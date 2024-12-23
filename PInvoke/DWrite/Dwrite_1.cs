@@ -3279,17 +3279,21 @@ public static partial class Dwrite
 
 		/// <summary>Determines whether the font supports a specified character.</summary>
 		/// <param name="unicodeValue">
-		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Type: <b>UINT32</b></para>
 		/// <para>A Unicode (UCS-4) character value for the method to inspect.</para>
 		/// </param>
+		/// <param name="exists">
+		/// <para>Type: <b>BOOL*</b></para>
+		/// <para>When this method returns, <b>TRUE</b> if the font supports the specified character; otherwise, <b>FALSE</b>.</para>
+		/// </param>
 		/// <returns>
-		/// <para>Type: <c>BOOL*</c></para>
-		/// <para>When this method returns, <c>TRUE</c> if the font supports the specified character; otherwise, <c>FALSE</c>.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefont-hascharacter HRESULT HasCharacter( UINT32
-		// unicodeValue, BOOL *exists );
-		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool HasCharacter(uint unicodeValue);
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefont-hascharacter
+		// HRESULT HasCharacter( UINT32 unicodeValue, [out] BOOL *exists );
+		[PreserveSig]
+		new HRESULT HasCharacter(uint unicodeValue, [MarshalAs(UnmanagedType.Bool)] out bool exists);
 
 		/// <summary>Creates a font face object for the font.</summary>
 		/// <returns>

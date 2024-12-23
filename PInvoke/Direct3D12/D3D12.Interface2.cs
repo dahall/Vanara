@@ -448,7 +448,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap HRESULT
 		// CreateDescriptorHeap( [in] const D3D12_DESCRIPTOR_HEAP_DESC *pDescriptorHeapDesc, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [Out] IntPtr ppvHeap);
 
 		/// <summary>
 		/// Gets the size of the handle increment for the given type of descriptor heap. This value is typically used to increment a handle
@@ -2658,7 +2658,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap HRESULT
 		// CreateDescriptorHeap( [in] const D3D12_DESCRIPTOR_HEAP_DESC *pDescriptorHeapDesc, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [Out] IntPtr ppvHeap);
 
 		/// <summary>
 		/// Gets the size of the handle increment for the given type of descriptor heap. This value is typically used to increment a handle
@@ -5008,7 +5008,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap HRESULT
 		// CreateDescriptorHeap( [in] const D3D12_DESCRIPTOR_HEAP_DESC *pDescriptorHeapDesc, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [Out] IntPtr ppvHeap);
 
 		/// <summary>
 		/// Gets the size of the handle increment for the given type of descriptor heap. This value is typically used to increment a handle
@@ -7762,7 +7762,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap HRESULT
 		// CreateDescriptorHeap( [in] const D3D12_DESCRIPTOR_HEAP_DESC *pDescriptorHeapDesc, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [Out] IntPtr ppvHeap);
 
 		/// <summary>
 		/// Gets the size of the handle increment for the given type of descriptor heap. This value is typically used to increment a handle

@@ -3769,7 +3769,7 @@ public static partial class DXGI
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nn-d3dcommon-id3d10blob
 	[PInvokeData("d3dcommon.h", MSDNShortId = "NN:d3dcommon.ID3D10Blob"), ComImport, Guid("8BA5FB08-5195-40e2-AC58-0D989C3A0102"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D10Blob
+	public interface ID3DBlob
 	{
 		/// <summary>Gets a pointer to the data.</summary>
 		/// <returns>
@@ -3937,23 +3937,41 @@ public static partial class DXGI
 	[PInvokeData("dcommon.h", MSDNShortId = "c8a54bad-4376-479b-8529-1e407623e473"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_MATRIX_3X2_F
 	{
+		/// <summary>The value in the first row and first column of the matrix.</summary>
+		public float _11;
+
+		/// <summary>The value in the first row and second column of the matrix.</summary>
+		public float _12;
+
+		/// <summary>The value in the second row and first column of the matrix.</summary>
+		public float _21;
+
+		/// <summary>The value in the second row and second column of the matrix.</summary>
+		public float _22;
+
+		/// <summary>The value in the third row and first column of the matrix.</summary>
+		public float _31;
+
+		/// <summary>The value in the third row and second column of the matrix.</summary>
+		public float _32;
+
 		/// <summary>Horizontal scaling / cosine of rotation</summary>
-		public float m11;
+		public float m11 { get => _11; set => _11 = value; }
 
 		/// <summary>Vertical shear / sine of rotation</summary>
-		public float m12;
+		public float m12 { get => _12; set => _12 = value; }
 
 		/// <summary>Horizontal shear / negative sine of rotation</summary>
-		public float m21;
+		public float m21 { get => _21; set => _21 = value; }
 
 		/// <summary>Vertical scaling / cosine of rotation</summary>
-		public float m22;
+		public float m22 { get => _22; set => _22 = value; }
 
 		/// <summary>Horizontal shift (always orthogonal regardless of rotation)</summary>
-		public float dx;
+		public float dx { get => _31; set => _31 = value; }
 
 		/// <summary>Vertical shift (always orthogonal regardless of rotation)</summary>
-		public float dy;
+		public float dy { get => _32; set => _32 = value; }
 
 		/// <summary>Gets or sets the values as a multidimensional (3x2) array.</summary>
 		/// <value>The array value.</value>
@@ -3974,6 +3992,10 @@ public static partial class DXGI
 			}
 		}
 
+		/// <summary>Calculates the determinant of the matrix.</summary>
+		/// <value>The determinant of this matrix.</value>
+		public float Determinant => _11 * _22 - _12 * _21;
+
 		/// <summary>Performs an implicit conversion from <see cref="float"/>[,] to <see cref="D2D_MATRIX_3X2_F"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -3993,6 +4015,39 @@ public static partial class DXGI
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator Matrix(D2D_MATRIX_3X2_F value) => new(value.m);
+
+		/// <summary>Creates an identity matrix.</summary>
+		/// <returns>An identity matrix.</returns>
+		/// <remarks>
+		/// The identity matrix is the 3x2 matrix with ones on the main diagonal and zeros elsewhere. When an identity transform is applied
+		/// to an object, it does not change the position, shape, or size of the object. It is similar to the way that multiplying a number
+		/// by 1 does not change the number. Any transform other than the identity transform will modify the position, shape, and/or size of objects.
+		/// </remarks>
+		public static D2D_MATRIX_3X2_F Identity() => new() { _11 = 1, _22 = 1 };
+
+		/// <summary>Creates a translation transformation that has the specified x and y displacements.</summary>
+		/// <param name="x">The distance to translate along the x-axis.</param>
+		/// <param name="y">The distance to translate along the y-axis.</param>
+		/// <returns>A transformation matrix that translates an object the specified horizontal and vertical distance.</returns>
+		public static D2D_MATRIX_3X2_F Translation(float x, float y) => new() { _11 = 1, _22 = 1, _31 = x, _32 = y };
+
+		/// <summary>Creates a scale transformation that has the specified scale factors and center point.</summary>
+		/// <param name="width">The x-axis scale factor of the scale transformation.</param>
+		/// <param name="height">The y-axis scale factor of the scale transformation.</param>
+		/// <param name="x">The x-coordinate of the point about which the scale is performed.</param>
+		/// <param name="y">The y-coordinate of the point about which the scale is performed.</param>
+		/// <returns>The new scale transformation.</returns>
+		/// <remarks>
+		/// <para>
+		/// This method creates a scale transformation for the specified centerPoint and the x-axis and y-axis scale factors. If you prefer
+		/// to create a D2D1_SIZE_F structure to store the scale factors, call the other Scale method.
+		/// </para>
+		/// <para>
+		/// The following illustration shows the size of the square increased to 130% in both dimensions. The center point of the scaling is
+		/// the upper-left corner of the square.
+		/// </para>
+		/// </remarks>
+		public static D2D_MATRIX_3X2_F Scale(float width, float height, float x, float y) => new() { _11 = width, _22 = height, _31 = x - width * x, _32 = y - height * y };
 	}
 
 	/// <summary>Describes a 4-by-3 floating point matrix.</summary>

@@ -120,6 +120,7 @@ public class Matrix :
 			return true;
 		}
 	}
+
 	/// <summary>Gets a value indicating whether this instance is singluar.</summary>
 	/// <value><c>true</c> if this instance is singluar; otherwise, <c>false</c>.</value>
 	public bool IsSingluar => Determinant.Equals(0f);

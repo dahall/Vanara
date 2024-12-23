@@ -58,7 +58,7 @@ public class SafeNativeArray<TElem> : SafeNativeArrayBase<TElem, HGlobalMemoryMe
 public class SafeNativeArrayBase<TElem, TMem> : SafeMemoryHandle<TMem>, IList<TElem> where TElem : struct where TMem : IMemoryMethods, new()
 {
 	/// <summary>Gets the size of the element.</summary>
-	protected static readonly int ElemSize = Marshal.SizeOf(typeof(TElem));
+	protected static readonly int ElemSize = InteropExtensions.SizeOf(typeof(TElem));
 
 	/// <summary>Initializes a new instance of the <see cref="SafeNativeArrayBase{TElem, TMem}"/> class from a copy of a managed TElem array.</summary>
 	/// <param name="array">The array of <typeparamref name="TElem"/> with which to initialize the <see cref="SafeNativeArrayBase{TElem, TMem}"/>.</param>

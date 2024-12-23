@@ -1,5 +1,6 @@
 ﻿global using D3DCOLOR = Vanara.PInvoke.COLORREF;
 global using D3DRECT = Vanara.PInvoke.RECT;
+global using DXGI_MATRIX_3X2_F = Vanara.PInvoke.DXGI.D2D_MATRIX_3X2_F;
 #if !NET45
 using CommunityToolkit.HighPerformance;
 #endif

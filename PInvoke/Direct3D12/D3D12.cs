@@ -3,7 +3,6 @@ global using static Vanara.PInvoke.D3DCompiler;
 global using D3D12_BOX = Vanara.PInvoke.DXGI.D3D10_BOX;
 global using D3D12_GPU_VIRTUAL_ADDRESS = System.UInt64;
 global using D3D12_RECT = Vanara.PInvoke.RECT;
-global using ID3DBlob = Vanara.PInvoke.DXGI.ID3D10Blob;
 using System.Linq;
 
 namespace Vanara.PInvoke;

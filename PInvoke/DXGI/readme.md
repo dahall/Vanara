@@ -45,6 +45,8 @@ Native Enum | Header | Managed Enum
 [D3D_TESSELLATOR_DOMAIN](https://www.google.com/search?num=5&q=D3D_TESSELLATOR_DOMAIN+site%3Alearn.microsoft.com) | d3dcommon.h | [Vanara.PInvoke.DXGI.D3D_TESSELLATOR_DOMAIN](https://github.com/dahall/Vanara/search?l=C%23&q=D3D_TESSELLATOR_DOMAIN)  
 [D3D_TESSELLATOR_OUTPUT_PRIMITIVE](https://www.google.com/search?num=5&q=D3D_TESSELLATOR_OUTPUT_PRIMITIVE+site%3Alearn.microsoft.com) | d3dcommon.h | [Vanara.PInvoke.DXGI.D3D_TESSELLATOR_OUTPUT_PRIMITIVE](https://github.com/dahall/Vanara/search?l=C%23&q=D3D_TESSELLATOR_OUTPUT_PRIMITIVE)  
 [D3D_TESSELLATOR_PARTITIONING](https://www.google.com/search?num=5&q=D3D_TESSELLATOR_PARTITIONING+site%3Alearn.microsoft.com) | d3dcommon.h | [Vanara.PInvoke.DXGI.D3D_TESSELLATOR_PARTITIONING](https://github.com/dahall/Vanara/search?l=C%23&q=D3D_TESSELLATOR_PARTITIONING)  
+[DWRITE_GLYPH_IMAGE_FORMATS](https://www.google.com/search?num=5&q=DWRITE_GLYPH_IMAGE_FORMATS+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.DWRITE_GLYPH_IMAGE_FORMATS](https://github.com/dahall/Vanara/search?l=C%23&q=DWRITE_GLYPH_IMAGE_FORMATS)  
+[DWRITE_MEASURING_MODE](https://www.google.com/search?num=5&q=DWRITE_MEASURING_MODE+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.DWRITE_MEASURING_MODE](https://github.com/dahall/Vanara/search?l=C%23&q=DWRITE_MEASURING_MODE)  
 [DXGI_ADAPTER_FLAG](https://www.google.com/search?num=5&q=DXGI_ADAPTER_FLAG+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.DXGI_ADAPTER_FLAG](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_ADAPTER_FLAG)  
 [DXGI_ADAPTER_FLAG3](https://www.google.com/search?num=5&q=DXGI_ADAPTER_FLAG3+site%3Alearn.microsoft.com) | dxgi1_6.h | [Vanara.PInvoke.DXGI.DXGI_ADAPTER_FLAG3](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_ADAPTER_FLAG3)  
 [DXGI_ALPHA_MODE](https://www.google.com/search?num=5&q=DXGI_ALPHA_MODE+site%3Alearn.microsoft.com) | dxgi1_2.h | [Vanara.PInvoke.DXGI.DXGI_ALPHA_MODE](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_ALPHA_MODE)  
@@ -103,7 +105,9 @@ Native Structure | Header | Managed Structure
 [D2D_MATRIX_4X4_F](https://www.google.com/search?num=5&q=D2D_MATRIX_4X4_F+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.D2D_MATRIX_4X4_F](https://github.com/dahall/Vanara/search?l=C%23&q=D2D_MATRIX_4X4_F)  
 [D2D_MATRIX_5X4_F](https://www.google.com/search?num=5&q=D2D_MATRIX_5X4_F+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.D2D_MATRIX_5X4_F](https://github.com/dahall/Vanara/search?l=C%23&q=D2D_MATRIX_5X4_F)  
 [D2D_POINT_2F](https://www.google.com/search?num=5&q=D2D_POINT_2F+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.D2D_POINT_2F](https://github.com/dahall/Vanara/search?l=C%23&q=D2D_POINT_2F)  
+[D2D_POINT_2U](https://www.google.com/search?num=5&q=D2D_POINT_2U+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.D2D_POINT_2U](https://github.com/dahall/Vanara/search?l=C%23&q=D2D_POINT_2U)  
 [D2D_RECT_F](https://www.google.com/search?num=5&q=D2D_RECT_F+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.D2D_RECT_F](https://github.com/dahall/Vanara/search?l=C%23&q=D2D_RECT_F)  
+[D2D_RECT_U](https://www.google.com/search?num=5&q=D2D_RECT_U+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.D2D_RECT_U](https://github.com/dahall/Vanara/search?l=C%23&q=D2D_RECT_U)  
 [D2D_SIZE_F](https://www.google.com/search?num=5&q=D2D_SIZE_F+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.D2D_SIZE_F](https://github.com/dahall/Vanara/search?l=C%23&q=D2D_SIZE_F)  
 [D2D_SIZE_U](https://www.google.com/search?num=5&q=D2D_SIZE_U+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.D2D_SIZE_U](https://github.com/dahall/Vanara/search?l=C%23&q=D2D_SIZE_U)  
 [D2D_VECTOR_2F](https://www.google.com/search?num=5&q=D2D_VECTOR_2F+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.D2D_VECTOR_2F](https://github.com/dahall/Vanara/search?l=C%23&q=D2D_VECTOR_2F)  
@@ -153,6 +157,8 @@ Native Structure | Header | Managed Structure
 [DXGI_SWAP_CHAIN_DESC](https://www.google.com/search?num=5&q=DXGI_SWAP_CHAIN_DESC+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.DXGI_SWAP_CHAIN_DESC](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_SWAP_CHAIN_DESC)  
 [DXGI_SWAP_CHAIN_DESC1](https://www.google.com/search?num=5&q=DXGI_SWAP_CHAIN_DESC1+site%3Alearn.microsoft.com) | dxgi1_2.h | [Vanara.PInvoke.DXGI.DXGI_SWAP_CHAIN_DESC1](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_SWAP_CHAIN_DESC1)  
 [DXGI_SWAP_CHAIN_FULLSCREEN_DESC](https://www.google.com/search?num=5&q=DXGI_SWAP_CHAIN_FULLSCREEN_DESC+site%3Alearn.microsoft.com) | dxgi1_2.h | [Vanara.PInvoke.DXGI.DXGI_SWAP_CHAIN_FULLSCREEN_DESC](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_SWAP_CHAIN_FULLSCREEN_DESC)  
+[PD2D_POINT_2F](https://www.google.com/search?num=5&q=PD2D_POINT_2F+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.PD2D_POINT_2F](https://github.com/dahall/Vanara/search?l=C%23&q=PD2D_POINT_2F)  
+[PD2D_RECT_F](https://www.google.com/search?num=5&q=PD2D_RECT_F+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.PD2D_RECT_F](https://github.com/dahall/Vanara/search?l=C%23&q=PD2D_RECT_F)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
@@ -203,3 +209,8 @@ Native Interface | Header | Managed Interface
 [IDXGISwapChain3](https://www.google.com/search?num=5&q=IDXGISwapChain3+site%3Alearn.microsoft.com) | dxgi1_4.h | [Vanara.PInvoke.DXGI.IDXGISwapChain3](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGISwapChain3)  
 [IDXGISwapChain4](https://www.google.com/search?num=5&q=IDXGISwapChain4+site%3Alearn.microsoft.com) | dxgi1_5.h | [Vanara.PInvoke.DXGI.IDXGISwapChain4](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGISwapChain4)  
 [IDXGISwapChainMedia](https://www.google.com/search?num=5&q=IDXGISwapChainMedia+site%3Alearn.microsoft.com) | dxgi1_3.h | [Vanara.PInvoke.DXGI.IDXGISwapChainMedia](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGISwapChainMedia)  
+### Classes  
+Native Class | Header | Managed Class  
+--- | --- | ---  
+[PD2D_POINT_2F](https://www.google.com/search?num=5&q=PD2D_POINT_2F+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.PD2D_POINT_2F](https://github.com/dahall/Vanara/search?l=C%23&q=PD2D_POINT_2F)  
+[PD2D_RECT_F](https://www.google.com/search?num=5&q=PD2D_RECT_F+site%3Alearn.microsoft.com) | dcommon.h | [Vanara.PInvoke.DXGI.PD2D_RECT_F](https://github.com/dahall/Vanara/search?l=C%23&q=PD2D_RECT_F)  

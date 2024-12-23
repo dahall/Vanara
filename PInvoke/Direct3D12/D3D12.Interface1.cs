@@ -1396,33 +1396,36 @@ public static partial class D3D12
 		new HRESULT GetDevice(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvDevice);
 
 		/// <summary>Gets the descriptor heap description.</summary>
-		/// <returns>
+		/// <param name="desc">
 		///   <para>Type: <b><c>D3D12_DESCRIPTOR_HEAP_DESC</c></b></para>
 		///   <para>The description of the descriptor heap, as a <c>D3D12_DESCRIPTOR_HEAP_DESC</c> structure.</para>
-		/// </returns>
+		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12descriptorheap-getdesc D3D12_DESCRIPTOR_HEAP_DESC GetDesc();
-		D3D12_DESCRIPTOR_HEAP_DESC GetDesc();
+		[PreserveSig]
+		void GetDesc(out D3D12_DESCRIPTOR_HEAP_DESC desc);
 
 		/// <summary>Gets the CPU descriptor handle that represents the start of the heap.</summary>
-		/// <returns>
+		/// <param name="handle">
 		///   <para>Type: <b><c>D3D12_CPU_DESCRIPTOR_HANDLE</c></b></para>
 		///   <para>Returns the CPU descriptor handle that represents the start of the heap.</para>
-		/// </returns>
+		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12descriptorheap-getcpudescriptorhandleforheapstart
 		// D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandleForHeapStart();
-		D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandleForHeapStart();
+		[PreserveSig]
+		void GetCPUDescriptorHandleForHeapStart(out D3D12_CPU_DESCRIPTOR_HANDLE handle);
 
 		/// <summary>Gets the GPU descriptor handle that represents the start of the heap.</summary>
-		/// <returns>
+		/// <param name="handle">
 		///   <para>Type: <b><c>D3D12_GPU_DESCRIPTOR_HANDLE</c></b></para>
 		///   <para>
 		/// Returns the GPU descriptor handle that represents the start of the heap. If the descriptor heap is not shader-visible, a null
 		/// handle is returned.
 		/// </para>
-		/// </returns>
+		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12descriptorheap-getgpudescriptorhandleforheapstart
 		// D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandleForHeapStart();
-		D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandleForHeapStart();
+		[PreserveSig]
+		void GetGPUDescriptorHandleForHeapStart(out D3D12_GPU_DESCRIPTOR_HANDLE handle);
 	}
 
 	/// <summary>
@@ -1896,7 +1899,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap HRESULT
 		// CreateDescriptorHeap( [in] const D3D12_DESCRIPTOR_HEAP_DESC *pDescriptorHeapDesc, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [Out] IntPtr ppvHeap);
 
 		/// <summary>
 		/// Gets the size of the handle increment for the given type of descriptor heap. This value is typically used to increment a handle
@@ -3477,661 +3480,6 @@ public static partial class D3D12
 	}
 
 	/// <summary>
-	/// <para>Creates a command queue.</para>
-	/// <para>Also see <c>ID3D12Device9::CreateCommandQueue1</c>.</para>
-	/// </summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="pDesc">
-	/// <para>Type: [in] <b>const <c>D3D12_COMMAND_QUEUE_DESC</c>*</b></para>
-	/// <para>Specifies a <b>D3D12_COMMAND_QUEUE_DESC</b> that describes the command queue.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>
-	/// This method returns <b>E_OUTOFMEMORY</b> if there is insufficient memory to create the command queue. See <c>Direct3D 12 return
-	/// codes</c> for other possible return values.
-	/// </para>
-	/// </returns>
-	/// <remarks>
-	/// The <b>REFIID</b>, or <b>GUID</b>, of the interface to the command queue can be obtained by using the __uuidof() macro. For
-	/// example, __uuidof(ID3D12CommandQueue) will get the <b>GUID</b> of the interface to a command queue.
-	/// </remarks>
-	public static T CreateCommandQueue<T>(this ID3D12Device device, in D3D12_COMMAND_QUEUE_DESC pDesc) where T : class
-	{
-		device.CreateCommandQueue(pDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Creates a command allocator object.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="type">
-	/// <para>Type: <b><c>D3D12_COMMAND_LIST_TYPE</c></b></para>
-	/// <para>
-	/// A <c>D3D12_COMMAND_LIST_TYPE</c>-typed value that specifies the type of command allocator to create. The type of command
-	/// allocator can be the type that records either direct command lists or bundles.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>
-	/// This method returns <b>E_OUTOFMEMORY</b> if there is insufficient memory to create the command allocator. See <c>Direct3D 12
-	/// Return Codes</c> for other possible return values.
-	/// </para>
-	/// </returns>
-	/// <remarks>
-	/// <para>The device creates command lists from the command allocator. Examples The <c>D3D12Bundles</c> sample uses <b>ID3D12Device::CreateCommandAllocator</b> as follows:</para>
-	/// <para>
-	/// <c>ThrowIfFailed(pDevice-&gt;CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&amp;m_commandAllocator)));
-	/// ThrowIfFailed(pDevice-&gt;CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_BUNDLE, IID_PPV_ARGS(&amp;m_bundleAllocator)));</c>
-	/// </para>
-	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
-	/// </remarks>
-	public static T CreateCommandAllocator<T>(this ID3D12Device device, D3D12_COMMAND_LIST_TYPE type) where T : class
-	{
-		device.CreateCommandAllocator(type, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Creates a graphics pipeline state object.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="pDesc">
-	/// <para>Type: <b>const <c>D3D12_GRAPHICS_PIPELINE_STATE_DESC</c>*</b></para>
-	/// <para>A pointer to a <c>D3D12_GRAPHICS_PIPELINE_STATE_DESC</c> structure that describes graphics pipeline state.</para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	public static T CreateGraphicsPipelineState<T>(this ID3D12Device device, in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc) where T : class
-	{
-		device.CreateGraphicsPipelineState(pDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Creates a compute pipeline state object.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="pDesc">
-	/// <para>Type: <b>const <c>D3D12_COMPUTE_PIPELINE_STATE_DESC</c>*</b></para>
-	/// <para>A pointer to a <c>D3D12_COMPUTE_PIPELINE_STATE_DESC</c> structure that describes compute pipeline state.</para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	public static T CreateComputePipelineState<T>(this ID3D12Device device, in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc) where T : class
-	{
-		device.CreateComputePipelineState(pDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Creates a command list.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="nodeMask">
-	/// <para>Type: <b><c>UINT</c></b></para>
-	/// <para>
-	/// For single-GPU operation, set this to zero. If there are multiple GPU nodes, then set a bit to identify the node (the device's
-	/// physical adapter) for which to create the command list. Each bit in the mask corresponds to a single node. Only one bit must be
-	/// set. Also see <c>Multi-adapter systems</c>.
-	/// </para>
-	/// </param>
-	/// <param name="type">
-	/// <para>Type: <b><c>D3D12_COMMAND_LIST_TYPE</c></b></para>
-	/// <para>Specifies the type of command list to create.</para>
-	/// </param>
-	/// <param name="pCommandAllocator">
-	/// <para>Type: <b><c>ID3D12CommandAllocator</c>*</b></para>
-	/// <para>A pointer to the command allocator object from which the device creates command lists.</para>
-	/// </param>
-	/// <param name="pInitialState">
-	/// <para>Type: <b><c>ID3D12PipelineState</c>*</b></para>
-	/// <para>
-	/// An optional pointer to the pipeline state object that contains the initial pipeline state for the command list. If it is
-	/// <c>nullptr</c>, then the runtime sets a dummy initial pipeline state, so that drivers don't have to deal with undefined state.
-	/// The overhead for this is low, particularly for a command list, for which the overall cost of recording the command list likely
-	/// dwarfs the cost of a single initial state setting. So there's little cost in not setting the initial pipeline state parameter,
-	/// if doing so is inconvenient.
-	/// </para>
-	/// <para>
-	/// For bundles, on the other hand, it might make more sense to try to set the initial state parameter (since bundles are likely
-	/// smaller overall, and can be reused frequently).
-	/// </para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	/// <remarks>The device creates command lists from the command allocator.</remarks>
-	public static T CreateCommandList<T>(this ID3D12Device device, uint nodeMask, D3D12_COMMAND_LIST_TYPE type,
-		[In] ID3D12CommandAllocator pCommandAllocator, [In, Optional] ID3D12PipelineState? pInitialState) where T : class
-	{
-		device.CreateCommandList(nodeMask, type, pCommandAllocator, pInitialState, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
-	/// <typeparam name="T">The type of the structure associated with <paramref name="Feature" />.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device" /> instance.</param>
-	/// <param name="Feature">A constant from the <c>D3D12_FEATURE</c> enumeration describing the feature(s) that you want to query for support.</param>
-	/// <param name="pFeatureSupportData">A reference to a data structure that corresponds to the value of the <i>Feature</i> parameter. To determine the corresponding data
-	/// structure for each constant, see <c>D3D12_FEATURE</c>.</param>
-	/// <returns>
-	/// Returns <b>S_OK</b> if successful. Returns <b>E_INVALIDARG</b> if an unsupported data type is passed to the
-	/// <i>pFeatureSupportData</i> parameter or if a size mismatch is detected for the <i>FeatureSupportDataSize</i> parameter.
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// As a usage example, to check for ray tracing support, specify the <c>D3D12_FEATURE_DATA_D3D12_OPTIONS5</c> structure in the
-	/// <i>pFeatureSupportData</i> parameter. When the function completes successfully, access the <i>RaytracingTier</i> field (which
-	/// specifies the supported ray tracing tier) of the now-populated <b>D3D12_FEATURE_DATA_D3D12_OPTIONS5</b> structure.
-	/// </para>
-	/// <para>For more info, see <c>Capability Querying</c>.</para>
-	/// <para>Examples</para>
-	/// <para>The <c>D3D1211on12</c> sample uses <b>ID3D12Device::CheckFeatureSupport</b> as follows:</para>
-	/// <para>
-	/// <code>inline UINT8 D3D12GetFormatPlaneCount( _In_ ID3D12Device* pDevice, DXGI_FORMAT Format ) {
-	///   D3D12_FEATURE_DATA_FORMAT_INFO formatInfo = {Format};
-	///   if (FAILED(pDevice-&gt;CheckFeatureSupport(D3D12_FEATURE_FORMAT_INFO, &amp;formatInfo, sizeof(formatInfo))))
-	///     { return 0; }
-	///   return formatInfo.PlaneCount;
-	/// }</code>
-	/// </para>
-	/// </remarks>
-	public static HRESULT CheckFeatureSupport<T>(this ID3D12Device device, D3D12_FEATURE Feature, ref T pFeatureSupportData) where T : struct
-	{
-		using SafeCoTaskMemStruct<T> mem = new(pFeatureSupportData);
-		var hr = device.CheckFeatureSupport(Feature, mem, mem.Size);
-		pFeatureSupportData = mem.Value;
-		return hr;
-	}
-
-	/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
-	/// <typeparam name="T">The type of the structure associated with <paramref name="Feature" />.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device" /> instance.</param>
-	/// <param name="Feature">A constant from the <c>D3D12_FEATURE</c> enumeration describing the feature(s) that you want to query for support.</param>
-	/// <param name="pFeatureSupportData">A reference to a data structure that corresponds to the value of the <i>Feature</i> parameter. To determine the corresponding data
-	/// structure for each constant, see <c>D3D12_FEATURE</c>.</param>
-	/// <returns>
-	/// Returns <b>S_OK</b> if successful. Returns <b>E_INVALIDARG</b> if an unsupported data type is passed to the
-	/// <i>pFeatureSupportData</i> parameter or if a size mismatch is detected for the <i>FeatureSupportDataSize</i> parameter.
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// As a usage example, to check for ray tracing support, specify the <c>D3D12_FEATURE_DATA_D3D12_OPTIONS5</c> structure in the
-	/// <i>pFeatureSupportData</i> parameter. When the function completes successfully, access the <i>RaytracingTier</i> field (which
-	/// specifies the supported ray tracing tier) of the now-populated <b>D3D12_FEATURE_DATA_D3D12_OPTIONS5</b> structure.
-	/// </para>
-	/// <para>For more info, see <c>Capability Querying</c>.</para>
-	/// <para>Examples</para>
-	/// <para>The <c>D3D1211on12</c> sample uses <b>ID3D12Device::CheckFeatureSupport</b> as follows:</para>
-	/// <para>
-	/// <code>inline UINT8 D3D12GetFormatPlaneCount( _In_ ID3D12Device* pDevice, DXGI_FORMAT Format ) {
-	///   D3D12_FEATURE_DATA_FORMAT_INFO formatInfo = {Format};
-	///   if (FAILED(pDevice-&gt;CheckFeatureSupport(D3D12_FEATURE_FORMAT_INFO, &amp;formatInfo, sizeof(formatInfo))))
-	///     { return 0; }
-	///   return formatInfo.PlaneCount;
-	/// }</code>
-	/// </para>
-	/// </remarks>
-	public static HRESULT CheckFeatureSupport<T>(this ID3D12Device device, D3D12_FEATURE Feature, in T? pFeatureSupportData) where T : struct
-	{
-		using SafeCoTaskMemStruct<T> mem = pFeatureSupportData;
-		return device.CheckFeatureSupport(Feature, mem, mem.Size);
-	}
-
-	/// <summary>Creates a descriptor heap object.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="pDescriptorHeapDesc">
-	/// <para>Type: <b>const <c>D3D12_DESCRIPTOR_HEAP_DESC</c>*</b></para>
-	/// <para>A pointer to a <c>D3D12_DESCRIPTOR_HEAP_DESC</c> structure that describes the heap.</para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	/// <remarks>
-	/// <para>
-	/// The <b>REFIID</b>, or <b>GUID</b>, of the interface to the descriptor heap can be obtained by using the __uuidof() macro. For
-	/// example, __uuidof( <c>ID3D12DescriptorHeap</c>) will get the <b>GUID</b> of the interface to a descriptor heap.
-	///  Examples The <c>D3D12HelloWorld</c> sample uses <b>ID3D12Device::CreateDescriptorHeap</b> as follows:</para>
-	/// <para>Describe and create a render target view (RTV) descriptor heap.</para>
-	/// <para>
-	/// <c>// Create descriptor heaps. { // Describe and create a render target view (RTV) descriptor heap. D3D12_DESCRIPTOR_HEAP_DESC
-	/// rtvHeapDesc = {}; rtvHeapDesc.NumDescriptors = FrameCount; rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; rtvHeapDesc.Flags
-	/// = D3D12_DESCRIPTOR_HEAP_FLAG_NONE; ThrowIfFailed(m_device-&gt;CreateDescriptorHeap(&amp;rtvHeapDesc,
-	/// IID_PPV_ARGS(&amp;m_rtvHeap))); m_rtvDescriptorSize =
-	/// m_device-&gt;GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV); } // Create frame resources. {
-	/// CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvHeap-&gt;GetCPUDescriptorHandleForHeapStart()); // Create a RTV for each frame. for
-	/// (UINT n = 0; n &lt; FrameCount; n++) { ThrowIfFailed(m_swapChain-&gt;GetBuffer(n, IID_PPV_ARGS(&amp;m_renderTargets[n])));
-	/// m_device-&gt;CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvHandle); rtvHandle.Offset(1, m_rtvDescriptorSize); }</c>
-	/// </para>
-	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
-	/// </remarks>
-	public static T CreateDescriptorHeap<T>(this ID3D12Device device, in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc) where T : class
-	{
-		device.CreateDescriptorHeap(pDescriptorHeapDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Creates a root signature layout.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="nodeMask">
-	/// <para>Type: <b><c>UINT</c></b></para>
-	/// <para>
-	/// For single GPU operation, set this to zero. If there are multiple GPU nodes, set bits to identify the nodes (the device's
-	/// physical adapters) to which the root signature is to apply. Each bit in the mask corresponds to a single node. Refer to
-	/// <c>Multi-adapter systems</c>.
-	/// </para>
-	/// </param>
-	/// <param name="pBlobWithRootSignature">
-	/// <para>Type: <b>const <c>void</c>*</b></para>
-	/// <para>A pointer to the source data for the serialized signature.</para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	/// <remarks>
-	/// <para>
-	/// If an application procedurally generates a <c>D3D12_ROOT_SIGNATURE_DESC</c> data structure, it must pass a pointer to this
-	/// <b>D3D12_ROOT_SIGNATURE_DESC</b> in a call to <c>D3D12SerializeRootSignature</c> to make the serialized form. The application
-	/// then passes the serialized form to <i>pBlobWithRootSignature</i> in a call to <b>ID3D12Device::CreateRootSignature</b>.
-	/// </para>
-	/// <para>
-	/// The <b>REFIID</b>, or <b>GUID</b>, of the interface to the root signature layout can be obtained by using the __uuidof() macro.
-	/// For example, __uuidof( <c>ID3D12RootSignature</c>) will get the <b>GUID</b> of the interface to a root signature.
-	///  Examples The <c>D3D12HelloTriangle</c> sample uses <b>ID3D12Device::CreateRootSignature</b> as follows:</para>
-	/// <para>Create an empty root signature.</para>
-	/// <para>
-	/// <c>CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc; rootSignatureDesc.Init(0, nullptr, 0, nullptr,
-	/// D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT); ComPtr&lt;ID3DBlob&gt; signature; ComPtr&lt;ID3DBlob&gt; error;
-	/// ThrowIfFailed(D3D12SerializeRootSignature(&amp;rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &amp;signature, &amp;error));
-	/// ThrowIfFailed(m_device-&gt;CreateRootSignature(0, signature-&gt;GetBufferPointer(), signature-&gt;GetBufferSize(), IID_PPV_ARGS(&amp;m_rootSignature)));</c>
-	/// </para>
-	/// </remarks>
-	public static T CreateRootSignature<T>(this ID3D12Device device, uint nodeMask, ID3DBlob pBlobWithRootSignature) where T : class
-	{
-		device.CreateRootSignature(nodeMask, pBlobWithRootSignature.GetBufferPointer(), pBlobWithRootSignature.GetBufferSize(), typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>
-	/// Creates both a resource and an implicit heap, such that the heap is big enough to contain the entire resource, and the resource
-	/// is mapped to the heap.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="pHeapProperties">
-	/// <para>Type: <b>const <c>D3D12_HEAP_PROPERTIES</c>*</b></para>
-	/// <para>A pointer to a <b>D3D12_HEAP_PROPERTIES</b> structure that provides properties for the resource's heap.</para>
-	/// </param>
-	/// <param name="HeapFlags">
-	/// <para>Type: <b><c>D3D12_HEAP_FLAGS</c></b></para>
-	/// <para>Heap options, as a bitwise-OR'd combination of <b>D3D12_HEAP_FLAGS</b> enumeration constants.</para>
-	/// </param>
-	/// <param name="pDesc">
-	/// <para>Type: <b>const <c>D3D12_RESOURCE_DESC</c>*</b></para>
-	/// <para>A pointer to a <b>D3D12_RESOURCE_DESC</b> structure that describes the resource.</para>
-	/// </param>
-	/// <param name="InitialResourceState">
-	/// <para>Type: <b><c>D3D12_RESOURCE_STATES</c></b></para>
-	/// <para>The initial state of the resource, as a bitwise-OR'd combination of <b>D3D12_RESOURCE_STATES</b> enumeration constants.</para>
-	/// <para>When you create a resource together with a <c>D3D12_HEAP_TYPE_UPLOAD</c> heap, you must set InitialResourceState to <c>D3D12_RESOURCE_STATE_GENERIC_READ</c>.</para>
-	/// <para>
-	/// When you create a resource together with a <c>D3D12_HEAP_TYPE_READBACK</c> heap, you must set InitialResourceState to <c>D3D12_RESOURCE_STATE_COPY_DEST</c>.
-	/// </para>
-	/// </param>
-	/// <param name="pOptimizedClearValue">
-	/// <para>Type: <b>const <c>D3D12_CLEAR_VALUE</c>*</b></para>
-	/// <para>Specifies a <b>D3D12_CLEAR_VALUE</b> structure that describes the default value for a clear color.</para>
-	/// <para>
-	/// <paramref name="pOptimizedClearValue"/> specifies a value for which clear operations are most optimal. When the created resource
-	/// is a texture with either the <c>D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET</c> or <b>D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL</b>
-	/// flags, you should choose the value with which the clear operation will most commonly be called. You can call the clear operation
-	/// with other values, but those operations won't be as efficient as when the value matches the one passed in to resource creation.
-	/// </para>
-	/// <para>When you use <c>D3D12_RESOURCE_DIMENSION_BUFFER</c>, you must set pOptimizedClearValue to <c>nullptr</c>.</para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	/// <remarks>
-	/// <para>
-	/// This method creates both a resource and a heap, such that the heap is big enough to contain the entire resource, and the
-	/// resource is mapped to the heap. The created heap is known as an implicit heap, because the heap object can't be obtained by the
-	/// application. Before releasing the final reference on the resource, your application must ensure that the GPU will no longer read
-	/// nor write to this resource.
-	/// </para>
-	/// <para>The implicit heap is made resident for GPU access before the method returns control to your application. Also see <c>Residency</c>.</para>
-	/// <para>The resource GPU VA mapping can't be changed. See <c>ID3D12CommandQueue::UpdateTileMappings</c> and <c>Volume tiled resources</c>.</para>
-	/// <para>This method may be called by multiple threads concurrently.</para>
-	/// </remarks>
-	public static T CreateCommittedResource<T>(this ID3D12Device device, in D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, in D3D12_RESOURCE_DESC pDesc,
-		D3D12_RESOURCE_STATES InitialResourceState, [In, Optional] D3D12_CLEAR_VALUE? pOptimizedClearValue) where T : class
-	{
-		device.CreateCommittedResource(pHeapProperties, HeapFlags, pDesc, InitialResourceState, new(pOptimizedClearValue, out _), typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Creates a heap that can be used with placed resources and reserved resources.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="pDesc">
-	/// <para>Type: <b>const <c>D3D12_HEAP_DESC</c>*</b></para>
-	/// <para>A pointer to a constant <b>D3D12_HEAP_DESC</b> structure that describes the heap.</para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	/// <remarks>
-	/// <para><b>CreateHeap</b> creates a heap that can be used with placed resources and reserved resources.</para>
-	/// <para>
-	/// Before releasing the final reference on the heap, your application must ensure that the GPU will no longer read or write to this heap.
-	/// </para>
-	/// <para>
-	/// A placed resource object holds a reference on the heap it is created on; but a reserved resource doesn't hold a reference for
-	/// each mapping made to a heap.
-	/// </para>
-	/// </remarks>
-	public static T CreateHeap<T>(this ID3D12Device device, in D3D12_HEAP_DESC pDesc) where T : class
-	{
-		device.CreateHeap(pDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>
-	/// <para>
-	/// Creates a resource that is placed in a specific heap. Placed resources are the lightest weight resource objects available, and
-	/// are the fastest to create and destroy.
-	/// </para>
-	/// <para>
-	/// Your application can re-use video memory by overlapping multiple Direct3D placed and reserved resources on heap regions. The
-	/// simple memory re-use model (described in <c>Remarks</c>) exists to clarify which overlapping resource is valid at any given
-	/// time. To maximize graphics tool support, with the simple model data-inheritance isn't supported; and finer-grained tile and
-	/// sub-resource invalidation isn't supported. Only full overlapping resource invalidation occurs.
-	/// </para>
-	/// </summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="pHeap">
-	/// <para>Type: [in] <b><c>ID3D12Heap</c></b>*</para>
-	/// <para>A pointer to the <b>ID3D12Heap</b> interface that represents the heap in which the resource is placed.</para>
-	/// </param>
-	/// <param name="HeapOffset">
-	/// <para>Type: <b><c>UINT64</c></b></para>
-	/// <para>
-	/// The offset, in bytes, to the resource. The HeapOffset must be a multiple of the resource's alignment, and HeapOffset plus the
-	/// resource size must be smaller than or equal to the heap size. <c><b>GetResourceAllocationInfo</b></c> must be used to understand
-	/// the sizes of texture resources.
-	/// </para>
-	/// </param>
-	/// <param name="pDesc">
-	/// <para>Type: [in] <b>const <c>D3D12_RESOURCE_DESC</c></b>*</para>
-	/// <para>A pointer to a <b>D3D12_RESOURCE_DESC</b> structure that describes the resource.</para>
-	/// </param>
-	/// <param name="InitialState">
-	/// <para>Type: <b><c>D3D12_RESOURCE_STATES</c></b></para>
-	/// <para>The initial state of the resource, as a bitwise-OR'd combination of <b>D3D12_RESOURCE_STATES</b> enumeration constants.</para>
-	/// <para>
-	/// When a resource is created together with a <b>D3D12_HEAP_TYPE_UPLOAD</b> heap, InitialState must be
-	/// <b>D3D12_RESOURCE_STATE_GENERIC_READ</b>. When a resource is created together with a <b>D3D12_HEAP_TYPE_READBACK</b> heap,
-	/// InitialState must be <b>D3D12_RESOURCE_STATE_COPY_DEST</b>.
-	/// </para>
-	/// </param>
-	/// <param name="pOptimizedClearValue">
-	/// <para>Type: [in, optional] <b>const <c>D3D12_CLEAR_VALUE</c></b>*</para>
-	/// <para>Specifies a <b>D3D12_CLEAR_VALUE</b> that describes the default value for a clear color.</para>
-	/// <para>
-	/// <paramref name="pOptimizedClearValue"/> specifies a value for which clear operations are most optimal. When the created resource
-	/// is a texture with either the <b>D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET</b> or <b>D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL</b>
-	/// flags, your application should choose the value that the clear operation will most commonly be called with.
-	/// </para>
-	/// <para>
-	/// Clear operations can be called with other values, but those operations will not be as efficient as when the value matches the
-	/// one passed into resource creation.
-	/// </para>
-	/// <para><paramref name="pOptimizedClearValue"/> must be NULL when used with <b>D3D12_RESOURCE_DIMENSION_BUFFER</b>.</para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	/// <remarks>
-	/// <para>
-	/// <b>CreatePlacedResource</b> is similar to fully mapping a reserved resource to an offset within a heap; but the virtual address
-	/// space associated with a heap may be reused as well.
-	/// </para>
-	/// <para>
-	/// Placed resources are lighter weight to create and destroy than committed resources are. This is because no heap is created nor
-	/// destroyed during those operations. In addition, placed resources enable an even lighter weight technique to reuse memory than
-	/// resource creation and destruction—that is, reuse through aliasing, and aliasing barriers. Multiple placed resources may
-	/// simultaneously overlap each other on the same heap, but only a single overlapping resource can be used at a time.
-	/// </para>
-	/// <para>
-	/// There are two placed resource usage semantics—a simple model, and an advanced model. We recommend that you choose the simple
-	/// model (it maximizes graphics tool support across the diverse ecosystem of GPUs), unless and until you find that you need the
-	/// advanced model for your app.
-	/// </para>
-	/// <para>Simple model</para>
-	/// <para>
-	/// In this model, you can consider a placed resource to be in one of two states: active, or inactive. It's invalid for the GPU to
-	/// either read or write from an inactive resource. Placed resources are created in the inactive state.
-	/// </para>
-	/// <para>
-	/// To activate a resource with an aliasing barrier on a command list, your application must pass the resource in
-	/// <c><b>D3D12_RESOURCE_ALIASING_BARRIER::pResourceAfter</b></c>. <b>pResourceBefore</b> can be left NULL during an activation. All
-	/// resources that share physical memory with the activated resource now become inactive, which includes overlapping placed and
-	/// reserved resources.
-	/// </para>
-	/// <para>Aliasing barriers should be grouped up and submitted together, in order to maximize efficiency.</para>
-	/// <para>
-	/// After activation, resources with either the render target or depth stencil flags must be further initialized. See the notes on
-	/// the required resource initialization below.
-	/// </para>
-	/// <para>Notes on the required resource initialization</para>
-	/// <para>
-	/// Certain resource types still require initialization. Resources with either the render target or depth stencil flags must be
-	/// initialized with either a clear operation or a collection of full subresource copies. If an aliasing barrier was used to denote
-	/// the transition between two aliased resources, the initialization must occur after the aliasing barrier. This initialization is
-	/// still required whenever a resource would've been activated in the simple model.
-	/// </para>
-	/// <para>
-	/// Placed and reserved resources with either the render target or depth stencil flags must be initialized with one of the following
-	/// operations before other operations are supported.
-	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <description>A Clear operation; for example <c>ClearRenderTargetView</c> or <c>ClearDepthStencilView</c>.</description>
-	/// </item>
-	/// <item>
-	/// <description>A <c>DiscardResource</c> operation.</description>
-	/// </item>
-	/// <item>
-	/// <description>A Copy operation; for example <c>CopyBufferRegion</c>, <c>CopyTextureRegion</c>, or <c>CopyResource</c>.</description>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// Applications should prefer the most explicit operation that results in the least amount of texels modified. Consider the
-	/// following examples.
-	/// </para>
-	/// <list type="bullet">
-	/// <item>
-	/// <description>
-	/// Using a depth buffer to solve pixel visibility typically requires each depth texel start out at 1.0 or 0. Therefore, a Clear
-	/// operation should be the most efficient option for aliased depth buffer initialization.
-	/// </description>
-	/// </item>
-	/// <item>
-	/// <description>
-	/// An application may use an aliased render target as a destination for tone mapping. Since the application will render over every
-	/// pixel during the tone mapping, <c>DiscardResource</c> should be the most efficient option for initialization.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// <para>Advanced model</para>
-	/// <para>In this model, you can ignore the active/inactive state abstraction. Instead, you must honor these lower-level rules.</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <description>
-	/// An aliasing barrier must be between two different GPU resource accesses of the same physical memory, as long as those accesses
-	/// are within the same <c>ExecuteCommandLists</c> call.
-	/// </description>
-	/// </item>
-	/// <item>
-	/// <description>
-	/// The first rendering operation to certain types of aliased resource must still be an initialization, just like the simple model.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// Initialization operations must occur either on an entire subresource, or on a 64KB granularity. An entire subresource
-	/// initialization is supported for all resource types. A 64KB initialization granularity, aligned at a 64KB offset, is supported
-	/// for buffers and textures with either the 64KB_UNDEFINED_SWIZZLE or 64KB_STANDARD_SWIZZLE texture layout (refer to <c>D3D12_TEXTURE_LAYOUT</c>).
-	/// </para>
-	/// <para>Notes on the aliasing barrier</para>
-	/// <para>
-	/// The aliasing barrier may set NULL for both pResourceAfter and pResourceBefore. The memory coherence definition of
-	/// <c><b>ExecuteCommandLists</b></c> and an aliasing barrier are the same, such that two aliased accesses to the same physical
-	/// memory need no aliasing barrier when the accesses are in two different <b>ExecuteCommandLists</b> invocations.
-	/// </para>
-	/// <para>
-	/// For D3D12 advanced usage models, the synchronization definition of <c><b>ExecuteCommandLists</b></c> is equivalent to an
-	/// aliasing barrier. Therefore, applications may either insert an aliasing barrier between reusing physical memory, or ensure the
-	/// two aliased usages of physical memory occurs in two separate calls to <b>ExecuteCommandLists</b>.
-	/// </para>
-	/// <para>
-	/// The amount of inactivation varies based on resource properties. Textures with undefined memory layouts are the worst case, as
-	/// the entire texture must be inactivated atomically. For two overlapping resources with defined layouts, inactivation can result
-	/// in only the overlapping aligned regions of a resource. Data inheritance can even be well-defined. For more details, see
-	/// <c>Memory aliasing and data inheritance</c>.
-	/// </para>
-	/// </remarks>
-	public static T CreatePlacedResource<T>(this ID3D12Device device, [In] ID3D12Heap pHeap, ulong HeapOffset, in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
-		[In, Optional] D3D12_CLEAR_VALUE? pOptimizedClearValue) where T : class
-	{
-		device.CreatePlacedResource(pHeap, HeapOffset, pDesc, InitialState, new(pOptimizedClearValue, out _), typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Creates a resource that is reserved, and not yet mapped to any pages in a heap.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="pDesc">
-	/// <para>Type: <b>const <c>D3D12_RESOURCE_DESC</c>*</b></para>
-	/// <para>A pointer to a <b>D3D12_RESOURCE_DESC</b> structure that describes the resource.</para>
-	/// </param>
-	/// <param name="InitialState">
-	/// <para>Type: <b><c>D3D12_RESOURCE_STATES</c></b></para>
-	/// <para>The initial state of the resource, as a bitwise-OR'd combination of <b>D3D12_RESOURCE_STATES</b> enumeration constants.</para>
-	/// </param>
-	/// <param name="pOptimizedClearValue">
-	/// <para>Type: <b>const <c>D3D12_CLEAR_VALUE</c>*</b></para>
-	/// <para>Specifies a <b>D3D12_CLEAR_VALUE</b> structure that describes the default value for a clear color.</para>
-	/// <para>
-	/// <paramref name="pOptimizedClearValue"/> specifies a value for which clear operations are most optimal. When the created resource
-	/// is a texture with either the <c>D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET</c> or <b>D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL</b>
-	/// flags, you should choose the value with which the clear operation will most commonly be called. You can call the clear operation
-	/// with other values, but those operations won't be as efficient as when the value matches the one passed in to resource creation.
-	/// </para>
-	/// <para>When you use <c>D3D12_RESOURCE_DIMENSION_BUFFER</c>, you must set pOptimizedClearValue to <c>nullptr</c>.</para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	/// <remarks>
-	/// <para>
-	/// <b>CreateReservedResource</b> is equivalent to <c>D3D11_RESOURCE_MISC_TILED</c> in Direct3D 11. It creates a resource with
-	/// virtual memory only, no backing store.
-	/// </para>
-	/// <para>You need to map the resource to physical memory (that is, to a heap) using <c>CopyTileMappings</c> and <c>UpdateTileMappings</c>.</para>
-	/// <para>
-	/// These resource types can only be created when the adapter supports tiled resource tier 1 or greater. The tiled resource tier
-	/// defines the behavior of accessing a resource that is not mapped to a heap.
-	/// </para>
-	/// </remarks>
-	public static T CreateReservedResource<T>(this ID3D12Device device, in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
-		[In, Optional] D3D12_CLEAR_VALUE? pOptimizedClearValue) where T : class
-	{
-		device.CreateReservedResource(pDesc, InitialState, new(pOptimizedClearValue, out _), typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Opens a handle for shared resources, shared heaps, and shared fences, by using HANDLE and REFIID.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="NTHandle">
-	/// <para>Type: <b>HANDLE</b></para>
-	/// <para>The handle that was output by the call to <c>ID3D12Device::CreateSharedHandle</c>.</para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	public static T OpenSharedHandle<T>(this ID3D12Device device, HANDLE NTHandle) where T : class
-	{
-		device.OpenSharedHandle(NTHandle, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Creates a fence object.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="InitialValue">
-	/// <para>Type: <b><c>UINT64</c></b></para>
-	/// <para>The initial value for the fence.</para>
-	/// </param>
-	/// <param name="Flags">
-	/// <para>Type: <b><c>D3D12_FENCE_FLAGS</c></b></para>
-	/// <para>
-	/// A combination of <c>D3D12_FENCE_FLAGS</c>-typed values that are combined by using a bitwise OR operation. The resulting value
-	/// specifies options for the fence.
-	/// </para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	public static T CreateFence<T>(this ID3D12Device device, ulong InitialValue = 0, D3D12_FENCE_FLAGS Flags = D3D12_FENCE_FLAGS.D3D12_FENCE_FLAG_NONE) where T : class
-	{
-		device.CreateFence(InitialValue, Flags, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>Creates a query heap. A query heap contains an array of queries.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="pDesc">
-	/// <para>Type: <b>const <c>D3D12_QUERY_HEAP_DESC</c>*</b></para>
-	/// <para>Specifies the query heap in a <c>D3D12_QUERY_HEAP_DESC</c> structure.</para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	/// <remarks>
-	/// <para>Refer to <c>Queries</c> for more information. Examples The <c>D3D12PredicationQueries</c> sample uses <b>ID3D12Device::CreateQueryHeap</b> as follows:</para>
-	/// <para>Create a query heap and a query result buffer.</para>
-	/// <para>
-	/// <c>// Pipeline objects. D3D12_VIEWPORT m_viewport; D3D12_RECT m_scissorRect; ComPtr&lt;IDXGISwapChain3&gt; m_swapChain;
-	/// ComPtr&lt;ID3D12Device&gt; m_device; ComPtr&lt;ID3D12Resource&gt; m_renderTargets[FrameCount];
-	/// ComPtr&lt;ID3D12CommandAllocator&gt; m_commandAllocators[FrameCount]; ComPtr&lt;ID3D12CommandQueue&gt; m_commandQueue;
-	/// ComPtr&lt;ID3D12RootSignature&gt; m_rootSignature; ComPtr&lt;ID3D12DescriptorHeap&gt; m_rtvHeap;
-	/// ComPtr&lt;ID3D12DescriptorHeap&gt; m_cbvHeap; ComPtr&lt;ID3D12DescriptorHeap&gt; m_dsvHeap; ComPtr&lt;ID3D12QueryHeap&gt;
-	/// m_queryHeap; UINT m_rtvDescriptorSize; UINT m_cbvSrvDescriptorSize; UINT m_frameIndex; // Synchronization objects.
-	/// ComPtr&lt;ID3D12Fence&gt; m_fence; UINT64 m_fenceValues[FrameCount]; HANDLE m_fenceEvent; // Asset objects.
-	/// ComPtr&lt;ID3D12PipelineState&gt; m_pipelineState; ComPtr&lt;ID3D12PipelineState&gt; m_queryState;
-	/// ComPtr&lt;ID3D12GraphicsCommandList&gt; m_commandList; ComPtr&lt;ID3D12Resource&gt; m_vertexBuffer; ComPtr&lt;ID3D12Resource&gt;
-	/// m_constantBuffer; ComPtr&lt;ID3D12Resource&gt; m_depthStencil; ComPtr&lt;ID3D12Resource&gt; m_queryResult;
-	/// D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView;</c>
-	/// </para>
-	/// <para>
-	/// <c>// Describe and create a heap for occlusion queries. D3D12_QUERY_HEAP_DESC queryHeapDesc = {}; queryHeapDesc.Count = 1;
-	/// queryHeapDesc.Type = D3D12_QUERY_HEAP_TYPE_OCCLUSION; ThrowIfFailed(m_device-&gt;CreateQueryHeap(&amp;queryHeapDesc, IID_PPV_ARGS(&amp;m_queryHeap)));</c>
-	/// </para>
-	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
-	/// </remarks>
-	public static T CreateQueryHeap<T>(this ID3D12Device device, in D3D12_QUERY_HEAP_DESC pDesc) where T : class
-	{
-		device.CreateQueryHeap(pDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>This method creates a command signature.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="pDesc">
-	/// <para>Type: <b>const <c>D3D12_COMMAND_SIGNATURE_DESC</c>*</b></para>
-	/// <para>Describes the command signature to be created with the <c>D3D12_COMMAND_SIGNATURE_DESC</c> structure.</para>
-	/// </param>
-	/// <param name="pRootSignature">
-	/// <para>Type: <b><c>ID3D12RootSignature</c>*</b></para>
-	/// <para>Specifies the <c>ID3D12RootSignature</c> that the command signature applies to.</para>
-	/// <para>
-	/// The root signature is required if any of the commands in the signature will update bindings on the pipeline. If the only command
-	/// present is a draw or dispatch, the root signature parameter can be set to NULL.
-	/// </para>
-	/// </param>
-	/// <returns>The requested interface.</returns>
-	public static T CreateCommandSignature<T>(this ID3D12Device device, in D3D12_COMMAND_SIGNATURE_DESC pDesc, [In, Optional] ID3D12RootSignature? pRootSignature) where T : class
-	{
-		device.CreateCommandSignature(pDesc, pRootSignature, typeof(T).GUID, out var ppv).ThrowIfFailed();
-		return (T)ppv!;
-	}
-
-	/// <summary>
 	/// <para>Represents a virtual adapter, and expands on the range of methods provided by <c>ID3D12Device</c>.</para>
 	/// <note>This interface was introduced in Windows 10 Anniversary Update. Applications targetting Windows 10 Anniversary Update should
 	/// use this interface instead of earlier or later versions. Applications targetting an earlier or later version of Windows 10 should
@@ -4574,7 +3922,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap HRESULT
 		// CreateDescriptorHeap( [in] const D3D12_DESCRIPTOR_HEAP_DESC *pDescriptorHeapDesc, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [Out] IntPtr ppvHeap);
 
 		/// <summary>
 		/// Gets the size of the handle increment for the given type of descriptor heap. This value is typically used to increment a handle
@@ -6298,5 +5646,710 @@ public static partial class D3D12
 		[PreserveSig]
 		HRESULT SetResidencyPriority(int NumObjects, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 0)] ID3D12Pageable[] ppObjects,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESIDENCY_PRIORITY[] pPriorities);
+	}
+
+	/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
+	/// <typeparam name="T">The type of the structure associated with <paramref name="Feature" />.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device" /> instance.</param>
+	/// <param name="Feature">A constant from the <c>D3D12_FEATURE</c> enumeration describing the feature(s) that you want to query for support.</param>
+	/// <param name="pFeatureSupportData">A reference to a data structure that corresponds to the value of the <i>Feature</i> parameter. To determine the corresponding data
+	/// structure for each constant, see <c>D3D12_FEATURE</c>.</param>
+	/// <returns>
+	/// Returns <b>S_OK</b> if successful. Returns <b>E_INVALIDARG</b> if an unsupported data type is passed to the
+	/// <i>pFeatureSupportData</i> parameter or if a size mismatch is detected for the <i>FeatureSupportDataSize</i> parameter.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// As a usage example, to check for ray tracing support, specify the <c>D3D12_FEATURE_DATA_D3D12_OPTIONS5</c> structure in the
+	/// <i>pFeatureSupportData</i> parameter. When the function completes successfully, access the <i>RaytracingTier</i> field (which
+	/// specifies the supported ray tracing tier) of the now-populated <b>D3D12_FEATURE_DATA_D3D12_OPTIONS5</b> structure.
+	/// </para>
+	/// <para>For more info, see <c>Capability Querying</c>.</para>
+	/// <para>Examples</para>
+	/// <para>The <c>D3D1211on12</c> sample uses <b>ID3D12Device::CheckFeatureSupport</b> as follows:</para>
+	/// <para>
+	/// <code>inline UINT8 D3D12GetFormatPlaneCount( _In_ ID3D12Device* pDevice, DXGI_FORMAT Format ) {
+	///   D3D12_FEATURE_DATA_FORMAT_INFO formatInfo = {Format};
+	///   if (FAILED(pDevice-&gt;CheckFeatureSupport(D3D12_FEATURE_FORMAT_INFO, &amp;formatInfo, sizeof(formatInfo))))
+	///     { return 0; }
+	///   return formatInfo.PlaneCount;
+	/// }</code>
+	/// </para>
+	/// </remarks>
+	public static HRESULT CheckFeatureSupport<T>(this ID3D12Device device, D3D12_FEATURE Feature, ref T pFeatureSupportData) where T : struct
+	{
+		using SafeCoTaskMemStruct<T> mem = new(pFeatureSupportData);
+		var hr = device.CheckFeatureSupport(Feature, mem, mem.Size);
+		pFeatureSupportData = mem.Value;
+		return hr;
+	}
+
+	/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
+	/// <typeparam name="T">The type of the structure associated with <paramref name="Feature" />.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device" /> instance.</param>
+	/// <param name="Feature">A constant from the <c>D3D12_FEATURE</c> enumeration describing the feature(s) that you want to query for support.</param>
+	/// <param name="pFeatureSupportData">A reference to a data structure that corresponds to the value of the <i>Feature</i> parameter. To determine the corresponding data
+	/// structure for each constant, see <c>D3D12_FEATURE</c>.</param>
+	/// <returns>
+	/// Returns <b>S_OK</b> if successful. Returns <b>E_INVALIDARG</b> if an unsupported data type is passed to the
+	/// <i>pFeatureSupportData</i> parameter or if a size mismatch is detected for the <i>FeatureSupportDataSize</i> parameter.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// As a usage example, to check for ray tracing support, specify the <c>D3D12_FEATURE_DATA_D3D12_OPTIONS5</c> structure in the
+	/// <i>pFeatureSupportData</i> parameter. When the function completes successfully, access the <i>RaytracingTier</i> field (which
+	/// specifies the supported ray tracing tier) of the now-populated <b>D3D12_FEATURE_DATA_D3D12_OPTIONS5</b> structure.
+	/// </para>
+	/// <para>For more info, see <c>Capability Querying</c>.</para>
+	/// <para>Examples</para>
+	/// <para>The <c>D3D1211on12</c> sample uses <b>ID3D12Device::CheckFeatureSupport</b> as follows:</para>
+	/// <para>
+	/// <code>inline UINT8 D3D12GetFormatPlaneCount( _In_ ID3D12Device* pDevice, DXGI_FORMAT Format ) {
+	///   D3D12_FEATURE_DATA_FORMAT_INFO formatInfo = {Format};
+	///   if (FAILED(pDevice-&gt;CheckFeatureSupport(D3D12_FEATURE_FORMAT_INFO, &amp;formatInfo, sizeof(formatInfo))))
+	///     { return 0; }
+	///   return formatInfo.PlaneCount;
+	/// }</code>
+	/// </para>
+	/// </remarks>
+	public static HRESULT CheckFeatureSupport<T>(this ID3D12Device device, D3D12_FEATURE Feature, in T? pFeatureSupportData) where T : struct
+	{
+		using SafeCoTaskMemStruct<T> mem = pFeatureSupportData;
+		return device.CheckFeatureSupport(Feature, mem, mem.Size);
+	}
+
+	/// <summary>Creates a command allocator object.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="type">
+	/// <para>Type: <b><c>D3D12_COMMAND_LIST_TYPE</c></b></para>
+	/// <para>
+	/// A <c>D3D12_COMMAND_LIST_TYPE</c>-typed value that specifies the type of command allocator to create. The type of command
+	/// allocator can be the type that records either direct command lists or bundles.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b><c>HRESULT</c></b></para>
+	/// <para>
+	/// This method returns <b>E_OUTOFMEMORY</b> if there is insufficient memory to create the command allocator. See <c>Direct3D 12
+	/// Return Codes</c> for other possible return values.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The device creates command lists from the command allocator. Examples The <c>D3D12Bundles</c> sample uses <b>ID3D12Device::CreateCommandAllocator</b> as follows:</para>
+	/// <para>
+	/// <c>ThrowIfFailed(pDevice-&gt;CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&amp;m_commandAllocator)));
+	/// ThrowIfFailed(pDevice-&gt;CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_BUNDLE, IID_PPV_ARGS(&amp;m_bundleAllocator)));</c>
+	/// </para>
+	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	public static T CreateCommandAllocator<T>(this ID3D12Device device, D3D12_COMMAND_LIST_TYPE type) where T : class
+	{
+		device.CreateCommandAllocator(type, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>Creates a command list.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="nodeMask">
+	/// <para>Type: <b><c>UINT</c></b></para>
+	/// <para>
+	/// For single-GPU operation, set this to zero. If there are multiple GPU nodes, then set a bit to identify the node (the device's
+	/// physical adapter) for which to create the command list. Each bit in the mask corresponds to a single node. Only one bit must be
+	/// set. Also see <c>Multi-adapter systems</c>.
+	/// </para>
+	/// </param>
+	/// <param name="type">
+	/// <para>Type: <b><c>D3D12_COMMAND_LIST_TYPE</c></b></para>
+	/// <para>Specifies the type of command list to create.</para>
+	/// </param>
+	/// <param name="pCommandAllocator">
+	/// <para>Type: <b><c>ID3D12CommandAllocator</c>*</b></para>
+	/// <para>A pointer to the command allocator object from which the device creates command lists.</para>
+	/// </param>
+	/// <param name="pInitialState">
+	/// <para>Type: <b><c>ID3D12PipelineState</c>*</b></para>
+	/// <para>
+	/// An optional pointer to the pipeline state object that contains the initial pipeline state for the command list. If it is
+	/// <c>nullptr</c>, then the runtime sets a dummy initial pipeline state, so that drivers don't have to deal with undefined state.
+	/// The overhead for this is low, particularly for a command list, for which the overall cost of recording the command list likely
+	/// dwarfs the cost of a single initial state setting. So there's little cost in not setting the initial pipeline state parameter,
+	/// if doing so is inconvenient.
+	/// </para>
+	/// <para>
+	/// For bundles, on the other hand, it might make more sense to try to set the initial state parameter (since bundles are likely
+	/// smaller overall, and can be reused frequently).
+	/// </para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	/// <remarks>The device creates command lists from the command allocator.</remarks>
+	public static T CreateCommandList<T>(this ID3D12Device device, uint nodeMask, D3D12_COMMAND_LIST_TYPE type,
+		[In] ID3D12CommandAllocator pCommandAllocator, [In, Optional] ID3D12PipelineState? pInitialState) where T : class
+	{
+		device.CreateCommandList(nodeMask, type, pCommandAllocator, pInitialState, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>
+	/// <para>Creates a command queue.</para>
+	/// <para>Also see <c>ID3D12Device9::CreateCommandQueue1</c>.</para>
+	/// </summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pDesc">
+	/// <para>Type: [in] <b>const <c>D3D12_COMMAND_QUEUE_DESC</c>*</b></para>
+	/// <para>Specifies a <b>D3D12_COMMAND_QUEUE_DESC</b> that describes the command queue.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b><c>HRESULT</c></b></para>
+	/// <para>
+	/// This method returns <b>E_OUTOFMEMORY</b> if there is insufficient memory to create the command queue. See <c>Direct3D 12 return
+	/// codes</c> for other possible return values.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// The <b>REFIID</b>, or <b>GUID</b>, of the interface to the command queue can be obtained by using the __uuidof() macro. For
+	/// example, __uuidof(ID3D12CommandQueue) will get the <b>GUID</b> of the interface to a command queue.
+	/// </remarks>
+	public static T CreateCommandQueue<T>(this ID3D12Device device, in D3D12_COMMAND_QUEUE_DESC pDesc) where T : class
+	{
+		device.CreateCommandQueue(pDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>This method creates a command signature.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pDesc">
+	/// <para>Type: <b>const <c>D3D12_COMMAND_SIGNATURE_DESC</c>*</b></para>
+	/// <para>Describes the command signature to be created with the <c>D3D12_COMMAND_SIGNATURE_DESC</c> structure.</para>
+	/// </param>
+	/// <param name="pRootSignature">
+	/// <para>Type: <b><c>ID3D12RootSignature</c>*</b></para>
+	/// <para>Specifies the <c>ID3D12RootSignature</c> that the command signature applies to.</para>
+	/// <para>
+	/// The root signature is required if any of the commands in the signature will update bindings on the pipeline. If the only command
+	/// present is a draw or dispatch, the root signature parameter can be set to NULL.
+	/// </para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	public static T CreateCommandSignature<T>(this ID3D12Device device, in D3D12_COMMAND_SIGNATURE_DESC pDesc, [In, Optional] ID3D12RootSignature? pRootSignature) where T : class
+	{
+		device.CreateCommandSignature(pDesc, pRootSignature, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>
+	/// Creates both a resource and an implicit heap, such that the heap is big enough to contain the entire resource, and the resource
+	/// is mapped to the heap.
+	/// </summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pHeapProperties">
+	/// <para>Type: <b>const <c>D3D12_HEAP_PROPERTIES</c>*</b></para>
+	/// <para>A pointer to a <b>D3D12_HEAP_PROPERTIES</b> structure that provides properties for the resource's heap.</para>
+	/// </param>
+	/// <param name="HeapFlags">
+	/// <para>Type: <b><c>D3D12_HEAP_FLAGS</c></b></para>
+	/// <para>Heap options, as a bitwise-OR'd combination of <b>D3D12_HEAP_FLAGS</b> enumeration constants.</para>
+	/// </param>
+	/// <param name="pDesc">
+	/// <para>Type: <b>const <c>D3D12_RESOURCE_DESC</c>*</b></para>
+	/// <para>A pointer to a <b>D3D12_RESOURCE_DESC</b> structure that describes the resource.</para>
+	/// </param>
+	/// <param name="InitialResourceState">
+	/// <para>Type: <b><c>D3D12_RESOURCE_STATES</c></b></para>
+	/// <para>The initial state of the resource, as a bitwise-OR'd combination of <b>D3D12_RESOURCE_STATES</b> enumeration constants.</para>
+	/// <para>When you create a resource together with a <c>D3D12_HEAP_TYPE_UPLOAD</c> heap, you must set InitialResourceState to <c>D3D12_RESOURCE_STATE_GENERIC_READ</c>.</para>
+	/// <para>
+	/// When you create a resource together with a <c>D3D12_HEAP_TYPE_READBACK</c> heap, you must set InitialResourceState to <c>D3D12_RESOURCE_STATE_COPY_DEST</c>.
+	/// </para>
+	/// </param>
+	/// <param name="pOptimizedClearValue">
+	/// <para>Type: <b>const <c>D3D12_CLEAR_VALUE</c>*</b></para>
+	/// <para>Specifies a <b>D3D12_CLEAR_VALUE</b> structure that describes the default value for a clear color.</para>
+	/// <para>
+	/// <paramref name="pOptimizedClearValue"/> specifies a value for which clear operations are most optimal. When the created resource
+	/// is a texture with either the <c>D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET</c> or <b>D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL</b>
+	/// flags, you should choose the value with which the clear operation will most commonly be called. You can call the clear operation
+	/// with other values, but those operations won't be as efficient as when the value matches the one passed in to resource creation.
+	/// </para>
+	/// <para>When you use <c>D3D12_RESOURCE_DIMENSION_BUFFER</c>, you must set pOptimizedClearValue to <c>nullptr</c>.</para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	/// <remarks>
+	/// <para>
+	/// This method creates both a resource and a heap, such that the heap is big enough to contain the entire resource, and the
+	/// resource is mapped to the heap. The created heap is known as an implicit heap, because the heap object can't be obtained by the
+	/// application. Before releasing the final reference on the resource, your application must ensure that the GPU will no longer read
+	/// nor write to this resource.
+	/// </para>
+	/// <para>The implicit heap is made resident for GPU access before the method returns control to your application. Also see <c>Residency</c>.</para>
+	/// <para>The resource GPU VA mapping can't be changed. See <c>ID3D12CommandQueue::UpdateTileMappings</c> and <c>Volume tiled resources</c>.</para>
+	/// <para>This method may be called by multiple threads concurrently.</para>
+	/// </remarks>
+	public static T CreateCommittedResource<T>(this ID3D12Device device, in D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, in D3D12_RESOURCE_DESC pDesc,
+		D3D12_RESOURCE_STATES InitialResourceState, [In, Optional] D3D12_CLEAR_VALUE? pOptimizedClearValue) where T : class
+	{
+		device.CreateCommittedResource(pHeapProperties, HeapFlags, pDesc, InitialResourceState, new(pOptimizedClearValue, out _), typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>Creates a compute pipeline state object.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pDesc">
+	/// <para>Type: <b>const <c>D3D12_COMPUTE_PIPELINE_STATE_DESC</c>*</b></para>
+	/// <para>A pointer to a <c>D3D12_COMPUTE_PIPELINE_STATE_DESC</c> structure that describes compute pipeline state.</para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	public static T CreateComputePipelineState<T>(this ID3D12Device device, in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc) where T : class
+	{
+		device.CreateComputePipelineState(pDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>Creates a descriptor heap object.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pDescriptorHeapDesc">
+	/// <para>Type: <b>const <c>D3D12_DESCRIPTOR_HEAP_DESC</c>*</b></para>
+	/// <para>A pointer to a <c>D3D12_DESCRIPTOR_HEAP_DESC</c> structure that describes the heap.</para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	/// <remarks>
+	/// <para>
+	/// The <b>REFIID</b>, or <b>GUID</b>, of the interface to the descriptor heap can be obtained by using the __uuidof() macro. For
+	/// example, __uuidof( <c>ID3D12DescriptorHeap</c>) will get the <b>GUID</b> of the interface to a descriptor heap.
+	///  Examples The <c>D3D12HelloWorld</c> sample uses <b>ID3D12Device::CreateDescriptorHeap</b> as follows:</para>
+	/// <para>Describe and create a render target view (RTV) descriptor heap.</para>
+	/// <para>
+	/// <c>// Create descriptor heaps. { // Describe and create a render target view (RTV) descriptor heap. D3D12_DESCRIPTOR_HEAP_DESC
+	/// rtvHeapDesc = {}; rtvHeapDesc.NumDescriptors = FrameCount; rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; rtvHeapDesc.Flags
+	/// = D3D12_DESCRIPTOR_HEAP_FLAG_NONE; ThrowIfFailed(m_device-&gt;CreateDescriptorHeap(&amp;rtvHeapDesc,
+	/// IID_PPV_ARGS(&amp;m_rtvHeap))); m_rtvDescriptorSize =
+	/// m_device-&gt;GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV); } // Create frame resources. {
+	/// CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvHeap-&gt;GetCPUDescriptorHandleForHeapStart()); // Create a RTV for each frame. for
+	/// (UINT n = 0; n &lt; FrameCount; n++) { ThrowIfFailed(m_swapChain-&gt;GetBuffer(n, IID_PPV_ARGS(&amp;m_renderTargets[n])));
+	/// m_device-&gt;CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvHandle); rtvHandle.Offset(1, m_rtvDescriptorSize); }</c>
+	/// </para>
+	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	public static T CreateDescriptorHeap<T>(this ID3D12Device device, in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc) where T : class
+	{
+		device.CreateDescriptorHeap(pDescriptorHeapDesc, out T? ppv).ThrowIfFailed();
+		return ppv!;
+	}
+
+	/// <summary>Creates a descriptor heap object.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pDescriptorHeapDesc">
+	/// <para>Type: <b>const <c>D3D12_DESCRIPTOR_HEAP_DESC</c>*</b></para>
+	/// <para>A pointer to a <c>D3D12_DESCRIPTOR_HEAP_DESC</c> structure that describes the heap.</para>
+	/// </param>
+	/// <param name="ppvHeap">
+	/// <para>Type: <b><b>void</b>**</b></para>
+	/// <para>
+	/// A pointer to a memory block that receives a pointer to the descriptor heap. <i>ppvHeap</i> can be NULL, to enable capability
+	/// testing. When <i>ppvHeap</i> is NULL, no object will be created and S_FALSE will be returned when <i>pDescriptorHeapDesc</i> is valid.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b><c>HRESULT</c></b></para>
+	/// <para>
+	/// This method returns <b>E_OUTOFMEMORY</b> if there is insufficient memory to create the descriptor heap object. See <c>Direct3D
+	/// 12 Return Codes</c> for other possible return values.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The <b>REFIID</b>, or <b>GUID</b>, of the interface to the descriptor heap can be obtained by using the __uuidof() macro. For
+	/// example, __uuidof( <c>ID3D12DescriptorHeap</c>) will get the <b>GUID</b> of the interface to a descriptor heap.
+	///  Examples The <c>D3D12HelloWorld</c> sample uses <b>ID3D12Device::CreateDescriptorHeap</b> as follows:</para>
+	/// <para>Describe and create a render target view (RTV) descriptor heap.</para>
+	/// <para>
+	/// <c>// Create descriptor heaps. { // Describe and create a render target view (RTV) descriptor heap. D3D12_DESCRIPTOR_HEAP_DESC
+	/// rtvHeapDesc = {}; rtvHeapDesc.NumDescriptors = FrameCount; rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; rtvHeapDesc.Flags
+	/// = D3D12_DESCRIPTOR_HEAP_FLAG_NONE; ThrowIfFailed(m_device-&gt;CreateDescriptorHeap(&amp;rtvHeapDesc,
+	/// IID_PPV_ARGS(&amp;m_rtvHeap))); m_rtvDescriptorSize =
+	/// m_device-&gt;GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV); } // Create frame resources. {
+	/// CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvHeap-&gt;GetCPUDescriptorHandleForHeapStart()); // Create a RTV for each frame. for
+	/// (UINT n = 0; n &lt; FrameCount; n++) { ThrowIfFailed(m_swapChain-&gt;GetBuffer(n, IID_PPV_ARGS(&amp;m_renderTargets[n])));
+	/// m_device-&gt;CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvHandle); rtvHandle.Offset(1, m_rtvDescriptorSize); }</c>
+	/// </para>
+	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	public static HRESULT CreateDescriptorHeap<T>(this ID3D12Device device, in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, out T? ppvHeap) where T : class
+	{
+		unsafe
+		{
+			IntPtr p = default;
+			var hr = device.CreateDescriptorHeap(pDescriptorHeapDesc, typeof(T).GUID, (IntPtr)(void*)&p);
+			ppvHeap = hr.Succeeded ? (T)Marshal.GetObjectForIUnknown(p) : null;
+			return hr;
+		}
+	}
+
+	/// <summary>Creates a fence object.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="InitialValue">
+	/// <para>Type: <b><c>UINT64</c></b></para>
+	/// <para>The initial value for the fence.</para>
+	/// </param>
+	/// <param name="Flags">
+	/// <para>Type: <b><c>D3D12_FENCE_FLAGS</c></b></para>
+	/// <para>
+	/// A combination of <c>D3D12_FENCE_FLAGS</c>-typed values that are combined by using a bitwise OR operation. The resulting value
+	/// specifies options for the fence.
+	/// </para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	public static T CreateFence<T>(this ID3D12Device device, ulong InitialValue = 0, D3D12_FENCE_FLAGS Flags = D3D12_FENCE_FLAGS.D3D12_FENCE_FLAG_NONE) where T : class
+	{
+		device.CreateFence(InitialValue, Flags, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>Creates a graphics pipeline state object.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pDesc">
+	/// <para>Type: <b>const <c>D3D12_GRAPHICS_PIPELINE_STATE_DESC</c>*</b></para>
+	/// <para>A pointer to a <c>D3D12_GRAPHICS_PIPELINE_STATE_DESC</c> structure that describes graphics pipeline state.</para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	public static T CreateGraphicsPipelineState<T>(this ID3D12Device device, in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc) where T : class
+	{
+		device.CreateGraphicsPipelineState(pDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>Creates a heap that can be used with placed resources and reserved resources.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pDesc">
+	/// <para>Type: <b>const <c>D3D12_HEAP_DESC</c>*</b></para>
+	/// <para>A pointer to a constant <b>D3D12_HEAP_DESC</b> structure that describes the heap.</para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	/// <remarks>
+	/// <para><b>CreateHeap</b> creates a heap that can be used with placed resources and reserved resources.</para>
+	/// <para>
+	/// Before releasing the final reference on the heap, your application must ensure that the GPU will no longer read or write to this heap.
+	/// </para>
+	/// <para>
+	/// A placed resource object holds a reference on the heap it is created on; but a reserved resource doesn't hold a reference for
+	/// each mapping made to a heap.
+	/// </para>
+	/// </remarks>
+	public static T CreateHeap<T>(this ID3D12Device device, in D3D12_HEAP_DESC pDesc) where T : class
+	{
+		device.CreateHeap(pDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>
+	/// <para>
+	/// Creates a resource that is placed in a specific heap. Placed resources are the lightest weight resource objects available, and
+	/// are the fastest to create and destroy.
+	/// </para>
+	/// <para>
+	/// Your application can re-use video memory by overlapping multiple Direct3D placed and reserved resources on heap regions. The
+	/// simple memory re-use model (described in <c>Remarks</c>) exists to clarify which overlapping resource is valid at any given
+	/// time. To maximize graphics tool support, with the simple model data-inheritance isn't supported; and finer-grained tile and
+	/// sub-resource invalidation isn't supported. Only full overlapping resource invalidation occurs.
+	/// </para>
+	/// </summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pHeap">
+	/// <para>Type: [in] <b><c>ID3D12Heap</c></b>*</para>
+	/// <para>A pointer to the <b>ID3D12Heap</b> interface that represents the heap in which the resource is placed.</para>
+	/// </param>
+	/// <param name="HeapOffset">
+	/// <para>Type: <b><c>UINT64</c></b></para>
+	/// <para>
+	/// The offset, in bytes, to the resource. The HeapOffset must be a multiple of the resource's alignment, and HeapOffset plus the
+	/// resource size must be smaller than or equal to the heap size. <c><b>GetResourceAllocationInfo</b></c> must be used to understand
+	/// the sizes of texture resources.
+	/// </para>
+	/// </param>
+	/// <param name="pDesc">
+	/// <para>Type: [in] <b>const <c>D3D12_RESOURCE_DESC</c></b>*</para>
+	/// <para>A pointer to a <b>D3D12_RESOURCE_DESC</b> structure that describes the resource.</para>
+	/// </param>
+	/// <param name="InitialState">
+	/// <para>Type: <b><c>D3D12_RESOURCE_STATES</c></b></para>
+	/// <para>The initial state of the resource, as a bitwise-OR'd combination of <b>D3D12_RESOURCE_STATES</b> enumeration constants.</para>
+	/// <para>
+	/// When a resource is created together with a <b>D3D12_HEAP_TYPE_UPLOAD</b> heap, InitialState must be
+	/// <b>D3D12_RESOURCE_STATE_GENERIC_READ</b>. When a resource is created together with a <b>D3D12_HEAP_TYPE_READBACK</b> heap,
+	/// InitialState must be <b>D3D12_RESOURCE_STATE_COPY_DEST</b>.
+	/// </para>
+	/// </param>
+	/// <param name="pOptimizedClearValue">
+	/// <para>Type: [in, optional] <b>const <c>D3D12_CLEAR_VALUE</c></b>*</para>
+	/// <para>Specifies a <b>D3D12_CLEAR_VALUE</b> that describes the default value for a clear color.</para>
+	/// <para>
+	/// <paramref name="pOptimizedClearValue"/> specifies a value for which clear operations are most optimal. When the created resource
+	/// is a texture with either the <b>D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET</b> or <b>D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL</b>
+	/// flags, your application should choose the value that the clear operation will most commonly be called with.
+	/// </para>
+	/// <para>
+	/// Clear operations can be called with other values, but those operations will not be as efficient as when the value matches the
+	/// one passed into resource creation.
+	/// </para>
+	/// <para><paramref name="pOptimizedClearValue"/> must be NULL when used with <b>D3D12_RESOURCE_DIMENSION_BUFFER</b>.</para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	/// <remarks>
+	/// <para>
+	/// <b>CreatePlacedResource</b> is similar to fully mapping a reserved resource to an offset within a heap; but the virtual address
+	/// space associated with a heap may be reused as well.
+	/// </para>
+	/// <para>
+	/// Placed resources are lighter weight to create and destroy than committed resources are. This is because no heap is created nor
+	/// destroyed during those operations. In addition, placed resources enable an even lighter weight technique to reuse memory than
+	/// resource creation and destruction—that is, reuse through aliasing, and aliasing barriers. Multiple placed resources may
+	/// simultaneously overlap each other on the same heap, but only a single overlapping resource can be used at a time.
+	/// </para>
+	/// <para>
+	/// There are two placed resource usage semantics—a simple model, and an advanced model. We recommend that you choose the simple
+	/// model (it maximizes graphics tool support across the diverse ecosystem of GPUs), unless and until you find that you need the
+	/// advanced model for your app.
+	/// </para>
+	/// <para>Simple model</para>
+	/// <para>
+	/// In this model, you can consider a placed resource to be in one of two states: active, or inactive. It's invalid for the GPU to
+	/// either read or write from an inactive resource. Placed resources are created in the inactive state.
+	/// </para>
+	/// <para>
+	/// To activate a resource with an aliasing barrier on a command list, your application must pass the resource in
+	/// <c><b>D3D12_RESOURCE_ALIASING_BARRIER::pResourceAfter</b></c>. <b>pResourceBefore</b> can be left NULL during an activation. All
+	/// resources that share physical memory with the activated resource now become inactive, which includes overlapping placed and
+	/// reserved resources.
+	/// </para>
+	/// <para>Aliasing barriers should be grouped up and submitted together, in order to maximize efficiency.</para>
+	/// <para>
+	/// After activation, resources with either the render target or depth stencil flags must be further initialized. See the notes on
+	/// the required resource initialization below.
+	/// </para>
+	/// <para>Notes on the required resource initialization</para>
+	/// <para>
+	/// Certain resource types still require initialization. Resources with either the render target or depth stencil flags must be
+	/// initialized with either a clear operation or a collection of full subresource copies. If an aliasing barrier was used to denote
+	/// the transition between two aliased resources, the initialization must occur after the aliasing barrier. This initialization is
+	/// still required whenever a resource would've been activated in the simple model.
+	/// </para>
+	/// <para>
+	/// Placed and reserved resources with either the render target or depth stencil flags must be initialized with one of the following
+	/// operations before other operations are supported.
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>A Clear operation; for example <c>ClearRenderTargetView</c> or <c>ClearDepthStencilView</c>.</description>
+	/// </item>
+	/// <item>
+	/// <description>A <c>DiscardResource</c> operation.</description>
+	/// </item>
+	/// <item>
+	/// <description>A Copy operation; for example <c>CopyBufferRegion</c>, <c>CopyTextureRegion</c>, or <c>CopyResource</c>.</description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Applications should prefer the most explicit operation that results in the least amount of texels modified. Consider the
+	/// following examples.
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// Using a depth buffer to solve pixel visibility typically requires each depth texel start out at 1.0 or 0. Therefore, a Clear
+	/// operation should be the most efficient option for aliased depth buffer initialization.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// An application may use an aliased render target as a destination for tone mapping. Since the application will render over every
+	/// pixel during the tone mapping, <c>DiscardResource</c> should be the most efficient option for initialization.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>Advanced model</para>
+	/// <para>In this model, you can ignore the active/inactive state abstraction. Instead, you must honor these lower-level rules.</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// An aliasing barrier must be between two different GPU resource accesses of the same physical memory, as long as those accesses
+	/// are within the same <c>ExecuteCommandLists</c> call.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// The first rendering operation to certain types of aliased resource must still be an initialization, just like the simple model.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// Initialization operations must occur either on an entire subresource, or on a 64KB granularity. An entire subresource
+	/// initialization is supported for all resource types. A 64KB initialization granularity, aligned at a 64KB offset, is supported
+	/// for buffers and textures with either the 64KB_UNDEFINED_SWIZZLE or 64KB_STANDARD_SWIZZLE texture layout (refer to <c>D3D12_TEXTURE_LAYOUT</c>).
+	/// </para>
+	/// <para>Notes on the aliasing barrier</para>
+	/// <para>
+	/// The aliasing barrier may set NULL for both pResourceAfter and pResourceBefore. The memory coherence definition of
+	/// <c><b>ExecuteCommandLists</b></c> and an aliasing barrier are the same, such that two aliased accesses to the same physical
+	/// memory need no aliasing barrier when the accesses are in two different <b>ExecuteCommandLists</b> invocations.
+	/// </para>
+	/// <para>
+	/// For D3D12 advanced usage models, the synchronization definition of <c><b>ExecuteCommandLists</b></c> is equivalent to an
+	/// aliasing barrier. Therefore, applications may either insert an aliasing barrier between reusing physical memory, or ensure the
+	/// two aliased usages of physical memory occurs in two separate calls to <b>ExecuteCommandLists</b>.
+	/// </para>
+	/// <para>
+	/// The amount of inactivation varies based on resource properties. Textures with undefined memory layouts are the worst case, as
+	/// the entire texture must be inactivated atomically. For two overlapping resources with defined layouts, inactivation can result
+	/// in only the overlapping aligned regions of a resource. Data inheritance can even be well-defined. For more details, see
+	/// <c>Memory aliasing and data inheritance</c>.
+	/// </para>
+	/// </remarks>
+	public static T CreatePlacedResource<T>(this ID3D12Device device, [In] ID3D12Heap pHeap, ulong HeapOffset, in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
+		[In, Optional] D3D12_CLEAR_VALUE? pOptimizedClearValue) where T : class
+	{
+		device.CreatePlacedResource(pHeap, HeapOffset, pDesc, InitialState, new(pOptimizedClearValue, out _), typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>Creates a query heap. A query heap contains an array of queries.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pDesc">
+	/// <para>Type: <b>const <c>D3D12_QUERY_HEAP_DESC</c>*</b></para>
+	/// <para>Specifies the query heap in a <c>D3D12_QUERY_HEAP_DESC</c> structure.</para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	/// <remarks>
+	/// <para>Refer to <c>Queries</c> for more information. Examples The <c>D3D12PredicationQueries</c> sample uses <b>ID3D12Device::CreateQueryHeap</b> as follows:</para>
+	/// <para>Create a query heap and a query result buffer.</para>
+	/// <para>
+	/// <c>// Pipeline objects. D3D12_VIEWPORT m_viewport; D3D12_RECT m_scissorRect; ComPtr&lt;IDXGISwapChain3&gt; m_swapChain;
+	/// ComPtr&lt;ID3D12Device&gt; m_device; ComPtr&lt;ID3D12Resource&gt; m_renderTargets[FrameCount];
+	/// ComPtr&lt;ID3D12CommandAllocator&gt; m_commandAllocators[FrameCount]; ComPtr&lt;ID3D12CommandQueue&gt; m_commandQueue;
+	/// ComPtr&lt;ID3D12RootSignature&gt; m_rootSignature; ComPtr&lt;ID3D12DescriptorHeap&gt; m_rtvHeap;
+	/// ComPtr&lt;ID3D12DescriptorHeap&gt; m_cbvHeap; ComPtr&lt;ID3D12DescriptorHeap&gt; m_dsvHeap; ComPtr&lt;ID3D12QueryHeap&gt;
+	/// m_queryHeap; UINT m_rtvDescriptorSize; UINT m_cbvSrvDescriptorSize; UINT m_frameIndex; // Synchronization objects.
+	/// ComPtr&lt;ID3D12Fence&gt; m_fence; UINT64 m_fenceValues[FrameCount]; HANDLE m_fenceEvent; // Asset objects.
+	/// ComPtr&lt;ID3D12PipelineState&gt; m_pipelineState; ComPtr&lt;ID3D12PipelineState&gt; m_queryState;
+	/// ComPtr&lt;ID3D12GraphicsCommandList&gt; m_commandList; ComPtr&lt;ID3D12Resource&gt; m_vertexBuffer; ComPtr&lt;ID3D12Resource&gt;
+	/// m_constantBuffer; ComPtr&lt;ID3D12Resource&gt; m_depthStencil; ComPtr&lt;ID3D12Resource&gt; m_queryResult;
+	/// D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView;</c>
+	/// </para>
+	/// <para>
+	/// <c>// Describe and create a heap for occlusion queries. D3D12_QUERY_HEAP_DESC queryHeapDesc = {}; queryHeapDesc.Count = 1;
+	/// queryHeapDesc.Type = D3D12_QUERY_HEAP_TYPE_OCCLUSION; ThrowIfFailed(m_device-&gt;CreateQueryHeap(&amp;queryHeapDesc, IID_PPV_ARGS(&amp;m_queryHeap)));</c>
+	/// </para>
+	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	public static T CreateQueryHeap<T>(this ID3D12Device device, in D3D12_QUERY_HEAP_DESC pDesc) where T : class
+	{
+		device.CreateQueryHeap(pDesc, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>Creates a resource that is reserved, and not yet mapped to any pages in a heap.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="pDesc">
+	/// <para>Type: <b>const <c>D3D12_RESOURCE_DESC</c>*</b></para>
+	/// <para>A pointer to a <b>D3D12_RESOURCE_DESC</b> structure that describes the resource.</para>
+	/// </param>
+	/// <param name="InitialState">
+	/// <para>Type: <b><c>D3D12_RESOURCE_STATES</c></b></para>
+	/// <para>The initial state of the resource, as a bitwise-OR'd combination of <b>D3D12_RESOURCE_STATES</b> enumeration constants.</para>
+	/// </param>
+	/// <param name="pOptimizedClearValue">
+	/// <para>Type: <b>const <c>D3D12_CLEAR_VALUE</c>*</b></para>
+	/// <para>Specifies a <b>D3D12_CLEAR_VALUE</b> structure that describes the default value for a clear color.</para>
+	/// <para>
+	/// <paramref name="pOptimizedClearValue"/> specifies a value for which clear operations are most optimal. When the created resource
+	/// is a texture with either the <c>D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET</c> or <b>D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL</b>
+	/// flags, you should choose the value with which the clear operation will most commonly be called. You can call the clear operation
+	/// with other values, but those operations won't be as efficient as when the value matches the one passed in to resource creation.
+	/// </para>
+	/// <para>When you use <c>D3D12_RESOURCE_DIMENSION_BUFFER</c>, you must set pOptimizedClearValue to <c>nullptr</c>.</para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	/// <remarks>
+	/// <para>
+	/// <b>CreateReservedResource</b> is equivalent to <c>D3D11_RESOURCE_MISC_TILED</c> in Direct3D 11. It creates a resource with
+	/// virtual memory only, no backing store.
+	/// </para>
+	/// <para>You need to map the resource to physical memory (that is, to a heap) using <c>CopyTileMappings</c> and <c>UpdateTileMappings</c>.</para>
+	/// <para>
+	/// These resource types can only be created when the adapter supports tiled resource tier 1 or greater. The tiled resource tier
+	/// defines the behavior of accessing a resource that is not mapped to a heap.
+	/// </para>
+	/// </remarks>
+	public static T CreateReservedResource<T>(this ID3D12Device device, in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
+		[In, Optional] D3D12_CLEAR_VALUE? pOptimizedClearValue) where T : class
+	{
+		device.CreateReservedResource(pDesc, InitialState, new(pOptimizedClearValue, out _), typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>Creates a root signature layout.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="nodeMask">
+	/// <para>Type: <b><c>UINT</c></b></para>
+	/// <para>
+	/// For single GPU operation, set this to zero. If there are multiple GPU nodes, set bits to identify the nodes (the device's
+	/// physical adapters) to which the root signature is to apply. Each bit in the mask corresponds to a single node. Refer to
+	/// <c>Multi-adapter systems</c>.
+	/// </para>
+	/// </param>
+	/// <param name="pBlobWithRootSignature">
+	/// <para>Type: <b>const <c>void</c>*</b></para>
+	/// <para>A pointer to the source data for the serialized signature.</para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	/// <remarks>
+	/// <para>
+	/// If an application procedurally generates a <c>D3D12_ROOT_SIGNATURE_DESC</c> data structure, it must pass a pointer to this
+	/// <b>D3D12_ROOT_SIGNATURE_DESC</b> in a call to <c>D3D12SerializeRootSignature</c> to make the serialized form. The application
+	/// then passes the serialized form to <i>pBlobWithRootSignature</i> in a call to <b>ID3D12Device::CreateRootSignature</b>.
+	/// </para>
+	/// <para>
+	/// The <b>REFIID</b>, or <b>GUID</b>, of the interface to the root signature layout can be obtained by using the __uuidof() macro.
+	/// For example, __uuidof( <c>ID3D12RootSignature</c>) will get the <b>GUID</b> of the interface to a root signature.
+	///  Examples The <c>D3D12HelloTriangle</c> sample uses <b>ID3D12Device::CreateRootSignature</b> as follows:</para>
+	/// <para>Create an empty root signature.</para>
+	/// <para>
+	/// <c>CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc; rootSignatureDesc.Init(0, nullptr, 0, nullptr,
+	/// D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT); ComPtr&lt;ID3DBlob&gt; signature; ComPtr&lt;ID3DBlob&gt; error;
+	/// ThrowIfFailed(D3D12SerializeRootSignature(&amp;rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &amp;signature, &amp;error));
+	/// ThrowIfFailed(m_device-&gt;CreateRootSignature(0, signature-&gt;GetBufferPointer(), signature-&gt;GetBufferSize(), IID_PPV_ARGS(&amp;m_rootSignature)));</c>
+	/// </para>
+	/// </remarks>
+	public static T CreateRootSignature<T>(this ID3D12Device device, uint nodeMask, ID3DBlob pBlobWithRootSignature) where T : class
+	{
+		device.CreateRootSignature(nodeMask, pBlobWithRootSignature.GetBufferPointer(), pBlobWithRootSignature.GetBufferSize(), typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
+	}
+
+	/// <summary>Opens a handle for shared resources, shared heaps, and shared fences, by using HANDLE and REFIID.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="NTHandle">
+	/// <para>Type: <b>HANDLE</b></para>
+	/// <para>The handle that was output by the call to <c>ID3D12Device::CreateSharedHandle</c>.</para>
+	/// </param>
+	/// <returns>The requested interface.</returns>
+	public static T OpenSharedHandle<T>(this ID3D12Device device, HANDLE NTHandle) where T : class
+	{
+		device.OpenSharedHandle(NTHandle, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		return (T)ppv!;
 	}
 }

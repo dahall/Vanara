@@ -1,5 +1,5 @@
 ﻿using static Vanara.PInvoke.Ole32;
-using IDxcBlob = Vanara.PInvoke.DXGI.ID3D10Blob;
+using IDxcBlob = Vanara.PInvoke.DXGI.ID3DBlob;
 
 namespace Vanara.PInvoke;
 

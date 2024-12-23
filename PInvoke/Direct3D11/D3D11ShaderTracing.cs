@@ -809,7 +809,7 @@ public static partial class D3D11
 	[PInvokeData("d3d11shadertracing.h", MSDNShortId = "NF:d3d11shadertracing.D3DDisassemble11Trace")]
 	[DllImport("d3dcompiler_47.dll", SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DDisassemble11Trace([In] IntPtr pSrcData, [In] SizeT SrcDataSize,
-		[In] ID3D11ShaderTrace pTrace, uint StartStep, uint NumSteps, uint Flags, out ID3D10Blob ppDisassembly);
+		[In] ID3D11ShaderTrace pTrace, uint StartStep, uint NumSteps, uint Flags, out ID3DBlob ppDisassembly);
 
 	/// <summary>Describes an instance of a compute shader to trace.</summary>
 	/// <remarks>This API requires the Windows Software Development Kit (SDK) for Windows 8.</remarks>

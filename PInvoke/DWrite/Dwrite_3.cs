@@ -3,6 +3,26 @@
 public static partial class Dwrite
 {
 	/// <summary>
+	/// The download was canceled, which happens if the application calls IDWriteFontDownloadQueue::CancelDownload before they finish.
+	/// </summary>
+	public const int DWRITE_E_DOWNLOADCANCELLED = unchecked((int)0x8898500E);
+
+	/// <summary>The download failed to complete because the remote resource is missing or the network is down.</summary>
+	public const int DWRITE_E_DOWNLOADFAILED = unchecked((int)0x8898500F);
+
+	/// <summary>
+	/// A font resource could not be accessed because it was remote. This can happen when calling CreateFontFace on a non-local font or
+	/// trying to measure/draw glyphs that are not downloaded yet.
+	/// </summary>
+	public const int DWRITE_E_REMOTEFONT = unchecked((int)0x8898500D);
+
+	/// <summary>A download request was not added or a download failed because there are too many active downloads.</summary>
+	public const int DWRITE_E_TOOMANYDOWNLOADS = unchecked((int)0x88985010);
+
+	/// <summary>The standard font axis count.</summary>
+	public const int DWRITE_STANDARD_FONT_AXIS_COUNT = 5;
+
+	/// <summary>
 	/// Defines constants that specifies axes that can be applied automatically in layout during font selection. Values can be bitwise OR'd together.
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/ne-dwrite_3-dwrite_automatic_font_axes typedef enum
@@ -202,9 +222,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Families are grouped by the typographic family name preferred by the font author. The family can contain as many faces as the
 		/// font author wants. This corresponds to
-		/// </para>
-		/// <para>DWRITE_FONT_PROPERTY_ID_TYPOGRAPHIC_FAMILY_NAME</para>
-		/// <para>.</para>
+		///  DWRITE_FONT_PROPERTY_ID_TYPOGRAPHIC_FAMILY_NAME.</para>
 		/// </summary>
 		DWRITE_FONT_FAMILY_MODEL_TYPOGRAPHIC,
 
@@ -213,9 +231,7 @@ public static partial class Dwrite
 		/// Families are grouped by the weight-stretch-style family name, where all faces that differ only by those three axes are grouped
 		/// into the same family, but any other axes go into a distinct family. For example, the Sitka family with six different optical
 		/// sizes yields six separate families (Sitka Caption, Display, Text, Subheading, Heading, Banner...). This corresponds to
-		/// </para>
-		/// <para>DWRITE_FONT_PROPERTY_ID_WEIGHT_STRETCH_STYLE_FAMILY_NAME</para>
-		/// <para>.</para>
+		///  DWRITE_FONT_PROPERTY_ID_WEIGHT_STRETCH_STYLE_FAMILY_NAME.</para>
 		/// </summary>
 		DWRITE_FONT_FAMILY_MODEL_WEIGHT_STRETCH_STYLE,
 	}
@@ -443,9 +459,7 @@ public static partial class Dwrite
 	public enum DWRITE_PAINT_TYPE
 	{
 		/// <summary>
-		/// <para>Specifies no rendering action. Can be returned for color feature levels greater than or equal to</para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V0</para>
-		/// <para>.</para>
+		/// <para>Specifies no rendering action. Can be returned for color feature levels greater than or equal to DWRITE_PAINT_FEATURE_LEVEL_COLR_V0.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_NONE,
 
@@ -453,9 +467,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Specifies a rendering action of rendering the child paint elements in bottom-up order. Can be returned for color feature levels
 		/// greater than or equal to
-		/// </para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V0</para>
-		/// <para>.</para>
+		///  DWRITE_PAINT_FEATURE_LEVEL_COLR_V0.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_LAYERS,
 
@@ -463,9 +475,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Specifies a rendering action of filling the specified glyph shape with the specified color. Can be returned for color feature
 		/// levels greater than or equal to
-		/// </para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V0</para>
-		/// <para>.</para>
+		///  DWRITE_PAINT_FEATURE_LEVEL_COLR_V0.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_SOLID_GLYPH,
 
@@ -473,9 +483,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Specifies a rendering action of filling the current clip with the specified color. Can be returned for color feature levels
 		/// greater than or equal to
-		/// </para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V1</para>
-		/// <para>.</para>
+		///  DWRITE_PAINT_FEATURE_LEVEL_COLR_V1.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_SOLID,
 
@@ -483,9 +491,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Specifies a rendering action of filling the current clip with the specified gradient. Can be returned for color feature levels
 		/// greater than or equal to
-		/// </para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V1</para>
-		/// <para>.</para>
+		///  DWRITE_PAINT_FEATURE_LEVEL_COLR_V1.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_LINEAR_GRADIENT,
 
@@ -493,9 +499,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Specifies a rendering action of filling the current clip with the specified gradient. Can be returned for color feature levels
 		/// greater than or equal to
-		/// </para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V1</para>
-		/// <para>.</para>
+		///  DWRITE_PAINT_FEATURE_LEVEL_COLR_V1.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_RADIAL_GRADIENT,
 
@@ -503,9 +507,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Specifies a rendering action of filling the current clip with the specified gradient. Can be returned for color feature levels
 		/// greater than or equal to
-		/// </para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V1</para>
-		/// <para>.</para>
+		///  DWRITE_PAINT_FEATURE_LEVEL_COLR_V1.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_SWEEP_GRADIENT,
 
@@ -513,9 +515,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Specifies a rendering action of filling the specified glyph shape with child paint element. Can be returned for color feature
 		/// levels greater than or equal to
-		/// </para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V1</para>
-		/// <para>.</para>
+		///  DWRITE_PAINT_FEATURE_LEVEL_COLR_V1.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_GLYPH,
 
@@ -523,9 +523,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Specifies a rendering action of rendering the child paint element. Can be returned for color feature levels greater than or
 		/// equal to
-		/// </para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V1</para>
-		/// <para>.</para>
+		///  DWRITE_PAINT_FEATURE_LEVEL_COLR_V1.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_COLOR_GLYPH,
 
@@ -533,9 +531,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Specifies a rendering action of rendering the child paint element with the specified transform. Can be returned for color
 		/// feature levels greater than or equal to
-		/// </para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V1</para>
-		/// <para>.</para>
+		///  DWRITE_PAINT_FEATURE_LEVEL_COLR_V1.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_TRANSFORM,
 
@@ -543,9 +539,7 @@ public static partial class Dwrite
 		/// <para>
 		/// Specifies a rendering action of rendering the two child paint elements and compose them using the specified composite mode. Can
 		/// be returned for color feature levels greater than or equal to
-		/// </para>
-		/// <para>DWRITE_PAINT_FEATURE_LEVEL_COLR_V1</para>
-		/// <para>.</para>
+		///  DWRITE_PAINT_FEATURE_LEVEL_COLR_V1.</para>
 		/// </summary>
 		DWRITE_PAINT_TYPE_COMPOSITE,
 	}
@@ -616,6 +610,34 @@ public static partial class Dwrite
 
 		/// <summary>Similar to natural symmetric mode except that when possible, text should be rasterized in a downsampled form.</summary>
 		DWRITE_RENDERING_MODE1_NATURAL_SYMMETRIC_DOWNSAMPLED,
+	}
+
+	/// <summary>Converts glyph run placements to glyph origins.</summary>
+	/// <param name="factory">The <see cref="IDWriteFactory4"/> instance.</param>
+	/// <param name="glyphRun">Structure containing the properties of the glyph run.</param>
+	/// <param name="baselineOrigin">The position of the baseline origin, in DIPs, relative to the upper-left corner of the DIB.</param>
+	/// <param name="worldAndDpiTransform">The world and dpi transform.</param>
+	/// <param name="measuringMode">The measuring mode.</param>
+	/// <returns>On return contains the glyph origins for the glyphrun.</returns>
+	/// <remarks>
+	/// The transform and DPI have no effect on the origin scaling. They are solely used to compute glyph advances when not supplied and
+	/// align glyphs in pixel aligned measuring modes.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefactory4-computeglyphorigins(dwrite_glyph_runconst_dwrite_measuring_mode_d2d1_point_2f_dwrite_matrixconst_d2d1_point_2f)
+	// HRESULT ComputeGlyphOrigins( DWRITE_GLYPH_RUN const *glyphRun, DWRITE_MEASURING_MODE measuringMode, D2D1_POINT_2F baselineOrigin,
+	// DWRITE_MATRIX const *worldAndDpiTransform, D2D1_POINT_2F *glyphOrigins );
+	public static D2D_POINT_2F[] ComputeGlyphOrigins(this IDWriteFactory4 factory, in DWRITE_GLYPH_RUN glyphRun, D2D_POINT_2F baselineOrigin,
+		[In] DWRITE_MATRIX? worldAndDpiTransform = null, DWRITE_MEASURING_MODE? measuringMode = null)
+	{
+		var org = new D2D_POINT_2F[glyphRun.glyphCount];
+		if (worldAndDpiTransform.HasValue || measuringMode.HasValue)
+		{
+			using SafeCoTaskMemStruct<DWRITE_MATRIX> txf = worldAndDpiTransform;
+			factory.ComputeGlyphOrigins(glyphRun, measuringMode.GetValueOrDefault(DWRITE_MEASURING_MODE.DWRITE_MEASURING_MODE_NATURAL), baselineOrigin, txf, org);
+		}
+		else
+			factory.ComputeGlyphOrigins(glyphRun, baselineOrigin, org);
+		return org;
 	}
 
 	/// <summary>Creates an OpenType tag for a font axis.</summary>
@@ -956,7 +978,7 @@ public static partial class Dwrite
 		public float baseline;
 
 		/// <summary>
-		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Type: <c>bool</c></para>
 		/// <para>The line is trimmed.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.Bool)]
@@ -1486,55 +1508,4 @@ public static partial class Dwrite
 			}
 		}
 	}
-
-/*
-IDWriteAsyncResult
-IDWriteBitmapRenderTarget2
-IDWriteBitmapRenderTarget3
-IDWriteColorGlyphRunEnumerator1
-IDWriteFactory3
-IDWriteFactory4
-IDWriteFactory5
-IDWriteFactory6
-IDWriteFactory7
-IDWriteFactory8
-IDWriteFont3
-IDWriteFontCollection1
-IDWriteFontCollection2
-IDWriteFontCollection3
-IDWriteFontDownloadListener
-IDWriteFontDownloadQueue
-IDWriteFontFace3
-IDWriteFontFace4
-IDWriteFontFace5
-IDWriteFontFace6
-IDWriteFontFace7
-IDWriteFontFaceReference
-IDWriteFontFaceReference1
-IDWriteFontFallback1
-IDWriteFontFamily1
-IDWriteFontFamily2
-IDWriteFontList1
-IDWriteFontList2
-IDWriteFontResource
-IDWriteFontSet
-IDWriteFontSet1
-IDWriteFontSet2
-IDWriteFontSet3
-IDWriteFontSet4
-IDWriteFontSetBuilder
-IDWriteFontSetBuilder1
-IDWriteFontSetBuilder2
-IDWriteGdiInterop1
-IDWriteInMemoryFontFileLoader
-IDWritePaintReader
-IDWriteRemoteFontFileLoader
-IDWriteRemoteFontFileStream
-IDWriteRenderingParams3
-IDWriteStringList
-IDWriteTextFormat2
-IDWriteTextFormat3
-IDWriteTextLayout3
-IDWriteTextLayout4
-*/
 }

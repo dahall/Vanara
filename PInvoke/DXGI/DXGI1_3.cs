@@ -4396,32 +4396,4 @@ public static partial class DXGI
 		/// </summary>
 		public uint ApprovedPresentDuration;
 	}
-
-	/// <summary>
-	/// Represents a 3x2 matrix. Used with GetMatrixTransform and SetMatrixTransform to indicate the scaling and translation transform for
-	/// SwapChainPanel swap chains.
-	/// </summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_3/ns-dxgi1_3-dxgi_matrix_3x2_f typedef struct DXGI_MATRIX_3X2_F { FLOAT
-	// _11; FLOAT _12; FLOAT _21; FLOAT _22; FLOAT _31; FLOAT _32; } DXGI_MATRIX_3X2_F;
-	[PInvokeData("dxgi1_3.h", MSDNShortId = "NS:dxgi1_3.DXGI_MATRIX_3X2_F"), StructLayout(LayoutKind.Sequential)]
-	public struct DXGI_MATRIX_3X2_F
-	{
-		/// <summary>The value in the first row and first column of the matrix.</summary>
-		public float _11;
-
-		/// <summary>The value in the first row and second column of the matrix.</summary>
-		public float _12;
-
-		/// <summary>The value in the second row and first column of the matrix.</summary>
-		public float _21;
-
-		/// <summary>The value in the second row and second column of the matrix.</summary>
-		public float _22;
-
-		/// <summary>The value in the third row and first column of the matrix.</summary>
-		public float _31;
-
-		/// <summary>The value in the third row and second column of the matrix.</summary>
-		public float _32;
-	}
 }

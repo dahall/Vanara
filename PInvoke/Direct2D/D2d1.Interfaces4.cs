@@ -3260,7 +3260,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1simplifiedgeometrysink-addlines void AddLines( const
 		// D2D1_POINT_2F *points, UINT32 pointsCount );
 		[PreserveSig]
-		void AddLines([In] D2D_POINT_2F[] points, uint pointsCount);
+		void AddLines([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D_POINT_2F[] points, uint pointsCount);
 
 		/// <summary>Creates a sequence of cubic Bezier curves and adds them to the geometry sink.</summary>
 		/// <param name="beziers">
@@ -3280,7 +3280,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1simplifiedgeometrysink-addbeziers void AddBeziers( const
 		// D2D1_BEZIER_SEGMENT *beziers, UINT32 beziersCount );
 		[PreserveSig]
-		void AddBeziers([In] D2D1_BEZIER_SEGMENT[] beziers, uint beziersCount);
+		void AddBeziers([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_BEZIER_SEGMENT[] beziers, uint beziersCount);
 
 		/// <summary>Ends the current figure; optionally, closes it.</summary>
 		/// <param name="figureEnd">

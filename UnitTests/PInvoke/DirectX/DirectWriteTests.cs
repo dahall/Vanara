@@ -3,70 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using static Vanara.PInvoke.Dwrite;
+using static Vanara.PInvoke.DXGI;
 
 namespace Vanara.PInvoke.Tests;
 
 public class DirectWriteTests : GenericComTester<IDWriteFactory>
 {
 	private const string fontDir = @"C:\Temp\Fonts";
-
-	protected override IDWriteFactory InitInstance() => DWriteCreateFactory<IDWriteFactory>();
-
-	[Test]
-	public void StructTest()
-	{
-		foreach (var ss in TestHelper.GetNestedStructSizes(typeof(Dwrite)))
-			TestContext.WriteLine(ss);
-	}
-
-	[Test]
-	public void EnumFontsTest()
-	{
-		Instance.GetSystemFontCollection(out var coll);
-		using var pColl = ComReleaserFactory.Create(coll);
-		EnumFonts(pColl.Item);
-	}
-
-	private static void EnumFonts(IDWriteFontCollection coll)
-	{
-		var count = coll.GetFontFamilyCount();
-		var locale = System.Globalization.CultureInfo.CurrentCulture.Name;
-		for (var i = 0U; i < count; i++)
-		{
-			try
-			{
-				using var pFontFam = ComReleaserFactory.Create(coll.GetFontFamily(i));
-				using var pFamNames = ComReleaserFactory.Create(pFontFam.Item.GetFamilyNames());
-				pFamNames.Item.FindLocaleName(locale, out var index, out var exists);
-				if (!exists) index = 0;
-				var len = pFamNames.Item.GetStringLength(index) + 1;
-				var str = new StringBuilder((int)len);
-				pFamNames.Item.GetString(index, str, len);
-				TestContext.WriteLine(str);
-			}
-			catch (Exception ex)
-			{
-				TestContext.WriteLine("ERROR: " + ex.Message);
-			}
-		}
-	}
-
-	[Test]
-	public void LoadCustomFontsTest()
-	{
-		var loader = new FontLoader();
-		Instance.RegisterFontCollectionLoader(loader);
-		try
-		{
-			using var pDir = new SafeCoTaskMemString(fontDir);
-			using var pColl = ComReleaserFactory.Create(Instance.CreateCustomFontCollection(loader, pDir, pDir.Size));
-			EnumFonts(pColl.Item);
-		}
-		finally
-		{
-			Instance.UnregisterFontCollectionLoader(loader);
-		}
-	}
 
 	[Test]
 	public void CreateFontFaceTest()
@@ -140,12 +83,11 @@ public class DirectWriteTests : GenericComTester<IDWriteFactory>
 	}
 
 	[Test]
-	public void GetGdiInteropTest()
+	public void EnumFontsTest()
 	{
-		Assert.That(() =>
-		{
-			using var p = ComReleaserFactory.Create(Instance.GetGdiInterop());
-		}, Throws.Nothing);
+		Instance.GetSystemFontCollection(out var coll);
+		using var pColl = ComReleaserFactory.Create(coll);
+		EnumFonts(pColl.Item);
 	}
 
 	[Test]
@@ -155,7 +97,6 @@ public class DirectWriteTests : GenericComTester<IDWriteFactory>
 		Assert.That(() => Instance.RegisterFontFileLoader(loader), Throws.Nothing);
 		try
 		{
-
 		}
 		finally
 		{
@@ -163,29 +104,62 @@ public class DirectWriteTests : GenericComTester<IDWriteFactory>
 		}
 	}
 
-	[ComVisible(true)]
-	public class FontLoader : IDWriteFontCollectionLoader
+	[Test]
+	public void GetGdiInteropTest() => Assert.That(() =>
 	{
-		public HRESULT CreateEnumeratorFromKey([In] IDWriteFactory factory, IntPtr collectionKey, uint collectionKeySize, out IDWriteFontFileEnumerator? fontFileEnumerator)
+		using var p = ComReleaserFactory.Create(Instance.GetGdiInterop());
+	}, Throws.Nothing);
+
+	[Test]
+	public void LoadCustomFontsTest()
+	{
+		var loader = new FontLoader();
+		Instance.RegisterFontCollectionLoader(loader);
+		try
 		{
-			fontFileEnumerator = null;
-			if (factory is null || collectionKey == default)
-				return HRESULT.E_INVALIDARG;
+			using var pDir = new SafeCoTaskMemString(fontDir);
+			using var pColl = ComReleaserFactory.Create(Instance.CreateCustomFontCollection(loader, pDir, pDir.Size));
+			EnumFonts(pColl.Item);
+		}
+		finally
+		{
+			Instance.UnregisterFontCollectionLoader(loader);
+		}
+	}
 
-			fontFileEnumerator = new FontEnumerator(factory, StringHelper.GetString(collectionKey, CharSet.Unicode, collectionKeySize)!);
+	[Test]
+	public void StructTest()
+	{
+		foreach (var ss in TestHelper.GetNestedStructSizes(typeof(Dwrite)))
+			TestContext.WriteLine(ss);
+	}
 
-			return HRESULT.S_OK;
+	protected override IDWriteFactory InitInstance() => DWriteCreateFactory<IDWriteFactory>();
+
+	private static void EnumFonts(IDWriteFontCollection coll)
+	{
+		var count = coll.GetFontFamilyCount();
+		var locale = System.Globalization.CultureInfo.CurrentCulture.Name;
+		for (var i = 0U; i < count; i++)
+		{
+			try
+			{
+				using var pFontFam = ComReleaserFactory.Create(coll.GetFontFamily(i));
+				using var piFamNames = ComReleaserFactory.Create(pFontFam.Item.GetFamilyNames());
+				DWriteLocalizedStrings pFamNames = new(piFamNames.Item);
+				if (pFamNames.ContainsKey(locale))
+					TestContext.WriteLine(pFamNames[locale]);
+			}
+			catch (Exception ex)
+			{
+				TestContext.WriteLine("ERROR: " + ex.Message);
+			}
 		}
 	}
 
 	[ComVisible(true)]
 	public class FileLoader : IDWriteFontFileLoader
 	{
-		public FileLoader()
-		{
-
-		}
-
 		public HRESULT CreateStreamFromKey([In] IntPtr fontFileReferenceKey, uint fontFileReferenceKeySize, out IDWriteFontFileStream fontFileStream)
 		{
 			fontFileStream = new FileStream(Directory.EnumerateFiles(fontDir).First());
@@ -194,15 +168,27 @@ public class DirectWriteTests : GenericComTester<IDWriteFactory>
 	}
 
 	[ComVisible(true)]
-	public class FileStream : IDWriteFontFileStream, IDisposable
+	public class FileStream(string path) : IDWriteFontFileStream, IDisposable
 	{
-		FileInfo fi;
-		SafeHGlobalHandle mem;
+		private readonly FileInfo fi = new(path);
+		private readonly SafeHGlobalHandle mem = new(File.ReadAllBytes(path));
 
-		public FileStream(string path)
+		public void Dispose()
 		{
-			fi = new FileInfo(path);
-			mem = new SafeHGlobalHandle(File.ReadAllBytes(path));
+			((IDisposable)mem).Dispose();
+			GC.SuppressFinalize(this);
+		}
+
+		public HRESULT GetFileSize(out ulong fileSize)
+		{
+			fileSize = (ulong)fi.Length;
+			return default;
+		}
+
+		public HRESULT GetLastWriteTime(out System.Runtime.InteropServices.ComTypes.FILETIME lastWriteTime)
+		{
+			lastWriteTime = fi.LastWriteTime.ToFileTimeStruct();
+			return default;
 		}
 
 		public HRESULT ReadFileFragment(out IntPtr fragmentStart, ulong fileOffset, ulong fragmentSize, [Out] out IntPtr fragmentContext)
@@ -220,41 +206,36 @@ public class DirectWriteTests : GenericComTester<IDWriteFactory>
 		public void ReleaseFileFragment([In] IntPtr fragmentContext)
 		{
 		}
-
-		public HRESULT GetFileSize(out ulong fileSize)
-		{
-			fileSize = (ulong)fi.Length;
-			return default;
-		}
-
-		public HRESULT GetLastWriteTime(out System.Runtime.InteropServices.ComTypes.FILETIME lastWriteTime)
-		{
-			lastWriteTime = fi.LastWriteTime.ToFileTimeStruct();
-			return default;
-		}
-
-		public void Dispose() => ((IDisposable)mem).Dispose();
 	}
 
 	[ComVisible(true)]
-	public class FontEnumerator : IDWriteFontFileEnumerator
+	public class FontEnumerator(IDWriteFactory fact, string path) : IDWriteFontFileEnumerator
 	{
-		private IEnumerator<string> enumerator;
-		private IDWriteFactory factory;
-
-		public FontEnumerator(IDWriteFactory fact, string path)
-		{
-			factory = fact;
-			enumerator = Directory.EnumerateFiles(path).GetEnumerator();
-		}
-
-		public HRESULT MoveNext([MarshalAs(UnmanagedType.Bool)] out bool hasCurrentFile) { hasCurrentFile = enumerator.MoveNext(); return HRESULT.S_OK; }
+		private readonly IEnumerator<string> enumerator = Directory.EnumerateFiles(path).GetEnumerator();
 
 		public HRESULT GetCurrentFontFile(out IDWriteFontFile? fontFile)
 		{
-			try { fontFile = factory.CreateFontFileReference(enumerator.Current); }
+			try { fontFile = fact.CreateFontFileReference(enumerator.Current); }
 			catch (COMException ex) { fontFile = null; return ex.HResult; }
 			return default;
+		}
+
+		public HRESULT MoveNext([MarshalAs(UnmanagedType.Bool)] out bool hasCurrentFile)
+		{ hasCurrentFile = enumerator.MoveNext(); return HRESULT.S_OK; }
+	}
+
+	[ComVisible(true)]
+	public class FontLoader : IDWriteFontCollectionLoader
+	{
+		public HRESULT CreateEnumeratorFromKey([In] IDWriteFactory factory, IntPtr collectionKey, uint collectionKeySize, out IDWriteFontFileEnumerator? fontFileEnumerator)
+		{
+			fontFileEnumerator = null;
+			if (factory is null || collectionKey == default)
+				return HRESULT.E_INVALIDARG;
+
+			fontFileEnumerator = new FontEnumerator(factory, StringHelper.GetString(collectionKey, CharSet.Unicode, collectionKeySize)!);
+
+			return HRESULT.S_OK;
 		}
 	}
 }

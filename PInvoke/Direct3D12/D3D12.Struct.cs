@@ -995,7 +995,7 @@ public static partial class D3D12
 		/// <summary>Initializes a new instance of the <see cref="D3D12_CPU_DESCRIPTOR_HANDLE"/> struct.</summary>
 		/// <param name="h">The handle.</param>
 		/// <param name="offsetScaledByIncrementSize">Size of the offset scaled by increment.</param>
-		public D3D12_CPU_DESCRIPTOR_HANDLE(in D3D12_CPU_DESCRIPTOR_HANDLE h, int offsetScaledByIncrementSize) => ptr = h.ptr + offsetScaledByIncrementSize;
+		public D3D12_CPU_DESCRIPTOR_HANDLE(in D3D12_CPU_DESCRIPTOR_HANDLE h, int offsetScaledByIncrementSize = 0) => ptr = h.ptr + offsetScaledByIncrementSize;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_CPU_DESCRIPTOR_HANDLE"/> struct.</summary>
 		/// <param name="h">The handle.</param>
@@ -3522,7 +3522,7 @@ public static partial class D3D12
 	// D3D12_BARRIER_SYNC SyncBefore; D3D12_BARRIER_SYNC SyncAfter; D3D12_BARRIER_ACCESS AccessBefore; D3D12_BARRIER_ACCESS AccessAfter; } D3D12_GLOBAL_BARRIER;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_GLOBAL_BARRIER")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_GLOBAL_BARRIER(D3D12.D3D12_BARRIER_SYNC syncBefore, D3D12.D3D12_BARRIER_SYNC syncAfter, D3D12.D3D12_BARRIER_ACCESS accessBefore, D3D12.D3D12_BARRIER_ACCESS accessAfter)
+	public struct D3D12_GLOBAL_BARRIER(D3D12_BARRIER_SYNC syncBefore, D3D12_BARRIER_SYNC syncAfter, D3D12_BARRIER_ACCESS accessBefore, D3D12_BARRIER_ACCESS accessAfter)
 	{
 		/// <summary>Synchronization scope of all preceding GPU work that must be completed before executing the barrier.</summary>
 		public D3D12_BARRIER_SYNC SyncBefore = syncBefore;
@@ -6192,12 +6192,10 @@ public static partial class D3D12
 	public struct D3D12_RESOURCE_ALIASING_BARRIER
 	{
 		/// <summary>A pointer to the <c>ID3D12Resource</c> object that represents the before resource used in the transition.</summary>
-		[MarshalAs(UnmanagedType.Interface)]
-		public ID3D12Resource? pResourceBefore;
+		public IUnknownPointer<ID3D12Resource> pResourceBefore;
 
 		/// <summary>A pointer to the <c>ID3D12Resource</c> object that represents the after resource used in the transition.</summary>
-		[MarshalAs(UnmanagedType.Interface)]
-		public ID3D12Resource? pResourceAfter;
+		public IUnknownPointer<ID3D12Resource> pResourceAfter;
 	}
 
 	/// <summary>Describes parameters needed to allocate resources.</summary>
@@ -6297,8 +6295,8 @@ public static partial class D3D12
 			Type = D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_ALIASING,
 			Aliasing = new()
 			{
-				pResourceBefore = pResourceBefore,
-				pResourceAfter = pResourceAfter
+				pResourceBefore = new(pResourceBefore),
+				pResourceAfter = new(pResourceAfter)
 			}
 		};
 
@@ -6311,7 +6309,7 @@ public static partial class D3D12
 					Flags = flags,
 					Transition = new()
 					{
-						pResource = pResource,
+						pResource = new(pResource),
 						StateBefore = stateBefore,
 						StateAfter = stateAfter,
 						Subresource = subresource,
@@ -6322,7 +6320,7 @@ public static partial class D3D12
 		public static D3D12_RESOURCE_BARRIER CreateUAV(ID3D12Resource? pResource) => new()
 		{
 			Type = D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_UAV,
-			UAV = new() { pResource = pResource }
+			UAV = new() { pResource = new(pResource )}
 		};
 	}
 
@@ -6808,8 +6806,7 @@ public static partial class D3D12
 	public struct D3D12_RESOURCE_TRANSITION_BARRIER
 	{
 		/// <summary>A pointer to the <c>ID3D12Resource</c> object that represents the resource used in the transition.</summary>
-		[MarshalAs(UnmanagedType.Interface)]
-		public ID3D12Resource pResource;
+		public IUnknownPointer<ID3D12Resource> pResource;
 
 		/// <summary>
 		/// The index of the subresource for the transition. Use the <b>D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES</b> flag ( 0xffffffff ) to
@@ -6848,8 +6845,7 @@ public static partial class D3D12
 	public struct D3D12_RESOURCE_UAV_BARRIER
 	{
 		/// <summary>The resource used in the transition, as a pointer to <c>ID3D12Resource</c>.</summary>
-		[MarshalAs(UnmanagedType.Interface)]
-		public ID3D12Resource? pResource;
+		public IUnknownPointer<ID3D12Resource> pResource;
 	}
 
 	/// <summary>Describes constants inline in the root signature that appear in shaders as one constant buffer.</summary>
@@ -7461,8 +7457,8 @@ public static partial class D3D12
 		public SizeT BytecodeLength = bytecodeLength;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_SHADER_BYTECODE"/> struct.</summary>
-		/// <param name="pShaderBlob">The <see cref="ID3D10Blob"/> with shader data.</param>
-		public D3D12_SHADER_BYTECODE(ID3D10Blob pShaderBlob) : this(pShaderBlob.GetBufferPointer(), pShaderBlob.GetBufferSize()) { }
+		/// <param name="pShaderBlob">The <see cref="ID3DBlob"/> with shader data.</param>
+		public D3D12_SHADER_BYTECODE(ID3DBlob pShaderBlob) : this(pShaderBlob.GetBufferPointer(), pShaderBlob.GetBufferSize()) { }
 	}
 
 	/// <summary>Describes a shader cache session.</summary>
@@ -8117,7 +8113,7 @@ public static partial class D3D12
 	// D3D12_SUBRESOURCE_RANGE_UINT64 { UINT Subresource; D3D12_RANGE_UINT64 Range; } D3D12_SUBRESOURCE_RANGE_UINT64;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_SUBRESOURCE_RANGE_UINT64")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_SUBRESOURCE_RANGE_UINT64(uint subresource, in D3D12.D3D12_RANGE_UINT64 range)
+	public struct D3D12_SUBRESOURCE_RANGE_UINT64(uint subresource, in D3D12_RANGE_UINT64 range)
 	{
 		/// <summary>The index of the subresource.</summary>
 		public uint Subresource = subresource;

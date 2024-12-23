@@ -8,6 +8,7 @@ global using D2D1_COLOR_F = Vanara.PInvoke.DXGI.D3DCOLORVALUE;
 global using D2D1_MATRIX_3X2_F = Vanara.PInvoke.DXGI.D2D_MATRIX_3X2_F;
 global using D2D1_POINT_2F = Vanara.PInvoke.DXGI.D2D_POINT_2F;
 global using D2D1_TAG = System.UInt64;
+using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -949,6 +950,21 @@ public static partial class D2d1
 	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("d2d1.h", MSDNShortId = "9f29488c-37f0-4d53-9e3b-3b27e841c8b4")]
 	public static extern void D2D1MakeSkewMatrix(float angleX, float angleY, D2D_POINT_2F center, out D2D_MATRIX_3X2_F matrix);
+
+	/// <summary>Retrieves the gradient stops of the current paint element.</summary>
+	/// <param name="rdr">The <see cref="IDWritePaintReader" /> instance.</param>
+	/// <param name="gradientStopCount">Number of gradient stops to retrieve.</param>
+	/// <param name="firstGradientStopIndex">Index of the first gradient stop to retrieve.</param>
+	/// <returns>Receives the gradient stops.</returns>
+	/// <remarks>Gradient stops are guaranteed to be in ascending order by position.</remarks>
+	// https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/win32/dwrite_3/nf-dwrite_3-idwritepaintreader-getgradientstops
+	// HRESULT GetGradientStops( UINT32 firstGradientStopIndex, UINT32 gradientStopCount, D2D1_GRADIENT_STOP *gradientStops );
+	public static D2D1_GRADIENT_STOP[] GetGradientStops(this IDWritePaintReader rdr, uint gradientStopCount, uint firstGradientStopIndex = 0)
+	{
+		using SafeNativeArray<D2D1_GRADIENT_STOP> stops = new((int)gradientStopCount);
+		rdr.GetGradientStops(firstGradientStopIndex, gradientStopCount, stops);
+		return stops.ToArray();
+	}
 
 	/// <summary>Describes an elliptical arc between two points.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/ns-d2d1-d2d1_arc_segment typedef struct D2D1_ARC_SEGMENT { D2D1_POINT_2F
