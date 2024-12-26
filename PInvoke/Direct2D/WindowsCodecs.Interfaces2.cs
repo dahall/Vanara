@@ -3259,7 +3259,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatareaderinfo-getpatterns HRESULT
 		// GetPatterns( REFGUID guidContainerFormat, UINT cbSize, WICMetadataPattern *pPattern, UINT *pcCount, UINT *pcbActual );
-		void GetPatterns(in Guid guidContainerFormat, uint cbSize, [Out, Optional] IntPtr pPattern, out uint pcCount, out uint pcbActual);
+		void GetPatterns(in Guid guidContainerFormat, uint cbSize, [Out, Optional] ManagedStructPointer<WICMetadataPattern> pPattern, out uint pcCount, out uint pcbActual);
 
 		/// <summary>Determines if a stream contains a metadata item pattern.</summary>
 		/// <param name="guidContainerFormat">
@@ -3700,7 +3700,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodecsdk/nf-wincodecsdk-iwicmetadatawriterinfo-getheader HRESULT
 		// GetHeader( REFGUID guidContainerFormat, UINT cbSize, WICMetadataHeader *pHeader, UINT *pcbActual );
-		void GetHeader(in Guid guidContainerFormat, uint cbSize, [Out] IntPtr pHeader, out uint pcbActual);
+		void GetHeader(in Guid guidContainerFormat, uint cbSize, [Out] ManagedStructPointer<WICMetadataHeader> pHeader, out uint pcbActual);
 
 		/// <summary>Creates an instance of an IWICMetadataWriter.</summary>
 		/// <returns>

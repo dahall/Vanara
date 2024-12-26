@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System;
+
+namespace Vanara.PInvoke;
 
 public static partial class D2d1
 {

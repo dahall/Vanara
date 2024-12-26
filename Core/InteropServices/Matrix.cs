@@ -187,23 +187,50 @@ public class Matrix :
 		return r;
 	}
 
-	/// <summary>Gets an identity matrix of the specified size.</summary>
+	/// <summary>Gets an identity matrix of the specified balanced size.</summary>
 	/// <param name="dimensions">The rows and columns in the matrix.</param>
-	/// <returns>An identity matrix.</returns>
+	/// <returns>An identity matrix with the value of all diagonal entries set to <c>1.0f</c>.</returns>
 	/// <exception cref="System.ArgumentException">The number of rows must be equal to the number of columns.</exception>
-	public static Matrix CreateIdentity(int dimensions)
+	public static Matrix CreateIdentity(int dimensions) => CreateIdentity(dimensions, dimensions);
+
+	/// <summary>Gets an identity matrix of the specified size.</summary>
+	/// <param name="rows">The number of rows.</param>
+	/// <param name="columns">The number of columns.</param>
+	/// <returns>An identity matrix with the value of all diagonal entries set to <c>1.0f</c>.</returns>
+	/// <exception cref="System.ArgumentException">The number of rows must be equal to the number of columns.</exception>
+	public static Matrix CreateIdentity(int rows, int columns)
 	{
-		if (dimensions < 1)
-			throw new ArgumentOutOfRangeException(nameof(dimensions), "Dimension must be greater than 0.");
-		Memory<float> m = new float[dimensions * dimensions];
+		if (rows < 1)
+			throw new ArgumentOutOfRangeException(nameof(rows), "Rows must be greater than 0.");
+		if (columns < 1)
+			throw new ArgumentOutOfRangeException(nameof(columns), "Columns must be greater than 0.");
+		Memory<float> m = new float[rows * columns];
 		Span<float> sp = m.Span;
-		for (int i = 0; i < dimensions; i++)
-		{
-			int c1 = i * dimensions;
-			for (int j = 0; j < dimensions; j++)
-				sp[c1 + j] = i == j ? 1f : 0f;
-		}
-		return new(m, dimensions, dimensions);
+		for (int i = 0; i < Math.Min(rows, columns); i++)
+			sp[i * columns + i] = 1f;
+		return new(m, rows, columns);
+	}
+
+	/// <summary>Creates a scaling matrix from the list of scalars.</summary>
+	/// <param name="scalars">
+	/// The scalars to use as diagonal values. Note, the resulting matrix will be one dimension larger than the number of scalars in this
+	/// array and that diagonal entry will be set to <c>1.0f</c>.
+	/// </param>
+	/// <returns>
+	/// A matrix one dimension larger than the number of scalars in <paramref name="scalars"/> whose diagnoal entries are set to each
+	/// subsequent value of <paramref name="scalars"/> and whose final diagonal entry will be set to <c>1.0f</c>.
+	/// </returns>
+	/// <exception cref="System.ArgumentNullException">scalars</exception>
+	/// <exception cref="System.ArgumentOutOfRangeException">scalars - At least one scaling value must be provided.</exception>
+	public static Matrix CreateScale(float[] scalars)
+	{
+		if (scalars is null) throw new ArgumentNullException(nameof(scalars));
+		if (scalars.Length < 1)
+			throw new ArgumentOutOfRangeException(nameof(scalars), "At least one scaling value must be provided.");
+		Matrix r = CreateIdentity(scalars.Length + 1);
+		for (int i = 0; i < scalars.Length; i++)
+			r[i, i] = scalars[i];
+		return r;
 	}
 
 	/// <summary>Performs an implicit conversion from <see cref="float"/>[,] to <see cref="Matrix"/>.</summary>

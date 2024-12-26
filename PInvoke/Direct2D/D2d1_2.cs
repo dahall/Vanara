@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Drawing;
+
+namespace Vanara.PInvoke;
 
 public static partial class D2d1
 {
@@ -188,7 +190,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/ja-jp/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-clear HRESULT Clear( const D2D1_COLOR_F
 		// *color );
 		[PreserveSig]
-		new HRESULT Clear([In, Optional] IntPtr color);
+		new HRESULT Clear([In, Optional] StructPointer<D2D1_COLOR_F> color);
 
 		/// <summary>Indicates the glyphs to be drawn.</summary>
 		/// <param name="baselineOrigin">
@@ -224,7 +226,7 @@ public static partial class D2d1
 		// D2D1_POINT_2F baselineOrigin, const DWRITE_GLYPH_RUN *glyphRun, const DWRITE_GLYPH_RUN_DESCRIPTION *glyphRunDescription,
 		// ID2D1Brush *foregroundBrush, DWRITE_MEASURING_MODE measuringMode );
 		[PreserveSig]
-		new HRESULT DrawGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun, [In, Optional] IntPtr glyphRunDescription, [In] ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
+		new HRESULT DrawGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, [In] ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
 
 		/// <summary>Draws a line drawn between two points.</summary>
 		/// <param name="point0">
@@ -358,7 +360,7 @@ public static partial class D2d1
 		// *bitmap, const D2D1_RECT_F *destinationRectangle, FLOAT opacity, D2D1_INTERPOLATION_MODE interpolationMode, const D2D1_RECT_F
 		// *sourceRectangle, const D2D1_MATRIX_4X4_F *perspectiveTransform );
 		[PreserveSig]
-		new HRESULT DrawBitmap([In] ID2D1Bitmap bitmap, [In, Optional] IntPtr destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, [In, Optional] IntPtr sourceRectangle, [In, Optional] IntPtr perspectiveTransform);
+		new HRESULT DrawBitmap([In] ID2D1Bitmap bitmap, [In, Optional] PD2D_RECT_F? destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, [In, Optional] PD2D_RECT_F? sourceRectangle, [In, Optional] StructPointer<D2D_MATRIX_4X4_F> perspectiveTransform);
 
 		/// <summary>Draws the provided image to the command sink.</summary>
 		/// <param name="image">
@@ -397,7 +399,7 @@ public static partial class D2d1
 		// *image, const D2D1_POINT_2F *targetOffset, const D2D1_RECT_F *imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode,
 		// D2D1_COMPOSITE_MODE compositeMode );
 		[PreserveSig]
-		new HRESULT DrawImage([In] ID2D1Image image, [In, Optional] IntPtr targetOffset, [In, Optional] IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+		new HRESULT DrawImage([In] ID2D1Image image, [In, Optional] StructPointer<D2D1_POINT_2F> targetOffset, [In, Optional] PD2D_RECT_F? imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
 
 		/// <summary>Draw a metafile to the device context.</summary>
 		/// <param name="gdiMetafile">
@@ -417,7 +419,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-drawgdimetafile HRESULT DrawGdiMetafile(
 		// ID2D1GdiMetafile *gdiMetafile, const D2D1_POINT_2F *targetOffset );
 		[PreserveSig]
-		new HRESULT DrawGdiMetafile([In] ID2D1GdiMetafile gdiMetafile, [In, Optional] IntPtr targetOffset);
+		new HRESULT DrawGdiMetafile([In] ID2D1GdiMetafile gdiMetafile, [In, Optional] StructPointer<D2D1_POINT_2F> targetOffset);
 
 		/// <summary>Indicates a mesh to be filled by the command sink.</summary>
 		/// <param name="mesh">
@@ -462,7 +464,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-fillopacitymask HRESULT FillOpacityMask(
 		// ID2D1Bitmap *opacityMask, ID2D1Brush *brush, const D2D1_RECT_F *destinationRectangle, const D2D1_RECT_F *sourceRectangle );
 		[PreserveSig]
-		new HRESULT FillOpacityMask([In] ID2D1Bitmap opacityMask, [In] ID2D1Brush brush, [In, Optional] IntPtr destinationRectangle, [In, Optional] IntPtr sourceRectangle);
+		new HRESULT FillOpacityMask([In] ID2D1Bitmap opacityMask, [In] ID2D1Brush brush, [In, Optional] PD2D_RECT_F? destinationRectangle, [In, Optional] PD2D_RECT_F? sourceRectangle);
 
 		/// <summary>Indicates to the command sink a geometry to be filled.</summary>
 		/// <param name="geometry">
@@ -884,7 +886,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createbitmapfromwicbitmap(iwicbitmapsource_constd2d1_bitmap_properties_id2d1bitmap)
 		// HRESULT CreateBitmapFromWicBitmap( IWICBitmapSource *wicBitmapSource, const D2D1_BITMAP_PROPERTIES *bitmapProperties, ID2D1Bitmap
 		// **bitmap );
-		new ID2D1Bitmap CreateBitmapFromWicBitmap(IWICBitmapSource wicBitmapSource, [In, Optional] IntPtr bitmapProperties);
+		new ID2D1Bitmap CreateBitmapFromWicBitmap(IWICBitmapSource wicBitmapSource, [In, Optional] StructPointer<D2D1_BITMAP_PROPERTIES> bitmapProperties);
 
 		/// <summary>Creates an ID2D1Bitmap whose data is shared with another resource.</summary>
 		/// <param name="riid">
@@ -957,7 +959,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createsharedbitmap HRESULT CreateSharedBitmap(
 		// REFIID riid, void *data, const D2D1_BITMAP_PROPERTIES *bitmapProperties, ID2D1Bitmap **bitmap );
-		new ID2D1Bitmap CreateSharedBitmap(in Guid riid, [In, Out] IntPtr data, [In, Optional] IntPtr bitmapProperties);
+		new ID2D1Bitmap CreateSharedBitmap(in Guid riid, [In, Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object data, [In, Optional] StructPointer<D2D1_BITMAP_PROPERTIES> bitmapProperties);
 
 		/// <summary>Creates an ID2D1BitmapBrush from the specified bitmap.</summary>
 		/// <param name="bitmap">
@@ -988,7 +990,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createbitmapbrush(id2d1bitmap_constd2d1_bitmap_brush_properties_constd2d1_brush_properties_id2d1bitmapbrush)
 		// HRESULT CreateBitmapBrush( ID2D1Bitmap *bitmap, const D2D1_BITMAP_BRUSH_PROPERTIES *bitmapBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1BitmapBrush **bitmapBrush );
-		new ID2D1BitmapBrush CreateBitmapBrush([In, Optional] ID2D1Bitmap? bitmap, [In, Optional] IntPtr bitmapBrushProperties, [In, Optional] IntPtr brushProperties);
+		new ID2D1BitmapBrush CreateBitmapBrush([In, Optional] ID2D1Bitmap? bitmap, [In, Optional] StructPointer<D2D1_BITMAP_BRUSH_PROPERTIES> bitmapBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties);
 
 		/// <summary>Creates a new ID2D1SolidColorBrush that has the specified color and opacity.</summary>
 		/// <param name="color">
@@ -1006,7 +1008,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createsolidcolorbrush(constd2d1_color_f__constd2d1_brush_properties__id2d1solidcolorbrush)
 		// HRESULT CreateSolidColorBrush( const D2D1_COLOR_F &amp; color, const D2D1_BRUSH_PROPERTIES &amp; brushProperties,
 		// ID2D1SolidColorBrush **solidColorBrush );
-		new ID2D1SolidColorBrush CreateSolidColorBrush(in D3DCOLORVALUE color, [In, Optional] IntPtr brushProperties);
+		new ID2D1SolidColorBrush CreateSolidColorBrush(in D3DCOLORVALUE color, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties);
 
 		/// <summary>Creates an ID2D1GradientStopCollection from the specified array of D2D1_GRADIENT_STOP structures.</summary>
 		/// <param name="gradientStops">
@@ -1032,7 +1034,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-creategradientstopcollection%28constd2d1_gradient_stop_uint32_d2d1_gamma_d2d1_extend_mode_id2d1gradientstopcollection%29
 		// HRESULT CreateGradientStopCollection( const D2D1_GRADIENT_STOP *gradientStops, UINT32 gradientStopsCount, D2D1_GAMMA
 		// colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, ID2D1GradientStopCollection **gradientStopCollection );
-		new ID2D1GradientStopCollection CreateGradientStopCollection([In] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode);
+		new ID2D1GradientStopCollection CreateGradientStopCollection([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode);
 
 		/// <summary>Creates an ID2D1LinearGradientBrush object for painting areas with a linear gradient.</summary>
 		/// <param name="linearGradientBrushProperties">
@@ -1058,7 +1060,7 @@ public static partial class D2d1
 		// HRESULT CreateLinearGradientBrush( const D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES *linearGradientBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1GradientStopCollection *gradientStopCollection, ID2D1LinearGradientBrush
 		// **linearGradientBrush );
-		new ID2D1LinearGradientBrush CreateLinearGradientBrush(in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, [In, Optional] IntPtr brushProperties, [In] ID2D1GradientStopCollection gradientStopCollection);
+		new ID2D1LinearGradientBrush CreateLinearGradientBrush(in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties, [In] ID2D1GradientStopCollection gradientStopCollection);
 
 		/// <summary>Creates an ID2D1RadialGradientBrush object that can be used to paint areas with a radial gradient.</summary>
 		/// <param name="radialGradientBrushProperties">
@@ -1083,7 +1085,7 @@ public static partial class D2d1
 		// HRESULT CreateRadialGradientBrush( const D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES *radialGradientBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1GradientStopCollection *gradientStopCollection, ID2D1RadialGradientBrush
 		// **radialGradientBrush );
-		new ID2D1RadialGradientBrush CreateRadialGradientBrush(in D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES radialGradientBrushProperties, [In, Optional] IntPtr brushProperties, [In] ID2D1GradientStopCollection gradientStopCollection);
+		new ID2D1RadialGradientBrush CreateRadialGradientBrush(in D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES radialGradientBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties, [In] ID2D1GradientStopCollection gradientStopCollection);
 
 		/// <summary>
 		/// Creates a bitmap render target for use during intermediate offscreen drawing that is compatible with the current render target.
@@ -1152,7 +1154,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createcompatiblerendertarget(constd2d1_size_f_constd2d1_size_u_constd2d1_pixel_format_d2d1_compatible_render_target_options_id2d1bitmaprendertarget)
 		// HRESULT CreateCompatibleRenderTarget( const D2D1_SIZE_F *desiredSize, const D2D1_SIZE_U *desiredPixelSize, const
 		// D2D1_PIXEL_FORMAT *desiredFormat, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS options, ID2D1BitmapRenderTarget **bitmapRenderTarget );
-		new ID2D1BitmapRenderTarget CreateCompatibleRenderTarget([In, Optional] IntPtr desiredSize, [In, Optional] IntPtr desiredPixelSize, [In, Optional] IntPtr desiredFormat, [In, Optional] D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS options);
+		new ID2D1BitmapRenderTarget CreateCompatibleRenderTarget([In, Optional] StructPointer<D2D_SIZE_F> desiredSize, [In, Optional] StructPointer<D2D_SIZE_U> desiredPixelSize, [In, Optional] StructPointer<D2D1_PIXEL_FORMAT> desiredFormat, [In, Optional] D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS options);
 
 		/// <summary>Creates a layer resource that can be used with this render target and its compatible render targets.</summary>
 		/// <param name="size">
@@ -1169,7 +1171,7 @@ public static partial class D2d1
 		/// <remarks>The layer automatically resizes itself, as needed.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createlayer(constd2d1_size_f_id2d1layer)
 		// HRESULT CreateLayer( const D2D1_SIZE_F *size, ID2D1Layer **layer );
-		new ID2D1Layer CreateLayer([In, Optional] IntPtr size);
+		new ID2D1Layer CreateLayer([In, Optional] StructPointer<D2D_SIZE_F> size);
 
 		/// <summary>Create a mesh that uses triangles to describe a shape.</summary>
 		/// <returns>
@@ -1508,7 +1510,7 @@ public static partial class D2d1
 		// void FillOpacityMask( ID2D1Bitmap *opacityMask, ID2D1Brush *brush, D2D1_OPACITY_MASK_CONTENT content, const D2D1_RECT_F &amp;
 		// destinationRectangle, const D2D1_RECT_F &amp; sourceRectangle );
 		[PreserveSig]
-		new void FillOpacityMask([In] ID2D1Bitmap opacityMask, [In] ID2D1Brush brush, D2D1_OPACITY_MASK_CONTENT content, [In, Optional] IntPtr destinationRectangle, [In, Optional] IntPtr sourceRectangle);
+		new void FillOpacityMask([In] ID2D1Bitmap opacityMask, [In] ID2D1Brush brush, D2D1_OPACITY_MASK_CONTENT content, [In, Optional] PD2D_RECT_F? destinationRectangle, [In, Optional] PD2D_RECT_F? sourceRectangle);
 
 		/// <summary>Draws the specified bitmap after scaling it to the size of the specified rectangle.</summary>
 		/// <param name="bitmap">
@@ -1548,8 +1550,8 @@ public static partial class D2d1
 		// void DrawBitmap( ID2D1Bitmap *bitmap, const D2D1_RECT_F &amp; destinationRectangle, FLOAT opacity, D2D1_BITMAP_INTERPOLATION_MODE
 		// interpolationMode, const D2D1_RECT_F &amp; sourceRectangle );
 		[PreserveSig]
-		new void DrawBitmap([In] ID2D1Bitmap bitmap, [In, Optional] IntPtr destinationRectangle, float opacity = 1.0f,
-			D2D1_BITMAP_INTERPOLATION_MODE interpolationMode = D2D1_BITMAP_INTERPOLATION_MODE.D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, [In] IntPtr sourceRectangle = default);
+		new void DrawBitmap([In] ID2D1Bitmap bitmap, [In, Optional] PD2D_RECT_F? destinationRectangle, float opacity = 1.0f,
+			D2D1_BITMAP_INTERPOLATION_MODE interpolationMode = D2D1_BITMAP_INTERPOLATION_MODE.D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, [In] PD2D_RECT_F? sourceRectangle = default);
 
 		/// <summary>Draws the specified text using the format information provided by an IDWriteTextFormat object.</summary>
 		/// <param name="string">
@@ -2038,7 +2040,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-clear(constd2d1_color_f_) void Clear( const
 		// D2D1_COLOR_F &amp; clearColor );
 		[PreserveSig]
-		new void Clear([In, Optional] IntPtr clearColor);
+		new void Clear([In, Optional] StructPointer<D2D1_COLOR_F> clearColor);
 
 		/// <summary>Initiates drawing on this render target.</summary>
 		/// <returns>None</returns>
@@ -2279,7 +2281,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createbitmapfromwicbitmap(iwicbitmapsource_id2d1bitmap1)
 		// HRESULT CreateBitmapFromWicBitmap( IWICBitmapSource *wicBitmapSource, ID2D1Bitmap1 **bitmap );
-		new ID2D1Bitmap1 CreateBitmap1FromWicBitmap(IWICBitmapSource wicBitmapSource, [In, Optional] IntPtr bitmapProperties);
+		new ID2D1Bitmap1 CreateBitmap1FromWicBitmap(IWICBitmapSource wicBitmapSource, [In, Optional] StructPointer<D2D1_BITMAP_PROPERTIES> bitmapProperties);
 
 		/// <summary>Creates a color context.</summary>
 		/// <param name="space">
@@ -2416,7 +2418,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createbitmapfromdxgisurface(idxgisurface_constd2d1_bitmap_properties1__id2d1bitmap1)
 		// HRESULT CreateBitmapFromDxgiSurface( IDXGISurface *surface, const D2D1_BITMAP_PROPERTIES1 &amp; bitmapProperties, ID2D1Bitmap1
 		// **bitmap );
-		new ID2D1Bitmap1 CreateBitmapFromDxgiSurface(IDXGISurface surface, [In, Optional] IntPtr bitmapProperties);
+		new ID2D1Bitmap1 CreateBitmapFromDxgiSurface(IDXGISurface surface, [In, Optional] StructPointer<D2D1_BITMAP_PROPERTIES> bitmapProperties);
 
 		/// <summary>Creates an effect for the specified class ID.</summary>
 		/// <param name="effectId">
@@ -2581,7 +2583,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createimagebrush(id2d1image_constd2d1_image_brush_properties__constd2d1_brush_properties__id2d1imagebrush)
 		// HRESULT CreateImageBrush( ID2D1Image *image, const D2D1_IMAGE_BRUSH_PROPERTIES &amp; imageBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES &amp; brushProperties, ID2D1ImageBrush **imageBrush );
-		new ID2D1ImageBrush CreateImageBrush([Optional] ID2D1Image? image, in D2D1_IMAGE_BRUSH_PROPERTIES imageBrushProperties, [In, Optional] IntPtr brushProperties);
+		new ID2D1ImageBrush CreateImageBrush([Optional] ID2D1Image? image, in D2D1_IMAGE_BRUSH_PROPERTIES imageBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties);
 
 		/// <summary>Creates a bitmap brush, the input image is a Direct2D bitmap object.</summary>
 		/// <param name="bitmap">
@@ -2603,7 +2605,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createbitmapbrush%28id2d1bitmap_constd2d1_bitmap_brush_properties1_constd2d1_brush_properties_id2d1bitmapbrush1%29
 		// HRESULT CreateBitmapBrush( ID2D1Bitmap *bitmap, const D2D1_BITMAP_BRUSH_PROPERTIES1 *bitmapBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1BitmapBrush1 **bitmapBrush );
-		new ID2D1BitmapBrush1 CreateBitmapBrush1([Optional] ID2D1Bitmap? bitmap, [In, Optional] IntPtr bitmapBrushProperties, [In, Optional] IntPtr brushProperties);
+		new ID2D1BitmapBrush1 CreateBitmapBrush1([Optional] ID2D1Bitmap? bitmap, [In, Optional] StructPointer<D2D1_BITMAP_BRUSH_PROPERTIES> bitmapBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties);
 
 		/// <summary>Creates a ID2D1CommandList object.</summary>
 		/// <returns>
@@ -3003,7 +3005,7 @@ public static partial class D2d1
 		// D2D1_POINT_2F baselineOrigin, const DWRITE_GLYPH_RUN *glyphRun, const DWRITE_GLYPH_RUN_DESCRIPTION *glyphRunDescription,
 		// ID2D1Brush *foregroundBrush, DWRITE_MEASURING_MODE measuringMode );
 		[PreserveSig]
-		new void DrawGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun, [In, Optional] IntPtr glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
+		new void DrawGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
 
 		/// <summary>Draws an image to the device context.</summary>
 		/// <param name="image">
@@ -3057,7 +3059,7 @@ public static partial class D2d1
 		// void DrawImage( ID2D1Effect *effect, const D2D1_POINT_2F *targetOffset, const D2D1_RECT_F *imageRectangle,
 		// D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode );
 		[PreserveSig]
-		new void DrawImage(ID2D1Image image, [In, Optional] IntPtr targetOffset, [In, Optional] IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+		new void DrawImage(ID2D1Image image, [In, Optional] StructPointer<D2D1_POINT_2F> targetOffset, [In, Optional] PD2D_RECT_F? imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
 
 		/// <summary>Draw a metafile to the device context.</summary>
 		/// <param name="gdiMetafile">
@@ -3072,7 +3074,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-drawgdimetafile(id2d1gdimetafile_d2d1_point_2f)
 		// void DrawGdiMetafile( ID2D1GdiMetafile *gdiMetafile, D2D1_POINT_2F targetOffset );
 		[PreserveSig]
-		new void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, [In, Optional] IntPtr targetOffset);
+		new void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, [In, Optional] StructPointer<D2D1_POINT_2F> targetOffset);
 
 		/// <summary>Draws a bitmap to the render target.</summary>
 		/// <param name="bitmap">
@@ -3119,7 +3121,7 @@ public static partial class D2d1
 		// void DrawBitmap( ID2D1Bitmap *bitmap, const D2D1_RECT_F &amp; destinationRectangle, FLOAT opacity, D2D1_INTERPOLATION_MODE
 		// interpolationMode, const D2D1_RECT_F *sourceRectangle, const D2D1_MATRIX_4X4_F *perspectiveTransform );
 		[PreserveSig]
-		new void DrawBitmap(ID2D1Bitmap bitmap, [In, Optional] IntPtr destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, [In, Optional] IntPtr sourceRectangle, [In, Optional] IntPtr perspectiveTransform);
+		new void DrawBitmap(ID2D1Bitmap bitmap, [In, Optional] PD2D_RECT_F? destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, [In, Optional] PD2D_RECT_F? sourceRectangle, [In, Optional] StructPointer<D2D_MATRIX_4X4_F> perspectiveTransform);
 
 		/// <summary>Push a layer onto the clip and layer stack of the device context.</summary>
 		/// <param name="layerParameters">
@@ -3559,7 +3561,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1factory-createdrawingstateblock%28constd2d1_drawing_state_description_idwriterenderingparams_id2d1drawingstateblock%29
 		// HRESULT CreateDrawingStateBlock( const D2D1_DRAWING_STATE_DESCRIPTION *drawingStateDescription, IDWriteRenderingParams
 		// *textRenderingParams, ID2D1DrawingStateBlock **drawingStateBlock );
-		new ID2D1DrawingStateBlock CreateDrawingStateBlock([In, Optional] IntPtr drawingStateDescription, [In, Optional] IDWriteRenderingParams? textRenderingParams);
+		new ID2D1DrawingStateBlock CreateDrawingStateBlock([In, Optional] StructPointer<D2D1_DRAWING_STATE_DESCRIPTION> drawingStateDescription, [In, Optional] IDWriteRenderingParams? textRenderingParams);
 
 		/// <summary>Creates a render target that renders to a Microsoft Windows Imaging Component (WIC) bitmap.</summary>
 		/// <param name="target">
@@ -4021,6 +4023,54 @@ public static partial class D2d1
 		// **factory );
 		[PreserveSig]
 		new void GetFactory(out ID2D1Factory factory);
+	}
+
+	/// <summary>Computes the appropriate flattening tolerance to pass to APIs that take a flattening tolerance (for instance, <c><b>ID2D1DeviceContext1::CreateFilledGeometryRealization</b></c>).</summary>
+	/// <param name="matrix">[in, ref] The matrix that will be applied subsequently to the geometry being flattened.</param>
+	/// <param name="dpiX">
+	/// <para>Default: 96.0f</para>
+	/// <para>The horizontal DPI of the render target that the geometry will be rendered onto (a choice of 96 implies no DPI correction).</para>
+	/// </param>
+	/// <param name="dpiY">
+	/// <para>Default: 96.0f</para>
+	/// <para>The vertical DPI of the render target that the geometry will be rendered onto (a choice of 96 implies no DPI correction).</para>
+	/// </param>
+	/// <param name="maxZoomFactor">
+	/// <para>Default: 1.0f</para>
+	/// <para>
+	/// The maximum amount of additional scaling (on top of any scaling implied by the matrix or the DPI) that will be applied to the geometry.
+	/// </para>
+	/// </param>
+	/// <returns>The flattening tolerance.</returns>
+	/// <remarks>
+	/// <para>
+	/// Flattening tolerances affect how finely curved segments such as arcs and Beziers will be tessellated. When rendering a geometry
+	/// realization or the output of a geometry operation with the identity transform, the default flattening tolerance
+	/// (D2D1_DEFAULT_FLATTENING_TOLERANCE) is appropriate. Using the default tolerance with a large scale transform, however, can cause
+	/// visible faceting. To guard against this, callers should use <b>ComputeFlatteningTolerance</b> and pass in the expected transform
+	/// that the content will be rendered with and the DPI of the render target the content will be rendered onto.
+	/// </para>
+	/// <para>
+	/// <b>Note</b>   The DPI is used only to infer the corresponding scale transform. No attempt is made to validate dpi values (e.g.
+	/// ensure they are positive).
+	/// </para>
+	/// <para></para>
+	/// <para>
+	/// In some scenarios content may be dynamically resized. In this case, the caller may wish to realize the geometry at a higher zoom
+	/// level than is currently required. This can be achieved by passing in a maxZoomFactor equal to or greater than the maximum scale the
+	/// geometry will be rendered at. Note that the maxZoomFactor is appended to any scale that may be present in the matrix parameter.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/dn280327(v=vs.85)
+	// FLOAT ComputeFlatteningTolerance(_In_ const D2D1_MATRIX_3X2_F &amp;matrix, FLOAT dpiX, FLOAT dpiY, FLOAT maxZoomFactor );
+	[PInvokeData("D2d1_1.h")]
+	public static float ComputeFlatteningTolerance(in D2D1_MATRIX_3X2_F matrix, float dpiX = 96.0f, float dpiY = 96.0f, float maxZoomFactor = 1.0f)
+	{
+		D2D1_MATRIX_3X2_F dpiDependentTransform = D2D1_MATRIX_3X2_F.Scale(dpiX / 96.0f, dpiY / 96.0f);
+
+		float absMaxZoomFactor = (maxZoomFactor > 0) ? maxZoomFactor : -maxZoomFactor;
+
+		return D2D1_DEFAULT_FLATTENING_TOLERANCE / (absMaxZoomFactor * D2D1ComputeMaximumScaleFactor(dpiDependentTransform));
 	}
 
 	/// <summary>Computes the maximum factor by which a given transform can stretch any vector.</summary>

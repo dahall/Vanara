@@ -932,6 +932,13 @@ public static partial class DXGI
 		/// </summary>
 		public float a = a;
 
+		/// <summary>Initializes a new instance of the <see cref="D3DCOLORVALUE"/> struct.</summary>
+		/// <param name="color">The color.</param>
+		/// <param name="a">The alpha value.</param>
+		public D3DCOLORVALUE(System.Drawing.Color color, float a = 1.0f) : this(color.R / 255f, color.G / 255f, color.B / 255f, a)
+		{
+		}
+
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is D3DCOLORVALUE dCOLORVALUE && Equals(dCOLORVALUE);
 
@@ -976,12 +983,12 @@ public static partial class DXGI
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator D3DCOLOR(D3DCOLORVALUE cv) => new((byte)(cv.r * 255), (byte)(cv.g * 255), (byte)(cv.b * 255), (byte)(cv.a * 255));
 
-		/// <summary>Performs an explicit conversion from <see cref="Vanara.PInvoke.DXGI.D3DCOLORVALUE"/> to <see cref="float"/>[].</summary>
+		/// <summary>Performs an explicit conversion from <see cref="D3DCOLORVALUE"/> to <see cref="float"/>[].</summary>
 		/// <param name="cv">The color value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator float[](D3DCOLORVALUE cv) => [cv.r, cv.g, cv.b, cv.a];
 
-		/// <summary>Performs an explicit conversion from <see cref="float"/>[] to <see cref="Vanara.PInvoke.DXGI.D3DCOLORVALUE"/>.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="float"/>[] to <see cref="D3DCOLORVALUE"/>.</summary>
 		/// <param name="cv">The color value array.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator D3DCOLORVALUE(float[] cv) => cv is not null && cv.Length == 4 ? new(cv[0], cv[1], cv[2], cv[3]) : throw new ArgumentException("An array of four values is required.", nameof(cv));

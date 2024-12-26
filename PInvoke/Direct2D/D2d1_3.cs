@@ -304,79 +304,211 @@ public static partial class D2d1
 	// leftEdgeMode; D2D1_PATCH_EDGE_MODE bottomEdgeMode; D2D1_PATCH_EDGE_MODE rightEdgeMode; } D2D1_GRADIENT_MESH_PATCH;
 	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_GRADIENT_MESH_PATCH")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_GRADIENT_MESH_PATCH
+	public struct D2D1_GRADIENT_MESH_PATCH(D2D1_POINT_2F point00, D2D1_POINT_2F point01, D2D1_POINT_2F point02, D2D1_POINT_2F point03, D2D1_POINT_2F point10,
+		D2D1_POINT_2F point11, D2D1_POINT_2F point12, D2D1_POINT_2F point13, D2D1_POINT_2F point20, D2D1_POINT_2F point21, D2D1_POINT_2F point22,
+		D2D1_POINT_2F point23, D2D1_POINT_2F point30, D2D1_POINT_2F point31, D2D1_POINT_2F point32, D2D1_POINT_2F point33, D2D1_COLOR_F color00,
+		D2D1_COLOR_F color03, D2D1_COLOR_F color30, D2D1_COLOR_F color33, D2D1_PATCH_EDGE_MODE topEdgeMode, D2D1_PATCH_EDGE_MODE leftEdgeMode,
+		D2D1_PATCH_EDGE_MODE bottomEdgeMode, D2D1_PATCH_EDGE_MODE rightEdgeMode)
 	{
 		/// <summary>The coordinate-space location of the control point in column 0 and row 0 of the tensor grid.</summary>
-		public D2D1_POINT_2F point00;
+		public D2D1_POINT_2F point00 = point00;
 
 		/// <summary>The coordinate-space location of the control point in column 0 and row 1 of the tensor grid.</summary>
-		public D2D1_POINT_2F point01;
+		public D2D1_POINT_2F point01 = point01;
 
 		/// <summary>The coordinate-space location of the control point in column 0 and row 2 of the tensor grid.</summary>
-		public D2D1_POINT_2F point02;
+		public D2D1_POINT_2F point02 = point02;
 
 		/// <summary>The coordinate-space location of the control point in column 0 and row 3 of the tensor grid.</summary>
-		public D2D1_POINT_2F point03;
+		public D2D1_POINT_2F point03 = point03;
 
 		/// <summary>The coordinate-space location of the control point in column 1 and row 0 of the tensor grid.</summary>
-		public D2D1_POINT_2F point10;
+		public D2D1_POINT_2F point10 = point10;
 
 		/// <summary>The coordinate-space location of the control point in column 1 and row 1 of the tensor grid.</summary>
-		public D2D1_POINT_2F point11;
+		public D2D1_POINT_2F point11 = point11;
 
 		/// <summary>The coordinate-space location of the control point in column 1 and row 2 of the tensor grid.</summary>
-		public D2D1_POINT_2F point12;
+		public D2D1_POINT_2F point12 = point12;
 
 		/// <summary>The coordinate-space location of the control point in column 1 and row 3 of the tensor grid.</summary>
-		public D2D1_POINT_2F point13;
+		public D2D1_POINT_2F point13 = point13;
 
 		/// <summary>The coordinate-space location of the control point in column 2 and row 0 of the tensor grid.</summary>
-		public D2D1_POINT_2F point20;
+		public D2D1_POINT_2F point20 = point20;
 
 		/// <summary>The coordinate-space location of the control point in column 2 and row 1 of the tensor grid.</summary>
-		public D2D1_POINT_2F point21;
+		public D2D1_POINT_2F point21 = point21;
 
 		/// <summary>The coordinate-space location of the control point in column 2 and row 2 of the tensor grid.</summary>
-		public D2D1_POINT_2F point22;
+		public D2D1_POINT_2F point22 = point22;
 
 		/// <summary>The coordinate-space location of the control point in column 2 and row 3 of the tensor grid.</summary>
-		public D2D1_POINT_2F point23;
+		public D2D1_POINT_2F point23 = point23;
 
 		/// <summary>The coordinate-space location of the control point in column 3 and row 0 of the tensor grid.</summary>
-		public D2D1_POINT_2F point30;
+		public D2D1_POINT_2F point30 = point30;
 
 		/// <summary>The coordinate-space location of the control point in column 3 and row 1 of the tensor grid.</summary>
-		public D2D1_POINT_2F point31;
+		public D2D1_POINT_2F point31 = point31;
 
 		/// <summary>The coordinate-space location of the control point in column 3 and row 2 of the tensor grid.</summary>
-		public D2D1_POINT_2F point32;
+		public D2D1_POINT_2F point32 = point32;
 
 		/// <summary>The coordinate-space location of the control point in column 3 and row 3 of the tensor grid.</summary>
-		public D2D1_POINT_2F point33;
+		public D2D1_POINT_2F point33 = point33;
 
 		/// <summary>The color associated with the control point in column 0 and row 0 of the tensor grid.</summary>
-		public D2D1_COLOR_F color00;
+		public D2D1_COLOR_F color00 = color00;
 
 		/// <summary>The color associated with the control point in column 0 and row 3 of the tensor grid.</summary>
-		public D2D1_COLOR_F color03;
+		public D2D1_COLOR_F color03 = color03;
 
 		/// <summary>The color associated with the control point in column 3 and row 0 of the tensor grid.</summary>
-		public D2D1_COLOR_F color30;
+		public D2D1_COLOR_F color30 = color30;
 
 		/// <summary>The color associated with the control point in column 3 and row 3 of the tensor grid.</summary>
-		public D2D1_COLOR_F color33;
+		public D2D1_COLOR_F color33 = color33;
 
 		/// <summary>Specifies how to render the top edge of the mesh.</summary>
-		public D2D1_PATCH_EDGE_MODE topEdgeMode;
+		public D2D1_PATCH_EDGE_MODE topEdgeMode = topEdgeMode;
 
 		/// <summary>Specifies how to render the left edge of the mesh.</summary>
-		public D2D1_PATCH_EDGE_MODE leftEdgeMode;
+		public D2D1_PATCH_EDGE_MODE leftEdgeMode = leftEdgeMode;
 
 		/// <summary>Specifies how to render the bottom edge of the mesh.</summary>
-		public D2D1_PATCH_EDGE_MODE bottomEdgeMode;
+		public D2D1_PATCH_EDGE_MODE bottomEdgeMode = bottomEdgeMode;
 
 		/// <summary>Specifies how to render the right edge of the mesh.</summary>
-		public D2D1_PATCH_EDGE_MODE rightEdgeMode;
+		public D2D1_PATCH_EDGE_MODE rightEdgeMode = rightEdgeMode;
+
+		/// <summary>Creates a <c>D2D1_GRADIENT_MESH_PATCH</c> from a given Coons patch description.</summary>
+		/// <param name="point0">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 0.</para>
+		/// </param>
+		/// <param name="point1">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 1.</para>
+		/// </param>
+		/// <param name="point2">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 2.</para>
+		/// </param>
+		/// <param name="point3">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 3.</para>
+		/// </param>
+		/// <param name="point4">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 4.</para>
+		/// </param>
+		/// <param name="point5">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 5.</para>
+		/// </param>
+		/// <param name="point6">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 6.</para>
+		/// </param>
+		/// <param name="point7">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 7.</para>
+		/// </param>
+		/// <param name="point8">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 8.</para>
+		/// </param>
+		/// <param name="point9">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 9.</para>
+		/// </param>
+		/// <param name="point10">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 10.</para>
+		/// </param>
+		/// <param name="point11">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The coordinate-space location of the control point at position 11.</para>
+		/// </param>
+		/// <param name="color0">
+		/// <para>Type: <b><c>D2D1_COLOR_F</c></b></para>
+		/// <para>The color associated with the control point at position 0.</para>
+		/// </param>
+		/// <param name="color1">
+		/// <para>Type: <b><c>D2D1_COLOR_F</c></b></para>
+		/// <para>The color associated with the control point at position 1.</para>
+		/// </param>
+		/// <param name="color2">
+		/// <para>Type: <b><c>D2D1_COLOR_F</c></b></para>
+		/// <para>The color associated with the control point at position 2.</para>
+		/// </param>
+		/// <param name="color3">
+		/// <para>Type: <b><c>D2D1_COLOR_F</c></b></para>
+		/// <para>The color associated with the control point at position 3.</para>
+		/// </param>
+		/// <param name="topEdgeMode">
+		/// <para>Type: <b><c>D2D1_PATCH_EDGE_MODE</c></b></para>
+		/// <para>Specifies how to render the top edge of the mesh.</para>
+		/// </param>
+		/// <param name="leftEdgeMode">
+		/// <para>Type: <b><c>D2D1_PATCH_EDGE_MODE</c></b></para>
+		/// <para>Specifies how to render the left edge of the mesh.</para>
+		/// </param>
+		/// <param name="bottomEdgeMode">
+		/// <para>Type: <b><c>D2D1_PATCH_EDGE_MODE</c></b></para>
+		/// <para>Specifies how to render the bottom edge of the mesh.</para>
+		/// </param>
+		/// <param name="rightEdgeMode">
+		/// <para>Type: <b><c>D2D1_PATCH_EDGE_MODE</c></b></para>
+		/// <para>Specifies how to render the right edge of the mesh.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>D2D1_GRADIENT_MESH_PATCH</c></b></para>
+		/// <para>Returns the created <c>D2D1_GRADIENT_MESH_PATCH</c> structure.</para>
+		/// </returns>
+		/// <remarks>The following image shows the numbering of control points in a Coons patch.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3helper/nf-d2d1_3helper-gradientmeshpatchfromcoonspatch
+		// D2D1_GRADIENT_MESH_PATCH GradientMeshPatchFromCoonsPatch( D2D1_POINT_2F point0, D2D1_POINT_2F point1, D2D1_POINT_2F point2,
+		// D2D1_POINT_2F point3, D2D1_POINT_2F point4, D2D1_POINT_2F point5, D2D1_POINT_2F point6, D2D1_POINT_2F point7, D2D1_POINT_2F
+		// point8, D2D1_POINT_2F point9, D2D1_POINT_2F point10, D2D1_POINT_2F point11, D2D1_COLOR_F color0, D2D1_COLOR_F color1,
+		// D2D1_COLOR_F color2, D2D1_COLOR_F color3, D2D1_PATCH_EDGE_MODE topEdgeMode, D2D1_PATCH_EDGE_MODE leftEdgeMode,
+		// D2D1_PATCH_EDGE_MODE bottomEdgeMode, D2D1_PATCH_EDGE_MODE rightEdgeMode );
+		[PInvokeData("d2d1_3helper.h", MSDNShortId = "NF:d2d1_3helper.GradientMeshPatchFromCoonsPatch")]
+		public static D2D1_GRADIENT_MESH_PATCH FromCoonsPatch(D2D1_POINT_2F point0, D2D1_POINT_2F point1, D2D1_POINT_2F point2, D2D1_POINT_2F point3, D2D1_POINT_2F point4,
+			D2D1_POINT_2F point5, D2D1_POINT_2F point6, D2D1_POINT_2F point7, D2D1_POINT_2F point8, D2D1_POINT_2F point9, D2D1_POINT_2F point10,
+			D2D1_POINT_2F point11, D2D1_COLOR_F color0, D2D1_COLOR_F color1, D2D1_COLOR_F color2, D2D1_COLOR_F color3,
+			D2D1_PATCH_EDGE_MODE topEdgeMode, D2D1_PATCH_EDGE_MODE leftEdgeMode, D2D1_PATCH_EDGE_MODE bottomEdgeMode, D2D1_PATCH_EDGE_MODE rightEdgeMode)
+		{
+			D2D1_GRADIENT_MESH_PATCH newPatch = new()
+			{
+				point00 = point0,
+				point01 = point1,
+				point02 = point2,
+				point03 = point3,
+				point13 = point4,
+				point23 = point5,
+				point33 = point6,
+				point32 = point7,
+				point31 = point8,
+				point30 = point9,
+				point20 = point10,
+				point10 = point11,
+				color00 = color0,
+				color03 = color1,
+				color33 = color2,
+				color30 = color3,
+				topEdgeMode = topEdgeMode,
+				leftEdgeMode = leftEdgeMode,
+				bottomEdgeMode = bottomEdgeMode,
+				rightEdgeMode = rightEdgeMode,
+			};
+
+			D2D1GetGradientMeshInteriorPointsFromCoonsPatch(point0, point1, point2, point3, point4, point5, point6, point7, point8, point9, point10, point11,
+				out newPatch.point11, out newPatch.point12, out newPatch.point21, out newPatch.point22);
+
+			return newPatch;
+		}
 	}
 
 	/// <summary>
@@ -387,16 +519,16 @@ public static partial class D2d1
 	// D2D1_INK_POINT point1; D2D1_INK_POINT point2; D2D1_INK_POINT point3; } D2D1_INK_BEZIER_SEGMENT;
 	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_INK_BEZIER_SEGMENT")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_INK_BEZIER_SEGMENT
+	public struct D2D1_INK_BEZIER_SEGMENT(in D2d1.D2D1_INK_POINT point1, in D2d1.D2D1_INK_POINT point2, in D2d1.D2D1_INK_POINT point3)
 	{
 		/// <summary>The first control point for the Bezier segment.</summary>
-		public D2D1_INK_POINT point1;
+		public D2D1_INK_POINT point1 = point1;
 
 		/// <summary>The second control point for the Bezier segment.</summary>
-		public D2D1_INK_POINT point2;
+		public D2D1_INK_POINT point2 = point2;
 
 		/// <summary>The end point for the Bezier segment.</summary>
-		public D2D1_INK_POINT point3;
+		public D2D1_INK_POINT point3 = point3;
 	}
 
 	/// <summary>Represents a point, radius pair that makes up part of a D2D1_INK_BEZIER_SEGMENT.</summary>
@@ -404,16 +536,16 @@ public static partial class D2d1
 	// FLOAT radius; } D2D1_INK_POINT;
 	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_INK_POINT")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_INK_POINT
+	public struct D2D1_INK_POINT(in D2D1_POINT_2F point, float radius)
 	{
 		/// <summary>The x-coordinate of the point.</summary>
-		public float x;
+		public float x = point.x;
 
 		/// <summary>The y-coordinate of the point.</summary>
-		public float y;
+		public float y = point.y;
 
 		/// <summary>The radius of this point. Corresponds to the width of the ink stroke at this point in the stroke.</summary>
-		public float radius;
+		public float radius = radius;
 	}
 
 	/// <summary>Defines the general pen tip shape and the transform used in an ID2D1InkStyle object.</summary>
@@ -421,15 +553,15 @@ public static partial class D2d1
 	// D2D1_INK_STYLE_PROPERTIES { D2D1_INK_NIB_SHAPE nibShape; D2D1_MATRIX_3X2_F nibTransform; } D2D1_INK_STYLE_PROPERTIES;
 	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_INK_STYLE_PROPERTIES")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_INK_STYLE_PROPERTIES
+	public struct D2D1_INK_STYLE_PROPERTIES(D2d1.D2D1_INK_NIB_SHAPE nibShape, in D2D1_MATRIX_3X2_F nibTransform)
 	{
 		/// <summary>The pre-transform shape of the nib (pen tip) used to draw a given ink object.</summary>
-		public D2D1_INK_NIB_SHAPE nibShape;
+		public D2D1_INK_NIB_SHAPE nibShape = nibShape;
 
 		/// <summary>
 		/// The transform applied to the nib. Note that the translation components of the transform matrix are ignored for the purposes of rendering.
 		/// </summary>
-		public D2D1_MATRIX_3X2_F nibTransform;
+		public D2D1_MATRIX_3X2_F nibTransform = nibTransform;
 	}
 
 	/// <summary>Simple description of a color space.</summary>
@@ -438,22 +570,22 @@ public static partial class D2d1
 	// whitePointXZ; D2D1_GAMMA1 gamma; } D2D1_SIMPLE_COLOR_PROFILE;
 	[PInvokeData("d2d1_3.h", MSDNShortId = "NS:d2d1_3.D2D1_SIMPLE_COLOR_PROFILE")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_SIMPLE_COLOR_PROFILE
+	public struct D2D1_SIMPLE_COLOR_PROFILE(in D2D1_POINT_2F redPrimary, in D2D1_POINT_2F greenPrimary, in D2D1_POINT_2F bluePrimary, D2D1_GAMMA1 gamma, in D2D1_POINT_2F whitePointXZ)
 	{
 		/// <summary>The xy coordinates of the red primary in the CIExyY color space.</summary>
-		public D2D1_POINT_2F redPrimary;
+		public D2D1_POINT_2F redPrimary = redPrimary;
 
 		/// <summary>The xy coordinates of the green primary in the CIExyY color space.</summary>
-		public D2D1_POINT_2F greenPrimary;
+		public D2D1_POINT_2F greenPrimary = greenPrimary;
 
 		/// <summary>The xy coordinates of the blue primary in the CIExyY color space.</summary>
-		public D2D1_POINT_2F bluePrimary;
+		public D2D1_POINT_2F bluePrimary = bluePrimary;
 
 		/// <summary>The XZ tristimulus values for the whitepoint in the CIEXYZ color space, normalized to luminance (Y) of 1.</summary>
-		public D2D1_POINT_2F whitePointXZ;
+		public D2D1_POINT_2F whitePointXZ = whitePointXZ;
 
 		/// <summary>The gamma encoding to use for this color space.</summary>
-		public D2D1_GAMMA1 gamma;
+		public D2D1_GAMMA1 gamma = gamma;
 	}
 
 	/// <summary>Properties of a transformed image source.</summary>

@@ -511,61 +511,79 @@ public static partial class D2d1
 		D2D1_PROPERTY_TYPE_UNKNOWN,
 
 		/// <summary>An arbitrary-length string.</summary>
+		[CorrespondingType(typeof(string))]
 		D2D1_PROPERTY_TYPE_STRING,
 
 		/// <summary>A 32-bit integer value constrained to be either 0 or 1.</summary>
+		[CorrespondingType(typeof(BOOL))]
 		D2D1_PROPERTY_TYPE_BOOL,
 
 		/// <summary>An unsigned 32-bit integer.</summary>
+		[CorrespondingType(typeof(uint))]
 		D2D1_PROPERTY_TYPE_UINT32,
 
 		/// <summary>A signed 32-bit integer.</summary>
+		[CorrespondingType(typeof(int))]
 		D2D1_PROPERTY_TYPE_INT32,
 
 		/// <summary>A 32-bit float.</summary>
+		[CorrespondingType(typeof(float))]
 		D2D1_PROPERTY_TYPE_FLOAT,
 
 		/// <summary>Two 32-bit float values.</summary>
+		[CorrespondingType(typeof(D2D_VECTOR_2F))]
 		D2D1_PROPERTY_TYPE_VECTOR2,
 
 		/// <summary>Three 32-bit float values.</summary>
+		[CorrespondingType(typeof(D2D_VECTOR_3F))]
 		D2D1_PROPERTY_TYPE_VECTOR3,
 
 		/// <summary>Four 32-bit float values.</summary>
+		[CorrespondingType(typeof(D2D_VECTOR_4F))]
 		D2D1_PROPERTY_TYPE_VECTOR4,
 
 		/// <summary>An arbitrary number of bytes.</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		D2D1_PROPERTY_TYPE_BLOB,
 
 		/// <summary>A returned COM or nano-COM interface.</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		D2D1_PROPERTY_TYPE_IUNKNOWN,
 
 		/// <summary>
 		/// An enumeration. The value should be treated as a UINT32 with a defined array of fields to specify the bindings to human-readable strings.
 		/// </summary>
+		[CorrespondingType(typeof(uint))]
 		D2D1_PROPERTY_TYPE_ENUM,
 
 		/// <summary>
 		/// An enumeration. The value is the count of sub-properties in the array. The set of array elements will be contained in the sub-property.
 		/// </summary>
+		[CorrespondingType(typeof(uint))]
 		D2D1_PROPERTY_TYPE_ARRAY,
 
 		/// <summary>A CLSID.</summary>
+		[CorrespondingType(typeof(Guid))]
 		D2D1_PROPERTY_TYPE_CLSID,
 
 		/// <summary>A 3x2 matrix of float values.</summary>
+		[CorrespondingType(typeof(D2D_MATRIX_3X2_F))]
 		D2D1_PROPERTY_TYPE_MATRIX_3X2,
 
 		/// <summary>A 4x2 matrix of float values.</summary>
+		[CorrespondingType(typeof(D2D_MATRIX_4X3_F))]
 		D2D1_PROPERTY_TYPE_MATRIX_4X3,
 
 		/// <summary>A 4x4 matrix of float values.</summary>
+		[CorrespondingType(typeof(D2D_MATRIX_4X4_F))]
 		D2D1_PROPERTY_TYPE_MATRIX_4X4,
 
 		/// <summary>A 5x4 matrix of float values.</summary>
+		[CorrespondingType(typeof(D2D_MATRIX_5X4_F))]
 		D2D1_PROPERTY_TYPE_MATRIX_5X4,
 
 		/// <summary>A nano-COM color context interface pointer.</summary>
+		[CorrespondingType(typeof(IntPtr))]
 		D2D1_PROPERTY_TYPE_COLOR_CONTEXT,
 	}
 
@@ -827,7 +845,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-copyfrombitmap HRESULT CopyFromBitmap( const
 		// D2D1_POINT_2U *destPoint, ID2D1Bitmap *bitmap, const D2D1_RECT_U *srcRect );
-		new void CopyFromBitmap([In, Optional] IntPtr destPoint, [In] ID2D1Bitmap bitmap, [In, Optional] IntPtr srcRect);
+		new void CopyFromBitmap([In, Optional] StructPointer<D2D_POINT_2U> destPoint, [In] ID2D1Bitmap bitmap, [In, Optional] StructPointer<D2D_RECT_U> srcRect);
 
 		/// <summary>Copies the specified region from the specified render target into the current bitmap.</summary>
 		/// <param name="destPoint">
@@ -864,7 +882,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-copyfromrendertarget HRESULT CopyFromRenderTarget(
 		// const D2D1_POINT_2U *destPoint, ID2D1RenderTarget *renderTarget, const D2D1_RECT_U *srcRect );
-		new void CopyFromRenderTarget([In, Optional] IntPtr destPoint, [In] ID2D1RenderTarget renderTarget, [In, Optional] IntPtr srcRect);
+		new void CopyFromRenderTarget([In, Optional] StructPointer<D2D_POINT_2U> destPoint, [In] ID2D1RenderTarget renderTarget, [In, Optional] StructPointer<D2D_RECT_U> srcRect);
 
 		/// <summary>Copies the specified region from memory into the current bitmap.</summary>
 		/// <param name="dstRect">
@@ -907,7 +925,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-copyfrommemory HRESULT CopyFromMemory( const
 		// D2D1_RECT_U *dstRect, const void *srcData, UINT32 pitch );
-		new void CopyFromMemory([In, Optional] IntPtr dstRect, [In] IntPtr srcData, uint pitch);
+		new void CopyFromMemory([In, Optional] StructPointer<D2D_RECT_U> dstRect, [In] IntPtr srcData, uint pitch);
 
 		/// <summary>Gets the color context information associated with the bitmap.</summary>
 		/// <param name="colorContext">
@@ -1670,7 +1688,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/ja-jp/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-clear HRESULT Clear( const D2D1_COLOR_F
 		// *color );
 		[PreserveSig]
-		HRESULT Clear([In, Optional] IntPtr color);
+		HRESULT Clear([In, Optional] StructPointer<D2D1_COLOR_F> color);
 
 		/// <summary>Indicates the glyphs to be drawn.</summary>
 		/// <param name="baselineOrigin">
@@ -1706,7 +1724,7 @@ public static partial class D2d1
 		// D2D1_POINT_2F baselineOrigin, const DWRITE_GLYPH_RUN *glyphRun, const DWRITE_GLYPH_RUN_DESCRIPTION *glyphRunDescription,
 		// ID2D1Brush *foregroundBrush, DWRITE_MEASURING_MODE measuringMode );
 		[PreserveSig]
-		HRESULT DrawGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun, [In, Optional] IntPtr glyphRunDescription, [In] ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
+		HRESULT DrawGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, [In] ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
 
 		/// <summary>Draws a line drawn between two points.</summary>
 		/// <param name="point0">
@@ -1840,7 +1858,7 @@ public static partial class D2d1
 		// *bitmap, const D2D1_RECT_F *destinationRectangle, FLOAT opacity, D2D1_INTERPOLATION_MODE interpolationMode, const D2D1_RECT_F
 		// *sourceRectangle, const D2D1_MATRIX_4X4_F *perspectiveTransform );
 		[PreserveSig]
-		HRESULT DrawBitmap([In] ID2D1Bitmap bitmap, [In, Optional] IntPtr destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, [In, Optional] IntPtr sourceRectangle, [In, Optional] IntPtr perspectiveTransform);
+		HRESULT DrawBitmap([In] ID2D1Bitmap bitmap, [In, Optional] PD2D_RECT_F? destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, [In, Optional] PD2D_RECT_F? sourceRectangle, [In, Optional] StructPointer<D2D_MATRIX_4X4_F> perspectiveTransform);
 
 		/// <summary>Draws the provided image to the command sink.</summary>
 		/// <param name="image">
@@ -1879,7 +1897,7 @@ public static partial class D2d1
 		// *image, const D2D1_POINT_2F *targetOffset, const D2D1_RECT_F *imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode,
 		// D2D1_COMPOSITE_MODE compositeMode );
 		[PreserveSig]
-		HRESULT DrawImage([In] ID2D1Image image, [In, Optional] IntPtr targetOffset, [In, Optional] IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+		HRESULT DrawImage([In] ID2D1Image image, [In, Optional] StructPointer<D2D1_POINT_2F> targetOffset, [In, Optional] PD2D_RECT_F? imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
 
 		/// <summary>Draw a metafile to the device context.</summary>
 		/// <param name="gdiMetafile">
@@ -1899,7 +1917,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-drawgdimetafile HRESULT DrawGdiMetafile(
 		// ID2D1GdiMetafile *gdiMetafile, const D2D1_POINT_2F *targetOffset );
 		[PreserveSig]
-		HRESULT DrawGdiMetafile([In] ID2D1GdiMetafile gdiMetafile, [In, Optional] IntPtr targetOffset);
+		HRESULT DrawGdiMetafile([In] ID2D1GdiMetafile gdiMetafile, [In, Optional] StructPointer<D2D1_POINT_2F> targetOffset);
 
 		/// <summary>Indicates a mesh to be filled by the command sink.</summary>
 		/// <param name="mesh">
@@ -1944,7 +1962,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1commandsink-fillopacitymask HRESULT FillOpacityMask(
 		// ID2D1Bitmap *opacityMask, ID2D1Brush *brush, const D2D1_RECT_F *destinationRectangle, const D2D1_RECT_F *sourceRectangle );
 		[PreserveSig]
-		HRESULT FillOpacityMask([In] ID2D1Bitmap opacityMask, [In] ID2D1Brush brush, [In, Optional] IntPtr destinationRectangle, [In, Optional] IntPtr sourceRectangle);
+		HRESULT FillOpacityMask([In] ID2D1Bitmap opacityMask, [In] ID2D1Brush brush, [In, Optional] PD2D_RECT_F? destinationRectangle, [In, Optional] PD2D_RECT_F? sourceRectangle);
 
 		/// <summary>Indicates to the command sink a geometry to be filled.</summary>
 		/// <param name="geometry">
@@ -2237,7 +2255,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createbitmapfromwicbitmap(iwicbitmapsource_constd2d1_bitmap_properties_id2d1bitmap)
 		// HRESULT CreateBitmapFromWicBitmap( IWICBitmapSource *wicBitmapSource, const D2D1_BITMAP_PROPERTIES *bitmapProperties, ID2D1Bitmap
 		// **bitmap );
-		new ID2D1Bitmap CreateBitmapFromWicBitmap(IWICBitmapSource wicBitmapSource, [In, Optional] IntPtr bitmapProperties);
+		new ID2D1Bitmap CreateBitmapFromWicBitmap(IWICBitmapSource wicBitmapSource, [In, Optional] StructPointer<D2D1_BITMAP_PROPERTIES> bitmapProperties);
 
 		/// <summary>Creates an ID2D1Bitmap whose data is shared with another resource.</summary>
 		/// <param name="riid">
@@ -2310,7 +2328,7 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createsharedbitmap HRESULT CreateSharedBitmap(
 		// REFIID riid, void *data, const D2D1_BITMAP_PROPERTIES *bitmapProperties, ID2D1Bitmap **bitmap );
-		new ID2D1Bitmap CreateSharedBitmap(in Guid riid, [In, Out] IntPtr data, [In, Optional] IntPtr bitmapProperties);
+		new ID2D1Bitmap CreateSharedBitmap(in Guid riid, [In, Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object data, [In, Optional] StructPointer<D2D1_BITMAP_PROPERTIES> bitmapProperties);
 
 		/// <summary>Creates an ID2D1BitmapBrush from the specified bitmap.</summary>
 		/// <param name="bitmap">
@@ -2341,7 +2359,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createbitmapbrush(id2d1bitmap_constd2d1_bitmap_brush_properties_constd2d1_brush_properties_id2d1bitmapbrush)
 		// HRESULT CreateBitmapBrush( ID2D1Bitmap *bitmap, const D2D1_BITMAP_BRUSH_PROPERTIES *bitmapBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1BitmapBrush **bitmapBrush );
-		new ID2D1BitmapBrush CreateBitmapBrush([In, Optional] ID2D1Bitmap? bitmap, [In, Optional] IntPtr bitmapBrushProperties, [In, Optional] IntPtr brushProperties);
+		new ID2D1BitmapBrush CreateBitmapBrush([In, Optional] ID2D1Bitmap? bitmap, [In, Optional] StructPointer<D2D1_BITMAP_BRUSH_PROPERTIES> bitmapBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties);
 
 		/// <summary>Creates a new ID2D1SolidColorBrush that has the specified color and opacity.</summary>
 		/// <param name="color">
@@ -2359,7 +2377,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createsolidcolorbrush(constd2d1_color_f__constd2d1_brush_properties__id2d1solidcolorbrush)
 		// HRESULT CreateSolidColorBrush( const D2D1_COLOR_F &amp; color, const D2D1_BRUSH_PROPERTIES &amp; brushProperties,
 		// ID2D1SolidColorBrush **solidColorBrush );
-		new ID2D1SolidColorBrush CreateSolidColorBrush(in D3DCOLORVALUE color, [In, Optional] IntPtr brushProperties);
+		new ID2D1SolidColorBrush CreateSolidColorBrush(in D3DCOLORVALUE color, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties);
 
 		/// <summary>Creates an ID2D1GradientStopCollection from the specified array of D2D1_GRADIENT_STOP structures.</summary>
 		/// <param name="gradientStops">
@@ -2385,7 +2403,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-creategradientstopcollection%28constd2d1_gradient_stop_uint32_d2d1_gamma_d2d1_extend_mode_id2d1gradientstopcollection%29
 		// HRESULT CreateGradientStopCollection( const D2D1_GRADIENT_STOP *gradientStops, UINT32 gradientStopsCount, D2D1_GAMMA
 		// colorInterpolationGamma, D2D1_EXTEND_MODE extendMode, ID2D1GradientStopCollection **gradientStopCollection );
-		new ID2D1GradientStopCollection CreateGradientStopCollection([In] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode);
+		new ID2D1GradientStopCollection CreateGradientStopCollection([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_GRADIENT_STOP[] gradientStops, uint gradientStopsCount, D2D1_GAMMA colorInterpolationGamma, D2D1_EXTEND_MODE extendMode);
 
 		/// <summary>Creates an ID2D1LinearGradientBrush object for painting areas with a linear gradient.</summary>
 		/// <param name="linearGradientBrushProperties">
@@ -2411,7 +2429,7 @@ public static partial class D2d1
 		// HRESULT CreateLinearGradientBrush( const D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES *linearGradientBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1GradientStopCollection *gradientStopCollection, ID2D1LinearGradientBrush
 		// **linearGradientBrush );
-		new ID2D1LinearGradientBrush CreateLinearGradientBrush(in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, [In, Optional] IntPtr brushProperties, [In] ID2D1GradientStopCollection gradientStopCollection);
+		new ID2D1LinearGradientBrush CreateLinearGradientBrush(in D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES linearGradientBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties, [In] ID2D1GradientStopCollection gradientStopCollection);
 
 		/// <summary>Creates an ID2D1RadialGradientBrush object that can be used to paint areas with a radial gradient.</summary>
 		/// <param name="radialGradientBrushProperties">
@@ -2436,7 +2454,7 @@ public static partial class D2d1
 		// HRESULT CreateRadialGradientBrush( const D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES *radialGradientBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1GradientStopCollection *gradientStopCollection, ID2D1RadialGradientBrush
 		// **radialGradientBrush );
-		new ID2D1RadialGradientBrush CreateRadialGradientBrush(in D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES radialGradientBrushProperties, [In, Optional] IntPtr brushProperties, [In] ID2D1GradientStopCollection gradientStopCollection);
+		new ID2D1RadialGradientBrush CreateRadialGradientBrush(in D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES radialGradientBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties, [In] ID2D1GradientStopCollection gradientStopCollection);
 
 		/// <summary>
 		/// Creates a bitmap render target for use during intermediate offscreen drawing that is compatible with the current render target.
@@ -2505,7 +2523,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createcompatiblerendertarget(constd2d1_size_f_constd2d1_size_u_constd2d1_pixel_format_d2d1_compatible_render_target_options_id2d1bitmaprendertarget)
 		// HRESULT CreateCompatibleRenderTarget( const D2D1_SIZE_F *desiredSize, const D2D1_SIZE_U *desiredPixelSize, const
 		// D2D1_PIXEL_FORMAT *desiredFormat, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS options, ID2D1BitmapRenderTarget **bitmapRenderTarget );
-		new ID2D1BitmapRenderTarget CreateCompatibleRenderTarget([In, Optional] IntPtr desiredSize, [In, Optional] IntPtr desiredPixelSize, [In, Optional] IntPtr desiredFormat, [In, Optional] D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS options);
+		new ID2D1BitmapRenderTarget CreateCompatibleRenderTarget([In, Optional] StructPointer<D2D_SIZE_F> desiredSize, [In, Optional] StructPointer<D2D_SIZE_U> desiredPixelSize, [In, Optional] StructPointer<D2D1_PIXEL_FORMAT> desiredFormat, [In, Optional] D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS options);
 
 		/// <summary>Creates a layer resource that can be used with this render target and its compatible render targets.</summary>
 		/// <param name="size">
@@ -2522,7 +2540,7 @@ public static partial class D2d1
 		/// <remarks>The layer automatically resizes itself, as needed.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-createlayer(constd2d1_size_f_id2d1layer)
 		// HRESULT CreateLayer( const D2D1_SIZE_F *size, ID2D1Layer **layer );
-		new ID2D1Layer CreateLayer([In, Optional] IntPtr size);
+		new ID2D1Layer CreateLayer([In, Optional] StructPointer<D2D_SIZE_F> size);
 
 		/// <summary>Create a mesh that uses triangles to describe a shape.</summary>
 		/// <returns>
@@ -2861,7 +2879,7 @@ public static partial class D2d1
 		// void FillOpacityMask( ID2D1Bitmap *opacityMask, ID2D1Brush *brush, D2D1_OPACITY_MASK_CONTENT content, const D2D1_RECT_F &amp;
 		// destinationRectangle, const D2D1_RECT_F &amp; sourceRectangle );
 		[PreserveSig]
-		new void FillOpacityMask([In] ID2D1Bitmap opacityMask, [In] ID2D1Brush brush, D2D1_OPACITY_MASK_CONTENT content, [In, Optional] IntPtr destinationRectangle, [In, Optional] IntPtr sourceRectangle);
+		new void FillOpacityMask([In] ID2D1Bitmap opacityMask, [In] ID2D1Brush brush, D2D1_OPACITY_MASK_CONTENT content, [In, Optional] PD2D_RECT_F? destinationRectangle, [In, Optional] PD2D_RECT_F? sourceRectangle);
 
 		/// <summary>Draws the specified bitmap after scaling it to the size of the specified rectangle.</summary>
 		/// <param name="bitmap">
@@ -2901,8 +2919,8 @@ public static partial class D2d1
 		// void DrawBitmap( ID2D1Bitmap *bitmap, const D2D1_RECT_F &amp; destinationRectangle, FLOAT opacity, D2D1_BITMAP_INTERPOLATION_MODE
 		// interpolationMode, const D2D1_RECT_F &amp; sourceRectangle );
 		[PreserveSig]
-		new void DrawBitmap([In] ID2D1Bitmap bitmap, [In, Optional] IntPtr destinationRectangle, float opacity = 1.0f,
-			D2D1_BITMAP_INTERPOLATION_MODE interpolationMode = D2D1_BITMAP_INTERPOLATION_MODE.D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, [In] IntPtr sourceRectangle = default);
+		new void DrawBitmap([In] ID2D1Bitmap bitmap, [In, Optional] PD2D_RECT_F? destinationRectangle, float opacity = 1.0f,
+			D2D1_BITMAP_INTERPOLATION_MODE interpolationMode = D2D1_BITMAP_INTERPOLATION_MODE.D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, [In] PD2D_RECT_F? sourceRectangle = default);
 
 		/// <summary>Draws the specified text using the format information provided by an IDWriteTextFormat object.</summary>
 		/// <param name="string">
@@ -3391,7 +3409,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-clear(constd2d1_color_f_) void Clear( const
 		// D2D1_COLOR_F &amp; clearColor );
 		[PreserveSig]
-		new void Clear([In, Optional] IntPtr clearColor);
+		new void Clear([In, Optional] StructPointer<D2D1_COLOR_F> clearColor);
 
 		/// <summary>Initiates drawing on this render target.</summary>
 		/// <returns>None</returns>
@@ -3632,7 +3650,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createbitmapfromwicbitmap(iwicbitmapsource_id2d1bitmap1)
 		// HRESULT CreateBitmapFromWicBitmap( IWICBitmapSource *wicBitmapSource, ID2D1Bitmap1 **bitmap );
-		ID2D1Bitmap1 CreateBitmap1FromWicBitmap(IWICBitmapSource wicBitmapSource, [In, Optional] IntPtr bitmapProperties);
+		ID2D1Bitmap1 CreateBitmap1FromWicBitmap(IWICBitmapSource wicBitmapSource, [In, Optional] StructPointer<D2D1_BITMAP_PROPERTIES> bitmapProperties);
 
 		/// <summary>Creates a color context.</summary>
 		/// <param name="space">
@@ -3769,7 +3787,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createbitmapfromdxgisurface(idxgisurface_constd2d1_bitmap_properties1__id2d1bitmap1)
 		// HRESULT CreateBitmapFromDxgiSurface( IDXGISurface *surface, const D2D1_BITMAP_PROPERTIES1 &amp; bitmapProperties, ID2D1Bitmap1
 		// **bitmap );
-		ID2D1Bitmap1 CreateBitmapFromDxgiSurface(IDXGISurface surface, [In, Optional] IntPtr bitmapProperties);
+		ID2D1Bitmap1 CreateBitmapFromDxgiSurface(IDXGISurface surface, [In, Optional] StructPointer<D2D1_BITMAP_PROPERTIES> bitmapProperties);
 
 		/// <summary>Creates an effect for the specified class ID.</summary>
 		/// <param name="effectId">
@@ -3934,7 +3952,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createimagebrush(id2d1image_constd2d1_image_brush_properties__constd2d1_brush_properties__id2d1imagebrush)
 		// HRESULT CreateImageBrush( ID2D1Image *image, const D2D1_IMAGE_BRUSH_PROPERTIES &amp; imageBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES &amp; brushProperties, ID2D1ImageBrush **imageBrush );
-		ID2D1ImageBrush CreateImageBrush([Optional] ID2D1Image? image, in D2D1_IMAGE_BRUSH_PROPERTIES imageBrushProperties, [In, Optional] IntPtr brushProperties);
+		ID2D1ImageBrush CreateImageBrush([Optional] ID2D1Image? image, in D2D1_IMAGE_BRUSH_PROPERTIES imageBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties);
 
 		/// <summary>Creates a bitmap brush, the input image is a Direct2D bitmap object.</summary>
 		/// <param name="bitmap">
@@ -3956,7 +3974,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-createbitmapbrush%28id2d1bitmap_constd2d1_bitmap_brush_properties1_constd2d1_brush_properties_id2d1bitmapbrush1%29
 		// HRESULT CreateBitmapBrush( ID2D1Bitmap *bitmap, const D2D1_BITMAP_BRUSH_PROPERTIES1 *bitmapBrushProperties, const
 		// D2D1_BRUSH_PROPERTIES *brushProperties, ID2D1BitmapBrush1 **bitmapBrush );
-		ID2D1BitmapBrush1 CreateBitmapBrush1([Optional] ID2D1Bitmap? bitmap, [In, Optional] IntPtr bitmapBrushProperties, [In, Optional] IntPtr brushProperties);
+		ID2D1BitmapBrush1 CreateBitmapBrush1([Optional] ID2D1Bitmap? bitmap, [In, Optional] StructPointer<D2D1_BITMAP_BRUSH_PROPERTIES> bitmapBrushProperties, [In, Optional] StructPointer<D2D1_BRUSH_PROPERTIES> brushProperties);
 
 		/// <summary>Creates a ID2D1CommandList object.</summary>
 		/// <returns>
@@ -4356,7 +4374,7 @@ public static partial class D2d1
 		// D2D1_POINT_2F baselineOrigin, const DWRITE_GLYPH_RUN *glyphRun, const DWRITE_GLYPH_RUN_DESCRIPTION *glyphRunDescription,
 		// ID2D1Brush *foregroundBrush, DWRITE_MEASURING_MODE measuringMode );
 		[PreserveSig]
-		void DrawGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun, [In, Optional] IntPtr glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
+		void DrawGlyphRun(D2D_POINT_2F baselineOrigin, in DWRITE_GLYPH_RUN glyphRun, [In, Optional] StructPointer<DWRITE_GLYPH_RUN_DESCRIPTION> glyphRunDescription, ID2D1Brush foregroundBrush, DWRITE_MEASURING_MODE measuringMode);
 
 		/// <summary>Draws an image to the device context.</summary>
 		/// <param name="image">
@@ -4410,7 +4428,7 @@ public static partial class D2d1
 		// void DrawImage( ID2D1Effect *effect, const D2D1_POINT_2F *targetOffset, const D2D1_RECT_F *imageRectangle,
 		// D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode );
 		[PreserveSig]
-		void DrawImage(ID2D1Image image, [In, Optional] IntPtr targetOffset, [In, Optional] IntPtr imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
+		void DrawImage(ID2D1Image image, [In, Optional] StructPointer<D2D1_POINT_2F> targetOffset, [In, Optional] PD2D_RECT_F? imageRectangle, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_COMPOSITE_MODE compositeMode);
 
 		/// <summary>Draw a metafile to the device context.</summary>
 		/// <param name="gdiMetafile">
@@ -4425,7 +4443,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1devicecontext-drawgdimetafile(id2d1gdimetafile_d2d1_point_2f)
 		// void DrawGdiMetafile( ID2D1GdiMetafile *gdiMetafile, D2D1_POINT_2F targetOffset );
 		[PreserveSig]
-		void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, [In, Optional] IntPtr targetOffset);
+		void DrawGdiMetafile(ID2D1GdiMetafile gdiMetafile, [In, Optional] StructPointer<D2D1_POINT_2F> targetOffset);
 
 		/// <summary>Draws a bitmap to the render target.</summary>
 		/// <param name="bitmap">
@@ -4472,7 +4490,7 @@ public static partial class D2d1
 		// void DrawBitmap( ID2D1Bitmap *bitmap, const D2D1_RECT_F &amp; destinationRectangle, FLOAT opacity, D2D1_INTERPOLATION_MODE
 		// interpolationMode, const D2D1_RECT_F *sourceRectangle, const D2D1_MATRIX_4X4_F *perspectiveTransform );
 		[PreserveSig]
-		void DrawBitmap(ID2D1Bitmap bitmap, [In, Optional] IntPtr destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, [In, Optional] IntPtr sourceRectangle, [In, Optional] IntPtr perspectiveTransform);
+		void DrawBitmap(ID2D1Bitmap bitmap, [In, Optional] PD2D_RECT_F? destinationRectangle, float opacity, D2D1_INTERPOLATION_MODE interpolationMode, [In, Optional] PD2D_RECT_F? sourceRectangle, [In, Optional] StructPointer<D2D_MATRIX_4X4_F> perspectiveTransform);
 
 		/// <summary>Push a layer onto the clip and layer stack of the device context.</summary>
 		/// <param name="layerParameters">
@@ -5320,7 +5338,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1factory-createdrawingstateblock%28constd2d1_drawing_state_description_idwriterenderingparams_id2d1drawingstateblock%29
 		// HRESULT CreateDrawingStateBlock( const D2D1_DRAWING_STATE_DESCRIPTION *drawingStateDescription, IDWriteRenderingParams
 		// *textRenderingParams, ID2D1DrawingStateBlock **drawingStateBlock );
-		new ID2D1DrawingStateBlock CreateDrawingStateBlock([In, Optional] IntPtr drawingStateDescription, [In, Optional] IDWriteRenderingParams? textRenderingParams);
+		new ID2D1DrawingStateBlock CreateDrawingStateBlock([In, Optional] StructPointer<D2D1_DRAWING_STATE_DESCRIPTION> drawingStateDescription, [In, Optional] IDWriteRenderingParams? textRenderingParams);
 
 		/// <summary>Creates a render target that renders to a Microsoft Windows Imaging Component (WIC) bitmap.</summary>
 		/// <param name="target">
@@ -6273,7 +6291,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getbounds(constd2d1_matrix_3x2_f_d2d1_rect_f)
 		// HRESULT GetBounds( const D2D1_MATRIX_3X2_F *worldTransform, D2D1_RECT_F *bounds );
-		new D2D_RECT_F GetBounds([In, Optional] IntPtr worldTransform);
+		new D2D_RECT_F GetBounds([In, Optional] PD2D_RECT_F? worldTransform);
 
 		/// <summary>
 		/// Gets the bounds of the geometry after it has been widened by the specified stroke width and style and transformed by the
@@ -6306,7 +6324,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-getwidenedbounds%28float_id2d1strokestyle_constd2d1_matrix_3x2_f_float_d2d1_rect_f%29
 		// HRESULT GetWidenedBounds( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, D2D1_RECT_F *bounds );
-		new D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
+		new D2D_RECT_F GetWidenedBounds(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
 
 		/// <summary>
 		/// Determines whether the geometry's stroke contains the specified point given the specified stroke thickness, style, and transform.
@@ -6345,7 +6363,7 @@ public static partial class D2d1
 		// HRESULT StrokeContainsPoint( D2D1_POINT_2F point, FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F
 		// *worldTransform, FLOAT flatteningTolerance, BOOL *contains );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
+		new bool StrokeContainsPoint(D2D_POINT_2F point, float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
 
 		/// <summary>
 		/// Indicates whether the area filled by the geometry would contain the specified point given the specified flattening tolerance.
@@ -6376,7 +6394,7 @@ public static partial class D2d1
 		// HRESULT FillContainsPoint( D2D1_POINT_2F point, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, BOOL
 		// *contains );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool FillContainsPoint(D2D_POINT_2F point, [In, Optional] IntPtr worldTransform, float flatteningTolerance);
+		new bool FillContainsPoint(D2D_POINT_2F point, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
 
 		/// <summary>
 		/// Describes the intersection between this geometry and the specified geometry. The comparison is performed by using the specified
@@ -6416,7 +6434,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-comparewithgeometry%28id2d1geometry_constd2d1_matrix_3x2_f_float_d2d1_geometry_relation%29
 		// HRESULT CompareWithGeometry( ID2D1Geometry *inputGeometry, const D2D1_MATRIX_3X2_F *inputGeometryTransform, FLOAT
 		// flatteningTolerance, D2D1_GEOMETRY_RELATION *relation );
-		new D2D1_GEOMETRY_RELATION CompareWithGeometry([In] ID2D1Geometry inputGeometry, [In, Optional] IntPtr inputGeometryTransform, float flatteningTolerance);
+		new D2D1_GEOMETRY_RELATION CompareWithGeometry([In] ID2D1Geometry inputGeometry, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> inputGeometryTransform, float flatteningTolerance);
 
 		/// <summary>
 		/// Creates a simplified version of the geometry that contains only lines and (optionally) cubic Bezier curves and writes the result
@@ -6449,7 +6467,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-simplify%28d2d1_geometry_simplification_option_constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink%29
 		// HRESULT Simplify( D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void Simplify(D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, [In, Optional] IntPtr worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void Simplify(D2D1_GEOMETRY_SIMPLIFICATION_OPTION simplificationOption, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
 
 		/// <summary>
 		/// Creates a set of clockwise-wound triangles that cover the geometry after it has been transformed using the specified matrix and
@@ -6474,7 +6492,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/ja-jp/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-tessellate%28constd2d1_matrix_3x2_f_float_id2d1tessellationsink%29
 		// HRESULT Tessellate( const D2D1_MATRIX_3X2_F *worldTransform, FLOAT flatteningTolerance, ID2D1TessellationSink
 		// *tessellationSink );
-		new void Tessellate([In, Optional] IntPtr worldTransform, float flatteningTolerance, [In] ID2D1TessellationSink tessellationSink);
+		new void Tessellate([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, [In] ID2D1TessellationSink tessellationSink);
 
 		/// <summary>Combines this geometry with the specified geometry and stores the result in an ID2D1SimplifiedGeometrySink.</summary>
 		/// <param name="inputGeometry">
@@ -6504,7 +6522,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-combinewithgeometry(id2d1geometry_d2d1_combine_mode_constd2d1_matrix_3x2_f__float_id2d1simplifiedgeometrysink)
 		// HRESULT CombineWithGeometry( ID2D1Geometry *inputGeometry, D2D1_COMBINE_MODE combineMode, const D2D1_MATRIX_3X2_F &amp;
 		// inputGeometryTransform, FLOAT flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void CombineWithGeometry([In] ID2D1Geometry inputGeometry, D2D1_COMBINE_MODE combineMode, [In, Optional] IntPtr inputGeometryTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void CombineWithGeometry([In] ID2D1Geometry inputGeometry, D2D1_COMBINE_MODE combineMode, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> inputGeometryTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
 
 		/// <summary>Computes the outline of the geometry and writes the result to an ID2D1SimplifiedGeometrySink.</summary>
 		/// <param name="worldTransform">
@@ -6550,7 +6568,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-outline%28constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink%29
 		// HRESULT Outline( const D2D1_MATRIX_3X2_F *worldTransform, FLOAT flatteningTolerance, ID2D1SimplifiedGeometrySink
 		// *geometrySink );
-		new void Outline([In, Optional] IntPtr worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void Outline([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
 
 		/// <summary>
 		/// Computes the area of the geometry after it has been transformed by the specified matrix and flattened using the specified tolerance.
@@ -6576,7 +6594,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computearea(constd2d1_matrix_3x2_f__float_float)
 		// HRESULT ComputeArea( const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, FLOAT *area );
-		new float ComputeArea([In, Optional] IntPtr worldTransform, float flatteningTolerance);
+		new float ComputeArea([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
 
 		/// <summary>Calculates the length of the geometry as though each segment were unrolled into a line.</summary>
 		/// <param name="worldTransform">
@@ -6600,7 +6618,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computelength(constd2d1_matrix_3x2_f__float_float)
 		// HRESULT ComputeLength( const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, FLOAT *length );
-		new float ComputeLength([In, Optional] IntPtr worldTransform, float flatteningTolerance);
+		new float ComputeLength([In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance);
 
 		/// <summary>
 		/// Calculates the point and tangent vector at the specified distance along the geometry after it has been transformed by the
@@ -6642,7 +6660,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-computepointatlength(float_constd2d1_matrix_3x2_f__float_d2d1_point_2f_d2d1_point_2f)
 		// HRESULT ComputePointAtLength( FLOAT length, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance,
 		// D2D1_POINT_2F *point, D2D1_POINT_2F *unitTangentVector );
-		new void ComputePointAtLength(float length, [In, Optional] IntPtr worldTransform, float flatteningTolerance, out D2D_POINT_2F point, out D2D_POINT_2F unitTangentVector);
+		new void ComputePointAtLength(float length, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, out D2D_POINT_2F point, out D2D_POINT_2F unitTangentVector);
 
 		/// <summary>
 		/// Widens the geometry by the specified stroke and writes the result to an ID2D1SimplifiedGeometrySink after it has been
@@ -6675,7 +6693,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-widen(float_id2d1strokestyle_constd2d1_matrix_3x2_f__float_id2d1simplifiedgeometrysink)
 		// HRESULT Widen( FLOAT strokeWidth, ID2D1StrokeStyle *strokeStyle, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT
 		// flatteningTolerance, ID2D1SimplifiedGeometrySink *geometrySink );
-		new void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] IntPtr worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+		new void Widen(float strokeWidth, [In, Optional] ID2D1StrokeStyle? strokeStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform, float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
 
 		/// <summary>Retrieves the geometry sink that is used to populate the path geometry with figures and segments.</summary>
 		/// <returns>
@@ -7761,31 +7779,259 @@ public static partial class D2d1
 	[PInvokeData("d2d1_1.h", MSDNShortId = "0E305151-63EA-4865-B9C4-5F685D17FD5A")]
 	public static extern float D2D1Vec3Length(float x, float y, float z);
 
+	/// <summary>Gets the property name that corresponds to the given index.</summary>
+	/// <param name="props">The <see cref="ID2D1Properties"/> instance.</param>
+	/// <param name="index">The index of the property for which the name is being returned.</param>
+	/// <returns>When this method returns, contains the name being retrieved.</returns>
+	/// <remarks>This method returns an empty string if index is invalid.</remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-getpropertyname(uint32_pwstr_uint32) HRESULT
+	// GetPropertyName( UINT32 index, PWSTR name, UINT32 nameCount );
+	public static string GetPropertyName(this ID2D1Properties props, uint index)
+	{
+		var len = props.GetPropertyNameLength(index);
+		if (len == 0)
+			return string.Empty;
+		StringBuilder sb = new((int)len + 1);
+		props.GetPropertyName(index, sb, (uint)sb.Capacity);
+		return sb.ToString();
+	}
+
+	/// <summary>Gets the value of the specified property by index.</summary>
+	/// <typeparam name="T">The type of the data to get.</typeparam>
+	/// <param name="props">The <see cref="ID2D1Properties"/> instance.</param>
+	/// <param name="index">The index of the property from which the data is to be obtained.</param>
+	/// <param name="type">TBD</param>
+	/// <returns>When this method returns, contains a pointer to the data requested.</returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-getvalue(uint32_d2d1_property_type_byte_uint32)
+	// HRESULT GetValue( UINT32 index, D2D1_PROPERTY_TYPE type, BYTE *data, UINT32 dataSize );
+	public static T? GetValue<T>(this ID2D1Properties props, uint index, D2D1_PROPERTY_TYPE type = D2D1_PROPERTY_TYPE.D2D1_PROPERTY_TYPE_UNKNOWN)
+	{
+		using SafeCoTaskMemHandle mem = new(props.GetValueSize(index));
+		if (mem.Size == 0)
+			return default;
+		props.GetValue(index, type, mem, (uint)mem.Size);
+		return mem.ToType<T>(CharSet.Unicode);
+	}
+
+	/// <summary>Gets the property value by name.</summary>
+	/// <typeparam name="T">The type of the data to get.</typeparam>
+	/// <param name="props">The <see cref="ID2D1Properties"/> instance.</param>
+	/// <param name="name">The property name to get.</param>
+	/// <param name="type">TBD</param>
+	/// <returns>When this method returns, contains the buffer with the data value.</returns>
+	/// <remarks>
+	/// <para>If name does not exist, no information is retrieved.</para>
+	/// <para>Any error not in the standard set returned by a property implementation will be mapped into the standard error range.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-getvaluebyname(pcwstr_d2d1_property_type_byte_uint32)
+	// HRESULT GetValueByName( PCWSTR name, D2D1_PROPERTY_TYPE type, BYTE *data, UINT32 dataSize );
+	public static T? GetValueByName<T>(this ID2D1Properties props, string name, D2D1_PROPERTY_TYPE type = D2D1_PROPERTY_TYPE.D2D1_PROPERTY_TYPE_UNKNOWN) =>
+		GetValue<T>(props, props.GetPropertyIndex(name), type);
+
+	/// <summary>
+	/// Sets a bitmap as an effect input, while inserting a DPI compensation effect to preserve visual appearance as the device context's
+	/// DPI changes.
+	/// </summary>
+	/// <param name="deviceContext">
+	/// <para>Type: <b><c>ID2D1DeviceContext</c>*</b></para>
+	/// <para>The device context that is the creator of the effect.</para>
+	/// </param>
+	/// <param name="effect">
+	/// <para>Type: <b><c>ID2D1Effect</c>*</b></para>
+	/// <para>The function sets the input of this effect.</para>
+	/// </param>
+	/// <param name="inputIndex">
+	/// <para>Type: <b>UINT32</b></para>
+	/// <para>The index of the input to be set.</para>
+	/// </param>
+	/// <param name="inputBitmap">
+	/// <para>Type: <b><c>ID2D1Bitmap</c>*</b></para>
+	/// <para>The input bitmap.</para>
+	/// </param>
+	/// <param name="interpolationMode">
+	/// <para>Type: <b><c>D2D1_INTERPOLATION_MODE</c></b></para>
+	/// <para>The interpolation mode for the DPI compensation effect.</para>
+	/// </param>
+	/// <param name="borderMode">
+	/// <para>Type: <b><c>D2D1_BORDER_MODE</c></b></para>
+	/// <para>The border mode for the DPI compensation effect.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b>HRESULT</b></para>
+	/// <para>If this function succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
+	/// </returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-setdpicompensatedeffectinput HRESULT
+	// SetDpiCompensatedEffectInput( [in] ID2D1DeviceContext *deviceContext, [in] ID2D1Effect *effect, UINT32 inputIndex, [in, optional]
+	// ID2D1Bitmap *inputBitmap, D2D1_INTERPOLATION_MODE interpolationMode, D2D1_BORDER_MODE borderMode );
+	[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.SetDpiCompensatedEffectInput")]
+	public static HRESULT SetDpiCompensatedEffectInput([In] ID2D1DeviceContext deviceContext, [In] ID2D1Effect effect,
+		uint inputIndex, [In, Optional] ID2D1Bitmap? inputBitmap,
+		D2D1_INTERPOLATION_MODE interpolationMode = D2D1_INTERPOLATION_MODE.D2D1_INTERPOLATION_MODE_LINEAR,
+		D2D1_BORDER_MODE borderMode = D2D1_BORDER_MODE.D2D1_BORDER_MODE_HARD)
+	{
+		if (inputBitmap is null)
+		{
+			effect.SetInput(inputIndex, default);
+			return HRESULT.S_OK;
+		}
+
+		try
+		{
+			ID2D1Effect dpiCompensationEffect = deviceContext.CreateEffect(CLSID_D2D1DpiCompensation)!;
+			dpiCompensationEffect.SetInput(0, inputBitmap);
+
+			D2D1_POINT_2F bitmapDpi = new();
+			inputBitmap.GetDpi(out bitmapDpi.x, out bitmapDpi.y);
+			dpiCompensationEffect.SetValue(D2D1_DPICOMPENSATION_PROP.D2D1_DPICOMPENSATION_PROP_INPUT_DPI, bitmapDpi);
+
+			dpiCompensationEffect.SetValue(D2D1_DPICOMPENSATION_PROP.D2D1_DPICOMPENSATION_PROP_INTERPOLATION_MODE, interpolationMode);
+
+			dpiCompensationEffect.SetValue(D2D1_DPICOMPENSATION_PROP.D2D1_DPICOMPENSATION_PROP_BORDER_MODE, borderMode);
+
+			effect.SetInputEffect(inputIndex, dpiCompensationEffect);
+
+			Marshal.ReleaseComObject(dpiCompensationEffect);
+
+			return HRESULT.S_OK;
+		}
+		catch (Exception ex)
+		{
+			return ex.HResult;
+		}
+	}
+
+	/// <summary>
+	/// <para>Sets the given input effect by index.</para>
+	/// <para>This method gets the output of the given effect and then passes the output image to the <c>SetInput</c> method.</para>
+	/// </summary>
+	/// <param name="effect">The <see cref="ID2D1Effect"/> instance.</param>
+	/// <param name="index">The index of the input to set.</param>
+	/// <param name="inputEffect">The input effect to set.</param>
+	/// <param name="invalidate">Whether to invalidate the graph at the location of the effect input</param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1effect-setinputeffect void SetInputEffect( UINT32 index,
+	// [in, optional] ID2D1Effect *inputEffect, BOOL invalidate );
+	[PInvokeData("d2d1_1.h", MSDNShortId = "NF:d2d1_1.ID2D1Effect.SetInputEffect")]
+	public static void SetInputEffect(this ID2D1Effect effect, uint index, ID2D1Effect? inputEffect = null, bool invalidate = true)
+	{
+		ID2D1Image? output = null;
+		inputEffect?.GetOutput(out output);
+		effect.SetInput(index, output, invalidate);
+		if (output is not null)
+			Marshal.ReleaseComObject(output);
+	}
+
+	/// <summary>Sets the corresponding property by index.</summary>
+	/// <typeparam name="T">The type of the data to set.</typeparam>
+	/// <typeparam name="TE">The index type.</typeparam>
+	/// <param name="props">The <see cref="ID2D1Properties"/> instance.</param>
+	/// <param name="index">The index of the property to set.</param>
+	/// <param name="type">TBD</param>
+	/// <param name="data">The data to set.</param>
+	/// <remarks>
+	/// <para>If the property does not exist, the request is ignored and <c>D2DERR_INVALID_PROPERTY</c> is returned.</para>
+	/// <para>Any error not in the standard set returned by a property implementation will be mapped into the standard error range.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-setvalue(uint32_d2d1_property_type_constbyte_uint32)
+	// HRESULT SetValue( UINT32 index, D2D1_PROPERTY_TYPE type, const BYTE *data, UINT32 dataSize );
+	public static void SetValue<T, TE>(this ID2D1Properties props, TE index, D2D1_PROPERTY_TYPE type, in T data) where T : struct where TE : struct, IConvertible
+	{
+		using var mem = SafeCoTaskMemHandle.CreateFromStructure(data);
+		props.SetValue(index.ToUInt32(null), type, mem, (uint)mem.Size);
+	}
+
+	/// <summary>Sets the corresponding property by index.</summary>
+	/// <typeparam name="T">The type of the data to set.</typeparam>
+	/// <typeparam name="TE">The index type.</typeparam>
+	/// <param name="props">The <see cref="ID2D1Properties"/> instance.</param>
+	/// <param name="index">The index of the property to set.</param>
+	/// <param name="data">The data to set.</param>
+	/// <remarks>
+	/// <para>If the property does not exist, the request is ignored and <c>D2DERR_INVALID_PROPERTY</c> is returned.</para>
+	/// <para>Any error not in the standard set returned by a property implementation will be mapped into the standard error range.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-setvalue(uint32_d2d1_property_type_constbyte_uint32)
+	// HRESULT SetValue( UINT32 index, D2D1_PROPERTY_TYPE type, const BYTE *data, UINT32 dataSize );
+	public static void SetValue<T, TE>(this ID2D1Properties props, TE index, in T data) where T : struct where TE : struct, IConvertible =>
+		SetValue(props, index, D2D1_PROPERTY_TYPE.D2D1_PROPERTY_TYPE_UNKNOWN, data);
+
+	/// <summary>Sets the corresponding property by index.</summary>
+	/// <param name="props">The <see cref="ID2D1Properties"/> instance.</param>
+	/// <param name="index">The index of the property to set.</param>
+	/// <param name="data">The data to set.</param>
+	/// <remarks>
+	/// <para>If the property does not exist, the request is ignored and <c>D2DERR_INVALID_PROPERTY</c> is returned.</para>
+	/// <para>Any error not in the standard set returned by a property implementation will be mapped into the standard error range.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-setvalue(uint32_d2d1_property_type_constbyte_uint32)
+	// HRESULT SetValue( UINT32 index, D2D1_PROPERTY_TYPE type, const BYTE *data, UINT32 dataSize );
+	public static void SetValue(this ID2D1Properties props, uint index, string data)
+	{
+		using SafeLPWSTR mem = new(data);
+		props.SetValue(index, D2D1_PROPERTY_TYPE.D2D1_PROPERTY_TYPE_STRING, mem, (uint)mem.Size);
+	}
+
+	/// <summary>Sets the named property to the given value.</summary>
+	/// <typeparam name="T">The type of the data to set.</typeparam>
+	/// <param name="props">The <see cref="ID2D1Properties"/> instance.</param>
+	/// <param name="name">The name of the property to set.</param>
+	/// <param name="type">TBD</param>
+	/// <param name="data">The data to set.</param>
+	/// <remarks>
+	/// <para>If the property does not exist, the request is ignored and the method returns <c>D2DERR_INVALID_PROPERTY</c>.</para>
+	/// <para>Any error not in the standard set returned by a property implementation will be mapped into the standard error range.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-setvaluebyname%28pcwstr_d2d1_property_type_constbyte_uint32%29
+	// HRESULT SetValueByName( PCWSTR name, D2D1_PROPERTY_TYPE type, const BYTE *data, UINT32 dataSize );
+	public static void SetValueByName<T>(this ID2D1Properties props, string name, D2D1_PROPERTY_TYPE type, in T data) where T : struct
+	{
+		using var mem = SafeCoTaskMemHandle.CreateFromStructure(data);
+		props.SetValueByName(name, type, mem, (uint)mem.Size);
+	}
+
+	/// <summary>Sets the named property to the given value.</summary>
+	/// <param name="props">The <see cref="ID2D1Properties"/> instance.</param>
+	/// <param name="name">The name of the property to set.</param>
+	/// <param name="type">TBD</param>
+	/// <param name="data">The data to set.</param>
+	/// <remarks>
+	/// <para>If the property does not exist, the request is ignored and the method returns <c>D2DERR_INVALID_PROPERTY</c>.</para>
+	/// <para>Any error not in the standard set returned by a property implementation will be mapped into the standard error range.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-setvaluebyname%28pcwstr_d2d1_property_type_constbyte_uint32%29
+	// HRESULT SetValueByName( PCWSTR name, D2D1_PROPERTY_TYPE type, const BYTE *data, UINT32 dataSize );
+	public static void SetValueByName(this ID2D1Properties props, string name, D2D1_PROPERTY_TYPE type, string data)
+	{
+		using SafeLPWSTR mem = new(data);
+		props.SetValueByName(name, type, mem, (uint)mem.Size);
+	}
+
 	/// <summary>Describes the extend modes and the interpolation mode of an ID2D1BitmapBrush.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/ns-d2d1_1-d2d1_bitmap_brush_properties1 typedef struct
 	// D2D1_BITMAP_BRUSH_PROPERTIES1 { D2D1_EXTEND_MODE extendModeX; D2D1_EXTEND_MODE extendModeY; D2D1_INTERPOLATION_MODE
 	// interpolationMode; } D2D1_BITMAP_BRUSH_PROPERTIES1;
 	[PInvokeData("d2d1_1.h", MSDNShortId = "NS:d2d1_1.D2D1_BITMAP_BRUSH_PROPERTIES1")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_BITMAP_BRUSH_PROPERTIES1
+	public struct D2D1_BITMAP_BRUSH_PROPERTIES1(D2D1_EXTEND_MODE extendModeX = D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP,
+		D2D1_EXTEND_MODE extendModeY = D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP, D2D1_INTERPOLATION_MODE interpolationMode = D2D1_INTERPOLATION_MODE.D2D1_INTERPOLATION_MODE_LINEAR)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_EXTEND_MODE</c></para>
 		/// <para>A value that describes how the brush horizontally tiles those areas that extend past its bitmap.</para>
 		/// </summary>
-		public D2D1_EXTEND_MODE extendModeX;
+		public D2D1_EXTEND_MODE extendModeX = extendModeX;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_EXTEND_MODE</c></para>
 		/// <para>A value that describes how the brush vertically tiles those areas that extend past its bitmap.</para>
 		/// </summary>
-		public D2D1_EXTEND_MODE extendModeY;
+		public D2D1_EXTEND_MODE extendModeY = extendModeY;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_INTERPOLATION_MODE</c></para>
 		/// <para>A value that specifies how the bitmap is interpolated when it is scaled or rotated.</para>
 		/// </summary>
-		public D2D1_INTERPOLATION_MODE interpolationMode;
+		public D2D1_INTERPOLATION_MODE interpolationMode = interpolationMode;
 	}
 
 	/// <summary>This structure allows a ID2D1Bitmap1 to be created with bitmap options and color context information available.</summary>
@@ -7797,37 +8043,38 @@ public static partial class D2d1
 	// D2D1_PIXEL_FORMAT pixelFormat; FLOAT dpiX; FLOAT dpiY; D2D1_BITMAP_OPTIONS bitmapOptions; ID2D1ColorContext *colorContext; } D2D1_BITMAP_PROPERTIES1;
 	[PInvokeData("d2d1_1.h", MSDNShortId = "c9371ce3-f6fc-4fe6-ada6-0aa64a8f29a2")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_BITMAP_PROPERTIES1
+	public struct D2D1_BITMAP_PROPERTIES1(D2D1_BITMAP_OPTIONS bitmapOptions = D2D1_BITMAP_OPTIONS.D2D1_BITMAP_OPTIONS_NONE,
+		in D2D1_PIXEL_FORMAT pixelFormat = default, float dpiX = 96f, float dpiY = 96f, ID2D1ColorContext? colorContext = null)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_PIXEL_FORMAT</c></para>
 		/// <para>The DXGI format and alpha mode to create the bitmap with.</para>
 		/// </summary>
-		public D2D1_PIXEL_FORMAT pixelFormat;
+		public D2D1_PIXEL_FORMAT pixelFormat = pixelFormat;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>The bitmap dpi in the x direction.</para>
 		/// </summary>
-		public float dpiX;
+		public float dpiX = dpiX;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>The bitmap dpi in the y direction.</para>
 		/// </summary>
-		public float dpiY;
+		public float dpiY = dpiY;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_BITMAP_OPTIONS</c></para>
 		/// <para>The special creation options of the bitmap.</para>
 		/// </summary>
-		public D2D1_BITMAP_OPTIONS bitmapOptions;
+		public D2D1_BITMAP_OPTIONS bitmapOptions = bitmapOptions;
 
 		/// <summary>
 		/// <para>Type: <c>ID2D1ColorContext*</c></para>
 		/// <para>The optionally specified color context information.</para>
 		/// </summary>
-		public IntPtr colorContext;
+		public IUnknownPointer<ID2D1ColorContext> colorContext = new(colorContext);
 	}
 
 	/// <summary>Specifies the options with which the Direct2D device, factory, and device context are created.</summary>
@@ -7854,49 +8101,59 @@ public static partial class D2d1
 	// D2D1_TAG tag2; D2D1_MATRIX_3X2_F transform; D2D1_PRIMITIVE_BLEND primitiveBlend; D2D1_UNIT_MODE unitMode; } D2D1_DRAWING_STATE_DESCRIPTION1;
 	[PInvokeData("d2d1_1.h", MSDNShortId = "NS:d2d1_1.D2D1_DRAWING_STATE_DESCRIPTION1")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_DRAWING_STATE_DESCRIPTION1
+	public struct D2D1_DRAWING_STATE_DESCRIPTION1(D2D1_ANTIALIAS_MODE antialiasMode = D2D1_ANTIALIAS_MODE.D2D1_ANTIALIAS_MODE_PER_PRIMITIVE,
+		D2D1_TEXT_ANTIALIAS_MODE textAntialiasMode = D2D1_TEXT_ANTIALIAS_MODE.D2D1_TEXT_ANTIALIAS_MODE_DEFAULT, D2D1_TAG tag1 = 0, D2D1_TAG tag2 = 0,
+		in D2D_MATRIX_3X2_F? transform = null, D2D1_PRIMITIVE_BLEND primitiveBlend = D2D1_PRIMITIVE_BLEND.D2D1_PRIMITIVE_BLEND_SOURCE_OVER,
+		D2D1_UNIT_MODE unitMode = D2D1_UNIT_MODE.D2D1_UNIT_MODE_DIPS)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_ANTIALIAS_MODE</c></para>
 		/// <para>The antialiasing mode for subsequent nontext drawing operations.</para>
 		/// </summary>
-		public D2D1_ANTIALIAS_MODE antialiasMode;
+		public D2D1_ANTIALIAS_MODE antialiasMode = antialiasMode;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_TEXT_ANTIALIAS_MODE</c></para>
 		/// <para>The antialiasing mode for subsequent text and glyph drawing operations.</para>
 		/// </summary>
-		public D2D1_TEXT_ANTIALIAS_MODE textAntialiasMode;
+		public D2D1_TEXT_ANTIALIAS_MODE textAntialiasMode = textAntialiasMode;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_TAG</c></para>
 		/// <para>A label for subsequent drawing operations.</para>
 		/// </summary>
-		public D2D1_TAG tag1;
+		public D2D1_TAG tag1 = tag1;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_TAG</c></para>
 		/// <para>A label for subsequent drawing operations.</para>
 		/// </summary>
-		public D2D1_TAG tag2;
+		public D2D1_TAG tag2 = tag2;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_MATRIX_3X2_F</c></para>
 		/// <para>The transformation to apply to subsequent drawing operations.</para>
 		/// </summary>
-		public D2D_MATRIX_3X2_F transform;
+		public D2D_MATRIX_3X2_F transform = transform.GetValueOrDefault(D2D_MATRIX_3X2_F.Identity());
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_PRIMITIVE_BLEND</c></para>
 		/// <para>The blend mode for the device context to apply to subsequent drawing operations.</para>
 		/// </summary>
-		public D2D1_PRIMITIVE_BLEND primitiveBlend;
+		public D2D1_PRIMITIVE_BLEND primitiveBlend = primitiveBlend;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_UNIT_MODE</c></para>
 		/// <para>D2D1_UNIT_MODE</para>
 		/// </summary>
-		public D2D1_UNIT_MODE unitMode;
+		public D2D1_UNIT_MODE unitMode = unitMode;
+
+		/// <summary>Initializes a new instance of the <see cref="D2D1_DRAWING_STATE_DESCRIPTION1"/> struct.</summary>
+		/// <param name="desc">The D2D1_DRAWING_STATE_DESCRIPTION value.</param>
+		/// <param name="primitiveBlend">The primitive blend.</param>
+		/// <param name="unitMode">The unit mode.</param>
+		public D2D1_DRAWING_STATE_DESCRIPTION1(in D2D1_DRAWING_STATE_DESCRIPTION desc, D2D1_PRIMITIVE_BLEND primitiveBlend = D2D1_PRIMITIVE_BLEND.D2D1_PRIMITIVE_BLEND_SOURCE_OVER,
+			D2D1_UNIT_MODE unitMode = D2D1_UNIT_MODE.D2D1_UNIT_MODE_DIPS) : this(desc.antialiasMode, desc.textAntialiasMode, desc.tag1, desc.tag2, desc.transform, primitiveBlend, unitMode) { }
 	}
 
 	/// <summary>Describes features of an effect.</summary>
@@ -7928,31 +8185,32 @@ public static partial class D2d1
 	// D2D1_INTERPOLATION_MODE interpolationMode; } D2D1_IMAGE_BRUSH_PROPERTIES;
 	[PInvokeData("d2d1_1.h", MSDNShortId = "c7bcae4d-cdef-4bfc-aa5a-68b85497a7f6")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_IMAGE_BRUSH_PROPERTIES
+	public struct D2D1_IMAGE_BRUSH_PROPERTIES(in D2D_RECT_F sourceRectangle, D2D1_EXTEND_MODE extendModeX = D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP,
+		D2D1_EXTEND_MODE extendModeY = D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP, D2D1_INTERPOLATION_MODE interpolationMode = D2D1_INTERPOLATION_MODE.D2D1_INTERPOLATION_MODE_LINEAR)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_RECT_F</c></para>
 		/// <para>The source rectangle in the image space from which the image will be tiled or interpolated.</para>
 		/// </summary>
-		public D2D_RECT_F sourceRectangle;
+		public D2D_RECT_F sourceRectangle = sourceRectangle;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_EXTEND_MODE</c></para>
 		/// <para>The extend mode in the image x-axis.</para>
 		/// </summary>
-		public D2D1_EXTEND_MODE extendModeX;
+		public D2D1_EXTEND_MODE extendModeX = extendModeX;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_EXTEND_MODE</c></para>
 		/// <para>The extend mode in the image y-axis.</para>
 		/// </summary>
-		public D2D1_EXTEND_MODE extendModeY;
+		public D2D1_EXTEND_MODE extendModeY = extendModeY;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_INTERPOLATION_MODE</c></para>
 		/// <para>The interpolation mode to use when scaling the image brush.</para>
 		/// </summary>
-		public D2D1_INTERPOLATION_MODE interpolationMode;
+		public D2D1_INTERPOLATION_MODE interpolationMode = interpolationMode;
 	}
 
 	/// <summary>Contains the content bounds, mask information, opacity settings, and other options for a layer resource.</summary>
@@ -7961,37 +8219,39 @@ public static partial class D2d1
 	// FLOAT opacity; ID2D1Brush *opacityBrush; D2D1_LAYER_OPTIONS1 layerOptions; } D2D1_LAYER_PARAMETERS1;
 	[PInvokeData("d2d1_1.h", MSDNShortId = "D7CC93F8-D871-4DFC-84A3-CA60EB52FF0A")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_LAYER_PARAMETERS1
+	public struct D2D1_LAYER_PARAMETERS1(in D2D_RECT_F? contentBounds = null, ID2D1Geometry? geometricMask = null,
+		D2D1_ANTIALIAS_MODE maskAntialiasMode = D2D1_ANTIALIAS_MODE.D2D1_ANTIALIAS_MODE_PER_PRIMITIVE, in D2D_MATRIX_3X2_F? maskTransform = null,
+		float opacity = 1f, ID2D1Brush? opacityBrush = null, D2D1_LAYER_OPTIONS1 layerOptions = D2D1_LAYER_OPTIONS1.D2D1_LAYER_OPTIONS1_NONE)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_RECT_F</c></para>
 		/// <para>The content bounds of the layer. Content outside these bounds is not guaranteed to render.</para>
 		/// </summary>
-		public D2D_RECT_F contentBounds;
+		public D2D_RECT_F contentBounds = contentBounds.GetValueOrDefault(D2D_RECT_F.Infinite);
 
 		/// <summary>
 		/// <para>Type: <c>ID2D1Geometry*</c></para>
 		/// <para>The geometric mask specifies the area of the layer that is composited into the render target.</para>
 		/// </summary>
-		public IntPtr geometricMask;
+		public IUnknownPointer<ID2D1Geometry> geometricMask = new(geometricMask);
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_ANTIALIAS_MODE</c></para>
 		/// <para>A value that specifies the antialiasing mode for the geometricMask.</para>
 		/// </summary>
-		public D2D1_ANTIALIAS_MODE maskAntialiasMode;
+		public D2D1_ANTIALIAS_MODE maskAntialiasMode = maskAntialiasMode;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_MATRIX_3X2_F</c></para>
 		/// <para>A value that specifies the transform that is applied to the geometric mask when composing the layer.</para>
 		/// </summary>
-		public D2D_MATRIX_3X2_F maskTransform;
+		public D2D_MATRIX_3X2_F maskTransform = maskTransform.GetValueOrDefault(D2D_MATRIX_3X2_F.Identity());
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>An opacity value that is applied uniformly to all resources in the layer when compositing to the target.</para>
 		/// </summary>
-		public float opacity;
+		public float opacity = opacity;
 
 		/// <summary>
 		/// <para>Type: <c>ID2D1Brush*</c></para>
@@ -8000,13 +8260,13 @@ public static partial class D2d1
 		/// brush pixel is multiplied against the corresponding layer pixel.
 		/// </para>
 		/// </summary>
-		public IntPtr opacityBrush;
+		public IUnknownPointer<ID2D1Brush> opacityBrush = new(opacityBrush);
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_LAYER_OPTIONS1</c></para>
 		/// <para>Additional options for the layer creation.</para>
 		/// </summary>
-		public D2D1_LAYER_OPTIONS1 layerOptions;
+		public D2D1_LAYER_OPTIONS1 layerOptions = layerOptions;
 	}
 
 	/// <summary>Describes mapped memory from the ID2D1Bitmap1::Map API.</summary>
@@ -8050,29 +8310,31 @@ public static partial class D2d1
 	}
 
 	/// <summary>The creation properties for a ID2D1PrintControl object.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="D2D1_PRINT_CONTROL_PROPERTIES"/> struct.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/ns-d2d1_1-d2d1_print_control_properties typedef struct
 	// D2D1_PRINT_CONTROL_PROPERTIES { D2D1_PRINT_FONT_SUBSET_MODE fontSubset; FLOAT rasterDPI; D2D1_COLOR_SPACE colorSpace; } D2D1_PRINT_CONTROL_PROPERTIES;
 	[PInvokeData("d2d1_1.h", MSDNShortId = "5A4D4DDC-4161-44A2-9EB6-E4C14696B810")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_PRINT_CONTROL_PROPERTIES
+	public struct D2D1_PRINT_CONTROL_PROPERTIES(D2D1_PRINT_FONT_SUBSET_MODE fontSubset = D2D1_PRINT_FONT_SUBSET_MODE.D2D1_PRINT_FONT_SUBSET_MODE_DEFAULT,
+		float rasterDPI = 150f, D2D1_COLOR_SPACE colorSpace = D2D1_COLOR_SPACE.D2D1_COLOR_SPACE_SRGB)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_PRINT_FONT_SUBSET_MODE</c></para>
 		/// <para>The mode to use for subsetting fonts for printing, defaults to D2D1_PRINT_FONT_SUBSET_MODE_DEFAULT.</para>
 		/// </summary>
-		public D2D1_PRINT_FONT_SUBSET_MODE fontSubset;
+		public D2D1_PRINT_FONT_SUBSET_MODE fontSubset = fontSubset;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>DPI for rasterization of all unsupported Direct2D commands or options, defaults to 150.0.</para>
 		/// </summary>
-		public float rasterDPI;
+		public float rasterDPI = rasterDPI;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_COLOR_SPACE</c></para>
 		/// <para>Color space for vector graphics, defaults to D2D1_COLOR_SPACE_SRGB.</para>
 		/// </summary>
-		public D2D1_COLOR_SPACE colorSpace;
+		public D2D1_COLOR_SPACE colorSpace = colorSpace;
 	}
 
 	/// <summary>Describes limitations to be applied to an imaging effect renderer.</summary>
@@ -8158,54 +8420,59 @@ public static partial class D2d1
 	// FLOAT miterLimit; D2D1_DASH_STYLE dashStyle; FLOAT dashOffset; D2D1_STROKE_TRANSFORM_TYPE transformType; } D2D1_STROKE_STYLE_PROPERTIES1;
 	[PInvokeData("d2d1_1.h", MSDNShortId = "NS:d2d1_1.D2D1_STROKE_STYLE_PROPERTIES1")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_STROKE_STYLE_PROPERTIES1
+	public struct D2D1_STROKE_STYLE_PROPERTIES1(D2d1.D2D1_CAP_STYLE startCap = D2d1.D2D1_CAP_STYLE.D2D1_CAP_STYLE_FLAT,
+		D2d1.D2D1_CAP_STYLE endCap = D2d1.D2D1_CAP_STYLE.D2D1_CAP_STYLE_FLAT,
+		D2d1.D2D1_CAP_STYLE dashCap = D2d1.D2D1_CAP_STYLE.D2D1_CAP_STYLE_FLAT,
+		D2d1.D2D1_LINE_JOIN lineJoin = D2d1.D2D1_LINE_JOIN.D2D1_LINE_JOIN_MITER, float miterLimit = 10f,
+		D2d1.D2D1_DASH_STYLE dashStyle = D2d1.D2D1_DASH_STYLE.D2D1_DASH_STYLE_SOLID, float dashOffset = 0f,
+		D2d1.D2D1_STROKE_TRANSFORM_TYPE transformType = D2d1.D2D1_STROKE_TRANSFORM_TYPE.D2D1_STROKE_TRANSFORM_TYPE_NORMAL)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_CAP_STYLE</c></para>
 		/// <para>The cap to use at the start of each open figure.</para>
 		/// </summary>
-		public D2D1_CAP_STYLE startCap;
+		public D2D1_CAP_STYLE startCap = startCap;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_CAP_STYLE</c></para>
 		/// <para>The cap to use at the end of each open figure.</para>
 		/// </summary>
-		public D2D1_CAP_STYLE endCap;
+		public D2D1_CAP_STYLE endCap = endCap;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_CAP_STYLE</c></para>
 		/// <para>The cap to use at the start and end of each dash.</para>
 		/// </summary>
-		public D2D1_CAP_STYLE dashCap;
+		public D2D1_CAP_STYLE dashCap = dashCap;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_LINE_JOIN</c></para>
 		/// <para>The line join to use.</para>
 		/// </summary>
-		public D2D1_LINE_JOIN lineJoin;
+		public D2D1_LINE_JOIN lineJoin = lineJoin;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>The limit beyond which miters are either clamped or converted to bevels.</para>
 		/// </summary>
-		public float miterLimit;
+		public float miterLimit = miterLimit;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_DASH_STYLE</c></para>
 		/// <para>The type of dash to use.</para>
 		/// </summary>
-		public D2D1_DASH_STYLE dashStyle;
+		public D2D1_DASH_STYLE dashStyle = dashStyle;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>The location of the first dash, relative to the start of the figure.</para>
 		/// </summary>
-		public float dashOffset;
+		public float dashOffset = dashOffset;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_STROKE_TRANSFORM_TYPE</c></para>
 		/// <para>The rule that determines what render target properties affect the nib of the stroke.</para>
 		/// </summary>
-		public D2D1_STROKE_TRANSFORM_TYPE transformType;
+		public D2D1_STROKE_TRANSFORM_TYPE transformType = transformType;
 	}
 }
