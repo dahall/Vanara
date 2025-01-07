@@ -5983,14 +5983,14 @@ public static partial class D3D12
 		/// since that can result in premature cache flushes, or resource layout changes (for example, compress/decompress), causing
 		/// unnecessary pipeline stalls. You should instead transition resources only to the actually-used states.
 		/// </summary>
-		D3D12_RESOURCE_STATE_GENERIC_READ,
+		D3D12_RESOURCE_STATE_GENERIC_READ = 0x1 | 0x2 | 0x40 | 0x80 | 0x200 | 0x800,
 
 		/// <summary>
 		/// <para>Equivalent to</para>
 		/// <para>D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE | D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE</para>
 		/// <para>.</para>
 		/// </summary>
-		D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE = D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE | D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+		D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE = 0x40 | 0x80,
 
 		/// <summary>
 		/// <para>Value: 0 Synonymous with D3D12_RESOURCE_STATE_COMMON.</para>

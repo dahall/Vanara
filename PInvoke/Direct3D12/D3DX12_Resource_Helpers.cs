@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using static Vanara.PInvoke.FunctionHelper;
 
 namespace Vanara.PInvoke;
 
@@ -552,8 +553,7 @@ public static partial class D3D12
 			return 0;
 		}
 
-		HRESULT hr = pIntermediate.Map(0, null, out var pData);
-		if (hr.Failed)
+		if (pIntermediate.Map(0, null, out var pData).Failed)
 		{
 			return 0;
 		}
@@ -564,7 +564,7 @@ public static partial class D3D12
 			D3D12_MEMCPY_DEST DestData = new() { pData = pData.Offset((long)pLayouts[i].Offset), RowPitch = pLayouts[i].Footprint.RowPitch, SlicePitch = pLayouts[i].Footprint.RowPitch * pNumRows[i] };
 			MemcpySubresource(DestData, pSrcData[i], pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth);
 		}
-		pIntermediate.Unmap(0, default);
+		pIntermediate.Unmap(0);
 
 		if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_BUFFER)
 		{
@@ -576,7 +576,7 @@ public static partial class D3D12
 			{
 				D3D12_TEXTURE_COPY_LOCATION Dst = new(pDestinationResource, i + FirstSubresource);
 				D3D12_TEXTURE_COPY_LOCATION Src = new(pIntermediate, pLayouts[i]);
-				pCmdList.CopyTextureRegion(Dst, 0, 0, 0, Src, default);
+				pCmdList.CopyTextureRegion(Dst, 0, 0, 0, Src);
 			}
 		}
 		return RequiredSize;
@@ -656,8 +656,7 @@ public static partial class D3D12
 			return 0;
 		}
 
-		HRESULT hr = pIntermediate.Map(0, null, out var pData);
-		if (hr.Failed)
+		if (pIntermediate.Map(0, null, out var pData).Failed)
 		{
 			return 0;
 		}
@@ -680,7 +679,7 @@ public static partial class D3D12
 			{
 				D3D12_TEXTURE_COPY_LOCATION Dst = new(pDestinationResource, i + FirstSubresource);
 				D3D12_TEXTURE_COPY_LOCATION Src = new(pIntermediate, pLayouts[i]);
-				pCmdList.CopyTextureRegion(Dst, 0, 0, 0, Src, default);
+				pCmdList.CopyTextureRegion(Dst, 0, 0, 0, Src);
 			}
 		}
 		return RequiredSize;
@@ -731,12 +730,11 @@ public static partial class D3D12
 		[In] D3D12_SUBRESOURCE_DATA[] pSrcData)
 	{
 		pDestinationResource.GetDesc(out var Desc);
-		pDestinationResource.GetDevice(typeof(ID3D12Device).GUID, out var ppv).ThrowIfFailed();
-		ID3D12Device pDevice = (ID3D12Device)ppv!;
+		IidGetObj(pDestinationResource.GetDevice, out ID3D12Device pDevice).ThrowIfFailed();
 
-		D3D12_PLACED_SUBRESOURCE_FOOTPRINT[] pLayouts = new D3D12_PLACED_SUBRESOURCE_FOOTPRINT[NumSubresources];
-		ulong[] pRowSizesInBytes = new ulong[NumSubresources];
-		uint[] pNumRows = new uint[NumSubresources];
+		var pLayouts = new D3D12_PLACED_SUBRESOURCE_FOOTPRINT[NumSubresources];
+		var pRowSizesInBytes = new ulong[NumSubresources];
+		var pNumRows = new uint[NumSubresources];
 		pDevice.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, pLayouts,
 			pNumRows, pRowSizesInBytes, out var RequiredSize);
 		Marshal.ReleaseComObject(pDevice);
@@ -796,8 +794,7 @@ public static partial class D3D12
 
 		pDestinationResource.GetDesc(out var Desc);
 
-		pDestinationResource.GetDevice(typeof(ID3D12Device).GUID, out var ppv).ThrowIfFailed();
-		ID3D12Device pDevice = (ID3D12Device)ppv!;
+		IidGetObj(pDestinationResource.GetDevice, out ID3D12Device pDevice).ThrowIfFailed();
 
 		pDevice.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, pLayouts, pNumRows,
 			pRowSizesInBytes, out var RequiredSize);
@@ -858,8 +855,7 @@ public static partial class D3D12
 		ulong[] RowSizesInBytes = new ulong[MaxSubresources];
 
 		pDestinationResource.GetDesc(out var Desc);
-		pDestinationResource.GetDevice(typeof(ID3D12Device).GUID, out var ppv).ThrowIfFailed();
-		ID3D12Device pDevice = (ID3D12Device)ppv!;
+		IidGetObj(pDestinationResource.GetDevice, out ID3D12Device pDevice).ThrowIfFailed();
 		pDevice.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, Layouts, NumRows,
 			RowSizesInBytes, out var RequiredSize);
 		Marshal.ReleaseComObject(pDevice);
@@ -920,8 +916,7 @@ public static partial class D3D12
 
 		pDestinationResource.GetDesc(out var Desc);
 
-		pDestinationResource.GetDevice(typeof(ID3D12Device).GUID, out var ppv).ThrowIfFailed();
-		ID3D12Device pDevice = (ID3D12Device)ppv!;
+		IidGetObj(pDestinationResource.GetDevice, out ID3D12Device pDevice).ThrowIfFailed();
 		pDevice.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, pLayouts, pNumRows, pRowSizesInBytes,
 			out var RequiredSize);
 		Marshal.ReleaseComObject(pDevice);

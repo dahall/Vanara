@@ -8040,16 +8040,16 @@ public static partial class D3D12
 	// const void *pData; LONG_PTR RowPitch; LONG_PTR SlicePitch; } D3D12_SUBRESOURCE_DATA;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_SUBRESOURCE_DATA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-	public struct D3D12_SUBRESOURCE_DATA
+	public struct D3D12_SUBRESOURCE_DATA(IntPtr pData, SizeT rowPitch, SizeT slicePitch)
 	{
 		/// <summary>A pointer to a memory block that contains the subresource data.</summary>
-		public IntPtr pData;
+		public IntPtr pData = pData;
 
 		/// <summary>The row pitch, or width, or physical size, in bytes, of the subresource data.</summary>
-		public SizeT RowPitch;
+		public SizeT RowPitch = rowPitch;
 
 		/// <summary>The depth pitch, or width, or physical size, in bytes, of the subresource data.</summary>
-		public SizeT SlicePitch;
+		public SizeT SlicePitch = slicePitch;
 	}
 
 	/// <summary>Describes the format, width, height, depth, and row-pitch of the subresource into the parent resource.</summary>

@@ -5745,10 +5745,40 @@ public static partial class D3D12
 	/// </remarks>
 	public static T CreateCommandAllocator<T>(this ID3D12Device device, D3D12_COMMAND_LIST_TYPE type) where T : class
 	{
-		device.CreateCommandAllocator(type, typeof(T).GUID, out var ppv).ThrowIfFailed();
+		device.CreateCommandAllocator(type, out T? ppv).ThrowIfFailed();
 		return (T)ppv!;
 	}
 
+	/// <summary>Creates a command allocator object.</summary>
+	/// <typeparam name="T">The type of the interface to return.</typeparam>
+	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
+	/// <param name="type">
+	/// A <c>D3D12_COMMAND_LIST_TYPE</c>-typed value that specifies the type of command allocator to create. The type of command allocator
+	/// can be the type that records either direct command lists or bundles.
+	/// </param>
+	/// <param name="ppCommandAllocator">
+	/// A pointer to a memory block that receives a pointer to the <c>ID3D12CommandAllocator</c> interface for the command allocator.
+	/// </param>
+	/// <returns>
+	/// This method returns <b>E_OUTOFMEMORY</b> if there is insufficient memory to create the command allocator. See <c>Direct3D 12 Return
+	/// Codes</c> for other possible return values.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// The device creates command lists from the command allocator. Examples The <c>D3D12Bundles</c> sample uses
+	/// <b>ID3D12Device::CreateCommandAllocator</b> as follows:
+	/// </para>
+	/// <para>
+	/// <c>ThrowIfFailed(pDevice-&gt;CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&amp;m_commandAllocator)));
+	/// ThrowIfFailed(pDevice-&gt;CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_BUNDLE, IID_PPV_ARGS(&amp;m_bundleAllocator)));</c>
+	/// </para>
+	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcommandallocator HRESULT
+	// CreateCommandAllocator( [in] D3D12_COMMAND_LIST_TYPE type, REFIID riid, [out] void **ppCommandAllocator );
+	public static HRESULT CreateCommandAllocator<T>(this ID3D12Device device, D3D12_COMMAND_LIST_TYPE type, out T? ppCommandAllocator) where T : class =>
+		FunctionHelper.IidGetObj(device.CreateCommandAllocator, type, out ppCommandAllocator);
+	
 	/// <summary>Creates a command list.</summary>
 	/// <typeparam name="T">The type of the interface to return.</typeparam>
 	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
