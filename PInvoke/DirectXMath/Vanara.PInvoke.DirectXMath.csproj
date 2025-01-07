@@ -1,21 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-	<ProjectExtensions>
-		<!--<SupportedDlls>dxgi.dll</SupportedDlls>-->
-	</ProjectExtensions>
-	<PropertyGroup>
-		<Description>PInvoke API (methods, structures and constants) imported from Windows DirectX Math.</Description>
-		<AssemblyName>Vanara.PInvoke.DirectXMath</AssemblyName>
-		<AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-		<PackageId>$(AssemblyName)</PackageId>
-		<PackageTags>pinvoke;vanara;net-extensions;interop;directx;math;directxmath</PackageTags>
-		<PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
-	</PropertyGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-		<ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' != 'net45'">
-		<PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
-	</ItemGroup>
+  <ProjectExtensions>
+    <!--<SupportedDlls>dxgi.dll</SupportedDlls>-->
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows DirectX Math.</Description>
+    <AssemblyName>Vanara.PInvoke.DirectXMath</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;directx;math;directxmath</PackageTags>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+DirectXMath
+
+Structures
+&lt;bytes&gt;e__FixedBuffer, &lt;f&gt;e__FixedBuffer, &lt;i&gt;e__FixedBuffer, &lt;u&gt;e__FixedBuffer, &lt;u&gt;e__FixedBuffer, &lt;vector4_f32&gt;e__FixedBuffer, XMFLOAT2, XMFLOAT3, XMFLOAT3X3, XMFLOAT3X4, XMFLOAT4, XMFLOAT4X3, XMINT2, XMINT3, XMINT4, XMMATRIX, XMUINT2, XMUINT3, XMUINT4, XMVECTOR, XMVECTORI32, XMVECTORU8
+
+</PackageReleaseNotes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net45'">
+    <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
+  </ItemGroup>
 </Project>

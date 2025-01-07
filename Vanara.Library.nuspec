@@ -46,6 +46,7 @@
       <dependency id="Vanara.PInvoke.Direct3D11" version="4.0.5" />
       <dependency id="Vanara.PInvoke.Direct3D12" version="4.0.5" />
       <dependency id="Vanara.PInvoke.DirectX" version="4.0.5" />
+      <dependency id="Vanara.PInvoke.DirectXMath" version="4.0.5" />
       <dependency id="Vanara.PInvoke.DnsApi" version="4.0.5" />
       <dependency id="Vanara.PInvoke.DOSvc" version="4.0.5" />
       <dependency id="Vanara.PInvoke.Drt" version="4.0.5" />

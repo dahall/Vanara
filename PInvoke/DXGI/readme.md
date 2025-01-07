@@ -136,7 +136,6 @@ Native Structure | Header | Managed Structure
 [DXGI_JPEG_DC_HUFFMAN_TABLE](https://www.google.com/search?num=5&q=DXGI_JPEG_DC_HUFFMAN_TABLE+site%3Alearn.microsoft.com) | Dxgitype.h | [Vanara.PInvoke.DXGI.DXGI_JPEG_DC_HUFFMAN_TABLE](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_JPEG_DC_HUFFMAN_TABLE)  
 [DXGI_JPEG_QUANTIZATION_TABLE](https://www.google.com/search?num=5&q=DXGI_JPEG_QUANTIZATION_TABLE+site%3Alearn.microsoft.com) | Dxgitype.h | [Vanara.PInvoke.DXGI.DXGI_JPEG_QUANTIZATION_TABLE](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_JPEG_QUANTIZATION_TABLE)  
 [DXGI_MAPPED_RECT](https://www.google.com/search?num=5&q=DXGI_MAPPED_RECT+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.DXGI_MAPPED_RECT](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_MAPPED_RECT)  
-[DXGI_MATRIX_3X2_F](https://www.google.com/search?num=5&q=DXGI_MATRIX_3X2_F+site%3Alearn.microsoft.com) | dxgi1_3.h | [Vanara.PInvoke.DXGI.DXGI_MATRIX_3X2_F](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_MATRIX_3X2_F)  
 [DXGI_MODE_DESC](https://www.google.com/search?num=5&q=DXGI_MODE_DESC+site%3Alearn.microsoft.com) | DXGI.h | [Vanara.PInvoke.DXGI.DXGI_MODE_DESC](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_MODE_DESC)  
 [DXGI_MODE_DESC1](https://www.google.com/search?num=5&q=DXGI_MODE_DESC1+site%3Alearn.microsoft.com) | dxgi1_2.h | [Vanara.PInvoke.DXGI.DXGI_MODE_DESC1](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_MODE_DESC1)  
 [DXGI_OUTDUPL_DESC](https://www.google.com/search?num=5&q=DXGI_OUTDUPL_DESC+site%3Alearn.microsoft.com) | dxgi1_2.h | [Vanara.PInvoke.DXGI.DXGI_OUTDUPL_DESC](https://github.com/dahall/Vanara/search?l=C%23&q=DXGI_OUTDUPL_DESC)  
@@ -162,7 +161,7 @@ Native Structure | Header | Managed Structure
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
-[ID3D10Blob](https://www.google.com/search?num=5&q=ID3D10Blob+site%3Alearn.microsoft.com) | d3dcommon.h | [Vanara.PInvoke.DXGI.ID3D10Blob](https://github.com/dahall/Vanara/search?l=C%23&q=ID3D10Blob)  
+[ID3DBlob](https://www.google.com/search?num=5&q=ID3DBlob+site%3Alearn.microsoft.com) | d3dcommon.h | [Vanara.PInvoke.DXGI.ID3DBlob](https://github.com/dahall/Vanara/search?l=C%23&q=ID3DBlob)  
 [ID3DDestructionNotifier](https://www.google.com/search?num=5&q=ID3DDestructionNotifier+site%3Alearn.microsoft.com) | d3dcommon.h | [Vanara.PInvoke.DXGI.ID3DDestructionNotifier](https://github.com/dahall/Vanara/search?l=C%23&q=ID3DDestructionNotifier)  
 [IDXGIAdapter](https://www.google.com/search?num=5&q=IDXGIAdapter+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.IDXGIAdapter](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGIAdapter)  
 [IDXGIAdapter1](https://www.google.com/search?num=5&q=IDXGIAdapter1+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.IDXGIAdapter1](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGIAdapter1)  
