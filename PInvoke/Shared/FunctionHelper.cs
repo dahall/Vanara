@@ -18,8 +18,43 @@ public static class FunctionHelper
 	/// <summary>Delegate for functions that use an IID to retrieve an object.</summary>
 	/// <param name="riid">The IID of the requested interface.</param>
 	/// <param name="ppv">The resulting interface.</param>
-	/// <returns>The error code for the function.</returns>
 	public delegate void IidFunc(in Guid riid, out object ppv);
+
+	/// <summary>Delegate for functions that use an IID to retrieve an object.</summary>
+	/// <typeparam name="TIn1">The type of the first parameter.</typeparam>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
+	/// <param name="p1">The first parameter.</param>
+	/// <param name="riid">The IID of the requested interface.</param>
+	/// <param name="ppv">The resulting interface.</param>
+	/// <returns>The error code for the function.</returns>
+	public delegate TErr IidFunc1<TIn1, out TErr>(TIn1 p1, in Guid riid, out object ppv) where TErr : IErrorProvider;
+
+	/// <summary>Delegate for functions that use an IID to retrieve an object.</summary>
+	/// <typeparam name="TIn1">The type of the first parameter.</typeparam>
+	/// <param name="p1">The first parameter.</param>
+	/// <param name="riid">The IID of the requested interface.</param>
+	/// <param name="ppv">The resulting interface.</param>
+	public delegate void IidFunc1<TIn1>(TIn1 p1, in Guid riid, out object ppv);
+
+	/// <summary>Delegate for functions that use an IID to retrieve an object.</summary>
+	/// <typeparam name="TIn1">The type of the first parameter.</typeparam>
+	/// <typeparam name="TIn2">The type of the second parameter.</typeparam>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
+	/// <param name="p1">The first parameter.</param>
+	/// <param name="p2">The second parameter.</param>
+	/// <param name="riid">The IID of the requested interface.</param>
+	/// <param name="ppv">The resulting interface.</param>
+	/// <returns>The error code for the function.</returns>
+	public delegate TErr IidFunc2<TIn1, TIn2, out TErr>(TIn1 p1, TIn2 p2, in Guid riid, out object ppv) where TErr : IErrorProvider;
+
+	/// <summary>Delegate for functions that use an IID to retrieve an object.</summary>
+	/// <typeparam name="TIn1">The type of the first parameter.</typeparam>
+	/// <typeparam name="TIn2">The type of the second parameter.</typeparam>
+	/// <param name="p1">The first parameter.</param>
+	/// <param name="p2">The second parameter.</param>
+	/// <param name="riid">The IID of the requested interface.</param>
+	/// <param name="ppv">The resulting interface.</param>
+	public delegate void IidFunc2<TIn1, TIn2>(TIn1 p1, TIn2 p2, in Guid riid, out object ppv);
 #nullable restore
 
 	/// <summary>Delegate to get the size of memory allocated to a pointer.</summary>
@@ -229,6 +264,7 @@ public static class FunctionHelper
 	public static bool ChkGoodBuf<TSize, TRet>(TSize sz, TRet err) where TSize : struct where TRet : IErrorProvider, IConvertible =>
 		!sz.Equals(default(TSize)) && buffErrs.ConvertAll(e => (HRESULT)e).Contains(err.ToHRESULT());
 
+#nullable disable
 	/// <summary>Helper function for functions that retrieve an object based on an IID.</summary>
 	/// <typeparam name="T">The type of the object to retrieve.</typeparam>
 	/// <typeparam name="TErr">The type of the error.</typeparam>
@@ -238,17 +274,14 @@ public static class FunctionHelper
 	/// The returned object case to <typeparamref name="T"/>, or <see langword="null"/> on failure and <paramref name="throwOnError"/> is
 	/// <see langword="true"/>.
 	/// </returns>
-	public static T? IidGetObj<T, TErr>(IidFunc<TErr> f, bool throwOnError = true) where T : class where TErr : IErrorProvider
+	public static T IidGetObj<T, TErr>(IidFunc<TErr> f, bool throwOnError = true) where T : class where TErr : IErrorProvider
 	{
-		var hr = f(typeof(T).GUID, out var ppv);
-		if (hr.Succeeded)
-			return (T?)ppv;
-		if (throwOnError)
+		TErr hr = IidGetObj(f, out T ppv);
+		if (hr.Failed && throwOnError)
 			throw hr.GetException()!;
-		return default;
+		return ppv;
 	}
 
-#nullable disable
 	/// <summary>Helper function for functions that retrieve an object based on an IID.</summary>
 	/// <typeparam name="T">The type of the object to retrieve.</typeparam>
 	/// <typeparam name="TErr">The type of the error.</typeparam>
@@ -270,6 +303,53 @@ public static class FunctionHelper
 	public static void IidGetObj<T>(IidFunc f, out T ppv) where T : class
 	{
 		f(typeof(T).GUID, out var pv);
+		ppv = (T)pv;
+	}
+
+	/// <summary>Helper function for functions that retrieve an object based on an IID.</summary>
+	/// <typeparam name="T">The type of the object to retrieve.</typeparam>
+	/// <typeparam name="TIn1">The type of the first parameter.</typeparam>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
+	/// <param name="f">The function.</param>
+	/// <param name="p1">The first parameter.</param>
+	/// <param name="throwOnError">If set to <see langword="true" />, throw an exception on error. Otherwise, just return <see langword="null" />.</param>
+	/// <returns>
+	/// The returned object case to <typeparamref name="T" />, or <see langword="null" /> on failure and <paramref name="throwOnError" /> is
+	/// <see langword="true" />.
+	/// </returns>
+	public static T IidGetObj<T, TIn1, TErr>(IidFunc1<TIn1, TErr> f, TIn1 p1, bool throwOnError = true) where T : class where TErr : IErrorProvider
+	{
+		TErr hr = IidGetObj(f, p1, out T ppv);
+		if (hr.Failed && throwOnError)
+			throw hr.GetException()!;
+		return ppv;
+	}
+
+	/// <summary>Helper function for functions that retrieve an object based on an IID.</summary>
+	/// <typeparam name="T">The type of the object to retrieve.</typeparam>
+	/// <typeparam name="TIn1">The type of the first parameter.</typeparam>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
+	/// <param name="f">The function.</param>
+	/// <param name="p1">The first parameter.</param>
+	/// <param name="ppv">The returned object case to <typeparamref name="T" />, or <see langword="null" /> on failure.</param>
+	/// <returns>The error returned by <paramref name="f"/>.</returns>
+	public static TErr IidGetObj<T, TIn1, TErr>(IidFunc1<TIn1, TErr> f, TIn1 p1, out T ppv) where T : class where TErr : IErrorProvider
+	{
+		var hr = f(p1, typeof(T).GUID, out var pv);
+		ppv = hr.Succeeded ? (T)pv : default;
+		return hr;
+	}
+
+	/// <summary>Helper function for functions that retrieve an object based on an IID.</summary>
+	/// <typeparam name="T">The type of the object to retrieve.</typeparam>
+	/// <typeparam name="TIn1">The type of the first parameter.</typeparam>
+	/// <param name="f">The function.</param>
+	/// <param name="p1">The first parameter.</param>
+	/// <param name="ppv">The returned object case to <typeparamref name="T" />, or <see langword="null" /> on failure.</param>
+	/// <returns>The error returned by <paramref name="f"/>.</returns>
+	public static void IidGetObj<T, TIn1>(IidFunc1<TIn1> f, TIn1 p1, out T ppv) where T : class
+	{
+		f(p1, typeof(T).GUID, out var pv);
 		ppv = (T)pv;
 	}
 #nullable restore
