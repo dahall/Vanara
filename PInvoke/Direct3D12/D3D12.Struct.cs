@@ -1,5 +1,7 @@
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Vanara.PInvoke;
 
@@ -1587,36 +1589,37 @@ public static partial class D3D12
 	// OffsetInDescriptorsFromTableStart; } D3D12_DESCRIPTOR_RANGE;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_DESCRIPTOR_RANGE")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_DESCRIPTOR_RANGE
+	public struct D3D12_DESCRIPTOR_RANGE(D3D12_DESCRIPTOR_RANGE_TYPE rangeType, uint numDescriptors, uint baseShaderRegister, uint registerSpace = 0,
+		uint offsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND)
 	{
 		/// <summary>A <c>D3D12_DESCRIPTOR_RANGE_TYPE</c>-typed value that specifies the type of descriptor range.</summary>
-		public D3D12_DESCRIPTOR_RANGE_TYPE RangeType;
+		public D3D12_DESCRIPTOR_RANGE_TYPE RangeType = rangeType;
 
 		/// <summary>
 		/// The number of descriptors in the range. Use -1 or UINT_MAX to specify an unbounded size. If a given descriptor range is
 		/// unbounded, then it must either be the last range in the table definition, or else the following range in the table definition
 		/// must have a value for OffsetInDescriptorsFromTableStart that is not <c>D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND</c>.
 		/// </summary>
-		public uint NumDescriptors;
+		public uint NumDescriptors = numDescriptors;
 
 		/// <summary>
 		/// The base shader register in the range. For example, for shader-resource views (SRVs), 3 maps to ": register(t3);" in HLSL.
 		/// </summary>
-		public uint BaseShaderRegister;
+		public uint BaseShaderRegister = baseShaderRegister;
 
 		/// <summary>
 		/// The register space. Can typically be 0, but allows multiple descriptor arrays of unknown size to not appear to overlap. For
 		/// example, for SRVs, by extending the example in the <b>BaseShaderRegister</b> member description, 5 maps to ":
 		/// register(t3,space5);" in HLSL.
 		/// </summary>
-		public uint RegisterSpace;
+		public uint RegisterSpace = registerSpace;
 
 		/// <summary>
 		/// The offset in descriptors, from the start of the descriptor table which was set as the root argument value for this parameter
 		/// slot. This value can be <b>D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND</b>, which indicates this range should immediately follow the
 		/// preceding range.
 		/// </summary>
-		public uint OffsetInDescriptorsFromTableStart;
+		public uint OffsetInDescriptorsFromTableStart = offsetInDescriptorsFromTableStart;
 	}
 
 	/// <summary>Describes a descriptor range, with flags to determine their volatility.</summary>
@@ -1629,37 +1632,44 @@ public static partial class D3D12
 	// Flags; UINT OffsetInDescriptorsFromTableStart; } D3D12_DESCRIPTOR_RANGE1;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_DESCRIPTOR_RANGE1")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_DESCRIPTOR_RANGE1
+	public struct D3D12_DESCRIPTOR_RANGE1(D3D12_DESCRIPTOR_RANGE_TYPE rangeType, uint numDescriptors, uint baseShaderRegister, uint registerSpace = 0,
+		D3D12_DESCRIPTOR_RANGE_FLAGS flags = D3D12_DESCRIPTOR_RANGE_FLAGS.D3D12_DESCRIPTOR_RANGE_FLAG_NONE,
+		uint offsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND)
 	{
 		/// <summary>A <c>D3D12_DESCRIPTOR_RANGE_TYPE</c>-typed value that specifies the type of descriptor range.</summary>
-		public D3D12_DESCRIPTOR_RANGE_TYPE RangeType;
+		public D3D12_DESCRIPTOR_RANGE_TYPE RangeType = rangeType;
 
 		/// <summary>
 		/// The number of descriptors in the range. Use -1 or UINT_MAX to specify unbounded size. Only the last entry in a table can have
 		/// unbounded size.
 		/// </summary>
-		public uint NumDescriptors;
+		public uint NumDescriptors = numDescriptors;
 
 		/// <summary>
 		/// The base shader register in the range. For example, for shader-resource views (SRVs), 3 maps to ": register(t3);" in HLSL.
 		/// </summary>
-		public uint BaseShaderRegister;
+		public uint BaseShaderRegister = baseShaderRegister;
 
 		/// <summary>
 		/// The register space. Can typically be 0, but allows multiple descriptor arrays of unknown size to not appear to overlap. For
 		/// example, for SRVs, by extending the example in the <b>BaseShaderRegister</b> member description, 5 maps to ":
 		/// register(t3,space5);" in HLSL.
 		/// </summary>
-		public uint RegisterSpace;
+		public uint RegisterSpace = registerSpace;
 
 		/// <summary>Specifies the <c>D3D12_DESCRIPTOR_RANGE_FLAGS</c> that determine descriptor and data volatility.</summary>
-		public D3D12_DESCRIPTOR_RANGE_FLAGS Flags;
+		public D3D12_DESCRIPTOR_RANGE_FLAGS Flags = flags;
 
 		/// <summary>
 		/// The offset in descriptors from the start of the root signature. This value can be <b>D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND</b>,
 		/// which indicates this range should immediately follow the preceding range.
 		/// </summary>
-		public uint OffsetInDescriptorsFromTableStart;
+		public uint OffsetInDescriptorsFromTableStart = offsetInDescriptorsFromTableStart;
+
+		/// <summary>Performs an implicit conversion from <see cref="Vanara.PInvoke.D3D12.D3D12_DESCRIPTOR_RANGE1"/> to <see cref="Vanara.PInvoke.D3D12.D3D12_DESCRIPTOR_RANGE"/>.</summary>
+		/// <param name="r">The D3D12_DESCRIPTOR_RANGE1.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D3D12_DESCRIPTOR_RANGE(D3D12_DESCRIPTOR_RANGE1 r) => new(r.RangeType, r.NumDescriptors, r.BaseShaderRegister, r.RegisterSpace, r.OffsetInDescriptorsFromTableStart);
 	}
 
 	/// <summary>
@@ -4325,9 +4335,9 @@ public static partial class D3D12
 	// InputSlotClass; UINT InstanceDataStepRate; } D3D12_INPUT_ELEMENT_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_INPUT_ELEMENT_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_INPUT_ELEMENT_DESC(string semanticName, DXGI_FORMAT format, uint semanticIndex = 0,
-		D3D12_INPUT_CLASSIFICATION inputSlotClass = D3D12_INPUT_CLASSIFICATION.D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
-		uint inputSlot = 0, uint instanceDataStepRate = 0, uint alignedByteOffset = 0)
+	public struct D3D12_INPUT_ELEMENT_DESC(string semanticName, DXGI_FORMAT format, uint alignedByteOffset = 0,
+		D3D12_INPUT_CLASSIFICATION inputSlotClass = D3D12_INPUT_CLASSIFICATION.D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, uint semanticIndex = 0,
+		uint inputSlot = 0, uint instanceDataStepRate = 0)
 	{
 		/// <summary>The HLSL semantic associated with this element in a shader input-signature. See <c>HLSL Semantics</c> for more info.</summary>
 		[MarshalAs(UnmanagedType.LPStr)]
@@ -6861,19 +6871,19 @@ public static partial class D3D12
 	// ShaderRegister; UINT RegisterSpace; UINT Num32BitValues; } D3D12_ROOT_CONSTANTS;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_ROOT_CONSTANTS")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_ROOT_CONSTANTS
+	public struct D3D12_ROOT_CONSTANTS(uint shaderRegister, uint registerSpace, uint num32BitValues)
 	{
 		/// <summary>The shader register.</summary>
-		public uint ShaderRegister;
+		public uint ShaderRegister = shaderRegister;
 
 		/// <summary>The register space.</summary>
-		public uint RegisterSpace;
+		public uint RegisterSpace = registerSpace;
 
 		/// <summary>
 		/// The number of constants that occupy a single shader slot (these constants appear like a single constant buffer). All constants
 		/// occupy a single root signature bind slot.
 		/// </summary>
-		public uint Num32BitValues;
+		public uint Num32BitValues = num32BitValues;
 	}
 
 	/// <summary>Describes descriptors inline in the root signature version 1.0 that appear in shaders.</summary>
@@ -6886,13 +6896,13 @@ public static partial class D3D12
 	// ShaderRegister; UINT RegisterSpace; } D3D12_ROOT_DESCRIPTOR;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_ROOT_DESCRIPTOR")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_ROOT_DESCRIPTOR
+	public struct D3D12_ROOT_DESCRIPTOR(uint shaderRegister, uint registerSpace)
 	{
 		/// <summary>The shader register.</summary>
-		public uint ShaderRegister;
+		public uint ShaderRegister = shaderRegister;
 
 		/// <summary>The register space.</summary>
-		public uint RegisterSpace;
+		public uint RegisterSpace = registerSpace;
 	}
 
 	/// <summary>
@@ -6920,6 +6930,13 @@ public static partial class D3D12
 
 		/// <summary>An array of <c>D3D12_DESCRIPTOR_RANGE</c> structures that describe the descriptor ranges.</summary>
 		public ArrayPointer<D3D12_DESCRIPTOR_RANGE> pDescriptorRanges;
+
+		/// <summary>Creates a new instance of a D3D12_ROOT_DESCRIPTOR_TABLE.</summary>
+		/// <param name="ranges">The descriptor ranges.</param>
+		/// <param name="h">The allocated memory holding the data in <paramref name="ranges"/>.</param>
+		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE.</returns>
+		public static D3D12_ROOT_DESCRIPTOR_TABLE Init(D3D12_DESCRIPTOR_RANGE[] ranges, out SafeAllocatedMemoryHandle h) =>
+			new() { NumDescriptorRanges = (uint)ranges.Length, pDescriptorRanges = h = SafeCoTaskMemHandle.CreateFromList(ranges) };
 	}
 
 	/// <summary>
@@ -6948,6 +6965,13 @@ public static partial class D3D12
 
 		/// <summary>An array of <c>D3D12_DESCRIPTOR_RANGE1</c> structures that describe the descriptor ranges.</summary>
 		public ArrayPointer<D3D12_DESCRIPTOR_RANGE1> pDescriptorRanges;
+
+		/// <summary>Creates a new instance of a D3D12_ROOT_DESCRIPTOR_TABLE1.</summary>
+		/// <param name="ranges">The descriptor ranges.</param>
+		/// <param name="h">The allocated memory holding the data in <paramref name="ranges"/>.</param>
+		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE1.</returns>
+		public static D3D12_ROOT_DESCRIPTOR_TABLE1 Init(D3D12_DESCRIPTOR_RANGE1[] ranges, out SafeAllocatedMemoryHandle h) =>
+			new() { NumDescriptorRanges = (uint)ranges.Length, pDescriptorRanges = h = SafeCoTaskMemHandle.CreateFromList(ranges) };
 	}
 
 	/// <summary>Describes descriptors inline in the root signature version 1.1 that appear in shaders.</summary>
@@ -6963,18 +6987,23 @@ public static partial class D3D12
 	// UINT ShaderRegister; UINT RegisterSpace; D3D12_ROOT_DESCRIPTOR_FLAGS Flags; } D3D12_ROOT_DESCRIPTOR1;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_ROOT_DESCRIPTOR1")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_ROOT_DESCRIPTOR1
+	public struct D3D12_ROOT_DESCRIPTOR1(uint shaderRegister, uint registerSpace, D3D12_ROOT_DESCRIPTOR_FLAGS flags)
 	{
 		/// <summary>The shader register.</summary>
-		public uint ShaderRegister;
+		public uint ShaderRegister = shaderRegister;
 
 		/// <summary>The register space.</summary>
-		public uint RegisterSpace;
+		public uint RegisterSpace = registerSpace;
 
 		/// <summary>
 		/// Specifies the <c>D3D12_ROOT_DESCRIPTOR_FLAGS</c> that determine the volatility of descriptors and the data they reference.
 		/// </summary>
-		public D3D12_ROOT_DESCRIPTOR_FLAGS Flags;
+		public D3D12_ROOT_DESCRIPTOR_FLAGS Flags = flags;
+
+		/// <summary>Performs an implicit conversion from <see cref="Vanara.PInvoke.D3D12.D3D12_ROOT_DESCRIPTOR1"/> to <see cref="Vanara.PInvoke.D3D12.D3D12_ROOT_DESCRIPTOR"/>.</summary>
+		/// <param name="rd">The D3D12_ROOT_DESCRIPTOR1.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D3D12_ROOT_DESCRIPTOR(D3D12_ROOT_DESCRIPTOR1 rd) => new(rd.ShaderRegister, rd.RegisterSpace);
 	}
 
 	/// <summary>Describes the slot of a root signature version 1.0.</summary>
@@ -6987,41 +7016,120 @@ public static partial class D3D12
 	// D3D12_ROOT_PARAMETER_TYPE ParameterType; union { D3D12_ROOT_DESCRIPTOR_TABLE DescriptorTable; D3D12_ROOT_CONSTANTS Constants;
 	// D3D12_ROOT_DESCRIPTOR Descriptor; }; D3D12_SHADER_VISIBILITY ShaderVisibility; } D3D12_ROOT_PARAMETER;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_ROOT_PARAMETER")]
-	[StructLayout(LayoutKind.Explicit)]
+	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_ROOT_PARAMETER
 	{
 		/// <summary>
 		/// A <c>D3D12_ROOT_PARAMETER_TYPE</c>-typed value that specifies the type of root signature slot. This member determines which type
 		/// to use in the union below.
 		/// </summary>
-		[FieldOffset(0)]
 		public D3D12_ROOT_PARAMETER_TYPE ParameterType;
+
+		private UNION u;
+
+		[StructLayout(LayoutKind.Explicit)]
+		private struct UNION
+		{
+			[FieldOffset(0)]
+			public D3D12_ROOT_DESCRIPTOR_TABLE DescriptorTable;
+
+			[FieldOffset(0)]
+			public D3D12_ROOT_CONSTANTS Constants;
+
+			[FieldOffset(0)]
+			public D3D12_ROOT_DESCRIPTOR Descriptor;
+		}
+
+		/// <summary>
+		/// A <c>D3D12_SHADER_VISIBILITY</c>-typed value that specifies the shaders that can access the contents of the root signature slot.
+		/// </summary>
+		public D3D12_SHADER_VISIBILITY ShaderVisibility;
 
 		/// <summary>
 		/// A <c>D3D12_ROOT_DESCRIPTOR_TABLE</c> structure that describes the layout of a descriptor table as a collection of descriptor
 		/// ranges that appear one after the other in a descriptor heap.
 		/// </summary>
-		[FieldOffset(4)]
-		public D3D12_ROOT_DESCRIPTOR_TABLE DescriptorTable;
+		public D3D12_ROOT_DESCRIPTOR_TABLE DescriptorTable { get => u.DescriptorTable; set => u = new UNION { DescriptorTable = value }; }
 
 		/// <summary>
 		/// A <c>D3D12_ROOT_CONSTANTS</c> structure that describes constants inline in the root signature that appear in shaders as one
 		/// constant buffer.
 		/// </summary>
-		[FieldOffset(4)]
-		public D3D12_ROOT_CONSTANTS Constants;
+		public D3D12_ROOT_CONSTANTS Constants { get => u.Constants; set => u = new UNION { Constants = value }; }
 
 		/// <summary>
 		/// A <c>D3D12_ROOT_DESCRIPTOR</c> structure that describes descriptors inline in the root signature that appear in shaders.
 		/// </summary>
-		[FieldOffset(4)]
-		public D3D12_ROOT_DESCRIPTOR Descriptor;
+		public D3D12_ROOT_DESCRIPTOR Descriptor { get => u.Descriptor; set => u = new UNION { Descriptor = value }; }
 
-		/// <summary>
-		/// A <c>D3D12_SHADER_VISIBILITY</c>-typed value that specifies the shaders that can access the contents of the root signature slot.
-		/// </summary>
-		[FieldOffset(4)]
-		public D3D12_SHADER_VISIBILITY ShaderVisibility;
+		/// <summary>Initializes with a descriptor table.</summary>
+		/// <param name="pDescriptorRanges">The descriptor ranges.</param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <param name="h">The allocated memory for <paramref name="pDescriptorRanges"/>.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER"/>.</returns>
+		public static D3D12_ROOT_PARAMETER InitAsDescriptorTable([In] D3D12_DESCRIPTOR_RANGE[] pDescriptorRanges,
+			[Optional] D3D12_SHADER_VISIBILITY visibility, out SafeAllocatedMemoryHandle h) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
+				ShaderVisibility = visibility,
+				u = new() { DescriptorTable = D3D12_ROOT_DESCRIPTOR_TABLE.Init(pDescriptorRanges, out h) }
+			};
+
+		/// <summary>Initializes with constants.</summary>
+		/// <param name="num32BitValues">
+		/// The number of constants that occupy a single shader slot (these constants appear like a single constant buffer). All constants
+		/// occupy a single root signature bind slot.
+		/// </param>
+		/// <param name="shaderRegister">The shader register.</param>
+		/// <param name="registerSpace">The register space.</param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER"/>.</returns>
+		public static D3D12_ROOT_PARAMETER InitAsConstants(uint num32BitValues, uint shaderRegister, uint registerSpace = 0,
+			D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY.D3D12_SHADER_VISIBILITY_ALL) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS,
+				ShaderVisibility = visibility,
+				u = new() { Constants = new(shaderRegister, registerSpace, num32BitValues) }
+			};
+
+		/// <summary>Initializes with constants for a buffer view.</summary>
+		/// <param name="shaderRegister">The shader register.</param>
+		/// <param name="registerSpace">The register space.</param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER"/>.</returns>
+		public static D3D12_ROOT_PARAMETER InitAsConstantBufferView(uint shaderRegister, uint registerSpace = 0,
+			D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY.D3D12_SHADER_VISIBILITY_ALL) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_CBV,
+				ShaderVisibility = visibility,
+				u = new() { Descriptor = new(shaderRegister, registerSpace) }
+			};
+
+		/// <summary>Initializes with constants for a shader view.</summary>
+		/// <param name="shaderRegister">The shader register.</param>
+		/// <param name="registerSpace">The register space.</param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER"/>.</returns>
+		public static D3D12_ROOT_PARAMETER InitAsShaderResourceView(uint shaderRegister, uint registerSpace = 0,
+			D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY.D3D12_SHADER_VISIBILITY_ALL) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_SRV,
+				ShaderVisibility = visibility,
+				u = new() { Descriptor = new(shaderRegister, registerSpace) }
+			};
+
+		/// <summary>Initializes with constants for an access view.</summary>
+		/// <param name="shaderRegister">The shader register.</param>
+		/// <param name="registerSpace">The register space.</param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER"/>.</returns>
+		public static D3D12_ROOT_PARAMETER InitAsUnorderedAccessView(uint shaderRegister, uint registerSpace = 0,
+			D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY.D3D12_SHADER_VISIBILITY_ALL) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_UAV,
+				ShaderVisibility = visibility,
+				u = new() { Descriptor = new(shaderRegister, registerSpace) }
+			};
 	}
 
 	/// <summary>Describes the slot of a root signature version 1.1.</summary>
@@ -7033,41 +7141,132 @@ public static partial class D3D12
 	// D3D12_ROOT_PARAMETER_TYPE ParameterType; union { D3D12_ROOT_DESCRIPTOR_TABLE1 DescriptorTable; D3D12_ROOT_CONSTANTS Constants;
 	// D3D12_ROOT_DESCRIPTOR1 Descriptor; }; D3D12_SHADER_VISIBILITY ShaderVisibility; } D3D12_ROOT_PARAMETER1;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_ROOT_PARAMETER1")]
-	[StructLayout(LayoutKind.Explicit)]
+	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_ROOT_PARAMETER1
 	{
 		/// <summary>
 		/// A <c>D3D12_ROOT_PARAMETER_TYPE</c>-typed value that specifies the type of root signature slot. This member determines which type
 		/// to use in the union below.
 		/// </summary>
-		[FieldOffset(0)]
 		public D3D12_ROOT_PARAMETER_TYPE ParameterType;
+
+		private UNION u;
+
+		[StructLayout(LayoutKind.Explicit)]
+		private struct UNION
+		{
+			[FieldOffset(0)]
+			public D3D12_ROOT_DESCRIPTOR_TABLE1 DescriptorTable;
+
+			[FieldOffset(0)]
+			public D3D12_ROOT_CONSTANTS Constants;
+
+			[FieldOffset(0)]
+			public D3D12_ROOT_DESCRIPTOR1 Descriptor;
+		}
+
+		/// <summary>
+		/// A <c>D3D12_SHADER_VISIBILITY</c>-typed value that specifies the shaders that can access the contents of the root signature slot.
+		/// </summary>
+		public D3D12_SHADER_VISIBILITY ShaderVisibility;
 
 		/// <summary>
 		/// A <c>D3D12_ROOT_DESCRIPTOR_TABLE1</c> structure that describes the layout of a descriptor table as a collection of descriptor
 		/// ranges that appear one after the other in a descriptor heap.
 		/// </summary>
-		[FieldOffset(4)]
-		public D3D12_ROOT_DESCRIPTOR_TABLE1 DescriptorTable;
+		public D3D12_ROOT_DESCRIPTOR_TABLE1 DescriptorTable { get => u.DescriptorTable; set => u = new UNION { DescriptorTable = value }; }
 
 		/// <summary>
 		/// A <c>D3D12_ROOT_CONSTANTS</c> structure that describes constants inline in the root signature that appear in shaders as one
 		/// constant buffer.
 		/// </summary>
-		[FieldOffset(4)]
-		public D3D12_ROOT_CONSTANTS Constants;
+		public D3D12_ROOT_CONSTANTS Constants { get => u.Constants; set => u = new UNION { Constants = value }; }
 
 		/// <summary>
 		/// A <c>D3D12_ROOT_DESCRIPTOR1</c> structure that describes descriptors inline in the root signature that appear in shaders.
 		/// </summary>
-		[FieldOffset(4)]
-		public D3D12_ROOT_DESCRIPTOR1 Descriptor;
+		public D3D12_ROOT_DESCRIPTOR1 Descriptor { get => u.Descriptor; set => u = new UNION { Descriptor = value }; }
 
-		/// <summary>
-		/// A <c>D3D12_SHADER_VISIBILITY</c>-typed value that specifies the shaders that can access the contents of the root signature slot.
-		/// </summary>
-		[FieldOffset(4)]
-		public D3D12_SHADER_VISIBILITY ShaderVisibility;
+		/// <summary>Initializes with a descriptor table.</summary>
+		/// <param name="pDescriptorRanges">The descriptor ranges.</param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <param name="h">The allocated memory for <paramref name="pDescriptorRanges"/>.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER1"/>.</returns>
+		public static D3D12_ROOT_PARAMETER1 InitAsDescriptorTable([In] D3D12_DESCRIPTOR_RANGE1[] pDescriptorRanges,
+			[Optional] D3D12_SHADER_VISIBILITY visibility, out SafeAllocatedMemoryHandle h) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
+				ShaderVisibility = visibility,
+				u = new() { DescriptorTable = D3D12_ROOT_DESCRIPTOR_TABLE1.Init(pDescriptorRanges, out h) }
+			};
+
+		/// <summary>Initializes with constants.</summary>
+		/// <param name="num32BitValues">
+		/// The number of constants that occupy a single shader slot (these constants appear like a single constant buffer). All constants
+		/// occupy a single root signature bind slot.
+		/// </param>
+		/// <param name="shaderRegister">The shader register.</param>
+		/// <param name="registerSpace">The register space.</param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER1"/>.</returns>
+		public static D3D12_ROOT_PARAMETER1 InitAsConstants(uint num32BitValues, uint shaderRegister, uint registerSpace,
+			D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY.D3D12_SHADER_VISIBILITY_ALL) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS,
+				ShaderVisibility = visibility,
+				u = new() { Constants = new D3D12_ROOT_CONSTANTS(shaderRegister, registerSpace, num32BitValues) }
+			};
+
+		/// <summary>Initializes with constants for a buffer view.</summary>
+		/// <param name="shaderRegister">The shader register.</param>
+		/// <param name="registerSpace">The register space.</param>
+		/// <param name="flags">
+		/// Specifies the <c>D3D12_ROOT_DESCRIPTOR_FLAGS</c> that determine the volatility of descriptors and the data they reference.
+		/// </param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER1"/>.</returns>
+		public static D3D12_ROOT_PARAMETER1 InitAsConstantBufferView(uint shaderRegister, uint registerSpace,
+			D3D12_ROOT_DESCRIPTOR_FLAGS flags = D3D12_ROOT_DESCRIPTOR_FLAGS.D3D12_ROOT_DESCRIPTOR_FLAG_NONE,
+			D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY.D3D12_SHADER_VISIBILITY_ALL) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_CBV,
+				ShaderVisibility = visibility,
+				u = new() { Descriptor = new(shaderRegister, registerSpace, flags) }
+			};
+
+		/// <summary>Initializes with constants for a shader view.</summary>
+		/// <param name="shaderRegister">The shader register.</param>
+		/// <param name="registerSpace">The register space.</param>
+		/// <param name="flags">
+		/// Specifies the <c>D3D12_ROOT_DESCRIPTOR_FLAGS</c> that determine the volatility of descriptors and the data they reference.
+		/// </param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER1"/>.</returns>
+		public static D3D12_ROOT_PARAMETER1 InitAsShaderResourceView(uint shaderRegister, uint registerSpace,
+			D3D12_ROOT_DESCRIPTOR_FLAGS flags = D3D12_ROOT_DESCRIPTOR_FLAGS.D3D12_ROOT_DESCRIPTOR_FLAG_NONE,
+			D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY.D3D12_SHADER_VISIBILITY_ALL) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_SRV,
+				ShaderVisibility = visibility,
+				u = new() { Descriptor = new(shaderRegister, registerSpace, flags) }
+			};
+
+		/// <summary>Initializes with constants for a shader view.</summary>
+		/// <param name="shaderRegister">The shader register.</param>
+		/// <param name="registerSpace">The register space.</param>
+		/// <param name="flags">
+		/// Specifies the <c>D3D12_ROOT_DESCRIPTOR_FLAGS</c> that determine the volatility of descriptors and the data they reference.
+		/// </param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER1"/>.</returns>
+		public static D3D12_ROOT_PARAMETER1 InitAsUnorderedAccessView(uint shaderRegister, uint registerSpace,
+			D3D12_ROOT_DESCRIPTOR_FLAGS flags = D3D12_ROOT_DESCRIPTOR_FLAGS.D3D12_ROOT_DESCRIPTOR_FLAG_NONE,
+			D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY.D3D12_SHADER_VISIBILITY_ALL) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_UAV,
+				ShaderVisibility = visibility,
+				u = new() { Descriptor = new(shaderRegister, registerSpace, flags) }
+			};
 	}
 
 	/// <summary>Describes the layout of a root signature version 1.0.</summary>
@@ -7104,6 +7303,23 @@ public static partial class D3D12
 		/// value specifies options for the root signature layout.
 		/// </summary>
 		public D3D12_ROOT_SIGNATURE_FLAGS Flags;
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC"/> struct.</summary>
+		/// <param name="cParameters">The number of elements in the <i>pParameters</i> array.</param>
+		/// <param name="pParameters">A pointer to an array of <c>D3D12_ROOT_PARAMETER</c> structures for the slots in the root signature.</param>
+		/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
+		/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
+		/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
+		public D3D12_ROOT_SIGNATURE_DESC(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER> pParameters, SizeT cStaticSamplers = default,
+			ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default,
+			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
+		{
+			NumParameters = cParameters;
+			this.pParameters = pParameters;
+			NumStaticSamplers = cStaticSamplers;
+			this.pStaticSamplers = pStaticSamplers;
+			Flags = flags;
+		}
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC"/> struct.</summary>
 		/// <param name="pParameters">An array of <c>D3D12_ROOT_PARAMETER</c> structures for the slots in the root signature.</param>
@@ -7170,6 +7386,23 @@ public static partial class D3D12
 		public D3D12_ROOT_SIGNATURE_FLAGS Flags;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC1"/> struct.</summary>
+		/// <param name="cParameters">The number of elements in the <i>pParameters</i> array.</param>
+		/// <param name="pParameters">A pointer to an array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
+		/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
+		/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
+		/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
+		public D3D12_ROOT_SIGNATURE_DESC1(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters, SizeT cStaticSamplers = default,
+			ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default,
+			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
+		{
+			NumParameters = cParameters;
+			this.pParameters = pParameters;
+			NumStaticSamplers = cStaticSamplers;
+			this.pStaticSamplers = pStaticSamplers;
+			Flags = flags;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC1"/> struct.</summary>
 		/// <param name="pParameters">An array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
 		/// <param name="pStaticSamplers">Optional array of one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
 		/// <param name="flags">Specifies options for the root signature layout.</param>
@@ -7229,6 +7462,23 @@ public static partial class D3D12
 
 		/// <summary>Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</summary>
 		public D3D12_ROOT_SIGNATURE_FLAGS Flags;
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC2"/> struct.</summary>
+		/// <param name="cParameters">The number of elements in the <i>pParameters</i> array.</param>
+		/// <param name="pParameters">A pointer to an array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
+		/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
+		/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC1</c> structures.</param>
+		/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
+		public D3D12_ROOT_SIGNATURE_DESC2(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters, SizeT cStaticSamplers = default,
+			ArrayPointer<D3D12_STATIC_SAMPLER_DESC1> pStaticSamplers = default,
+			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
+		{
+			NumParameters = cParameters;
+			this.pParameters = pParameters;
+			NumStaticSamplers = cStaticSamplers;
+			this.pStaticSamplers = pStaticSamplers;
+			Flags = flags;
+		}
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_ROOT_SIGNATURE_DESC2"/> struct.</summary>
 		/// <param name="pParameters">An array of <c>D3D12_ROOT_PARAMETER1</c> structures for the slots in the root signature.</param>
@@ -7801,62 +8051,69 @@ public static partial class D3D12
 	// FLOAT MaxLOD; UINT ShaderRegister; UINT RegisterSpace; D3D12_SHADER_VISIBILITY ShaderVisibility; } D3D12_STATIC_SAMPLER_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_STATIC_SAMPLER_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_STATIC_SAMPLER_DESC
+	public struct D3D12_STATIC_SAMPLER_DESC(uint shaderRegister, D3D12_FILTER filter = D3D12_FILTER.D3D12_FILTER_ANISOTROPIC,
+		D3D12_TEXTURE_ADDRESS_MODE addressU = D3D12_TEXTURE_ADDRESS_MODE.D3D12_TEXTURE_ADDRESS_MODE_WRAP,
+		D3D12_TEXTURE_ADDRESS_MODE addressV = D3D12_TEXTURE_ADDRESS_MODE.D3D12_TEXTURE_ADDRESS_MODE_WRAP,
+		D3D12_TEXTURE_ADDRESS_MODE addressW = D3D12_TEXTURE_ADDRESS_MODE.D3D12_TEXTURE_ADDRESS_MODE_WRAP,
+		float mipLODBias = 0f, uint maxAnisotropy = 16, D3D12_COMPARISON_FUNC comparisonFunc = D3D12_COMPARISON_FUNC.D3D12_COMPARISON_FUNC_LESS_EQUAL,
+		D3D12_STATIC_BORDER_COLOR borderColor = D3D12_STATIC_BORDER_COLOR.D3D12_STATIC_BORDER_COLOR_OPAQUE_WHITE, float minLOD = 0f,
+		float maxLOD = D3D12_FLOAT32_MAX, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY.D3D12_SHADER_VISIBILITY_ALL,
+		uint registerSpace = 0)
 	{
 		/// <summary>The filtering method to use when sampling a texture, as a <c>D3D12_FILTER</c> enumeration constant.</summary>
-		public D3D12_FILTER Filter;
+		public D3D12_FILTER Filter = filter;
 
 		/// <summary>
 		/// Specifies the <c>D3D12_TEXTURE_ADDRESS_MODE</c> mode to use for resolving a <i>u</i> texture coordinate that is outside the 0 to
 		/// 1 range.
 		/// </summary>
-		public D3D12_TEXTURE_ADDRESS_MODE AddressU;
+		public D3D12_TEXTURE_ADDRESS_MODE AddressU = addressU;
 
 		/// <summary>
 		/// Specifies the <c>D3D12_TEXTURE_ADDRESS_MODE</c> mode to use for resolving a <i>v</i> texture coordinate that is outside the 0 to
 		/// 1 range.
 		/// </summary>
-		public D3D12_TEXTURE_ADDRESS_MODE AddressV;
+		public D3D12_TEXTURE_ADDRESS_MODE AddressV = addressV;
 
 		/// <summary>
 		/// Specifies the <c>D3D12_TEXTURE_ADDRESS_MODE</c> mode to use for resolving a <i>w</i> texture coordinate that is outside the 0 to
 		/// 1 range.
 		/// </summary>
-		public D3D12_TEXTURE_ADDRESS_MODE AddressW;
+		public D3D12_TEXTURE_ADDRESS_MODE AddressW = addressW;
 
 		/// <summary>
 		/// Offset from the calculated mipmap level. For example, if Direct3D calculates that a texture should be sampled at mipmap level 3
 		/// and MipLODBias is 2, then the texture will be sampled at mipmap level 5.
 		/// </summary>
-		public float MipLODBias;
+		public float MipLODBias = mipLODBias;
 
 		/// <summary>
 		/// Clamping value used if D3D12_FILTER_ANISOTROPIC or D3D12_FILTER_COMPARISON_ANISOTROPIC is specified as the filter. Valid values
 		/// are between 1 and 16.
 		/// </summary>
-		public uint MaxAnisotropy;
+		public uint MaxAnisotropy = maxAnisotropy;
 
 		/// <summary>A function that compares sampled data against existing sampled data. The function options are listed in <c>D3D12_COMPARISON_FUNC</c>.</summary>
-		public D3D12_COMPARISON_FUNC ComparisonFunc;
+		public D3D12_COMPARISON_FUNC ComparisonFunc = comparisonFunc;
 
 		/// <summary>
 		/// One member of <c>D3D12_STATIC_BORDER_COLOR</c>, the border color to use if D3D12_TEXTURE_ADDRESS_MODE_BORDER is specified for
 		/// AddressU, AddressV, or AddressW. Range must be between 0.0 and 1.0 inclusive.
 		/// </summary>
-		public D3D12_STATIC_BORDER_COLOR BorderColor;
+		public D3D12_STATIC_BORDER_COLOR BorderColor = borderColor;
 
 		/// <summary>
 		/// Lower end of the mipmap range to clamp access to, where 0 is the largest and most detailed mipmap level and any level higher
 		/// than that is less detailed.
 		/// </summary>
-		public float MinLOD;
+		public float MinLOD = minLOD;
 
 		/// <summary>
 		/// Upper end of the mipmap range to clamp access to, where 0 is the largest and most detailed mipmap level and any level higher
 		/// than that is less detailed. This value must be greater than or equal to MinLOD. To have no upper limit on LOD set this to a
 		/// large value such as D3D12_FLOAT32_MAX.
 		/// </summary>
-		public float MaxLOD;
+		public float MaxLOD = maxLOD;
 
 		/// <summary>
 		/// The <i>ShaderRegister</i> and <i>RegisterSpace</i> parameters correspond to the binding syntax of HLSL. For example, in HLSL:
@@ -7867,75 +8124,82 @@ public static partial class D3D12
 		/// runtime heap descriptors, using the root signature data structure.
 		/// </para>
 		/// </summary>
-		public uint ShaderRegister;
+		public uint ShaderRegister = shaderRegister;
 
 		/// <summary>See the description for <i>ShaderRegister</i>. Register space is optional; the default register space is 0.</summary>
-		public uint RegisterSpace;
+		public uint RegisterSpace = registerSpace;
 
 		/// <summary>Specifies the visibility of the sampler to the pipeline shaders, one member of <c>D3D12_SHADER_VISIBILITY</c>.</summary>
-		public D3D12_SHADER_VISIBILITY ShaderVisibility;
+		public D3D12_SHADER_VISIBILITY ShaderVisibility = shaderVisibility;
 	}
 
 	/// <summary>Describes a static sampler.</summary>
 	/// <remarks>Use this structure with the <c>D3D12_ROOT_SIGNATURE_DESC2</c> structure.</remarks>
 	[PInvokeData("d3d12.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_STATIC_SAMPLER_DESC1
+	public struct D3D12_STATIC_SAMPLER_DESC1(uint shaderRegister, D3D12_FILTER filter = D3D12_FILTER.D3D12_FILTER_ANISOTROPIC,
+		D3D12_TEXTURE_ADDRESS_MODE addressU = D3D12_TEXTURE_ADDRESS_MODE.D3D12_TEXTURE_ADDRESS_MODE_WRAP,
+		D3D12_TEXTURE_ADDRESS_MODE addressV = D3D12_TEXTURE_ADDRESS_MODE.D3D12_TEXTURE_ADDRESS_MODE_WRAP,
+		D3D12_TEXTURE_ADDRESS_MODE addressW = D3D12_TEXTURE_ADDRESS_MODE.D3D12_TEXTURE_ADDRESS_MODE_WRAP,
+		float mipLODBias = 0f, uint maxAnisotropy = 16, D3D12_COMPARISON_FUNC comparisonFunc = D3D12_COMPARISON_FUNC.D3D12_COMPARISON_FUNC_LESS_EQUAL,
+		D3D12_STATIC_BORDER_COLOR borderColor = D3D12_STATIC_BORDER_COLOR.D3D12_STATIC_BORDER_COLOR_OPAQUE_WHITE, float minLOD = 0f,
+		float maxLOD = D3D12_FLOAT32_MAX, D3D12_SHADER_VISIBILITY shaderVisibility = D3D12_SHADER_VISIBILITY.D3D12_SHADER_VISIBILITY_ALL,
+		uint registerSpace = 0, D3D12_SAMPLER_FLAGS flags = D3D12_SAMPLER_FLAGS.D3D12_SAMPLER_FLAG_NONE)
 	{
 		/// <summary>The filtering method to use when sampling a texture, as a <c>D3D12_FILTER</c> enumeration constant.</summary>
-		public D3D12_FILTER Filter;
+		public D3D12_FILTER Filter = filter;
 
 		/// <summary>
 		/// Specifies the <c>D3D12_TEXTURE_ADDRESS_MODE</c> mode to use for resolving a <i>u</i> texture coordinate that is outside the 0 to
 		/// 1 range.
 		/// </summary>
-		public D3D12_TEXTURE_ADDRESS_MODE AddressU;
+		public D3D12_TEXTURE_ADDRESS_MODE AddressU = addressU;
 
 		/// <summary>
 		/// Specifies the <c>D3D12_TEXTURE_ADDRESS_MODE</c> mode to use for resolving a <i>v</i> texture coordinate that is outside the 0 to
 		/// 1 range.
 		/// </summary>
-		public D3D12_TEXTURE_ADDRESS_MODE AddressV;
+		public D3D12_TEXTURE_ADDRESS_MODE AddressV = addressV;
 
 		/// <summary>
 		/// Specifies the <c>D3D12_TEXTURE_ADDRESS_MODE</c> mode to use for resolving a <i>w</i> texture coordinate that is outside the 0 to
 		/// 1 range.
 		/// </summary>
-		public D3D12_TEXTURE_ADDRESS_MODE AddressW;
+		public D3D12_TEXTURE_ADDRESS_MODE AddressW = addressW;
 
 		/// <summary>
 		/// Offset from the calculated mipmap level. For example, if Direct3D calculates that a texture should be sampled at mipmap level 3
 		/// and MipLODBias is 2, then the texture will be sampled at mipmap level 5.
 		/// </summary>
-		public float MipLODBias;
+		public float MipLODBias = mipLODBias;
 
 		/// <summary>
 		/// Clamping value used if D3D12_FILTER_ANISOTROPIC or D3D12_FILTER_COMPARISON_ANISOTROPIC is specified as the filter. Valid values
 		/// are between 1 and 16.
 		/// </summary>
-		public uint MaxAnisotropy;
+		public uint MaxAnisotropy = maxAnisotropy;
 
 		/// <summary>A function that compares sampled data against existing sampled data. The function options are listed in <c>D3D12_COMPARISON_FUNC</c>.</summary>
-		public D3D12_COMPARISON_FUNC ComparisonFunc;
+		public D3D12_COMPARISON_FUNC ComparisonFunc = comparisonFunc;
 
 		/// <summary>
 		/// One member of <c>D3D12_STATIC_BORDER_COLOR</c>, the border color to use if D3D12_TEXTURE_ADDRESS_MODE_BORDER is specified for
 		/// AddressU, AddressV, or AddressW. Range must be between 0.0 and 1.0 inclusive.
 		/// </summary>
-		public D3D12_STATIC_BORDER_COLOR BorderColor;
+		public D3D12_STATIC_BORDER_COLOR BorderColor = borderColor;
 
 		/// <summary>
 		/// Lower end of the mipmap range to clamp access to, where 0 is the largest and most detailed mipmap level and any level higher
 		/// than that is less detailed.
 		/// </summary>
-		public float MinLOD;
+		public float MinLOD = minLOD;
 
 		/// <summary>
 		/// Upper end of the mipmap range to clamp access to, where 0 is the largest and most detailed mipmap level and any level higher
 		/// than that is less detailed. This value must be greater than or equal to MinLOD. To have no upper limit on LOD set this to a
 		/// large value such as D3D12_FLOAT32_MAX.
 		/// </summary>
-		public float MaxLOD;
+		public float MaxLOD = maxLOD;
 
 		/// <summary>
 		/// The <i>ShaderRegister</i> and <i>RegisterSpace</i> parameters correspond to the binding syntax of HLSL. For example, in HLSL:
@@ -7946,16 +8210,23 @@ public static partial class D3D12
 		/// runtime heap descriptors, using the root signature data structure.
 		/// </para>
 		/// </summary>
-		public uint ShaderRegister;
+		public uint ShaderRegister = shaderRegister;
 
 		/// <summary>See the description for <i>ShaderRegister</i>. Register space is optional; the default register space is 0.</summary>
-		public uint RegisterSpace;
+		public uint RegisterSpace = registerSpace;
 
 		/// <summary>Specifies the visibility of the sampler to the pipeline shaders, one member of <c>D3D12_SHADER_VISIBILITY</c>.</summary>
-		public D3D12_SHADER_VISIBILITY ShaderVisibility;
+		public D3D12_SHADER_VISIBILITY ShaderVisibility = shaderVisibility;
 
 		/// <summary/>
-		public D3D12_SAMPLER_FLAGS Flags;
+		public D3D12_SAMPLER_FLAGS Flags = flags;
+
+		/// <summary>Performs an implicit conversion from <see cref="D3D12_STATIC_SAMPLER_DESC1"/> to <see cref="D3D12_STATIC_SAMPLER_DESC"/>.</summary>
+		/// <param name="desc">The D3D12_STATIC_SAMPLER_DESC1.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D3D12_STATIC_SAMPLER_DESC(D3D12_STATIC_SAMPLER_DESC1 desc) => new(desc.ShaderRegister,
+			desc.Filter, desc.AddressU, desc.AddressV, desc.AddressW, desc.MipLODBias, desc.MaxAnisotropy, desc.ComparisonFunc, desc.BorderColor,
+			desc.MinLOD, desc.MaxLOD, desc.ShaderVisibility, desc.RegisterSpace);
 	}
 
 	/// <summary>Describes a stream output buffer.</summary>

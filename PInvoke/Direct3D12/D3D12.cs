@@ -4,6 +4,7 @@ global using D3D12_BOX = Vanara.PInvoke.DXGI.D3D10_BOX;
 global using D3D12_GPU_VIRTUAL_ADDRESS = System.UInt64;
 global using D3D12_RECT = Vanara.PInvoke.RECT;
 using System.Linq;
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
 
@@ -1967,6 +1968,226 @@ public static partial class D3D12
 	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3D12SerializeVersionedRootSignature(in D3D12_VERSIONED_ROOT_SIGNATURE_DESC pRootSignature,
 		out ID3DBlob ppBlob, out ID3DBlob? ppErrorBlob);
+
+	/// <summary>
+	/// Helps enable root signature 1.1 features when they are available, and does not require maintaining two code paths for building root
+	/// signatures. This helper method reconstructs a version 1.0 root signature when version 1.1 is not supported.
+	/// </summary>
+	/// <param name="pRootSignatureDesc">
+	/// <para>Type: <b>const D3D12_VERSIONED_ROOT_SIGNATURE_DESC*</b></para>
+	/// <para>Specifies a <c><b>D3D12_VERSIONED_ROOT_SIGNATURE_DESC</b></c> that contains a description of any version of a root signature.</para>
+	/// </param>
+	/// <param name="MaxVersion">
+	/// <para>Type: <b>D3D_ROOT_SIGNATURE_VERSION</b></para>
+	/// <para>Specifies the maximum supported <c><b>D3D_ROOT_SIGNATURE_VERSION</b></c>.</para>
+	/// </param>
+	/// <param name="ppBlob">
+	/// <para>Type: <b>ID3DBlob**</b></para>
+	/// <para>
+	/// A pointer to a memory block that receives a pointer to the <c><b>ID3DBlob</b></c> interface that you can use to access the
+	/// serialized root signature.
+	/// </para>
+	/// </param>
+	/// <param name="ppErrorBlob">
+	/// <para>Type: <b>ID3DBlob**</b></para>
+	/// <para>
+	/// A pointer to a memory block that receives a pointer to the <c><b>ID3DBlob</b></c> interface that you can use to access serializer
+	/// error messages, or <b>NULL</b> if there are no errors.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b><c><b>HRESULT</b></c></b></para>
+	/// <para>Returns <b>S_OK</b> if successful; otherwise, returns one of the <c>Direct3D 12 Return Codes</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// This function was released to coincide with the Windows 10 Anniversary Update (14393). In order to support Windows 10 versions prior
+	/// to this, use of this function requires d3d12.lib be set up for delay loading.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/direct3d12/d3dx12serializeversionedrootsignature HRESULT inline
+	// D3DX12SerializeVersionedRootSignature( _In_ const D3D12_VERSIONED_ROOT_SIGNATURE_DESC *pRootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION
+	// MaxVersion, _Out_ ID3DBlob **ppBlob, _Out_opt_ ID3DBlob **ppErrorBlob );
+	[PInvokeData("D3dx12.h")]
+	public static HRESULT D3DX12SerializeVersionedRootSignature(in D3D12_VERSIONED_ROOT_SIGNATURE_DESC pRootSignatureDesc,
+		D3D_ROOT_SIGNATURE_VERSION MaxVersion, out ID3DBlob? ppBlob, out ID3DBlob? ppErrorBlob)
+	{
+		ppBlob = ppErrorBlob = null;
+		switch (MaxVersion)
+		{
+			case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0:
+				switch (pRootSignatureDesc.Version)
+				{
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0:
+						return D3D12SerializeRootSignature(pRootSignatureDesc.Desc_1_0, D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1, out ppBlob, out ppErrorBlob);
+
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1:
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2:
+						{
+							HRESULT hr = HRESULT.S_OK;
+							D3D12_ROOT_SIGNATURE_DESC1 desc_1_1 = pRootSignatureDesc.Desc_1_1;
+
+							SizeT ParametersSize = Marshal.SizeOf(typeof(D3D12_ROOT_PARAMETER)) * desc_1_1.NumParameters;
+							SafeHeapBlock pParameters = (ParametersSize > 0) ? HeapAlloc(GetProcessHeap(), 0, ParametersSize) : SafeHeapBlock.Null;
+							if (ParametersSize > 0 && pParameters.IsInvalid)
+							{
+								hr = HRESULT.E_OUTOFMEMORY;
+							}
+
+							var pParameters_1_0 = pParameters.AsSpan<D3D12_ROOT_PARAMETER>((int)desc_1_1.NumParameters);
+
+							if (hr.Succeeded)
+							{
+								for (int n = 0; n < desc_1_1.NumParameters; n++)
+								{
+									pParameters_1_0[n].ParameterType = desc_1_1.pParameters[n].ParameterType;
+									pParameters_1_0[n].ShaderVisibility = desc_1_1.pParameters[n].ShaderVisibility;
+
+									switch (desc_1_1.pParameters[n].ParameterType)
+									{
+										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS:
+											pParameters_1_0[n].Constants = desc_1_1.pParameters[n].Constants;
+											break;
+
+										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_CBV:
+										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_SRV:
+										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_UAV:
+											pParameters_1_0[n].Descriptor = desc_1_1.pParameters[n].Descriptor;
+											break;
+
+										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE:
+											{
+												D3D12_ROOT_DESCRIPTOR_TABLE1 table_1_1 = desc_1_1.pParameters[n].DescriptorTable;
+
+												SizeT DescriptorRangesSize = Marshal.SizeOf(typeof(D3D12_DESCRIPTOR_RANGE)) * table_1_1.NumDescriptorRanges;
+												SafeHeapBlock pDescriptorRanges = (DescriptorRangesSize > 0 && hr.Succeeded) ? HeapAlloc(GetProcessHeap(), 0, DescriptorRangesSize) : SafeHeapBlock.Null;
+												if (DescriptorRangesSize > 0 && pDescriptorRanges.IsInvalid)
+												{
+													hr = HRESULT.E_OUTOFMEMORY;
+												}
+												var pDescriptorRanges_1_0 = pDescriptorRanges.AsSpan<D3D12_DESCRIPTOR_RANGE>((int)table_1_1.NumDescriptorRanges);
+
+												if (hr.Succeeded)
+												{
+													for (int x = 0; x < table_1_1.NumDescriptorRanges; x++)
+													{
+														pDescriptorRanges_1_0[x] = table_1_1.pDescriptorRanges[x];
+													}
+												}
+
+												D3D12_ROOT_DESCRIPTOR_TABLE table_1_0 = pParameters_1_0[n].DescriptorTable;
+												table_1_0.NumDescriptorRanges = table_1_1.NumDescriptorRanges;
+												table_1_0.pDescriptorRanges = pDescriptorRanges; // _1_0;
+											}
+											break;
+
+										default:
+											break;
+									}
+								}
+							}
+
+							Span<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default;
+							SafeHeapBlock ppSamplers = SafeHeapBlock.Null;
+							if (desc_1_1.NumStaticSamplers > 0 && pRootSignatureDesc.Version == D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2)
+							{
+								SizeT SamplersSize = Marshal.SizeOf(typeof(D3D12_STATIC_SAMPLER_DESC)) * desc_1_1.NumStaticSamplers;
+								ppSamplers = HeapAlloc(GetProcessHeap(), 0, SamplersSize);
+
+								if (ppSamplers.IsInvalid)
+								{
+									hr = HRESULT.E_OUTOFMEMORY;
+								}
+								else
+								{
+									pStaticSamplers = ppSamplers.AsSpan<D3D12_STATIC_SAMPLER_DESC>((int)desc_1_1.NumStaticSamplers);
+									D3D12_ROOT_SIGNATURE_DESC2 desc_1_2 = pRootSignatureDesc.Desc_1_2;
+									for (int n = 0; n < desc_1_1.NumStaticSamplers; ++n)
+									{
+										if ((desc_1_2.pStaticSamplers[n].Flags & ~D3D12_SAMPLER_FLAGS.D3D12_SAMPLER_FLAG_UINT_BORDER_COLOR) != 0)
+										{
+											hr = HRESULT.E_INVALIDARG;
+											break;
+										}
+										pStaticSamplers[n] = desc_1_2.pStaticSamplers[n];
+									}
+								}
+							}
+
+							if (hr.Succeeded)
+							{
+								D3D12_ROOT_SIGNATURE_DESC desc_1_0 = new(desc_1_1.NumParameters, pParameters, desc_1_1.NumStaticSamplers, pStaticSamplers == default ? (IntPtr)desc_1_1.pStaticSamplers : ppSamplers, desc_1_1.Flags);
+								hr = D3D12SerializeRootSignature(desc_1_0, D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1, out ppBlob, out ppErrorBlob);
+							}
+
+							return hr;
+						}
+
+					default:
+						break;
+				}
+				break;
+
+
+			case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1:
+				switch (pRootSignatureDesc.Version)
+				{
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0:
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1:
+						return D3D12SerializeVersionedRootSignature(pRootSignatureDesc, out ppBlob, out ppErrorBlob);
+
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2:
+						{
+							HRESULT hr = HRESULT.S_OK;
+							D3D12_ROOT_SIGNATURE_DESC1 desc_1_1 = pRootSignatureDesc.Desc_1_1;
+
+							Span<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default;
+							SafeHeapBlock ppStaticSamplers = SafeHeapBlock.Null;
+							if (desc_1_1.NumStaticSamplers > 0)
+							{
+								SizeT SamplersSize = Marshal.SizeOf(typeof(D3D12_STATIC_SAMPLER_DESC)) * desc_1_1.NumStaticSamplers;
+								ppStaticSamplers = HeapAlloc(GetProcessHeap(), 0, SamplersSize);
+
+								if (ppStaticSamplers.IsInvalid)
+								{
+									hr = HRESULT.E_OUTOFMEMORY;
+								}
+								else
+								{
+									pStaticSamplers = ppStaticSamplers.AsSpan<D3D12_STATIC_SAMPLER_DESC>((int)desc_1_1.NumStaticSamplers);
+									D3D12_ROOT_SIGNATURE_DESC2 desc_1_2 = pRootSignatureDesc.Desc_1_2;
+									for (int n = 0; n < desc_1_1.NumStaticSamplers; ++n)
+									{
+										if ((desc_1_2.pStaticSamplers[n].Flags & ~D3D12_SAMPLER_FLAGS.D3D12_SAMPLER_FLAG_UINT_BORDER_COLOR) != 0)
+										{
+											hr = HRESULT.E_INVALIDARG;
+											break;
+										}
+										pStaticSamplers[n] = desc_1_2.pStaticSamplers[n];
+									}
+								}
+							}
+
+							if (hr.Succeeded)
+							{
+								D3D12_VERSIONED_ROOT_SIGNATURE_DESC desc = new(desc_1_1);
+								if (pStaticSamplers != default) desc.Desc_1_1.pStaticSamplers = ppStaticSamplers;
+								hr = D3D12SerializeVersionedRootSignature(desc, out ppBlob, out ppErrorBlob);
+							}
+
+							return hr;
+						}
+
+					default:
+						break;
+				}
+				break;
+
+			case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2:
+			default:
+				return D3D12SerializeVersionedRootSignature(pRootSignatureDesc, out ppBlob, out ppErrorBlob);
+		}
+
+		return HRESULT.E_INVALIDARG;
+	}
 
 	/// <summary>CLSID_D3D12Debug</summary>
 	[ComImport, Guid("f2352aeb-dd84-49fe-b97b-a9dcfdcc1b4f"), ClassInterface(ClassInterfaceType.None)]
