@@ -181,7 +181,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatedownloader-put_updates HRESULT put_Updates(
 		// IUpdateCollection *value );
 		[DispId(0x60020004)]
-		IUpdateCollection Updates
+		IUpdateCollection? Updates
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)]
 			[return: MarshalAs(UnmanagedType.Interface)]
@@ -242,8 +242,8 @@ public static partial class WUApi
 		// IUnknown *onProgressChanged, [in] IUnknown *onCompleted, [in] VARIANT state, [out] IDownloadJob **retval );
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020005)]
 		[return: MarshalAs(UnmanagedType.Interface)]
-		IDownloadJob BeginDownload([In, MarshalAs(UnmanagedType.IUnknown)] object onProgressChanged,
-			[In, MarshalAs(UnmanagedType.IUnknown)] object onCompleted, [In, MarshalAs(UnmanagedType.Struct)] object? state);
+		IDownloadJob BeginDownload([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? onProgressChanged,
+			[In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? onCompleted, [In, MarshalAs(UnmanagedType.Struct)] object? state);
 
 		/// <summary>Starts a synchronous download of the content files that are associated with the updates.</summary>
 		/// <returns>An IDownloadResult interface that contains result codes for the download.</returns>

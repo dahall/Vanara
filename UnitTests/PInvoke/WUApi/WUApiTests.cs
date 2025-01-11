@@ -169,6 +169,16 @@ public class WUApiTests
 		us?.WriteValues();
 		mgr.RemoveService(svcid);
 	}
+
+	[Test]
+	public void UserTest()
+	{
+		// Create Downloader
+		var session = new IUpdateSession();
+		var downloader = session.CreateUpdateDownloader();
+		var updates = new IUpdateCollection();
+		downloader.Updates = updates; // <------ issue
+	}
 }
 
 #if WUTYPELIB
