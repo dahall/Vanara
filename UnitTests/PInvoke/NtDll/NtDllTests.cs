@@ -63,7 +63,7 @@ public partial class NtDllTests
 			Type? t = CorrespondingTypeAttribute.GetCorrespondingTypes(i).FirstOrDefault();
 			if (t is null)
 				continue;
-			var ret = NtQueryInformationFile(hFile, out var stat, mem, mem.Size, i);
+			var ret = NtQueryInformationFile(hFile, out _, mem, mem.Size, i);
 			TestContext.WriteLine($"{i} ({t.Name}) = {ret}");
 			if (ret.Succeeded)
 				mem.DangerousGetHandle().Convert(mem.Size, t, CharSet.Unicode)!.WriteValues();
