@@ -1991,7 +1991,6 @@ public static partial class NtDll
 	NtQueryAttributesFile
 	NtQueryDirectoryFile
 	NtQueryInformationEnlistment
-	NtQueryInformationFile
 	NtQueryInformationProcess
 	NtQueryInformationResourceManager
 	NtQueryInformationThread

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
@@ -25,8 +26,8 @@ public static partial class NtDll
 		FILE_DIRECTORY_FILE = 0x00000001,
 
 		/// <summary>
-		/// System services, file-system drivers, and drivers that write data to the file must actually transfer the data to the file
-		/// before any requested write operation is considered complete.
+		/// System services, file-system drivers, and drivers that write data to the file must actually transfer the data to the file before
+		/// any requested write operation is considered complete.
 		/// </summary>
 		FILE_WRITE_THROUGH = 0x00000002,
 
@@ -43,14 +44,14 @@ public static partial class NtDll
 
 		/// <summary>
 		/// All operations on the file are performed synchronously. Any wait on behalf of the caller is subject to premature termination
-		/// from alerts. This flag also causes the I/O system to maintain the file-position pointer. If this flag is set, the
-		/// SYNCHRONIZE flag must be set in the DesiredAccess parameter.
+		/// from alerts. This flag also causes the I/O system to maintain the file-position pointer. If this flag is set, the SYNCHRONIZE
+		/// flag must be set in the DesiredAccess parameter.
 		/// </summary>
 		FILE_SYNCHRONOUS_IO_ALERT = 0x00000010,
 
 		/// <summary>
-		/// All operations on the file are performed synchronously. Waits in the system that synchronize I/O queuing and completion are
-		/// not subject to alerts. This flag also causes the I/O system to maintain the file-position context. If this flag is set, the
+		/// All operations on the file are performed synchronously. Waits in the system that synchronize I/O queuing and completion are not
+		/// subject to alerts. This flag also causes the I/O system to maintain the file-position context. If this flag is set, the
 		/// SYNCHRONIZE flag must be set in the DesiredAccess parameter.
 		/// </summary>
 		FILE_SYNCHRONOUS_IO_NONALERT = 0x00000020,
@@ -61,15 +62,14 @@ public static partial class NtDll
 		FILE_NON_DIRECTORY_FILE = 0x00000040,
 
 		/// <summary>
-		/// Create a tree connection for this file in order to open it over the network. This flag is not used by device and
-		/// intermediate drivers.
+		/// Create a tree connection for this file in order to open it over the network. This flag is not used by device and intermediate drivers.
 		/// </summary>
 		FILE_CREATE_TREE_CONNECTION = 0x00000080,
 
 		/// <summary>
 		/// Complete this operation immediately with an alternate success code of STATUS_OPLOCK_BREAK_IN_PROGRESS if the target file is
-		/// oplocked, rather than blocking the caller's thread. If the file is oplocked, another caller already has access to the file.
-		/// This flag is not used by device and intermediate drivers.
+		/// oplocked, rather than blocking the caller's thread. If the file is oplocked, another caller already has access to the file. This
+		/// flag is not used by device and intermediate drivers.
 		/// </summary>
 		FILE_COMPLETE_IF_OPLOCKED = 0x00000100,
 
@@ -83,35 +83,34 @@ public static partial class NtDll
 		FILE_OPEN_REMOTE_INSTANCE = 0x00000400,
 
 		/// <summary>
-		/// Access to the file can be random, so no sequential read-ahead operations should be performed by file-system drivers or by
-		/// the system.
+		/// Access to the file can be random, so no sequential read-ahead operations should be performed by file-system drivers or by the system.
 		/// </summary>
 		FILE_RANDOM_ACCESS = 0x00000800,
 
 		/// <summary>
-		/// The system deletes the file when the last handle to the file is passed to NtClose. If this flag is set, the DELETE flag must
-		/// be set in the DesiredAccess parameter.
+		/// The system deletes the file when the last handle to the file is passed to NtClose. If this flag is set, the DELETE flag must be
+		/// set in the DesiredAccess parameter.
 		/// </summary>
 		FILE_DELETE_ON_CLOSE = 0x00001000,
 
 		/// <summary>
-		/// The file name that is specified by the ObjectAttributes parameter includes a binary 8-byte or 16-byte file reference number
-		/// or object ID for the file, depending on the file system as shown below. Optionally, a device name followed by a backslash
-		/// character may proceed these binary values. For example, a device name will have the following format. This number is
-		/// assigned by and specific to the particular file system.
+		/// The file name that is specified by the ObjectAttributes parameter includes a binary 8-byte or 16-byte file reference number or
+		/// object ID for the file, depending on the file system as shown below. Optionally, a device name followed by a backslash character
+		/// may proceed these binary values. For example, a device name will have the following format. This number is assigned by and
+		/// specific to the particular file system.
 		/// </summary>
 		FILE_OPEN_BY_FILE_ID = 0x00002000,
 
 		/// <summary>
-		/// The file is being opened for backup intent. Therefore, the system should check for certain access rights and grant the
-		/// caller the appropriate access to the file—before checking the DesiredAccess parameter against the file's security
-		/// descriptor. This flag not used by device and intermediate drivers.
+		/// The file is being opened for backup intent. Therefore, the system should check for certain access rights and grant the caller
+		/// the appropriate access to the file—before checking the DesiredAccess parameter against the file's security descriptor. This flag
+		/// not used by device and intermediate drivers.
 		/// </summary>
 		FILE_OPEN_FOR_BACKUP_INTENT = 0x00004000,
 
 		/// <summary>
-		/// When a new file is created, the file MUST NOT be compressed, even if it is on a compressed volume. The flag MUST be ignored
-		/// when opening an existing file.
+		/// When a new file is created, the file MUST NOT be compressed, even if it is on a compressed volume. The flag MUST be ignored when
+		/// opening an existing file.
 		/// </summary>
 		FILE_NO_COMPRESSION = 0x00008000,
 
@@ -123,8 +122,8 @@ public static partial class NtDll
 		FILE_OPEN_REQUIRING_OPLOCK = 0x00010000,
 
 		/// <summary>
-		/// This flag allows an application to request a Filter opportunistic lock (oplock) to prevent other applications from getting
-		/// share violations. If there are already open handles, the create request will fail with STATUS_OPLOCK_NOT_GRANTED. For more
+		/// This flag allows an application to request a Filter opportunistic lock (oplock) to prevent other applications from getting share
+		/// violations. If there are already open handles, the create request will fail with STATUS_OPLOCK_NOT_GRANTED. For more
 		/// information, see the following Remarks section.
 		/// </summary>
 		FILE_RESERVE_OPFILTER = 0x00100000,
@@ -137,8 +136,8 @@ public static partial class NtDll
 
 		/// <summary>
 		/// In a hierarchical storage management environment, this option requests that the file SHOULD NOT be recalled from tertiary
-		/// storage such as tape. A file recall can take up to several minutes in a hierarchical storage management environment. The
-		/// clients can specify this option to avoid such delays.
+		/// storage such as tape. A file recall can take up to several minutes in a hierarchical storage management environment. The clients
+		/// can specify this option to avoid such delays.
 		/// </summary>
 		FILE_OPEN_NO_RECALL = 0x00400000,
 
@@ -186,36 +185,34 @@ public static partial class NtDll
 
 	/// <summary>
 	/// <para>
-	/// The <c>NtAllocateVirtualMemory</c> routine reserves, commits, or both, a region of pages within the user-mode virtual address
-	/// space of a specified process.
+	/// The <c>NtAllocateVirtualMemory</c> routine reserves, commits, or both, a region of pages within the user-mode virtual address space
+	/// of a specified process.
 	/// </para>
 	/// </summary>
 	/// <param name="ProcessHandle">
 	/// <para>
-	/// A handle for the process for which the mapping should be done. Use the <c>NtCurrentProcess</c> macro, defined in Ntddk.h, to
-	/// specify the current process.
+	/// A handle for the process for which the mapping should be done. Use the <c>NtCurrentProcess</c> macro, defined in Ntddk.h, to specify
+	/// the current process.
 	/// </para>
 	/// </param>
 	/// <param name="BaseAddress">
 	/// <para>
-	/// A pointer to a variable that will receive the base address of the allocated region of pages. If the initial value of this
-	/// parameter is non- <c>NULL</c>, the region is allocated starting at the specified virtual address rounded down to the next host
-	/// page size address boundary. If the initial value of this parameter is <c>NULL</c>, the operating system will determine where to
-	/// allocate the region.
+	/// A pointer to a variable that will receive the base address of the allocated region of pages. If the initial value of this parameter
+	/// is non- <c>NULL</c>, the region is allocated starting at the specified virtual address rounded down to the next host page size
+	/// address boundary. If the initial value of this parameter is <c>NULL</c>, the operating system will determine where to allocate the region.
 	/// </para>
 	/// </param>
 	/// <param name="ZeroBits">
 	/// <para>
-	/// The number of high-order address bits that must be zero in the base address of the section view. Used only when the operating
-	/// system determines where to allocate the region, as when BaseAddress is <c>NULL</c>. Note that when ZeroBits is larger than 32,
-	/// it becomes a bitmask.
+	/// The number of high-order address bits that must be zero in the base address of the section view. Used only when the operating system
+	/// determines where to allocate the region, as when BaseAddress is <c>NULL</c>. Note that when ZeroBits is larger than 32, it becomes a bitmask.
 	/// </para>
 	/// </param>
 	/// <param name="RegionSize">
 	/// <para>
 	/// A pointer to a variable that will receive the actual size, in bytes, of the allocated region of pages. The initial value of this
-	/// parameter specifies the size, in bytes, of the region and is rounded up to the next host page size boundary. *RegionSize cannot
-	/// be zero on input.
+	/// parameter specifies the size, in bytes, of the region and is rounded up to the next host page size boundary. *RegionSize cannot be
+	/// zero on input.
 	/// </para>
 	/// </param>
 	/// <param name="AllocationType">
@@ -243,10 +240,10 @@ public static partial class NtDll
 	/// <item>
 	/// <term>MEM_RESET</term>
 	/// <term>
-	/// Reset the state of the specified region so that if the pages are in paging file, they are discarded and pages of zeros are
-	/// brought in. If the pages are in memory and modified, they are marked as not modified so that they will not be written out to the
-	/// paging file. The contents are zeroed. The Protect parameter is not used, but it must be set to a valid value. One of MEM_COMMIT,
-	/// MEM_RESET, or MEM_RESERVE must be set. If MEM_RESET is set, no other flag may be set.
+	/// Reset the state of the specified region so that if the pages are in paging file, they are discarded and pages of zeros are brought
+	/// in. If the pages are in memory and modified, they are marked as not modified so that they will not be written out to the paging
+	/// file. The contents are zeroed. The Protect parameter is not used, but it must be set to a valid value. One of MEM_COMMIT, MEM_RESET,
+	/// or MEM_RESERVE must be set. If MEM_RESET is set, no other flag may be set.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -286,15 +283,14 @@ public static partial class NtDll
 	/// <item>
 	/// <term>PAGE_READWRITE</term>
 	/// <term>
-	/// Read, write, and execute access to the committed region of pages is allowed. If write access to the underlying section is
-	/// allowed, then a single copy of the pages is shared. Otherwise the pages are shared read only/copy on write.
+	/// Read, write, and execute access to the committed region of pages is allowed. If write access to the underlying section is allowed,
+	/// then a single copy of the pages is shared. Otherwise the pages are shared read only/copy on write.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>PAGE_EXECUTE</term>
 	/// <term>
-	/// Execute access to the committed region of pages is allowed. An attempt to read or write to the committed region results in an
-	/// access violation.
+	/// Execute access to the committed region of pages is allowed. An attempt to read or write to the committed region results in an access violation.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -308,10 +304,10 @@ public static partial class NtDll
 	/// <term>PAGE_GUARD</term>
 	/// <term>
 	/// Pages in the region become guard pages. Any attempt to read from or write to a guard page causes the system to raise a
-	/// STATUS_GUARD_PAGE exception. Guard pages thus act as a one-shot access alarm. This flag is a page protection modifier, valid
-	/// only when used with one of the page protection flags other than PAGE_NOACCESS. When an access attempt leads the system to turn
-	/// off guard page status, the underlying page protection takes over. If a guard page exception occurs during a system service, the
-	/// service typically returns a failure status indicator.
+	/// STATUS_GUARD_PAGE exception. Guard pages thus act as a one-shot access alarm. This flag is a page protection modifier, valid only
+	/// when used with one of the page protection flags other than PAGE_NOACCESS. When an access attempt leads the system to turn off guard
+	/// page status, the underlying page protection takes over. If a guard page exception occurs during a system service, the service
+	/// typically returns a failure status indicator.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -324,8 +320,8 @@ public static partial class NtDll
 	/// Enables write combining, that is, coalescing writes from cache to main memory, where the hardware supports it. This flag is used
 	/// primarily for frame buffer memory so that writes to the same cache line are combined where possible before being written to the
 	/// device. This can greatly reduce writes across the bus to (for example) video memory. If the hardware does not support write
-	/// combining, the flag is ignored. This flag is a page protection modifier, valid only when used with one of the page protection
-	/// flags other than PAGE_NOACCESS.
+	/// combining, the flag is ignored. This flag is a page protection modifier, valid only when used with one of the page protection flags
+	/// other than PAGE_NOACCESS.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -351,8 +347,8 @@ public static partial class NtDll
 	/// <item>
 	/// <term>FREE</term>
 	/// <term>
-	/// The page is not committed or reserved and is not accessible to the process. ZwAllocateVirtualMemory can reserve, or
-	/// simultaneously reserve and commit, a free page.
+	/// The page is not committed or reserved and is not accessible to the process. ZwAllocateVirtualMemory can reserve, or simultaneously
+	/// reserve and commit, a free page.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -367,11 +363,10 @@ public static partial class NtDll
 	/// <term>COMMITTED</term>
 	/// <term>
 	/// Physical storage is allocated for the page, and access is controlled by a protection code. The system initializes and loads each
-	/// committed page into physical memory only at the first attempt to read or write to that page. When the process terminates, the
-	/// system releases the storage for committed pages. ZwAllocateVirtualMemory can commit an already committed page. This means that
-	/// you can commit a range of pages, regardless of whether they have already been committed, and the function will not fail.
-	/// ZwFreeVirtualMemory can decommit a committed page, releasing the page's storage, or it can simultaneously decommit and release a
-	/// committed page.
+	/// committed page into physical memory only at the first attempt to read or write to that page. When the process terminates, the system
+	/// releases the storage for committed pages. ZwAllocateVirtualMemory can commit an already committed page. This means that you can
+	/// commit a range of pages, regardless of whether they have already been committed, and the function will not fail. ZwFreeVirtualMemory
+	/// can decommit a committed page, releasing the page's storage, or it can simultaneously decommit and release a committed page.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -379,8 +374,8 @@ public static partial class NtDll
 	/// <para>For more information about memory management, see Memory Management for Windows Drivers.</para>
 	/// <para>
 	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship between
+	/// the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/nf-ntifs-ntallocatevirtualmemory __kernel_entry
@@ -398,8 +393,8 @@ public static partial class NtDll
 	/// </param>
 	/// <param name="DesiredAccess">
 	/// <para>
-	/// Specifies an ACCESS_MASK value that determines the requested access to the object. In addition to the access rights that are
-	/// defined for all types of objects, the caller can specify any of the following access rights, which are specific to files.
+	/// Specifies an ACCESS_MASK value that determines the requested access to the object. In addition to the access rights that are defined
+	/// for all types of objects, the caller can specify any of the following access rights, which are specific to files.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -439,9 +434,7 @@ public static partial class NtDll
 	/// <term>Use system paging I/O to read data from the file into memory. This flag is irrelevant for device and intermediate drivers.</term>
 	/// </item>
 	/// </list>
-	/// <para>
-	/// <c>Note</c> Do not specify FILE_READ_DATA, FILE_WRITE_DATA, FILE_APPEND_DATA, or FILE_EXECUTE when you create or open a directory.
-	/// </para>
+	/// <para><c>Note</c> Do not specify FILE_READ_DATA, FILE_WRITE_DATA, FILE_APPEND_DATA, or FILE_EXECUTE when you create or open a directory.</para>
 	/// <para>The caller can only specify a generic access right, GENERIC_</para>
 	/// <para>XXX</para>
 	/// <para>, for a file, not a directory. Generic access rights correspond to specific access rights as shown in the following table.</para>
@@ -461,8 +454,7 @@ public static partial class NtDll
 	/// <item>
 	/// <term>GENERIC_EXECUTE</term>
 	/// <term>
-	/// STANDARD_RIGHTS_EXECUTE, FILE_EXECUTE, FILE_READ_ATTRIBUTES, and SYNCHRONIZE. This value is irrelevant for device and
-	/// intermediate drivers.
+	/// STANDARD_RIGHTS_EXECUTE, FILE_EXECUTE, FILE_READ_ATTRIBUTES, and SYNCHRONIZE. This value is irrelevant for device and intermediate drivers.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -471,10 +463,10 @@ public static partial class NtDll
 	/// </item>
 	/// </list>
 	/// <para>
-	/// For example, if you specify GENERIC_READ for a file object, the routine maps this value to the FILE_GENERIC_READ bitmask of
-	/// specific access rights. In the preceding table, the specific access rights that are listed for GENERIC_READ correspond to the
-	/// access flags that are contained in the FILE_GENERIC_READ bitmask. If the file is actually a directory, the caller can also
-	/// specify the following generic access rights.
+	/// For example, if you specify GENERIC_READ for a file object, the routine maps this value to the FILE_GENERIC_READ bitmask of specific
+	/// access rights. In the preceding table, the specific access rights that are listed for GENERIC_READ correspond to the access flags
+	/// that are contained in the FILE_GENERIC_READ bitmask. If the file is actually a directory, the caller can also specify the following
+	/// generic access rights.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -494,9 +486,9 @@ public static partial class NtDll
 	/// </param>
 	/// <param name="ObjectAttributes">
 	/// <para>
-	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use InitializeObjectAttributes
-	/// to initialize this structure. If the caller is not running in a system thread context, it must set the OBJ_KERNEL_HANDLE
-	/// attribute when it calls InitializeObjectAttributes.
+	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use InitializeObjectAttributes to
+	/// initialize this structure. If the caller is not running in a system thread context, it must set the OBJ_KERNEL_HANDLE attribute when
+	/// it calls InitializeObjectAttributes.
 	/// </para>
 	/// </param>
 	/// <param name="IoStatusBlock">
@@ -533,10 +525,9 @@ public static partial class NtDll
 	/// </param>
 	/// <param name="FileAttributes">
 	/// <para>
-	/// Specifies one or more FILE_ATTRIBUTE_XXX flags, which represent the file attributes to set if you create or overwrite a file.
-	/// The caller usually specifies FILE_ATTRIBUTE_NORMAL, which sets the default attributes. For a list of valid
-	/// FILE_ATTRIBUTE_XXXflags, see the CreateFile routine in the Microsoft Windows SDK documentation. If no file is created or
-	/// overwritten, FileAttributes is ignored.
+	/// Specifies one or more FILE_ATTRIBUTE_XXX flags, which represent the file attributes to set if you create or overwrite a file. The
+	/// caller usually specifies FILE_ATTRIBUTE_NORMAL, which sets the default attributes. For a list of valid FILE_ATTRIBUTE_XXXflags, see
+	/// the CreateFile routine in the Microsoft Windows SDK documentation. If no file is created or overwritten, FileAttributes is ignored.
 	/// </para>
 	/// </param>
 	/// <param name="ShareAccess">
@@ -604,9 +595,7 @@ public static partial class NtDll
 	/// </list>
 	/// </param>
 	/// <param name="CreateOptions">
-	/// <para>
-	/// Specifies the options to apply when the driver creates or opens the file. Use one or more of the flags in the following table.
-	/// </para>
+	/// <para>Specifies the options to apply when the driver creates or opens the file. Use one or more of the flags in the following table.</para>
 	/// <list type="table">
 	/// <listheader>
 	/// <term>CreateOptions flag</term>
@@ -622,15 +611,13 @@ public static partial class NtDll
 	/// </item>
 	/// <item>
 	/// <term>FILE_NON_DIRECTORY_FILE</term>
-	/// <term>
-	/// The file is a directory. The file object to open can represent a data file; a logical, virtual, or physical device; or a volume.
-	/// </term>
+	/// <term>The file is a directory. The file object to open can represent a data file; a logical, virtual, or physical device; or a volume.</term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_WRITE_THROUGH</term>
 	/// <term>
-	/// System services, file-system drivers, and drivers that write data to the file must actually transfer the data to the file before
-	/// any requested write operation is considered complete.
+	/// System services, file-system drivers, and drivers that write data to the file must actually transfer the data to the file before any
+	/// requested write operation is considered complete.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -646,24 +633,24 @@ public static partial class NtDll
 	/// <item>
 	/// <term>FILE_NO_INTERMEDIATE_BUFFERING</term>
 	/// <term>
-	/// The file cannot be cached or buffered in a driver's internal buffers. This flag is incompatible with the DesiredAccess
-	/// parameter's FILE_APPEND_DATA flag.
+	/// The file cannot be cached or buffered in a driver's internal buffers. This flag is incompatible with the DesiredAccess parameter's
+	/// FILE_APPEND_DATA flag.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_SYNCHRONOUS_IO_ALERT</term>
 	/// <term>
-	/// All operations on the file are performed synchronously. Any wait on behalf of the caller is subject to premature termination
-	/// from alerts. This flag also causes the I/O system to maintain the file-position pointer. If this flag is set, the SYNCHRONIZE
-	/// flag must be set in the DesiredAccess parameter.
+	/// All operations on the file are performed synchronously. Any wait on behalf of the caller is subject to premature termination from
+	/// alerts. This flag also causes the I/O system to maintain the file-position pointer. If this flag is set, the SYNCHRONIZE flag must
+	/// be set in the DesiredAccess parameter.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_SYNCHRONOUS_IO_NONALERT</term>
 	/// <term>
 	/// All operations on the file are performed synchronously. Waits in the system that synchronize I/O queuing and completion are not
-	/// subject to alerts. This flag also causes the I/O system to maintain the file-position context. If this flag is set, the
-	/// SYNCHRONIZE flag must be set in the DesiredAccess parameter.
+	/// subject to alerts. This flag also causes the I/O system to maintain the file-position context. If this flag is set, the SYNCHRONIZE
+	/// flag must be set in the DesiredAccess parameter.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -690,47 +677,47 @@ public static partial class NtDll
 	/// <item>
 	/// <term>FILE_OPEN_REPARSE_POINT</term>
 	/// <term>
-	/// Open a file with a reparse point and bypass normal reparse point processing for the file. For more information, see the
-	/// following Remarks section.
+	/// Open a file with a reparse point and bypass normal reparse point processing for the file. For more information, see the following
+	/// Remarks section.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_DELETE_ON_CLOSE</term>
 	/// <term>
-	/// The system deletes the file when the last handle to the file is passed to NtClose. If this flag is set, the DELETE flag must be
-	/// set in the DesiredAccess parameter.
+	/// The system deletes the file when the last handle to the file is passed to NtClose. If this flag is set, the DELETE flag must be set
+	/// in the DesiredAccess parameter.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_OPEN_BY_FILE_ID</term>
 	/// <term>
 	/// The file name that is specified by the ObjectAttributes parameter includes a binary 8-byte or 16-byte file reference number or
-	/// object ID for the file, depending on the file system as shown below. Optionally, a device name followed by a backslash character
-	/// may proceed these binary values. For example, a device name will have the following format. This number is assigned by and
-	/// specific to the particular file system.
+	/// object ID for the file, depending on the file system as shown below. Optionally, a device name followed by a backslash character may
+	/// proceed these binary values. For example, a device name will have the following format. This number is assigned by and specific to
+	/// the particular file system.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_OPEN_FOR_BACKUP_INTENT</term>
 	/// <term>
-	/// The file is being opened for backup intent. Therefore, the system should check for certain access rights and grant the caller
-	/// the appropriate access to the file—before checking the DesiredAccess parameter against the file's security descriptor. This flag
-	/// not used by device and intermediate drivers.
+	/// The file is being opened for backup intent. Therefore, the system should check for certain access rights and grant the caller the
+	/// appropriate access to the file—before checking the DesiredAccess parameter against the file's security descriptor. This flag not
+	/// used by device and intermediate drivers.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_RESERVE_OPFILTER</term>
 	/// <term>
 	/// This flag allows an application to request a Filter opportunistic lock (oplock) to prevent other applications from getting share
-	/// violations. If there are already open handles, the create request will fail with STATUS_OPLOCK_NOT_GRANTED. For more
-	/// information, see the following Remarks section.
+	/// violations. If there are already open handles, the create request will fail with STATUS_OPLOCK_NOT_GRANTED. For more information,
+	/// see the following Remarks section.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_OPEN_REQUIRING_OPLOCK</term>
 	/// <term>
-	/// The file is being opened and an opportunistic lock (oplock) on the file is being requested as a single atomic operation. The
-	/// file system checks for oplocks before it performs the create operation, and will fail the create with a return code of
+	/// The file is being opened and an opportunistic lock (oplock) on the file is being requested as a single atomic operation. The file
+	/// system checks for oplocks before it performs the create operation, and will fail the create with a return code of
 	/// STATUS_CANNOT_BREAK_OPLOCK if the result would be to break an existing oplock.
 	/// </term>
 	/// </item>
@@ -747,12 +734,12 @@ public static partial class NtDll
 	/// <para>For device and intermediate drivers, this parameter must be zero.</para>
 	/// </param>
 	/// <returns>
-	/// NtCreateFile returns STATUS_SUCCESS on success or an appropriate NTSTATUS error code on failure. In the latter case, the caller
-	/// can determine the cause of the failure by checking the IoStatusBlock parameter.
+	/// NtCreateFile returns STATUS_SUCCESS on success or an appropriate NTSTATUS error code on failure. In the latter case, the caller can
+	/// determine the cause of the failure by checking the IoStatusBlock parameter.
 	/// <para>
 	/// <c>Note</c><c>NtCreateFile</c> might return STATUS_FILE_LOCK_CONFLICT as the return value or in the <c>Status</c> member of the
-	/// <c>IO_STATUS_BLOCK</c> structure that is pointed to by the IoStatusBlock parameter. This would occur only if the NTFS log file
-	/// is full, and an error occurs while <c>NtCreateFile</c> tries to handle this situation.
+	/// <c>IO_STATUS_BLOCK</c> structure that is pointed to by the IoStatusBlock parameter. This would occur only if the NTFS log file is
+	/// full, and an error occurs while <c>NtCreateFile</c> tries to handle this situation.
 	/// </para>
 	/// </returns>
 	/// <remarks>
@@ -762,60 +749,57 @@ public static partial class NtDll
 	/// </para>
 	/// <para>Once the handle pointed to by FileHandle is no longer in use, the driver must call NtClose to close it.</para>
 	/// <para>
-	/// If the caller is not running in a system thread context, it must ensure that any handles it creates are private handles.
-	/// Otherwise, the handle can be accessed by the process in whose context the driver is running. For more information, see Object Handles.
+	/// If the caller is not running in a system thread context, it must ensure that any handles it creates are private handles. Otherwise,
+	/// the handle can be accessed by the process in whose context the driver is running. For more information, see Object Handles.
 	/// </para>
 	/// <para>There are two alternate ways to specify the name of the file to be created or opened with <c>NtCreateFile</c>:</para>
 	/// <para>Setting certain flags in the DesiredAccess parameter results in the following effects:</para>
 	/// <para>
-	/// The ShareAccess parameter determines whether separate threads can access the same file, possibly simultaneously. Provided that
-	/// both callers have the appropriate access privileges, the file can be successfully opened and shared. If the original caller of
-	/// <c>NtCreateFile</c> does not specify FILE_SHARE_READ, FILE_SHARE_WRITE, or FILE_SHARE_DELETE, no other caller can open the
-	/// file—that is, the original caller is granted exclusive access.
+	/// The ShareAccess parameter determines whether separate threads can access the same file, possibly simultaneously. Provided that both
+	/// callers have the appropriate access privileges, the file can be successfully opened and shared. If the original caller of
+	/// <c>NtCreateFile</c> does not specify FILE_SHARE_READ, FILE_SHARE_WRITE, or FILE_SHARE_DELETE, no other caller can open the file—that
+	/// is, the original caller is granted exclusive access.
 	/// </para>
 	/// <para>
-	/// To successfully open a shared file, the DesiredAccess flags must be compatible with the DesiredAccess and ShareAccess flags of
-	/// all the previous open operations that have not yet been released through . That is, the DesiredAccess specified to
-	/// <c>NtCreateFile</c> for a given file must not conflict with the accesses that other openers of the file have disallowed.
+	/// To successfully open a shared file, the DesiredAccess flags must be compatible with the DesiredAccess and ShareAccess flags of all
+	/// the previous open operations that have not yet been released through . That is, the DesiredAccess specified to <c>NtCreateFile</c>
+	/// for a given file must not conflict with the accesses that other openers of the file have disallowed.
 	/// </para>
 	/// <para>
 	/// The CreateDisposition value FILE_SUPERSEDE requires that the caller have DELETE access to a existing file object. If so, a
-	/// successful call to <c>NtCreateFile</c> with FILE_SUPERSEDE on an existing file effectively deletes that file, and then recreates
-	/// it. This implies that, if the file has already been opened by another thread, it opened the file by specifying a ShareAccess
-	/// parameter with the FILE_SHARE_DELETE flag set. Note that this type of disposition is consistent with the POSIX style of
-	/// overwriting files.
+	/// successful call to <c>NtCreateFile</c> with FILE_SUPERSEDE on an existing file effectively deletes that file, and then recreates it.
+	/// This implies that, if the file has already been opened by another thread, it opened the file by specifying a ShareAccess parameter
+	/// with the FILE_SHARE_DELETE flag set. Note that this type of disposition is consistent with the POSIX style of overwriting files.
 	/// </para>
 	/// <para>
-	/// The CreateDisposition values FILE_OVERWRITE_IF and FILE_SUPERSEDE are similar. If <c>NtCreateFile</c> is called with a existing
-	/// file and either of these CreateDisposition values, the file will be replaced.
+	/// The CreateDisposition values FILE_OVERWRITE_IF and FILE_SUPERSEDE are similar. If <c>NtCreateFile</c> is called with a existing file
+	/// and either of these CreateDisposition values, the file will be replaced.
 	/// </para>
 	/// <para>Overwriting a file is semantically equivalent to a supersede operation, except for the following:</para>
 	/// <para>
-	/// The FILE_DIRECTORY_FILE CreateOptions value specifies that the file to be created or opened is a directory. When a directory
-	/// file is created, the file system creates an appropriate structure on the disk to represent an empty directory for that
-	/// particular file system's on-disk structure. If this option was specified and the given file to be opened is not a directory
-	/// file, or if the caller specified an inconsistent CreateOptions or CreateDisposition value, the call to <c>NtCreateFile</c> will fail.
+	/// The FILE_DIRECTORY_FILE CreateOptions value specifies that the file to be created or opened is a directory. When a directory file is
+	/// created, the file system creates an appropriate structure on the disk to represent an empty directory for that particular file
+	/// system's on-disk structure. If this option was specified and the given file to be opened is not a directory file, or if the caller
+	/// specified an inconsistent CreateOptions or CreateDisposition value, the call to <c>NtCreateFile</c> will fail.
 	/// </para>
 	/// <para>
-	/// The FILE_NO_INTERMEDIATE_BUFFERING CreateOptions flag prevents the file system from performing any intermediate buffering on
-	/// behalf of the caller. Specifying this flag places the following restrictions on the caller's parameters to other
-	/// <c>ZwXxxFile</c> routines.
+	/// The FILE_NO_INTERMEDIATE_BUFFERING CreateOptions flag prevents the file system from performing any intermediate buffering on behalf
+	/// of the caller. Specifying this flag places the following restrictions on the caller's parameters to other <c>ZwXxxFile</c> routines.
 	/// </para>
 	/// <para>
 	/// The FILE_SYNCHRONOUS_IO_ALERT and FILE_SYNCHRONOUS_IO_NONALERT CreateOptions flags, which are mutually exclusive as their names
-	/// suggest, specify that all I/O operations on the file will be synchronous—as long as they occur through the file object referred
-	/// to by the returned FileHandle. All I/O on such a file is serialized across all threads using the returned handle. If either of
-	/// these CreateOptions flags is set, the SYNCHRONIZE DesiredAccess flag must also be set—to compel the I/O manager to use the file
-	/// object as a synchronization object. In these cases, the I/O manager keeps track of the current file-position offset, which you
-	/// can pass to <c>NtReadFile</c> and <c>NtWriteFile</c>. Call <c>NtQueryInformationFile</c> or <c>NtSetInformationFile</c> to get
-	/// or set this position.
+	/// suggest, specify that all I/O operations on the file will be synchronous—as long as they occur through the file object referred to
+	/// by the returned FileHandle. All I/O on such a file is serialized across all threads using the returned handle. If either of these
+	/// CreateOptions flags is set, the SYNCHRONIZE DesiredAccess flag must also be set—to compel the I/O manager to use the file object as
+	/// a synchronization object. In these cases, the I/O manager keeps track of the current file-position offset, which you can pass to
+	/// <c>NtReadFile</c> and <c>NtWriteFile</c>. Call <c>NtQueryInformationFile</c> or <c>NtSetInformationFile</c> to get or set this position.
 	/// </para>
 	/// <para>
-	/// If the CreateOptions FILE_OPEN_REPARSE_POINT flag is specified and <c>NtCreateFile</c> attempts to open a file with a reparse
-	/// point, normal reparse point processing occurs for the file. If, on the other hand, the FILE_OPEN_REPARSE_POINT flag is
-	/// specified, normal reparse processing does occur and <c>NtCreateFile</c> attempts to directly open the reparse point file. In
-	/// either case, if the open operation was successful, <c>NtCreateFile</c> returns STATUS_SUCCESS; otherwise, the routine returns an
-	/// NTSTATUS error code. <c>NtCreateFile</c> never returns STATUS_REPARSE.
+	/// If the CreateOptions FILE_OPEN_REPARSE_POINT flag is specified and <c>NtCreateFile</c> attempts to open a file with a reparse point,
+	/// normal reparse point processing occurs for the file. If, on the other hand, the FILE_OPEN_REPARSE_POINT flag is specified, normal
+	/// reparse processing does occur and <c>NtCreateFile</c> attempts to directly open the reparse point file. In either case, if the open
+	/// operation was successful, <c>NtCreateFile</c> returns STATUS_SUCCESS; otherwise, the routine returns an NTSTATUS error code.
+	/// <c>NtCreateFile</c> never returns STATUS_REPARSE.
 	/// </para>
 	/// <para>
 	/// The CreateOptions FILE_OPEN_REQUIRING_OPLOCK flag eliminates the time between when you open the file and request an oplock that
@@ -824,8 +808,8 @@ public static partial class NtDll
 	/// notified of any subsequent open request that causes a sharing violation.
 	/// </para>
 	/// <para>
-	/// In Windows 7, if other handles exist on the file when an application uses the FILE_OPEN_REQUIRING_OPLOCK flag, the create
-	/// operation will fail with STATUS_OPLOCK_NOT_GRANTED. This restriction no longer exists starting with Windows 8.
+	/// In Windows 7, if other handles exist on the file when an application uses the FILE_OPEN_REQUIRING_OPLOCK flag, the create operation
+	/// will fail with STATUS_OPLOCK_NOT_GRANTED. This restriction no longer exists starting with Windows 8.
 	/// </para>
 	/// <para>
 	/// If this create operation would break an oplock that already exists on the file, then setting the FILE_OPEN_REQUIRING_OPLOCK flag
@@ -833,39 +817,35 @@ public static partial class NtDll
 	/// </para>
 	/// <para>
 	/// An application that uses the FILE_OPEN_REQUIRING_OPLOCK flag must request an oplock after this call succeeds, or all subsequent
-	/// attempts to open the file will be blocked without the benefit of normal oplock processing. Similarly, if this call succeeds but
-	/// the subsequent oplock request fails, an application that uses this flag must close its handle after it detects that the oplock
-	/// request has failed.
+	/// attempts to open the file will be blocked without the benefit of normal oplock processing. Similarly, if this call succeeds but the
+	/// subsequent oplock request fails, an application that uses this flag must close its handle after it detects that the oplock request
+	/// has failed.
 	/// </para>
 	/// <para>
-	/// The CreateOptions flag FILE_RESERVE_OPFILTER allows an application to request a Level 1, Batch, or Filter oplock to prevent
-	/// other applications from getting share violations. However, FILE_RESERVE_OPFILTER is only practically useful for Filter oplocks.
-	/// To use it, you must complete the following steps:
+	/// The CreateOptions flag FILE_RESERVE_OPFILTER allows an application to request a Level 1, Batch, or Filter oplock to prevent other
+	/// applications from getting share violations. However, FILE_RESERVE_OPFILTER is only practically useful for Filter oplocks. To use it,
+	/// you must complete the following steps:
 	/// </para>
 	/// <para>
 	/// Step three makes this practical only for Filter oplocks. The handle opened in step 3 can have a DesiredAccess that contains a
-	/// maximum of FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES | FILE_READ_DATA | FILE_READ_EA | FILE_EXECUTE | SYNCHRONIZE |
-	/// READ_CONTROL and still not break a Filter oplock. However, any DesiredAccess greater than FILE_READ_ATTRIBUTES |
-	/// FILE_WRITE_ATTRIBUTES | SYNCHRONIZE will break a Level 1 or Batch oplock and make the FILE_RESERVE_OPFILTER flag useless for
-	/// those oplock types.
+	/// maximum of FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES | FILE_READ_DATA | FILE_READ_EA | FILE_EXECUTE | SYNCHRONIZE | READ_CONTROL
+	/// and still not break a Filter oplock. However, any DesiredAccess greater than FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES |
+	/// SYNCHRONIZE will break a Level 1 or Batch oplock and make the FILE_RESERVE_OPFILTER flag useless for those oplock types.
 	/// </para>
 	/// <para>NTFS is the only Microsoft file system that implements FILE_RESERVE_OPFILTER.</para>
 	/// <para>Callers of <c>NtCreateFile</c> must be running at IRQL = PASSIVE_LEVEL and with special kernel APCs enabled.</para>
 	/// <para>
 	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship between
+	/// the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/nf-ntifs-ntcreatefile __kernel_entry NTSYSCALLAPI
 	// NTSTATUS NtCreateFile( PHANDLE FileHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES ObjectAttributes, PIO_STATUS_BLOCK
-	// IoStatusBlock, PLARGE_INTEGER AllocationSize, ULONG FileAttributes, ULONG ShareAccess, ULONG CreateDisposition, ULONG
-	// CreateOptions, PVOID EaBuffer, ULONG EaLength );
+	// IoStatusBlock, PLARGE_INTEGER AllocationSize, ULONG FileAttributes, ULONG ShareAccess, ULONG CreateDisposition, ULONG CreateOptions,
+	// PVOID EaBuffer, ULONG EaLength );
 	[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("ntifs.h", MSDNShortId = "c40b99be-5627-44f3-9853-c3ae31a8035c")]
-	// public static extern __kernel_entry NTSYSCALLAPI NTSTATUS NtCreateFile(ref IntPtr FileHandle, ACCESS_MASK DesiredAccess,
-	// POBJECT_ATTRIBUTES ObjectAttributes, PIO_STATUS_BLOCK IoStatusBlock, PLARGE_INTEGER AllocationSize, uint FileAttributes, uint
-	// ShareAccess, uint CreateDisposition, uint CreateOptions, IntPtr EaBuffer, uint EaLength);
 	public static extern NTStatus NtCreateFile(out SafeHFILE FileHandle, ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes, out IO_STATUS_BLOCK IoStatusBlock,
 		in long AllocationSize, FileFlagsAndAttributes FileAttributes, FileShare ShareAccess, NtFileMode CreateDisposition, NtFileCreateOptions CreateOptions, IntPtr EaBuffer = default, uint EaLength = 0);
 
@@ -877,8 +857,8 @@ public static partial class NtDll
 	/// </param>
 	/// <param name="DesiredAccess">
 	/// <para>
-	/// Specifies an ACCESS_MASK value that determines the requested access to the object. In addition to the access rights that are
-	/// defined for all types of objects, the caller can specify any of the following access rights, which are specific to files.
+	/// Specifies an ACCESS_MASK value that determines the requested access to the object. In addition to the access rights that are defined
+	/// for all types of objects, the caller can specify any of the following access rights, which are specific to files.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -918,9 +898,7 @@ public static partial class NtDll
 	/// <term>Use system paging I/O to read data from the file into memory. This flag is irrelevant for device and intermediate drivers.</term>
 	/// </item>
 	/// </list>
-	/// <para>
-	/// <c>Note</c> Do not specify FILE_READ_DATA, FILE_WRITE_DATA, FILE_APPEND_DATA, or FILE_EXECUTE when you create or open a directory.
-	/// </para>
+	/// <para><c>Note</c> Do not specify FILE_READ_DATA, FILE_WRITE_DATA, FILE_APPEND_DATA, or FILE_EXECUTE when you create or open a directory.</para>
 	/// <para>The caller can only specify a generic access right, GENERIC_</para>
 	/// <para>XXX</para>
 	/// <para>, for a file, not a directory. Generic access rights correspond to specific access rights as shown in the following table.</para>
@@ -940,8 +918,7 @@ public static partial class NtDll
 	/// <item>
 	/// <term>GENERIC_EXECUTE</term>
 	/// <term>
-	/// STANDARD_RIGHTS_EXECUTE, FILE_EXECUTE, FILE_READ_ATTRIBUTES, and SYNCHRONIZE. This value is irrelevant for device and
-	/// intermediate drivers.
+	/// STANDARD_RIGHTS_EXECUTE, FILE_EXECUTE, FILE_READ_ATTRIBUTES, and SYNCHRONIZE. This value is irrelevant for device and intermediate drivers.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -950,10 +927,10 @@ public static partial class NtDll
 	/// </item>
 	/// </list>
 	/// <para>
-	/// For example, if you specify GENERIC_READ for a file object, the routine maps this value to the FILE_GENERIC_READ bitmask of
-	/// specific access rights. In the preceding table, the specific access rights that are listed for GENERIC_READ correspond to the
-	/// access flags that are contained in the FILE_GENERIC_READ bitmask. If the file is actually a directory, the caller can also
-	/// specify the following generic access rights.
+	/// For example, if you specify GENERIC_READ for a file object, the routine maps this value to the FILE_GENERIC_READ bitmask of specific
+	/// access rights. In the preceding table, the specific access rights that are listed for GENERIC_READ correspond to the access flags
+	/// that are contained in the FILE_GENERIC_READ bitmask. If the file is actually a directory, the caller can also specify the following
+	/// generic access rights.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -973,9 +950,9 @@ public static partial class NtDll
 	/// </param>
 	/// <param name="ObjectAttributes">
 	/// <para>
-	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use InitializeObjectAttributes
-	/// to initialize this structure. If the caller is not running in a system thread context, it must set the OBJ_KERNEL_HANDLE
-	/// attribute when it calls InitializeObjectAttributes.
+	/// A pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use InitializeObjectAttributes to
+	/// initialize this structure. If the caller is not running in a system thread context, it must set the OBJ_KERNEL_HANDLE attribute when
+	/// it calls InitializeObjectAttributes.
 	/// </para>
 	/// </param>
 	/// <param name="IoStatusBlock">
@@ -1012,10 +989,9 @@ public static partial class NtDll
 	/// </param>
 	/// <param name="FileAttributes">
 	/// <para>
-	/// Specifies one or more FILE_ATTRIBUTE_XXX flags, which represent the file attributes to set if you create or overwrite a file.
-	/// The caller usually specifies FILE_ATTRIBUTE_NORMAL, which sets the default attributes. For a list of valid
-	/// FILE_ATTRIBUTE_XXXflags, see the CreateFile routine in the Microsoft Windows SDK documentation. If no file is created or
-	/// overwritten, FileAttributes is ignored.
+	/// Specifies one or more FILE_ATTRIBUTE_XXX flags, which represent the file attributes to set if you create or overwrite a file. The
+	/// caller usually specifies FILE_ATTRIBUTE_NORMAL, which sets the default attributes. For a list of valid FILE_ATTRIBUTE_XXXflags, see
+	/// the CreateFile routine in the Microsoft Windows SDK documentation. If no file is created or overwritten, FileAttributes is ignored.
 	/// </para>
 	/// </param>
 	/// <param name="ShareAccess">
@@ -1083,9 +1059,7 @@ public static partial class NtDll
 	/// </list>
 	/// </param>
 	/// <param name="CreateOptions">
-	/// <para>
-	/// Specifies the options to apply when the driver creates or opens the file. Use one or more of the flags in the following table.
-	/// </para>
+	/// <para>Specifies the options to apply when the driver creates or opens the file. Use one or more of the flags in the following table.</para>
 	/// <list type="table">
 	/// <listheader>
 	/// <term>CreateOptions flag</term>
@@ -1101,15 +1075,13 @@ public static partial class NtDll
 	/// </item>
 	/// <item>
 	/// <term>FILE_NON_DIRECTORY_FILE</term>
-	/// <term>
-	/// The file is a directory. The file object to open can represent a data file; a logical, virtual, or physical device; or a volume.
-	/// </term>
+	/// <term>The file is a directory. The file object to open can represent a data file; a logical, virtual, or physical device; or a volume.</term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_WRITE_THROUGH</term>
 	/// <term>
-	/// System services, file-system drivers, and drivers that write data to the file must actually transfer the data to the file before
-	/// any requested write operation is considered complete.
+	/// System services, file-system drivers, and drivers that write data to the file must actually transfer the data to the file before any
+	/// requested write operation is considered complete.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1125,24 +1097,24 @@ public static partial class NtDll
 	/// <item>
 	/// <term>FILE_NO_INTERMEDIATE_BUFFERING</term>
 	/// <term>
-	/// The file cannot be cached or buffered in a driver's internal buffers. This flag is incompatible with the DesiredAccess
-	/// parameter's FILE_APPEND_DATA flag.
+	/// The file cannot be cached or buffered in a driver's internal buffers. This flag is incompatible with the DesiredAccess parameter's
+	/// FILE_APPEND_DATA flag.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_SYNCHRONOUS_IO_ALERT</term>
 	/// <term>
-	/// All operations on the file are performed synchronously. Any wait on behalf of the caller is subject to premature termination
-	/// from alerts. This flag also causes the I/O system to maintain the file-position pointer. If this flag is set, the SYNCHRONIZE
-	/// flag must be set in the DesiredAccess parameter.
+	/// All operations on the file are performed synchronously. Any wait on behalf of the caller is subject to premature termination from
+	/// alerts. This flag also causes the I/O system to maintain the file-position pointer. If this flag is set, the SYNCHRONIZE flag must
+	/// be set in the DesiredAccess parameter.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_SYNCHRONOUS_IO_NONALERT</term>
 	/// <term>
 	/// All operations on the file are performed synchronously. Waits in the system that synchronize I/O queuing and completion are not
-	/// subject to alerts. This flag also causes the I/O system to maintain the file-position context. If this flag is set, the
-	/// SYNCHRONIZE flag must be set in the DesiredAccess parameter.
+	/// subject to alerts. This flag also causes the I/O system to maintain the file-position context. If this flag is set, the SYNCHRONIZE
+	/// flag must be set in the DesiredAccess parameter.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1169,47 +1141,47 @@ public static partial class NtDll
 	/// <item>
 	/// <term>FILE_OPEN_REPARSE_POINT</term>
 	/// <term>
-	/// Open a file with a reparse point and bypass normal reparse point processing for the file. For more information, see the
-	/// following Remarks section.
+	/// Open a file with a reparse point and bypass normal reparse point processing for the file. For more information, see the following
+	/// Remarks section.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_DELETE_ON_CLOSE</term>
 	/// <term>
-	/// The system deletes the file when the last handle to the file is passed to NtClose. If this flag is set, the DELETE flag must be
-	/// set in the DesiredAccess parameter.
+	/// The system deletes the file when the last handle to the file is passed to NtClose. If this flag is set, the DELETE flag must be set
+	/// in the DesiredAccess parameter.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_OPEN_BY_FILE_ID</term>
 	/// <term>
 	/// The file name that is specified by the ObjectAttributes parameter includes a binary 8-byte or 16-byte file reference number or
-	/// object ID for the file, depending on the file system as shown below. Optionally, a device name followed by a backslash character
-	/// may proceed these binary values. For example, a device name will have the following format. This number is assigned by and
-	/// specific to the particular file system.
+	/// object ID for the file, depending on the file system as shown below. Optionally, a device name followed by a backslash character may
+	/// proceed these binary values. For example, a device name will have the following format. This number is assigned by and specific to
+	/// the particular file system.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_OPEN_FOR_BACKUP_INTENT</term>
 	/// <term>
-	/// The file is being opened for backup intent. Therefore, the system should check for certain access rights and grant the caller
-	/// the appropriate access to the file—before checking the DesiredAccess parameter against the file's security descriptor. This flag
-	/// not used by device and intermediate drivers.
+	/// The file is being opened for backup intent. Therefore, the system should check for certain access rights and grant the caller the
+	/// appropriate access to the file—before checking the DesiredAccess parameter against the file's security descriptor. This flag not
+	/// used by device and intermediate drivers.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_RESERVE_OPFILTER</term>
 	/// <term>
 	/// This flag allows an application to request a Filter opportunistic lock (oplock) to prevent other applications from getting share
-	/// violations. If there are already open handles, the create request will fail with STATUS_OPLOCK_NOT_GRANTED. For more
-	/// information, see the following Remarks section.
+	/// violations. If there are already open handles, the create request will fail with STATUS_OPLOCK_NOT_GRANTED. For more information,
+	/// see the following Remarks section.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_OPEN_REQUIRING_OPLOCK</term>
 	/// <term>
-	/// The file is being opened and an opportunistic lock (oplock) on the file is being requested as a single atomic operation. The
-	/// file system checks for oplocks before it performs the create operation, and will fail the create with a return code of
+	/// The file is being opened and an opportunistic lock (oplock) on the file is being requested as a single atomic operation. The file
+	/// system checks for oplocks before it performs the create operation, and will fail the create with a return code of
 	/// STATUS_CANNOT_BREAK_OPLOCK if the result would be to break an existing oplock.
 	/// </term>
 	/// </item>
@@ -1226,12 +1198,12 @@ public static partial class NtDll
 	/// <para>For device and intermediate drivers, this parameter must be zero.</para>
 	/// </param>
 	/// <returns>
-	/// NtCreateFile returns STATUS_SUCCESS on success or an appropriate NTSTATUS error code on failure. In the latter case, the caller
-	/// can determine the cause of the failure by checking the IoStatusBlock parameter.
+	/// NtCreateFile returns STATUS_SUCCESS on success or an appropriate NTSTATUS error code on failure. In the latter case, the caller can
+	/// determine the cause of the failure by checking the IoStatusBlock parameter.
 	/// <para>
 	/// <c>Note</c><c>NtCreateFile</c> might return STATUS_FILE_LOCK_CONFLICT as the return value or in the <c>Status</c> member of the
-	/// <c>IO_STATUS_BLOCK</c> structure that is pointed to by the IoStatusBlock parameter. This would occur only if the NTFS log file
-	/// is full, and an error occurs while <c>NtCreateFile</c> tries to handle this situation.
+	/// <c>IO_STATUS_BLOCK</c> structure that is pointed to by the IoStatusBlock parameter. This would occur only if the NTFS log file is
+	/// full, and an error occurs while <c>NtCreateFile</c> tries to handle this situation.
 	/// </para>
 	/// </returns>
 	/// <remarks>
@@ -1241,60 +1213,57 @@ public static partial class NtDll
 	/// </para>
 	/// <para>Once the handle pointed to by FileHandle is no longer in use, the driver must call NtClose to close it.</para>
 	/// <para>
-	/// If the caller is not running in a system thread context, it must ensure that any handles it creates are private handles.
-	/// Otherwise, the handle can be accessed by the process in whose context the driver is running. For more information, see Object Handles.
+	/// If the caller is not running in a system thread context, it must ensure that any handles it creates are private handles. Otherwise,
+	/// the handle can be accessed by the process in whose context the driver is running. For more information, see Object Handles.
 	/// </para>
 	/// <para>There are two alternate ways to specify the name of the file to be created or opened with <c>NtCreateFile</c>:</para>
 	/// <para>Setting certain flags in the DesiredAccess parameter results in the following effects:</para>
 	/// <para>
-	/// The ShareAccess parameter determines whether separate threads can access the same file, possibly simultaneously. Provided that
-	/// both callers have the appropriate access privileges, the file can be successfully opened and shared. If the original caller of
-	/// <c>NtCreateFile</c> does not specify FILE_SHARE_READ, FILE_SHARE_WRITE, or FILE_SHARE_DELETE, no other caller can open the
-	/// file—that is, the original caller is granted exclusive access.
+	/// The ShareAccess parameter determines whether separate threads can access the same file, possibly simultaneously. Provided that both
+	/// callers have the appropriate access privileges, the file can be successfully opened and shared. If the original caller of
+	/// <c>NtCreateFile</c> does not specify FILE_SHARE_READ, FILE_SHARE_WRITE, or FILE_SHARE_DELETE, no other caller can open the file—that
+	/// is, the original caller is granted exclusive access.
 	/// </para>
 	/// <para>
-	/// To successfully open a shared file, the DesiredAccess flags must be compatible with the DesiredAccess and ShareAccess flags of
-	/// all the previous open operations that have not yet been released through . That is, the DesiredAccess specified to
-	/// <c>NtCreateFile</c> for a given file must not conflict with the accesses that other openers of the file have disallowed.
+	/// To successfully open a shared file, the DesiredAccess flags must be compatible with the DesiredAccess and ShareAccess flags of all
+	/// the previous open operations that have not yet been released through . That is, the DesiredAccess specified to <c>NtCreateFile</c>
+	/// for a given file must not conflict with the accesses that other openers of the file have disallowed.
 	/// </para>
 	/// <para>
 	/// The CreateDisposition value FILE_SUPERSEDE requires that the caller have DELETE access to a existing file object. If so, a
-	/// successful call to <c>NtCreateFile</c> with FILE_SUPERSEDE on an existing file effectively deletes that file, and then recreates
-	/// it. This implies that, if the file has already been opened by another thread, it opened the file by specifying a ShareAccess
-	/// parameter with the FILE_SHARE_DELETE flag set. Note that this type of disposition is consistent with the POSIX style of
-	/// overwriting files.
+	/// successful call to <c>NtCreateFile</c> with FILE_SUPERSEDE on an existing file effectively deletes that file, and then recreates it.
+	/// This implies that, if the file has already been opened by another thread, it opened the file by specifying a ShareAccess parameter
+	/// with the FILE_SHARE_DELETE flag set. Note that this type of disposition is consistent with the POSIX style of overwriting files.
 	/// </para>
 	/// <para>
-	/// The CreateDisposition values FILE_OVERWRITE_IF and FILE_SUPERSEDE are similar. If <c>NtCreateFile</c> is called with a existing
-	/// file and either of these CreateDisposition values, the file will be replaced.
+	/// The CreateDisposition values FILE_OVERWRITE_IF and FILE_SUPERSEDE are similar. If <c>NtCreateFile</c> is called with a existing file
+	/// and either of these CreateDisposition values, the file will be replaced.
 	/// </para>
 	/// <para>Overwriting a file is semantically equivalent to a supersede operation, except for the following:</para>
 	/// <para>
-	/// The FILE_DIRECTORY_FILE CreateOptions value specifies that the file to be created or opened is a directory. When a directory
-	/// file is created, the file system creates an appropriate structure on the disk to represent an empty directory for that
-	/// particular file system's on-disk structure. If this option was specified and the given file to be opened is not a directory
-	/// file, or if the caller specified an inconsistent CreateOptions or CreateDisposition value, the call to <c>NtCreateFile</c> will fail.
+	/// The FILE_DIRECTORY_FILE CreateOptions value specifies that the file to be created or opened is a directory. When a directory file is
+	/// created, the file system creates an appropriate structure on the disk to represent an empty directory for that particular file
+	/// system's on-disk structure. If this option was specified and the given file to be opened is not a directory file, or if the caller
+	/// specified an inconsistent CreateOptions or CreateDisposition value, the call to <c>NtCreateFile</c> will fail.
 	/// </para>
 	/// <para>
-	/// The FILE_NO_INTERMEDIATE_BUFFERING CreateOptions flag prevents the file system from performing any intermediate buffering on
-	/// behalf of the caller. Specifying this flag places the following restrictions on the caller's parameters to other
-	/// <c>ZwXxxFile</c> routines.
+	/// The FILE_NO_INTERMEDIATE_BUFFERING CreateOptions flag prevents the file system from performing any intermediate buffering on behalf
+	/// of the caller. Specifying this flag places the following restrictions on the caller's parameters to other <c>ZwXxxFile</c> routines.
 	/// </para>
 	/// <para>
 	/// The FILE_SYNCHRONOUS_IO_ALERT and FILE_SYNCHRONOUS_IO_NONALERT CreateOptions flags, which are mutually exclusive as their names
-	/// suggest, specify that all I/O operations on the file will be synchronous—as long as they occur through the file object referred
-	/// to by the returned FileHandle. All I/O on such a file is serialized across all threads using the returned handle. If either of
-	/// these CreateOptions flags is set, the SYNCHRONIZE DesiredAccess flag must also be set—to compel the I/O manager to use the file
-	/// object as a synchronization object. In these cases, the I/O manager keeps track of the current file-position offset, which you
-	/// can pass to <c>NtReadFile</c> and <c>NtWriteFile</c>. Call <c>NtQueryInformationFile</c> or <c>NtSetInformationFile</c> to get
-	/// or set this position.
+	/// suggest, specify that all I/O operations on the file will be synchronous—as long as they occur through the file object referred to
+	/// by the returned FileHandle. All I/O on such a file is serialized across all threads using the returned handle. If either of these
+	/// CreateOptions flags is set, the SYNCHRONIZE DesiredAccess flag must also be set—to compel the I/O manager to use the file object as
+	/// a synchronization object. In these cases, the I/O manager keeps track of the current file-position offset, which you can pass to
+	/// <c>NtReadFile</c> and <c>NtWriteFile</c>. Call <c>NtQueryInformationFile</c> or <c>NtSetInformationFile</c> to get or set this position.
 	/// </para>
 	/// <para>
-	/// If the CreateOptions FILE_OPEN_REPARSE_POINT flag is specified and <c>NtCreateFile</c> attempts to open a file with a reparse
-	/// point, normal reparse point processing occurs for the file. If, on the other hand, the FILE_OPEN_REPARSE_POINT flag is
-	/// specified, normal reparse processing does occur and <c>NtCreateFile</c> attempts to directly open the reparse point file. In
-	/// either case, if the open operation was successful, <c>NtCreateFile</c> returns STATUS_SUCCESS; otherwise, the routine returns an
-	/// NTSTATUS error code. <c>NtCreateFile</c> never returns STATUS_REPARSE.
+	/// If the CreateOptions FILE_OPEN_REPARSE_POINT flag is specified and <c>NtCreateFile</c> attempts to open a file with a reparse point,
+	/// normal reparse point processing occurs for the file. If, on the other hand, the FILE_OPEN_REPARSE_POINT flag is specified, normal
+	/// reparse processing does occur and <c>NtCreateFile</c> attempts to directly open the reparse point file. In either case, if the open
+	/// operation was successful, <c>NtCreateFile</c> returns STATUS_SUCCESS; otherwise, the routine returns an NTSTATUS error code.
+	/// <c>NtCreateFile</c> never returns STATUS_REPARSE.
 	/// </para>
 	/// <para>
 	/// The CreateOptions FILE_OPEN_REQUIRING_OPLOCK flag eliminates the time between when you open the file and request an oplock that
@@ -1303,8 +1272,8 @@ public static partial class NtDll
 	/// notified of any subsequent open request that causes a sharing violation.
 	/// </para>
 	/// <para>
-	/// In Windows 7, if other handles exist on the file when an application uses the FILE_OPEN_REQUIRING_OPLOCK flag, the create
-	/// operation will fail with STATUS_OPLOCK_NOT_GRANTED. This restriction no longer exists starting with Windows 8.
+	/// In Windows 7, if other handles exist on the file when an application uses the FILE_OPEN_REQUIRING_OPLOCK flag, the create operation
+	/// will fail with STATUS_OPLOCK_NOT_GRANTED. This restriction no longer exists starting with Windows 8.
 	/// </para>
 	/// <para>
 	/// If this create operation would break an oplock that already exists on the file, then setting the FILE_OPEN_REQUIRING_OPLOCK flag
@@ -1312,39 +1281,35 @@ public static partial class NtDll
 	/// </para>
 	/// <para>
 	/// An application that uses the FILE_OPEN_REQUIRING_OPLOCK flag must request an oplock after this call succeeds, or all subsequent
-	/// attempts to open the file will be blocked without the benefit of normal oplock processing. Similarly, if this call succeeds but
-	/// the subsequent oplock request fails, an application that uses this flag must close its handle after it detects that the oplock
-	/// request has failed.
+	/// attempts to open the file will be blocked without the benefit of normal oplock processing. Similarly, if this call succeeds but the
+	/// subsequent oplock request fails, an application that uses this flag must close its handle after it detects that the oplock request
+	/// has failed.
 	/// </para>
 	/// <para>
-	/// The CreateOptions flag FILE_RESERVE_OPFILTER allows an application to request a Level 1, Batch, or Filter oplock to prevent
-	/// other applications from getting share violations. However, FILE_RESERVE_OPFILTER is only practically useful for Filter oplocks.
-	/// To use it, you must complete the following steps:
+	/// The CreateOptions flag FILE_RESERVE_OPFILTER allows an application to request a Level 1, Batch, or Filter oplock to prevent other
+	/// applications from getting share violations. However, FILE_RESERVE_OPFILTER is only practically useful for Filter oplocks. To use it,
+	/// you must complete the following steps:
 	/// </para>
 	/// <para>
 	/// Step three makes this practical only for Filter oplocks. The handle opened in step 3 can have a DesiredAccess that contains a
-	/// maximum of FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES | FILE_READ_DATA | FILE_READ_EA | FILE_EXECUTE | SYNCHRONIZE |
-	/// READ_CONTROL and still not break a Filter oplock. However, any DesiredAccess greater than FILE_READ_ATTRIBUTES |
-	/// FILE_WRITE_ATTRIBUTES | SYNCHRONIZE will break a Level 1 or Batch oplock and make the FILE_RESERVE_OPFILTER flag useless for
-	/// those oplock types.
+	/// maximum of FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES | FILE_READ_DATA | FILE_READ_EA | FILE_EXECUTE | SYNCHRONIZE | READ_CONTROL
+	/// and still not break a Filter oplock. However, any DesiredAccess greater than FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES |
+	/// SYNCHRONIZE will break a Level 1 or Batch oplock and make the FILE_RESERVE_OPFILTER flag useless for those oplock types.
 	/// </para>
 	/// <para>NTFS is the only Microsoft file system that implements FILE_RESERVE_OPFILTER.</para>
 	/// <para>Callers of <c>NtCreateFile</c> must be running at IRQL = PASSIVE_LEVEL and with special kernel APCs enabled.</para>
 	/// <para>
 	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship between
+	/// the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/nf-ntifs-ntcreatefile __kernel_entry NTSYSCALLAPI
 	// NTSTATUS NtCreateFile( PHANDLE FileHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES ObjectAttributes, PIO_STATUS_BLOCK
-	// IoStatusBlock, PLARGE_INTEGER AllocationSize, ULONG FileAttributes, ULONG ShareAccess, ULONG CreateDisposition, ULONG
-	// CreateOptions, PVOID EaBuffer, ULONG EaLength );
+	// IoStatusBlock, PLARGE_INTEGER AllocationSize, ULONG FileAttributes, ULONG ShareAccess, ULONG CreateDisposition, ULONG CreateOptions,
+	// PVOID EaBuffer, ULONG EaLength );
 	[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("ntifs.h", MSDNShortId = "c40b99be-5627-44f3-9853-c3ae31a8035c")]
-	// public static extern __kernel_entry NTSYSCALLAPI NTSTATUS NtCreateFile(ref IntPtr FileHandle, ACCESS_MASK DesiredAccess,
-	// POBJECT_ATTRIBUTES ObjectAttributes, PIO_STATUS_BLOCK IoStatusBlock, PLARGE_INTEGER AllocationSize, uint FileAttributes, uint
-	// ShareAccess, uint CreateDisposition, uint CreateOptions, IntPtr EaBuffer, uint EaLength);
 	public static extern NTStatus NtCreateFile(out SafeHFILE FileHandle, ACCESS_MASK DesiredAccess, in OBJECT_ATTRIBUTES ObjectAttributes, out IO_STATUS_BLOCK IoStatusBlock,
 		[In, Optional] IntPtr AllocationSize, FileFlagsAndAttributes FileAttributes, FileShare ShareAccess, NtFileMode CreateDisposition, NtFileCreateOptions CreateOptions,
 		IntPtr EaBuffer = default, uint EaLength = 0);
@@ -1357,9 +1322,8 @@ public static partial class NtDll
 	/// </param>
 	/// <param name="DesiredAccess">
 	/// <para>
-	/// Specifies an ACCESS_MASK value that determines the requested access to the object. In addition to the access rights that are
-	/// defined for all types of objects (see ACCESS_MASK), the caller can specify any of the following access rights, which are
-	/// specific to section objects:
+	/// Specifies an ACCESS_MASK value that determines the requested access to the object. In addition to the access rights that are defined
+	/// for all types of objects (see ACCESS_MASK), the caller can specify any of the following access rights, which are specific to section objects:
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -1395,8 +1359,8 @@ public static partial class NtDll
 	/// <param name="ObjectAttributes">
 	/// <para>
 	/// Pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use InitializeObjectAttributes to
-	/// initialize this structure. If the caller is not running in a system thread context, it must set the OBJ_KERNEL_HANDLE attribute
-	/// when it calls <c>InitializeObjectAttributes</c>.
+	/// initialize this structure. If the caller is not running in a system thread context, it must set the OBJ_KERNEL_HANDLE attribute when
+	/// it calls <c>InitializeObjectAttributes</c>.
 	/// </para>
 	/// </param>
 	/// <param name="MaximumSize">
@@ -1408,14 +1372,13 @@ public static partial class NtDll
 	/// </param>
 	/// <param name="SectionPageProtection">
 	/// <para>
-	/// Specifies the protection to place on each page in the section. Use one of the following four values: PAGE_READONLY,
-	/// PAGE_READWRITE, PAGE_EXECUTE, or PAGE_WRITECOPY. For a description of these values, see CreateFileMapping.
+	/// Specifies the protection to place on each page in the section. Use one of the following four values: PAGE_READONLY, PAGE_READWRITE,
+	/// PAGE_EXECUTE, or PAGE_WRITECOPY. For a description of these values, see CreateFileMapping.
 	/// </para>
 	/// </param>
 	/// <param name="AllocationAttributes">
 	/// <para>
-	/// Specifies a bitmask of SEC_XXX flags that determines the allocation attributes of the section. For a description of these flags,
-	/// see CreateFileMapping.
+	/// Specifies a bitmask of SEC_XXX flags that determines the allocation attributes of the section. For a description of these flags, see CreateFileMapping.
 	/// </para>
 	/// </param>
 	/// <param name="FileHandle">
@@ -1426,8 +1389,8 @@ public static partial class NtDll
 	/// </param>
 	/// <returns>
 	/// <para>
-	/// <c>NtCreateSection</c> returns STATUS_SUCCESS on success, or the appropriate NTSTATUS error code on failure. Possible error
-	/// status codes include the following:
+	/// <c>NtCreateSection</c> returns STATUS_SUCCESS on success, or the appropriate NTSTATUS error code on failure. Possible error status
+	/// codes include the following:
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -1453,8 +1416,8 @@ public static partial class NtDll
 	/// <item>
 	/// <term>STATUS_SECTION_TOO_BIG</term>
 	/// <term>
-	/// The value of MaximumSize is too big. This occurs when either MaximumSize is greater than the system-defined maximum for
-	/// sections, or if MaximumSize is greater than the specified file and the section is not writable.
+	/// The value of MaximumSize is too big. This occurs when either MaximumSize is greater than the system-defined maximum for sections, or
+	/// if MaximumSize is greater than the specified file and the section is not writable.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -1462,14 +1425,14 @@ public static partial class NtDll
 	/// <remarks>
 	/// <para>Once the handle pointed to by SectionHandle is no longer in use, the driver must call NtClose to close it.</para>
 	/// <para>
-	/// If the caller is not running in a system thread context, it must ensure that any handles it creates are private handles.
-	/// Otherwise, the handle can be accessed by the process in whose context the driver is running. For more information, see Object Handles.
+	/// If the caller is not running in a system thread context, it must ensure that any handles it creates are private handles. Otherwise,
+	/// the handle can be accessed by the process in whose context the driver is running. For more information, see Object Handles.
 	/// </para>
 	/// <para>For more information about setting up mapped sections and views of memory, see Sections and Views.</para>
 	/// <para>
 	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship between
+	/// the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/nf-ntifs-ntcreatesection __kernel_entry NTSYSCALLAPI
@@ -1488,9 +1451,8 @@ public static partial class NtDll
 	/// </param>
 	/// <param name="DesiredAccess">
 	/// <para>
-	/// Specifies an ACCESS_MASK value that determines the requested access to the object. In addition to the access rights that are
-	/// defined for all types of objects (see ACCESS_MASK), the caller can specify any of the following access rights, which are
-	/// specific to section objects:
+	/// Specifies an ACCESS_MASK value that determines the requested access to the object. In addition to the access rights that are defined
+	/// for all types of objects (see ACCESS_MASK), the caller can specify any of the following access rights, which are specific to section objects:
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -1526,8 +1488,8 @@ public static partial class NtDll
 	/// <param name="ObjectAttributes">
 	/// <para>
 	/// Pointer to an OBJECT_ATTRIBUTES structure that specifies the object name and other attributes. Use InitializeObjectAttributes to
-	/// initialize this structure. If the caller is not running in a system thread context, it must set the OBJ_KERNEL_HANDLE attribute
-	/// when it calls <c>InitializeObjectAttributes</c>.
+	/// initialize this structure. If the caller is not running in a system thread context, it must set the OBJ_KERNEL_HANDLE attribute when
+	/// it calls <c>InitializeObjectAttributes</c>.
 	/// </para>
 	/// </param>
 	/// <param name="MaximumSize">
@@ -1539,14 +1501,13 @@ public static partial class NtDll
 	/// </param>
 	/// <param name="SectionPageProtection">
 	/// <para>
-	/// Specifies the protection to place on each page in the section. Use one of the following four values: PAGE_READONLY,
-	/// PAGE_READWRITE, PAGE_EXECUTE, or PAGE_WRITECOPY. For a description of these values, see CreateFileMapping.
+	/// Specifies the protection to place on each page in the section. Use one of the following four values: PAGE_READONLY, PAGE_READWRITE,
+	/// PAGE_EXECUTE, or PAGE_WRITECOPY. For a description of these values, see CreateFileMapping.
 	/// </para>
 	/// </param>
 	/// <param name="AllocationAttributes">
 	/// <para>
-	/// Specifies a bitmask of SEC_XXX flags that determines the allocation attributes of the section. For a description of these flags,
-	/// see CreateFileMapping.
+	/// Specifies a bitmask of SEC_XXX flags that determines the allocation attributes of the section. For a description of these flags, see CreateFileMapping.
 	/// </para>
 	/// </param>
 	/// <param name="FileHandle">
@@ -1557,8 +1518,8 @@ public static partial class NtDll
 	/// </param>
 	/// <returns>
 	/// <para>
-	/// <c>NtCreateSection</c> returns STATUS_SUCCESS on success, or the appropriate NTSTATUS error code on failure. Possible error
-	/// status codes include the following:
+	/// <c>NtCreateSection</c> returns STATUS_SUCCESS on success, or the appropriate NTSTATUS error code on failure. Possible error status
+	/// codes include the following:
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -1584,8 +1545,8 @@ public static partial class NtDll
 	/// <item>
 	/// <term>STATUS_SECTION_TOO_BIG</term>
 	/// <term>
-	/// The value of MaximumSize is too big. This occurs when either MaximumSize is greater than the system-defined maximum for
-	/// sections, or if MaximumSize is greater than the specified file and the section is not writable.
+	/// The value of MaximumSize is too big. This occurs when either MaximumSize is greater than the system-defined maximum for sections, or
+	/// if MaximumSize is greater than the specified file and the section is not writable.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -1593,14 +1554,14 @@ public static partial class NtDll
 	/// <remarks>
 	/// <para>Once the handle pointed to by SectionHandle is no longer in use, the driver must call NtClose to close it.</para>
 	/// <para>
-	/// If the caller is not running in a system thread context, it must ensure that any handles it creates are private handles.
-	/// Otherwise, the handle can be accessed by the process in whose context the driver is running. For more information, see Object Handles.
+	/// If the caller is not running in a system thread context, it must ensure that any handles it creates are private handles. Otherwise,
+	/// the handle can be accessed by the process in whose context the driver is running. For more information, see Object Handles.
 	/// </para>
 	/// <para>For more information about setting up mapped sections and views of memory, see Sections and Views.</para>
 	/// <para>
 	/// For calls from kernel-mode drivers, the <c>NtXxx</c> and <c>ZwXxx</c> versions of a Windows Native System Services routine can
-	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship
-	/// between the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship between
+	/// the <c>NtXxx</c> and <c>ZwXxx</c> versions of a routine, see Using Nt and Zw Versions of the Native System Services Routines.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/nf-ntifs-ntcreatesection __kernel_entry NTSYSCALLAPI
@@ -1611,10 +1572,598 @@ public static partial class NtDll
 	public static extern NTStatus NtCreateSection(out SafeSectionHandle SectionHandle, ACCESS_MASK DesiredAccess, [In, Optional] IntPtr ObjectAttributes, [In, Optional] IntPtr MaximumSize,
 		MEM_PROTECTION SectionPageProtection, SEC_ALLOC AllocationAttributes, [Optional] HFILE FileHandle);
 
+	/// <summary>
+	/// The <b>NtQueryInformationFile</b> routine returns various kinds of information about a file object. See also
+	/// <c><b>NtQueryInformationByName</b></c>, which can be more efficiently used for a few file information classes.
+	/// </summary>
+	/// <param name="FileHandle">
+	/// Handle to a file object. The handle is created by a successful call to <c><b>NtCreateFile</b></c> or <c><b>NtOpenFile</b></c>, or to
+	/// an equivalent file create or open routine.
+	/// </param>
+	/// <param name="IoStatusBlock">
+	/// Pointer to an <c>IO_STATUS_BLOCK</c> structure that receives the final completion status and information about the operation. The
+	/// <b>Information</b> member receives the number of bytes that this routine actually writes to the FileInformation buffer.
+	/// </param>
+	/// <param name="FileInformation">
+	/// Pointer to a caller-allocated buffer into which the routine writes the requested information about the file object. The
+	/// FileInformationClass parameter specifies the type of information that the caller requests.
+	/// </param>
+	/// <param name="Length">The size, in bytes, of the buffer pointed to by FileInformation.</param>
+	/// <param name="FileInformationClass">
+	/// <para>
+	/// Specifies the type of information to be returned about the file, in the buffer that FileInformation points to. Device and
+	/// intermediate drivers can specify any of the following <c>FILE_INFORMATION_CLASS</c> values (listed from lowest to highest enum value):
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>FILE_INFORMATION_CLASS value</description>
+	/// <description>Type of information returned</description>
+	/// </listheader>
+	/// <item>
+	/// <description><b>FileBasicInformation</b> (4)</description>
+	/// <description>
+	/// A <c>FILE_BASIC_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_ATTRIBUTES flag specified in the
+	/// <c>DesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStandardInformation</b> (5)</description>
+	/// <description>
+	/// A <c>FILE_STANDARD_INFORMATION</c> structure. The caller can query this information as long as the file is open, without any
+	/// particular requirements for <c>DesiredAccess</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileInternalInformation</b> (6)</description>
+	/// <description>
+	/// A <c>FILE_INTERNAL_INFORMATION</c> structure. This structure specifies a 64-bit file ID that uniquely identifies a file in NTFS. On
+	/// other file systems, this file ID is not guaranteed to be unique.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileEaInformation</b> (7)</description>
+	/// <description>
+	/// A <c>FILE_EA_INFORMATION</c> structure. This structure specifies the size of the extended attributes block that is associated with
+	/// the file.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileAccessInformation</b> (8)</description>
+	/// <description>
+	/// A <c>FILE_ACCESS_INFORMATION</c> structure. This structure contains an access mask. For more information about access masks, see <c>ACCESS_MASK</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileNameInformation</b> (9)</description>
+	/// <description>
+	/// A <c>FILE_NAME_INFORMATION</c> structure. The structure can contain the file's full path or only a portion of it. The caller can
+	/// query this information as long as the file is open, without any particular requirements for <c>DesiredAccess</c>. For more
+	/// information about the file-name syntax, see the Remarks section later in this topic.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FilePositionInformation</b> (14)</description>
+	/// <description>
+	/// A <c>FILE_POSITION_INFORMATION</c> structure. The caller must have opened the file with the <c>DesiredAccess</c> FILE_READ_DATA or
+	/// FILE_WRITE_DATA flag specified in the <c>DesiredAccess</c> parameter, and with the FILE_SYNCHRONOUS_IO_ALERT or
+	/// FILE_SYNCHRONOUS_IO_NONALERT flag specified in the <c>CreateOptions</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileModeInformation</b> (16)</description>
+	/// <description>
+	/// A <c>FILE_MODE_INFORMATION</c> structure. This structure contains a set of flags that specify the mode in which the file can be
+	/// accessed. These flags are a subset of the options that can be specified in the <c>CreateOptions</c> parameter of the
+	/// <c><b>IoCreateFile</b></c> routine.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileAlignmentInformation</b> (17)</description>
+	/// <description>
+	/// A <c>FILE_ALIGNMENT_INFORMATION</c> structure. The caller can query this information as long as the file is open, without any
+	/// particular requirements for <c>DesiredAccess</c>. This information is useful if the file was opened with the
+	/// FILE_NO_INTERMEDIATE_BUFFERING flag specified in the <c>CreateOptions</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileAllInformation</b> (18)</description>
+	/// <description>
+	/// A <c>FILE_ALL_INFORMATION</c> structure. By combining several file-information structures into a single structure,
+	/// <b>FILE_ALL_INFORMATION</b> reduces the number of queries required to obtain information about a file.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileAlternateNameInformation</b> (21)</description>
+	/// <description>
+	/// A <c>FILE_ALL_INFORMATION</c> structure in which to return the alternate name information for a file (its 8.3 format name).
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStreamInformation</b> (22)</description>
+	/// <description>
+	/// A buffer of <c>FILE_STREAM_INFORMATION</c> structures in which to enumerate the data streams of a file or a directory.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileCompressionInformation</b> (28)</description>
+	/// <description>A <c>FILE_COMPRESSION_INFORMATION</c> structure in which to return compression information for a file.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileNetworkOpenInformation</b> (34)</description>
+	/// <description>
+	/// A <c>FILE_NETWORK_OPEN_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_ATTRIBUTES flag specified
+	/// in the <c>DesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileAttributeTagInformation</b> (35)</description>
+	/// <description>
+	/// A <c>FILE_ATTRIBUTE_TAG_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_ATTRIBUTES flag specified
+	/// in the <c>DesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileIoPriorityHintInformation</b> (43)</description>
+	/// <description>
+	/// A <c>FILE_IO_PRIORITY_HINT_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_DATA flag specified in
+	/// the <c>DesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileSfioReserveInformation</b> (44)</description>
+	/// <description>A <c>FILE_SFIO_RESERVE_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileHardLinkInformation</b> (46)</description>
+	/// <description>A <c>FILE_LINKS_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileNormalizedNameInformation</b> (48)</description>
+	/// <description>A <c>FILE_NAME_INFORMATION</c> structure in which to return the normalized name of a file.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileIsRemoteDeviceInformation</b> (51)</description>
+	/// <description>
+	/// A <c>FILE_IS_REMOTE_DEVICE_INFORMATION</c> structure. The caller can query this information as long as the file is open, without any
+	/// particular requirements for <c>DesiredAccess</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStandardLinkInformation</b> (54)</description>
+	/// <description>A <c>FILE_STANDARD_LINK_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileIdInformation</b> (59)</description>
+	/// <description>A <c>FILE_ID_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileDesiredStorageClassInformation</b> (67)</description>
+	/// <description>A <c>FILE_DESIRED_STORAGE_CLASS_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStatInformation</b> (68)</description>
+	/// <description><c>FILE_STAT_INFORMATION</c></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStatLxInformation</b> (70)</description>
+	/// <description><c>FILE_STAT_LX_INFORMATION</c></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileCaseSensitiveInformation</b> (71)</description>
+	/// <description>
+	/// A <c>FILE_CASE_SENSITIVE_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_ATTRIBUTES flag
+	/// specified in the <c>DesiredAccess</c> parameter. This value is available starting with Windows 10, version 1803.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStorageReserveIdInformation</b> (74)</description>
+	/// <description>A <c>FILE_STORAGE_RESERVE_ID_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileCaseSensitiveInformationForceAccessCheck</b> (75)</description>
+	/// <description>
+	/// A <c>FILE_CASE_SENSITIVE_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_ATTRIBUTES flag
+	/// specified in the <c>DesiredAccess</c> parameter. This is a special version of the FileCaseSensitiveInformation operation that is
+	/// used to force the IOManager to perform access checks for the kernel-mode driver, similar to the checks that apply to a user-mode
+	/// caller. This operation is only recognized by the IOManager and a file system should never receive it. This value is available
+	/// starting with Windows 10, version 1803.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileKnownFolderInformation</b> (76)</description>
+	/// <description>A <c><b>FILE_KNOWN_FOLDER_INFORMATION</b></c> structure. Available starting in Windows Server 2022.</description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns><b>NtQueryInformationFile</b> returns STATUS_SUCCESS or an appropriate NTSTATUS error code.</returns>
+	/// <remarks>
+	/// <para>
+	/// <b>NtQueryInformationFile</b> returns information about the specified file object. Note that it returns zero in any member of a
+	/// <b>FILE_XXX_INFORMATION</b> structure that is not supported by a particular device or file system.
+	/// </para>
+	/// <para>
+	/// When FileInformationClass = <b>FileNameInformation</b>, the file name is returned in the <c>FILE_NAME_INFORMATION</c> structure. The
+	/// precise syntax of the file name depends on a number of factors:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// <para>
+	/// If you opened the file by submitting a full path to <c><b>NtCreateFile</b></c>, <b>NtQueryInformationFile</b> returns that full path.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>
+	/// If the <b>ObjectAttributes-&gt;RootDirectory</b> handle was opened by name in a call to <b>NtCreateFile</b>, and subsequently the
+	/// file was opened by <b>NtCreateFile</b> relative to this root-directory handle, <b>NtQueryInformationFile</b> returns the full path.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>
+	/// If the <b>ObjectAttributes-&gt;RootDirectory</b> handle was opened by file ID (using the FILE_OPEN_BY_FILE_ID flag) in a call to
+	/// <b>NtCreateFile</b>, and subsequently the file was opened by <b>NtCreateFile</b> relative to this root-directory handle,
+	/// <b>NtQueryInformationFile</b> returns the relative path.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>
+	/// However, if the user has <b>SeChangeNotifyPrivilege</b> (described in the Microsoft Windows SDK documentation),
+	/// <b>NtQueryInformationFile</b> returns the full path in all cases.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>If only the relative path is returned, the file name string will not begin with a backslash.</para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>
+	/// If the full path and file name are returned, the string will begin with a single backslash, regardless of its location. Thus the
+	/// file C:\dir1\dir2\filename.ext will appear as \dir1\dir2\filename.ext, while the file \server\share\dir1\dir2\filename.ext will
+	/// appear as \server\share\dir1\dir2\filename.ext.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If <b>NtQueryInformationFile</b> fails because of a buffer overflow, drivers that implement <b>FileNameInformation</b> should return
+	/// as many WCHAR characters of the file name as will fit in the buffer and specify the full length that is required in the
+	/// FileNameLength parameter of the <c>FILE_NAME_INFORMATION</c> structure. You should reissue the query by using the file name length
+	/// so that you can retrieve the full file name. Drivers that do not follow this pattern might require a gradual increase in length
+	/// until they retrieve the full file name. For more information about working with files, see <c>Using Files in a Driver</c>.
+	/// </para>
+	/// <para>Callers of <b>NtQueryInformationFile</b> must be running at IRQL = PASSIVE_LEVEL and <c>with special kernel APCs enabled</c>.</para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>If the call to this function occurs in user mode, you should use the name " <b>NtQueryInformationFile</b>" instead of " <b>ZwQueryInformationFile</b>".</para>
+	/// </para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <b>NtXxx</b> and <b>ZwXxx</b> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship between
+	/// the <b>NtXxx</b> and <b>ZwXxx</b> versions of a routine, see <c>Using Nt and Zw Versions of the Native System Services Routines</c>.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-ntqueryinformationfile __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtQueryInformationFile( [in] HANDLE FileHandle, [out] PIO_STATUS_BLOCK IoStatusBlock, [out] PVOID FileInformation, [in]
+	// ULONG Length, [in] FILE_INFORMATION_CLASS FileInformationClass );
+	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.NtQueryInformationFile")]
+	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
+	public static extern NTStatus NtQueryInformationFile([In] HFILE FileHandle, out IO_STATUS_BLOCK IoStatusBlock,
+		[Out] IntPtr FileInformation, uint Length, [In] FILE_INFORMATION_CLASS FileInformationClass);
+
+	/// <summary>
+	/// The <b>NtQueryInformationFile</b> routine returns various kinds of information about a file object. See also
+	/// <c><b>NtQueryInformationByName</b></c>, which can be more efficiently used for a few file information classes.
+	/// </summary>
+	/// <typeparam name="T">The type of the structure for the requested information.</typeparam>
+	/// <param name="FileHandle">
+	/// Handle to a file object. The handle is created by a successful call to <c><b>NtCreateFile</b></c> or <c><b>NtOpenFile</b></c>, or to
+	/// an equivalent file create or open routine.
+	/// </param>
+	/// <param name="IoStatusBlock">
+	/// Pointer to an <c>IO_STATUS_BLOCK</c> structure that receives the final completion status and information about the operation. The
+	/// <b>Information</b> member receives the number of bytes that this routine actually writes to the FileInformation buffer.
+	/// </param>
+	/// <param name="FileInformationClass">
+	/// <para>
+	/// Specifies the type of information to be returned about the file, in the buffer that FileInformation points to. Device and
+	/// intermediate drivers can specify any of the following <c>FILE_INFORMATION_CLASS</c> values (listed from lowest to highest enum value):
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>FILE_INFORMATION_CLASS value</description>
+	/// <description>Type of information returned</description>
+	/// </listheader>
+	/// <item>
+	/// <description><b>FileBasicInformation</b> (4)</description>
+	/// <description>
+	/// A <c>FILE_BASIC_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_ATTRIBUTES flag specified in the
+	/// <c>DesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStandardInformation</b> (5)</description>
+	/// <description>
+	/// A <c>FILE_STANDARD_INFORMATION</c> structure. The caller can query this information as long as the file is open, without any
+	/// particular requirements for <c>DesiredAccess</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileInternalInformation</b> (6)</description>
+	/// <description>
+	/// A <c>FILE_INTERNAL_INFORMATION</c> structure. This structure specifies a 64-bit file ID that uniquely identifies a file in NTFS. On
+	/// other file systems, this file ID is not guaranteed to be unique.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileEaInformation</b> (7)</description>
+	/// <description>
+	/// A <c>FILE_EA_INFORMATION</c> structure. This structure specifies the size of the extended attributes block that is associated with
+	/// the file.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileAccessInformation</b> (8)</description>
+	/// <description>
+	/// A <c>FILE_ACCESS_INFORMATION</c> structure. This structure contains an access mask. For more information about access masks, see <c>ACCESS_MASK</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileNameInformation</b> (9)</description>
+	/// <description>
+	/// A <c>FILE_NAME_INFORMATION</c> structure. The structure can contain the file's full path or only a portion of it. The caller can
+	/// query this information as long as the file is open, without any particular requirements for <c>DesiredAccess</c>. For more
+	/// information about the file-name syntax, see the Remarks section later in this topic.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FilePositionInformation</b> (14)</description>
+	/// <description>
+	/// A <c>FILE_POSITION_INFORMATION</c> structure. The caller must have opened the file with the <c>DesiredAccess</c> FILE_READ_DATA or
+	/// FILE_WRITE_DATA flag specified in the <c>DesiredAccess</c> parameter, and with the FILE_SYNCHRONOUS_IO_ALERT or
+	/// FILE_SYNCHRONOUS_IO_NONALERT flag specified in the <c>CreateOptions</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileModeInformation</b> (16)</description>
+	/// <description>
+	/// A <c>FILE_MODE_INFORMATION</c> structure. This structure contains a set of flags that specify the mode in which the file can be
+	/// accessed. These flags are a subset of the options that can be specified in the <c>CreateOptions</c> parameter of the
+	/// <c><b>IoCreateFile</b></c> routine.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileAlignmentInformation</b> (17)</description>
+	/// <description>
+	/// A <c>FILE_ALIGNMENT_INFORMATION</c> structure. The caller can query this information as long as the file is open, without any
+	/// particular requirements for <c>DesiredAccess</c>. This information is useful if the file was opened with the
+	/// FILE_NO_INTERMEDIATE_BUFFERING flag specified in the <c>CreateOptions</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileAllInformation</b> (18)</description>
+	/// <description>
+	/// A <c>FILE_ALL_INFORMATION</c> structure. By combining several file-information structures into a single structure,
+	/// <b>FILE_ALL_INFORMATION</b> reduces the number of queries required to obtain information about a file.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileAlternateNameInformation</b> (21)</description>
+	/// <description>
+	/// A <c>FILE_ALL_INFORMATION</c> structure in which to return the alternate name information for a file (its 8.3 format name).
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStreamInformation</b> (22)</description>
+	/// <description>
+	/// A buffer of <c>FILE_STREAM_INFORMATION</c> structures in which to enumerate the data streams of a file or a directory.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileCompressionInformation</b> (28)</description>
+	/// <description>A <c>FILE_COMPRESSION_INFORMATION</c> structure in which to return compression information for a file.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileNetworkOpenInformation</b> (34)</description>
+	/// <description>
+	/// A <c>FILE_NETWORK_OPEN_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_ATTRIBUTES flag specified
+	/// in the <c>DesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileAttributeTagInformation</b> (35)</description>
+	/// <description>
+	/// A <c>FILE_ATTRIBUTE_TAG_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_ATTRIBUTES flag specified
+	/// in the <c>DesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileIoPriorityHintInformation</b> (43)</description>
+	/// <description>
+	/// A <c>FILE_IO_PRIORITY_HINT_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_DATA flag specified in
+	/// the <c>DesiredAccess</c> parameter.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileSfioReserveInformation</b> (44)</description>
+	/// <description>A <c>FILE_SFIO_RESERVE_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileHardLinkInformation</b> (46)</description>
+	/// <description>A <c>FILE_LINKS_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileNormalizedNameInformation</b> (48)</description>
+	/// <description>A <c>FILE_NAME_INFORMATION</c> structure in which to return the normalized name of a file.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileIsRemoteDeviceInformation</b> (51)</description>
+	/// <description>
+	/// A <c>FILE_IS_REMOTE_DEVICE_INFORMATION</c> structure. The caller can query this information as long as the file is open, without any
+	/// particular requirements for <c>DesiredAccess</c>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStandardLinkInformation</b> (54)</description>
+	/// <description>A <c>FILE_STANDARD_LINK_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileIdInformation</b> (59)</description>
+	/// <description>A <c>FILE_ID_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileDesiredStorageClassInformation</b> (67)</description>
+	/// <description>A <c>FILE_DESIRED_STORAGE_CLASS_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStatInformation</b> (68)</description>
+	/// <description><c>FILE_STAT_INFORMATION</c></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStatLxInformation</b> (70)</description>
+	/// <description><c>FILE_STAT_LX_INFORMATION</c></description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileCaseSensitiveInformation</b> (71)</description>
+	/// <description>
+	/// A <c>FILE_CASE_SENSITIVE_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_ATTRIBUTES flag
+	/// specified in the <c>DesiredAccess</c> parameter. This value is available starting with Windows 10, version 1803.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileStorageReserveIdInformation</b> (74)</description>
+	/// <description>A <c>FILE_STORAGE_RESERVE_ID_INFORMATION</c> structure.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileCaseSensitiveInformationForceAccessCheck</b> (75)</description>
+	/// <description>
+	/// A <c>FILE_CASE_SENSITIVE_INFORMATION</c> structure. The caller must have opened the file with the FILE_READ_ATTRIBUTES flag
+	/// specified in the <c>DesiredAccess</c> parameter. This is a special version of the FileCaseSensitiveInformation operation that is
+	/// used to force the IOManager to perform access checks for the kernel-mode driver, similar to the checks that apply to a user-mode
+	/// caller. This operation is only recognized by the IOManager and a file system should never receive it. This value is available
+	/// starting with Windows 10, version 1803.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>FileKnownFolderInformation</b> (76)</description>
+	/// <description>A <c><b>FILE_KNOWN_FOLDER_INFORMATION</b></c> structure. Available starting in Windows Server 2022.</description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="FileInformation">
+	/// Pointer to a caller-allocated buffer into which the routine writes the requested information about the file object. The
+	/// FileInformationClass parameter specifies the type of information that the caller requests.
+	/// </param>
+	/// <returns><b>NtQueryInformationFile</b> returns STATUS_SUCCESS or an appropriate NTSTATUS error code.</returns>
+	/// <exception cref="ArgumentException">Invalid type request for FileInformationClass, nameof(FileInformation)</exception>
+	/// <remarks>
+	/// <para>
+	/// <b>NtQueryInformationFile</b> returns information about the specified file object. Note that it returns zero in any member of a
+	/// <b>FILE_XXX_INFORMATION</b> structure that is not supported by a particular device or file system.
+	/// </para>
+	/// <para>
+	/// When FileInformationClass = <b>FileNameInformation</b>, the file name is returned in the <c>FILE_NAME_INFORMATION</c> structure. The
+	/// precise syntax of the file name depends on a number of factors:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// <para>
+	/// If you opened the file by submitting a full path to <c><b>NtCreateFile</b></c>, <b>NtQueryInformationFile</b> returns that full path.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>
+	/// If the <b>ObjectAttributes-&gt;RootDirectory</b> handle was opened by name in a call to <b>NtCreateFile</b>, and subsequently the
+	/// file was opened by <b>NtCreateFile</b> relative to this root-directory handle, <b>NtQueryInformationFile</b> returns the full path.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>
+	/// If the <b>ObjectAttributes-&gt;RootDirectory</b> handle was opened by file ID (using the FILE_OPEN_BY_FILE_ID flag) in a call to
+	/// <b>NtCreateFile</b>, and subsequently the file was opened by <b>NtCreateFile</b> relative to this root-directory handle,
+	/// <b>NtQueryInformationFile</b> returns the relative path.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>
+	/// However, if the user has <b>SeChangeNotifyPrivilege</b> (described in the Microsoft Windows SDK documentation),
+	/// <b>NtQueryInformationFile</b> returns the full path in all cases.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>If only the relative path is returned, the file name string will not begin with a backslash.</para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>
+	/// If the full path and file name are returned, the string will begin with a single backslash, regardless of its location. Thus the
+	/// file C:\dir1\dir2\filename.ext will appear as \dir1\dir2\filename.ext, while the file \server\share\dir1\dir2\filename.ext will
+	/// appear as \server\share\dir1\dir2\filename.ext.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If <b>NtQueryInformationFile</b> fails because of a buffer overflow, drivers that implement <b>FileNameInformation</b> should return
+	/// as many WCHAR characters of the file name as will fit in the buffer and specify the full length that is required in the
+	/// FileNameLength parameter of the <c>FILE_NAME_INFORMATION</c> structure. You should reissue the query by using the file name length
+	/// so that you can retrieve the full file name. Drivers that do not follow this pattern might require a gradual increase in length
+	/// until they retrieve the full file name. For more information about working with files, see <c>Using Files in a Driver</c>.
+	/// </para>
+	/// <para>Callers of <b>NtQueryInformationFile</b> must be running at IRQL = PASSIVE_LEVEL and <c>with special kernel APCs enabled</c>.</para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>If the call to this function occurs in user mode, you should use the name " <b>NtQueryInformationFile</b>" instead of " <b>ZwQueryInformationFile</b>".</para>
+	/// </para>
+	/// <para>
+	/// For calls from kernel-mode drivers, the <b>NtXxx</b> and <b>ZwXxx</b> versions of a Windows Native System Services routine can
+	/// behave differently in the way that they handle and interpret input parameters. For more information about the relationship between
+	/// the <b>NtXxx</b> and <b>ZwXxx</b> versions of a routine, see <c>Using Nt and Zw Versions of the Native System Services Routines</c>.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-ntqueryinformationfile __kernel_entry NTSYSCALLAPI
+	// NTSTATUS NtQueryInformationFile( [in] HANDLE FileHandle, [out] PIO_STATUS_BLOCK IoStatusBlock, [out] PVOID FileInformation, [in]
+	// ULONG Length, [in] FILE_INFORMATION_CLASS FileInformationClass );
+	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.NtQueryInformationFile")]
+	public static NTStatus NtQueryInformationFile<T>([In] HFILE FileHandle, out IO_STATUS_BLOCK IoStatusBlock, [In] FILE_INFORMATION_CLASS FileInformationClass,
+		out T? FileInformation) where T : struct
+	{
+		var validTypes = CorrespondingTypeAttribute.GetCorrespondingTypes(FileInformationClass).ToList();
+		if (validTypes.Count > 0 && !validTypes.Contains(typeof(T)))
+			throw new ArgumentException("Invalid type request for FileInformationClass", nameof(FileInformation));
+		using SafeCoTaskMemStruct<T> mem = new(4096);
+		var ret = NtQueryInformationFile(FileHandle, out IoStatusBlock, mem, (uint)mem.Size, FileInformationClass);
+		if ((int)ret is NTStatus.STATUS_BUFFER_OVERFLOW or NTStatus.STATUS_BUFFER_TOO_SMALL or NTStatus.STATUS_INFO_LENGTH_MISMATCH)
+		{
+			mem.Size += 4096; // Add a big number to ensure we have enough space
+			ret = NtQueryInformationFile(FileHandle, out IoStatusBlock, mem, (uint)mem.Size, FileInformationClass);
+		}
+		FileInformation = ret.Succeeded ? mem.GetValueOrDefault() : default;
+		return ret;
+	}
+
 	/// <summary>The <c>RtlAllocateHeap</c> routine allocates a block of memory from a heap.</summary>
 	/// <param name="HeapHandle">
-	/// [in] Handle for a private heap from which the memory will be allocated. This parameter is a handle returned from a successful
-	/// call to <c>RtlCreateHeap</c> .
+	/// [in] Handle for a private heap from which the memory will be allocated. This parameter is a handle returned from a successful call
+	/// to <c>RtlCreateHeap</c> .
 	/// </param>
 	/// <param name="Flags">
 	/// <para>
@@ -1643,27 +2192,26 @@ public static partial class NtDll
 	/// </list>
 	/// </param>
 	/// <param name="Size">
-	/// [in] Number of bytes to be allocated. If the heap, specified by the HeapHandle parameter, is a nongrowable heap, Size must be
-	/// less than or equal to the heap's virtual memory threshold. (For more information, see the <c>VirtualMemoryThreshold</c> member
-	/// of the Parameters parameter to <c>RtlCreateHeap</c>.)
+	/// [in] Number of bytes to be allocated. If the heap, specified by the HeapHandle parameter, is a nongrowable heap, Size must be less
+	/// than or equal to the heap's virtual memory threshold. (For more information, see the <c>VirtualMemoryThreshold</c> member of the
+	/// Parameters parameter to <c>RtlCreateHeap</c>.)
 	/// </param>
 	/// <returns>
-	/// If the call to <c>RtlAllocateHeap</c> succeeds, the return value is a pointer to the newly-allocated block. The return value is
-	/// NULL if the allocation failed.
+	/// If the call to <c>RtlAllocateHeap</c> succeeds, the return value is a pointer to the newly-allocated block. The return value is NULL
+	/// if the allocation failed.
 	/// </returns>
 	/// <remarks>
 	/// <para><c>RtlAllocateHeap</c> allocates a block of memory of the specified size from the specified heap.</para>
 	/// <para>To free a block of memory allocated by <c>RtlAllocateHeap</c>, call <c>RtlFreeHeap</c>.</para>
 	/// <para>
-	/// Memory allocated by <c>RtlAllocateHeap</c> is not movable. Since the memory is not movable, it is possible for the heap to
-	/// become fragmented.
+	/// Memory allocated by <c>RtlAllocateHeap</c> is not movable. Since the memory is not movable, it is possible for the heap to become fragmented.
 	/// </para>
 	/// <para>
 	/// Serialization ensures mutual exclusion when two or more threads attempt to simultaneously allocate or free blocks from the same
 	/// heap. There is a small performance cost to serialization, but it must be used whenever multiple threads allocate and free memory
-	/// from the same heap. Setting the HEAP_NO_SERIALIZE value eliminates mutual exclusion on the heap. Without serialization, two or
-	/// more threads that use the same heap handle might attempt to allocate or free memory simultaneously, likely causing corruption in
-	/// the heap. The HEAP_NO_SERIALIZE value can, therefore, be safely used only in the following situations:
+	/// from the same heap. Setting the HEAP_NO_SERIALIZE value eliminates mutual exclusion on the heap. Without serialization, two or more
+	/// threads that use the same heap handle might attempt to allocate or free memory simultaneously, likely causing corruption in the
+	/// heap. The HEAP_NO_SERIALIZE value can, therefore, be safely used only in the following situations:
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
@@ -1685,25 +2233,25 @@ public static partial class NtDll
 	/// <para>
 	/// <para>Note</para>
 	/// <para>
-	/// To guard against an access violation, use structured exception handling to protect any code that writes to or reads from a heap.
-	/// For more information about structured exception handling with memory accesses, see Handling Exceptions.
+	/// To guard against an access violation, use structured exception handling to protect any code that writes to or reads from a heap. For
+	/// more information about structured exception handling with memory accesses, see Handling Exceptions.
 	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlallocateheap NTSYSAPI PVOID RtlAllocateHeap(
-	// PVOID HeapHandle, ULONG Flags, SIZE_T Size );
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlallocateheap NTSYSAPI PVOID RtlAllocateHeap( PVOID
+	// HeapHandle, ULONG Flags, SIZE_T Size );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlAllocateHeap")]
 	public static extern IntPtr RtlAllocateHeap(IntPtr HeapHandle, [In, Optional] HeapFlags Flags, SizeT Size);
 
 	/// <summary>
-	/// The <c>RtlCreateHeap</c> routine creates a heap object that can be used by the calling process. This routine reserves space in
-	/// the virtual address space of the process and allocates physical storage for a specified initial portion of this block.
+	/// The <c>RtlCreateHeap</c> routine creates a heap object that can be used by the calling process. This routine reserves space in the
+	/// virtual address space of the process and allocates physical storage for a specified initial portion of this block.
 	/// </summary>
 	/// <param name="Flags">
 	/// <para>
-	/// [in] Flags specifying optional attributes of the heap. These options affect subsequent access to the new heap through calls to
-	/// the heap functions (RtlAllocateHeap and RtlFreeHeap).
+	/// [in] Flags specifying optional attributes of the heap. These options affect subsequent access to the new heap through calls to the
+	/// heap functions (RtlAllocateHeap and RtlFreeHeap).
 	/// </para>
 	/// <para>Callers should set this parameter to zero if no optional attributes are requested.</para>
 	/// <para>This parameter can be one or more of the following values.</para>
@@ -1715,9 +2263,9 @@ public static partial class NtDll
 	/// <para>Specifies that the heap is growable. Must be specified if HeapBase is <c>NULL</c>.</para>
 	/// <para>HEAP_NO_SERIALIZE</para>
 	/// <para>
-	/// Specifies that mutual exclusion will not be used when the heap functions allocate and free memory from this heap. The default,
-	/// when HEAP_NO_SERIALIZE is not specified, is to serialize access to the heap. Serialization of heap access allows two or more
-	/// threads to simultaneously allocate and free memory from the same heap.
+	/// Specifies that mutual exclusion will not be used when the heap functions allocate and free memory from this heap. The default, when
+	/// HEAP_NO_SERIALIZE is not specified, is to serialize access to the heap. Serialization of heap access allows two or more threads to
+	/// simultaneously allocate and free memory from the same heap.
 	/// </para>
 	/// </param>
 	/// <param name="HeapBase">
@@ -1725,9 +2273,7 @@ public static partial class NtDll
 	/// <para>
 	/// If HeapBase is a non- <c>NULL</c> value, it specifies the base address for a block of caller-allocated memory to use for the heap.
 	/// </para>
-	/// <para>
-	/// If HeapBase is <c>NULL</c>, <c>RtlCreateHeap</c> allocates system memory for the heap from the process's virtual address space.
-	/// </para>
+	/// <para>If HeapBase is <c>NULL</c>, <c>RtlCreateHeap</c> allocates system memory for the heap from the process's virtual address space.</para>
 	/// </param>
 	/// <param name="ReserveSize">
 	/// <para>
@@ -1765,8 +2311,8 @@ public static partial class NtDll
 	/// <param name="CommitSize">
 	/// <para>
 	/// [in, optional] If CommitSize is a nonzero value, it specifies the initial amount of memory, in bytes, to commit for the heap.
-	/// <c>RtlCreateHeap</c> rounds CommitSize up to the next page boundary, and then commits a block of that size in the process's
-	/// virtual address space for the heap.
+	/// <c>RtlCreateHeap</c> rounds CommitSize up to the next page boundary, and then commits a block of that size in the process's virtual
+	/// address space for the heap.
 	/// </para>
 	/// <para>This parameter is optional and can be zero.</para>
 	/// </param>
@@ -1784,46 +2330,45 @@ public static partial class NtDll
 	/// <para>
 	/// <c>RtlCreateHeap</c> creates a private heap object from which the calling process can allocate memory blocks by calling
 	/// RtlAllocateHeap. The initial commit size determines the number of pages that are initially allocated for the heap. The initial
-	/// reserve size determines the number of pages that are initially reserved for the heap. Pages that are reserved but uncommitted
-	/// create a block in the process's virtual address space into which the heap can expand.
+	/// reserve size determines the number of pages that are initially reserved for the heap. Pages that are reserved but uncommitted create
+	/// a block in the process's virtual address space into which the heap can expand.
 	/// </para>
 	/// <para>
 	/// If allocation requests made by RtlAllocateHeap exceed the heap's initial commit size, the system commits additional pages of
-	/// physical storage for the heap, up to the heap's maximum size. If the heap is nongrowable, its maximum size is limited to its
-	/// initial reserve size.
+	/// physical storage for the heap, up to the heap's maximum size. If the heap is nongrowable, its maximum size is limited to its initial
+	/// reserve size.
 	/// </para>
 	/// <para>
 	/// If the heap is growable, its size is limited only by available memory. If requests by RtlAllocateHeap exceed the current size of
 	/// committed pages, the system calls ZwAllocateVirtualMemory to obtain the memory needed, assuming that the physical storage is available.
 	/// </para>
 	/// <para>
-	/// In addition, if the heap is nongrowable, an absolute limitation arises: the maximum size of a memory block in the heap is
-	/// 0x7F000 bytes. The virtual memory threshold of the heap is equal to the maximum heap block size or the value of the
-	/// <c>VirtualMemoryThreshold</c> member of the Parameters structure, whichever is less. The heap also may need to pad the request
-	/// size for metadata and alignment purposes so requests to allocate blocks within 4096 Bytes (1 Page) of the
-	/// <c>VirtualMemoryThreshold</c> may fail even if the maximum size of the heap is large enough to contain the block. (For more
-	/// information about <c>VirtualMemoryThreshold</c>, see the members of the Parameters parameter to <c>RtlCreateHeap</c>.)
+	/// In addition, if the heap is nongrowable, an absolute limitation arises: the maximum size of a memory block in the heap is 0x7F000
+	/// bytes. The virtual memory threshold of the heap is equal to the maximum heap block size or the value of the
+	/// <c>VirtualMemoryThreshold</c> member of the Parameters structure, whichever is less. The heap also may need to pad the request size
+	/// for metadata and alignment purposes so requests to allocate blocks within 4096 Bytes (1 Page) of the <c>VirtualMemoryThreshold</c>
+	/// may fail even if the maximum size of the heap is large enough to contain the block. (For more information about
+	/// <c>VirtualMemoryThreshold</c>, see the members of the Parameters parameter to <c>RtlCreateHeap</c>.)
 	/// </para>
 	/// <para>
-	/// If the heap is growable, requests to allocate blocks larger than the heap's virtual memory threshold do not automatically fail;
-	/// the system calls ZwAllocateVirtualMemory to obtain the memory needed for such large blocks.
+	/// If the heap is growable, requests to allocate blocks larger than the heap's virtual memory threshold do not automatically fail; the
+	/// system calls ZwAllocateVirtualMemory to obtain the memory needed for such large blocks.
 	/// </para>
 	/// <para>The memory of a private heap object is accessible only to the process that created it.</para>
 	/// <para>
-	/// The system uses memory from the private heap to store heap support structures, so not all of the specified heap size is
-	/// available to the process. For example, if RtlAllocateHeap requests 64 kilobytes (K) from a heap with a maximum size of 64K, the
-	/// request may fail because of system overhead.
+	/// The system uses memory from the private heap to store heap support structures, so not all of the specified heap size is available to
+	/// the process. For example, if RtlAllocateHeap requests 64 kilobytes (K) from a heap with a maximum size of 64K, the request may fail
+	/// because of system overhead.
 	/// </para>
 	/// <para>
-	/// If HEAP_NO_SERIALIZE is not specified (the simple default), the heap will serialize access within the calling process.
-	/// Serialization ensures mutual exclusion when two or more threads attempt to simultaneously allocate or free blocks from the same
-	/// heap. There is a small performance cost to serialization, but it must be used whenever multiple threads allocate and free memory
-	/// from the same heap.
+	/// If HEAP_NO_SERIALIZE is not specified (the simple default), the heap will serialize access within the calling process. Serialization
+	/// ensures mutual exclusion when two or more threads attempt to simultaneously allocate or free blocks from the same heap. There is a
+	/// small performance cost to serialization, but it must be used whenever multiple threads allocate and free memory from the same heap.
 	/// </para>
 	/// <para>
-	/// Setting HEAP_NO_SERIALIZE eliminates mutual exclusion on the heap. Without serialization, two or more threads that use the same
-	/// heap handle might attempt to allocate or free memory simultaneously, likely causing corruption in the heap. Therefore,
-	/// HEAP_NO_SERIALIZE can safely be used only in the following situations:
+	/// Setting HEAP_NO_SERIALIZE eliminates mutual exclusion on the heap. Without serialization, two or more threads that use the same heap
+	/// handle might attempt to allocate or free memory simultaneously, likely causing corruption in the heap. Therefore, HEAP_NO_SERIALIZE
+	/// can safely be used only in the following situations:
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
@@ -1838,25 +2383,25 @@ public static partial class NtDll
 	/// </list>
 	/// <para><c>Note</c>
 	/// <para></para>
-	/// To guard against an access violation, use structured exception handling to protect any code that writes to or reads from a heap.
-	/// For more information about structured exception handling with memory accesses, see Handling Exceptions.
+	/// To guard against an access violation, use structured exception handling to protect any code that writes to or reads from a heap. For
+	/// more information about structured exception handling with memory accesses, see Handling Exceptions.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlcreateheap NTSYSAPI PVOID RtlCreateHeap( ULONG
-	// Flags, PVOID HeapBase, SIZE_T ReserveSize, SIZE_T CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlcreateheap NTSYSAPI PVOID RtlCreateHeap( ULONG Flags,
+	// PVOID HeapBase, SIZE_T ReserveSize, SIZE_T CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlCreateHeap")]
 	public static extern IntPtr RtlCreateHeap([In, Optional] HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SizeT ReserveSize,
 		[In, Optional] SizeT CommitSize, [In, Optional] IntPtr Lock, [In, Optional] IntPtr Parameters);
 
 	/// <summary>
-	/// The <c>RtlCreateHeap</c> routine creates a heap object that can be used by the calling process. This routine reserves space in
-	/// the virtual address space of the process and allocates physical storage for a specified initial portion of this block.
+	/// The <c>RtlCreateHeap</c> routine creates a heap object that can be used by the calling process. This routine reserves space in the
+	/// virtual address space of the process and allocates physical storage for a specified initial portion of this block.
 	/// </summary>
 	/// <param name="Flags">
 	/// <para>
-	/// [in] Flags specifying optional attributes of the heap. These options affect subsequent access to the new heap through calls to
-	/// the heap functions (RtlAllocateHeap and RtlFreeHeap).
+	/// [in] Flags specifying optional attributes of the heap. These options affect subsequent access to the new heap through calls to the
+	/// heap functions (RtlAllocateHeap and RtlFreeHeap).
 	/// </para>
 	/// <para>Callers should set this parameter to zero if no optional attributes are requested.</para>
 	/// <para>This parameter can be one or more of the following values.</para>
@@ -1868,9 +2413,9 @@ public static partial class NtDll
 	/// <para>Specifies that the heap is growable. Must be specified if HeapBase is <c>NULL</c>.</para>
 	/// <para>HEAP_NO_SERIALIZE</para>
 	/// <para>
-	/// Specifies that mutual exclusion will not be used when the heap functions allocate and free memory from this heap. The default,
-	/// when HEAP_NO_SERIALIZE is not specified, is to serialize access to the heap. Serialization of heap access allows two or more
-	/// threads to simultaneously allocate and free memory from the same heap.
+	/// Specifies that mutual exclusion will not be used when the heap functions allocate and free memory from this heap. The default, when
+	/// HEAP_NO_SERIALIZE is not specified, is to serialize access to the heap. Serialization of heap access allows two or more threads to
+	/// simultaneously allocate and free memory from the same heap.
 	/// </para>
 	/// </param>
 	/// <param name="HeapBase">
@@ -1878,9 +2423,7 @@ public static partial class NtDll
 	/// <para>
 	/// If HeapBase is a non- <c>NULL</c> value, it specifies the base address for a block of caller-allocated memory to use for the heap.
 	/// </para>
-	/// <para>
-	/// If HeapBase is <c>NULL</c>, <c>RtlCreateHeap</c> allocates system memory for the heap from the process's virtual address space.
-	/// </para>
+	/// <para>If HeapBase is <c>NULL</c>, <c>RtlCreateHeap</c> allocates system memory for the heap from the process's virtual address space.</para>
 	/// </param>
 	/// <param name="ReserveSize">
 	/// <para>
@@ -1918,8 +2461,8 @@ public static partial class NtDll
 	/// <param name="CommitSize">
 	/// <para>
 	/// [in, optional] If CommitSize is a nonzero value, it specifies the initial amount of memory, in bytes, to commit for the heap.
-	/// <c>RtlCreateHeap</c> rounds CommitSize up to the next page boundary, and then commits a block of that size in the process's
-	/// virtual address space for the heap.
+	/// <c>RtlCreateHeap</c> rounds CommitSize up to the next page boundary, and then commits a block of that size in the process's virtual
+	/// address space for the heap.
 	/// </para>
 	/// <para>This parameter is optional and can be zero.</para>
 	/// </param>
@@ -1937,46 +2480,45 @@ public static partial class NtDll
 	/// <para>
 	/// <c>RtlCreateHeap</c> creates a private heap object from which the calling process can allocate memory blocks by calling
 	/// RtlAllocateHeap. The initial commit size determines the number of pages that are initially allocated for the heap. The initial
-	/// reserve size determines the number of pages that are initially reserved for the heap. Pages that are reserved but uncommitted
-	/// create a block in the process's virtual address space into which the heap can expand.
+	/// reserve size determines the number of pages that are initially reserved for the heap. Pages that are reserved but uncommitted create
+	/// a block in the process's virtual address space into which the heap can expand.
 	/// </para>
 	/// <para>
 	/// If allocation requests made by RtlAllocateHeap exceed the heap's initial commit size, the system commits additional pages of
-	/// physical storage for the heap, up to the heap's maximum size. If the heap is nongrowable, its maximum size is limited to its
-	/// initial reserve size.
+	/// physical storage for the heap, up to the heap's maximum size. If the heap is nongrowable, its maximum size is limited to its initial
+	/// reserve size.
 	/// </para>
 	/// <para>
 	/// If the heap is growable, its size is limited only by available memory. If requests by RtlAllocateHeap exceed the current size of
 	/// committed pages, the system calls ZwAllocateVirtualMemory to obtain the memory needed, assuming that the physical storage is available.
 	/// </para>
 	/// <para>
-	/// In addition, if the heap is nongrowable, an absolute limitation arises: the maximum size of a memory block in the heap is
-	/// 0x7F000 bytes. The virtual memory threshold of the heap is equal to the maximum heap block size or the value of the
-	/// <c>VirtualMemoryThreshold</c> member of the Parameters structure, whichever is less. The heap also may need to pad the request
-	/// size for metadata and alignment purposes so requests to allocate blocks within 4096 Bytes (1 Page) of the
-	/// <c>VirtualMemoryThreshold</c> may fail even if the maximum size of the heap is large enough to contain the block. (For more
-	/// information about <c>VirtualMemoryThreshold</c>, see the members of the Parameters parameter to <c>RtlCreateHeap</c>.)
+	/// In addition, if the heap is nongrowable, an absolute limitation arises: the maximum size of a memory block in the heap is 0x7F000
+	/// bytes. The virtual memory threshold of the heap is equal to the maximum heap block size or the value of the
+	/// <c>VirtualMemoryThreshold</c> member of the Parameters structure, whichever is less. The heap also may need to pad the request size
+	/// for metadata and alignment purposes so requests to allocate blocks within 4096 Bytes (1 Page) of the <c>VirtualMemoryThreshold</c>
+	/// may fail even if the maximum size of the heap is large enough to contain the block. (For more information about
+	/// <c>VirtualMemoryThreshold</c>, see the members of the Parameters parameter to <c>RtlCreateHeap</c>.)
 	/// </para>
 	/// <para>
-	/// If the heap is growable, requests to allocate blocks larger than the heap's virtual memory threshold do not automatically fail;
-	/// the system calls ZwAllocateVirtualMemory to obtain the memory needed for such large blocks.
+	/// If the heap is growable, requests to allocate blocks larger than the heap's virtual memory threshold do not automatically fail; the
+	/// system calls ZwAllocateVirtualMemory to obtain the memory needed for such large blocks.
 	/// </para>
 	/// <para>The memory of a private heap object is accessible only to the process that created it.</para>
 	/// <para>
-	/// The system uses memory from the private heap to store heap support structures, so not all of the specified heap size is
-	/// available to the process. For example, if RtlAllocateHeap requests 64 kilobytes (K) from a heap with a maximum size of 64K, the
-	/// request may fail because of system overhead.
+	/// The system uses memory from the private heap to store heap support structures, so not all of the specified heap size is available to
+	/// the process. For example, if RtlAllocateHeap requests 64 kilobytes (K) from a heap with a maximum size of 64K, the request may fail
+	/// because of system overhead.
 	/// </para>
 	/// <para>
-	/// If HEAP_NO_SERIALIZE is not specified (the simple default), the heap will serialize access within the calling process.
-	/// Serialization ensures mutual exclusion when two or more threads attempt to simultaneously allocate or free blocks from the same
-	/// heap. There is a small performance cost to serialization, but it must be used whenever multiple threads allocate and free memory
-	/// from the same heap.
+	/// If HEAP_NO_SERIALIZE is not specified (the simple default), the heap will serialize access within the calling process. Serialization
+	/// ensures mutual exclusion when two or more threads attempt to simultaneously allocate or free blocks from the same heap. There is a
+	/// small performance cost to serialization, but it must be used whenever multiple threads allocate and free memory from the same heap.
 	/// </para>
 	/// <para>
-	/// Setting HEAP_NO_SERIALIZE eliminates mutual exclusion on the heap. Without serialization, two or more threads that use the same
-	/// heap handle might attempt to allocate or free memory simultaneously, likely causing corruption in the heap. Therefore,
-	/// HEAP_NO_SERIALIZE can safely be used only in the following situations:
+	/// Setting HEAP_NO_SERIALIZE eliminates mutual exclusion on the heap. Without serialization, two or more threads that use the same heap
+	/// handle might attempt to allocate or free memory simultaneously, likely causing corruption in the heap. Therefore, HEAP_NO_SERIALIZE
+	/// can safely be used only in the following situations:
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
@@ -1991,20 +2533,20 @@ public static partial class NtDll
 	/// </list>
 	/// <para><c>Note</c>
 	/// <para></para>
-	/// To guard against an access violation, use structured exception handling to protect any code that writes to or reads from a heap.
-	/// For more information about structured exception handling with memory accesses, see Handling Exceptions.
+	/// To guard against an access violation, use structured exception handling to protect any code that writes to or reads from a heap. For
+	/// more information about structured exception handling with memory accesses, see Handling Exceptions.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlcreateheap NTSYSAPI PVOID RtlCreateHeap( ULONG
-	// Flags, PVOID HeapBase, SIZE_T ReserveSize, SIZE_T CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlcreateheap NTSYSAPI PVOID RtlCreateHeap( ULONG Flags,
+	// PVOID HeapBase, SIZE_T ReserveSize, SIZE_T CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlCreateHeap")]
 	public static extern IntPtr RtlCreateHeap([In, Optional] HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SizeT ReserveSize,
 		[In, Optional] SizeT CommitSize, [In, Optional] IntPtr Lock, in RTL_HEAP_PARAMETERS Parameters);
 
 	/// <summary>
-	/// The <c>RtlDestroyHeap</c> routine destroys the specified heap object. <c>RtlDestroyHeap</c> decommits and releases all the pages
-	/// of a private heap object, and it invalidates the handle to the heap.
+	/// The <c>RtlDestroyHeap</c> routine destroys the specified heap object. <c>RtlDestroyHeap</c> decommits and releases all the pages of
+	/// a private heap object, and it invalidates the handle to the heap.
 	/// </summary>
 	/// <param name="HeapHandle">[in] Handle for the heap to be destroyed. This parameter is a heap handle returned by <c>RtlCreateHeap</c>.</param>
 	/// <returns>
@@ -2046,12 +2588,572 @@ public static partial class NtDll
 	/// <para>Starting with Windows 8 the return value is typed as <c>LOGICAL</c>, which has a different size than <c>BOOLEAN</c>.</para>
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/devnotes/rtlfreeheap BOOLEAN RtlFreeHeap( _In_ PVOID HeapHandle, _In_opt_ ULONG
-	// Flags, _In_ PVOID HeapBase );
+	// https://docs.microsoft.com/en-us/windows/win32/devnotes/rtlfreeheap BOOLEAN RtlFreeHeap( _In_ PVOID HeapHandle, _In_opt_ ULONG Flags,
+	// _In_ PVOID HeapBase );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h")]
 	[return: MarshalAs(UnmanagedType.U1)]
 	public static extern bool RtlFreeHeap([In] IntPtr HeapHandle, [In, Optional] HeapFlags Flags, [In] IntPtr HeapBase);
+
+	/// <summary>The <b>FILE_ACCESS_INFORMATION</b> structure is used to query for or set the access rights of a file.</summary>
+	/// <remarks>
+	/// <para>This structure is used by the <c>ZwQueryInformationFile</c> routine.</para>
+	/// <para>
+	/// The <i>AccessFlags</i> parameter is an access mask that encodes the user rights to a file object. An access mask can be used to
+	/// encode the rights to an object that is assigned to a user or a user group, or to encode the requested access when a user opens an
+	/// object. For more information, see <c>ACCESS_MASK</c>.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_access_information typedef struct
+	// _FILE_ACCESS_INFORMATION { ACCESS_MASK AccessFlags; } FILE_ACCESS_INFORMATION, *PFILE_ACCESS_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_ACCESS_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_ACCESS_INFORMATION
+	{
+		/// <summary>
+		/// Flags that specify a set of access rights in the access mask of an access control entry. This member is a value of type <c>ACCESS_MASK</c>.
+		/// </summary>
+		public ACCESS_MASK AccessFlags;
+	}
+
+	/// <summary>
+	/// The <b>FILE_BASIC_INFORMATION</b> structure contains timestamps and basic attributes of a file. It is used as an argument to
+	/// routines that query or set file information.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The FILE_ATTRIBUTE_NORMAL flag cannot be set or returned in combination with any other attributes. All other <b>FileAttributes</b>
+	/// values override this attribute.
+	/// </para>
+	/// <para>
+	/// Time values <b>CreationTime</b>, <b>LastAccessTime</b>, <b>LastWriteTime</b>, and <b>ChangeTime</b> are expressed in absolute system
+	/// time format. Absolute system time is the number of 100-nanosecond intervals since the start of the year 1601 in the Gregorian calendar.
+	/// </para>
+	/// <para>
+	/// If you specify a value of zero for any of the Xxx <b>Time</b> members of the <b>FILE_BASIC_INFORMATION</b> structure, the
+	/// <c>ZwSetInformationFile</c> function keeps a file's current setting for that time.
+	/// </para>
+	/// <para>
+	/// The file system updates the values of the <b>LastAccessTime</b>, <b>LastWriteTime</b>, and <b>ChangeTime</b> members as appropriate
+	/// after an I/O operation is performed on a file. A driver or application can request that the file system not update one or more of
+	/// these members for I/O operations that are performed on the caller's file handle by setting the appropriate members to -1. The caller
+	/// can set one, all, or any other combination of these three members to -1. Only the members that are set to -1 will be unaffected by
+	/// I/O operations on the file handle; the other members will be updated as appropriate. On NTFS and ReFS systems, time stamp updates on
+	/// the file handle can be restored by setting the appropriate member(s) to -2.
+	/// </para>
+	/// <para>To set the members of this structure, the caller must have FILE_WRITE_ATTRIBUTES access to the file.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ns-wdm-_file_basic_information typedef struct
+	// _FILE_BASIC_INFORMATION { LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER LastWriteTime; LARGE_INTEGER
+	// ChangeTime; ULONG FileAttributes; } FILE_BASIC_INFORMATION, *PFILE_BASIC_INFORMATION;
+	[PInvokeData("wdm.h", MSDNShortId = "NS:wdm._FILE_BASIC_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_BASIC_INFORMATION
+	{
+		/// <summary>Specifies the time that the file was created.</summary>
+		public FILETIME CreationTime;
+
+		/// <summary>Specifies the time that the file was last accessed.</summary>
+		public FILETIME LastAccessTime;
+
+		/// <summary>Specifies the time that the file was last written to.</summary>
+		public FILETIME LastWriteTime;
+
+		/// <summary>Specifies the last time the file was changed.</summary>
+		public FILETIME ChangeTime;
+
+		/// <summary>
+		/// Specifies one or more FILE_ATTRIBUTE_XXX flags. For descriptions of these flags, see <c>File Attribute Constants</c> in the
+		/// Microsoft Windows SDK.
+		/// </summary>
+		public FileFlagsAndAttributes FileAttributes;
+	}
+
+	/// <summary>The <b>FILE_BOTH_DIR_INFORMATION</b> structure is used to query detailed information for the files in a directory.</summary>
+	/// <remarks>
+	/// <para>This information can be queried in either of the following ways:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// <para>
+	/// Call <c><b>ZwQueryDirectoryFile</b></c>, passing FileBothDirectoryInformation as the value of <b>FileInformationClass</b> and
+	/// passing a caller-allocated, FILE_BOTH_DIR_INFORMATION-structured buffer as the value of <b>FileInformation</b>.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>Create an IRP with major function code IRP_MJ_DIRECTORY_CONTROL and minor function code IRP_MN_QUERY_DIRECTORY.</para>
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>No specific access rights are required to query this information.</para>
+	/// <para>
+	/// All dates and times are in absolute system-time format. Absolute system time is the number of 100-nanosecond intervals since the
+	/// start of the year 1601.
+	/// </para>
+	/// <para>
+	/// This structure must be aligned on a LONGLONG (8-byte) boundary. If a buffer contains two or more of these structures, the
+	/// <b>NextEntryOffset</b> value in each entry, except the last, falls on an 8-byte boundary.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_both_dir_information typedef struct
+	// _FILE_BOTH_DIR_INFORMATION { ULONG NextEntryOffset; ULONG FileIndex; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime;
+	// LARGE_INTEGER LastWriteTime; LARGE_INTEGER ChangeTime; LARGE_INTEGER EndOfFile; LARGE_INTEGER AllocationSize; ULONG FileAttributes;
+	// ULONG FileNameLength; ULONG EaSize; CCHAR ShortNameLength; WCHAR ShortName[12]; WCHAR FileName[1]; } FILE_BOTH_DIR_INFORMATION, *PFILE_BOTH_DIR_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_BOTH_DIR_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_BOTH_DIR_INFORMATION
+	{
+		/// <summary>
+		/// Byte offset of the next FILE_BOTH_DIR_INFORMATION entry, if multiple entries are present in a buffer. This member is zero if no
+		/// other entries follow this one.
+		/// </summary>
+		public uint NextEntryOffset;
+
+		/// <summary>
+		/// Byte offset of the file within the parent directory. This member is undefined for file systems, such as NTFS, in which the
+		/// position of a file within the parent directory is not fixed and can be changed at any time to maintain sort order.
+		/// </summary>
+		public uint FileIndex;
+
+		/// <summary>Time when the file was created.</summary>
+		public FILETIME CreationTime;
+
+		/// <summary>Last time the file was accessed.</summary>
+		public FILETIME LastAccessTime;
+
+		/// <summary>Last time information was written to the file.</summary>
+		public FILETIME LastWriteTime;
+
+		/// <summary>Last time the file was changed.</summary>
+		public FILETIME ChangeTime;
+
+		/// <summary>
+		/// Absolute new end-of-file position as a byte offset from the start of the file. <b>EndOfFile</b> specifies the byte offset to the
+		/// end of the file. Because this value is zero-based, it actually refers to the first free byte in the file. In other words,
+		/// <b>EndOfFile</b> is the offset to the byte immediately following the last valid byte in the file.
+		/// </summary>
+		public long EndOfFile;
+
+		/// <summary>
+		/// File allocation size, in bytes. Usually, this value is a multiple of the sector or cluster size of the underlying physical device.
+		/// </summary>
+		public long AllocationSize;
+
+		/// <summary>
+		/// <para>File attributes, which can be any valid combination of the following:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_READONLY</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_HIDDEN</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_SYSTEM</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_DIRECTORY</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_ARCHIVE</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_DEVICE</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_NORMAL</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_TEMPORARY</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_SPARSE_FILE</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_REPARSE_POINT</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_COMPRESSED</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_OFFLINE</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_NOT_CONTENT_INDEXED</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_ENCRYPTED</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FileFlagsAndAttributes FileAttributes;
+
+		/// <summary>Specifies the length, in bytes, of the file name string.</summary>
+		public uint FileNameLength;
+
+		/// <summary>Combined length, in bytes, of the extended attributes (EA) for the file.</summary>
+		public uint EaSize;
+
+		/// <summary>Specifies the length, in bytes, of the short file name string.</summary>
+		public byte ShortNameLength;
+
+		/// <summary>Unicode string containing the short (8.3) name for the file.</summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
+		public string ShortName;
+
+		/// <summary>Specifies the first character of the file name string. This is followed in memory by the remainder of the string.</summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+		public string FileName;
+	}
+
+	/// <summary>The <b>FILE_DIRECTORY_INFORMATION</b> structure is used to query detailed information for the files in a directory.</summary>
+	/// <remarks>
+	/// <para>This information can be queried in either of the following ways:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// Call <c><b>ZwQueryDirectoryFile</b></c>, passing FileDirectoryInformation as the value of <b>FileInformationClass</b> and passing a
+	/// caller-allocated, FILE_DIRECTORY_INFORMATION-structured buffer as the value of <b>FileInformation</b>.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>Create an IRP with major function code IRP_MJ_DIRECTORY_CONTROL and minor function code IRP_MN_QUERY_DIRECTORY.</description>
+	/// </item>
+	/// </list>
+	/// <para>No specific access rights are required to query this information.</para>
+	/// <para>
+	/// All dates and times are in absolute system-time format. Absolute system time is the number of 100-nanosecond intervals since the
+	/// start of the year 1601.
+	/// </para>
+	/// <para>
+	/// This structure must be aligned on a LONGLONG (8-byte) boundary. If a buffer contains two or more of these structures, the
+	/// <b>NextEntryOffset</b> value in each entry, except the last, falls on an 8-byte boundary.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_directory_information typedef struct
+	// _FILE_DIRECTORY_INFORMATION { ULONG NextEntryOffset; ULONG FileIndex; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime;
+	// LARGE_INTEGER LastWriteTime; LARGE_INTEGER ChangeTime; LARGE_INTEGER EndOfFile; LARGE_INTEGER AllocationSize; ULONG FileAttributes;
+	// ULONG FileNameLength; WCHAR FileName[1]; } FILE_DIRECTORY_INFORMATION, *PFILE_DIRECTORY_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_DIRECTORY_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_DIRECTORY_INFORMATION>), nameof(FileNameLength))]
+	public struct FILE_DIRECTORY_INFORMATION
+	{
+		/// <summary>
+		/// Byte offset of the next <b>FILE_DIRECTORY_INFORMATION</b> entry, if multiple entries are present in a buffer. This member is
+		/// zero if no other entries follow this one.
+		/// </summary>
+		public uint NextEntryOffset;
+
+		/// <summary>
+		/// Byte offset of the file within the parent directory. This member is undefined for file systems, such as NTFS, in which the
+		/// position of a file within the parent directory is not fixed and can be changed at any time to maintain sort order.
+		/// </summary>
+		public uint FileIndex;
+
+		/// <summary>Time when the file was created.</summary>
+		public FILETIME CreationTime;
+
+		/// <summary>Last time the file was accessed.</summary>
+		public FILETIME LastAccessTime;
+
+		/// <summary>Last time information was written to the file.</summary>
+		public FILETIME LastWriteTime;
+
+		/// <summary>Last time the file was changed.</summary>
+		public FILETIME ChangeTime;
+
+		/// <summary>
+		/// Absolute new end-of-file position as a byte offset from the start of the file. <b>EndOfFile</b> specifies the byte offset to the
+		/// end of the file. Because this value is zero-based, it actually refers to the first free byte in the file. In other words,
+		/// <b>EndOfFile</b> is the offset to the byte immediately following the last valid byte in the file.
+		/// </summary>
+		public long EndOfFile;
+
+		/// <summary>
+		/// File allocation size, in bytes. Usually, this value is a multiple of the sector or cluster size of the underlying physical device.
+		/// </summary>
+		public long AllocationSize;
+
+		/// <summary>
+		/// <para>File attributes, which can be any valid combination of the following:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_ARCHIVE</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_COMPRESSED</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_DIRECTORY</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_HIDDEN</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_NORMAL</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_READONLY</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_SYSTEM</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_TEMPORARY</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FileFlagsAndAttributes FileAttributes;
+
+		/// <summary>Specifies the length of the file name string.</summary>
+		public uint FileNameLength;
+
+		/// <summary>Specifies the first character of the file name string. This is followed in memory by the remainder of the string.</summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+		public string FileName;
+	}
+
+	/// <summary>The <b>FILE_EA_INFORMATION</b> structure is used to query for the size of the extended attributes (EA) for a file.</summary>
+	/// <remarks>
+	/// <para>This structure is used by the <c>ZwQueryInformationFile</c> routine.</para>
+	/// <para>
+	/// An extended attribute is a piece of application-specific metadata that an application can associate with a file that is not part of
+	/// the file's data. In addition to the built-in attributes of a file, such as creation and modification times, applications can add
+	/// non-file system attributes, such as the author's name and a description of the file content.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_ea_information typedef struct
+	// _FILE_EA_INFORMATION { ULONG EaSize; } FILE_EA_INFORMATION, *PFILE_EA_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_EA_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_EA_INFORMATION
+	{
+		/// <summary>Specifies the combined length, in bytes, of the extended attributes for the file.</summary>
+		public uint EaSize;
+	}
+
+	/// <summary>The <b>FILE_FULL_DIR_INFORMATION</b> structure is used to query detailed information for the files in a directory.</summary>
+	/// <remarks>
+	/// <para>This information can be queried in either of the following ways:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// <para>
+	/// Call <c><b>ZwQueryDirectoryFile</b></c>, passing FileFullDirectoryInformation as the value of <b>FileInformationClass</b> and
+	/// passing a caller-allocated, FILE_FULL_DIR_INFORMATION-structured buffer as the value of <b>FileInformation</b>.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>Create an IRP with major function code IRP_MJ_DIRECTORY_CONTROL and minor function code IRP_MN_QUERY_DIRECTORY.</para>
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>No specific access rights are required to query this information.</para>
+	/// <para>
+	/// All dates and times are in absolute system-time format. Absolute system time is the number of 100-nanosecond intervals since the
+	/// start of the year 1601.
+	/// </para>
+	/// <para>
+	/// This structure must be aligned on a LONGLONG (8-byte) boundary. If a buffer contains two or more of these structures, the
+	/// <b>NextEntryOffset</b> value in each entry, except the last, falls on an 8-byte boundary.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_full_dir_information typedef struct
+	// _FILE_FULL_DIR_INFORMATION { ULONG NextEntryOffset; ULONG FileIndex; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime;
+	// LARGE_INTEGER LastWriteTime; LARGE_INTEGER ChangeTime; LARGE_INTEGER EndOfFile; LARGE_INTEGER AllocationSize; ULONG FileAttributes;
+	// ULONG FileNameLength; ULONG EaSize; WCHAR FileName[1]; } FILE_FULL_DIR_INFORMATION, *PFILE_FULL_DIR_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_FULL_DIR_INFORMATION")]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_FULL_DIR_INFORMATION>), nameof(FileNameLength))]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_FULL_DIR_INFORMATION
+	{
+		/// <summary>
+		/// Byte offset of the next <b>FILE_FULL_DIR_INFORMATION</b> entry, if multiple entries are present in a buffer. This member is zero
+		/// if no other entries follow this one.
+		/// </summary>
+		public uint NextEntryOffset;
+
+		/// <summary>
+		/// Byte offset of the file within the parent directory. This member is undefined for file systems, such as NTFS, in which the
+		/// position of a file within the parent directory is not fixed and can be changed at any time to maintain sort order.
+		/// </summary>
+		public uint FileIndex;
+
+		/// <summary>Time when the file was created.</summary>
+		public FILETIME CreationTime;
+
+		/// <summary>Last time the file was accessed.</summary>
+		public FILETIME LastAccessTime;
+
+		/// <summary>Last time information was written to the file.</summary>
+		public FILETIME LastWriteTime;
+
+		/// <summary>Last time the file was changed.</summary>
+		public FILETIME ChangeTime;
+
+		/// <summary>
+		/// Absolute new end-of-file position as a byte offset from the start of the file. <b>EndOfFile</b> specifies the byte offset to the
+		/// end of the file. Because this value is zero-based, it actually refers to the first free byte in the file. In other words,
+		/// <b>EndOfFile</b> is the offset to the byte immediately following the last valid byte in the file.
+		/// </summary>
+		public long EndOfFile;
+
+		/// <summary>
+		/// File allocation size, in bytes. Usually, this value is a multiple of the sector or cluster size of the underlying physical device.
+		/// </summary>
+		public long AllocationSize;
+
+		/// <summary>
+		/// <para>File attributes, which can be any valid combination of the following:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_READONLY</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_HIDDEN</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_SYSTEM</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_DIRECTORY</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_ARCHIVE</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_NORMAL</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_TEMPORARY</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_COMPRESSED</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FileFlagsAndAttributes FileAttributes;
+
+		/// <summary>Specifies the length of the file name string.</summary>
+		public uint FileNameLength;
+
+		/// <summary>Combined length, in bytes, of the extended attributes (EA) for the file.</summary>
+		public uint EaSize;
+
+		/// <summary>Specifies the first character of the file name string. This is followed in memory by the remainder of the string.</summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+		public string FileName;
+	}
+
+	/// <summary>
+	/// The <b>FILE_INTERNAL_INFORMATION</b> structure is used to query for the file system's 8-byte file reference number for a file.
+	/// </summary>
+	/// <remarks>
+	/// <para>This information can be queried in either of the following ways:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// <para>
+	/// Call <c><b>FltQueryInformationFile</b></c> or <c><b>ZwQueryInformationFile</b></c>, passing FileInternalInformation as the value of
+	/// <b>FileInformationClass</b> and passing a caller-allocated, FILE_INTERNAL_INFORMATION-structured buffer as the value of <b>FileInformation</b>.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>Create an IRP with major function code <c><b>IRP_MJ_QUERY_INFORMATION</b></c>.</para>
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>No specific access rights are required to query this information.</para>
+	/// <para>
+	/// The <b>IndexNumber</b> member of the FILE_INTERNAL_INFORMATION structure is the same as the <b>FileId</b> member of the
+	/// FILE_ID_BOTH_DIR_INFORMATION and FILE_ID_FULL_DIR_INFORMATION structures.
+	/// </para>
+	/// <para>
+	/// File reference numbers, also called file IDs, are guaranteed to be unique only within a static file system. They are not guaranteed
+	/// to be unique over time, because file systems are free to reuse them. Nor are they guaranteed to remain constant. For example, the
+	/// FAT file system generates the file reference number for a file from the byte offset of the file's directory entry record (DIRENT) on
+	/// the disk. Defragmentation can change this byte offset. Thus a FAT file reference number can change over time.
+	/// </para>
+	/// <para>
+	/// The size of the buffer passed in the <b>FileInformation</b> parameter to <c><b>FltQueryInformationFile</b></c> or
+	/// <c><b>ZwQueryInformationFile</b></c> must be at least <c>sizeof(FILE_INTERNAL_INFORMATION)</c>.
+	/// </para>
+	/// <para>This structure must be aligned on a LONGLONG (8-byte) boundary.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_internal_information typedef struct
+	// _FILE_INTERNAL_INFORMATION { LARGE_INTEGER IndexNumber; } FILE_INTERNAL_INFORMATION, *PFILE_INTERNAL_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_INTERNAL_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_INTERNAL_INFORMATION
+	{
+		/// <summary>
+		/// The 8-byte file reference number for the file. This number is assigned by the file system and is file-system-specific. (Note
+		/// that this is not the same as the 16-byte "file object ID" that was added to NTFS for Microsoft Windows 2000.)
+		/// </summary>
+		public long IndexNumber;
+	}
+
+	/// <summary>
+	/// The <b>FILE_NAME_INFORMATION</b> structure is used as argument to the <c>ZwQueryInformationFile</c> and <c>ZwSetInformationFile</c> routines.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The <b>ZwQueryInformationFile</b> routine uses this structure to return the file name string to the caller. For more information
+	/// about the form of the name returned, see <c>ZwQueryInformationFile</c>.
+	/// </para>
+	/// <para>Callers of <c>ZwSetInformationFile</c> can use this structure to specify a new short name for a file.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/ns-ntddk-_file_name_information typedef struct
+	// _FILE_NAME_INFORMATION { ULONG FileNameLength; WCHAR FileName[1]; } FILE_NAME_INFORMATION, *PFILE_NAME_INFORMATION;
+	[PInvokeData("ntddk.h", MSDNShortId = "NS:ntddk._FILE_NAME_INFORMATION")]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_NAME_INFORMATION>), nameof(FileNameLength))]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_NAME_INFORMATION
+	{
+		/// <summary>Specifies the length, in bytes, of the file name string.</summary>
+		public uint FileNameLength;
+
+		/// <summary>Specifies the first character of the file name string. This is followed in memory by the remainder of the string.</summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+		public string FileName;
+	}
+
+	/// <summary>The <b>FILE_STANDARD_INFORMATION</b> structure is used as an argument to routines that query or set file information.</summary>
+	/// <remarks>
+	/// <b>EndOfFile</b> specifies the byte offset to the end of the file. Because this value is zero-based, it actually refers to the first
+	/// free byte in the file; that is, it is the offset to the byte immediately following the last valid byte in the file.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ns-wdm-_file_standard_information typedef struct
+	// _FILE_STANDARD_INFORMATION { LARGE_INTEGER AllocationSize; LARGE_INTEGER EndOfFile; ULONG NumberOfLinks; BOOLEAN DeletePending;
+	// BOOLEAN Directory; } FILE_STANDARD_INFORMATION, *PFILE_STANDARD_INFORMATION;
+	[PInvokeData("wdm.h", MSDNShortId = "NS:wdm._FILE_STANDARD_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_STANDARD_INFORMATION
+	{
+		/// <summary>
+		/// The file allocation size in bytes. Usually, this value is a multiple of the sector or cluster size of the underlying physical device.
+		/// </summary>
+		public long AllocationSize;
+
+		/// <summary>The end of file location as a byte offset.</summary>
+		public long EndOfFile;
+
+		/// <summary>The number of hard links to the file.</summary>
+		public uint NumberOfLinks;
+
+		/// <summary>The delete pending status. <b>TRUE</b> indicates that a file deletion has been requested.</summary>
+		[MarshalAs(UnmanagedType.U1)] public bool DeletePending;
+
+		/// <summary>The file directory status. <b>TRUE</b> indicates the file object represents a directory.</summary>
+		[MarshalAs(UnmanagedType.U1)] public bool Directory;
+	}
 
 	/// <summary>Contains parameters to be applied when creating the heap.</summary>
 	[StructLayout(LayoutKind.Sequential)]
@@ -2079,8 +3181,8 @@ public static partial class NtDll
 		public SizeT MaximumAllocationSize;
 
 		/// <summary>
-		/// Virtual memory threshold, in bytes. If this value is not specified, or if it is greater than the maximum heap block size,
-		/// the maximum heap block size of 0x7F000 is used.
+		/// Virtual memory threshold, in bytes. If this value is not specified, or if it is greater than the maximum heap block size, the
+		/// maximum heap block size of 0x7F000 is used.
 		/// </summary>
 		public SizeT VirtualMemoryThreshold;
 
@@ -2088,8 +3190,8 @@ public static partial class NtDll
 		/// Initial amount of memory, in bytes, to commit for the heap.
 		/// <para>Must be less than or equal to InitialReserve.</para>
 		/// <para>
-		/// If HeapBase and CommitRoutine are non-NULL, this parameter, which overrides the value of CommitSize, must be a nonzero
-		/// value; otherwise it is ignored.
+		/// If HeapBase and CommitRoutine are non-NULL, this parameter, which overrides the value of CommitSize, must be a nonzero value;
+		/// otherwise it is ignored.
 		/// </para>
 		/// </summary>
 		public SizeT InitialCommit;
@@ -2097,8 +3199,8 @@ public static partial class NtDll
 		/// <summary>
 		/// Initial amount of memory, in bytes, to reserve for the heap.
 		/// <para>
-		/// If HeapBase and CommitRoutine are non-NULL, this parameter, which overrides the value of ReserveSize, must be a nonzero
-		/// value; otherwise it is ignored.
+		/// If HeapBase and CommitRoutine are non-NULL, this parameter, which overrides the value of ReserveSize, must be a nonzero value;
+		/// otherwise it is ignored.
 		/// </para>
 		/// </summary>
 		public SizeT InitialReserve;
