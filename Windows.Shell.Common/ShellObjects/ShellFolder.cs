@@ -204,7 +204,11 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	public IEnumerable<PIDL> EnumerateChildIds(FolderItemFilter filter /*= FolderItemFilter.Folders | FolderItemFilter.IncludeHidden | FolderItemFilter.NonFolders | FolderItemFilter.IncludeSuperHidden */, HWND parentWindow = default, int fetchSize = 20)
 	{
 		if (iShellFolder.EnumObjects(parentWindow, (SHCONTF)filter, out var eo).Failed)
+		{
 			Debug.WriteLine($"Unable to enum children in folder.");
+			yield break;
+		}
+
 		try
 		{
 			foreach (PIDL p in eo!.Enumerate(fetchSize))
