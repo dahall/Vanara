@@ -4932,7 +4932,7 @@ public static partial class WUApi
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdatecollection
 	[PInvokeData("wuapi.h", MSDNShortId = "NN:wuapi.IUpdateCollection")]
-	[ComImport, Guid("07F7438C-7709-4CA5-B518-91279288134E"), InterfaceType(ComInterfaceType.InterfaceIsIDispatch), CoClass(typeof(UpdateCollectionClass))/*, TypeLibType(TypeLibTypeFlags.FDispatchable | TypeLibTypeFlags.FHidden | TypeLibTypeFlags.FDual | TypeLibTypeFlags.FNonExtensible)*/]
+	[ComImport, Guid("07F7438C-7709-4CA5-B518-91279288134E")/*, CoClass(typeof(UpdateCollectionClass))*/]
 	public interface IUpdateCollection : IEnumerable
 	{
 		/// <summary>

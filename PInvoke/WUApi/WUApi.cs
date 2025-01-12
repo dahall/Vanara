@@ -2539,7 +2539,7 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-idownloadresult-get_hresult HRESULT get_HResult( LONG *retval );
 		[DispId(0x60020001)]
-		int HResult
+		HRESULT HResult
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)]
 			get;
@@ -2953,7 +2953,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iinstallationresult-get_hresult HRESULT get_HResult( LONG
 		// *retval );
 		[DispId(0x60020001)]
-		int HResult
+		HRESULT HResult
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)]
 			get;
@@ -3023,7 +3023,7 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdateexception-get_hresult HRESULT get_HResult( LONG *retval );
 		[DispId(1610743809)]
-		new int HResult
+		new HRESULT HResult
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
 			get;

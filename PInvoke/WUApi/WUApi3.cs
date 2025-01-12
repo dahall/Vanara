@@ -163,14 +163,13 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatedownloader-get_priority HRESULT get_Priority(
 		// DownloadPriority *retval );
-		[DispId(0x60020003), ComAliasName("WUApiLib.DownloadPriority")]
+		[DispId(0x60020003)]
 		DownloadPriority Priority
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-			[return: ComAliasName("WUApiLib.DownloadPriority")]
 			get;
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020003)]
-			[param: In, ComAliasName("WUApiLib.DownloadPriority")]
+			[param: In]
 			set;
 		}
 
@@ -187,7 +186,8 @@ public static partial class WUApi
 			[return: MarshalAs(UnmanagedType.Interface)]
 			get;
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020004)]
-			[param: In, MarshalAs(UnmanagedType.Interface)]
+			[param: In]
+			[param: MarshalAs(UnmanagedType.Interface)]
 			set;
 		}
 
@@ -204,16 +204,13 @@ public static partial class WUApi
 		/// attach a value to the download job object. This allows the caller to retrieve custom information about that download job object
 		/// at a later time.
 		/// </para>
-		/// <para><c>Note</c>  
-		/// <para>
+		/// <note>
 		/// The AsyncState property of the IDownloadJob interface can be retrieved, but it cannot be set. This does not prevent the caller
 		/// from changing the contents of the object already set to the <c>AsyncState</c> property of the <c>IDownloadJob</c> interface. In
 		/// other words, if the <c>AsyncState</c> property contains a number, the number cannot be changed. But, if the <c>AsyncState</c>
 		/// property contains a safe array or an object, the contents of the safe array or the object can be changed at will. The value is
 		/// released when the caller releases <c>IDownloadJob</c> by calling IUpdateDownloader::EndDownload.
-		/// </para>
-		/// </para>
-		/// <para></para>
+		/// </note>
 		/// </param>
 		/// <returns>
 		/// An IDownloadJob interface that contains the properties and methods that are available to a download operation that has started.
@@ -243,7 +240,7 @@ public static partial class WUApi
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020005)]
 		[return: MarshalAs(UnmanagedType.Interface)]
 		IDownloadJob BeginDownload([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? onProgressChanged,
-			[In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? onCompleted, [In, MarshalAs(UnmanagedType.Struct)] object? state);
+			[In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? onCompleted, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? state);
 
 		/// <summary>Starts a synchronous download of the content files that are associated with the updates.</summary>
 		/// <returns>An IDownloadResult interface that contains result codes for the download.</returns>
@@ -291,7 +288,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatedownloadresult-get_hresult HRESULT get_HResult( LONG
 		// *retval );
 		[DispId(0x60020001)]
-		int HResult
+		HRESULT HResult
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)]
 			get;
@@ -347,7 +344,7 @@ public static partial class WUApi
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdateexception-get_hresult HRESULT get_HResult( LONG *retval );
 		[DispId(1610743809)]
-		int HResult
+		HRESULT HResult
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743809)]
 			get;
@@ -456,7 +453,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatehistoryentry-get_hresult HRESULT get_HResult( LONG
 		// *retval );
 		[DispId(1610743811)]
-		int HResult
+		HRESULT HResult
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743811)]
 			get;
@@ -750,7 +747,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdatehistoryentry-get_hresult HRESULT get_HResult( LONG
 		// *retval );
 		[DispId(1610743811)]
-		new int HResult
+		new HRESULT HResult
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(1610743811)]
 			get;
@@ -1110,7 +1107,7 @@ public static partial class WUApi
 		// https://learn.microsoft.com/en-us/windows/win32/api/wuapi/nf-wuapi-iupdateinstallationresult-get_hresult HRESULT get_HResult( LONG
 		// *retval );
 		[DispId(0x60020001)]
-		int HResult
+		HRESULT HResult
 		{
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020001)]
 			get;
