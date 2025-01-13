@@ -44,6 +44,19 @@ public struct COLORREF : IEquatable<COLORREF>
 		B = b;
 	}
 
+	/// <summary>Initializes a new instance of the <see cref="COLORREF" /> struct.</summary>
+	/// <param name="r">The intensity of the red color.</param>
+	/// <param name="g">The intensity of the green color.</param>
+	/// <param name="b">The intensity of the blue color.</param>
+	/// <param name="a">The transparency.</param>
+	public COLORREF(byte r, byte g, byte b, byte a)
+	{
+		A = a;
+		R = r;
+		G = g;
+		B = b;
+	}
+
 	/// <summary>Initializes a new instance of the <see cref="COLORREF"/> struct.</summary>
 	/// <param name="value">The packed DWORD value.</param>
 	public COLORREF(uint value)
@@ -55,11 +68,20 @@ public struct COLORREF : IEquatable<COLORREF>
 		Value = value & 0x00FFFFFF;
 	}
 
-	/// <summary>Initializes a new instance of the <see cref="COLORREF"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="COLORREF" /> struct.</summary>
 	/// <param name="color">The color.</param>
 	public COLORREF(Color color) : this(color.R, color.G, color.B)
 	{
 		if (color == Color.Transparent)
+			Value = CLR_NONE;
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="COLORREF" /> struct.</summary>
+	/// <param name="color">The color.</param>
+	/// <param name="alpha">The alpha value.</param>
+	public COLORREF(Color color, byte alpha) : this(color.R, color.G, color.B, alpha)
+	{
+		if (color == Color.Transparent && alpha == 255)
 			Value = CLR_NONE;
 	}
 

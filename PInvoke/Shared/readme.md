@@ -140,6 +140,7 @@ Struct | Description
 [Vanara.PInvoke.LCID](https://github.com/dahall/Vanara/search?l=C%23&q=LCID) | An LCID is a 4-byte value. The value supplied in an LCID is a standard numeric substitution for the international [RFC5646] string.
 [Vanara.PInvoke.LOGFONT](https://github.com/dahall/Vanara/search?l=C%23&q=LOGFONT) | The LOGFONT structure defines the attributes of a font.
 [Vanara.PInvoke.LOGPALETTE](https://github.com/dahall/Vanara/search?l=C%23&q=LOGPALETTE) | The <c>LOGPALETTE</c> structure defines a logical palette.
+[Vanara.PInvoke.LUID](https://github.com/dahall/Vanara/search?l=C%23&q=LUID) | An LUID is a 64-bit value guaranteed to be unique only on the system on which it was generated. The uniqueness of a locally unique identifier (LUID) is guaranteed only until the system is restarted. <p>Applications must use functions and structures to manipulate LUID values.</p>
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Memory40](https://github.com/dahall/Vanara/search?l=C%23&q=Memory40) | 
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Memory48](https://github.com/dahall/Vanara/search?l=C%23&q=Memory48) | 
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Memory64](https://github.com/dahall/Vanara/search?l=C%23&q=Memory64) | 
@@ -201,7 +202,12 @@ Class | Description
 [Vanara.Collections.IEnumFromCom&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumFromCom%26lt%3BT%26gt%3B) | Creates an enumerable class from a get next method in the form of HRESULT Next(uint, TItem[], out uint) and a reset method. Useful if a class doesn't support `System.Collections.IEnumerable` or `System.Collections.Generic.IEnumerable` like some COM objects.
 [Vanara.Collections.IEnumFromIndexer&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumFromIndexer%26lt%3BT%26gt%3B) | Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support `System.Collections.IEnumerable` or `System.Collections.Generic.IEnumerable` like some COM objects.
 [Vanara.Collections.IEnumFromNext&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumFromNext%26lt%3BT%26gt%3B) | Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support `System.Collections.IEnumerable` or `System.Collections.Generic.IEnumerable` like some COM objects.
+[Vanara.PInvoke.FunctionHelper.IidFunc](https://github.com/dahall/Vanara/search?l=C%23&q=IidFunc) | Delegate for functions that use an IID to retrieve an object.
 [Vanara.PInvoke.FunctionHelper.IidFunc&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IidFunc%26lt%3BT%26gt%3B) | Delegate for functions that use an IID to retrieve an object.
+[Vanara.PInvoke.FunctionHelper.IidFunc1&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IidFunc1%26lt%3BT%26gt%3B) | Delegate for functions that use an IID to retrieve an object.
+[Vanara.PInvoke.FunctionHelper.IidFunc1&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IidFunc1%26lt%3BT%26gt%3B) | Delegate for functions that use an IID to retrieve an object.
+[Vanara.PInvoke.FunctionHelper.IidFunc2&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IidFunc2%26lt%3BT%26gt%3B) | Delegate for functions that use an IID to retrieve an object.
+[Vanara.PInvoke.FunctionHelper.IidFunc2&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IidFunc2%26lt%3BT%26gt%3B) | Delegate for functions that use an IID to retrieve an object.
 [Vanara.Windows.Shell.IndirectResource](https://github.com/dahall/Vanara/search?l=C%23&q=IndirectResource) | Wraps a resource reference used by some Shell classes.
 [Vanara.Windows.Shell.IndirectString](https://github.com/dahall/Vanara/search?l=C%23&q=IndirectString) | Wraps a string resource reference used by some Shell classes.
 [Vanara.PInvoke.Lib](https://github.com/dahall/Vanara/search?l=C%23&q=Lib) | Holds string values for all used external API libraries.

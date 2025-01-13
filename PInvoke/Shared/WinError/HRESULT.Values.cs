@@ -704,6 +704,21 @@ public partial struct HRESULT
 	/// <summary>The server principal name (SPN) obtained during security negotiation is malformed.</summary>
 	public const int CO_E_MALFORMED_SPN = unchecked((int)0x80004033);
 
+	/// <summary>More data is required.</summary>
+	public const int E_MOREDATA = unchecked((int)0x800700ea);
+
+	/// <summary>Supplied buffer is insufficient.</summary>
+	public const int E_INSUFFICIENT_BUFFER = unchecked((int)0x8007007a);
+
+	/// <summary>The operation was cancelled.</summary>
+	public const int E_CANCELLED = unchecked((int)0x800704c7);
+
+	/// <summary>The operation was already initialized.</summary>
+	public const int E_ALREADYINITIALIZED = unchecked((int)0x800704df);
+
+	/// <summary>Something was not found.</summary>
+	public const int E_NOTFOUND = unchecked((int)0x80070490);
+
 	/// <summary>Catastrophic failure.</summary>
 	public const int E_UNEXPECTED = unchecked((int)0x8000FFFF);
 
@@ -9954,4 +9969,76 @@ public partial struct HRESULT
 
 	/// <summary>The operation cannot be completed because the window is being closed.</summary>
 	public const int UI_E_WINDOW_CLOSED = unchecked((int)0x802A0201);
+
+	/// <summary>You tried to use a resource to which you did not have the required access privileges. This error is most typically caused when you write to a shared resource with read-only access.</summary>
+	public const int DXGI_ERROR_ACCESS_DENIED = unchecked((int)0x887A002B);
+
+	/// <summary>The desktop duplication interface is invalid. The desktop duplication interface typically becomes invalid when a different type of image is displayed on the desktop.</summary>
+	public const int DXGI_ERROR_ACCESS_LOST = unchecked((int)0x887A0026);
+
+	/// <summary>The desired element already exists. This is returned by DXGIDeclareAdapterRemovalSupport if it is not the first time that the function is called.</summary>
+	public const int DXGI_ERROR_ALREADY_EXISTS = unchecked((int)0x887A0036L);
+
+	/// <summary>DXGI can't provide content protection on the swap chain. This error is typically caused by an older driver, or when you use a swap chain that is incompatible with content protection.</summary>
+	public const int DXGI_ERROR_CANNOT_PROTECT_CONTENT = unchecked((int)0x887A002A);
+
+	/// <summary>The application's device failed due to badly formed commands sent by the application. This is an design-time issue that should be investigated and fixed.</summary>
+	public const int DXGI_ERROR_DEVICE_HUNG = unchecked((int)0x887A0006);
+
+	/// <summary>The video card has been physically removed from the system, or a driver upgrade for the video card has occurred. The application should destroy and recreate the device. For help debugging the problem, call ID3D10Device::GetDeviceRemovedReason.</summary>
+	public const int DXGI_ERROR_DEVICE_REMOVED = unchecked((int)0x887A0005);
+
+	/// <summary>The device failed due to a badly formed command. This is a run-time issue; The application should destroy and recreate the device.</summary>
+	public const int DXGI_ERROR_DEVICE_RESET = unchecked((int)0x887A0007);
+
+	/// <summary>The driver encountered a problem and was put into the device removed state.</summary>
+	public const int DXGI_ERROR_DRIVER_INTERNAL_ERROR = unchecked((int)0x887A0020);
+
+	/// <summary>An event (for example, a power cycle) interrupted the gathering of presentation statistics.</summary>
+	public const int DXGI_ERROR_FRAME_STATISTICS_DISJOINT = unchecked((int)0x887A000B);
+
+	/// <summary>The application attempted to acquire exclusive ownership of an output, but failed because some other application (or device within the application) already acquired ownership.</summary>
+	public const int DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE = unchecked((int)0x887A000C);
+
+	/// <summary>The application provided invalid parameter data; this must be debugged and fixed before the application is released.</summary>
+	public const int DXGI_ERROR_INVALID_CALL = unchecked((int)0x887A0001);
+
+	/// <summary>The buffer supplied by the application is not big enough to hold the requested data.</summary>
+	public const int DXGI_ERROR_MORE_DATA = unchecked((int)0x887A0003);
+
+	/// <summary>The supplied name of a resource in a call to IDXGIResource1::CreateSharedHandle is already associated with some other resource.</summary>
+	public const int DXGI_ERROR_NAME_ALREADY_EXISTS = unchecked((int)0x887A002C);
+
+	/// <summary>A global counter resource is in use, and the Direct3D device can't currently use the counter resource.</summary>
+	public const int DXGI_ERROR_NONEXCLUSIVE = unchecked((int)0x887A0021);
+
+	/// <summary>The resource or request is not currently available, but it might become available later.</summary>
+	public const int DXGI_ERROR_NOT_CURRENTLY_AVAILABLE = unchecked((int)0x887A0022);
+
+	/// <summary>When calling IDXGIObject::GetPrivateData, the GUID passed in is not recognized as one previously passed to IDXGIObject::SetPrivateData or IDXGIObject::SetPrivateDataInterface. When calling IDXGIFactory::EnumAdapters or IDXGIAdapter::EnumOutputs, the enumerated ordinal is out of range.</summary>
+	public const int DXGI_ERROR_NOT_FOUND = unchecked((int)0x887A0002);
+
+	/// <summary>Reserved</summary>
+	public const int DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED = unchecked((int)0x887A0023);
+
+	/// <summary>Reserved</summary>
+	public const int DXGI_ERROR_REMOTE_OUTOFMEMORY = unchecked((int)0x887A0024);
+
+	/// <summary>The DXGI output (monitor) to which the swap chain content was restricted is now disconnected or changed.</summary>
+	public const int DXGI_ERROR_RESTRICT_TO_OUTPUT_STALE = unchecked((int)0x887A0029);
+
+	/// <summary>The operation depends on an SDK component that is missing or mismatched.</summary>
+	public const int DXGI_ERROR_SDK_COMPONENT_MISSING = unchecked((int)0x887A002D);
+
+	/// <summary>The Remote Desktop Services session is currently disconnected.</summary>
+	public const int DXGI_ERROR_SESSION_DISCONNECTED = unchecked((int)0x887A0028);
+
+	/// <summary>The requested functionality is not supported by the device or the driver.</summary>
+	public const int DXGI_ERROR_UNSUPPORTED = unchecked((int)0x887A0004);
+
+	/// <summary>The time-out interval elapsed before the next desktop frame was available.</summary>
+	public const int DXGI_ERROR_WAIT_TIMEOUT = unchecked((int)0x887A0027);
+
+	/// <summary>The GPU was busy at the moment when a call was made to perform an operation, and did not execute or schedule the operation.</summary>
+	public const int DXGI_ERROR_WAS_STILL_DRAWING = unchecked((int)0x887A000A);
 }

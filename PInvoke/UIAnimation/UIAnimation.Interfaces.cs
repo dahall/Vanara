@@ -1,4 +1,4 @@
-using UI_ANIMATION_SECONDS = double;
+using UI_ANIMATION_SECONDS = System.Double;
 
 namespace Vanara.PInvoke;
 

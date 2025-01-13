@@ -53,6 +53,8 @@ public static class IntPtrConverter
 		}
 		if (destType == typeof(string))
 			return StringHelper.GetString(ptr, charSet, sz);
+		if (destType.IsCOMObject)
+			return Marshal.GetObjectForIUnknown(ptr);
 		return ptr.ToStructure(destType, sz, 0, out _);
 	}
 }

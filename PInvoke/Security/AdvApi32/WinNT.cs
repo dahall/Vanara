@@ -3208,62 +3208,6 @@ public static partial class AdvApi32
 		public static readonly GENERIC_MAPPING GenericFileMapping = new((uint)FileAccess.FILE_GENERIC_READ, (uint)FileAccess.FILE_GENERIC_WRITE, (uint)FileAccess.FILE_GENERIC_READ, (uint)FileAccess.FILE_ALL_ACCESS);
 	}
 
-	/// <summary>
-	/// An LUID is a 64-bit value guaranteed to be unique only on the system on which it was generated. The uniqueness of a locally
-	/// unique identifier (LUID) is guaranteed only until the system is restarted.
-	/// <para>Applications must use functions and structures to manipulate LUID values.</para>
-	/// </summary>
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct LUID
-	{
-		/// <summary>Low order bits.</summary>
-		public uint LowPart;
-
-		/// <summary>High order bits.</summary>
-		public int HighPart;
-
-		/// <summary>Gets the privilege name for this LUID.</summary>
-		/// <param name="systemName">
-		/// Name of the system on which to perform the lookup. Specifying <c>null</c> will query the local system.
-		/// </param>
-		/// <returns>The name retrieved for the LUID.</returns>
-		public string GetName(string? systemName = null)
-		{
-			var sb = new StringBuilder(1024);
-			var sz = (uint)sb.Capacity;
-			if (!LookupPrivilegeName(systemName, in this, sb, ref sz))
-				Win32Error.ThrowLastError();
-			return sb.ToString();
-		}
-
-		/// <summary>Creates a new LUID instance from a privilege name.</summary>
-		/// <param name="name">The privilege name.</param>
-		/// <param name="systemName">
-		/// Name of the system on which to perform the lookup. Specifying <c>null</c> will query the local system.
-		/// </param>
-		/// <returns>The LUID instance corresponding to the <paramref name="name"/>.</returns>
-		public static LUID FromName(string name, string? systemName = null) =>
-			LookupPrivilegeValue(systemName, name, out var val) ? val : throw Win32Error.GetLastError().GetException()!;
-
-		/// <summary>
-		/// Creates a new LUID that is unique to the local system only, and uniqueness is guaranteed only until the system is next restarted.
-		/// </summary>
-		/// <returns>A new LUID.</returns>
-		public static LUID NewLUID()
-		{
-			if (!AllocateLocallyUniqueId(out var ret))
-				Win32Error.ThrowLastError();
-			return ret;
-		}
-
-		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString()
-		{
-			try { return GetName(); } catch { return $"0x{Macros.MAKELONG64(LowPart, (uint)HighPart):X}"; }
-		}
-	}
-
 	/// <summary>The LUID_AND_ATTRIBUTES structure represents a locally unique identifier (LUID) and its attributes.</summary>
 	/// <remarks>
 	/// An LUID_AND_ATTRIBUTES structure can represent an LUID whose attributes change frequently, such as when the LUID is used to

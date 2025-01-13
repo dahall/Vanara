@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <ProjectExtensions>
+    <SupportedDlls>dstorage.dll</SupportedDlls>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows DStorage.dll.</Description>
+    <AssemblyName>Vanara.PInvoke.DStorage</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;DStorage</PackageTags>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+DStorageCreateCompressionCodec DStorageGetFactory DStorageSetConfiguration DStorageSetConfiguration1
+
+Structures
+&lt;Reserved1&gt;e__FixedBuffer &lt;Reserved&gt;e__FixedBuffer &lt;Reserved&gt;e__FixedBuffer &lt;_Filename&gt;e__FixedBuffer &lt;_RequestName&gt;e__FixedBuffer DSTORAGE_CONFIGURATION DSTORAGE_CONFIGURATION1 DSTORAGE_CUSTOM_DECOMPRESSION_REQUEST DSTORAGE_CUSTOM_DECOMPRESSION_RESULT DSTORAGE_DESTINATION DSTORAGE_DESTINATION_BUFFER DSTORAGE_DESTINATION_MEMORY DSTORAGE_DESTINATION_MULTIPLE_SUBRESOURCES DSTORAGE_DESTINATION_TEXTURE_REGION DSTORAGE_DESTINATION_TILES DSTORAGE_ERROR_FIRST_FAILURE DSTORAGE_ERROR_PARAMETERS_EVENT DSTORAGE_ERROR_PARAMETERS_REQUEST DSTORAGE_ERROR_PARAMETERS_SIGNAL DSTORAGE_ERROR_PARAMETERS_STATUS DSTORAGE_ERROR_RECORD DSTORAGE_QUEUE_DESC DSTORAGE_QUEUE_INFO DSTORAGE_REQUEST DSTORAGE_REQUEST_OPTIONS DSTORAGE_SOURCE DSTORAGE_SOURCE_FILE DSTORAGE_SOURCE_MEMORY UNION
+
+Interfaces
+IDStorageCompressionCodec IDStorageCustomDecompressionQueue IDStorageCustomDecompressionQueue1 IDStorageFactory IDStorageFile IDStorageQueue IDStorageQueue1 IDStorageQueue2 IDStorageStatusArray
+
+</PackageReleaseNotes>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Direct3D12\Vanara.PInvoke.Direct3D12.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="dstorage.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="dstoragecore.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
