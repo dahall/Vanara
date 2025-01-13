@@ -55,10 +55,15 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget pack ${{env.SOLUTION_PATH}}\Vanara.Library.nuspec
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4.6.0
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4.2.0
       with:
-        name: nupkg
-        path: ${{env.SOLUTION_PATH}}\*.nupkg
-        overwrite: true
-        retention-days: 365
+        source-url: https://nuget.pkg.github.com/<organization>/index.json
+      env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          
+    - name: Publish packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      shell: pwsh
+      #run: Get-ChildItem ${{env.SOLUTION_PATH}} -Include "Vanara.*.nupkg" -Recurse | ForEach-Object -Process { dotnet nuget push $_.FullName -k ${{env.SOLUTION_PATH}} -s ${{env.NUGET_REPO}} }
+      run: Get-ChildItem ${{env.SOLUTION_PATH}} -Include "Vanara.*.nupkg" -Recurse | ForEach-Object -Process { dotnet nuget push $_.FullName }
