@@ -19,6 +19,8 @@ env:
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
+  NUGET_REPO: https://www.myget.org/F/vanara/api/v2/package
+  NUGET_AUTH_TOKEN: ${{secrets.MYGETAPIKEY}}
 
 permissions:
   contents: read
@@ -47,8 +49,16 @@ jobs:
 
     - name: Build VssApi NuGet package
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget pack ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.nuspec -Verbosity quiet -Symbols -OutputDirectory C:\projects\Vanara\PInvoke\VssApi\bin\Release
+      run: nuget pack ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.nuspec -Verbosity quiet -Symbols -OutputDirectory ${{env.SOLUTION_PATH}}\PInvoke\VssApi\bin\Release
 
     - name: Build meta NuGet package
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget pack ${{env.SOLUTION_PATH}}\Vanara.Library.nuspec
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4.6.0
+      with:
+        name: nupkg
+        path: ${{env.SOLUTION_PATH}}\*.nupkg
+        overwrite: true
+        retention-days: 365
