@@ -19,8 +19,10 @@ env:
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
-  NUGET_REPO: https://www.myget.org/F/vanara/api/v2/package
-  NUGET_AUTH_TOKEN: ${{secrets.MYGETAPIKEY}}
+  #NUGET_REPO: https://www.myget.org/F/vanara/api/v2/package
+  NUGET_REPO: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+  #NUGET_AUTH_TOKEN: ${{secrets.MYGETAPIKEY}}
+  NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
 permissions:
   contents: read
@@ -55,15 +57,7 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget pack ${{env.SOLUTION_PATH}}\Vanara.Library.nuspec
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v4.2.0
-      with:
-        source-url: https://nuget.pkg.github.com/<organization>/index.json
-      env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          
     - name: Publish packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
       shell: pwsh
-      #run: Get-ChildItem ${{env.SOLUTION_PATH}} -Include "Vanara.*.nupkg" -Recurse | ForEach-Object -Process { dotnet nuget push $_.FullName -k ${{env.SOLUTION_PATH}} -s ${{env.NUGET_REPO}} }
-      run: Get-ChildItem ${{env.SOLUTION_PATH}} -Include "Vanara.*.nupkg" -Recurse | ForEach-Object -Process { dotnet nuget push $_.FullName }
+      run: Get-ChildItem ${{env.SOLUTION_PATH}} -Include "Vanara.*.nupkg" -Recurse | ForEach-Object -Process { dotnet nuget push $_.FullName -k ${{env.NUGET_AUTH_TOKEN}} -s ${{env.NUGET_REPO}} }
