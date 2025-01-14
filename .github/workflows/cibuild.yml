@@ -19,10 +19,10 @@ env:
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
-  #NUGET_REPO: https://www.myget.org/F/vanara/api/v2/package
-  NUGET_REPO: https://nuget.pkg.github.com/dahall/index.json
-  #NUGET_AUTH_TOKEN: ${{secrets.MYGETAPIKEY}}
-  NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  NUGET_REPO: https://www.myget.org/F/vanara/api/v2/package
+  #NUGET_REPO: https://nuget.pkg.github.com/dahall/index.json
+  NUGET_AUTH_TOKEN: ${{secrets.MYGETAPIKEY}}
+  #NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
 permissions:
   contents: read
