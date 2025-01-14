@@ -1,5 +1,6 @@
 using System.Buffers;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 
@@ -194,7 +195,7 @@ public static partial class D3D12
 		{
 			Type = D3D12_BARRIER_TYPE.D3D12_BARRIER_TYPE_TEXTURE;
 			NumBarriers = (uint?)pBarriers?.Length ?? 0;
-			pGlobalBarriers = memoryHandle = SafeCoTaskMemHandle.CreateFromList(pBarriers ?? []);
+			pTextureBarriers = memoryHandle = SafeCoTaskMemHandle.CreateFromList(pBarriers ?? []);
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_BARRIER_GROUP"/> struct.</summary>
@@ -204,7 +205,37 @@ public static partial class D3D12
 		{
 			Type = D3D12_BARRIER_TYPE.D3D12_BARRIER_TYPE_BUFFER;
 			NumBarriers = (uint?)pBarriers?.Length ?? 0;
-			pGlobalBarriers = memoryHandle = SafeCoTaskMemHandle.CreateFromList(pBarriers ?? []);
+			pBufferBarriers = memoryHandle = SafeCoTaskMemHandle.CreateFromList(pBarriers ?? []);
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_BARRIER_GROUP"/> struct.</summary>
+		/// <param name="numBarriers">The number of barriers.</param>
+		/// <param name="pBarriers">The barriers.</param>
+		public D3D12_BARRIER_GROUP(SizeT numBarriers, ManagedArrayPointer<D3D12_GLOBAL_BARRIER> pBarriers)
+		{
+			Type = D3D12_BARRIER_TYPE.D3D12_BARRIER_TYPE_GLOBAL;
+			NumBarriers = numBarriers;
+			pGlobalBarriers = pBarriers;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_BARRIER_GROUP"/> struct.</summary>
+		/// <param name="numBarriers">The number of barriers.</param>
+		/// <param name="pBarriers">The barriers.</param>
+		public D3D12_BARRIER_GROUP(SizeT numBarriers, ManagedArrayPointer<D3D12_TEXTURE_BARRIER> pBarriers)
+		{
+			Type = D3D12_BARRIER_TYPE.D3D12_BARRIER_TYPE_TEXTURE;
+			NumBarriers = numBarriers;
+			pTextureBarriers = pBarriers;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_BARRIER_GROUP"/> struct.</summary>
+		/// <param name="numBarriers">The number of barriers.</param>
+		/// <param name="pBarriers">The barriers.</param>
+		public D3D12_BARRIER_GROUP(SizeT numBarriers, ManagedArrayPointer<D3D12_BUFFER_BARRIER> pBarriers)
+		{
+			Type = D3D12_BARRIER_TYPE.D3D12_BARRIER_TYPE_BUFFER;
+			NumBarriers = numBarriers;
+			pBufferBarriers = pBarriers;
 		}
 	}
 
@@ -339,7 +370,21 @@ public static partial class D3D12
 		/// to the eight render targets that can be bound to the <c>output-merger stage</c> at one time.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-		public D3D12_RENDER_TARGET_BLEND_DESC[] RenderTarget;
+		public D3D12_RENDER_TARGET_BLEND_DESC[] _RenderTarget;
+
+		/// <summary>
+		/// Sets the array of <c>D3D12_RENDER_TARGET_BLEND_DESC</c> structures that describe the blend states for render targets; these
+		/// correspond to the eight render targets that can be bound to the <c>output-merger stage</c> at one time. This method ensures that
+		/// the structure's value always has a length of 8.
+		/// </summary>
+		/// <param name="value">The array of <c>D3D12_RENDER_TARGET_BLEND_DESC</c> structures.</param>
+		[MemberNotNull(nameof(_RenderTarget))]
+		public void SetRenderTarget(params D3D12_RENDER_TARGET_BLEND_DESC[] value)
+		{
+			_RenderTarget = new D3D12_RENDER_TARGET_BLEND_DESC[8];
+			if (value is null || value.Length == 0) return;
+			Array.ConstrainedCopy(value, 0, _RenderTarget, 0, Math.Min(value.Length, 8));
+		}
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_BLEND_DESC"/> struct with standard (not default) values.</summary>
 		public D3D12_BLEND_DESC()
@@ -358,9 +403,7 @@ public static partial class D3D12
 				LogicOp = D3D12_LOGIC_OP.D3D12_LOGIC_OP_NOOP,
 				RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE.D3D12_COLOR_WRITE_ENABLE_ALL
 			};
-			RenderTarget = new D3D12_RENDER_TARGET_BLEND_DESC[D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT];
-			for (int i = 0; i < D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT; i++)
-				RenderTarget[i] = def;
+			SetRenderTarget(def);
 		}
 	}
 
@@ -3828,6 +3871,24 @@ public static partial class D3D12
 
 		/// <summary>A <c>D3D12_PIPELINE_STATE_FLAGS</c> enumeration constant such as for "tool debug".</summary>
 		public D3D12_PIPELINE_STATE_FLAGS Flags;
+
+		/// <summary>
+		/// Sets the number of render targets and the render target formats ensuring that the <see cref="RTVFormats"/> array is correctly sized.
+		/// </summary>
+		/// <param name="value">The render targets.</param>
+		[MemberNotNull(nameof(RTVFormats))]
+		public void SetRTVFormats(params DXGI_FORMAT[] value)
+		{
+			RTVFormats = new DXGI_FORMAT[8];
+			if (value is null || value.Length == 0)
+			{
+				NumRenderTargets = 0;
+			}
+			else
+			{
+				Array.ConstrainedCopy(value, 0, RTVFormats, 0, (int)(NumRenderTargets = (uint)Math.Min(value.Length, RTVFormats.Length)));
+			}
+		}
 	}
 
 	/// <summary>Describes a heap.</summary>
@@ -4396,6 +4457,15 @@ public static partial class D3D12
 		{
 			NumElements = (uint)(elements?.Length ?? 0);
 			pInputElementDescs = memoryHandle = NumElements > 0 ? SafeCoTaskMemHandle.CreateFromList(elements!) : SafeCoTaskMemHandle.Null;
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_INPUT_LAYOUT_DESC" /> struct.</summary>
+		/// <param name="numElements">The number of elements.</param>
+		/// <param name="elements">The elements.</param>
+		public D3D12_INPUT_LAYOUT_DESC(SizeT numElements, ManagedArrayPointer<D3D12_INPUT_ELEMENT_DESC> elements)
+		{
+			NumElements = numElements;
+			pInputElementDescs = elements;
 		}
 	}
 
@@ -6937,6 +7007,13 @@ public static partial class D3D12
 		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE.</returns>
 		public static D3D12_ROOT_DESCRIPTOR_TABLE Init(D3D12_DESCRIPTOR_RANGE[] ranges, out SafeAllocatedMemoryHandle h) =>
 			new() { NumDescriptorRanges = (uint)ranges.Length, pDescriptorRanges = h = SafeCoTaskMemHandle.CreateFromList(ranges) };
+
+		/// <summary>Creates a new instance of a D3D12_ROOT_DESCRIPTOR_TABLE.</summary>
+		/// <param name="numRanges">The number of descriptor ranges in the table layout.</param>
+		/// <param name="ranges">The descriptor ranges.</param>
+		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE.</returns>
+		public static D3D12_ROOT_DESCRIPTOR_TABLE Init(SizeT numRanges, ArrayPointer<D3D12_DESCRIPTOR_RANGE> ranges) =>
+			new() { NumDescriptorRanges = numRanges, pDescriptorRanges = ranges };
 	}
 
 	/// <summary>
@@ -6972,6 +7049,13 @@ public static partial class D3D12
 		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE1.</returns>
 		public static D3D12_ROOT_DESCRIPTOR_TABLE1 Init(D3D12_DESCRIPTOR_RANGE1[] ranges, out SafeAllocatedMemoryHandle h) =>
 			new() { NumDescriptorRanges = (uint)ranges.Length, pDescriptorRanges = h = SafeCoTaskMemHandle.CreateFromList(ranges) };
+
+		/// <summary>Creates a new instance of a D3D12_ROOT_DESCRIPTOR_TABLE1.</summary>
+		/// <param name="numRanges">The number of descriptor ranges in the table layout.</param>
+		/// <param name="ranges">The descriptor ranges.</param>
+		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE1.</returns>
+		public static D3D12_ROOT_DESCRIPTOR_TABLE1 Init(SizeT numRanges, ArrayPointer<D3D12_DESCRIPTOR_RANGE1> ranges) =>
+			new() { NumDescriptorRanges = numRanges, pDescriptorRanges = ranges };
 	}
 
 	/// <summary>Describes descriptors inline in the root signature version 1.1 that appear in shaders.</summary>
@@ -7073,6 +7157,19 @@ public static partial class D3D12
 				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
 				ShaderVisibility = visibility,
 				u = new() { DescriptorTable = D3D12_ROOT_DESCRIPTOR_TABLE.Init(pDescriptorRanges, out h) }
+			};
+
+		/// <summary>Initializes with a descriptor table.</summary>
+		/// <param name="numRanges">The number of descriptor ranges in the table layout.</param>
+		/// <param name="pDescriptorRanges">The descriptor ranges.</param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER"/>.</returns>
+		public static D3D12_ROOT_PARAMETER InitAsDescriptorTable(SizeT numRanges, [In] ArrayPointer<D3D12_DESCRIPTOR_RANGE> pDescriptorRanges,
+			[Optional] D3D12_SHADER_VISIBILITY visibility) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
+				ShaderVisibility = visibility,
+				u = new() { DescriptorTable = D3D12_ROOT_DESCRIPTOR_TABLE.Init(numRanges, pDescriptorRanges) }
 			};
 
 		/// <summary>Initializes with constants.</summary>
@@ -7198,6 +7295,19 @@ public static partial class D3D12
 				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
 				ShaderVisibility = visibility,
 				u = new() { DescriptorTable = D3D12_ROOT_DESCRIPTOR_TABLE1.Init(pDescriptorRanges, out h) }
+			};
+
+		/// <summary>Initializes with a descriptor table.</summary>
+		/// <param name="numRanges">The number of descriptor ranges in the table layout.</param>
+		/// <param name="pDescriptorRanges">The descriptor ranges.</param>
+		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
+		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER1"/>.</returns>
+		public static D3D12_ROOT_PARAMETER1 InitAsDescriptorTable(SizeT numRanges, [In] ArrayPointer<D3D12_DESCRIPTOR_RANGE1> pDescriptorRanges,
+			[Optional] D3D12_SHADER_VISIBILITY visibility) => new()
+			{
+				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
+				ShaderVisibility = visibility,
+				u = new() { DescriptorTable = D3D12_ROOT_DESCRIPTOR_TABLE1.Init(numRanges, pDescriptorRanges) }
 			};
 
 		/// <summary>Initializes with constants.</summary>
@@ -7625,8 +7735,7 @@ public static partial class D3D12
 		/// RGBA border color to use if <c>D3D12_TEXTURE_ADDRESS_MODE_BORDER</c> is specified for <b>AddressU</b>, <b>AddressV</b>, or
 		/// <b>AddressW</b>. Range must be between 0.0 and 1.0 inclusive.
 		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-		public float[] BorderColor;
+		public D3DCOLORVALUE BorderColor;
 
 		/// <summary>
 		/// Lower end of the mipmap range to clamp access to, where 0 is the largest and most detailed mipmap level and any level higher
@@ -7659,6 +7768,21 @@ public static partial class D3D12
 		/// <summary>The opaque driver versioning data.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
 		public byte[] DriverOpaqueVersioningData;
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER"/> struct.</summary>
+		/// <param name="driverOpaqueGUID">The opaque identifier of the driver.</param>
+		/// <param name="driverOpaqueVersioningData">The opaque driver versioning data.</param>
+		/// <exception cref="ArgumentOutOfRangeException">nameof(driverOpaqueVersioningData), Array length must be 16 or less.</exception>
+		public D3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER(Guid driverOpaqueGUID, byte[] driverOpaqueVersioningData)
+		{
+			DriverOpaqueGUID = driverOpaqueGUID;
+			DriverOpaqueVersioningData = new byte[16];
+			if (driverOpaqueVersioningData.Length > 16)
+				throw new ArgumentOutOfRangeException(nameof(driverOpaqueVersioningData), "Array length must be 16 or less.");
+			if (driverOpaqueVersioningData is null || driverOpaqueVersioningData.Length == 0)
+				return;
+			Array.ConstrainedCopy(driverOpaqueVersioningData, 0, DriverOpaqueVersioningData, 0, driverOpaqueVersioningData.Length);
+		}
 	}
 
 	/// <summary>Defines the header for a serialized raytracing acceleration structure.</summary>
@@ -9559,6 +9683,18 @@ public static partial class D3D12
 
 		/// <summary>Configures view instancing with additional options.</summary>
 		public D3D12_VIEW_INSTANCING_FLAGS Flags;
+
+		/// <summary>Initializes a new instance of the <see cref="D3D12_VIEW_INSTANCING_DESC"/> struct.</summary>
+		/// <param name="cViewInstance">The number of views to be used, up to D3D12_MAX_VIEW_INSTANCE_COUNT.</param>
+		/// <param name="pViewInstanceLocations">The view instance locations.</param>
+		/// <param name="flags">Configures view instancing with additional options.</param>
+		public D3D12_VIEW_INSTANCING_DESC([Optional] SizeT cViewInstance, [In, Optional] ArrayPointer<D3D12_VIEW_INSTANCE_LOCATION> pViewInstanceLocations,
+			[Optional] D3D12_VIEW_INSTANCING_FLAGS flags)
+		{
+			ViewInstanceCount = cViewInstance;
+			this.pViewInstanceLocations = pViewInstanceLocations;
+			Flags = flags;
+		}
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_VIEW_INSTANCING_DESC"/> struct.</summary>
 		/// <param name="pViewInstanceLocations">The view instance locations.</param>
