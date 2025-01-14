@@ -20,7 +20,7 @@ env:
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
   #NUGET_REPO: https://www.myget.org/F/vanara/api/v2/package
-  NUGET_REPO: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+  NUGET_REPO: https://nuget.pkg.github.com/dahall/index.json
   #NUGET_AUTH_TOKEN: ${{secrets.MYGETAPIKEY}}
   NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
