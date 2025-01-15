@@ -2,7 +2,6 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace Vanara.PInvoke;
 
@@ -650,7 +649,7 @@ public static partial class D3D12
 		/// </para>
 		/// <para>The memory pointed to must be in state <c>D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE</c>.</para>
 		/// </summary>
-		public D3D12_GPU_VIRTUAL_ADDRESS InstanceDescs { get => (ulong)union; set => union = (IntPtr)value; }
+		public D3D12_GPU_VIRTUAL_ADDRESS InstanceDescs { readonly get => (ulong)union; set => union = (IntPtr)value; }
 
 		/// <summary>
 		/// <para>
@@ -786,12 +785,12 @@ public static partial class D3D12
 		/// <summary>
 		/// Specifies a 4-entry array of float values, determining the RGBA value. The order of RGBA matches the order used with <c>ClearRenderTargetView</c>.
 		/// </summary>
-		public float[] Color { get => (float[])u.Color; set => u.Color = value; }
+		public float[] Color { readonly get => (float[])u.Color; set => u.Color = value; }
 
 		/// <summary>
 		/// Specifies one member of <c>D3D12_DEPTH_STENCIL_VALUE</c>. These values match the semantics of <i>Depth</i> and <i>Stencil</i> in <c>ClearDepthStencilView</c>.
 		/// </summary>
-		public D3D12_DEPTH_STENCIL_VALUE DepthStencil { get => u.DepthStencil; set => u.DepthStencil = value; }
+		public D3D12_DEPTH_STENCIL_VALUE DepthStencil { readonly get => u.DepthStencil; set => u.DepthStencil = value; }
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_CLEAR_VALUE"/> struct.</summary>
 		/// <param name="format">Specifies one member of the <c>DXGI_FORMAT</c> enum.</param>
@@ -824,13 +823,7 @@ public static partial class D3D12
 			u.Color.Equals(other.u.Color);
 
 		/// <inheritdoc/>
-		public override int GetHashCode()
-		{
-			int hashCode = -390594502;
-			hashCode = hashCode * -1521134295 + Format.GetHashCode();
-			hashCode = hashCode * -1521134295 + u.Color.GetHashCode();
-			return hashCode;
-		}
+		public override int GetHashCode() => (Format, u.Color).GetHashCode();
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -4049,15 +4042,7 @@ public static partial class D3D12
 		public bool Equals(D3D12_HEAP_DESC other) => SizeInBytes == other.SizeInBytes && Properties.Equals(other.Properties) && Alignment == other.Alignment && Flags == other.Flags;
 
 		/// <inheritdoc/>
-		public override int GetHashCode()
-		{
-			int hashCode = -1327957844;
-			hashCode = hashCode * -1521134295 + SizeInBytes.GetHashCode();
-			hashCode = hashCode * -1521134295 + Properties.GetHashCode();
-			hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
-			hashCode = hashCode * -1521134295 + Flags.GetHashCode();
-			return hashCode;
-		}
+		public override int GetHashCode() => (SizeInBytes, Properties, Alignment, Flags).GetHashCode();
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -4209,16 +4194,7 @@ public static partial class D3D12
 		public bool Equals(D3D12_HEAP_PROPERTIES other) => Type == other.Type && CPUPageProperty == other.CPUPageProperty && MemoryPoolPreference == other.MemoryPoolPreference && CreationNodeMask == other.CreationNodeMask && VisibleNodeMask == other.VisibleNodeMask;
 
 		/// <inheritdoc/>
-		public override int GetHashCode()
-		{
-			int hashCode = -856471406;
-			hashCode = hashCode * -1521134295 + Type.GetHashCode();
-			hashCode = hashCode * -1521134295 + CPUPageProperty.GetHashCode();
-			hashCode = hashCode * -1521134295 + MemoryPoolPreference.GetHashCode();
-			hashCode = hashCode * -1521134295 + CreationNodeMask.GetHashCode();
-			hashCode = hashCode * -1521134295 + VisibleNodeMask.GetHashCode();
-			return hashCode;
-		}
+		public override int GetHashCode() => (Type, CPUPageProperty, MemoryPoolPreference, CreationNodeMask, VisibleNodeMask).GetHashCode();
 
 		/// <summary>Implements the operator op_Equality.</summary>
 		/// <param name="left">The left.</param>
@@ -5139,19 +5115,51 @@ public static partial class D3D12
 	/// you always set <b>MultisampleEnable</b> to <b>TRUE</b> whenever you render on MSAA render targets.
 	/// </para>
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="D3D12_RASTERIZER_DESC"/> struct.</remarks>
+	/// <param name="fillMode">A <c>D3D12_FILL_MODE</c>-typed value that specifies the fill mode to use when rendering.</param>
+	/// <param name="cullMode">
+	/// A <c>D3D12_CULL_MODE</c>-typed value that specifies that triangles facing the specified direction are not drawn.
+	/// </param>
+	/// <param name="frontCounterClockwise">
+	/// Determines if a triangle is front- or back-facing. If this member is <b>TRUE</b>, a triangle will be considered front-facing if
+	/// its vertices are counter-clockwise on the render target and considered back-facing if they are clockwise. If this parameter is
+	/// <b>FALSE</b>, the opposite is true.
+	/// </param>
+	/// <param name="depthBias">Depth value added to a given pixel. For info about depth bias, see <c>Depth Bias</c>.</param>
+	/// <param name="depthBiasClamp">Maximum depth bias of a pixel. For info about depth bias, see <c>Depth Bias</c>.</param>
+	/// <param name="slopeScaledDepthBias">Scalar on a given pixel's slope. For info about depth bias, see <c>Depth Bias</c>.</param>
+	/// <param name="depthClipEnable">Specifies whether to enable clipping based on distance.</param>
+	/// <param name="multisampleEnable">
+	/// Specifies whether to use the quadrilateral or alpha line anti-aliasing algorithm on multisample antialiasing (MSAA) render
+	/// targets. Set to <b>TRUE</b> to use the quadrilateral line anti-aliasing algorithm and to <b>FALSE</b> to use the alpha line
+	/// anti-aliasing algorithm. For more info about this member, see Remarks.
+	/// </param>
+	/// <param name="antialiasedLineEnable">
+	/// Specifies whether to enable line antialiasing; only applies if doing line drawing and <b>MultisampleEnable</b> is <b>FALSE</b>.
+	/// For more info about this member, see Remarks.
+	/// </param>
+	/// <param name="forcedSampleCount">
+	/// The sample count that is forced while UAV rendering or rasterizing. Valid values are 0, 1, 4, 8, and optionally 16. 0 indicates
+	/// that the sample count is not forced.
+	/// </param>
+	/// <param name="conservativeRaster">
+	/// A <c>D3D12_CONSERVATIVE_RASTERIZATION_MODE</c>-typed value that identifies whether conservative rasterization is on or off.
+	/// </param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_rasterizer_desc typedef struct D3D12_RASTERIZER_DESC {
 	// D3D12_FILL_MODE FillMode; D3D12_CULL_MODE CullMode; BOOL FrontCounterClockwise; INT DepthBias; FLOAT DepthBiasClamp; FLOAT
 	// SlopeScaledDepthBias; BOOL DepthClipEnable; BOOL MultisampleEnable; BOOL AntialiasedLineEnable; UINT ForcedSampleCount;
 	// D3D12_CONSERVATIVE_RASTERIZATION_MODE ConservativeRaster; } D3D12_RASTERIZER_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_RASTERIZER_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_RASTERIZER_DESC
+	public struct D3D12_RASTERIZER_DESC(D3D12.D3D12_FILL_MODE fillMode, D3D12.D3D12_CULL_MODE cullMode, bool frontCounterClockwise, int depthBias,
+		float depthBiasClamp, float slopeScaledDepthBias, bool depthClipEnable, bool multisampleEnable,
+		bool antialiasedLineEnable, uint forcedSampleCount, D3D12.D3D12_CONSERVATIVE_RASTERIZATION_MODE conservativeRaster)
 	{
 		/// <summary>A <c>D3D12_FILL_MODE</c>-typed value that specifies the fill mode to use when rendering.</summary>
-		public D3D12_FILL_MODE FillMode;
+		public D3D12_FILL_MODE FillMode = fillMode;
 
 		/// <summary>A <c>D3D12_CULL_MODE</c>-typed value that specifies that triangles facing the specified direction are not drawn.</summary>
-		public D3D12_CULL_MODE CullMode;
+		public D3D12_CULL_MODE CullMode = cullMode;
 
 		/// <summary>
 		/// Determines if a triangle is front- or back-facing. If this member is <b>TRUE</b>, a triangle will be considered front-facing if
@@ -5159,16 +5167,16 @@ public static partial class D3D12
 		/// <b>FALSE</b>, the opposite is true.
 		/// </summary>
 		[MarshalAs(UnmanagedType.Bool)]
-		public bool FrontCounterClockwise;
+		public bool FrontCounterClockwise = frontCounterClockwise;
 
 		/// <summary>Depth value added to a given pixel. For info about depth bias, see <c>Depth Bias</c>.</summary>
-		public int DepthBias;
+		public int DepthBias = depthBias;
 
 		/// <summary>Maximum depth bias of a pixel. For info about depth bias, see <c>Depth Bias</c>.</summary>
-		public float DepthBiasClamp;
+		public float DepthBiasClamp = depthBiasClamp;
 
 		/// <summary>Scalar on a given pixel's slope. For info about depth bias, see <c>Depth Bias</c>.</summary>
-		public float SlopeScaledDepthBias;
+		public float SlopeScaledDepthBias = slopeScaledDepthBias;
 
 		/// <summary>
 		/// <para>Specifies whether to enable clipping based on distance.</para>
@@ -5187,7 +5195,7 @@ public static partial class D3D12
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.Bool)]
-		public bool DepthClipEnable;
+		public bool DepthClipEnable = depthClipEnable;
 
 		/// <summary>
 		/// Specifies whether to use the quadrilateral or alpha line anti-aliasing algorithm on multisample antialiasing (MSAA) render
@@ -5195,14 +5203,14 @@ public static partial class D3D12
 		/// anti-aliasing algorithm. For more info about this member, see Remarks.
 		/// </summary>
 		[MarshalAs(UnmanagedType.Bool)]
-		public bool MultisampleEnable;
+		public bool MultisampleEnable = multisampleEnable;
 
 		/// <summary>
 		/// Specifies whether to enable line antialiasing; only applies if doing line drawing and <b>MultisampleEnable</b> is <b>FALSE</b>.
 		/// For more info about this member, see Remarks.
 		/// </summary>
 		[MarshalAs(UnmanagedType.Bool)]
-		public bool AntialiasedLineEnable;
+		public bool AntialiasedLineEnable = antialiasedLineEnable;
 
 		/// <summary>
 		/// <para>Type: <b><c>UINT</c></b></para>
@@ -5213,12 +5221,12 @@ public static partial class D3D12
 		/// <note>If you want to render with <b>ForcedSampleCount</b> set to 1 or greater, you must follow these guidelines: Otherwise,
 		/// rendering behavior is undefined.</note>
 		/// </summary>
-		public uint ForcedSampleCount;
+		public uint ForcedSampleCount = forcedSampleCount;
 
 		/// <summary>
 		/// A <c>D3D12_CONSERVATIVE_RASTERIZATION_MODE</c>-typed value that identifies whether conservative rasterization is on or off.
 		/// </summary>
-		public D3D12_CONSERVATIVE_RASTERIZATION_MODE ConservativeRaster;
+		public D3D12_CONSERVATIVE_RASTERIZATION_MODE ConservativeRaster = conservativeRaster;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_RASTERIZER_DESC"/> struct with standard (not default) values.</summary>
 		public D3D12_RASTERIZER_DESC() :
@@ -5226,53 +5234,6 @@ public static partial class D3D12
 				D3D12_DEFAULT_DEPTH_BIAS_CLAMP, D3D12_DEFAULT_SLOPE_SCALED_DEPTH_BIAS, true, false, false, 0,
 				D3D12_CONSERVATIVE_RASTERIZATION_MODE.D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF)
 		{
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="D3D12_RASTERIZER_DESC"/> struct.</summary>
-		/// <param name="fillMode">A <c>D3D12_FILL_MODE</c>-typed value that specifies the fill mode to use when rendering.</param>
-		/// <param name="cullMode">
-		/// A <c>D3D12_CULL_MODE</c>-typed value that specifies that triangles facing the specified direction are not drawn.
-		/// </param>
-		/// <param name="frontCounterClockwise">
-		/// Determines if a triangle is front- or back-facing. If this member is <b>TRUE</b>, a triangle will be considered front-facing if
-		/// its vertices are counter-clockwise on the render target and considered back-facing if they are clockwise. If this parameter is
-		/// <b>FALSE</b>, the opposite is true.
-		/// </param>
-		/// <param name="depthBias">Depth value added to a given pixel. For info about depth bias, see <c>Depth Bias</c>.</param>
-		/// <param name="depthBiasClamp">Maximum depth bias of a pixel. For info about depth bias, see <c>Depth Bias</c>.</param>
-		/// <param name="slopeScaledDepthBias">Scalar on a given pixel's slope. For info about depth bias, see <c>Depth Bias</c>.</param>
-		/// <param name="depthClipEnable">Specifies whether to enable clipping based on distance.</param>
-		/// <param name="multisampleEnable">
-		/// Specifies whether to use the quadrilateral or alpha line anti-aliasing algorithm on multisample antialiasing (MSAA) render
-		/// targets. Set to <b>TRUE</b> to use the quadrilateral line anti-aliasing algorithm and to <b>FALSE</b> to use the alpha line
-		/// anti-aliasing algorithm. For more info about this member, see Remarks.
-		/// </param>
-		/// <param name="antialiasedLineEnable">
-		/// Specifies whether to enable line antialiasing; only applies if doing line drawing and <b>MultisampleEnable</b> is <b>FALSE</b>.
-		/// For more info about this member, see Remarks.
-		/// </param>
-		/// <param name="forcedSampleCount">
-		/// The sample count that is forced while UAV rendering or rasterizing. Valid values are 0, 1, 4, 8, and optionally 16. 0 indicates
-		/// that the sample count is not forced.
-		/// </param>
-		/// <param name="conservativeRaster">
-		/// A <c>D3D12_CONSERVATIVE_RASTERIZATION_MODE</c>-typed value that identifies whether conservative rasterization is on or off.
-		/// </param>
-		public D3D12_RASTERIZER_DESC(D3D12_FILL_MODE fillMode, D3D12_CULL_MODE cullMode, bool frontCounterClockwise, int depthBias,
-			float depthBiasClamp, float slopeScaledDepthBias, bool depthClipEnable, bool multisampleEnable,
-			bool antialiasedLineEnable, uint forcedSampleCount, D3D12_CONSERVATIVE_RASTERIZATION_MODE conservativeRaster)
-		{
-			FillMode = fillMode;
-			CullMode = cullMode;
-			FrontCounterClockwise = frontCounterClockwise;
-			DepthBias = depthBias;
-			DepthBiasClamp = depthBiasClamp;
-			SlopeScaledDepthBias = slopeScaledDepthBias;
-			DepthClipEnable = depthClipEnable;
-			MultisampleEnable = multisampleEnable;
-			AntialiasedLineEnable = antialiasedLineEnable;
-			ForcedSampleCount = forcedSampleCount;
-			ConservativeRaster = conservativeRaster;
 		}
 	}
 
@@ -5721,7 +5682,7 @@ public static partial class D3D12
 		/// <para>Type: <b><c>UINT</c> : 24</b></para>
 		/// <para>An arbitrary 24-bit value that can be accessed using the <c>InstanceID</c> intrinsic function in supported shader types.</para>
 		/// </summary>
-		public uint InstanceID { get => (uint)(bits & 0xFFFFFF); set => bits = (bits & 0xFFFFFFFFFF000000) | value; }
+		public uint InstanceID { readonly get => (uint)(bits & 0xFFFFFF); set => bits = (bits & 0xFFFFFFFFFF000000) | value; }
 
 		/// <summary>
 		/// <para>Type: <b><c>UINT</c> : 8</b></para>
@@ -5731,7 +5692,7 @@ public static partial class D3D12
 		/// see, the <c>InstanceInclusionMask</c> parameter to the <c>TraceRay</c> function.
 		/// </para>
 		/// </summary>
-		public uint InstanceMask { get => (uint)((bits >> 24) & 0xFF); set => bits = (bits & 0xFFFFFFFF00FFFFFF) | ((ulong)value << 24); }
+		public uint InstanceMask { readonly get => (uint)((bits >> 24) & 0xFF); set => bits = (bits & 0xFFFFFFFF00FFFFFF) | ((ulong)value << 24); }
 
 		/// <summary>
 		/// <para>Type: <b><c>UINT</c> : 24</b></para>
@@ -5739,13 +5700,13 @@ public static partial class D3D12
 		/// An arbitrary 24-bit value representing per-instance contribution to add into shader table indexing to select the hit group to use.
 		/// </para>
 		/// </summary>
-		public uint InstanceContributionToHitGroupIndex { get => (uint)((bits >> 32) & 0xFFFFFF); set => bits = (bits & 0xFF000000FFFFFFFF) | ((ulong)value << 32); }
+		public uint InstanceContributionToHitGroupIndex { readonly get => (uint)((bits >> 32) & 0xFFFFFF); set => bits = (bits & 0xFF000000FFFFFFFF) | ((ulong)value << 32); }
 
 		/// <summary>
 		/// <para>Type: <b><c>UINT</c> : 8</b></para>
 		/// <para>An 8-bit mask representing flags from <c>D3D12_RAYTRACING_INSTANCE_FLAGS</c> to apply to the instance.</para>
 		/// </summary>
-		public D3D12_RAYTRACING_INSTANCE_FLAGS Flags { get => (D3D12_RAYTRACING_INSTANCE_FLAGS)((bits >> 56) & 0xFF); set => bits = (bits & 0x00FFFFFFFFFFFFFF) | ((ulong)value << 56); }
+		public D3D12_RAYTRACING_INSTANCE_FLAGS Flags { readonly get => (D3D12_RAYTRACING_INSTANCE_FLAGS)((bits >> 56) & 0xFF); set => bits = (bits & 0x00FFFFFFFFFFFFFF) | ((ulong)value << 56); }
 
 		/// <summary>
 		/// <para>Type: <b><c>D3D12_GPU_VIRTUAL_ADDRESS</c></b></para>
@@ -6609,7 +6570,8 @@ public static partial class D3D12
 		/// <param name="resAllocInfo">The resource alloc information.</param>
 		/// <param name="flags">The flags.</param>
 		/// <returns></returns>
-		public static D3D12_RESOURCE_DESC Buffer(in D3D12_RESOURCE_ALLOCATION_INFO resAllocInfo, D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAGS.D3D12_RESOURCE_FLAG_NONE) => new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_BUFFER, resAllocInfo.Alignment, resAllocInfo.SizeInBytes,
+		public static D3D12_RESOURCE_DESC Buffer(in D3D12_RESOURCE_ALLOCATION_INFO resAllocInfo, D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAGS.D3D12_RESOURCE_FLAG_NONE) =>
+			new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_BUFFER, resAllocInfo.Alignment, resAllocInfo.SizeInBytes,
 				1, 1, 1, DXGI_FORMAT.DXGI_FORMAT_UNKNOWN, 1, 0, D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_ROW_MAJOR, flags);
 
 		/// <summary>Creates a buffer instance.</summary>
@@ -6617,8 +6579,9 @@ public static partial class D3D12
 		/// <param name="flags">The flags.</param>
 		/// <param name="alignment">The alignment.</param>
 		/// <returns></returns>
-		public static D3D12_RESOURCE_DESC Buffer(ulong width, D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAGS.D3D12_RESOURCE_FLAG_NONE, ulong alignment = 0) => new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_BUFFER, alignment, width, 1, 1, 1,
-			DXGI_FORMAT.DXGI_FORMAT_UNKNOWN, 1, 0, D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_ROW_MAJOR, flags);
+		public static D3D12_RESOURCE_DESC Buffer(ulong width, D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAGS.D3D12_RESOURCE_FLAG_NONE, ulong alignment = 0) =>
+			new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_BUFFER, alignment, width, 1, 1, 1,
+				DXGI_FORMAT.DXGI_FORMAT_UNKNOWN, 1, 0, D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_ROW_MAJOR, flags);
 
 		/// <summary>Creates a 1D texture instance.</summary>
 		/// <param name="format">The format.</param>
@@ -6631,7 +6594,8 @@ public static partial class D3D12
 		/// <returns></returns>
 		public static D3D12_RESOURCE_DESC Tex1D(DXGI_FORMAT format, ulong width, ushort arraySize = 1, ushort mipLevels = 0,
 			D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAGS.D3D12_RESOURCE_FLAG_NONE,
-			D3D12_TEXTURE_LAYOUT layout = D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_UNKNOWN, ulong alignment = 0) => new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE1D, alignment, width, 1, arraySize,
+			D3D12_TEXTURE_LAYOUT layout = D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_UNKNOWN, ulong alignment = 0) =>
+			new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE1D, alignment, width, 1, arraySize,
 			mipLevels, format, 1, 0, layout, flags);
 
 		/// <summary>Creates a 2D texture instance.</summary>
@@ -6648,7 +6612,8 @@ public static partial class D3D12
 		/// <returns></returns>
 		public static D3D12_RESOURCE_DESC Tex2D(DXGI_FORMAT format, ulong width, uint height, ushort arraySize = 1, ushort mipLevels = 0,
 			uint sampleCount = 1, uint sampleQuality = 0, D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAGS.D3D12_RESOURCE_FLAG_NONE,
-			D3D12_TEXTURE_LAYOUT layout = D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_UNKNOWN, ulong alignment = 0) => new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE2D, alignment, width, height, arraySize,
+			D3D12_TEXTURE_LAYOUT layout = D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_UNKNOWN, ulong alignment = 0) =>
+			new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE2D, alignment, width, height, arraySize,
 			mipLevels, format, sampleCount, sampleQuality, layout, flags);
 
 		/// <summary>Creates a 3D texture instance.</summary>
@@ -6663,7 +6628,8 @@ public static partial class D3D12
 		/// <returns></returns>
 		public static D3D12_RESOURCE_DESC Tex3D(DXGI_FORMAT format, ulong width, uint height, ushort depth, ushort mipLevels = 0,
 			D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAGS.D3D12_RESOURCE_FLAG_NONE,
-			D3D12_TEXTURE_LAYOUT layout = D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_UNKNOWN, ulong alignment = 0) => new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D, alignment, width, height, depth,
+			D3D12_TEXTURE_LAYOUT layout = D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_UNKNOWN, ulong alignment = 0) =>
+			new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_TEXTURE3D, alignment, width, height, depth,
 			mipLevels, format, 1, 0, layout, flags);
 
 		/// <summary>Gets the depth.</summary>
@@ -6682,21 +6648,7 @@ public static partial class D3D12
 		public uint CalcSubresource(uint MipSlice, uint ArraySlice, uint PlaneSlice) => D3D12CalcSubresource(MipSlice, ArraySlice, PlaneSlice, MipLevels, ArraySize);
 
 		/// <inheritdoc/>
-		public override int GetHashCode()
-		{
-			int hashCode = 1420403684;
-			hashCode = hashCode * -1521134295 + Dimension.GetHashCode();
-			hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
-			hashCode = hashCode * -1521134295 + Width.GetHashCode();
-			hashCode = hashCode * -1521134295 + Height.GetHashCode();
-			hashCode = hashCode * -1521134295 + DepthOrArraySize.GetHashCode();
-			hashCode = hashCode * -1521134295 + MipLevels.GetHashCode();
-			hashCode = hashCode * -1521134295 + Format.GetHashCode();
-			hashCode = hashCode * -1521134295 + SampleDesc.GetHashCode();
-			hashCode = hashCode * -1521134295 + Layout.GetHashCode();
-			hashCode = hashCode * -1521134295 + Flags.GetHashCode();
-			return hashCode;
-		}
+		public override int GetHashCode() => (Dimension, Alignment, Width, Height, DepthOrArraySize, MipLevels, Format, SampleDesc, Layout, Flags).GetHashCode();
 	}
 
 	/// <summary>Describes a resource, such as a texture, including a mip region. This structure is used in several methods.</summary>
@@ -6819,22 +6771,7 @@ public static partial class D3D12
 		public uint CalcSubresource(uint MipSlice, uint ArraySlice, uint PlaneSlice) => D3D12_RESOURCE_DESC.D3D12CalcSubresource(MipSlice, ArraySlice, PlaneSlice, MipLevels, ArraySize);
 
 		/// <inheritdoc/>
-		public override int GetHashCode()
-		{
-			int hashCode = 1420403684;
-			hashCode = hashCode * -1521134295 + Dimension.GetHashCode();
-			hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
-			hashCode = hashCode * -1521134295 + Width.GetHashCode();
-			hashCode = hashCode * -1521134295 + Height.GetHashCode();
-			hashCode = hashCode * -1521134295 + DepthOrArraySize.GetHashCode();
-			hashCode = hashCode * -1521134295 + MipLevels.GetHashCode();
-			hashCode = hashCode * -1521134295 + Format.GetHashCode();
-			hashCode = hashCode * -1521134295 + SampleDesc.GetHashCode();
-			hashCode = hashCode * -1521134295 + Layout.GetHashCode();
-			hashCode = hashCode * -1521134295 + Flags.GetHashCode();
-			hashCode = hashCode * -1521134295 + SamplerFeedbackMipRegion.GetHashCode();
-			return hashCode;
-		}
+		public override int GetHashCode() => (Dimension, Alignment, Width, Height, DepthOrArraySize, MipLevels, Format, SampleDesc, Layout, Flags, SamplerFeedbackMipRegion).GetHashCode();
 
 		/// <summary>
 		/// Fills in the mipmap and alignment values of pDesc when either members are zero. Used to replace an implicit field to an explicit
@@ -7133,18 +7070,18 @@ public static partial class D3D12
 		/// A <c>D3D12_ROOT_DESCRIPTOR_TABLE</c> structure that describes the layout of a descriptor table as a collection of descriptor
 		/// ranges that appear one after the other in a descriptor heap.
 		/// </summary>
-		public D3D12_ROOT_DESCRIPTOR_TABLE DescriptorTable { get => u.DescriptorTable; set => u = new UNION { DescriptorTable = value }; }
+		public D3D12_ROOT_DESCRIPTOR_TABLE DescriptorTable { readonly get => u.DescriptorTable; set => u = new UNION { DescriptorTable = value }; }
 
 		/// <summary>
 		/// A <c>D3D12_ROOT_CONSTANTS</c> structure that describes constants inline in the root signature that appear in shaders as one
 		/// constant buffer.
 		/// </summary>
-		public D3D12_ROOT_CONSTANTS Constants { get => u.Constants; set => u = new UNION { Constants = value }; }
+		public D3D12_ROOT_CONSTANTS Constants { readonly get => u.Constants; set => u = new UNION { Constants = value }; }
 
 		/// <summary>
 		/// A <c>D3D12_ROOT_DESCRIPTOR</c> structure that describes descriptors inline in the root signature that appear in shaders.
 		/// </summary>
-		public D3D12_ROOT_DESCRIPTOR Descriptor { get => u.Descriptor; set => u = new UNION { Descriptor = value }; }
+		public D3D12_ROOT_DESCRIPTOR Descriptor { readonly get => u.Descriptor; set => u = new UNION { Descriptor = value }; }
 
 		/// <summary>Initializes with a descriptor table.</summary>
 		/// <param name="pDescriptorRanges">The descriptor ranges.</param>
@@ -7271,18 +7208,18 @@ public static partial class D3D12
 		/// A <c>D3D12_ROOT_DESCRIPTOR_TABLE1</c> structure that describes the layout of a descriptor table as a collection of descriptor
 		/// ranges that appear one after the other in a descriptor heap.
 		/// </summary>
-		public D3D12_ROOT_DESCRIPTOR_TABLE1 DescriptorTable { get => u.DescriptorTable; set => u = new UNION { DescriptorTable = value }; }
+		public D3D12_ROOT_DESCRIPTOR_TABLE1 DescriptorTable { readonly get => u.DescriptorTable; set => u = new UNION { DescriptorTable = value }; }
 
 		/// <summary>
 		/// A <c>D3D12_ROOT_CONSTANTS</c> structure that describes constants inline in the root signature that appear in shaders as one
 		/// constant buffer.
 		/// </summary>
-		public D3D12_ROOT_CONSTANTS Constants { get => u.Constants; set => u = new UNION { Constants = value }; }
+		public D3D12_ROOT_CONSTANTS Constants { readonly get => u.Constants; set => u = new UNION { Constants = value }; }
 
 		/// <summary>
 		/// A <c>D3D12_ROOT_DESCRIPTOR1</c> structure that describes descriptors inline in the root signature that appear in shaders.
 		/// </summary>
-		public D3D12_ROOT_DESCRIPTOR1 Descriptor { get => u.Descriptor; set => u = new UNION { Descriptor = value }; }
+		public D3D12_ROOT_DESCRIPTOR1 Descriptor { readonly get => u.Descriptor; set => u = new UNION { Descriptor = value }; }
 
 		/// <summary>Initializes with a descriptor table.</summary>
 		/// <param name="pDescriptorRanges">The descriptor ranges.</param>
@@ -7444,8 +7381,7 @@ public static partial class D3D12
 			if (NumStaticSamplers == 0)
 			{
 				this.pStaticSamplers = default;
-				this.pParameters = NumParameters > 0 ? (ArrayPointer<D3D12_ROOT_PARAMETER>)(memoryHandle = SafeCoTaskMemHandle.CreateFromList(pParameters!)) : default;
-				memoryHandle = SafeCoTaskMemHandle.Null;
+				this.pParameters = memoryHandle = NumParameters > 0 ? SafeCoTaskMemHandle.CreateFromList(pParameters!) : SafeCoTaskMemHandle.Null;
 			}
 			else
 			{
@@ -7525,8 +7461,7 @@ public static partial class D3D12
 			if (NumStaticSamplers == 0)
 			{
 				this.pStaticSamplers = default;
-				this.pParameters = NumParameters > 0 ? (ArrayPointer<D3D12_ROOT_PARAMETER1>)(memoryHandle = SafeCoTaskMemHandle.CreateFromList(pParameters!)) : default;
-				memoryHandle = SafeCoTaskMemHandle.Null;
+				this.pParameters = memoryHandle = NumParameters > 0 ? SafeCoTaskMemHandle.CreateFromList(pParameters!) : SafeCoTaskMemHandle.Null;
 			}
 			else
 			{
@@ -7603,8 +7538,7 @@ public static partial class D3D12
 			if (NumStaticSamplers == 0)
 			{
 				this.pStaticSamplers = default;
-				this.pParameters = NumParameters > 0 ? (ArrayPointer<D3D12_ROOT_PARAMETER1>)(memoryHandle = SafeCoTaskMemHandle.CreateFromList(pParameters!)) : default;
-				memoryHandle = SafeCoTaskMemHandle.Null;
+				this.pParameters = memoryHandle = NumParameters > 0 ? SafeCoTaskMemHandle.CreateFromList(pParameters!) : SafeCoTaskMemHandle.Null;
 			}
 			else
 			{
@@ -9294,12 +9228,12 @@ public static partial class D3D12
 		/// Specifies a texture layout, with offset, dimensions, and pitches, for the hardware to understand how to treat a section of a
 		/// buffer resource as a multi-dimensional texture. To fill-in the correct data for a <c>CopyTextureRegion</c> call, see <c>D3D12_PLACED_SUBRESOURCE_FOOTPRINT</c>.
 		/// </summary>
-		public D3D12_PLACED_SUBRESOURCE_FOOTPRINT PlacedFootprint { get => _union.PlacedFootprint; set => _union.PlacedFootprint = value; }
+		public D3D12_PLACED_SUBRESOURCE_FOOTPRINT PlacedFootprint { readonly get => _union.PlacedFootprint; set => _union.PlacedFootprint = value; }
 
 		/// <summary>
 		/// Specifies the index of the subresource of an arrayed, mip-mapped, or planar texture should be used for the copy operation.
 		/// </summary>
-		public uint SubresourceIndex { get => _union.SubresourceIndex; set => _union.SubresourceIndex = value; }
+		public uint SubresourceIndex { readonly get => _union.SubresourceIndex; set => _union.SubresourceIndex = value; }
 
 		[StructLayout(LayoutKind.Explicit)]
 		private struct UNION

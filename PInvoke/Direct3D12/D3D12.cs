@@ -1,5 +1,5 @@
-global using static Vanara.PInvoke.DXGI;
 global using static Vanara.PInvoke.D3DCompiler;
+global using static Vanara.PInvoke.DXGI;
 global using D3D12_BOX = Vanara.PInvoke.DXGI.D3D10_BOX;
 global using D3D12_GPU_VIRTUAL_ADDRESS = System.UInt64;
 global using D3D12_RECT = Vanara.PInvoke.RECT;
@@ -1291,7 +1291,97 @@ public static partial class D3D12
 	/// <summary/>
 	public const int D3D12_WORK_GRAPHS_MAX_NODE_DEPTH = 32;
 
+	private const int D3D12_ANISOTROPIC_FILTERING_BIT = 0x40;
+	private const int D3D12_FILTER_REDUCTION_TYPE_MASK = 0x3;
+	private const int D3D12_FILTER_REDUCTION_TYPE_SHIFT = 7;
+	private const int D3D12_FILTER_TYPE_MASK = 0x3;
+	private const int D3D12_MAG_FILTER_SHIFT = 2;
+	private const int D3D12_MIN_FILTER_SHIFT = 4;
+	private const int D3D12_MIP_FILTER_SHIFT = 0;
+	private const int D3D12_SHADER_COMPONENT_MAPPING_ALWAYS_SET_BIT_AVOIDING_ZEROMEM_MISTAKES = 1 << (D3D12_SHADER_COMPONENT_MAPPING_SHIFT * 4);
+	private const int D3D12_SHADER_COMPONENT_MAPPING_MASK = 0x7;
+	private const int D3D12_SHADER_COMPONENT_MAPPING_SHIFT = 3;
+	private const int D3D12_SHADING_RATE_VALID_MASK = 3;
+	private const int D3D12_SHADING_RATE_X_AXIS_SHIFT = 2;
 	private const string Lib_D3D12 = "d3d12.dll";
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER_REDUCTION_TYPE D3D12_DECODE_FILTER_REDUCTION(D3D12_FILTER D3D12Filter) =>
+		(D3D12_FILTER_REDUCTION_TYPE)(((uint)D3D12Filter >> unchecked(D3D12_FILTER_REDUCTION_TYPE_SHIFT)) & D3D12_FILTER_REDUCTION_TYPE_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static bool D3D12_DECODE_IS_ANISOTROPIC_FILTER(D3D12_FILTER D3D12Filter) => ((uint)D3D12Filter & D3D12_ANISOTROPIC_FILTERING_BIT) != 0
+			&& D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR == D3D12_DECODE_MIN_FILTER(D3D12Filter)
+			&& D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR == D3D12_DECODE_MAG_FILTER(D3D12Filter)
+			&& D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR == D3D12_DECODE_MIP_FILTER(D3D12Filter);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static bool D3D12_DECODE_IS_COMPARISON_FILTER(D3D12_FILTER D3D12Filter) =>
+		D3D12_DECODE_FILTER_REDUCTION(D3D12Filter) == D3D12_FILTER_REDUCTION_TYPE.D3D12_FILTER_REDUCTION_TYPE_COMPARISON;
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER_TYPE D3D12_DECODE_MAG_FILTER(D3D12_FILTER D3D12Filter) =>
+		(D3D12_FILTER_TYPE)(((uint)D3D12Filter >> unchecked(D3D12_MAG_FILTER_SHIFT)) & D3D12_FILTER_TYPE_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER_TYPE D3D12_DECODE_MIN_FILTER(D3D12_FILTER D3D12Filter) =>
+		(D3D12_FILTER_TYPE)(((uint)D3D12Filter >> unchecked(D3D12_MIN_FILTER_SHIFT)) & D3D12_FILTER_TYPE_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER_TYPE D3D12_DECODE_MIP_FILTER(D3D12_FILTER D3D12Filter) =>
+		(D3D12_FILTER_TYPE)(((uint)D3D12Filter >> unchecked(D3D12_MIP_FILTER_SHIFT)) & D3D12_FILTER_TYPE_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_SHADER_COMPONENT_MAPPING D3D12_DECODE_SHADER_4_COMPONENT_MAPPING(int ComponentToExtract, uint Mapping) =>
+		(D3D12_SHADER_COMPONENT_MAPPING)((Mapping >> (unchecked(D3D12_SHADER_COMPONENT_MAPPING_SHIFT) * ComponentToExtract)) & D3D12_SHADER_COMPONENT_MAPPING_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER D3D12_ENCODE_ANISOTROPIC_FILTER(D3D12_FILTER_REDUCTION_TYPE reduction) =>
+		(D3D12_FILTER)(D3D12_ANISOTROPIC_FILTERING_BIT | (uint)D3D12_ENCODE_BASIC_FILTER(D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR,
+			D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR, D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR, reduction));
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER D3D12_ENCODE_BASIC_FILTER(D3D12_FILTER_TYPE min, D3D12_FILTER_TYPE mag, D3D12_FILTER_TYPE mip,
+		D3D12_FILTER_REDUCTION_TYPE reduction) => (D3D12_FILTER)((((uint)min & D3D12_FILTER_TYPE_MASK) << unchecked(D3D12_MIN_FILTER_SHIFT))
+							| (((uint)mag & D3D12_FILTER_TYPE_MASK) << unchecked(D3D12_MAG_FILTER_SHIFT))
+							| (((uint)mip & D3D12_FILTER_TYPE_MASK) << unchecked(D3D12_MIP_FILTER_SHIFT))
+							| (((uint)reduction & D3D12_FILTER_REDUCTION_TYPE_MASK) << unchecked(D3D12_FILTER_REDUCTION_TYPE_SHIFT)));
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER D3D12_ENCODE_MIN_MAG_ANISOTROPIC_MIP_POINT_FILTER(D3D12_FILTER_REDUCTION_TYPE reduction) =>
+		(D3D12_FILTER)D3D12_ANISOTROPIC_FILTERING_BIT | D3D12_ENCODE_BASIC_FILTER(D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR,
+			D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR, D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_POINT, reduction);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static uint D3D12_ENCODE_SHADER_4_COMPONENT_MAPPING(D3D12_SHADER_COMPONENT_MAPPING Src0, D3D12_SHADER_COMPONENT_MAPPING Src1,
+		D3D12_SHADER_COMPONENT_MAPPING Src2, D3D12_SHADER_COMPONENT_MAPPING Src3) => ((uint)Src0 & D3D12_SHADER_COMPONENT_MAPPING_MASK)
+			| (((uint)Src1 & D3D12_SHADER_COMPONENT_MAPPING_MASK) << unchecked(D3D12_SHADER_COMPONENT_MAPPING_SHIFT))
+			| (((uint)Src2 & D3D12_SHADER_COMPONENT_MAPPING_MASK) << (unchecked(D3D12_SHADER_COMPONENT_MAPPING_SHIFT) * 2))
+			| (((uint)Src3 & D3D12_SHADER_COMPONENT_MAPPING_MASK) << (unchecked(D3D12_SHADER_COMPONENT_MAPPING_SHIFT) * 3))
+			| D3D12_SHADER_COMPONENT_MAPPING_ALWAYS_SET_BIT_AVOIDING_ZEROMEM_MISTAKES;
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static uint D3D12_GET_COARSE_SHADING_RATE_X_AXIS(uint x) => (x >> unchecked(D3D12_SHADING_RATE_X_AXIS_SHIFT)) & D3D12_SHADING_RATE_VALID_MASK;
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static uint D3D12_GET_COARSE_SHADING_RATE_Y_AXIS(uint y) => y & D3D12_SHADING_RATE_VALID_MASK;
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static uint D3D12_MAKE_COARSE_SHADING_RATE(uint x, uint y) => (x << unchecked(D3D12_SHADING_RATE_X_AXIS_SHIFT)) | y;
 
 	/// <summary>Creates a device that represents the display adapter.</summary>
 	/// <param name="pAdapter">
@@ -1917,7 +2007,7 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12SerializeRootSignature")]
 	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true), Obsolete("This function has been superceded by D3D12SerializeVersionedRootSignature as of the Windows 10 Anniversary Update (14393).")]
 	public static extern HRESULT D3D12SerializeRootSignature(in D3D12_ROOT_SIGNATURE_DESC pRootSignature,
-		[In] D3D_ROOT_SIGNATURE_VERSION Version, out ID3DBlob ppBlob, out ID3DBlob? ppErrorBlob);
+		[In] D3D_ROOT_SIGNATURE_VERSION Version, out ID3DBlob ppBlob, [Out, Optional] IUnknownPointer<ID3DBlob> ppErrorBlob);
 
 	/// <summary>Serializes a root signature of any version that can be passed to <c>ID3D12Device::CreateRootSignature</c>.</summary>
 	/// <param name="pRootSignature">
@@ -1967,7 +2057,7 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12SerializeVersionedRootSignature")]
 	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3D12SerializeVersionedRootSignature(in D3D12_VERSIONED_ROOT_SIGNATURE_DESC pRootSignature,
-		out ID3DBlob ppBlob, out ID3DBlob? ppErrorBlob);
+		out ID3DBlob ppBlob, [Out, Optional] IUnknownPointer<ID3DBlob> ppErrorBlob);
 
 	/// <summary>
 	/// Helps enable root signature 1.1 features when they are available, and does not require maintaining two code paths for building root
@@ -2003,21 +2093,61 @@ public static partial class D3D12
 	/// This function was released to coincide with the Windows 10 Anniversary Update (14393). In order to support Windows 10 versions prior
 	/// to this, use of this function requires d3d12.lib be set up for delay loading.
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/direct3d12/d3dx12serializeversionedrootsignature HRESULT inline
-	// D3DX12SerializeVersionedRootSignature( _In_ const D3D12_VERSIONED_ROOT_SIGNATURE_DESC *pRootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION
-	// MaxVersion, _Out_ ID3DBlob **ppBlob, _Out_opt_ ID3DBlob **ppErrorBlob );
 	[PInvokeData("D3dx12.h")]
 	public static HRESULT D3DX12SerializeVersionedRootSignature(in D3D12_VERSIONED_ROOT_SIGNATURE_DESC pRootSignatureDesc,
 		D3D_ROOT_SIGNATURE_VERSION MaxVersion, out ID3DBlob? ppBlob, out ID3DBlob? ppErrorBlob)
 	{
-		ppBlob = ppErrorBlob = null;
+		unsafe
+		{
+			IntPtr err = IntPtr.Zero;
+			HRESULT hr = D3DX12SerializeVersionedRootSignature(pRootSignatureDesc, MaxVersion, out ppBlob, (IntPtr)(void*)&err);
+			ppErrorBlob = err != IntPtr.Zero ? (ID3DBlob)Marshal.GetObjectForIUnknown(err) : null;
+			return hr;
+		}
+	}
+
+	/// <summary>
+	/// Helps enable root signature 1.1 features when they are available, and does not require maintaining two code paths for building root
+	/// signatures. This helper method reconstructs a version 1.0 root signature when version 1.1 is not supported.
+	/// </summary>
+	/// <param name="pRootSignatureDesc">
+	/// <para>Type: <b>const D3D12_VERSIONED_ROOT_SIGNATURE_DESC*</b></para>
+	/// <para>Specifies a <c><b>D3D12_VERSIONED_ROOT_SIGNATURE_DESC</b></c> that contains a description of any version of a root signature.</para>
+	/// </param>
+	/// <param name="MaxVersion">
+	/// <para>Type: <b>D3D_ROOT_SIGNATURE_VERSION</b></para>
+	/// <para>Specifies the maximum supported <c><b>D3D_ROOT_SIGNATURE_VERSION</b></c>.</para>
+	/// </param>
+	/// <param name="ppBlob">
+	/// <para>Type: <b>ID3DBlob**</b></para>
+	/// <para>
+	/// A pointer to a memory block that receives a pointer to the <c><b>ID3DBlob</b></c> interface that you can use to access the
+	/// serialized root signature.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b><c><b>HRESULT</b></c></b></para>
+	/// <para>Returns <b>S_OK</b> if successful; otherwise, returns one of the <c>Direct3D 12 Return Codes</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// This function was released to coincide with the Windows 10 Anniversary Update (14393). In order to support Windows 10 versions prior
+	/// to this, use of this function requires d3d12.lib be set up for delay loading.
+	/// </remarks>
+	[PInvokeData("D3dx12.h")]
+	public static HRESULT D3DX12SerializeVersionedRootSignature(in D3D12_VERSIONED_ROOT_SIGNATURE_DESC pRootSignatureDesc,
+		D3D_ROOT_SIGNATURE_VERSION MaxVersion, out ID3DBlob? ppBlob) => D3DX12SerializeVersionedRootSignature(pRootSignatureDesc, MaxVersion, out ppBlob, default);
+
+	private static HRESULT D3DX12SerializeVersionedRootSignature(in D3D12_VERSIONED_ROOT_SIGNATURE_DESC pRootSignatureDesc,
+		D3D_ROOT_SIGNATURE_VERSION MaxVersion, out ID3DBlob? ppBlob, [Out] IntPtr ppErrorBlob)
+	{
+		ppBlob = null;
 		switch (MaxVersion)
 		{
 			case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0:
 				switch (pRootSignatureDesc.Version)
 				{
 					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0:
-						return D3D12SerializeRootSignature(pRootSignatureDesc.Desc_1_0, D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1, out ppBlob, out ppErrorBlob);
+						return D3D12SerializeRootSignature(pRootSignatureDesc.Desc_1_0, D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1, out ppBlob, ppErrorBlob);
 
 					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1:
 					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2:
@@ -2115,7 +2245,7 @@ public static partial class D3D12
 							if (hr.Succeeded)
 							{
 								D3D12_ROOT_SIGNATURE_DESC desc_1_0 = new(desc_1_1.NumParameters, pParameters, desc_1_1.NumStaticSamplers, pStaticSamplers == default ? (IntPtr)desc_1_1.pStaticSamplers : ppSamplers, desc_1_1.Flags);
-								hr = D3D12SerializeRootSignature(desc_1_0, D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1, out ppBlob, out ppErrorBlob);
+								hr = D3D12SerializeRootSignature(desc_1_0, D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1, out ppBlob, ppErrorBlob);
 							}
 
 							return hr;
@@ -2126,13 +2256,12 @@ public static partial class D3D12
 				}
 				break;
 
-
 			case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1:
 				switch (pRootSignatureDesc.Version)
 				{
 					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0:
 					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1:
-						return D3D12SerializeVersionedRootSignature(pRootSignatureDesc, out ppBlob, out ppErrorBlob);
+						return D3D12SerializeVersionedRootSignature(pRootSignatureDesc, out ppBlob, ppErrorBlob);
 
 					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2:
 						{
@@ -2170,7 +2299,7 @@ public static partial class D3D12
 							{
 								D3D12_VERSIONED_ROOT_SIGNATURE_DESC desc = new(desc_1_1);
 								if (pStaticSamplers != default) desc.Desc_1_1.pStaticSamplers = ppStaticSamplers;
-								hr = D3D12SerializeVersionedRootSignature(desc, out ppBlob, out ppErrorBlob);
+								hr = D3D12SerializeVersionedRootSignature(desc, out ppBlob, ppErrorBlob);
 							}
 
 							return hr;
@@ -2183,7 +2312,7 @@ public static partial class D3D12
 
 			case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2:
 			default:
-				return D3D12SerializeVersionedRootSignature(pRootSignatureDesc, out ppBlob, out ppErrorBlob);
+				return D3D12SerializeVersionedRootSignature(pRootSignatureDesc, out ppBlob, ppErrorBlob);
 		}
 
 		return HRESULT.E_INVALIDARG;
@@ -2204,20 +2333,4 @@ public static partial class D3D12
 	/// <summary>CLSID_D3D12Tools</summary>
 	[ComImport, Guid("e38216b1-3c8c-4833-aa09-0a06b65d96c8"), ClassInterface(ClassInterfaceType.None)]
 	public class D3D12Tools { }
-
-	/*
-	D3D12_DECODE_FILTER_REDUCTION
-	D3D12_DECODE_IS_ANISOTROPIC_FILTER
-	D3D12_DECODE_IS_COMPARISON_FILTER
-	D3D12_DECODE_MAG_FILTER
-	D3D12_DECODE_MIN_FILTER
-	D3D12_DECODE_MIP_FILTER
-	D3D12_DECODE_SHADER_4_COMPONENT_MAPPING
-	D3D12_ENCODE_ANISOTROPIC_FILTER
-	D3D12_ENCODE_BASIC_FILTER
-	D3D12_ENCODE_SHADER_4_COMPONENT_MAPPING
-	D3D12_GET_COARSE_SHADING_RATE_X_AXIS
-	D3D12_GET_COARSE_SHADING_RATE_Y_AXIS
-	D3D12_MAKE_COARSE_SHADING_RATE
-	*/
 }
