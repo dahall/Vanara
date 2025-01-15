@@ -124,6 +124,20 @@ public class NativeMemoryStreamTests
 	}
 
 	[Test]
+	public void NativeVsNormalTest()
+	{
+		var buffer = new byte[1000];
+		var temp1 = new MemoryStream();
+		var temp2 = new NativeMemoryStream();
+
+		temp1.Write(new byte[1000]);
+		temp2.Write(new byte[1000]);
+
+		Assert.That(temp1.Read(buffer, 0, 100), Is.EqualTo(0)); // Normal for MemoryStream, return value is 0
+		Assert.That(temp2.Read(buffer, 0, 100), Is.EqualTo(0)); // NativeMemoryStream throw ArgumentOutOfRangeException here
+	}
+
+	[Test]
 	public void MixedReadWriteTest()
 	{
 		using var m = new SafeHGlobalHandle(512);
