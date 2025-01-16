@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace Vanara;
@@ -51,6 +52,10 @@ public class Matrix :
 		}
 	}
 
+	/// <summary>A delegate that acts on a <see cref="Span{T}"/> to set the values of the matrix.</summary>
+	/// <param name="span">The span.</param>
+	public delegate void SpanAction(Span<float> span);
+
 	/// <summary>Gets the number of columns in the matrix.</summary>
 	/// <value>The column count.</value>
 	public int Columns { get; }
@@ -71,8 +76,10 @@ public class Matrix :
 			{
 				case 1:
 					return s[0];
+
 				case 2:
 					return Det2x2(s[0], s[1], s[2], s[3]);
+
 				case 3:
 					return s[0] * Det2x2(s[4], s[5], s[7], s[8]) - s[1] * Det2x2(s[3], s[5], s[6], s[8]) + s[2] * Det2x2(s[3], s[4], s[6], s[7]);
 			}
@@ -105,8 +112,12 @@ public class Matrix :
 	/// <value><c>true</c> if this instance is full rank; otherwise, <c>false</c>.</value>
 	public bool IsFullRank => Rank == Math.Min(Rows, Columns);
 
+	/// <summary>Gets a value indicating whether this instance is a horizontal vector (single row).</summary>
+	/// <value><see langword="true"/> if this instance is a horizontal vector; otherwise, <see langword="false"/>.</value>
+	public bool IsHorizontalVector => Rows == 1;
+
 	/// <summary>Gets a value that indicates whether the current matrix is the identity matrix.</summary>
-	/// <value><see langword="true" /> if the current matrix is the identity matrix; otherwise, <see langword="false" />.</value>
+	/// <value><see langword="true"/> if the current matrix is the identity matrix; otherwise, <see langword="false"/>.</value>
 	public bool IsIdentity
 	{
 		get
@@ -120,6 +131,7 @@ public class Matrix :
 			return true;
 		}
 	}
+
 	/// <summary>Gets a value indicating whether this instance is singluar.</summary>
 	/// <value><c>true</c> if this instance is singluar; otherwise, <c>false</c>.</value>
 	public bool IsSingluar => Determinant.Equals(0f);
@@ -127,6 +139,14 @@ public class Matrix :
 	/// <summary>Gets a value indicating whether this instance is square.</summary>
 	/// <value><c>true</c> if this instance is square; otherwise, <c>false</c>.</value>
 	public bool IsSquare => Rows == Columns;
+
+	/// <summary>Gets a value indicating whether this instance is a vector (either one row or one column).</summary>
+	/// <value><see langword="true"/> if this instance is a vector; otherwise, <see langword="false"/>.</value>
+	public bool IsVector => Rows == 1 || Columns == 1;
+
+	/// <summary>Gets a value indicating whether this instance is a vertical vector (single column).</summary>
+	/// <value><see langword="true"/> if this instance is a vertical vector; otherwise, <see langword="false"/>.</value>
+	public bool IsVerticalVector => Columns == 1;
 
 	/// <summary>Gets the principal minor.</summary>
 	/// <value>The principal minor.</value>
@@ -173,47 +193,204 @@ public class Matrix :
 		set { CheckValidRow(row); CheckValidColumn(column); m.Span[row * Columns + column] = value; }
 	}
 
+	/// <summary>Creates a matrix of the specified size filled values created by a delegate.</summary>
+	/// <param name="rows">The number of rows.</param>
+	/// <param name="columns">The number of columns.</param>
+	/// <param name="setValue">A delegate that sets each value.</param>
+	/// <returns>A matrix of the specified size filled with values.</returns>
+	public static Matrix Build(int rows, int columns, Func<int, int, float> setValue) =>
+		Build(rows, columns, sp =>
+		{
+			for (int i = 0; i < rows; i++)
+				for (int j = 0; j < columns; j++)
+					sp[i * columns + j] = setValue(i, j);
+		});
+
+	/// <summary>Builds a new matrix of the specified dimensions exposing a <see cref="Span{T}"/> with the allocated memory to act upon.</summary>
+	/// <param name="rows">The rows.</param>
+	/// <param name="columns">The columns.</param>
+	/// <param name="setValues">A delegate to set the underlying values of the memory of the matrix.</param>
+	/// <returns>A matrix with the values set to the Span value.</returns>
+	public static Matrix Build(int rows, int columns, SpanAction setValues)
+	{
+		if (rows < 1)
+			throw new ArgumentOutOfRangeException(nameof(rows), "Rows must be greater than 0.");
+		if (columns < 1)
+			throw new ArgumentOutOfRangeException(nameof(columns), "Columns must be greater than 0.");
+		Memory<float> m = new float[rows * columns];
+		setValues(m.Span);
+		return new(m, rows, columns);
+	}
+
+	/// <summary>Constructs block matrix {{ A, B }, { C, D } }.</summary>
+	/// <param name="A">Upper left sub matrix.</param>
+	/// <param name="B">Upper right sub matrix.</param>
+	/// <param name="C">Lower left sub matrix.</param>
+	/// <param name="D">Lower right sub matrix.</param>
+	/// <returns>An expanded matrix with each parameter's matrix in its respective quadrant.</returns>
+	public static Matrix CreateBlock(Matrix A, Matrix B, Matrix C, Matrix D)
+	{
+		if (A.Rows != B.Rows || C.Rows != D.Rows || A.Columns != C.Columns || B.Columns != D.Columns)
+			throw new ArgumentException("Matrix dimensions must agree.");
+
+		return Build(A.Rows + C.Rows, A.Columns + B.Columns, (i, j) =>
+		{
+			if (i <= A.Rows)
+				return j <= A.Columns ? A[i, j] : B[i, j - A.Columns];
+			else
+				return j <= C.Columns ? C[i - A.Rows, j] : D[i - A.Rows, j - C.Columns];
+		});
+	}
+
+	/// <summary>Creates m by n chessboard matrix with interchangíng ones and zeros. ///</summary>
+	/// <param name="rows">Number of rows.</param>
+	/// <param name="columns">Number of columns.</param>
+	/// <param name="even">Indicates that even columns on the first row are set to 1.</param>
+	/// <returns></returns>
+	public static Matrix CreateChessboard(int rows, int columns, bool even)
+	{
+		int mod = even ? 0 : 1;
+		return Build(rows, columns, sp =>
+		{
+			for (int i = 0; i < rows; i++)
+				for (int j = 0; j < columns; j++)
+					sp[i * columns + j] = (i + j) % 2 == mod ? 1f : 0f;
+		});
+	}
+
+	/// <summary>Retrieves the j-th canoncical basis vector of the IR^n.</summary>
+	/// <param name="n">Dimension of the basis.</param>
+	/// <param name="j">Index of canonical basis vector to be retrieved.</param>
+	/// <returns>A single column matrix where the [j,0] element is set to 1f.</returns>
+	public static Matrix CreateE(int n, int j)
+	{
+		Matrix e = new(Math.Max(n, j), 1);
+		e[j, 0] = 1f;
+		return e;
+	}
+
 	/// <summary>Creates a matrix filled with the specified value.</summary>
 	/// <param name="rows">The number of rows to create.</param>
 	/// <param name="columns">The number of columns to create.</param>
 	/// <param name="value">The fill value.</param>
 	/// <returns>A new matrix of the specified dimensions with all values set to <paramref name="value"/>.</returns>
-	public static Matrix CreateFilled(int rows, int columns, float value)
+	public static Matrix CreateFilled(int rows, int columns, float value) => Build(rows, columns, sp => sp.Fill(value));
+
+	/// <summary>Gets an identity matrix of the specified balanced size.</summary>
+	/// <param name="dimensions">The rows and columns in the matrix.</param>
+	/// <returns>An identity matrix with the value of all diagonal entries set to <c>1.0f</c>.</returns>
+	/// <exception cref="System.ArgumentException">The number of rows must be equal to the number of columns.</exception>
+	public static Matrix CreateIdentity(int dimensions) => CreateIdentity(dimensions, dimensions);
+
+	/// <summary>Gets an identity matrix of the specified size.</summary>
+	/// <param name="rows">The number of rows.</param>
+	/// <param name="columns">The number of columns.</param>
+	/// <returns>An identity matrix with the value of all diagonal entries set to <c>1.0f</c>.</returns>
+	/// <exception cref="System.ArgumentException">The number of rows must be equal to the number of columns.</exception>
+	public static Matrix CreateIdentity(int rows, int columns) =>
+		Build(rows, columns, sp =>
+		{
+			for (int i = 0; i < Math.Min(rows, columns); i++)
+				sp[i * columns + i] = 1f;
+		});
+
+	/// <summary>Creates a matrix of the specified size filled with random values between 0 and 1.</summary>
+	/// <param name="rows">The number of rows.</param>
+	/// <param name="columns">The number of columns.</param>
+	/// <param name="seed">The seed value for the random numbers. If <c>0</c>, the default seed value is used.</param>
+	/// <returns>A matrix of the specified size filled with random values between 0 and 1.</returns>
+	public static Matrix CreateRandom(int rows, int columns, int seed = 0)
 	{
-		var r = new Matrix(rows, columns);
-		if (!value.Equals(0f))
-			r.m.Span.Fill(value);
+		Random r = seed == 0 ? new() : new(seed);
+		return Build(rows, columns, (i, j) => (float)r.NextDouble());
+	}
+
+	/// <summary>
+	/// Creates a matrix of the specified size filled with random values between 0 and 1. All diagonal entries are zero. A specified random
+	/// percentage of edges has weight positive infinity.
+	/// </summary>
+	/// <param name="rows">The number of rows.</param>
+	/// <param name="columns">The number of columns.</param>
+	/// <param name="p">
+	/// Defines probability for an edge being less than +infty. Should be in [0,1], p = 1 gives complete directed graph; p = 0 gives no edges.
+	/// </param>
+	/// <param name="seed">The seed value for the random numbers. If <c>0</c>, the default seed value is used.</param>
+	/// <returns>A matrix of the specified size filled with random values between 0 and 1.</returns>
+	public static Matrix CreateRandomGraph(int rows, int columns, double p = 1d, int seed = 0)
+	{
+		if (p is < 0d or > 1d)
+			throw new ArgumentOutOfRangeException(nameof(p), "Probability must be in the range [0,1].");
+		Random r = seed == 0 ? new() : new(seed);
+		double c;
+		return Build(rows, columns, (i, j) => (i, j) switch
+		{
+			_ when i == j => 0f,
+			_ when (c = r.NextDouble()) < p => (float)c,
+			_ => float.PositiveInfinity
+		});
+	}
+
+	/// <summary>Creates a matrix of the specified size filled with random 0's and 1's with probability <paramref name="p"/> for a one.</summary>
+	/// <param name="rows">The number of rows.</param>
+	/// <param name="columns">The number of columns.</param>
+	/// <param name="p">Defines probability for the value to be a one. Should be in [0,1].</param>
+	/// <param name="seed">The seed value for the random numbers. If <c>0</c>, the default seed value is used.</param>
+	/// <returns>A matrix of the specified size filled with random 0's and 1's.</returns>
+	public static Matrix CreateRandomZeroOne(int rows, int columns, double p = 0.5d, int seed = 0)
+	{
+		if (p is < 0d or > 1d)
+			throw new ArgumentOutOfRangeException(nameof(p), "Probability must be in the range [0,1].");
+		Random r = seed == 0 ? new() : new(seed);
+		return Build(rows, columns, (_, _) => r.NextDouble() <= p ? 1f : 0f);
+	}
+
+	/// <summary>Creates a scaling matrix from the list of scalars.</summary>
+	/// <param name="scalars">
+	/// The scalars to use as diagonal values. Note, the resulting matrix will be one dimension larger than the number of scalars in this
+	/// array and that diagonal entry will be set to <c>1.0f</c>.
+	/// </param>
+	/// <returns>
+	/// A matrix one dimension larger than the number of scalars in <paramref name="scalars"/> whose diagnoal entries are set to each
+	/// subsequent value of <paramref name="scalars"/> and whose final diagonal entry will be set to <c>1.0f</c>.
+	/// </returns>
+	/// <exception cref="System.ArgumentNullException">scalars</exception>
+	/// <exception cref="System.ArgumentOutOfRangeException">scalars - At least one scaling value must be provided.</exception>
+	public static Matrix CreateScale(float[] scalars)
+	{
+		if (scalars is null) throw new ArgumentNullException(nameof(scalars));
+		if (scalars.Length < 1)
+			throw new ArgumentOutOfRangeException(nameof(scalars), "At least one scaling value must be provided.");
+		Matrix r = CreateIdentity(scalars.Length + 1);
+		for (int i = 0; i < scalars.Length; i++)
+			r[i, i] = scalars[i];
 		return r;
 	}
 
-	/// <summary>Gets an identity matrix of the specified size.</summary>
-	/// <param name="dimensions">The rows and columns in the matrix.</param>
-	/// <returns>An identity matrix.</returns>
-	/// <exception cref="System.ArgumentException">The number of rows must be equal to the number of columns.</exception>
-	public static Matrix CreateIdentity(int dimensions)
+	/// <summary>Gets the dot product of two single-row vector matrices of the same length.</summary>
+	/// <param name="left">The left vector.</param>
+	/// <param name="right">The right vector.</param>
+	/// <returns>The dot product.</returns>
+	public static float Dot(Matrix left, Matrix right)
 	{
-		if (dimensions < 1)
-			throw new ArgumentOutOfRangeException(nameof(dimensions), "Dimension must be greater than 0.");
-		Memory<float> m = new float[dimensions * dimensions];
-		Span<float> sp = m.Span;
-		for (int i = 0; i < dimensions; i++)
-		{
-			int c1 = i * dimensions;
-			for (int j = 0; j < dimensions; j++)
-				sp[c1 + j] = i == j ? 1f : 0f;
-		}
-		return new(m, dimensions, dimensions);
+		if (left is null) throw new ArgumentNullException(nameof(left));
+		if (right is null) throw new ArgumentNullException(nameof(right));
+		if (left.Rows != 1 || right.Rows != 1 || left.Columns != right.Columns)
+			throw new ArgumentException("Both matrices must be row vectors of the same length.");
+		float sum = 0f;
+		for (int i = 0; i < left.Columns; i++)
+			sum += left[0, i] * right[0, i];
+		return sum;
 	}
+
+	/// <summary>Performs an implicit conversion from <see cref="Matrix"/> to <see cref="float"/>[,].</summary>
+	/// <param name="m">The matrix.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator float[,](Matrix m) => m.ToArray();
 
 	/// <summary>Performs an implicit conversion from <see cref="float"/>[,] to <see cref="Matrix"/>.</summary>
 	/// <param name="values">The values.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator Matrix(float[,] values) => new(values);
-
-	/// <summary>Performs an implicit conversion from <see cref="Matrix" /> to <see cref="float" />[,].</summary>
-	/// <param name="m">The matrix.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator float[,](Matrix m) => m.ToArray();
 
 	/// <summary>Negates the specified matrix by multiplying all its values by -1.</summary>
 	/// <param name="value">The matrix to negate.</param>
@@ -224,7 +401,10 @@ public class Matrix :
 	/// <summary>Subtracts each element in a second matrix from its corresponding element in a first matrix.</summary>
 	/// <param name="left">The first matrix.</param>
 	/// <param name="right">The second matrix.</param>
-	/// <returns>The matrix containing the values that result from subtracting each element in <paramref name="right" /> from its corresponding element in <paramref name="left" />.</returns>
+	/// <returns>
+	/// The matrix containing the values that result from subtracting each element in <paramref name="right"/> from its corresponding
+	/// element in <paramref name="left"/>.
+	/// </returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static Matrix operator -(Matrix left, Matrix right) => BinaryAction(left, right, (a, b) => a - b);
 
@@ -281,7 +461,7 @@ public class Matrix :
 
 	/// <summary>Computes the unary plus of a value.</summary>
 	/// <param name="value">The value for which to compute the unary plus.</param>
-	/// <returns>The unary plus of <paramref name="value" />.</returns>
+	/// <returns>The unary plus of <paramref name="value"/>.</returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static Matrix operator +(Matrix value) => value;
 
@@ -352,7 +532,7 @@ public class Matrix :
 
 	/// <summary>Returns a value that indicates whether this instance and another 3x2 matrix are equal.</summary>
 	/// <param name="other">The other matrix.</param>
-	/// <returns><see langword="true" /> if the two matrices are equal; otherwise, <see langword="false" />.</returns>
+	/// <returns><see langword="true"/> if the two matrices are equal; otherwise, <see langword="false"/>.</returns>
 	/// <remarks>Two matrices are equal if all their corresponding elements are equal.</remarks>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool Equals(Matrix? other)
@@ -367,6 +547,76 @@ public class Matrix :
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is Matrix other && Equals(other);
+
+	/// <summary>Extract sub matrix.</summary>
+	/// <param name="startRow">Start row.</param>
+	/// <param name="endRow">End row.</param>
+	/// <param name="startCol">Start column.</param>
+	/// <param name="endCol">End column.</param>
+	/// <returns></returns>
+	public Matrix Extract(int startRow, int endRow, int startCol, int endCol)
+	{
+		if (endRow < startRow || endCol < startCol || startRow <= 0 || endCol <= 0 || endRow > Rows || endCol > Columns)
+			throw new ArgumentOutOfRangeException(null, "Invalid dimension index.");
+		int cols = endCol - startCol + 1;
+		return Build(endRow - startRow + 1, cols, sp =>
+		{
+			for (int i = startRow; i <= endRow; i++)
+				for (int j = startCol; j <= endCol; j++)
+					sp[(i - startRow) * cols + (j - startCol)] = this[i, j];
+		});
+	}
+
+	/// <summary>Extracts lower trapeze matrix of this matrix.</summary>
+	/// <returns>A matrix of the same dimensions with the lower diagonal trapeze values.</returns>
+	public Matrix ExtractLowerTrapeze()
+	{
+		var vals = m.ToArray();
+		for (int i = 0; i < vals.Length; i++)
+			if (i % Columns > i / Columns)
+				vals[i] = 0f;
+		return new(vals, Rows, Columns);
+	}
+
+	/// <summary>Extracts upper trapeze matrix of this matrix.</summary>
+	/// <returns>A matrix of the same dimensions with the upper diagonal trapeze values.</returns>
+	public Matrix ExtractUpperTrapeze()
+	{
+		var vals = m.ToArray();
+		for (int i = 0; i < vals.Length; i++)
+			if (i % Columns < (int)((float)i / Columns))
+				vals[i] = 0f;
+		return new(vals, Rows, Columns);
+	}
+
+	/// <summary>Flips matrix horizontally.</summary>
+	public void FlipHorizontally()
+	{
+		for (int i = 0; i < Rows; i++)
+			m.Span.Slice(i * Columns, Columns).Reverse();
+	}
+
+	/// <summary>Flips matrix vertically.</summary>
+	public void FlipVertically()
+	{
+		for (int i = 0; i < Columns; i++)
+		{
+			var colSpan = ColumnVector(i).m.Span;
+			colSpan.Reverse();
+			for (int j = 0; j < Rows; j++)
+				m.Span[j * Columns + i] = colSpan[j];
+		}
+	}
+
+	/// <summary>Gets an array of each column as a vector.</summary>
+	/// <returns>An array of column vectors.</returns>
+	public Matrix[] GetColumnVectors()
+	{
+		Matrix[] vectors = new Matrix[Columns];
+		for (int i = 0; i < Columns; i++)
+			vectors[i] = ColumnVector(i);
+		return vectors;
+	}
 
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<Memory<float>>)this).GetEnumerator();
@@ -391,13 +641,19 @@ public class Matrix :
 #endif
 	}
 
+	/// <summary>Gets an array of each row as a vector.</summary>
+	/// <returns>An array of row vectors.</returns>
+	public Matrix[] GetRowVectors()
+	{
+		Matrix[] vectors = new Matrix[Rows];
+		for (int i = 0; i < Rows; i++)
+			vectors[i] = RowVector(i);
+		return vectors;
+	}
+
 	/// <summary>Inverts this instance.</summary>
 	/// <returns></returns>
-	/// <exception cref="System.InvalidOperationException">
-	/// The matrix must be square.
-	/// or
-	/// The matrix is singular.
-	/// </exception>
+	/// <exception cref="System.InvalidOperationException">The matrix must be square. or The matrix is singular.</exception>
 	public Matrix Invert()
 	{
 		CheckSquare();
@@ -449,6 +705,25 @@ public class Matrix :
 	/// <returns>A handle for the underlying memory.</returns>
 	public MemoryHandle Pin() => m.Pin();
 
+	/// <summary>Returns the matrix to the power of <paramref name="n"/>.</summary>
+	/// <param name="n">The value of the power.</param>
+	/// <returns>A matrix with the result of this matrix to the power of <paramref name="n"/>.</returns>
+	public Matrix Pow(int n)
+	{
+		if (!IsSquare)
+			throw new InvalidOperationException("Matrix must be square.");
+		if (n == 0)
+			return (IsSquare) ? CreateIdentity(Rows) : throw new InvalidOperationException("Matrix must be square.");
+		if (n == 1)
+			return (IsSquare) ? Clone() : throw new InvalidOperationException("Matrix must be square.");
+		if (n < 0)
+			return (IsSquare) ? Invert().Pow(-n) : throw new InvalidOperationException("Matrix must be square.");
+		Matrix r = Clone();
+		for (int i = 1; i < n; i++)
+			r *= this;
+		return r;
+	}
+
 	/// <summary>Gets the reduced row echelon form (RREF) of the matrix.</summary>
 	/// <returns>The reduced row echelon form (RREF).</returns>
 	public Matrix ReducedRowEchelonForm()
@@ -496,6 +771,7 @@ public class Matrix :
 		}
 		return r;
 	}
+
 	/// <summary>Rows the vector.</summary>
 	/// <param name="row">The row.</param>
 	/// <returns></returns>
@@ -542,17 +818,28 @@ public class Matrix :
 	/// <summary>Returns the string representation of the current instance using the specified format string to format individual elements.</summary>
 	/// <param name="format">A standard or custom numeric format string that defines the format of individual elements.</param>
 	/// <returns>The string representation of the current instance.</returns>
-	/// <remarks>This method returns a string in which each element of the vector is formatted using <paramref name="format" /> and the current culture's formatting conventions. The "&lt;" and "&gt;" characters are used to begin and end the string, and the current culture's <see cref="System.Globalization.NumberFormatInfo.NumberGroupSeparator" /> property followed by a space is used to separate each element.</remarks>
+	/// <remarks>
+	/// This method returns a string in which each element of the vector is formatted using <paramref name="format"/> and the current
+	/// culture's formatting conventions. The "&lt;" and "&gt;" characters are used to begin and end the string, and the current culture's
+	/// <see cref="System.Globalization.NumberFormatInfo.NumberGroupSeparator"/> property followed by a space is used to separate each element.
+	/// </remarks>
 	/// <related type="Article" href="/dotnet/standard/base-types/standard-numeric-format-strings">Standard Numeric Format Strings</related>
 	/// <related type="Article" href="/dotnet/standard/base-types/custom-numeric-format-strings">Custom Numeric Format Strings</related>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public string ToString(string? format) => ToString(format, CultureInfo.CurrentCulture);
 
-	/// <summary>Returns the string representation of the current instance using the specified format string to format individual elements and the specified format provider to define culture-specific formatting.</summary>
+	/// <summary>
+	/// Returns the string representation of the current instance using the specified format string to format individual elements and the
+	/// specified format provider to define culture-specific formatting.
+	/// </summary>
 	/// <param name="format">A standard or custom numeric format string that defines the format of individual elements.</param>
 	/// <param name="formatProvider">A format provider that supplies culture-specific formatting information.</param>
 	/// <returns>The string representation of the current instance.</returns>
-	/// <remarks>This method returns a string in which each element of the vector is formatted using <paramref name="format" /> and <paramref name="formatProvider" />. The "&lt;" and "&gt;" characters are used to begin and end the string, and the format provider's <see cref="System.Globalization.NumberFormatInfo.NumberGroupSeparator" /> property followed by a space is used to separate each element.</remarks>
+	/// <remarks>
+	/// This method returns a string in which each element of the vector is formatted using <paramref name="format"/> and <paramref
+	/// name="formatProvider"/>. The "&lt;" and "&gt;" characters are used to begin and end the string, and the format provider's <see
+	/// cref="System.Globalization.NumberFormatInfo.NumberGroupSeparator"/> property followed by a space is used to separate each element.
+	/// </remarks>
 	/// <related type="Article" href="/dotnet/standard/base-types/custom-numeric-format-strings">Custom Numeric Format Strings</related>
 	/// <related type="Article" href="/dotnet/standard/base-types/standard-numeric-format-strings">Standard Numeric Format Strings</related>
 	public string ToString(string? format, IFormatProvider? formatProvider)
@@ -600,13 +887,6 @@ public class Matrix :
 		return new(dup, a.Rows, a.Columns);
 	}
 
-	/// <summary>Gets the element at the specified indices without bounds checking.</summary>
-	/// <param name="row">The row.</param>
-	/// <param name="column">The column.</param>
-	/// <returns>The element at the specified indices.</returns>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	protected float GetUnchecked(int row, int column) => m.Span[row * Columns + column];
-
 	/// <summary>Performs an action on each element in a matrix and returns the resulting matrix.</summary>
 	/// <param name="value">The source matrix.</param>
 	/// <param name="action">The action to perform on the elements from <paramref name="value"/>.</param>
@@ -620,6 +900,13 @@ public class Matrix :
 			sp[i] = action(sp[i]);
 		return new(dup, value.Rows, value.Columns);
 	}
+
+	/// <summary>Gets the element at the specified indices without bounds checking.</summary>
+	/// <param name="row">The row.</param>
+	/// <param name="column">The column.</param>
+	/// <returns>The element at the specified indices.</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	protected float GetUnchecked(int row, int column) => m.Span[row * Columns + column];
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void CheckSquare()

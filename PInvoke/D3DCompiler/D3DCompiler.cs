@@ -1,5 +1,5 @@
 ﻿global using static Vanara.PInvoke.DXGI;
-global using ID3DBlob = Vanara.PInvoke.DXGI.ID3D10Blob;
+global using ID3DBlob = Vanara.PInvoke.DXGI.ID3DBlob;
 
 namespace Vanara.PInvoke;
 
@@ -1951,7 +1951,7 @@ public static partial class D3DCompiler
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DReflect")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DReflect([In] IntPtr pSrcData, [In] SizeT SrcDataSize, in Guid pInterface,
-		[MarshalAs(UnmanagedType.IUnknown)] out object? ppReflector);
+		[MarshalAs(UnmanagedType.Interface)] out object? ppReflector);
 
 	/// <summary>
 	/// <para>Creates a library-reflection interface from source data that contains an HLSL library of functions.</para>
@@ -1987,7 +1987,7 @@ public static partial class D3DCompiler
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DReflectLibrary")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DReflectLibrary([In] IntPtr pSrcData, [In] SizeT SrcDataSize, in Guid riid,
-		[MarshalAs(UnmanagedType.IUnknown)] out object? ppReflector);
+		[MarshalAs(UnmanagedType.Interface)] out object? ppReflector);
 
 	/// <summary>Sets information in a compilation result.</summary>
 	/// <param name="pSrcData">

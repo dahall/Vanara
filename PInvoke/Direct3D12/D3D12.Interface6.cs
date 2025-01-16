@@ -6,7 +6,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist3
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList3")]
 	[ComImport, Guid("6fda83a7-b84c-4e38-9ac8-c7bd22016b3d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList3 : ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList3 : ID3D12GraphicsCommandList2
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -93,7 +93,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -240,7 +240,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -1959,7 +1959,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -3193,7 +3193,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist4
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList4")]
 	[ComImport, Guid("8754318e-d3a9-4541-98cf-645b50dc4874"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList4 : ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList4 : ID3D12GraphicsCommandList3
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -3280,7 +3280,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -3427,7 +3427,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -5146,7 +5146,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -6608,7 +6608,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist5
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList5")]
 	[ComImport, Guid("55050859-4024-474c-87f5-6472eaee44ea"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList5 : ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList5 : ID3D12GraphicsCommandList4
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -6695,7 +6695,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -6842,7 +6842,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -8561,7 +8561,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -10104,7 +10104,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist6
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList6")]
 	[ComImport, Guid("c3827890-e548-4cfa-96cf-5689a9370f80"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList6 : ID3D12GraphicsCommandList5, ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList6 : ID3D12GraphicsCommandList5
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -10191,7 +10191,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -10338,7 +10338,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -12057,7 +12057,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -13613,7 +13613,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist7
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList7")]
 	[ComImport, Guid("dd171223-8b61-4769-90e3-160ccde4e2c1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList7 : ID3D12GraphicsCommandList6, ID3D12GraphicsCommandList5, ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList7 : ID3D12GraphicsCommandList6
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -13700,7 +13700,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -13847,7 +13847,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -15566,7 +15566,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -17126,747 +17126,4 @@ public static partial class D3D12
 		[PreserveSig]
 		void Barrier(int NumBarrierGroups, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_BARRIER_GROUP[] pBarrierGroups);
 	}
-
-	/*
-	[ComImport, Guid("ee936ef9-599d-4d28-938e-23c4ad05ce51"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList8 : ID3D12GraphicsCommandList7, ID3D12GraphicsCommandList6, ID3D12GraphicsCommandList5, ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
-	{
-		[PreserveSig]
-		new HRESULT GetPrivateData(in Guid guid, ref uint pDataSize, IntPtr pData);
-
-		[PreserveSig]
-		new HRESULT SetPrivateData(in Guid guid, uint DataSize, IntPtr pData);
-
-		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, IntPtr pData);
-
-		[PreserveSig]
-		new HRESULT SetName([MarshalAs(UnmanagedType.LPWStr)] string Name);
-
-		[PreserveSig]
-		new HRESULT GetDevice(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvDevice);
-
-		[PreserveSig]
-		new D3D12_COMMAND_LIST_TYPE GetType();
-
-		[PreserveSig]
-		new HRESULT Close();
-
-		[PreserveSig]
-		new HRESULT Reset([In] ID3D12CommandAllocator pAllocator, ID3D12PipelineState pInitialState);
-
-		[PreserveSig]
-		new void ClearState([In] ID3D12PipelineState pPipelineState);
-
-		[PreserveSig]
-		new void DrawInstanced(uint VertexCountPerInstance, uint InstanceCount, uint StartVertexLocation, uint StartInstanceLocation);
-
-		[PreserveSig]
-		new void DrawIndexedInstanced(uint IndexCountPerInstance, uint InstanceCount, uint StartIndexLocation, int BaseVertexLocation, uint StartInstanceLocation);
-
-		[PreserveSig]
-		new void Dispatch(uint ThreadGroupCountX, uint ThreadGroupCountY, uint ThreadGroupCountZ);
-
-		[PreserveSig]
-		new void CopyBufferRegion([In] ID3D12Resource pDstBuffer, ulong DstOffset, ID3D12Resource pSrcBuffer, ulong SrcOffset, ulong NumBytes);
-
-		[PreserveSig]
-		new void CopyTextureRegion(ref D3D12_TEXTURE_COPY_LOCATION pDst, uint DstX, uint DstY, uint DstZ, ref D3D12_TEXTURE_COPY_LOCATION pSrc, IntPtr pSrcBox);
-
-		[PreserveSig]
-		new void CopyResource([In] ID3D12Resource pDstResource, ID3D12Resource pSrcResource);
-
-		[PreserveSig]
-		new void CopyTiles([In] ID3D12Resource pTiledResource, ref D3D12_TILED_RESOURCE_COORDINATE pTileRegionStartCoordinate, ref D3D12_TILE_REGION_SIZE pTileRegionSize, ID3D12Resource pBuffer, ulong BufferStartOffsetInBytes, D3D12_TILE_COPY_FLAGS Flags);
-
-		[PreserveSig]
-		new void ResolveSubresource([In] ID3D12Resource pDstResource, uint DstSubresource, ID3D12Resource pSrcResource, uint SrcSubresource, DXGI_FORMAT Format);
-
-		[PreserveSig]
-		new void IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY PrimitiveTopology);
-
-		[PreserveSig]
-		new void RSSetViewports(int NumViewports, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_VIEWPORT[] pViewports);
-
-		[PreserveSig]
-		new void RSSetScissorRects(int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void OMSetBlendFactor([In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] BlendFactor);
-
-		[PreserveSig]
-		new void OMSetStencilRef(uint StencilRef);
-
-		[PreserveSig]
-		new void SetPipelineState([In] ID3D12PipelineState pPipelineState);
-
-		[PreserveSig]
-		new void ResourceBarrier(int NumBarriers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
-
-		[PreserveSig]
-		new void ExecuteBundle([In] ID3D12GraphicsCommandList pCommandList);
-
-		[PreserveSig]
-		new void SetDescriptorHeaps(int NumDescriptorHeaps, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)][In] ID3D12DescriptorHeap[] ppDescriptorHeaps);
-
-		[PreserveSig]
-		new void SetComputeRootSignature([In] ID3D12RootSignature pRootSignature);
-
-		[PreserveSig]
-		new void SetGraphicsRootSignature([In] ID3D12RootSignature pRootSignature);
-
-		[PreserveSig]
-		new void SetComputeRootDescriptorTable(uint RootParameterIndex, D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor);
-
-		[PreserveSig]
-		new void SetGraphicsRootDescriptorTable(uint RootParameterIndex, D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor);
-
-		[PreserveSig]
-		new void SetComputeRoot32BitConstant(uint RootParameterIndex, uint SrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetGraphicsRoot32BitConstant(uint RootParameterIndex, uint SrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetComputeRoot32BitConstants(uint RootParameterIndex, uint Num32BitValuesToSet, IntPtr pSrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetGraphicsRoot32BitConstants(uint RootParameterIndex, uint Num32BitValuesToSet, IntPtr pSrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetComputeRootConstantBufferView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetGraphicsRootConstantBufferView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetComputeRootShaderResourceView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetGraphicsRootShaderResourceView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetComputeRootUnorderedAccessView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetGraphicsRootUnorderedAccessView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void IASetIndexBuffer(IntPtr pView);
-
-		[PreserveSig]
-		new void IASetVertexBuffers(uint StartSlot, int NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_VERTEX_BUFFER_VIEW[] pViews);
-
-		[PreserveSig]
-		new void SOSetTargets(uint StartSlot, int NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_STREAM_OUTPUT_BUFFER_VIEW[] pViews);
-
-		[PreserveSig]
-		new void OMSetRenderTargets(uint NumRenderTargetDescriptors, IntPtr pRenderTargetDescriptors, bool RTsSingleHandleToDescriptorRange, IntPtr pDepthStencilDescriptor);
-
-		[PreserveSig]
-		new void ClearDepthStencilView(D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray)] float[] ColorRGBA, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void ClearUnorderedAccessViewUint(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, [In] ID3D12Resource pResource, [In, Out, MarshalAs(UnmanagedType.LPArray)] uint[] Values, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void ClearUnorderedAccessViewFloat(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, [In] ID3D12Resource pResource, [In, Out, MarshalAs(UnmanagedType.LPArray)] float[] Values, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, IntPtr pRegion);
-
-		[PreserveSig]
-		new void BeginQuery([In] ID3D12QueryHeap pQueryHeap, D3D12_QUERY_TYPE Type, uint Index);
-
-		[PreserveSig]
-		new void EndQuery([In] ID3D12QueryHeap pQueryHeap, D3D12_QUERY_TYPE Type, uint Index);
-
-		[PreserveSig]
-		new void ResolveQueryData([In] ID3D12QueryHeap pQueryHeap, D3D12_QUERY_TYPE Type, uint StartIndex, uint NumQueries, ID3D12Resource pDestinationBuffer, ulong AlignedDestinationBufferOffset);
-
-		[PreserveSig]
-		new void SetPredication([In] ID3D12Resource pBuffer, ulong AlignedBufferOffset, D3D12_PREDICATION_OP Operation);
-
-		[PreserveSig]
-		new void SetMarker(uint Metadata, IntPtr pData, uint Size);
-
-		[PreserveSig]
-		new void BeginEvent(uint Metadata, IntPtr pData, uint Size);
-
-		[PreserveSig]
-		new void EndEvent();
-
-		[PreserveSig]
-		new void ExecuteIndirect([In] ID3D12CommandSignature pCommandSignature, uint MaxCommandCount, ID3D12Resource pArgumentBuffer, ulong ArgumentBufferOffset, ID3D12Resource pCountBuffer, ulong CountBufferOffset);
-
-		[PreserveSig]
-		new void AtomicCopyBufferUINT(ID3D12Resource pDstBuffer, ulong DstOffset, ID3D12Resource pSrcBuffer, ulong SrcOffset, int Dependencies, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)][In] ID3D12Resource[] ppDependentResources, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_RANGE_UINT64[] pDependentSubresourceRanges);
-
-		[PreserveSig]
-		new void AtomicCopyBufferUINT64(ID3D12Resource pDstBuffer, ulong DstOffset, ID3D12Resource pSrcBuffer, ulong SrcOffset, int Dependencies, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)][In] ID3D12Resource[] ppDependentResources, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_RANGE_UINT64[] pDependentSubresourceRanges);
-
-		[PreserveSig]
-		new void OMSetDepthBounds(float Min, float Max);
-
-		[PreserveSig]
-		new void SetSamplePositions(uint NumSamplesPerPixel, uint NumPixels, [MarshalAs(UnmanagedType.LPArray)] D3D12_SAMPLE_POSITION[] pSamplePositions);
-
-		[PreserveSig]
-		new void ResolveSubresourceRegion([In] ID3D12Resource pDstResource, uint DstSubresource, uint DstX, uint DstY, ID3D12Resource pSrcResource, uint SrcSubresource, IntPtr pSrcRect, DXGI_FORMAT Format, D3D12_RESOLVE_MODE ResolveMode);
-
-		[PreserveSig]
-		new void SetViewInstanceMask(uint Mask);
-
-		[PreserveSig]
-		new void WriteBufferImmediate(int Count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[] pModes);
-
-		[PreserveSig]
-		new void SetProtectedResourceSession([In] ID3D12ProtectedResourceSession pProtectedResourceSession);
-
-		[PreserveSig]
-		new void BeginRenderPass(int NumRenderTargets, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RENDER_PASS_RENDER_TARGET_DESC[] pRenderTargets, IntPtr pDepthStencil, D3D12_RENDER_PASS_FLAGS Flags);
-
-		[PreserveSig]
-		new void EndRenderPass();
-
-		[PreserveSig]
-		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, IntPtr pInitializationParametersData, IntPtr InitializationParametersDataSizeInBytes);
-
-		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, IntPtr pExecutionParametersData, IntPtr ExecutionParametersDataSizeInBytes);
-
-		[PreserveSig]
-		new void BuildRaytracingAccelerationStructure(ref D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC pDesc, int NumPostbuildInfoDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC[] pPostbuildInfoDescs);
-
-		[PreserveSig]
-		new void EmitRaytracingAccelerationStructurePostbuildInfo(ref D3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC pDesc, int NumSourceAccelerationStructures, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ulong[] pSourceAccelerationStructureData);
-
-		[PreserveSig]
-		new void CopyRaytracingAccelerationStructure(ulong DestAccelerationStructureData, ulong SourceAccelerationStructureData, D3D12_RAYTRACING_ACCELERATION_STRUCTURE_COPY_MODE Mode);
-
-		[PreserveSig]
-		new void SetPipelineState1([In] ID3D12StateObject pStateObject);
-
-		[PreserveSig]
-		new void DispatchRays(ref D3D12_DISPATCH_RAYS_DESC pDesc);
-
-		[PreserveSig]
-		new void RSSetShadingRate(D3D12_SHADING_RATE baseShadingRate, [MarshalAs(UnmanagedType.LPArray)] D3D12_SHADING_RATE_COMBINER[] combiners);
-
-		[PreserveSig]
-		new void RSSetShadingRateImage([In] ID3D12Resource shadingRateImage);
-
-		[PreserveSig]
-		new void DispatchMesh(uint ThreadGroupCountX, uint ThreadGroupCountY, uint ThreadGroupCountZ);
-
-		[PreserveSig]
-		new void Barrier(int NumBarrierGroups, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_BARRIER_GROUP[] pBarrierGroups);
-
-		[PreserveSig]
-		void OMSetFrontAndBackStencilRef(uint FrontStencilRef, uint BackStencilRef);
-	}
-
-	[ComImport, Guid("34ed2808-ffe6-4c2b-b11a-cabd2b0c59e1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList9 : ID3D12GraphicsCommandList8, ID3D12GraphicsCommandList7, ID3D12GraphicsCommandList6, ID3D12GraphicsCommandList5, ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
-	{
-		[PreserveSig]
-		new HRESULT GetPrivateData(in Guid guid, ref uint pDataSize, IntPtr pData);
-
-		[PreserveSig]
-		new HRESULT SetPrivateData(in Guid guid, uint DataSize, IntPtr pData);
-
-		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, IntPtr pData);
-
-		[PreserveSig]
-		new HRESULT SetName([MarshalAs(UnmanagedType.LPWStr)] string Name);
-
-		[PreserveSig]
-		new HRESULT GetDevice(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvDevice);
-
-		[PreserveSig]
-		new D3D12_COMMAND_LIST_TYPE GetType();
-
-		[PreserveSig]
-		new HRESULT Close();
-
-		[PreserveSig]
-		new HRESULT Reset([In] ID3D12CommandAllocator pAllocator, ID3D12PipelineState pInitialState);
-
-		[PreserveSig]
-		new void ClearState([In] ID3D12PipelineState pPipelineState);
-
-		[PreserveSig]
-		new void DrawInstanced(uint VertexCountPerInstance, uint InstanceCount, uint StartVertexLocation, uint StartInstanceLocation);
-
-		[PreserveSig]
-		new void DrawIndexedInstanced(uint IndexCountPerInstance, uint InstanceCount, uint StartIndexLocation, int BaseVertexLocation, uint StartInstanceLocation);
-
-		[PreserveSig]
-		new void Dispatch(uint ThreadGroupCountX, uint ThreadGroupCountY, uint ThreadGroupCountZ);
-
-		[PreserveSig]
-		new void CopyBufferRegion([In] ID3D12Resource pDstBuffer, ulong DstOffset, ID3D12Resource pSrcBuffer, ulong SrcOffset, ulong NumBytes);
-
-		[PreserveSig]
-		new void CopyTextureRegion(ref D3D12_TEXTURE_COPY_LOCATION pDst, uint DstX, uint DstY, uint DstZ, ref D3D12_TEXTURE_COPY_LOCATION pSrc, IntPtr pSrcBox);
-
-		[PreserveSig]
-		new void CopyResource([In] ID3D12Resource pDstResource, ID3D12Resource pSrcResource);
-
-		[PreserveSig]
-		new void CopyTiles([In] ID3D12Resource pTiledResource, ref D3D12_TILED_RESOURCE_COORDINATE pTileRegionStartCoordinate, ref D3D12_TILE_REGION_SIZE pTileRegionSize, ID3D12Resource pBuffer, ulong BufferStartOffsetInBytes, D3D12_TILE_COPY_FLAGS Flags);
-
-		[PreserveSig]
-		new void ResolveSubresource([In] ID3D12Resource pDstResource, uint DstSubresource, ID3D12Resource pSrcResource, uint SrcSubresource, DXGI_FORMAT Format);
-
-		[PreserveSig]
-		new void IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY PrimitiveTopology);
-
-		[PreserveSig]
-		new void RSSetViewports(int NumViewports, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_VIEWPORT[] pViewports);
-
-		[PreserveSig]
-		new void RSSetScissorRects(int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void OMSetBlendFactor([In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] BlendFactor);
-
-		[PreserveSig]
-		new void OMSetStencilRef(uint StencilRef);
-
-		[PreserveSig]
-		new void SetPipelineState([In] ID3D12PipelineState pPipelineState);
-
-		[PreserveSig]
-		new void ResourceBarrier(int NumBarriers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
-
-		[PreserveSig]
-		new void ExecuteBundle([In] ID3D12GraphicsCommandList pCommandList);
-
-		[PreserveSig]
-		new void SetDescriptorHeaps(int NumDescriptorHeaps, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)][In] ID3D12DescriptorHeap[] ppDescriptorHeaps);
-
-		[PreserveSig]
-		new void SetComputeRootSignature([In] ID3D12RootSignature pRootSignature);
-
-		[PreserveSig]
-		new void SetGraphicsRootSignature([In] ID3D12RootSignature pRootSignature);
-
-		[PreserveSig]
-		new void SetComputeRootDescriptorTable(uint RootParameterIndex, D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor);
-
-		[PreserveSig]
-		new void SetGraphicsRootDescriptorTable(uint RootParameterIndex, D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor);
-
-		[PreserveSig]
-		new void SetComputeRoot32BitConstant(uint RootParameterIndex, uint SrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetGraphicsRoot32BitConstant(uint RootParameterIndex, uint SrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetComputeRoot32BitConstants(uint RootParameterIndex, uint Num32BitValuesToSet, IntPtr pSrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetGraphicsRoot32BitConstants(uint RootParameterIndex, uint Num32BitValuesToSet, IntPtr pSrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetComputeRootConstantBufferView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetGraphicsRootConstantBufferView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetComputeRootShaderResourceView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetGraphicsRootShaderResourceView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetComputeRootUnorderedAccessView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetGraphicsRootUnorderedAccessView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void IASetIndexBuffer(IntPtr pView);
-
-		[PreserveSig]
-		new void IASetVertexBuffers(uint StartSlot, int NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_VERTEX_BUFFER_VIEW[] pViews);
-
-		[PreserveSig]
-		new void SOSetTargets(uint StartSlot, int NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_STREAM_OUTPUT_BUFFER_VIEW[] pViews);
-
-		[PreserveSig]
-		new void OMSetRenderTargets(uint NumRenderTargetDescriptors, IntPtr pRenderTargetDescriptors, bool RTsSingleHandleToDescriptorRange, IntPtr pDepthStencilDescriptor);
-
-		[PreserveSig]
-		new void ClearDepthStencilView(D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray)] float[] ColorRGBA, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void ClearUnorderedAccessViewUint(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, [In] ID3D12Resource pResource, [In, Out, MarshalAs(UnmanagedType.LPArray)] uint[] Values, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void ClearUnorderedAccessViewFloat(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, [In] ID3D12Resource pResource, [In, Out, MarshalAs(UnmanagedType.LPArray)] float[] Values, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, IntPtr pRegion);
-
-		[PreserveSig]
-		new void BeginQuery([In] ID3D12QueryHeap pQueryHeap, D3D12_QUERY_TYPE Type, uint Index);
-
-		[PreserveSig]
-		new void EndQuery([In] ID3D12QueryHeap pQueryHeap, D3D12_QUERY_TYPE Type, uint Index);
-
-		[PreserveSig]
-		new void ResolveQueryData([In] ID3D12QueryHeap pQueryHeap, D3D12_QUERY_TYPE Type, uint StartIndex, uint NumQueries, ID3D12Resource pDestinationBuffer, ulong AlignedDestinationBufferOffset);
-
-		[PreserveSig]
-		new void SetPredication([In] ID3D12Resource pBuffer, ulong AlignedBufferOffset, D3D12_PREDICATION_OP Operation);
-
-		[PreserveSig]
-		new void SetMarker(uint Metadata, IntPtr pData, uint Size);
-
-		[PreserveSig]
-		new void BeginEvent(uint Metadata, IntPtr pData, uint Size);
-
-		[PreserveSig]
-		new void EndEvent();
-
-		[PreserveSig]
-		new void ExecuteIndirect([In] ID3D12CommandSignature pCommandSignature, uint MaxCommandCount, ID3D12Resource pArgumentBuffer, ulong ArgumentBufferOffset, ID3D12Resource pCountBuffer, ulong CountBufferOffset);
-
-		[PreserveSig]
-		new void AtomicCopyBufferUINT(ID3D12Resource pDstBuffer, ulong DstOffset, ID3D12Resource pSrcBuffer, ulong SrcOffset, int Dependencies, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)][In] ID3D12Resource[] ppDependentResources, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_RANGE_UINT64[] pDependentSubresourceRanges);
-
-		[PreserveSig]
-		new void AtomicCopyBufferUINT64(ID3D12Resource pDstBuffer, ulong DstOffset, ID3D12Resource pSrcBuffer, ulong SrcOffset, int Dependencies, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)][In] ID3D12Resource[] ppDependentResources, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_RANGE_UINT64[] pDependentSubresourceRanges);
-
-		[PreserveSig]
-		new void OMSetDepthBounds(float Min, float Max);
-
-		[PreserveSig]
-		new void SetSamplePositions(uint NumSamplesPerPixel, uint NumPixels, [MarshalAs(UnmanagedType.LPArray)] D3D12_SAMPLE_POSITION[] pSamplePositions);
-
-		[PreserveSig]
-		new void ResolveSubresourceRegion([In] ID3D12Resource pDstResource, uint DstSubresource, uint DstX, uint DstY, ID3D12Resource pSrcResource, uint SrcSubresource, IntPtr pSrcRect, DXGI_FORMAT Format, D3D12_RESOLVE_MODE ResolveMode);
-
-		[PreserveSig]
-		new void SetViewInstanceMask(uint Mask);
-
-		[PreserveSig]
-		new void WriteBufferImmediate(int Count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[] pModes);
-
-		[PreserveSig]
-		new void SetProtectedResourceSession([In] ID3D12ProtectedResourceSession pProtectedResourceSession);
-
-		[PreserveSig]
-		new void BeginRenderPass(int NumRenderTargets, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RENDER_PASS_RENDER_TARGET_DESC[] pRenderTargets, IntPtr pDepthStencil, D3D12_RENDER_PASS_FLAGS Flags);
-
-		[PreserveSig]
-		new void EndRenderPass();
-
-		[PreserveSig]
-		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, IntPtr pInitializationParametersData, IntPtr InitializationParametersDataSizeInBytes);
-
-		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, IntPtr pExecutionParametersData, IntPtr ExecutionParametersDataSizeInBytes);
-
-		[PreserveSig]
-		new void BuildRaytracingAccelerationStructure(ref D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC pDesc, int NumPostbuildInfoDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC[] pPostbuildInfoDescs);
-
-		[PreserveSig]
-		new void EmitRaytracingAccelerationStructurePostbuildInfo(ref D3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC pDesc, int NumSourceAccelerationStructures, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ulong[] pSourceAccelerationStructureData);
-
-		[PreserveSig]
-		new void CopyRaytracingAccelerationStructure(ulong DestAccelerationStructureData, ulong SourceAccelerationStructureData, D3D12_RAYTRACING_ACCELERATION_STRUCTURE_COPY_MODE Mode);
-
-		[PreserveSig]
-		new void SetPipelineState1([In] ID3D12StateObject pStateObject);
-
-		[PreserveSig]
-		new void DispatchRays(ref D3D12_DISPATCH_RAYS_DESC pDesc);
-
-		[PreserveSig]
-		new void RSSetShadingRate(D3D12_SHADING_RATE baseShadingRate, [MarshalAs(UnmanagedType.LPArray)] D3D12_SHADING_RATE_COMBINER[] combiners);
-
-		[PreserveSig]
-		new void RSSetShadingRateImage([In] ID3D12Resource shadingRateImage);
-
-		[PreserveSig]
-		new void DispatchMesh(uint ThreadGroupCountX, uint ThreadGroupCountY, uint ThreadGroupCountZ);
-
-		[PreserveSig]
-		new void Barrier(int NumBarrierGroups, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_BARRIER_GROUP[] pBarrierGroups);
-
-		[PreserveSig]
-		new void OMSetFrontAndBackStencilRef(uint FrontStencilRef, uint BackStencilRef);
-
-		[PreserveSig]
-		void RSSetDepthBias(float DepthBias, float DepthBiasClamp, float SlopeScaledDepthBias);
-
-		[PreserveSig]
-		void IASetIndexBufferStripCutValue(D3D12_INDEX_BUFFER_STRIP_CUT_VALUE IBStripCutValue);
-	}
-
-	[ComImport, Guid("7013c015-d161-4b63-a08c-238552dd8acc"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList10 : ID3D12GraphicsCommandList9, ID3D12GraphicsCommandList8, ID3D12GraphicsCommandList7, ID3D12GraphicsCommandList6, ID3D12GraphicsCommandList5, ID3D12GraphicsCommandList4, ID3D12GraphicsCommandList3, ID3D12GraphicsCommandList2, ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
-	{
-		[PreserveSig]
-		new HRESULT GetPrivateData(in Guid guid, ref uint pDataSize, IntPtr pData);
-
-		[PreserveSig]
-		new HRESULT SetPrivateData(in Guid guid, uint DataSize, IntPtr pData);
-
-		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, IntPtr pData);
-
-		[PreserveSig]
-		new HRESULT SetName([MarshalAs(UnmanagedType.LPWStr)] string Name);
-
-		[PreserveSig]
-		new HRESULT GetDevice(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvDevice);
-
-		[PreserveSig]
-		new D3D12_COMMAND_LIST_TYPE GetType();
-
-		[PreserveSig]
-		new HRESULT Close();
-
-		[PreserveSig]
-		new HRESULT Reset([In] ID3D12CommandAllocator pAllocator, ID3D12PipelineState pInitialState);
-
-		[PreserveSig]
-		new void ClearState([In] ID3D12PipelineState pPipelineState);
-
-		[PreserveSig]
-		new void DrawInstanced(uint VertexCountPerInstance, uint InstanceCount, uint StartVertexLocation, uint StartInstanceLocation);
-
-		[PreserveSig]
-		new void DrawIndexedInstanced(uint IndexCountPerInstance, uint InstanceCount, uint StartIndexLocation, int BaseVertexLocation, uint StartInstanceLocation);
-
-		[PreserveSig]
-		new void Dispatch(uint ThreadGroupCountX, uint ThreadGroupCountY, uint ThreadGroupCountZ);
-
-		[PreserveSig]
-		new void CopyBufferRegion([In] ID3D12Resource pDstBuffer, ulong DstOffset, ID3D12Resource pSrcBuffer, ulong SrcOffset, ulong NumBytes);
-
-		[PreserveSig]
-		new void CopyTextureRegion(ref D3D12_TEXTURE_COPY_LOCATION pDst, uint DstX, uint DstY, uint DstZ, ref D3D12_TEXTURE_COPY_LOCATION pSrc, IntPtr pSrcBox);
-
-		[PreserveSig]
-		new void CopyResource([In] ID3D12Resource pDstResource, ID3D12Resource pSrcResource);
-
-		[PreserveSig]
-		new void CopyTiles([In] ID3D12Resource pTiledResource, ref D3D12_TILED_RESOURCE_COORDINATE pTileRegionStartCoordinate, ref D3D12_TILE_REGION_SIZE pTileRegionSize, ID3D12Resource pBuffer, ulong BufferStartOffsetInBytes, D3D12_TILE_COPY_FLAGS Flags);
-
-		[PreserveSig]
-		new void ResolveSubresource([In] ID3D12Resource pDstResource, uint DstSubresource, ID3D12Resource pSrcResource, uint SrcSubresource, DXGI_FORMAT Format);
-
-		[PreserveSig]
-		new void IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY PrimitiveTopology);
-
-		[PreserveSig]
-		new void RSSetViewports(int NumViewports, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_VIEWPORT[] pViewports);
-
-		[PreserveSig]
-		new void RSSetScissorRects(int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void OMSetBlendFactor([In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] BlendFactor);
-
-		[PreserveSig]
-		new void OMSetStencilRef(uint StencilRef);
-
-		[PreserveSig]
-		new void SetPipelineState([In] ID3D12PipelineState pPipelineState);
-
-		[PreserveSig]
-		new void ResourceBarrier(int NumBarriers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
-
-		[PreserveSig]
-		new void ExecuteBundle([In] ID3D12GraphicsCommandList pCommandList);
-
-		[PreserveSig]
-		new void SetDescriptorHeaps(int NumDescriptorHeaps, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)][In] ID3D12DescriptorHeap[] ppDescriptorHeaps);
-
-		[PreserveSig]
-		new void SetComputeRootSignature([In] ID3D12RootSignature pRootSignature);
-
-		[PreserveSig]
-		new void SetGraphicsRootSignature([In] ID3D12RootSignature pRootSignature);
-
-		[PreserveSig]
-		new void SetComputeRootDescriptorTable(uint RootParameterIndex, D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor);
-
-		[PreserveSig]
-		new void SetGraphicsRootDescriptorTable(uint RootParameterIndex, D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor);
-
-		[PreserveSig]
-		new void SetComputeRoot32BitConstant(uint RootParameterIndex, uint SrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetGraphicsRoot32BitConstant(uint RootParameterIndex, uint SrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetComputeRoot32BitConstants(uint RootParameterIndex, uint Num32BitValuesToSet, IntPtr pSrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetGraphicsRoot32BitConstants(uint RootParameterIndex, uint Num32BitValuesToSet, IntPtr pSrcData, uint DestOffsetIn32BitValues);
-
-		[PreserveSig]
-		new void SetComputeRootConstantBufferView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetGraphicsRootConstantBufferView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetComputeRootShaderResourceView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetGraphicsRootShaderResourceView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetComputeRootUnorderedAccessView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void SetGraphicsRootUnorderedAccessView(uint RootParameterIndex, ulong BufferLocation);
-
-		[PreserveSig]
-		new void IASetIndexBuffer(IntPtr pView);
-
-		[PreserveSig]
-		new void IASetVertexBuffers(uint StartSlot, int NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_VERTEX_BUFFER_VIEW[] pViews);
-
-		[PreserveSig]
-		new void SOSetTargets(uint StartSlot, int NumViews, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_STREAM_OUTPUT_BUFFER_VIEW[] pViews);
-
-		[PreserveSig]
-		new void OMSetRenderTargets(uint NumRenderTargetDescriptors, IntPtr pRenderTargetDescriptors, bool RTsSingleHandleToDescriptorRange, IntPtr pDepthStencilDescriptor);
-
-		[PreserveSig]
-		new void ClearDepthStencilView(D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void ClearRenderTargetView(D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray)] float[] ColorRGBA, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void ClearUnorderedAccessViewUint(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, [In] ID3D12Resource pResource, [In, Out, MarshalAs(UnmanagedType.LPArray)] uint[] Values, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void ClearUnorderedAccessViewFloat(D3D12_GPU_DESCRIPTOR_HANDLE ViewGPUHandleInCurrentHeap, D3D12_CPU_DESCRIPTOR_HANDLE ViewCPUHandle, [In] ID3D12Resource pResource, [In, Out, MarshalAs(UnmanagedType.LPArray)] float[] Values, int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] tagRECT[] pRects);
-
-		[PreserveSig]
-		new void DiscardResource([In] ID3D12Resource pResource, IntPtr pRegion);
-
-		[PreserveSig]
-		new void BeginQuery([In] ID3D12QueryHeap pQueryHeap, D3D12_QUERY_TYPE Type, uint Index);
-
-		[PreserveSig]
-		new void EndQuery([In] ID3D12QueryHeap pQueryHeap, D3D12_QUERY_TYPE Type, uint Index);
-
-		[PreserveSig]
-		new void ResolveQueryData([In] ID3D12QueryHeap pQueryHeap, D3D12_QUERY_TYPE Type, uint StartIndex, uint NumQueries, ID3D12Resource pDestinationBuffer, ulong AlignedDestinationBufferOffset);
-
-		[PreserveSig]
-		new void SetPredication([In] ID3D12Resource pBuffer, ulong AlignedBufferOffset, D3D12_PREDICATION_OP Operation);
-
-		[PreserveSig]
-		new void SetMarker(uint Metadata, IntPtr pData, uint Size);
-
-		[PreserveSig]
-		new void BeginEvent(uint Metadata, IntPtr pData, uint Size);
-
-		[PreserveSig]
-		new void EndEvent();
-
-		[PreserveSig]
-		new void ExecuteIndirect([In] ID3D12CommandSignature pCommandSignature, uint MaxCommandCount, ID3D12Resource pArgumentBuffer, ulong ArgumentBufferOffset, ID3D12Resource pCountBuffer, ulong CountBufferOffset);
-
-		[PreserveSig]
-		new void AtomicCopyBufferUINT(ID3D12Resource pDstBuffer, ulong DstOffset, ID3D12Resource pSrcBuffer, ulong SrcOffset, int Dependencies, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)][In] ID3D12Resource[] ppDependentResources, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_RANGE_UINT64[] pDependentSubresourceRanges);
-
-		[PreserveSig]
-		new void AtomicCopyBufferUINT64(ID3D12Resource pDstBuffer, ulong DstOffset, ID3D12Resource pSrcBuffer, ulong SrcOffset, int Dependencies, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)][In] ID3D12Resource[] ppDependentResources, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] D3D12_SUBRESOURCE_RANGE_UINT64[] pDependentSubresourceRanges);
-
-		[PreserveSig]
-		new void OMSetDepthBounds(float Min, float Max);
-
-		[PreserveSig]
-		new void SetSamplePositions(uint NumSamplesPerPixel, uint NumPixels, [MarshalAs(UnmanagedType.LPArray)] D3D12_SAMPLE_POSITION[] pSamplePositions);
-
-		[PreserveSig]
-		new void ResolveSubresourceRegion([In] ID3D12Resource pDstResource, uint DstSubresource, uint DstX, uint DstY, ID3D12Resource pSrcResource, uint SrcSubresource, IntPtr pSrcRect, DXGI_FORMAT Format, D3D12_RESOLVE_MODE ResolveMode);
-
-		[PreserveSig]
-		new void SetViewInstanceMask(uint Mask);
-
-		[PreserveSig]
-		new void WriteBufferImmediate(int Count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[] pModes);
-
-		[PreserveSig]
-		new void SetProtectedResourceSession([In] ID3D12ProtectedResourceSession pProtectedResourceSession);
-
-		[PreserveSig]
-		new void BeginRenderPass(int NumRenderTargets, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RENDER_PASS_RENDER_TARGET_DESC[] pRenderTargets, IntPtr pDepthStencil, D3D12_RENDER_PASS_FLAGS Flags);
-
-		[PreserveSig]
-		new void EndRenderPass();
-
-		[PreserveSig]
-		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, IntPtr pInitializationParametersData, IntPtr InitializationParametersDataSizeInBytes);
-
-		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, IntPtr pExecutionParametersData, IntPtr ExecutionParametersDataSizeInBytes);
-
-		[PreserveSig]
-		new void BuildRaytracingAccelerationStructure(ref D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC pDesc, int NumPostbuildInfoDescs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC[] pPostbuildInfoDescs);
-
-		[PreserveSig]
-		new void EmitRaytracingAccelerationStructurePostbuildInfo(ref D3D12_RAYTRACING_ACCELERATION_STRUCTURE_POSTBUILD_INFO_DESC pDesc, int NumSourceAccelerationStructures, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ulong[] pSourceAccelerationStructureData);
-
-		[PreserveSig]
-		new void CopyRaytracingAccelerationStructure(ulong DestAccelerationStructureData, ulong SourceAccelerationStructureData, D3D12_RAYTRACING_ACCELERATION_STRUCTURE_COPY_MODE Mode);
-
-		[PreserveSig]
-		new void SetPipelineState1([In] ID3D12StateObject pStateObject);
-
-		[PreserveSig]
-		new void DispatchRays(ref D3D12_DISPATCH_RAYS_DESC pDesc);
-
-		[PreserveSig]
-		new void RSSetShadingRate(D3D12_SHADING_RATE baseShadingRate, [MarshalAs(UnmanagedType.LPArray)] D3D12_SHADING_RATE_COMBINER[] combiners);
-
-		[PreserveSig]
-		new void RSSetShadingRateImage([In] ID3D12Resource shadingRateImage);
-
-		[PreserveSig]
-		new void DispatchMesh(uint ThreadGroupCountX, uint ThreadGroupCountY, uint ThreadGroupCountZ);
-
-		[PreserveSig]
-		new void Barrier(int NumBarrierGroups, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_BARRIER_GROUP[] pBarrierGroups);
-
-		[PreserveSig]
-		new void OMSetFrontAndBackStencilRef(uint FrontStencilRef, uint BackStencilRef);
-
-		[PreserveSig]
-		new void RSSetDepthBias(float DepthBias, float DepthBiasClamp, float SlopeScaledDepthBias);
-
-		[PreserveSig]
-		new void IASetIndexBufferStripCutValue(D3D12_INDEX_BUFFER_STRIP_CUT_VALUE IBStripCutValue);
-
-		[PreserveSig]
-		void SetProgram(ref D3D12_SET_PROGRAM_DESC pDesc);
-
-		[PreserveSig]
-		void DispatchGraph(ref D3D12_DISPATCH_GRAPH_DESC pDesc);
-	}
-	*/
 }

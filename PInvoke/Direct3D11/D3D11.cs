@@ -135,7 +135,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the size of the data (in bytes) that is output when calling ID3D11DeviceContext::GetData.</summary>
 		/// <returns>
@@ -262,7 +262,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the size of the driver's certificate chain.</summary>
 		/// <param name="pCertificateSize">Receives the size of the certificate chain, in bytes.</param>
@@ -417,7 +417,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the description for blending state that you used to create the blend-state object.</summary>
 		/// <param name="pDesc">
@@ -563,7 +563,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the type of the resource.</summary>
 		/// <param name="pResourceDimension">
@@ -777,7 +777,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the ID3D11ClassLinkage object associated with the current HLSL class.</summary>
 		/// <param name="ppLinkage">
@@ -997,7 +997,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the class-instance object that represents the specified HLSL class.</summary>
 		/// <param name="pClassInstanceName">
@@ -1197,7 +1197,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the initialization flags associated with the deferred context that created the command list.</summary>
 		/// <returns>
@@ -1338,7 +1338,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 	}
 
 	/// <summary>This interface encapsulates methods for measuring GPU performance.</summary>
@@ -1467,7 +1467,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the size of the data (in bytes) that is output when calling ID3D11DeviceContext::GetData.</summary>
 		/// <returns>
@@ -1605,7 +1605,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the type of encryption that is supported by this session.</summary>
 		/// <param name="pCryptoType">
@@ -1792,7 +1792,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the description for depth-stencil state that you used to create the depth-stencil-state object.</summary>
 		/// <param name="pDesc">
@@ -1928,7 +1928,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the resource that is accessed through this view.</summary>
 		/// <param name="ppResource">
@@ -3388,7 +3388,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-opensharedresource HRESULT OpenSharedResource(
 		// [in] HANDLE hResource, [in] REFIID ReturnedInterface, [out, optional] void **ppResource );
 		[PreserveSig]
-		HRESULT OpenSharedResource([In] IntPtr hResource, in Guid ReturnedInterface, [MarshalAs(UnmanagedType.IUnknown)] out object? ppResource);
+		HRESULT OpenSharedResource([In] IntPtr hResource, in Guid ReturnedInterface, [MarshalAs(UnmanagedType.Interface)] out object? ppResource);
 
 		/// <summary>Get the support of a given format on the installed video device.</summary>
 		/// <param name="Format">
@@ -3661,7 +3661,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the feature level of the hardware device.</summary>
 		/// <returns>
@@ -3898,7 +3898,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 	}
 
 	/// <summary>
@@ -4022,7 +4022,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Sets the constant buffers used by the vertex shader pipeline stage.</summary>
 		/// <param name="StartSlot">
@@ -8025,7 +8025,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 	}
 
 	/// <summary>A geometry-shader interface manages an executable program (a geometry shader) that controls the geometry-shader stage.</summary>
@@ -8153,7 +8153,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 	}
 
 	/// <summary>A hull-shader interface manages an executable program (a hull shader) that controls the hull-shader stage.</summary>
@@ -8281,7 +8281,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 	}
 
 	/// <summary>
@@ -8405,7 +8405,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 	}
 
 	/// <summary>A pixel-shader interface manages an executable program (a pixel shader) that controls the pixel-shader stage.</summary>
@@ -8533,7 +8533,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 	}
 
 	/// <summary>A predicate interface determines whether geometry should be processed depending on the results of a previous draw call.</summary>
@@ -8658,7 +8658,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the size of the data (in bytes) that is output when calling ID3D11DeviceContext::GetData.</summary>
 		/// <returns>
@@ -8809,7 +8809,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the size of the data (in bytes) that is output when calling ID3D11DeviceContext::GetData.</summary>
 		/// <returns>
@@ -8950,7 +8950,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the description for rasterizer state that you used to create the rasterizer-state object.</summary>
 		/// <param name="pDesc">
@@ -9091,7 +9091,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the resource that is accessed through this view.</summary>
 		/// <param name="ppResource">
@@ -9240,7 +9240,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the type of the resource.</summary>
 		/// <param name="pResourceDimension">
@@ -9467,7 +9467,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the description for sampler state that you used to create the sampler-state object.</summary>
 		/// <param name="pDesc">
@@ -9608,7 +9608,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the resource that is accessed through this view.</summary>
 		/// <param name="ppResource">
@@ -9764,7 +9764,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the type of the resource.</summary>
 		/// <param name="pResourceDimension">
@@ -9986,7 +9986,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the type of the resource.</summary>
 		/// <param name="pResourceDimension">
@@ -10208,7 +10208,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the type of the resource.</summary>
 		/// <param name="pResourceDimension">
@@ -10426,7 +10426,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the resource that is accessed through this view.</summary>
 		/// <param name="ppResource">
@@ -10581,7 +10581,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 	}
 
 	/// <summary>Provides the video functionality of a Microsoft Direct3D 11 device.</summary>
@@ -10734,7 +10734,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets a pointer to a decoder buffer.</summary>
 		/// <param name="pDecoder">A pointer to the ID3D11VideoDecoder interface. To get this pointer, call ID3D11VideoDevice::CreateVideoDecoder.</param>
@@ -12282,7 +12282,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the parameters that were used to create the decoder.</summary>
 		/// <param name="pVideoDesc">A pointer to a D3D11_VIDEO_DECODER_DESC structure that receives a description of the video stream.</param>
@@ -12418,7 +12418,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the resource that is accessed through this view.</summary>
 		/// <param name="ppResource">
@@ -12818,7 +12818,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11videodevice-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in] const IUnknown *pData );
 		[PreserveSig]
-		HRESULT SetPrivateDataInterface(in Guid guid, [In, MarshalAs(UnmanagedType.IUnknown)] object pData);
+		HRESULT SetPrivateDataInterface(in Guid guid, [In, MarshalAs(UnmanagedType.Interface)] object pData);
 	}
 
 	/// <summary>Represents a video processor for Microsoft Direct3D 11.</summary>
@@ -12936,7 +12936,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the content description that was used to create the video processor.</summary>
 		/// <param name="pDesc">A pointer to a D3D11_VIDEO_PROCESSOR_CONTENT_DESC structure that receives the content description.</param>
@@ -13076,7 +13076,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the content description that was used to create this enumerator.</summary>
 		/// <param name="pContentDesc">A pointer to a D3D11_VIDEO_PROCESSOR_CONTENT_DESC structure that receives the content description.</param>
@@ -13275,7 +13275,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the resource that is accessed through this view.</summary>
 		/// <param name="ppResource">
@@ -13419,7 +13419,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the resource that is accessed through this view.</summary>
 		/// <param name="ppResource">
@@ -13591,7 +13591,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Get the resource that is accessed through this view.</summary>
 		/// <param name="ppResource">

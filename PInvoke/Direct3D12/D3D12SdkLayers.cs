@@ -3929,7 +3929,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nn-d3d12sdklayers-id3d12debug4
 	[PInvokeData("d3d12sdklayers.h", MSDNShortId = "NN:d3d12sdklayers.ID3D12Debug4")]
 	[ComImport, Guid("014b816e-9ec5-4a2f-a845-ffbe441ce13a"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Debug4 : ID3D12Debug3, ID3D12Debug
+	public interface ID3D12Debug4 : ID3D12Debug3
 	{
 		/// <summary>Enables the debug layer.</summary>
 		/// <returns>None</returns>
@@ -4025,7 +4025,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nn-d3d12sdklayers-id3d12debug5
 	[PInvokeData("d3d12sdklayers.h", MSDNShortId = "NN:d3d12sdklayers.ID3D12Debug5")]
 	[ComImport, Guid("548d6b12-09fa-40e0-9069-5dcd589a52c9"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Debug5 : ID3D12Debug4, ID3D12Debug3, ID3D12Debug
+	public interface ID3D12Debug5 : ID3D12Debug4
 	{
 		/// <summary>Enables the debug layer.</summary>
 		/// <returns>None</returns>
@@ -4160,7 +4160,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nn-d3d12sdklayers-id3d12debug6
 	[PInvokeData("d3d12sdklayers.h", MSDNShortId = "NN:d3d12sdklayers.ID3D12Debug6")]
 	[ComImport, Guid("82a816d6-5d01-4157-97d0-4975463fd1ed"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Debug6 : ID3D12Debug5, ID3D12Debug4, ID3D12Debug3, ID3D12Debug
+	public interface ID3D12Debug6 : ID3D12Debug5
 	{
 		/// <summary>Enables the debug layer.</summary>
 		/// <returns>None</returns>
@@ -4536,7 +4536,7 @@ public static partial class D3D12
 
 	/// <summary>Undocumented.</summary>
 	[ComImport, Guid("197d5e15-4d37-4d34-af78-724cd70fdb1f"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12DebugCommandList3 : ID3D12DebugCommandList2, ID3D12DebugCommandList
+	public interface ID3D12DebugCommandList3 : ID3D12DebugCommandList2
 	{
 		/// <summary>Checks whether a resource, or subresource, is in a specified state, or not.</summary>
 		/// <param name="pResource">

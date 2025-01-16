@@ -167,10 +167,10 @@ public static partial class DXGI
 	/// </para>
 	/// </para>
 	/// </summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_cbuffer_type typedef enum _D3D_CBUFFER_TYPE {
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_cbuffer_type typedef enum D3D_CBUFFER_TYPE {
 	// D3D_CT_CBUFFER = 0, D3D_CT_TBUFFER, D3D_CT_INTERFACE_POINTERS, D3D_CT_RESOURCE_BIND_INFO, D3D10_CT_CBUFFER, D3D10_CT_TBUFFER,
 	// D3D11_CT_CBUFFER, D3D11_CT_TBUFFER, D3D11_CT_INTERFACE_POINTERS, D3D11_CT_RESOURCE_BIND_INFO } D3D_CBUFFER_TYPE;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_CBUFFER_TYPE")]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_CBUFFER_TYPE")]
 	public enum D3D_CBUFFER_TYPE
 	{
 		/// <summary>
@@ -209,8 +209,7 @@ public static partial class DXGI
 	}
 
 	/// <summary/>
-	[PInvokeData("d3dcommon.h")]
-	[Flags]
+	[PInvokeData("d3dcommon.h"), Flags]
 	public enum D3D_COMPONENT_MASK
 	{
 		/// <summary/>
@@ -516,9 +515,9 @@ public static partial class DXGI
 	/// You pass a <c>D3D_INCLUDE_TYPE</c>-typed value to the <c>IncludeType</c> parameter in a call to the ID3DInclude::Open method to
 	/// indicate the location of the #include file.
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_include_type typedef enum _D3D_INCLUDE_TYPE {
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_include_type typedef enum D3D_INCLUDE_TYPE {
 	// D3D_INCLUDE_LOCAL = 0, D3D_INCLUDE_SYSTEM, D3D10_INCLUDE_LOCAL, D3D10_INCLUDE_SYSTEM, D3D_INCLUDE_FORCE_DWORD = 0x7fffffff } D3D_INCLUDE_TYPE;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_INCLUDE_TYPE")]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_INCLUDE_TYPE")]
 	public enum D3D_INCLUDE_TYPE : uint
 	{
 		/// <summary>
@@ -1020,10 +1019,9 @@ public static partial class DXGI
 	}
 
 	/// <summary>Indicates semantic flags for function parameters.</summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_parameter_flags typedef enum _D3D_PARAMETER_FLAGS {
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_parameter_flags typedef enum D3D_PARAMETER_FLAGS {
 	// D3D_PF_NONE = 0, D3D_PF_IN = 0x1, D3D_PF_OUT = 0x2, D3D_PF_FORCE_DWORD = 0x7fffffff } D3D_PARAMETER_FLAGS;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_PARAMETER_FLAGS")]
-	[Flags]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_PARAMETER_FLAGS"), Flags]
 	public enum D3D_PARAMETER_FLAGS : uint
 	{
 		/// <summary>
@@ -2176,9 +2174,8 @@ public static partial class DXGI
 	/// <c>D3D_SHADER_CBUFFER_FLAGS</c>-typed values are specified in the <c>uFlags</c> member of the D3D11_SHADER_BUFFER_DESC structure.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_cbuffer_flags typedef enum
-	// _D3D_SHADER_CBUFFER_FLAGS { D3D_CBF_USERPACKED = 1, D3D10_CBF_USERPACKED, D3D_CBF_FORCE_DWORD = 0x7fffffff } D3D_SHADER_CBUFFER_FLAGS;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_CBUFFER_FLAGS")]
-	[Flags]
+	// D3D_SHADER_CBUFFER_FLAGS { D3D_CBF_USERPACKED = 1, D3D10_CBF_USERPACKED, D3D_CBF_FORCE_DWORD = 0x7fffffff } D3D_SHADER_CBUFFER_FLAGS;
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_CBUFFER_FLAGS"), Flags]
 	public enum D3D_SHADER_CBUFFER_FLAGS : uint
 	{
 		/// <summary>
@@ -2312,12 +2309,11 @@ public static partial class DXGI
 	/// <c>D3D_SHADER_INPUT_FLAGS</c>-typed values are specified in the <c>uFlags</c> member of the D3D11_SHADER_INPUT_BIND_DESC structure.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_input_flags typedef enum
-	// _D3D_SHADER_INPUT_FLAGS { D3D_SIF_USERPACKED = 0x1, D3D_SIF_COMPARISON_SAMPLER = 0x2, D3D_SIF_TEXTURE_COMPONENT_0 = 0x4,
+	// D3D_SHADER_INPUT_FLAGS { D3D_SIF_USERPACKED = 0x1, D3D_SIF_COMPARISON_SAMPLER = 0x2, D3D_SIF_TEXTURE_COMPONENT_0 = 0x4,
 	// D3D_SIF_TEXTURE_COMPONENT_1 = 0x8, D3D_SIF_TEXTURE_COMPONENTS = 0xc, D3D_SIF_UNUSED = 0x10, D3D10_SIF_USERPACKED,
 	// D3D10_SIF_COMPARISON_SAMPLER, D3D10_SIF_TEXTURE_COMPONENT_0, D3D10_SIF_TEXTURE_COMPONENT_1, D3D10_SIF_TEXTURE_COMPONENTS,
 	// D3D_SIF_FORCE_DWORD = 0x7fffffff } D3D_SHADER_INPUT_FLAGS;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_INPUT_FLAGS")]
-	[Flags]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_INPUT_FLAGS"), Flags]
 	public enum D3D_SHADER_INPUT_FLAGS : uint
 	{
 		/// <summary>
@@ -2406,14 +2402,14 @@ public static partial class DXGI
 	/// <remarks>
 	/// <c>D3D_SHADER_INPUT_TYPE</c>-typed values are specified in the <c>Type</c> member of the D3D11_SHADER_INPUT_BIND_DESC structure.
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_input_type typedef enum _D3D_SHADER_INPUT_TYPE
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_input_type typedef enum D3D_SHADER_INPUT_TYPE
 	// { D3D_SIT_CBUFFER = 0, D3D_SIT_TBUFFER, D3D_SIT_TEXTURE, D3D_SIT_SAMPLER, D3D_SIT_UAV_RWTYPED, D3D_SIT_STRUCTURED,
 	// D3D_SIT_UAV_RWSTRUCTURED, D3D_SIT_BYTEADDRESS, D3D_SIT_UAV_RWBYTEADDRESS, D3D_SIT_UAV_APPEND_STRUCTURED,
 	// D3D_SIT_UAV_CONSUME_STRUCTURED, D3D_SIT_UAV_RWSTRUCTURED_WITH_COUNTER, D3D_SIT_RTACCELERATIONSTRUCTURE, D3D_SIT_UAV_FEEDBACKTEXTURE,
 	// D3D10_SIT_CBUFFER, D3D10_SIT_TBUFFER, D3D10_SIT_TEXTURE, D3D10_SIT_SAMPLER, D3D11_SIT_UAV_RWTYPED, D3D11_SIT_STRUCTURED,
 	// D3D11_SIT_UAV_RWSTRUCTURED, D3D11_SIT_BYTEADDRESS, D3D11_SIT_UAV_RWBYTEADDRESS, D3D11_SIT_UAV_APPEND_STRUCTURED,
 	// D3D11_SIT_UAV_CONSUME_STRUCTURED, D3D11_SIT_UAV_RWSTRUCTURED_WITH_COUNTER } D3D_SHADER_INPUT_TYPE;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_INPUT_TYPE")]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_INPUT_TYPE")]
 	public enum D3D_SHADER_INPUT_TYPE
 	{
 		/// <summary>
@@ -2511,11 +2507,11 @@ public static partial class DXGI
 	/// and so on. <c>D3D_SHADER_VARIABLE_CLASS</c>-typed values are specified in the <c>Class</c> member of the D3D11_SHADER_TYPE_DESC structure.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_variable_class typedef enum
-	// _D3D_SHADER_VARIABLE_CLASS { D3D_SVC_SCALAR = 0, D3D_SVC_VECTOR, D3D_SVC_MATRIX_ROWS, D3D_SVC_MATRIX_COLUMNS, D3D_SVC_OBJECT,
+	// D3D_SHADER_VARIABLE_CLASS { D3D_SVC_SCALAR = 0, D3D_SVC_VECTOR, D3D_SVC_MATRIX_ROWS, D3D_SVC_MATRIX_COLUMNS, D3D_SVC_OBJECT,
 	// D3D_SVC_STRUCT, D3D_SVC_INTERFACE_CLASS, D3D_SVC_INTERFACE_POINTER, D3D10_SVC_SCALAR, D3D10_SVC_VECTOR, D3D10_SVC_MATRIX_ROWS,
 	// D3D10_SVC_MATRIX_COLUMNS, D3D10_SVC_OBJECT, D3D10_SVC_STRUCT, D3D11_SVC_INTERFACE_CLASS, D3D11_SVC_INTERFACE_POINTER,
 	// D3D_SVC_FORCE_DWORD = 0x7fffffff } D3D_SHADER_VARIABLE_CLASS;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_VARIABLE_CLASS")]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_VARIABLE_CLASS")]
 	public enum D3D_SHADER_VARIABLE_CLASS
 	{
 		/// <summary>
@@ -2581,11 +2577,10 @@ public static partial class DXGI
 	/// member of a D3D11_SHADER_VARIABLE_DESC structure.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_variable_flags typedef enum
-	// _D3D_SHADER_VARIABLE_FLAGS { D3D_SVF_USERPACKED = 1, D3D_SVF_USED = 2, D3D_SVF_INTERFACE_POINTER = 4, D3D_SVF_INTERFACE_PARAMETER =
+	// D3D_SHADER_VARIABLE_FLAGS { D3D_SVF_USERPACKED = 1, D3D_SVF_USED = 2, D3D_SVF_INTERFACE_POINTER = 4, D3D_SVF_INTERFACE_PARAMETER =
 	// 8, D3D10_SVF_USERPACKED, D3D10_SVF_USED, D3D11_SVF_INTERFACE_POINTER, D3D11_SVF_INTERFACE_PARAMETER, D3D_SVF_FORCE_DWORD = 0x7fffffff
 	// } D3D_SHADER_VARIABLE_FLAGS;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_VARIABLE_FLAGS")]
-	[Flags]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_VARIABLE_FLAGS"), Flags]
 	public enum D3D_SHADER_VARIABLE_FLAGS : uint
 	{
 		/// <summary>
@@ -2657,7 +2652,7 @@ public static partial class DXGI
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_shader_variable_type typedef enum
-	// _D3D_SHADER_VARIABLE_TYPE { D3D_SVT_VOID = 0, D3D_SVT_BOOL = 1, D3D_SVT_INT = 2, D3D_SVT_FLOAT = 3, D3D_SVT_STRING = 4,
+	// D3D_SHADER_VARIABLE_TYPE { D3D_SVT_VOID = 0, D3D_SVT_BOOL = 1, D3D_SVT_INT = 2, D3D_SVT_FLOAT = 3, D3D_SVT_STRING = 4,
 	// D3D_SVT_TEXTURE = 5, D3D_SVT_TEXTURE1D = 6, D3D_SVT_TEXTURE2D = 7, D3D_SVT_TEXTURE3D = 8, D3D_SVT_TEXTURECUBE = 9, D3D_SVT_SAMPLER =
 	// 10, D3D_SVT_SAMPLER1D = 11, D3D_SVT_SAMPLER2D = 12, D3D_SVT_SAMPLER3D = 13, D3D_SVT_SAMPLERCUBE = 14, D3D_SVT_PIXELSHADER = 15,
 	// D3D_SVT_VERTEXSHADER = 16, D3D_SVT_PIXELFRAGMENT = 17, D3D_SVT_VERTEXFRAGMENT = 18, D3D_SVT_UINT = 19, D3D_SVT_UINT8 = 20,
@@ -2680,7 +2675,7 @@ public static partial class DXGI
 	// D3D11_SVT_RWTEXTURE2D, D3D11_SVT_RWTEXTURE2DARRAY, D3D11_SVT_RWTEXTURE3D, D3D11_SVT_RWBUFFER, D3D11_SVT_BYTEADDRESS_BUFFER,
 	// D3D11_SVT_RWBYTEADDRESS_BUFFER, D3D11_SVT_STRUCTURED_BUFFER, D3D11_SVT_RWSTRUCTURED_BUFFER, D3D11_SVT_APPEND_STRUCTURED_BUFFER,
 	// D3D11_SVT_CONSUME_STRUCTURED_BUFFER, D3D_SVT_FORCE_DWORD = 0x7fffffff } D3D_SHADER_VARIABLE_TYPE;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon._D3D_SHADER_VARIABLE_TYPE")]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NE:d3dcommon.D3D_SHADER_VARIABLE_TYPE")]
 	public enum D3D_SHADER_VARIABLE_TYPE
 	{
 		/// <summary>
@@ -3647,6 +3642,120 @@ public static partial class DXGI
 		D3D11_TESSELLATOR_PARTITIONING_FRACTIONAL_EVEN = D3D_TESSELLATOR_PARTITIONING_FRACTIONAL_EVEN,
 	}
 
+	/// <summary>
+	/// <note>Some information relates to pre-released product, which may be substantially modified before it's commercially released.
+	/// Microsoft makes no warranties, express or implied, with respect to the information provided here.</note>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ne-dcommon-dwrite_glyph_image_formats typedef enum
+	// DWRITE_GLYPH_IMAGE_FORMATS { DWRITE_GLYPH_IMAGE_FORMATS_NONE = 0x00000000, DWRITE_GLYPH_IMAGE_FORMATS_TRUETYPE = 0x00000001,
+	// DWRITE_GLYPH_IMAGE_FORMATS_CFF = 0x00000002, DWRITE_GLYPH_IMAGE_FORMATS_COLR = 0x00000004, DWRITE_GLYPH_IMAGE_FORMATS_SVG =
+	// 0x00000008, DWRITE_GLYPH_IMAGE_FORMATS_PNG = 0x00000010, DWRITE_GLYPH_IMAGE_FORMATS_JPEG = 0x00000020,
+	// DWRITE_GLYPH_IMAGE_FORMATS_TIFF = 0x00000040, DWRITE_GLYPH_IMAGE_FORMATS_PREMULTIPLIED_B8G8R8A8 = 0x00000080,
+	// DWRITE_GLYPH_IMAGE_FORMATS_COLR_PAINT_TREE = 0x00000100 } ;
+	[PInvokeData("dcommon.h", MSDNShortId = "NE:dcommon.DWRITE_GLYPH_IMAGE_FORMATS")]
+	[Flags]
+	public enum DWRITE_GLYPH_IMAGE_FORMATS
+	{
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000000</para>
+		/// <para>Specifies that no data is available for this glyph.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_NONE = 0x0,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000001</para>
+		/// <para>Specifies that the glyph has TrueType outlines.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_TRUETYPE = 0x1,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000002</para>
+		/// <para>Specifies that the glyph has CFF outlines.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_CFF = 0x2,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000004</para>
+		/// <para>Specifies that the glyph has multilayered COLR data.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_COLR = 0x4,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000008</para>
+		/// <para>
+		/// Specifies that the glyph has SVG outlines as standard XML. Fonts may store the content gzip'd rather than plain text, indicated
+		/// by the first two bytes as gzip header {0x1F 0x8B}.
+		/// </para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_SVG = 0x8,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000010</para>
+		/// <para>Specifies that the glyph has PNG image data, with standard PNG IHDR.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_PNG = 0x10,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000020</para>
+		/// <para>Specifies that the glyph has JPEG image data, with standard JIFF SOI header.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_JPEG = 0x20,
+
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000040</para>
+		/// <para>Specifies that the glyph has TIFF image data.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_TIFF = 0x40,
+	
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000080</para>
+		/// <para>Specifies that the glyph has raw 32-bit premultiplied BGRA data.</para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_PREMULTIPLIED_B8G8R8A8 = 0x80,
+	
+		/// <summary>
+		/// <para>Value:</para>
+		/// <para>0x00000100</para>
+		/// <para>
+		/// <para>IMPORTANT</para>
+		/// <para>
+		/// The <b>DWRITE_GLYPH_IMAGE_FORMATS_COLR_PAINT_TREE</b> constant is available in pre-release versions of the <c>Windows Insider
+		/// Preview</c>.Specifies that the glyph is represented by a tree of paint elements in the font's COLR table.
+		/// </para>
+		/// </para>
+		/// </summary>
+		DWRITE_GLYPH_IMAGE_FORMATS_COLR_PAINT_TREE = 0x100,
+	}
+
+	/// <summary>Indicates the measuring method used for text layout.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ne-dcommon-dwrite_measuring_mode typedef enum DWRITE_MEASURING_MODE {
+	// DWRITE_MEASURING_MODE_NATURAL, DWRITE_MEASURING_MODE_GDI_CLASSIC, DWRITE_MEASURING_MODE_GDI_NATURAL } ;
+	[PInvokeData("dcommon.h", MSDNShortId = "NE:dcommon.DWRITE_MEASURING_MODE")]
+	public enum DWRITE_MEASURING_MODE
+	{
+		/// <summary>Specifies that text is measured using glyph ideal metrics whose values are independent to the current display resolution.</summary>
+		DWRITE_MEASURING_MODE_NATURAL,
+
+		/// <summary>
+		/// Specifies that text is measured using glyph display-compatible metrics whose values tuned for the current display resolution.
+		/// </summary>
+		DWRITE_MEASURING_MODE_GDI_CLASSIC,
+
+		/// <summary>
+		/// Specifies that text is measured using the same glyph display metrics as text measured by GDI using a font created with CLEARTYPE_NATURAL_QUALITY.
+		/// </summary>
+		DWRITE_MEASURING_MODE_GDI_NATURAL,
+	}
+	
 	/// <summary>This interface is used to return arbitrary-length data.</summary>
 	/// <remarks>
 	/// <para>
@@ -3659,9 +3768,8 @@ public static partial class DXGI
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nn-d3dcommon-id3d10blob
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NN:d3dcommon.ID3D10Blob")]
-	[ComImport, Guid("8BA5FB08-5195-40e2-AC58-0D989C3A0102"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D10Blob
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NN:d3dcommon.ID3D10Blob"), ComImport, Guid("8BA5FB08-5195-40e2-AC58-0D989C3A0102"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface ID3DBlob
 	{
 		/// <summary>Gets a pointer to the data.</summary>
 		/// <returns>
@@ -3701,8 +3809,7 @@ public static partial class DXGI
 	/// object disposal.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nn-d3dcommon-id3ddestructionotifier
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NN:d3dcommon.ID3DDestructionNotifier")]
-	[ComImport, Guid("a06eb39a-50da-425b-8c31-4eecd6c270f3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NN:d3dcommon.ID3DDestructionNotifier"), ComImport, Guid("a06eb39a-50da-425b-8c31-4eecd6c270f3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface ID3DDestructionNotifier
 	{
 		/// <summary>
@@ -3826,28 +3933,45 @@ public static partial class DXGI
 	/// <summary>Represents a 3-by-2 matrix.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_matrix_3x2_f typedef struct D2D_MATRIX_3X2_F { union {
 	// struct { FLOAT m11; FLOAT m12; FLOAT m21; FLOAT m22; FLOAT dx; FLOAT dy; }; struct { FLOAT _11; FLOAT _12; FLOAT _21; FLOAT _22;
-	// FLOAT _31; FLOAT _32; }; FLOAT m[3][2]; }; } D2D_MATRIX_3X2_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "c8a54bad-4376-479b-8529-1e407623e473")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D_MATRIX_3X2_F
+	// FLOAT _31; FLOAT _32; }; FLOAT m[3, 2]; }; } D2D_MATRIX_3X2_F;
+	[PInvokeData("dcommon.h", MSDNShortId = "c8a54bad-4376-479b-8529-1e407623e473"), StructLayout(LayoutKind.Sequential)]
+	public struct D2D_MATRIX_3X2_F : IEquatable<DXGI_MATRIX_3X2_F>
 	{
+		/// <summary>The value in the first row and first column of the matrix.</summary>
+		public float _11;
+
+		/// <summary>The value in the first row and second column of the matrix.</summary>
+		public float _12;
+
+		/// <summary>The value in the second row and first column of the matrix.</summary>
+		public float _21;
+
+		/// <summary>The value in the second row and second column of the matrix.</summary>
+		public float _22;
+
+		/// <summary>The value in the third row and first column of the matrix.</summary>
+		public float _31;
+
+		/// <summary>The value in the third row and second column of the matrix.</summary>
+		public float _32;
+
 		/// <summary>Horizontal scaling / cosine of rotation</summary>
-		public float m11;
+		public float m11 { get => _11; set => _11 = value; }
 
 		/// <summary>Vertical shear / sine of rotation</summary>
-		public float m12;
+		public float m12 { get => _12; set => _12 = value; }
 
 		/// <summary>Horizontal shear / negative sine of rotation</summary>
-		public float m21;
+		public float m21 { get => _21; set => _21 = value; }
 
 		/// <summary>Vertical scaling / cosine of rotation</summary>
-		public float m22;
+		public float m22 { get => _22; set => _22 = value; }
 
 		/// <summary>Horizontal shift (always orthogonal regardless of rotation)</summary>
-		public float dx;
+		public float dx { get => _31; set => _31 = value; }
 
 		/// <summary>Vertical shift (always orthogonal regardless of rotation)</summary>
-		public float dy;
+		public float dy { get => _32; set => _32 = value; }
 
 		/// <summary>Gets or sets the values as a multidimensional (3x2) array.</summary>
 		/// <value>The array value.</value>
@@ -3868,6 +3992,34 @@ public static partial class DXGI
 			}
 		}
 
+		/// <summary>Calculates the determinant of the matrix.</summary>
+		/// <value>The determinant of this matrix.</value>
+		public float Determinant => _11 * _22 - _12 * _21;
+
+		/// <summary>Indicates whether this matrix is the identity matrix.</summary>
+		/// <returns>
+		/// <para>Type: <b>bool</b></para>
+		/// <para><b>true</b> if the matrix is an identity matrix; otherwise, <b>false</b>.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1helper/nf-d2d1helper-matrix3x2f-isidentity
+		// bool IsIdentity();
+		[PInvokeData("d2d1helper.h", MSDNShortId = "NF:d2d1helper.Matrix3x2F.IsIdentity")]
+		public bool IsIdentity => Equals(Identity());
+
+		/// <summary>Uses this matrix to transform the specified point and returns the result.</summary>
+		/// <param name="point">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The point to transform.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The transformed point.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1helper/nf-d2d1helper-matrix3x2f-transformpoint
+		// D2D1_POINT_2F TransformPoint( D2D1_POINT_2F point );
+		[PInvokeData("d2d1helper.h", MSDNShortId = "NF:d2d1helper.Matrix3x2F.TransformPoint")]
+		public D2D_POINT_2F TransformPoint(in D2D_POINT_2F point) => new() { x = point.x * _11 + point.y * _21 + _31, y = point.x * _12 + point.y * _22 + _32 };
+
 		/// <summary>Performs an implicit conversion from <see cref="float"/>[,] to <see cref="D2D_MATRIX_3X2_F"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -3887,14 +4039,73 @@ public static partial class DXGI
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator Matrix(D2D_MATRIX_3X2_F value) => new(value.m);
+
+		/// <summary>Multiplies two matrices together to compute the product.</summary>
+		/// <param name="left">The first matrix.</param>
+		/// <param name="right">The second matrix.</param>
+		/// <returns>The product matrix.</returns>
+		public static DXGI_MATRIX_3X2_F operator *(DXGI_MATRIX_3X2_F left, DXGI_MATRIX_3X2_F right) => new() { m = new Matrix(left.m) * new Matrix(right.m) };
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="left">The left comparible.</param>
+		/// <param name="right">The right comparible.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(DXGI_MATRIX_3X2_F left, DXGI_MATRIX_3X2_F right) => left.Equals(right);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="left">The left comparible.</param>
+		/// <param name="right">The right comparible.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(DXGI_MATRIX_3X2_F left, DXGI_MATRIX_3X2_F right) => !(left == right);
+
+		/// <summary>Creates an identity matrix.</summary>
+		/// <returns>An identity matrix.</returns>
+		/// <remarks>
+		/// The identity matrix is the 3x2 matrix with ones on the main diagonal and zeros elsewhere. When an identity transform is applied
+		/// to an object, it does not change the position, shape, or size of the object. It is similar to the way that multiplying a number
+		/// by 1 does not change the number. Any transform other than the identity transform will modify the position, shape, and/or size of objects.
+		/// </remarks>
+		public static D2D_MATRIX_3X2_F Identity() => new() { _11 = 1, _22 = 1 };
+
+		/// <summary>Creates a translation transformation that has the specified x and y displacements.</summary>
+		/// <param name="x">The distance to translate along the x-axis.</param>
+		/// <param name="y">The distance to translate along the y-axis.</param>
+		/// <returns>A transformation matrix that translates an object the specified horizontal and vertical distance.</returns>
+		public static D2D_MATRIX_3X2_F Translation(float x, float y) => new() { _11 = 1, _22 = 1, _31 = x, _32 = y };
+
+		/// <summary>Creates a scale transformation that has the specified scale factors and center point.</summary>
+		/// <param name="width">The x-axis scale factor of the scale transformation.</param>
+		/// <param name="height">The y-axis scale factor of the scale transformation.</param>
+		/// <param name="x">The x-coordinate of the point about which the scale is performed.</param>
+		/// <param name="y">The y-coordinate of the point about which the scale is performed.</param>
+		/// <returns>The new scale transformation.</returns>
+		/// <remarks>
+		/// <para>
+		/// This method creates a scale transformation for the specified centerPoint and the x-axis and y-axis scale factors. If you prefer
+		/// to create a D2D1_SIZE_F structure to store the scale factors, call the other Scale method.
+		/// </para>
+		/// <para>
+		/// The following illustration shows the size of the square increased to 130% in both dimensions. The center point of the scaling is
+		/// the upper-left corner of the square.
+		/// </para>
+		/// </remarks>
+		public static D2D_MATRIX_3X2_F Scale(float width, float height, float x = 0f, float y = 0f) => new() { _11 = width, _22 = height, _31 = x - width * x, _32 = y - height * y };
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is DXGI_MATRIX_3X2_F f && Equals(f);
+
+		/// <inheritdoc/>
+		public bool Equals(DXGI_MATRIX_3X2_F other) => _11 == other._11 && _12 == other._12 && _21 == other._21 && _22 == other._22 && _31 == other._31 && _32 == other._32;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => m.GetHashCode();
 	}
 
 	/// <summary>Describes a 4-by-3 floating point matrix.</summary>
 	/// <remarks>The <c>D2D1_MATRIX_4X3_F</c> structure is type defined from a <c>D2D_MATRIX_4X3_F</c> structure in D2d1_1.h.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_matrix_4x3_f
-	// typedef struct D2D_MATRIX_4X3_F { union { struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _31; FLOAT _32; FLOAT _33; FLOAT _41; FLOAT _42; FLOAT _43; } DUMMYSTRUCTNAME; FLOAT m[4][3]; } DUMMYUNIONNAME; } D2D_MATRIX_4X3_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_4X3_F")]
-	[StructLayout(LayoutKind.Sequential)]
+	// typedef struct D2D_MATRIX_4X3_F { union { struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _31; FLOAT _32; FLOAT _33; FLOAT _41; FLOAT _42; FLOAT _43; } DUMMYSTRUCTNAME; FLOAT m[4, 3]; } DUMMYUNIONNAME; } D2D_MATRIX_4X3_F;
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_4X3_F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_MATRIX_4X3_F
 	{
 		/// <summary/>
@@ -3983,10 +4194,9 @@ public static partial class DXGI
 	/// <summary>Describes a 4-by-4 floating point matrix.</summary>
 	/// <remarks>The <c>D2D1_MATRIX_4X4_F</c> structure is type defined from a <c>D2D_MATRIX_4X4_F</c> structure in D2d1_1.h.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_matrix_4x4_f
-	// typedef struct D2D_MATRIX_4X4_F { union { struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _14; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _24; FLOAT _31; FLOAT _32; FLOAT _33; FLOAT _34; FLOAT _41; FLOAT _42; FLOAT _43; FLOAT _44; } DUMMYSTRUCTNAME; FLOAT m[4][4]; } DUMMYUNIONNAME; } D2D_MATRIX_4X4_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_4X4_F")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D_MATRIX_4X4_F
+	// typedef struct D2D_MATRIX_4X4_F { union { struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _14; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _24; FLOAT _31; FLOAT _32; FLOAT _33; FLOAT _34; FLOAT _41; FLOAT _42; FLOAT _43; FLOAT _44; } DUMMYSTRUCTNAME; FLOAT m[4, 4]; } DUMMYUNIONNAME; } D2D_MATRIX_4X4_F;
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_4X4_F"), StructLayout(LayoutKind.Sequential)]
+	public struct D2D_MATRIX_4X4_F : IEquatable<D2D_MATRIX_4X4_F>
 	{
 		/// <summary/>
 		public float _11;
@@ -4036,6 +4246,26 @@ public static partial class DXGI
 		/// <summary/>	;
 		public float _44;
 
+		/// <summary>Calculates the determinant of the matrix.</summary>
+		/// <returns>
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The determinant.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-determinant
+		// FLOAT Determinant();
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.Determinant")]
+		public float Determinant => new Matrix(m).Determinant;
+
+		/// <summary>Indicates whether this matrix is the identity matrix.</summary>
+		/// <returns>
+		/// <para>Type: <b>BOOL</b></para>
+		/// <para>Indicates whether this matrix is the identity matrix.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-isidentity
+		// bool IsIdentity();
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.IsIdentity")]
+		public bool IsIdentity => new Matrix(m).IsIdentity;
+
 		/// <summary/>
 		public float[,] m
 		{
@@ -4063,6 +4293,33 @@ public static partial class DXGI
 			}
 		}
 
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D2D_MATRIX_4X4_F f && Equals(f);
+
+		/// <inheritdoc/>
+		public bool Equals(D2D_MATRIX_4X4_F other) => _11 == other._11 && _12 == other._12 && _13 == other._13 && _14 == other._14 && _21 == other._21 && _22 == other._22 && _23 == other._23 && _24 == other._24 && _31 == other._31 && _32 == other._32 && _33 == other._33 && _34 == other._34 && _41 == other._41 && _42 == other._42 && _43 == other._43 && _44 == other._44;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => ((float[,])this).GetHashCode();
+
+		/// <summary>Multiplies two matrices together to compute the product.</summary>
+		/// <param name="left">The first matrix.</param>
+		/// <param name="right">The second matrix.</param>
+		/// <returns>The product matrix.</returns>
+		public static D2D_MATRIX_4X4_F operator *(D2D_MATRIX_4X4_F left, D2D_MATRIX_4X4_F right) => new() { m = new Matrix(left.m) * new Matrix(right.m) };
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="left">The left comparible.</param>
+		/// <param name="right">The right comparible.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(D2D_MATRIX_4X4_F left, D2D_MATRIX_4X4_F right) => left.Equals(right);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="left">The left comparible.</param>
+		/// <param name="right">The right comparible.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(D2D_MATRIX_4X4_F left, D2D_MATRIX_4X4_F right) => !(left == right);
+
 		/// <summary>Performs an implicit conversion from <see cref="float"/>[,] to <see cref="D2D_MATRIX_4X4_F"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -4082,16 +4339,179 @@ public static partial class DXGI
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator Matrix(D2D_MATRIX_4X4_F value) => new(value.m);
+
+		/// <summary>A perspective transformation given a depth value.</summary>
+		/// <param name="depth">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The depth for the perspective transform.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>Matrix4x4F</c></b></para>
+		/// <para>The result matrix.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-perspectiveprojection
+		// Matrix4x4F PerspectiveProjection( FLOAT depth );
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.PerspectiveProjection")]
+		public static D2D_MATRIX_4X4_F PerspectiveProjection(float depth) => new() { _11 = 1, _22 = 1, _33 = 1, _34 = depth > 0 ? -1 / depth : 0f, _44 = 1 };
+
+		/// <summary>Rotates the transform matrix around the X axis.</summary>
+		/// <param name="degreeX">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The amount of rotation.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>Matrix4x4F</c></b></para>
+		/// <para>The result matrix.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-rotationx
+		// Matrix4x4F RotationX( FLOAT degreeX );
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.RotationX")]
+		public static D2D_MATRIX_4X4_F RotationX(float degreeX) { var angle = degreeX * Math.PI / 180; return new() { _11 = 1, _22 = (float)Math.Cos(angle), _23 = (float)Math.Sin(angle), _32 = (float)-Math.Sin(angle), _33 = (float)Math.Cos(angle), _44 = 1 }; }
+
+		/// <summary>Rotates the transform matrix around the Y axis.</summary>
+		/// <param name="degreeY">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The amount of rotation.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>Matrix4x4F</c></b></para>
+		/// <para>The result matrix.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-rotationy
+		// Matrix4x4F RotationY( FLOAT degreeY );
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.RotationY")]
+		public static D2D_MATRIX_4X4_F RotationY(float degreeY) { var angle = degreeY * Math.PI / 180; return new() { _11 = (float)Math.Cos(angle), _13 = (float)-Math.Sin(angle), _22 = 1, _31 = (float)Math.Sin(angle), _33 = (float)Math.Cos(angle), _44 = 1 }; }
+
+		/// <summary>Rotates the transform matrix around the Z axis.</summary>
+		/// <param name="degreeZ">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The amount of rotation.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>Matrix4x4F</c></b></para>
+		/// <para>The result matrix.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-rotationz
+		// Matrix4x4F RotationZ( FLOAT degreeZ );
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.RotationZ")]
+		public static D2D_MATRIX_4X4_F RotationZ(float degreeZ) { var angle = degreeZ * Math.PI / 180; return new() { _11 = (float)Math.Cos(angle), _12 = (float)Math.Sin(angle), _21 = (float)-Math.Sin(angle), _22 = (float)Math.Cos(angle), _33 = 1, _44 = 1 }; }
+
+		/// <summary>Determines the 3-D Rotation matrix for an arbitrary axis.</summary>
+		/// <param name="x">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The X point of the axis.</para>
+		/// </param>
+		/// <param name="y">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The Y point of the axis.</para>
+		/// </param>
+		/// <param name="z">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The Z point of the axis.</para>
+		/// </param>
+		/// <param name="degree">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The amount of rotation.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>Matrix4x4F</c></b></para>
+		/// <para>The result matrix</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-rotationarbitraryaxis
+		// Matrix4x4F RotationArbitraryAxis( FLOAT x, FLOAT y, FLOAT z, FLOAT degree );
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.RotationArbitraryAxis")]
+		public static D2D_MATRIX_4X4_F RotationArbitraryAxis(float x, float y, float z, float degree)
+		{
+			var magnitude = (float)Math.Sqrt(x * x + y * y + z * z);
+			x /= magnitude;
+			y /= magnitude;
+			z /= magnitude;
+
+			var angle = degree * Math.PI / 180;
+			var c = (float)Math.Cos(angle);
+			var s = (float)Math.Sin(angle);
+			var t = 1 - c;
+			return new()
+			{
+				_11 = 1 + t * (x * x - 1),
+				_12 = t * x * y + s * z,
+				_13 = t * x * z - s * y,
+				_21 = t * x * y - s * z,
+				_22 = 1 + t * (y * y - 1),
+				_23 = t * y * z + s * x,
+				_31 = t * x * z + s * y,
+				_32 = t * y * z - s * x,
+				_33 = 1 + t * (z * z - 1),
+				_44 = 1
+			};
+		}
+
+		/// <summary>Scales the perspective plane of the matrix.</summary>
+		/// <param name="x">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The scale in the X direction.</para>
+		/// </param>
+		/// <param name="y">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The scale in the Y direction.</para>
+		/// </param>
+		/// <param name="z">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The scale in the Z direction.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>Matrix4x4F</c></b></para>
+		/// <para>The result matrix.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-scale
+		// Matrix4x4F Scale( FLOAT x, FLOAT y, FLOAT z );
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.Scale")]
+		public static D2D_MATRIX_4X4_F Scale(float x, float y, float z) => new() { _11 = x, _22 = y, _33 = z, _44 = 1 };
+
+		/// <summary>Skews the matrix in the X direction.</summary>
+		/// <param name="degreeX">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The skew amount.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>Matrix4x4F</c></b></para>
+		/// <para>The result matrix.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-skewx
+		// Matrix4x4F SkewX( FLOAT degreeX );
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.SkewX")]
+		public static D2D_MATRIX_4X4_F SkewX(float degreeX) => new() { _11 = 1, _22 = 1, _23 = (float)Math.Tan(degreeX * Math.PI / 180), _33 = 1, _44 = 1 };
+
+		/// <summary>Skews the matrix in the Y direction.</summary>
+		/// <param name="degreeY">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The skew amount.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>Matrix4x4F</c></b></para>
+		/// <para>The result matrix.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-skewy
+		// Matrix4x4F SkewY( FLOAT degreeY );
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.SkewY")]
+		public static D2D_MATRIX_4X4_F SkewY(float degreeY) => new() { _11 = 1, _12 = (float)Math.Tan(degreeY * Math.PI / 180), _22 = 1, _33 = 1, _44 = 1 };
+
+		/// <summary>Creates a translation matrix from the specified X, Y, and Z components.</summary>
+		/// <param name="x">The amount to translate on the X axis.</param>
+		/// <param name="y">The amount to translate on the Y axis.</param>
+		/// <param name="z">The amount to translate on the Z axis.</param>
+		/// <returns>The translation matrix.</returns>
+		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.Translation")]
+		public static D2D_MATRIX_4X4_F Translation(float x, float y, float z) => new() { _11 = 1, _22 = 1, _33 = 1, _41 = x, _42 = y, _43 = z, _44 = 1 };
 	}
 
 	/// <summary>Describes a 5-by-4 floating point matrix.</summary>
 	/// <remarks>The <c>D2D1_MATRIX_5X4_F</c> structure is type defined from a <c>D2D_MATRIX_5X4_F</c> structure in D2d1_1.h.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_matrix_5x4_f typedef struct D2D_MATRIX_5X4_F { union {
 	// struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _14; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _24; FLOAT _31; FLOAT _32; FLOAT _33;
-	// FLOAT _34; FLOAT _41; FLOAT _42; FLOAT _43; FLOAT _44; FLOAT _51; FLOAT _52; FLOAT _53; FLOAT _54; } DUMMYSTRUCTNAME; FLOAT m[5][4];
+	// FLOAT _34; FLOAT _41; FLOAT _42; FLOAT _43; FLOAT _44; FLOAT _51; FLOAT _52; FLOAT _53; FLOAT _54; } DUMMYSTRUCTNAME; FLOAT m[5, 4];
 	// } DUMMYUNIONNAME; } D2D_MATRIX_5X4_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_5X4_F")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_5X4_F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_MATRIX_5X4_F
 	{
 		/// <summary/>
@@ -4209,9 +4629,68 @@ public static partial class DXGI
 	/// <summary>Represents an x-coordinate and y-coordinate pair, expressed as floating-point values, in two-dimensional space.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2f typedef struct D2D_POINT_2F { FLOAT x; FLOAT
 	// y; } D2D_POINT_2F;
-	[PInvokeData("dcommon.h", MSDNShortId = "2ee55d63-594b-482d-9e31-2378369c6c30")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D_POINT_2F(float x, float y)
+	[PInvokeData("dcommon.h", MSDNShortId = "2ee55d63-594b-482d-9e31-2378369c6c30"), StructLayout(LayoutKind.Sequential)]
+	public struct D2D_POINT_2F(float x = 0f, float y = 0f) : IEquatable<D2D_POINT_2F>
+	{
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The x-coordinate of the point.</para>
+		/// </summary>
+		public float x = x;
+
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The y-coordinate of the point.</para>
+		/// </summary>
+		public float y = y;
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D2D_POINT_2F f && Equals(f);
+
+		/// <inheritdoc/>
+		public bool Equals(D2D_POINT_2F other) => x == other.x && y == other.y;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => (x, y).GetHashCode();
+
+		/// <summary>Implements the operator *.</summary>
+		/// <param name="left">The left point.</param>
+		/// <param name="right">The right matrix.</param>
+		/// <returns>The result of the operator.</returns>
+		public static D2D_POINT_2F operator *(D2D_POINT_2F left, DXGI_MATRIX_3X2_F right) => right.TransformPoint(left);
+
+		/// <summary>Implements the operator op_Equality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(D2D_POINT_2F left, D2D_POINT_2F right) => left.Equals(right);
+
+		/// <summary>Implements the operator op_Inequality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(D2D_POINT_2F left, D2D_POINT_2F right) => !(left == right);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="System.Drawing.PointF"/> to <see cref="D2D_POINT_2F"/>.
+		/// </summary>
+		/// <param name="pointF">The point f.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_POINT_2F(PointF pointF) => new(pointF.X, pointF.Y);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="D2D_POINT_2F"/> to <see cref="System.Drawing.PointF"/>.
+		/// </summary>
+		/// <param name="pointF">The point f.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PointF(D2D_POINT_2F pointF) => new(pointF.x, pointF.y);
+	}
+
+	/// <summary>Represents an x-coordinate and y-coordinate pair, expressed as floating-point values, in two-dimensional space.</summary>
+	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2f typedef struct D2D_POINT_2F { FLOAT x; FLOAT
+	// y; } D2D_POINT_2F;
+	[PInvokeData("dcommon.h", MSDNShortId = "2ee55d63-594b-482d-9e31-2378369c6c30"), StructLayout(LayoutKind.Sequential)]
+	public class PD2D_POINT_2F(float x, float y)
 	{
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -4230,14 +4709,50 @@ public static partial class DXGI
 		/// </summary>
 		/// <param name="pointF">The point f.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator D2D_POINT_2F(PointF pointF) => new(pointF.X, pointF.Y);
+		public static implicit operator PD2D_POINT_2F?(PointF? pointF) => pointF is null ? null : new(pointF.Value.X, pointF.Value.Y);
 
 		/// <summary>
 		/// Performs an implicit conversion from <see cref="D2D_POINT_2F"/> to <see cref="System.Drawing.PointF"/>.
 		/// </summary>
 		/// <param name="pointF">The point f.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PointF(D2D_POINT_2F pointF) => new(pointF.x, pointF.y);
+		public static implicit operator PointF?(PD2D_POINT_2F? pointF) => pointF is null ? null : new(pointF.x, pointF.y);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="System.Drawing.PointF"/> to <see cref="D2D_POINT_2F"/>.
+		/// </summary>
+		/// <param name="pointF">The point f.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PD2D_POINT_2F?(D2D_POINT_2F? pointF) => pointF is null ? null : new(pointF.Value.x, pointF.Value.y);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="D2D_POINT_2F"/> to <see cref="System.Drawing.PointF"/>.
+		/// </summary>
+		/// <param name="pointF">The point f.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_POINT_2F?(PD2D_POINT_2F? pointF) => pointF is null ? null : new(pointF.x, pointF.y);
+	}
+
+	/// <summary>
+	/// Represents an x-coordinate and y-coordinate pair, expressed as an unsigned 32-bit integer value, in two-dimensional space.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2u typedef struct D2D_POINT_2U { UINT32 x; UINT32 y;
+	// } D2D_POINT_2U;
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_POINT_2U")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D2D_POINT_2U
+	{
+		/// <summary>
+		/// <para>Type: <b>UINT32</b></para>
+		/// <para>The x-coordinate value of the point.</para>
+		/// </summary>
+		public uint x;
+
+		/// <summary>
+		/// <para>Type: <b>UINT32</b></para>
+		/// <para>The y-coordinate value of the point.</para>
+		/// </summary>
+		public uint y;
 	}
 
 	/// <summary>
@@ -4246,9 +4761,160 @@ public static partial class DXGI
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_rect_f typedef struct D2D_RECT_F { FLOAT left; FLOAT
 	// top; FLOAT right; FLOAT bottom; } D2D_RECT_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "84bd7ab0-f273-46f8-b261-86cd1d7f3868")]
+	[PInvokeData("dcommon.h", MSDNShortId = "84bd7ab0-f273-46f8-b261-86cd1d7f3868"), StructLayout(LayoutKind.Sequential)]
+	public struct D2D_RECT_F(float left = 0f, float top = 0f, float right = 0f, float bottom = 0f) : IEquatable<D2D_RECT_F>
+	{
+		/// <summary>The x-coordinate of the upper-left corner of the rectangle.</summary>
+		public float left = left;
+
+		/// <summary>The y-coordinate of the upper-left corner of the rectangle.</summary>
+		public float top = top;
+
+		/// <summary>The x-coordinate of the lower-right corner of the rectangle.</summary>
+		public float right = right;
+
+		/// <summary>The y-coordinate of the lower-right corner of the rectangle.</summary>
+		public float bottom = bottom;
+
+		/// <summary>Gets a value indicating whether this instance is empty.</summary>
+		/// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
+		public bool IsEmpty => left == 0f && top == 0f && right == 0f && bottom == 0f;
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D2D_RECT_F f && Equals(f);
+
+		/// <inheritdoc/>
+		public bool Equals(D2D_RECT_F other) => left == other.left && top == other.top && right == other.right && bottom == other.bottom;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => (left, top, right, bottom).GetHashCode();
+
+		/// <summary>Tests whether two <see cref="D2D_RECT_F"/> structures have equal location and size.</summary>
+		/// <param name="left">The <see cref="D2D_RECT_F"/> structure that is to the left of the equality operator.</param>
+		/// <param name="right">The <see cref="D2D_RECT_F"/> structure that is to the right of the equality operator.</param>
+		/// <returns>
+		/// This operator returns <see langword="true"/> if the two <see cref="D2D_RECT_F"/> structures have equal left, top, right, and
+		/// bottom properties.
+		/// </returns>
+		public static bool operator ==(D2D_RECT_F left, D2D_RECT_F right) => left.Equals(right);
+
+		/// <summary>Tests whether two <see cref="D2D_RECT_F"/> structures differ in location and size.</summary>
+		/// <param name="left">The <see cref="D2D_RECT_F"/> structure that is to the left of the inequality operator.</param>
+		/// <param name="right">The <see cref="D2D_RECT_F"/> structure that is to the right of the inequality operator.</param>
+		/// <returns>
+		/// This operator returns <see langword="true"/> if any of the left, top, right, and bottom properties of the two <see
+		/// cref="D2D_RECT_F"/> structures are unequal; otherwise <see langword="false"/>.
+		/// </returns>
+		public static bool operator !=(D2D_RECT_F left, D2D_RECT_F right) => !(left == right);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="System.Drawing.RectangleF"/> to <see cref="D2D_RECT_F"/>.
+		/// </summary>
+		/// <param name="r">The r.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_RECT_F(RectangleF r) => new(r.Left, r.Top, r.Right, r.Bottom);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="D2D_RECT_F"/> to <see cref="System.Drawing.RectangleF"/>.
+		/// </summary>
+		/// <param name="r">The r.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator RectangleF(D2D_RECT_F r) => RectangleF.FromLTRB(r.left, r.top, r.right, r.bottom);
+
+		/// <summary>
+		/// Creates a rectangle that has its upper-left corner set to (negative infinity, negative infinity) and its lower-right corner set
+		/// to (infinity, infinity).
+		/// </summary>
+		/// <returns>
+		/// A rectangle that has its upper-left corner set to (negative infinity, negative infinity) and its lower-right corner set to
+		/// (infinity, infinity).
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1helper/nf-d2d1helper-infiniterect D2D1_RECT_F InfiniteRect();
+		[PInvokeData("d2d1helper.h", MSDNShortId = "NF:d2d1helper.InfiniteRect")]
+		public static D2D_RECT_F Infinite => new(-float.MaxValue, -float.MaxValue, float.MaxValue, float.MaxValue);
+	}
+
+	/// <summary>Represents a rectangle defined by the upper-left corner pair of coordinates (left,top) and the lower-right corner pair of coordinates (right, bottom). These coordinates are expressed as a 32-bit integer values.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_rect_u
+	// typedef struct D2D_RECT_U { UINT32 left; UINT32 top; UINT32 right; UINT32 bottom; } D2D_RECT_U;
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_RECT_U")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D_RECT_F(float left, float top, float right, float bottom)
+	public struct D2D_RECT_U(uint left = 0, uint top = 0, uint right = 0, uint bottom = 0) : IEquatable<D2D_RECT_U>
+	{
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The x-coordinate of the upper-left corner of the rectangle.</para>
+		/// </summary>
+		public uint left = left;
+
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The y-coordinate of the upper-left corner of the rectangle.</para>
+		/// </summary>
+		public uint top = top;
+
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The x-coordinate of the lower-right corner of the rectangle.</para>
+		/// </summary>
+		public uint right = right;
+
+		/// <summary>
+		/// <para>Type: <c>FLOAT</c></para>
+		/// <para>The y-coordinate of the lower-right corner of the rectangle.</para>
+		/// </summary>
+		public uint bottom = bottom;
+
+		/// <summary>Gets a value indicating whether this instance is empty.</summary>
+		/// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
+		public bool IsEmpty => left == 0 && top == 0 && right == 0 && bottom == 0;
+
+		/// <summary>Gets a value indicating whether this instance is infinite.</summary>
+		/// <value><c>true</c> if this instance is infinite; otherwise, <c>false</c>.</value>
+		public bool IsInfinite => left == 0 && top == 0 && right == uint.MaxValue && bottom == uint.MaxValue;
+
+		/// <summary>
+		/// Gets a value representing an infinite rectange that has its upper-left corner set to (0u, 0u) and its lower-right corner set to
+		/// (UINT32_MAX, UINT32_MAX).
+		/// </summary>
+		public static D2D_RECT_U Infinite => new(0, 0, uint.MaxValue, uint.MaxValue);
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D2D_RECT_U f && Equals(f);
+
+		/// <inheritdoc/>
+		public bool Equals(D2D_RECT_U other) => left == other.left && top == other.top && right == other.right && bottom == other.bottom;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => (left, top, right, bottom).GetHashCode();
+
+		/// <summary>Tests whether two <see cref="D2D_RECT_U"/> structures have equal location and size.</summary>
+		/// <param name="left">The <see cref="D2D_RECT_U"/> structure that is to the left of the equality operator.</param>
+		/// <param name="right">The <see cref="D2D_RECT_U"/> structure that is to the right of the equality operator.</param>
+		/// <returns>
+		/// This operator returns <see langword="true"/> if the two <see cref="D2D_RECT_U"/> structures have equal left, top, right, and
+		/// bottom properties.
+		/// </returns>
+		public static bool operator ==(D2D_RECT_U left, D2D_RECT_U right) => left.Equals(right);
+
+		/// <summary>Tests whether two <see cref="D2D_RECT_U"/> structures differ in location and size.</summary>
+		/// <param name="left">The <see cref="D2D_RECT_U"/> structure that is to the left of the inequality operator.</param>
+		/// <param name="right">The <see cref="D2D_RECT_U"/> structure that is to the right of the inequality operator.</param>
+		/// <returns>
+		/// This operator returns <see langword="true"/> if any of the left, top, right, and bottom properties of the two <see
+		/// cref="D2D_RECT_U"/> structures are unequal; otherwise <see langword="false"/>.
+		/// </returns>
+		public static bool operator !=(D2D_RECT_U left, D2D_RECT_U right) => !(left == right);
+	}
+
+	/// <summary>
+	/// Represents a rectangle defined by the coordinates of the upper-left corner (left, top) and the coordinates of the lower-right
+	/// corner (right, bottom).
+	/// </summary>
+	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_rect_f typedef struct D2D_RECT_F { FLOAT left; FLOAT
+	// top; FLOAT right; FLOAT bottom; } D2D_RECT_F;
+	[PInvokeData("dcommon.h", MSDNShortId = "84bd7ab0-f273-46f8-b261-86cd1d7f3868"), StructLayout(LayoutKind.Sequential)]
+	public class PD2D_RECT_F(float left, float top, float right, float bottom)
 	{
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -4274,27 +4940,39 @@ public static partial class DXGI
 		/// </summary>
 		public float bottom = bottom;
 
-		/// <summary>
-		/// Performs an implicit conversion from <see cref="System.Drawing.RectangleF"/> to <see cref="D2D_RECT_F"/>.
-		/// </summary>
-		/// <param name="r">The r.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator D2D_RECT_F(RectangleF r) => new(r.Left, r.Top, r.Right, r.Bottom);
+		private D2D_RECT_F rect => new(left, top, right, bottom);
 
-		/// <summary>
-		/// Performs an implicit conversion from <see cref="D2D_RECT_F"/> to <see cref="System.Drawing.RectangleF"/>.
-		/// </summary>
-		/// <param name="r">The r.</param>
+		/// <summary>Performs an implicit conversion from <see cref="PD2D_RECT_F"/> to <see cref="D2D_RECT_F"/>.</summary>
+		/// <param name="r">The <see cref="PD2D_RECT_F"/> to convert.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator RectangleF(D2D_RECT_F r) => RectangleF.FromLTRB(r.left, r.top, r.right, r.bottom);
+		public static implicit operator D2D_RECT_F?(PD2D_RECT_F r) => r?.rect;
+
+		/// <summary>Performs an implicit conversion from <see cref="PD2D_RECT_F"/> to <see cref="RectangleF"/>.</summary>
+		/// <param name="r">The <see cref="PD2D_RECT_F"/> to convert.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator RectangleF?(PD2D_RECT_F r) => r?.rect;
+
+		/// <summary>Performs an implicit conversion from <see cref="Nullable{RectangleF}"/> to <see cref="PD2D_RECT_F"/>.</summary>
+		/// <param name="r">The <see cref="RectangleF"/> to convert.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PD2D_RECT_F?(RectangleF? r) => r.HasValue ? new(r.Value.Left, r.Value.Top, r.Value.Right, r.Value.Bottom) : null;
+
+		/// <summary>Performs an implicit conversion from <see cref="D2D_RECT_F"/> to <see cref="PD2D_RECT_F"/>.</summary>
+		/// <param name="r">The <see cref="D2D_RECT_F"/> to convert.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PD2D_RECT_F(D2D_RECT_F r) => new(r.left, r.top, r.right, r.bottom);
+
+		/// <summary>Performs an implicit conversion from <see cref="Nullable{D2D_RECT_F}"/> to <see cref="PD2D_RECT_F"/>.</summary>
+		/// <param name="r">The <see cref="D2D_RECT_F"/> to convert.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PD2D_RECT_F?(D2D_RECT_F? r) => r.HasValue ? new(r.Value.left, r.Value.top, r.Value.right, r.Value.bottom) : null;
 	}
 
 	/// <summary>Stores an ordered pair of floating-point values, typically the width and height of a rectangle.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_size_f typedef struct D2D_SIZE_F { FLOAT width; FLOAT
 	// height; } D2D_SIZE_F;
-	[PInvokeData("dcommon.h", MSDNShortId = "9d519bb9-3eb8-4d7e-ba00-b6cf5a428a04")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D_SIZE_F(float width, float height)
+	[PInvokeData("dcommon.h", MSDNShortId = "9d519bb9-3eb8-4d7e-ba00-b6cf5a428a04"), StructLayout(LayoutKind.Sequential)]
+	public struct D2D_SIZE_F(float width = 0f, float height = 0f) : IEquatable<D2D_SIZE_F>
 	{
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -4307,6 +4985,27 @@ public static partial class DXGI
 		/// <para>The vertical component of this size.</para>
 		/// </summary>
 		public float height = height;
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D2D_SIZE_F f && Equals(f);
+
+		/// <inheritdoc/>
+		public bool Equals(D2D_SIZE_F other) => width == other.width && height == other.height;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => (width, height).GetHashCode();
+
+		/// <summary>Implements the operator op_Equality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(D2D_SIZE_F left, D2D_SIZE_F right) => left.Equals(right);
+
+		/// <summary>Implements the operator op_Inequality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(D2D_SIZE_F left, D2D_SIZE_F right) => !(left == right);
 
 		/// <summary>Performs an implicit conversion from <see cref="System.Drawing.SizeF"/> to <see cref="D2D_SIZE_F"/>.</summary>
 		/// <param name="sz">The sz.</param>
@@ -4322,9 +5021,8 @@ public static partial class DXGI
 	/// <summary>Stores an ordered pair of integers, typically the width and height of a rectangle.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_size_u typedef struct D2D_SIZE_U { UINT32 width; UINT32
 	// height; } D2D_SIZE_U;
-	[PInvokeData("dcommon.h", MSDNShortId = "d9ea9df5-7c5f-4afa-9859-14d77b017904")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D_SIZE_U(uint width, uint height)
+	[PInvokeData("dcommon.h", MSDNShortId = "d9ea9df5-7c5f-4afa-9859-14d77b017904"), StructLayout(LayoutKind.Sequential)]
+	public struct D2D_SIZE_U(uint width = 0, uint height = 0) : IEquatable<D2D_SIZE_U>
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT32</c></para>
@@ -4338,6 +5036,27 @@ public static partial class DXGI
 		/// </summary>
 		public uint height = height;
 
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D2D_SIZE_U u && Equals(u);
+
+		/// <inheritdoc/>
+		public bool Equals(D2D_SIZE_U other) => width == other.width && height == other.height;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => (width, height).GetHashCode();
+
+		/// <summary>Implements the operator op_Equality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(D2D_SIZE_U left, D2D_SIZE_U right) => left.Equals(right);
+
+		/// <summary>Implements the operator op_Inequality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(D2D_SIZE_U left, D2D_SIZE_U right) => !(left == right);
+
 		/// <summary>Performs an explicit conversion from <see cref="System.Drawing.Size"/> to <see cref="D2D_SIZE_U"/>.</summary>
 		/// <param name="sz">The sz.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -4347,52 +5066,83 @@ public static partial class DXGI
 	/// <summary>A vector of 2 FLOAT values (x, y).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_2f
 	// typedef struct D2D_VECTOR_2F { FLOAT x; FLOAT y; } D2D_VECTOR_2F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_2F")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D_VECTOR_2F
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_2F"), StructLayout(LayoutKind.Sequential)]
+	public struct D2D_VECTOR_2F(float x = 0f, float y = 0f)
 	{
 		/// <summary>The x value of the vector.</summary>
-		public float x;
+		public float x = x;
 
 		/// <summary>The y value of the vector.</summary>
-		public float y;
+		public float y = y;
+
+		/// <summary>Performs an implicit conversion from <see cref="float"/>[] to <see cref="Vanara.PInvoke.DXGI.D2D_VECTOR_2F"/>.</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_VECTOR_2F(float[] v) => v is not null && v.Length == 2 ? new(v[0], v[1]) : throw new ArgumentOutOfRangeException(nameof(v), "Value must be an array of 2 elements.");
+
+		/// <summary>Performs an implicit conversion from <see cref="Vanara.PInvoke.DXGI.D2D_VECTOR_2F"/> to <see cref="float"/>[].</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator float[](D2D_VECTOR_2F v) => [v.x, v.y];
 	}
 
 	/// <summary>A vector of 3 FLOAT values (x, y, z).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_3f
 	// typedef struct D2D_VECTOR_3F { FLOAT x; FLOAT y; FLOAT z; } D2D_VECTOR_3F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_3F")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D_VECTOR_3F
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_3F"), StructLayout(LayoutKind.Sequential)]
+	public struct D2D_VECTOR_3F(float x = 0f, float y = 0f, float z = 0f)
 	{
 		/// <summary>The x value of the vector.</summary>
-		public float x;
+		public float x = x;
 
 		/// <summary>The y value of the vector.</summary>
-		public float y;
+		public float y = y;
 
 		/// <summary>The z value of the vector.</summary>
-		public float z;
+		public float z = z;
+
+		/// <summary>Returns the length of a 3 dimensional vector.</summary>
+		/// <value>The length.</value>
+		public readonly float Length => (float)Math.Sqrt(x * x + y * y + z * z);
+
+		/// <summary>Performs an implicit conversion from <see cref="float"/>[] to <see cref="D2D_VECTOR_3F"/>.</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_VECTOR_3F(float[] v) => v is not null && v.Length == 3 ? new(v[0], v[1], v[2]) : throw new ArgumentOutOfRangeException(nameof(v), "Value must be an array of 3 elements.");
+
+		/// <summary>Performs an implicit conversion from <see cref="D2D_VECTOR_3F"/> to <see cref="float"/>[].</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator float[](D2D_VECTOR_3F v) => [v.x, v.y, v.z];
 	}
 
 	/// <summary>A vector of 4 FLOAT values (x, y, z, w).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_4f
 	// typedef struct D2D_VECTOR_4F { FLOAT x; FLOAT y; FLOAT z; FLOAT w; } D2D_VECTOR_4F;
-	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_4F")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D_VECTOR_4F
+	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_4F"), StructLayout(LayoutKind.Sequential)]
+	public struct D2D_VECTOR_4F(float x = 0f, float y = 0f, float z = 0f, float w = 0f)
 	{
 		/// <summary>The x value of the vector.</summary>
-		public float x;
+		public float x = x;
 
 		/// <summary>The y value of the vector.</summary>
-		public float y;
+		public float y = y;
 
 		/// <summary>The z value of the vector.</summary>
-		public float z;
+		public float z = z;
 
 		/// <summary>The w value of the vector.</summary>
-		public float w;
+		public float w = w;
+
+		/// <summary>Performs an implicit conversion from <see cref="float"/>[] to <see cref="D2D_VECTOR_4F"/>.</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D2D_VECTOR_4F(float[] v) => v is not null && v.Length == 4 ? new(v[0], v[1], v[2], v[3]) : throw new ArgumentOutOfRangeException(nameof(v), "Value must be an array of 4 elements.");
+
+		/// <summary>Performs an implicit conversion from <see cref="D2D_VECTOR_4F"/> to <see cref="float"/>[].</summary>
+		/// <param name="v">The vector.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator float[](D2D_VECTOR_4F v) => [v.x, v.y, v.z, v.w];
 	}
 
 	/// <summary>Contains the data format and alpha mode for a bitmap or render target.</summary>
@@ -4408,15 +5158,14 @@ public static partial class DXGI
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d1_pixel_format typedef struct D2D1_PIXEL_FORMAT {
 	// DXGI_FORMAT format; D2D1_ALPHA_MODE alphaMode; } D2D1_PIXEL_FORMAT;
-	[PInvokeData("dcommon.h", MSDNShortId = "e95afd9c-5793-4cb7-bcb8-aae4d28b6532")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_PIXEL_FORMAT
+	[PInvokeData("dcommon.h", MSDNShortId = "e95afd9c-5793-4cb7-bcb8-aae4d28b6532"), StructLayout(LayoutKind.Sequential)]
+	public struct D2D1_PIXEL_FORMAT(DXGI_FORMAT format = DXGI_FORMAT.DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE alphaMode = D2D1_ALPHA_MODE.D2D1_ALPHA_MODE_UNKNOWN)
 	{
 		/// <summary>
 		/// <para>Type: <c>DXGI_FORMAT</c></para>
 		/// <para>A value that specifies the size and arrangement of channels in each pixel.</para>
 		/// </summary>
-		public DXGI_FORMAT format;
+		public DXGI_FORMAT format = format;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_ALPHA_MODE</c></para>
@@ -4425,16 +5174,15 @@ public static partial class DXGI
 		/// and considered opaque, or whether it is unkown.
 		/// </para>
 		/// </summary>
-		public D2D1_ALPHA_MODE alphaMode;
+		public D2D1_ALPHA_MODE alphaMode = alphaMode;
 	}
 
 	/// <summary>Defines a 3D box.</summary>
 	/// <remarks>The following diagram shows a 3D box, where the origin is the left, front, top corner.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d10/ns-d3d10-d3d10_box typedef struct D3D10_BOX { UINT left; UINT top; UINT
 	// front; UINT right; UINT bottom; UINT back; } D3D10_BOX;
-	[PInvokeData("d3d10.h", MSDNShortId = "NS:d3d10.D3D10_BOX")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D10_BOX
+	[PInvokeData("d3d10.h", MSDNShortId = "NS:d3d10.D3D10_BOX"), StructLayout(LayoutKind.Sequential)]
+	public struct D3D10_BOX : IEquatable<D3D10_BOX>
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
@@ -4471,6 +5219,56 @@ public static partial class DXGI
 		/// <para>The z position of the back of the box.</para>
 		/// </summary>
 		public uint back;
+
+		/// <summary>Initializes a new instance of the <see cref="D3D10_BOX" /> struct.</summary>
+		/// <param name="Left">The x position of the left hand side of the box.</param>
+		/// <param name="Right">The y position of the top of the box.</param>
+		/// <param name="Top">The y position of the top of the box.</param>
+		/// <param name="Bottom">The y position of the bottom of the box.</param>
+		/// <param name="Front">The z position of the front of the box.</param>
+		/// <param name="Back">The z position of the back of the box.</param>
+		public D3D10_BOX(int Left, int Right, int Top = 0, int Bottom = 1, int Front = 0, int Back = 1)
+		{
+			left = unchecked((uint)Left);
+			top = unchecked((uint)Top);
+			front = unchecked((uint)Front);
+			right = unchecked((uint)Right);
+			bottom = unchecked((uint)Bottom);
+			back = unchecked((uint)Back);
+		}
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is D3D10_BOX bOX && Equals(bOX);
+
+		/// <summary>Determines whether the specified object is equal to the current object.</summary>
+		/// <param name="other">The object to compare with the current object.</param>
+		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
+		public bool Equals(D3D10_BOX other) => left == other.left && top == other.top && front == other.front && right == other.right && bottom == other.bottom && back == other.back;
+
+		/// <inheritdoc/>
+		public override int GetHashCode()
+		{
+			int hashCode = 1435850453;
+			hashCode = hashCode * -1521134295 + left.GetHashCode();
+			hashCode = hashCode * -1521134295 + top.GetHashCode();
+			hashCode = hashCode * -1521134295 + front.GetHashCode();
+			hashCode = hashCode * -1521134295 + right.GetHashCode();
+			hashCode = hashCode * -1521134295 + bottom.GetHashCode();
+			hashCode = hashCode * -1521134295 + back.GetHashCode();
+			return hashCode;
+		}
+
+		/// <summary>Implements the operator op_Equality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(D3D10_BOX left, D3D10_BOX right) => left.Equals(right);
+
+		/// <summary>Implements the operator op_Inequality.</summary>
+		/// <param name="left">The left.</param>
+		/// <param name="right">The right.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(D3D10_BOX left, D3D10_BOX right) => !(left == right);
 	}
 	
 	/// <summary>Defines a shader macro.</summary>
@@ -4495,10 +5293,9 @@ public static partial class DXGI
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ns-d3dcommon-d3d_shader_macro typedef struct _D3D_SHADER_MACRO { LPCSTR
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/ns-d3dcommon-d3d_shader_macro typedef struct D3D_SHADER_MACRO { LPCSTR
 	// Name; LPCSTR Definition; } D3D_SHADER_MACRO, *LPD3D_SHADER_MACRO;
-	[PInvokeData("d3dcommon.h", MSDNShortId = "NS:d3dcommon._D3D_SHADER_MACRO")]
-	[StructLayout(LayoutKind.Sequential)]
+	[PInvokeData("d3dcommon.h", MSDNShortId = "NS:d3dcommon.D3D_SHADER_MACRO"), StructLayout(LayoutKind.Sequential)]
 	public struct D3D_SHADER_MACRO
 	{
 		/// <summary>The macro name.</summary>

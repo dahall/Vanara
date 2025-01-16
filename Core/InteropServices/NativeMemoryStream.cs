@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Vanara.InteropServices;
 
@@ -115,6 +116,7 @@ public class NativeMemoryStream : Stream
 
 	/// <summary>Ensures the allocated buffer is large enough for the supplied capacity.</summary>
 	/// <param name="value">The new capacity.</param>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public virtual void EnsureCapacity(long value)
 	{
 		if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
@@ -169,7 +171,7 @@ public class NativeMemoryStream : Stream
 		if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
 		ThrowIfDisposed();
 		if (!CanRead) throw new NotSupportedException();
-		if (Position + count > Capacity) throw new ArgumentOutOfRangeException(nameof(count));
+		count = (int)Math.Min(count, Capacity - Position);
 		if (count > 0)
 		{
 			Marshal.Copy(PositionPtr, buffer, offset, count);
@@ -179,6 +181,19 @@ public class NativeMemoryStream : Stream
 	}
 
 	/// <summary>
+	/// Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
+	/// </summary>
+	/// <param name="buffer">
+	/// An array of bytes. When this method returns, the buffer contains the specified byte array with the values replaced by the bytes read
+	/// from the current source.
+	/// </param>
+	/// <returns>
+	/// The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not
+	/// currently available, or zero (0) if the end of the stream has been reached.
+	/// </returns>
+	public virtual int Read(byte[] buffer) => Read(buffer, 0, buffer.Length);
+
+	/// <summary>
 	/// Reads a blittable type from the current stream and advances the position within the stream by the number of bytes read.
 	/// </summary>
 	/// <typeparam name="T">The type of the object to read.</typeparam>
@@ -186,6 +201,7 @@ public class NativeMemoryStream : Stream
 	/// <returns>An object of type <typeparamref name="T"/>.</returns>
 	/// <exception cref="ArgumentException">Type to be read must be blittable. - T</exception>
 	/// <exception cref="ArgumentOutOfRangeException"/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public T? Read<T>(CharSet charSet = CharSet.Auto) => (T?)Read(typeof(T), charSet);
 
 	/// <summary>
@@ -332,9 +348,7 @@ public class NativeMemoryStream : Stream
 	/// <param name="buffer">
 	/// An array of bytes. This method copies <paramref name="count"/> bytes from <paramref name="buffer"/> to the current stream.
 	/// </param>
-	/// <param name="offset">
-	/// The zero-based byte offset in <paramref name="buffer"/> at which to begin copying bytes to the current stream.
-	/// </param>
+	/// <param name="offset">The zero-based byte offset in <paramref name="buffer"/> at which to begin copying bytes to the current stream.</param>
 	/// <param name="count">The number of bytes to be written to the current stream.</param>
 	/// <exception cref="ArgumentNullException">buffer</exception>
 	/// <exception cref="ArgumentException"></exception>
@@ -353,9 +367,16 @@ public class NativeMemoryStream : Stream
 		length += count;
 	}
 
+	/// <summary>
+	/// Writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
+	/// </summary>
+	/// <param name="buffer">An array of bytes. This method copies all bytes from <paramref name="buffer"/> to the current stream.</param>
+	public virtual void Write(byte[] buffer) => Write(buffer, 0, buffer.Length);
+
 	/// <summary>Writes the specified value into the stream.</summary>
 	/// <typeparam name="T">The type of the value.</typeparam>
 	/// <param name="value">The value.</param>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void Write<T>(in T value) where T : struct => WriteObject(value);
 
 	/// <summary>Writes the specified string into the stream.</summary>
@@ -376,6 +397,7 @@ public class NativeMemoryStream : Stream
 	/// <param name="byRef">Write values as a referenced array.</param>
 	public void Write(IEnumerable? items, bool byRef = false)
 	{
+		if (items is byte[] b && byRef == false) { Write(b, 0, b.Length); return; }
 		if (access == FileAccess.Read) throw new NotSupportedException();
 		if (items == null) return;
 		ResetIfFlushed();
@@ -455,6 +477,7 @@ public class NativeMemoryStream : Stream
 	/// or flushed.
 	/// </summary>
 	/// <param name="value">The value.</param>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void WriteReference<T>(T value) where T : unmanaged => WriteReferenceObject(value);
 
 	/// <summary>
@@ -462,6 +485,7 @@ public class NativeMemoryStream : Stream
 	/// or flushed.
 	/// </summary>
 	/// <param name="value">The value.</param>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void WriteReference<T>(T? value) where T : unmanaged => WriteReferenceObject(value.HasValue ? value.Value : null);
 
 	/// <summary>
@@ -469,6 +493,7 @@ public class NativeMemoryStream : Stream
 	/// or flushed.
 	/// </summary>
 	/// <param name="value">The string value.</param>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void WriteReference(string? value) => WriteReferenceObject(value);
 
 	/// <summary>Writes the specified value into the stream. This function should fail if the object cannot be blitted.</summary>
@@ -500,9 +525,11 @@ public class NativeMemoryStream : Stream
 	/// <param name="obj">The object to check.</param>
 	/// <param name="charSet">The character set.</param>
 	/// <returns>The size, in bytes, of the object.</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	protected virtual int GetSize(object? obj, CharSet charSet = CharSet.None) =>
 		InteropExtensions.SizeOf(obj, charSet);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private int GetRefSize() => references.Sum(e => GetSize(e.Value, CharSet));
 
 	private void ResetIfFlushed()
@@ -513,11 +540,13 @@ public class NativeMemoryStream : Stream
 		preflushPos = 0;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void ThrowIfDisposed()
 	{
 		if (IsDisposed) throw new ObjectDisposedException(nameof(NativeMemoryStream));
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private T ThrowIfDisposed<T>(T value) => !IsDisposed ? value : throw new ObjectDisposedException(nameof(NativeMemoryStream));
 
 	private class Reference

@@ -1,36 +1,38 @@
 ## Vanara.PInvoke.D3DCompiler  
 PInvoke API (methods, structures and constants) imported from Windows D3DCompiler.dll.
 
-- Includes methods from Vanara.PInvoke.D3DCompiler.dll  
+- Includes methods from d3dcompiler_47.dll, dxilconv.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.D3DCompiler?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.D3DCompiler?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.D3DCompiler)  
-### Methods - 100% API coverage (25 of 25 functions)  
-Native Method | Header | Managed Method  
---- | --- | ---  
-[D3DCompile](https://www.google.com/search?num=5&q=D3DCompile+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompile](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompile)  
-[D3DCompile2](https://www.google.com/search?num=5&q=D3DCompile2+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompile2](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompile2)  
-[D3DCompileFromFile](https://www.google.com/search?num=5&q=D3DCompileFromFile+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompileFromFile](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompileFromFile)  
-[D3DCompressShaders](https://www.google.com/search?num=5&q=D3DCompressShaders+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompressShaders](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompressShaders)  
-[D3DCreateBlob](https://www.google.com/search?num=5&q=D3DCreateBlob+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCreateBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCreateBlob)  
-[D3DCreateFunctionLinkingGraph](https://www.google.com/search?num=5&q=D3DCreateFunctionLinkingGraph+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCreateFunctionLinkingGraph](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCreateFunctionLinkingGraph)  
-[D3DCreateLinker](https://www.google.com/search?num=5&q=D3DCreateLinker+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCreateLinker](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCreateLinker)  
-[D3DDecompressShaders](https://www.google.com/search?num=5&q=D3DDecompressShaders+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDecompressShaders](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDecompressShaders)  
-[D3DDisassemble](https://www.google.com/search?num=5&q=D3DDisassemble+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDisassemble](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassemble)  
-[D3DDisassemble10Effect](https://www.google.com/search?num=5&q=D3DDisassemble10Effect+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDisassemble10Effect](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassemble10Effect)  
-[D3DDisassembleRegion](https://www.google.com/search?num=5&q=D3DDisassembleRegion+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDisassembleRegion](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassembleRegion)  
-[D3DGetBlobPart](https://www.google.com/search?num=5&q=D3DGetBlobPart+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetBlobPart](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetBlobPart)  
-[D3DGetDebugInfo](https://www.google.com/search?num=5&q=D3DGetDebugInfo+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetDebugInfo](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetDebugInfo)  
-[D3DGetInputAndOutputSignatureBlob](https://www.google.com/search?num=5&q=D3DGetInputAndOutputSignatureBlob+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetInputAndOutputSignatureBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetInputAndOutputSignatureBlob)  
-[D3DGetInputSignatureBlob](https://www.google.com/search?num=5&q=D3DGetInputSignatureBlob+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetInputSignatureBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetInputSignatureBlob)  
-[D3DGetOutputSignatureBlob](https://www.google.com/search?num=5&q=D3DGetOutputSignatureBlob+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetOutputSignatureBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetOutputSignatureBlob)  
-[D3DGetTraceInstructionOffsets](https://www.google.com/search?num=5&q=D3DGetTraceInstructionOffsets+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetTraceInstructionOffsets](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetTraceInstructionOffsets)  
-[D3DLoadModule](https://www.google.com/search?num=5&q=D3DLoadModule+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DLoadModule](https://github.com/dahall/Vanara/search?l=C%23&q=D3DLoadModule)  
-[D3DPreprocess](https://www.google.com/search?num=5&q=D3DPreprocess+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DPreprocess](https://github.com/dahall/Vanara/search?l=C%23&q=D3DPreprocess)  
-[D3DReadFileToBlob](https://www.google.com/search?num=5&q=D3DReadFileToBlob+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DReadFileToBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DReadFileToBlob)  
-[D3DReflect](https://www.google.com/search?num=5&q=D3DReflect+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DReflect](https://github.com/dahall/Vanara/search?l=C%23&q=D3DReflect)  
-[D3DReflectLibrary](https://www.google.com/search?num=5&q=D3DReflectLibrary+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DReflectLibrary](https://github.com/dahall/Vanara/search?l=C%23&q=D3DReflectLibrary)  
-[D3DSetBlobPart](https://www.google.com/search?num=5&q=D3DSetBlobPart+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DSetBlobPart](https://github.com/dahall/Vanara/search?l=C%23&q=D3DSetBlobPart)  
-[D3DStripShader](https://www.google.com/search?num=5&q=D3DStripShader+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DStripShader](https://github.com/dahall/Vanara/search?l=C%23&q=D3DStripShader)  
-[D3DWriteBlobToFile](https://www.google.com/search?num=5&q=D3DWriteBlobToFile+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DWriteBlobToFile](https://github.com/dahall/Vanara/search?l=C%23&q=D3DWriteBlobToFile)  
+### Methods - 100% API coverage (27 of 27 functions)  
+Native Method | Native DLL | Header | Managed Method  
+--- | --- | --- | ---  
+[D3DCompile](https://www.google.com/search?num=5&q=D3DCompile+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompile](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompile)  
+[D3DCompile2](https://www.google.com/search?num=5&q=D3DCompile2+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompile2](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompile2)  
+[D3DCompileFromFile](https://www.google.com/search?num=5&q=D3DCompileFromFile+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompileFromFile](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompileFromFile)  
+[D3DCompressShaders](https://www.google.com/search?num=5&q=D3DCompressShaders+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCompressShaders](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompressShaders)  
+[D3DCreateBlob](https://www.google.com/search?num=5&q=D3DCreateBlob+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCreateBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCreateBlob)  
+[D3DCreateFunctionLinkingGraph](https://www.google.com/search?num=5&q=D3DCreateFunctionLinkingGraph+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCreateFunctionLinkingGraph](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCreateFunctionLinkingGraph)  
+[D3DCreateLinker](https://www.google.com/search?num=5&q=D3DCreateLinker+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCreateLinker](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCreateLinker)  
+[D3DDecompressShaders](https://www.google.com/search?num=5&q=D3DDecompressShaders+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDecompressShaders](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDecompressShaders)  
+[D3DDisassemble](https://www.google.com/search?num=5&q=D3DDisassemble+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDisassemble](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassemble)  
+[D3DDisassemble10Effect](https://www.google.com/search?num=5&q=D3DDisassemble10Effect+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDisassemble10Effect](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassemble10Effect)  
+[D3DDisassembleRegion](https://www.google.com/search?num=5&q=D3DDisassembleRegion+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DDisassembleRegion](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassembleRegion)  
+[D3DGetBlobPart](https://www.google.com/search?num=5&q=D3DGetBlobPart+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetBlobPart](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetBlobPart)  
+[D3DGetDebugInfo](https://www.google.com/search?num=5&q=D3DGetDebugInfo+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetDebugInfo](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetDebugInfo)  
+[D3DGetInputAndOutputSignatureBlob](https://www.google.com/search?num=5&q=D3DGetInputAndOutputSignatureBlob+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetInputAndOutputSignatureBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetInputAndOutputSignatureBlob)  
+[D3DGetInputSignatureBlob](https://www.google.com/search?num=5&q=D3DGetInputSignatureBlob+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetInputSignatureBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetInputSignatureBlob)  
+[D3DGetOutputSignatureBlob](https://www.google.com/search?num=5&q=D3DGetOutputSignatureBlob+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetOutputSignatureBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetOutputSignatureBlob)  
+[D3DGetTraceInstructionOffsets](https://www.google.com/search?num=5&q=D3DGetTraceInstructionOffsets+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DGetTraceInstructionOffsets](https://github.com/dahall/Vanara/search?l=C%23&q=D3DGetTraceInstructionOffsets)  
+[D3DLoadModule](https://www.google.com/search?num=5&q=D3DLoadModule+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DLoadModule](https://github.com/dahall/Vanara/search?l=C%23&q=D3DLoadModule)  
+[D3DPreprocess](https://www.google.com/search?num=5&q=D3DPreprocess+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DPreprocess](https://github.com/dahall/Vanara/search?l=C%23&q=D3DPreprocess)  
+[D3DReadFileToBlob](https://www.google.com/search?num=5&q=D3DReadFileToBlob+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DReadFileToBlob](https://github.com/dahall/Vanara/search?l=C%23&q=D3DReadFileToBlob)  
+[D3DReflect](https://www.google.com/search?num=5&q=D3DReflect+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DReflect](https://github.com/dahall/Vanara/search?l=C%23&q=D3DReflect)  
+[D3DReflectLibrary](https://www.google.com/search?num=5&q=D3DReflectLibrary+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DReflectLibrary](https://github.com/dahall/Vanara/search?l=C%23&q=D3DReflectLibrary)  
+[D3DSetBlobPart](https://www.google.com/search?num=5&q=D3DSetBlobPart+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DSetBlobPart](https://github.com/dahall/Vanara/search?l=C%23&q=D3DSetBlobPart)  
+[D3DStripShader](https://www.google.com/search?num=5&q=D3DStripShader+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DStripShader](https://github.com/dahall/Vanara/search?l=C%23&q=D3DStripShader)  
+[D3DWriteBlobToFile](https://www.google.com/search?num=5&q=D3DWriteBlobToFile+site%3Alearn.microsoft.com) | d3dcompiler_47.dll | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DWriteBlobToFile](https://github.com/dahall/Vanara/search?l=C%23&q=D3DWriteBlobToFile)  
+[DxcCreateInstance](https://www.google.com/search?num=5&q=DxcCreateInstance+site%3Alearn.microsoft.com) | dxilconv.dll | dxcapi.h | [Vanara.PInvoke.DXC.DxcCreateInstance](https://github.com/dahall/Vanara/search?l=C%23&q=DxcCreateInstance)  
+[DxcCreateInstance2](https://www.google.com/search?num=5&q=DxcCreateInstance2+site%3Alearn.microsoft.com) | dxilconv.dll | dxcapi.h | [Vanara.PInvoke.DXC.DxcCreateInstance2](https://github.com/dahall/Vanara/search?l=C%23&q=DxcCreateInstance2)  
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  
@@ -45,6 +47,11 @@ Native Enum | Header | Managed Enum
 [D3DCOMPILE_FLAGS2](https://www.google.com/search?num=5&q=D3DCOMPILE_FLAGS2+site%3Alearn.microsoft.com) | D3DCompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCOMPILE_FLAGS2](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCOMPILE_FLAGS2)  
 [D3DCOMPILE_SECDATA](https://www.google.com/search?num=5&q=D3DCOMPILE_SECDATA+site%3Alearn.microsoft.com) | D3DCompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCOMPILE_SECDATA](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCOMPILE_SECDATA)  
 [D3DCOMPILER_STRIP_FLAGS](https://www.google.com/search?num=5&q=D3DCOMPILER_STRIP_FLAGS+site%3Alearn.microsoft.com) | d3dcompiler.h | [Vanara.PInvoke.D3DCompiler.D3DCOMPILER_STRIP_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCOMPILER_STRIP_FLAGS)  
+[DXC_CP](https://www.google.com/search?num=5&q=DXC_CP+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DXC.DXC_CP](https://github.com/dahall/Vanara/search?l=C%23&q=DXC_CP)  
+[DXC_HASHFLAG](https://www.google.com/search?num=5&q=DXC_HASHFLAG+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DXC.DXC_HASHFLAG](https://github.com/dahall/Vanara/search?l=C%23&q=DXC_HASHFLAG)  
+[DXC_OUT_KIND](https://www.google.com/search?num=5&q=DXC_OUT_KIND+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.DXC_OUT_KIND](https://github.com/dahall/Vanara/search?l=C%23&q=DXC_OUT_KIND)  
+[DxcValidatorFlags](https://www.google.com/search?num=5&q=DxcValidatorFlags+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.DxcValidatorFlags](https://github.com/dahall/Vanara/search?l=C%23&q=DxcValidatorFlags)  
+[DxcVersionInfoFlags](https://www.google.com/search?num=5&q=DxcVersionInfoFlags+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DXC.DxcVersionInfoFlags](https://github.com/dahall/Vanara/search?l=C%23&q=DxcVersionInfoFlags)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -58,6 +65,11 @@ Native Structure | Header | Managed Structure
 [D3D11_SHADER_TYPE_DESC](https://www.google.com/search?num=5&q=D3D11_SHADER_TYPE_DESC+site%3Alearn.microsoft.com) | d3d11shader.h | [Vanara.PInvoke.D3DCompiler.D3D11_SHADER_TYPE_DESC](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11_SHADER_TYPE_DESC)  
 [D3D11_SHADER_VARIABLE_DESC](https://www.google.com/search?num=5&q=D3D11_SHADER_VARIABLE_DESC+site%3Alearn.microsoft.com) | d3d11shader.h | [Vanara.PInvoke.D3DCompiler.D3D11_SHADER_VARIABLE_DESC](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11_SHADER_VARIABLE_DESC)  
 [D3D11_SIGNATURE_PARAMETER_DESC](https://www.google.com/search?num=5&q=D3D11_SIGNATURE_PARAMETER_DESC+site%3Alearn.microsoft.com) | d3d11shader.h | [Vanara.PInvoke.D3DCompiler.D3D11_SIGNATURE_PARAMETER_DESC](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11_SIGNATURE_PARAMETER_DESC)  
+[DXC_PART](https://www.google.com/search?num=5&q=DXC_PART+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DXC.DXC_PART](https://github.com/dahall/Vanara/search?l=C%23&q=DXC_PART)  
+[DxcArgPair](https://www.google.com/search?num=5&q=DxcArgPair+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.DxcArgPair](https://github.com/dahall/Vanara/search?l=C%23&q=DxcArgPair)  
+[DxcBuffer](https://www.google.com/search?num=5&q=DxcBuffer+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.DxcBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=DxcBuffer)  
+[DxcDefine](https://www.google.com/search?num=5&q=DxcDefine+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.DxcDefine](https://github.com/dahall/Vanara/search?l=C%23&q=DxcDefine)  
+[DxcShaderHash](https://www.google.com/search?num=5&q=DxcShaderHash+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.DxcShaderHash](https://github.com/dahall/Vanara/search?l=C%23&q=DxcShaderHash)  
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
@@ -73,7 +85,34 @@ Native Interface | Header | Managed Interface
 [ID3D11ShaderReflectionConstantBuffer](https://www.google.com/search?num=5&q=ID3D11ShaderReflectionConstantBuffer+site%3Alearn.microsoft.com) | d3d11shader.h | [Vanara.PInvoke.D3DCompiler.ID3D11ShaderReflectionConstantBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=ID3D11ShaderReflectionConstantBuffer)  
 [ID3D11ShaderReflectionType](https://www.google.com/search?num=5&q=ID3D11ShaderReflectionType+site%3Alearn.microsoft.com) | d3d11shader.h | [Vanara.PInvoke.D3DCompiler.ID3D11ShaderReflectionType](https://github.com/dahall/Vanara/search?l=C%23&q=ID3D11ShaderReflectionType)  
 [ID3D11ShaderReflectionVariable](https://www.google.com/search?num=5&q=ID3D11ShaderReflectionVariable+site%3Alearn.microsoft.com) | d3d11shader.h | [Vanara.PInvoke.D3DCompiler.ID3D11ShaderReflectionVariable](https://github.com/dahall/Vanara/search?l=C%23&q=ID3D11ShaderReflectionVariable)  
+[IDxcAssembler](https://www.google.com/search?num=5&q=IDxcAssembler+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcAssembler](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcAssembler)  
+[IDxcBlobEncoding](https://www.google.com/search?num=5&q=IDxcBlobEncoding+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcBlobEncoding](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcBlobEncoding)  
+[IDxcBlobUtf8](https://www.google.com/search?num=5&q=IDxcBlobUtf8+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcBlobUtf8](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcBlobUtf8)  
+[IDxcBlobWide](https://www.google.com/search?num=5&q=IDxcBlobWide+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcBlobWide](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcBlobWide)  
+[IDxcCompiler](https://www.google.com/search?num=5&q=IDxcCompiler+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcCompiler](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcCompiler)  
+[IDxcCompiler2](https://www.google.com/search?num=5&q=IDxcCompiler2+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcCompiler2](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcCompiler2)  
+[IDxcCompiler3](https://www.google.com/search?num=5&q=IDxcCompiler3+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcCompiler3](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcCompiler3)  
+[IDxcCompilerArgs](https://www.google.com/search?num=5&q=IDxcCompilerArgs+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcCompilerArgs](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcCompilerArgs)  
+[IDxcContainerBuilder](https://www.google.com/search?num=5&q=IDxcContainerBuilder+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcContainerBuilder](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcContainerBuilder)  
+[IDxcContainerReflection](https://www.google.com/search?num=5&q=IDxcContainerReflection+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcContainerReflection](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcContainerReflection)  
+[IDxcExtraOutputs](https://www.google.com/search?num=5&q=IDxcExtraOutputs+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcExtraOutputs](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcExtraOutputs)  
+[IDxcIncludeHandler](https://www.google.com/search?num=5&q=IDxcIncludeHandler+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcIncludeHandler](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcIncludeHandler)  
+[IDxcLibrary](https://www.google.com/search?num=5&q=IDxcLibrary+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcLibrary](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcLibrary)  
+[IDxcLinker](https://www.google.com/search?num=5&q=IDxcLinker+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcLinker](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcLinker)  
+[IDxcOperationResult](https://www.google.com/search?num=5&q=IDxcOperationResult+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcOperationResult](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcOperationResult)  
+[IDxcOptimizer](https://www.google.com/search?num=5&q=IDxcOptimizer+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcOptimizer](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcOptimizer)  
+[IDxcOptimizerPass](https://www.google.com/search?num=5&q=IDxcOptimizerPass+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcOptimizerPass](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcOptimizerPass)  
+[IDxcPdbUtils](https://www.google.com/search?num=5&q=IDxcPdbUtils+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcPdbUtils](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcPdbUtils)  
+[IDxcPdbUtils2](https://www.google.com/search?num=5&q=IDxcPdbUtils2+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DXC.IDxcPdbUtils2](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcPdbUtils2)  
+[IDxcResult](https://www.google.com/search?num=5&q=IDxcResult+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcResult](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcResult)  
+[IDxcUtils](https://www.google.com/search?num=5&q=IDxcUtils+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcUtils](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcUtils)  
+[IDxcValidator](https://www.google.com/search?num=5&q=IDxcValidator+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcValidator](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcValidator)  
+[IDxcValidator2](https://www.google.com/search?num=5&q=IDxcValidator2+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcValidator2](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcValidator2)  
+[IDxcVersionInfo](https://www.google.com/search?num=5&q=IDxcVersionInfo+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcVersionInfo](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcVersionInfo)  
+[IDxcVersionInfo2](https://www.google.com/search?num=5&q=IDxcVersionInfo2+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcVersionInfo2](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcVersionInfo2)  
+[IDxcVersionInfo3](https://www.google.com/search?num=5&q=IDxcVersionInfo3+site%3Alearn.microsoft.com) | dxcapi.h | [Vanara.PInvoke.DXC.IDxcVersionInfo3](https://github.com/dahall/Vanara/search?l=C%23&q=IDxcVersionInfo3)  
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
 [D3DCompiler](https://www.google.com/search?num=5&q=D3DCompiler+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.D3DCompiler](https://github.com/dahall/Vanara/search?l=C%23&q=D3DCompiler)  
+[DXC](https://www.google.com/search?num=5&q=DXC+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DXC](https://github.com/dahall/Vanara/search?l=C%23&q=DXC)  

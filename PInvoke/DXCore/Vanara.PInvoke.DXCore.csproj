@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
-    <SupportedDlls>DXCore.dll</SupportedDlls>
+    <SupportedDlls>dxcore.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows DXCore.dll.</Description>
@@ -16,6 +16,9 @@ DXCoreCreateAdapterFactory
 
 Structures
 DXCoreAdapterEngineIndex DXCoreAdapterMemoryBudget DXCoreAdapterMemoryBudgetNodeSegmentGroup DXCoreAdapterProcessSetQueryInput DXCoreAdapterProcessSetQueryOutput DXCoreEngineNamePropertyInput DXCoreEngineNamePropertyOutput DXCoreEngineQueryInput DXCoreEngineQueryOutput DXCoreFrequencyQueryOutput DXCoreHardwareID DXCoreHardwareIDParts DXCoreMemoryQueryInput DXCoreMemoryUsage DXCoreProcessMemoryQueryInput DXCoreProcessMemoryQueryOutput
+
+Interfaces
+IDXCoreAdapter IDXCoreAdapter1 IDXCoreAdapterFactory IDXCoreAdapterFactory1 IDXCoreAdapterList
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>

@@ -109,6 +109,7 @@ Class | Description
 [Vanara.InteropServices.SafeMemoryPool&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemoryPool%26lt%3BT%26gt%3B) | A memory pool that will automatically release all memory pointers on disposal.
 [Vanara.InteropServices.SafeMemString&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemString%26lt%3BT%26gt%3B) | Base abstract class for a string handler based on `Vanara.InteropServices.SafeMemoryHandle`.
 [Vanara.InteropServices.SafeMemStruct&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemStruct%26lt%3BT%26gt%3B) | Base abstract class for a structure handler based on `Vanara.InteropServices.SafeMemoryHandle`.
+[Vanara.Matrix.SpanAction](https://github.com/dahall/Vanara/search?l=C%23&q=SpanAction) | A delegate that acts on a `System.Span` to set the values of the matrix.
 [Vanara.Collections.SparseArray&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SparseArray%26lt%3BT%26gt%3B) | A sparse array based on a dictionary.
 [Vanara.Extensions.StringHelper](https://github.com/dahall/Vanara/search?l=C%23&q=StringHelper) | A safe class that represents an object that is pinned in memory.
 [Vanara.Collections.VirtualReadOnlyList&lt;T&gt;.TryGetDelegate](https://github.com/dahall/Vanara/search?l=C%23&q=TryGetDelegate) | Delegate for a method that tries to get the element at the specified index.

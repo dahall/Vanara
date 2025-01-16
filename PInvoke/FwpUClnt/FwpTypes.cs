@@ -198,7 +198,7 @@ public static partial class FwpUClnt
 		/// <para>0xff</para>
 		/// <para>Reserved for future use.</para>
 		/// </summary>
-		FWP_SINGLE_DATA_TYPE_MAX,
+		FWP_SINGLE_DATA_TYPE_MAX = 0xff,
 
 		/// <summary>
 		/// <para>Indicates a pointer to an</para>

@@ -1,15 +1,51 @@
 ## Vanara.PInvoke.Direct3D11  
 PInvoke API (methods, structures and constants) imported from Windows Direct3D11.dll.
 
-- Includes methods from Vanara.PInvoke.Direct3D11.dll  
+- Includes methods from d3d11.dll, d3dcsx.dll, d3d11sdklayers.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Direct3D11?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Direct3D11?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Direct3D11)  
-### Methods - 100% API coverage (13 of 13 functions)  
+### Methods - 26% API coverage (13 of 50 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
+[CreateDirect3D11DeviceFromDXGIDevice](https://www.google.com/search?num=5&q=CreateDirect3D11DeviceFromDXGIDevice+site%3Alearn.microsoft.com) |  |   
+[CreateDirect3D11SurfaceFromDXGISurface](https://www.google.com/search?num=5&q=CreateDirect3D11SurfaceFromDXGISurface+site%3Alearn.microsoft.com) |  |   
 [D3D11CreateDevice](https://www.google.com/search?num=5&q=D3D11CreateDevice+site%3Alearn.microsoft.com) | d3d11.h | [Vanara.PInvoke.D3D11.D3D11CreateDevice](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11CreateDevice)  
 [D3D11CreateDeviceAndSwapChain](https://www.google.com/search?num=5&q=D3D11CreateDeviceAndSwapChain+site%3Alearn.microsoft.com) | d3d11.h | [Vanara.PInvoke.D3D11.D3D11CreateDeviceAndSwapChain](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11CreateDeviceAndSwapChain)  
 [D3D11On12CreateDevice](https://www.google.com/search?num=5&q=D3D11On12CreateDevice+site%3Alearn.microsoft.com) | d3d11on12.h | [Vanara.PInvoke.D3D11.D3D11On12CreateDevice](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11On12CreateDevice)  
 [D3DDisassemble11Trace](https://www.google.com/search?num=5&q=D3DDisassemble11Trace+site%3Alearn.microsoft.com) | d3d11shadertracing.h | [Vanara.PInvoke.D3D11.D3DDisassemble11Trace](https://github.com/dahall/Vanara/search?l=C%23&q=D3DDisassemble11Trace)  
+[D3DKMTCloseAdapter](https://www.google.com/search?num=5&q=D3DKMTCloseAdapter+site%3Alearn.microsoft.com) |  |   
+[D3DKMTCreateAllocation](https://www.google.com/search?num=5&q=D3DKMTCreateAllocation+site%3Alearn.microsoft.com) |  |   
+[D3DKMTCreateContext](https://www.google.com/search?num=5&q=D3DKMTCreateContext+site%3Alearn.microsoft.com) |  |   
+[D3DKMTCreateDevice](https://www.google.com/search?num=5&q=D3DKMTCreateDevice+site%3Alearn.microsoft.com) |  |   
+[D3DKMTCreateSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTCreateSynchronizationObject+site%3Alearn.microsoft.com) |  |   
+[D3DKMTDestroyAllocation](https://www.google.com/search?num=5&q=D3DKMTDestroyAllocation+site%3Alearn.microsoft.com) |  |   
+[D3DKMTDestroyContext](https://www.google.com/search?num=5&q=D3DKMTDestroyContext+site%3Alearn.microsoft.com) |  |   
+[D3DKMTDestroyDevice](https://www.google.com/search?num=5&q=D3DKMTDestroyDevice+site%3Alearn.microsoft.com) |  |   
+[D3DKMTDestroySynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTDestroySynchronizationObject+site%3Alearn.microsoft.com) |  |   
+[D3DKMTEscape](https://www.google.com/search?num=5&q=D3DKMTEscape+site%3Alearn.microsoft.com) |  |   
+[D3DKMTGetContextSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTGetContextSchedulingPriority+site%3Alearn.microsoft.com) |  |   
+[D3DKMTGetDeviceState](https://www.google.com/search?num=5&q=D3DKMTGetDeviceState+site%3Alearn.microsoft.com) |  |   
+[D3DKMTGetDisplayModeList](https://www.google.com/search?num=5&q=D3DKMTGetDisplayModeList+site%3Alearn.microsoft.com) |  |   
+[D3DKMTGetMultisampleMethodList](https://www.google.com/search?num=5&q=D3DKMTGetMultisampleMethodList+site%3Alearn.microsoft.com) |  |   
+[D3DKMTGetRuntimeData](https://www.google.com/search?num=5&q=D3DKMTGetRuntimeData+site%3Alearn.microsoft.com) |  |   
+[D3DKMTGetSharedPrimaryHandle](https://www.google.com/search?num=5&q=D3DKMTGetSharedPrimaryHandle+site%3Alearn.microsoft.com) |  |   
+[D3DKMTLock](https://www.google.com/search?num=5&q=D3DKMTLock+site%3Alearn.microsoft.com) |  |   
+[D3DKMTOpenAdapterFromHdc](https://www.google.com/search?num=5&q=D3DKMTOpenAdapterFromHdc+site%3Alearn.microsoft.com) |  |   
+[D3DKMTOpenResource](https://www.google.com/search?num=5&q=D3DKMTOpenResource+site%3Alearn.microsoft.com) |  |   
+[D3DKMTPresent](https://www.google.com/search?num=5&q=D3DKMTPresent+site%3Alearn.microsoft.com) |  |   
+[D3DKMTQueryAdapterInfo](https://www.google.com/search?num=5&q=D3DKMTQueryAdapterInfo+site%3Alearn.microsoft.com) |  |   
+[D3DKMTQueryAllocationResidency](https://www.google.com/search?num=5&q=D3DKMTQueryAllocationResidency+site%3Alearn.microsoft.com) |  |   
+[D3DKMTQueryResourceInfo](https://www.google.com/search?num=5&q=D3DKMTQueryResourceInfo+site%3Alearn.microsoft.com) |  |   
+[D3DKMTRender](https://www.google.com/search?num=5&q=D3DKMTRender+site%3Alearn.microsoft.com) |  |   
+[D3DKMTSetAllocationPriority](https://www.google.com/search?num=5&q=D3DKMTSetAllocationPriority+site%3Alearn.microsoft.com) |  |   
+[D3DKMTSetContextSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTSetContextSchedulingPriority+site%3Alearn.microsoft.com) |  |   
+[D3DKMTSetDisplayMode](https://www.google.com/search?num=5&q=D3DKMTSetDisplayMode+site%3Alearn.microsoft.com) |  |   
+[D3DKMTSetDisplayPrivateDriverFormat](https://www.google.com/search?num=5&q=D3DKMTSetDisplayPrivateDriverFormat+site%3Alearn.microsoft.com) |  |   
+[D3DKMTSetGammaRamp](https://www.google.com/search?num=5&q=D3DKMTSetGammaRamp+site%3Alearn.microsoft.com) |  |   
+[D3DKMTSetVidPnSourceOwner](https://www.google.com/search?num=5&q=D3DKMTSetVidPnSourceOwner+site%3Alearn.microsoft.com) |  |   
+[D3DKMTSignalSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTSignalSynchronizationObject+site%3Alearn.microsoft.com) |  |   
+[D3DKMTUnlock](https://www.google.com/search?num=5&q=D3DKMTUnlock+site%3Alearn.microsoft.com) |  |   
+[D3DKMTWaitForSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTWaitForSynchronizationObject+site%3Alearn.microsoft.com) |  |   
+[D3DKMTWaitForVerticalBlankEvent](https://www.google.com/search?num=5&q=D3DKMTWaitForVerticalBlankEvent+site%3Alearn.microsoft.com) |  |   
 [D3DX11CreateFFT](https://www.google.com/search?num=5&q=D3DX11CreateFFT+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateFFT](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateFFT)  
 [D3DX11CreateFFT1DComplex](https://www.google.com/search?num=5&q=D3DX11CreateFFT1DComplex+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateFFT1DComplex](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateFFT1DComplex)  
 [D3DX11CreateFFT1DReal](https://www.google.com/search?num=5&q=D3DX11CreateFFT1DReal+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateFFT1DReal](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateFFT1DReal)  
@@ -19,6 +55,7 @@ Native Method | Header | Managed Method
 [D3DX11CreateFFT3DReal](https://www.google.com/search?num=5&q=D3DX11CreateFFT3DReal+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateFFT3DReal](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateFFT3DReal)  
 [D3DX11CreateScan](https://www.google.com/search?num=5&q=D3DX11CreateScan+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateScan](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateScan)  
 [D3DX11CreateSegmentedScan](https://www.google.com/search?num=5&q=D3DX11CreateSegmentedScan+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateSegmentedScan](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateSegmentedScan)  
+[EnableFeatureLevelUpgrade](https://www.google.com/search?num=5&q=EnableFeatureLevelUpgrade+site%3Alearn.microsoft.com) |  |   
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  
@@ -369,7 +406,3 @@ Native Interface | Header | Managed Interface
 [ID3DX11FFT](https://www.google.com/search?num=5&q=ID3DX11FFT+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.ID3DX11FFT](https://github.com/dahall/Vanara/search?l=C%23&q=ID3DX11FFT)  
 [ID3DX11Scan](https://www.google.com/search?num=5&q=ID3DX11Scan+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.ID3DX11Scan](https://github.com/dahall/Vanara/search?l=C%23&q=ID3DX11Scan)  
 [ID3DX11SegmentedScan](https://www.google.com/search?num=5&q=ID3DX11SegmentedScan+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.ID3DX11SegmentedScan](https://github.com/dahall/Vanara/search?l=C%23&q=ID3DX11SegmentedScan)  
-### Classes  
-Native Class | Header | Managed Class  
---- | --- | ---  
-[D3D11](https://www.google.com/search?num=5&q=D3D11+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.D3D11](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11)  

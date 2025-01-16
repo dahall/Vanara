@@ -1,7 +1,6 @@
 ﻿//#define WUTYPELIB
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using Vanara.WindowsUpdate;
 using static Vanara.PInvoke.WUApi;
 #else
+using System.Collections.Generic;
 using WUApiLib;
 #endif
 
@@ -66,12 +66,27 @@ public class WUApiTests
 			Assert.That(auto.ServiceEnabled, Is.True);
 		}
 
+#if WUTYPELIB
+		List<IUpdate> autoUpd = new UpdateSearcher().Search("IsInstalled=0").Updates.Cast<IUpdate>().Where(u => u.AutoSelectOnWebSites).ToList();
+		List<IUpdate> dnld = autoUpd.Where(u => !u.IsDownloaded).ToList();
+		if (dnld.Count > 0)
+		{
+			var dnldColl = new UpdateCollection();
+			dnld.ForEach(u => dnldColl.Add(u));
+			new UpdateDownloader() { Updates = dnldColl }.DownloadAsync(p => p.WriteValues()).Result.WriteValues();
+		}
+
+		var updColl = new UpdateCollection();
+		autoUpd.ForEach(u => updColl.Add(u));
+		var res = new UpdateInstaller { AllowSourcePrompts = false, ForceQuiet = true, Updates = updColl }.InstallAsync(p => p.WriteValues()).Result;
+#else
 		var autoUpd = new UpdateSearcher().Search("IsInstalled=0").Updates.Where(u => u.AutoSelectOnWebSites).ToList();
 		var dnld = autoUpd.Where(u => !u.IsDownloaded).ToList();
 		if (dnld.Count > 0)
 			new UpdateDownloader(dnld).DownloadAsync(p => p.WriteValues()).Result.WriteValues();
 
 		var res = new UpdateInstaller(autoUpd) { AllowSourcePrompts = false, ForceQuiet = true }.InstallAsync(p => p.WriteValues()).Result;
+#endif
 		Assert.That(res.HResult, Is.EqualTo((HRESULT)0));
 		res.WriteValues();
 	}
@@ -100,7 +115,7 @@ public class WUApiTests
 	{
 		UpdateSearcher searcher = new();
 		var res = searcher.Search("");
-		foreach (var upd in res.Updates)
+		foreach (var upd in res.Updates.Cast<IUpdate>())
 		{
 			TestContext.WriteLine(new string('=', 50));
 			TestContext.WriteLine(upd.Title);
@@ -127,7 +142,7 @@ public class WUApiTests
 	{
 		UpdateSearcher searcher = new();
 		var res = await searcher.SearchAsync("IsInstalled=1");
-		foreach (var upd in res.Updates)
+		foreach (var upd in res.Updates.Cast<IUpdate>())
 		{
 			TestContext.WriteLine(new string('=', 50));
 			TestContext.WriteLine(upd.Title);
@@ -159,15 +174,194 @@ public class WUApiTests
 	[Test]
 	public void TestUpdateServiceManager()
 	{
+		const string svcid = "7971f918-a847-4430-9279-4a52d1efe18d"; // Guid.NewGuid().ToString("D");
+
 		UpdateServiceManager mgr = new() { ClientApplicationID = "Test" };
+#if WUTYPELIB
+		foreach (var up in mgr.Services.Cast<IUpdateService>())
+			up.WriteValues();
+		var us = mgr.AddService2(svcid, (int)(AddServiceFlag.asfAllowOnlineRegistration | AddServiceFlag.asfAllowPendingRegistration), "");
+#else
 		foreach (var up in mgr)
 			up.WriteValues();
-
-		var svcid = "7971f918-a847-4430-9279-4a52d1efe18d"; // Guid.NewGuid().ToString("D");
 		var us = mgr.AddService(svcid, AddServiceFlag.asfAllowOnlineRegistration | AddServiceFlag.asfAllowPendingRegistration);
+#endif
 		Assert.That(us?.ServiceID, Is.EqualTo(svcid));
 		us?.WriteValues();
 		mgr.RemoveService(svcid);
+	}
+
+#if !WUTYPELIB
+	[Test]
+	public void UpdateTestRaw()
+	{
+		// Create searcher
+		IUpdateSearcher updateSearcher = new();
+
+		// Create list of updates to install
+		IUpdateCollection updatesToInstall = (IUpdateCollection)new UpdateCollectionClass();
+		var searchResult = updateSearcher.Search("IsInstalled=1 AND IsHidden=0");
+		var updates = searchResult.Updates.Cast<IUpdate>().ToList();
+
+		// Check updates downloaded
+		var downloadable = updates.Where(u =>!u.IsDownloaded && (!u.Title.Contains("Internet Explorer 9") || !u.Title.Contains("Internet Explorer 10"))).ToList();
+
+		// Add downloaded to updates to install
+		foreach (var x in updates.Where(x => !downloadable.Contains(x)))
+			updatesToInstall.Add(x);
+
+		if (downloadable.Count > 0)
+		{
+			// Create Downloader
+			IUpdateDownloader downloader = new();
+			downloader.Priority = DownloadPriority.dpNormal;
+			downloader.ClientApplicationID = "Test";
+
+			// Create list of updates to download
+			IUpdateCollection updatesToDownload = (IUpdateCollection)new UpdateCollectionClass();
+			foreach (var update in downloadable)
+				updatesToDownload.Add(update);
+
+			// Create awaiter
+			var downloadTask = new TaskCompletionSource<IDownloadResult>();
+
+			// Download updates
+			downloader.Updates = updatesToDownload; // <------ issue
+			Console.WriteLine("Downloading updates ...");
+			IUpdate? latest;
+			downloader.BeginDownload(new DownloadProgressChangedCallback(progress =>
+			{
+				// Calculate percent
+				Console.WriteLine($"Downloading {progress.PercentComplete}% ...");
+				switch (progress.CurrentUpdateDownloadPhase)
+				{
+					case DownloadPhase.dphDownloading:
+						latest = downloader.Updates[progress.CurrentUpdateIndex];
+						Console.WriteLine($"Downloading {latest.Title} in {progress.CurrentUpdatePercentComplete}% ...");
+						break;
+					case DownloadPhase.dphVerifying:
+						updatesToInstall.Add(downloader.Updates[progress.CurrentUpdateIndex]);
+						break;
+				}
+			}), new DownloadCompletedCallback((job, _) =>
+			{
+				try { downloadTask.TrySetResult(downloader.EndDownload(job)); }
+				catch (Exception ex) { downloadTask.TrySetException(ex); }
+			}), null);
+
+			// Get download result
+			try
+			{
+				var downloadResult = downloadTask.Task.Result;
+				if (downloadResult.ResultCode == OperationResultCode.orcFailed)
+					Console.WriteLine("Failed to download!");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Failed to download updates: {ex.Message}");
+			}
+		}
+
+		if (updatesToInstall.Count > 0)
+		{
+			// Create installer
+			// TODO: Solve problem with set updates to downloader and installer instances
+			IUpdateInstaller installer = new();
+			installer.Updates = updatesToInstall;
+			installer.AllowSourcePrompts = false;
+			installer.IsForced = true;
+
+			// Create awaiter
+			var installTask = new TaskCompletionSource<IInstallationResult>();
+
+			installer.BeginInstall(
+				new InstallationProgressChangeCallback(progress =>
+					Console.Write($"Installing {progress.PercentComplete}% ...")),
+				new InstallationCompletedCallback(job =>
+				{
+					try { installTask.TrySetResult(installer.EndInstall(job)); }
+					catch (Exception e) { installTask.TrySetException(e); }
+				}), null);
+
+			// Get installation result
+			try
+			{
+				var installResult = installTask.Task.Result;
+				if (installResult.ResultCode == OperationResultCode.orcFailed)
+				{
+					Console.WriteLine("Failed to install!");
+					return;
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Failed to install updates: {ex.Message}");
+				return;
+			}
+		}
+
+		Console.WriteLine("Patching complete!");
+	}
+#endif
+
+	public class DownloadProgressChangedCallback(Action<IDownloadProgress> action) : IDownloadProgressChangedCallback
+	{
+		public HRESULT Invoke(IDownloadJob job, IDownloadProgressChangedCallbackArgs args)
+		{
+			try { action.Invoke(args.Progress); }
+			catch (Exception ex) { return ex.HResult; }
+
+			return HRESULT.S_OK;
+		}
+
+#if WUTYPELIB
+		void IDownloadProgressChangedCallback.Invoke(IDownloadJob downloadJob, IDownloadProgressChangedCallbackArgs callbackArgs) => Invoke(downloadJob, callbackArgs).ThrowIfFailed();
+#endif
+	}
+
+	public class DownloadCompletedCallback(Action<IDownloadJob, IDownloadCompletedCallbackArgs> action) : IDownloadCompletedCallback
+	{
+		public HRESULT Invoke(IDownloadJob job, IDownloadCompletedCallbackArgs args)
+		{
+			try { action.Invoke(job, args); }
+			catch (Exception ex) { return ex.HResult; }
+
+			return HRESULT.S_OK;
+		}
+
+#if WUTYPELIB
+		void IDownloadCompletedCallback.Invoke(IDownloadJob downloadJob, IDownloadCompletedCallbackArgs callbackArgs) => Invoke(downloadJob, callbackArgs).ThrowIfFailed();
+#endif
+	}
+
+	internal class InstallationProgressChangeCallback(Action<IInstallationProgress> action) : IInstallationProgressChangedCallback
+	{
+		public HRESULT Invoke(IInstallationJob job, IInstallationProgressChangedCallbackArgs args)
+		{
+			try { action.Invoke(args.Progress); }
+			catch (Exception ex) { return ex.HResult; }
+
+			return HRESULT.S_OK;
+		}
+
+#if WUTYPELIB
+		void IInstallationProgressChangedCallback.Invoke(IInstallationJob downloadJob, IInstallationProgressChangedCallbackArgs callbackArgs) => Invoke(downloadJob, callbackArgs).ThrowIfFailed();
+#endif
+	}
+
+	internal class InstallationCompletedCallback(Action<IInstallationJob> action) : IInstallationCompletedCallback
+	{
+		public HRESULT Invoke(IInstallationJob job, IInstallationCompletedCallbackArgs? args)
+		{
+			try { action.Invoke(job); }
+			catch (Exception ex) { return ex.HResult; }
+
+			return HRESULT.S_OK;
+		}
+
+#if WUTYPELIB
+		void IInstallationCompletedCallback.Invoke(IInstallationJob downloadJob, IInstallationCompletedCallbackArgs callbackArgs) => Invoke(downloadJob, callbackArgs).ThrowIfFailed();
+#endif
 	}
 }
 

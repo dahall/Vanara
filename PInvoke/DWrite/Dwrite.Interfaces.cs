@@ -1,3 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the Dwrite.dll</summary>
@@ -844,17 +848,21 @@ public static partial class Dwrite
 
 		/// <summary>Determines whether the font supports a specified character.</summary>
 		/// <param name="unicodeValue">
-		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Type: <b>UINT32</b></para>
 		/// <para>A Unicode (UCS-4) character value for the method to inspect.</para>
 		/// </param>
+		/// <param name="exists">
+		/// <para>Type: <b>BOOL*</b></para>
+		/// <para>When this method returns, <b>TRUE</b> if the font supports the specified character; otherwise, <b>FALSE</b>.</para>
+		/// </param>
 		/// <returns>
-		/// <para>Type: <c>BOOL*</c></para>
-		/// <para>When this method returns, <c>TRUE</c> if the font supports the specified character; otherwise, <c>FALSE</c>.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefont-hascharacter HRESULT HasCharacter( UINT32
-		// unicodeValue, BOOL *exists );
-		[return: MarshalAs(UnmanagedType.Bool)]
-		bool HasCharacter(uint unicodeValue);
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefont-hascharacter
+		// HRESULT HasCharacter( UINT32 unicodeValue, [out] BOOL *exists );
+		[PreserveSig]
+		HRESULT HasCharacter(uint unicodeValue, [MarshalAs(UnmanagedType.Bool)] out bool exists);
 
 		/// <summary>Creates a font face object for the font.</summary>
 		/// <returns>
@@ -968,37 +976,37 @@ public static partial class Dwrite
 	public interface IDWriteFontCollectionLoader
 	{
 		/// <summary>
-		/// Creates a font file enumerator object that encapsulates a collection of font files. The font system calls back to this
-		/// interface to create a font collection.
+		/// Creates a font file enumerator object that encapsulates a collection of font files. The font system calls back to this interface
+		/// to create a font collection.
 		/// </summary>
 		/// <param name="factory">
-		/// <para>Type: <c>IDWriteFactory*</c></para>
-		/// <para>Pointer to the IDWriteFactory object that was used to create the current font collection.</para>
+		/// <para>Type: <b><c>IDWriteFactory</c>*</b></para>
+		/// <para>Pointer to the <c>IDWriteFactory</c> object that was used to create the current font collection.</para>
 		/// </param>
 		/// <param name="collectionKey">
-		/// <para>Type: <c>const void*</c></para>
+		/// <para>Type: <b>const void*</b></para>
 		/// <para>
-		/// A font collection key that uniquely identifies the collection of font files within the scope of the font collection loader
-		/// being used. The buffer allocated for this key must be at least the size, in bytes, specified by collectionKeySize.
+		/// A font collection key that uniquely identifies the collection of font files within the scope of the font collection loader being
+		/// used. The buffer allocated for this key must be at least the size, in bytes, specified by <i>collectionKeySize</i>.
 		/// </para>
 		/// </param>
 		/// <param name="collectionKeySize">
-		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Type: <b>UINT32</b></para>
 		/// <para>The size of the font collection key, in bytes.</para>
 		/// </param>
 		/// <param name="fontFileEnumerator">
-		/// <para>Type: <c>IDWriteFontFileEnumerator**</c></para>
+		/// <para>Type: <b><c>IDWriteFontFileEnumerator</c>**</b></para>
 		/// <para>When this method returns, contains the address of a pointer to the newly created font file enumerator.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontcollectionloader-createenumeratorfromkey
-		// HRESULT CreateEnumeratorFromKey( IDWriteFactory *factory, void const *collectionKey, UINT32 collectionKeySize,
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontcollectionloader-createenumeratorfromkey HRESULT
+		// CreateEnumeratorFromKey( IDWriteFactory *factory, [in] void const *collectionKey, UINT32 collectionKeySize, [out]
 		// IDWriteFontFileEnumerator **fontFileEnumerator );
 		[PreserveSig]
-		HRESULT CreateEnumeratorFromKey([In] IDWriteFactory factory, IntPtr collectionKey, uint collectionKeySize, out IDWriteFontFileEnumerator? fontFileEnumerator);
+		HRESULT CreateEnumeratorFromKey([In] IDWriteFactory factory, [In] IntPtr collectionKey, uint collectionKeySize, out IDWriteFontFileEnumerator? fontFileEnumerator);
 	}
 
 	/// <summary>
@@ -1610,35 +1618,35 @@ public static partial class Dwrite
 	{
 		/// <summary>
 		/// Advances to the next font file in the collection. When it is first created, the enumerator is positioned before the first
-		/// element of the collection and the first call to <c>MoveNext</c> advances to the first file.
+		/// element of the collection and the first call to <b>MoveNext</b> advances to the first file.
 		/// </summary>
 		/// <param name="hasCurrentFile">
-		/// <para>Type: <c>BOOL*</c></para>
+		/// <para>Type: <b>BOOL*</b></para>
 		/// <para>
-		/// When the method returns, contains the value <c>TRUE</c> if the enumerator advances to a file; otherwise, <c>FALSE</c> if the
+		/// When the method returns, contains the value <b>TRUE</b> if the enumerator advances to a file; otherwise, <b>FALSE</b> if the
 		/// enumerator advances past the last file in the collection.
 		/// </para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileenumerator-movenext HRESULT MoveNext( BOOL
-		// *hasCurrentFile );
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileenumerator-movenext HRESULT MoveNext( [out]
+		// BOOL *hasCurrentFile );
 		[PreserveSig]
 		HRESULT MoveNext([MarshalAs(UnmanagedType.Bool)] out bool hasCurrentFile);
 
 		/// <summary>Gets a reference to the current font file.</summary>
 		/// <param name="fontFile">
-		/// <para>Type: <c>IDWriteFontFile**</c></para>
-		/// <para>When this method returns, the address of a pointer to the newly created IDWriteFontFile object.</para>
+		/// <para>Type: <b><c>IDWriteFontFile</c>**</b></para>
+		/// <para>When this method returns, the address of a pointer to the newly created <c>IDWriteFontFile</c> object.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileenumerator-getcurrentfontfile HRESULT
-		// GetCurrentFontFile( IDWriteFontFile **fontFile );
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileenumerator-getcurrentfontfile HRESULT
+		// GetCurrentFontFile( [out] IDWriteFontFile **fontFile );
 		[PreserveSig]
 		HRESULT GetCurrentFontFile(out IDWriteFontFile? fontFile);
 	}
@@ -1660,24 +1668,28 @@ public static partial class Dwrite
 	{
 		/// <summary>Creates a font file stream object that encapsulates an open file resource.</summary>
 		/// <param name="fontFileReferenceKey">
-		/// <para>Type: <c>const void*</c></para>
-		/// <para>A pointer to a font file reference key that uniquely identifies the font file resource within the scope of the font loader being used. The buffer allocated for this key must at least be the size, in bytes, specified by fontFileReferenceKeySize.</para>
+		/// <para>Type: <b>const void*</b></para>
+		/// <para>
+		/// A pointer to a font file reference key that uniquely identifies the font file resource within the scope of the font loader being
+		/// used. The buffer allocated for this key must at least be the size, in bytes, specified by <i>fontFileReferenceKeySize</i>.
+		/// </para>
 		/// </param>
 		/// <param name="fontFileReferenceKeySize">
-		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Type: <b>UINT32</b></para>
 		/// <para>The size of font file reference key, in bytes.</para>
 		/// </param>
 		/// <param name="fontFileStream">
-		/// <para>Type: <c>IDWriteFontFileStream**</c></para>
-		/// <para>When this method returns, contains the address of a pointer to the newly created IDWriteFontFileStream object.</para>
+		/// <para>Type: <b><c>IDWriteFontFileStream</c>**</b></para>
+		/// <para>When this method returns, contains the address of a pointer to the newly created <c>IDWriteFontFileStream</c> object.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		/// <remarks>The resource is closed when the last reference to fontFileStream is released.</remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileloader-createstreamfromkey
-		// HRESULT CreateStreamFromKey( void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, IDWriteFontFileStream **fontFileStream );
+		/// <remarks>The resource is closed when the last reference to <i>fontFileStream</i> is released.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileloader-createstreamfromkey HRESULT
+		// CreateStreamFromKey( [in] void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, [out] IDWriteFontFileStream
+		// **fontFileStream );
 		[PreserveSig]
 		HRESULT CreateStreamFromKey([In] IntPtr fontFileReferenceKey, uint fontFileReferenceKeySize, out IDWriteFontFileStream? fontFileStream);
 	}
@@ -1690,72 +1702,95 @@ public static partial class Dwrite
 	{
 		/// <summary>Reads a fragment from a font file.</summary>
 		/// <param name="fragmentStart">
-		/// <para>Type: <c>const void**</c></para>
-		/// <para>When this method returns, contains an address of a pointer to the start of the font file fragment. This parameter is passed uninitialized.</para>
+		/// <para>Type: <b>const void**</b></para>
+		/// <para>
+		/// When this method returns, contains an address of a pointer to the start of the font file fragment. This parameter is passed uninitialized.
+		/// </para>
 		/// </param>
 		/// <param name="fileOffset">
-		/// <para>Type: <c>UINT64</c></para>
+		/// <para>Type: <b>UINT64</b></para>
 		/// <para>The offset of the fragment, in bytes, from the beginning of the font file.</para>
 		/// </param>
 		/// <param name="fragmentSize">
-		/// <para>Type: <c>UINT64</c></para>
+		/// <para>Type: <b>UINT64</b></para>
 		/// <para>The size of the file fragment, in bytes.</para>
 		/// </param>
 		/// <param name="fragmentContext">
-		/// <para>Type: <c>void**</c></para>
-		/// <para>When this method returns, contains the address of a pointer to a pointer to the client-defined context to be passed to ReleaseFileFragment.</para>
+		/// <para>Type: <b>void**</b></para>
+		/// <para>
+		/// When this method returns, contains the address of a pointer to a pointer to the client-defined context to be passed to <c>ReleaseFileFragment</c>.
+		/// </para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
 		/// <remarks>
-		/// <para>Note that <c>ReadFileFragment</c> implementations must check whether the requested font file fragment is within the file bounds. Otherwise, an error should be returned from <c>ReadFileFragment</c>.</para>
-		/// <para>DirectWrite may invoke IDWriteFontFileStream methods on the same object from multiple threads simultaneously. Therefore, <c>ReadFileFragment</c> implementations that rely on internal mutable state must serialize access to such state across multiple threads. For example, an implementation that uses separate Seek and Read operations to read a file fragment must place the code block containing Seek and Read calls under a lock or a critical section.</para>
+		/// <para>
+		/// Note that <b>ReadFileFragment</b> implementations must check whether the requested font file fragment is within the file bounds.
+		/// Otherwise, an error should be returned from <b>ReadFileFragment</b>.
+		/// </para>
+		/// <para>
+		/// <c>DirectWrite</c> may invoke <c>IDWriteFontFileStream</c> methods on the same object from multiple threads simultaneously.
+		/// Therefore, <b>ReadFileFragment</b> implementations that rely on internal mutable state must serialize access to such state
+		/// across multiple threads. For example, an implementation that uses separate Seek and Read operations to read a file fragment must
+		/// place the code block containing Seek and Read calls under a lock or a critical section.
+		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfilestream-readfilefragment
-		// HRESULT ReadFileFragment( void const **fragmentStart, UINT64 fileOffset, UINT64 fragmentSize, void **fragmentContext );
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfilestream-readfilefragment HRESULT
+		// ReadFileFragment( [out] void const **fragmentStart, UINT64 fileOffset, UINT64 fragmentSize, [out] void **fragmentContext );
 		[PreserveSig]
 		HRESULT ReadFileFragment(out IntPtr fragmentStart, ulong fileOffset, ulong fragmentSize, [Out] out IntPtr fragmentContext);
 
 		/// <summary>Releases a fragment from a file.</summary>
 		/// <param name="fragmentContext">
-		/// <para>Type: <c>void*</c></para>
-		/// <para>A pointer to the client-defined context of a font fragment returned from ReadFileFragment.</para>
+		/// <para>Type: <b>void*</b></para>
+		/// <para>A pointer to the client-defined context of a font fragment returned from <c>ReadFileFragment</c>.</para>
 		/// </param>
 		/// <returns>None</returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfilestream-releasefilefragment void
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfilestream-releasefilefragment void
 		// ReleaseFileFragment( void *fragmentContext );
 		[PreserveSig]
 		void ReleaseFileFragment([In] IntPtr fragmentContext);
 
 		/// <summary>Obtains the total size of a file.</summary>
 		/// <param name="fileSize">
-		/// <para>Type: <c>UINT64*</c></para>
+		/// <para>Type: <b>UINT64*</b></para>
 		/// <para>When this method returns, contains the total size of the file.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		/// <remarks>Implementing <c>GetFileSize</c>() for asynchronously loaded font files may require downloading the complete file contents. Therefore, this method should be used only for operations that either require a complete font file to be loaded (for example, copying a font file) or that need to make decisions based on the value of the file size (for example, validation against a persisted file size).</remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfilestream-getfilesize
-		// HRESULT GetFileSize( UINT64 *fileSize );
+		/// <remarks>
+		/// Implementing <b>GetFileSize</b>() for asynchronously loaded font files may require downloading the complete file contents.
+		/// Therefore, this method should be used only for operations that either require a complete font file to be loaded (for example,
+		/// copying a font file) or that need to make decisions based on the value of the file size (for example, validation against a
+		/// persisted file size).
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfilestream-getfilesize HRESULT GetFileSize( [out]
+		// UINT64 *fileSize );
 		[PreserveSig]
 		HRESULT GetFileSize(out ulong fileSize);
 
 		/// <summary>Obtains the last modified time of the file.</summary>
 		/// <param name="lastWriteTime">
-		/// <para>Type: <c>UINT64*</c></para>
-		/// <para>When this method returns, contains the last modified time of the file in the format that represents the number of 100-nanosecond intervals since January 1, 1601 (UTC).</para>
+		/// <para>Type: <b>UINT64*</b></para>
+		/// <para>
+		/// When this method returns, contains the last modified time of the file in the format that represents the number of 100-nanosecond
+		/// intervals since January 1, 1601 (UTC).
+		/// </para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		/// <remarks>The "last modified time" is used by DirectWrite font selection algorithms to determine whether one font resource is more up to date than another one.</remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfilestream-getlastwritetime
-		// HRESULT GetLastWriteTime( UINT64 *lastWriteTime );
+		/// <remarks>
+		/// The "last modified time" is used by DirectWrite font selection algorithms to determine whether one font resource is more up to
+		/// date than another one.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfilestream-getlastwritetime HRESULT
+		// GetLastWriteTime( [out] UINT64 *lastWriteTime );
 		[PreserveSig]
 		HRESULT GetLastWriteTime(out FILETIME lastWriteTime);
 	}
@@ -2064,7 +2099,7 @@ public static partial class Dwrite
 		// *clientDrawingContext, IDWriteTextRenderer *renderer, FLOAT originX, FLOAT originY, BOOL isSideways, BOOL isRightToLeft,
 		// IUnknown *clientDrawingEffect );
 		void Draw([In, Optional] IntPtr clientDrawingContext, [In] IDWriteTextRenderer renderer, float originX, float originY,
-			[MarshalAs(UnmanagedType.Bool)] bool isSideways, [MarshalAs(UnmanagedType.Bool)] bool isRightToLeft, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object clientDrawingEffect);
+			[MarshalAs(UnmanagedType.Bool)] bool isSideways, [MarshalAs(UnmanagedType.Bool)] bool isRightToLeft, [In, Optional, MarshalAs(UnmanagedType.Interface)] object clientDrawingEffect);
 
 		/// <summary>IDWriteTextLayout calls this callback function to get the measurement of the inline object.</summary>
 		/// <returns>
@@ -2128,94 +2163,99 @@ public static partial class Dwrite
 	{
 		/// <summary>Creates a font file stream object that encapsulates an open file resource.</summary>
 		/// <param name="fontFileReferenceKey">
-		/// <para>Type: <c>const void*</c></para>
-		/// <para>A pointer to a font file reference key that uniquely identifies the font file resource within the scope of the font loader being used. The buffer allocated for this key must at least be the size, in bytes, specified by fontFileReferenceKeySize.</para>
+		/// <para>Type: <b>const void*</b></para>
+		/// <para>
+		/// A pointer to a font file reference key that uniquely identifies the font file resource within the scope of the font loader being
+		/// used. The buffer allocated for this key must at least be the size, in bytes, specified by <i>fontFileReferenceKeySize</i>.
+		/// </para>
 		/// </param>
 		/// <param name="fontFileReferenceKeySize">
-		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Type: <b>UINT32</b></para>
 		/// <para>The size of font file reference key, in bytes.</para>
 		/// </param>
 		/// <param name="fontFileStream">
-		/// <para>Type: <c>IDWriteFontFileStream**</c></para>
-		/// <para>When this method returns, contains the address of a pointer to the newly created IDWriteFontFileStream object.</para>
+		/// <para>Type: <b><c>IDWriteFontFileStream</c>**</b></para>
+		/// <para>When this method returns, contains the address of a pointer to the newly created <c>IDWriteFontFileStream</c> object.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		/// <remarks>The resource is closed when the last reference to fontFileStream is released.</remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileloader-createstreamfromkey
-		// HRESULT CreateStreamFromKey( void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, IDWriteFontFileStream **fontFileStream );
+		/// <remarks>The resource is closed when the last reference to <i>fontFileStream</i> is released.</remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritefontfileloader-createstreamfromkey HRESULT
+		// CreateStreamFromKey( [in] void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, [out] IDWriteFontFileStream
+		// **fontFileStream );
 		[PreserveSig]
 		new HRESULT CreateStreamFromKey([In] IntPtr fontFileReferenceKey, uint fontFileReferenceKeySize, out IDWriteFontFileStream? fontFileStream);
 
 		/// <summary>Obtains the length of the absolute file path from the font file reference key.</summary>
 		/// <param name="fontFileReferenceKey">
-		/// <para>Type: <c>const void*</c></para>
+		/// <para>Type: <b>const void*</b></para>
 		/// <para>Font file reference key that uniquely identifies the local font file within the scope of the font loader being used.</para>
 		/// </param>
 		/// <param name="fontFileReferenceKeySize">
-		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Type: <b>UINT32</b></para>
 		/// <para>Size of font file reference key in bytes.</para>
 		/// </param>
 		/// <param name="filePathLength">
-		/// <para>Type: <c>UINT32*</c></para>
-		/// <para>Length of the file path string, not including the terminated <c>NULL</c> character.</para>
+		/// <para>Type: <b>UINT32*</b></para>
+		/// <para>Length of the file path string, not including the terminated <b>NULL</b> character.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritelocalfontfileloader-getfilepathlengthfromkey
-		// HRESULT GetFilePathLengthFromKey( void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, UINT32 *filePathLength );
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritelocalfontfileloader-getfilepathlengthfromkey HRESULT
+		// GetFilePathLengthFromKey( [in] void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, [out] UINT32 *filePathLength );
 		[PreserveSig]
 		HRESULT GetFilePathLengthFromKey(IntPtr fontFileReferenceKey, uint fontFileReferenceKeySize, out uint filePathLength);
 
 		/// <summary>Obtains the absolute font file path from the font file reference key.</summary>
 		/// <param name="fontFileReferenceKey">
-		/// <para>Type: <c>const void*</c></para>
+		/// <para>Type: <b>const void*</b></para>
 		/// <para>The font file reference key that uniquely identifies the local font file within the scope of the font loader being used.</para>
 		/// </param>
 		/// <param name="fontFileReferenceKeySize">
-		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Type: <b>UINT32</b></para>
 		/// <para>The size of font file reference key in bytes.</para>
 		/// </param>
 		/// <param name="filePath">
-		/// <para>Type: <c>WCHAR*</c></para>
+		/// <para>Type: <b>WCHAR*</b></para>
 		/// <para>The character array that receives the local file path.</para>
 		/// </param>
 		/// <param name="filePathSize">
-		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Type: <b>UINT32</b></para>
 		/// <para>The length of the file path character array.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritelocalfontfileloader-getfilepathfromkey
-		// HRESULT GetFilePathFromKey( void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, WCHAR *filePath, UINT32 filePathSize );
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritelocalfontfileloader-getfilepathfromkey HRESULT
+		// GetFilePathFromKey( [in] void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, [out] WCHAR *filePath, UINT32
+		// filePathSize );
 		[PreserveSig]
 		HRESULT GetFilePathFromKey(IntPtr fontFileReferenceKey, uint fontFileReferenceKeySize, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder filePath, uint filePathSize);
 
 		/// <summary>Obtains the last write time of the file from the font file reference key.</summary>
 		/// <param name="fontFileReferenceKey">
-		/// <para>Type: <c>const void*</c></para>
+		/// <para>Type: <b>const void*</b></para>
 		/// <para>The font file reference key that uniquely identifies the local font file within the scope of the font loader being used.</para>
 		/// </param>
 		/// <param name="fontFileReferenceKeySize">
-		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Type: <b>UINT32</b></para>
 		/// <para>The size of font file reference key in bytes.</para>
 		/// </param>
 		/// <param name="lastWriteTime">
-		/// <para>Type: <c>FILETIME*</c></para>
+		/// <para>Type: <b>FILETIME*</b></para>
 		/// <para>The time of the last font file modification.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritelocalfontfileloader-getlastwritetimefromkey
-		// HRESULT GetLastWriteTimeFromKey( void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, FILETIME *lastWriteTime );
+		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritelocalfontfileloader-getlastwritetimefromkey HRESULT
+		// GetLastWriteTimeFromKey( [in] void const *fontFileReferenceKey, UINT32 fontFileReferenceKeySize, [out] FILETIME *lastWriteTime );
 		[PreserveSig]
 		HRESULT GetLastWriteTimeFromKey(IntPtr fontFileReferenceKey, uint fontFileReferenceKeySize, out FILETIME lastWriteTime);
 	}
@@ -2346,6 +2386,96 @@ public static partial class Dwrite
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritelocalizedstrings-getstring HRESULT GetString(
 		// UINT32 index, WCHAR *stringBuffer, UINT32 size );
 		void GetString(uint index, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder stringBuffer, uint size);
+	}
+
+	/// <summary>
+	/// A wrapper for the <see cref="IDWriteLocalizedStrings"/> interface that provides a dictionary-like interface for the strings.
+	/// </summary>
+	public partial class DWriteLocalizedStrings(IDWriteLocalizedStrings? obj) : IReadOnlyDictionary<string, string>
+	{
+		private readonly IDWriteLocalizedStrings? obj = obj;
+
+		/// <inheritdoc/>
+		public string this[string key] => TryGetValue(key, out var value) ? value : throw new KeyNotFoundException();
+
+		/// <inheritdoc/>
+		public IEnumerable<string> Keys
+		{
+			get
+			{
+				for (uint i = 0; i < Count; i++)
+					yield return GetKey(i);
+			}
+		}
+
+		/// <inheritdoc/>
+		public IEnumerable<string> Values
+		{
+			get
+			{
+				for (uint i = 0; i < Count; i++)
+					yield return GetValue(i);
+			}
+		}
+
+		/// <inheritdoc/>
+		public int Count => (int?)obj?.GetCount() ?? 0;
+
+		/// <inheritdoc/>
+		public bool ContainsKey(string key) => FindLocaleName(key) != uint.MaxValue;
+
+		/// <inheritdoc/>
+		public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+		{
+			for (uint i = 0; i < Count; i++)
+				yield return new KeyValuePair<string, string>(GetKey(i), GetValue(i));
+		}
+
+		/// <inheritdoc/>
+		public bool TryGetValue(string key, out string value)
+		{
+			value = "";
+			try
+			{
+				var idx = FindLocaleName(key);
+				if (idx == uint.MaxValue)
+					return false;
+				value = GetValue(idx);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		/// <inheritdoc/>
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		private uint FindLocaleName(string key)
+		{
+			if (obj is null) return uint.MaxValue;
+			obj.FindLocaleName(key, out var idx, out var exists);
+			return exists ? idx : uint.MaxValue;
+		}
+
+		private string GetKey(uint i)
+		{
+			if (obj is null) return "";
+			var len = obj.GetLocaleNameLength(i);
+			var sb = new StringBuilder((int)len + 1);
+			obj.GetLocaleName(i, sb, (uint)sb.Capacity);
+			return sb.ToString();
+		}
+
+		private string GetValue(uint i)
+		{
+			if (obj is null) return "";
+			var len = obj.GetStringLength(i);
+			var sb = new StringBuilder((int)len + 1);
+			obj.GetString(i, sb, (uint)sb.Capacity);
+			return sb.ToString();
+		}
 	}
 
 	/// <summary>Holds the appropriate digits and numeric punctuation for a specified locale.</summary>
@@ -2504,24 +2634,20 @@ public static partial class Dwrite
 	{
 		/// <summary>Reports script analysis for the specified text range.</summary>
 		/// <param name="textPosition">
-		/// <para>Type: <c>UINT32</c></para>
-		/// <para>The starting position from which to report.</para>
+		///   <para>Type: <c>UINT32</c></para>
+		///   <para>The starting position from which to report.</para>
 		/// </param>
 		/// <param name="textLength">
-		/// <para>Type: <c>UINT32</c></para>
-		/// <para>The number of UTF16 units of the reported range.</para>
+		///   <para>Type: <c>UINT32</c></para>
+		///   <para>The number of UTF16 units of the reported range.</para>
 		/// </param>
 		/// <param name="scriptAnalysis">
-		/// <para>Type: <c>const DWRITE_SCRIPT_ANALYSIS*</c></para>
-		/// <para>
+		///   <para>Type: <c>const DWRITE_SCRIPT_ANALYSIS*</c></para>
+		///   <para>
 		/// A pointer to a structure that contains a zero-based index representation of a writing system script and a value indicating
 		/// whether additional shaping of text is required.
 		/// </para>
 		/// </param>
-		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>A successful code or error code to stop analysis.</para>
-		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextanalysissink-setscriptanalysis HRESULT
 		// SetScriptAnalysis( UINT32 textPosition, UINT32 textLength, DWRITE_SCRIPT_ANALYSIS const *scriptAnalysis );
 		[PreserveSig]
@@ -2663,8 +2789,7 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextanalysissource-gettextatposition HRESULT
 		// GetTextAtPosition( UINT32 textPosition, WCHAR const **textString, UINT32 *textLength );
-		[PreserveSig]
-		HRESULT GetTextAtPosition(uint textPosition, out StrPtrUni textString, out uint textLength);
+		void GetTextAtPosition(uint textPosition, out StrPtrUni textString, out uint textLength);
 
 		/// <summary>Gets a block of text immediately preceding the specified position.</summary>
 		/// <param name="textPosition">
@@ -2700,8 +2825,7 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextanalysissource-gettextbeforeposition HRESULT
 		// GetTextBeforePosition( UINT32 textPosition, WCHAR const **textString, UINT32 *textLength );
-		[PreserveSig]
-		HRESULT GetTextBeforePosition(uint textPosition, out StrPtrUni textString, out uint textLength);
+		void GetTextBeforePosition(uint textPosition, out StrPtrUni textString, out uint textLength);
 
 		/// <summary>Gets the paragraph reading direction.</summary>
 		/// <returns>
@@ -2736,8 +2860,7 @@ public static partial class Dwrite
 		/// <remarks>The localeName pointer must remain valid until the next call or until the analysis returns.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextanalysissource-getlocalename HRESULT
 		// GetLocaleName( UINT32 textPosition, UINT32 *textLength, WCHAR const **localeName );
-		[PreserveSig]
-		HRESULT GetLocaleName(uint textPosition, out uint textLength, out StrPtrUni localeName);
+		void GetLocaleName(uint textPosition, out uint textLength, out StrPtrUni localeName);
 
 		/// <summary>Gets the number substitution from the text range affected by the text analysis.</summary>
 		/// <param name="textPosition">
@@ -2765,8 +2888,7 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextanalysissource-getnumbersubstitution HRESULT
 		// GetNumberSubstitution( UINT32 textPosition, UINT32 *textLength, IDWriteNumberSubstitution **numberSubstitution );
-		[PreserveSig]
-		HRESULT GetNumberSubstitution(uint textPosition, out uint textLength, out IDWriteNumberSubstitution? numberSubstitution);
+		void GetNumberSubstitution(uint textPosition, out uint textLength, out IDWriteNumberSubstitution? numberSubstitution);
 	}
 
 	/// <summary>
@@ -4038,7 +4160,7 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextlayout-setdrawingeffect HRESULT
 		// SetDrawingEffect( IUnknown *drawingEffect, DWRITE_TEXT_RANGE textRange );
-		void SetDrawingEffect([MarshalAs(UnmanagedType.IUnknown)] object drawingEffect, DWRITE_TEXT_RANGE textRange);
+		void SetDrawingEffect([MarshalAs(UnmanagedType.Interface)] object drawingEffect, DWRITE_TEXT_RANGE textRange);
 
 		/// <summary>Sets the inline object.</summary>
 		/// <param name="inlineObject">
@@ -4326,7 +4448,7 @@ public static partial class Dwrite
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextlayout-getdrawingeffect HRESULT
 		// GetDrawingEffect( UINT32 currentPosition, IUnknown **drawingEffect, DWRITE_TEXT_RANGE *textRange );
-		void GetDrawingEffect(uint currentPosition, [MarshalAs(UnmanagedType.IUnknown)] out object drawingEffect, out DWRITE_TEXT_RANGE textRange);
+		void GetDrawingEffect(uint currentPosition, [MarshalAs(UnmanagedType.Interface)] out object drawingEffect, out DWRITE_TEXT_RANGE textRange);
 
 		/// <summary>Gets the inline object at the specified position.</summary>
 		/// <param name="currentPosition">
@@ -4764,7 +4886,7 @@ public static partial class Dwrite
 		// void *clientDrawingContext, FLOAT baselineOriginX, FLOAT baselineOriginY, DWRITE_MEASURING_MODE measuringMode,
 		// DWRITE_GLYPH_RUN const *glyphRun, DWRITE_GLYPH_RUN_DESCRIPTION const *glyphRunDescription, IUnknown *clientDrawingEffect );
 		void DrawGlyphRun([In, Optional] IntPtr clientDrawingContext, float baselineOriginX, float baselineOriginY, DWRITE_MEASURING_MODE measuringMode,
-			in DWRITE_GLYPH_RUN glyphRun, in DWRITE_GLYPH_RUN_DESCRIPTION glyphRunDescription, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object clientDrawingEffect);
+			in DWRITE_GLYPH_RUN glyphRun, in DWRITE_GLYPH_RUN_DESCRIPTION glyphRunDescription, [In, Optional, MarshalAs(UnmanagedType.Interface)] object clientDrawingEffect);
 
 		/// <summary>IDWriteTextLayout::Draw calls this function to instruct the client to draw an underline.</summary>
 		/// <param name="clientDrawingContext">
@@ -4802,7 +4924,7 @@ public static partial class Dwrite
 		// void *clientDrawingContext, FLOAT baselineOriginX, FLOAT baselineOriginY, DWRITE_UNDERLINE const *underline, IUnknown
 		// *clientDrawingEffect );
 		void DrawUnderline([In, Optional] IntPtr clientDrawingContext, float baselineOriginX, float baselineOriginY,
-			in DWRITE_UNDERLINE underline, [In, Optional] [MarshalAs(UnmanagedType.IUnknown)] object clientDrawingEffect);
+			in DWRITE_UNDERLINE underline, [In, Optional] [MarshalAs(UnmanagedType.Interface)] object clientDrawingEffect);
 
 		/// <summary>IDWriteTextLayout::Draw calls this function to instruct the client to draw a strikethrough.</summary>
 		/// <param name="clientDrawingContext">
@@ -4837,7 +4959,7 @@ public static partial class Dwrite
 		// DrawStrikethrough( void *clientDrawingContext, FLOAT baselineOriginX, FLOAT baselineOriginY, DWRITE_STRIKETHROUGH const
 		// *strikethrough, IUnknown *clientDrawingEffect );
 		void DrawStrikethrough([In, Optional] IntPtr clientDrawingContext, float baselineOriginX, float baselineOriginY,
-			in DWRITE_STRIKETHROUGH strikethrough, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object clientDrawingEffect);
+			in DWRITE_STRIKETHROUGH strikethrough, [In, Optional, MarshalAs(UnmanagedType.Interface)] object clientDrawingEffect);
 
 		/// <summary>IDWriteTextLayout::Draw calls this application callback when it needs to draw an inline object.</summary>
 		/// <param name="clientDrawingContext">
@@ -4879,7 +5001,7 @@ public static partial class Dwrite
 		// isSideways, BOOL isRightToLeft, IUnknown *clientDrawingEffect );
 		void DrawInlineObject([In, Optional] IntPtr clientDrawingContext, float originX, float originY, [In] IDWriteInlineObject inlineObject,
 			[MarshalAs(UnmanagedType.Bool)] bool isSideways, [MarshalAs(UnmanagedType.Bool)] bool isRightToLeft,
-			[In, Optional] [MarshalAs(UnmanagedType.IUnknown)] object clientDrawingEffect);
+			[In, Optional] [MarshalAs(UnmanagedType.Interface)] object clientDrawingEffect);
 	}
 
 	/// <summary>Represents a font typography setting.</summary>
@@ -4959,7 +5081,7 @@ public static partial class Dwrite
 	// DWRITE_FACTORY_TYPE factoryType, REFIID iid, IUnknown **factory );
 	[DllImport("dwrite.dll", SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dwrite.h", MSDNShortId = "c74c0906-0a5c-4ab8-87cf-a195566e1d9e")]
-	public static extern HRESULT DWriteCreateFactory(DWRITE_FACTORY_TYPE factoryType, in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object factory);
+	public static extern HRESULT DWriteCreateFactory(DWRITE_FACTORY_TYPE factoryType, in Guid iid, [MarshalAs(UnmanagedType.Interface)] out object factory);
 
 	/// <summary>Creates a DirectWrite factory object that is used for subsequent creation of individual DirectWrite objects.</summary>
 	/// <typeparam name="T">Identifies the DirectWrite factory interface, such as IDWriteFactory.</typeparam>

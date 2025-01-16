@@ -1,4 +1,7 @@
-﻿namespace Vanara.PInvoke;
+﻿global using static Vanara.PInvoke.DXGI;
+global using DWRITE_COLOR_F = Vanara.PInvoke.DXGI.D3DCOLORVALUE;
+
+namespace Vanara.PInvoke;
 
 /// <summary>Items from the Dwrite.dll</summary>
 public static partial class Dwrite
@@ -1001,28 +1004,6 @@ public static partial class Dwrite
 		DWRITE_LINE_SPACING_METHOD_PROPORTIONAL,
 	}
 
-	/// <summary>Indicates the measuring method used for text layout.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ne-dcommon-dwrite_measuring_mode typedef enum DWRITE_MEASURING_MODE {
-	// DWRITE_MEASURING_MODE_NATURAL, DWRITE_MEASURING_MODE_GDI_CLASSIC, DWRITE_MEASURING_MODE_GDI_NATURAL } ;
-	[PInvokeData("dcommon.h", MSDNShortId = "99e89754-8bc2-457d-bfdb-a3c9ccfe00c1")]
-	public enum DWRITE_MEASURING_MODE
-	{
-		/// <summary>
-		/// Specifies that text is measured using glyph ideal metrics whose values are independent to the current display resolution.
-		/// </summary>
-		DWRITE_MEASURING_MODE_NATURAL,
-
-		/// <summary>
-		/// Specifies that text is measured using glyph display-compatible metrics whose values tuned for the current display resolution.
-		/// </summary>
-		DWRITE_MEASURING_MODE_GDI_CLASSIC,
-
-		/// <summary>
-		/// Specifies that text is measured using the same glyph display metrics as text measured by GDI using a font created with CLEARTYPE_NATURAL_QUALITY.
-		/// </summary>
-		DWRITE_MEASURING_MODE_GDI_NATURAL,
-	}
-
 	/// <summary>Specifies how to apply number substitution on digits and related punctuation.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/ne-dwrite-dwrite_number_substitution_method typedef enum
 	// DWRITE_NUMBER_SUBSTITUTION_METHOD { DWRITE_NUMBER_SUBSTITUTION_METHOD_FROM_CULTURE, DWRITE_NUMBER_SUBSTITUTION_METHOD_CONTEXTUAL,
@@ -1322,6 +1303,58 @@ public static partial class Dwrite
 		/// <summary>Wrap between any valid character clusters.</summary>
 		DWRITE_WORD_WRAPPING_CHARACTER,
 	}
+
+	/// <summary>Dwrites the make font feature tag.</summary>
+	/// <param name="a">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The first character in the tag.</para>
+	/// </param>
+	/// <param name="b">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The second character in the tag.</para>
+	/// </param>
+	/// <param name="c">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The third character in the tag.</para>
+	/// </param>
+	/// <param name="d">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The fourth character in the tag.</para>
+	/// </param>
+	/// <returns></returns>
+	[PInvokeData("dwrite.h", MSDNShortId = "NF:dwrite.DWRITE_MAKE_OPENTYPE_TAG")]
+	public static DWRITE_FONT_FEATURE_TAG DWRITE_MAKE_FONT_FEATURE_TAG(char a, char b, char c, char d) => (DWRITE_FONT_FEATURE_TAG)DWRITE_MAKE_OPENTYPE_TAG(a, b, c, d);
+
+	/// <summary>
+	/// Creates an OpenType tag as a 32-bit integer, such that the first character in the tag is the lowest byte (least significant on
+	/// little-endian architectures), which can be used to compare with tags in the font file. This macro is compatible with <c>DWRITE_FONT_FEATURE_TAG</c>.
+	/// </summary>
+	/// <param name="a">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The first character in the tag.</para>
+	/// </param>
+	/// <param name="b">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The second character in the tag.</para>
+	/// </param>
+	/// <param name="c">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The third character in the tag.</para>
+	/// </param>
+	/// <param name="d">
+	/// <para>Type: <b><c>CHAR</c></b></para>
+	/// <para>The fourth character in the tag.</para>
+	/// </param>
+	/// <returns>None</returns>
+	/// <remarks>
+	/// The OpenType language (such as "ROM ", "URD ", and "FAR " for Romanian, Urdu, and Persian) are determined from the locale, and the
+	/// script ("latn" and "arab" for Latin and Arabic) is determined from the script analyzer. That's why these are not listed under
+	/// OpenType tags; only the feature tags.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-dwrite_make_opentype_tag
+	// void DWRITE_MAKE_OPENTYPE_TAG( a, b, c, d );
+	[PInvokeData("dwrite.h", MSDNShortId = "NF:dwrite.DWRITE_MAKE_OPENTYPE_TAG")]
+	public static uint DWRITE_MAKE_OPENTYPE_TAG(char a, char b, char c, char d) => a | ((uint)b << 8) | ((uint)c << 16) | ((uint)d << 24);
 
 	/// <summary>Contains information about a glyph cluster.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/ns-dwrite-dwrite_cluster_metrics struct DWRITE_CLUSTER_METRICS { FLOAT

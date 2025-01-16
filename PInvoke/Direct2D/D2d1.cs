@@ -4,12 +4,23 @@ global using static Vanara.PInvoke.Dwrite;
 global using static Vanara.PInvoke.Ole32;
 global using static Vanara.PInvoke.OleAut32;
 global using static Vanara.PInvoke.WindowsCodecs;
+global using D2D1_COLOR_F = Vanara.PInvoke.DXGI.D3DCOLORVALUE;
+global using D2D1_MATRIX_3X2_F = Vanara.PInvoke.DXGI.D2D_MATRIX_3X2_F;
+global using D2D1_POINT_2F = Vanara.PInvoke.DXGI.D2D_POINT_2F;
+global using D2D1_TAG = System.UInt64;
+using System.Linq;
 
 namespace Vanara.PInvoke;
 
 /// <summary>Items from the D2d1.dll</summary>
 public static partial class D2d1
 {
+	/// <summary/>
+	public const float D2D1_DEFAULT_FLATTENING_TOLERANCE = 0.25f;
+
+	/// <summary/>
+	public const ulong D2D1_INVALID_TAG = ulong.MaxValue;
+
 	/// <summary>Specifies how the edges of nontext primitives are rendered.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/ne-d2d1-d2d1_antialias_mode typedef enum D2D1_ANTIALIAS_MODE {
 	// D2D1_ANTIALIAS_MODE_PER_PRIMITIVE, D2D1_ANTIALIAS_MODE_ALIASED, D2D1_ANTIALIAS_MODE_FORCE_DWORD } ;
@@ -847,7 +858,7 @@ public static partial class D2d1
 	// factoryType, REFIID riid, const D2D1_FACTORY_OPTIONS *pFactoryOptions, void **ppIFactory );
 	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("d2d1.h", MSDNShortId = "8c0a685a-8f33-4072-a715-bb423cb44f03")]
-	public static extern HRESULT D2D1CreateFactory(D2D1_FACTORY_TYPE factoryType, in Guid riid, [In, Optional] IntPtr pFactoryOptions, [MarshalAs(UnmanagedType.IUnknown)] out object ppIFactory);
+	public static extern HRESULT D2D1CreateFactory(D2D1_FACTORY_TYPE factoryType, in Guid riid, [In, Optional] StructPointer<D2D1_FACTORY_OPTIONS> pFactoryOptions, [MarshalAs(UnmanagedType.Interface)] out object ppIFactory);
 
 	/// <summary>Creates a factory object that can be used to create Direct2D resources.</summary>
 	/// <typeparam name="T">The type of the factory interface to create.</typeparam>
@@ -946,24 +957,39 @@ public static partial class D2d1
 	[PInvokeData("d2d1.h", MSDNShortId = "9f29488c-37f0-4d53-9e3b-3b27e841c8b4")]
 	public static extern void D2D1MakeSkewMatrix(float angleX, float angleY, D2D_POINT_2F center, out D2D_MATRIX_3X2_F matrix);
 
+	/// <summary>Retrieves the gradient stops of the current paint element.</summary>
+	/// <param name="rdr">The <see cref="IDWritePaintReader" /> instance.</param>
+	/// <param name="gradientStopCount">Number of gradient stops to retrieve.</param>
+	/// <param name="firstGradientStopIndex">Index of the first gradient stop to retrieve.</param>
+	/// <returns>Receives the gradient stops.</returns>
+	/// <remarks>Gradient stops are guaranteed to be in ascending order by position.</remarks>
+	// https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/win32/dwrite_3/nf-dwrite_3-idwritepaintreader-getgradientstops
+	// HRESULT GetGradientStops( UINT32 firstGradientStopIndex, UINT32 gradientStopCount, D2D1_GRADIENT_STOP *gradientStops );
+	public static D2D1_GRADIENT_STOP[] GetGradientStops(this IDWritePaintReader rdr, uint gradientStopCount, uint firstGradientStopIndex = 0)
+	{
+		using SafeNativeArray<D2D1_GRADIENT_STOP> stops = new((int)gradientStopCount);
+		rdr.GetGradientStops(firstGradientStopIndex, gradientStopCount, stops);
+		return stops.ToArray();
+	}
+
 	/// <summary>Describes an elliptical arc between two points.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/ns-d2d1-d2d1_arc_segment typedef struct D2D1_ARC_SEGMENT { D2D1_POINT_2F
 	// point; D2D1_SIZE_F size; FLOAT rotationAngle; D2D1_SWEEP_DIRECTION sweepDirection; D2D1_ARC_SIZE arcSize; } D2D1_ARC_SEGMENT;
 	[PInvokeData("d2d1.h", MSDNShortId = "3f391265-20b4-4897-aa0b-d14b71cd5f0a")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_ARC_SEGMENT
+	public struct D2D1_ARC_SEGMENT(in DXGI.D2D_POINT_2F point, in DXGI.D2D_SIZE_F size, float rotationAngle, D2d1.D2D1_SWEEP_DIRECTION sweepDirection, D2d1.D2D1_ARC_SIZE arcSize)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>The end point of the arc.</para>
 		/// </summary>
-		public D2D_POINT_2F point;
+		public D2D_POINT_2F point = point;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_SIZE_F</c></para>
 		/// <para>The x-radius and y-radius of the arc.</para>
 		/// </summary>
-		public D2D_SIZE_F size;
+		public D2D_SIZE_F size = size;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -971,19 +997,19 @@ public static partial class D2d1
 		/// A value that specifies how many degrees in the clockwise direction the ellipse is rotated relative to the current coordinate system.
 		/// </para>
 		/// </summary>
-		public float rotationAngle;
+		public float rotationAngle = rotationAngle;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_SWEEP_DIRECTION</c></para>
 		/// <para>A value that specifies whether the arc sweep is clockwise or counterclockwise.</para>
 		/// </summary>
-		public D2D1_SWEEP_DIRECTION sweepDirection;
+		public D2D1_SWEEP_DIRECTION sweepDirection = sweepDirection;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_ARC_SIZE</c></para>
 		/// <para>A value that specifies whether the given arc is larger than 180 degrees.</para>
 		/// </summary>
-		public D2D1_ARC_SIZE arcSize;
+		public D2D1_ARC_SIZE arcSize = arcSize;
 	}
 
 	/// <summary>Represents a cubic bezier segment drawn between two points.</summary>
@@ -1007,25 +1033,25 @@ public static partial class D2d1
 	// D2D1_POINT_2F point1; D2D1_POINT_2F point2; D2D1_POINT_2F point3; } D2D1_BEZIER_SEGMENT;
 	[PInvokeData("d2d1.h", MSDNShortId = "cf8df7d2-c4fe-4a46-a4b2-7e0eed67df2a")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_BEZIER_SEGMENT
+	public struct D2D1_BEZIER_SEGMENT(in DXGI.D2D_POINT_2F point1, in DXGI.D2D_POINT_2F point2, in DXGI.D2D_POINT_2F point3)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>The first control point for the Bezier segment.</para>
 		/// </summary>
-		public D2D_POINT_2F point1;
+		public D2D_POINT_2F point1 = point1;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>The second control point for the Bezier segment.</para>
 		/// </summary>
-		public D2D_POINT_2F point2;
+		public D2D_POINT_2F point2 = point2;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>The end point for the Bezier segment.</para>
 		/// </summary>
-		public D2D_POINT_2F point3;
+		public D2D_POINT_2F point3 = point3;
 	}
 
 	/// <summary>Describes the extend modes and the interpolation mode of an ID2D1BitmapBrush.</summary>
@@ -1034,25 +1060,27 @@ public static partial class D2d1
 	// interpolationMode; } D2D1_BITMAP_BRUSH_PROPERTIES;
 	[PInvokeData("d2d1.h", MSDNShortId = "e252d1b4-2f34-4479-94fc-636d4115b00c")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_BITMAP_BRUSH_PROPERTIES
+	public struct D2D1_BITMAP_BRUSH_PROPERTIES(D2D1_EXTEND_MODE extendModeX = D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP,
+		D2D1_EXTEND_MODE extendModeY = D2D1_EXTEND_MODE.D2D1_EXTEND_MODE_CLAMP,
+		D2D1_BITMAP_INTERPOLATION_MODE interpolationMode = D2D1_BITMAP_INTERPOLATION_MODE.D2D1_BITMAP_INTERPOLATION_MODE_LINEAR)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_EXTEND_MODE</c></para>
 		/// <para>A value that describes how the brush horizontally tiles those areas that extend past its bitmap.</para>
 		/// </summary>
-		public D2D1_EXTEND_MODE extendModeX;
+		public D2D1_EXTEND_MODE extendModeX = extendModeX;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_EXTEND_MODE</c></para>
 		/// <para>A value that describes how the brush vertically tiles those areas that extend past its bitmap.</para>
 		/// </summary>
-		public D2D1_EXTEND_MODE extendModeY;
+		public D2D1_EXTEND_MODE extendModeY = extendModeY;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_BITMAP_INTERPOLATION_MODE</c></para>
 		/// <para>A value that specifies how the bitmap is interpolated when it is scaled or rotated.</para>
 		/// </summary>
-		public D2D1_BITMAP_INTERPOLATION_MODE interpolationMode;
+		public D2D1_BITMAP_INTERPOLATION_MODE interpolationMode = interpolationMode;
 	}
 
 	/// <summary>Describes the pixel format and dpi of a bitmap.</summary>
@@ -1060,25 +1088,25 @@ public static partial class D2d1
 	// D2D1_PIXEL_FORMAT pixelFormat; FLOAT dpiX; FLOAT dpiY; } D2D1_BITMAP_PROPERTIES;
 	[PInvokeData("d2d1.h", MSDNShortId = "050246fd-f91a-4a2a-858a-5f0447e3ecbf")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_BITMAP_PROPERTIES
+	public struct D2D1_BITMAP_PROPERTIES(D2D1_PIXEL_FORMAT pixelFormat = default, float dpiX = 96f, float dpiY = 96f)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_PIXEL_FORMAT</c></para>
 		/// <para>The bitmap's pixel format and alpha mode.</para>
 		/// </summary>
-		public D2D1_PIXEL_FORMAT pixelFormat;
+		public D2D1_PIXEL_FORMAT pixelFormat = pixelFormat;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>The horizontal dpi of the bitmap.</para>
 		/// </summary>
-		public float dpiX;
+		public float dpiX = dpiX;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>The vertical dpi of the bitmap.</para>
 		/// </summary>
-		public float dpiY;
+		public float dpiY = dpiY;
 	}
 
 	/// <summary>Describes the opacity and transformation of a brush.</summary>
@@ -1105,7 +1133,16 @@ public static partial class D2d1
 		/// <para>Type: <c>D2D1_MATRIX_3X2_F</c></para>
 		/// <para>The transformation that is applied to the brush.</para>
 		/// </summary>
-		public D2D_MATRIX_3X2_F transform;
+		public D2D1_MATRIX_3X2_F transform;
+
+		/// <summary>Initializes a new instance of the <see cref="D2D1_BRUSH_PROPERTIES"/> struct.</summary>
+		/// <param name="opacity">The opacity.</param>
+		/// <param name="transform">The transform.</param>
+		public D2D1_BRUSH_PROPERTIES(float opacity = 1.0f, D2D1_MATRIX_3X2_F? transform = null)
+		{
+			this.opacity = opacity;
+			this.transform = transform.GetValueOrDefault(D2D1_MATRIX_3X2_F.Identity());
+		}
 	}
 
 	/// <summary>Describes the drawing state of a render target.</summary>
@@ -1114,37 +1151,39 @@ public static partial class D2d1
 	// tag2; D2D1_MATRIX_3X2_F transform; } D2D1_DRAWING_STATE_DESCRIPTION;
 	[PInvokeData("d2d1.h", MSDNShortId = "ba4adc4b-4d86-40c4-8911-1c800d3c6f3e")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_DRAWING_STATE_DESCRIPTION
+	public struct D2D1_DRAWING_STATE_DESCRIPTION(D2D1_ANTIALIAS_MODE antialiasMode = D2D1_ANTIALIAS_MODE.D2D1_ANTIALIAS_MODE_PER_PRIMITIVE,
+		D2D1_TEXT_ANTIALIAS_MODE textAntialiasMode = D2D1_TEXT_ANTIALIAS_MODE.D2D1_TEXT_ANTIALIAS_MODE_DEFAULT, ulong tag1 = 0, ulong tag2 = 0,
+		in D2D_MATRIX_3X2_F? transform = null)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_ANTIALIAS_MODE</c></para>
 		/// <para>The antialiasing mode for subsequent nontext drawing operations.</para>
 		/// </summary>
-		public D2D1_ANTIALIAS_MODE antialiasMode;
+		public D2D1_ANTIALIAS_MODE antialiasMode = antialiasMode;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_TEXT_ANTIALIAS_MODE</c></para>
 		/// <para>The antialiasing mode for subsequent text and glyph drawing operations.</para>
 		/// </summary>
-		public D2D1_TEXT_ANTIALIAS_MODE textAntialiasMode;
+		public D2D1_TEXT_ANTIALIAS_MODE textAntialiasMode = textAntialiasMode;
 
 		/// <summary>
 		/// <para>Type: <c>ulong</c></para>
 		/// <para>A label for subsequent drawing operations.</para>
 		/// </summary>
-		public ulong tag1;
+		public ulong tag1 = tag1;
 
 		/// <summary>
 		/// <para>Type: <c>ulong</c></para>
 		/// <para>A label for subsequent drawing operations.</para>
 		/// </summary>
-		public ulong tag2;
+		public ulong tag2 = tag2;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_MATRIX_3X2_F</c></para>
 		/// <para>The transformation to apply to subsequent drawing operations.</para>
 		/// </summary>
-		public D2D_MATRIX_3X2_F transform;
+		public D2D_MATRIX_3X2_F transform = transform.GetValueOrDefault(D2D_MATRIX_3X2_F.Identity());
 	}
 
 	/// <summary>Contains the center point, x-radius, and y-radius of an ellipse.</summary>
@@ -1152,25 +1191,25 @@ public static partial class D2d1
 	// FLOAT radiusX; FLOAT radiusY; } D2D1_ELLIPSE;
 	[PInvokeData("d2d1.h", MSDNShortId = "6fed6c49-ba83-4c2b-af8a-04156ee317f0")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_ELLIPSE
+	public struct D2D1_ELLIPSE(in DXGI.D2D_POINT_2F point, float radiusX, float radiusY)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>The center point of the ellipse.</para>
 		/// </summary>
-		public D2D_POINT_2F point;
+		public D2D_POINT_2F point = point;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>The X-radius of the ellipse.</para>
 		/// </summary>
-		public float radiusX;
+		public float radiusX = radiusX;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>The Y-radius of the ellipse.</para>
 		/// </summary>
-		public float radiusY;
+		public float radiusY = radiusY;
 	}
 
 	/// <summary>Contains the debugging level of an ID2D1Factory object.</summary>
@@ -1214,7 +1253,7 @@ public static partial class D2d1
 	// position; D2D1_COLOR_F color; } D2D1_GRADIENT_STOP;
 	[PInvokeData("d2d1.h", MSDNShortId = "f6798542-382a-4074-bbe1-707bc00b3575")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_GRADIENT_STOP
+	public struct D2D1_GRADIENT_STOP(float position, in D3DCOLORVALUE color)
 	{
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -1223,13 +1262,13 @@ public static partial class D2d1
 		/// if the gradient stop is to be seen explicitly.
 		/// </para>
 		/// </summary>
-		public float position;
+		public float position = position;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_COLOR_F</c></para>
 		/// <para>The color of the gradient stop.</para>
 		/// </summary>
-		public D3DCOLORVALUE color;
+		public D3DCOLORVALUE color = color;
 	}
 
 	/// <summary>Contains the HWND, pixel size, and presentation options for an ID2D1HwndRenderTarget.</summary>
@@ -1244,19 +1283,19 @@ public static partial class D2d1
 	// D2D1_HWND_RENDER_TARGET_PROPERTIES { HWND hwnd; D2D1_SIZE_U pixelSize; D2D1_PRESENT_OPTIONS presentOptions; } D2D1_HWND_RENDER_TARGET_PROPERTIES;
 	[PInvokeData("d2d1.h", MSDNShortId = "4300843a-a24f-4f9e-a396-67172f083638")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_HWND_RENDER_TARGET_PROPERTIES
+	public struct D2D1_HWND_RENDER_TARGET_PROPERTIES(HWND hwnd, D2D_SIZE_U pixelSize = default, D2D1_PRESENT_OPTIONS presentOptions = D2D1_PRESENT_OPTIONS.D2D1_PRESENT_OPTIONS_NONE)
 	{
 		/// <summary>
 		/// <para>Type: <c>HWND</c></para>
 		/// <para>The HWND to which the render target issues the output from its drawing commands.</para>
 		/// </summary>
-		public HWND hwnd;
+		public HWND hwnd = hwnd;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_SIZE_U</c></para>
 		/// <para>The size of the render target, in pixels.</para>
 		/// </summary>
-		public D2D_SIZE_U pixelSize;
+		public D2D_SIZE_U pixelSize = pixelSize;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_PRESENT_OPTIONS</c></para>
@@ -1265,7 +1304,7 @@ public static partial class D2d1
 		/// for the device to refresh before presenting.
 		/// </para>
 		/// </summary>
-		public D2D1_PRESENT_OPTIONS presentOptions;
+		public D2D1_PRESENT_OPTIONS presentOptions = presentOptions;
 	}
 
 	/// <summary>Contains the content bounds, mask information, opacity settings, and other options for a layer resource.</summary>
@@ -1274,37 +1313,38 @@ public static partial class D2d1
 	// FLOAT opacity; ID2D1Brush *opacityBrush; D2D1_LAYER_OPTIONS layerOptions; } D2D1_LAYER_PARAMETERS;
 	[PInvokeData("d2d1.h", MSDNShortId = "ce575df6-9464-4672-9a0e-ff7e016d9354")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_LAYER_PARAMETERS
+	public struct D2D1_LAYER_PARAMETERS(in D2D_RECT_F? contentBounds = null, ID2D1Geometry? geometricMask = null, D2D1_ANTIALIAS_MODE maskAntialiasMode = D2D1_ANTIALIAS_MODE.D2D1_ANTIALIAS_MODE_PER_PRIMITIVE,
+		in D2D_MATRIX_3X2_F? maskTransform = null, float opacity = 1f, ID2D1Brush? opacityBrush = null, D2D1_LAYER_OPTIONS layerOptions = D2D1_LAYER_OPTIONS.D2D1_LAYER_OPTIONS_NONE)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_RECT_F</c></para>
 		/// <para>The content bounds of the layer. Content outside these bounds is not guaranteed to render.</para>
 		/// </summary>
-		public D2D_RECT_F contentBounds;
+		public D2D_RECT_F contentBounds = contentBounds.GetValueOrDefault(D2D_RECT_F.Infinite);
 
 		/// <summary>
 		/// <para>Type: <c>ID2D1Geometry*</c></para>
 		/// <para>The geometric mask specifies the area of the layer that is composited into the render target.</para>
 		/// </summary>
-		public IntPtr geometricMask;
+		public IUnknownPointer<ID2D1Geometry> geometricMask = new(geometricMask);
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_ANTIALIAS_MODE</c></para>
 		/// <para>A value that specifies the antialiasing mode for the geometricMask.</para>
 		/// </summary>
-		public D2D1_ANTIALIAS_MODE maskAntialiasMode;
+		public D2D1_ANTIALIAS_MODE maskAntialiasMode = maskAntialiasMode;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_MATRIX_3X2_F</c></para>
 		/// <para>A value that specifies the transform that is applied to the geometric mask when composing the layer.</para>
 		/// </summary>
-		public D2D_MATRIX_3X2_F maskTransform;
+		public D2D_MATRIX_3X2_F maskTransform = maskTransform.GetValueOrDefault(D2D_MATRIX_3X2_F.Identity());
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>An opacity value that is applied uniformly to all resources in the layer when compositing to the target.</para>
 		/// </summary>
-		public float opacity;
+		public float opacity = opacity;
 
 		/// <summary>
 		/// <para>Type: <c>ID2D1Brush*</c></para>
@@ -1313,13 +1353,13 @@ public static partial class D2d1
 		/// mapped brush pixel is multiplied against the corresponding layer pixel.
 		/// </para>
 		/// </summary>
-		public IntPtr opacityBrush;
+		public IUnknownPointer<ID2D1Brush> opacityBrush = new(opacityBrush);
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_LAYER_OPTIONS</c></para>
 		/// <para>A value that specifies whether the layer intends to render text with ClearType antialiasing.</para>
 		/// </summary>
-		public D2D1_LAYER_OPTIONS layerOptions;
+		public D2D1_LAYER_OPTIONS layerOptions = layerOptions;
 	}
 
 	/// <summary>Contains the starting point and endpoint of the gradient axis for an ID2D1LinearGradientBrush.</summary>
@@ -1342,19 +1382,19 @@ public static partial class D2d1
 	// D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES { D2D1_POINT_2F startPoint; D2D1_POINT_2F endPoint; } D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES;
 	[PInvokeData("d2d1.h", MSDNShortId = "753278f0-d8a1-4dc5-b976-a00f8aab357e")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES
+	public struct D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES(in DXGI.D2D_POINT_2F startPoint, in DXGI.D2D_POINT_2F endPoint)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>In the brush's coordinate space, the starting point of the gradient axis.</para>
 		/// </summary>
-		public D2D_POINT_2F startPoint;
+		public D2D_POINT_2F startPoint = startPoint;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>In the brush's coordinate space, the endpoint of the gradient axis.</para>
 		/// </summary>
-		public D2D_POINT_2F endPoint;
+		public D2D_POINT_2F endPoint = endPoint;
 	}
 
 	/// <summary>Contains the control point and end point for a quadratic Bezier segment.</summary>
@@ -1362,19 +1402,19 @@ public static partial class D2d1
 	// D2D1_QUADRATIC_BEZIER_SEGMENT { D2D1_POINT_2F point1; D2D1_POINT_2F point2; } D2D1_QUADRATIC_BEZIER_SEGMENT;
 	[PInvokeData("d2d1.h", MSDNShortId = "5060cb17-b6f4-4796-b91d-602fd81591c2")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_QUADRATIC_BEZIER_SEGMENT
+	public struct D2D1_QUADRATIC_BEZIER_SEGMENT(in DXGI.D2D_POINT_2F point1, in DXGI.D2D_POINT_2F point2)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>The control point of the quadratic Bezier segment.</para>
 		/// </summary>
-		public D2D_POINT_2F point1;
+		public D2D_POINT_2F point1 = point1;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>The end point of the quadratic Bezier segment.</para>
 		/// </summary>
-		public D2D_POINT_2F point2;
+		public D2D_POINT_2F point2 = point2;
 	}
 
 	/// <summary>Contains the gradient origin offset and the size and position of the gradient ellipse for an ID2D1RadialGradientBrush.</summary>
@@ -1393,31 +1433,31 @@ public static partial class D2d1
 	// D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES { D2D1_POINT_2F center; D2D1_POINT_2F gradientOriginOffset; FLOAT radiusX; FLOAT radiusY; } D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES;
 	[PInvokeData("d2d1.h", MSDNShortId = "194f7624-ac3b-4054-8d6f-5b4c99ef6546")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES
+	public struct D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES(in DXGI.D2D_POINT_2F center, in DXGI.D2D_POINT_2F gradientOriginOffset, float radiusX, float radiusY)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>In the brush's coordinate space, the center of the gradient ellipse.</para>
 		/// </summary>
-		public D2D_POINT_2F center;
+		public D2D_POINT_2F center = center;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_POINT_2F</c></para>
 		/// <para>In the brush's coordinate space, the offset of the gradient origin relative to the gradient ellipse's center.</para>
 		/// </summary>
-		public D2D_POINT_2F gradientOriginOffset;
+		public D2D_POINT_2F gradientOriginOffset = gradientOriginOffset;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>In the brush's coordinate space, the x-radius of the gradient ellipse.</para>
 		/// </summary>
-		public float radiusX;
+		public float radiusX = radiusX;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>In the brush's coordinate space, the y-radius of the gradient ellipse.</para>
 		/// </summary>
-		public float radiusY;
+		public float radiusY = radiusY;
 	}
 
 	/// <summary>
@@ -1459,7 +1499,9 @@ public static partial class D2d1
 	// D2D1_RENDER_TARGET_USAGE usage; D2D1_FEATURE_LEVEL minLevel; } D2D1_RENDER_TARGET_PROPERTIES;
 	[PInvokeData("d2d1.h", MSDNShortId = "360900bd-1353-4a92-865c-ad34d5e98123")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_RENDER_TARGET_PROPERTIES
+	public struct D2D1_RENDER_TARGET_PROPERTIES(D2D1_RENDER_TARGET_TYPE type = D2D1_RENDER_TARGET_TYPE.D2D1_RENDER_TARGET_TYPE_DEFAULT,
+		D2D1_PIXEL_FORMAT pixelFormat = default, float dpiX = 0f, float dpiY = 0f, D2D1_RENDER_TARGET_USAGE usage = D2D1_RENDER_TARGET_USAGE.D2D1_RENDER_TARGET_USAGE_NONE,
+		D2D1_FEATURE_LEVEL minLevel = D2D1_FEATURE_LEVEL.D2D1_FEATURE_LEVEL_DEFAULT)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_RENDER_TARGET_TYPE</c></para>
@@ -1469,7 +1511,7 @@ public static partial class D2d1
 		/// otherwise, it uses software rendering. Note that WIC bitmap render targets do not support hardware rendering.
 		/// </para>
 		/// </summary>
-		public D2D1_RENDER_TARGET_TYPE type;
+		public D2D1_RENDER_TARGET_TYPE type = type;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_PIXEL_FORMAT</c></para>
@@ -1479,7 +1521,7 @@ public static partial class D2d1
 		/// modes supported by each render target, see Supported Pixel Formats and Alpha Modes.
 		/// </para>
 		/// </summary>
-		public D2D1_PIXEL_FORMAT pixelFormat;
+		public D2D1_PIXEL_FORMAT pixelFormat = pixelFormat;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -1488,7 +1530,7 @@ public static partial class D2d1
 		/// Remarks section.
 		/// </para>
 		/// </summary>
-		public float dpiX;
+		public float dpiX = dpiX;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -1496,7 +1538,7 @@ public static partial class D2d1
 		/// The vertical DPI of the render target. To use the default DPI, set dpiX and dpiY to 0. For more information, see the Remarks section.
 		/// </para>
 		/// </summary>
-		public float dpiY;
+		public float dpiY = dpiY;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_RENDER_TARGET_USAGE</c></para>
@@ -1506,7 +1548,7 @@ public static partial class D2d1
 		/// remoting if it is available.
 		/// </para>
 		/// </summary>
-		public D2D1_RENDER_TARGET_USAGE usage;
+		public D2D1_RENDER_TARGET_USAGE usage = usage;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_FEATURE_LEVEL</c></para>
@@ -1518,7 +1560,7 @@ public static partial class D2d1
 		/// the device is adequate. This field is used only when creating ID2D1HwndRenderTarget and ID2D1DCRenderTarget objects.
 		/// </para>
 		/// </summary>
-		public D2D1_FEATURE_LEVEL minLevel;
+		public D2D1_FEATURE_LEVEL minLevel = minLevel;
 	}
 
 	/// <summary>Contains the dimensions and corner radii of a rounded rectangle.</summary>
@@ -1540,25 +1582,25 @@ public static partial class D2d1
 	// rect; FLOAT radiusX; FLOAT radiusY; } D2D1_ROUNDED_RECT;
 	[PInvokeData("d2d1.h", MSDNShortId = "7069ca65-170e-42fc-8c1a-849a2f25c36f")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_ROUNDED_RECT
+	public struct D2D1_ROUNDED_RECT(in D2D_RECT_F rect, float radiusX, float radiusY)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_RECT_F</c></para>
 		/// <para>The coordinates of the rectangle.</para>
 		/// </summary>
-		public D2D_RECT_F rect;
+		public D2D_RECT_F rect = rect;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>The x-radius for the quarter ellipse that is drawn to replace every corner of the rectangle.</para>
 		/// </summary>
-		public float radiusX;
+		public float radiusX = radiusX;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
 		/// <para>The y-radius for the quarter ellipse that is drawn to replace every corner of the rectangle.</para>
 		/// </summary>
-		public float radiusY;
+		public float radiusY = radiusY;
 	}
 
 	/// <summary>Describes the stroke that outlines a shape.</summary>
@@ -1568,25 +1610,28 @@ public static partial class D2d1
 	// FLOAT miterLimit; D2D1_DASH_STYLE dashStyle; FLOAT dashOffset; } D2D1_STROKE_STYLE_PROPERTIES;
 	[PInvokeData("d2d1.h", MSDNShortId = "67f3701f-febd-4afe-803e-c5d9dbcd1b21")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D1_STROKE_STYLE_PROPERTIES
+	public struct D2D1_STROKE_STYLE_PROPERTIES(D2D1_CAP_STYLE startCap = D2D1_CAP_STYLE.D2D1_CAP_STYLE_FLAT,
+		D2D1_CAP_STYLE endCap = D2D1_CAP_STYLE.D2D1_CAP_STYLE_FLAT, D2D1_CAP_STYLE dashCap = D2D1_CAP_STYLE.D2D1_CAP_STYLE_FLAT,
+		D2D1_LINE_JOIN lineJoin = D2D1_LINE_JOIN.D2D1_LINE_JOIN_MITER, float miterLimit = 10f, D2D1_DASH_STYLE dashStyle = D2D1_DASH_STYLE.D2D1_DASH_STYLE_SOLID,
+		float dashOffset = 0f)
 	{
 		/// <summary>
 		/// <para>Type: <c>D2D1_CAP_STYLE</c></para>
 		/// <para>The cap applied to the start of all the open figures in a stroked geometry.</para>
 		/// </summary>
-		public D2D1_CAP_STYLE startCap;
+		public D2D1_CAP_STYLE startCap = startCap;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_CAP_STYLE</c></para>
 		/// <para>The cap applied to the end of all the open figures in a stroked geometry.</para>
 		/// </summary>
-		public D2D1_CAP_STYLE endCap;
+		public D2D1_CAP_STYLE endCap = endCap;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_CAP_STYLE</c></para>
 		/// <para>The shape at either end of each dash segment.</para>
 		/// </summary>
-		public D2D1_CAP_STYLE dashCap;
+		public D2D1_CAP_STYLE dashCap = dashCap;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_LINE_JOIN</c></para>
@@ -1595,7 +1640,7 @@ public static partial class D2d1
 		/// segment should have a smooth join.
 		/// </para>
 		/// </summary>
-		public D2D1_LINE_JOIN lineJoin;
+		public D2D1_LINE_JOIN lineJoin = lineJoin;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -1604,13 +1649,13 @@ public static partial class D2d1
 		/// equal to 1.0f.
 		/// </para>
 		/// </summary>
-		public float miterLimit;
+		public float miterLimit = miterLimit;
 
 		/// <summary>
 		/// <para>Type: <c>D2D1_DASH_STYLE</c></para>
 		/// <para>A value that specifies whether the stroke has a dash pattern and, if so, the dash style.</para>
 		/// </summary>
-		public D2D1_DASH_STYLE dashStyle;
+		public D2D1_DASH_STYLE dashStyle = dashStyle;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -1620,7 +1665,7 @@ public static partial class D2d1
 		/// stroke width, toward the end of the stroked geometry.
 		/// </para>
 		/// </summary>
-		public float dashOffset;
+		public float dashOffset = dashOffset;
 	}
 
 	/// <summary>Contains the three vertices that describe a triangle.</summary>
@@ -1663,7 +1708,7 @@ public static partial class D2d1
 		/// <para>Type: <c>IDWriteFontFace*</c></para>
 		/// <para>The physical font face object to draw with.</para>
 		/// </summary>
-		public IntPtr fontFace;
+		public IUnknownPointer<IDWriteFontFace> fontFace;
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
@@ -1681,19 +1726,19 @@ public static partial class D2d1
 		/// <para>Type: <c>const UINT16*</c></para>
 		/// <para>A pointer to an array of indices to render for the glyph run.</para>
 		/// </summary>
-		public IntPtr glyphIndices;
+		public ArrayPointer<ushort> glyphIndices;
 
 		/// <summary>
 		/// <para>Type: <c>const FLOAT*</c></para>
 		/// <para>A pointer to an array containing glyph advance widths for the glyph run.</para>
 		/// </summary>
-		public IntPtr glyphAdvances;
+		public ArrayPointer<float> glyphAdvances;
 
 		/// <summary>
 		/// <para>Type: <c>const DWRITE_GLYPH_OFFSET*</c></para>
 		/// <para>A pointer to an array containing glyph offsets for the glyph run.</para>
 		/// </summary>
-		public IntPtr glyphOffsets;
+		public ArrayPointer<DWRITE_GLYPH_OFFSET> glyphOffsets;
 
 		/// <summary>
 		/// <para>Type: <c>BOOL</c></para>

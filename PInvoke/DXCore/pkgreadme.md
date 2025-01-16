@@ -16,6 +16,6 @@ If you're still running into problems, file an [issue](https://github.com/dahall
 
 ### **Included in Vanara.PInvoke.DXCore**
 
-Functions | Enumerations | Structures
---- | --- | ---
-DXCoreCreateAdapterFactory                 | DXCoreAdapterPreference DXCoreAdapterProperty DXCoreAdapterState DXCoreHardwareTypeFilterFlags DXCoreMemoryType DXCoreNotificationType DXCoreRuntimeFilterFlags DXCoreSegmentGroup DXCoreWorkload         | DXCoreAdapterEngineIndex DXCoreAdapterMemoryBudget DXCoreAdapterMemoryBudgetNodeSegmentGroup DXCoreAdapterProcessSetQueryInput DXCoreAdapterProcessSetQueryOutput DXCoreEngineNamePropertyInput DXCoreEngineNamePropertyOutput DXCoreEngineQueryInput DXCoreEngineQueryOutput DXCoreFrequencyQueryOutput DXCoreHardwareID DXCoreHardwareIDParts DXCoreMemoryQueryInput DXCoreMemoryUsage DXCoreProcessMemoryQueryInput DXCoreProcessMemoryQueryOutput 
+Functions | Enumerations | Structures | Interfaces
+--- | --- | --- | ---
+DXCoreCreateAdapterFactory                 | DXCoreAdapterPreference DXCoreAdapterProperty DXCoreAdapterState DXCoreHardwareTypeFilterFlags DXCoreMemoryType DXCoreNotificationType DXCoreRuntimeFilterFlags DXCoreSegmentGroup DXCoreWorkload         | DXCoreAdapterEngineIndex DXCoreAdapterMemoryBudget DXCoreAdapterMemoryBudgetNodeSegmentGroup DXCoreAdapterProcessSetQueryInput DXCoreAdapterProcessSetQueryOutput DXCoreEngineNamePropertyInput DXCoreEngineNamePropertyOutput DXCoreEngineQueryInput DXCoreEngineQueryOutput DXCoreFrequencyQueryOutput DXCoreHardwareID DXCoreHardwareIDParts DXCoreMemoryQueryInput DXCoreMemoryUsage DXCoreProcessMemoryQueryInput DXCoreProcessMemoryQueryOutput  | IDXCoreAdapter IDXCoreAdapter1 IDXCoreAdapterFactory IDXCoreAdapterFactory1 IDXCoreAdapterList            

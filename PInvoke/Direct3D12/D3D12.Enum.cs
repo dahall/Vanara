@@ -27,20 +27,17 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NE:d3d12.D3D_ROOT_SIGNATURE_VERSION")]
 	public enum D3D_ROOT_SIGNATURE_VERSION
 	{
-		/// <summary>
-		/// <para>Value: 0x1 Version one of root signature layout.</para>
-		/// </summary>
+		/// <summary>Value: 0x1 Version one of root signature layout.</summary>
 		D3D_ROOT_SIGNATURE_VERSION_1 = 1,
 
-		/// <summary>
-		/// <para>Value: 0x1 Version one of root signature layout.</para>
-		/// </summary>
+		/// <summary>Value: 0x1 Version one of root signature layout.</summary>
 		D3D_ROOT_SIGNATURE_VERSION_1_0 = 1,
 
-		/// <summary>
-		/// <para>Value: 0x2 Version 1.1 of root signature layout. Refer to Root Signature Version 1.1.</para>
-		/// </summary>
+		/// <summary>Value: 0x2 Version 1.1 of root signature layout. Refer to Root Signature Version 1.1.</summary>
 		D3D_ROOT_SIGNATURE_VERSION_1_1 = 2,
+
+		/// <summary>Value: 0x3 Version 1.2 of root signature layout. Refer to Root Signature Version 1.2.</summary>
+		D3D_ROOT_SIGNATURE_VERSION_1_2 = 0x3
 	}
 
 	/// <summary>Undocumented</summary>
@@ -117,6 +114,18 @@ public static partial class D3D12
 		/// </para>
 		/// </summary>
 		D3D_SHADER_MODEL_6_7 = 0x67,
+
+		/// <summary>
+		/// <para>Value: 0x68 
+		/// </para>
+		/// </summary>
+		D3D_SHADER_MODEL_6_8 = 0x68,
+
+		/// <summary>
+		/// <para>Value: 0x69 
+		/// </para>
+		/// </summary>
+		D3D_SHADER_MODEL_6_9 = 0x69,
 	}
 
 	/// <summary>Defines constants that specify render/compute GPU operations.</summary>
@@ -1113,15 +1122,15 @@ public static partial class D3D12
 	/// <remarks>
 	/// <para>This enum is used by the following methods:</para>
 	/// <list type="bullet">
-	/// <item>
-	/// <description>CreateCommandAllocator</description>
-	/// </item>
-	/// <item>
-	/// <description>CreateCommandQueue</description>
-	/// </item>
-	/// <item>
-	/// <description>CreateCommandList</description>
-	/// </item>
+	///   <item>
+	///     <description>CreateCommandAllocator</description>
+	///   </item>
+	///   <item>
+	///     <description>CreateCommandQueue</description>
+	///   </item>
+	///   <item>
+	///     <description>CreateCommandList</description>
+	///   </item>
 	/// </list>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ne-d3d12-d3d12_command_list_type typedef enum D3D12_COMMAND_LIST_TYPE {
@@ -1131,37 +1140,26 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NE:d3d12.D3D12_COMMAND_LIST_TYPE")]
 	public enum D3D12_COMMAND_LIST_TYPE
 	{
-		/// <summary>
-		/// <para>Value: 0 Specifies a command buffer that the GPU can execute. A direct command list doesn't inherit any GPU state.</para>
-		/// </summary>
+		/// <summary>Value: 0 Specifies a command buffer that the GPU can execute. A direct command list doesn't inherit any GPU state.</summary>
 		D3D12_COMMAND_LIST_TYPE_DIRECT = 0,
 
 		/// <summary>
-		/// <para>Value: 1 
+		/// Value: 1
 		/// Specifies a command buffer that can be executed only directly via a direct command list. A bundle command list inherits all GPU
 		/// state (except for the currently set pipeline state object and primitive topology).
-		/// </para>
 		/// </summary>
 		D3D12_COMMAND_LIST_TYPE_BUNDLE,
 
-		/// <summary>
-		/// <para>Value: 2 Specifies a command buffer for computing.</para>
-		/// </summary>
+		/// <summary>Value: 2 Specifies a command buffer for computing.</summary>
 		D3D12_COMMAND_LIST_TYPE_COMPUTE,
 
-		/// <summary>
-		/// <para>Value: 3 Specifies a command buffer for copying.</para>
-		/// </summary>
+		/// <summary>Value: 3 Specifies a command buffer for copying.</summary>
 		D3D12_COMMAND_LIST_TYPE_COPY,
 
-		/// <summary>
-		/// <para>Value: 4 Specifies a command buffer for video decoding.</para>
-		/// </summary>
+		/// <summary>Value: 4 Specifies a command buffer for video decoding.</summary>
 		D3D12_COMMAND_LIST_TYPE_VIDEO_DECODE,
 
-		/// <summary>
-		/// <para>Value: 5 Specifies a command buffer for video processing.</para>
-		/// </summary>
+		/// <summary>Value: 5 Specifies a command buffer for video processing.</summary>
 		D3D12_COMMAND_LIST_TYPE_VIDEO_PROCESS,
 	}
 
@@ -3567,6 +3565,9 @@ public static partial class D3D12
 		/// </para>
 		/// </summary>
 		D3D12_HEAP_TYPE_CUSTOM,
+
+		/// <summary/>
+		D3D12_HEAP_TYPE_GPU_UPLOAD
 	}
 
 	/// <summary>
@@ -5982,14 +5983,14 @@ public static partial class D3D12
 		/// since that can result in premature cache flushes, or resource layout changes (for example, compress/decompress), causing
 		/// unnecessary pipeline stalls. You should instead transition resources only to the actually-used states.
 		/// </summary>
-		D3D12_RESOURCE_STATE_GENERIC_READ,
+		D3D12_RESOURCE_STATE_GENERIC_READ = 0x1 | 0x2 | 0x40 | 0x80 | 0x200 | 0x800,
 
 		/// <summary>
 		/// <para>Equivalent to</para>
 		/// <para>D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE | D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE</para>
 		/// <para>.</para>
 		/// </summary>
-		D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE = D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE | D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+		D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE = 0x40 | 0x80,
 
 		/// <summary>
 		/// <para>Value: 0 Synonymous with D3D12_RESOURCE_STATE_COMMON.</para>
@@ -6901,6 +6902,25 @@ public static partial class D3D12
 		/// </para>
 		/// </summary>
 		D3D12_STATE_OBJECT_FLAG_ALLOW_EXTERNAL_DEPENDENCIES_ON_LOCAL_DEFINITIONS = 0x2,
+
+		/// <summary>
+		/// The presence of this flag in an executable state object, e.g. raytracing pipeline, allows the state object to be passed into
+		/// AddToStateObject() calls, either as the original state object, or the portion being added.
+		/// <para>
+		/// The presence of this flag in a collection state object means the collection can be imported by executable state objects (e.g.
+		/// raytracing pipelines) regardless of whether they have also set this flag. The absence of this flag in a collection state object
+		/// means the collection can only be imported by executable state objects that also do not set this flag.
+		/// </para>
+		/// </summary>
+		D3D12_STATE_OBJECT_FLAG_ALLOW_STATE_OBJECT_ADDITIONS = 0x4,
+
+		/// <summary>
+		/// All nodes in work graphs in the state object get their global root signature bindings from graphics state as opposed to compute
+		/// state. e.g. pCommandList-&gt;SetGraphicsRoot*() APIs as opposed to pCommandList-&gt;SetComputeRoot*() APIs. This flag must be
+		/// specified for state objects that contain work graphs using graphics nodes. For work graphs that don’t use graphics nodes, this
+		/// flag can be used optionally. It is only available when D3D12_WORK_GRAPHS_TIER_1_1 is supported.
+		/// </summary>
+		D3D12_STATE_OBJECT_FLAG_WORK_GRAPHS_USE_GRAPHICS_STATE_FOR_GLOBAL_ROOT_SIGNATURE = 0x40,
 	}
 
 	/// <summary>Specifies the type of a state object. Use with <c>D3D12_STATE_OBJECT_DESC</c>.</summary>
@@ -6910,14 +6930,24 @@ public static partial class D3D12
 	public enum D3D12_STATE_OBJECT_TYPE
 	{
 		/// <summary>
-		/// <para>Value: 0 Collection state object.</para>
+		/// <para>Value: 0 Collection state object. This can hold individual shaders but not generic program or work graph definitions.</para>
 		/// </summary>
 		D3D12_STATE_OBJECT_TYPE_COLLECTION,
 
 		/// <summary>
-		/// <para>Value: 3 Raytracing pipeline state object.</para>
+		/// <para>
+		/// Value: 3 Raytracing pipeline state object. For now at least, raytracing pipelines can only be defined here, and not in
+		///        EXECUTABLE state objects below.
+		/// </para>
 		/// </summary>
 		D3D12_STATE_OBJECT_TYPE_RAYTRACING_PIPELINE = 3,
+
+		/// <summary>
+		/// State object that holds one or more programs. This could hold zero or more work graphs, as well as zero or more compute,
+		/// graphics and mesh shading programs. A raytracing pipelines are not supported here (though using RayQuery in non-raytracing
+		/// shader stages is fine).
+		/// </summary>
+		D3D12_STATE_OBJECT_TYPE_EXECUTABLE = 4
 	}
 
 	/// <summary>The type of a state subobject. Use with <c>D3D12_STATE_SUBOBJECT</c>.</summary>
@@ -6938,19 +6968,16 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NE:d3d12.D3D12_STATE_SUBOBJECT_TYPE")]
 	public enum D3D12_STATE_SUBOBJECT_TYPE
 	{
-		/// <summary>
-		/// <para>Value: 0 Subobject type is D3D12_STATE_OBJECT_CONFIG.</para>
-		/// </summary>
+		/// <summary>Value: 0 Subobject type is D3D12_STATE_OBJECT_CONFIG.</summary>
+		[CorrespondingType(typeof(D3D12_STATE_OBJECT_CONFIG))]
 		D3D12_STATE_SUBOBJECT_TYPE_STATE_OBJECT_CONFIG,
 
-		/// <summary>
-		/// <para>Value: 1 Subobject type is D3D12_GLOBAL_ROOT_SIGNATURE.</para>
-		/// </summary>
+		/// <summary>Value: 1 Subobject type is D3D12_GLOBAL_ROOT_SIGNATURE.</summary>
+		[CorrespondingType(typeof(D3D12_GLOBAL_ROOT_SIGNATURE))]
 		D3D12_STATE_SUBOBJECT_TYPE_GLOBAL_ROOT_SIGNATURE,
 
-		/// <summary>
-		/// <para>Value: 2 Subobject type is D3D12_LOCAL_ROOT_SIGNATURE.</para>
-		/// </summary>
+		/// <summary>Value: 2 Subobject type is D3D12_LOCAL_ROOT_SIGNATURE.</summary>
+		[CorrespondingType(typeof(D3D12_LOCAL_ROOT_SIGNATURE))]
 		D3D12_STATE_SUBOBJECT_TYPE_LOCAL_ROOT_SIGNATURE,
 
 		/// <summary>
@@ -6965,43 +6992,152 @@ public static partial class D3D12
 		/// </para>
 		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_NODE_MASK))]
 		D3D12_STATE_SUBOBJECT_TYPE_NODE_MASK,
 
-		/// <summary>
-		/// <para>Value: 5 Subobject type is D3D12_DXIL_LIBRARY_DESC.</para>
-		/// </summary>
+		/// <summary>Value: 5 Subobject type is D3D12_DXIL_LIBRARY_DESC.</summary>
+		[CorrespondingType(typeof(D3D12_DXIL_LIBRARY_DESC))]
 		D3D12_STATE_SUBOBJECT_TYPE_DXIL_LIBRARY,
 
-		/// <summary>
-		/// <para>Value: 6 Subobject type is D3D12_EXISTING_COLLECTION_DESC.</para>
-		/// </summary>
+		/// <summary>Value: 6 Subobject type is D3D12_EXISTING_COLLECTION_DESC.</summary>
+		[CorrespondingType(typeof(D3D12_EXISTING_COLLECTION_DESC))]
 		D3D12_STATE_SUBOBJECT_TYPE_EXISTING_COLLECTION,
 
-		/// <summary>
-		/// <para>Value: 7 Subobject type is D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION.</para>
-		/// </summary>
+		/// <summary>Value: 7 Subobject type is D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION.</summary>
+		[CorrespondingType(typeof(D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION))]
 		D3D12_STATE_SUBOBJECT_TYPE_SUBOBJECT_TO_EXPORTS_ASSOCIATION,
 
-		/// <summary>
-		/// <para>Value: 8 Subobject type is D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION.</para>
-		/// </summary>
+		/// <summary>Value: 8 Subobject type is D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION.</summary>
+		[CorrespondingType(typeof(D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION))]
 		D3D12_STATE_SUBOBJECT_TYPE_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION,
 
-		/// <summary>
-		/// <para>Value: 9 Subobject type is D3D12_RAYTRACING_SHADER_CONFIG.</para>
-		/// </summary>
+		/// <summary>Value: 9 Subobject type is D3D12_RAYTRACING_SHADER_CONFIG.</summary>
+		[CorrespondingType(typeof(D3D12_RAYTRACING_SHADER_CONFIG))]
 		D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_SHADER_CONFIG,
 
-		/// <summary>
-		/// <para>Value: 10 Subobject type is D3D12_RAYTRACING_PIPELINE_CONFIG.</para>
-		/// </summary>
+		/// <summary>Value: 10 Subobject type is D3D12_RAYTRACING_PIPELINE_CONFIG.</summary>
+		[CorrespondingType(typeof(D3D12_RAYTRACING_PIPELINE_CONFIG))]
 		D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_PIPELINE_CONFIG,
 
-		/// <summary>
-		/// <para>Value: 11 Subobject type is</para>
-		/// <para>D3D12_HIT_GROUP_DESC</para>
-		/// </summary>
+		/// <summary>Value: 11 Subobject type is D3D12_HIT_GROUP_DESC</summary>
+		[CorrespondingType(typeof(D3D12_HIT_GROUP_DESC))]
 		D3D12_STATE_SUBOBJECT_TYPE_HIT_GROUP,
+
+		/// <summary>The d3 D12 state subobject type raytracing pipeline confi g1</summary>
+		[CorrespondingType(typeof(D3D12_RAYTRACING_PIPELINE_CONFIG1))]
+		D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_PIPELINE_CONFIG1 = 12,
+
+		/// <summary>The d3 D12 state subobject type work graph</summary>
+		[CorrespondingType(typeof(D3D12_SET_WORK_GRAPH_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_WORK_GRAPH = 13,
+
+		/// <summary>
+		/// Stream output definition subobject that can used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_STREAM_OUTPUT_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_STREAM_OUTPUT_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_STREAM_OUTPUT = 14,
+
+		/// <summary>
+		/// Blend description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_BLEND_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_BLEND_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_BLEND = 15,
+
+		/// <summary>Sample mask subobject that can be used by a generic program. The contents are a UINT. Defaults if missing.</summary>
+		[CorrespondingType(typeof(uint))]
+		D3D12_STATE_SUBOBJECT_TYPE_SAMPLE_MASK = 16,
+
+		/// <summary>
+		/// Rasterizer description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_RASTERIZER_DESC2. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_RASTERIZER_DESC2))]
+		D3D12_STATE_SUBOBJECT_TYPE_RASTERIZER = 17,
+
+		/// <summary>
+		/// Depth Stencil description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_DEPTH_STENCIL_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_DEPTH_STENCIL_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL = 18,
+
+		/// <summary>
+		/// Input layout description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_INPUT_LAYOUT_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_INPUT_LAYOUT_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_INPUT_LAYOUT = 19,
+
+		/// <summary>
+		/// Index buffer strip cut value description subobject that can be used by a generic program. The contents are the pre-existing API
+		/// struct: D3D12_INDEX_BUFFER_STRIP_CUT_VALUE. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_INDEX_BUFFER_STRIP_CUT_VALUE))]
+		D3D12_STATE_SUBOBJECT_TYPE_IB_STRIP_CUT_VALUE = 20,
+
+		/// <summary>
+		/// Primitive topology description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_PRIMITIVE_TOPOLOGY_TYPE. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_PRIMITIVE_TOPOLOGY_TYPE))]
+		D3D12_STATE_SUBOBJECT_TYPE_PRIMITIVE_TOPOLOGY = 21,
+
+		/// <summary>
+		/// RenderTarget formats description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_RT_FORMAT_ARRAY. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_RT_FORMAT_ARRAY))]
+		D3D12_STATE_SUBOBJECT_TYPE_RENDER_TARGET_FORMATS = 22,
+
+		/// <summary>
+		/// Depth Stencil format description subobject that can be used by a generic program. The contents are a DXGI_FORMAT. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(DXGI_FORMAT))]
+		D3D12_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL_FORMAT = 23,
+
+		/// <summary>
+		/// Sample description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_SAMPLE_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(DXGI_SAMPLE_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_SAMPLE_DESC = 24,
+
+		/// <summary>
+		/// Pipeline state flags subobject that can be used by a generic program. The contents are the pre-existing flags enum:
+		/// D3D12_PIPELINE_STATE_FLAGS. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_PIPELINE_STATE_FLAGS))]
+		D3D12_STATE_SUBOBJECT_TYPE_FLAGS = 26,
+
+		/// <summary>
+		/// Depth Stencil (iteration 1) description subobject that can be used by a generic program. The contents are the pre-existing API
+		/// struct: D3D12_DEPTH_STENCIL_DESC1. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_DEPTH_STENCIL_DESC1))]
+		D3D12_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL1 = 27,
+
+		/// <summary>
+		/// View Instancing description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_VIEW_INSTANCING_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_VIEW_INSTANCING_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_VIEW_INSTANCING = 28,
+
+		/// <summary>
+		/// Generic program definition subobject. See D3D12_GENERIC_PROGRAM_DESC. This is proposed as part of graphics nodes, which aren’t
+		/// supported yet.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_GENERIC_PROGRAM_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_GENERIC_PROGRAM = 29,
+
+		/// <summary>
+		/// Depth Stencil (iteration 2) description subobject that can be used by a generic program. The contents are the pre-existing API
+		/// struct: D3D12_DEPTH_STENCIL_DESC2. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_DEPTH_STENCIL_DESC2))]
+		D3D12_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL2 = 30,
 	}
 
 	/// <summary>Specifies the border color for a static sampler.</summary>

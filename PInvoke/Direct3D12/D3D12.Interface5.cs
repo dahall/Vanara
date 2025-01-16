@@ -97,7 +97,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -183,7 +183,7 @@ public static partial class D3D12
 		HRESULT SerializeVersionedRootSignature(ref D3D12_VERSIONED_ROOT_SIGNATURE_DESC pDesc, out [In] ID3D10Blob ppResult, out ID3D10Blob ppError);
 
 		[PreserveSig]
-		HRESULT CreateVersionedRootSignatureDeserializer(IntPtr pBlob, IntPtr Size, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvDeserializer);
+		HRESULT CreateVersionedRootSignatureDeserializer(IntPtr pBlob, IntPtr Size, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvDeserializer);
 	}
 
 	[ComImport, Guid("ed342442-6343-4e16-bb82-a3a577874e56"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -199,10 +199,10 @@ public static partial class D3D12
 		new HRESULT SerializeVersionedRootSignature(ref D3D12_VERSIONED_ROOT_SIGNATURE_DESC pDesc, out [In] ID3D10Blob ppResult, out ID3D10Blob ppError);
 
 		[PreserveSig]
-		new HRESULT CreateVersionedRootSignatureDeserializer(IntPtr pBlob, IntPtr Size, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvDeserializer);
+		new HRESULT CreateVersionedRootSignatureDeserializer(IntPtr pBlob, IntPtr Size, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvDeserializer);
 
 		[PreserveSig]
-		HRESULT CreateVersionedRootSignatureDeserializerFromSubobjectInLibrary(IntPtr pLibraryBlob, IntPtr Size, [MarshalAs(UnmanagedType.LPWStr)] string RootSignatureSubobjectName, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvDeserializer);
+		HRESULT CreateVersionedRootSignatureDeserializerFromSubobjectInLibrary(IntPtr pLibraryBlob, IntPtr Size, [MarshalAs(UnmanagedType.LPWStr)] string RootSignatureSubobjectName, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvDeserializer);
 	}
 
 	[ComImport, Guid("61f307d3-d34e-4e7c-8374-3ba4de23cccb"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -221,13 +221,13 @@ public static partial class D3D12
 		D3D12_DEVICE_FACTORY_FLAGS GetFlags();
 
 		[PreserveSig]
-		HRESULT GetConfigurationInterface(in Guid clsid, in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		HRESULT GetConfigurationInterface(in Guid clsid, in Guid iid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		[PreserveSig]
 		HRESULT EnableExperimentalFeatures(int NumFeatures, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] pIIDs, IntPtr pConfigurationStructs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] pConfigurationStructSizes);
 
 		[PreserveSig]
-		HRESULT CreateDevice([MarshalAs(UnmanagedType.IUnknown)] object adapter, D3D_FEATURE_LEVEL FeatureLevel, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvDevice);
+		HRESULT CreateDevice([MarshalAs(UnmanagedType.Interface)] object adapter, D3D_FEATURE_LEVEL FeatureLevel, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvDevice);
 	}
 	*/
 
@@ -326,7 +326,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12deviceremovedextendeddata2
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12DeviceRemovedExtendedData2")]
 	[ComImport, Guid("67fc5816-e4ca-4915-bf18-42541272da54"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12DeviceRemovedExtendedData2 : ID3D12DeviceRemovedExtendedData1, ID3D12DeviceRemovedExtendedData
+	public interface ID3D12DeviceRemovedExtendedData2 : ID3D12DeviceRemovedExtendedData1
 	{
 		/// <summary>Retrieves the Device Removed Extended Data (DRED) auto-breadcrumbs output after device removal.</summary>
 		/// <param name="pOutput">
@@ -465,7 +465,7 @@ public static partial class D3D12
 
 	/*
 	[ComImport, Guid("61552388-01ab-4008-a436-83db189566ea"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12DeviceRemovedExtendedDataSettings2 : ID3D12DeviceRemovedExtendedDataSettings1, ID3D12DeviceRemovedExtendedDataSettings
+	public interface ID3D12DeviceRemovedExtendedDataSettings2 : ID3D12DeviceRemovedExtendedDataSettings1
 	{
 		[PreserveSig]
 		new void SetAutoBreadcrumbsEnablement(D3D12_DRED_ENABLEMENT Enablement);
@@ -488,7 +488,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12fence
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Fence")]
 	[ComImport, Guid("0a753dcf-c4d8-4b91-adf6-be5a60d95a76"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Fence : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Fence : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -575,7 +575,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -709,7 +709,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12fence1
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Fence1")]
 	[ComImport, Guid("433685fe-e22b-4ca0-a8db-b5b4f4dd0e4a"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Fence1 : ID3D12Fence, ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Fence1 : ID3D12Fence
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -796,7 +796,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -988,7 +988,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList")]
 	[ComImport, Guid("5b160d0f-ac1b-4185-8ba8-b3ae42a5a455"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList : ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList : ID3D12CommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -1075,7 +1075,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -1222,7 +1222,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -2941,7 +2941,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -3674,7 +3674,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist1
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList1")]
 	[ComImport, Guid("553103fb-1fe7-4557-bb38-946d7d0e7ca7"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList1 : ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList1 : ID3D12GraphicsCommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -3761,7 +3761,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -3908,7 +3908,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -5627,7 +5627,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -6821,7 +6821,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist2
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList2")]
 	[ComImport, Guid("38c3e585-ff17-412c-9150-4fc6f9d72a28"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList2 : ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList2 : ID3D12GraphicsCommandList1
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -6908,7 +6908,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12object-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Associates a name with the device object. This name is for use in debug diagnostics and tools.</summary>
 		/// <param name="Name">
@@ -7055,7 +7055,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -8774,7 +8774,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>

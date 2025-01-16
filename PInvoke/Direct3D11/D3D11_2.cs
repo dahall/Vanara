@@ -1530,7 +1530,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-opensharedresource HRESULT OpenSharedResource(
 		// [in] HANDLE hResource, [in] REFIID ReturnedInterface, [out, optional] void **ppResource );
 		[PreserveSig]
-		new HRESULT OpenSharedResource([In] IntPtr hResource, in Guid ReturnedInterface, [MarshalAs(UnmanagedType.IUnknown)] out object? ppResource);
+		new HRESULT OpenSharedResource([In] IntPtr hResource, in Guid ReturnedInterface, [MarshalAs(UnmanagedType.Interface)] out object? ppResource);
 
 		/// <summary>Get the support of a given format on the installed video device.</summary>
 		/// <param name="Format">
@@ -1803,7 +1803,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Gets the feature level of the hardware device.</summary>
 		/// <returns>
@@ -2732,7 +2732,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11_1/nf-d3d11_1-id3d11device1-opensharedresource1 HRESULT
 		// OpenSharedResource1( [in] HANDLE hResource, [in] REFIID returnedInterface, [out] void **ppResource );
 		[PreserveSig]
-		new HRESULT OpenSharedResource1(HANDLE hResource, in Guid returnedInterface, [MarshalAs(UnmanagedType.IUnknown)] out object ppResource);
+		new HRESULT OpenSharedResource1(HANDLE hResource, in Guid returnedInterface, [MarshalAs(UnmanagedType.Interface)] out object ppResource);
 
 		/// <summary>
 		/// Gives a device access to a shared resource that is referenced by name and that was created on a different device. You must have
@@ -2804,7 +2804,7 @@ public static partial class D3D11
 		// OpenSharedResourceByName( [in] LPCWSTR lpName, [in] DWORD dwDesiredAccess, [in] REFIID returnedInterface, [out] void **ppResource );
 		[PreserveSig]
 		new HRESULT OpenSharedResourceByName([MarshalAs(UnmanagedType.LPWStr)] string lpName, DXGI_SHARED_RESOURCE_RW dwDesiredAccess,
-			in Guid returnedInterface, [MarshalAs(UnmanagedType.IUnknown)] out object ppResource);
+			in Guid returnedInterface, [MarshalAs(UnmanagedType.Interface)] out object ppResource);
 
 		/// <summary>Gets an immediate context, which can play back command lists.</summary>
 		/// <param name="ppImmediateContext">
@@ -3108,7 +3108,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11devicechild-setprivatedatainterface HRESULT
 		// SetPrivateDataInterface( [in] REFGUID guid, [in, optional] const IUnknown *pData );
 		[PreserveSig]
-		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pData);
+		new HRESULT SetPrivateDataInterface(in Guid guid, [In, Optional, MarshalAs(UnmanagedType.Interface)] object? pData);
 
 		/// <summary>Sets the constant buffers used by the vertex shader pipeline stage.</summary>
 		/// <param name="StartSlot">

@@ -258,7 +258,11 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// <summary>
 /// Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory. This class assumes read-only memory.
 /// </summary>
-/// <seealso cref="SafeHandle"/>
+/// <seealso cref="System.Runtime.InteropServices.SafeHandle" />
+/// <seealso cref="System.IComparable{T}" />
+/// <seealso cref="System.IComparable{T}" />
+/// <seealso cref="System.IEquatable{T}" />
+/// <seealso cref="SafeHandle" />
 public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<SafeAllocatedMemoryHandleBase>, IComparable<IReadOnlyList<byte>>,
 	IEquatable<SafeAllocatedMemoryHandleBase>
 {
@@ -380,6 +384,20 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 		IReadOnlyList<byte> e => CompareTo(e) == 0,
 		_ => throw new ArgumentException("Unable to compare type.", nameof(obj)),
 	};
+
+	/// <summary>Gets a hash code value for all bytes within the allocated memory.</summary>
+	/// <returns>A hash code.</returns>
+	public virtual int GetContentHashCode()
+	{
+		unsafe
+		{
+			byte* p = (byte*)handle;
+			int result = 0;
+			for (int i = 0; i < Size; i++)
+				result = (result * 31) ^ p[i];
+			return result;
+		}
+	}
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();

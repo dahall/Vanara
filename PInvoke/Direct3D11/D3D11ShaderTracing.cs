@@ -718,7 +718,7 @@ public static partial class D3D11
 		// HRESULT CreateShaderTrace( [in] IUnknown *pShader, [in] D3D11_SHADER_TRACE_DESC *pTraceDesc, [out] ID3D11ShaderTrace
 		// **ppShaderTrace );
 		[PreserveSig]
-		HRESULT CreateShaderTrace([In, MarshalAs(UnmanagedType.IUnknown)] object pShader, in D3D11_SHADER_TRACE_DESC pTraceDesc, out ID3D11ShaderTrace ppShaderTrace);
+		HRESULT CreateShaderTrace([In, MarshalAs(UnmanagedType.Interface)] object pShader, in D3D11_SHADER_TRACE_DESC pTraceDesc, out ID3D11ShaderTrace ppShaderTrace);
 	}
 
 	/// <summary>
@@ -807,9 +807,9 @@ public static partial class D3D11
 	// D3DDisassemble11Trace( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [in] ID3D11ShaderTrace *pTrace, [in] UINT StartStep, [in] UINT
 	// NumSteps, [in] UINT Flags, [out] ID3D10Blob **ppDisassembly );
 	[PInvokeData("d3d11shadertracing.h", MSDNShortId = "NF:d3d11shadertracing.D3DDisassemble11Trace")]
-	[DllImport(Lib_D3D11SDKLayers, SetLastError = false, ExactSpelling = true)]
+	[DllImport("d3dcompiler_47.dll", SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DDisassemble11Trace([In] IntPtr pSrcData, [In] SizeT SrcDataSize,
-		[In] ID3D11ShaderTrace pTrace, uint StartStep, uint NumSteps, uint Flags, out ID3D10Blob ppDisassembly);
+		[In] ID3D11ShaderTrace pTrace, uint StartStep, uint NumSteps, uint Flags, out ID3DBlob ppDisassembly);
 
 	/// <summary>Describes an instance of a compute shader to trace.</summary>
 	/// <remarks>This API requires the Windows Software Development Kit (SDK) for Windows 8.</remarks>

@@ -283,22 +283,22 @@ public static partial class Ole32
 		/// <summary>Gets the array of objects.</summary>
 		public IEnumerable<object?> parray => GetSafeArray();
 
-		/// <summary>Gets the "by value" boolean value.</summary>
+		/// <summary>Gets the boolean value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public bool? pboolVal => GetRawValue<bool>();
 
-		/// <summary>Gets the "by value" string value.</summary>
+		/// <summary>Gets the string value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public IntPtr pbstrVal => _ptr;
 
-		/// <summary>Gets the "by value" byte value.</summary>
+		/// <summary>Gets the byte value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public byte? pbVal => GetRawValue<byte>();
 
-		/// <summary>Gets the "by value" CLIPDATA value.</summary>
+		/// <summary>Gets the CLIPDATA value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public CLIPDATA pclipdata => GetRawValue<CLIPDATA>().GetValueOrDefault();
 
-		/// <summary>Gets the "by value" sbyte value.</summary>
+		/// <summary>Gets the sbyte value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public sbyte? pcVal => GetRawValue<sbyte>();
 
-		/// <summary>Gets the "by value" decimal value.</summary>
+		/// <summary>Gets the decimal value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public decimal? pcyVal
 		{
 			get
@@ -308,7 +308,7 @@ public static partial class Ole32
 			}
 		}
 
-		/// <summary>Gets the "by value" DateTime value.</summary>
+		/// <summary>Gets the DateTime value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public DateTime? pdate
 		{
 			get
@@ -318,25 +318,25 @@ public static partial class Ole32
 			}
 		}
 
-		/// <summary>Gets the "by value" double value.</summary>
+		/// <summary>Gets the double value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public double? pdblVal => GetRawValue<double>();
 
-		/// <summary>Gets the "by value" decimal value.</summary>
+		/// <summary>Gets the decimal value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public decimal? pdecVal => GetRawValue<decimal>();
 
-		/// <summary>Gets the "by value" pointer value.</summary>
+		/// <summary>Gets the pointer value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public object? pdispVal => punkVal;
 
-		/// <summary>Gets the "by value" float value.</summary>
+		/// <summary>Gets the float value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public float? pfltVal => GetRawValue<float>();
 
-		/// <summary>Gets the "by value" int value.</summary>
+		/// <summary>Gets the int value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public int? pintVal => GetRawValue<int>();
 
-		/// <summary>Gets the "by value" short value.</summary>
+		/// <summary>Gets the short value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public short? piVal => GetRawValue<short>();
 
-		/// <summary>Gets the "by value" int value.</summary>
+		/// <summary>Gets the int value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public int? plVal => GetRawValue<int>();
 
 		/// <summary>Gets the IDispatch value.</summary>
@@ -345,7 +345,7 @@ public static partial class Ole32
 		/// <summary>Gets the IUnknown value.</summary>
 		public object ppunkVal => GetRawValue<IntPtr>().GetValueOrDefault();
 
-		/// <summary>Gets the "by value" Win32Error value.</summary>
+		/// <summary>Gets the Win32Error value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public Win32Error? pscode
 		{
 			get
@@ -364,22 +364,22 @@ public static partial class Ole32
 		/// <summary>Gets the ANSI string value.</summary>
 		public string? pszVal => GetString(VarType);
 
-		/// <summary>Gets the "by value" uint value.</summary>
+		/// <summary>Gets the uint value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public uint? puintVal => GetRawValue<uint>();
 
-		/// <summary>Gets the "by value" ushort value.</summary>
+		/// <summary>Gets the ushort value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public ushort? puiVal => GetRawValue<ushort>();
 
-		/// <summary>Gets the "by value" uint value.</summary>
+		/// <summary>Gets the uint value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public uint? pulVal => GetRawValue<uint>();
 
-		/// <summary>Gets the "by value" IUnknown value.</summary>
+		/// <summary>Gets the IUnknown value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public object? punkVal => _ptr == IntPtr.Zero ? null : Marshal.GetObjectForIUnknown(_ptr);
 
-		/// <summary>Gets the "by value" Guid value.</summary>
+		/// <summary>Gets the Guid value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public Guid? puuid => GetRawValue<Guid>();
 
-		/// <summary>Gets the "by value" PROPVARIANT value.</summary>
+		/// <summary>Gets the PROPVARIANT value as a reference accounting for its source potentially being a pointer to NULL..</summary>
 		public PROPVARIANT? pvarVal => _ptr.ToStructure<PROPVARIANT>();
 
 		/// <summary>Gets a stream with a Guid version.</summary>
