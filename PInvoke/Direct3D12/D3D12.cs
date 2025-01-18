@@ -2155,32 +2155,32 @@ public static partial class D3D12
 							HRESULT hr = HRESULT.S_OK;
 							D3D12_ROOT_SIGNATURE_DESC1 desc_1_1 = pRootSignatureDesc.Desc_1_1;
 
-							SizeT ParametersSize = Marshal.SizeOf(typeof(D3D12_ROOT_PARAMETER)) * desc_1_1.NumParameters;
-							SafeHeapBlock pParameters = (ParametersSize > 0) ? HeapAlloc(GetProcessHeap(), 0, ParametersSize) : SafeHeapBlock.Null;
-							if (ParametersSize > 0 && pParameters.IsInvalid)
+							SafeNativeArray<D3D12_ROOT_PARAMETER> pParameters_1_0 = new((int)desc_1_1.NumParameters);
+							if (desc_1_1.NumParameters > 0 && pParameters_1_0.IsInvalid)
 							{
 								hr = HRESULT.E_OUTOFMEMORY;
 							}
-
-							var pParameters_1_0 = pParameters.AsSpan<D3D12_ROOT_PARAMETER>((int)desc_1_1.NumParameters);
 
 							if (hr.Succeeded)
 							{
 								for (int n = 0; n < desc_1_1.NumParameters; n++)
 								{
-									pParameters_1_0[n].ParameterType = desc_1_1.pParameters[n].ParameterType;
-									pParameters_1_0[n].ShaderVisibility = desc_1_1.pParameters[n].ShaderVisibility;
+									D3D12_ROOT_PARAMETER p_1_0 = new()
+									{
+										ParameterType = desc_1_1.pParameters[n].ParameterType,
+										ShaderVisibility = desc_1_1.pParameters[n].ShaderVisibility
+									};
 
 									switch (desc_1_1.pParameters[n].ParameterType)
 									{
 										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS:
-											pParameters_1_0[n].Constants = desc_1_1.pParameters[n].Constants;
+											p_1_0.Constants = desc_1_1.pParameters[n].Constants;
 											break;
 
 										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_CBV:
 										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_SRV:
 										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_UAV:
-											pParameters_1_0[n].Descriptor = desc_1_1.pParameters[n].Descriptor;
+											p_1_0.Descriptor = desc_1_1.pParameters[n].Descriptor;
 											break;
 
 										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE:
@@ -2203,7 +2203,7 @@ public static partial class D3D12
 													}
 												}
 
-												D3D12_ROOT_DESCRIPTOR_TABLE table_1_0 = pParameters_1_0[n].DescriptorTable;
+												D3D12_ROOT_DESCRIPTOR_TABLE table_1_0 = p_1_0.DescriptorTable;
 												table_1_0.NumDescriptorRanges = table_1_1.NumDescriptorRanges;
 												table_1_0.pDescriptorRanges = pDescriptorRanges; // _1_0;
 											}
@@ -2212,23 +2212,20 @@ public static partial class D3D12
 										default:
 											break;
 									}
+									pParameters_1_0[n] = p_1_0;
 								}
 							}
 
-							Span<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default;
-							SafeHeapBlock ppSamplers = SafeHeapBlock.Null;
+							SafeNativeArray<D3D12_STATIC_SAMPLER_DESC>? pStaticSamplers = null;
 							if (desc_1_1.NumStaticSamplers > 0 && pRootSignatureDesc.Version == D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2)
 							{
-								SizeT SamplersSize = Marshal.SizeOf(typeof(D3D12_STATIC_SAMPLER_DESC)) * desc_1_1.NumStaticSamplers;
-								ppSamplers = HeapAlloc(GetProcessHeap(), 0, SamplersSize);
-
-								if (ppSamplers.IsInvalid)
+								pStaticSamplers = new((int)desc_1_1.NumStaticSamplers);
+								if (pStaticSamplers.IsInvalid)
 								{
 									hr = HRESULT.E_OUTOFMEMORY;
 								}
 								else
 								{
-									pStaticSamplers = ppSamplers.AsSpan<D3D12_STATIC_SAMPLER_DESC>((int)desc_1_1.NumStaticSamplers);
 									D3D12_ROOT_SIGNATURE_DESC2 desc_1_2 = pRootSignatureDesc.Desc_1_2;
 									for (int n = 0; n < desc_1_1.NumStaticSamplers; ++n)
 									{
@@ -2244,7 +2241,7 @@ public static partial class D3D12
 
 							if (hr.Succeeded)
 							{
-								D3D12_ROOT_SIGNATURE_DESC desc_1_0 = new(desc_1_1.NumParameters, pParameters, desc_1_1.NumStaticSamplers, pStaticSamplers == default ? (IntPtr)desc_1_1.pStaticSamplers : ppSamplers, desc_1_1.Flags);
+								D3D12_ROOT_SIGNATURE_DESC desc_1_0 = new(desc_1_1.NumParameters, pParameters_1_0, desc_1_1.NumStaticSamplers, pStaticSamplers ?? (IntPtr)desc_1_1.pStaticSamplers, desc_1_1.Flags);
 								hr = D3D12SerializeRootSignature(desc_1_0, D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1, out ppBlob, ppErrorBlob);
 							}
 
@@ -2268,20 +2265,16 @@ public static partial class D3D12
 							HRESULT hr = HRESULT.S_OK;
 							D3D12_ROOT_SIGNATURE_DESC1 desc_1_1 = pRootSignatureDesc.Desc_1_1;
 
-							Span<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default;
-							SafeHeapBlock ppStaticSamplers = SafeHeapBlock.Null;
+							SafeNativeArray<D3D12_STATIC_SAMPLER_DESC>? pStaticSamplers = default;
 							if (desc_1_1.NumStaticSamplers > 0)
 							{
-								SizeT SamplersSize = Marshal.SizeOf(typeof(D3D12_STATIC_SAMPLER_DESC)) * desc_1_1.NumStaticSamplers;
-								ppStaticSamplers = HeapAlloc(GetProcessHeap(), 0, SamplersSize);
-
-								if (ppStaticSamplers.IsInvalid)
+								pStaticSamplers = new((int)desc_1_1.NumStaticSamplers);
+								if (pStaticSamplers.IsInvalid)
 								{
 									hr = HRESULT.E_OUTOFMEMORY;
 								}
 								else
 								{
-									pStaticSamplers = ppStaticSamplers.AsSpan<D3D12_STATIC_SAMPLER_DESC>((int)desc_1_1.NumStaticSamplers);
 									D3D12_ROOT_SIGNATURE_DESC2 desc_1_2 = pRootSignatureDesc.Desc_1_2;
 									for (int n = 0; n < desc_1_1.NumStaticSamplers; ++n)
 									{
@@ -2298,7 +2291,7 @@ public static partial class D3D12
 							if (hr.Succeeded)
 							{
 								D3D12_VERSIONED_ROOT_SIGNATURE_DESC desc = new(desc_1_1);
-								if (pStaticSamplers != default) desc.Desc_1_1.pStaticSamplers = ppStaticSamplers;
+								if (pStaticSamplers != null) desc.Desc_1_1.pStaticSamplers = pStaticSamplers;
 								hr = D3D12SerializeVersionedRootSignature(desc, out ppBlob, ppErrorBlob);
 							}
 

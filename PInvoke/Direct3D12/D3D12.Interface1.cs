@@ -5687,7 +5687,7 @@ public static partial class D3D12
 	/// <typeparam name="T">The type of the structure associated with <paramref name="Feature"/>.</typeparam>
 	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
 	/// <param name="Feature">
-	/// A constant from the <c>D3D12_FEATURE</c> enumeration describing the feature(s) that you want to query for support.
+	/// A constant from the <c>D3D12_FEATURE</c> enumeration describing the feature(s) that you want to query for support. If not supplied, it is derived from <typeparamref name="T"/>.
 	/// </param>
 	/// <param name="pFeatureSupportData">
 	/// A reference to a data structure that corresponds to the value of the <i>Feature</i> parameter. To determine the corresponding data
@@ -5717,10 +5717,12 @@ public static partial class D3D12
 	/// </code>
 	/// </para>
 	/// </remarks>
-	public static HRESULT CheckFeatureSupport<T>(this ID3D12Device device, D3D12_FEATURE Feature, ref T pFeatureSupportData) where T : struct
+	public static HRESULT CheckFeatureSupport<T>(this ID3D12Device device, ref T pFeatureSupportData, D3D12_FEATURE? Feature = null) where T : struct
 	{
+		if (!CorrespondingTypeAttribute.CanGet<T, D3D12_FEATURE>(Feature, out var f))
+			return HRESULT.E_INVALIDARG;
 		using SafeCoTaskMemStruct<T> mem = new(pFeatureSupportData);
-		var hr = device.CheckFeatureSupport(Feature, mem, mem.Size);
+		var hr = device.CheckFeatureSupport(f, mem, mem.Size);
 		pFeatureSupportData = mem.Value;
 		return hr;
 	}
@@ -5729,7 +5731,7 @@ public static partial class D3D12
 	/// <typeparam name="T">The type of the structure associated with <paramref name="Feature"/>.</typeparam>
 	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
 	/// <param name="Feature">
-	/// A constant from the <c>D3D12_FEATURE</c> enumeration describing the feature(s) that you want to query for support.
+	/// A constant from the <c>D3D12_FEATURE</c> enumeration describing the feature(s) that you want to query for support. If not supplied, it is derived from <typeparamref name="T"/>.
 	/// </param>
 	/// <param name="pFeatureSupportData">
 	/// A reference to a data structure that corresponds to the value of the <i>Feature</i> parameter. To determine the corresponding data
@@ -5759,10 +5761,12 @@ public static partial class D3D12
 	/// </code>
 	/// </para>
 	/// </remarks>
-	public static HRESULT CheckFeatureSupport<T>(this ID3D12Device device, D3D12_FEATURE Feature, in T? pFeatureSupportData) where T : struct
+	public static HRESULT CheckFeatureSupport<T>(this ID3D12Device device, in T? pFeatureSupportData, D3D12_FEATURE? Feature = null) where T : struct
 	{
+		if (!CorrespondingTypeAttribute.CanGet<T, D3D12_FEATURE>(Feature, out var f))
+			return HRESULT.E_INVALIDARG;
 		using SafeCoTaskMemStruct<T> mem = pFeatureSupportData;
-		return device.CheckFeatureSupport(Feature, mem, mem.Size);
+		return device.CheckFeatureSupport(f, mem, mem.Size);
 	}
 
 	/// <summary>Creates a command allocator object.</summary>
