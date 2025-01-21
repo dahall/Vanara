@@ -6541,7 +6541,7 @@ public static partial class D3D12
 		internal static byte D3D12GetFormatPlaneCount([In] ID3D12Device pDevice, DXGI_FORMAT Format)
 		{
 			D3D12_FEATURE_DATA_FORMAT_INFO formatInfo = new() { Format = Format };
-			return pDevice.CheckFeatureSupport(D3D12_FEATURE.D3D12_FEATURE_FORMAT_INFO, ref formatInfo).Failed ? (byte)0 : formatInfo.PlaneCount;
+			return pDevice.CheckFeatureSupport(ref formatInfo, D3D12_FEATURE.D3D12_FEATURE_FORMAT_INFO).Failed ? (byte)0 : formatInfo.PlaneCount;
 		}
 
 		/// <inheritdoc/>
