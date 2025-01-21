@@ -2213,6 +2213,31 @@ public static partial class D3D12
 		HRESULT CreatePipelineState(in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
 	}
 
+	/// <summary>Creates a pipeline state object from a pipeline state stream description.</summary>
+	/// <typeparam name="T">The type of the pipeline state interface (<c>ID3D12PipelineState</c>).</typeparam>
+	/// <param name="dev">The <see cref="ID3D12Device2" /> instance.</param>
+	/// <param name="pDesc">A <c>D3D12_PIPELINE_STATE_STREAM_DESC</c> structure that describes the pipeline state.</param>
+	/// <param name="ppPipelineState"><para>
+	/// A value that receives the <c>ID3D12PipelineState</c> interface for the pipeline state object.
+	/// </para>
+	/// <para>The pipeline state object is an immutable state object. It contains no methods.</para></param>
+	/// <returns>
+	/// This method returns <b>E_OUTOFMEMORY</b> if there is insufficient memory to create the pipeline state object. See <c>Direct3D 12
+	/// Return Codes</c> for other possible return values.
+	/// </returns>
+	/// <remarks>
+	/// This function takes the pipeline description as a <c>D3D12_PIPELINE_STATE_STREAM_DESC</c> and combines the functionality of the
+	/// <c>ID3D12Device::CreateGraphicsPipelineState</c> and <c>ID3D12Device::CreateComputePipelineState</c> functions, which take their
+	/// pipeline description as the less-flexible <c>D3D12_GRAPHICS_PIPELINE_STATE_DESC</c> and <c>D3D12_COMPUTE_PIPELINE_STATE_DESC</c>
+	/// structs, respectively.
+	/// </remarks>
+	public static HRESULT CreatePipelineState<T>(this ID3D12Device2 dev, in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, out T? ppPipelineState) where T : class
+	{
+		var hr = dev.CreatePipelineState(pDesc, typeof(T).GUID, out var ppv);
+		ppPipelineState = hr.Succeeded ? (T)ppv! : null;
+		return hr;
+	}
+
 	/// <summary>
 	/// <para>
 	/// Represents a virtual adapter. This interface extends <c>ID3D12Device2</c> to support the creation of special-purpose diagnostic

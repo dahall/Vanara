@@ -4717,17 +4717,16 @@ public static partial class D3D12
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_PIPELINE_STATE_STREAM_DESC
 	{
-		/// <summary>
-		/// <para><c>SAL</c>: <c>In</c></para>
-		/// <para>Specifies the size of the opaque data structure pointed to by the pPipelineStateSubobjectStream member, in bytes.</para>
-		/// </summary>
+		/// <summary>Specifies the size of the opaque data structure pointed to by the pPipelineStateSubobjectStream member, in bytes.</summary>
 		public SizeT SizeInBytes;
 
-		/// <summary>
-		/// <para><c>SAL</c>: <c>In_reads(Inexpressible("Dependentonsizeofsubobjects"))</c></para>
-		/// <para>Specifies the address of a data structure that describes as a bytestream an arbitrary pipeline state subobject.</para>
-		/// </summary>
+		/// <summary>Specifies the address of a data structure that describes as a bytestream an arbitrary pipeline state subobject.</summary>
 		public IntPtr pPipelineStateSubobjectStream;
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandle"/> to <see cref="D3D12.D3D12_PIPELINE_STATE_STREAM_DESC"/>.</summary>
+		/// <param name="h">The <see cref="SafeAllocatedMemoryHandle"/> instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator D3D12_PIPELINE_STATE_STREAM_DESC(SafeAllocatedMemoryHandle h) => new() { SizeInBytes = h.Size, pPipelineStateSubobjectStream = h.DangerousGetHandle() };
 	}
 
 	/// <summary>Describes the footprint of a placed subresource, including the offset and the D3D12_SUBRESOURCE_FOOTPRINT.</summary>
@@ -6498,7 +6497,7 @@ public static partial class D3D12
 	// D3D12_RESOURCE_DIMENSION Dimension; UINT64 Alignment; UINT64 Width; UINT Height; UINT16 DepthOrArraySize; UINT16 MipLevels;
 	// DXGI_FORMAT Format; DXGI_SAMPLE_DESC SampleDesc; D3D12_TEXTURE_LAYOUT Layout; D3D12_RESOURCE_FLAGS Flags; } D3D12_RESOURCE_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_RESOURCE_DESC")]
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct D3D12_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION dimension, ulong alignment, ulong width, uint height, ushort depthOrArraySize,
 		ushort mipLevels, DXGI_FORMAT format, uint sampleCount, uint sampleQuality, D3D12_TEXTURE_LAYOUT layout, D3D12_RESOURCE_FLAGS flags) : IEquatable<D3D12_RESOURCE_DESC>
 	{

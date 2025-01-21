@@ -1869,7 +1869,7 @@ public static partial class D3D12
 		// [in] UINT8 Stencil, [in] UINT NumRects, [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearDepthStencilView([In] D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil,
-			int NumRects, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[]? pRects);
 
 		/// <summary>Sets all the elements in a render target to one value.</summary>
 		/// <param name="RenderTargetView">
@@ -5056,7 +5056,7 @@ public static partial class D3D12
 		// [in] UINT8 Stencil, [in] UINT NumRects, [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearDepthStencilView([In] D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil,
-			int NumRects, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[]? pRects);
 
 		/// <summary>Sets all the elements in a render target to one value.</summary>
 		/// <param name="RenderTargetView">
@@ -8471,7 +8471,7 @@ public static partial class D3D12
 		// [in] UINT8 Stencil, [in] UINT NumRects, [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearDepthStencilView([In] D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil,
-			int NumRects, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[]? pRects);
 
 		/// <summary>Sets all the elements in a render target to one value.</summary>
 		/// <param name="RenderTargetView">
@@ -11967,7 +11967,7 @@ public static partial class D3D12
 		// [in] UINT8 Stencil, [in] UINT NumRects, [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearDepthStencilView([In] D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil,
-			int NumRects, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[]? pRects);
 
 		/// <summary>Sets all the elements in a render target to one value.</summary>
 		/// <param name="RenderTargetView">
@@ -15476,7 +15476,7 @@ public static partial class D3D12
 		// [in] UINT8 Stencil, [in] UINT NumRects, [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearDepthStencilView([In] D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil,
-			int NumRects, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[]? pRects);
 
 		/// <summary>Sets all the elements in a render target to one value.</summary>
 		/// <param name="RenderTargetView">
