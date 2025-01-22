@@ -6592,7 +6592,13 @@ public static partial class D3D12
 		return (T)ppv!;
 	}
 
+	/// <summary>Gets the CPU descriptor handle that represents the start of the heap.</summary>
+	/// <param name="heap">The heap.</param>
+	/// <returns>Returns the CPU descriptor handle that represents the start of the heap.</returns>
+	public static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandleForHeapStart(this ID3D12DescriptorHeap heap) { heap.GetCPUDescriptorHandleForHeapStart(out var h); return h; }
+
 	/// <summary>Gets the GPU descriptor handle that represents the start of the heap.</summary>
+	/// <param name="heap">The heap.</param>
 	/// <returns>
 	/// Returns the GPU descriptor handle that represents the start of the heap. If the descriptor heap is not shader-visible, a null handle
 	/// is returned.

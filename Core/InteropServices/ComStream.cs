@@ -34,11 +34,11 @@ public class ComStream : Stream, IStream, IDisposable
 
 	/// <summary>Gets a value indicating whether this instance can read.</summary>
 	/// <value><see langword="true"/> if this instance can read; otherwise, <see langword="false"/>.</value>
-	public override bool CanRead => netStream?.CanRead ?? false;
+	public override bool CanRead => (GetStats().grfMode & 0x00000003) is 0 or 2;
 
 	/// <summary>Gets a value indicating whether this instance can seek.</summary>
 	/// <value><see langword="true"/> if this instance can seek; otherwise, <see langword="false"/>.</value>
-	public override bool CanSeek => netStream?.CanSeek ?? false;
+	public override bool CanSeek => netStream?.CanSeek ?? true;
 
 	/// <summary>Gets a value indicating whether this instance can timeout.</summary>
 	/// <value><see langword="true"/> if this instance can timeout; otherwise, <see langword="false"/>.</value>
@@ -46,7 +46,7 @@ public class ComStream : Stream, IStream, IDisposable
 
 	/// <summary>Gets a value indicating whether this instance can write.</summary>
 	/// <value><see langword="true"/> if this instance can write; otherwise, <see langword="false"/>.</value>
-	public override bool CanWrite => netStream?.CanWrite ?? false;
+	public override bool CanWrite => (GetStats().grfMode & 0x00000003) is 1 or 2;
 
 	/// <summary>When overridden in a derived class, gets the length in bytes of the stream.</summary>
 	public override long Length
@@ -415,28 +415,7 @@ public class ComStream : Stream, IStream, IDisposable
 	/// Specifies that this method does not return some of the members in the STATSTG structure, thus saving a memory allocation operation.
 	/// This parameter is not used internally.
 	/// </param>
-	/// <returns></returns>
-	/// <exception cref="NotSupportedException">The stream does not support reading.</exception>
-	/// <exception cref="ObjectDisposedException">Methods were called after the stream was closed.</exception>
-	/// <remarks>The <paramref name="grfStatFlag"/> parameter is not used</remarks>
-	void IStream.Stat(out STATSTG pstatstg, int grfStatFlag)
-	{
-		if (netStream is not null)
-		{
-			pstatstg = new STATSTG
-			{
-				type = 2, // STGTY_STREAM
-						  // Gets the length in bytes of the stream.
-				cbSize = netStream.Length,
-				grfMode = 2, // STGM_READWRITE;
-				grfLocksSupported = 2 // LOCK_EXCLUSIVE
-			};
-		}
-		else if (comStream is not null)
-			comStream.Stat(out pstatstg, grfStatFlag);
-		else
-			throw new InvalidOperationException();
-	}
+	void IStream.Stat(out STATSTG pstatstg, int grfStatFlag) => pstatstg = GetStats(grfStatFlag);
 
 	/// <summary>Removes the access restriction on a range of bytes previously restricted with the LockRegion method.</summary>
 	/// <param name="libOffset">Specifies the byte offset for the beginning of the range.</param>
@@ -485,5 +464,25 @@ public class ComStream : Stream, IStream, IDisposable
 			comStream.Write(pv, cb, pcbWritten);
 		else
 			throw new InvalidOperationException();
+	}
+
+	private STATSTG GetStats(int grfStatFlag = 1)
+	{
+		if (netStream is not null)
+		{
+			return new()
+			{
+				type = 2, // STGTY_STREAM
+				cbSize = netStream.Length, // Gets the length in bytes of the stream.
+				grfMode = netStream.CanRead && netStream.CanWrite ? 2 : (netStream.CanRead ? 0 : 1),
+				grfLocksSupported = 2 // LOCK_EXCLUSIVE
+			};
+		}
+		else if (comStream is not null)
+		{
+			comStream.Stat(out var pstatstg, grfStatFlag);
+			return pstatstg;
+		}
+		throw new InvalidOperationException();
 	}
 }
