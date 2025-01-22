@@ -43,7 +43,7 @@ public static class MsgExtensions
 	/// <typeparam name="TEnum">The type of the message enum.</typeparam>
 	/// <param name="msg">The MSG value.</param>
 	/// <returns>The wParam and lParam in a tuple tied to their assigned value types.</returns>
-	public static (object? wParam, object? lParam) GetParams<TEnum>(this MSG msg) where TEnum : Enum
+	public static (object? wParam, object? lParam) GetParams<TEnum>(this MSG msg) where TEnum : unmanaged, Enum
 	{
 		TEnum value = msg.message.ToEnum<TEnum>();
 		FieldInfo? fieldInfo = value.GetType().GetField(value.ToString());
