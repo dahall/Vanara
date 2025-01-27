@@ -85,24 +85,35 @@ public struct ArrayPointer<T> where T : unmanaged
 
 /// <summary>This structure is used to hold a reference to an IUnknown interface pointer.</summary>
 /// <typeparam name="T">The type of the interface.</typeparam>
+[StructLayout(LayoutKind.Sequential)]
 public struct IUnknownPointer<T> where T : class
 {
 	private IntPtr ptr;
 
 	/// <summary>Initializes a new instance of the <see cref="IUnknownPointer{T}"/> struct.</summary>
 	/// <param name="value">The value.</param>
-	public IUnknownPointer(T? value) => ptr = value == null ? IntPtr.Zero : Marshal.GetIUnknownForObject(value);
+	public IUnknownPointer(T? value) => ptr = value == null ? IntPtr.Zero :
+#if NET45
+		Marshal.GetIUnknownForObject(value);
+#else
+		Marshal.GetComInterfaceForObject(value, typeof(T));
+#endif
 
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>
 	/// <para>Gets the value as an interface.</para>
 	/// <note type="warning">This must only be used with COM interfaces.</note>
 	/// </summary>
 	/// <value>The value.</value>
-	public T? Value => ptr == IntPtr.Zero ? null : (T?)Marshal.GetObjectForIUnknown(ptr);
+	public T? Value => ptr == IntPtr.Zero ? null :
+#if NETSTANDARD
+		(T)Marshal.GetObjectForIUnknown(ptr);
+#else
+		(T)Marshal.GetTypedObjectForIUnknown(ptr, typeof(T));
+#endif
 
 	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="IUnknownPointer{T}"/>.</summary>
 	/// <param name="p">The IUnknown interface pointer.</param>
