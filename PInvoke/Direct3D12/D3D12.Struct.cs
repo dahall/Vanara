@@ -6294,49 +6294,60 @@ public static partial class D3D12
 	// D3D12_RESOURCE_BARRIER_TYPE Type; D3D12_RESOURCE_BARRIER_FLAGS Flags; union { D3D12_RESOURCE_TRANSITION_BARRIER Transition;
 	// D3D12_RESOURCE_ALIASING_BARRIER Aliasing; D3D12_RESOURCE_UAV_BARRIER UAV; }; } D3D12_RESOURCE_BARRIER;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_RESOURCE_BARRIER")]
-	[StructLayout(LayoutKind.Explicit)]
+	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_RESOURCE_BARRIER
 	{
 		/// <summary>
 		/// A <c>D3D12_RESOURCE_BARRIER_TYPE</c>-typed value that specifies the type of resource barrier. This member determines which type
 		/// to use in the union below.
 		/// </summary>
-		[FieldOffset(0)]
 		public D3D12_RESOURCE_BARRIER_TYPE Type;
 
 		/// <summary>Specifies a <c>D3D12_RESOURCE_BARRIER_FLAGS</c> enumeration constant such as for "begin only" or "end only".</summary>
-		[FieldOffset(4)]
 		public D3D12_RESOURCE_BARRIER_FLAGS Flags;
+
+		private UNION union;
+
+		[StructLayout(LayoutKind.Explicit)]
+		private struct UNION
+		{
+			[FieldOffset(0)]
+			public D3D12_RESOURCE_TRANSITION_BARRIER Transition;
+			[FieldOffset(0)]
+			public D3D12_RESOURCE_ALIASING_BARRIER Aliasing;
+			[FieldOffset(0)]
+			public D3D12_RESOURCE_UAV_BARRIER UAV;
+		}
 
 		/// <summary>
 		/// A <c>D3D12_RESOURCE_TRANSITION_BARRIER</c> structure that describes the transition of subresources between different usages.
 		/// Members specify the before and after usages of the subresources.
 		/// </summary>
-		[FieldOffset(8)]
-		public D3D12_RESOURCE_TRANSITION_BARRIER Transition;
+		public D3D12_RESOURCE_TRANSITION_BARRIER Transition { get => Type == D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_TRANSITION ? union.Transition : default; set { Type = D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_TRANSITION; union.Transition = value; } }
 
 		/// <summary>
 		/// A <c>D3D12_RESOURCE_ALIASING_BARRIER</c> structure that describes the transition between usages of two different resources that
 		/// have mappings into the same heap.
 		/// </summary>
-		[FieldOffset(8)]
-		public D3D12_RESOURCE_ALIASING_BARRIER Aliasing;
+		public D3D12_RESOURCE_ALIASING_BARRIER Aliasing { get => Type == D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_ALIASING ? union.Aliasing : default; set { Type = D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_ALIASING; union.Aliasing = value; } }
 
 		/// <summary>
 		/// A <c>D3D12_RESOURCE_UAV_BARRIER</c> structure that describes a resource in which all UAV accesses (reads or writes) must
 		/// complete before any future UAV accesses (read or write) can begin.
 		/// </summary>
-		[FieldOffset(8)]
-		public D3D12_RESOURCE_UAV_BARRIER UAV;
+		public D3D12_RESOURCE_UAV_BARRIER UAV { get => Type == D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_UAV ? union.UAV : default; set { Type = D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_UAV; union.UAV = value; } }
 
 		/// <summary>Creates aliasing barrier.</summary>
 		public static D3D12_RESOURCE_BARRIER CreateAliasing(ID3D12Resource? pResourceBefore, ID3D12Resource? pResourceAfter) => new()
 		{
 			Type = D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_ALIASING,
-			Aliasing = new()
+			union = new()
 			{
-				pResourceBefore = new(pResourceBefore),
-				pResourceAfter = new(pResourceAfter)
+				Aliasing = new()
+				{
+					pResourceBefore = new(pResourceBefore),
+					pResourceAfter = new(pResourceAfter)
+				}
 			}
 		};
 
@@ -6347,12 +6358,15 @@ public static partial class D3D12
 				{
 					Type = D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
 					Flags = flags,
-					Transition = new()
+					union = new()
 					{
-						pResource = new(pResource),
-						StateBefore = stateBefore,
-						StateAfter = stateAfter,
-						Subresource = subresource,
+						Transition = new()
+						{
+							pResource = new(pResource),
+							StateBefore = stateBefore,
+							StateAfter = stateAfter,
+							Subresource = subresource,
+						}
 					}
 				};
 
@@ -6360,7 +6374,7 @@ public static partial class D3D12
 		public static D3D12_RESOURCE_BARRIER CreateUAV(ID3D12Resource? pResource) => new()
 		{
 			Type = D3D12_RESOURCE_BARRIER_TYPE.D3D12_RESOURCE_BARRIER_TYPE_UAV,
-			UAV = new() { pResource = new(pResource )}
+			union = new() { UAV = new() { pResource = new(pResource) } }
 		};
 	}
 
