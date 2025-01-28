@@ -22,7 +22,7 @@ public class IMAPITests
 	public void RecorderTest()
 	{
 		IDiscMaster2 discMaster = new();
-		Assert.True(discMaster.IsSupportedEnvironment, "There are no media sources on which to test.");
+		Assert.That(discMaster.IsSupportedEnvironment, "There are no media sources on which to test.");
 
 		IDiscRecorder2 discRecorder = new();
 		discRecorder.InitializeDiscRecorder(discMaster[0]);
@@ -30,7 +30,7 @@ public class IMAPITests
 
 		// Get the media type in the recorder
 		IDiscFormat2Data iDiscFormat2Data = new();
-		Assert.True(iDiscFormat2Data.IsCurrentMediaSupported(discRecorder));
+		Assert.That(iDiscFormat2Data.IsCurrentMediaSupported(discRecorder));
 		iDiscFormat2Data.Recorder = discRecorder;
 		IMAPI_MEDIA_PHYSICAL_TYPE mediaType = iDiscFormat2Data.CurrentPhysicalMediaType;
 		TestContext.WriteLine($"Media Type : {mediaType.GetDescription()}");

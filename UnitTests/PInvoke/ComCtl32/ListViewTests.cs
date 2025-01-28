@@ -10,7 +10,7 @@ public class ListViewTests
 	public void TestLVGROUP()
 	{
 		LVGROUP grp = new() { Header = "Grp1", Alignment = ListViewGroupAlignment.LVGA_HEADER_CENTER, Subtitle = "Sub1" };
-		Assert.AreEqual(grp.mask, ListViewGroupMask.LVGF_HEADER | ListViewGroupMask.LVGF_ALIGN | ListViewGroupMask.LVGF_SUBTITLE);
+		Assert.That(grp.mask, Is.EqualTo(ListViewGroupMask.LVGF_HEADER | ListViewGroupMask.LVGF_ALIGN | ListViewGroupMask.LVGF_SUBTITLE));
 		InteropExtensions.SizeOf(grp).WriteValues();
 		LVINSERTGROUPSORTED insert = new() { lvGroup = grp };
 		Assert.DoesNotThrow(() => new SafeCoTaskMemStruct<LVINSERTGROUPSORTED>(insert));

@@ -145,7 +145,7 @@ public class Gdi32Tests
 	{
 		using var hdc = SafeHDC.ScreenCompatibleDCHandle;
 		var cs = GetTextCharsetInfo(hdc, out var fs);
-		Assert.AreNotEqual(cs, CharacterSetUint.DEFAULT_CHARSET);
+		Assert.That(cs, Is.Not.EqualTo(CharacterSetUint.DEFAULT_CHARSET));
 		fs.WriteValues();
 	}
 

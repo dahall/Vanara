@@ -15,7 +15,7 @@ public class PhotoAcquireTests
 	public void Test()
 	{
 		if (devId is null) TestSelDlg();
-		Assert.NotNull(devId);
+		Assert.That(devId, Is.Not.Null);
 
 		IPhotoAcquire acquire = new();
 		IPhotoAcquireSource? src = acquire.CreatePhotoSource(devId!);
@@ -30,7 +30,7 @@ public class PhotoAcquireTests
 		for (uint i = 0; i < src?.GetItemCount(); i++)
 		{
 			IPhotoAcquireItem? item = src.GetItemAt(i);
-			Assert.NotNull(item);
+			Assert.That(item, Is.Not.Null);
 			var name = item!.GetItemName();
 			string? file = item.GetProperty(PKEY_PhotoAcquire_FinalFilename)?.ToString();
 			if (file is not null)
@@ -57,11 +57,11 @@ public class PhotoAcquireTests
 	public void TestSrc()
 	{
 		if (devId is null) TestSelDlg();
-		Assert.NotNull(devId);
+		Assert.That(devId, Is.Not.Null);
 
 		IPhotoAcquire acquire = new();
 		IPhotoAcquireSource? src = acquire.CreatePhotoSource(devId!);
-		Assert.NotNull(src);
+		Assert.That(src, Is.Not.Null);
 
 		Assert.That(src!.GetFriendlyName(), Is.Not.Null);
 		Assert.That(src!.GetDeviceId(), Is.EqualTo(devId));
@@ -75,7 +75,7 @@ public class PhotoAcquireTests
 		Assert.That(settings!.GetAcquisitionTime().ToDateTime(), Is.GreaterThan(DateTime.MinValue));
 
 		src.GetDeviceIcons(32, out var hIco, out var hSmIco);
-		Assert.NotNull(hIco);
+		Assert.That(hIco, Is.Not.Null);
 		Assert.That(hIco, ResultIs.ValidHandle);
 		Assert.That(hSmIco, ResultIs.ValidHandle);
 

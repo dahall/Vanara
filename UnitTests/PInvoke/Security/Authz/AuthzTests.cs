@@ -262,7 +262,7 @@ public class AuthzTests
 				szEventMessageFile = eventFile,
 				szEventAccessStringsFile = eventFile,
 			};
-			Assert.IsTrue(AuthzInstallSecurityEventSource(0, srcReg) || Win32Error.GetLastError() == Win32Error.ERROR_OBJECT_ALREADY_EXISTS);
+			Assert.That(AuthzInstallSecurityEventSource(0, srcReg) || Win32Error.GetLastError() == Win32Error.ERROR_OBJECT_ALREADY_EXISTS);
 
 			Assert.That(AuthzRegisterSecurityEventSource(0, eventSource, out SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEvtProv), ResultIs.Successful);
 			try
@@ -296,7 +296,7 @@ public class AuthzTests
 				szEventMessageFile = eventFile,
 				szEventAccessStringsFile = eventFile,
 			};
-			Assert.IsTrue(AuthzInstallSecurityEventSource(0, srcReg) || Win32Error.GetLastError() == Win32Error.ERROR_OBJECT_ALREADY_EXISTS);
+			Assert.That(AuthzInstallSecurityEventSource(0, srcReg) || Win32Error.GetLastError() == Win32Error.ERROR_OBJECT_ALREADY_EXISTS);
 
 			Assert.That(AuthzRegisterSecurityEventSource(0, eventSource, out SafeAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEvtProv), ResultIs.Successful);
 			try

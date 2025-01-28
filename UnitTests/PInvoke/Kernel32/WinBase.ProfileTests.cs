@@ -72,17 +72,17 @@ public partial class WinBaseTests_Profile
 		sec.SetValue("Key23", 4L);
 		DumpFile();
 		Assert.That(ppf.Sections.Count, Is.EqualTo(1));
-		Assert.IsTrue(ppf.Sections.Contains(secName.ToLower()));
+		Assert.That(ppf.Sections.Contains(secName.ToLower()));
 		Assert.That(ppf.Sections[secName], Is.Not.Null.And.Property("Name").EqualTo(secName));
 
-		Assert.IsTrue(sec.TryGetValue("Key1", out int iVal));
+		Assert.That(sec.TryGetValue("Key1", out int iVal));
 		Assert.That(iVal, Is.EqualTo(1));
-		Assert.IsTrue(sec.TryGetValue("Key1", out uint uVal));
+		Assert.That(sec.TryGetValue("Key1", out uint uVal));
 		Assert.That(uVal, Is.EqualTo(1));
-		Assert.IsTrue(sec.TryGetValue("Key23", out long lVal));
+		Assert.That(sec.TryGetValue("Key23", out long lVal));
 		Assert.That(lVal, Is.EqualTo(4));
-		Assert.IsFalse(sec.TryGetValue("Key20", out iVal));
-		Assert.IsFalse(sec.TryGetValue("Key24", out iVal));
+		Assert.That(!sec.TryGetValue("Key20", out iVal));
+		Assert.That(!sec.TryGetValue("Key24", out iVal));
 
 		KeyValuePair<string, string>[] secVals = sec.ToArray();
 		Assert.That(secVals.Length, Is.EqualTo(cnt + 4));
@@ -95,17 +95,17 @@ public partial class WinBaseTests_Profile
 		Assert.That(sec["Key1"], Is.EqualTo("1"));
 		Assert.That(sec["Key21"], Is.EqualTo("Value1"));
 		Assert.That(sec["Key23"], Is.EqualTo("040000000000000004"));
-		Assert.IsTrue(sec.TryGetValue("Key20", out string sVal));
+		Assert.That(sec.TryGetValue("Key20", out string sVal));
 		Assert.That(sVal, Is.EqualTo(""));
-		Assert.IsFalse(sec.TryGetValue("Key24", out sVal));
+		Assert.That(!sec.TryGetValue("Key24", out sVal));
 
 		Assert.That(sec.TryGetValue("Key22", out RECT r), Is.True);
 		Assert.That(r.bottom, Is.EqualTo(4));
 
 		sec.Add("Key100", "100");
 		Assert.That(sec.Count, Is.EqualTo(cnt + 5));
-		Assert.IsFalse(sec.Remove(new KeyValuePair<string, string>("Key100", "200")));
-		Assert.IsTrue(sec.Remove(new KeyValuePair<string, string>("Key100", "100")));
+		Assert.That(!sec.Remove(new KeyValuePair<string, string>("Key100", "200")));
+		Assert.That(sec.Remove(new KeyValuePair<string, string>("Key100", "100")));
 		Assert.That(sec.Count, Is.EqualTo(cnt + 4));
 
 		Assert.That(() => sec.Clear(), Throws.Nothing);
@@ -117,7 +117,7 @@ public partial class WinBaseTests_Profile
 		Assert.That(ppf.Sections.Count, Is.EqualTo(2));
 		Assert.That(() => ppf.Sections.Remove(sec), Throws.Nothing);
 		Assert.That(ppf.Sections.Count, Is.EqualTo(1));
-		Assert.IsTrue(ppf.Sections.Contains("OTHER"));
+		Assert.That(ppf.Sections.Contains("OTHER"));
 		Assert.That(() => ppf.Sections.Clear(), Throws.Nothing);
 		Assert.That(ppf.Sections.Count, Is.Zero);
 		Assert.That(new FileInfo(tmp.FullName).Length, Is.LessThan(8));

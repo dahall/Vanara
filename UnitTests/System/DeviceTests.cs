@@ -71,13 +71,13 @@ public class DeviceTests
 
 		using var cl = new DeviceClass(GUID_DEVCLASS_DISKDRIVE);
 		var val = cl.Properties[item];
-		Assert.IsNull(val);
+		Assert.That(val, Is.Null);
 		try
 		{
 			cl.Properties[item] = false;
 			val = cl.Properties[item];
 			Assert.That(val, Is.Not.Null.And.TypeOf<bool>());
-			Assert.IsFalse((bool)val!);
+			Assert.That(!(bool)val!);
 		}
 		finally
 		{

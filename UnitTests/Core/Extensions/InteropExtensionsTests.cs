@@ -45,13 +45,13 @@ public class InteropExtensionsTests
 		var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + intSz);
 		var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
 		((IntPtr)h).Write(rs, intSz, h.Size);
-		Assert.AreEqual(Marshal.ReadInt32((IntPtr)h, 4 * intSz), 0);
-		Assert.AreEqual(Marshal.ReadInt32((IntPtr)h, 5 * intSz), 10);
-		Assert.AreEqual(Marshal.ReadInt32((IntPtr)h, 7 * intSz), 12);
+		Assert.That(Marshal.ReadInt32((IntPtr)h, 4 * intSz), Is.EqualTo(0));
+		Assert.That(Marshal.ReadInt32((IntPtr)h, 5 * intSz), Is.EqualTo(10));
+		Assert.That(Marshal.ReadInt32((IntPtr)h, 7 * intSz), Is.EqualTo(12));
 		var ro = ((IntPtr)h).ToArray<RECT>(2, intSz);
-		Assert.AreEqual(ro!.Length, 2);
-		Assert.AreEqual(ro[0].left, 0);
-		Assert.AreEqual(ro[1].right, 12);
+		Assert.That(ro!.Length, Is.EqualTo(2));
+		Assert.That(ro[0].left, Is.EqualTo(0));
+		Assert.That(ro[1].right, Is.EqualTo(12));
 	}
 
 	[Test()]
@@ -64,13 +64,13 @@ public class InteropExtensionsTests
 			h = rs.MarshalToPtr(Marshal.AllocHGlobal, out var a, intSz);
 			Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 			Assert.That(a, Is.EqualTo(Marshal.SizeOf(typeof(RECT)) * rs.Length + intSz));
-			Assert.AreEqual(Marshal.ReadInt32((IntPtr)h, 4 * intSz), 0);
-			Assert.AreEqual(Marshal.ReadInt32((IntPtr)h, 5 * intSz), 10);
-			Assert.AreEqual(Marshal.ReadInt32((IntPtr)h, 7 * intSz), 12);
+			Assert.That(Marshal.ReadInt32((IntPtr)h, 4 * intSz), Is.EqualTo(0));
+			Assert.That(Marshal.ReadInt32((IntPtr)h, 5 * intSz), Is.EqualTo(10));
+			Assert.That(Marshal.ReadInt32((IntPtr)h, 7 * intSz), Is.EqualTo(12));
 			var ro = h.ToArray<RECT>(rs.Length, intSz)!;
-			Assert.AreEqual(ro.Length, 2);
-			Assert.AreEqual(ro[0].left, 0);
-			Assert.AreEqual(ro[1].right, 12);
+			Assert.That(ro.Length, Is.EqualTo(2));
+			Assert.That(ro[0].left, Is.EqualTo(0));
+			Assert.That(ro[1].right, Is.EqualTo(12));
 			Marshal.FreeHGlobal(h);
 
 			h = new RECT[0].MarshalToPtr(Marshal.AllocHGlobal, out a, intSz);
@@ -252,7 +252,7 @@ public class InteropExtensionsTests
 		var mp = ptrs.MarshalToPtr(Marshal.AllocCoTaskMem, out var l);
 		try
 		{
-			Assert.AreEqual(l, ptrs.Length * IntPtr.Size);
+			Assert.That(l, Is.EqualTo(ptrs.Length * IntPtr.Size));
 			Assert.That(mp.GetNulledPtrArrayLength(), Is.EqualTo(ptrs.Length - 1));
 			Marshal.WriteIntPtr(mp, IntPtr.Size, IntPtr.Zero);
 			Assert.That(mp.GetNulledPtrArrayLength(), Is.EqualTo(1));

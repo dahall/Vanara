@@ -123,7 +123,7 @@ public class GenericMatrixFloatTests
 		GMatrix4x4 inv = val.Invert();
 		output.WriteLine(inv.ToString());
 		GMatrix4x4 id = val * inv;
-		Assert.True(id.IsIdentity);
+		Assert.That(id.IsIdentity);
 	}
 
 	[Test]
@@ -131,8 +131,8 @@ public class GenericMatrixFloatTests
 	{
 		GMatrix4x4 val = new float[,] { { 1.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f } };
 
-		Assert.True(val.IsIdentity);
-		Assert.True(val.Equals(GMatrix4x4.CreateIdentity(4)), "Matrix4x4.Indentity was not set correctly.");
+		Assert.That(val.IsIdentity);
+		Assert.That(val.Equals(GMatrix4x4.CreateIdentity(4)), "Matrix4x4.Indentity was not set correctly.");
 	}
 
 	[Test]
@@ -191,17 +191,17 @@ public class GenericMatrixFloatTests
 		const int sz = 4;
 		GMatrix4x4 val = GMatrix4x4.CreateIdentity(sz);
 
-		Assert.True(val.Rows == sz, "Matrix4x4.Rows was not set correctly.");
-		Assert.True(val.Columns == sz, "Matrix4x4.Rows was not set correctly.");
+		Assert.That(val.Rows == sz, "Matrix4x4.Rows was not set correctly.");
+		Assert.That(val.Columns == sz, "Matrix4x4.Rows was not set correctly.");
 
-		Assert.True(val[0, 0] == 1f);
-		Assert.True(val[0, 1] == 0f);
+		Assert.That(val[0, 0] == 1f);
+		Assert.That(val[0, 1] == 0f);
 
 		Assert.Throws<ArgumentOutOfRangeException>(() => val[0, 4] == 0f);
 		Assert.Throws<ArgumentOutOfRangeException>(() => val[4, 0] == 0f);
 
 		val[0, 0] = 2f;
-		Assert.True(val[0, 0] == 2f);
+		Assert.That(val[0, 0] == 2f);
 
 		Assert.Throws<ArgumentOutOfRangeException>(() => val[0, 4] = 0f);
 		Assert.Throws<ArgumentOutOfRangeException>(() => val[4, 0] = 0f);
@@ -239,7 +239,7 @@ public class GenericMatrixFloatTests
 		GMatrix4x4 bad = GMatrix4x4.CreateIdentity(3);
 		Assert.Throws<ArgumentException>(() => vl - bad);
 
-		Assert.True(vl != vr);
+		Assert.That(vl != vr);
 		var val = vl - vr;
 		Assert.Equals(val.Columns, vl.Columns);
 		Assert.Equals(val.Rows, vl.Rows);

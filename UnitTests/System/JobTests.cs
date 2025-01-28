@@ -110,7 +110,7 @@ public class JobTests
 		void TestGT<T, TS>(TS js, T? value, Action<TS, T?> set, Func<TS, T?> get) where TS : notnull where T : struct
 		{
 			Assert.That(() => set(js, value), Throws.Nothing);
-			Assert.That(get(js).GetValueOrDefault(), Is.GreaterThanOrEqualTo(value));
+			Assert.That(get(js).GetValueOrDefault(), Is.GreaterThanOrEqualTo(value!));
 
 			Assert.That(() => set(js, null), Throws.Nothing);
 			Assert.That(get(js), Is.Null);

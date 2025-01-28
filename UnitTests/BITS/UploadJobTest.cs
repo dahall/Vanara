@@ -74,8 +74,8 @@ internal partial class BackgroundCopyTests
 
 			job.Complete();
 
-			Assert.AreEqual(totalFiles, job.Progress.FilesTotal);
-			Assert.AreEqual(totalBytes, job.Progress.BytesTransferred);
+			Assert.That(totalFiles, Is.EqualTo(job.Progress.FilesTotal));
+			Assert.That(totalBytes, Is.EqualTo(job.Progress.BytesTransferred));
 
 			// Enable: Debug > Options > Debugging > General: Redirect all Output Window text to the Immediate Window
 			Debug.WriteLine($"Completed job: {job.DisplayName} | Total files: {job.Progress.FilesTotal:N0} | Bytes: {job.Progress.BytesTotal:N0}");

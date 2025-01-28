@@ -33,13 +33,13 @@ public class BitmapTests
 		Assert.That(hbmp, ResultIs.ValidHandle);
 
 		BITMAP bitmap = GetObject<BITMAP>(hbmp);
-		Assert.IsTrue(bitmap.bmType == 0);
-		Assert.IsTrue(bitmap.bmWidth == 2);
-		Assert.IsTrue(bitmap.bmHeight == 2);
+		Assert.That(bitmap.bmType == 0);
+		Assert.That(bitmap.bmWidth == 2);
+		Assert.That(bitmap.bmHeight == 2);
 		Assert.That(bitmap.bmWidthBytes, Is.EqualTo(8));
-		Assert.IsTrue(bitmap.bmPlanes == 1);
-		Assert.IsTrue(bitmap.bmBitsPixel == GetDeviceCaps(hdc, DeviceCap.BITSPIXEL));
-		Assert.IsTrue(bitmap.bmBits == IntPtr.Zero);
+		Assert.That(bitmap.bmPlanes == 1);
+		Assert.That(bitmap.bmBitsPixel == GetDeviceCaps(hdc, DeviceCap.BITSPIXEL));
+		Assert.That(bitmap.bmBits == IntPtr.Zero);
 
 		bmi.bmiHeader.biCompression = BitmapCompressionMode.BI_RLE8;
 		bmi.bmiHeader.biBitCount = 8;
@@ -48,13 +48,13 @@ public class BitmapTests
 		Assert.That(hbmp = CreateDIBitmap(hdc, bmi.bmiHeader, CBM.CBM_INIT, rlebits, new SafeBITMAPINFO(bmi), DIBColorMode.DIB_PAL_COLORS), ResultIs.ValidHandle);
 
 		bitmap = GetObject<BITMAP>(hbmp);
-		Assert.IsTrue(bitmap.bmType == 0);
-		Assert.IsTrue(bitmap.bmWidth == 2);
-		Assert.IsTrue(bitmap.bmHeight == 2);
+		Assert.That(bitmap.bmType == 0);
+		Assert.That(bitmap.bmWidth == 2);
+		Assert.That(bitmap.bmHeight == 2);
 		Assert.That(bitmap.bmWidthBytes, Is.EqualTo(8));
-		Assert.IsTrue(bitmap.bmPlanes == 1);
-		Assert.IsTrue(bitmap.bmBitsPixel == GetDeviceCaps(hdc, DeviceCap.BITSPIXEL));
-		Assert.IsTrue(bitmap.bmBits == IntPtr.Zero);
+		Assert.That(bitmap.bmPlanes == 1);
+		Assert.That(bitmap.bmBitsPixel == GetDeviceCaps(hdc, DeviceCap.BITSPIXEL));
+		Assert.That(bitmap.bmBits == IntPtr.Zero);
 	}
 
 	[Test]
@@ -149,34 +149,34 @@ public class BitmapTests
 
 		/* null bitmap info - crashes XP*/
 		//SetLastError(Win32Error.ERROR_SUCCESS);
-		//Assert.IsTrue(GetDIBits(hdcScreen, default, 0, 15, default, default, DIBColorMode.DIB_RGB_COLORS) == 0);
-		//Assert.IsTrue(GetLastError() == Win32Error.ERROR_INVALID_PARAMETER);
+		//Assert.That(GetDIBits(hdcScreen, default, 0, 15, default, default, DIBColorMode.DIB_RGB_COLORS) == 0);
+		//Assert.That(GetLastError() == Win32Error.ERROR_INVALID_PARAMETER);
 
 		/* bad bmi colours (uUsage) */
 		SetLastError(0);
 		pbi.Zero();
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 15, default, pbi, (DIBColorMode)100), ResultIs.Value(0));
-		Assert.IsTrue(pbi.bmiHeader.biWidth == 0);
-		Assert.IsTrue(pbi.bmiHeader.biHeight == 0);
-		Assert.IsTrue(pbi.bmiHeader.biBitCount == 0);
-		Assert.IsTrue(pbi.bmiHeader.biSizeImage == 0);
+		Assert.That(pbi.bmiHeader.biWidth == 0);
+		Assert.That(pbi.bmiHeader.biHeight == 0);
+		Assert.That(pbi.bmiHeader.biBitCount == 0);
+		Assert.That(pbi.bmiHeader.biSizeImage == 0);
 
 		SetLastError(Win32Error.ERROR_SUCCESS);
 		pbi.Zero();
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 15, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Not.Value(0));
 
 		var ScreenBpp = GetDeviceCaps(hdcScreen, DeviceCap.BITSPIXEL);
-		Assert.IsTrue(pbi.bmiHeader.biWidth == 16);
-		Assert.IsTrue(pbi.bmiHeader.biHeight == 16);
-		Assert.IsTrue(pbi.bmiHeader.biBitCount == ScreenBpp);
-		Assert.IsTrue(pbi.bmiHeader.biSizeImage == (16 * 16) * (ScreenBpp / 8));
+		Assert.That(pbi.bmiHeader.biWidth == 16);
+		Assert.That(pbi.bmiHeader.biHeight == 16);
+		Assert.That(pbi.bmiHeader.biBitCount == ScreenBpp);
+		Assert.That(pbi.bmiHeader.biSizeImage == (16 * 16) * (ScreenBpp / 8));
 
 		//pbi.Zero();
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 15, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		//Assert.AreEqual(pbi.bmiHeader.biSize, Marshal.SizeOf(typeof(BITMAPINFOHEADER)));
-		//Assert.AreEqual(pbch.bcWidth, 16);
-		//Assert.AreEqual(pbch.bcHeight, 16);
-		//Assert.AreEqual(pbch.bcPlanes, 1);
+		//Assert.That(pbi.bmiHeader.biSize, Is.EqualTo(Marshal.SizeOf(typeof(BITMAPINFOHEADER))));
+		//Assert.That(pbch.bcWidth, Is.EqualTo(16));
+		//Assert.That(pbch.bcHeight, Is.EqualTo(16));
+		//Assert.That(pbch.bcPlanes, Is.EqualTo(1));
 		//ok_int(pbch.bcBitCount, ScreenBpp > 16 ? 24 : ScreenBpp); // fails on XP with screenbpp == 16
 
 		pbi.Zero();
@@ -186,19 +186,19 @@ public class BitmapTests
 		pbi.HeaderSize = Marshal.SizeOf(typeof(BITMAPV5HEADER)) + 4;
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 15, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
 		var pbV5Header = pbi.GetHeader<BITMAPV5HEADER>();
-		Assert.AreEqual(pbV5Header.bV5RedMask, 0);
-		Assert.AreEqual(pbV5Header.bV5GreenMask, 0);
-		Assert.AreEqual(pbV5Header.bV5BlueMask, 0);
-		Assert.AreEqual(pbV5Header.bV5AlphaMask, 0);
-		Assert.AreEqual(pbV5Header.bV5CSType, 0);
+		Assert.That(pbV5Header.bV5RedMask, Is.EqualTo(0));
+		Assert.That(pbV5Header.bV5GreenMask, Is.EqualTo(0));
+		Assert.That(pbV5Header.bV5BlueMask, Is.EqualTo(0));
+		Assert.That(pbV5Header.bV5AlphaMask, Is.EqualTo(0));
+		Assert.That(pbV5Header.bV5CSType, Is.EqualTo(0));
 		// CIEXYZTRIPLE bV5Endpoints;
-		Assert.AreEqual(pbV5Header.bV5GammaRed, 0);
-		Assert.AreEqual(pbV5Header.bV5GammaGreen, 0);
-		Assert.AreEqual(pbV5Header.bV5GammaBlue, 0);
-		Assert.AreEqual(pbV5Header.bV5Intent, 0);
-		Assert.AreEqual(pbV5Header.bV5ProfileData, 0);
-		Assert.AreEqual(pbV5Header.bV5ProfileSize, 0);
-		Assert.AreEqual(pbV5Header.bV5Reserved, 0);
+		Assert.That(pbV5Header.bV5GammaRed, Is.EqualTo(0));
+		Assert.That(pbV5Header.bV5GammaGreen, Is.EqualTo(0));
+		Assert.That(pbV5Header.bV5GammaBlue, Is.EqualTo(0));
+		Assert.That(pbV5Header.bV5Intent, Is.EqualTo(0));
+		Assert.That(pbV5Header.bV5ProfileData, Is.EqualTo(0));
+		Assert.That(pbV5Header.bV5ProfileSize, Is.EqualTo(0));
+		Assert.That(pbV5Header.bV5Reserved, Is.EqualTo(0));
 
 		pbi.Zero();
 		Assert.That(GetDIBits(hdcScreen, hbmp, 234, 43, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
@@ -208,17 +208,17 @@ public class BitmapTests
 		Assert.That(hbmp = CreateBitmap(13, 7, 1, 1, ajBits), ResultIs.ValidHandle);
 		pbi.Zero();
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 0, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		Assert.AreEqual(pbi.bmiHeader.biWidth, 13);
-		Assert.AreEqual(pbi.bmiHeader.biHeight, 7);
-		Assert.AreEqual(pbi.bmiHeader.biBitCount, 1);
-		Assert.AreEqual(pbi.bmiHeader.biSizeImage, 28);
+		Assert.That(pbi.bmiHeader.biWidth, Is.EqualTo(13));
+		Assert.That(pbi.bmiHeader.biHeight, Is.EqualTo(7));
+		Assert.That(pbi.bmiHeader.biBitCount, Is.EqualTo(1));
+		Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(28));
 
 		/* Test with values set, except biSizeImage */
 		var h = pbi.bmiHeader;
 		h.biSizeImage = 0;
 		pbi.bmiHeader = h;
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 0, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		Assert.AreEqual(pbi.bmiHeader.biSizeImage, 28);
+		Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(28));
 
 		h = pbi.bmiHeader;
 		h.biWidth = 17;
@@ -226,39 +226,39 @@ public class BitmapTests
 		h.biSizeImage = 0;
 		pbi.bmiHeader = h;
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 0, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		Assert.AreEqual(pbi.bmiHeader.biSizeImage, 12);
-		Assert.AreEqual(pbi.bmiHeader.biWidth, 17);
-		Assert.AreEqual(pbi.bmiHeader.biHeight, 3);
+		Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(12));
+		Assert.That(pbi.bmiHeader.biWidth, Is.EqualTo(17));
+		Assert.That(pbi.bmiHeader.biHeight, Is.EqualTo(3));
 
 		h = pbi.bmiHeader;
 		h.biBitCount = 4;
 		h.biSizeImage = 1;
 		pbi.bmiHeader = h;
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 0, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		Assert.AreEqual(pbi.bmiHeader.biSizeImage, 36);
-		Assert.AreEqual(pbi.bmiHeader.biBitCount, 4);
+		Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(36));
+		Assert.That(pbi.bmiHeader.biBitCount, Is.EqualTo(4));
 
 		h = pbi.bmiHeader;
 		h.biBitCount = 8;
 		h.biSizeImage = 1000;
 		pbi.bmiHeader = h;
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 0, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		Assert.AreEqual(pbi.bmiHeader.biSizeImage, 60);
-		Assert.AreEqual(pbi.bmiHeader.biBitCount, 8);
+		Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(60));
+		Assert.That(pbi.bmiHeader.biBitCount, Is.EqualTo(8));
 
 		Assert.That(SetBitmapDimensionEx(hbmp, 110, 220, out _), ResultIs.Successful);
 		pbi.Zero();
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		Assert.AreEqual(pbi.bmiHeader.biXPelsPerMeter, 0);
-		Assert.AreEqual(pbi.bmiHeader.biYPelsPerMeter, 0);
+		Assert.That(pbi.bmiHeader.biXPelsPerMeter, Is.EqualTo(0));
+		Assert.That(pbi.bmiHeader.biYPelsPerMeter, Is.EqualTo(0));
 
 		pbi.Zero();
 		h = pbi.bmiHeader;
 		h.biWidth = 12;
 		pbi.bmiHeader = h;
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		Assert.AreEqual(pbi.bmiHeader.biWidth, 13);
-		Assert.AreEqual(pbi.bmiHeader.biSizeImage, 28);
+		Assert.That(pbi.bmiHeader.biWidth, Is.EqualTo(13));
+		Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(28));
 
 		pbi.Zero();
 		h = pbi.bmiHeader;
@@ -281,12 +281,12 @@ public class BitmapTests
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
 		//pbi.bmiHeader.biBitCount = 32;
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
-		//Assert.AreEqual(pbi.bmiHeader.biWidth, 0);
-		//Assert.AreEqual(pbi.bmiHeader.biHeight, 0);
-		//Assert.AreEqual(pbi.bmiHeader.biPlanes, 0);
-		//Assert.AreEqual(pbi.bmiHeader.biBitCount, 32);
-		//Assert.AreEqual(pbi.bmiHeader.biCompression, 0);
-		//Assert.AreEqual(pbi.bmiHeader.biSizeImage, 0);
+		//Assert.That(pbi.bmiHeader.biWidth, Is.EqualTo(0));
+		//Assert.That(pbi.bmiHeader.biHeight, Is.EqualTo(0));
+		//Assert.That(pbi.bmiHeader.biPlanes, Is.EqualTo(0));
+		//Assert.That(pbi.bmiHeader.biBitCount, Is.EqualTo(32));
+		//Assert.That(pbi.bmiHeader.biCompression, Is.EqualTo(0));
+		//Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(0));
 
 		h = pbi.bmiHeader;
 		h.biWidth = 4;
@@ -296,13 +296,13 @@ public class BitmapTests
 		h.biCompression = BitmapCompressionMode.BI_RGB;
 		pbi.bmiHeader = h;
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		Assert.AreEqual(pbi.bmiHeader.biSizeImage, 64);
-		Assert.AreEqual(pbi.bmiHeader.biPlanes, 1);
+		Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(64));
+		Assert.That(pbi.bmiHeader.biPlanes, Is.EqualTo(1));
 		//pbi.bmiHeader.biWidth;
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
 		//pbi.bmiHeader.biWidth = 2;
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		//Assert.AreEqual(pbi.bmiHeader.biSizeImage, 32);
+		//Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(32));
 		//pbi.bmiHeader.biWidth = -3;
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
 		//pbi.bmiHeader.biWidth = 4;
@@ -315,7 +315,7 @@ public class BitmapTests
 		//pbi.bmiHeader.biBitCount = 16;
 		//pbi.bmiHeader.biPlanes = 23;
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		//Assert.AreEqual(pbi.bmiHeader.biPlanes, 1);
+		//Assert.That(pbi.bmiHeader.biPlanes, Is.EqualTo(1));
 		//SetLastError(0xdeadbabe);
 		//Assert.That(GetDIBits((HDC)0xff00ff00, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
 		//ok_err(0x57);
@@ -348,17 +348,17 @@ public class BitmapTests
 		//cjSizeImage = ((pbi.bmiHeader.biWidth * pbi.bmiHeader.biBitCount + 31) / 32) * 4 * pbi.bmiHeader.biHeight;
 		//pvBits = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, 512);
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 4, pvBits, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(4));
-		//Assert.AreEqual(pbi.bmiHeader.biSize, Marshal.SizeOf(typeof(BITMAPINFOHEADER)));
-		//Assert.AreEqual(pbi.bmiHeader.biWidth, 4);
-		//Assert.AreEqual(pbi.bmiHeader.biHeight, 4);
-		//Assert.AreEqual(pbi.bmiHeader.biPlanes, 1);
-		//Assert.AreEqual(pbi.bmiHeader.biBitCount, 32);
-		//Assert.AreEqual(pbi.bmiHeader.biCompression, BI_RGB);
-		//Assert.AreEqual(pbi.bmiHeader.biSizeImage, 64);
-		//Assert.AreEqual(pbi.bmiHeader.biXPelsPerMeter, 0);
-		//Assert.AreEqual(pbi.bmiHeader.biYPelsPerMeter, 0);
-		//Assert.AreEqual(pbi.bmiHeader.biClrUsed, 0);
-		//Assert.AreEqual(pbi.bmiHeader.biClrImportant, 0);
+		//Assert.That(pbi.bmiHeader.biSize, Is.EqualTo(Marshal.SizeOf(typeof(BITMAPINFOHEADER))));
+		//Assert.That(pbi.bmiHeader.biWidth, Is.EqualTo(4));
+		//Assert.That(pbi.bmiHeader.biHeight, Is.EqualTo(4));
+		//Assert.That(pbi.bmiHeader.biPlanes, Is.EqualTo(1));
+		//Assert.That(pbi.bmiHeader.biBitCount, Is.EqualTo(32));
+		//Assert.That(pbi.bmiHeader.biCompression, Is.EqualTo(BI_RGB));
+		//Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(64));
+		//Assert.That(pbi.bmiHeader.biXPelsPerMeter, Is.EqualTo(0));
+		//Assert.That(pbi.bmiHeader.biYPelsPerMeter, Is.EqualTo(0));
+		//Assert.That(pbi.bmiHeader.biClrUsed, Is.EqualTo(0));
+		//Assert.That(pbi.bmiHeader.biClrImportant, Is.EqualTo(0));
 
 		//pbi.bmiHeader.biBitCount;
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 4, pvBits, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
@@ -386,14 +386,14 @@ public class BitmapTests
 		//HeapFree(GetProcessHeap(), 0, pvBits);
 
 		//hbmp = CreateBitmap(3, 5, 1, 4, default);
-		//Assert.IsTrue(hbmp != 0, "failed to create bitmap\n");
+		//Assert.That(hbmp != 0, "failed to create bitmap\n");
 		//pbi.Zero();
 		//pbi.bmiHeader.biSize = Marshal.SizeOf(typeof(BITMAPINFOHEADER));
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 0, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		//Assert.AreEqual(pbi.bmiHeader.biWidth, 3);
-		//Assert.AreEqual(pbi.bmiHeader.biHeight, 5);
-		//Assert.AreEqual(pbi.bmiHeader.biBitCount, 4);
-		//Assert.AreEqual(pbi.bmiHeader.biSizeImage, 20);
+		//Assert.That(pbi.bmiHeader.biWidth, Is.EqualTo(3));
+		//Assert.That(pbi.bmiHeader.biHeight, Is.EqualTo(5));
+		//Assert.That(pbi.bmiHeader.biBitCount, Is.EqualTo(4));
+		//Assert.That(pbi.bmiHeader.biSizeImage, Is.EqualTo(20));
 
 		//pbi.bmiHeader.biSizeImage;
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 0, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
@@ -403,7 +403,7 @@ public class BitmapTests
 		//pvBits = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, cjSizeImage);
 
 		//hdcMem = CreateCompatibleDC(0);
-		//Assert.IsTrue(hdcMem != 0, "CreateCompatibleDC failed, skipping tests\n");
+		//Assert.That(hdcMem != 0, "CreateCompatibleDC failed, skipping tests\n");
 		//if (hdcMem is null) return;
 		//Assert.That(GetDIBits(hdcMem, hbmp, 0, 4, pvBits, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
 		//Assert.That(GetDIBits(hdcMem, ghbmpDIB4, 0, 4, pvBits, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(4));

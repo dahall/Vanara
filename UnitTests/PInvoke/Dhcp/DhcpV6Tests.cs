@@ -16,7 +16,7 @@ public class DhcpV6Tests
 	[Test]
 	public void Dhcpv6RequestParamsTest()
 	{
-		Assert.NotNull(DhcpTests.adp);
+		Assert.That(DhcpTests.adp, Is.Not.Null);
 		using var pparam = new SafeCoTaskMemStruct<DHCPV6CAPI_PARAMS>(new DHCPV6CAPI_PARAMS { OptionId = DHCPV6_OPTION_ID.DHCPV6_OPTION_CLIENTID });
 		var recdParams = new DHCPV6CAPI_PARAMS_ARRAY { nParams = 1, Params = pparam };
 		uint sz = 1000;
@@ -27,7 +27,7 @@ public class DhcpV6Tests
 	[Test]
 	public void Dhcpv6RequestPrefixTest()
 	{
-		Assert.NotNull(DhcpTests.adp);
+		Assert.That(DhcpTests.adp, Is.Not.Null);
 		using var pPrefix = new SafeNativeArray<DHCPV6Prefix>(1);
 		using var duid = new SafeCoTaskMemHandle(128);
 		var pfxLease = new DHCPV6PrefixLeaseInformation { iaid = 7, nPrefixes = 1, prefixArray = pPrefix, ServerId = duid, ServerIdLen = duid.Size };

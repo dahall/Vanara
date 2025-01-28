@@ -204,7 +204,7 @@ public class PROPVARIANTTests
 		string[] arr = new[] { "A", "B", "C" };
 		using PROPVARIANT pv = new(arr);
 		using PROPVARIANT pv2 = new(pv);
-		Assert.That(pv2.Value, Is.EquivalentTo(arr).And.EquivalentTo(pv.Value as IEnumerable));
+		Assert.That(pv2.Value, Is.EquivalentTo(arr).And.EquivalentTo((IEnumerable)pv.Value!));
 	}
 
 	[Test]

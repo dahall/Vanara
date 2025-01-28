@@ -186,7 +186,7 @@ public partial class User32Tests
 	[Test()]
 	public void MB_GetStringTest()
 	{
-		Assert.NotNull((string?)MB_GetString(1));
+		Assert.That((string?)MB_GetString(1), Is.Not.Null);
 		TestContext.WriteLine((string?)MB_GetString(1));
 	}
 
@@ -565,7 +565,7 @@ public partial class User32Tests
 				System.Threading.Thread.Sleep(20);
 		}
 		timer.Stop();
-		Assert.True(gotMsg);
+		Assert.That(gotMsg);
 
 		bool meth(HWND hwnd, uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
 		{

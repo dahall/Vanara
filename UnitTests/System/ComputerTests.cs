@@ -37,7 +37,7 @@ public class ComputerTests
 			Assert.That(lg.Name, Is.EqualTo(name));
 			Assert.That(lg.Target, Is.EqualTo(Computer.Local.Target));
 			Assert.That(lg.Comment, Is.Empty);
-			Assert.IsTrue(Computer.Local.LocalGroups.Contains(lg));
+			Assert.That(Computer.Local.LocalGroups.Contains(lg));
 			Assert.That(() => lg.Comment = newcomment, Throws.Nothing);
 			Assert.That(lg.Comment, Is.EqualTo(newcomment));
 		}
@@ -81,7 +81,7 @@ public class ComputerTests
 			Assert.That(acct.UserName, Is.EqualTo(user));
 			Assert.That(acct.Target, Is.EqualTo(Computer.Local.Target));
 			Assert.That(acct.Comment, Is.EqualTo(comment));
-			Assert.IsTrue(Computer.Local.UserAccounts.Contains(acct));
+			Assert.That(Computer.Local.UserAccounts.Contains(acct));
 			Assert.That(() => acct.Comment = newcomment, Throws.Nothing);
 			Assert.That(acct.Comment, Is.EqualTo(newcomment));
 			Assert.That(acct.HomeFolder, Is.Empty);
@@ -98,7 +98,7 @@ public class ComputerTests
 	public void MapUnmapDriveTest()
 	{
 		var remoteShare = TestCaseSources.Lookup["RemoteShare"];
-		Assert.NotNull(remoteShare);
+		Assert.That(remoteShare, Is.Not.Null);
 		string? local = null;
 		try
 		{
@@ -118,7 +118,7 @@ public class ComputerTests
 	public void AuthMapUnmapDriveTest()
 	{
 		var remoteShare = TestCaseSources.Lookup["RemoteShare"];
-		Assert.NotNull(remoteShare);
+		Assert.That(remoteShare, Is.Not.Null);
 		string? local = null;
 		using var authLocal = new Computer(null, Environment.MachineName + "\\" + TestCaseSources.Lookup["LocalUser"], TestCaseSources.Lookup["LocalUserPassword"]);
 		try

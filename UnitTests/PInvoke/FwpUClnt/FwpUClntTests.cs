@@ -52,14 +52,14 @@ public class FwpUClntTests
 		Assert.That(FwpmCalloutUnsubscribeChanges0(fwpEngineHandle, hChange), ResultIs.Successful);
 
 		Assert.That(FwpmCalloutGetById0(fwpEngineHandle, id, out SafeFwpmStruct<FWPM_CALLOUT0> byId), ResultIs.Successful);
-		Assert.True(byId.Value.HasValue && byId.Value.Value.calloutId == id);
+		Assert.That(byId.Value.HasValue && byId.Value.Value.calloutId == id);
 		Assert.That(FwpmCalloutGetByKey0(fwpEngineHandle, callout.calloutKey, out SafeFwpmStruct<FWPM_CALLOUT0> byKey), ResultIs.Successful);
-		Assert.True(byKey.Value.HasValue && byKey.Value.Value.calloutId == id);
+		Assert.That(byKey.Value.HasValue && byKey.Value.Value.calloutId == id);
 		Assert.That(FwpmCalloutGetSecurityInfoByKey0(fwpEngineHandle, callout.calloutKey,
 			SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION|SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION|SECURITY_INFORMATION.DACL_SECURITY_INFORMATION,
 			out PSID sOwn, out PSID sGrp, out PACL dacl, out PACL sacl, out SafeFwpmMem sd), ResultIs.Successful);
-		Assert.True(!sOwn.IsNull && !sGrp.IsNull && !dacl.IsNull);
-		Assert.True(sOwn.IsValidSid() && sGrp.IsValidSid() && dacl.IsValidAcl());
+		Assert.That(!sOwn.IsNull && !sGrp.IsNull && !dacl.IsNull);
+		Assert.That(sOwn.IsValidSid() && sGrp.IsValidSid() && dacl.IsValidAcl());
 
 		Assert.That(FwpmCalloutDeleteById0(fwpEngineHandle, id), ResultIs.Successful);
 

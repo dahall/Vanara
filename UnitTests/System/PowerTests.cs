@@ -85,7 +85,7 @@ public class PowerTests
 		//for (int i = 0; i < 50; i++)
 		//	System.Threading.Thread.Sleep(10);
 
-		//Assert.True(eventFired);
+		//Assert.That(eventFired);
 		//TestContext.WriteLine($"Failed={eventFailed}");
 	}
 
@@ -102,7 +102,7 @@ public class PowerTests
 		for (int i = 0; i < 20; i++)
 			System.Threading.Thread.Sleep(10);
 		PowerManager.PowerSchemePersonalityChanged -= EventHandler;
-		Assert.True(eventFired);
+		Assert.That(eventFired);
 
 		void EventHandler(object? sender, PowerEventArgs<Guid> e) => eventFired = true;
 	}

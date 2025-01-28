@@ -85,8 +85,8 @@ public class ShellDataTests
 		const int cnt = 5;
 		var obj = new ShellDataObject(new ShellFolder(TestCaseSources.TempDir).EnumerateChildren(FolderItemFilter.NonFolders).Take(cnt));
 
-		Assert.IsTrue(obj.ContainsFileDropList());
-		Assert.IsTrue(obj.ContainsShellIdList());
+		Assert.That(obj.ContainsFileDropList());
+		Assert.That(obj.ContainsShellIdList());
 		Assert.That(obj.GetData(ShellClipboardFormat.CFSTR_SHELLIDLIST, false), Has.Exactly(cnt).Items);
 	}
 
@@ -95,15 +95,15 @@ public class ShellDataTests
 	{
 		var obj = new ShellDataObject(new[] { new ShellItem(TestCaseSources.WordDoc) });
 
-		Assert.IsTrue(obj.GetDataPresent(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW));
+		Assert.That(obj.GetDataPresent(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW));
 		var fd = obj.GetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW, true);
-		Assert.IsTrue(fd is ShellFileDescriptor[]);
+		Assert.That(fd is ShellFileDescriptor[]);
 		Assert.That((ShellFileDescriptor[])fd, Has.Exactly(1).Items);
 		Assert.That(((ShellFileDescriptor[])fd)[0].Info.Name, Is.EqualTo(System.IO.Path.GetFileName(TestCaseSources.WordDoc)));
 
-		Assert.IsTrue(obj.GetDataPresent(ShellClipboardFormat.CFSTR_FILECONTENTS));
+		Assert.That(obj.GetDataPresent(ShellClipboardFormat.CFSTR_FILECONTENTS));
 		var fc = obj.GetData(ShellClipboardFormat.CFSTR_FILECONTENTS, true);
-		Assert.IsTrue(fc is System.IO.Stream[]);
+		Assert.That(fc is System.IO.Stream[]);
 		Assert.That((System.IO.Stream[])fc, Has.Exactly(1).Items);
 		Assert.That(((System.IO.Stream[])fc)[0].Length, Is.EqualTo(new System.IO.FileInfo(TestCaseSources.WordDoc).Length));
 	}

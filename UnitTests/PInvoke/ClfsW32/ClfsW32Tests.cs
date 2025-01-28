@@ -67,8 +67,8 @@ public class ClfsW32Tests
 		var lsn1 = new CLS_LSN(3, 512, 26);
 		var lsn2 = LsnDecrement(lsn1);
 
-		Assert.False(lsn1.IsInvalid);
-		Assert.False(lsn1.IsNull);
+		Assert.That(!lsn1.IsInvalid);
+		Assert.That(!lsn1.IsNull);
 		Assert.That(lsn2, Is.LessThan(lsn1));
 		Assert.That(lsn1, Is.GreaterThan(lsn2));
 		Assert.That(lsn1, Is.EqualTo(lsn1));

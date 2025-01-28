@@ -24,7 +24,7 @@ public class UrlMonTests
 			catch { }
 		}
 		TestContext.WriteLine(sb.ToString());
-		Assert.IsTrue(iUri.HasProperty(Uri_PROPERTY.Uri_PROPERTY_DOMAIN));
+		Assert.That(iUri.HasProperty(Uri_PROPERTY.Uri_PROPERTY_DOMAIN));
 		string? str = null;
 		Assert.That(() => iUri.GetPropertyBSTR(Uri_PROPERTY.Uri_PROPERTY_DOMAIN, out str), Throws.Nothing);
 		Assert.That(str, Is.EqualTo("microsoft.com"));
@@ -44,7 +44,7 @@ public class UrlMonTests
 		iBld.SetHost("microsoft.com");
 		iBld.SetSchemeName("https");
 		using var pUri2 = ComReleaserFactory.Create(iBld.CreateUri(Uri_CREATE.Uri_CREATE_ALLOW_RELATIVE));
-		Assert.IsTrue(iUri.IsEqual(pUri2.Item));
+		Assert.That(iUri.IsEqual(pUri2.Item));
 
 		StrPtrUni sch = default;
 		Assert.That(() => iBld.GetSchemeName(out _, out sch), Throws.Nothing);

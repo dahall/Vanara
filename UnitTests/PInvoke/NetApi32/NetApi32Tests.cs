@@ -12,7 +12,7 @@ public class NetApi32Tests
 	public void DsGetDcName_DsGetDcEnum_DsAddressToSiteNamesEx_DsGetDcSiteCoverage_Test()
 	{
 		var dci = DsGetDcName(DsGetDcNameFlags.DS_RETURN_DNS_NAME);
-		Assert.NotNull(dci.DomainControllerName);
+		Assert.That(dci.DomainControllerName, Is.Not.Null);
 		foreach (var (dnsHostName, sockets) in DsGetDcEnum(dci.DomainName))
 		{
 			TestContext.WriteLine($"{dnsHostName} = {string.Join(",", sockets)}");
@@ -51,7 +51,7 @@ public class NetApi32Tests
 	{
 		Assert.That(NetServerGetInfo(null, 100, out var bufptr).Succeeded);
 		bufptr.Dispose();
-		Assert.True(bufptr.IsClosed);
+		Assert.That(bufptr.IsClosed);
 	}
 
 	[Test]
@@ -71,15 +71,15 @@ public class NetApi32Tests
 	public void NetServerEnumTest()
 	{
 		var l = NetServerEnum<SERVER_INFO_101>().ToList();
-		Assert.NotZero(l.Count);
-		Assert.NotNull(l[0].sv101_name);
+		Assert.That(l.Count, Is.Not.Zero);
+		Assert.That(l[0].sv101_name, Is.Not.Null);
 	}
 
 	[Test()]
 	public void NetServerGetInfoTest()
 	{
 		var i = NetServerGetInfo<SERVER_INFO_100>(null);
-		Assert.AreEqual(i.sv100_name, Environment.MachineName);
+		Assert.That(i.sv100_name, Is.EqualTo(Environment.MachineName));
 	}
 
 	[Test]
@@ -155,7 +155,7 @@ public class NetApi32Tests
 		Assert.That(info.lgrpi1_name, Is.EqualTo(val));
 
 		using var identity = WindowsIdentity.GetCurrent();
-		Assert.NotNull(identity.User);
+		Assert.That(identity.User, Is.Not.Null);
 		var sidmem = new SafeHGlobalHandle(identity.User!.GetBytes());
 
 		NetLocalGroupAddMembers(null, val, new[] { new LOCALGROUP_MEMBERS_INFO_0 { lgrmi0_sid = (IntPtr)sidmem } });
