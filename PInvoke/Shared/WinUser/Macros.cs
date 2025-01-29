@@ -110,25 +110,19 @@ public static partial class Macros
 	/// <param name="wLow">The low-order word of the new value.</param>
 	/// <param name="wHigh">The high-order word of the new value.</param>
 	/// <returns>The return value is a LONG value.</returns>
-	public static uint MAKELONG(ushort wLow, ushort wHigh) => ((uint)wHigh << 16) | ((uint)wLow & 0xffff);
+	public static uint MAKELONG(IConvertible wLow, IConvertible wHigh) => (wHigh.ToUInt32(null) << 16) | (wLow.ToUInt32(null) & 0xffff);
 
 	/// <summary>Creates a LONG64 value by concatenating the specified values.</summary>
 	/// <param name="dwLow">The low-order double word of the new value.</param>
 	/// <param name="dwHigh">The high-order double word of the new value.</param>
 	/// <returns>The return value is a LONG64 value.</returns>
-	public static ulong MAKELONG64(uint dwLow, uint dwHigh) => ((ulong)dwHigh << 32) | ((ulong)dwLow & 0xffffffff);
-
-	/// <summary>Creates a LONG64 value by concatenating the specified values.</summary>
-	/// <param name="dwLow">The low-order double word of the new value.</param>
-	/// <param name="dwHigh">The high-order double word of the new value.</param>
-	/// <returns>The return value is a LONG64 value.</returns>
-	public static long MAKELONG64(uint dwLow, int dwHigh) => ((long)dwHigh << 32) | ((long)dwLow & 0xffffffff);
+	public static ulong MAKELONG64(IConvertible dwLow, IConvertible dwHigh) => (dwHigh.ToUInt64(null) << 32) | (dwLow.ToUInt64(null) & 0xffffffff);
 
 	/// <summary>Creates a value for use as an lParam parameter in a message. The macro concatenates the specified values.</summary>
 	/// <param name="wLow">The low-order word of the new value.</param>
 	/// <param name="wHigh">The high-order word of the new value.</param>
 	/// <returns>The return value is an LPARAM value.</returns>
-	public static IntPtr MAKELPARAM(ushort wLow, ushort wHigh) => new(MAKELONG(wLow, wHigh));
+	public static IntPtr MAKELPARAM(IConvertible wLow, IConvertible wHigh) => new(MAKELONG(wLow, wHigh));
 
 	/// <summary>Creates a WORD value by concatenating the specified values.</summary>
 	/// <param name="bLow">The low-order byte of the new value.</param>
