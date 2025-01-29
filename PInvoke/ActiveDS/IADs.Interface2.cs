@@ -1545,7 +1545,7 @@ public static partial class ActiveDS
 	/// <summary>Converts interface values to <see cref="Int64"/>.</summary>
 	/// <param name="li">The <see cref="IADsLargeInteger"/> instance.</param>
 	/// <returns>A <see cref="long"/> value.</returns>
-	public static long ToInt64(this IADsLargeInteger li) => Macros.MAKELONG64(unchecked((uint)li.LowPart), li.HighPart);
+	public static long ToInt64(this IADsLargeInteger li) => Macros.MAKELONG64(li.LowPart, li.HighPart);
 
 	/// <summary>
 	/// <para>

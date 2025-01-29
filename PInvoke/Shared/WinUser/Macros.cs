@@ -116,6 +116,12 @@ public static partial class Macros
 	/// <param name="dwLow">The low-order double word of the new value.</param>
 	/// <param name="dwHigh">The high-order double word of the new value.</param>
 	/// <returns>The return value is a LONG64 value.</returns>
+	public static long MAKELONG64(IConvertible dwLow, int dwHigh) => ((long)dwHigh << 32) | (dwLow.ToInt64(null) & 0xffffffff);
+
+	/// <summary>Creates a LONG64 value by concatenating the specified values.</summary>
+	/// <param name="dwLow">The low-order double word of the new value.</param>
+	/// <param name="dwHigh">The high-order double word of the new value.</param>
+	/// <returns>The return value is a LONG64 value.</returns>
 	public static ulong MAKELONG64(IConvertible dwLow, IConvertible dwHigh) => (dwHigh.ToUInt64(null) << 32) | (dwLow.ToUInt64(null) & 0xffffffff);
 
 	/// <summary>Creates a value for use as an lParam parameter in a message. The macro concatenates the specified values.</summary>
