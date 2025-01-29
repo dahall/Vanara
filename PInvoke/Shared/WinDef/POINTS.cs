@@ -72,4 +72,14 @@ public struct POINTS : IEquatable<POINTS>
 	/// <param name="p">The <see cref="POINT"/>.</param>
 	/// <returns>The <see cref="POINTS"/> result of the conversion.</returns>
 	public static implicit operator POINTS(POINT p) => new((short)p.X, (short)p.Y);
+
+	/// <summary>Performs an explicit conversion from <see cref="IntPtr"/> to <see cref="POINTS"/>.</summary>
+	/// <param name="p">The pointer.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static explicit operator POINTS(IntPtr p) => new(unchecked((short)Macros.LOWORD(p)), unchecked((short)Macros.HIWORD(p)));
+
+	/// <summary>Performs an implicit conversion from <see cref="POINTS"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="p">The <see cref="POINTS"/>.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator IntPtr(POINTS p) => Macros.MAKELPARAM(p.x, p.y);
 }

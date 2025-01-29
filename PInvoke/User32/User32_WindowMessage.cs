@@ -12972,16 +12972,16 @@ public static partial class User32
 	/// <summary>The state specified in the wParam value of WM_*MOUSEWHEEL* commands.</summary>
 	[PInvokeData("winuser.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct MOUSEWHEEL
+	public readonly struct MOUSEWHEEL(short distance, MouseButtonState state)
 	{
-		private readonly ushort btndown;
+		private readonly ushort btndown = state;
 
 		/// <summary>
 		/// The distance the wheel is rotated, expressed in multiples or factors of WHEEL_DELTA, which is set to 120. A positive value
 		/// indicates that the wheel was rotated to the right or forward; a negative value indicates that the wheel was rotated to the left
 		/// or backward.
 		/// </summary>
-		public readonly short distance;
+		public readonly short distance = distance;
 
 		/// <summary>The down state of the mouse buttons.</summary>
 		public MouseButtonState ButtonState => (MouseButtonState)btndown;
@@ -12995,6 +12995,11 @@ public static partial class User32
 		/// <param name="p">The wParam.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator MOUSEWHEEL(IntPtr p) => new(p);
+
+		/// <summary>Performs an implicit conversion from <see cref="MOUSEWHEEL"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="s">The MOUSEWHEEL value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(MOUSEWHEEL s) => Macros.MAKELPARAM((ushort)s.ButtonState, (ushort)s.distance);
 	}
 
 	/// <summary>lParam value for <see cref="WindowMessage.WM_SIZE"/>.</summary>
