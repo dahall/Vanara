@@ -12974,7 +12974,7 @@ public static partial class User32
 	[StructLayout(LayoutKind.Sequential)]
 	public readonly struct MOUSEWHEEL(short distance, MouseButtonState state)
 	{
-		private readonly ushort btndown = state;
+		private readonly ushort btndown = (ushort)state;
 
 		/// <summary>
 		/// The distance the wheel is rotated, expressed in multiples or factors of WHEEL_DELTA, which is set to 120. A positive value
@@ -12988,8 +12988,7 @@ public static partial class User32
 
 		/// <summary>Initializes a new instance of the <see cref="MOUSEWHEEL"/> struct.</summary>
 		/// <param name="lParam">The lParam value from *UISTATE*.</param>
-		public MOUSEWHEEL(IntPtr lParam)
-		{ btndown = Macros.LOWORD(unchecked((uint)lParam.ToInt32())); distance = unchecked((short)Macros.HIWORD(unchecked((uint)lParam.ToInt32()))); }
+		public MOUSEWHEEL(IntPtr lParam) : this(unchecked((short)Macros.HIWORD(unchecked((uint)lParam.ToInt32()))), (MouseButtonState)Macros.LOWORD(unchecked((uint)lParam.ToInt32()))) { }
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="MOUSEWHEEL"/>.</summary>
 		/// <param name="p">The wParam.</param>
