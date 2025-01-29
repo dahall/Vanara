@@ -13135,6 +13135,11 @@ public static partial class User32
 		/// <param name="p">The lParam.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator WM_KEY_LPARAM(IntPtr p) => new(p);
+
+		/// <summary>Performs an implicit conversion from <see cref="WM_KEY_LPARAM"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="lp">The lParam.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(WM_KEY_LPARAM lp) => (IntPtr)unchecked((int)(lp.lp));
 	}
 
 	/// <summary>The state specified in the wParam value of WM_*MOUSEWHEEL* commands.</summary>

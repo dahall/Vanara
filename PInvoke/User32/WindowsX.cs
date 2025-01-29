@@ -40,8 +40,11 @@ public static partial class User32
 	public static void FORWARD_WM_CHANGECBCHAIN(HWND hwnd, HWND hwndRemove, HWND hwndNext, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_CHANGECBCHAIN, (WPARAM)hwndRemove, (LPARAM)hwndNext);
 
-	public static void FORWARD_WM_CHAR(HWND hwnd, ushort ch, int cRepeat, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static void FORWARD_WM_CHAR(HWND hwnd, char ch, ushort cRepeat, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_CHAR, (WPARAM)ch, MAKELPARAM(cRepeat, 0));
+
+	public static void FORWARD_WM_CHAR(HWND hwnd, char ch, WM_KEY_LPARAM lp, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_CHAR, (WPARAM)ch, lp);
 
 	public static int FORWARD_WM_CHARTOITEM(HWND hwnd, uint ch, HWND hwndListBox, int iCaret, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> (int)fn(hwnd, (int)WindowMessage.WM_CHARTOITEM, MAKELPARAM(ch, iCaret), (LPARAM)hwndListBox);
@@ -103,8 +106,11 @@ public static partial class User32
 	public static void FORWARD_WM_CUT(HWND hwnd, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_CUT, IntPtr.Zero, IntPtr.Zero);
 
-	public static void FORWARD_WM_DEADCHAR(HWND hwnd, ushort ch, int cRepeat, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static void FORWARD_WM_DEADCHAR(HWND hwnd, char ch, ushort cRepeat, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_DEADCHAR, (WPARAM)ch, MAKELPARAM(cRepeat, 0));
+
+	public static void FORWARD_WM_DEADCHAR(HWND hwnd, char ch, WM_KEY_LPARAM lp, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_DEADCHAR, (WPARAM)ch, lp);
 
 	public static void FORWARD_WM_DELETEITEM(HWND hwnd, in DELETEITEMSTRUCT lpDeleteItem, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_DELETEITEM, (WPARAM)lpDeleteItem.CtlID, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(lpDeleteItem));
@@ -184,11 +190,17 @@ public static partial class User32
 	public static void FORWARD_WM_INITMENUPOPUP(HWND hwnd, HMENU hMenu, uint item, bool fSystemMenu, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_INITMENUPOPUP, (WPARAM)hMenu, MAKELPARAM(item, (uint)(BOOL)fSystemMenu));
 
-	public static void FORWARD_WM_KEYDOWN(HWND hwnd, uint vk, int cRepeat, uint flags, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static void FORWARD_WM_KEYDOWN(HWND hwnd, VK vk, ushort cRepeat, ushort flags, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_KEYDOWN, (WPARAM)vk, MAKELPARAM(cRepeat, flags));
 
-	public static void FORWARD_WM_KEYUP(HWND hwnd, uint vk, int cRepeat, uint flags, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static void FORWARD_WM_KEYDOWN(HWND hwnd, VK vk, WM_KEY_LPARAM lp, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_KEYDOWN, (WPARAM)vk, lp);
+
+	public static void FORWARD_WM_KEYUP(HWND hwnd, uint vk, ushort cRepeat, ushort flags, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_KEYUP, (WPARAM)vk, MAKELPARAM(cRepeat, flags));
+
+	public static void FORWARD_WM_KEYUP(HWND hwnd, uint vk, WM_KEY_LPARAM lp, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_KEYUP, (WPARAM)vk, lp);
 
 	public static void FORWARD_WM_KILLFOCUS(HWND hwnd, HWND hwndNewFocus, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_KILLFOCUS, (WPARAM)hwndNewFocus, IntPtr.Zero);
@@ -379,8 +391,11 @@ public static partial class User32
 	public static void FORWARD_WM_SPOOLERSTATUS(HWND hwnd, uint status, ushort cJobInQueue, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_SPOOLERSTATUS, (WPARAM)status, MAKELPARAM(cJobInQueue, 0));
 
-	public static void FORWARD_WM_SYSCHAR(HWND hwnd, ushort ch, int cRepeat, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static void FORWARD_WM_SYSCHAR(HWND hwnd, char ch, ushort cRepeat, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_SYSCHAR, (WPARAM)ch, MAKELPARAM(cRepeat, 0));
+
+	public static void FORWARD_WM_SYSCHAR(HWND hwnd, char ch, WM_KEY_LPARAM klp, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_SYSCHAR, (WPARAM)ch, klp);
 
 	public static void FORWARD_WM_SYSCOLORCHANGE(HWND hwnd, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_SYSCOLORCHANGE, IntPtr.Zero, IntPtr.Zero);
@@ -388,13 +403,22 @@ public static partial class User32
 	public static void FORWARD_WM_SYSCOMMAND(HWND hwnd, uint cmd, int x, int y, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_SYSCOMMAND, (WPARAM)cmd, MAKELPARAM(x, y));
 
-	public static void FORWARD_WM_SYSDEADCHAR(HWND hwnd, ushort ch, int cRepeat, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static void FORWARD_WM_SYSDEADCHAR(HWND hwnd, char ch, ushort cRepeat, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_SYSDEADCHAR, (WPARAM)ch, MAKELPARAM(cRepeat, 0));
 
-	public static void FORWARD_WM_SYSKEYDOWN(HWND hwnd, uint vk, int cRepeat, uint flags, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static void FORWARD_WM_SYSDEADCHAR(HWND hwnd, char ch, WM_KEY_LPARAM klp, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_SYSDEADCHAR, (WPARAM)ch, klp);
+
+	public static void FORWARD_WM_SYSKEYDOWN(HWND hwnd, VK vk, ushort cRepeat, ushort flags, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_SYSKEYDOWN, (WPARAM)vk, MAKELPARAM(cRepeat, flags));
 
-	public static void FORWARD_WM_SYSKEYUP(HWND hwnd, uint vk, int cRepeat, uint flags, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static void FORWARD_WM_SYSKEYDOWN(HWND hwnd, VK vk, WM_KEY_LPARAM klp, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_SYSKEYDOWN, (WPARAM)vk, klp);
+
+	public static void FORWARD_WM_SYSKEYUP(HWND hwnd, VK vk, WM_KEY_LPARAM klp, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_SYSKEYUP, (WPARAM)vk, klp);
+
+	public static void FORWARD_WM_SYSKEYUP(HWND hwnd, VK vk, ushort cRepeat, ushort flags, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_SYSKEYUP, (WPARAM)vk, MAKELPARAM(cRepeat, flags));
 
 	public static void FORWARD_WM_SYSTEMERROR(HWND hwnd, int errCode, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
@@ -573,9 +597,9 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_CHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, ushort, int> fn)
+	public static LRESULT HANDLE_WM_CHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, char, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (ushort)wParam, (short)LOWORD(lParam));
+		fn(hwnd, (char)(int)wParam, new WM_KEY_LPARAM(lParam));
 		return IntPtr.Zero;
 	}
 
@@ -669,9 +693,9 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_DEADCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, ushort, int> fn)
+	public static LRESULT HANDLE_WM_DEADCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, char, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (ushort)wParam, (short)LOWORD(lParam));
+		fn(hwnd, (char)(int)wParam, new WM_KEY_LPARAM(lParam));
 		return IntPtr.Zero;
 	}
 
@@ -807,15 +831,15 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_KEYDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, uint, bool, int, uint> fn)
+	public static LRESULT HANDLE_WM_KEYDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, VK, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (uint)wParam, true, (short)LOWORD(lParam), HIWORD(lParam));
+		fn(hwnd, (VK)(int)wParam, lParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_KEYUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, uint, bool, int, uint> fn)
+	public static LRESULT HANDLE_WM_KEYUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, VK, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (uint)wParam, false, (short)LOWORD(lParam), HIWORD(lParam));
+		fn(hwnd, (VK)(int)wParam, lParam);
 		return IntPtr.Zero;
 	}
 
@@ -1178,9 +1202,9 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_SYSCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, ushort, int> fn)
+	public static LRESULT HANDLE_WM_SYSCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, char, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (ushort)wParam, (short)LOWORD(lParam));
+		fn(hwnd, (char)(int)wParam, new WM_KEY_LPARAM(lParam));
 		return IntPtr.Zero;
 	}
 
@@ -1196,21 +1220,21 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_SYSDEADCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, ushort, int> fn)
+	public static LRESULT HANDLE_WM_SYSDEADCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, char, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (ushort)wParam, (short)LOWORD(lParam));
+		fn(hwnd, (char)(int)wParam, new WM_KEY_LPARAM(lParam));
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_SYSKEYDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, uint, bool, int, uint> fn)
+	public static LRESULT HANDLE_WM_SYSKEYDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, VK, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (uint)wParam, true, (short)LOWORD(lParam), HIWORD(lParam));
+		fn(hwnd, (VK)(int)wParam, new WM_KEY_LPARAM(lParam));
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_SYSKEYUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, uint, bool, int, uint> fn)
+	public static LRESULT HANDLE_WM_SYSKEYUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, VK, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (uint)wParam, false, (short)LOWORD(lParam), HIWORD(lParam));
+		fn(hwnd, (VK)(int)wParam, new WM_KEY_LPARAM(lParam));
 		return IntPtr.Zero;
 	}
 
