@@ -311,7 +311,7 @@ public class VisibleWindow : WindowBase
 				if (len > 0)
 				{
 					StringBuilder sb = new(len + 1);
-					if (GetWindowText(Handle, sb, len) > 0)
+					if (GetWindowText(Handle, sb, sb.Capacity) > 0)
 					{
 						return sb.ToString();
 					}

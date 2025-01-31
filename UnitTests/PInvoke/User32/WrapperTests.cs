@@ -17,14 +17,16 @@ public partial class User32Tests
 		Assert.That(wc.Unregister());
 
 		Assert.DoesNotThrow(() => wc = new("MyCustomName"));
-		Assert.That(wc.ClassName, Is.EqualTo("MyCustomName"));
+		Assert.That(GetClassInfoEx(wc.wc.hInstance, wc.ClassName, out var wcex));
+		Assert.That(wcex.lpszClassName, Is.EqualTo("MyCustomName"));
 		Assert.That(wc.Unregister());
 
 		Assert.DoesNotThrow(() => wc = WindowClass.MakeVisibleWindowClass("MyWindowClass", DefWindowProc));
-		Assert.That(wc.ClassName, Is.EqualTo("MyWindowClass"));
-		Assert.That(wc.wc.hIcon, Is.Not.EqualTo(HICON.NULL));
-		Assert.That(wc.wc.hCursor, Is.Not.EqualTo(HCURSOR.NULL));
-		Assert.That(wc.wc.hbrBackground, Is.Not.EqualTo(HBRUSH.NULL));
+		Assert.That(GetClassInfoEx(wc.wc.hInstance, wc.ClassName, out wcex));
+		Assert.That(wcex.lpszClassName, Is.EqualTo("MyWindowClass"));
+		Assert.That(wcex.hIcon, Is.Not.EqualTo(HICON.NULL));
+		Assert.That(wcex.hCursor, Is.Not.EqualTo(HCURSOR.NULL));
+		Assert.That(wcex.hbrBackground, Is.Not.EqualTo(HBRUSH.NULL));
 	}
 
 	[Test]
@@ -51,6 +53,9 @@ public partial class User32Tests
 		Assert.That(wnd.ClassName, Is.Not.Null);
 		Assert.That(created);
 		Assert.That(wnd.Handle, Is.Not.EqualTo(HWND.NULL));
+		Assert.That(GetWindowTextLength(wnd.Handle), Is.Zero);
+		Assert.That(SetWindowText(wnd.Handle, "Hello, World!\0"));
+		Assert.That(GetWindowTextLength(wnd.Handle), Is.EqualTo(13));
 	}
 
 	[Test]
@@ -73,7 +78,7 @@ public partial class User32Tests
 	{
 		protected override IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 		{
-			if (msg == (uint)WindowMessage.WM_CREATE) MessageBox(hwnd, "Got it!");
+			//if (msg == (uint)WindowMessage.WM_CREATE) MessageBox(hwnd, "Got it!");
 			return base.WndProc(hwnd, msg, wParam, lParam);
 		}
 	}

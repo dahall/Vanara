@@ -7472,7 +7472,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowtext")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowText(HWND hWnd, string lpString);
+	public static extern bool SetWindowText(HWND hWnd, [MarshalAs(UnmanagedType.LPTStr)] string lpString);
 
 	/// <summary>
 	/// <para>Shows or hides all pop-up windows owned by the specified window.</para>

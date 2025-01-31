@@ -79,7 +79,7 @@ public static partial class User32
 	public static bool FORWARD_WM_COPYDATA(HWND hwnd, HWND hwndFrom, in COPYDATASTRUCT pcds, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> (BOOL)fn(hwnd, (int)WindowMessage.WM_COPYDATA, (WPARAM)hwndFrom, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(pcds));
 
-	public static unsafe bool FORWARD_WM_CREATE(HWND hwnd, in CREATESTRUCT lpCreateStruct, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static bool FORWARD_WM_CREATE(HWND hwnd, in CREATESTRUCT lpCreateStruct, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> (BOOL)fn(hwnd, (int)WindowMessage.WM_CREATE, IntPtr.Zero, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(lpCreateStruct));
 
 	public static HBRUSH FORWARD_WM_CTLCOLORBTN(HWND hwnd, HDC hdc, HWND hwndChild, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
@@ -154,8 +154,8 @@ public static partial class User32
 	public static void FORWARD_WM_FONTCHANGE(HWND hwnd, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_FONTCHANGE, IntPtr.Zero, IntPtr.Zero);
 
-	public static uint FORWARD_WM_GETDLGCODE(HWND hwnd, in MSG? lpmsg, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> (uint)fn(hwnd, (int)WindowMessage.WM_GETDLGCODE, lpmsg.HasValue ? lpmsg.Value.wParam : IntPtr.Zero, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(lpmsg));
+	public static DLGC FORWARD_WM_GETDLGCODE(HWND hwnd, in MSG? lpmsg, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> (DLGC)fn(hwnd, (int)WindowMessage.WM_GETDLGCODE, lpmsg.HasValue ? lpmsg.Value.wParam : IntPtr.Zero, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(lpmsg));
 
 	public static HFONT FORWARD_WM_GETFONT(HWND hwnd, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> (HFONT)fn(hwnd, (int)WindowMessage.WM_GETFONT, IntPtr.Zero, IntPtr.Zero);
@@ -253,14 +253,14 @@ public static partial class User32
 	public static void FORWARD_WM_MEASUREITEM(HWND hwnd, in MEASUREITEMSTRUCT lpMeasureItem, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_MEASUREITEM, (WPARAM)lpMeasureItem.CtlID, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(lpMeasureItem));
 
-	public static uint FORWARD_WM_MENUCHAR(HWND hwnd, uint ch, uint flags, HMENU hmenu, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> (uint)fn(hwnd, (int)WindowMessage.WM_MENUCHAR, MAKELPARAM(flags, ch), (LPARAM)hmenu);
+	public static WM_MENUCHAR_RETURN FORWARD_WM_MENUCHAR(HWND hwnd, char ch, MenuFlags flags, HMENU hmenu, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> (WM_MENUCHAR_RETURN)fn(hwnd, (int)WindowMessage.WM_MENUCHAR, MAKELPARAM(flags, ch), (LPARAM)hmenu);
 
-	public static void FORWARD_WM_MENUSELECT(HWND hwnd, HMENU hmenu, int item, HMENU hmenuPopup, uint flags, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static void FORWARD_WM_MENUSELECT(HWND hwnd, HMENU hmenu, int item, HMENU hmenuPopup, MenuFlags flags, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_MENUSELECT, MAKELPARAM(item, flags), (LPARAM)((hmenu != HMENU.NULL) ? hmenu : hmenuPopup));
 
-	public static int FORWARD_WM_MOUSEACTIVATE(HWND hwnd, HWND hwndTopLevel, uint codeHitTest, uint msg, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> (int)fn(hwnd, (int)WindowMessage.WM_MOUSEACTIVATE, (WPARAM)hwndTopLevel, MAKELPARAM(codeHitTest, msg));
+	public static MouseActivateCode FORWARD_WM_MOUSEACTIVATE(HWND hwnd, HWND hwndTopLevel, HitTestValues codeHitTest, uint msg, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> (MouseActivateCode)fn(hwnd, (int)WindowMessage.WM_MOUSEACTIVATE, (WPARAM)hwndTopLevel, MAKELPARAM(codeHitTest, msg));
 
 	public static void FORWARD_WM_MOUSEMOVE(HWND hwnd, MouseButtonState state, POINTS pt, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_MOUSEMOVE, (WPARAM)state, pt);
@@ -274,41 +274,41 @@ public static partial class User32
 	public static bool FORWARD_WM_NCACTIVATE(HWND hwnd, bool fActive, HWND hwndActDeact, bool fMinimized, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> (BOOL)fn(hwnd, (int)WindowMessage.WM_NCACTIVATE, (WPARAM)(BOOL)fActive, IntPtr.Zero);
 
-	public static uint FORWARD_WM_NCCALCSIZE(HWND hwnd, bool fCalcValidRects, in NCCALCSIZE_PARAMS lpcsp, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> (uint)fn(hwnd, (int)WindowMessage.WM_NCCALCSIZE, (WPARAM)(BOOL)fCalcValidRects, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(lpcsp));
+	public static WVR FORWARD_WM_NCCALCSIZE(HWND hwnd, bool fCalcValidRects, in NCCALCSIZE_PARAMS lpcsp, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> (WVR)fn(hwnd, (int)WindowMessage.WM_NCCALCSIZE, (WPARAM)(BOOL)fCalcValidRects, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(lpcsp));
 
-	public static unsafe bool FORWARD_WM_NCCREATE(HWND hwnd, in CREATESTRUCT lpCreateStruct, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static bool FORWARD_WM_NCCREATE(HWND hwnd, in CREATESTRUCT lpCreateStruct, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> (BOOL)fn(hwnd, (int)WindowMessage.WM_NCCREATE, IntPtr.Zero, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(lpCreateStruct));
 
 	public static void FORWARD_WM_NCDESTROY(HWND hwnd, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_NCDESTROY, IntPtr.Zero, IntPtr.Zero);
 
-	public static uint FORWARD_WM_NCHITTEST(HWND hwnd, int x, int y, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> (uint)fn(hwnd, (int)WindowMessage.WM_NCHITTEST, IntPtr.Zero, MAKELPARAM(x, y));
+	public static HitTestValues FORWARD_WM_NCHITTEST(HWND hwnd, short x, short y, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> (HitTestValues)fn(hwnd, (int)WindowMessage.WM_NCHITTEST, IntPtr.Zero, new POINTS(x, y));
 
-	public static void FORWARD_WM_NCLBUTTONDOWN(HWND hwnd, bool fDoubleClick, int x, int y, uint codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, fDoubleClick ? (uint)WindowMessage.WM_NCLBUTTONDBLCLK : (uint)WindowMessage.WM_NCLBUTTONDOWN, (WPARAM)codeHitTest, MAKELPARAM(x, y));
+	public static void FORWARD_WM_NCLBUTTONDOWN(HWND hwnd, bool fDoubleClick, short x, short y, HitTestValues codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, fDoubleClick ? (uint)WindowMessage.WM_NCLBUTTONDBLCLK : (uint)WindowMessage.WM_NCLBUTTONDOWN, (WPARAM)codeHitTest, new POINTS(x, y));
 
-	public static void FORWARD_WM_NCLBUTTONUP(HWND hwnd, int x, int y, uint codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, (int)WindowMessage.WM_NCLBUTTONUP, (WPARAM)codeHitTest, MAKELPARAM(x, y));
+	public static void FORWARD_WM_NCLBUTTONUP(HWND hwnd, short x, short y, HitTestValues codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_NCLBUTTONUP, (WPARAM)codeHitTest, new POINTS(x, y));
 
-	public static void FORWARD_WM_NCMBUTTONDOWN(HWND hwnd, bool fDoubleClick, int x, int y, uint codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, fDoubleClick ? (uint)WindowMessage.WM_NCMBUTTONDBLCLK : (uint)WindowMessage.WM_NCMBUTTONDOWN, (WPARAM)codeHitTest, MAKELPARAM(x, y));
+	public static void FORWARD_WM_NCMBUTTONDOWN(HWND hwnd, bool fDoubleClick, short x, short y, HitTestValues codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, fDoubleClick ? (uint)WindowMessage.WM_NCMBUTTONDBLCLK : (uint)WindowMessage.WM_NCMBUTTONDOWN, (WPARAM)codeHitTest, new POINTS(x, y));
 
-	public static void FORWARD_WM_NCMBUTTONUP(HWND hwnd, int x, int y, uint codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, (int)WindowMessage.WM_NCMBUTTONUP, (WPARAM)codeHitTest, MAKELPARAM(x, y));
+	public static void FORWARD_WM_NCMBUTTONUP(HWND hwnd, short x, short y, HitTestValues codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_NCMBUTTONUP, (WPARAM)codeHitTest, new POINTS(x, y));
 
-	public static void FORWARD_WM_NCMOUSEMOVE(HWND hwnd, int x, int y, uint codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, (int)WindowMessage.WM_NCMOUSEMOVE, (WPARAM)codeHitTest, MAKELPARAM(x, y));
+	public static void FORWARD_WM_NCMOUSEMOVE(HWND hwnd, short x, short y, HitTestValues codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_NCMOUSEMOVE, (WPARAM)codeHitTest, new POINTS(x, y));
 
 	public static void FORWARD_WM_NCPAINT(HWND hwnd, HRGN hrgn, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_NCPAINT, (WPARAM)hrgn, IntPtr.Zero);
 
-	public static void FORWARD_WM_NCRBUTTONDOWN(HWND hwnd, bool fDoubleClick, int x, int y, uint codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, fDoubleClick ? (uint)WindowMessage.WM_NCRBUTTONDBLCLK : (uint)WindowMessage.WM_NCRBUTTONDOWN, (WPARAM)codeHitTest, MAKELPARAM(x, y));
+	public static void FORWARD_WM_NCRBUTTONDOWN(HWND hwnd, bool fDoubleClick, short x, short y, HitTestValues codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, fDoubleClick ? (uint)WindowMessage.WM_NCRBUTTONDBLCLK : (uint)WindowMessage.WM_NCRBUTTONDOWN, (WPARAM)codeHitTest, new POINTS(x, y));
 
-	public static void FORWARD_WM_NCRBUTTONUP(HWND hwnd, int x, int y, uint codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, (int)WindowMessage.WM_NCRBUTTONUP, (WPARAM)codeHitTest, MAKELPARAM(x, y));
+	public static void FORWARD_WM_NCRBUTTONUP(HWND hwnd, short x, short y, HitTestValues codeHitTest, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+		=> fn(hwnd, (int)WindowMessage.WM_NCRBUTTONUP, (WPARAM)codeHitTest, new POINTS(x, y));
 
 	public static HWND FORWARD_WM_NEXTDLGCTL(HWND hwnd, HWND hwndSetFocus, bool fNext, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> (HWND)fn(hwnd, (int)WindowMessage.WM_NEXTDLGCTL, (WPARAM)hwndSetFocus, (LPARAM)(BOOL)fNext);
@@ -364,7 +364,7 @@ public static partial class User32
 	public static HANDLE FORWARD_WM_RENDERFORMAT(HWND hwnd, uint fmt, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> (HANDLE)fn(hwnd, (int)WindowMessage.WM_RENDERFORMAT, (WPARAM)fmt, IntPtr.Zero);
 
-	public static bool FORWARD_WM_SETCURSOR(HWND hwnd, HWND hwndCursor, uint codeHitTest, uint msg, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static bool FORWARD_WM_SETCURSOR(HWND hwnd, HWND hwndCursor, HitTestValues codeHitTest, uint msg, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> (BOOL)fn(hwnd, (int)WindowMessage.WM_SETCURSOR, (WPARAM)hwndCursor, MAKELPARAM(codeHitTest, msg));
 
 	public static void FORWARD_WM_SETFOCUS(HWND hwnd, HWND hwndOldFocus, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
@@ -400,7 +400,7 @@ public static partial class User32
 	public static void FORWARD_WM_SYSCOLORCHANGE(HWND hwnd, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_SYSCOLORCHANGE, IntPtr.Zero, IntPtr.Zero);
 
-	public static void FORWARD_WM_SYSCOMMAND(HWND hwnd, uint cmd, int x, int y, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
+	public static void FORWARD_WM_SYSCOMMAND(HWND hwnd, uint cmd, short x, short y, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_SYSCOMMAND, (WPARAM)cmd, MAKELPARAM(x, y));
 
 	public static void FORWARD_WM_SYSDEADCHAR(HWND hwnd, char ch, ushort cRepeat, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
@@ -515,7 +515,7 @@ public static partial class User32
 
 	public static (WPARAM wp, LPARAM lp) GET_WM_MDISETMENU_MPS(HMENU hmenuF, HMENU hmenuW) => ((WPARAM)hmenuF, (LPARAM)hmenuW);
 
-	public static ushort GET_WM_MENUCHAR_CHAR(WPARAM wp, LPARAM lp) => LOWORD(wp);
+	public static char GET_WM_MENUCHAR_CHAR(WPARAM wp, LPARAM lp) => WPARAM_TO_CHARCODE(wp);
 
 	public static bool GET_WM_MENUCHAR_FMENU(WPARAM wp, LPARAM lp) => (BOOL)(uint)HIWORD(wp);
 
@@ -543,7 +543,7 @@ public static partial class User32
 
 	public static int GET_WM_PARENTNOTIFY_Y(WPARAM wp, LPARAM lp) => (short)HIWORD(lp);
 
-	public static (WPARAM wp, LPARAM lp) GET_WM_PARENTNOTIFY2_MPS(ushort msg, int x, int y) => (MAKELPARAM(0, msg), MAKELPARAM(x, y));
+	public static (WPARAM wp, LPARAM lp) GET_WM_PARENTNOTIFY2_MPS(ushort msg, short x, short y) => (MAKELPARAM(0, msg), MAKELPARAM(x, y));
 
 	public static int GET_WM_VKEYTOITEM_CODE(WPARAM wp, LPARAM lp) => (short)LOWORD(wp);
 
@@ -562,10 +562,6 @@ public static partial class User32
 	public static ushort GET_WM_VSCROLL_POS(WPARAM wp, LPARAM lp) => HIWORD(wp);
 
 	public static WPARAM GET_WPARAM(WPARAM wp, LPARAM lp) => wp;
-
-	public static int GET_X_LPARAM(LPARAM lp) => (short)LOWORD(lp);
-
-	public static int GET_Y_LPARAM(LPARAM lp) => (short)HIWORD(lp);
 
 	public static LRESULT HANDLE_WM_ACTIVATE(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, uint, HWND, bool> fn)
 	{
@@ -599,7 +595,7 @@ public static partial class User32
 
 	public static LRESULT HANDLE_WM_CHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, char, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (char)(int)wParam, new WM_KEY_LPARAM(lParam));
+		fn(hwnd, WPARAM_TO_CHARCODE(wParam), new WM_KEY_LPARAM(lParam));
 		return IntPtr.Zero;
 	}
 
@@ -695,7 +691,7 @@ public static partial class User32
 
 	public static LRESULT HANDLE_WM_DEADCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, char, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (char)(int)wParam, new WM_KEY_LPARAM(lParam));
+		fn(hwnd, WPARAM_TO_CHARCODE(wParam), new WM_KEY_LPARAM(lParam));
 		return IntPtr.Zero;
 	}
 
@@ -849,39 +845,39 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_LBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_LBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, MouseButtonState, POINTS> fn)
 	{
-		fn(hwnd, true, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, true, (MouseButtonState)wParam, (POINTS)lParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_LBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_LBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, MouseButtonState, POINTS> fn)
 	{
-		fn(hwnd, false, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, false, (MouseButtonState)wParam, (POINTS)lParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_LBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_LBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, MouseButtonState, POINTS> fn)
 	{
-		fn(hwnd, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, (MouseButtonState)wParam, (POINTS)lParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_MBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_MBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, MouseButtonState, POINTS> fn)
 	{
-		fn(hwnd, true, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, true, (MouseButtonState)wParam, (POINTS)lParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_MBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_MBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, MouseButtonState, POINTS> fn)
 	{
-		fn(hwnd, false, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, false, (MouseButtonState)wParam, (POINTS)lParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_MBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_MBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, MouseButtonState, POINTS> fn)
 	{
-		fn(hwnd, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, (MouseButtonState)wParam, (POINTS)lParam);
 		return IntPtr.Zero;
 	}
 
@@ -939,17 +935,17 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_MENUCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, uint, uint, HMENU, uint> fn)
-		=> (LRESULT)fn(hwnd, LOWORD(wParam), HIWORD(wParam), (HMENU)lParam);
+	public static LRESULT HANDLE_WM_MENUCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, char, MenuFlags, HMENU, WM_MENUCHAR_LRESULT> fn)
+		=> (LRESULT)fn(hwnd, WPARAM_TO_CHARCODE(wParam), (MenuFlags)HIWORD(wParam), (HMENU)lParam);
 
-	public static LRESULT HANDLE_WM_MENUSELECT(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, HMENU, int, HMENU, uint> fn)
+	public static LRESULT HANDLE_WM_MENUSELECT(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, HMENU, int, HMENU, MenuFlags> fn)
 	{
-		fn(hwnd, (HMENU)lParam, ((HIWORD(wParam) & (int)MenuFlags.MF_POPUP) != 0) ? 0 : LOWORD(wParam), ((HIWORD(wParam) & (int)MenuFlags.MF_POPUP) != 0) ? GetSubMenu((HMENU)lParam, LOWORD(wParam)) : HMENU.NULL, ((short)HIWORD(wParam) == -1) ? 0xFFFFFFFF : HIWORD(wParam));
+		fn(hwnd, (HMENU)lParam, ((HIWORD(wParam) & (int)MenuFlags.MF_POPUP) != 0) ? 0 : LOWORD(wParam), ((HIWORD(wParam) & (int)MenuFlags.MF_POPUP) != 0) ? GetSubMenu((HMENU)lParam, LOWORD(wParam)) : HMENU.NULL, (MenuFlags)HIWORD(wParam));
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_MOUSEACTIVATE(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, HWND, uint, uint, int> fn)
-		=> (LRESULT)(uint)fn(hwnd, (HWND)wParam, LOWORD(lParam), HIWORD(lParam));
+	public static LRESULT HANDLE_WM_MOUSEACTIVATE(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, HWND, HitTestValues, uint, MouseActivateCode> fn)
+		=> (LRESULT)fn(hwnd, (HWND)wParam, (HitTestValues)LOWORD(lParam), HIWORD(lParam));
 
 	public static LRESULT HANDLE_WM_MOUSEMOVE(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, MouseButtonState, POINTS> fn)
 	{
@@ -972,7 +968,7 @@ public static partial class User32
 	public static LRESULT HANDLE_WM_NCACTIVATE(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, bool, HWND, bool, bool> fn)
 		=> (LRESULT)(BOOL)fn(hwnd, (BOOL)wParam, HWND.NULL, false);
 
-	public static LRESULT HANDLE_WM_NCCALCSIZE(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, bool, NCCALCSIZE_PARAMS, uint> fn)
+	public static LRESULT HANDLE_WM_NCCALCSIZE(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, bool, NCCALCSIZE_PARAMS, WVR> fn)
 		=> (LRESULT)fn(hwnd, (BOOL)wParam, lParam.ToStructure<NCCALCSIZE_PARAMS>());
 
 	public static unsafe LRESULT HANDLE_WM_NCCREATE(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, CREATESTRUCT, bool> fn)
@@ -984,48 +980,48 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_NCHITTEST(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, int, int, uint> fn)
-		=> (LRESULT)fn(hwnd, (short)LOWORD(lParam), (short)HIWORD(lParam));
+	public static LRESULT HANDLE_WM_NCHITTEST(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, POINTS, HitTestValues> fn)
+		=> (LRESULT)fn(hwnd, (POINTS)lParam);
 
-	public static LRESULT HANDLE_WM_NCLBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_NCLBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, POINTS, HitTestValues> fn)
 	{
-		fn(hwnd, true, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, true, (POINTS)lParam, (HitTestValues)wParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_NCLBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_NCLBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, POINTS, HitTestValues> fn)
 	{
-		fn(hwnd, false, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, false, (POINTS)lParam, (HitTestValues)wParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_NCLBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_NCLBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, POINTS, HitTestValues> fn)
 	{
-		fn(hwnd, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, (POINTS)lParam, (HitTestValues)wParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_NCMBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_NCMBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, POINTS, HitTestValues> fn)
 	{
-		fn(hwnd, true, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, true, (POINTS)lParam, (HitTestValues)wParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_NCMBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_NCMBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, POINTS, HitTestValues> fn)
 	{
-		fn(hwnd, false, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, false, (POINTS)lParam, (HitTestValues)wParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_NCMBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_NCMBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, POINTS, HitTestValues> fn)
 	{
-		fn(hwnd, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, (POINTS)lParam, (HitTestValues)wParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_NCMOUSEMOVE(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_NCMOUSEMOVE(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, POINTS, HitTestValues> fn)
 	{
-		fn(hwnd, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, (POINTS)lParam, (HitTestValues)wParam);
 		return IntPtr.Zero;
 	}
 
@@ -1035,21 +1031,21 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_NCRBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_NCRBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, POINTS, HitTestValues> fn)
 	{
-		fn(hwnd, true, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, true, (POINTS)lParam, (HitTestValues)wParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_NCRBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_NCRBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, POINTS, HitTestValues> fn)
 	{
-		fn(hwnd, false, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, false, (POINTS)lParam, (HitTestValues)wParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_NCRBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_NCRBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, POINTS, HitTestValues> fn)
 	{
-		fn(hwnd, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, (POINTS)lParam, (HitTestValues)wParam);
 		return IntPtr.Zero;
 	}
 
@@ -1123,21 +1119,21 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_RBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_RBUTTONDBLCLK(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, MouseButtonState, POINTS> fn)
 	{
-		fn(hwnd, true, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, true, (MouseButtonState)wParam, (POINTS)lParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_RBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_RBUTTONDOWN(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, bool, MouseButtonState, POINTS> fn)
 	{
-		fn(hwnd, false, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, false, (MouseButtonState)wParam, (POINTS)lParam);
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_RBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, int, int, uint> fn)
+	public static LRESULT HANDLE_WM_RBUTTONUP(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, MouseButtonState, POINTS> fn)
 	{
-		fn(hwnd, (short)LOWORD(lParam), (short)HIWORD(lParam), (uint)wParam);
+		fn(hwnd, (MouseButtonState)wParam, (POINTS)lParam);
 		return IntPtr.Zero;
 	}
 
@@ -1204,7 +1200,7 @@ public static partial class User32
 
 	public static LRESULT HANDLE_WM_SYSCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, char, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (char)(int)wParam, new WM_KEY_LPARAM(lParam));
+		fn(hwnd, WPARAM_TO_CHARCODE(wParam), new WM_KEY_LPARAM(lParam));
 		return IntPtr.Zero;
 	}
 
@@ -1222,7 +1218,7 @@ public static partial class User32
 
 	public static LRESULT HANDLE_WM_SYSDEADCHAR(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, char, WM_KEY_LPARAM> fn)
 	{
-		fn(hwnd, (char)(int)wParam, new WM_KEY_LPARAM(lParam));
+		fn(hwnd, WPARAM_TO_CHARCODE(wParam), new WM_KEY_LPARAM(lParam));
 		return IntPtr.Zero;
 	}
 

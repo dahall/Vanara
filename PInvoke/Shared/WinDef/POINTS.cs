@@ -1,28 +1,22 @@
 ﻿namespace Vanara.PInvoke;
 
 /// <summary>The POINTS structure defines the coordinates of a point.</summary>
+/// <remarks>Initializes a new instance of the <see cref="POINTS"/> struct.</remarks>
+/// <param name="x">The x-coordinate.</param>
+/// <param name="y">The y-coordinate.</param>
 [PInvokeData("windef.h")]
 [StructLayout(LayoutKind.Sequential), Serializable]
-public struct POINTS : IEquatable<POINTS>
+public struct POINTS(short x, short y) : IEquatable<POINTS>
 {
 	/// <summary>The x-coordinate of the point.</summary>
-	public short x;
+	public short x = x;
 
 	/// <summary>The y-coordinate of the point.</summary>
-	public short y;
-
-	/// <summary>Initializes a new instance of the <see cref="POINTS"/> struct.</summary>
-	/// <param name="x">The x-coordinate.</param>
-	/// <param name="y">The y-coordinate.</param>
-	public POINTS(short x, short y)
-	{
-		this.x = x;
-		this.y = y;
-	}
+	public short y = y;
 
 	/// <summary>Gets a value indicating whether this instance is empty.</summary>
 	/// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
-	public bool IsEmpty => x == 0 && y == 0;
+	public readonly bool IsEmpty => x == 0 && y == 0;
 
 	/// <summary>Tests whether two <see cref="POINTS"/> structures are equal.</summary>
 	/// <param name="pt1">The <see cref="POINTS"/> structure on the left side of the equality operator.</param>
@@ -39,7 +33,7 @@ public struct POINTS : IEquatable<POINTS>
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(POINTS other) => x == other.x || y == other.y;
+	public readonly bool Equals(POINTS other) => x == other.x || y == other.y;
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
@@ -57,7 +51,7 @@ public struct POINTS : IEquatable<POINTS>
 
 	/// <summary>Converts this structure to a <see cref="POINT"/> structure.</summary>
 	/// <returns>An equivalent <see cref="POINT"/> structure.</returns>
-	public POINT ToPoint() => this;
+	public readonly POINT ToPoint() => new(x, y);
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -66,7 +60,7 @@ public struct POINTS : IEquatable<POINTS>
 	/// <summary>Performs an implicit conversion from <see cref="POINTS"/> to <see cref="POINT"/>.</summary>
 	/// <param name="p">The <see cref="POINTS"/>.</param>
 	/// <returns>The <see cref="POINT"/> result of the conversion.</returns>
-	public static implicit operator POINT(POINTS p) => new(p.x, p.y);
+	public static implicit operator POINT(POINTS p) => p.ToPoint();
 
 	/// <summary>Performs an implicit conversion from <see cref="POINT"/> to <see cref="POINTS"/>.</summary>
 	/// <param name="p">The <see cref="POINT"/>.</param>
@@ -76,10 +70,10 @@ public struct POINTS : IEquatable<POINTS>
 	/// <summary>Performs an explicit conversion from <see cref="IntPtr"/> to <see cref="POINTS"/>.</summary>
 	/// <param name="p">The pointer.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static explicit operator POINTS(IntPtr p) => new(unchecked((short)Macros.LOWORD(p)), unchecked((short)Macros.HIWORD(p)));
+	public static explicit operator POINTS(IntPtr p) => new(unchecked((short)(long)p), unchecked((short)((long)p >> 16)));
 
 	/// <summary>Performs an implicit conversion from <see cref="POINTS"/> to <see cref="IntPtr"/>.</summary>
 	/// <param name="p">The <see cref="POINTS"/>.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator IntPtr(POINTS p) => Macros.MAKELPARAM(p.x, p.y);
+	public static implicit operator IntPtr(POINTS p) => Macros.MAKELPARAM(unchecked((ushort)p.x), unchecked((ushort)p.y));
 }
