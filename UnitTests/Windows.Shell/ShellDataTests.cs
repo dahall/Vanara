@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Vanara.PInvoke.Tests;
@@ -93,19 +94,32 @@ public class ShellDataTests
 	[Test]
 	public void GetDataTest()
 	{
-		var obj = new ShellDataObject(new[] { new ShellItem(TestCaseSources.WordDoc) });
+		const int cnt = 512;
+
+		byte[] orig;
+		using (var fs = File.OpenRead(TestCaseSources.WordDoc))
+			orig = GetFileBytes(fs, cnt);
+		var obj = new ShellDataObject([new ShellItem(TestCaseSources.WordDoc)]);
 
 		Assert.That(obj.GetDataPresent(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW));
 		var fd = obj.GetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW, true);
 		Assert.That(fd is ShellFileDescriptor[]);
 		Assert.That((ShellFileDescriptor[])fd, Has.Exactly(1).Items);
-		Assert.That(((ShellFileDescriptor[])fd)[0].Info.Name, Is.EqualTo(System.IO.Path.GetFileName(TestCaseSources.WordDoc)));
+		Assert.That(((ShellFileDescriptor[])fd)[0].Info.Name, Is.EqualTo(Path.GetFileName(TestCaseSources.WordDoc)));
 
 		Assert.That(obj.GetDataPresent(ShellClipboardFormat.CFSTR_FILECONTENTS));
 		var fc = obj.GetData(ShellClipboardFormat.CFSTR_FILECONTENTS, true);
-		Assert.That(fc is System.IO.Stream[]);
-		Assert.That((System.IO.Stream[])fc, Has.Exactly(1).Items);
-		Assert.That(((System.IO.Stream[])fc)[0].Length, Is.EqualTo(new System.IO.FileInfo(TestCaseSources.WordDoc).Length));
+		if (fc is not Stream[] fcs) { Assert.Fail(); return; }
+		Assert.That(fcs, Has.Exactly(1).Items);
+		Assert.That(fcs[0].Length, Is.EqualTo(new FileInfo(TestCaseSources.WordDoc).Length));
+		Assert.That(GetFileBytes(fcs[0], cnt), Is.EquivalentTo(orig));
+
+		static byte[] GetFileBytes(Stream fs, int count)
+		{
+			var ret = new byte[count];
+			fs.Read(ret, 0, count);
+			return ret;
+		}
 	}
 
 	[TestCase("<a href=\"http://www.contoso.com\">Contoso</a>")]
