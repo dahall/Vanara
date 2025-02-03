@@ -402,7 +402,9 @@ public static partial class D3D12
 				LogicOp = D3D12_LOGIC_OP.D3D12_LOGIC_OP_NOOP,
 				RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE.D3D12_COLOR_WRITE_ENABLE_ALL
 			};
-			SetRenderTarget(def);
+			_RenderTarget = new D3D12_RENDER_TARGET_BLEND_DESC[8];
+			for (var i = 0; i < 8; i++)
+				_RenderTarget[i] = def;
 		}
 	}
 
@@ -1121,7 +1123,7 @@ public static partial class D3D12
 	// BOOL DepthEnable; D3D12_DEPTH_WRITE_MASK DepthWriteMask; D3D12_COMPARISON_FUNC DepthFunc; BOOL StencilEnable; UINT8 StencilReadMask;
 	// UINT8 StencilWriteMask; D3D12_DEPTH_STENCILOP_DESC FrontFace; D3D12_DEPTH_STENCILOP_DESC BackFace; } D3D12_DEPTH_STENCIL_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_DEPTH_STENCIL_DESC")]
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	public struct D3D12_DEPTH_STENCIL_DESC
 	{
 		/// <summary>Specifies whether to enable depth testing. Set this member to <b>TRUE</b> to enable depth testing.</summary>
