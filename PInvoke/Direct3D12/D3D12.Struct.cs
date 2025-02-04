@@ -1162,14 +1162,6 @@ public static partial class D3D12
 		/// </summary>
 		public D3D12_DEPTH_STENCILOP_DESC BackFace;
 
-		/// <summary>Initializes a new instance of the <see cref="D3D12_DEPTH_STENCIL_DESC"/> struct with default values (not all default).</summary>
-		public D3D12_DEPTH_STENCIL_DESC() : this(true, D3D12_DEPTH_WRITE_MASK.D3D12_DEPTH_WRITE_MASK_ALL, D3D12_COMPARISON_FUNC.D3D12_COMPARISON_FUNC_LESS,
-			false, D3D12_DEFAULT_STENCIL_READ_MASK, D3D12_DEFAULT_STENCIL_WRITE_MASK, D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP, D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP,
-			D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP, D3D12_COMPARISON_FUNC.D3D12_COMPARISON_FUNC_ALWAYS, D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP,
-			D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP, D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP, D3D12_COMPARISON_FUNC.D3D12_COMPARISON_FUNC_ALWAYS)
-		{
-		}
-
 		/// <summary>Initializes a new instance of the <see cref="D3D12_DEPTH_STENCIL_DESC"/> struct.</summary>
 		/// <param name="depthEnable">Specifies whether to enable depth testing. Set this member to <b>TRUE</b> to enable depth testing.</param>
 		/// <param name="depthWriteMask">
@@ -1210,11 +1202,11 @@ public static partial class D3D12
 		/// <param name="backStencilFunc">
 		/// A <c>D3D12_COMPARISON_FUNC</c>-typed value that identifies the function that compares back stencil data against existing stencil data.
 		/// </param>
-		public D3D12_DEPTH_STENCIL_DESC(bool depthEnable, D3D12_DEPTH_WRITE_MASK depthWriteMask, D3D12_COMPARISON_FUNC depthFunc, bool stencilEnable,
-			byte stencilReadMask, byte stencilWriteMask, D3D12_STENCIL_OP frontStencilFailOp,
-			D3D12_STENCIL_OP frontStencilDepthFailOp, D3D12_STENCIL_OP frontStencilPassOp, D3D12_COMPARISON_FUNC frontStencilFunc,
-			D3D12_STENCIL_OP backStencilFailOp, D3D12_STENCIL_OP backStencilDepthFailOp, D3D12_STENCIL_OP backStencilPassOp,
-			D3D12_COMPARISON_FUNC backStencilFunc)
+		public D3D12_DEPTH_STENCIL_DESC(bool depthEnable, D3D12_DEPTH_WRITE_MASK depthWriteMask = 0, D3D12_COMPARISON_FUNC depthFunc = 0,
+			bool stencilEnable = false, byte stencilReadMask = 0, byte stencilWriteMask = 0, D3D12_STENCIL_OP frontStencilFailOp = 0,
+			D3D12_STENCIL_OP frontStencilDepthFailOp = 0, D3D12_STENCIL_OP frontStencilPassOp = 0, D3D12_COMPARISON_FUNC frontStencilFunc = 0,
+			D3D12_STENCIL_OP backStencilFailOp = 0,  D3D12_STENCIL_OP backStencilDepthFailOp = 0, D3D12_STENCIL_OP backStencilPassOp = 0,
+			D3D12_COMPARISON_FUNC backStencilFunc = 0)
 		{
 			DepthEnable = depthEnable;
 			DepthWriteMask = depthWriteMask;
@@ -1237,6 +1229,15 @@ public static partial class D3D12
 				StencilFunc = backStencilFunc,
 			};
 		}
+
+		/// <summary>Gets an instance filled with D3D12_DEFAULT values.</summary>
+		public static D3D12_DEPTH_STENCIL_DESC Default => new(
+			true, D3D12_DEPTH_WRITE_MASK.D3D12_DEPTH_WRITE_MASK_ALL, D3D12_COMPARISON_FUNC.D3D12_COMPARISON_FUNC_LESS, false,
+			D3D12_DEFAULT_STENCIL_READ_MASK, D3D12_DEFAULT_STENCIL_WRITE_MASK, D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP,
+			D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP, D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP,
+			D3D12_COMPARISON_FUNC.D3D12_COMPARISON_FUNC_ALWAYS, D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP,
+			D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP, D3D12_STENCIL_OP.D3D12_STENCIL_OP_KEEP,
+			D3D12_COMPARISON_FUNC.D3D12_COMPARISON_FUNC_ALWAYS);
 	}
 
 	/// <summary>Describes depth-stencil state.</summary>
@@ -4423,6 +4424,7 @@ public static partial class D3D12
 	public struct D3D12_INPUT_LAYOUT_DESC
 	{
 		/// <summary>An array of <c>D3D12_INPUT_ELEMENT_DESC</c> structures that describe the data types of the input-assembler stage.</summary>
+		[SizeFieldName(nameof(NumElements))]
 		public ManagedArrayPointer<D3D12_INPUT_ELEMENT_DESC> pInputElementDescs;
 
 		/// <summary>The number of input-data types in the array of input elements that the <b>pInputElementDescs</b> member points to.</summary>
