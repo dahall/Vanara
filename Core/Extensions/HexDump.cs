@@ -1,7 +1,7 @@
 ﻿namespace Vanara.Extensions;
 
 /// <summary>Extension to dump a byte array.</summary>
-public static class HexDempHelpers
+public static class HexDumpHelpers
 {
 	/// <summary>Creates a multi-line dump of a byte array using hexadecimal values.</summary>
 	/// <param name="bytes">The byte array to dump. This value cannot be <see langword="null"/>.</param>
