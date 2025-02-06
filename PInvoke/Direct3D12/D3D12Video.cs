@@ -44,152 +44,152 @@ public static partial class D3D12
 	public enum D3D12_FEATURE_VIDEO
 	{
 		/// <summary>
-		/// <para>
 		/// Check if a decode profile, bitstream encryption, resolution, and format are supported. The result is a D3D12_VIDEO_DECODE_TIER
 		/// indicating the level of support. The associated data structure is D3D12_FEATURE_DATA_VIDEO_DECODE_SUPPORT.
-		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_DECODE_SUPPORT))]
 		D3D12_FEATURE_VIDEO_DECODE_SUPPORT,
 
 		/// <summary>
-		/// <para>
 		/// Retrieve the list of decode profiles supported by the adapter. Call CheckFeatureSupport specifying the feature
 		/// D3D12_FEATURE_VIDEO_DECODE_PROFILE_COUNT to get the number of profiles before calling CheckFeatureSupport for the
 		/// D3D12_FEATURE_VIDEO_DECODE_PROFILES feature. The associated data structure is D3D12_FEATURE_DATA_VIDEO_DECODE_PROFILES.
-		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_DECODE_PROFILES))]
 		D3D12_FEATURE_VIDEO_DECODE_PROFILES,
 
 		/// <summary>
-		/// <para>
 		/// Retrieves the list of supported decode formats for a D3D12_VIDEO_DECODE_CONFIGURATION. Call CheckFeatureSupport specifying the
 		/// feature D3D12_FEATURE_VIDEO_DECODE_FORMAT_COUNT to get the number of profiles before calling CheckFeatureSupport for the
 		/// D3D12_FEATURE_VIDEO_DECODE_PROFILES feature.The associated data structure is D3D12_FEATURE_DATA_VIDEO_DECODE_FORMATS.
-		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_DECODE_FORMATS))]
 		D3D12_FEATURE_VIDEO_DECODE_FORMATS,
 
 		/// <summary>
-		/// <para>Check if a colorspace conversion, format conversion, and scale are supported. The associated data structure is D3D12_FEATURE_DATA_VIDEO_DECODE_CONVERSION_SUPPORT.</para>
+		/// Check if a colorspace conversion, format conversion, and scale are supported. The associated data structure is D3D12_FEATURE_DATA_VIDEO_DECODE_CONVERSION_SUPPORT.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_DECODE_CONVERSION_SUPPORT))]
 		D3D12_FEATURE_VIDEO_DECODE_CONVERSION_SUPPORT,
 
-		/// <summary>
-		/// <para>Retrieves the video processor capabilities. The associated data structure is D3D12_FEATURE_DATA_VIDEO_PROCESS_SUPPORT.</para>
-		/// </summary>
+		/// <summary>Retrieves the video processor capabilities. The associated data structure is D3D12_FEATURE_DATA_VIDEO_PROCESS_SUPPORT.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_PROCESS_SUPPORT))]
 		D3D12_FEATURE_VIDEO_PROCESS_SUPPORT = 5,
 
 		/// <summary>
-		/// <para>Retrieves the maximum number of streams that can be enabled at the same time. The associated data structure is D3D12_FEATURE_DATA_VIDEO_PROCESS_MAX_INPUT_STREAMS.</para>
+		/// Retrieves the maximum number of streams that can be enabled at the same time. The associated data structure is D3D12_FEATURE_DATA_VIDEO_PROCESS_MAX_INPUT_STREAMS.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_PROCESS_MAX_INPUT_STREAMS))]
 		D3D12_FEATURE_VIDEO_PROCESS_MAX_INPUT_STREAMS,
 
 		/// <summary>
-		/// <para>
 		/// Retrieves the number of past and future frames required for a given deinterlace mode, filters, frame rate conversion, and
 		/// features. The associated data structure is D3D12_FEATURE_DATA_VIDEO_PROCESS_REFERENCE_INFO.
-		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_PROCESS_REFERENCE_INFO))]
 		D3D12_FEATURE_VIDEO_PROCESS_REFERENCE_INFO,
 
 		/// <summary>
-		/// <para>
 		/// Checks the allocation size of a video decoder heap. The associated data structure is D3D12_FEATURE_DATA_VIDEO_DECODER_HEAP_SIZE.
 		/// For information on residency budgeting for heaps, see Residency.
-		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_DECODER_HEAP_SIZE))]
 		D3D12_FEATURE_VIDEO_DECODER_HEAP_SIZE,
 
 		/// <summary>
-		/// <para>
 		/// Checks the allocation size of a video processor heap. The associated data structure is D3D12_FEATURE_DATA_VIDEO_PROCESSOR_SIZE.
 		/// For information on residency budgeting for heaps, see Residency.
-		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_PROCESSOR_SIZE))]
 		D3D12_FEATURE_VIDEO_PROCESSOR_SIZE,
 
 		/// <summary>
-		/// <para>Retrieves the number of supported decoder profiles. The returned count is used when querying for D3D12_FEATURE_VIDEO_DECODE_PROFILES.</para>
+		/// Retrieves the number of supported decoder profiles. The returned count is used when querying for D3D12_FEATURE_VIDEO_DECODE_PROFILES.
 		/// </summary>
+		[CorrespondingType(typeof(uint))]
 		D3D12_FEATURE_VIDEO_DECODE_PROFILE_COUNT,
 
 		/// <summary>
-		/// <para>Retrieves the number of supported decoder profiles. The returned count is used when querying for D3D12_FEATURE_VIDEO_DECODE_FORMATS.</para>
+		/// Retrieves the number of supported decoder profiles. The returned count is used when querying for D3D12_FEATURE_VIDEO_DECODE_FORMATS.
 		/// </summary>
+		[CorrespondingType(typeof(uint))]
 		D3D12_FEATURE_VIDEO_DECODE_FORMAT_COUNT,
 
 		/// <summary>Indicates if the video engine is IO coherent with the CPU.</summary>
+		[CorrespondingType(typeof(BOOL))]
 		D3D12_FEATURE_VIDEO_ARCHITECTURE = 17,
 
 		/// <summary>
-		/// <para>
 		/// Retrieves the supported components, bin count, and counter bit depth for the a decode histogram with the specified decode
 		/// profile, resolution, and format. The associated data structure is D3D12_FEATURE_DATA_VIDEO_DECODE_HISTOGRAM.
-		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_DECODE_HISTOGRAM))]
 		D3D12_FEATURE_VIDEO_DECODE_HISTOGRAM,
 
-		/// <summary/>
+		/// <summary>The d3 D12 feature video feature area support</summary>
 		D3D12_FEATURE_VIDEO_FEATURE_AREA_SUPPORT,
 
 		/// <summary>
-		/// <para>
 		/// Value: 20 Retrieves the supported resolutions, search block sizes, and precision for motion estimation. The associated data
 		/// structure is D3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR.
-		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR))]
 		D3D12_FEATURE_VIDEO_MOTION_ESTIMATOR,
 
 		/// <summary>
-		/// <para>Value: 21 Checks the allocation size of a motion estimator heap. The associated data structure is D3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_SIZE.</para>
+		/// Value: 21 Checks the allocation size of a motion estimator heap. The associated data structure is D3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_SIZE.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_SIZE))]
 		D3D12_FEATURE_VIDEO_MOTION_ESTIMATOR_SIZE,
 
 		/// <summary>
-		/// <para>Value: 22 Retrieves the supported number of video extension commands. The associated data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_COUNT.</para>
+		/// Value: 22 Retrieves the supported number of video extension commands. The associated data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_COUNT.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_COUNT))]
 		D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_COUNT,
 
 		/// <summary>
-		/// <para>
 		/// Value: 23 Retrieves a list of D3D12_VIDEO_EXTENSION_COMMAND_INFO structures describing video extension commands. The associated
-		///        data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_COUNT.
-		/// </para>
+		/// data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_COUNT.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMANDS))]
 		D3D12_FEATURE_VIDEO_EXTENSION_COMMANDS,
 
 		/// <summary>
-		/// <para>Value: 24 Retrieves the parameter count for the specified parameter stage. The associated data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETER_COUNT.</para>
+		/// Value: 24 Retrieves the parameter count for the specified parameter stage. The associated data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETER_COUNT.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETER_COUNT))]
 		D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETER_COUNT,
 
 		/// <summary>
-		/// <para>
 		/// Value: 25 Retrieves a list of D3D12_VIDEO_EXTENSION_COMMAND_PARAMETER_INFO structures describing video extension command
 		/// parameters for the specified parameter stage. The associated data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETERS.
-		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_PARAMETERS))]
 		D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_PARAMETERS,
 
 		/// <summary>
-		/// <para>Value: 26 Queries for command-defined support information. The associated data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT.</para>
+		/// Value: 26 Queries for command-defined support information. The associated data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT))]
 		D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_SUPPORT,
 
 		/// <summary>
-		/// <para>Value: 27 Checks the allocation size of a video extension command. The associated data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SIZE.</para>
+		/// Value: 27 Checks the allocation size of a video extension command. The associated data structure is D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SIZE.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SIZE))]
 		D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_SIZE,
 
-		/// <summary/>
+		/// <summary>The d3 D12 feature video decode protected resources</summary>
 		D3D12_FEATURE_VIDEO_DECODE_PROTECTED_RESOURCES,
 
-		/// <summary/>
+		/// <summary>The d3 D12 feature video process protected resources</summary>
 		D3D12_FEATURE_VIDEO_PROCESS_PROTECTED_RESOURCES,
 
 		/// <summary>
-		/// <para>Value: 30 Checks support for motion estimation with protected resources. The associated data structure is D3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_PROTECTED_RESOURCES.</para>
+		/// Value: 30 Checks support for motion estimation with protected resources. The associated data structure is D3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_PROTECTED_RESOURCES.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_MOTION_ESTIMATOR_PROTECTED_RESOURCES))]
 		D3D12_FEATURE_VIDEO_MOTION_ESTIMATOR_PROTECTED_RESOURCES,
 
 		/// <summary/>
@@ -199,50 +199,63 @@ public static partial class D3D12
 		D3D12_FEATURE_VIDEO_PROCESSOR_SIZE1,
 
 		/// <summary>Checks support for a given codec. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_CODEC</c>.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_CODEC))]
 		D3D12_FEATURE_VIDEO_ENCODER_CODEC,
 
 		/// <summary>
 		/// Checks support for a given profile and returns the supported levels range for that profile. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_PROFILE_LEVEL</c>.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_PROFILE_LEVEL))]
 		D3D12_FEATURE_VIDEO_ENCODER_PROFILE_LEVEL,
 
 		/// <summary>Checks support for the number of resolution ratios available. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_OUTPUT_RESOLUTION_RATIOS_COUNT</c>.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_OUTPUT_RESOLUTION_RATIOS_COUNT))]
 		D3D12_FEATURE_VIDEO_ENCODER_OUTPUT_RESOLUTION_RATIOS_COUNT,
 
 		/// <summary>Checks support for the rules that resolutions must meet. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_OUTPUT_RESOLUTION</c>.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_OUTPUT_RESOLUTION))]
 		D3D12_FEATURE_VIDEO_ENCODER_OUTPUT_RESOLUTION,
 
 		/// <summary>Checks support for a given input format. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_INPUT_FORMAT</c>.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_INPUT_FORMAT))]
 		D3D12_FEATURE_VIDEO_ENCODER_INPUT_FORMAT,
 
 		/// <summary>Checks support for a given rate control mode. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_RATE_CONTROL_MODE</c>.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_RATE_CONTROL_MODE))]
 		D3D12_FEATURE_VIDEO_ENCODER_RATE_CONTROL_MODE,
 
 		/// <summary>Checks support for a given intra refresh mode. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_INTRA_REFRESH_MODE</c>.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_INTRA_REFRESH_MODE))]
 		D3D12_FEATURE_VIDEO_ENCODER_INTRA_REFRESH_MODE,
 
 		/// <summary>Checks support for a given subregion layout mode. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_FRAME_SUBREGION_LAYOUT_MODE</c>.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_FRAME_SUBREGION_LAYOUT_MODE))]
 		D3D12_FEATURE_VIDEO_ENCODER_FRAME_SUBREGION_LAYOUT_MODE,
 
 		/// <summary>
 		/// Retrieves the memory requirements of a video encoder heap created with the given encoder heap properties. The associated data
 		/// structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_HEAP_SIZE</c>.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_HEAP_SIZE))]
 		D3D12_FEATURE_VIDEO_ENCODER_HEAP_SIZE,
 
 		/// <summary>Retrieves a set of codec specific configuration limits. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_CODEC_CONFIGURATION_SUPPORT</c>.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_CODEC_CONFIGURATION_SUPPORT))]
 		D3D12_FEATURE_VIDEO_ENCODER_CODEC_CONFIGURATION_SUPPORT,
 
 		/// <summary>Retrieves the feature support details on the requested configuration. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_SUPPORT</c>.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_SUPPORT))]
 		D3D12_FEATURE_VIDEO_ENCODER_SUPPORT,
 
 		/// <summary>
 		/// Retrieves the codec specific capabilities related to the reference picture management limitations. The associated data structure
 		/// is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_CODEC_PICTURE_CONTROL_SUPPORT</c>.
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_CODEC_PICTURE_CONTROL_SUPPORT))]
 		D3D12_FEATURE_VIDEO_ENCODER_CODEC_PICTURE_CONTROL_SUPPORT,
 
 		/// <summary>Retrieves the requirements for alignment for resource access. The associated data structure is <c>D3D12_FEATURE_DATA_VIDEO_ENCODER_RESOURCE_REQUIREMENTS</c>.</summary>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_VIDEO_ENCODER_RESOURCE_REQUIREMENTS))]
 		D3D12_FEATURE_VIDEO_ENCODER_RESOURCE_REQUIREMENTS,
 
 		/// <summary/>

@@ -8332,4 +8332,48 @@ public static partial class D3D12
 		[PreserveSig]
 		HRESULT GetProtectedResourceSession(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppProtectedSession);
 	}
+
+	/// <summary>Gets information about the features that are supported by the current video driver.</summary>
+	/// <typeparam name="T">The type of the structure associated with <paramref name="FeatureVideo"/>.</typeparam>
+	/// <param name="device">The <see cref="ID3D12VideoDevice"/> instance.</param>
+	/// <param name="pFeatureSupportData">
+	/// A structure that contains data that describes the configuration details of the feature for which support is requested and, upon the
+	/// completion of the call, is populated with details about the level of support available. For information on the structure that is
+	/// associated with each type of feature support request, see the field descriptions for <c>D3D12_FEATURE_VIDEO</c>.
+	/// </param>
+	/// <param name="FeatureVideo">A member of the <c>D3D12_FEATURE_VIDEO</c> enumeration that specifies the feature to query for support.</param>
+	/// <returns>
+	/// Returns <b>S_OK</b> if successful; otherwise, returns <b>E_INVALIDARG</b> if an unsupported data type is passed to the
+	/// pFeatureSupportData parameter or a size mismatch is detected for the FeatureSupportDataSize parameter.
+	/// </returns>
+	public static HRESULT CheckFeatureSupport<T>(this ID3D12VideoDevice device, ref T pFeatureSupportData, D3D12_FEATURE_VIDEO? FeatureVideo = null) where T : struct
+	{
+		if (!CorrespondingTypeAttribute.CanGet<T, D3D12_FEATURE_VIDEO>(FeatureVideo, out var f))
+			return HRESULT.E_INVALIDARG;
+		using SafeCoTaskMemStruct<T> mem = new(pFeatureSupportData);
+		var hr = device.CheckFeatureSupport(f, mem, mem.Size);
+		pFeatureSupportData = mem.Value;
+		return hr;
+	}
+
+	/// <summary>Gets information about the features that are supported by the current video driver.</summary>
+	/// <typeparam name="T">The type of the structure associated with <paramref name="FeatureVideo"/>.</typeparam>
+	/// <param name="device">The <see cref="ID3D12VideoDevice"/> instance.</param>
+	/// <param name="pFeatureSupportData">
+	/// A structure that contains data that describes the configuration details of the feature for which support is requested and, upon the
+	/// completion of the call, is populated with details about the level of support available. For information on the structure that is
+	/// associated with each type of feature support request, see the field descriptions for <c>D3D12_FEATURE_VIDEO</c>.
+	/// </param>
+	/// <param name="FeatureVideo">A member of the <c>D3D12_FEATURE_VIDEO</c> enumeration that specifies the feature to query for support.</param>
+	/// <returns>
+	/// Returns <b>S_OK</b> if successful; otherwise, returns <b>E_INVALIDARG</b> if an unsupported data type is passed to the
+	/// pFeatureSupportData parameter or a size mismatch is detected for the FeatureSupportDataSize parameter.
+	/// </returns>
+	public static HRESULT CheckFeatureSupport<T>(this ID3D12VideoDevice device, in T? pFeatureSupportData, D3D12_FEATURE_VIDEO? FeatureVideo = null) where T : struct
+	{
+		if (!CorrespondingTypeAttribute.CanGet<T, D3D12_FEATURE_VIDEO>(FeatureVideo, out var f))
+			return HRESULT.E_INVALIDARG;
+		using SafeCoTaskMemStruct<T> mem = pFeatureSupportData;
+		return device.CheckFeatureSupport(f, mem, mem.Size);
+	}
 }
