@@ -36,8 +36,8 @@ public class ShellUtilTests
 		Assert.That(() => shi = GetShellItemForPath(TestCaseSources.SmallFile)!, Throws.Nothing);
 		try
 		{
-			Assert.NotNull(shi);
-			Assert.AreEqual(GetPathFromShellItem(shi!), TestCaseSources.SmallFile);
+			Assert.That(shi, Is.Not.Null);
+			Assert.That(GetPathFromShellItem(shi!), Is.EqualTo(TestCaseSources.SmallFile));
 		}
 		finally
 		{
@@ -70,7 +70,7 @@ public class ShellUtilTests
 			pi.GetParentAndItem(out _, out var psf, out var pChild);
 			uint sz = 32;
 			Assert.That(LoadIconFromExtractIcon(psf, pChild, ref sz, out var hIcon), ResultIs.Successful);
-			Assert.IsFalse(hIcon.IsInvalid);
+			Assert.That(!hIcon.IsInvalid);
 			Assert.That(sz, Is.EqualTo(32));
 			hIcon.Dispose();
 		}
@@ -91,7 +91,7 @@ public class ShellUtilTests
 			pi.GetParentAndItem(out _, out var psf, out var pChild);
 			uint sz = 32;
 			Assert.That(LoadImageFromExtractImage(psf, pChild, ref sz, out var hBmp), ResultIs.Successful);
-			Assert.IsFalse(hBmp.IsInvalid);
+			Assert.That(!hBmp.IsInvalid);
 			Assert.That(sz, Is.EqualTo(32));
 			hBmp.Dispose();
 		}
@@ -146,7 +146,7 @@ public class ShellUtilTests
 		{
 			uint sz = 32;
 			Assert.That(LoadImageFromThumbnailProvider(shi!, ref sz, out var hBmp), ResultIs.Successful);
-			Assert.IsFalse(hBmp.IsInvalid);
+			Assert.That(!hBmp.IsInvalid);
 			Assert.That(sz, Is.EqualTo(32));
 			hBmp.Dispose();
 		}
@@ -167,7 +167,7 @@ public class ShellUtilTests
 			pi.GetParentAndItem(out _, out var psf, out var pChild);
 			uint sz = 32;
 			Assert.That(LoadImageFromThumbnailProvider(psf, pChild, ref sz, out var hBmp), ResultIs.Successful);
-			Assert.IsFalse(hBmp.IsInvalid);
+			Assert.That(!hBmp.IsInvalid);
 			Assert.That(sz, Is.EqualTo(32));
 			hBmp.Dispose();
 		}
@@ -182,7 +182,7 @@ public class ShellUtilTests
 	{
 		uint sz = 32;
 		Assert.That(LoadIconFromSystemImageList(2, ref sz, out var hIcon), ResultIs.Successful);
-		Assert.IsFalse(hIcon.IsInvalid);
+		Assert.That(!hIcon.IsInvalid);
 		Assert.That(sz, Is.EqualTo(32));
 		hIcon.Dispose();
 	}

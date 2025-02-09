@@ -122,16 +122,16 @@ public class ReflectionExtensionsTests
 	[Test]
 	public void InhertisFromTest()
 	{
-		Assert.IsTrue(typeof(Foo).InheritsFrom<IFoo>());
-		Assert.IsTrue(typeof(FooInt).InheritsFrom<IFoo>());
-		Assert.IsTrue(typeof(FooInt).InheritsFrom(typeof(IFoo<>)));
-		Assert.IsTrue(typeof(FooInt).InheritsFrom<IFoo<int>>());
-		Assert.IsTrue(typeof(FooStringInt).InheritsFrom<IFoo<string>>());
-		Assert.IsTrue(typeof(FooStringInt).InheritsFrom(typeof(IFoo<,>)));
-		Assert.IsTrue(typeof(FooStringInt).InheritsFrom<IFoo<string, int>>());
-		Assert.IsTrue(typeof(Foo<int, string>).InheritsFrom<IFoo<int>>());
-		Assert.IsTrue(typeof(Foo2).InheritsFrom<Foo>());
-		Assert.IsTrue(typeof(Foo2).InheritsFrom<IFoo>());
+		Assert.That(typeof(Foo).InheritsFrom<IFoo>());
+		Assert.That(typeof(FooInt).InheritsFrom<IFoo>());
+		Assert.That(typeof(FooInt).InheritsFrom(typeof(IFoo<>)));
+		Assert.That(typeof(FooInt).InheritsFrom<IFoo<int>>());
+		Assert.That(typeof(FooStringInt).InheritsFrom<IFoo<string>>());
+		Assert.That(typeof(FooStringInt).InheritsFrom(typeof(IFoo<,>)));
+		Assert.That(typeof(FooStringInt).InheritsFrom<IFoo<string, int>>());
+		Assert.That(typeof(Foo<int, string>).InheritsFrom<IFoo<int>>());
+		Assert.That(typeof(Foo2).InheritsFrom<Foo>());
+		Assert.That(typeof(Foo2).InheritsFrom<IFoo>());
 	}
 
 	[Test()]
@@ -188,7 +188,7 @@ public class ReflectionExtensionsTests
 	{
 		var t = new TestDerived();
 		var mi = typeof(TestBase).GetMethod("GetValue", Type.EmptyTypes);
-		Assert.NotNull(mi);
+		Assert.That(mi, Is.Not.Null);
 		Assert.That(mi!.InvokeNotOverride(t), Is.EqualTo(0));
 		Assert.That(() => mi!.InvokeNotOverride(t, 2), Throws.Exception);
 		mi = typeof(TestBase).GetMethod("GetValue", new[] { typeof(int), typeof(int) });

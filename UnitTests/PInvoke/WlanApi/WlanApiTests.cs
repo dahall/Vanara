@@ -79,7 +79,7 @@ public class WlanApiTests
 	[Test]
 	public void WlanConnectDisconnectTest()
 	{
-		Assert.IsTrue(WlanConnected);
+		Assert.That(WlanConnected);
 		Assert.That(WlanGetAvailableNetworkList(hWlan, PrimaryInterface, 3, default, out var list), ResultIs.Successful);
 		Assert.That(list.Network.Length, Is.GreaterThan(0));
 
@@ -105,7 +105,7 @@ public class WlanApiTests
 	[Test]
 	public void WlanGetAvailableNetworkListTest()
 	{
-		Assert.IsTrue(WlanConnected);
+		Assert.That(WlanConnected);
 		Assert.That(WlanGetAvailableNetworkList(hWlan, PrimaryInterface, 3, default, out var list), ResultIs.Successful);
 		Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
 		Assert.That(list.Network.Length, Is.EqualTo(list.dwNumberOfItems));

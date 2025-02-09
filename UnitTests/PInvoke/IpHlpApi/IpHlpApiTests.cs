@@ -209,7 +209,7 @@ public partial class IpHlpApiTests
 	public void GetBestInterfaceExTest()
 	{
 		System.Net.IPAddress? gw = primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert()).FirstOrDefault();
-		Assert.NotNull(gw);
+		Assert.That(gw, Is.Not.Null);
 		var sa = new SOCKADDR(gw!.GetAddressBytes(), 0, gw.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? 0 : (uint)gw.ScopeId);
 		Assert.That(GetBestInterfaceEx(sa, out var idx), ResultIs.Successful);
 		Assert.That(idx, Is.EqualTo(primaryAdapter.IfIndex));
@@ -577,7 +577,7 @@ public partial class IpHlpApiTests
 	public void SendARPTest() => Assert.That(() =>
 	{
 		var gw = primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert().GetAddressBytes()).FirstOrDefault();
-		Assert.NotNull(gw);
+		Assert.That(gw, Is.Not.Null);
 		var mac = SendARP(new IN_ADDR(gw!));
 		Assert.That(mac.Length, Is.EqualTo(6));
 		Assert.That(mac, Has.Some.Not.EqualTo(0));

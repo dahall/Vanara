@@ -90,9 +90,9 @@ public class TdhTests
 	public void TdhEnumerateManifestProviderEventsTest()
 	{
 		Assert.That(TdhEnumerateManifestProviderEvents(GetProviders().First().ProviderGuid, out PROVIDER_EVENT_INFO peInfo), ResultIs.Successful);
-		Assert.IsNotNull(peInfo);
+		Assert.That(peInfo, Is.Not.Null);
 		uint cnt = peInfo.NumberOfEvents;
-		Assert.NotZero(cnt);
+		Assert.That(cnt, Is.Not.Zero);
 		EVENT_DESCRIPTOR[] a = peInfo.EventDescriptorsArray;
 		a[0].WriteValues();
 		a[cnt - 1].WriteValues();
@@ -102,11 +102,11 @@ public class TdhTests
 	public void TdhEnumerateProviderFieldInformationTest()
 	{
 		Assert.That(TdhEnumerateProviderFieldInformation(GetProviders().First().ProviderGuid, EVENT_FIELD_TYPE.EventLevelInformation, out SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY> peInfo), ResultIs.Successful);
-		Assert.IsNotNull(peInfo);
+		Assert.That(peInfo, Is.Not.Null);
 		uint cnt = peInfo.Value.NumberOfElements;
-		Assert.NotZero(cnt);
+		Assert.That(cnt, Is.Not.Zero);
 		PROVIDER_FIELD_INFO f = peInfo.Value.FieldInfoArray[cnt - 1];
-		Assert.IsNotNull(PFI_FIELD_MESSAGE(peInfo, f));
+		Assert.That(PFI_FIELD_MESSAGE(peInfo, f), Is.Not.Null);
 		TestContext.WriteLine($"{f.Value}, {PFI_FIELD_NAME(peInfo, f)}, {PFI_FIELD_MESSAGE(peInfo, f)}");
 	}
 
@@ -120,12 +120,12 @@ public class TdhTests
 	public void TdhEnumerateProvidersForDecodingSourceTest()
 	{
 		Assert.That(TdhEnumerateProvidersForDecodingSource(DECODING_SOURCE.DecodingSourceXMLFile, out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> peInfo), ResultIs.Successful);
-		Assert.IsNotNull(peInfo);
+		Assert.That(peInfo, Is.Not.Null);
 		uint cnt = peInfo.Value.NumberOfProviders;
-		Assert.NotZero(cnt);
+		Assert.That(cnt, Is.Not.Zero);
 		TRACE_PROVIDER_INFO[] a = peInfo.Value.TraceProviderInfoArray;
-		Assert.NotNull(PEI_PROVIDER_NAME(peInfo, a[0]));
-		Assert.NotNull(PEI_PROVIDER_NAME(peInfo, a[cnt - 1]));
+		Assert.That(PEI_PROVIDER_NAME(peInfo, a[0]), Is.Not.Null);
+		Assert.That(PEI_PROVIDER_NAME(peInfo, a[cnt - 1]), Is.Not.Null);
 		Write(peInfo, a[cnt - 1]);
 	}
 
@@ -133,12 +133,12 @@ public class TdhTests
 	public void TdhEnumerateProvidersTest()
 	{
 		Assert.That(TdhEnumerateProviders(out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> peInfo), ResultIs.Successful);
-		Assert.IsNotNull(peInfo);
+		Assert.That(peInfo, Is.Not.Null);
 		uint cnt = peInfo.Value.NumberOfProviders;
-		Assert.NotZero(cnt);
+		Assert.That(cnt, Is.Not.Zero);
 		TRACE_PROVIDER_INFO[] a = peInfo.Value.TraceProviderInfoArray;
-		Assert.NotNull(PEI_PROVIDER_NAME(peInfo, a[0]));
-		Assert.NotNull(PEI_PROVIDER_NAME(peInfo, a[cnt - 1]));
+		Assert.That(PEI_PROVIDER_NAME(peInfo, a[0]), Is.Not.Null);
+		Assert.That(PEI_PROVIDER_NAME(peInfo, a[cnt - 1]), Is.Not.Null);
 		Write(peInfo, a[cnt - 1]);
 	}
 

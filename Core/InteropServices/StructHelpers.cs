@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Vanara.PInvoke;
 
@@ -85,24 +86,35 @@ public struct ArrayPointer<T> where T : unmanaged
 
 /// <summary>This structure is used to hold a reference to an IUnknown interface pointer.</summary>
 /// <typeparam name="T">The type of the interface.</typeparam>
+[StructLayout(LayoutKind.Sequential)]
 public struct IUnknownPointer<T> where T : class
 {
 	private IntPtr ptr;
 
 	/// <summary>Initializes a new instance of the <see cref="IUnknownPointer{T}"/> struct.</summary>
 	/// <param name="value">The value.</param>
-	public IUnknownPointer(T? value) => ptr = value == null ? IntPtr.Zero : Marshal.GetIUnknownForObject(value);
+	public IUnknownPointer(T? value) => ptr = value == null ? IntPtr.Zero :
+#if NET45
+		Marshal.GetIUnknownForObject(value);
+#else
+		Marshal.GetComInterfaceForObject(value, typeof(T));
+#endif
 
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>
 	/// <para>Gets the value as an interface.</para>
 	/// <note type="warning">This must only be used with COM interfaces.</note>
 	/// </summary>
 	/// <value>The value.</value>
-	public T? Value => ptr == IntPtr.Zero ? null : (T?)Marshal.GetObjectForIUnknown(ptr);
+	public T? Value => ptr == IntPtr.Zero ? null :
+#if NETSTANDARD
+		(T)Marshal.GetObjectForIUnknown(ptr);
+#else
+		(T)Marshal.GetTypedObjectForIUnknown(ptr, typeof(T));
+#endif
 
 	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="IUnknownPointer{T}"/>.</summary>
 	/// <param name="p">The IUnknown interface pointer.</param>
@@ -387,4 +399,50 @@ public struct ManagedArrayPointer<T> where T : struct
 		ptr = h;
 		return h;
 	}
+}
+
+/// <summary>
+/// Should be used with <see cref="ManagedArrayPointer{T}"/> or <see cref="ArrayPointer{T}"/> to indicate which field within the same
+/// structure contains the size of the array.
+/// </summary>
+/// <seealso cref="System.Attribute"/>
+/// <remarks>Initializes a new instance of the <see cref="SizeFieldNameAttribute"/> class.</remarks>
+/// <param name="FieldName">Name of the field that contains the size of the array.</param>
+[System.AttributeUsage(AttributeTargets.Field, Inherited = false)]
+public sealed class SizeFieldNameAttribute(string FieldName) : Attribute
+{
+	/// <summary>Gets the name of the field that contains the size of the array.</summary>
+	/// <value>The name of the field that contains the size of the array.</value>
+	public string FieldName { get; private set; } = FieldName;
+}
+
+/// <summary>Extension methods for <see cref="SizeFieldNameAttribute"/> to get the size of an array pointer within a structure via attribute.</summary>
+public static class SizeFieldNameAttributeExt
+{
+	/// <summary>Gets the field size of an array pointer within a structure via attribute.</summary>
+	/// <typeparam name="T">The type of the structure.</typeparam>
+	/// <param name="structInstance">The structure instance.</param>
+	/// <param name="fi">The <see cref="FieldInfo"/> of the array pointer.</param>
+	/// <returns>
+	/// The size of the array indicated by the referenced field, if available, or <see langword="null"/> if no attribute was found.
+	/// </returns>
+	public static SizeT? GetFieldSizeViaAttribute<T>(this T structInstance, FieldInfo fi) where T : struct
+	{
+		var attr = fi.GetCustomAttribute<SizeFieldNameAttribute>();
+		if (attr is null)
+			return null;
+		var fld = fi.DeclaringType!.GetField(attr.FieldName);
+		var fval = fld?.GetValue(structInstance);
+		return fval is IConvertible cnv ? cnv.ToUInt64(null) : null;
+	}
+
+	/// <summary>Gets the field size of an array pointer within a structure via attribute.</summary>
+	/// <typeparam name="T">The type of the structure.</typeparam>
+	/// <param name="structInstance">The structure instance.</param>
+	/// <param name="fieldName">The name of the array pointer field.</param>
+	/// <returns>
+	/// The size of the array indicated by the referenced field, if available, or <see langword="null"/> if no attribute was found.
+	/// </returns>
+	public static SizeT? GetFieldSizeViaAttribute<T>(this T structInstance, string fieldName) where T : struct =>
+		GetFieldSizeViaAttribute(structInstance, typeof(T).GetField(fieldName) ?? throw new ArgumentException("Unable to find matching field.", nameof(fieldName)));
 }

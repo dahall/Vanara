@@ -7472,7 +7472,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowtext")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowText(HWND hWnd, string lpString);
+	public static extern bool SetWindowText(HWND hWnd, [MarshalAs(UnmanagedType.LPTStr)] string lpString);
 
 	/// <summary>
 	/// <para>Shows or hides all pop-up windows owned by the specified window.</para>
@@ -9097,6 +9097,63 @@ public static partial class User32
 		/// <para>The caret's bounding rectangle, in client coordinates, relative to the window specified by the <c>hwndCaret</c> member.</para>
 		/// </summary>
 		public RECT rcCaret;
+	}
+
+	/// <summary>
+	/// Contains information that an application can use while processing the <c>WM_NCCALCSIZE</c> message to calculate the size, position,
+	/// and valid contents of the client area of a window.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-nccalcsize_params typedef struct tagNCCALCSIZE_PARAMS { RECT
+	// rgrc[3]; PWINDOWPOS lppos; } NCCALCSIZE_PARAMS, *LPNCCALCSIZE_PARAMS;
+	[PInvokeData("winuser.h", MSDNShortId = "NS:winuser.tagNCCALCSIZE_PARAMS")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct NCCALCSIZE_PARAMS
+	{
+		/// <summary>
+		/// <para>Type: <b><c>RECT</c>[3]</b></para>
+		/// <para>
+		/// An array of rectangles. The meaning of the array of rectangles changes during the processing of the <c>WM_NCCALCSIZE</c> message.
+		/// </para>
+		/// <para>
+		/// When the window procedure receives the <c>WM_NCCALCSIZE</c> message, the first rectangle contains the new coordinates of a
+		/// window that has been moved or resized, that is, it is the proposed new window coordinates. The second contains the coordinates
+		/// of the window before it was moved or resized. The third contains the coordinates of the window's client area before the window
+		/// was moved or resized. If the window is a child window, the coordinates are relative to the client area of the parent window. If
+		/// the window is a top-level window, the coordinates are relative to the screen origin.
+		/// </para>
+		/// <para>
+		/// When the window procedure returns, the first rectangle contains the coordinates of the new client rectangle resulting from the
+		/// move or resize. The second rectangle contains the valid destination rectangle, and the third rectangle contains the valid source
+		/// rectangle. The last two rectangles are used in conjunction with the return value of the <c>WM_NCCALCSIZE</c> message to
+		/// determine the area of the window to be preserved.
+		/// </para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+		public RECT[] rgrc;
+
+		/// <summary>
+		/// <para>Type: <b>PWINDOWPOS</b></para>
+		/// <para>
+		/// A pointer to a <c>WINDOWPOS</c> structure that contains the size and position values specified in the operation that moved or
+		/// resized the window.
+		/// </para>
+		/// </summary>
+		public StructPointer<WINDOWPOS> lppos;
+
+		/// <summary>Initializes a new instance of the <see cref="NCCALCSIZE_PARAMS"/> struct.</summary>
+		/// <param name="rgrc">An array of rectangles.</param>
+		/// <param name="lppos">
+		/// A pointer to a <c>WINDOWPOS</c> structure that contains the size and position values specified in the operation that moved or
+		/// resized the window.
+		/// </param>
+		/// <exception cref="System.ArgumentException">rgrc must be an array of 3 RECT structures.</exception>
+		public NCCALCSIZE_PARAMS(RECT[] rgrc, StructPointer<WINDOWPOS> lppos)
+		{
+			if (rgrc is null || rgrc.Length != 3)
+				throw new ArgumentException("rgrc must be an array of 3 RECT structures.");
+			this.rgrc = rgrc;
+			this.lppos = lppos;
+		}
 	}
 
 	/// <summary>

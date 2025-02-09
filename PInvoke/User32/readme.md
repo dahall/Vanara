@@ -796,12 +796,14 @@ Native Enum | Header | Managed Enum
 [WINEVENT](https://www.google.com/search?num=5&q=WINEVENT+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WINEVENT](https://github.com/dahall/Vanara/search?l=C%23&q=WINEVENT)  
 [WM_ACTIVATE_WPARAM](https://www.google.com/search?num=5&q=WM_ACTIVATE_WPARAM+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_ACTIVATE_WPARAM](https://github.com/dahall/Vanara/search?l=C%23&q=WM_ACTIVATE_WPARAM)  
 [WM_ICON_WPARAM](https://www.google.com/search?num=5&q=WM_ICON_WPARAM+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_ICON_WPARAM](https://github.com/dahall/Vanara/search?l=C%23&q=WM_ICON_WPARAM)  
+[WM_MENUCHAR_RETURN](https://www.google.com/search?num=5&q=WM_MENUCHAR_RETURN+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_MENUCHAR_RETURN](https://github.com/dahall/Vanara/search?l=C%23&q=WM_MENUCHAR_RETURN)  
 [WM_MOUSEACTIVATE_RETURN](https://www.google.com/search?num=5&q=WM_MOUSEACTIVATE_RETURN+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_MOUSEACTIVATE_RETURN](https://github.com/dahall/Vanara/search?l=C%23&q=WM_MOUSEACTIVATE_RETURN)  
 [WM_POINTERACTIVATE_RETURN](https://www.google.com/search?num=5&q=WM_POINTERACTIVATE_RETURN+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_POINTERACTIVATE_RETURN](https://github.com/dahall/Vanara/search?l=C%23&q=WM_POINTERACTIVATE_RETURN)  
 [WM_SHOWWINDOW_LPARAM](https://www.google.com/search?num=5&q=WM_SHOWWINDOW_LPARAM+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_SHOWWINDOW_LPARAM](https://github.com/dahall/Vanara/search?l=C%23&q=WM_SHOWWINDOW_LPARAM)  
 [WM_SIZE_WPARAM](https://www.google.com/search?num=5&q=WM_SIZE_WPARAM+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_SIZE_WPARAM](https://github.com/dahall/Vanara/search?l=C%23&q=WM_SIZE_WPARAM)  
 [WMSZ](https://www.google.com/search?num=5&q=WMSZ+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WMSZ](https://github.com/dahall/Vanara/search?l=C%23&q=WMSZ)  
 [WTS](https://www.google.com/search?num=5&q=WTS+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WTS](https://github.com/dahall/Vanara/search?l=C%23&q=WTS)  
+[WVR](https://www.google.com/search?num=5&q=WVR+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WVR](https://github.com/dahall/Vanara/search?l=C%23&q=WVR)  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
@@ -895,6 +897,7 @@ Native Structure | Header | Managed Structure
 [MSGBOXPARAMS](https://www.google.com/search?num=5&q=MSGBOXPARAMS+site%3Alearn.microsoft.com) | Winuser.h | [Vanara.PInvoke.User32.MSGBOXPARAMS](https://github.com/dahall/Vanara/search?l=C%23&q=MSGBOXPARAMS)  
 [MSLLHOOKSTRUCT](https://www.google.com/search?num=5&q=MSLLHOOKSTRUCT+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.MSLLHOOKSTRUCT](https://github.com/dahall/Vanara/search?l=C%23&q=MSLLHOOKSTRUCT)  
 [MULTIKEYHELP](https://www.google.com/search?num=5&q=MULTIKEYHELP+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.MULTIKEYHELP](https://github.com/dahall/Vanara/search?l=C%23&q=MULTIKEYHELP)  
+[NCCALCSIZE_PARAMS](https://www.google.com/search?num=5&q=NCCALCSIZE_PARAMS+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.NCCALCSIZE_PARAMS](https://github.com/dahall/Vanara/search?l=C%23&q=NCCALCSIZE_PARAMS)  
 [NMHDR](https://www.google.com/search?num=5&q=NMHDR+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.NMHDR](https://github.com/dahall/Vanara/search?l=C%23&q=NMHDR)  
 [NMSEARCHWEB](https://www.google.com/search?num=5&q=NMSEARCHWEB+site%3Alearn.microsoft.com) | commctrl.h | [Vanara.PInvoke.User32.NMSEARCHWEB](https://github.com/dahall/Vanara/search?l=C%23&q=NMSEARCHWEB)  
 [NONCLIENTMETRICS](https://www.google.com/search?num=5&q=NONCLIENTMETRICS+site%3Alearn.microsoft.com) | Winuser.h | [Vanara.PInvoke.User32.NONCLIENTMETRICS](https://github.com/dahall/Vanara/search?l=C%23&q=NONCLIENTMETRICS)  
@@ -943,6 +946,7 @@ Native Structure | Header | Managed Structure
 [WINDOWPOS](https://www.google.com/search?num=5&q=WINDOWPOS+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.WINDOWPOS](https://github.com/dahall/Vanara/search?l=C%23&q=WINDOWPOS)  
 [WM_HOTKEY_LPARAM](https://www.google.com/search?num=5&q=WM_HOTKEY_LPARAM+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.WM_HOTKEY_LPARAM](https://github.com/dahall/Vanara/search?l=C%23&q=WM_HOTKEY_LPARAM)  
 [WM_KEY_LPARAM](https://www.google.com/search?num=5&q=WM_KEY_LPARAM+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_KEY_LPARAM](https://github.com/dahall/Vanara/search?l=C%23&q=WM_KEY_LPARAM)  
+[WM_MENUCHAR_LRESULT](https://www.google.com/search?num=5&q=WM_MENUCHAR_LRESULT+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_MENUCHAR_LRESULT](https://github.com/dahall/Vanara/search?l=C%23&q=WM_MENUCHAR_LRESULT)  
 [WM_SCROLL_LPARAM](https://www.google.com/search?num=5&q=WM_SCROLL_LPARAM+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_SCROLL_LPARAM](https://github.com/dahall/Vanara/search?l=C%23&q=WM_SCROLL_LPARAM)  
 [WM_SETCURSOR_LPARAM](https://www.google.com/search?num=5&q=WM_SETCURSOR_LPARAM+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WM_SETCURSOR_LPARAM](https://github.com/dahall/Vanara/search?l=C%23&q=WM_SETCURSOR_LPARAM)  
 [WNDCLASS](https://www.google.com/search?num=5&q=WNDCLASS+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.WNDCLASS](https://github.com/dahall/Vanara/search?l=C%23&q=WNDCLASS)  

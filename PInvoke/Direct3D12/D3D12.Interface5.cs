@@ -2116,7 +2116,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-omsetblendfactor void
 		// OMSetBlendFactor( [in, optional] const FLOAT [4] BlendFactor );
 		[PreserveSig]
-		void OMSetBlendFactor([In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[]? BlendFactor);
+		void OMSetBlendFactor([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[]? BlendFactor);
 
 		/// <summary>Sets the reference value for depth stencil tests.</summary>
 		/// <param name="StencilRef">
@@ -3662,6 +3662,77 @@ public static partial class D3D12
 		void ExecuteIndirect([In] ID3D12CommandSignature pCommandSignature, uint MaxCommandCount, [In] ID3D12Resource pArgumentBuffer,
 			ulong ArgumentBufferOffset, [In, Optional] ID3D12Resource? pCountBuffer, ulong CountBufferOffset);
 	}
+
+	/// <summary>Sets the view for the index buffer.</summary>
+	/// <param name="cmdl">The <see cref="ID3D12GraphicsCommandList"/> instance.</param>
+	/// <param name="pView">
+	/// <para>
+	/// The view specifies the index buffer's address, size, and <c>DXGI_FORMAT</c>, as a pointer to a <c>D3D12_INDEX_BUFFER_VIEW</c> structure.
+	/// </para>
+	/// </param>
+	/// <returns>None</returns>
+	/// <remarks>
+	/// <para>
+	/// Only one index buffer can be bound to the graphics pipeline at any one time. Examples The <c>D3D12Bundles</c> sample uses
+	/// <b>ID3D12GraphicsCommandList::IASetIndexBuffer</b> as follows:
+	/// </para>
+	/// <para>
+	/// <c>void FrameResource::PopulateCommandList(ID3D12GraphicsCommandList* pCommandList, ID3D12PipelineState* pPso1, ID3D12PipelineState*
+	/// pPso2, UINT frameResourceIndex, UINT numIndices, D3D12_INDEX_BUFFER_VIEW* pIndexBufferViewDesc, D3D12_VERTEX_BUFFER_VIEW*
+	/// pVertexBufferViewDesc, ID3D12DescriptorHeap* pCbvSrvDescriptorHeap, UINT cbvSrvDescriptorSize, ID3D12DescriptorHeap*
+	/// pSamplerDescriptorHeap, ID3D12RootSignature* pRootSignature) { // If the root signature matches the root signature of the caller,
+	/// then // bindings are inherited, otherwise the bind space is reset. pCommandList-&gt;SetGraphicsRootSignature(pRootSignature);
+	/// ID3D12DescriptorHeap* ppHeaps[] = { pCbvSrvDescriptorHeap, pSamplerDescriptorHeap };
+	/// pCommandList-&gt;SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	/// pCommandList-&gt;IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	/// pCommandList-&gt;IASetIndexBuffer(pIndexBufferViewDesc); pCommandList-&gt;IASetVertexBuffers(0, 1, pVertexBufferViewDesc);
+	/// pCommandList-&gt;SetGraphicsRootDescriptorTable(0, pCbvSrvDescriptorHeap-&gt;GetGPUDescriptorHandleForHeapStart());
+	/// pCommandList-&gt;SetGraphicsRootDescriptorTable(1, pSamplerDescriptorHeap-&gt;GetGPUDescriptorHandleForHeapStart()); // Calculate
+	/// the descriptor offset due to multiple frame resources. // 1 SRV + how many CBVs we have currently. UINT
+	/// frameResourceDescriptorOffset = 1 + (frameResourceIndex * m_cityRowCount * m_cityColumnCount); CD3DX12_GPU_DESCRIPTOR_HANDLE
+	/// cbvSrvHandle(pCbvSrvDescriptorHeap-&gt;GetGPUDescriptorHandleForHeapStart(), frameResourceDescriptorOffset, cbvSrvDescriptorSize);
+	/// BOOL usePso1 = TRUE; for (UINT i = 0; i &lt; m_cityRowCount; i++) { for (UINT j = 0; j &lt; m_cityColumnCount; j++) { // Alternate
+	/// which PSO to use; the pixel shader is different on // each just as a PSO setting demonstration.
+	/// pCommandList-&gt;SetPipelineState(usePso1 ? pPso1 : pPso2); usePso1 = !usePso1; // Set this city's CBV table and move to the next
+	/// descriptor. pCommandList-&gt;SetGraphicsRootDescriptorTable(2, cbvSrvHandle); cbvSrvHandle.Offset(cbvSrvDescriptorSize);
+	/// pCommandList-&gt;DrawIndexedInstanced(numIndices, 1, 0, 0, 0); } } }</c>
+	/// </para>
+	/// <para>See <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-iasetindexbuffer void
+	public static void IASetIndexBuffer(this ID3D12GraphicsCommandList cmdl, D3D12_INDEX_BUFFER_VIEW? pView = null) =>
+		cmdl.IASetIndexBuffer(new(pView, out var _));
+
+	/// <summary>Sets CPU descriptor handles for the render targets and depth stencil.</summary>
+	/// <param name="cmdl">The <see cref="ID3D12GraphicsCommandList"/> instance.</param>
+	/// <param name="pRenderTargetDescriptors">
+	/// Specifies an array of <c>D3D12_CPU_DESCRIPTOR_HANDLE</c> structures that describe the CPU descriptor handles that represents the
+	/// start of the heap of render target descriptors. If this parameter is NULL and NumRenderTargetDescriptors is 0, no render targets are bound.
+	/// </param>
+	/// <param name="RTsSingleHandleToDescriptorRange">
+	/// <para>
+	/// <b>True</b> means the handle passed in is the pointer to a contiguous range of <i>NumRenderTargetDescriptors</i> descriptors. This
+	/// case is useful if the set of descriptors to bind already happens to be contiguous in memory (so all that’s needed is a handle to the
+	/// first one). For example, if <i>NumRenderTargetDescriptors</i> is 3 then the memory layout is taken as follows:
+	/// </para>
+	/// <para>In this case the driver dereferences the handle and then increments the memory being pointed to.</para>
+	/// <para>
+	/// <b>False</b> means that the handle is the first of an array of <i>NumRenderTargetDescriptors</i> handles. The false case allows an
+	/// application to bind a set of descriptors from different locations at once. Again assuming that <i>NumRenderTargetDescriptors</i> is
+	/// 3, the memory layout is taken as follows:
+	/// </para>
+	/// <para>In this case the driver dereferences three handles that are expected to be adjacent to each other in memory.</para>
+	/// </param>
+	/// <param name="pDepthStencilDescriptor">
+	/// A pointer to a <c>D3D12_CPU_DESCRIPTOR_HANDLE</c> structure that describes the CPU descriptor handle that represents the start of
+	/// the heap that holds the depth stencil descriptor. If this parameter is NULL, no depth stencil descriptor is bound.
+	/// </param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-omsetrendertargets void
+	public static void OMSetRenderTargets(this ID3D12GraphicsCommandList cmdl, D3D12_CPU_DESCRIPTOR_HANDLE[]? pRenderTargetDescriptors,
+		bool RTsSingleHandleToDescriptorRange, D3D12_CPU_DESCRIPTOR_HANDLE? pDepthStencilDescriptor = null) =>
+		cmdl.OMSetRenderTargets((uint?)pRenderTargetDescriptors?.Length ?? 0U, pRenderTargetDescriptors, RTsSingleHandleToDescriptorRange,
+			new(pDepthStencilDescriptor, out var _));
 
 	/// <summary>
 	/// <para>

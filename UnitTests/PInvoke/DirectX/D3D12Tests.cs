@@ -18,12 +18,8 @@ public class D3D12Tests
 	{
 		Assert.That(D3D12CreateDevice(D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_12_1, null, out ID3D12Device? device), ResultIs.Successful);
 
-		//Assert.That(() => device!.GetNodeCount(), Throws.Nothing);
-		//Assert.That(() => device!.CreateCommandAllocator<ID3D12CommandAllocator>(D3D12_COMMAND_LIST_TYPE.D3D12_COMMAND_LIST_TYPE_DIRECT), Throws.Nothing);
-		//Assert.That(device!.CheckFeatureSupport(D3D12_FEATURE.D3D12_FEATURE_FORMAT_SUPPORT, new D3D12_FEATURE_DATA_FORMAT_SUPPORT() { Format = DXGI_FORMAT.DXGI_FORMAT_R16G16B16A16_FLOAT }), ResultIs.Successful);
-
 		D3D12_HEAP_PROPERTIES bufferHeapProps = new() { Type = D3D12_HEAP_TYPE.D3D12_HEAP_TYPE_DEFAULT };
-		D3D12_RESOURCE_DESC bufferDesc = new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_BUFFER, 4096, 1, 1, 0, 1,
+		D3D12_RESOURCE_DESC bufferDesc = new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_BUFFER, 0, 4096, 1, 1, 1,
 			DXGI_FORMAT.DXGI_FORMAT_UNKNOWN, 1, 0, D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_ROW_MAJOR, D3D12_RESOURCE_FLAGS.D3D12_RESOURCE_FLAG_NONE);
 		Assert.That(() => device!.CreateCommittedResource<ID3D12Resource>(bufferHeapProps, D3D12_HEAP_FLAGS.D3D12_HEAP_FLAG_NONE,
 			bufferDesc, D3D12_RESOURCE_STATES.D3D12_RESOURCE_STATE_COMMON), Throws.Nothing);
@@ -62,11 +58,36 @@ public class D3D12Tests
 		m_commandList.ResourceBarrier(1, [D3D12_RESOURCE_BARRIER.CreateTransition(m_vertexBuffer,
 			D3D12_RESOURCE_STATES.D3D12_RESOURCE_STATE_COPY_DEST,
 			D3D12_RESOURCE_STATES.D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER)]);
+	}
 
-		// Initialize the vertex buffer view.
-		//m_vertexBufferView.BufferLocation = m_vertexBuffer.GetGPUVirtualAddress();
-		//m_vertexBufferView.StrideInBytes = (uint)Marshal.SizeOf(typeof(Vertex));
-		//m_vertexBufferView.SizeInBytes = vertexBufferSize;
+	[Test]
+	public void TestResourceBarrier()
+	{
+		// Initialize D3D12 device and command list
+		Assert.That(D3D12CreateDevice(D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_12_0, null, out ID3D12Device? device), ResultIs.Successful);
+		Assert.That(device!.CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE.D3D12_COMMAND_LIST_TYPE_DIRECT, out ID3D12CommandAllocator? commandAllocator), ResultIs.Successful);
+		Assert.That(device!.CreateCommandList(0, D3D12_COMMAND_LIST_TYPE.D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator!, default, out ID3D12GraphicsCommandList? commandList), ResultIs.Successful);
+
+		try
+		{
+			// Create dummy resources
+			D3D12_HEAP_PROPERTIES heapProps = new(D3D12_HEAP_TYPE.D3D12_HEAP_TYPE_DEFAULT);
+			D3D12_RESOURCE_DESC resourceDesc = new(D3D12_RESOURCE_DIMENSION.D3D12_RESOURCE_DIMENSION_BUFFER, 0, 1024, 1, 1, 1,
+				DXGI_FORMAT.DXGI_FORMAT_UNKNOWN, 1, 0, D3D12_TEXTURE_LAYOUT.D3D12_TEXTURE_LAYOUT_ROW_MAJOR, 0);
+			Assert.That(device!.CreateCommittedResource(heapProps, D3D12_HEAP_FLAGS.D3D12_HEAP_FLAG_NONE, resourceDesc,
+				D3D12_RESOURCE_STATES.D3D12_RESOURCE_STATE_COMMON, default, out ID3D12Resource? resource), ResultIs.Successful);
+
+			// Define a resource barrier
+			D3D12_RESOURCE_BARRIER barrier = D3D12_RESOURCE_BARRIER.CreateTransition(resource!, D3D12_RESOURCE_STATES.D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATES.D3D12_RESOURCE_STATE_COPY_DEST);
+
+			// Apply the resource barrier
+			commandList!.ResourceBarrier(1, [barrier]);
+		}
+		finally
+		{
+			// Close the command list
+			Assert.That(commandList!.Close(), ResultIs.Successful);
+		}
 	}
 
 	[StructLayout(LayoutKind.Sequential)]

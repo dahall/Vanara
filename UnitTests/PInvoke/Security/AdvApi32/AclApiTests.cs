@@ -25,8 +25,8 @@ public class AclApiTests
 	{
 		EXPLICIT_ACCESS ea = default;
 		Assert.That(() => BuildExplicitAccessWithName(out ea, userName, ACCESS_MASK.GENERIC_ALL, ACCESS_MODE.SET_ACCESS, INHERIT_FLAGS.SUB_CONTAINERS_AND_OBJECTS_INHERIT), Throws.Nothing);
-		Assert.AreEqual(ea.grfAccessMode, ACCESS_MODE.SET_ACCESS);
-		Assert.AreEqual(userName, ea.Trustee.Name);
+		Assert.That(ea.grfAccessMode, Is.EqualTo(ACCESS_MODE.SET_ACCESS));
+		Assert.That(userName, Is.EqualTo(ea.Trustee.Name));
 		ea.WriteValues();
 	}
 

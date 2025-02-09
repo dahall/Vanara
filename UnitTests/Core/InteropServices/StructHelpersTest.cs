@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using System.Reflection;
+using Vanara.Extensions;
 using Vanara.PInvoke;
 
 namespace Vanara.InteropServices.Tests;
@@ -20,6 +22,8 @@ public class StructHelpersTest
 	struct TEST2
 	{
 		public int l;
+
+		[SizeFieldName("l")]
 		public ArrayPointer<POINT> p;
 	}
 
@@ -88,5 +92,9 @@ public class StructHelpersTest
 		POINT newpt = new(4, 4);
 		t.p[1] = newpt;
 		Assert.That(t.p[1], Is.EqualTo(newpt));
+
+		// Get the size from the attribute
+		SizeT? val = t.GetFieldSizeViaAttribute("p");
+		Assert.That((int)val!.GetValueOrDefault(), Is.EqualTo(t.l));
 	}
 }

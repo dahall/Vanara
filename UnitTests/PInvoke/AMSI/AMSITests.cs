@@ -26,7 +26,7 @@ public class AMSITests
 
 		var fn = TestCaseSources.LogFile;
 		Assert.That(AmsiScanString(hctx, File.ReadAllText(fn), fn, hsess, out var ret), ResultIs.Successful);
-		Assert.IsFalse(AmsiResultIsMalware(ret));
+		Assert.That(!AmsiResultIsMalware(ret));
 	}
 
 	[Test]
@@ -39,7 +39,7 @@ public class AMSITests
 
 			var fn = TestCaseSources.LogFile;
 			Assert.That(AmsiScanString(hsess.Context, File.ReadAllText(fn), fn, hsess, out var ret), ResultIs.Successful);
-			Assert.IsFalse(AmsiResultIsMalware(ret));
+			Assert.That(!AmsiResultIsMalware(ret));
 		}
 		Assert.That(hsess, Is.Not.Null);
 		Assert.That(hsess.Context, ResultIs.Not.ValidHandle);
@@ -55,9 +55,9 @@ public class AMSITests
 		using var mem = new NativeMemoryStream();
 		fs.CopyTo(mem);
 		Assert.That(AmsiNotifyOperation(hsess.Context, mem.Pointer, (uint)mem.Length, fn, out var ret), ResultIs.Successful);
-		Assert.IsFalse(AmsiResultIsMalware(ret));
+		Assert.That(!AmsiResultIsMalware(ret));
 		Assert.That(AmsiScanBuffer(hsess.Context, mem.Pointer, (uint)mem.Length, fn, hsess, out ret), ResultIs.Successful);
-		Assert.IsFalse(AmsiResultIsMalware(ret));
+		Assert.That(!AmsiResultIsMalware(ret));
 	}
 
 	[Test]

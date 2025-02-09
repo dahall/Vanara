@@ -394,7 +394,7 @@ public class PrintingTests
 			JOB_INFO_2 ji2 = default;
 			Assert.That(() => ji2 = GetJob<JOB_INFO_2>(hprnt, id), Throws.Nothing);
 			Assert.That(ji2.JobId, Is.EqualTo(id));
-			Assert.NotNull(ji2.pDatatype);
+			Assert.That(ji2.pDatatype, Is.Not.Null);
 			TestHelper.WriteValues(ji2);
 
 			var jobInfo = new JOB_INFO_1 { JobId = id, Priority = JOB_PRIORITY.MAX_PRIORITY, Status = ji2.Status, pDatatype = ji2.pDatatype! };

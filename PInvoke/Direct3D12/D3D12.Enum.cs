@@ -1265,7 +1265,7 @@ public static partial class D3D12
 		/// <summary>
 		/// <para>Value: 1 Never pass the comparison.</para>
 		/// </summary>
-		D3D12_COMPARISON_FUNC_NEVER,
+		D3D12_COMPARISON_FUNC_NEVER = 1,
 
 		/// <summary>
 		/// <para>Value: 2 If the source data is less than the destination data, the comparison passes.</para>

@@ -103,7 +103,7 @@ public class WinBioTests
 		try
 		{
 			Assert.That(WinBioAsyncEnumBiometricUnits(hFramework, WINBIO_BIOMETRIC_TYPE.WINBIO_TYPE_FINGERPRINT), ResultIs.Successful);
-			Assert.IsTrue(evt.WaitOne(5000));
+			Assert.That(evt.WaitOne(5000));
 		}
 		finally
 		{
@@ -142,7 +142,7 @@ public class WinBioTests
 		try
 		{
 			Assert.That(WinBioAsyncEnumDatabases(hFramework, WINBIO_BIOMETRIC_TYPE.WINBIO_TYPE_FINGERPRINT), ResultIs.Successful);
-			Assert.IsTrue(evt.WaitOne(5000));
+			Assert.That(evt.WaitOne(5000));
 		}
 		finally
 		{
@@ -181,7 +181,7 @@ public class WinBioTests
 		try
 		{
 			Assert.That(WinBioAsyncEnumServiceProviders(hFramework, WINBIO_BIOMETRIC_TYPE.WINBIO_TYPE_FINGERPRINT), ResultIs.Successful);
-			Assert.IsTrue(evt.WaitOne(5000));
+			Assert.That(evt.WaitOne(5000));
 		}
 		finally
 		{
@@ -220,7 +220,7 @@ public class WinBioTests
 		try
 		{
 			Assert.That(WinBioAsyncMonitorFrameworkChanges(hFramework, WINBIO_FRAMEWORK_CHANGE_TYPE.WINBIO_FRAMEWORK_CHANGE_UNIT), ResultIs.Successful);
-			Assert.IsTrue(evt.WaitOne(5000));
+			Assert.That(evt.WaitOne(5000));
 		}
 		finally
 		{
@@ -327,7 +327,7 @@ public class WinBioTests
 			out var sampleSize,
 			out _);
 		Assert.That(hr, ResultIs.Successful);
-		Assert.IsFalse(sample.IsInvalid);
+		Assert.That(!sample.IsInvalid);
 
 		var value = sample.ToStructure<WINBIO_BIR>(sampleSize);
 		WINBIO_BIR_HEADER BirHeader = sample.ToStructure<WINBIO_BIR_HEADER>(sampleSize, value.HeaderBlock.Offset);

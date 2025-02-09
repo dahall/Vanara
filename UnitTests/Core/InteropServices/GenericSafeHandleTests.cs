@@ -39,7 +39,7 @@ public class GenericSafeHandleTests
 			h.SetHandle((IntPtr)1);	
 		}
 
-		Assert.AreEqual(1, i);
+		Assert.That(1, Is.EqualTo(i));
 	}
 	
 	
@@ -66,7 +66,7 @@ public class GenericSafeHandleTests
 		{
 		}
 
-		Assert.AreEqual(1, i);
+		Assert.That(1, Is.EqualTo(i));
 	}
 
 	[Test]

@@ -256,9 +256,9 @@ public class WinBaseTests
 		Assert.That(snu, Is.EqualTo(SID_NAME_USE.SidTypeUser));
 
 		Assert.That(LookupAccountSid2(null, sid, out var name2, out var domN2, out var snu2), ResultIs.Successful);
-		Assert.AreEqual(name, name2);
-		Assert.AreEqual(domN, domN2);
-		Assert.AreEqual(snu, snu2);
+		Assert.That(name, Is.EqualTo(name2));
+		Assert.That(domN, Is.EqualTo(domN2));
+		Assert.That(snu, Is.EqualTo(snu2));
 	}
 
 	[Test]

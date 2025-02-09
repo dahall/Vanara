@@ -24,7 +24,7 @@ public class DhcpTests
 	[Test]
 	public void DhcpRequestParamsTest()
 	{
-		Assert.NotNull(adp);
+		Assert.That(adp, Is.Not.Null);
 		Assert.That(() =>
 		{
 			TestContext.WriteLine(new IPAddress(RequestParam<uint>(adp!.Id, DHCP_OPTION_ID.OPTION_SUBNET_MASK)));
@@ -40,7 +40,7 @@ public class DhcpTests
 	[Test]
 	public void DhcpRegisterParamChangeTest()
 	{
-		Assert.NotNull(adp);
+		Assert.That(adp, Is.Not.Null);
 		using var pparam = new SafeCoTaskMemStruct<DHCPAPI_PARAMS>(new DHCPAPI_PARAMS { OptionId = DHCP_OPTION_ID.OPTION_ROUTER_ADDRESS });
 		//using var pparam = new SafeCoTaskMemStruct<DHCPAPI_PARAMS>(new DHCPAPI_PARAMS { OptionId = DHCP_OPTION_ID.OPTION_HOST_NAME });
 		var watchParams = new DHCPCAPI_PARAMS_ARRAY { nParams = 1, Params = pparam };

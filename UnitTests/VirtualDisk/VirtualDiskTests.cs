@@ -283,7 +283,7 @@ public class VirtualDiskTests
 			using var vhd = VirtualDisk.Create(lfn, sz);
 			var b = vhd.ResilientChangeTrackingEnabled;
 			Assert.That(() => vhd.ResilientChangeTrackingEnabled = !b, Throws.Nothing);
-			Assert.AreEqual(!b, vhd.ResilientChangeTrackingEnabled);
+			Assert.That(!b, Is.EqualTo(vhd.ResilientChangeTrackingEnabled));
 		}
 		finally
 		{

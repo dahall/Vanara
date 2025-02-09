@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke.Tests;
@@ -98,7 +99,7 @@ public class MemoryApiTests
 	public void SafeMoveableHGlobleFlagsTest()
 	{
 		using SafeMoveableHGlobalHandle h = new(32);
-		Assert.AreEqual(GlobalFlags(h), GMEM.GMEM_SHARE);
+		Assert.That(GlobalFlags(h), Is.EqualTo(GMEM.GMEM_SHARE));
 	}
 
 	[Test, Repeat(50)]
@@ -107,7 +108,7 @@ public class MemoryApiTests
 		RECT val = new(8, 16, 32, 64);
 		IntPtr ptr = InteropExtensions.MarshalToPtr(val, i => (IntPtr)GlobalAlloc(GMEM.GHND | GMEM.GMEM_SHARE, i), out _, memLock: p => GlobalLock(p), memUnlock: p => GlobalUnlock(p));
 		using SafeMoveableHGlobalHandle h = new(ptr, true);
-		Assert.AreEqual(val, h.ToStructure<RECT>());
+		Assert.That(val, Is.EqualTo(h.ToStructure<RECT>()));
 	}
 
 	[Test]
@@ -123,7 +124,7 @@ public class MemoryApiTests
 	{
 		RECT val = new(8, 16, 32, 64);
 		using SafeMoveableHGlobalHandle h = SafeMoveableHGlobalHandle.CreateFromStructure(val);
-		Assert.AreEqual(val, h.ToStructure<RECT>());
+		Assert.That(val, Is.EqualTo(h.ToStructure<RECT>()));
 	}
 
 	[Test]
@@ -131,7 +132,7 @@ public class MemoryApiTests
 	{
 		const string txt = @"“0’0©0è0”";
 		using SafeMoveableHGlobalHandle h = new(Encoding.Unicode.GetBytes(txt + '\0'));
-		Assert.AreEqual(txt, h.ToString(-1));
+		Assert.That(txt, Is.EqualTo(h.ToString(-1)));
 	}
 
 	[Test, Repeat(50)]
@@ -143,10 +144,10 @@ public class MemoryApiTests
 		try
 		{
 			IntPtr p = GlobalLock(myh);
-			Assert.AreEqual(val, p.ToStructure<RECT>());
+			Assert.That(val, Is.EqualTo(p.ToStructure<RECT>()));
 			GlobalUnlock(myh);
 		}
-		finally { Assert.AreEqual(GlobalFree(myh), HGLOBAL.NULL); }
+		finally { Assert.That(GlobalFree(myh), Is.EqualTo(HGLOBAL.NULL)); }
 	}
 
 	[Test]
@@ -155,7 +156,7 @@ public class MemoryApiTests
 		RECT val = new(8, 16, 32, 64);
 		using SafeMoveableHGlobalHandle h = new(32);
 		h.Write(val);
-		Assert.AreEqual(val, h.ToStructure<RECT>());
+		Assert.That(val, Is.EqualTo(h.ToStructure<RECT>()));
 	}
 
 	[Test]

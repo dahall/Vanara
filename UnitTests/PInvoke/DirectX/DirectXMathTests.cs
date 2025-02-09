@@ -90,7 +90,7 @@ public class DirectXMathTests
 		Assert.That(inv, Is.EqualTo(invChk));
 		XMMATRIX id = val * inv;
 		TestContext.WriteLine(id);
-		Assert.True(id.XMMatrixIsIdentity());
+		Assert.That(id.XMMatrixIsIdentity());
 	}
 
 	[Test]
@@ -129,7 +129,7 @@ public class DirectXMathTests
 		XMMATRIX inv = m1inv;
 		XMMATRIX id = val * inv;
 		TestContext.WriteLine(id);
-		Assert.True(id.XMMatrixIsIdentity());
+		Assert.That(id.XMMatrixIsIdentity());
 	}
 
 	[Test]

@@ -103,13 +103,13 @@ public class NetTests
 		public Firewall()
 		{
 			pMgr = ComReleaserFactory.Create(new INetFwMgr());
-			Assert.IsNotNull(pMgr.Item);
+			Assert.That(pMgr.Item, Is.Not.Null);
 			pPol = ComReleaserFactory.Create(pMgr.Item.LocalPolicy);
-			Assert.IsNotNull(pPol.Item);
+			Assert.That(pPol.Item, Is.Not.Null);
 			pProf = ComReleaserFactory.Create(pPol.Item.CurrentProfile);
-			Assert.IsNotNull(pProf.Item);
+			Assert.That(pProf.Item, Is.Not.Null);
 			pSet = ComReleaserFactory.Create(pProf.Item.AuthorizedApplications);
-			Assert.IsNotNull(pSet.Item);
+			Assert.That(pSet.Item, Is.Not.Null);
 		}
 
 		public void AddApp(string name, string exePath)

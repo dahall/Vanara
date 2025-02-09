@@ -97,7 +97,7 @@ public class Shell32Methods
 	{
 		Ole32.CoCreateInstance(typeof(MenuBand).GUID, default, Ole32.CLSCTX.CLSCTX_INPROC_SERVER, typeof(IShellMenu).GUID, out var ppv).ThrowIfFailed();
 		using var ishmenu = ComReleaserFactory.Create((IShellMenu)ppv);
-		Assert.IsNotNull(ishmenu.Item);
+		Assert.That(ishmenu.Item, Is.Not.Null);
 	}
 
 	/*

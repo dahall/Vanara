@@ -89,7 +89,7 @@ public class ShellFolderTests
 			using var d = new ShellFolder(@"C:\");
 			using var libs = (ShellFolder)d["Temp"];
 			Assert.That(libs, Is.Not.Null.And.InstanceOf<ShellFolder>());
-			Assert.True(libs["Test.lnk"] is ShellItem);
+			Assert.That(libs["Test.lnk"] is ShellItem);
 		}, Throws.Nothing);
 		Assert.That(() => new ShellFolder(KNOWNFOLDERID.FOLDERID_Windows).EnumerateChildren((FolderItemFilter)0x80000), Is.Empty);
 	}

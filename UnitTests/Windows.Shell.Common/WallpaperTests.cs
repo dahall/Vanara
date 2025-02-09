@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Drawing;
 using System.Linq;
 using Vanara.PInvoke.Tests;
@@ -12,7 +13,7 @@ public class WallpaperTests
 	[Test]
 	public void ReadPropTest()
 	{
-		//Assert.IsTrue(WallpaperManager.Enabled);
+		//Assert.That(WallpaperManager.Enabled);
 		TestContext.WriteLine($"Enabled={WallpaperManager.Enabled}, Bkg={WallpaperManager.BackgroundColor}, Pos={WallpaperManager.WallpaperFit}");
 		Assert.That(WallpaperManager.Monitors.Count, Is.GreaterThanOrEqualTo(1));
 		TestContext.WriteLine("Monitors:\n" + string.Join("\n", WallpaperManager.Monitors));

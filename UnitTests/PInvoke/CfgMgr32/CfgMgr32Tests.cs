@@ -407,7 +407,7 @@ public class CfgMgr32Tests
 	//	{
 	//		using var lc = CM_Get_Log_Conf_List(NodeId, LOG_CONF_FLAG.BASIC_LOG_CONF).First();
 	//		Assert.That(CM_Get_Log_Conf_Priority(lc, out var p), Is.EqualTo(CONFIGRET.CR_SUCCESS));
-	//		Assert.IsTrue(Enum.IsDefined(typeof(PRIORITY), p));
+	//		Assert.That(Enum.IsDefined(typeof(PRIORITY), p));
 	//	}
 	//}
 

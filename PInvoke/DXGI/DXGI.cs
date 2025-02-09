@@ -1492,13 +1492,13 @@ public static partial class DXGI
 	// https://docs.microsoft.com/en-us/windows/win32/api/dxgicommon/ns-dxgicommon-dxgi_sample_desc typedef struct DXGI_SAMPLE_DESC { UINT
 	// Count; UINT Quality; } DXGI_SAMPLE_DESC;
 	[PInvokeData("dxgicommon.h"), StructLayout(LayoutKind.Sequential)]
-	public struct DXGI_SAMPLE_DESC
+	public struct DXGI_SAMPLE_DESC(uint count, uint quality)
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>The number of multisamples per pixel.</para>
 		/// </summary>
-		public uint Count;
+		public uint Count = count;
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
@@ -1512,7 +1512,7 @@ public static partial class DXGI
 		/// values, see Remarks.
 		/// </para>
 		/// </summary>
-		public uint Quality;
+		public uint Quality = quality;
 	}
 
 	/// <summary>Represents a handle to a shared resource.</summary>

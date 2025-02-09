@@ -14,6 +14,7 @@ public static partial class DXGI
 		/// <para>0</para>
 		/// <para>The display supports tearing, a requirement of variable refresh rate displays.</para>
 		/// </summary>
+		[CorrespondingType(typeof(BOOL))]
 		DXGI_FEATURE_PRESENT_ALLOW_TEARING,
 	}
 
@@ -3654,6 +3655,28 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_5/nf-dxgi1_5-idxgiswapchain4-sethdrmetadata HRESULT SetHDRMetaData(
 		// [in] DXGI_HDR_METADATA_TYPE Type, [in] UINT Size, [in, optional] void *pMetaData );
 		void SetHDRMetaData(DXGI_HDR_METADATA_TYPE Type, uint Size, [In, Optional] IntPtr pMetaData);
+	}
+
+	/// <summary>Used to check for hardware feature support.</summary>
+	/// <typeparam name="T">The type of the structure associated with <paramref name="Feature" />.</typeparam>
+	/// <param name="factory">The factory.</param>
+	/// <param name="pFeatureSupportData"><para>Type: <b>void*</b></para>
+	/// <para>Specifies a pointer to a buffer that will be filled with data that describes the feature support.</para></param>
+	/// <param name="Feature"><para>Type: <b><c>DXGI_FEATURE</c></b></para>
+	/// <para>Specifies one member of <c>DXGI_FEATURE</c> to query support for.</para></param>
+	/// <returns>
+	/// <para>Type: <b><c>HRESULT</c></b></para>
+	/// <para>This method returns an HRESULT success or error code.</para>
+	/// </returns>
+	/// <remarks>Refer to the description of <c>DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING</c>.</remarks>
+	public static HRESULT CheckFeatureSupport<T>(this IDXGIFactory5 factory, ref T pFeatureSupportData, DXGI_FEATURE? Feature = null) where T : struct
+	{
+		if (!CorrespondingTypeAttribute.CanGet<T, DXGI_FEATURE>(Feature, out var f))
+			return HRESULT.E_INVALIDARG;
+		using SafeCoTaskMemStruct<T> mem = new(pFeatureSupportData);
+		var hr = factory.CheckFeatureSupport(f, mem, mem.Size);
+		pFeatureSupportData = mem.Value;
+		return hr;
 	}
 
 	/// <summary>

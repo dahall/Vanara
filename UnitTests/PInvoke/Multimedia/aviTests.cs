@@ -26,7 +26,7 @@ public class aviTests
 	[Test]
 	public void TestErr()
 	{
-		Assert.NotNull(((HRESULT)(int)AVIERR.AVIERR_NODATA).ToString());
+		Assert.That(((HRESULT)(int)AVIERR.AVIERR_NODATA).ToString(), Is.Not.Null);
 		foreach (AVIERR err in Enum.GetValues(typeof(AVIERR)))
 			TestContext.WriteLine($"{err} = {(HRESULT)(int)err}");
 	}

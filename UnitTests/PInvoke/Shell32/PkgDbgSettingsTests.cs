@@ -18,12 +18,12 @@ public class PkgDbgSettingsTests
 			state.WriteValues();
 
 			pSetting.Item.EnumerateBackgroundTasks(pkgName, out var cnt, out var tasks, out var names);
-			Assert.AreEqual((int)cnt, tasks.Length);
+			Assert.That((int)cnt, Is.EqualTo(tasks.Length));
 			for (var i = 0; i < cnt; i++)
 				TestContext.WriteLine($"{tasks[i]} = {names[i]}");
 
 			((IPackageDebugSettings2)pSetting.Item).EnumerateApps(pkgName, out cnt, out var ids, out var dispNames);
-			Assert.AreEqual((int)cnt, ids.Length);
+			Assert.That((int)cnt, Is.EqualTo(ids.Length));
 			for (var i = 0; i < cnt; i++)
 				TestContext.WriteLine($"{ids[i]} = {dispNames[i]}");
 		}
