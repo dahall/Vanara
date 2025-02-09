@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -167,7 +168,7 @@ public class ClipboardTests
 		TestContext.Write(string.Join(", ", fmts.Select(f => Clipboard.GetFormatName((uint)f.cfFormat))));
 
 		var fmt = fmts.First();
-		Assert.IsTrue(ido.IsFormatAvailable((uint)fmt.cfFormat));
+		Assert.That(ido.IsFormatAvailable((uint)fmt.cfFormat));
 	}
 
 	[Test]
@@ -209,7 +210,7 @@ public class ClipboardTests
 		using System.Drawing.Bitmap bmp = new(TestCaseSources.BmpFile);
 		using Gdi32.SafeHBITMAP hBmp = new(bmp.GetHbitmap());
 		ido.SetData(CLIPFORMAT.CF_BITMAP, hBmp);
-		Assert.AreEqual((HBITMAP)(ido.GetData(CLIPFORMAT.CF_BITMAP) ?? throw new InvalidOperationException()), (HBITMAP)hBmp);
+		Assert.That((HBITMAP)(ido.GetData(CLIPFORMAT.CF_BITMAP) ?? throw new InvalidOperationException()), Is.EqualTo((HBITMAP)hBmp));
 
 		//using System.Drawing.Imaging.Metafile enhMeta = new System.Drawing.Imaging.Metafile(TestCaseSources.TempChildDirWhack + "test.wmf");
 		//using Gdi32.SafeHENHMETAFILE hEnh = new(enhMeta.GetHenhmetafile());
@@ -224,44 +225,44 @@ public class ClipboardTests
 		CollectionAssert.AreEquivalent(files, (string[])ido.GetData(ShellClipboardFormat.CFSTR_FILENAMEMAPW)!);
 
 		ido.SetData(CLIPFORMAT.CF_OEMTEXT, ptxt);
-		Assert.AreEqual(ido.GetData(CLIPFORMAT.CF_OEMTEXT), ptxt);
+		Assert.That(ido.GetData(CLIPFORMAT.CF_OEMTEXT), Is.EqualTo(ptxt));
 
 		ido.SetData(CLIPFORMAT.CF_TEXT, txt);
-		Assert.AreEqual(ido.GetData(CLIPFORMAT.CF_TEXT), txt);
+		Assert.That(ido.GetData(CLIPFORMAT.CF_TEXT), Is.EqualTo(txt));
 
 		ido.SetData(CLIPFORMAT.CF_UNICODETEXT, txt);
-		Assert.AreEqual(ido.GetData(CLIPFORMAT.CF_UNICODETEXT), txt);
+		Assert.That(ido.GetData(CLIPFORMAT.CF_UNICODETEXT), Is.EqualTo(txt));
 
 		var r = new RECT(0, 8, 16, 32);
 		ido.SetData("RECT", r);
-		Assert.AreEqual(ido.GetData<RECT>("RECT"), r);
+		Assert.That(ido.GetData<RECT>("RECT"), Is.EqualTo(r));
 
 		var lcid = Kernel32.GetUserDefaultLCID();
 		ido.SetData(CLIPFORMAT.CF_LOCALE, lcid);
-		//Assert.AreEqual(ido.GetData<LCID>(CLIPFORMAT.CF_LOCALE), lcid);
+		//Assert.That(ido.GetData<LCID>(CLIPFORMAT.CF_LOCALE), Is.EqualTo(lcid));
 		//Assert.That(ido.GetData(CLIPFORMAT.CF_LOCALE), lcid);
 
 		const string csv = "a,b,c,d\n1,2,3,4";
 		ido.SetData(ShellClipboardFormat.CF_CSV, csv);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CF_CSV), csv);
+		Assert.That(ido.GetData(ShellClipboardFormat.CF_CSV), Is.EqualTo(csv));
 
 		ido.SetData(ShellClipboardFormat.CF_HTML, html);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CF_HTML), html);
+		Assert.That(ido.GetData(ShellClipboardFormat.CF_HTML), Is.EqualTo(html));
 
 		var rtf = File.ReadAllText(TestCaseSources.TempDirWhack + "Test.rtf");
 		ido.SetData(ShellClipboardFormat.CF_RTF, rtf);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CF_RTF), rtf);
+		Assert.That(ido.GetData(ShellClipboardFormat.CF_RTF), Is.EqualTo(rtf));
 
 		ido.SetData(ShellClipboardFormat.CF_RTFNOOBJS, rtf);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CF_RTFNOOBJS), rtf);
+		Assert.That(ido.GetData(ShellClipboardFormat.CF_RTFNOOBJS), Is.EqualTo(rtf));
 
 		DROPDESCRIPTION dropDesc = new() { type = DROPIMAGETYPE.DROPIMAGE_COPY, szMessage = "Move this" };
 		ido.SetData(ShellClipboardFormat.CFSTR_DROPDESCRIPTION, dropDesc);
-		Assert.AreEqual(((DROPDESCRIPTION)ido.GetData(ShellClipboardFormat.CFSTR_DROPDESCRIPTION)!).szMessage, dropDesc.szMessage);
+		Assert.That(((DROPDESCRIPTION)ido.GetData(ShellClipboardFormat.CFSTR_DROPDESCRIPTION)!).szMessage, Is.EqualTo(dropDesc.szMessage));
 
 		FILE_ATTRIBUTES_ARRAY faa = new() { cItems = 1, rgdwFileAttributes = new[] { 4U } };
 		ido.SetData(ShellClipboardFormat.CFSTR_FILE_ATTRIBUTES_ARRAY, faa);
-		Assert.AreEqual(((FILE_ATTRIBUTES_ARRAY)ido.GetData(ShellClipboardFormat.CFSTR_FILE_ATTRIBUTES_ARRAY)!).cItems, faa.cItems);
+		Assert.That(((FILE_ATTRIBUTES_ARRAY)ido.GetData(ShellClipboardFormat.CFSTR_FILE_ATTRIBUTES_ARRAY)!).cItems, Is.EqualTo(faa.cItems));
 
 		FILEGROUPDESCRIPTOR fgd = new() { cItems = (uint)files.Length, fgd = new FILEDESCRIPTOR[files.Length] };
 		for (int i = 0; i < files.Length; i++)
@@ -272,7 +273,7 @@ public class ClipboardTests
 			ido.SetData(ShellClipboardFormat.CFSTR_FILECONTENTS, istream, DVASPECT.DVASPECT_CONTENT, i);
 		}
 		ido.SetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW, fgd);
-		Assert.AreEqual(((FILEGROUPDESCRIPTOR)ido.GetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW)!).cItems, fgd.cItems);
+		Assert.That(((FILEGROUPDESCRIPTOR)ido.GetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW)!).cItems, Is.EqualTo(fgd.cItems));
 		Assert.That(() => { var ist = (Ole32.IStreamV)ido.GetData(ShellClipboardFormat.CFSTR_FILECONTENTS, index: 1)!; ist.Seek(0, Ole32.STREAM_SEEK.STREAM_SEEK_SET, out _).ThrowIfFailed(); }, Throws.Nothing);
 		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_FILENAMEA), Is.TypeOf<string>().And.Not.Null);
 		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_FILENAMEW), Is.TypeOf<string>().And.Not.Null);
@@ -282,46 +283,46 @@ public class ClipboardTests
 		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_INETURLW), Does.StartWith(url));
 
 		ido.SetData(ShellClipboardFormat.CFSTR_INDRAGLOOP, true);
-		Assert.AreEqual((BOOL)ido.GetData(ShellClipboardFormat.CFSTR_INDRAGLOOP)!, true);
+		Assert.That((BOOL)ido.GetData(ShellClipboardFormat.CFSTR_INDRAGLOOP)!, Is.EqualTo(true));
 
 		ido.SetData(ShellClipboardFormat.CFSTR_INVOKECOMMAND_DROPPARAM, ptxt);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CFSTR_INVOKECOMMAND_DROPPARAM), ptxt);
+		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_INVOKECOMMAND_DROPPARAM), Is.EqualTo(ptxt));
 
 		ido.SetData(ShellClipboardFormat.CFSTR_LOGICALPERFORMEDDROPEFFECT, Ole32.DROPEFFECT.DROPEFFECT_COPY);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CFSTR_LOGICALPERFORMEDDROPEFFECT), Ole32.DROPEFFECT.DROPEFFECT_COPY);
+		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_LOGICALPERFORMEDDROPEFFECT), Is.EqualTo(Ole32.DROPEFFECT.DROPEFFECT_COPY));
 
 		ido.SetData(ShellClipboardFormat.CFSTR_MOUNTEDVOLUME, ptxt);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CFSTR_MOUNTEDVOLUME), ptxt);
+		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_MOUNTEDVOLUME), Is.EqualTo(ptxt));
 
 		SafeLPTSTR remName = new("WINSTATION");
 		NRESARRAY nres = new() { cItems = 1, nr = new NETRESOURCE[] { new() { lpRemoteName = remName } } };
 		ido.SetData(ShellClipboardFormat.CFSTR_NETRESOURCES, nres);
-		Assert.AreEqual(((NRESARRAY)ido.GetData(ShellClipboardFormat.CFSTR_NETRESOURCES)!).cItems, nres.cItems);
+		Assert.That(((NRESARRAY)ido.GetData(ShellClipboardFormat.CFSTR_NETRESOURCES)!).cItems, Is.EqualTo(nres.cItems));
 
 		ido.SetData(ShellClipboardFormat.CFSTR_PASTESUCCEEDED, Ole32.DROPEFFECT.DROPEFFECT_COPY);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CFSTR_PASTESUCCEEDED), Ole32.DROPEFFECT.DROPEFFECT_COPY);
+		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_PASTESUCCEEDED), Is.EqualTo(Ole32.DROPEFFECT.DROPEFFECT_COPY));
 
 		ido.SetData(ShellClipboardFormat.CFSTR_PERFORMEDDROPEFFECT, Ole32.DROPEFFECT.DROPEFFECT_COPY);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CFSTR_PERFORMEDDROPEFFECT), Ole32.DROPEFFECT.DROPEFFECT_COPY);
+		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_PERFORMEDDROPEFFECT), Is.EqualTo(Ole32.DROPEFFECT.DROPEFFECT_COPY));
 
 		ido.SetData(ShellClipboardFormat.CFSTR_PREFERREDDROPEFFECT, Ole32.DROPEFFECT.DROPEFFECT_COPY);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CFSTR_PREFERREDDROPEFFECT), Ole32.DROPEFFECT.DROPEFFECT_COPY);
+		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_PREFERREDDROPEFFECT), Is.EqualTo(Ole32.DROPEFFECT.DROPEFFECT_COPY));
 
 		ido.SetData(ShellClipboardFormat.CFSTR_PRINTERGROUP, ptxt);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CFSTR_PRINTERGROUP), ptxt);
+		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_PRINTERGROUP), Is.EqualTo(ptxt));
 
 		var guid = Guid.NewGuid();
 		ido.SetData(ShellClipboardFormat.CFSTR_SHELLDROPHANDLER, guid);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CFSTR_SHELLDROPHANDLER), guid);
+		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_SHELLDROPHANDLER), Is.EqualTo(guid));
 
 		ido.SetData(ShellClipboardFormat.CFSTR_TARGETCLSID, guid);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CFSTR_TARGETCLSID), guid);
+		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_TARGETCLSID), Is.EqualTo(guid));
 
 		ido.SetData(ShellClipboardFormat.CFSTR_UNTRUSTEDDRAGDROP, 16U);
-		Assert.AreEqual(ido.GetData(ShellClipboardFormat.CFSTR_UNTRUSTEDDRAGDROP), 16U);
+		Assert.That(ido.GetData(ShellClipboardFormat.CFSTR_UNTRUSTEDDRAGDROP), Is.EqualTo(16U));
 
 		ido.SetData("ByteArray", new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 });
-		Assert.AreEqual(((byte[])ido.GetData("ByteArray")!).Length, 8);
+		Assert.That(((byte[])ido.GetData("ByteArray")!).Length, Is.EqualTo(8));
 
 		//using var fs = File.OpenRead(files[0]);
 		//ido.SetData("Stream", fs);
@@ -340,7 +341,7 @@ public class ClipboardTests
 
 		//var fi = new FileInfo(files[0]);
 		//ido.SetData("File", fi);
-		//Assert.AreEqual(ido.GetData("File"), files[0]);
+		//Assert.That(ido.GetData("File"), Is.EqualTo(files[0]));
 
 		// ISerializable
 		ido.SetData("NetBmp", bmp);
@@ -349,7 +350,7 @@ public class ClipboardTests
 		// SafeAllocated
 		//SafeCoTaskMemHandle h = SafeCoTaskMemHandle.CreateFromStringList(files);
 		//ido.SetData("hMem", h);
-		//Assert.AreEqual(ido.GetData("hMem") as byte[], h.GetBytes());
+		//Assert.That(ido.GetData("hMem") as byte[], Is.EqualTo(h.GetBytes()));
 	}
 
 	[Test]
@@ -399,7 +400,7 @@ public class ClipboardTests
 		WFClipboard.SetText("Hello");
 		//using var Clipboard = new Clipboard();
 		//Clipboard.SetText("Hello");
-		Assert.IsTrue(sawChange.WaitOne(5000));
+		Assert.That(sawChange.WaitOne(5000));
 		Clipboard.ClipboardUpdate -= OnUpdate;
 
 		void OnUpdate(object? sender, EventArgs e) => sawChange.Set();

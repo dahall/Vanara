@@ -19,7 +19,7 @@ public class RegTests
 		m.SubkeyChanged += (s, e) => { TestContext.WriteLine("Subkey changed."); evKey.Set(); };
 
 		using var k = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(subkey, true);
-		Assert.NotNull(k);
+		Assert.That(k, Is.Not.Null);
 		k!.DeleteSubKeyTree(subkey2, false);
 		m.EnableRaisingEvents = true;
 

@@ -1582,7 +1582,7 @@ public static partial class NtDll
 			if (aType == typeof(SYSTEM_PROCESS_INFORMATION) && SystemInformationClass == SYSTEM_INFORMATION_CLASS.SystemProcessInformation)
 			{
 				var retList = new List<SYSTEM_PROCESS_INFORMATION>();
-				var pi = new SYSTEM_PROCESS_INFORMATION();
+				SYSTEM_PROCESS_INFORMATION pi;
 				var ptr = mem.DangerousGetHandle();
 				do
 				{
@@ -1594,7 +1594,7 @@ public static partial class NtDll
 			}
 			var cnt = Math.DivRem(len, Marshal.SizeOf(aType), out var res);
 			if (res != 0) throw new InvalidCastException("Reported size of object does not match query.");
-			return (T?)mem.InvokeGenericMethod("ToArray", new[] { aType }, new[] { typeof(int), typeof(int) }, new object[] { (int)cnt, 0 });
+			return (T?)mem.InvokeGenericMethod("ToArray", [aType], [typeof(int), typeof(int)], [(int)cnt, 0]);
 		}
 		return mem.ToStructure<T>();
 	}
@@ -1991,7 +1991,6 @@ public static partial class NtDll
 	NtQueryAttributesFile
 	NtQueryDirectoryFile
 	NtQueryInformationEnlistment
-	NtQueryInformationFile
 	NtQueryInformationProcess
 	NtQueryInformationResourceManager
 	NtQueryInformationThread

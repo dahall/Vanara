@@ -15,7 +15,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device2
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device2")]
 	[ComImport, Guid("30baa41e-b15b-475c-a0bb-1af5c5b64328"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device2 : ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device2 : ID3D12Device1
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -448,7 +448,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap HRESULT
 		// CreateDescriptorHeap( [in] const D3D12_DESCRIPTOR_HEAP_DESC *pDescriptorHeapDesc, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [Out] IntPtr ppvHeap);
 
 		/// <summary>
 		/// Gets the size of the handle increment for the given type of descriptor heap. This value is typically used to increment a handle
@@ -1820,7 +1820,7 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[]? pLayouts,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? pNumRows,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[]? pRowSizeInBytes,
-			[Out, Optional] StructPointer<ulong> pTotalBytes);
+			out ulong pTotalBytes);
 
 		/// <summary>Creates a query heap. A query heap contains an array of queries.</summary>
 		/// <param name="pDesc">
@@ -2213,6 +2213,31 @@ public static partial class D3D12
 		HRESULT CreatePipelineState(in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
 	}
 
+	/// <summary>Creates a pipeline state object from a pipeline state stream description.</summary>
+	/// <typeparam name="T">The type of the pipeline state interface (<c>ID3D12PipelineState</c>).</typeparam>
+	/// <param name="dev">The <see cref="ID3D12Device2" /> instance.</param>
+	/// <param name="pDesc">A <c>D3D12_PIPELINE_STATE_STREAM_DESC</c> structure that describes the pipeline state.</param>
+	/// <param name="ppPipelineState"><para>
+	/// A value that receives the <c>ID3D12PipelineState</c> interface for the pipeline state object.
+	/// </para>
+	/// <para>The pipeline state object is an immutable state object. It contains no methods.</para></param>
+	/// <returns>
+	/// This method returns <b>E_OUTOFMEMORY</b> if there is insufficient memory to create the pipeline state object. See <c>Direct3D 12
+	/// Return Codes</c> for other possible return values.
+	/// </returns>
+	/// <remarks>
+	/// This function takes the pipeline description as a <c>D3D12_PIPELINE_STATE_STREAM_DESC</c> and combines the functionality of the
+	/// <c>ID3D12Device::CreateGraphicsPipelineState</c> and <c>ID3D12Device::CreateComputePipelineState</c> functions, which take their
+	/// pipeline description as the less-flexible <c>D3D12_GRAPHICS_PIPELINE_STATE_DESC</c> and <c>D3D12_COMPUTE_PIPELINE_STATE_DESC</c>
+	/// structs, respectively.
+	/// </remarks>
+	public static HRESULT CreatePipelineState<T>(this ID3D12Device2 dev, in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, out T? ppPipelineState) where T : class
+	{
+		var hr = dev.CreatePipelineState(pDesc, typeof(T).GUID, out var ppv);
+		ppPipelineState = hr.Succeeded ? (T)ppv! : null;
+		return hr;
+	}
+
 	/// <summary>
 	/// <para>
 	/// Represents a virtual adapter. This interface extends <c>ID3D12Device2</c> to support the creation of special-purpose diagnostic
@@ -2225,7 +2250,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device3
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device3")]
 	[ComImport, Guid("81dadc15-2bad-4392-93c5-101345c4aa98"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device3 : ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device3 : ID3D12Device2
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -2658,7 +2683,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap HRESULT
 		// CreateDescriptorHeap( [in] const D3D12_DESCRIPTOR_HEAP_DESC *pDescriptorHeapDesc, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [Out] IntPtr ppvHeap);
 
 		/// <summary>
 		/// Gets the size of the handle increment for the given type of descriptor heap. This value is typically used to increment a handle
@@ -4030,7 +4055,7 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[]? pLayouts,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? pNumRows,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[]? pRowSizeInBytes,
-			[Out, Optional] StructPointer<ulong> pTotalBytes);
+			out ulong pTotalBytes);
 
 		/// <summary>Creates a query heap. A query heap contains an array of queries.</summary>
 		/// <param name="pDesc">
@@ -4575,7 +4600,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device4
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device4")]
 	[ComImport, Guid("e865df17-a9ee-46f9-a463-3098315aa2e5"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device4 : ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device4 : ID3D12Device3
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -5008,7 +5033,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap HRESULT
 		// CreateDescriptorHeap( [in] const D3D12_DESCRIPTOR_HEAP_DESC *pDescriptorHeapDesc, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [Out] IntPtr ppvHeap);
 
 		/// <summary>
 		/// Gets the size of the handle increment for the given type of descriptor heap. This value is typically used to increment a handle
@@ -6380,7 +6405,7 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[]? pLayouts,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? pNumRows,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[]? pRowSizeInBytes,
-			[Out, Optional] StructPointer<ulong> pTotalBytes);
+			out ulong pTotalBytes);
 
 		/// <summary>Creates a query heap. A query heap contains an array of queries.</summary>
 		/// <param name="pDesc">
@@ -7329,7 +7354,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12device5
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Device5")]
 	[ComImport, Guid("8b4f173b-2fea-4b80-8f58-4307191ab95d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Device5 : ID3D12Device4, ID3D12Device3, ID3D12Device2, ID3D12Device1, ID3D12Device, ID3D12Object
+	public interface ID3D12Device5 : ID3D12Device4
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -7762,7 +7787,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createdescriptorheap HRESULT
 		// CreateDescriptorHeap( [in] const D3D12_DESCRIPTOR_HEAP_DESC *pDescriptorHeapDesc, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT CreateDescriptorHeap(in D3D12_DESCRIPTOR_HEAP_DESC pDescriptorHeapDesc, in Guid riid, [Out] IntPtr ppvHeap);
 
 		/// <summary>
 		/// Gets the size of the handle increment for the given type of descriptor heap. This value is typically used to increment a handle
@@ -9134,7 +9159,7 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_PLACED_SUBRESOURCE_FOOTPRINT[]? pLayouts,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? pNumRows,
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[]? pRowSizeInBytes,
-			[Out, Optional] StructPointer<ulong> pTotalBytes);
+			out ulong pTotalBytes);
 
 		/// <summary>Creates a query heap. A query heap contains an array of queries.</summary>
 		/// <param name="pDesc">
@@ -10246,5 +10271,31 @@ public static partial class D3D12
 		[PreserveSig]
 		D3D12_DRIVER_MATCHING_IDENTIFIER_STATUS CheckDriverMatchingIdentifier(D3D12_SERIALIZED_DATA_TYPE SerializedDataType,
 			in D3D12_SERIALIZED_DATA_DRIVER_MATCHING_IDENTIFIER pIdentifierToCheck);
+	}
+
+	/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
+	/// <param name="dev">The <see cref="ID3D12Device5"/> instance.</param>
+	/// <param name="pDesc">The description of the state object to create.</param>
+	/// <param name="ppStateObject">The returned state object.</param>
+	/// <returns>
+	/// <para>Returns S_OK if successful; otherwise, returns one of the following values:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>E_INVALIDARG if one of the input parameters is invalid.</description>
+	/// </item>
+	/// <item>
+	/// <description>E_OUTOFMEMORY if sufficient memory is not available to create the handle.</description>
+	/// </item>
+	/// <item>
+	/// <description>Possibly other error codes that are described in the <c>Direct3D 12 Return Codes</c> topic.</description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	public static HRESULT CreateStateObject(this ID3D12Device5 dev, [In] D3D12_STATE_OBJECT_DESC_MGD pDesc, out ID3D12StateObject? ppStateObject)
+	{
+		var hr = dev.CreateStateObject(pDesc.GetUnmanaged(out var mem), typeof(ID3D12StateObject).GUID, out var ret);
+		ppStateObject = hr.Succeeded ? (ID3D12StateObject)ret! : null;
+		mem.Dispose();
+		return hr;
 	}
 }

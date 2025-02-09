@@ -105,13 +105,28 @@ public partial class User32Tests
 		int WriteStr(string o) { StringHelper.Write(o + '\0', lpdt.DangerousGetHandle().Offset(lpw), out var nchar, true, CharSet.Unicode, lpdt.Size - lpw); return nchar; }
 	}
 
-	[Test()]
+	[Test]
+	public void CreateWindowExTest()
+	{
+		WindowClass wc = new("MyWindowClass");
+		SafeCoTaskMemHandle mem = new(128);
+		SafeHWND wnd = new(IntPtr.Zero, false);
+		Assert.That(wnd = CreateWindowEx(0, wc.ClassName, "1234567890", WindowStyles.WS_OVERLAPPEDWINDOW, lpParam: mem), ResultIs.ValidHandle);
+		Assert.That(GetWindowTextLength(wnd), Is.EqualTo(10));
+		Assert.That(SetWindowText(wnd, "Hello, World!\0"));
+		Assert.That(GetWindowTextLength(wnd), Is.EqualTo(13));
+		StringBuilder sb = new(256);
+		Assert.That(GetWindowText(wnd, sb, sb.Capacity), Is.EqualTo(13));
+		Assert.That(sb.ToString(), Is.EqualTo("Hello, World!"));
+	}
+
+	[Test]
 	public void DrawTextTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void ExitWindowsExTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void GetClientRectTest() => throw new NotImplementedException();
 
 	[Test]
@@ -147,46 +162,48 @@ public partial class User32Tests
 		}
 	}
 
-	[Test()]
-	public void GetWindowLong32Test() => throw new NotImplementedException();
+	[Test]
+	public void GetSetWindowLongTest()
+	{
+		var s = WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPSIBLINGS;
+		WindowClass wc = new("MyWindowClass");
+		SafeHWND wnd = CreateWindowEx(0, wc.ClassName, "1234567890", s);
+		Assert.That(GetWindowLong<WindowStyles>(wnd, WindowLongFlags.GWL_STYLE), Is.EqualTo(s));
+		SetWindowLong(wnd, WindowLongFlags.GWL_STYLE, (int)(s | WindowStyles.WS_DISABLED));
+		Assert.That(GetWindowLong<WindowStyles>(wnd, WindowLongFlags.GWL_STYLE), Is.EqualTo(s | WindowStyles.WS_DISABLED));
+	}
 
-	[Test()]
-	public void GetWindowLongPtrTest() => throw new NotImplementedException();
-
-	[Test()]
-	public void GetWindowLongTest() => throw new NotImplementedException();
-
-	[Test()]
+	[Test]
 	public void GetWindowRectTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void InvalidateRectTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void LoadImageTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void LoadStringTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void LoadStringTest1() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void LockWorkStationTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void MapWindowPointsTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void MapWindowPointsTest1() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void MapWindowPointsTest2() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void MB_GetStringTest()
 	{
-		Assert.NotNull((string?)MB_GetString(1));
+		Assert.That((string?)MB_GetString(1), Is.Not.Null);
 		TestContext.WriteLine((string?)MB_GetString(1));
 	}
 
@@ -305,19 +322,19 @@ public partial class User32Tests
 		Assert.That(dlg.controls[1].title.name, Is.EqualTo(dlg2!.controls[1].title.name));
 	}
 
-	[Test()]
+	[Test]
 	public void RealGetWindowClassTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void RegisterHotKeyTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void RegisterWindowMessageTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void ScreenToClientTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void SendMessageTest()
 	{
 		// WM_ERASEBKGND
@@ -356,7 +373,7 @@ public partial class User32Tests
 		SendMessage(default, ButtonMessage.BCM_SETDROPDOWNSTATE, true);
 	}
 
-	[Test()]
+	[Test]
 	public void SendMessageTest1()
 	{
 		var length = 256;
@@ -365,45 +382,40 @@ public partial class User32Tests
 		TestContext.WriteLine(sb);
 	}
 
-	//public static IntPtr SendMessage<TMsg, THandle>(HWND hwnd, TMsg msg, THandle wParam) where TMsg : struct, IConvertible where THandle : IHandle
-	//	=> SendMessage(hwnd, Convert.ToUInt32(msg), (IntPtr)wParam, IntPtr.Zero);
-	[Test()]
+	[Test]
 	public void SendMessageTest2() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void SendMessageTest3() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void SendMessageTest4() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void SendMessageTest5() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void SendMessageTest6() => throw new NotImplementedException();
 
-	[Test()]
-	public void SetWindowLongTest() => throw new NotImplementedException();
-
-	[Test()]
+	[Test]
 	public void SetWindowPosTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void SetWindowsHookExTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void SetWindowTextTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void ShutdownBlockReasonCreateTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void ShutdownBlockReasonDestroyTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void ShutdownBlockReasonQueryTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void ShutdownBlockReasonQueryTest1() => throw new NotImplementedException();
 
 	[Test]
@@ -545,13 +557,13 @@ public partial class User32Tests
 		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)sb.Length, sb.ToString(), SPIF.SPIF_SENDCHANGE));
 	}
 
-	[Test()]
+	[Test]
 	public void UnhookWindowsHookExTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void UnregisterHotKeyTest() => throw new NotImplementedException();
 
-	[Test()]
+	[Test]
 	public void WindowFromPointTest() => throw new NotImplementedException();
 
 	[Test]
@@ -565,7 +577,7 @@ public partial class User32Tests
 				System.Threading.Thread.Sleep(20);
 		}
 		timer.Stop();
-		Assert.True(gotMsg);
+		Assert.That(gotMsg);
 
 		bool meth(HWND hwnd, uint uMsg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
 		{

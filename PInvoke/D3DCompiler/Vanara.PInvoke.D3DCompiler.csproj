@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <ProjectExtensions>
-    <SupportedDlls>D3DCompiler.dll</SupportedDlls>
+    <SupportedDlls>d3dcompiler_47.dll;dxilconv.dll</SupportedDlls>
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows D3DCompiler.dll.</Description>
@@ -12,13 +12,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-D3DCompile D3DCompile2 D3DCompileFromFile D3DCompressShaders D3DCreateBlob D3DCreateFunctionLinkingGraph D3DCreateLinker D3DDecompressShaders D3DDisassemble D3DDisassemble10Effect D3DDisassembleRegion D3DGetBlobPart D3DGetDebugInfo D3DGetInputAndOutputSignatureBlob D3DGetInputSignatureBlob D3DGetOutputSignatureBlob D3DGetTraceInstructionOffsets D3DLoadModule D3DPreprocess D3DReadFileToBlob D3DReflect D3DReflectLibrary D3DSetBlobPart D3DStripShader D3DWriteBlobToFile
+D3DCompile D3DCompile2 D3DCompileFromFile D3DCompressShaders D3DCreateBlob D3DCreateFunctionLinkingGraph D3DCreateLinker D3DDecompressShaders D3DDisassemble D3DDisassemble10Effect D3DDisassembleRegion D3DGetBlobPart D3DGetDebugInfo D3DGetInputAndOutputSignatureBlob D3DGetInputSignatureBlob D3DGetOutputSignatureBlob D3DGetTraceInstructionOffsets D3DLoadModule D3DPreprocess D3DReadFileToBlob D3DReflect D3DReflectLibrary D3DSetBlobPart D3DStripShader D3DWriteBlobToFile DxcCreateInstance DxcCreateInstance2
 
 Structures
-D3D11_FUNCTION_DESC D3D11_LIBRARY_DESC D3D11_PARAMETER_DESC D3D11_SHADER_BUFFER_DESC D3D11_SHADER_DESC D3D11_SHADER_INPUT_BIND_DESC D3D11_SHADER_TYPE_DESC D3D11_SHADER_VARIABLE_DESC D3D11_SIGNATURE_PARAMETER_DESC D3D_SHADER_DATA
+D3D11_FUNCTION_DESC D3D11_LIBRARY_DESC D3D11_PARAMETER_DESC D3D11_SHADER_BUFFER_DESC D3D11_SHADER_DESC D3D11_SHADER_INPUT_BIND_DESC D3D11_SHADER_TYPE_DESC D3D11_SHADER_VARIABLE_DESC D3D11_SIGNATURE_PARAMETER_DESC D3D_SHADER_DATA DxcArgPair DxcBuffer DxcDefine DxcShaderHash DXC_PART
 
 Interfaces
-ID3D11FunctionLinkingGraph ID3D11FunctionParameterReflection ID3D11FunctionReflection ID3D11LibraryReflection ID3D11Linker ID3D11LinkingNode ID3D11Module ID3D11ModuleInstance ID3D11ShaderReflection ID3D11ShaderReflectionConstantBuffer ID3D11ShaderReflectionType ID3D11ShaderReflectionVariable
+ID3D11FunctionLinkingGraph ID3D11FunctionParameterReflection ID3D11FunctionReflection ID3D11LibraryReflection ID3D11Linker ID3D11LinkingNode ID3D11Module ID3D11ModuleInstance ID3D11ShaderReflection ID3D11ShaderReflectionConstantBuffer ID3D11ShaderReflectionType ID3D11ShaderReflectionVariable IDxcAssembler IDxcBlobEncoding IDxcBlobUtf8 IDxcBlobWide IDxcCompiler IDxcCompiler2 IDxcCompiler3 IDxcCompilerArgs IDxcContainerBuilder IDxcContainerReflection IDxcExtraOutputs IDxcIncludeHandler IDxcLibrary IDxcLinker IDxcOperationResult IDxcOptimizer IDxcOptimizerPass IDxcPdbUtils IDxcPdbUtils2 IDxcResult IDxcUtils IDxcValidator IDxcValidator2 IDxcVersionInfo IDxcVersionInfo2 IDxcVersionInfo3
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
@@ -26,6 +26,7 @@ ID3D11FunctionLinkingGraph ID3D11FunctionParameterReflection ID3D11FunctionRefle
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\DXGI\Vanara.PInvoke.DXGI.csproj" />
+    <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

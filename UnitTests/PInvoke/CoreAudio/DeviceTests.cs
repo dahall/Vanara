@@ -55,7 +55,7 @@ public partial class CoreAudioTests
 			void TestActivation<T>() where T : class
 			{
 				Assert.That(d.Activate(typeof(T).GUID, CLSCTX.CLSCTX_INPROC_SERVER, default, out var objInterface), ResultIs.Successful);
-				Assert.IsNotNull(objInterface as T);
+				Assert.That(objInterface as T, Is.Not.Null);
 				Marshal.ReleaseComObject(objInterface!);
 			}
 		}
@@ -71,7 +71,7 @@ public partial class CoreAudioTests
 		{
 			string? strId = null;
 			Assert.That(() => strId = d.GetId(), Throws.Nothing);
-			Assert.IsNotNull(strId);
+			Assert.That(strId, Is.Not.Null);
 			TestContext.WriteLine($"Id:{d.GetId()}, State:{d.GetState()}");
 		}
 	}
@@ -113,7 +113,7 @@ public partial class CoreAudioTests
 			// Verify the count can be received.
 			var propertyCount = uint.MaxValue;
 			Assert.That(() => propertyCount = propertyStore!.GetCount(), Throws.Nothing);
-			Assert.AreNotEqual(uint.MaxValue, propertyCount, "The property count was not received.");
+			Assert.That(uint.MaxValue, Is.Not.EqualTo(propertyCount), "The property count was not received.");
 
 			// Get each property key, then get value.
 			for (uint i = 0; i < propertyCount; i++)
@@ -143,22 +143,22 @@ public partial class CoreAudioTests
 		var allRenderDevices = enumerator.Item.EnumAudioEndpoints(EDataFlow.eRender, DEVICE_STATE.DEVICE_STATEMASK_ALL);
 		var allDevices = enumerator.Item.EnumAudioEndpoints(EDataFlow.eAll, DEVICE_STATE.DEVICE_STATEMASK_ALL);
 
-		Assert.IsNotNull(allCaptureDevices, "The IMMDeviceCollection object is null.");
-		Assert.IsNotNull(allRenderDevices, "The IMMDeviceCollection object is null.");
-		Assert.IsNotNull(allDevices, "The IMMDeviceCollection object is null.");
+		Assert.That(allCaptureDevices, Is.Not.Null, "The IMMDeviceCollection object is null.");
+		Assert.That(allRenderDevices, Is.Not.Null, "The IMMDeviceCollection object is null.");
+		Assert.That(allDevices, Is.Not.Null, "The IMMDeviceCollection object is null.");
 
 		uint captureCount = uint.MaxValue, renderCount = uint.MaxValue, allCount = uint.MaxValue;
 
 		Assert.That(() => captureCount = allCaptureDevices!.GetCount(), Throws.Nothing);
-		Assert.AreNotEqual(uint.MaxValue, captureCount, "Device count was not received.");
+		Assert.That(uint.MaxValue, Is.Not.EqualTo(captureCount), "Device count was not received.");
 
 		Assert.That(() => renderCount = allRenderDevices!.GetCount(), Throws.Nothing);
-		Assert.AreNotEqual(uint.MaxValue, renderCount, "Device count was not received.");
+		Assert.That(uint.MaxValue, Is.Not.EqualTo(renderCount), "Device count was not received.");
 
 		Assert.That(() => allCount = allDevices!.GetCount(), Throws.Nothing);
-		Assert.AreNotEqual(uint.MaxValue, allDevices, "Device count was not received.");
+		Assert.That(uint.MaxValue, Is.Not.EqualTo(allDevices), "Device count was not received.");
 
-		Assert.AreEqual(allCount, captureCount + renderCount, "The combined number of capture and render devices is not equal to the total device count.");
+		Assert.That(allCount, Is.EqualTo(captureCount + renderCount), "The combined number of capture and render devices is not equal to the total device count.");
 	}
 
 	/// <summary>Tests the all devices from index zero to [count - 1] can be received with S_OK HRESULT and each device is not null.</summary>
@@ -169,7 +169,7 @@ public partial class CoreAudioTests
 
 		IMMDeviceCollection? allDevices = null;
 		Assert.That(() => allDevices = enumerator.Item.EnumAudioEndpoints(EDataFlow.eAll, DEVICE_STATE.DEVICE_STATEMASK_ALL), Throws.Nothing);
-		Assert.IsNotNull(allDevices, "The IMMDeviceCollection object is null");
+		Assert.That(allDevices, Is.Not.Null, "The IMMDeviceCollection object is null");
 
 		uint count = 0;
 		Assert.That(() => count = allDevices!.GetCount(), Throws.Nothing);
@@ -209,7 +209,7 @@ public partial class CoreAudioTests
 		using var enumerator = ComReleaserFactory.Create(new IMMDeviceEnumerator());
 		IMMDevice? device = null;
 		Assert.That(() => device = enumerator.Item.GetDefaultAudioEndpoint(flow, role), good ? Throws.Nothing : Throws.Exception);
-		if (good) Assert.IsNotNull(device);
+		if (good) Assert.That(device, Is.Not.Null);
 	}
 
 	/// <summary>Tests that the GetDevice method can get each audio device individually, by ID.</summary>
@@ -223,19 +223,19 @@ public partial class CoreAudioTests
 			// Get the device ID.
 			string? deviceId = null;
 			Assert.That(() => deviceId = device.GetId(), Throws.Nothing);
-			Assert.IsNotNull(deviceId, "The device string is null.");
+			Assert.That(deviceId, Is.Not.Null, "The device string is null.");
 
 			// Get the IMMDevice directly from the ID.
 			IMMDevice? deviceFromId = null;
 			Assert.That(() => deviceFromId = enumerator.Item.GetDevice(deviceId!), Throws.Nothing);
-			Assert.IsNotNull(deviceFromId, "The IMMDevice object is null.");
+			Assert.That(deviceFromId, Is.Not.Null, "The IMMDevice object is null.");
 
 			// Ensure the IDs of each device match.
 			string? deviceId2 = null;
 			Assert.That(() => deviceId2 = deviceFromId!.GetId(), Throws.Nothing);
-			Assert.IsNotNull(deviceId2, "The device string is null.");
+			Assert.That(deviceId2, Is.Not.Null, "The device string is null.");
 
-			Assert.AreEqual(deviceId, deviceId2, "The device IDs are not equal.");
+			Assert.That(deviceId, Is.EqualTo(deviceId2), "The device IDs are not equal.");
 		}
 	}
 
@@ -298,11 +298,11 @@ public partial class CoreAudioTests
 		{
 			// Cast compiles to QueryInterface call.
 			var endpoint = (IMMEndpoint)device;
-			Assert.IsNotNull(endpoint);
+			Assert.That(endpoint, Is.Not.Null);
 
 			EDataFlow dataFlow = EDataFlow.eAll;
 			Assert.That(() => dataFlow = endpoint.GetDataFlow(), Throws.Nothing);
-			Assert.AreNotEqual(EDataFlow.eAll, dataFlow);
+			Assert.That(EDataFlow.eAll, Is.Not.EqualTo(dataFlow));
 		}
 	}
 
@@ -335,7 +335,7 @@ public partial class CoreAudioTests
 				Assert.That(pv.vt, Is.EqualTo(VARTYPE.VT_BLOB));
 				var format = pv.blob.pBlobData.ToStructure<WAVEFORMATEX>(pv.blob.cbSize);
 				if (format.nChannels != 0 && format.nSamplesPerSec != 0 && format.wBitsPerSample != 0)
-					Assert.AreEqual(format.nChannels * format.nSamplesPerSec * format.wBitsPerSample, format.nAvgBytesPerSec * 8, "The wave format was not valid.");
+					Assert.That(format.nChannels * format.nSamplesPerSec * format.wBitsPerSample, Is.EqualTo(format.nAvgBytesPerSec * 8), "The wave format was not valid.");
 			}
 
 			return pv.Value;

@@ -306,7 +306,7 @@ public static partial class D3DCompiler
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11shader/nf-d3d11shader-id3d11functionlinkinggraph-getlasterror HRESULT
 		// GetLastError( [out, optional] ID3DBlob **ppErrorBuffer );
 		[PreserveSig]
-		HRESULT GetLastError(out ID3D10Blob ppErrorBuffer);
+		HRESULT GetLastError(out ID3DBlob ppErrorBuffer);
 
 		/// <summary>Generates Microsoft High Level Shader Language (HLSL) shader code that represents the function-linking-graph.</summary>
 		/// <param name="uFlags">
@@ -328,7 +328,7 @@ public static partial class D3DCompiler
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11shader/nf-d3d11shader-id3d11functionlinkinggraph-generatehlsl HRESULT
 		// GenerateHlsl( [in] UINT uFlags, [out] ID3DBlob **ppBuffer );
 		[PreserveSig]
-		HRESULT GenerateHlsl([Optional] uint uFlags, out ID3D10Blob ppBuffer);
+		HRESULT GenerateHlsl([Optional] uint uFlags, out ID3DBlob ppBuffer);
 	}
 
 	/// <summary>
@@ -603,7 +603,7 @@ public static partial class D3DCompiler
 		// [out, optional] ID3DBlob **ppErrorBuffer );
 		[PreserveSig]
 		HRESULT Link([In] ID3D11ModuleInstance pEntry, [MarshalAs(UnmanagedType.LPStr)] string pEntryName, [MarshalAs(UnmanagedType.LPStr)] string pTargetName,
-			[Optional] uint uFlags, out ID3D10Blob ppShaderBlob, [Out, Optional] IntPtr ppErrorBuffer);
+			[Optional] uint uFlags, out ID3DBlob ppShaderBlob, [Out, Optional] IntPtr ppErrorBuffer);
 
 		/// <summary>Adds an instance of a library module to be used for linking.</summary>
 		/// <param name="pLibraryMI">
@@ -1813,13 +1813,13 @@ public static partial class D3DCompiler
 	/// </returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d11shader/nf-d3d11shader-id3d11functionlinkinggraph-createmoduleinstance
 	// HRESULT CreateModuleInstance( [out] ID3D11ModuleInstance **ppModuleInstance, [out, optional] ID3DBlob **ppErrorBuffer );
-	public static HRESULT CreateModuleInstance(this ID3D11FunctionLinkingGraph graph, out ID3D11ModuleInstance ppModuleInstance, out ID3D10Blob? ppErrorBuffer)
+	public static HRESULT CreateModuleInstance(this ID3D11FunctionLinkingGraph graph, out ID3D11ModuleInstance ppModuleInstance, out ID3DBlob? ppErrorBuffer)
 	{
 		unsafe
 		{
 			IntPtr pBlob = IntPtr.Zero;
 			var hr = graph.CreateModuleInstance(out ppModuleInstance, new IntPtr(&pBlob));
-			ppErrorBuffer = hr.Failed ? null : (ID3D10Blob)Marshal.GetObjectForIUnknown(pBlob);
+			ppErrorBuffer = hr.Failed ? null : (ID3DBlob)Marshal.GetObjectForIUnknown(pBlob);
 			return hr;
 		}
 	}
@@ -1851,13 +1851,13 @@ public static partial class D3DCompiler
 	/// <para>Returns S_OK if successful; otherwise, returns one of the Direct3D 11 Return Codes.</para>
 	/// </returns>
 	public static HRESULT Link(this ID3D11Linker linker, [In] ID3D11ModuleInstance pEntry, string pEntryName, string pTargetName,
-		out ID3D10Blob ppShaderBlob, out ID3D10Blob? ppErrorBuffer)
+		out ID3DBlob ppShaderBlob, out ID3DBlob? ppErrorBuffer)
 	{
 		unsafe
 		{
 			IntPtr pErr = IntPtr.Zero;
 			var hr = linker.Link(pEntry, pEntryName, pTargetName, 0, out ppShaderBlob, new IntPtr(&pErr));
-			ppErrorBuffer = hr.Failed ? null : (ID3D10Blob)Marshal.GetObjectForIUnknown(pErr);
+			ppErrorBuffer = hr.Failed ? null : (ID3DBlob)Marshal.GetObjectForIUnknown(pErr);
 			return hr;
 		}
 	}

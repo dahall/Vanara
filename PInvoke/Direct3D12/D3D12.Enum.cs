@@ -27,20 +27,17 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NE:d3d12.D3D_ROOT_SIGNATURE_VERSION")]
 	public enum D3D_ROOT_SIGNATURE_VERSION
 	{
-		/// <summary>
-		/// <para>Value: 0x1 Version one of root signature layout.</para>
-		/// </summary>
+		/// <summary>Value: 0x1 Version one of root signature layout.</summary>
 		D3D_ROOT_SIGNATURE_VERSION_1 = 1,
 
-		/// <summary>
-		/// <para>Value: 0x1 Version one of root signature layout.</para>
-		/// </summary>
+		/// <summary>Value: 0x1 Version one of root signature layout.</summary>
 		D3D_ROOT_SIGNATURE_VERSION_1_0 = 1,
 
-		/// <summary>
-		/// <para>Value: 0x2 Version 1.1 of root signature layout. Refer to Root Signature Version 1.1.</para>
-		/// </summary>
+		/// <summary>Value: 0x2 Version 1.1 of root signature layout. Refer to Root Signature Version 1.1.</summary>
 		D3D_ROOT_SIGNATURE_VERSION_1_1 = 2,
+
+		/// <summary>Value: 0x3 Version 1.2 of root signature layout. Refer to Root Signature Version 1.2.</summary>
+		D3D_ROOT_SIGNATURE_VERSION_1_2 = 0x3
 	}
 
 	/// <summary>Undocumented</summary>
@@ -117,6 +114,18 @@ public static partial class D3D12
 		/// </para>
 		/// </summary>
 		D3D_SHADER_MODEL_6_7 = 0x67,
+
+		/// <summary>
+		/// <para>Value: 0x68 
+		/// </para>
+		/// </summary>
+		D3D_SHADER_MODEL_6_8 = 0x68,
+
+		/// <summary>
+		/// <para>Value: 0x69 
+		/// </para>
+		/// </summary>
+		D3D_SHADER_MODEL_6_9 = 0x69,
 	}
 
 	/// <summary>Defines constants that specify render/compute GPU operations.</summary>
@@ -1137,7 +1146,7 @@ public static partial class D3D12
 		/// <summary>
 		/// Value: 1
 		/// Specifies a command buffer that can be executed only directly via a direct command list. A bundle command list inherits all GPU
-		/// {D255958A-8513-4226-94B9-080D98F904A1}{D255958A-8513-4226-94B9-080D98F904A1}state (except for the currently set pipeline state object and primitive topology).
+		/// state (except for the currently set pipeline state object and primitive topology).
 		/// </summary>
 		D3D12_COMMAND_LIST_TYPE_BUNDLE,
 
@@ -1256,7 +1265,7 @@ public static partial class D3D12
 		/// <summary>
 		/// <para>Value: 1 Never pass the comparison.</para>
 		/// </summary>
-		D3D12_COMPARISON_FUNC_NEVER,
+		D3D12_COMPARISON_FUNC_NEVER = 1,
 
 		/// <summary>
 		/// <para>Value: 2 If the source data is less than the destination data, the comparison passes.</para>
@@ -2168,7 +2177,8 @@ public static partial class D3D12
 		/// value is D3D12_FEATURE_DATA_D3D12_OPTIONS.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS))]
+		D3D12_FEATURE_D3D12_OPTIONS = 0,
 
 		/// <summary>
 		/// <para>Value: 1 
@@ -2178,12 +2188,14 @@ public static partial class D3D12
 		/// <note>This value has been superseded by the <b>D3D_FEATURE_DATA_ARCHITECTURE1</b> value. If your application targets Windows 10,
 		/// version 1703 (Creators' Update) or higher, then use the <b>D3D_FEATURE_DATA_ARCHITECTURE1</b> value instead.</note>
 		/// </summary>
-		D3D12_FEATURE_ARCHITECTURE,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_ARCHITECTURE))]
+		D3D12_FEATURE_ARCHITECTURE = 1,
 
 		/// <summary>
 		/// <para>Value: 2 Indicates a query for info about the feature levels supported. The corresponding data structure for this value is D3D12_FEATURE_DATA_FEATURE_LEVELS.</para>
 		/// </summary>
-		D3D12_FEATURE_FEATURE_LEVELS,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_FEATURE_LEVELS))]
+		D3D12_FEATURE_FEATURE_LEVELS = 2,
 
 		/// <summary>
 		/// <para>Value: 3 
@@ -2191,7 +2203,8 @@ public static partial class D3D12
 		/// structure for this value is D3D12_FEATURE_DATA_FORMAT_SUPPORT.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_FORMAT_SUPPORT,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_FORMAT_SUPPORT))]
+		D3D12_FEATURE_FORMAT_SUPPORT = 3,
 
 		/// <summary>
 		/// <para>Value: 4 
@@ -2199,43 +2212,50 @@ public static partial class D3D12
 		/// value is D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS))]
+		D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS = 4,
 
 		/// <summary>
 		/// <para>Value: 5 Indicates a query for the DXGI data format. The corresponding data structure for this value is D3D12_FEATURE_DATA_FORMAT_INFO.</para>
 		/// </summary>
-		D3D12_FEATURE_FORMAT_INFO,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_FORMAT_INFO))]
+		D3D12_FEATURE_FORMAT_INFO = 5,
 
 		/// <summary>
 		/// <para>Value: 6 
 		/// Indicates a query for the GPU's virtual address space limitations. The corresponding data structure for this value is D3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT))]
+		D3D12_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT = 6,
 
 		/// <summary>
 		/// <para>Value: 7 Indicates a query for the supported shader model. The corresponding data structure for this value is D3D12_FEATURE_DATA_SHADER_MODEL.</para>
 		/// </summary>
-		D3D12_FEATURE_SHADER_MODEL,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_SHADER_MODEL))]
+		D3D12_FEATURE_SHADER_MODEL = 7,
 
 		/// <summary>
 		/// <para>Value: 8 
 		/// Indicates a query for the level of support for HLSL 6.0 wave operations. The corresponding data structure for this value is D3D12_FEATURE_DATA_D3D12_OPTIONS1.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS1,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS1))]
+		D3D12_FEATURE_D3D12_OPTIONS1 = 8,
 
 		/// <summary>
 		/// <para>Value: 10 
 		/// Indicates a query for the level of support for protected resource sessions. The corresponding data structure for this value is D3D12_FEATURE_DATA_PROTECTED_RESOURCE_SESSION_SUPPORT.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_PROTECTED_RESOURCE_SESSION_SUPPORT,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_PROTECTED_RESOURCE_SESSION_SUPPORT))]
+		D3D12_FEATURE_PROTECTED_RESOURCE_SESSION_SUPPORT = 10,
 
 		/// <summary>
 		/// <para>Value: 12 Indicates a query for root signature version support. The corresponding data structure for this value is D3D12_FEATURE_DATA_ROOT_SIGNATURE.</para>
 		/// </summary>
-		D3D12_FEATURE_ROOT_SIGNATURE,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_ROOT_SIGNATURE))]
+		D3D12_FEATURE_ROOT_SIGNATURE = 12,
 
 		/// <summary>
 		/// <para>Value: 16 
@@ -2245,7 +2265,8 @@ public static partial class D3D12
 		/// <note>This value supersedes the <b>D3D_FEATURE_DATA_ARCHITECTURE</b> value. If your application targets Windows 10, version 1703
 		/// (Creators' Update) or higher, then use <b>D3D_FEATURE_DATA_ARCHITECTURE1</b>.</note>
 		/// </summary>
-		D3D12_FEATURE_ARCHITECTURE1,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_ARCHITECTURE1))]
+		D3D12_FEATURE_ARCHITECTURE1 = 16,
 
 		/// <summary>
 		/// <para>Value: 18 
@@ -2253,12 +2274,14 @@ public static partial class D3D12
 		/// structure for this value is D3D12_FEATURE_DATA_D3D12_OPTIONS2.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS2,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS2))]
+		D3D12_FEATURE_D3D12_OPTIONS2 = 18,
 
 		/// <summary>
 		/// <para>Value: 19 Indicates a query for the level of support for shader caching. The corresponding data structure for this value is D3D12_FEATURE_DATA_SHADER_CACHE.</para>
 		/// </summary>
-		D3D12_FEATURE_SHADER_CACHE,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_SHADER_CACHE))]
+		D3D12_FEATURE_SHADER_CACHE = 19,
 
 		/// <summary>
 		/// <para>Value: 20 
@@ -2266,7 +2289,8 @@ public static partial class D3D12
 		/// structure for this value is D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_COMMAND_QUEUE_PRIORITY,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY))]
+		D3D12_FEATURE_COMMAND_QUEUE_PRIORITY = 20,
 
 		/// <summary>
 		/// <para>Value: 21 
@@ -2274,7 +2298,8 @@ public static partial class D3D12
 		/// barycentrics. The corresponding data structure for this value is D3D12_FEATURE_DATA_D3D12_OPTIONS3.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS3,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS3))]
+		D3D12_FEATURE_D3D12_OPTIONS3 = 21,
 
 		/// <summary>
 		/// <para>Value: 22 
@@ -2282,7 +2307,8 @@ public static partial class D3D12
 		/// structure for this value is D3D12_FEATURE_DATA_EXISTING_HEAPS.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_EXISTING_HEAPS,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_EXISTING_HEAPS))]
+		D3D12_FEATURE_EXISTING_HEAPS = 22,
 
 		/// <summary>
 		/// <para>Value: 23 
@@ -2290,14 +2316,16 @@ public static partial class D3D12
 		/// operations. The corresponding data structure for this value is D3D12_FEATURE_DATA_D3D12_OPTIONS4.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS4,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS4))]
+		D3D12_FEATURE_D3D12_OPTIONS4 = 23,
 
 		/// <summary>
 		/// <para>Value: 24 
 		/// Indicates a query for the level of support for heap serialization. The corresponding data structure for this value is D3D12_FEATURE_DATA_SERIALIZATION.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_SERIALIZATION,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_SERIALIZATION))]
+		D3D12_FEATURE_SERIALIZATION = 24,
 
 		/// <summary>
 		/// <para>Value: 25 
@@ -2305,7 +2333,8 @@ public static partial class D3D12
 		/// The corresponding data structure for this value is D3D12_FEATURE_DATA_CROSS_NODE.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_CROSS_NODE,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_CROSS_NODE))]
+		D3D12_FEATURE_CROSS_NODE = 25,
 
 		/// <summary>
 		/// <para>Value: 27 
@@ -2313,12 +2342,14 @@ public static partial class D3D12
 		/// tracing, and shader-resource view tier 3 tiled resources. The corresponding data structure for this value is D3D12_FEATURE_DATA_D3D12_OPTIONS5.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS5,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS5))]
+		D3D12_FEATURE_D3D12_OPTIONS5 = 27,
 
 		/// <summary>
 		/// <para>Starting with Windows 11 (Build 10.0.22000.194). The corresponding data structure for this value is D3D12_FEATURE_DATA_DISPLAYABLE.</para>
 		/// </summary>
-		D3D12_FEATURE_DISPLAYABLE,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_DISPLAYABLE))]
+		D3D12_FEATURE_DISPLAYABLE = 28,
 
 		/// <summary>
 		/// <para>Value: 30 
@@ -2327,12 +2358,14 @@ public static partial class D3D12
 		/// </para>
 		/// <para>For more info, see Variable-rate shading (VRS), and the Direct3D 12 background processing spec.</para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS6,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS6))]
+		D3D12_FEATURE_D3D12_OPTIONS6 = 30,
 
 		/// <summary>
 		/// <para>Value: 31 Indicates a query for the level of support for metacommands. The corresponding data structure for this value is D3D12_FEATURE_DATA_QUERY_META_COMMAND.</para>
 		/// </summary>
-		D3D12_FEATURE_QUERY_META_COMMAND,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_QUERY_META_COMMAND))]
+		D3D12_FEATURE_QUERY_META_COMMAND = 31,
 
 		/// <summary>
 		/// <para>Value: 32 
@@ -2341,7 +2374,8 @@ public static partial class D3D12
 		/// </para>
 		/// <para>For more info, see the Mesh shader and Sampler feedback specs.</para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS7,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS7))]
+		D3D12_FEATURE_D3D12_OPTIONS7 = 32,
 
 		/// <summary>
 		/// <para>Value: 33 
@@ -2349,7 +2383,8 @@ public static partial class D3D12
 		/// session types. The corresponding data structure for this value is D3D12_FEATURE_DATA_PROTECTED_RESOURCE_SESSION_TYPE_COUNT.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_PROTECTED_RESOURCE_SESSION_TYPE_COUNT,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_PROTECTED_RESOURCE_SESSION_TYPE_COUNT))]
+		D3D12_FEATURE_PROTECTED_RESOURCE_SESSION_TYPE_COUNT = 33,
 
 		/// <summary>
 		/// <para>Value: 34 
@@ -2357,7 +2392,8 @@ public static partial class D3D12
 		/// types. The corresponding data structure for this value is D3D12_FEATURE_DATA_PROTECTED_RESOURCE_SESSION_TYPES.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_PROTECTED_RESOURCE_SESSION_TYPES,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_PROTECTED_RESOURCE_SESSION_TYPES))]
+		D3D12_FEATURE_PROTECTED_RESOURCE_SESSION_TYPES = 34,
 
 		/// <summary>
 		/// <para>Value: 36 
@@ -2365,7 +2401,8 @@ public static partial class D3D12
 		/// corresponding data structure for this value is D3D12_FEATURE_DATA_D3D12_OPTIONS8.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS8,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS8))]
+		D3D12_FEATURE_D3D12_OPTIONS8 = 36,
 
 		/// <summary>
 		/// <para>Value: 37 
@@ -2375,23 +2412,63 @@ public static partial class D3D12
 		/// this value is D3D12_FEATURE_DATA_D3D12_OPTIONS9.
 		/// </para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS9,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS9))]
+		D3D12_FEATURE_D3D12_OPTIONS9 = 37,
 
 		/// <summary>
-		/// <para>
 		/// Starting with Windows 11 (Build 10.0.22000.194), indicates whether or not the SUM combiner can be used, and whether or not
 		/// SV_ShadingRate can be set from a mesh shader. The corresponding data structure for this value is D3D12_FEATURE_DATA_D3D12_OPTIONS10.
-		/// </para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS10,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS10))]
+		D3D12_FEATURE_D3D12_OPTIONS10 = 39,
 
 		/// <summary>
-		/// <para>
 		/// Starting with Windows 11 (Build 10.0.22000.194), indicates whether or not 64-bit integer atomics on resources in descriptor
 		/// heaps are supported. The corresponding data structure for this value is D3D12_FEATURE_DATA_D3D12_OPTIONS11.
-		/// </para>
 		/// </summary>
-		D3D12_FEATURE_D3D12_OPTIONS11,
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS11))]
+		D3D12_FEATURE_D3D12_OPTIONS11 = 40,
+
+		/// <summary/>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS12))]
+		D3D12_FEATURE_D3D12_OPTIONS12 = 41,
+
+		/// <summary/>
+		[CorrespondingType(typeof(D3D12_FEATURE_DATA_D3D12_OPTIONS13))]
+		D3D12_FEATURE_D3D12_OPTIONS13 = 42,
+
+		/// <summary/>
+		D3D12_FEATURE_D3D12_OPTIONS14 = 43,
+
+		/// <summary/>
+		D3D12_FEATURE_D3D12_OPTIONS15 = 44,
+
+		/// <summary/>
+		D3D12_FEATURE_D3D12_OPTIONS16 = 45,
+
+		/// <summary/>
+		D3D12_FEATURE_D3D12_OPTIONS17 = 46,
+
+		/// <summary/>
+		D3D12_FEATURE_D3D12_OPTIONS18 = 47,
+
+		/// <summary/>
+		D3D12_FEATURE_D3D12_OPTIONS19 = 48,
+
+		/// <summary/>
+		D3D12_FEATURE_D3D12_OPTIONS20 = 49,
+
+		/// <summary/>
+		D3D12_FEATURE_PREDICATION = 50,
+
+		/// <summary/>
+		D3D12_FEATURE_PLACED_RESOURCE_SUPPORT_INFO = 51,
+
+		/// <summary/>
+		D3D12_FEATURE_HARDWARE_COPY = 52,
+
+		/// <summary/>
+		D3D12_FEATURE_D3D12_OPTIONS21 = 53
 	}
 
 	/// <summary>Specifies fence options.</summary>
@@ -3556,6 +3633,9 @@ public static partial class D3D12
 		/// </para>
 		/// </summary>
 		D3D12_HEAP_TYPE_CUSTOM,
+
+		/// <summary/>
+		D3D12_HEAP_TYPE_GPU_UPLOAD
 	}
 
 	/// <summary>
@@ -5971,14 +6051,14 @@ public static partial class D3D12
 		/// since that can result in premature cache flushes, or resource layout changes (for example, compress/decompress), causing
 		/// unnecessary pipeline stalls. You should instead transition resources only to the actually-used states.
 		/// </summary>
-		D3D12_RESOURCE_STATE_GENERIC_READ,
+		D3D12_RESOURCE_STATE_GENERIC_READ = 0x1 | 0x2 | 0x40 | 0x80 | 0x200 | 0x800,
 
 		/// <summary>
 		/// <para>Equivalent to</para>
 		/// <para>D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE | D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE</para>
 		/// <para>.</para>
 		/// </summary>
-		D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE = D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE | D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+		D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE = 0x40 | 0x80,
 
 		/// <summary>
 		/// <para>Value: 0 Synonymous with D3D12_RESOURCE_STATE_COMMON.</para>
@@ -6890,6 +6970,25 @@ public static partial class D3D12
 		/// </para>
 		/// </summary>
 		D3D12_STATE_OBJECT_FLAG_ALLOW_EXTERNAL_DEPENDENCIES_ON_LOCAL_DEFINITIONS = 0x2,
+
+		/// <summary>
+		/// The presence of this flag in an executable state object, e.g. raytracing pipeline, allows the state object to be passed into
+		/// AddToStateObject() calls, either as the original state object, or the portion being added.
+		/// <para>
+		/// The presence of this flag in a collection state object means the collection can be imported by executable state objects (e.g.
+		/// raytracing pipelines) regardless of whether they have also set this flag. The absence of this flag in a collection state object
+		/// means the collection can only be imported by executable state objects that also do not set this flag.
+		/// </para>
+		/// </summary>
+		D3D12_STATE_OBJECT_FLAG_ALLOW_STATE_OBJECT_ADDITIONS = 0x4,
+
+		/// <summary>
+		/// All nodes in work graphs in the state object get their global root signature bindings from graphics state as opposed to compute
+		/// state. e.g. pCommandList-&gt;SetGraphicsRoot*() APIs as opposed to pCommandList-&gt;SetComputeRoot*() APIs. This flag must be
+		/// specified for state objects that contain work graphs using graphics nodes. For work graphs that don’t use graphics nodes, this
+		/// flag can be used optionally. It is only available when D3D12_WORK_GRAPHS_TIER_1_1 is supported.
+		/// </summary>
+		D3D12_STATE_OBJECT_FLAG_WORK_GRAPHS_USE_GRAPHICS_STATE_FOR_GLOBAL_ROOT_SIGNATURE = 0x40,
 	}
 
 	/// <summary>Specifies the type of a state object. Use with <c>D3D12_STATE_OBJECT_DESC</c>.</summary>
@@ -6899,14 +6998,24 @@ public static partial class D3D12
 	public enum D3D12_STATE_OBJECT_TYPE
 	{
 		/// <summary>
-		/// <para>Value: 0 Collection state object.</para>
+		/// <para>Value: 0 Collection state object. This can hold individual shaders but not generic program or work graph definitions.</para>
 		/// </summary>
 		D3D12_STATE_OBJECT_TYPE_COLLECTION,
 
 		/// <summary>
-		/// <para>Value: 3 Raytracing pipeline state object.</para>
+		/// <para>
+		/// Value: 3 Raytracing pipeline state object. For now at least, raytracing pipelines can only be defined here, and not in
+		///        EXECUTABLE state objects below.
+		/// </para>
 		/// </summary>
 		D3D12_STATE_OBJECT_TYPE_RAYTRACING_PIPELINE = 3,
+
+		/// <summary>
+		/// State object that holds one or more programs. This could hold zero or more work graphs, as well as zero or more compute,
+		/// graphics and mesh shading programs. A raytracing pipelines are not supported here (though using RayQuery in non-raytracing
+		/// shader stages is fine).
+		/// </summary>
+		D3D12_STATE_OBJECT_TYPE_EXECUTABLE = 4
 	}
 
 	/// <summary>The type of a state subobject. Use with <c>D3D12_STATE_SUBOBJECT</c>.</summary>
@@ -6927,19 +7036,16 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NE:d3d12.D3D12_STATE_SUBOBJECT_TYPE")]
 	public enum D3D12_STATE_SUBOBJECT_TYPE
 	{
-		/// <summary>
-		/// <para>Value: 0 Subobject type is D3D12_STATE_OBJECT_CONFIG.</para>
-		/// </summary>
+		/// <summary>Value: 0 Subobject type is D3D12_STATE_OBJECT_CONFIG.</summary>
+		[CorrespondingType(typeof(D3D12_STATE_OBJECT_CONFIG))]
 		D3D12_STATE_SUBOBJECT_TYPE_STATE_OBJECT_CONFIG,
 
-		/// <summary>
-		/// <para>Value: 1 Subobject type is D3D12_GLOBAL_ROOT_SIGNATURE.</para>
-		/// </summary>
+		/// <summary>Value: 1 Subobject type is D3D12_GLOBAL_ROOT_SIGNATURE.</summary>
+		[CorrespondingType(typeof(D3D12_GLOBAL_ROOT_SIGNATURE))]
 		D3D12_STATE_SUBOBJECT_TYPE_GLOBAL_ROOT_SIGNATURE,
 
-		/// <summary>
-		/// <para>Value: 2 Subobject type is D3D12_LOCAL_ROOT_SIGNATURE.</para>
-		/// </summary>
+		/// <summary>Value: 2 Subobject type is D3D12_LOCAL_ROOT_SIGNATURE.</summary>
+		[CorrespondingType(typeof(D3D12_LOCAL_ROOT_SIGNATURE))]
 		D3D12_STATE_SUBOBJECT_TYPE_LOCAL_ROOT_SIGNATURE,
 
 		/// <summary>
@@ -6954,43 +7060,152 @@ public static partial class D3D12
 		/// </para>
 		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D12_NODE_MASK))]
 		D3D12_STATE_SUBOBJECT_TYPE_NODE_MASK,
 
-		/// <summary>
-		/// <para>Value: 5 Subobject type is D3D12_DXIL_LIBRARY_DESC.</para>
-		/// </summary>
+		/// <summary>Value: 5 Subobject type is D3D12_DXIL_LIBRARY_DESC.</summary>
+		[CorrespondingType(typeof(D3D12_DXIL_LIBRARY_DESC))]
 		D3D12_STATE_SUBOBJECT_TYPE_DXIL_LIBRARY,
 
-		/// <summary>
-		/// <para>Value: 6 Subobject type is D3D12_EXISTING_COLLECTION_DESC.</para>
-		/// </summary>
+		/// <summary>Value: 6 Subobject type is D3D12_EXISTING_COLLECTION_DESC.</summary>
+		[CorrespondingType(typeof(D3D12_EXISTING_COLLECTION_DESC))]
 		D3D12_STATE_SUBOBJECT_TYPE_EXISTING_COLLECTION,
 
-		/// <summary>
-		/// <para>Value: 7 Subobject type is D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION.</para>
-		/// </summary>
+		/// <summary>Value: 7 Subobject type is D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION.</summary>
+		[CorrespondingType(typeof(D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION))]
 		D3D12_STATE_SUBOBJECT_TYPE_SUBOBJECT_TO_EXPORTS_ASSOCIATION,
 
-		/// <summary>
-		/// <para>Value: 8 Subobject type is D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION.</para>
-		/// </summary>
+		/// <summary>Value: 8 Subobject type is D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION.</summary>
+		[CorrespondingType(typeof(D3D12_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION))]
 		D3D12_STATE_SUBOBJECT_TYPE_DXIL_SUBOBJECT_TO_EXPORTS_ASSOCIATION,
 
-		/// <summary>
-		/// <para>Value: 9 Subobject type is D3D12_RAYTRACING_SHADER_CONFIG.</para>
-		/// </summary>
+		/// <summary>Value: 9 Subobject type is D3D12_RAYTRACING_SHADER_CONFIG.</summary>
+		[CorrespondingType(typeof(D3D12_RAYTRACING_SHADER_CONFIG))]
 		D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_SHADER_CONFIG,
 
-		/// <summary>
-		/// <para>Value: 10 Subobject type is D3D12_RAYTRACING_PIPELINE_CONFIG.</para>
-		/// </summary>
+		/// <summary>Value: 10 Subobject type is D3D12_RAYTRACING_PIPELINE_CONFIG.</summary>
+		[CorrespondingType(typeof(D3D12_RAYTRACING_PIPELINE_CONFIG))]
 		D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_PIPELINE_CONFIG,
 
-		/// <summary>
-		/// <para>Value: 11 Subobject type is</para>
-		/// <para>D3D12_HIT_GROUP_DESC</para>
-		/// </summary>
+		/// <summary>Value: 11 Subobject type is D3D12_HIT_GROUP_DESC</summary>
+		[CorrespondingType(typeof(D3D12_HIT_GROUP_DESC))]
 		D3D12_STATE_SUBOBJECT_TYPE_HIT_GROUP,
+
+		/// <summary>The d3 D12 state subobject type raytracing pipeline confi g1</summary>
+		[CorrespondingType(typeof(D3D12_RAYTRACING_PIPELINE_CONFIG1))]
+		D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_PIPELINE_CONFIG1 = 12,
+
+		/// <summary>The d3 D12 state subobject type work graph</summary>
+		[CorrespondingType(typeof(D3D12_SET_WORK_GRAPH_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_WORK_GRAPH = 13,
+
+		/// <summary>
+		/// Stream output definition subobject that can used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_STREAM_OUTPUT_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_STREAM_OUTPUT_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_STREAM_OUTPUT = 14,
+
+		/// <summary>
+		/// Blend description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_BLEND_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_BLEND_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_BLEND = 15,
+
+		/// <summary>Sample mask subobject that can be used by a generic program. The contents are a UINT. Defaults if missing.</summary>
+		[CorrespondingType(typeof(uint))]
+		D3D12_STATE_SUBOBJECT_TYPE_SAMPLE_MASK = 16,
+
+		/// <summary>
+		/// Rasterizer description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_RASTERIZER_DESC2. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_RASTERIZER_DESC2))]
+		D3D12_STATE_SUBOBJECT_TYPE_RASTERIZER = 17,
+
+		/// <summary>
+		/// Depth Stencil description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_DEPTH_STENCIL_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_DEPTH_STENCIL_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL = 18,
+
+		/// <summary>
+		/// Input layout description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_INPUT_LAYOUT_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_INPUT_LAYOUT_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_INPUT_LAYOUT = 19,
+
+		/// <summary>
+		/// Index buffer strip cut value description subobject that can be used by a generic program. The contents are the pre-existing API
+		/// struct: D3D12_INDEX_BUFFER_STRIP_CUT_VALUE. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_INDEX_BUFFER_STRIP_CUT_VALUE))]
+		D3D12_STATE_SUBOBJECT_TYPE_IB_STRIP_CUT_VALUE = 20,
+
+		/// <summary>
+		/// Primitive topology description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_PRIMITIVE_TOPOLOGY_TYPE. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_PRIMITIVE_TOPOLOGY_TYPE))]
+		D3D12_STATE_SUBOBJECT_TYPE_PRIMITIVE_TOPOLOGY = 21,
+
+		/// <summary>
+		/// RenderTarget formats description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_RT_FORMAT_ARRAY. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_RT_FORMAT_ARRAY))]
+		D3D12_STATE_SUBOBJECT_TYPE_RENDER_TARGET_FORMATS = 22,
+
+		/// <summary>
+		/// Depth Stencil format description subobject that can be used by a generic program. The contents are a DXGI_FORMAT. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(DXGI_FORMAT))]
+		D3D12_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL_FORMAT = 23,
+
+		/// <summary>
+		/// Sample description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_SAMPLE_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(DXGI_SAMPLE_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_SAMPLE_DESC = 24,
+
+		/// <summary>
+		/// Pipeline state flags subobject that can be used by a generic program. The contents are the pre-existing flags enum:
+		/// D3D12_PIPELINE_STATE_FLAGS. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_PIPELINE_STATE_FLAGS))]
+		D3D12_STATE_SUBOBJECT_TYPE_FLAGS = 26,
+
+		/// <summary>
+		/// Depth Stencil (iteration 1) description subobject that can be used by a generic program. The contents are the pre-existing API
+		/// struct: D3D12_DEPTH_STENCIL_DESC1. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_DEPTH_STENCIL_DESC1))]
+		D3D12_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL1 = 27,
+
+		/// <summary>
+		/// View Instancing description subobject that can be used by a generic program. The contents are the pre-existing API struct:
+		/// D3D12_VIEW_INSTANCING_DESC. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_VIEW_INSTANCING_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_VIEW_INSTANCING = 28,
+
+		/// <summary>
+		/// Generic program definition subobject. See D3D12_GENERIC_PROGRAM_DESC. This is proposed as part of graphics nodes, which aren’t
+		/// supported yet.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_GENERIC_PROGRAM_DESC))]
+		D3D12_STATE_SUBOBJECT_TYPE_GENERIC_PROGRAM = 29,
+
+		/// <summary>
+		/// Depth Stencil (iteration 2) description subobject that can be used by a generic program. The contents are the pre-existing API
+		/// struct: D3D12_DEPTH_STENCIL_DESC2. Defaults if missing.
+		/// </summary>
+		[CorrespondingType(typeof(D3D12_DEPTH_STENCIL_DESC2))]
+		D3D12_STATE_SUBOBJECT_TYPE_DEPTH_STENCIL2 = 30,
 	}
 
 	/// <summary>Specifies the border color for a static sampler.</summary>

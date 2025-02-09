@@ -106,9 +106,13 @@ public static partial class InteropExtensions
 		if (source == IntPtr.Zero || dest == IntPtr.Zero) throw new ArgumentNullException();
 		unsafe
 		{
+#if !NET45
+			Buffer.MemoryCopy((void*)(source.Offset(start)), (void*)dest, length, length);
+#else
 			byte* psrc = (byte*)source + start, pdest = (byte*)dest;
 			for (long i = 0; i < length; i++, psrc++, pdest++)
 				*pdest = *psrc;
+#endif
 		}
 	}
 

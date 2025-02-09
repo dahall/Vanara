@@ -19,13 +19,13 @@ public partial class CoreAudioTests
 	{
 		IMMDeviceEnumerator deviceEnumerator = new();
 		IMMDeviceCollection? spDeviceCollection = deviceEnumerator.EnumAudioEndpoints(EDataFlow.eRender, DEVICE_STATE.DEVICE_STATE_ACTIVE);
-		Assert.IsNotNull(spDeviceCollection);
+		Assert.That(spDeviceCollection, Is.Not.Null);
 		for (uint i = 0; i < spDeviceCollection!.GetCount(); i++)
 		{
 			spDeviceCollection.Item(i, out var device);
-			Assert.IsNotNull(device);
+			Assert.That(device, Is.Not.Null);
 			var properties = device!.OpenPropertyStore(STGM.STGM_READ);
-			Assert.IsNotNull(properties);
+			Assert.That(properties, Is.Not.Null);
 			TestContext.WriteLine($"{i + 1}: {properties!.GetValue(PKEY_Device_FriendlyName)}");
 		}
 	}
@@ -36,14 +36,14 @@ public partial class CoreAudioTests
 		IMMDeviceEnumerator deviceEnumerator = new();
 		IMMDevice? device = deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eCommunications);
 		IAudioClient2? audioClient = device?.Activate<IAudioClient2>(CLSCTX.CLSCTX_INPROC_SERVER);
-		Assert.IsNotNull(audioClient);
+		Assert.That(audioClient, Is.Not.Null);
 		AudioClientProperties clientProperties = new() { cbSize = InteropExtensions.SizeOf<AudioClientProperties>(), eCategory = AUDIO_STREAM_CATEGORY.AudioCategory_Communications };
 		audioClient!.SetClientProperties(clientProperties);
 		audioClient.GetMixFormat(out var fmtMem).ThrowIfFailed();
 		audioClient.Initialize(AUDCLNT_SHAREMODE.AUDCLNT_SHAREMODE_SHARED, AUDCLNT_STREAMFLAGS.AUDCLNT_STREAMFLAGS_EVENTCALLBACK, 10000000, 0, fmtMem).ThrowIfFailed();
 
 		var audioEffectsManager = audioClient.GetService<IAudioEffectsManager>();
-		Assert.IsNotNull(audioEffectsManager);
+		Assert.That(audioEffectsManager, Is.Not.Null);
 		var effects = audioEffectsManager!.GetAudioEffects();
 		var ispresent = effects.Any(e => e.id == AUDIO_EFFECT_TYPE_ACOUSTIC_ECHO_CANCELLATION);
 		TestContext.WriteLine($"Capture stream is {(ispresent ? "" : "not ")}echo cancelled.");
@@ -51,7 +51,7 @@ public partial class CoreAudioTests
 		string? deviceId = device?.GetId() ?? SafeCoTaskMemString.Null;
 		TestContext.WriteLine($"Created communications stream on capture endpoint {deviceId}");
 		var captureClient = audioClient.GetService<IAudioCaptureClient>();
-		Assert.IsNotNull(captureClient);
+		Assert.That(captureClient, Is.Not.Null);
 
 		using var terminationEvent = CreateEvent(default, false, false);
 		using var captureThread = CreateThread(default, default, p => {

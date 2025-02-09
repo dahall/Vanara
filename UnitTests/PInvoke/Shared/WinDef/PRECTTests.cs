@@ -38,9 +38,9 @@ public class PRECTTests
 		Assert.That(r, Is.EqualTo(r2));
 		Assert.That((Rectangle?)r, Is.EqualTo(dr));
 		PRECT r3 = (Rectangle?)null;
-		Assert.IsNull(r3);
+		Assert.That(r3, Is.Null);
 		r3 = (Rectangle?) dr;
-		Assert.NotNull(r3);
+		Assert.That(r3, Is.Not.Null);
 		Assert.That(new PRECT(0, 0, 0, 0).IsEmpty);
 		Assert.That(new PRECT(1, 0, 1, 0).IsEmpty, Is.False);
 		Assert.That(new PRECT().GetHashCode(), Is.EqualTo(Rectangle.Empty.GetHashCode()));

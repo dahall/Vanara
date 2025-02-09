@@ -1,5 +1,5 @@
 ﻿global using static Vanara.PInvoke.DXGI;
-global using ID3DBlob = Vanara.PInvoke.DXGI.ID3D10Blob;
+global using ID3DBlob = Vanara.PInvoke.DXGI.ID3DBlob;
 
 namespace Vanara.PInvoke;
 

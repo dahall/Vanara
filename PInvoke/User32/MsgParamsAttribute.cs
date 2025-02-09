@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Vanara.Extensions.Reflection;
 
 namespace Vanara.PInvoke;
@@ -34,30 +36,30 @@ public class MsgParamsAttribute : Attribute
 	public Type? WParamType { get; set; }
 }
 
-/// <summary></summary>
+/// <summary>Extension methods to help process window message enum values into their identified values in <see cref="MsgParamsAttribute"/>.</summary>
 public static class MsgExtensions
 {
 	/// <summary>Gets the parameters for a message using the <see cref="MsgParamsAttribute"/> associated with the message.</summary>
 	/// <typeparam name="TEnum">The type of the message enum.</typeparam>
 	/// <param name="msg">The MSG value.</param>
 	/// <returns>The wParam and lParam in a tuple tied to their assigned value types.</returns>
-	public static (object? wParam, object? lParam) GetParams<TEnum>(this MSG msg) where TEnum : Enum
+	public static (object? wParam, object? lParam) GetParams<TEnum>(this MSG msg) where TEnum : unmanaged, Enum
 	{
-		MsgParamsAttribute? attr = typeof(TEnum).GetCustomAttribute<MsgParamsAttribute>();
+		TEnum value = msg.message.ToEnum<TEnum>();
+		FieldInfo? fieldInfo = value.GetType().GetField(value.ToString());
+		MsgParamsAttribute? attr = fieldInfo?.GetCustomAttributes<MsgParamsAttribute>(false).FirstOrDefault();
 		if (attr is null || attr.WParamType == typeof(IntPtr) && attr.LParamType == typeof(IntPtr))
 		{
 			return (msg.wParam, msg.lParam);
 		}
 		else
 		{
-			object? wParam = GetParam(attr.WParamType, msg.wParam);
-			object? lParam = GetParam(attr.LParamType, msg.lParam);
-			return (wParam, lParam);
+			return (GetParam(attr.WParamType, msg.wParam), GetParam(attr.LParamType, msg.lParam));
 		}
 
 		static object? GetParam(Type? t, IntPtr p)
 		{
-			if (t is null)
+			if (t is null || p == IntPtr.Zero)
 				return null;
 			if (typeof(MulticastDelegate).IsAssignableFrom(t.BaseType))
 				return Marshal.GetDelegateForFunctionPointer(p, t);
@@ -69,7 +71,7 @@ public static class MsgExtensions
 				return p.ToStructure(t);
 			if (t.IsNullable())
 				return p.ToStructure(t.GetGenericArguments()[0]);
-			return p.ToInt32().CastTo(t);
+			return p.CastTo(t);
 		}
 	}
 }

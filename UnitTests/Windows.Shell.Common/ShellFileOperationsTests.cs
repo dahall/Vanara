@@ -50,7 +50,7 @@ public class ShellFileOperationsTests
 		op.PerformOperations();
 
 		// Asert and clean
-		Assert.IsTrue(progressShown);
+		Assert.That(progressShown);
 		var dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Path.GetFileName(TestCaseSources.LargeFile));
 		File.Delete(dest);
 
@@ -71,12 +71,12 @@ public class ShellFileOperationsTests
 		// Find deleted item
 		using var bin = new ShellFolder(KNOWNFOLDERID.FOLDERID_RecycleBinFolder);
 		var item = bin.FirstOrDefault(si => si.Name == tmp.FullName);
-		Assert.NotNull(item);
+		Assert.That(item, Is.Not.Null);
 
 		// Restore item
 		using var dest = new ShellFolder(Path.GetDirectoryName(tmp.FullName)!);
 		Assert.That(() => ShellFileOperations.Move(item!, dest, null, ShellFileOperations.OperationFlags.NoConfirmation), Throws.Nothing);
-		Assert.IsTrue(File.Exists(tmp.FullName));
+		Assert.That(File.Exists(tmp.FullName));
 	}
 
 	[Test]
@@ -98,7 +98,7 @@ public class ShellFileOperationsTests
 		Assert.That(() => Operation.PerformOperations(), Throws.Nothing);
 
 		var destFile = Path.Combine(winDir, Path.GetFileName(tmp.FullName));
-		Assert.IsTrue(File.Exists(destFile));
+		Assert.That(File.Exists(destFile));
 		File.Delete(destFile);
 
 		Operation.PostMoveItem -= Operation_PostMoveItem;

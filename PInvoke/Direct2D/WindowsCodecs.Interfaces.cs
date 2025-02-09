@@ -1378,7 +1378,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		/// <param name="pPatterns">
 		/// <para>Type: <c>WICBitmapPattern*</c></para>
-		/// <para>Receives a list of WICBitmapPattern objects supported by the decoder.</para>
+		/// <para>Receives a list of <see cref="WICBitmapPattern"/> objects supported by the decoder.</para>
 		/// </param>
 		/// <param name="pcPatterns">
 		/// <para>Type: <c>UINT*</c></para>
@@ -1399,7 +1399,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicbitmapdecoderinfo-getpatterns HRESULT
 		// GetPatterns( UINT cbSizePatterns, WICBitmapPattern *pPatterns, UINT *pcPatterns, UINT *pcbPatternsActual );
-		void GetPatterns(uint cbSizePatterns, [In, Out] IntPtr pPatterns, [Out, Optional] out uint pcPatterns, [Out] out uint pcbPatternsActual);
+		void GetPatterns(uint cbSizePatterns, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] WICBitmapPattern[] pPatterns, [Out, Optional] out uint pcPatterns, [Out] out uint pcbPatternsActual);
 
 		/// <summary>Retrieves a value that indicates whether the codec recognizes the pattern within a specified stream.</summary>
 		/// <param name="pIStream">
@@ -4982,7 +4982,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicdevelopraw-settonecurve
 		// HRESULT SetToneCurve( UINT cbToneCurveSize, const WICRawToneCurve *pToneCurve );
-		void SetToneCurve(uint cbToneCurveSize, [In] IntPtr pToneCurve);
+		void SetToneCurve(uint cbToneCurveSize, [In] ManagedStructPointer<WICRawToneCurve> pToneCurve);
 
 		/// <summary>Gets the tone curve of the raw image.</summary>
 		/// <param name="cbToneCurveBufferSize">
@@ -4999,7 +4999,7 @@ public static partial class WindowsCodecs
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicdevelopraw-gettonecurve
 		// HRESULT GetToneCurve( UINT cbToneCurveBufferSize, WICRawToneCurve *pToneCurve, UINT *pcbActualToneCurveBufferSize );
-		void GetToneCurve(uint cbToneCurveBufferSize, [Out] IntPtr pToneCurve, out uint pcbActualToneCurveBufferSize);
+		void GetToneCurve(uint cbToneCurveBufferSize, [Out] ManagedStructPointer<WICRawToneCurve> pToneCurve, out uint pcbActualToneCurveBufferSize);
 
 		/// <summary>Sets the desired rotation angle.</summary>
 		/// <param name="Rotation">

@@ -57,7 +57,7 @@ public class RecycleBinTests
 		TestContext.WriteLine($"cnt={RecycleBin.Count}; sz={RecycleBin.Size}");
 		RecycleBin.RestoreAll();
 		Assert.That(RecycleBin.Count, Is.EqualTo(0L));
-		Assert.IsTrue(Directory.Exists(dir));
+		Assert.That(Directory.Exists(dir));
 	}
 
 	[Test]

@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 5% API coverage (38 of 659 functions)  
+### Methods - 5% API coverage (39 of 660 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Alearn.microsoft.com) |  |   
@@ -104,7 +104,7 @@ Native Method | Header | Managed Method
 [NtQueryDirectoryFileEx](https://www.google.com/search?num=5&q=NtQueryDirectoryFileEx+site%3Alearn.microsoft.com) |  |   
 [NtQueryInformationCpuPartition](https://www.google.com/search?num=5&q=NtQueryInformationCpuPartition+site%3Alearn.microsoft.com) |  |   
 [NtQueryInformationEnlistment](https://www.google.com/search?num=5&q=NtQueryInformationEnlistment+site%3Alearn.microsoft.com) |  |   
-[NtQueryInformationFile](https://www.google.com/search?num=5&q=NtQueryInformationFile+site%3Alearn.microsoft.com) |  |   
+[NtQueryInformationFile](https://www.google.com/search?num=5&q=NtQueryInformationFile+site%3Alearn.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.NtQueryInformationFile](https://github.com/dahall/Vanara/search?l=C%23&q=NtQueryInformationFile)  
 [NtQueryInformationProcess](https://www.google.com/search?num=5&q=NtQueryInformationProcess+site%3Alearn.microsoft.com) | winternl.h | [Vanara.PInvoke.NtDll.NtQueryInformationProcess](https://github.com/dahall/Vanara/search?l=C%23&q=NtQueryInformationProcess)  
 [NtQueryInformationResourceManager](https://www.google.com/search?num=5&q=NtQueryInformationResourceManager+site%3Alearn.microsoft.com) |  |   
 [NtQueryInformationThread](https://www.google.com/search?num=5&q=NtQueryInformationThread+site%3Alearn.microsoft.com) |  |   
@@ -405,6 +405,7 @@ Native Method | Header | Managed Method
 [RtlQueryFeatureConfigurationChangeStamp](https://www.google.com/search?num=5&q=RtlQueryFeatureConfigurationChangeStamp+site%3Alearn.microsoft.com) |  |   
 [RtlQueryFeatureUsageNotificationSubscriptions](https://www.google.com/search?num=5&q=RtlQueryFeatureUsageNotificationSubscriptions+site%3Alearn.microsoft.com) |  |   
 [RtlQueryImageMitigationPolicy](https://www.google.com/search?num=5&q=RtlQueryImageMitigationPolicy+site%3Alearn.microsoft.com) |  |   
+[RtlQueryInternalFeatureConfiguration](https://www.google.com/search?num=5&q=RtlQueryInternalFeatureConfiguration+site%3Alearn.microsoft.com) |  |   
 [RtlQueryPointerMapping](https://www.google.com/search?num=5&q=RtlQueryPointerMapping+site%3Alearn.microsoft.com) |  |   
 [RtlQueryProcessPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlQueryProcessPlaceholderCompatibilityMode+site%3Alearn.microsoft.com) |  |   
 [RtlQueryPropertyStore](https://www.google.com/search?num=5&q=RtlQueryPropertyStore+site%3Alearn.microsoft.com) |  |   
@@ -669,6 +670,7 @@ Native Method | Header | Managed Method
 Native Enum | Header | Managed Enum  
 --- | --- | ---  
 [DPFLTR_TYPE](https://www.google.com/search?num=5&q=DPFLTR_TYPE+site%3Alearn.microsoft.com) | dpfilter.h | [Vanara.PInvoke.NtDll.DPFLTR_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=DPFLTR_TYPE)  
+[FILE_INFORMATION_CLASS](https://www.google.com/search?num=5&q=FILE_INFORMATION_CLASS+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.FILE_INFORMATION_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_INFORMATION_CLASS)  
 [KEY_INFORMATION_CLASS](https://www.google.com/search?num=5&q=KEY_INFORMATION_CLASS+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.KEY_INFORMATION_CLASS](https://github.com/dahall/Vanara/search?l=C%23&q=KEY_INFORMATION_CLASS)  
 [NOTIFICATION_MASK](https://www.google.com/search?num=5&q=NOTIFICATION_MASK+site%3Alearn.microsoft.com) | ktmtypes.h | [Vanara.PInvoke.NtDll.NOTIFICATION_MASK](https://github.com/dahall/Vanara/search?l=C%23&q=NOTIFICATION_MASK)  
 [NtFileCreateOptions](https://www.google.com/search?num=5&q=NtFileCreateOptions+site%3Alearn.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.NtFileCreateOptions](https://github.com/dahall/Vanara/search?l=C%23&q=NtFileCreateOptions)  
@@ -681,6 +683,15 @@ Native Enum | Header | Managed Enum
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [CLIENT_ID](https://www.google.com/search?num=5&q=CLIENT_ID+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.NtDll.CLIENT_ID](https://github.com/dahall/Vanara/search?l=C%23&q=CLIENT_ID)  
+[FILE_ACCESS_INFORMATION](https://www.google.com/search?num=5&q=FILE_ACCESS_INFORMATION+site%3Alearn.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.FILE_ACCESS_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_ACCESS_INFORMATION)  
+[FILE_BASIC_INFORMATION](https://www.google.com/search?num=5&q=FILE_BASIC_INFORMATION+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.FILE_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_BASIC_INFORMATION)  
+[FILE_BOTH_DIR_INFORMATION](https://www.google.com/search?num=5&q=FILE_BOTH_DIR_INFORMATION+site%3Alearn.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.FILE_BOTH_DIR_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_BOTH_DIR_INFORMATION)  
+[FILE_DIRECTORY_INFORMATION](https://www.google.com/search?num=5&q=FILE_DIRECTORY_INFORMATION+site%3Alearn.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.FILE_DIRECTORY_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_DIRECTORY_INFORMATION)  
+[FILE_EA_INFORMATION](https://www.google.com/search?num=5&q=FILE_EA_INFORMATION+site%3Alearn.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.FILE_EA_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_EA_INFORMATION)  
+[FILE_FULL_DIR_INFORMATION](https://www.google.com/search?num=5&q=FILE_FULL_DIR_INFORMATION+site%3Alearn.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.FILE_FULL_DIR_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_FULL_DIR_INFORMATION)  
+[FILE_INTERNAL_INFORMATION](https://www.google.com/search?num=5&q=FILE_INTERNAL_INFORMATION+site%3Alearn.microsoft.com) | ntifs.h | [Vanara.PInvoke.NtDll.FILE_INTERNAL_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_INTERNAL_INFORMATION)  
+[FILE_NAME_INFORMATION](https://www.google.com/search?num=5&q=FILE_NAME_INFORMATION+site%3Alearn.microsoft.com) | ntddk.h | [Vanara.PInvoke.NtDll.FILE_NAME_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_NAME_INFORMATION)  
+[FILE_STANDARD_INFORMATION](https://www.google.com/search?num=5&q=FILE_STANDARD_INFORMATION+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.FILE_STANDARD_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=FILE_STANDARD_INFORMATION)  
 [IO_STATUS_BLOCK](https://www.google.com/search?num=5&q=IO_STATUS_BLOCK+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.IO_STATUS_BLOCK](https://github.com/dahall/Vanara/search?l=C%23&q=IO_STATUS_BLOCK)  
 [KERNEL_USER_TIMES](https://www.google.com/search?num=5&q=KERNEL_USER_TIMES+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.NtDll.KERNEL_USER_TIMES](https://github.com/dahall/Vanara/search?l=C%23&q=KERNEL_USER_TIMES)  
 [KEY_BASIC_INFORMATION](https://www.google.com/search?num=5&q=KEY_BASIC_INFORMATION+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.KEY_BASIC_INFORMATION](https://github.com/dahall/Vanara/search?l=C%23&q=KEY_BASIC_INFORMATION)  

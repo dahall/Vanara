@@ -23,7 +23,7 @@ public class VersionTests
 		const string fn = @"c:\windows\explorer.exe";
 
 		var sz = GetFileVersionInfoSize(fn, out _);
-		Assert.NotZero(sz);
+		Assert.That(sz, Is.Not.Zero);
 		using var mem = new SafeCoTaskMemHandle(sz);
 		Assert.That(GetFileVersionInfo(fn, 0, mem.Size, mem), ResultIs.Successful);
 
@@ -47,7 +47,7 @@ public class VersionTests
 		const string fn = @"c:\windows\explorer.exe";
 
 		var sz = GetFileVersionInfoSizeEx(FILE_VER_GET.FILE_VER_GET_LOCALISED, fn, out _);
-		Assert.NotZero(sz);
+		Assert.That(sz, Is.Not.Zero);
 		using var mem = new SafeCoTaskMemHandle(sz);
 		Assert.That(GetFileVersionInfoEx(FILE_VER_GET.FILE_VER_GET_LOCALISED, fn, 0, mem.Size, mem), ResultIs.Successful);
 

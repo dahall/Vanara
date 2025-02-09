@@ -1515,7 +1515,7 @@ public class Update
 /// You can create an instance of this object by using the UpdateCollection class. Use the Microsoft.Update.UpdateColl program identifier to
 /// create the object.
 /// </remarks>
-public class UpdateCollection : VirtualList<Update>, ICloneable //, IUpdateCollection
+public class UpdateCollection : VirtualList<Update>, ICloneable
 {
 	/// <summary>Initializes a new instance of the <see cref="UpdateCollection"/> class.</summary>
 	public UpdateCollection() : this((IUpdateCollection?)null)
@@ -1529,7 +1529,7 @@ public class UpdateCollection : VirtualList<Update>, ICloneable //, IUpdateColle
 			Add(i);
 	}
 
-	internal UpdateCollection(IUpdateCollection? coll = null) : base(new UpdateCollectionMethods(coll ?? new IUpdateCollection()))
+	internal UpdateCollection(IUpdateCollection? coll = null) : base(new UpdateCollectionMethods(coll ?? (IUpdateCollection)new UpdateCollectionClass()))
 	{
 	}
 
@@ -1551,7 +1551,7 @@ public class UpdateCollection : VirtualList<Update>, ICloneable //, IUpdateColle
 
 	private class UpdateCollectionMethods(IUpdateCollection? c) : IVirtualListMethods<Update>
 	{
-		public readonly IUpdateCollection coll = c ?? new IUpdateCollection();
+		public readonly IUpdateCollection coll = c ?? (IUpdateCollection)new UpdateCollectionClass();
 
 		public void AddItem(Update item) => coll.Add(item.upd);
 
@@ -1612,11 +1612,8 @@ public class UpdateDownloader
 	/// <param name="updates">The updates to download.</param>
 	public UpdateDownloader(IEnumerable<Update>? updates = null)
 	{
-		if (updates is not null)
-		{
-			UpdateCollection c = updates.ToCollection();
-			downloader.Updates = c.Interface;
-		}
+		if (updates is not null && updates.Any())
+			downloader.Updates = updates.ToCollection().Interface;
 	}
 
 	/// <summary>Gets and sets the current client application.</summary>

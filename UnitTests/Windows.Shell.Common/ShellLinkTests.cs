@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.IO;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.User32;
@@ -22,7 +23,7 @@ public class ShellLinkTests
 		using var fn = new TempFile("lnk", null);
 		lnk.WriteValues(false);
 		lnk.SaveAs(fn.FullName);
-		Assert.IsTrue(File.Exists(fn.FullName));
+		Assert.That(File.Exists(fn.FullName));
 		lnk.ViewInExplorer();
 	}
 

@@ -12607,6 +12607,23 @@ public static partial class User32
 		ICON_SMALL2 = 2,
 	}
 
+	/// <summary>The high-order word of the return value from WM_MENUCHAR.</summary>
+	[PInvokeData("winuser.h")]
+	public enum WM_MENUCHAR_RETURN : ushort
+	{
+		/// <summary>Do not activate the window.</summary>
+		MNC_IGNORE = 0,
+
+		/// <summary>Activate the window and do not send the message.</summary>
+		MNC_CLOSE = 1,
+
+		/// <summary>Activate the window and send the message.</summary>
+		MNC_EXECUTE = 2,
+
+		/// <summary>Activate the window and send the message to the window procedure.</summary>
+		MNC_SELECT = 3,
+	}
+
 	/// <summary>Return value for WM_MOUSEACTIVATE.</summary>
 	[PInvokeData("winuser.h")]
 	public enum WM_MOUSEACTIVATE_RETURN : int
@@ -12731,6 +12748,65 @@ public static partial class User32
 
 		/// <summary>Reserved for future use.</summary>
 		WTS_SESSION_TERMINATE = 0xB,
+	}
+
+	/// <summary>Return codes for <see cref="WindowMessage.WM_NCCALCSIZE"/>.</summary>
+	[PInvokeData("winuser.h")]
+	[Flags]
+	public enum WVR : int
+	{
+		/// <summary>
+		/// Specifies that the client area of the window is to be preserved and aligned with the bottom of the new position of the window.
+		/// For example, to align the client area to the top-left corner, return the WVR_ALIGNTOP and <c>WVR_ALIGNLEFT</c> values.
+		/// </summary>
+		WVR_ALIGNBOTTOM = 0x0040,
+
+		/// <summary>
+		/// Specifies that the client area of the window is to be preserved and aligned with the left side of the new position of the
+		/// window. For example, to align the client area to the lower-left corner, return the <c>WVR_ALIGNLEFT</c> and
+		/// <c>WVR_ALIGNBOTTOM</c> values.
+		/// </summary>
+		WVR_ALIGNLEFT = 0x0020,
+
+		/// <summary>
+		/// Specifies that the client area of the window is to be preserved and aligned with the right side of the new position of the
+		/// window. For example, to align the client area to the lower-right corner, return the <c>WVR_ALIGNRIGHT</c> and WVR_ALIGNBOTTOM values.
+		/// </summary>
+		WVR_ALIGNRIGHT = 0x0080,
+
+		/// <summary>
+		/// Specifies that the client area of the window is to be preserved and aligned with the top of the new position of the window. For
+		/// example, to align the client area to the upper-left corner, return the WVR_ALIGNTOP and <c>WVR_ALIGNLEFT</c> values.
+		/// </summary>
+		WVR_ALIGNTOP = 0x0010,
+
+		/// <summary>
+		/// Used in combination with any other values, except <c>WVR_VALIDRECTS</c>, causes the window to be completely redrawn if the
+		/// client rectangle changes size horizontally. This value is similar to CS_HREDRAW class style
+		/// </summary>
+		WVR_HREDRAW = 0x0100,
+
+		/// <summary>
+		/// This value causes the entire window to be redrawn. It is a combination of <c>WVR_HREDRAW</c> and <c>WVR_VREDRAW</c> values.
+		/// </summary>
+		WVR_REDRAW = 0x0300,
+
+		/// <summary>
+		/// This value indicates that, upon return from <c>WM_NCCALCSIZE</c>, the rectangles specified by the <c>rgrc</c>[1] and
+		/// <c>rgrc</c>[2] members of the <c>NCCALCSIZE_PARAMS</c> structure contain valid destination and source area rectangles,
+		/// respectively. The system combines these rectangles to calculate the area of the window to be preserved. The system copies any
+		/// part of the window image that is within the source rectangle and clips the image to the destination rectangle. Both rectangles
+		/// are in parent-relative or screen-relative coordinates. This flag cannot be combined with any other flags. This return value
+		/// allows an application to implement more elaborate client-area preservation strategies, such as centering or preserving a subset
+		/// of the client area.
+		/// </summary>
+		WVR_VALIDRECTS = 0x400,
+
+		/// <summary>
+		/// Used in combination with any other values, except <c>WVR_VALIDRECTS</c>, causes the window to be completely redrawn if the
+		/// client rectangle changes size vertically. This value is similar to CS_VREDRAW class style
+		/// </summary>
+		WVR_VREDRAW = 0x0200,
 	}
 
 	/// <summary>Retrieves the application command from the specified <c>LPARAM</c> value.</summary>
@@ -12972,29 +13048,33 @@ public static partial class User32
 	/// <summary>The state specified in the wParam value of WM_*MOUSEWHEEL* commands.</summary>
 	[PInvokeData("winuser.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct MOUSEWHEEL
+	public readonly struct MOUSEWHEEL(short distance, MouseButtonState state)
 	{
-		private readonly ushort btndown;
+		private readonly ushort btndown = (ushort)state;
 
 		/// <summary>
 		/// The distance the wheel is rotated, expressed in multiples or factors of WHEEL_DELTA, which is set to 120. A positive value
 		/// indicates that the wheel was rotated to the right or forward; a negative value indicates that the wheel was rotated to the left
 		/// or backward.
 		/// </summary>
-		public readonly short distance;
+		public readonly short distance = distance;
 
 		/// <summary>The down state of the mouse buttons.</summary>
 		public MouseButtonState ButtonState => (MouseButtonState)btndown;
 
 		/// <summary>Initializes a new instance of the <see cref="MOUSEWHEEL"/> struct.</summary>
 		/// <param name="lParam">The lParam value from *UISTATE*.</param>
-		public MOUSEWHEEL(IntPtr lParam)
-		{ btndown = Macros.LOWORD(unchecked((uint)lParam.ToInt32())); distance = unchecked((short)Macros.HIWORD(unchecked((uint)lParam.ToInt32()))); }
+		public MOUSEWHEEL(IntPtr lParam) : this(unchecked((short)Macros.HIWORD(unchecked((uint)lParam.ToInt64()))), (MouseButtonState)Macros.LOWORD(unchecked((uint)lParam.ToInt64()))) { }
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="MOUSEWHEEL"/>.</summary>
 		/// <param name="p">The wParam.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator MOUSEWHEEL(IntPtr p) => new(p);
+
+		/// <summary>Performs an implicit conversion from <see cref="MOUSEWHEEL"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="s">The MOUSEWHEEL value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(MOUSEWHEEL s) => Macros.MAKELPARAM((ushort)s.ButtonState, (ushort)s.distance);
 	}
 
 	/// <summary>lParam value for <see cref="WindowMessage.WM_SIZE"/>.</summary>
@@ -13064,7 +13144,7 @@ public static partial class User32
 		/// <summary>Initializes a new instance of the <see cref="UISTATE"/> struct.</summary>
 		/// <param name="lParam">The lParam value from *UISTATE*.</param>
 		public UISTATE(IntPtr lParam)
-		{ action = (UIS)Macros.LOWORD(unchecked((uint)lParam.ToInt32())); state = (UISF)Macros.HIWORD(unchecked((uint)lParam.ToInt32())); }
+		{ action = (UIS)Macros.LOWORD(unchecked((uint)lParam.ToInt64())); state = (UISF)Macros.HIWORD(unchecked((uint)lParam.ToInt64())); }
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="UISTATE"/>.</summary>
 		/// <param name="p">The wParam.</param>
@@ -13088,7 +13168,7 @@ public static partial class User32
 		/// <summary>Initializes a new instance of the <see cref="WM_HOTKEY_LPARAM"/> struct.</summary>
 		/// <param name="lParam">The lParam value from *UISTATE*.</param>
 		public WM_HOTKEY_LPARAM(IntPtr lParam)
-		{ _Modifiers = Macros.LOWORD(unchecked((uint)lParam.ToInt32())); _VirtualKeyCode = Macros.HIWORD(unchecked((uint)lParam.ToInt32())); }
+		{ _Modifiers = Macros.LOWORD(unchecked((uint)lParam.ToInt64())); _VirtualKeyCode = Macros.HIWORD(unchecked((uint)lParam.ToInt64())); }
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WM_HOTKEY_LPARAM"/>.</summary>
 		/// <param name="p">The wParam.</param>
@@ -13129,12 +13209,37 @@ public static partial class User32
 
 		/// <summary>Initializes a new instance of the <see cref="WM_KEY_LPARAM"/> struct.</summary>
 		/// <param name="lParam">The lParam value from WM_KEYxx.</param>
-		public WM_KEY_LPARAM(IntPtr lParam) => lp = unchecked((uint)lParam.ToInt32());
+		public WM_KEY_LPARAM(IntPtr lParam) => lp = unchecked((uint)(long)lParam);
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WM_KEY_LPARAM"/>.</summary>
 		/// <param name="p">The lParam.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator WM_KEY_LPARAM(IntPtr p) => new(p);
+
+		/// <summary>Performs an implicit conversion from <see cref="WM_KEY_LPARAM"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="lp">The lParam.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(WM_KEY_LPARAM lp) => (IntPtr)unchecked((int)(lp.lp));
+	}
+
+	/// <summary>Result value for <see cref="WindowMessage.WM_MENUCHAR"/>.</summary>
+	[PInvokeData("winuser.h")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct WM_MENUCHAR_LRESULT(WM_MENUCHAR_RETURN code, ushort value)
+	{
+		private IntPtr lResult = Macros.MAKELPARAM((ushort)code, value);
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WM_MENUCHAR_LRESULT"/>.</summary>
+		/// <param name="p">The lParam.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator WM_MENUCHAR_LRESULT(IntPtr p) => new() { lResult = p };
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="Vanara.PInvoke.User32.WM_MENUCHAR_LRESULT"/> to <see cref="System.IntPtr"/>.
+		/// </summary>
+		/// <param name="lr">The LRESULT struct.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator IntPtr(WM_MENUCHAR_LRESULT lr) => lr.lResult;
 	}
 
 	/// <summary>The state specified in the wParam value of WM_*MOUSEWHEEL* commands.</summary>
@@ -13153,7 +13258,7 @@ public static partial class User32
 		/// <summary>Initializes a new instance of the <see cref="WM_SCROLL_LPARAM"/> struct.</summary>
 		/// <param name="lParam">The lParam value from *UISTATE*.</param>
 		public WM_SCROLL_LPARAM(IntPtr lParam)
-		{ _scrollbarEvent = Macros.LOWORD(unchecked((uint)lParam.ToInt32())); scrollPosition = Macros.HIWORD(unchecked((uint)lParam.ToInt32())); }
+		{ _scrollbarEvent = Macros.LOWORD(unchecked((uint)lParam.ToInt64())); scrollPosition = Macros.HIWORD(unchecked((uint)lParam.ToInt64())); }
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WM_SCROLL_LPARAM"/>.</summary>
 		/// <param name="p">The wParam.</param>
@@ -13169,13 +13274,13 @@ public static partial class User32
 		private IntPtr lp;
 
 		/// <summary>Specifies the hit-test result for the cursor position.</summary>
-		public HitTestValues HitTestResult => (HitTestValues)Macros.LOWORD(lp);
+		public readonly HitTestValues HitTestResult => (HitTestValues)Macros.LOWORD(lp);
 
 		/// <summary>
 		/// Specifies the mouse window message which triggered this event, such as WM_MOUSEMOVE. When the window enters menu mode, this value
 		/// is zero.
 		/// </summary>
-		public WindowMessage MouseWindowMessage => (WindowMessage)Macros.HIWORD(lp);
+		public readonly WindowMessage MouseWindowMessage => (WindowMessage)Macros.HIWORD(lp);
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WM_SETCURSOR_LPARAM"/>.</summary>
 		/// <param name="lparam">The lparam value.</param>

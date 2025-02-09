@@ -12,7 +12,7 @@ public class ContextMenuTests
 	public void QueryTest([Values] CMF cmf)
 	{
 		var pshi = SHCreateItemFromParsingName<IShellItem>(TestCaseSources.WordDoc);
-		Assert.NotNull(pshi);
+		Assert.That(pshi, Is.Not.Null);
 		var pcm = pshi!.BindToHandler<IContextMenu>(null, BHID.BHID_SFUIObject.Guid());
 		using var hmenu = CreatePopupMenu();
 		Assert.That(pcm.QueryContextMenu(hmenu, 0, 1, int.MaxValue, cmf), ResultIs.Successful);

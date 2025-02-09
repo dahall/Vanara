@@ -156,7 +156,7 @@ public class PortableDeviceApiTests
 	public void CallDeviceCmd()
 	{
 		var pkey = WPD_COMMAND_OBJECT_PROPERTIES_GET_SUPPORTED;
-		Assert.IsTrue(device.Capabilities().GetSupportedCommands().Enumerate().Contains(pkey));
+		Assert.That(device.Capabilities().GetSupportedCommands().Enumerate().Contains(pkey));
 		var objId = device.Content().EnumObjects(0, WPD_DEVICE_OBJECT_ID).Enumerate().First();
 		IPortableDeviceValues vals = new();
 		vals.SetCommandPKey(pkey);

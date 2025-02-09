@@ -97,7 +97,7 @@ public partial class WinternlTests
 							}
 							Assert.That(Kernel32.ContinueDebugEvent(Event.dwProcessId, Event.dwThreadId, Kernel32.DEBUG_CONTINUE.DBG_CONTINUE), ResultIs.Successful);
 						}
-						Assert.False(DebugProcessHandle.IsNull);
+						Assert.That(!DebugProcessHandle.IsNull);
 					}
 					finally
 					{

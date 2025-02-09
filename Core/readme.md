@@ -73,7 +73,7 @@ Class | Description
 [Vanara.FormatterComposer](https://github.com/dahall/Vanara/search?l=C%23&q=FormatterComposer) | Extension method to combine formatter instances.
 [Vanara.InteropServices.GenericSafeHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GenericSafeHandle) | A `System.Runtime.InteropServices.SafeHandle` that takes a delegate in the constructor that closes the supplied handle.
 [Vanara.Collections.GenericVirtualReadOnlyDictionary&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=GenericVirtualReadOnlyDictionary%26lt%3BT%26gt%3B) | A generic class that creates a read-only dictionary from a list and getter function.
-[Vanara.Extensions.HexDempHelpers](https://github.com/dahall/Vanara/search?l=C%23&q=HexDempHelpers) | Extension to dump a byte array.
+[Vanara.Extensions.HexDumpHelpers](https://github.com/dahall/Vanara/search?l=C%23&q=HexDumpHelpers) | Extension to dump a byte array.
 [Vanara.InteropServices.HGlobalMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=HGlobalMemoryMethods) | Unmanaged memory methods for HGlobal.
 [Vanara.Collections.History&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=History%26lt%3BT%26gt%3B) | Provides a history of items that lives efficiently in memory and whose size can change easily.
 [Vanara.PInvoke.IArrayStructExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=IArrayStructExtensions) | Extension methods for `Vanara.PInvoke.IArrayStruct`.
@@ -109,6 +109,9 @@ Class | Description
 [Vanara.InteropServices.SafeMemoryPool&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemoryPool%26lt%3BT%26gt%3B) | A memory pool that will automatically release all memory pointers on disposal.
 [Vanara.InteropServices.SafeMemString&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemString%26lt%3BT%26gt%3B) | Base abstract class for a string handler based on `Vanara.InteropServices.SafeMemoryHandle`.
 [Vanara.InteropServices.SafeMemStruct&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemStruct%26lt%3BT%26gt%3B) | Base abstract class for a structure handler based on `Vanara.InteropServices.SafeMemoryHandle`.
+[Vanara.PInvoke.SizeFieldNameAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=SizeFieldNameAttribute) | Should be used with `Vanara.PInvoke.ManagedArrayPointer` or `Vanara.PInvoke.ArrayPointer` to indicate which field within the same structure contains the size of the array.
+[Vanara.PInvoke.SizeFieldNameAttributeExt](https://github.com/dahall/Vanara/search?l=C%23&q=SizeFieldNameAttributeExt) | Extension methods for `Vanara.PInvoke.SizeFieldNameAttribute` to get the size of an array pointer within a structure via attribute.
+[Vanara.Matrix.SpanAction](https://github.com/dahall/Vanara/search?l=C%23&q=SpanAction) | A delegate that acts on a `System.Span` to set the values of the matrix.
 [Vanara.Collections.SparseArray&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SparseArray%26lt%3BT%26gt%3B) | A sparse array based on a dictionary.
 [Vanara.Extensions.StringHelper](https://github.com/dahall/Vanara/search?l=C%23&q=StringHelper) | A safe class that represents an object that is pinned in memory.
 [Vanara.Collections.VirtualReadOnlyList&lt;T&gt;.TryGetDelegate](https://github.com/dahall/Vanara/search?l=C%23&q=TryGetDelegate) | Delegate for a method that tries to get the element at the specified index.

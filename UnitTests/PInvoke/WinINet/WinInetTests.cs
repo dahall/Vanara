@@ -233,7 +233,7 @@ public class WinInetTests
 		using var mem = new SafeHGlobalHandle(1024);
 		Assert.That(InternetReadFile(hReq, mem, mem.Size, out var read), ResultIs.Successful);
 		TestContext.WriteLine($"Read {read} bytes: ");
-		TestContext.WriteLine(HexDempHelpers.ToHexDumpString(mem.DangerousGetHandle(), (int)read));
+		TestContext.WriteLine(HexDumpHelpers.ToHexDumpString(mem.DangerousGetHandle(), (int)read));
 	}
 
 	[Test]

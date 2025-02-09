@@ -258,7 +258,11 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// <summary>
 /// Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory. This class assumes read-only memory.
 /// </summary>
-/// <seealso cref="SafeHandle"/>
+/// <seealso cref="System.Runtime.InteropServices.SafeHandle" />
+/// <seealso cref="System.IComparable{T}" />
+/// <seealso cref="System.IComparable{T}" />
+/// <seealso cref="System.IEquatable{T}" />
+/// <seealso cref="SafeHandle" />
 public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<SafeAllocatedMemoryHandleBase>, IComparable<IReadOnlyList<byte>>,
 	IEquatable<SafeAllocatedMemoryHandleBase>
 {
@@ -367,6 +371,43 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 		return ret;
 	}
 
+	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
+	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length"/> bytes.</param>
+	/// <param name="length">The number of bytes to copy.</param>
+	public void CopyTo(IntPtr dest, SizeT length) => CallLocked(p => p.CopyTo(dest, length));
+
+	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
+	/// <param name="dest">A safe handle to allocated memory.</param>
+	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
+	/// <exception cref="System.ArgumentNullException">dest</exception>
+	/// <exception cref="System.ArgumentOutOfRangeException">destOffset</exception>
+	public void CopyTo(SafeAllocatedMemoryHandleBase dest, SizeT destOffset = default)
+	{
+		if (dest is null) throw new ArgumentNullException(nameof(dest));
+		if (dest.Size < destOffset + Size) throw new ArgumentOutOfRangeException(nameof(destOffset), "The destination buffer is not large enough.");
+		CallLocked(p => p.CopyTo(dest.handle, Size));
+	}
+
+	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
+	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
+	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length" /> bytes.</param>
+	/// <param name="length">The number of bytes to copy.</param>
+	public void CopyTo(SizeT start, IntPtr dest, SizeT length) => CallLocked(p => p.CopyTo(start, dest, length));
+
+	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
+	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
+	/// <param name="length">The number of bytes to copy.</param>
+	/// <param name="dest">A safe handle to allocated memory.</param>
+	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
+	/// <exception cref="System.ArgumentNullException">dest</exception>
+	/// <exception cref="System.ArgumentOutOfRangeException">destOffset - The destination buffer is not large enough.</exception>
+	public void CopyTo(SizeT start, SizeT length, SafeAllocatedMemoryHandleBase dest, SizeT destOffset = default)
+	{
+		if (dest is null) throw new ArgumentNullException(nameof(dest));
+		if (dest.Size < destOffset + length - start) throw new ArgumentOutOfRangeException(nameof(destOffset), "The destination buffer is not large enough.");
+		CallLocked(p => p.CopyTo(start, dest.handle.Offset(destOffset), length));
+	}
+
 	/// <inheritdoc/>
 	public bool Equals(SafeAllocatedMemoryHandleBase? other) => CompareTo(other) == 0;
 
@@ -380,6 +421,20 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 		IReadOnlyList<byte> e => CompareTo(e) == 0,
 		_ => throw new ArgumentException("Unable to compare type.", nameof(obj)),
 	};
+
+	/// <summary>Gets a hash code value for all bytes within the allocated memory.</summary>
+	/// <returns>A hash code.</returns>
+	public virtual int GetContentHashCode()
+	{
+		unsafe
+		{
+			byte* p = (byte*)handle;
+			int result = 0;
+			for (int i = 0; i < Size; i++)
+				result = (result * 31) ^ p[i];
+			return result;
+		}
+	}
 
 	/// <inheritdoc/>
 	public override int GetHashCode() => handle.GetHashCode();

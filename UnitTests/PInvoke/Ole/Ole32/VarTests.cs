@@ -81,7 +81,7 @@ public class VarTests
 	public void ShowOther()
 	{
 		List<string>? tested = NumericTests.Select(t => ((MethodInfo?)t.Arguments[2])?.Name)?.WhereNotNull().ToList();
-		Assert.NotNull(tested);
+		Assert.That(tested, Is.Not.Null);
 		List<string> all = typeof(OleAut32).GetMethods(BindingFlags.Static | BindingFlags.Public).Where(mi => mi.Name.StartsWith("Var")).Select(mi => mi.Name).ToList();
 		all.Except(tested!).OrderBy(s => s.ToLowerInvariant()).ToList().WriteValues();
 	}

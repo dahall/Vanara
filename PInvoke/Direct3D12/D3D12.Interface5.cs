@@ -326,7 +326,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12deviceremovedextendeddata2
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12DeviceRemovedExtendedData2")]
 	[ComImport, Guid("67fc5816-e4ca-4915-bf18-42541272da54"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12DeviceRemovedExtendedData2 : ID3D12DeviceRemovedExtendedData1, ID3D12DeviceRemovedExtendedData
+	public interface ID3D12DeviceRemovedExtendedData2 : ID3D12DeviceRemovedExtendedData1
 	{
 		/// <summary>Retrieves the Device Removed Extended Data (DRED) auto-breadcrumbs output after device removal.</summary>
 		/// <param name="pOutput">
@@ -465,7 +465,7 @@ public static partial class D3D12
 
 	/*
 	[ComImport, Guid("61552388-01ab-4008-a436-83db189566ea"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12DeviceRemovedExtendedDataSettings2 : ID3D12DeviceRemovedExtendedDataSettings1, ID3D12DeviceRemovedExtendedDataSettings
+	public interface ID3D12DeviceRemovedExtendedDataSettings2 : ID3D12DeviceRemovedExtendedDataSettings1
 	{
 		[PreserveSig]
 		new void SetAutoBreadcrumbsEnablement(D3D12_DRED_ENABLEMENT Enablement);
@@ -488,7 +488,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12fence
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Fence")]
 	[ComImport, Guid("0a753dcf-c4d8-4b91-adf6-be5a60d95a76"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Fence : ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Fence : ID3D12Pageable
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -709,7 +709,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12fence1
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12Fence1")]
 	[ComImport, Guid("433685fe-e22b-4ca0-a8db-b5b4f4dd0e4a"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12Fence1 : ID3D12Fence, ID3D12Pageable, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12Fence1 : ID3D12Fence
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -988,7 +988,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList")]
 	[ComImport, Guid("5b160d0f-ac1b-4185-8ba8-b3ae42a5a455"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList : ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList : ID3D12CommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -1222,7 +1222,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -2116,7 +2116,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-omsetblendfactor void
 		// OMSetBlendFactor( [in, optional] const FLOAT [4] BlendFactor );
 		[PreserveSig]
-		void OMSetBlendFactor([In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[]? BlendFactor);
+		void OMSetBlendFactor([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[]? BlendFactor);
 
 		/// <summary>Sets the reference value for depth stencil tests.</summary>
 		/// <param name="StencilRef">
@@ -2851,7 +2851,7 @@ public static partial class D3D12
 		// [in] UINT8 Stencil, [in] UINT NumRects, [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		void ClearDepthStencilView([In] D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil,
-			int NumRects, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[]? pRects);
 
 		/// <summary>Sets all the elements in a render target to one value.</summary>
 		/// <param name="RenderTargetView">
@@ -2941,7 +2941,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -3663,6 +3663,77 @@ public static partial class D3D12
 			ulong ArgumentBufferOffset, [In, Optional] ID3D12Resource? pCountBuffer, ulong CountBufferOffset);
 	}
 
+	/// <summary>Sets the view for the index buffer.</summary>
+	/// <param name="cmdl">The <see cref="ID3D12GraphicsCommandList"/> instance.</param>
+	/// <param name="pView">
+	/// <para>
+	/// The view specifies the index buffer's address, size, and <c>DXGI_FORMAT</c>, as a pointer to a <c>D3D12_INDEX_BUFFER_VIEW</c> structure.
+	/// </para>
+	/// </param>
+	/// <returns>None</returns>
+	/// <remarks>
+	/// <para>
+	/// Only one index buffer can be bound to the graphics pipeline at any one time. Examples The <c>D3D12Bundles</c> sample uses
+	/// <b>ID3D12GraphicsCommandList::IASetIndexBuffer</b> as follows:
+	/// </para>
+	/// <para>
+	/// <c>void FrameResource::PopulateCommandList(ID3D12GraphicsCommandList* pCommandList, ID3D12PipelineState* pPso1, ID3D12PipelineState*
+	/// pPso2, UINT frameResourceIndex, UINT numIndices, D3D12_INDEX_BUFFER_VIEW* pIndexBufferViewDesc, D3D12_VERTEX_BUFFER_VIEW*
+	/// pVertexBufferViewDesc, ID3D12DescriptorHeap* pCbvSrvDescriptorHeap, UINT cbvSrvDescriptorSize, ID3D12DescriptorHeap*
+	/// pSamplerDescriptorHeap, ID3D12RootSignature* pRootSignature) { // If the root signature matches the root signature of the caller,
+	/// then // bindings are inherited, otherwise the bind space is reset. pCommandList-&gt;SetGraphicsRootSignature(pRootSignature);
+	/// ID3D12DescriptorHeap* ppHeaps[] = { pCbvSrvDescriptorHeap, pSamplerDescriptorHeap };
+	/// pCommandList-&gt;SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	/// pCommandList-&gt;IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	/// pCommandList-&gt;IASetIndexBuffer(pIndexBufferViewDesc); pCommandList-&gt;IASetVertexBuffers(0, 1, pVertexBufferViewDesc);
+	/// pCommandList-&gt;SetGraphicsRootDescriptorTable(0, pCbvSrvDescriptorHeap-&gt;GetGPUDescriptorHandleForHeapStart());
+	/// pCommandList-&gt;SetGraphicsRootDescriptorTable(1, pSamplerDescriptorHeap-&gt;GetGPUDescriptorHandleForHeapStart()); // Calculate
+	/// the descriptor offset due to multiple frame resources. // 1 SRV + how many CBVs we have currently. UINT
+	/// frameResourceDescriptorOffset = 1 + (frameResourceIndex * m_cityRowCount * m_cityColumnCount); CD3DX12_GPU_DESCRIPTOR_HANDLE
+	/// cbvSrvHandle(pCbvSrvDescriptorHeap-&gt;GetGPUDescriptorHandleForHeapStart(), frameResourceDescriptorOffset, cbvSrvDescriptorSize);
+	/// BOOL usePso1 = TRUE; for (UINT i = 0; i &lt; m_cityRowCount; i++) { for (UINT j = 0; j &lt; m_cityColumnCount; j++) { // Alternate
+	/// which PSO to use; the pixel shader is different on // each just as a PSO setting demonstration.
+	/// pCommandList-&gt;SetPipelineState(usePso1 ? pPso1 : pPso2); usePso1 = !usePso1; // Set this city's CBV table and move to the next
+	/// descriptor. pCommandList-&gt;SetGraphicsRootDescriptorTable(2, cbvSrvHandle); cbvSrvHandle.Offset(cbvSrvDescriptorSize);
+	/// pCommandList-&gt;DrawIndexedInstanced(numIndices, 1, 0, 0, 0); } } }</c>
+	/// </para>
+	/// <para>See <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-iasetindexbuffer void
+	public static void IASetIndexBuffer(this ID3D12GraphicsCommandList cmdl, D3D12_INDEX_BUFFER_VIEW? pView = null) =>
+		cmdl.IASetIndexBuffer(new(pView, out var _));
+
+	/// <summary>Sets CPU descriptor handles for the render targets and depth stencil.</summary>
+	/// <param name="cmdl">The <see cref="ID3D12GraphicsCommandList"/> instance.</param>
+	/// <param name="pRenderTargetDescriptors">
+	/// Specifies an array of <c>D3D12_CPU_DESCRIPTOR_HANDLE</c> structures that describe the CPU descriptor handles that represents the
+	/// start of the heap of render target descriptors. If this parameter is NULL and NumRenderTargetDescriptors is 0, no render targets are bound.
+	/// </param>
+	/// <param name="RTsSingleHandleToDescriptorRange">
+	/// <para>
+	/// <b>True</b> means the handle passed in is the pointer to a contiguous range of <i>NumRenderTargetDescriptors</i> descriptors. This
+	/// case is useful if the set of descriptors to bind already happens to be contiguous in memory (so all that’s needed is a handle to the
+	/// first one). For example, if <i>NumRenderTargetDescriptors</i> is 3 then the memory layout is taken as follows:
+	/// </para>
+	/// <para>In this case the driver dereferences the handle and then increments the memory being pointed to.</para>
+	/// <para>
+	/// <b>False</b> means that the handle is the first of an array of <i>NumRenderTargetDescriptors</i> handles. The false case allows an
+	/// application to bind a set of descriptors from different locations at once. Again assuming that <i>NumRenderTargetDescriptors</i> is
+	/// 3, the memory layout is taken as follows:
+	/// </para>
+	/// <para>In this case the driver dereferences three handles that are expected to be adjacent to each other in memory.</para>
+	/// </param>
+	/// <param name="pDepthStencilDescriptor">
+	/// A pointer to a <c>D3D12_CPU_DESCRIPTOR_HANDLE</c> structure that describes the CPU descriptor handle that represents the start of
+	/// the heap that holds the depth stencil descriptor. If this parameter is NULL, no depth stencil descriptor is bound.
+	/// </param>
+	/// <returns>None</returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-omsetrendertargets void
+	public static void OMSetRenderTargets(this ID3D12GraphicsCommandList cmdl, D3D12_CPU_DESCRIPTOR_HANDLE[]? pRenderTargetDescriptors,
+		bool RTsSingleHandleToDescriptorRange, D3D12_CPU_DESCRIPTOR_HANDLE? pDepthStencilDescriptor = null) =>
+		cmdl.OMSetRenderTargets((uint?)pRenderTargetDescriptors?.Length ?? 0U, pRenderTargetDescriptors, RTsSingleHandleToDescriptorRange,
+			new(pDepthStencilDescriptor, out var _));
+
 	/// <summary>
 	/// <para>
 	/// Encapsulates a list of graphics commands for rendering, extending the interface to support programmable sample positions, atomic
@@ -3674,7 +3745,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist1
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList1")]
 	[ComImport, Guid("553103fb-1fe7-4557-bb38-946d7d0e7ca7"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList1 : ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList1 : ID3D12GraphicsCommandList
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -3908,7 +3979,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -5537,7 +5608,7 @@ public static partial class D3D12
 		// [in] UINT8 Stencil, [in] UINT NumRects, [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearDepthStencilView([In] D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil,
-			int NumRects, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[]? pRects);
 
 		/// <summary>Sets all the elements in a render target to one value.</summary>
 		/// <param name="RenderTargetView">
@@ -5627,7 +5698,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>
@@ -6821,7 +6892,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nn-d3d12-id3d12graphicscommandlist2
 	[PInvokeData("d3d12.h", MSDNShortId = "NN:d3d12.ID3D12GraphicsCommandList2")]
 	[ComImport, Guid("38c3e585-ff17-412c-9150-4fc6f9d72a28"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ID3D12GraphicsCommandList2 : ID3D12GraphicsCommandList1, ID3D12GraphicsCommandList, ID3D12CommandList, ID3D12DeviceChild, ID3D12Object
+	public interface ID3D12GraphicsCommandList2 : ID3D12GraphicsCommandList1
 	{
 		/// <summary>Gets application-defined data from a device object.</summary>
 		/// <param name="guid">
@@ -7055,7 +7126,7 @@ public static partial class D3D12
 		/// recommended. Every time the GPU needs it, the upload heap will be marshalled // over. Please read up on Default Heap usage. An
 		/// upload heap is used here for // code simplicity and because there are very few verts to actually transfer.
 		/// ThrowIfFailed(m_device-&gt;CreateCommittedResource( &amp;CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), D3D12_HEAP_FLAG_NONE,
-		/// &amp;CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		/// &amp;D3D12_RESOURCE_DESC::Buffer(vertexBufferSize), D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		/// IID_PPV_ARGS(&amp;m_vertexBuffer))); // Copy the triangle data to the vertex buffer. UINT8* pVertexDataBegin; CD3DX12_RANGE
 		/// readRange(0, 0); // We do not intend to read from this resource on the CPU. ThrowIfFailed(m_vertexBuffer-&gt;Map(0,
 		/// &amp;readRange, reinterpret_cast&lt;void**&gt;(&amp;pVertexDataBegin))); memcpy(pVertexDataBegin, triangleVertices,
@@ -8684,7 +8755,7 @@ public static partial class D3D12
 		// [in] UINT8 Stencil, [in] UINT NumRects, [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearDepthStencilView([In] D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView, D3D12_CLEAR_FLAGS ClearFlags, float Depth, byte Stencil,
-			int NumRects, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] RECT[]? pRects);
 
 		/// <summary>Sets all the elements in a render target to one value.</summary>
 		/// <param name="RenderTargetView">
@@ -8774,7 +8845,7 @@ public static partial class D3D12
 		// [in] const D3D12_RECT *pRects );
 		[PreserveSig]
 		new void ClearRenderTargetView([In] D3D12_CPU_DESCRIPTOR_HANDLE RenderTargetView, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] float[] ColorRGBA,
-			int NumRects, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[] pRects);
+			[Optional] int NumRects, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RECT[]? pRects);
 
 		/// <summary>
 		/// <para>Sets all the elements in a unordered-access view (UAV) to the specified integer values.</para>

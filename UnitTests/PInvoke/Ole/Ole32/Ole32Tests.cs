@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.Ole32;
@@ -96,7 +97,7 @@ public class Ole32Tests
 			PROPVARIANT[] prvs = new PROPVARIANT[0];
 			ipse.ReadMultiple(prcs, out PROPVARIANT[]? prvRead).ThrowIfFailed();
 
-			CollectionAssert.AreEqual(prvRead?.Select(prv => prv.Value), vals);
+			CollectionAssert.AreEqual(prvRead?.Select(prv => prv.Value) ?? [], vals);
 
 			foreach (PROPVARIANT prv in prvs)
 				prv.Dispose();
@@ -106,7 +107,7 @@ public class Ole32Tests
 	[Test]
 	public void ContextSwitcher()
 	{
-		Assert.AreEqual(CLSID_ContextSwitcher, typeof(ContextSwitcher).GUID);
+		Assert.That(CLSID_ContextSwitcher, Is.EqualTo(typeof(ContextSwitcher).GUID));
 		_ = new ContextSwitcher();
 	}
 }

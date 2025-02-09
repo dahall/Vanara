@@ -13637,6 +13637,74 @@ public static partial class D3D11
 		}
 	}
 
+	/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
+	/// <typeparam name="T">The type of the structure associated with <paramref name="Feature"/>.</typeparam>
+	/// <param name="device">The <see cref="ID3D11Device"/> instance.</param>
+	/// <param name="pFeatureSupportData"><para>Type: <c>void*</c></para>
+	/// <para>Upon completion of the method, the passed structure is filled with data that describes the feature support.</para></param>
+	/// <param name="Feature"><para>Type: <c>D3D11_FEATURE</c></para>
+	/// <para>A member of the D3D11_FEATURE enumerated type that describes which feature to query for support.</para></param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>
+	/// Returns S_OK if successful; otherwise, returns E_INVALIDARG if an unsupported data type is passed to the
+	/// <c>pFeatureSupportData</c> parameter or a size mismatch is detected for the <c>FeatureSupportDataSize</c> parameter.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// To query for multi-threading support, pass the <c>D3D11_FEATURE_THREADING</c> value to the <c>Feature</c> parameter, pass the
+	/// D3D11_FEATURE_DATA_THREADING structure to the <c>pFeatureSupportData</c> parameter, and pass the size of the
+	/// <c>D3D11_FEATURE_DATA_THREADING</c> structure to the <c>FeatureSupportDataSize</c> parameter.
+	/// </para>
+	/// <para>
+	/// Calling CheckFeatureSupport with <c>Feature</c> set to D3D11_FEATURE_FORMAT_SUPPORT causes the method to return the same
+	/// information that would be returned by ID3D11Device::CheckFormatSupport.
+	/// </para>
+	/// </remarks>
+	public static HRESULT CheckFeatureSupport<T>(this ID3D11Device device, in T? pFeatureSupportData, D3D11_FEATURE? Feature = null) where T : struct
+	{
+		if (!CorrespondingTypeAttribute.CanGet<T, D3D11_FEATURE>(Feature, out var f))
+			return HRESULT.E_INVALIDARG;
+		using SafeCoTaskMemStruct<T> mem = pFeatureSupportData;
+		return device.CheckFeatureSupport(f, mem, mem.Size);
+	}
+
+	/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
+	/// <typeparam name="T">The type of the structure associated with <paramref name="Feature"/>.</typeparam>
+	/// <param name="device">The <see cref="ID3D11Device"/> instance.</param>
+	/// <param name="pFeatureSupportData"><para>Type: <c>void*</c></para>
+	/// <para>Upon completion of the method, the passed structure is filled with data that describes the feature support.</para></param>
+	/// <param name="Feature"><para>Type: <c>D3D11_FEATURE</c></para>
+	/// <para>A member of the D3D11_FEATURE enumerated type that describes which feature to query for support.</para></param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>
+	/// Returns S_OK if successful; otherwise, returns E_INVALIDARG if an unsupported data type is passed to the
+	/// <c>pFeatureSupportData</c> parameter or a size mismatch is detected for the <c>FeatureSupportDataSize</c> parameter.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// To query for multi-threading support, pass the <c>D3D11_FEATURE_THREADING</c> value to the <c>Feature</c> parameter, pass the
+	/// D3D11_FEATURE_DATA_THREADING structure to the <c>pFeatureSupportData</c> parameter, and pass the size of the
+	/// <c>D3D11_FEATURE_DATA_THREADING</c> structure to the <c>FeatureSupportDataSize</c> parameter.
+	/// </para>
+	/// <para>
+	/// Calling CheckFeatureSupport with <c>Feature</c> set to D3D11_FEATURE_FORMAT_SUPPORT causes the method to return the same
+	/// information that would be returned by ID3D11Device::CheckFormatSupport.
+	/// </para>
+	/// </remarks>
+	public static HRESULT CheckFeatureSupport<T>(this ID3D11Device device, ref T pFeatureSupportData, D3D11_FEATURE? Feature = null) where T : struct
+	{
+		if (!CorrespondingTypeAttribute.CanGet<T, D3D11_FEATURE>(Feature, out var f))
+			return HRESULT.E_INVALIDARG;
+		using SafeCoTaskMemStruct<T> mem = pFeatureSupportData;
+		var hr = device.CheckFeatureSupport(f, mem, mem.Size);
+		pFeatureSupportData = mem.Value;
+		return hr;
+	}
+
 	/// <summary>Get a pointer to the device that created this interface.</summary>
 	/// <typeparam name="T">The device interface type.</typeparam>
 	/// <param name="pChild">The <see cref="ID3D11DeviceChild"/> instance.</param>

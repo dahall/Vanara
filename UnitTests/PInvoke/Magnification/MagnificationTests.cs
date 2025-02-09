@@ -26,13 +26,13 @@ public class MagnificationTests
 	[OneTimeSetUp]
 	public void _Setup()
 	{
-		Assert.IsTrue(MagInitialize());
+		Assert.That(MagInitialize());
 	}
 
 	[OneTimeTearDown]
 	public void _TearDown()
 	{
-		Assert.IsTrue(MagUninitialize());
+		Assert.That(MagUninitialize());
 	}
 
 	[Test]
@@ -46,7 +46,7 @@ public class MagnificationTests
 
 			HINSTANCE hInst = Kernel32.GetModuleHandle().ReleaseOwnership();
 			hwndHost = new VisibleWindow(WindowClassName, hInst, WindowClassName, new SIZE(300, 200), exStyle: WindowStylesEx.WS_EX_TOPMOST | WindowStylesEx.WS_EX_LAYERED | WindowStylesEx.WS_EX_TRANSPARENT);
-			Assert.False(hwndHost.Handle.IsNull);
+			Assert.That(!hwndHost.Handle.IsNull);
 
 			// Make the window opaque.
 			SetLayeredWindowAttributes(hwndHost, 0, 255, LayeredWindowAttributes.LWA_ALPHA);
@@ -74,10 +74,10 @@ public class MagnificationTests
 			MAGTRANSFORM matrix = new(2f);
 			Assert.That(MagSetWindowTransform(hwndMag, matrix), ResultIs.Successful);
 			Assert.That(MagGetWindowTransform(hwndMag, out var m2), ResultIs.Successful);
-			Assert.AreEqual(matrix, m2);
+			Assert.That(matrix, Is.EqualTo(m2));
 
 			Assert.That(MagGetColorEffect(hwndMag, out eff), ResultIs.Successful);
-			Assert.True(eff.IsIdentity);
+			Assert.That(eff.IsIdentity);
 			Assert.That(MagSetColorEffect(hwndMag, grayeff), ResultIs.Successful);
 			Assert.That(MagSetColorEffect(hwndMag), ResultIs.Successful);
 		}
@@ -108,7 +108,7 @@ public class MagnificationTests
 	{
 		Assert.That(MagSetFullscreenColorEffect(grayeff), ResultIs.Successful);
 		Assert.That(MagGetFullscreenColorEffect(out var grayeff_get), ResultIs.Successful);
-		Assert.AreEqual(grayeff, grayeff_get);
+		Assert.That(grayeff, Is.EqualTo(grayeff_get));
 		System.Threading.Thread.Sleep(1000);
 		Assert.That(MagSetFullscreenColorEffect(MAGCOLOREFFECT.Identity), ResultIs.Successful);
 	}
@@ -123,13 +123,13 @@ public class MagnificationTests
 	[Test]
 	public void CheckMAGCOLOREFFECTSizeTest()
 	{
-		Assert.AreEqual(sizeof(float) * 5 * 5, Marshal.SizeOf<MAGCOLOREFFECT>());
+		Assert.That(sizeof(float) * 5 * 5, Is.EqualTo(Marshal.SizeOf<MAGCOLOREFFECT>()));
 	}
 
 	[Test]
 	public void CheckMAGTRANSFORMSizeTest()
 	{
-		Assert.AreEqual(sizeof(float) * 3 * 3, Marshal.SizeOf<MAGTRANSFORM>());
+		Assert.That(sizeof(float) * 3 * 3, Is.EqualTo(Marshal.SizeOf<MAGTRANSFORM>()));
 	}
 
 	[Test]
@@ -146,10 +146,10 @@ public class MagnificationTests
 		effect[1, 2] = 11.2f;
 		effect[4, 4] = 14.4f;
 
-		Assert.AreEqual(10.0f, effect[0, 0]);
-		Assert.AreEqual(10.1f, effect[0, 1]);
-		Assert.AreEqual(11.2f, effect[1, 2]);
-		Assert.AreEqual(14.4f, effect[4, 4]);
+		Assert.That(10.0f, Is.EqualTo(effect[0, 0]));
+		Assert.That(10.1f, Is.EqualTo(effect[0, 1]));
+		Assert.That(11.2f, Is.EqualTo(effect[1, 2]));
+		Assert.That(14.4f, Is.EqualTo(effect[4, 4]));
 	}
 
 	[Test]
@@ -166,9 +166,9 @@ public class MagnificationTests
 		tfx[1, 2] = 11.2f;
 		tfx[2, 2] = 12.2f;
 
-		Assert.AreEqual(10.0f, tfx[0, 0]);
-		Assert.AreEqual(10.1f, tfx[0, 1]);
-		Assert.AreEqual(11.2f, tfx[1, 2]);
-		Assert.AreEqual(12.2f, tfx[2, 2]);
+		Assert.That(10.0f, Is.EqualTo(tfx[0, 0]));
+		Assert.That(10.1f, Is.EqualTo(tfx[0, 1]));
+		Assert.That(11.2f, Is.EqualTo(tfx[1, 2]));
+		Assert.That(12.2f, Is.EqualTo(tfx[2, 2]));
 	}
 }

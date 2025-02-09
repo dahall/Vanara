@@ -34,11 +34,11 @@ public class FirewallApiTests
 	public void GetProfileByTypeTest()
 	{
 		using var pMgr = ComReleaserFactory.Create(new INetFwMgr());
-		Assert.IsNotNull(pMgr.Item);
+		Assert.That(pMgr.Item, Is.Not.Null);
 		using var pPol = ComReleaserFactory.Create(pMgr.Item.LocalPolicy);
-		Assert.IsNotNull(pPol.Item);
+		Assert.That(pPol.Item, Is.Not.Null);
 		using var pProf = ComReleaserFactory.Create(pPol.Item.GetProfileByType(NET_FW_PROFILE_TYPE.NET_FW_PROFILE_DOMAIN));
-		Assert.IsNotNull(pProf.Item);
+		Assert.That(pProf.Item, Is.Not.Null);
 
 		TestContext.WriteLine($"Type={pProf.Item.Type}, FwEnable={pProf.Item.FirewallEnabled}, NoExc={pProf.Item.ExceptionsNotAllowed}, NoNtf={pProf.Item.NotificationsDisabled}, NoUnc={pProf.Item.UnicastResponsesToMulticastBroadcastDisabled}");
 	}
@@ -47,13 +47,13 @@ public class FirewallApiTests
 	public void RemoteAdminSettingsTest()
 	{
 		using var pMgr = ComReleaserFactory.Create(new INetFwMgr());
-		Assert.IsNotNull(pMgr.Item);
+		Assert.That(pMgr.Item, Is.Not.Null);
 		using var pPol = ComReleaserFactory.Create(pMgr.Item.LocalPolicy);
-		Assert.IsNotNull(pPol.Item);
+		Assert.That(pPol.Item, Is.Not.Null);
 		using var pProf = ComReleaserFactory.Create(pPol.Item.CurrentProfile);
-		Assert.IsNotNull(pProf.Item);
+		Assert.That(pProf.Item, Is.Not.Null);
 		using var pSet = ComReleaserFactory.Create(pProf.Item.RemoteAdminSettings);
-		Assert.IsNotNull(pSet.Item);
+		Assert.That(pSet.Item, Is.Not.Null);
 
 		TestContext.WriteLine($"Ver={pSet.Item.IpVersion}, Scope={pSet.Item.Scope}, Addr={pSet.Item.RemoteAddresses}, Enabled={pSet.Item.Enabled}");
 	}
@@ -62,13 +62,13 @@ public class FirewallApiTests
 	public void IcmpSettingsTest()
 	{
 		using var pMgr = ComReleaserFactory.Create(new INetFwMgr());
-		Assert.IsNotNull(pMgr.Item);
+		Assert.That(pMgr.Item, Is.Not.Null);
 		using var pPol = ComReleaserFactory.Create(pMgr.Item.LocalPolicy);
-		Assert.IsNotNull(pPol.Item);
+		Assert.That(pPol.Item, Is.Not.Null);
 		using var pProf = ComReleaserFactory.Create(pPol.Item.CurrentProfile);
-		Assert.IsNotNull(pProf.Item);
+		Assert.That(pProf.Item, Is.Not.Null);
 		using var pSet = ComReleaserFactory.Create(pProf.Item.IcmpSettings);
-		Assert.IsNotNull(pSet.Item);
+		Assert.That(pSet.Item, Is.Not.Null);
 
 		TestContext.WriteLine($"ObDest={pSet.Item.AllowOutboundDestinationUnreachable}, Redircope={pSet.Item.AllowRedirect}, InEcho={pSet.Item.AllowInboundEchoRequest}, ObTimeout={pSet.Item.AllowOutboundTimeExceeded}");
 		TestContext.WriteLine($"ObParam={pSet.Item.AllowOutboundParameterProblem}, ObSrcQuench={pSet.Item.AllowOutboundSourceQuench}, InRtReq={pSet.Item.AllowInboundRouterRequest}, InTimeReq={pSet.Item.AllowInboundTimestampRequest}");
@@ -79,13 +79,13 @@ public class FirewallApiTests
 	public void GloballyOpenPortsTest()
 	{
 		using var pMgr = ComReleaserFactory.Create(new INetFwMgr());
-		Assert.IsNotNull(pMgr.Item);
+		Assert.That(pMgr.Item, Is.Not.Null);
 		using var pPol = ComReleaserFactory.Create(pMgr.Item.LocalPolicy);
-		Assert.IsNotNull(pPol.Item);
+		Assert.That(pPol.Item, Is.Not.Null);
 		using var pProf = ComReleaserFactory.Create(pPol.Item.CurrentProfile);
-		Assert.IsNotNull(pProf.Item);
+		Assert.That(pProf.Item, Is.Not.Null);
 		using var pSet = ComReleaserFactory.Create(pProf.Item.GloballyOpenPorts);
-		Assert.IsNotNull(pSet.Item);
+		Assert.That(pSet.Item, Is.Not.Null);
 
 		var i = 0;
 		foreach (var pPort in pSet.Item.Cast<INetFwOpenPort>().Select(p => ComReleaserFactory.Create(p)))
@@ -106,7 +106,7 @@ public class FirewallApiTests
 		pSet.Item.Add(pNewPort.Item);
 		Assert.That(i + 1, Is.EqualTo(pSet.Item.Count));
 		using var pAddedPort = ComReleaserFactory.Create(pSet.Item.Item(pNewPort.Item.Port, pNewPort.Item.Protocol));
-		Assert.IsNotNull(pAddedPort.Item);
+		Assert.That(pAddedPort.Item, Is.Not.Null);
 		pSet.Item.Remove(pNewPort.Item.Port, pNewPort.Item.Protocol);
 		Assert.That(i, Is.EqualTo(pSet.Item.Count));
 	}
@@ -115,13 +115,13 @@ public class FirewallApiTests
 	public void ServicesTest()
 	{
 		using var pMgr = ComReleaserFactory.Create(new INetFwMgr());
-		Assert.IsNotNull(pMgr.Item);
+		Assert.That(pMgr.Item, Is.Not.Null);
 		using var pPol = ComReleaserFactory.Create(pMgr.Item.LocalPolicy);
-		Assert.IsNotNull(pPol.Item);
+		Assert.That(pPol.Item, Is.Not.Null);
 		using var pProf = ComReleaserFactory.Create(pPol.Item.CurrentProfile);
-		Assert.IsNotNull(pProf.Item);
+		Assert.That(pProf.Item, Is.Not.Null);
 		using var pSet = ComReleaserFactory.Create(pProf.Item.Services);
-		Assert.IsNotNull(pSet.Item);
+		Assert.That(pSet.Item, Is.Not.Null);
 
 		var i = 0;
 		foreach (var pSvc in pSet.Item.Cast<INetFwService>().Select(p => ComReleaserFactory.Create(p)))
@@ -140,13 +140,13 @@ public class FirewallApiTests
 	public void AuthorizedApplicationsTest()
 	{
 		using var pMgr = ComReleaserFactory.Create(new INetFwMgr());
-		Assert.IsNotNull(pMgr.Item);
+		Assert.That(pMgr.Item, Is.Not.Null);
 		using var pPol = ComReleaserFactory.Create(pMgr.Item.LocalPolicy);
-		Assert.IsNotNull(pPol.Item);
+		Assert.That(pPol.Item, Is.Not.Null);
 		using var pProf = ComReleaserFactory.Create(pPol.Item.CurrentProfile);
-		Assert.IsNotNull(pProf.Item);
+		Assert.That(pProf.Item, Is.Not.Null);
 		using var pSet = ComReleaserFactory.Create(pProf.Item.AuthorizedApplications);
-		Assert.IsNotNull(pSet.Item);
+		Assert.That(pSet.Item, Is.Not.Null);
 
 		var i = 0;
 		foreach (var pApp in pSet.Item.Cast<INetFwAuthorizedApplication>().Select(p => ComReleaserFactory.Create(p)))
@@ -174,7 +174,7 @@ public class FirewallApiTests
 	public void INetFwProductsTest()
 	{
 		using var pProds = ComReleaserFactory.Create(new INetFwProducts());
-		Assert.IsNotNull(pProds.Item);
+		Assert.That(pProds.Item, Is.Not.Null);
 
 		var i = 0;
 		foreach (var pProd in pProds.Item.Cast<INetFwProduct>().Select(p => ComReleaserFactory.Create(p)))
@@ -193,7 +193,7 @@ public class FirewallApiTests
 	public void INetFwPolicy2Test()
 	{
 		using var pPol = ComReleaserFactory.Create(new INetFwPolicy2());
-		Assert.IsNotNull(pPol.Item);
+		Assert.That(pPol.Item, Is.Not.Null);
 
 		TestContext.WriteLine($"Types={pPol.Item.CurrentProfileTypes}; ModState={pPol.Item.LocalPolicyModifyState}");
 		var prof = pPol.Item.CurrentProfileTypes.GetFlags().First();
@@ -202,7 +202,7 @@ public class FirewallApiTests
 		TestContext.WriteLine($"NoUni={pPol.Item.UnicastResponsesToMulticastBroadcastDisabled[prof]}, DefInAct={pPol.Item.DefaultInboundAction[prof]}, DefOutAct={pPol.Item.DefaultOutboundAction[prof]}");
 
 		using var pRules = ComReleaserFactory.Create(pPol.Item.Rules);
-		Assert.IsNotNull(pRules.Item);
+		Assert.That(pRules.Item, Is.Not.Null);
 
 		var i = 0;
 		var groups = new List<string>();
@@ -216,7 +216,7 @@ public class FirewallApiTests
 		groups = groups.Distinct().ToList();
 
 		using var pRstr = ComReleaserFactory.Create(pPol.Item.ServiceRestriction);
-		Assert.IsNotNull(pRules.Item);
+		Assert.That(pRules.Item, Is.Not.Null);
 
 		if (groups.Count > 0 && pPol.Item.IsRuleGroupCurrentlyEnabled[groups[0]])
 		{
@@ -228,9 +228,9 @@ public class FirewallApiTests
 	public void INetFwRuleTest()
 	{
 		using var pPol = ComReleaserFactory.Create(new INetFwPolicy2());
-		Assert.IsNotNull(pPol.Item);
+		Assert.That(pPol.Item, Is.Not.Null);
 		using var pRules = ComReleaserFactory.Create(pPol.Item.Rules);
-		Assert.IsNotNull(pRules.Item);
+		Assert.That(pRules.Item, Is.Not.Null);
 		foreach (var pRule in pRules.Item.Cast<INetFwRule>().Select(p => ComReleaserFactory.Create(p)))
 		{
 			using (pRule)

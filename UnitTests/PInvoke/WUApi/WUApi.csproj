@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.WUApi</AssemblyName>
   </PropertyGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <COMReference Include="WUApiLib">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>0</VersionMinor>
@@ -12,7 +12,7 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
+  </ItemGroup>-->
   <ItemGroup>
     <ProjectReference Include="..\..\..\WindowsUpdate\Vanara.WindowsUpdate.csproj" />
   </ItemGroup>

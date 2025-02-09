@@ -1,10 +1,10 @@
-global using static Vanara.PInvoke.DXGI;
 global using static Vanara.PInvoke.D3DCompiler;
+global using static Vanara.PInvoke.DXGI;
 global using D3D12_BOX = Vanara.PInvoke.DXGI.D3D10_BOX;
 global using D3D12_GPU_VIRTUAL_ADDRESS = System.UInt64;
 global using D3D12_RECT = Vanara.PInvoke.RECT;
-global using ID3DBlob = Vanara.PInvoke.DXGI.ID3D10Blob;
 using System.Linq;
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke;
 
@@ -371,13 +371,13 @@ public static partial class D3D12
 	public const float D3D12_DEFAULT_SLOPE_SCALED_DEPTH_BIAS = 0.0f;
 
 	/// <summary/>
-	public const uint D3D12_DEFAULT_STENCIL_READ_MASK = 0xff;
+	public const byte D3D12_DEFAULT_STENCIL_READ_MASK = 0xff;
 
 	/// <summary/>
 	public const int D3D12_DEFAULT_STENCIL_REFERENCE = 0;
 
 	/// <summary/>
-	public const uint D3D12_DEFAULT_STENCIL_WRITE_MASK = 0xff;
+	public const byte D3D12_DEFAULT_STENCIL_WRITE_MASK = 0xff;
 
 	/// <summary/>
 	public const int D3D12_DEFAULT_VIEWPORT_AND_SCISSORRECT_INDEX = 0;
@@ -1291,7 +1291,191 @@ public static partial class D3D12
 	/// <summary/>
 	public const int D3D12_WORK_GRAPHS_MAX_NODE_DEPTH = 32;
 
+	private const int D3D12_ANISOTROPIC_FILTERING_BIT = 0x40;
+	private const int D3D12_FILTER_REDUCTION_TYPE_MASK = 0x3;
+	private const int D3D12_FILTER_REDUCTION_TYPE_SHIFT = 7;
+	private const int D3D12_FILTER_TYPE_MASK = 0x3;
+	private const int D3D12_MAG_FILTER_SHIFT = 2;
+	private const int D3D12_MIN_FILTER_SHIFT = 4;
+	private const int D3D12_MIP_FILTER_SHIFT = 0;
+	private const int D3D12_SHADER_COMPONENT_MAPPING_ALWAYS_SET_BIT_AVOIDING_ZEROMEM_MISTAKES = 1 << (D3D12_SHADER_COMPONENT_MAPPING_SHIFT * 4);
+	private const int D3D12_SHADER_COMPONENT_MAPPING_MASK = 0x7;
+	private const int D3D12_SHADER_COMPONENT_MAPPING_SHIFT = 3;
+	private const int D3D12_SHADING_RATE_VALID_MASK = 3;
+	private const int D3D12_SHADING_RATE_X_AXIS_SHIFT = 2;
 	private const string Lib_D3D12 = "d3d12.dll";
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static uint D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING => D3D12_ENCODE_SHADER_4_COMPONENT_MAPPING(0, 1, 2, 3);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER_REDUCTION_TYPE D3D12_DECODE_FILTER_REDUCTION(D3D12_FILTER D3D12Filter) =>
+		(D3D12_FILTER_REDUCTION_TYPE)(((uint)D3D12Filter >> unchecked(D3D12_FILTER_REDUCTION_TYPE_SHIFT)) & D3D12_FILTER_REDUCTION_TYPE_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static bool D3D12_DECODE_IS_ANISOTROPIC_FILTER(D3D12_FILTER D3D12Filter) => ((uint)D3D12Filter & D3D12_ANISOTROPIC_FILTERING_BIT) != 0
+			&& D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR == D3D12_DECODE_MIN_FILTER(D3D12Filter)
+			&& D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR == D3D12_DECODE_MAG_FILTER(D3D12Filter)
+			&& D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR == D3D12_DECODE_MIP_FILTER(D3D12Filter);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static bool D3D12_DECODE_IS_COMPARISON_FILTER(D3D12_FILTER D3D12Filter) =>
+		D3D12_DECODE_FILTER_REDUCTION(D3D12Filter) == D3D12_FILTER_REDUCTION_TYPE.D3D12_FILTER_REDUCTION_TYPE_COMPARISON;
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER_TYPE D3D12_DECODE_MAG_FILTER(D3D12_FILTER D3D12Filter) =>
+		(D3D12_FILTER_TYPE)(((uint)D3D12Filter >> unchecked(D3D12_MAG_FILTER_SHIFT)) & D3D12_FILTER_TYPE_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER_TYPE D3D12_DECODE_MIN_FILTER(D3D12_FILTER D3D12Filter) =>
+		(D3D12_FILTER_TYPE)(((uint)D3D12Filter >> unchecked(D3D12_MIN_FILTER_SHIFT)) & D3D12_FILTER_TYPE_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER_TYPE D3D12_DECODE_MIP_FILTER(D3D12_FILTER D3D12Filter) =>
+		(D3D12_FILTER_TYPE)(((uint)D3D12Filter >> unchecked(D3D12_MIP_FILTER_SHIFT)) & D3D12_FILTER_TYPE_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_SHADER_COMPONENT_MAPPING D3D12_DECODE_SHADER_4_COMPONENT_MAPPING(int ComponentToExtract, int Mapping) => (D3D12_SHADER_COMPONENT_MAPPING)(Mapping >> (D3D12_SHADER_COMPONENT_MAPPING_SHIFT * ComponentToExtract) & D3D12_SHADER_COMPONENT_MAPPING_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_SHADER_COMPONENT_MAPPING D3D12_DECODE_SHADER_4_COMPONENT_MAPPING(int ComponentToExtract, uint Mapping) =>
+		(D3D12_SHADER_COMPONENT_MAPPING)((Mapping >> (unchecked(D3D12_SHADER_COMPONENT_MAPPING_SHIFT) * ComponentToExtract)) & D3D12_SHADER_COMPONENT_MAPPING_MASK);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER D3D12_ENCODE_ANISOTROPIC_FILTER(D3D12_FILTER_REDUCTION_TYPE reduction) =>
+		(D3D12_FILTER)(D3D12_ANISOTROPIC_FILTERING_BIT | (uint)D3D12_ENCODE_BASIC_FILTER(D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR,
+			D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR, D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR, reduction));
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER D3D12_ENCODE_BASIC_FILTER(D3D12_FILTER_TYPE min, D3D12_FILTER_TYPE mag, D3D12_FILTER_TYPE mip,
+		D3D12_FILTER_REDUCTION_TYPE reduction) => (D3D12_FILTER)((((uint)min & D3D12_FILTER_TYPE_MASK) << unchecked(D3D12_MIN_FILTER_SHIFT))
+							| (((uint)mag & D3D12_FILTER_TYPE_MASK) << unchecked(D3D12_MAG_FILTER_SHIFT))
+							| (((uint)mip & D3D12_FILTER_TYPE_MASK) << unchecked(D3D12_MIP_FILTER_SHIFT))
+							| (((uint)reduction & D3D12_FILTER_REDUCTION_TYPE_MASK) << unchecked(D3D12_FILTER_REDUCTION_TYPE_SHIFT)));
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static D3D12_FILTER D3D12_ENCODE_MIN_MAG_ANISOTROPIC_MIP_POINT_FILTER(D3D12_FILTER_REDUCTION_TYPE reduction) =>
+		(D3D12_FILTER)D3D12_ANISOTROPIC_FILTERING_BIT | D3D12_ENCODE_BASIC_FILTER(D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR,
+			D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_LINEAR, D3D12_FILTER_TYPE.D3D12_FILTER_TYPE_POINT, reduction);
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static uint D3D12_ENCODE_SHADER_4_COMPONENT_MAPPING(uint Src0, uint Src1, uint Src2, uint Src3) => ((Src0) & D3D12_SHADER_COMPONENT_MAPPING_MASK) |
+		(((Src1) & D3D12_SHADER_COMPONENT_MAPPING_MASK) << D3D12_SHADER_COMPONENT_MAPPING_SHIFT) |
+		(((Src2) & D3D12_SHADER_COMPONENT_MAPPING_MASK) << (D3D12_SHADER_COMPONENT_MAPPING_SHIFT * 2)) |
+		(((Src3) & D3D12_SHADER_COMPONENT_MAPPING_MASK) << (D3D12_SHADER_COMPONENT_MAPPING_SHIFT * 3)) |
+		D3D12_SHADER_COMPONENT_MAPPING_ALWAYS_SET_BIT_AVOIDING_ZEROMEM_MISTAKES;
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static uint D3D12_ENCODE_SHADER_4_COMPONENT_MAPPING(D3D12_SHADER_COMPONENT_MAPPING Src0, D3D12_SHADER_COMPONENT_MAPPING Src1,
+		D3D12_SHADER_COMPONENT_MAPPING Src2, D3D12_SHADER_COMPONENT_MAPPING Src3) => ((uint)Src0 & D3D12_SHADER_COMPONENT_MAPPING_MASK)
+			| (((uint)Src1 & D3D12_SHADER_COMPONENT_MAPPING_MASK) << unchecked(D3D12_SHADER_COMPONENT_MAPPING_SHIFT))
+			| (((uint)Src2 & D3D12_SHADER_COMPONENT_MAPPING_MASK) << (unchecked(D3D12_SHADER_COMPONENT_MAPPING_SHIFT) * 2))
+			| (((uint)Src3 & D3D12_SHADER_COMPONENT_MAPPING_MASK) << (unchecked(D3D12_SHADER_COMPONENT_MAPPING_SHIFT) * 3))
+			| D3D12_SHADER_COMPONENT_MAPPING_ALWAYS_SET_BIT_AVOIDING_ZEROMEM_MISTAKES;
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static uint D3D12_GET_COARSE_SHADING_RATE_X_AXIS(uint x) => (x >> unchecked(D3D12_SHADING_RATE_X_AXIS_SHIFT)) & D3D12_SHADING_RATE_VALID_MASK;
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static uint D3D12_GET_COARSE_SHADING_RATE_Y_AXIS(uint y) => y & D3D12_SHADING_RATE_VALID_MASK;
+
+	/// <summary/>
+	[PInvokeData("d3d12.h")]
+	public static uint D3D12_MAKE_COARSE_SHADING_RATE(uint x, uint y) => (x << unchecked(D3D12_SHADING_RATE_X_AXIS_SHIFT)) | y;
+
+	/// <summary>Creates a device that represents the display adapter.</summary>
+	/// <param name="pAdapter">
+	/// <para>Type: <b>IUnknown*</b></para>
+	/// <para>
+	/// A pointer to the video adapter to use when creating a <c>device</c>. Pass <b>NULL</b> to use the default adapter, which is the first
+	/// adapter that is enumerated by <c>IDXGIFactory1::EnumAdapters</c>.
+	/// </para>
+	/// <para>
+	/// <b>Note</b>  Don't mix the use of DXGI 1.0 ( <c>IDXGIFactory</c>) and DXGI 1.1 ( <c>IDXGIFactory1</c>) in an application. Use
+	/// <b>IDXGIFactory</b> or <b>IDXGIFactory1</b>, but not both in an application.
+	/// </para>
+	/// <para></para>
+	/// </param>
+	/// <param name="MinimumFeatureLevel">
+	/// <para>Type: <b><c>D3D_FEATURE_LEVEL</c></b></para>
+	/// <para>The minimum <c>D3D_FEATURE_LEVEL</c> required for successful device creation.</para>
+	/// </param>
+	/// <param name="riid">
+	/// <para>Type: <b><b>REFIID</b></b></para>
+	/// <para>
+	/// The globally unique identifier ( <b>GUID</b>) for the device interface. This parameter, and <i>ppDevice</i>, can be addressed with
+	/// the single macro <c>IID_PPV_ARGS</c>.
+	/// </para>
+	/// </param>
+	/// <param name="ppDevice">
+	/// <para>Type: <b><b>void</b>**</b></para>
+	/// <para>
+	/// A pointer to a memory block that receives a pointer to the device. Pass <b>NULL</b> to test if device creation would succeed, but to
+	/// not actually create the device. If <b>NULL</b> is passed and device creation would succeed, <b>S_FALSE</b> is returned.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b><c>HRESULT</c></b></para>
+	/// <para>This method can return one of the <c>Direct3D 12 Return Codes</c>.</para>
+	/// <para>Possible return values include those documented for <c>CreateDXGIFactory1</c> and <c>IDXGIFactory::EnumAdapters</c>.</para>
+	/// <para>If <b>ppDevice</b> is <b>NULL</b> and the function succeeds, <b>S_FALSE</b> is returned, rather than <b>S_OK</b>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Direct3D 12 devices are singletons per adapter. If a Direct3D 12 device already exists in the current process for a given adapter,
+	/// then a subsequent call to <b>D3D12CreateDevice</b> returns the existing device. If the current Direct3D 12 device is in a removed
+	/// state (that is, <c>ID3D12Device::GetDeviceRemovedReason</c> returns a failing HRESULT), then <b>D3D12CreateDevice</b> fails instead
+	/// of returning the existing device. The sameness of two adapters (that is, they have the same identity) is determined by comparing
+	/// their LUIDs, not their pointers.
+	/// </para>
+	/// <para>In order to be sure to pick up the first adapter that supports D3D12, use the following code.</para>
+	/// <para>
+	/// <c>void GetHardwareAdapter(IDXGIFactory4* pFactory, IDXGIAdapter1** ppAdapter) { *ppAdapter = nullptr; for (UINT adapterIndex = 0; ;
+	/// ++adapterIndex) { IDXGIAdapter1* pAdapter = nullptr; if (DXGI_ERROR_NOT_FOUND == pFactory-&gt;EnumAdapters1(adapterIndex,
+	/// &amp;pAdapter)) { // No more adapters to enumerate. break; } // Check to see if the adapter supports Direct3D 12, but don't create
+	/// the // actual device yet. if (SUCCEEDED(D3D12CreateDevice(pAdapter, D3D_FEATURE_LEVEL_11_0, _uuidof(ID3D12Device), nullptr))) {
+	/// *ppAdapter = pAdapter; return; } pAdapter-&gt;Release(); } }</c>
+	/// </para>
+	/// <para>
+	/// The function signature PFN_D3D12_CREATE_DEVICE is provided as a typedef, so that you can use dynamic linking techniques (
+	/// <c>GetProcAddress</c>) instead of statically linking.
+	/// </para>
+	/// <para>
+	/// The <b>REFIID</b>, or <b>GUID</b>, of the interface to a device can be obtained by using the <c>__uuidof()</c> macro. For example,
+	/// <c>__uuidof</c>( <c>ID3D12Device</c>) will get the <b>GUID</b> of the interface to a device.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>Create a hardware based device, unless instructed to create a WARP software device.</para>
+	/// <para>
+	/// <c>ComPtr&lt;IDXGIFactory4&gt; factory; ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&amp;factory))); if (m_useWarpDevice) {
+	/// ComPtr&lt;IDXGIAdapter&gt; warpAdapter; ThrowIfFailed(factory-&gt;EnumWarpAdapter(IID_PPV_ARGS(&amp;warpAdapter)));
+	/// ThrowIfFailed(D3D12CreateDevice( warpAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&amp;m_device) )); } else {
+	/// ComPtr&lt;IDXGIAdapter1&gt; hardwareAdapter; GetHardwareAdapter(factory.Get(), &amp;hardwareAdapter);
+	/// ThrowIfFailed(D3D12CreateDevice( hardwareAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&amp;m_device) )); }</c>
+	/// </para>
+	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-d3d12createdevice HRESULT D3D12CreateDevice( [in, optional]
+	// IUnknown *pAdapter, D3D_FEATURE_LEVEL MinimumFeatureLevel, [in] REFIID riid, [out, optional] void **ppDevice );
+	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12CreateDevice")]
+	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true)]
+	public static extern HRESULT D3D12CreateDevice([In, Optional, MarshalAs(UnmanagedType.Interface)] object? pAdapter,
+		D3D_FEATURE_LEVEL MinimumFeatureLevel, in Guid riid, [Out, Optional] IntPtr ppDevice);
 
 	/// <summary>Creates a device that represents the display adapter.</summary>
 	/// <param name="pAdapter">
@@ -1371,6 +1555,82 @@ public static partial class D3D12
 	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3D12CreateDevice([In, Optional, MarshalAs(UnmanagedType.Interface)] object? pAdapter,
 		D3D_FEATURE_LEVEL MinimumFeatureLevel, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppDevice);
+
+	/// <summary>Creates a device that represents the display adapter.</summary>
+	/// <typeparam name="T">The type of the device interface to return.</typeparam>
+	/// <param name="MinimumFeatureLevel">
+	/// <para>Type: <b><c>D3D_FEATURE_LEVEL</c></b></para>
+	/// <para>The minimum <c>D3D_FEATURE_LEVEL</c> required for successful device creation.</para>
+	/// </param>
+	/// <param name="pAdapter">
+	/// <para>Type: <b>IUnknown*</b></para>
+	/// <para>
+	/// A pointer to the video adapter to use when creating a <c>device</c>. Pass <b>NULL</b> to use the default adapter, which is the first
+	/// adapter that is enumerated by <c>IDXGIFactory1::EnumAdapters</c>.
+	/// </para>
+	/// <para>
+	/// <b>Note</b>  Don't mix the use of DXGI 1.0 ( <c>IDXGIFactory</c>) and DXGI 1.1 ( <c>IDXGIFactory1</c>) in an application. Use
+	/// <b>IDXGIFactory</b> or <b>IDXGIFactory1</b>, but not both in an application.
+	/// </para>
+	/// <para></para>
+	/// </param>
+	/// <param name="ppDevice">
+	/// <para>Type: <b><b>void</b>**</b></para>
+	/// <para>
+	/// A pointer to a memory block that receives a pointer to the device. Pass <b>NULL</b> to test if device creation would succeed, but to
+	/// not actually create the device. If <b>NULL</b> is passed and device creation would succeed, <b>S_FALSE</b> is returned.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b><c>HRESULT</c></b></para>
+	/// <para>This method can return one of the <c>Direct3D 12 Return Codes</c>.</para>
+	/// <para>Possible return values include those documented for <c>CreateDXGIFactory1</c> and <c>IDXGIFactory::EnumAdapters</c>.</para>
+	/// <para>If <b>ppDevice</b> is <b>NULL</b> and the function succeeds, <b>S_FALSE</b> is returned, rather than <b>S_OK</b>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Direct3D 12 devices are singletons per adapter. If a Direct3D 12 device already exists in the current process for a given adapter,
+	/// then a subsequent call to <b>D3D12CreateDevice</b> returns the existing device. If the current Direct3D 12 device is in a removed
+	/// state (that is, <c>ID3D12Device::GetDeviceRemovedReason</c> returns a failing HRESULT), then <b>D3D12CreateDevice</b> fails instead
+	/// of returning the existing device. The sameness of two adapters (that is, they have the same identity) is determined by comparing
+	/// their LUIDs, not their pointers.
+	/// </para>
+	/// <para>In order to be sure to pick up the first adapter that supports D3D12, use the following code.</para>
+	/// <para>
+	/// <c>void GetHardwareAdapter(IDXGIFactory4* pFactory, IDXGIAdapter1** ppAdapter) { *ppAdapter = nullptr; for (UINT adapterIndex = 0; ;
+	/// ++adapterIndex) { IDXGIAdapter1* pAdapter = nullptr; if (DXGI_ERROR_NOT_FOUND == pFactory-&gt;EnumAdapters1(adapterIndex,
+	/// &amp;pAdapter)) { // No more adapters to enumerate. break; } // Check to see if the adapter supports Direct3D 12, but don't create
+	/// the // actual device yet. if (SUCCEEDED(D3D12CreateDevice(pAdapter, D3D_FEATURE_LEVEL_11_0, _uuidof(ID3D12Device), nullptr))) {
+	/// *ppAdapter = pAdapter; return; } pAdapter-&gt;Release(); } }</c>
+	/// </para>
+	/// <para>
+	/// The function signature PFN_D3D12_CREATE_DEVICE is provided as a typedef, so that you can use dynamic linking techniques (
+	/// <c>GetProcAddress</c>) instead of statically linking.
+	/// </para>
+	/// <para>
+	/// The <b>REFIID</b>, or <b>GUID</b>, of the interface to a device can be obtained by using the <c>__uuidof()</c> macro. For example,
+	/// <c>__uuidof</c>( <c>ID3D12Device</c>) will get the <b>GUID</b> of the interface to a device.
+	/// </para>
+	/// <para>Examples</para>
+	/// <para>Create a hardware based device, unless instructed to create a WARP software device.</para>
+	/// <para>
+	/// <c>ComPtr&lt;IDXGIFactory4&gt; factory; ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&amp;factory))); if (m_useWarpDevice) {
+	/// ComPtr&lt;IDXGIAdapter&gt; warpAdapter; ThrowIfFailed(factory-&gt;EnumWarpAdapter(IID_PPV_ARGS(&amp;warpAdapter)));
+	/// ThrowIfFailed(D3D12CreateDevice( warpAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&amp;m_device) )); } else {
+	/// ComPtr&lt;IDXGIAdapter1&gt; hardwareAdapter; GetHardwareAdapter(factory.Get(), &amp;hardwareAdapter);
+	/// ThrowIfFailed(D3D12CreateDevice( hardwareAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&amp;m_device) )); }</c>
+	/// </para>
+	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-d3d12createdevice HRESULT D3D12CreateDevice( [in, optional]
+	// IUnknown *pAdapter, D3D_FEATURE_LEVEL MinimumFeatureLevel, [in] REFIID riid, [out, optional] void **ppDevice );
+	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12CreateDevice")]
+	public static HRESULT D3D12CreateDevice<T>(D3D_FEATURE_LEVEL MinimumFeatureLevel, [Optional] object? pAdapter, out T? ppDevice) where T : class
+	{
+		var hr = D3D12CreateDevice(pAdapter, MinimumFeatureLevel, typeof(T).GUID, out object? ptr);
+		ppDevice = hr.Succeeded ? (T)ptr! : null;
+		return hr;
+	}
 
 	/// <summary>Creates a device that represents the display adapter.</summary>
 	/// <param name="MinimumFeatureLevel">The minimum <c>D3D_FEATURE_LEVEL</c> required for successful device creation.</param>
@@ -1762,7 +2022,7 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12SerializeRootSignature")]
 	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true), Obsolete("This function has been superceded by D3D12SerializeVersionedRootSignature as of the Windows 10 Anniversary Update (14393).")]
 	public static extern HRESULT D3D12SerializeRootSignature(in D3D12_ROOT_SIGNATURE_DESC pRootSignature,
-		[In] D3D_ROOT_SIGNATURE_VERSION Version, out ID3DBlob ppBlob, out ID3DBlob? ppErrorBlob);
+		[In] D3D_ROOT_SIGNATURE_VERSION Version, out ID3DBlob ppBlob, [Out, Optional] IUnknownPointer<ID3DBlob> ppErrorBlob);
 
 	/// <summary>Serializes a root signature of any version that can be passed to <c>ID3D12Device::CreateRootSignature</c>.</summary>
 	/// <param name="pRootSignature">
@@ -1812,7 +2072,265 @@ public static partial class D3D12
 	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12SerializeVersionedRootSignature")]
 	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3D12SerializeVersionedRootSignature(in D3D12_VERSIONED_ROOT_SIGNATURE_DESC pRootSignature,
-		out ID3DBlob ppBlob, out ID3DBlob? ppErrorBlob);
+		out ID3DBlob ppBlob, [Out, Optional] IUnknownPointer<ID3DBlob> ppErrorBlob);
+
+	/// <summary>
+	/// Helps enable root signature 1.1 features when they are available, and does not require maintaining two code paths for building root
+	/// signatures. This helper method reconstructs a version 1.0 root signature when version 1.1 is not supported.
+	/// </summary>
+	/// <param name="pRootSignatureDesc">
+	/// <para>Type: <b>const D3D12_VERSIONED_ROOT_SIGNATURE_DESC*</b></para>
+	/// <para>Specifies a <c><b>D3D12_VERSIONED_ROOT_SIGNATURE_DESC</b></c> that contains a description of any version of a root signature.</para>
+	/// </param>
+	/// <param name="MaxVersion">
+	/// <para>Type: <b>D3D_ROOT_SIGNATURE_VERSION</b></para>
+	/// <para>Specifies the maximum supported <c><b>D3D_ROOT_SIGNATURE_VERSION</b></c>.</para>
+	/// </param>
+	/// <param name="ppBlob">
+	/// <para>Type: <b>ID3DBlob**</b></para>
+	/// <para>
+	/// A pointer to a memory block that receives a pointer to the <c><b>ID3DBlob</b></c> interface that you can use to access the
+	/// serialized root signature.
+	/// </para>
+	/// </param>
+	/// <param name="ppErrorBlob">
+	/// <para>Type: <b>ID3DBlob**</b></para>
+	/// <para>
+	/// A pointer to a memory block that receives a pointer to the <c><b>ID3DBlob</b></c> interface that you can use to access serializer
+	/// error messages, or <b>NULL</b> if there are no errors.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b><c><b>HRESULT</b></c></b></para>
+	/// <para>Returns <b>S_OK</b> if successful; otherwise, returns one of the <c>Direct3D 12 Return Codes</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// This function was released to coincide with the Windows 10 Anniversary Update (14393). In order to support Windows 10 versions prior
+	/// to this, use of this function requires d3d12.lib be set up for delay loading.
+	/// </remarks>
+	[PInvokeData("D3dx12.h")]
+	public static HRESULT D3DX12SerializeVersionedRootSignature(in D3D12_VERSIONED_ROOT_SIGNATURE_DESC pRootSignatureDesc,
+		D3D_ROOT_SIGNATURE_VERSION MaxVersion, out ID3DBlob? ppBlob, out ID3DBlob? ppErrorBlob)
+	{
+		unsafe
+		{
+			IntPtr err = IntPtr.Zero;
+			HRESULT hr = D3DX12SerializeVersionedRootSignature(pRootSignatureDesc, MaxVersion, out ppBlob, (IntPtr)(void*)&err);
+			ppErrorBlob = err != IntPtr.Zero ? (ID3DBlob)Marshal.GetObjectForIUnknown(err) : null;
+			return hr;
+		}
+	}
+
+	/// <summary>
+	/// Helps enable root signature 1.1 features when they are available, and does not require maintaining two code paths for building root
+	/// signatures. This helper method reconstructs a version 1.0 root signature when version 1.1 is not supported.
+	/// </summary>
+	/// <param name="pRootSignatureDesc">
+	/// <para>Type: <b>const D3D12_VERSIONED_ROOT_SIGNATURE_DESC*</b></para>
+	/// <para>Specifies a <c><b>D3D12_VERSIONED_ROOT_SIGNATURE_DESC</b></c> that contains a description of any version of a root signature.</para>
+	/// </param>
+	/// <param name="MaxVersion">
+	/// <para>Type: <b>D3D_ROOT_SIGNATURE_VERSION</b></para>
+	/// <para>Specifies the maximum supported <c><b>D3D_ROOT_SIGNATURE_VERSION</b></c>.</para>
+	/// </param>
+	/// <param name="ppBlob">
+	/// <para>Type: <b>ID3DBlob**</b></para>
+	/// <para>
+	/// A pointer to a memory block that receives a pointer to the <c><b>ID3DBlob</b></c> interface that you can use to access the
+	/// serialized root signature.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b><c><b>HRESULT</b></c></b></para>
+	/// <para>Returns <b>S_OK</b> if successful; otherwise, returns one of the <c>Direct3D 12 Return Codes</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// This function was released to coincide with the Windows 10 Anniversary Update (14393). In order to support Windows 10 versions prior
+	/// to this, use of this function requires d3d12.lib be set up for delay loading.
+	/// </remarks>
+	[PInvokeData("D3dx12.h")]
+	public static HRESULT D3DX12SerializeVersionedRootSignature(in D3D12_VERSIONED_ROOT_SIGNATURE_DESC pRootSignatureDesc,
+		D3D_ROOT_SIGNATURE_VERSION MaxVersion, out ID3DBlob? ppBlob) => D3DX12SerializeVersionedRootSignature(pRootSignatureDesc, MaxVersion, out ppBlob, default);
+
+	private static HRESULT D3DX12SerializeVersionedRootSignature(in D3D12_VERSIONED_ROOT_SIGNATURE_DESC pRootSignatureDesc,
+		D3D_ROOT_SIGNATURE_VERSION MaxVersion, out ID3DBlob? ppBlob, [Out] IntPtr ppErrorBlob)
+	{
+		ppBlob = null;
+		switch (MaxVersion)
+		{
+			case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0:
+				switch (pRootSignatureDesc.Version)
+				{
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0:
+						return D3D12SerializeRootSignature(pRootSignatureDesc.Desc_1_0, D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1, out ppBlob, ppErrorBlob);
+
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1:
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2:
+						{
+							HRESULT hr = HRESULT.S_OK;
+							D3D12_ROOT_SIGNATURE_DESC1 desc_1_1 = pRootSignatureDesc.Desc_1_1;
+
+							SafeNativeArray<D3D12_ROOT_PARAMETER> pParameters_1_0 = new((int)desc_1_1.NumParameters);
+							if (desc_1_1.NumParameters > 0 && pParameters_1_0.IsInvalid)
+							{
+								hr = HRESULT.E_OUTOFMEMORY;
+							}
+
+							if (hr.Succeeded)
+							{
+								for (int n = 0; n < desc_1_1.NumParameters; n++)
+								{
+									D3D12_ROOT_PARAMETER p_1_0 = new()
+									{
+										ParameterType = desc_1_1.pParameters[n].ParameterType,
+										ShaderVisibility = desc_1_1.pParameters[n].ShaderVisibility
+									};
+
+									switch (desc_1_1.pParameters[n].ParameterType)
+									{
+										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS:
+											p_1_0.Constants = desc_1_1.pParameters[n].Constants;
+											break;
+
+										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_CBV:
+										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_SRV:
+										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_UAV:
+											p_1_0.Descriptor = desc_1_1.pParameters[n].Descriptor;
+											break;
+
+										case D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE:
+											{
+												D3D12_ROOT_DESCRIPTOR_TABLE1 table_1_1 = desc_1_1.pParameters[n].DescriptorTable;
+
+												SizeT DescriptorRangesSize = Marshal.SizeOf(typeof(D3D12_DESCRIPTOR_RANGE)) * table_1_1.NumDescriptorRanges;
+												SafeHeapBlock pDescriptorRanges = (DescriptorRangesSize > 0 && hr.Succeeded) ? HeapAlloc(GetProcessHeap(), 0, DescriptorRangesSize) : SafeHeapBlock.Null;
+												if (DescriptorRangesSize > 0 && pDescriptorRanges.IsInvalid)
+												{
+													hr = HRESULT.E_OUTOFMEMORY;
+												}
+												var pDescriptorRanges_1_0 = pDescriptorRanges.AsSpan<D3D12_DESCRIPTOR_RANGE>((int)table_1_1.NumDescriptorRanges);
+
+												if (hr.Succeeded)
+												{
+													for (int x = 0; x < table_1_1.NumDescriptorRanges; x++)
+													{
+														pDescriptorRanges_1_0[x] = table_1_1.pDescriptorRanges[x];
+													}
+												}
+
+												D3D12_ROOT_DESCRIPTOR_TABLE table_1_0 = p_1_0.DescriptorTable;
+												table_1_0.NumDescriptorRanges = table_1_1.NumDescriptorRanges;
+												table_1_0.pDescriptorRanges = pDescriptorRanges; // _1_0;
+											}
+											break;
+
+										default:
+											break;
+									}
+									pParameters_1_0[n] = p_1_0;
+								}
+							}
+
+							SafeNativeArray<D3D12_STATIC_SAMPLER_DESC>? pStaticSamplers = null;
+							if (desc_1_1.NumStaticSamplers > 0 && pRootSignatureDesc.Version == D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2)
+							{
+								pStaticSamplers = new((int)desc_1_1.NumStaticSamplers);
+								if (pStaticSamplers.IsInvalid)
+								{
+									hr = HRESULT.E_OUTOFMEMORY;
+								}
+								else
+								{
+									D3D12_ROOT_SIGNATURE_DESC2 desc_1_2 = pRootSignatureDesc.Desc_1_2;
+									for (int n = 0; n < desc_1_1.NumStaticSamplers; ++n)
+									{
+										if ((desc_1_2.pStaticSamplers[n].Flags & ~D3D12_SAMPLER_FLAGS.D3D12_SAMPLER_FLAG_UINT_BORDER_COLOR) != 0)
+										{
+											hr = HRESULT.E_INVALIDARG;
+											break;
+										}
+										pStaticSamplers[n] = desc_1_2.pStaticSamplers[n];
+									}
+								}
+							}
+
+							if (hr.Succeeded)
+							{
+								D3D12_ROOT_SIGNATURE_DESC desc_1_0 = new(desc_1_1.NumParameters, pParameters_1_0, desc_1_1.NumStaticSamplers, pStaticSamplers ?? (IntPtr)desc_1_1.pStaticSamplers, desc_1_1.Flags);
+								hr = D3D12SerializeRootSignature(desc_1_0, D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1, out ppBlob, ppErrorBlob);
+							}
+
+							return hr;
+						}
+
+					default:
+						break;
+				}
+				break;
+
+			case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1:
+				switch (pRootSignatureDesc.Version)
+				{
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_0:
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_1:
+						return D3D12SerializeVersionedRootSignature(pRootSignatureDesc, out ppBlob, ppErrorBlob);
+
+					case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2:
+						{
+							HRESULT hr = HRESULT.S_OK;
+							D3D12_ROOT_SIGNATURE_DESC1 desc_1_1 = pRootSignatureDesc.Desc_1_1;
+
+							SafeNativeArray<D3D12_STATIC_SAMPLER_DESC>? pStaticSamplers = default;
+							if (desc_1_1.NumStaticSamplers > 0)
+							{
+								pStaticSamplers = new((int)desc_1_1.NumStaticSamplers);
+								if (pStaticSamplers.IsInvalid)
+								{
+									hr = HRESULT.E_OUTOFMEMORY;
+								}
+								else
+								{
+									D3D12_ROOT_SIGNATURE_DESC2 desc_1_2 = pRootSignatureDesc.Desc_1_2;
+									for (int n = 0; n < desc_1_1.NumStaticSamplers; ++n)
+									{
+										if ((desc_1_2.pStaticSamplers[n].Flags & ~D3D12_SAMPLER_FLAGS.D3D12_SAMPLER_FLAG_UINT_BORDER_COLOR) != 0)
+										{
+											hr = HRESULT.E_INVALIDARG;
+											break;
+										}
+										pStaticSamplers[n] = desc_1_2.pStaticSamplers[n];
+									}
+								}
+							}
+
+							if (hr.Succeeded)
+							{
+								D3D12_VERSIONED_ROOT_SIGNATURE_DESC desc = new(desc_1_1);
+								if (pStaticSamplers != null) desc.Desc_1_1.pStaticSamplers = pStaticSamplers;
+								hr = D3D12SerializeVersionedRootSignature(desc, out ppBlob, ppErrorBlob);
+							}
+
+							return hr;
+						}
+
+					default:
+						break;
+				}
+				break;
+
+			case D3D_ROOT_SIGNATURE_VERSION.D3D_ROOT_SIGNATURE_VERSION_1_2:
+			default:
+				return D3D12SerializeVersionedRootSignature(pRootSignatureDesc, out ppBlob, ppErrorBlob);
+		}
+
+		return HRESULT.E_INVALIDARG;
+	}
+
+	private struct Vertex(D2D_VECTOR_3F position, D2D_VECTOR_2F uv)
+	{
+		public D2D_VECTOR_3F position = position;
+		public D2D_VECTOR_2F uv = uv;
+	}
 
 	/// <summary>CLSID_D3D12Debug</summary>
 	[ComImport, Guid("f2352aeb-dd84-49fe-b97b-a9dcfdcc1b4f"), ClassInterface(ClassInterfaceType.None)]
@@ -1829,20 +2347,4 @@ public static partial class D3D12
 	/// <summary>CLSID_D3D12Tools</summary>
 	[ComImport, Guid("e38216b1-3c8c-4833-aa09-0a06b65d96c8"), ClassInterface(ClassInterfaceType.None)]
 	public class D3D12Tools { }
-
-	/*
-	D3D12_DECODE_FILTER_REDUCTION
-	D3D12_DECODE_IS_ANISOTROPIC_FILTER
-	D3D12_DECODE_IS_COMPARISON_FILTER
-	D3D12_DECODE_MAG_FILTER
-	D3D12_DECODE_MIN_FILTER
-	D3D12_DECODE_MIP_FILTER
-	D3D12_DECODE_SHADER_4_COMPONENT_MAPPING
-	D3D12_ENCODE_ANISOTROPIC_FILTER
-	D3D12_ENCODE_BASIC_FILTER
-	D3D12_ENCODE_SHADER_4_COMPONENT_MAPPING
-	D3D12_GET_COARSE_SHADING_RATE_X_AXIS
-	D3D12_GET_COARSE_SHADING_RATE_Y_AXIS
-	D3D12_MAKE_COARSE_SHADING_RATE
-	*/
 }

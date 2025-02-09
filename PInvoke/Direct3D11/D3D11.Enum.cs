@@ -1106,36 +1106,44 @@ public static partial class D3D11
 		/// Support. Refer to D3D11_FEATURE_DATA_THREADING.
 		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_THREADING))]
 		D3D11_FEATURE_THREADING = 0,
 
 		/// <summary>Supports the use of the double-precision shaders in HLSL. Refer to D3D11_FEATURE_DATA_DOUBLES.</summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_DOUBLES))]
 		D3D11_FEATURE_DOUBLES,
 
 		/// <summary>Supports the formats in D3D11_FORMAT_SUPPORT. Refer to D3D11_FEATURE_DATA_FORMAT_SUPPORT.</summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_FORMAT_SUPPORT))]
 		D3D11_FEATURE_FORMAT_SUPPORT,
 
 		/// <summary>Supports the formats in D3D11_FORMAT_SUPPORT2. Refer to D3D11_FEATURE_DATA_FORMAT_SUPPORT2.</summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_FORMAT_SUPPORT2))]
 		D3D11_FEATURE_FORMAT_SUPPORT2,
 
 		/// <summary>Supports compute shaders and raw and structured buffers. Refer to D3D11_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS.</summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS))]
 		D3D11_FEATURE_D3D10_X_HARDWARE_OPTIONS,
 
 		/// <summary>
 		/// <para>Supports Direct3D 11.1 feature options. Refer to D3D11_FEATURE_DATA_D3D11_OPTIONS.</para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.1.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D11_OPTIONS))]
 		D3D11_FEATURE_D3D11_OPTIONS,
 
 		/// <summary>
 		/// <para>Supports specific adapter architecture. Refer to D3D11_FEATURE_DATA_ARCHITECTURE_INFO.</para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.1.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_ARCHITECTURE_INFO))]
 		D3D11_FEATURE_ARCHITECTURE_INFO,
 
 		/// <summary>
 		/// <para>Supports Direct3D 9 feature options. Refer to D3D11_FEATURE_DATA_D3D9_OPTIONS.</para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.1.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D9_OPTIONS))]
 		D3D11_FEATURE_D3D9_OPTIONS,
 
 		/// <summary>
@@ -1144,30 +1152,35 @@ public static partial class D3D11
 		/// </para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.1.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_SHADER_MIN_PRECISION_SUPPORT))]
 		D3D11_FEATURE_SHADER_MIN_PRECISION_SUPPORT,
 
 		/// <summary>
 		/// <para>Supports Direct3D 9 shadowing feature. Refer to D3D11_FEATURE_DATA_D3D9_SHADOW_SUPPORT.</para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.1.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D9_SHADOW_SUPPORT))]
 		D3D11_FEATURE_D3D9_SHADOW_SUPPORT,
 
 		/// <summary>
 		/// <para>Supports Direct3D 11.2 feature options. Refer to D3D11_FEATURE_DATA_D3D11_OPTIONS1.</para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.2.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D11_OPTIONS1))]
 		D3D11_FEATURE_D3D11_OPTIONS1,
 
 		/// <summary>
 		/// <para>Supports Direct3D 11.2 instancing options. Refer to D3D11_FEATURE_DATA_D3D9_SIMPLE_INSTANCING_SUPPORT.</para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.2.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D9_SIMPLE_INSTANCING_SUPPORT))]
 		D3D11_FEATURE_D3D9_SIMPLE_INSTANCING_SUPPORT,
 
 		/// <summary>
 		/// <para>Supports Direct3D 11.2 marker options. Refer to D3D11_FEATURE_DATA_MARKER_SUPPORT.</para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.2.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_MARKER_SUPPORT))]
 		D3D11_FEATURE_MARKER_SUPPORT,
 
 		/// <summary>
@@ -1176,39 +1189,47 @@ public static partial class D3D11
 		/// </para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.2.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D9_OPTIONS1))]
 		D3D11_FEATURE_D3D9_OPTIONS1,
 
 		/// <summary>
 		/// <para>Supports Direct3D 11.3 conservative rasterization feature options. Refer to D3D11_FEATURE_DATA_D3D11_OPTIONS2.</para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.3.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D11_OPTIONS2))]
 		D3D11_FEATURE_D3D11_OPTIONS2,
 
 		/// <summary>
 		/// <para>Supports Direct3D 11.4 conservative rasterization feature options. Refer to D3D11_FEATURE_DATA_D3D11_OPTIONS3.</para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.4.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D11_OPTIONS3))]
 		D3D11_FEATURE_D3D11_OPTIONS3,
 
 		/// <summary>Supports GPU virtual addresses. Refer to D3D11_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT.</summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_GPU_VIRTUAL_ADDRESS_SUPPORT))]
 		D3D11_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT,
 
 		/// <summary>
 		/// <para>Supports a single boolean for NV12 shared textures. Refer to D3D11_FEATURE_DATA_D3D11_OPTIONS4 .</para>
 		/// <para>Direct3D 11: This value is not supported until Direct3D 11.4.</para>
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D11_OPTIONS4))]
 		D3D11_FEATURE_D3D11_OPTIONS4,
 
 		/// <summary>Supports shader cache, described in D3D11_FEATURE_DATA_SHADER_CACHE.</summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_SHADER_CACHE))]
 		D3D11_FEATURE_SHADER_CACHE,
 
 		/// <summary>
 		/// Supports a D3D11_SHARED_RESOURCE_TIER to indicate the level of support for shared resources in the current graphics driver.
 		/// Refer to D3D11_FEATURE_DATA_D3D11_OPTIONS5.
 		/// </summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_D3D11_OPTIONS5))]
 		D3D11_FEATURE_D3D11_OPTIONS5,
 
 		/// <summary>Supports displayable surfaces, described in D3D11_FEATURE_DATA_DISPLAYABLE.</summary>
+		[CorrespondingType(typeof(D3D11_FEATURE_DATA_DISPLAYABLE))]
 		D3D11_FEATURE_DISPLAYABLE,
 	}
 

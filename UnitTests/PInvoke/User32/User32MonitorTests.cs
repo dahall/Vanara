@@ -18,8 +18,8 @@ namespace Vanara.PInvoke.Tests;
                 return true;
             }, IntPtr.Zero);
             
-            Assert.IsTrue(result, "Error calling EnumDisplayMonitors()");
-            Assert.IsNotEmpty(monitors, "Calling EnumDisplayMonitors() returns empty list");
+            Assert.That(result, "Error calling EnumDisplayMonitors()");
+            Assert.That(monitors, Is.Not.Empty, "Calling EnumDisplayMonitors() returns empty list");
 
             TestContext.WriteLine($"EnumDisplayMonitors() returned {monitors.Count} monitor(s)");
 
@@ -28,9 +28,9 @@ namespace Vanara.PInvoke.Tests;
             {
                 var info = MONITORINFOEX.Default;
                 bool getInfoResult = GetMonitorInfo(monitor, ref info);
-                Assert.IsTrue(getInfoResult, $"Error calling GetMonitorInfo(h: {monitor}) returned: {getInfoResult}");
+                Assert.That(getInfoResult, $"Error calling GetMonitorInfo(h: {monitor}) returned: {getInfoResult}");
 
-                Assert.IsFalse(info.rcMonitor.IsEmpty, $"Bounds of monitor(handle: {monitor}) are empty!");
+                Assert.That(!info.rcMonitor.IsEmpty, $"Bounds of monitor(handle: {monitor}) are empty!");
                 
                 var isPrimary = (info.dwFlags & MonitorInfoFlags.MONITORINFOF_PRIMARY) != 0;
                 

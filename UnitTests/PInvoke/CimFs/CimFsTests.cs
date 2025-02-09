@@ -50,7 +50,7 @@ public class CimFsTests
 
 			Assert.That(CimCommitImage(hImg), ResultIs.Successful);
 
-			Assert.IsTrue(File.Exists(cimpath));
+			Assert.That(File.Exists(cimpath));
 			Assert.That(new FileInfo(cimpath).Length, Is.GreaterThan(0));
 
 		}

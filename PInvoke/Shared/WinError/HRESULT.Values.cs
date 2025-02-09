@@ -704,6 +704,21 @@ public partial struct HRESULT
 	/// <summary>The server principal name (SPN) obtained during security negotiation is malformed.</summary>
 	public const int CO_E_MALFORMED_SPN = unchecked((int)0x80004033);
 
+	/// <summary>More data is required.</summary>
+	public const int E_MOREDATA = unchecked((int)0x800700ea);
+
+	/// <summary>Supplied buffer is insufficient.</summary>
+	public const int E_INSUFFICIENT_BUFFER = unchecked((int)0x8007007a);
+
+	/// <summary>The operation was cancelled.</summary>
+	public const int E_CANCELLED = unchecked((int)0x800704c7);
+
+	/// <summary>The operation was already initialized.</summary>
+	public const int E_ALREADYINITIALIZED = unchecked((int)0x800704df);
+
+	/// <summary>Something was not found.</summary>
+	public const int E_NOTFOUND = unchecked((int)0x80070490);
+
 	/// <summary>Catastrophic failure.</summary>
 	public const int E_UNEXPECTED = unchecked((int)0x8000FFFF);
 

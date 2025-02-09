@@ -68,11 +68,20 @@ public struct COLORREF : IEquatable<COLORREF>
 		Value = value & 0x00FFFFFF;
 	}
 
-	/// <summary>Initializes a new instance of the <see cref="COLORREF"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="COLORREF" /> struct.</summary>
 	/// <param name="color">The color.</param>
 	public COLORREF(Color color) : this(color.R, color.G, color.B)
 	{
 		if (color == Color.Transparent)
+			Value = CLR_NONE;
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="COLORREF" /> struct.</summary>
+	/// <param name="color">The color.</param>
+	/// <param name="alpha">The alpha value.</param>
+	public COLORREF(Color color, byte alpha) : this(color.R, color.G, color.B, alpha)
+	{
+		if (color == Color.Transparent && alpha == 255)
 			Value = CLR_NONE;
 	}
 
