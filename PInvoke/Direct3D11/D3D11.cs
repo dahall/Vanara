@@ -5,6 +5,12 @@ namespace Vanara.PInvoke;
 /// <summary>Provides methods and types for working with Direct3D 11.</summary>
 public static partial class D3D11
 {
+	/// <summary>The D3D11 SDK version</summary>
+	public const uint D3D11_SDK_VERSION = 7;
+
+	/// <summary>Upper limit of FLOAT values for D3D11.</summary>
+	public const float D3D11_FLOAT32_MAX = 3.402823466e+38f;
+
 	/// <summary>This interface encapsulates methods for retrieving data from the GPU asynchronously.</summary>
 	/// <remarks>
 	/// <para>There are three types of asynchronous interfaces, all of which inherit this interface:</para>
