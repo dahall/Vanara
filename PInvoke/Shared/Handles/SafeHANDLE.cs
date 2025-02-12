@@ -32,6 +32,18 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 	/// <returns>The result of the operator.</returns>
 	public static bool operator !(SafeHANDLE hMem) => hMem.IsInvalid;
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(SafeHANDLE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(SafeHANDLE hMem) => hMem.IsInvalid;
+#endif
+
 	/// <summary>Implements the operator !=.</summary>
 	/// <param name="h1">The first handle.</param>
 	/// <param name="h2">The second handle.</param>

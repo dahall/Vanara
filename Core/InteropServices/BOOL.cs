@@ -121,6 +121,18 @@ public struct BOOL : IComparable, IComparable<BOOL>, IComparable<bool>, IConvert
 	/// <returns>The result of the operator.</returns>
 	public static BOOL operator !(BOOL value) => !value.Value;
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(BOOL value) => value.Value;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(BOOL value) => !value.Value;
+#endif
+
 	/// <inheritdoc/>
 	public int CompareTo(BOOL other) => Value.CompareTo(other.Value);
 

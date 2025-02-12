@@ -264,7 +264,7 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// <seealso cref="System.IEquatable{T}" />
 /// <seealso cref="SafeHandle" />
 public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<SafeAllocatedMemoryHandleBase>, IComparable<IReadOnlyList<byte>>,
-	IEquatable<SafeAllocatedMemoryHandleBase>
+	IEquatable<SafeAllocatedMemoryHandleBase>, IHandle
 {
 	/// <summary>Occurs when the handle has changed.</summary>
 	public event EventHandler<IntPtr>? HandleChanged;
@@ -307,6 +307,18 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator !(SafeAllocatedMemoryHandleBase hMem) => hMem.IsInvalid;
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(SafeAllocatedMemoryHandleBase hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(SafeAllocatedMemoryHandleBase hMem) => hMem.IsInvalid;
+#endif
 
 #if ALLOWSPAN
 	/// <summary>Creates a new span over this allocated memory.</summary>
