@@ -254,3 +254,4 @@ UndefinedMethods.txt
 /1.1.0 Changes.txt
 ~*.cs
 *.zip
+/.buildorder.txt
