@@ -188,6 +188,7 @@ Native Interface | Header | Managed Interface
 [IDXGIFactory7](https://www.google.com/search?num=5&q=IDXGIFactory7+site%3Alearn.microsoft.com) | dxgi1_6.h | [Vanara.PInvoke.DXGI.IDXGIFactory7](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGIFactory7)  
 [IDXGIFactoryMedia](https://www.google.com/search?num=5&q=IDXGIFactoryMedia+site%3Alearn.microsoft.com) | dxgi1_3.h | [Vanara.PInvoke.DXGI.IDXGIFactoryMedia](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGIFactoryMedia)  
 [IDXGIInfoQueue](https://www.google.com/search?num=5&q=IDXGIInfoQueue+site%3Alearn.microsoft.com) | dxgidebug.h | [Vanara.PInvoke.DXGI.IDXGIInfoQueue](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGIInfoQueue)  
+[IDXGIKeyedMutex](https://www.google.com/search?num=5&q=IDXGIKeyedMutex+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.IDXGIKeyedMutex](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGIKeyedMutex)  
 [IDXGIObject](https://www.google.com/search?num=5&q=IDXGIObject+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DXGI.IDXGIObject](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGIObject)  
 [IDXGIOutput](https://www.google.com/search?num=5&q=IDXGIOutput+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.IDXGIOutput](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGIOutput)  
 [IDXGIOutput1](https://www.google.com/search?num=5&q=IDXGIOutput1+site%3Alearn.microsoft.com) | dxgi1_2.h | [Vanara.PInvoke.DXGI.IDXGIOutput1](https://github.com/dahall/Vanara/search?l=C%23&q=IDXGIOutput1)  

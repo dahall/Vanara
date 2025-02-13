@@ -47,6 +47,18 @@ public readonly struct HACCEL : IUserHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HACCEL h1, HACCEL h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HACCEL hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HACCEL hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HACCEL h && handle == h.handle;
 
@@ -104,6 +116,18 @@ public readonly struct HANDLE : IHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HANDLE h1, HANDLE h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HANDLE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HANDLE hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HANDLE h && handle == h.handle;
@@ -163,6 +187,18 @@ public readonly struct HBITMAP : IGraphicsObjectHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HBITMAP h1, HBITMAP h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HBITMAP hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HBITMAP hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HBITMAP h && handle == h.handle;
 
@@ -220,6 +256,18 @@ public readonly struct HBRUSH : IGraphicsObjectHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HBRUSH h1, HBRUSH h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HBRUSH hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HBRUSH hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HBRUSH h && handle == h.handle;
@@ -279,6 +327,18 @@ public readonly struct HCOLORSPACE : IGraphicsObjectHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HCOLORSPACE h1, HCOLORSPACE h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HCOLORSPACE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HCOLORSPACE hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HCOLORSPACE h && handle == h.handle;
 
@@ -337,6 +397,18 @@ public readonly struct HCURSOR : IGraphicsObjectHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HCURSOR h1, HCURSOR h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HCURSOR hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HCURSOR hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HCURSOR h && handle == h.handle;
 
@@ -389,6 +461,18 @@ public readonly struct HDC : IHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HDC h1, HDC h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HDC hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HDC hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HDC h && handle == h.handle;
@@ -443,6 +527,18 @@ public readonly struct HDESK : IKernelHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HDESK h1, HDESK h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HDESK hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HDESK hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HDESK h && handle == h.handle;
 
@@ -495,6 +591,18 @@ public readonly struct HDPA : IKernelHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HDPA h1, HDPA h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HDPA hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HDPA hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HDPA h && handle == h.handle;
@@ -549,6 +657,18 @@ public readonly struct HDROP : IShellHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HDROP h1, HDROP h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HDROP hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HDROP hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HDROP h && handle == h.handle;
 
@@ -601,6 +721,18 @@ public readonly struct HDSA : IKernelHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HDSA h1, HDSA h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HDSA hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HDSA hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HDSA h && handle == h.handle;
@@ -655,6 +787,18 @@ public readonly struct HDWP : IUserHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HDWP h1, HDWP h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HDWP hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HDWP hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HDWP h && handle == h.handle;
 
@@ -708,6 +852,18 @@ public readonly struct HENHMETAFILE : IHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HENHMETAFILE h1, HENHMETAFILE h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HENHMETAFILE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HENHMETAFILE hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HENHMETAFILE h && handle == h.handle;
 
@@ -760,6 +916,18 @@ public readonly struct HEVENT : ISyncHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HEVENT h1, HEVENT h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HEVENT hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HEVENT hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HEVENT h && handle == h.handle;
@@ -825,6 +993,18 @@ public readonly struct HFILE : ISyncHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HFILE h1, HFILE h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HFILE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HFILE hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HFILE h && handle == h.handle;
 
@@ -882,6 +1062,18 @@ public readonly struct HFONT : IGraphicsObjectHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HFONT h1, HFONT h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HFONT hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HFONT hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HFONT h && handle == h.handle;
@@ -976,6 +1168,18 @@ public readonly struct HGDIOBJ : IGraphicsObjectHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HGDIOBJ h1, HGDIOBJ h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HGDIOBJ hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HGDIOBJ hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HGDIOBJ h && handle == h.handle;
 
@@ -1028,6 +1232,18 @@ public readonly struct HICON : IUserHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HICON h1, HICON h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HICON hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HICON hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HICON h && handle == h.handle;
@@ -1082,6 +1298,18 @@ public readonly struct HIMAGELIST : IShellHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HIMAGELIST h1, HIMAGELIST h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HIMAGELIST hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HIMAGELIST hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HIMAGELIST h && handle == h.handle;
 
@@ -1134,6 +1362,18 @@ public readonly struct HINSTANCE : IKernelHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HINSTANCE h1, HINSTANCE h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HINSTANCE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HINSTANCE hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HINSTANCE h && handle == h.handle;
@@ -1240,6 +1480,18 @@ public readonly struct HKEY : IKernelHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HKEY h1, HKEY h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HKEY hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HKEY hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HKEY h && handle == h.handle;
 
@@ -1292,6 +1544,18 @@ public readonly struct HMENU : IUserHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HMENU h1, HMENU h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HMENU hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HMENU hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HMENU h && handle == h.handle;
@@ -1346,6 +1610,18 @@ public readonly struct HMETAFILE : IHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HMETAFILE h1, HMETAFILE h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HMETAFILE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HMETAFILE hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HMETAFILE h && handle == h.handle;
 
@@ -1398,6 +1674,18 @@ public readonly struct HMONITOR : IKernelHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HMONITOR h1, HMONITOR h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HMONITOR hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HMONITOR hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HMONITOR h && handle == h.handle;
@@ -1457,6 +1745,18 @@ public readonly struct HPALETTE : IGraphicsObjectHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HPALETTE h1, HPALETTE h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HPALETTE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HPALETTE hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HPALETTE h && handle == h.handle;
 
@@ -1514,6 +1814,18 @@ public readonly struct HPEN : IGraphicsObjectHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HPEN h1, HPEN h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HPEN hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HPEN hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HPEN h && handle == h.handle;
@@ -1573,6 +1885,18 @@ public readonly struct HPROCESS : ISyncHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HPROCESS h1, HPROCESS h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HPROCESS hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HPROCESS hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HPROCESS h && handle == h.handle;
 
@@ -1626,6 +1950,18 @@ public readonly struct HPROPSHEET : IUserHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HPROPSHEET h1, HPROPSHEET h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HPROPSHEET hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HPROPSHEET hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HPROPSHEET h && handle == h.handle;
 
@@ -1678,6 +2014,18 @@ public readonly struct HPROPSHEETPAGE : IUserHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HPROPSHEETPAGE h1, HPROPSHEETPAGE h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HPROPSHEETPAGE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HPROPSHEETPAGE hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HPROPSHEETPAGE h && handle == h.handle;
@@ -1737,6 +2085,18 @@ public readonly struct HRGN : IGraphicsObjectHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HRGN h1, HRGN h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HRGN hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HRGN hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HRGN h && handle == h.handle;
 
@@ -1789,6 +2149,18 @@ public readonly struct HSECTION : IHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HSECTION h1, HSECTION h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HSECTION hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HSECTION hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HSECTION h && handle == h.handle;
@@ -1843,6 +2215,18 @@ public readonly struct HTASK : IHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HTASK h1, HTASK h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HTASK hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HTASK hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HTASK h && handle == h.handle;
 
@@ -1895,6 +2279,18 @@ public readonly struct HTHEME : IHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HTHEME h1, HTHEME h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HTHEME hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HTHEME hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HTHEME h && handle == h.handle;
@@ -1949,6 +2345,18 @@ public readonly struct HTHREAD : ISyncHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HTHREAD h1, HTHREAD h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HTHREAD hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HTHREAD hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HTHREAD h && handle == h.handle;
 
@@ -2001,6 +2409,18 @@ public readonly struct HTHUMBNAIL : IShellHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HTHUMBNAIL h1, HTHUMBNAIL h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HTHUMBNAIL hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HTHUMBNAIL hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HTHUMBNAIL h && handle == h.handle;
@@ -2055,6 +2475,18 @@ public readonly struct HTOKEN : IKernelHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HTOKEN h1, HTOKEN h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HTOKEN hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HTOKEN hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HTOKEN h && handle == h.handle;
 
@@ -2107,6 +2539,18 @@ public readonly struct HWINSTA : IKernelHandle
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HWINSTA h1, HWINSTA h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HWINSTA hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HWINSTA hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HWINSTA h && handle == h.handle;
@@ -2188,6 +2632,18 @@ public readonly struct HWND : IUserHandle
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(HWND h1, HWND h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(HWND hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(HWND hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is HWND h && handle == h.handle;
 
@@ -2240,6 +2696,18 @@ public readonly struct PACE : ISecurityObject
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(PACE h1, PACE h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(PACE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(PACE hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is PACE h && handle == h.handle;
@@ -2294,6 +2762,18 @@ public readonly struct PACL : ISecurityObject
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(PACL h1, PACL h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(PACL hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(PACL hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is PACL h && handle == h.handle;
 
@@ -2347,6 +2827,18 @@ public readonly struct PSECURITY_DESCRIPTOR : ISecurityObject
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(PSECURITY_DESCRIPTOR h1, PSECURITY_DESCRIPTOR h2) => h1.Equals(h2);
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(PSECURITY_DESCRIPTOR hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(PSECURITY_DESCRIPTOR hMem) => hMem.IsInvalid;
+#endif
+
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is PSECURITY_DESCRIPTOR h && handle == h.handle;
 
@@ -2399,6 +2891,18 @@ public readonly struct PSID : ISecurityObject
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(PSID h1, PSID h2) => h1.Equals(h2);
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(PSID hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(PSID hMem) => hMem.IsInvalid;
+#endif
 
 	/// <inheritdoc/>
 	public override bool Equals(object? obj) => obj is PSID h && handle == h.handle;

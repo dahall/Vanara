@@ -2245,28 +2245,186 @@ public static partial class DXGI
 		bool IsCurrent();
 	}
 
-	/// <summary>
-	/// An <c>IDXGIObject</c> interface is a base interface for all DXGI objects; <c>IDXGIObject</c> supports associating caller-defined
-	/// (private data) with an object and retrieval of an interface to the parent object.
-	/// </summary>
+	/// <summary>Represents a keyed mutex, which allows exclusive access to a shared resource that is used by multiple devices.</summary>
 	/// <remarks>
-	/// <para><c>IDXGIObject</c> implements base-class functionality for the following interfaces:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term>IDXGIAdapter</term>
-	/// </item>
-	/// <item>
-	/// <term>IDXGIDevice</term>
-	/// </item>
-	/// <item>
-	/// <term>IDXGIFactory</term>
-	/// </item>
-	/// <item>
-	/// <term>IDXGIOutput</term>
-	/// </item>
-	/// </list>
-	/// <para><c>Windows Phone 8:</c> This API is supported.</para>
+	/// <para>The <c>IDXGIFactory1</c> is required to create a resource capable of supporting the <b>IDXGIKeyedMutex</b> interface.</para>
+	/// <para>
+	/// An <b>IDXGIKeyedMutex</b> should be retrieved for each device sharing a resource. In Direct3D 10.1, such a resource that is shared
+	/// between two or more devices is created with the <c>D3D10_RESOURCE_MISC_SHARED_KEYEDMUTEX</c> flag. In Direct3D 11, such a resource that
+	/// is shared between two or more devices is created with the <c>D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX</c> flag.
+	/// </para>
+	/// <para>For information about creating a keyed mutex, see the <c>IDXGIKeyedMutex::AcquireSync</c> method.</para>
 	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/dxgi/nn-dxgi-idxgikeyedmutex
+	[PInvokeData("dxgi.h", MSDNShortId = "NN:dxgi.IDXGIKeyedMutex")]
+	[ComImport, Guid("9d8e1289-d7b3-465f-8126-250e349af85d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IDXGIKeyedMutex
+	{
+		/// <summary>Using a key, acquires exclusive rendering access to a shared resource.</summary>
+		/// <param name="Key">
+		/// <para>Type: <b><c>UINT64</c></b></para>
+		/// <para>
+		/// A value that indicates which device to give access to. This method will succeed when the device that currently owns the surface
+		/// calls the <c>IDXGIKeyedMutex::ReleaseSync</c> method using the same value. This value can be any UINT64 value.
+		/// </para>
+		/// </param>
+		/// <param name="dwMilliseconds">
+		/// <para>Type: <b><c>DWORD</c></b></para>
+		/// <para>
+		/// The time-out interval, in milliseconds. This method will return if the interval elapses, and the keyed mutex has not been released
+		/// using the specified <i>Key</i>. If this value is set to zero, the <b>AcquireSync</b> method will test to see if the keyed mutex has
+		/// been released and returns immediately. If this value is set to INFINITE, the time-out interval will never elapse.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>HRESULT</c></b></para>
+		/// <para>Return S_OK if successful.</para>
+		/// <para>If the owning device attempted to create another keyed mutex on the same shared resource, <b>AcquireSync</b> returns E_FAIL.</para>
+		/// <para>
+		/// <b>AcquireSync</b> can also return the following <c>DWORD</c> constants. Therefore, you should explicitly check for these constants.
+		/// If you only use the <c>SUCCEEDED</c> macro on the return value to determine if <b>AcquireSync</b> succeeded, you will not catch
+		/// these constants.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>
+		/// WAIT_ABANDONED - The shared surface and keyed mutex are no longer in a consistent state. If <b>AcquireSync</b> returns this value,
+		/// you should release and recreate both the keyed mutex and the shared surface.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>WAIT_TIMEOUT - The time-out interval elapsed before the specified key was released.</description>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <b>AcquireSync</b> method creates a lock to a surface that is shared between multiple devices, allowing only one device to
+		/// render to a surface at a time. This method uses a key to determine which device currently has exclusive access to the surface.
+		/// </para>
+		/// <para>
+		/// When a surface is created using the <b>D3D10_RESOURCE_MISC_SHARED_KEYEDMUTEX</b> value of the <c>D3D10_RESOURCE_MISC_FLAG</c>
+		/// enumeration, you must call the <b>AcquireSync</b> method before rendering to the surface. You must call the <c>ReleaseSync</c>
+		/// method when you are done rendering to a surface.
+		/// </para>
+		/// <para>
+		/// To acquire a reference to the keyed mutex object of a shared resource, call the <c>QueryInterface</c> method of the resource and
+		/// pass in the <b>UUID</b> of the <c>IDXGIKeyedMutex</c> interface. For more information about acquiring this reference, see the
+		/// following code example.
+		/// </para>
+		/// <para>The <b>AcquireSync</b> method uses the key as follows, depending on the state of the surface:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description>
+		/// On initial creation, the surface is unowned and any device can call the <b>AcquireSync</b> method to gain access. For an unowned
+		/// device, only a key of 0 will succeed. Calling the <b>AcquireSync</b> method for any other key will stall the calling CPU thread.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// If the surface is owned by a device when you call the <b>AcquireSync</b> method, the CPU thread that called the <b>AcquireSync</b>
+		/// method will stall until the owning device calls the <c>ReleaseSync</c> method using the same Key.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// If the surface is unowned when you call the <b>AcquireSync</b> method (for example, the last owning device has already called the
+		/// <c>ReleaseSync</c> method), the <b>AcquireSync</b> method will succeed if you specify the same key that was specified when the
+		/// <b>ReleaseSync</b> method was last called. Calling the <b>AcquireSync</b> method using any other key will cause a stall.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// When the owning device calls the <c>ReleaseSync</c> method with a particular key, and more than one device is waiting after calling
+		/// the <b>AcquireSync</b> method using the same key, any one of the waiting devices could be woken up first. The order in which devices
+		/// are woken up is undefined.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>A keyed mutex does not support recursive calls to the <b>AcquireSync</b> method.</description>
+		/// </item>
+		/// </list>
+		/// <para>Examples</para>
+		/// <para><b>Acquiring a Keyed Mutex</b></para>
+		/// <para>The following code example demonstrates how to acquire a lock to a shared resource and how to specify a key upon release.</para>
+		/// <para>
+		/// <c>// pDesc has already been set up with texture description. pDesc.MiscFlags = D3D10_RESOURCE_MISC_SHARED_KEYEDMUTEX; // Create a
+		/// shared texture resource. pD3D10DeviceD-&gt;CreateTexture2D(pDesc, NULL, pD3D10Texture); // Acquire a reference to the keyed mutex.
+		/// pD3D10Texture-&gt;QueryInterface(_uuidof(IDXGIKeyedMutex), pDXGIKeyedMutex); // Acquire a lock to the resource.
+		/// pDXGIKeyedMutex-&gt;AcquireSync(0, INFINITE); // Release the lock and specify a key. pDXGIKeyedMutex-&gt;ReleaseSync(1);</c>
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgikeyedmutex-acquiresync HRESULT AcquireSync( UINT64 Key, DWORD
+		// dwMilliseconds );
+		[PreserveSig]
+		HRESULT AcquireSync(ulong Key, uint dwMilliseconds);
+
+		/// <summary>Using a key, releases exclusive rendering access to a shared resource.</summary>
+		/// <param name="Key">
+		/// <para>Type: <b><c>UINT64</c></b></para>
+		/// <para>
+		/// A value that indicates which device to give access to. This method succeeds when the device that currently owns the surface calls
+		/// the <b>ReleaseSync</b> method using the same value. This value can be any UINT64 value.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>HRESULT</c></b></para>
+		/// <para>Returns S_OK if successful.</para>
+		/// <para>If the device attempted to release a keyed mutex that is not valid or owned by the device, <b>ReleaseSync</b> returns E_FAIL.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <b>ReleaseSync</b> method releases a lock to a surface that is shared between multiple devices. This method uses a key to
+		/// determine which device currently has exclusive access to the surface.
+		/// </para>
+		/// <para>
+		/// When a surface is created using the <b>D3D10_RESOURCE_MISC_SHARED_KEYEDMUTEX</b> value of the <c>D3D10_RESOURCE_MISC_FLAG</c>
+		/// enumeration, you must call the <c>IDXGIKeyedMutex::AcquireSync</c> method before rendering to the surface. You must call the
+		/// <b>ReleaseSync</b> method when you are done rendering to a surface.
+		/// </para>
+		/// <para>After you call the <b>ReleaseSync</b> method, the shared resource is unset from the rendering pipeline.</para>
+		/// <para>
+		/// To acquire a reference to the keyed mutex object of a shared resource, call the <c>QueryInterface</c> method of the resource and
+		/// pass in the <b>UUID</b> of the <c>IDXGIKeyedMutex</c> interface. For more information about acquiring this reference, see the
+		/// following code example.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para><b>Acquiring a Keyed Mutex</b></para>
+		/// <para>The following code example demonstrates how to acquire a lock to a shared resource and how to specify a key upon release.</para>
+		/// <para>
+		/// <c>// pDesc has already been set up with texture description. pDesc.MiscFlags = D3D10_RESOURCE_MISC_SHARED_KEYEDMUTEX; // Create a
+		/// shared texture resource. pD3D10DeviceD-&gt;CreateTexture2D(pDesc, NULL, pD3D10Texture); // Acquire a reference to the keyed mutex.
+		/// pD3D10Texture-&gt;QueryInterface(_uuidof(IDXGIKeyedMutex), pDXGIKeyedMutex); // Acquire a lock to the resource.
+		/// pDXGIKeyedMutex-&gt;AcquireSync(0, INFINITE); // Release the lock and specify a key. pDXGIKeyedMutex-&gt;ReleaseSync(1);</c>
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgikeyedmutex-releasesync HRESULT ReleaseSync( UINT64 Key );
+		[PreserveSig]
+		HRESULT ReleaseSync(ulong Key);
+	}
+	
+	/// <summary>
+		/// An <c>IDXGIObject</c> interface is a base interface for all DXGI objects; <c>IDXGIObject</c> supports associating caller-defined
+		/// (private data) with an object and retrieval of an interface to the parent object.
+		/// </summary>
+		/// <remarks>
+		/// <para><c>IDXGIObject</c> implements base-class functionality for the following interfaces:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>IDXGIAdapter</term>
+		/// </item>
+		/// <item>
+		/// <term>IDXGIDevice</term>
+		/// </item>
+		/// <item>
+		/// <term>IDXGIFactory</term>
+		/// </item>
+		/// <item>
+		/// <term>IDXGIOutput</term>
+		/// </item>
+		/// </list>
+		/// <para><c>Windows Phone 8:</c> This API is supported.</para>
+		/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nn-dxgi-idxgiobject
 	[ComImport, Guid("aec22fb8-76f3-4639-9be0-28eb43a67a2e"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IDXGIObject
@@ -4025,7 +4183,8 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiswapchain-present HRESULT Present( UINT SyncInterval, UINT
 		// Flags );
-		void Present(uint SyncInterval, DXGI_PRESENT Flags);
+		[PreserveSig]
+		HRESULT Present(uint SyncInterval, DXGI_PRESENT Flags);
 
 		/// <summary>Accesses one of the swap-chain's back buffers.</summary>
 		/// <param name="Buffer">

@@ -2768,7 +2768,8 @@ public static partial class DXGI
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiswapchain-present HRESULT Present( UINT SyncInterval, UINT
 		// Flags );
-		new void Present(uint SyncInterval, DXGI_PRESENT Flags);
+		[PreserveSig]
+		new HRESULT Present(uint SyncInterval, DXGI_PRESENT Flags);
 
 		/// <summary>Accesses one of the swap-chain's back buffers.</summary>
 		/// <param name="Buffer">

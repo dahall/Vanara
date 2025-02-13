@@ -4,6 +4,11 @@ using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
+/// <summary>Delegate for a method that closes a handle and reports success. Used by SafeHANDLE.</summary>
+/// <param name="handle">The handle.</param>
+/// <returns><see langword="true"/> if handle was closed or if handle is already closed; otherwise <see langword="false"/>.</returns>
+public delegate bool CloseHandleFunc(IntPtr handle);
+
 /// <summary>Base class for all native handles.</summary>
 /// <seealso cref="SafeHandleZeroOrMinusOneIsInvalid"/>
 /// <seealso cref="IEquatable{T}"/>
@@ -31,6 +36,18 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 	/// <param name="hMem">The <see cref="SafeHANDLE"/> instance.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator !(SafeHANDLE hMem) => hMem.IsInvalid;
+
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(SafeHANDLE hMem) => !hMem.IsInvalid;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="hMem">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(SafeHANDLE hMem) => hMem.IsInvalid;
+#endif
 
 	/// <summary>Implements the operator !=.</summary>
 	/// <param name="h1">The first handle.</param>

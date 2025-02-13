@@ -101,6 +101,18 @@ public struct BOOLEAN : IComparable, IComparable<BOOLEAN>, IComparable<bool>, IC
 	/// <returns>The result of the operator.</returns>
 	public static BOOLEAN operator !(BOOLEAN value) => !value.Value;
 
+#if !NETSTANDARD
+	/// <summary>Implements the operator <see langword="true"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator true(BOOLEAN value) => value.Value;
+
+	/// <summary>Implements the operator <see langword="false"/>.</summary>
+	/// <param name="value">The value.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator false(BOOLEAN value) => !value.Value;
+#endif
+
 	/// <inheritdoc/>
 	public int CompareTo(BOOLEAN other) => Value.CompareTo(other.Value);
 
