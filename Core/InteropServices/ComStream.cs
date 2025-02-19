@@ -8,28 +8,34 @@ namespace Vanara.InteropServices;
 /// <seealso cref="Stream"/>
 /// <seealso cref="IStream"/>
 /// <seealso cref="IDisposable"/>
-public class ComStream : Stream, IStream, IDisposable
+public class ComStream : Stream, IStream
 {
 	private readonly IStream? comStream = null;
 	private readonly Stream? netStream = null;
+	private bool disposed = false;
+	private readonly bool leaveOpen = false;
 
 	/// <summary>Initializes a new instance of the ComStream class.</summary>
 	/// <param name="stream">An IO.Stream</param>
-	public ComStream(Stream stream) => netStream = stream;
+	/// <param name="leaveOpen">
+	/// <see langword="true"/> to leave the stream open after the <see cref="ComStream"/> object is disposed; otherwise, <see langword="false"/>.
+	/// </param>
+	public ComStream(Stream stream, bool leaveOpen = false)
+	{
+		netStream = stream;
+		this.leaveOpen = leaveOpen;
+	}
 
 	/// <summary>Initializes a new instance of the ComStream class.</summary>
 	/// <param name="stream">A ComTypes.IStream</param>
-	public ComStream(IStream stream) => comStream = stream;
+	/// <param name="leaveOpen">
+	/// <see langword="true"/> to leave the stream open after the <see cref="ComStream"/> object is disposed; otherwise, <see langword="false"/>.
+	/// </param>
+	public ComStream(IStream stream, bool leaveOpen = false) => comStream = stream;
 
 	// Default constructor. Should not be used to create an ComStream object.
 	private ComStream()
 	{
-	}
-
-	/// <summary>Finalizes an instance of the <see cref="ComStream"/> class.</summary>
-	~ComStream()
-	{
-		netStream?.Close();
 	}
 
 	/// <summary>Gets a value indicating whether this instance can read.</summary>
@@ -93,14 +99,29 @@ public class ComStream : Stream, IStream, IDisposable
 	/// <returns>An <see cref="Stream"/> instance or <see langword="null"/> if not available.</returns>
 	public static Stream? ToStream(object stream) => stream is Stream s ? s : stream is IStream ist ? new ComStream(ist) : null;
 
-	/// <summary>Closes the current stream and releases any resources (such as the Stream) associated with the current IStream.</summary>
-	/// <returns></returns>
-	/// <remarks>This method is not a member in IStream.</remarks>
-	public override void Close()
+	/// <summary>
+	/// Releases the unmanaged resources used by the <see cref="T:System.IO.Stream" /> and optionally releases the managed resources.
+	/// </summary>
+	/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+	protected override void Dispose(bool disposing)
 	{
-		netStream?.Close();
-		try { comStream?.Commit(0 /*STGC_DEFAULT*/); } catch { }
-		GC.SuppressFinalize(this);
+		if (disposed)
+			return;
+		disposed = true;
+
+		try
+		{
+			if (disposing && !leaveOpen)
+			{
+				netStream?.Close();
+				comStream?.Commit(0 /*STGC_DEFAULT*/);
+			}
+		}
+		catch { }
+		finally
+		{
+			base.Dispose(disposing);
+		}
 	}
 
 	/// <summary>Clears all buffers for this stream and causes any buffered data to be written to the underlying device.</summary>
@@ -300,9 +321,6 @@ public class ComStream : Stream, IStream, IDisposable
 		else
 			throw new InvalidOperationException();
 	}
-
-	/// <summary>Releases all resources used by the Stream object.</summary>
-	void IDisposable.Dispose() => Close();
 
 	/// <summary>Restricts access to a specified range of bytes in the stream.</summary>
 	/// <param name="libOffset">Integer that specifies the byte offset for the beginning of the range.</param>
