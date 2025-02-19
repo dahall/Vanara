@@ -410,7 +410,7 @@ public class ComStream : Stream, IStream
 			// The enum values of SeekOrigin match the enum values of STREAM_SEEK, so we can just cast the dwOrigin to a SeekOrigin
 			var origin = Enum.IsDefined(typeof(SeekOrigin), dwOrigin) ? (SeekOrigin)dwOrigin : SeekOrigin.Begin;
 			var newPos = netStream.Seek(dlibMove, origin);
-			if (plibNewPosition == IntPtr.Zero)
+			if (plibNewPosition != IntPtr.Zero)
 				Marshal.WriteInt64(plibNewPosition, newPos);
 		}
 		else if (comStream is not null)
