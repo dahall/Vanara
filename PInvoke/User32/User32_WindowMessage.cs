@@ -9891,6 +9891,99 @@ public static partial class User32
 
 		/// <summary>
 		/// <para>
+		/// For <c>Per Monitor v2</c> top-level windows, this message is sent to all HWNDs in the child HWDN tree of the window that is
+		/// undergoing a DPI change. This message occurs before the top-level window receives <c><b>WM_DPICHANGED</b></c>, and traverses the
+		/// child tree from the bottom up.
+		/// </para>
+		/// <para><c>#define WM_DPICHANGED_BEFOREPARENT 0x02E2</c></para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>This value is unused and will be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This value is unused and will be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>This value is unused and ignored by the system.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>There is no default handling of this message in <c>DefWindowProc</c>.</para>
+		/// <para>This message is only sent when the top-level window has a DPI awareness context of PMv2.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/hidpi/wm-dpichanged-beforeparent
+		[MsgParams()]
+		WM_DPICHANGED_BEFOREPARENT = 0x02E2,
+
+		/// <summary>
+		/// <para>
+		/// For <c>Per Monitor v2</c> top-level windows, this message is sent to all HWNDs in the child HWDN tree of the window that is
+		/// undergoing a DPI change. This message occurs after the top-level window receives <c><b>WM_DPICHANGED</b></c>, and traverses the
+		/// child tree from the top down.
+		/// </para>
+		/// <para><c>#define WM_DPICHANGED_AFTERPARENT 0x02E3</c></para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>This value is unused and will be zero.</para>
+		/// <para><em>lParam</em></para>
+		/// <para>This value is unused and will be zero.</para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>This value is unused and ignored by the system.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>There is no default handling of this message in <c>DefWindowProc</c>.</para>
+		/// <para>This message is only sent when the top-level window has a DPI awareness context of PMv2.</para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/hidpi/wm-dpichanged-afterparent
+		[MsgParams()]
+		WM_DPICHANGED_AFTERPARENT = 0x02E3,
+
+		/// <summary>
+		/// <para>This message tells the operating system that the window will be sized to dimensions other than the default.</para>
+		/// <para>
+		/// This message is sent to top-level windows with a <c>DPI_AWARENESS_CONTEXT</c> of Per Monitor v2 before a
+		/// <c><b>WM_DPICHANGED</b></c> message is sent, and allows the window to compute its desired size for the pending DPI change. As
+		/// linear DPI scaling is the default behavior, this is only useful in scenarios where the window wants to scale non-linearly. If the
+		/// application responds to this message, the resulting size will be the candidate rectangle sent to <b>WM_DPICHANGED</b>.
+		/// </para>
+		/// <para>Use this message to alter the size of the rect that is provided with <c><b>WM_DPICHANGED</b></c>.</para>
+		/// <para><c>#define WM_GETDPISCALEDSIZE 0x02E4</c></para>
+		/// <para><strong>Parameters</strong></para>
+		/// <para><em>wParam</em></para>
+		/// <para>
+		/// The WPARAM contains a DPI value. The scaled window size that the application would set needs to be computed as if the window were
+		/// to switch to this DPI.
+		/// </para>
+		/// <para><em>lParam</em></para>
+		/// <para>
+		/// The LPARAM is an in/out pointer to a SIZE struct. The _In_ value in the LPARAM is the pending size of the window after a
+		/// user-initiated move or a call to <c><b>SetWindowPos</b></c>. If the window is being resized, this size is not necessarily the
+		/// same as the window's current size at the time this message is received.
+		/// </para>
+		/// <para>
+		/// The _Out_ value in the LPARAM should be written to by the application to specify the desired scaled window size corresponding to
+		/// the provided DPI value in the WPARAM.
+		/// </para>
+		/// <para><strong>Returns</strong></para>
+		/// <para>
+		/// The function returns a BOOL. Returning TRUE indicates that a new size has been computed. Returning FALSE indicates that the
+		/// message will not be handled, and the default linear DPI scaling will apply to the window.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>This message is only sent to top-level windows which have a DPI awareness context of Per Monitor v2.</para>
+		/// <para>
+		/// This event is necessary to facilitate graceful non-linear scaling, and ensures that the windows's position remains constant in
+		/// relationship to the cursor and when moving back and forth across monitors.
+		/// </para>
+		/// <para>
+		/// There is no specific default handling of this message in <c>DefWindowProc</c>. As for all messages it does not explicitly handle,
+		/// <c>DefWindowProc</c> will return zero for this message. As noted above, this return tells the system to use the default linear behavior.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/hidpi/wm-getdpiscaledsize
+		[MsgParams(typeof(uint), typeof(SIZE?), LResultType = typeof(BOOL))]
+		WM_GETDPISCALEDSIZE = 0x02E4,
+
+		/// <summary>
+		/// <para>
 		/// An application sends a <c>WM_CUT</c> message to an edit control or combo box to delete (cut) the current selection, if any, in
 		/// the edit control and copy the deleted text to the clipboard in <c>CF_TEXT</c> format.
 		/// </para>
