@@ -51,12 +51,12 @@ public readonly struct HACCEL : IUserHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HACCEL hMem) => !hMem.IsInvalid;
+	public static bool operator true(HACCEL hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HACCEL hMem) => hMem.IsInvalid;
+	public static bool operator false(HACCEL hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -121,12 +121,12 @@ public readonly struct HANDLE : IHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HANDLE hMem) => !hMem.IsInvalid;
+	public static bool operator true(HANDLE hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HANDLE hMem) => hMem.IsInvalid;
+	public static bool operator false(HANDLE hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -191,12 +191,12 @@ public readonly struct HBITMAP : IGraphicsObjectHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HBITMAP hMem) => !hMem.IsInvalid;
+	public static bool operator true(HBITMAP hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HBITMAP hMem) => hMem.IsInvalid;
+	public static bool operator false(HBITMAP hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -261,12 +261,12 @@ public readonly struct HBRUSH : IGraphicsObjectHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HBRUSH hMem) => !hMem.IsInvalid;
+	public static bool operator true(HBRUSH hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HBRUSH hMem) => hMem.IsInvalid;
+	public static bool operator false(HBRUSH hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -331,12 +331,12 @@ public readonly struct HCOLORSPACE : IGraphicsObjectHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HCOLORSPACE hMem) => !hMem.IsInvalid;
+	public static bool operator true(HCOLORSPACE hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HCOLORSPACE hMem) => hMem.IsInvalid;
+	public static bool operator false(HCOLORSPACE hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -401,12 +401,12 @@ public readonly struct HCURSOR : IGraphicsObjectHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HCURSOR hMem) => !hMem.IsInvalid;
+	public static bool operator true(HCURSOR hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HCURSOR hMem) => hMem.IsInvalid;
+	public static bool operator false(HCURSOR hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -466,12 +466,12 @@ public readonly struct HDC : IHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HDC hMem) => !hMem.IsInvalid;
+	public static bool operator true(HDC hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HDC hMem) => hMem.IsInvalid;
+	public static bool operator false(HDC hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -531,12 +531,12 @@ public readonly struct HDESK : IKernelHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HDESK hMem) => !hMem.IsInvalid;
+	public static bool operator true(HDESK hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HDESK hMem) => hMem.IsInvalid;
+	public static bool operator false(HDESK hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -596,12 +596,12 @@ public readonly struct HDPA : IKernelHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HDPA hMem) => !hMem.IsInvalid;
+	public static bool operator true(HDPA hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HDPA hMem) => hMem.IsInvalid;
+	public static bool operator false(HDPA hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -661,12 +661,12 @@ public readonly struct HDROP : IShellHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HDROP hMem) => !hMem.IsInvalid;
+	public static bool operator true(HDROP hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HDROP hMem) => hMem.IsInvalid;
+	public static bool operator false(HDROP hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -726,12 +726,12 @@ public readonly struct HDSA : IKernelHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HDSA hMem) => !hMem.IsInvalid;
+	public static bool operator true(HDSA hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HDSA hMem) => hMem.IsInvalid;
+	public static bool operator false(HDSA hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -791,12 +791,12 @@ public readonly struct HDWP : IUserHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HDWP hMem) => !hMem.IsInvalid;
+	public static bool operator true(HDWP hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HDWP hMem) => hMem.IsInvalid;
+	public static bool operator false(HDWP hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -856,12 +856,12 @@ public readonly struct HENHMETAFILE : IHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HENHMETAFILE hMem) => !hMem.IsInvalid;
+	public static bool operator true(HENHMETAFILE hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HENHMETAFILE hMem) => hMem.IsInvalid;
+	public static bool operator false(HENHMETAFILE hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -921,12 +921,12 @@ public readonly struct HEVENT : ISyncHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HEVENT hMem) => !hMem.IsInvalid;
+	public static bool operator true(HEVENT hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HEVENT hMem) => hMem.IsInvalid;
+	public static bool operator false(HEVENT hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -997,12 +997,12 @@ public readonly struct HFILE : ISyncHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HFILE hMem) => !hMem.IsInvalid;
+	public static bool operator true(HFILE hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HFILE hMem) => hMem.IsInvalid;
+	public static bool operator false(HFILE hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1067,12 +1067,12 @@ public readonly struct HFONT : IGraphicsObjectHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HFONT hMem) => !hMem.IsInvalid;
+	public static bool operator true(HFONT hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HFONT hMem) => hMem.IsInvalid;
+	public static bool operator false(HFONT hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1172,12 +1172,12 @@ public readonly struct HGDIOBJ : IGraphicsObjectHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HGDIOBJ hMem) => !hMem.IsInvalid;
+	public static bool operator true(HGDIOBJ hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HGDIOBJ hMem) => hMem.IsInvalid;
+	public static bool operator false(HGDIOBJ hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1237,12 +1237,12 @@ public readonly struct HICON : IUserHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HICON hMem) => !hMem.IsInvalid;
+	public static bool operator true(HICON hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HICON hMem) => hMem.IsInvalid;
+	public static bool operator false(HICON hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1302,12 +1302,12 @@ public readonly struct HIMAGELIST : IShellHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HIMAGELIST hMem) => !hMem.IsInvalid;
+	public static bool operator true(HIMAGELIST hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HIMAGELIST hMem) => hMem.IsInvalid;
+	public static bool operator false(HIMAGELIST hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1367,12 +1367,12 @@ public readonly struct HINSTANCE : IKernelHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HINSTANCE hMem) => !hMem.IsInvalid;
+	public static bool operator true(HINSTANCE hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HINSTANCE hMem) => hMem.IsInvalid;
+	public static bool operator false(HINSTANCE hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1484,12 +1484,12 @@ public readonly struct HKEY : IKernelHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HKEY hMem) => !hMem.IsInvalid;
+	public static bool operator true(HKEY hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HKEY hMem) => hMem.IsInvalid;
+	public static bool operator false(HKEY hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1549,12 +1549,12 @@ public readonly struct HMENU : IUserHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HMENU hMem) => !hMem.IsInvalid;
+	public static bool operator true(HMENU hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HMENU hMem) => hMem.IsInvalid;
+	public static bool operator false(HMENU hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1614,12 +1614,12 @@ public readonly struct HMETAFILE : IHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HMETAFILE hMem) => !hMem.IsInvalid;
+	public static bool operator true(HMETAFILE hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HMETAFILE hMem) => hMem.IsInvalid;
+	public static bool operator false(HMETAFILE hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1679,12 +1679,12 @@ public readonly struct HMONITOR : IKernelHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HMONITOR hMem) => !hMem.IsInvalid;
+	public static bool operator true(HMONITOR hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HMONITOR hMem) => hMem.IsInvalid;
+	public static bool operator false(HMONITOR hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1749,12 +1749,12 @@ public readonly struct HPALETTE : IGraphicsObjectHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HPALETTE hMem) => !hMem.IsInvalid;
+	public static bool operator true(HPALETTE hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HPALETTE hMem) => hMem.IsInvalid;
+	public static bool operator false(HPALETTE hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1819,12 +1819,12 @@ public readonly struct HPEN : IGraphicsObjectHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HPEN hMem) => !hMem.IsInvalid;
+	public static bool operator true(HPEN hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HPEN hMem) => hMem.IsInvalid;
+	public static bool operator false(HPEN hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1889,12 +1889,12 @@ public readonly struct HPROCESS : ISyncHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HPROCESS hMem) => !hMem.IsInvalid;
+	public static bool operator true(HPROCESS hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HPROCESS hMem) => hMem.IsInvalid;
+	public static bool operator false(HPROCESS hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -1954,12 +1954,12 @@ public readonly struct HPROPSHEET : IUserHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HPROPSHEET hMem) => !hMem.IsInvalid;
+	public static bool operator true(HPROPSHEET hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HPROPSHEET hMem) => hMem.IsInvalid;
+	public static bool operator false(HPROPSHEET hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2019,12 +2019,12 @@ public readonly struct HPROPSHEETPAGE : IUserHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HPROPSHEETPAGE hMem) => !hMem.IsInvalid;
+	public static bool operator true(HPROPSHEETPAGE hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HPROPSHEETPAGE hMem) => hMem.IsInvalid;
+	public static bool operator false(HPROPSHEETPAGE hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2089,12 +2089,12 @@ public readonly struct HRGN : IGraphicsObjectHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HRGN hMem) => !hMem.IsInvalid;
+	public static bool operator true(HRGN hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HRGN hMem) => hMem.IsInvalid;
+	public static bool operator false(HRGN hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2154,12 +2154,12 @@ public readonly struct HSECTION : IHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HSECTION hMem) => !hMem.IsInvalid;
+	public static bool operator true(HSECTION hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HSECTION hMem) => hMem.IsInvalid;
+	public static bool operator false(HSECTION hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2219,12 +2219,12 @@ public readonly struct HTASK : IHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HTASK hMem) => !hMem.IsInvalid;
+	public static bool operator true(HTASK hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HTASK hMem) => hMem.IsInvalid;
+	public static bool operator false(HTASK hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2284,12 +2284,12 @@ public readonly struct HTHEME : IHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HTHEME hMem) => !hMem.IsInvalid;
+	public static bool operator true(HTHEME hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HTHEME hMem) => hMem.IsInvalid;
+	public static bool operator false(HTHEME hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2349,12 +2349,12 @@ public readonly struct HTHREAD : ISyncHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HTHREAD hMem) => !hMem.IsInvalid;
+	public static bool operator true(HTHREAD hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HTHREAD hMem) => hMem.IsInvalid;
+	public static bool operator false(HTHREAD hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2414,12 +2414,12 @@ public readonly struct HTHUMBNAIL : IShellHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HTHUMBNAIL hMem) => !hMem.IsInvalid;
+	public static bool operator true(HTHUMBNAIL hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HTHUMBNAIL hMem) => hMem.IsInvalid;
+	public static bool operator false(HTHUMBNAIL hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2479,12 +2479,12 @@ public readonly struct HTOKEN : IKernelHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HTOKEN hMem) => !hMem.IsInvalid;
+	public static bool operator true(HTOKEN hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HTOKEN hMem) => hMem.IsInvalid;
+	public static bool operator false(HTOKEN hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2544,12 +2544,12 @@ public readonly struct HWINSTA : IKernelHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HWINSTA hMem) => !hMem.IsInvalid;
+	public static bool operator true(HWINSTA hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HWINSTA hMem) => hMem.IsInvalid;
+	public static bool operator false(HWINSTA hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2636,12 +2636,12 @@ public readonly struct HWND : IUserHandle
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(HWND hMem) => !hMem.IsInvalid;
+	public static bool operator true(HWND hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(HWND hMem) => hMem.IsInvalid;
+	public static bool operator false(HWND hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2701,12 +2701,12 @@ public readonly struct PACE : ISecurityObject
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(PACE hMem) => !hMem.IsInvalid;
+	public static bool operator true(PACE hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(PACE hMem) => hMem.IsInvalid;
+	public static bool operator false(PACE hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2766,12 +2766,12 @@ public readonly struct PACL : ISecurityObject
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(PACL hMem) => !hMem.IsInvalid;
+	public static bool operator true(PACL hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(PACL hMem) => hMem.IsInvalid;
+	public static bool operator false(PACL hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2831,12 +2831,12 @@ public readonly struct PSECURITY_DESCRIPTOR : ISecurityObject
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(PSECURITY_DESCRIPTOR hMem) => !hMem.IsInvalid;
+	public static bool operator true(PSECURITY_DESCRIPTOR hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(PSECURITY_DESCRIPTOR hMem) => hMem.IsInvalid;
+	public static bool operator false(PSECURITY_DESCRIPTOR hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
@@ -2896,12 +2896,12 @@ public readonly struct PSID : ISecurityObject
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(PSID hMem) => !hMem.IsInvalid;
+	public static bool operator true(PSID hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(PSID hMem) => hMem.IsInvalid;
+	public static bool operator false(PSID hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>

@@ -219,12 +219,12 @@ public readonly struct <#= name #> : <#= inheritance #>
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(<#= name #> hMem) => !hMem.IsInvalid;
+	public static bool operator true(<#= name #> hMem) => !hMem.IsNull;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(<#= name #> hMem) => hMem.IsInvalid;
+	public static bool operator false(<#= name #> hMem) => hMem.IsNull;
 #endif
 
 	/// <inheritdoc/>
