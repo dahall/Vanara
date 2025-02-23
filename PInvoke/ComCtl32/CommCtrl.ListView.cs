@@ -3873,6 +3873,12 @@ public static partial class ComCtl32
 		/// <summary/>
 		LVM_SETPRESERVEALPHA = LVM_FIRST + 212,
 
+		/// <summary>Undocumented. Calls ResetEmptyText method; returns TRUE.</summary>
+		LVM_RESETEMPTYTEXT = LVM_FIRST + 84,
+
+		/// <summary>Undocumented. Returns indirect result of GetFocusedColumn method.</summary>
+		LVM_GETFOCUSEDCOLUMN = LVM_FIRST + 186,
+
 		/*LVM_SetBkImage               = SETBKIMAGEW,
 		LVM_GetBkImage               = GETBKIMAGEW,*/
 	}
