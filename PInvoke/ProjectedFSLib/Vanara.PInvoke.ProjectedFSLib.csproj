@@ -22,8 +22,6 @@ EAINFORMATION PRJ_CALLBACKS PRJ_CALLBACK_DATA PRJ_COMPLETE_COMMAND_EXTENDED_PARA
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

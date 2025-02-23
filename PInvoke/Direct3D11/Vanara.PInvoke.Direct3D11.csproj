@@ -24,9 +24,6 @@ ID3D11Asynchronous ID3D11AuthenticatedChannel ID3D11BlendState ID3D11BlendState1
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\D3DCompiler\Vanara.PInvoke.D3DCompiler.csproj" />
-    <ProjectReference Include="..\DXGI\Vanara.PInvoke.DXGI.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

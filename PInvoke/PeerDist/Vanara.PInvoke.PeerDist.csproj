@@ -22,7 +22,6 @@ PEERDIST_CLIENT_BASIC_INFO PEERDIST_CONTENTINFO_HANDLE PEERDIST_CONTENT_HANDLE P
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

@@ -22,7 +22,6 @@ CONNECTDLGSTRUCT DISCDLGSTRUCT NETCONNECTINFOSTRUCT NETINFOSTRUCT NETRESOURCE RE
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

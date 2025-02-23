@@ -21,7 +21,6 @@ Corners
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>
   <ItemGroup Condition=" !$(TargetFramework.StartsWith('net4')) ">

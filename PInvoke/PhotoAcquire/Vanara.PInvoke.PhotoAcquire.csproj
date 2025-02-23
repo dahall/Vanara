@@ -18,8 +18,6 @@ IPhotoAcquire IPhotoAcquireDeviceSelectionDialog IPhotoAcquireItem IPhotoAcquire
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shell32\Vanara.PInvoke.Shell32.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

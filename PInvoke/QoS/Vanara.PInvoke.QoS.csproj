@@ -22,8 +22,6 @@ ADDRESS_LIST_DESCRIPTOR AD_GENERAL_PARAMS AD_GUARANTEED CONTROL_SERVICE ENUMERAT
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>
 </Project>

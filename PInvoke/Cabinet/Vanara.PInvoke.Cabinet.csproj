@@ -25,7 +25,6 @@ CCAB COMPRESSOR_HANDLE COMPRESS_ALLOCATION_ROUTINES DECOMPRESSOR_HANDLE DECRYPT 
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

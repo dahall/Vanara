@@ -25,9 +25,6 @@ IAnchor IEnumITfCompositionView IEnumSpeechCommands IEnumTfCandidates IEnumTfCon
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
     <ProjectReference Include="..\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>

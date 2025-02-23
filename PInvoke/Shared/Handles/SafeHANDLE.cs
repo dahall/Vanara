@@ -4,11 +4,6 @@ using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
-/// <summary>Delegate for a method that closes a handle and reports success. Used by SafeHANDLE.</summary>
-/// <param name="handle">The handle.</param>
-/// <returns><see langword="true"/> if handle was closed or if handle is already closed; otherwise <see langword="false"/>.</returns>
-public delegate bool CloseHandleFunc(IntPtr handle);
-
 /// <summary>Base class for all native handles.</summary>
 /// <seealso cref="SafeHandleZeroOrMinusOneIsInvalid"/>
 /// <seealso cref="IEquatable{T}"/>

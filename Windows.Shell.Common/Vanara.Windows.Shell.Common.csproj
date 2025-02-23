@@ -33,10 +33,6 @@ ChangeFilters, DialogStatus, ExecutableType, FileUsageType, FolderItemFilter, Li
     <PackageReference Include="System.Security.Permissions" Version="8.0.0" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' And '$(TargetFramework)' != 'net5.0' " />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj" />
-    <ProjectReference Include="..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj" />
-    <ProjectReference Include="..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
     <ProjectReference Include="..\PInvoke\SearchApi\Vanara.PInvoke.SearchApi.csproj" />
     <ProjectReference Include="..\Windows.Extensions\Vanara.Windows.Extensions.csproj" />
   </ItemGroup>

@@ -21,9 +21,7 @@ CREDUI_INFO PSEC_WINNT_CREDUI_CONTEXT PSEC_WINNT_CREDUI_CONTEXT_VECTOR
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

@@ -25,8 +25,6 @@ IEnumNetworkConnections IEnumNetworks INetwork INetworkConnection INetworkConnec
     <Reference Include="CustomMarshalers" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
   </ItemGroup>
 </Project>

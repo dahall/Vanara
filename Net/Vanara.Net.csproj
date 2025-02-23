@@ -20,6 +20,5 @@ CustomDnsBootstapper, DhcpClient, DistributedRoutingTable, DnsService, DrtBootst
     <ProjectReference Include="..\PInvoke\Dhcp\Vanara.PInvoke.Dhcp.csproj" />
     <ProjectReference Include="..\PInvoke\DnsApi\Vanara.PInvoke.DnsApi.csproj" />
     <ProjectReference Include="..\PInvoke\Drt\Vanara.PInvoke.Drt.csproj" />
-    <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
   </ItemGroup>
 </Project>

@@ -22,7 +22,6 @@ WCM_BILLING_CYCLE_INFO WCM_CONNECTION_COST_DATA WCM_DATAPLAN_STATUS WCM_POLICY_V
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

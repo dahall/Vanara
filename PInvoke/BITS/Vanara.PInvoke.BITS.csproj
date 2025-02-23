@@ -22,7 +22,6 @@ IBackgroundCopyCallback IBackgroundCopyCallback2 IBackgroundCopyCallback3 IBackg
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

@@ -13,17 +13,9 @@
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\D3DCompiler\Vanara.PInvoke.D3DCompiler.csproj" />
     <ProjectReference Include="..\Direct2D\Vanara.PInvoke.Direct2D.csproj" />
-    <ProjectReference Include="..\Direct3D11\Vanara.PInvoke.Direct3D11.csproj" />
-    <ProjectReference Include="..\Direct3D12\Vanara.PInvoke.Direct3D12.csproj" />
     <ProjectReference Include="..\DirectXMath\Vanara.PInvoke.DirectXMath.csproj" />
     <ProjectReference Include="..\DXCore\Vanara.PInvoke.DXCore.csproj" />
-    <ProjectReference Include="..\DXGI\Vanara.PInvoke.DXGI.csproj" />
     <ProjectReference Include="..\DStorage\Vanara.PInvoke.DStorage.csproj" />
-    <ProjectReference Include="..\DWrite\Vanara.PInvoke.DWrite.csproj" />
-    <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

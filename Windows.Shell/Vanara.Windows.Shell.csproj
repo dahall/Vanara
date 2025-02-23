@@ -33,8 +33,6 @@ NavigationLogDirection, SFVMUD, ShellBrowserViewMode, TaskbarItemTabThumbnailOpt
     <PackageReference Include="System.Drawing.Common" Version="8.0.5" Condition=" $(TargetFramework.StartsWith('netstandard')) " />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\Windows.Shell.Common\Vanara.Windows.Shell.Common.csproj" />
   </ItemGroup>
 </Project>

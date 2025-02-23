@@ -23,8 +23,6 @@ CLIENT_ID FILE_ACCESS_INFORMATION FILE_BASIC_INFORMATION FILE_BOTH_DIR_INFORMATI
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

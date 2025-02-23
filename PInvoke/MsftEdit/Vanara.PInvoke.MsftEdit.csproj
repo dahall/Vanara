@@ -24,11 +24,8 @@ IRichEditOle IRichEditOleCallback IRicheditUiaOverrides IRicheditWindowlessAcces
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Imm32\Vanara.PInvoke.Imm32.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\UIAutomation\Vanara.PInvoke.UIAutomation.csproj" />
-    <ProjectReference Include="..\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>
 </Project>
