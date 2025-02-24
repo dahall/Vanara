@@ -1882,4 +1882,94 @@ public static partial class Kernel32
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 		public string cStreamName;
 	}
+
+	/// <summary>The <c>WIN32_STREAM_ID</c> structure contains stream data.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-win32_stream_id typedef struct _WIN32_STREAM_ID { DWORD
+	// dwStreamId; DWORD dwStreamAttributes; LARGE_INTEGER Size; DWORD dwStreamNameSize; WCHAR cStreamName[ANYSIZE_ARRAY]; } WIN32_STREAM_ID, *LPWIN32_STREAM_ID;
+	[PInvokeData("winbase.h", MSDNShortId = "NS:winbase._WIN32_STREAM_ID")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Size = 20, Pack = 4)]
+	public struct WIN32_STREAM_ID_HEADER
+	{
+		/// <summary>
+		/// <para>Type of data. This member can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>BACKUP_ALTERNATE_DATA</c> 0x00000004</description>
+		/// <description>Alternative data streams. This corresponds to the NTFS $DATA stream type on a named data stream.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_DATA</c> 0x00000001</description>
+		/// <description>Standard data. This corresponds to the NTFS $DATA stream type on the default (unnamed) data stream.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_EA_DATA</c> 0x00000002</description>
+		/// <description>Extended attribute data. This corresponds to the NTFS $EA stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_LINK</c> 0x00000005</description>
+		/// <description>Hard link information. This corresponds to the NTFS $FILE_NAME stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_OBJECT_ID</c> 0x00000007</description>
+		/// <description>Objects identifiers. This corresponds to the NTFS $OBJECT_ID stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_PROPERTY_DATA</c> 0x00000006</description>
+		/// <description>Property data.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_REPARSE_DATA</c> 0x00000008</description>
+		/// <description>Reparse points. This corresponds to the NTFS $REPARSE_POINT stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_SECURITY_DATA</c> 0x00000003</description>
+		/// <description>Security descriptor data.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_SPARSE_BLOCK</c> 0x00000009</description>
+		/// <description>Sparse file. This corresponds to the NTFS $DATA stream type for a sparse file.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_TXFS_DATA</c> 0x0000000A</description>
+		/// <description>
+		/// Transactional NTFS (TxF) data stream. This corresponds to the NTFS $TXF_DATA stream type. <c>Windows Server 2003 and
+		/// Windows XP:  </c> This value is not supported.
+		/// </description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public BACKUP_STREAM_ID dwStreamId;
+
+		/// <summary>
+		/// <para>Attributes of data to facilitate cross-operating system transfer. This member can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>STREAM_MODIFIED_WHEN_READ</c></description>
+		/// <description>
+		/// Attribute set if the stream contains data that is modified when read. Allows the backup application to know that verification of
+		/// data will fail.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description><c>STREAM_CONTAINS_SECURITY</c></description>
+		/// <description>Stream contains security data (general attributes). Allows the stream to be ignored on cross-operations restore.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public BACKUP_STREAM_ATTR dwStreamAttributes;
+
+		/// <summary>Size of data, in bytes.</summary>
+		public long Size;
+
+		/// <summary>Length of the name of the alternative data stream, in bytes.</summary>
+		public uint dwStreamNameSize;
+	}
 }
