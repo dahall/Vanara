@@ -6,7 +6,7 @@
   </ProjectExtensions>
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows WindowsUpdate.dll.</Description>
-    <AssemblyName>Vanara.PInvoke.WindowsUpdate</AssemblyName>
+    <AssemblyName>Vanara.WindowsUpdate</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;WindowsUpdate</PackageTags>
