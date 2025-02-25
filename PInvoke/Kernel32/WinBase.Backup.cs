@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+
+namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -469,6 +471,105 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool BackupRead([In] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [MarshalAs(UnmanagedType.Bool)] bool bAbort,
 		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, ref IntPtr lpContext);
+
+	/// <summary>
+	/// The <c>BackupRead</c> function can be used to back up a file or directory, including the security information. The function reads
+	/// data associated with a specified file or directory into a buffer, which can then be written to the backup medium using the
+	/// <c>WriteFile</c> function.
+	/// <para>This method appropriately closes the read operation after reading all the streams.</para>
+	/// </summary>
+	/// <param name="hFile">
+	/// <para>
+	/// Handle to the file or directory to be backed up. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not read
+	/// unless the file handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. For more information, see File Security and
+	/// Access Rights.
+	/// </para>
+	/// <para>
+	/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when <c>CreateFile</c>
+	/// is called. This function does not validate that the handle it receives is synchronous, so it does not return an error code for a
+	/// synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are very difficult to debug.
+	/// </para>
+	/// <para>
+	/// The <c>BackupRead</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this case,
+	/// the <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
+	/// </para>
+	/// </param>
+	/// <param name="bProcessSecurity">
+	/// <para>Indicates whether the function will restore the access-control list (ACL) data for the file or directory.</para>
+	/// <para>If bProcessSecurity is <c>TRUE</c>, the ACL data will be backed up.</para>
+	/// </param>
+	/// <param name="retrieveContents">
+	/// If set to <see langword="true"/>, the contents of each stream will be returned in <paramref name="lpBuffers"/>; otherwise <see
+	/// langword="false"/> will return a null buffer.
+	/// </param>
+	/// <param name="lpBuffers">Returns a list of tuples with each stream's information (as a <see cref="WIN32_STREAM_ID"/> value, and optionally the contents.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is <see cref="Win32Error.NO_ERROR"/>.</para>
+	/// <para>If the function fails, the return value indicates which error occurred.</para>
+	/// </returns>
+	[PInvokeData("Winbase.h", MSDNShortId = "aa362509")]
+	public static Win32Error BackupRead([In] HFILE hFile, [Optional] bool bProcessSecurity, [Optional] bool retrieveContents, out List<(WIN32_STREAM_ID id, SafeAllocatedMemoryHandle? buffer)> lpBuffers)
+	{
+		lpBuffers = [];
+		unsafe
+		{
+			// Use header to prevent unknown allocation of name value
+			WIN32_STREAM_ID_HEADER hdr = new();
+			var hdrSize = (uint)sizeof(WIN32_STREAM_ID_HEADER);
+
+			IntPtr lpContext = default;
+			try
+			{
+				while (true)
+				{
+					// Read the next stream header:
+					var ret = BackupRead(hFile, (IntPtr)(void*)&hdr, hdrSize, out var bytesRead, false, bProcessSecurity, ref lpContext);
+					if (!ret)
+						return GetLastError();
+					// Last stream found, so exit loop
+					if (bytesRead == 0)
+						break;
+					// Unexpected error -- this should always be right
+					if (bytesRead != hdrSize)
+						return Win32Error.ERROR_INVALID_DATA;
+
+					// Get the name if available
+					string? name = null;
+					if (hdr.dwStreamNameSize > 0)
+					{
+						using SafeLPWSTR pName = new(((int)hdr.dwStreamNameSize / 2) + 1);
+						bool nameRead = BackupRead(hFile, pName, hdr.dwStreamNameSize, out bytesRead, false, bProcessSecurity, ref lpContext);
+						if (!nameRead)
+							return GetLastError();
+						name = pName;
+					}
+
+					// Capture the details about the stream and allocated memory with the contents
+					(WIN32_STREAM_ID id, SafeAllocatedMemoryHandle? buffer) entry = (hdr, null);
+					entry.id.cStreamName = name ?? "";
+					if (hdr.dwStreamId != BACKUP_STREAM_ID.BACKUP_INVALID && retrieveContents)
+					{
+						var buf = new SafeHGlobalHandle(hdr.Size.LowPart());
+						if (buf.Size > 0 && !BackupRead(hFile, buf, buf.Size, out bytesRead, false, bProcessSecurity, ref lpContext))
+							return GetLastError();
+						entry.buffer = buf;
+					}
+					else
+					{
+						if (!BackupSeek(hFile, hdr.Size.LowPart(), (uint)hdr.Size.HighPart(), out _, out _, ref lpContext))
+							return GetLastError();
+					}
+					lpBuffers.Add(entry);
+				}
+			}
+			finally
+			{
+				// Close the backup
+				BackupRead(hFile, IntPtr.Zero, 0, out _, true, bProcessSecurity, ref lpContext);
+			}
+		}
+		return 0;
+	}
 
 	/// <summary>
 	/// The <c>BackupSeek</c> function seeks forward in a data stream initially accessed by using the <c>BackupRead</c> or <c>BackupWrite</c> function.
@@ -1881,6 +1982,12 @@ public static partial class Kernel32
 		/// <summary>Unicode string that specifies the name of the alternative data stream.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 		public string cStreamName;
+
+		/// <summary>Performs an implicit conversion from <see cref="WIN32_STREAM_ID_HEADER"/> to <see cref="WIN32_STREAM_ID"/>.</summary>
+		/// <param name="h">The header.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator WIN32_STREAM_ID(in WIN32_STREAM_ID_HEADER h) =>
+			new() { dwStreamId = h.dwStreamId, dwStreamAttributes = h.dwStreamAttributes, Size = h.Size, dwStreamNameSize = h.dwStreamNameSize };
 	}
 
 	/// <summary>The <c>WIN32_STREAM_ID</c> structure contains stream data.</summary>
