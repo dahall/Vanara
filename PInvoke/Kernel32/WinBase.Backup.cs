@@ -478,8 +478,7 @@ public static partial class Kernel32
 	/// <c>WriteFile</c> function.
 	/// <para>This method appropriately closes the read operation after reading all the streams.</para>
 	/// </summary>
-	/// <param name="hFile">
-	/// <para>
+	/// <param name="hFile"><para>
 	/// Handle to the file or directory to be backed up. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not read
 	/// unless the file handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. For more information, see File Security and
 	/// Access Rights.
@@ -492,25 +491,18 @@ public static partial class Kernel32
 	/// <para>
 	/// The <c>BackupRead</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this case,
 	/// the <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
-	/// </para>
-	/// </param>
-	/// <param name="bProcessSecurity">
-	/// <para>Indicates whether the function will restore the access-control list (ACL) data for the file or directory.</para>
-	/// <para>If bProcessSecurity is <c>TRUE</c>, the ACL data will be backed up.</para>
-	/// </param>
-	/// <param name="retrieveContents">
-	/// If set to <see langword="true"/>, the contents of each stream will be returned in <paramref name="lpBuffers"/>; otherwise <see
-	/// langword="false"/> will return a null buffer.
-	/// </param>
-	/// <param name="lpBuffers">Returns a list of tuples with each stream's information (as a <see cref="WIN32_STREAM_ID"/> value, and optionally the contents.</param>
+	/// </para></param>
+	/// <param name="bProcessSecurity"><para>Indicates whether the function will restore the access-control list (ACL) data for the file or directory.</para>
+	/// <para>If bProcessSecurity is <c>TRUE</c>, the ACL data will be backed up.</para></param>
+	/// <param name="lpBufferInfo">Returns a list of tuples with each stream's information (as a <see cref="WIN32_STREAM_ID" /> value, and optionally the contents.</param>
 	/// <returns>
-	/// <para>If the function succeeds, the return value is <see cref="Win32Error.NO_ERROR"/>.</para>
+	/// <para>If the function succeeds, the return value is <see cref="Win32Error.NO_ERROR" />.</para>
 	/// <para>If the function fails, the return value indicates which error occurred.</para>
 	/// </returns>
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362509")]
-	public static Win32Error BackupRead([In] HFILE hFile, [Optional] bool bProcessSecurity, [Optional] bool retrieveContents, out List<(WIN32_STREAM_ID id, SafeAllocatedMemoryHandle? buffer)> lpBuffers)
+	public static Win32Error BackupRead([In] HFILE hFile, [Optional] bool bProcessSecurity, out List<WIN32_STREAM_ID> lpBufferInfo)
 	{
-		lpBuffers = [];
+		lpBufferInfo = [];
 		unsafe
 		{
 			// Use header to prevent unknown allocation of name value
@@ -544,22 +536,13 @@ public static partial class Kernel32
 						name = pName;
 					}
 
-					// Capture the details about the stream and allocated memory with the contents
-					(WIN32_STREAM_ID id, SafeAllocatedMemoryHandle? buffer) entry = (hdr, null);
-					entry.id.cStreamName = name ?? "";
-					if (hdr.dwStreamId != BACKUP_STREAM_ID.BACKUP_INVALID && retrieveContents)
-					{
-						var buf = new SafeHGlobalHandle(hdr.Size.LowPart());
-						if (buf.Size > 0 && !BackupRead(hFile, buf, buf.Size, out bytesRead, false, bProcessSecurity, ref lpContext))
-							return GetLastError();
-						entry.buffer = buf;
-					}
-					else
-					{
-						if (!BackupSeek(hFile, hdr.Size.LowPart(), (uint)hdr.Size.HighPart(), out _, out _, ref lpContext))
-							return GetLastError();
-					}
-					lpBuffers.Add(entry);
+					// Capture the details about the stream
+					WIN32_STREAM_ID entry = hdr;
+					entry.cStreamName = name ?? "";
+					lpBufferInfo.Add(entry);
+
+					if (!BackupSeek(hFile, hdr.Size.LowPart(), (uint)hdr.Size.HighPart(), out _, out _, ref lpContext))
+						return GetLastError();
 				}
 			}
 			finally

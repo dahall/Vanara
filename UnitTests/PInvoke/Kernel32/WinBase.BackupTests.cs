@@ -36,16 +36,14 @@ public partial class WinBaseTests
 	{
 		using var f = CreateFile(TestCaseSources.LogFile, FileAccess.GENERIC_READ, System.IO.FileShare.Read, null, System.IO.FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
 
-		Assert.That(BackupRead(f, true, false, out var streams), ResultIs.Successful);
+		Assert.That(BackupRead(f, true, out var streams), ResultIs.Successful);
 		Assert.That(streams, Is.Not.Empty);
-		Assert.That(streams, Has.Exactly(1).Matches<(WIN32_STREAM_ID id, SafeAllocatedMemoryHandle? buffer)>(s => s.id.dwStreamId == BACKUP_STREAM_ID.BACKUP_SECURITY_DATA));
-		Assert.That(streams.All(s => s.buffer is null));
-		TestContext.WriteLine(string.Join("\n", streams.Select(s => $"{s.id.cStreamName} ({s.id.dwStreamId})")));
+		Assert.That(streams, Has.Exactly(1).Matches<WIN32_STREAM_ID>(s => s.dwStreamId == BACKUP_STREAM_ID.BACKUP_SECURITY_DATA));
+		TestContext.WriteLine(string.Join("\n", streams.Select(s => $"{s.cStreamName} ({s.dwStreamId}) = {s.Size}")));
 
-		Assert.That(BackupRead(f, false, true, out streams), ResultIs.Successful);
+		Assert.That(BackupRead(f, false, out streams), ResultIs.Successful);
 		Assert.That(streams, Is.Not.Empty);
-		Assert.That(streams, Has.None.Matches<(WIN32_STREAM_ID id, SafeAllocatedMemoryHandle? buffer)>(s => s.id.dwStreamId == BACKUP_STREAM_ID.BACKUP_SECURITY_DATA));
-		Assert.That(streams.All(s => s.buffer is not null));
-		TestContext.WriteLine(string.Join("\n", streams.Select(s => $"{s.id.cStreamName} ({s.id.dwStreamId}) = {s.buffer!.Size}")));
+		Assert.That(streams, Has.None.Matches<WIN32_STREAM_ID>(s => s.dwStreamId == BACKUP_STREAM_ID.BACKUP_SECURITY_DATA));
+		TestContext.WriteLine(string.Join("\n", streams.Select(s => $"{s.cStreamName} ({s.dwStreamId}) = {s.Size}")));
 	}
 }
