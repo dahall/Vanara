@@ -468,7 +468,7 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362509")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool BackupRead([In] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [MarshalAs(UnmanagedType.Bool)] bool bAbort,
-		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
+		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, ref IntPtr lpContext);
 
 	/// <summary>
 	/// The <c>BackupSeek</c> function seeks forward in a data stream initially accessed by using the <c>BackupRead</c> or <c>BackupWrite</c> function.
@@ -573,7 +573,7 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362511")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool BackupWrite([In] HFILE hFile, [In] IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [MarshalAs(UnmanagedType.Bool)] bool bAbort,
-		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
+		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, ref IntPtr lpContext);
 
 	/// <summary>The <c>CreateTapePartition</c> function reformats a tape.</summary>
 	/// <param name="hDevice">
