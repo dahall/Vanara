@@ -26,7 +26,14 @@ CharacterSet, CM_DEVCAP, CM_FILE, CM_INSTALL_STATE, CM_REMOVAL_POLICY, CM_RESOUR
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
-  </PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>.\GeneratedFiles</CompilerGeneratedFilesOutputPath>  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Handles\HANDLE.cs">
       <DesignTime>True</DesignTime>
@@ -35,6 +42,7 @@ CharacterSet, CM_DEVCAP, CM_FILE, CM_INSTALL_STATE, CM_REMOVAL_POLICY, CM_RESOUR
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CodeGen\Vanara.CodeGen.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
   </ItemGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) Or $(TargetFramework.StartsWith('net7')) ">

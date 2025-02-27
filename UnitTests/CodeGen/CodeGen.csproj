@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UnitTest.PInvoke.CodeGen</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeGen\Vanara.CodeGen.csproj" OutputItemType="Analyzer" /> <!--ReferenceOutputAssembly="false"-->
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="1.1.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="handles.csv" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="handlesbad1.csv" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="handlesbad2.csv" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="handlesbad3.csv" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="handlesbad4.csv" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
