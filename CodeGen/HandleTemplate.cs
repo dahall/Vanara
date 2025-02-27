@@ -1,8 +1,12 @@
-﻿namespace Namespace;
+﻿using Microsoft.Win32.SafeHandles;
+using System.ComponentModel;
+using System.Diagnostics;
+
+namespace Namespace;
 
 SummaryText
-[StructLayout(LayoutKind.Sequential)]
-public partial struct HandleName : InterfaceName
+[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
+public readonly partial struct HandleName : InterfaceName
 {
 	private readonly IntPtr handle;
 
