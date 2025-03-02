@@ -1234,30 +1234,11 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertSerializeCRLStoreElement([In] PCCRL_CONTEXT pCrlContext, [Optional] uint dwFlags, [Optional] IntPtr pbElement, ref uint pcbElement);
 
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PCCRL_CONTEXT"/> that is disposed using <see cref="CertFreeCRLContext"/>.</summary>
-	public class SafePCCRL_CONTEXT : SafeHANDLE
+	public partial class SafePCCRL_CONTEXT
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafePCCRL_CONTEXT"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafePCCRL_CONTEXT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePCCRL_CONTEXT"/> class.</summary>
-		private SafePCCRL_CONTEXT() : base() { }
-
 		/// <summary>Performs an explicit conversion from <see cref="SafePCCRL_CONTEXT"/> to <see cref="CRL_CONTEXT"/>.</summary>
 		/// <param name="ctx">The <see cref="SafePCCRL_CONTEXT"/> instance.</param>
 		/// <returns>The resulting <see cref="CRL_CONTEXT"/> instance from the conversion.</returns>
 		public static unsafe explicit operator CRL_CONTEXT*(SafePCCRL_CONTEXT ctx) => (CRL_CONTEXT*)(void*)ctx.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafePCCRL_CONTEXT"/> to <see cref="PCCRL_CONTEXT"/>.</summary>
-		/// <param name="ctx">The <see cref="SafePCCRL_CONTEXT"/> instance.</param>
-		/// <returns>The resulting <see cref="PCCRL_CONTEXT"/> instance from the conversion.</returns>
-		public static implicit operator PCCRL_CONTEXT(SafePCCRL_CONTEXT ctx) => ctx.DangerousGetHandle();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CertFreeCRLContext(handle);
 	}
 }

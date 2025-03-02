@@ -684,30 +684,11 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertSerializeCTLStoreElement([In] PCCTL_CONTEXT pCtlContext, [Optional] uint dwFlags, [In, Out, Optional] IntPtr pbElement, ref uint pcbElement);
 
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PCCTL_CONTEXT"/> that is disposed using <see cref="CertFreeCTLContext"/>.</summary>
-	public class SafePCCTL_CONTEXT : SafeHANDLE
+	public partial class SafePCCTL_CONTEXT
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafePCCTL_CONTEXT"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafePCCTL_CONTEXT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePCCTL_CONTEXT"/> class.</summary>
-		private SafePCCTL_CONTEXT() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafePCCTL_CONTEXT"/> to <see cref="PCCTL_CONTEXT"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PCCTL_CONTEXT(SafePCCTL_CONTEXT h) => h.handle;
-
 		/// <summary>Performs an explicit conversion from <see cref="SafePCCTL_CONTEXT"/> to <see cref="CTL_CONTEXT"/>.</summary>
 		/// <param name="ctx">The handle.</param>
 		/// <returns>The resulting <see cref="CTL_CONTEXT"/> instance from the conversion.</returns>
 		public static unsafe explicit operator CTL_CONTEXT*(SafePCCTL_CONTEXT ctx) => (CTL_CONTEXT*)(void*)ctx.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CertFreeCTLContext(handle);
 	}
 }

@@ -412,6 +412,9 @@ public static partial class BCrypt
 		CRYPT_ALL_PROVIDERS = 2,
 	}
 
+	/// <summary>A handle that can be used by BCrypt functions.</summary>
+	public interface IBCryptHandle : IHandle { }
+
 	/// <summary>
 	/// <para>
 	/// [ <c>BCryptAddContextFunction</c> is available for use in the operating systems specified in the Requirements section. It may be
@@ -8791,59 +8794,6 @@ public static partial class BCrypt
 	public static extern NTStatus BCryptVerifySignature(BCRYPT_KEY_HANDLE hKey, [Optional] IntPtr pPaddingInfo, SafeAllocatedMemoryHandle pbHash,
 		uint cbHash, SafeAllocatedMemoryHandle pbSignature, uint cbSignature, EncryptFlags dwFlags);
 
-	/// <summary>Provides a handle to an algorithm provider.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct BCRYPT_ALG_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="BCRYPT_ALG_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public BCRYPT_ALG_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="BCRYPT_ALG_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static BCRYPT_ALG_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_ALG_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(BCRYPT_ALG_HANDLE h) => h.handle;
-
-		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_ALG_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator BCRYPT_HANDLE(BCRYPT_ALG_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="BCRYPT_ALG_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_ALG_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(BCRYPT_ALG_HANDLE h1, BCRYPT_ALG_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(BCRYPT_ALG_HANDLE h1, BCRYPT_ALG_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is BCRYPT_ALG_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>
 	/// <para>
 	/// The <c>BCRYPT_ALGORITHM_IDENTIFIER</c> structure is used with the BCryptEnumAlgorithms function to contain a cryptographic
@@ -8905,160 +8855,6 @@ public static partial class BCrypt
 
 		/// <summary>The size, in bytes, of the key that this structure applies to.</summary>
 		public uint cbKeyLength;
-	}
-
-	/// <summary>Provides a handle to a CNG object.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct BCRYPT_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="BCRYPT_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public BCRYPT_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="BCRYPT_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static BCRYPT_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(BCRYPT_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(BCRYPT_HANDLE h1, BCRYPT_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(BCRYPT_HANDLE h1, BCRYPT_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is BCRYPT_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to a multi-hash state.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct BCRYPT_HASH_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="BCRYPT_HASH_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public BCRYPT_HASH_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="BCRYPT_HASH_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static BCRYPT_HASH_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_HASH_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator BCRYPT_HANDLE(BCRYPT_HASH_HANDLE h) => h.handle;
-
-		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_HASH_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(BCRYPT_HASH_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="BCRYPT_HASH_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_HASH_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(BCRYPT_HASH_HANDLE h1, BCRYPT_HASH_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(BCRYPT_HASH_HANDLE h1, BCRYPT_HASH_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is BCRYPT_HASH_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to a key pair.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct BCRYPT_KEY_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="BCRYPT_KEY_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public BCRYPT_KEY_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="BCRYPT_KEY_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static BCRYPT_KEY_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_KEY_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator BCRYPT_HANDLE(BCRYPT_KEY_HANDLE h) => h.handle;
-
-		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_KEY_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(BCRYPT_KEY_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="BCRYPT_KEY_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_KEY_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(BCRYPT_KEY_HANDLE h1, BCRYPT_KEY_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(BCRYPT_KEY_HANDLE h1, BCRYPT_KEY_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is BCRYPT_KEY_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>
@@ -9270,59 +9066,6 @@ public static partial class BCrypt
 
 		/// <summary>The size, in bytes, of the random salt to use for the padding.</summary>
 		public uint cbSalt;
-	}
-
-	/// <summary>Provides a handle to a secret agreement.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct BCRYPT_SECRET_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="BCRYPT_SECRET_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public BCRYPT_SECRET_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="BCRYPT_SECRET_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static BCRYPT_SECRET_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_SECRET_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(BCRYPT_SECRET_HANDLE h) => h.handle;
-
-		/// <summary>Performs an explicit conversion from <see cref="BCRYPT_SECRET_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator BCRYPT_HANDLE(BCRYPT_SECRET_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="BCRYPT_SECRET_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_SECRET_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(BCRYPT_SECRET_HANDLE h1, BCRYPT_SECRET_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(BCRYPT_SECRET_HANDLE h1, BCRYPT_SECRET_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is BCRYPT_SECRET_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>
@@ -10035,133 +9778,13 @@ public static partial class BCrypt
 		public const string BCRYPT_XTS_AES_ALGORITHM = "XTS-AES";
 	}
 
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="BCRYPT_ALG_HANDLE"/> that is disposed using <see cref="BCryptCloseAlgorithmProvider"/>.</summary>
-	public class SafeBCRYPT_ALG_HANDLE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeBCRYPT_ALG_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeBCRYPT_ALG_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeBCRYPT_ALG_HANDLE"/> class.</summary>
-		private SafeBCRYPT_ALG_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_ALG_HANDLE"/> to <see cref="BCRYPT_ALG_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_ALG_HANDLE(SafeBCRYPT_ALG_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_ALG_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_HANDLE(SafeBCRYPT_ALG_HANDLE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => BCryptCloseAlgorithmProvider(this).Succeeded;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="BCRYPT_HASH_HANDLE"/> that is disposed using <see cref="BCryptDestroyHash"/>.</summary>
-	public class SafeBCRYPT_HASH_HANDLE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeBCRYPT_HASH_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeBCRYPT_HASH_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeBCRYPT_HASH_HANDLE"/> class.</summary>
-		private SafeBCRYPT_HASH_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_HASH_HANDLE"/> to <see cref="BCRYPT_HASH_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_HASH_HANDLE(SafeBCRYPT_HASH_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_HASH_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_HANDLE(SafeBCRYPT_HASH_HANDLE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => BCryptDestroyHash(this).Succeeded;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="BCRYPT_KEY_HANDLE"/> that is disposed using <see cref="BCryptDestroyKey"/>.</summary>
-	public class SafeBCRYPT_KEY_HANDLE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeBCRYPT_KEY_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeBCRYPT_KEY_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeBCRYPT_KEY_HANDLE"/> class.</summary>
-		private SafeBCRYPT_KEY_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_KEY_HANDLE"/> to <see cref="BCRYPT_KEY_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_KEY_HANDLE(SafeBCRYPT_KEY_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_KEY_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_HANDLE(SafeBCRYPT_KEY_HANDLE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => BCryptDestroyKey(this).Succeeded;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="BCRYPT_SECRET_HANDLE"/> that is disposed using <see cref="BCryptDestroySecret"/>.</summary>
-	public class SafeBCRYPT_SECRET_HANDLE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeBCRYPT_SECRET_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeBCRYPT_SECRET_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeBCRYPT_SECRET_HANDLE"/> class.</summary>
-		private SafeBCRYPT_SECRET_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_SECRET_HANDLE"/> to <see cref="BCRYPT_SECRET_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_SECRET_HANDLE(SafeBCRYPT_SECRET_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeBCRYPT_SECRET_HANDLE"/> to <see cref="BCRYPT_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BCRYPT_HANDLE(SafeBCRYPT_SECRET_HANDLE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => BCryptDestroySecret(this).Succeeded;
-	}
-
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="NCryptBuffer"/> that is disposed using <see cref="BCryptFreeBuffer"/>.</summary>
-	public class SafeBCryptBuffer : SafeHANDLE
+	[AutoSafeHandle("{ BCryptFreeBuffer(handle); return true; }", null, typeof(SafeHANDLE))]
+	public partial class SafeBCryptBuffer
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeBCryptBuffer"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeBCryptBuffer(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeBCryptBuffer"/> class.</summary>
-		private SafeBCryptBuffer() : base() { }
-
 		/// <summary>Marshals data to a newly allocated managed object of the type specified by a generic type parameter.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		/// <returns>A managed object that this buffer points to.</returns>
 		public T? ToStructure<T>() => IsInvalid || IsClosed ? default : handle.ToStructure<T>();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { BCryptFreeBuffer(handle); return true; }
-	}
+	} 
 }
