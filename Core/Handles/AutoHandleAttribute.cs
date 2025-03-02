@@ -10,7 +10,7 @@
 /// public partial struct HMODULE { }
 /// 
 /// /// &lt;summary&gt;A handle to a synchronization event.&lt;/summary&gt;
-/// [AutoHandle(typeof(ISynchHandle))]
+/// [AutoHandle(typeof(ISyncHandle))]
 /// public partial struct HEVENT
 /// {
 ///    /// &lt;summary&gt;Sets the signaled state.&lt;/summary&gt;
@@ -19,9 +19,13 @@
 /// </code>
 /// </remarks>
 [AttributeUsage(AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
-public sealed class AutoHandleAttribute(Type? baseInterface = null) : Attribute
+public sealed class AutoHandleAttribute(Type? baseInterface = null, Type? inheritedHandle = null) : Attribute
 {
-	/// <summary>Gets or sets the base interface.</summary>
+	/// <summary>Gets the base interface.</summary>
 	/// <value>The base interface.</value>
-	public Type BaseInterface { get; set; } = baseInterface ?? typeof(IHandle);
+	public Type BaseInterface { get; } = baseInterface ?? typeof(IHandle);
+
+	/// <summary>Gets the inherited handle.</summary>
+	/// <value>The inherited handle.</value>
+	public Type? InheritedHandle { get; } = inheritedHandle;
 }

@@ -31,41 +31,45 @@ public class HandlesFromFileGenerator : IIncrementalGenerator
 			bool hasHeader = file[0] == '#' || file.StartsWith("Namespace,");
 			using StringReader ms = new(file);
 			using CachedCsvReader parser = new(ms, hasHeader);
-			if (parser.FieldCount != 7)
+			if (parser.FieldCount != 9)
 			{
-				ReportError(context, "VANGEN001", "Invalid number of fields in file.", []);
+				context.ReportError("VANGEN001", "Invalid number of fields in file.");
 				continue;
 			}
 			while (parser.ReadNextRecord())
 			{
-				HandleModel model = new(parser[0], parser[1], parser[2], parser[3], parser[4], parser[5], parser[6]);
-				if (model.Namespace != string.Empty && model.HandleName != string.Empty)
+				try
 				{
-					bool found = false;
-					if (model.HandleName != string.Empty && model.InterfaceName != string.Empty)
+					HandleModel model = new(parser[0], parser[1], parser[2], parser[3], parser[4], parser[5], parser[6], parser[7], parser[8]);
+					if (model.Namespace != string.Empty)
 					{
-						var src = model.GetHandleCode();
-						context.AddSource($"{model.HandleName}.g.cs", SourceText.From(src, Encoding.UTF8));
-						found = true;
+						bool found = false;
+						if (model.HandleName != string.Empty && model.InterfaceName != string.Empty)
+						{
+							var src = model.GetHandleCode();
+							context.AddSource($"{model.HandleName}.g.cs", SourceText.From(src, Encoding.UTF8));
+							found = true;
+						}
+						if (!string.IsNullOrEmpty(model.ClassName) && !string.IsNullOrEmpty(model.BaseClassName) && !string.IsNullOrEmpty(model.CloseCode))
+						{
+							var classSrc = model.GetSafeHandleCode($"/// <summary>Provides a <see cref=\"SafeHandle\"/>{(string.IsNullOrEmpty(model.HandleName) ? "" : $" for <see cref=\"{model.HandleName}\"/>")} that is disposed using <c>{model.CloseCode}</c>.</summary>");
+							context.AddSource($"{model.ClassName}.g.cs", SourceText.From(classSrc, Encoding.UTF8));
+							found = true;
+						}
+						if (!found)
+							context.ReportError("VANGEN003", "Invalid record. No valid handle or safe handle found.", parser.Records[(int)parser.CurrentRecordIndex]);
 					}
-					if (model.ClassName != string.Empty && model.BaseClassName != string.Empty && model.CloseCode != string.Empty)
+					else
 					{
-						var classSrc = model.GetSafeHandleCode();
-						context.AddSource($"{model.ClassName}.g.cs", SourceText.From(classSrc, Encoding.UTF8));
-						found = true;
+						context.ReportError("VANGEN002", "Invalid record. Namespace is required.", parser.Records[(int)parser.CurrentRecordIndex]);
+						continue;
 					}
-					if (!found)
-						ReportError(context, "VANGEN003", "Invalid record. No valid handle or safe handle found.", parser.Records[(int)parser.CurrentRecordIndex]);
 				}
-				else
+				catch (Exception ex)
 				{
-					ReportError(context, "VANGEN002", "Invalid record. Namespace and HandleName are required.", parser.Records[(int)parser.CurrentRecordIndex]);
-					continue;
+					context.ReportError("VANGEN000", "Unknown error: " + Regex.Replace(ex.ToString(), "[\r\n]+", " "));
 				}
 			}
 		}
 	}
-
-	private static void ReportError(SourceProductionContext context, string id, string message, string[] fields) => 
-		context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(id, "Error", message, "Vanara.Generator", DiagnosticSeverity.Error, true), Location.None, string.Join(",", fields)));
 }

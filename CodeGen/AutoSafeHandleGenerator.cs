@@ -1,4 +1,6 @@
-﻿namespace Vanara.Generators;
+﻿using System.Collections.Immutable;
+
+namespace Vanara.Generators;
 
 /// <summary></summary>
 [Generator(LanguageNames.CSharp)]
@@ -12,26 +14,32 @@ public class AutoSafeHandleGenerator : IIncrementalGenerator
 	/// </param>
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		var pipeline = context.SyntaxProvider.ForAttributeWithMetadataName(attributeFullName,
-			IsValidSyntax, TransformFromSyntax).
-			Collect().
-			SelectMany((i, _) => i.Distinct()).
-			WithTrackingName("Syntax");
-
-		context.RegisterSourceOutput(pipeline, static (context, model) =>
-			context.AddSource($"{model.ClassName}.g.cs", SourceText.From(model.GetSafeHandleCode(), Encoding.UTF8)));
+		var decl = context.SyntaxProvider.ForAttributeWithMetadataName(attributeFullName, IsValidSyntax,
+			(ctx, _) =>
+				((ClassDeclarationSyntax)ctx.TargetNode, ctx.Attributes.FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == attributeFullName) ?? throw new InvalidOperationException("Attribute not found.")));
+		var source = context.CompilationProvider.Combine(decl.Collect()).WithTrackingName("Syntax");
+		context.RegisterSourceOutput(source, Execute);
 	}
 
 	private static bool IsValidSyntax(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
 		syntaxNode is ClassDeclarationSyntax ds && ds.IsPartial();
 
-	private static HandleModel TransformFromSyntax(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
+	private static void Execute(SourceProductionContext context, (Compilation compilation, ImmutableArray<(ClassDeclarationSyntax, AttributeData)> classes) unit)
 	{
-		ISymbol? classSymbol = context.TargetSymbol;
-		string handleType = context.Attributes.First().ConstructorArguments.ElementAtOrDefault(0).Value?.ToString() ?? "";
-		string baseType = context.Attributes.First().ConstructorArguments.ElementAtOrDefault(1).Value?.ToString() ?? "";
-		string closeCode = context.Attributes.First().ConstructorArguments.ElementAtOrDefault(2).Value?.ToString() ?? "";
-		var ns = classSymbol.ContainingNamespace.ToString();
-		return new(ns, handleType, "", "", classSymbol.Name, baseType, closeCode);
+		foreach ((ClassDeclarationSyntax decl, AttributeData attr) in unit.classes)
+		{
+			var semanticModel = unit.compilation.GetSemanticModel(decl.SyntaxTree);
+			if (semanticModel.GetDeclaredSymbol(decl) is not { } symbol) continue;
+			var ns = symbol.ContainingNamespace.ToString();
+			string? closeCode = attr.ConstructorArguments.ElementAtOrDefault(0).Value?.ToString();
+			string handleType = attr.ConstructorArguments.ElementAtOrDefault(1).Value?.ToString() ?? "";
+			string baseType = attr.ConstructorArguments.ElementAtOrDefault(2).Value?.ToString() ?? "Vanara.PInvoke.SafeHandleV";
+			string? inhType = attr.ConstructorArguments.ElementAtOrDefault(3).Value?.ToString();
+
+			if (decl.Parent is not ClassDeclarationSyntax parent) { context.ReportError("VANGEN004", "Unable to find parent class."); return; }
+
+			HandleModel model = new(ns, parent!.Identifier.Text, handleType, "", "", symbol.Name, baseType, closeCode, inhType);
+			context.AddSource($"{symbol.Name}.g.cs", SourceText.From(model.GetSafeHandleCode(), Encoding.UTF8));
+		}
 	}
 }

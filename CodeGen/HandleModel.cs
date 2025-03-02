@@ -1,7 +1,7 @@
 ﻿namespace Vanara.Generators;
 
 /// <summary>Represents handles.</summary>
-internal record HandleModel(string Namespace, string HandleName, string InterfaceName, string? SummaryText = null, string? ClassName = null, string? BaseClassName = null, string? CloseCode = null)
+internal record HandleModel(string Namespace, string ParentClassName, string HandleName, string InterfaceName, string? SummaryText = null, string? ClassName = null, string? BaseClassName = null, string? CloseCode = null, string? InheritedHandleName = null)
 {
 	private const string handleTemplateResourceName = "Vanara.Generators.HandleTemplate.cs";
 	private const string safeHandleTemplateResourceName = "Vanara.Generators.SafeHandleTemplate.cs";
@@ -10,25 +10,39 @@ internal record HandleModel(string Namespace, string HandleName, string Interfac
 	public string GetHandleCode()
 	{
 		handleTemplateText ??= Util.ReadAllTextFromAsmResource(handleTemplateResourceName);
-		return Util.ReplaceWholeWords(handleTemplateText, new Dictionary<string, string>()
+		var templateText = ReplaceMarker(handleTemplateText, "#1#", ParentClassName);
+		templateText = ReplaceMarker(templateText, "#2#", InheritedHandleName);
+		return Util.ReplaceWholeWords(templateText, new Dictionary<string, string>()
 		{
 			{ "HandleName", HandleName },
 			{ "Namespace", Namespace },
+			{ "ParentClassName", ParentClassName },
 			{ "InterfaceName", InterfaceName },
-			{ "SummaryText", SummaryText is null ? "" : $"/// <summary>{SummaryText}</summary>" }
+			{ "SummaryText", SummaryText is null ? "" : $"/// <summary>{SummaryText}</summary>\r\n" },
+			{ "InheritedHandleName", InheritedHandleName ?? "" },
 		});
 	}
 
-	public string GetSafeHandleCode()
+	public string GetSafeHandleCode(string summaryText = "")
 	{
 		safeHandleTemplateText ??= Util.ReadAllTextFromAsmResource(safeHandleTemplateResourceName);
-		return Util.ReplaceWholeWords(safeHandleTemplateText, new Dictionary<string, string>()
+		var templateText = ReplaceMarker(safeHandleTemplateText, "#1#", ParentClassName);
+		templateText = ReplaceMarker(templateText, "#2#", HandleName);
+		templateText = ReplaceMarker(templateText, "#3#", InheritedHandleName);
+		var closeCode = string.IsNullOrEmpty(CloseCode) ? "=> true;" : (CloseCode!.Trim().StartsWith("{") ? CloseCode : $"=> {CloseCode};");
+		return Util.ReplaceWholeWords(templateText, new Dictionary<string, string>()
 		{
 			{ "HandleName", HandleName },
 			{ "Namespace", Namespace },
+			{ "ParentClassName", ParentClassName },
 			{ "ClassName", ClassName ?? "" },
+			{ "SummaryText", summaryText },
 			{ "BaseClassName", BaseClassName ?? ""},
-			{ "CloseCode", CloseCode ?? "" }
+			{ "CloseCode", closeCode },
+			{ "InheritedHandleName", InheritedHandleName ?? "" },
 		});
 	}
+
+	private static string ReplaceMarker(string templateText, string marker, string? repl) =>
+		Regex.Replace(templateText, string.IsNullOrEmpty(repl) ? $"{marker}(?s).*?{marker}" : marker, "");
 }

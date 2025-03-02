@@ -1,4 +1,4 @@
-Namespace,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode
-Vanara.PInvoke,HACCEL,IUserHandle,Provides a handle to an accelerator table.,,,
-Vanara.PInvoke,HANDLE,IHandle,Provides a generic handle.,SafeHANDLE,SafeHandleV,true
-Vanara.PInvoke,IntPtr,,,SafeDummyHandle,SafeHandleV,false
+Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,,HACCEL,IUserHandle,Provides a handle to an accelerator table.,,,,HGDIOBJ
+Vanara.PInvoke,Parent32,HANDLE,IHandle,Provides a generic handle.,SafeHANDLE,SafeHandleV,true,
+Vanara.PInvoke,Parent32,,,,SafeDummyHandle,SafeHandleV,false,

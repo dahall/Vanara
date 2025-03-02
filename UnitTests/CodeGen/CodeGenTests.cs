@@ -31,11 +31,11 @@ using Vanara.Generators;
 //	public static partial class Test32
 //	{
 //		/// <summary>Handle to a test.</summary>
-//		[Vanara.PInvoke.AutoSafeHandleAttribute(typeof(HTEST), typeof(Vanara.PInvoke.SafeHandleV), "CloseTest(handle)")]
+//		[Vanara.PInvoke.AutoSafeHandleAttribute("CloseTest(handle)", typeof(HTEST), typeof(Vanara.PInvoke.SafeHandleV), typeof(HANDLE))]
 //		public partial class SafeHTEST { }
 
 //		/// <summary>Handle to a sample.</summary>
-//		[Vanara.PInvoke.AutoSafeHandleAttribute(typeof(HSAMPLE))]
+//		[Vanara.PInvoke.AutoSafeHandleAttribute(null, typeof(HSAMPLE))]
 //		public partial class SafeHSAMPLE
 //		{
 //			/// <summary>Get the integer value.</summary>
@@ -58,8 +58,8 @@ namespace Vanara.PInvoke.Tests
 				public static partial class Test32
 				{
 					/// <summary>Handle to a test.</summary>
-					[Vanara.PInvoke.AutoHandleAttribute(typeof(Vanara.PInvoke.IHandle))]
-					public partial struct HTEST { }
+					[Vanara.PInvoke.AutoHandleAttribute(typeof(Vanara.PInvoke.IGdiObjectHandle), typeof(HGDIOBJ))]
+					public partial struct HPEN { }
 
 					/// <summary>Handle to a sample.</summary>
 					[Vanara.PInvoke.AutoHandleAttribute]
@@ -89,11 +89,11 @@ namespace Vanara.PInvoke.Tests
 				public static partial class Test32
 				{
 					/// <summary>Handle to a test.</summary>
-					[Vanara.PInvoke.AutoSafeHandleAttribute(typeof(HTEST), typeof(Vanara.PInvoke.SafeHandleV), "CloseTest(handle)")]
+					[Vanara.PInvoke.AutoSafeHandleAttribute("CloseTest(handle)", typeof(HTEST), typeof(Vanara.PInvoke.SafeHandleV), typeof(HANDLE))]
 					public partial class SafeHTEST { }
 
 					/// <summary>Handle to a sample.</summary>
-					[Vanara.PInvoke.AutoSafeHandleAttribute(typeof(HSAMPLE))]
+					[Vanara.PInvoke.AutoSafeHandleAttribute(null, typeof(HSAMPLE))]
 					public partial class SafeHSAMPLE
 					{
 						/// <summary>Get the integer value.</summary>

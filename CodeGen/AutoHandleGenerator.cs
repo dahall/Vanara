@@ -28,13 +28,15 @@ public class AutoHandleGenerator : IIncrementalGenerator
 	{
 		foreach ((StructDeclarationSyntax decl, AttributeData attr) in unit.classes)
 		{
-			var interfaceType = attr.ConstructorArguments.FirstOrDefault();
+			if (unit.compilation?.GetSemanticModel(decl.SyntaxTree)?.GetDeclaredSymbol(decl) is not { } symbol) continue;
+			string ns = symbol?.ContainingNamespace?.ToDisplayString() ?? "BADNS";
 
-			var semanticModel = unit.compilation.GetSemanticModel(decl.SyntaxTree);
-			if (semanticModel.GetDeclaredSymbol(decl) is not { } symbol) continue;
-			var ns = symbol.ContainingNamespace.ToString();
+			if (decl.Parent is not ClassDeclarationSyntax parent) { context.ReportError("VANGEN004", "Unable to find parent class."); return; }
 
-			HandleModel model = new(ns, symbol.Name, interfaceType.Type?.ToString() == "System.Type" ? interfaceType.Value!.ToString() : "Vanara.PInvoke.IHandle");
+			var ctorp1 = attr.ConstructorArguments.ElementAtOrDefault(0);
+			var ctorp2 = attr.ConstructorArguments.ElementAtOrDefault(1);
+
+			HandleModel model = new(ns, parent!.Identifier.Text, decl.Identifier.Text, ctorp1.Value?.ToString() ?? "Vanara.PInvoke.IHandle", InheritedHandleName: ctorp2.Value?.ToString());
 			context.AddSource($"{model.HandleName}.g.cs", SourceText.From(model.GetHandleCode(), Encoding.UTF8));
 		}
 	}

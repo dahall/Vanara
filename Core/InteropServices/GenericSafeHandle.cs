@@ -1,44 +1,4 @@
 ﻿using Microsoft.Win32.SafeHandles;
-/* Unmerged change from project 'Vanara.Core (netcoreapp3.1)'
-Before:
-using System.Runtime.InteropServices;
-After:
-using System;
-using System.Runtime.InteropServices;
-*/
-
-/* Unmerged change from project 'Vanara.Core (net7.0)'
-Before:
-using System.Runtime.InteropServices;
-After:
-using System;
-using System.Runtime.InteropServices;
-*/
-
-/* Unmerged change from project 'Vanara.Core (net6.0)'
-Before:
-using System.Runtime.InteropServices;
-After:
-using System;
-using System.Runtime.InteropServices;
-*/
-
-/* Unmerged change from project 'Vanara.Core (net48)'
-Before:
-using System.Runtime.InteropServices;
-After:
-using System;
-using System.Runtime.InteropServices;
-*/
-
-/* Unmerged change from project 'Vanara.Core (net45)'
-Before:
-using System.Runtime.InteropServices;
-After:
-using System;
-using System.Runtime.InteropServices;
-*/
-
 
 namespace Vanara.InteropServices;
 

@@ -8,12 +8,12 @@
 /// To use this attribute, apply to a class that defines the safe handle name.
 /// <code lang="cs">
 /// /// &lt;summary&gt;A safe handle to a module.&lt;/summary&gt;
-/// [AutoSafeHandle(typeof(HMODULE), typeof(SafeHANDLE), "FreeLibrary(handle)")]
+/// [AutoSafeHandle(typeof(HMODULE), "FreeLibrary(handle)", typeof(SafeHANDLE))]
 /// public partial class SafeHMODULE { }
 /// </code>
 /// </remarks>
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-public sealed class AutoSafeHandleAttribute(Type handleStruct, Type? baseSafeHandle = null, string? closeHandleFuncName = null) : Attribute
+public sealed class AutoSafeHandleAttribute(string? closeHandleFuncName = null, Type? handleStruct = null, Type? baseSafeHandle = null, Type? inheritedHandle = null) : Attribute
 {
 	/// <summary>Gets the base safe handle. Defaults to <see cref="SafeHandleV"/>.</summary>
 	/// <value>The base safe handle.</value>
@@ -29,5 +29,9 @@ public sealed class AutoSafeHandleAttribute(Type handleStruct, Type? baseSafeHan
 
 	/// <summary>Gets the handle type that this safe handle holds and disposes.</summary>
 	/// <value>The handle structure.</value>
-	public Type HandleStruct { get; } = handleStruct;
+	public Type HandleStruct { get; } = handleStruct ?? typeof(IntPtr);
+
+	/// <summary>Gets the inherited handle.</summary>
+	/// <value>The inherited handle.</value>
+	public Type? InheritedHandle { get; } = inheritedHandle;
 }
