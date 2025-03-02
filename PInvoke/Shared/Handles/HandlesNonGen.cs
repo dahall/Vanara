@@ -11,38 +11,6 @@ public partial struct HANDLE
 	public static implicit operator HANDLE(SafeHandle h) => new(h.DangerousGetHandle());
 }
 
-public partial struct HBITMAP
-{
-	/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HBITMAP"/>.</summary>
-	/// <param name="h">The pointer to a GDI handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HBITMAP(HGDIOBJ h) => new((IntPtr)h);
-}
-
-public partial struct HBRUSH
-{
-	/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HBRUSH"/>.</summary>
-	/// <param name="h">The pointer to a GDI handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HBRUSH(HGDIOBJ h) => new((IntPtr)h);
-}
-
-public partial struct HCOLORSPACE
-{
-	/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HCOLORSPACE"/>.</summary>
-	/// <param name="h">The pointer to a GDI handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HCOLORSPACE(HGDIOBJ h) => new((IntPtr)h);
-}
-
-public partial struct HCURSOR
-{
-	/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HCURSOR"/>.</summary>
-	/// <param name="h">The pointer to a GDI handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HCURSOR(HGDIOBJ h) => new((IntPtr)h);
-}
-
 public partial struct HFILE
 {
 	/// <summary>Represents an invalid handle.</summary>
@@ -52,57 +20,6 @@ public partial struct HFILE
 	/// <param name="h">The pointer to a handle.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator HFILE(SafeFileHandle h) => new(h?.DangerousGetHandle() ?? IntPtr.Zero);
-}
-
-public partial struct HFONT
-{
-	/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HFONT"/>.</summary>
-	/// <param name="h">The pointer to a GDI handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HFONT(HGDIOBJ h) => new((IntPtr)h);
-}
-
-public partial struct HGDIOBJ
-{
-	/// <summary>Performs an implicit conversion from <see cref="HBITMAP"/> to <see cref="HGDIOBJ"/>.</summary>
-	/// <param name="h">The pointer to a handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HGDIOBJ(HBITMAP h) => new((IntPtr)h);
-
-	/// <summary>Performs an implicit conversion from <see cref="HBRUSH"/> to <see cref="HGDIOBJ"/>.</summary>
-	/// <param name="h">The pointer to a handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HGDIOBJ(HBRUSH h) => new((IntPtr)h);
-
-	/// <summary>Performs an implicit conversion from <see cref="HCOLORSPACE"/> to <see cref="HGDIOBJ"/>.</summary>
-	/// <param name="h">The pointer to a handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HGDIOBJ(HCOLORSPACE h) => new((IntPtr)h);
-
-	/// <summary>Performs an implicit conversion from <see cref="HCURSOR"/> to <see cref="HGDIOBJ"/>.</summary>
-	/// <param name="h">The pointer to a handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HGDIOBJ(HCURSOR h) => new((IntPtr)h);
-
-	/// <summary>Performs an implicit conversion from <see cref="HFONT"/> to <see cref="HGDIOBJ"/>.</summary>
-	/// <param name="h">The pointer to a handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HGDIOBJ(HFONT h) => new((IntPtr)h);
-
-	/// <summary>Performs an implicit conversion from <see cref="HPALETTE"/> to <see cref="HGDIOBJ"/>.</summary>
-	/// <param name="h">The pointer to a handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HGDIOBJ(HPALETTE h) => new((IntPtr)h);
-
-	/// <summary>Performs an implicit conversion from <see cref="HPEN"/> to <see cref="HGDIOBJ"/>.</summary>
-	/// <param name="h">The pointer to a handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HGDIOBJ(HPEN h) => new((IntPtr)h);
-
-	/// <summary>Performs an implicit conversion from <see cref="HRGN"/> to <see cref="HGDIOBJ"/>.</summary>
-	/// <param name="h">The pointer to a handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HGDIOBJ(HRGN h) => new((IntPtr)h);
 }
 
 public partial struct HKEY
@@ -159,36 +76,12 @@ public partial struct HKEY
 	public static implicit operator HKEY(SafeRegistryHandle h) => new(h.DangerousGetHandle());
 }
 
-public partial struct HPALETTE
-{
-	/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HPALETTE"/>.</summary>
-	/// <param name="h">The pointer to a GDI handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HPALETTE(HGDIOBJ h) => new((IntPtr)h);
-}
-
-public partial struct HPEN
-{
-	/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HPEN"/>.</summary>
-	/// <param name="h">The pointer to a GDI handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HPEN(HGDIOBJ h) => new((IntPtr)h);
-}
-
 public partial struct HPROCESS
 {
 	/// <summary>Performs an implicit conversion from <see cref="HPROCESS"/> to <see cref="Process"/>.</summary>
 	/// <param name="h">The pointer to a handle.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator HPROCESS(Process h) => new(h.Handle);
-}
-
-public partial struct HRGN
-{
-	/// <summary>Performs an implicit conversion from <see cref="HGDIOBJ"/> to <see cref="HRGN"/>.</summary>
-	/// <param name="h">The pointer to a GDI handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HRGN(HGDIOBJ h) => new((IntPtr)h);
 }
 
 public partial struct HWND
