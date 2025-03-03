@@ -6323,7 +6323,8 @@ public static partial class AdvApi32
 	/// Provides a <see cref="SafeHandle" /> to a that releases a created HTOKEN instance at disposal using CloseHandle.
 	/// </summary>
 	/// <seealso cref="SafeKernelHandle" />
-	public class SafeHTOKEN : SafeKernelHandle
+	[AutoSafeHandle(null, typeof(HTOKEN), typeof(SafeKernelHandle))]
+	public partial class SafeHTOKEN
 	{
 		private const TokenAccess defDupAccess = TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_ASSIGN_PRIMARY | TokenAccess.TOKEN_ADJUST_DEFAULT | TokenAccess.TOKEN_ADJUST_SESSIONID | TokenAccess.TOKEN_IMPERSONATE;
 
@@ -6389,17 +6390,6 @@ public static partial class AdvApi32
 		/// </remarks>
 		public static readonly SafeHTOKEN CurrentThreadToken = new((IntPtr)5, false);
 
-		/// <summary>Initializes a new instance of the <see cref="HTOKEN"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHTOKEN(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHTOKEN() : base()
-		{
-		}
-
 		/// <summary>Gets a value indicating whether this token is elevated.</summary>
 		/// <value><c>true</c> if this instance is elevated; otherwise, <c>false</c>.</value>
 		public bool IsElevated => GetInfo<TOKEN_ELEVATION>(TOKEN_INFORMATION_CLASS.TokenElevation).TokenIsElevated;
@@ -6439,11 +6429,6 @@ public static partial class AdvApi32
 			}
 			return val;
 		}
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHTOKEN"/> to <see cref="HTOKEN"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTOKEN(SafeHTOKEN h) => h.handle;
 
 #if NETSTANDARD2_0 || NETCOREAPP2_0 || NETCOREAPP2_1
 		/// <summary>Conversion operator from SafeHTOKEN to SafeAccessTokenHandle.</summary>
@@ -6630,28 +6615,11 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="SECURITY_DESCRIPTOR"/> that is disposed using <see cref="DestroyPrivateObjectSecurity"/>.</summary>
-	public class SafePrivateObjectSecurity : SafeHANDLE
+	[AutoSafeHandle("DestroyPrivateObjectSecurity(this)", typeof(PSECURITY_DESCRIPTOR))]
+	public partial class SafePrivateObjectSecurity
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafePrivateObjectSecurity"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafePrivateObjectSecurity(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePrivateObjectSecurity"/> class.</summary>
-		private SafePrivateObjectSecurity() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafePrivateObjectSecurity"/> to <see cref="SECURITY_DESCRIPTOR"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PSECURITY_DESCRIPTOR(SafePrivateObjectSecurity h) => h.handle;
-
 		/// <summary>Gets the raw handle instance for this SafeHandle. Be very careful!!. This should only be used with <see cref="SetPrivateObjectSecurity(SECURITY_INFORMATION, PSECURITY_DESCRIPTOR, ref IntPtr, in GENERIC_MAPPING, HTOKEN)"/>.</summary>
 		/// <returns>The native handle, usually retrieved by <see cref="CreatePrivateObjectSecurity"/>.</returns>
 		public ref IntPtr DangerousGetRefHandle() => ref handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DestroyPrivateObjectSecurity(this);
 	}
 }

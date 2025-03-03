@@ -21,6 +21,9 @@ ACCESS_ALLOWED_ACE ACCESS_ALLOWED_CALLBACK_ACE ACCESS_ALLOWED_CALLBACK_OBJECT_AC
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Cryptography\Vanara.PInvoke.Cryptography.csproj" />
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
   </ItemGroup>

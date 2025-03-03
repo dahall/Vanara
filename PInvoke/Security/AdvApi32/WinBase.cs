@@ -4103,54 +4103,6 @@ public static partial class AdvApi32
 		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] string[]? lpEnvironment,
 		[Optional] string? lpCurrentDirectory, in STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
-	/// <summary>Provides a context handle to an open encrypted file.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct EncryptedFileContext : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="EncryptedFileContext"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public EncryptedFileContext(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="EncryptedFileContext"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static EncryptedFileContext NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="EncryptedFileContext"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(EncryptedFileContext h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="EncryptedFileContext"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator EncryptedFileContext(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(EncryptedFileContext h1, EncryptedFileContext h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(EncryptedFileContext h1, EncryptedFileContext h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is EncryptedFileContext h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>
 	/// Contains information about a hardware profile. The GetCurrentHwProfile function uses this structure to retrieve the current
 	/// hardware profile for the local computer.
@@ -4299,27 +4251,5 @@ public static partial class AdvApi32
 			OperationId = opId;
 			Flags = singleThreadOnly ? 1U : 0U;
 		}
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="EncryptedFileContext"/> that is disposed using <see cref="CloseEncryptedFileRaw"/>.</summary>
-	public class SafeEncryptedFileContext : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeEncryptedFileContext"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeEncryptedFileContext(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeEncryptedFileContext"/> class.</summary>
-		private SafeEncryptedFileContext() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeEncryptedFileContext"/> to <see cref="EncryptedFileContext"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator EncryptedFileContext(SafeEncryptedFileContext h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { CloseEncryptedFileRaw(handle); return true; }
 	}
 }

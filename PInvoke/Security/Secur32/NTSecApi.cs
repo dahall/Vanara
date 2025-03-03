@@ -2389,54 +2389,6 @@ public static partial class Secur32
 		public uint FailedAttemptCountSinceLastSuccessfulLogon;
 	}
 
-	/// <summary>Provides a handle to an LSA connection.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct LsaConnectionHandle : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="LsaConnectionHandle"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public LsaConnectionHandle(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="LsaConnectionHandle"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static LsaConnectionHandle NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="LsaConnectionHandle"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(LsaConnectionHandle h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="LsaConnectionHandle"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator LsaConnectionHandle(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(LsaConnectionHandle h1, LsaConnectionHandle h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(LsaConnectionHandle h1, LsaConnectionHandle h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is LsaConnectionHandle h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>
 	/// <para>The <c>MSV1_0_INTERACTIVE_LOGON</c> structure contains information about an interactive logon.</para>
 	/// <para>It is used by the LsaLogonUser function.</para>
@@ -2663,27 +2615,5 @@ public static partial class Secur32
 		/// </para>
 		/// </summary>
 		public long PasswordMustChange;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="LsaConnectionHandle"/> that is disposed using <see cref="LsaDeregisterLogonProcess"/>.</summary>
-	public class SafeLsaConnectionHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeLsaConnectionHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeLsaConnectionHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeLsaConnectionHandle"/> class.</summary>
-		private SafeLsaConnectionHandle() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeLsaConnectionHandle"/> to <see cref="LsaConnectionHandle"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator LsaConnectionHandle(SafeLsaConnectionHandle h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => LsaDeregisterLogonProcess(this).Succeeded;
 	}
 }

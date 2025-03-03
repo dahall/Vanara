@@ -304,54 +304,6 @@ public static partial class AdvApi32
 		RegisterWaitChainCOMCallback(p1, p2);
 	}
 
-	/// <summary>Provides a handle to a thread wait chain.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HWCT : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HWCT"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HWCT(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HWCT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HWCT NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HWCT"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HWCT h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HWCT"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HWCT(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HWCT h1, HWCT h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HWCT h1, HWCT h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HWCT h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>Represents a node in a wait chain.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wct/ns-wct-waitchain_node_info typedef struct _WAITCHAIN_NODE_INFO {
 	// WCT_OBJECT_TYPE ObjectType; WCT_OBJECT_STATUS ObjectStatus; union { struct { WCHAR ObjectName[WCT_OBJNAME_LENGTH]; LARGE_INTEGER
@@ -436,27 +388,5 @@ public static partial class AdvApi32
 			/// <summary>The number of context switches.</summary>
 			public uint ContextSwitches;
 		}
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HWCT"/> that is disposed using <see cref="CloseThreadWaitChainSession"/>.</summary>
-	public class SafeHWCT : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHWCT"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHWCT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHWCT"/> class.</summary>
-		private SafeHWCT() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHWCT"/> to <see cref="HWCT"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HWCT(SafeHWCT h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { CloseThreadWaitChainSession(handle); return true; }
 	}
 }
