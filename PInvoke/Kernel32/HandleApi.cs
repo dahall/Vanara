@@ -633,7 +633,7 @@ public static partial class Kernel32
 	public static extern bool SetHandleInformation([In] IntPtr hObject, HANDLE_FLAG dwMask, HANDLE_FLAG dwFlags);
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a handle that releases a created HANDLE instance at disposal using CloseHandle.</summary>
-	public abstract class SafeKernelHandle : SafeHANDLE, IKernelHandle
+	public abstract partial class SafeKernelHandle : SafeHANDLE, IKernelHandle
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeSyncHandle"/> class.</summary>
 		protected SafeKernelHandle() : base() { }

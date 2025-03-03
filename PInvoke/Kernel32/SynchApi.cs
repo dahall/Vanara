@@ -2534,17 +2534,9 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to an event that is automatically disposed using CloseHandle.</summary>
-	public class SafeEventHandle : SafeSyncHandle
+	[AutoSafeHandle(null, typeof(HEVENT), typeof(SafeSyncHandle))]
+	public partial class SafeEventHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeEventHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeEventHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeEventHandle() : base() { }
-
 		/// <summary>
 		/// Sets the event to the signaled state and then resets it to the nonsignaled state after releasing the appropriate number of
 		/// waiting threads.
@@ -2574,16 +2566,8 @@ public static partial class Kernel32
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator SafeEventHandle(EventWaitHandle h) => new(h.Handle, false);
 
-		/// <summary>Performs an implicit conversion from <see cref="SafeEventHandle"/> to <see cref="HEVENT"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HEVENT(SafeEventHandle h) => h.handle;
-
 		/// <summary>Gets an invalid event handle.</summary>
 		public static SafeEventHandle InvalidHandle => new(new IntPtr(-1), false);
-
-		/// <summary>Gets a null event handle.</summary>
-		public static SafeEventHandle Null => new(IntPtr.Zero, false);
 
 		/// <summary>
 		/// <para>Creates or opens a named or unnamed event object.</para>
@@ -2668,25 +2652,12 @@ public static partial class Kernel32
 		/// <para>If the function fails, the return value is <c>Null</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
 		public static SafeEventHandle Open(string name, bool inherit = false, SynchronizationObjectAccess access = SynchronizationObjectAccess.EVENT_ALL_ACCESS) => OpenEvent((uint)access, inherit, name);
-
-		/// <summary>Performs an explicit conversion from <see cref="SafeEventHandle"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The event handle.</param>
-		/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
-		public static explicit operator IntPtr(SafeEventHandle h) => h.handle;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a mutex that is automatically disposed using CloseHandle.</summary>
-	public class SafeMutexHandle : SafeSyncHandle
+	[AutoSafeHandle(null, null, typeof(SafeSyncHandle))]
+	public partial class SafeMutexHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeMutexHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeMutexHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeMutexHandle() : base() { }
-
 		/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
 		/// <param name="h">The SafeSyncHandle instance.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -2696,17 +2667,9 @@ public static partial class Kernel32
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> to a wait handle created by RegisterWaitForSingleObject and closed on disposal by UnregisterWaitEx.
 	/// </summary>
-	public class SafeRegisteredWaitHandle : SafeHANDLE
+	[AutoSafeHandle]
+	public partial class SafeRegisteredWaitHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeRegisteredWaitHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeRegisteredWaitHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeRegisteredWaitHandle() : base() { }
-
 		/// <summary>
 		/// Gets or sets the event object to be signaled when the wait operation has been unregistered. This property can be <see langword="null"/>.
 		/// </summary>
@@ -2715,7 +2678,7 @@ public static partial class Kernel32
 
 		/// <summary>Gets or sets a value indicating whether the disposal waits for all callback functions to complete before returning.</summary>
 		/// <value><c>true</c> if disposal wait for all functions to complete; otherwise, <c>false</c>.</value>
-		public bool WaitForAllFunctions { get; set; }
+		public bool WaitForAllFunctions { get; set; } = false;
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SafeRegisteredWaitHandle"/>.</summary>
 		/// <param name="p">The handle pointer.</param>
@@ -2723,26 +2686,15 @@ public static partial class Kernel32
 		public static implicit operator SafeRegisteredWaitHandle(IntPtr p) => new(p, false);
 
 		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle()
-		{
-			if (UnregisterWaitEx(handle, CompletionEvent ?? (WaitForAllFunctions ? SafeEventHandle.InvalidHandle : SafeEventHandle.Null)))
-				return true;
-			return CompletionEvent is not null && Win32Error.GetLastError() == Win32Error.ERROR_IO_PENDING && CompletionEvent.Wait();
-		}
+		protected override bool InternalReleaseHandle() =>
+			UnregisterWaitEx(handle, CompletionEvent ?? (WaitForAllFunctions ? SafeEventHandle.InvalidHandle : SafeEventHandle.Null))
+				? true : CompletionEvent is not null && Win32Error.GetLastError() == Win32Error.ERROR_IO_PENDING && CompletionEvent.Wait();
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a semaphore that is automatically disposed using CloseHandle.</summary>
-	public class SafeSemaphoreHandle : SafeSyncHandle
+	[AutoSafeHandle(null, null, typeof(SafeSyncHandle))]
+	public partial class SafeSemaphoreHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSemaphoreHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeSemaphoreHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeSemaphoreHandle() : base() { }
-
 		/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
 		/// <param name="h">The SafeSyncHandle instance.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -2750,17 +2702,9 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a waitable timer that is automatically disposed using CloseHandle.</summary>
-	public class SafeWaitableTimerHandle : SafeSyncHandle
+	[AutoSafeHandle(null, null, typeof(SafeSyncHandle))]
+	public partial class SafeWaitableTimerHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeWaitableTimerHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeWaitableTimerHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeWaitableTimerHandle() : base() { }
-
 		/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
 		/// <param name="h">The SafeSyncHandle instance.</param>
 		/// <returns>The result of the conversion.</returns>

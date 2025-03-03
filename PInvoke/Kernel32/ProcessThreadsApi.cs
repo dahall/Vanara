@@ -1701,7 +1701,7 @@ public static partial class Kernel32
 		if (CreateProcess(null, new StringBuilder(lpCommandLine ?? throw new ArgumentNullException(nameof(lpCommandLine))), null, null, false, 0, null, null, STARTUPINFO.Default, out PROCESS_INFORMATION pi))
 		{
 			CloseHandle((IntPtr)pi.hThread);
-			return new SafeHPROCESS(pi.hProcess);
+			return new SafeHPROCESS((IntPtr)pi.hProcess);
 		}
 		return SafeHPROCESS.Null;
 	}
@@ -7790,54 +7790,21 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a process that releases a created HPROCESS instance at disposal using CloseHandle.</summary>
-	public class SafeHPROCESS : SafeSyncHandle
+	[AutoSafeHandle(null, typeof(HPROCESS), typeof(SafeSyncHandle))]
+	public partial class SafeHPROCESS
 	{
-		/// <summary>Initializes a new instance of the <see cref="HPROCESS"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHPROCESS(HPROCESS preexistingHandle, bool ownsHandle = true) : base((IntPtr)preexistingHandle, ownsHandle) { }
-
-		private SafeHPROCESS() : base()
-		{
-		}
-
 		/// <summary>Gets a handle to the current process that can be used across processes.</summary>
 		/// <value>The current process handle.</value>
 		public static SafeHPROCESS Current => new(GetCurrentProcess().Duplicate());
-
-		/// <summary>Represents a <see langword="null"/> or invalid process.</summary>
-		public static SafeHPROCESS Null => new();
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHPROCESS"/> to <see cref="HPROCESS"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPROCESS(SafeHPROCESS h) => h.handle;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a thread that releases a created HTHREAD instance at disposal using CloseHandle.</summary>
-	public class SafeHTHREAD : SafeSyncHandle
+	[AutoSafeHandle(null, typeof(HTHREAD), typeof(SafeSyncHandle))]
+	public partial class SafeHTHREAD
 	{
-		/// <summary>Initializes a new instance of the <see cref="HTHREAD"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHTHREAD(HTHREAD preexistingHandle, bool ownsHandle = true) : base((IntPtr)preexistingHandle, ownsHandle) { }
-
-		private SafeHTHREAD() : base()
-		{
-		}
-
 		/// <summary>Gets a handle to the current thread that can be used across processes.</summary>
 		/// <value>The current thread handle.</value>
 		public static SafeHTHREAD Current => new(GetCurrentThread().Duplicate());
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHTHREAD"/> to <see cref="HTHREAD"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTHREAD(SafeHTHREAD h) => h.handle;
 	}
 
 	/// <summary>
@@ -7854,8 +7821,8 @@ public static partial class Kernel32
 		/// <param name="pi">The pi.</param>
 		public SafePROCESS_INFORMATION(in PROCESS_INFORMATION pi)
 		{
-			hProcess = new SafeHPROCESS(pi.hProcess);
-			hThread = new SafeHTHREAD(pi.hThread);
+			hProcess = new SafeHPROCESS((IntPtr)pi.hProcess);
+			hThread = new SafeHTHREAD((IntPtr)pi.hThread);
 			dwProcessId = pi.dwProcessId;
 			dwThreadId = pi.dwThreadId;
 		}

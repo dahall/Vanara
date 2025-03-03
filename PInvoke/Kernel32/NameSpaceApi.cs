@@ -156,123 +156,8 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684318")]
 	private static extern SafeNamespaceHandle OpenPrivateNamespaceInternal([In] BoundaryDescriptorHandle lpBoundaryDescriptor, string lpAliasPrefix);
 
-	/// <summary>Provides a handle to a boundary descriptor.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct BoundaryDescriptorHandle : IHandle
+	public partial class SafeBoundaryDescriptorHandle
 	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="BoundaryDescriptorHandle"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public BoundaryDescriptorHandle(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="BoundaryDescriptorHandle"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static BoundaryDescriptorHandle NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="BoundaryDescriptorHandle"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(BoundaryDescriptorHandle h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="BoundaryDescriptorHandle"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BoundaryDescriptorHandle(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(BoundaryDescriptorHandle h1, BoundaryDescriptorHandle h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(BoundaryDescriptorHandle h1, BoundaryDescriptorHandle h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is BoundaryDescriptorHandle h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to a private namespace.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct NamespaceHandle : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="NamespaceHandle"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public NamespaceHandle(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="NamespaceHandle"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static NamespaceHandle NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="NamespaceHandle"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(NamespaceHandle h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="NamespaceHandle"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator NamespaceHandle(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(NamespaceHandle h1, NamespaceHandle h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(NamespaceHandle h1, NamespaceHandle h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is NamespaceHandle h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>
-	/// Provides a <see cref="SafeHandle"/> to a boundary descriptor that releases a created BoundaryDescriptorHandle instance at
-	/// disposal using DeleteBoundaryDescriptor.
-	/// </summary>
-	public class SafeBoundaryDescriptorHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="BoundaryDescriptorHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeBoundaryDescriptorHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="BoundaryDescriptorHandle"/> class.</summary>
-		private SafeBoundaryDescriptorHandle() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeBoundaryDescriptorHandle"/> to <see cref="BoundaryDescriptorHandle"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator BoundaryDescriptorHandle(SafeBoundaryDescriptorHandle h) => h.handle;
-
 		/// <summary>Adds a security identifier (SID) to the boundary descriptor.</summary>
 		/// <param name="pSid">A pointer to a <c>SID</c> structure.</param>
 		/// <returns>
@@ -282,43 +167,14 @@ public static partial class Kernel32
 		public bool AddSid(PSID pSid)
 		{
 			BoundaryDescriptorHandle h = handle;
-			if (Marshal.ReadByte(pSid.DangerousGetHandle(), 7) == 16)
-				return AddIntegrityLabelToBoundaryDescriptor(ref h, pSid);
-			return AddSIDToBoundaryDescriptor(ref h, pSid);
-		}
-
-		/// <inheritdoc/>
-		[MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.NoInlining)]
-		protected override bool InternalReleaseHandle()
-		{
-			BoundaryDescriptorHandle h = handle;
-			DeleteBoundaryDescriptor(h);
-			return true;
+			return Marshal.ReadByte(pSid.DangerousGetHandle(), 7) == 16
+				? AddIntegrityLabelToBoundaryDescriptor(ref h, pSid)
+				: AddSIDToBoundaryDescriptor(ref h, pSid);
 		}
 	}
 
-	/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created NamespaceHandle instance at disposal using ClosePrivateNamespace.</summary>
-	public class SafeNamespaceHandle : SafeHANDLE
+	public partial class SafeNamespaceHandle
 	{
 		internal uint flag = PRIVATE_NAMESPACE_FLAG_DESTROY;
-
-		/// <summary>Initializes a new instance of the <see cref="NamespaceHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeNamespaceHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeNamespaceHandle() : base()
-		{
-		}
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeNamespaceHandle"/> to <see cref="NamespaceHandle"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator NamespaceHandle(SafeNamespaceHandle h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => ClosePrivateNamespace(handle, flag);
 	}
 }
