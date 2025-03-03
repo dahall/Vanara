@@ -31,7 +31,7 @@ using Vanara.Generators;
 //	public static partial class Test32
 //	{
 //		/// <summary>Handle to a test.</summary>
-//		[Vanara.PInvoke.AutoSafeHandleAttribute("CloseTest(handle)", typeof(HTEST), typeof(Vanara.PInvoke.SafeHandleV), typeof(HANDLE))]
+//		[Vanara.PInvoke.AutoSafeHandleAttribute("CloseTest(handle)", typeof(HTEST), typeof(Vanara.PInvoke.SafeHANDLE), typeof(HANDLE))]
 //		public partial class SafeHTEST { }
 
 //		/// <summary>Handle to a sample.</summary>

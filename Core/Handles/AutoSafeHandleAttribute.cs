@@ -15,9 +15,9 @@
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
 public sealed class AutoSafeHandleAttribute(string? closeHandleFuncName = null, Type? handleStruct = null, Type? baseSafeHandle = null, Type? inheritedHandle = null) : Attribute
 {
-	/// <summary>Gets the base safe handle. Defaults to <see cref="SafeHandleV"/>.</summary>
+	/// <summary>Gets the base safe handle. Defaults to <see cref="SafeHANDLE"/>.</summary>
 	/// <value>The base safe handle.</value>
-	public Type BaseSafeHandle { get; } = baseSafeHandle ?? typeof(SafeHandleV);
+	public Type BaseSafeHandle { get; } = baseSafeHandle ?? typeof(SafeHANDLE);
 
 	/// <summary>
 	/// Gets the name of the close handle function. This should be expressed as a lambda function

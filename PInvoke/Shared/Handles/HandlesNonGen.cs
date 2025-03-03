@@ -9,6 +9,11 @@ public partial struct HANDLE
 	/// <param name="h">The pointer to a handle.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator HANDLE(SafeHandle h) => new(h.DangerousGetHandle());
+
+	/// <summary>Performs an implicit conversion from <see cref="HANDLE"/> to <see cref="SafeHANDLE"/>.</summary>
+	/// <param name="h">The pointer to a handle.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator HANDLE(SafeHANDLE h) => new(h.DangerousGetHandle());
 }
 
 public partial struct HFILE

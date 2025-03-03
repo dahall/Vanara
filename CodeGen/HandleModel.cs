@@ -29,7 +29,8 @@ internal record HandleModel(string Namespace, string ParentClassName, string Han
 		var templateText = ReplaceMarker(safeHandleTemplateText, "#1#", ParentClassName);
 		templateText = ReplaceMarker(templateText, "#2#", HandleName);
 		templateText = ReplaceMarker(templateText, "#3#", InheritedHandleName);
-		var closeCode = string.IsNullOrEmpty(CloseCode) ? "=> true;" : (CloseCode!.Trim().StartsWith("{") ? CloseCode : $"=> {CloseCode};");
+		templateText = ReplaceMarker(templateText, "#4#", CloseCode);
+		var closeCode = string.IsNullOrEmpty(CloseCode) ? "" : (CloseCode!.Trim().StartsWith("{") ? CloseCode : $"=> {CloseCode};");
 		return Util.ReplaceWholeWords(templateText, new Dictionary<string, string>()
 		{
 			{ "HandleName", HandleName },

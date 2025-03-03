@@ -33,7 +33,7 @@ public class AutoSafeHandleGenerator : IIncrementalGenerator
 			var ns = symbol.ContainingNamespace.ToString();
 			string? closeCode = attr.ConstructorArguments.ElementAtOrDefault(0).Value?.ToString();
 			string handleType = attr.ConstructorArguments.ElementAtOrDefault(1).Value?.ToString() ?? "";
-			string baseType = attr.ConstructorArguments.ElementAtOrDefault(2).Value?.ToString() ?? "Vanara.PInvoke.SafeHandleV";
+			string baseType = attr.ConstructorArguments.ElementAtOrDefault(2).Value?.ToString() ?? "Vanara.PInvoke.SafeHANDLE";
 			string? inhType = attr.ConstructorArguments.ElementAtOrDefault(3).Value?.ToString();
 
 			if (decl.Parent is not ClassDeclarationSyntax parent) { context.ReportError("VANGEN004", "Unable to find parent class."); return; }

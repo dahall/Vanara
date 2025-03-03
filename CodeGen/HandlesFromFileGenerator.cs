@@ -50,7 +50,7 @@ public class HandlesFromFileGenerator : IIncrementalGenerator
 							context.AddSource($"{model.HandleName}.g.cs", SourceText.From(src, Encoding.UTF8));
 							found = true;
 						}
-						if (!string.IsNullOrEmpty(model.ClassName) && !string.IsNullOrEmpty(model.BaseClassName) && !string.IsNullOrEmpty(model.CloseCode))
+						if (!string.IsNullOrEmpty(model.ClassName) && !string.IsNullOrEmpty(model.BaseClassName))
 						{
 							var classSrc = model.GetSafeHandleCode($"/// <summary>Provides a <see cref=\"SafeHandle\"/>{(string.IsNullOrEmpty(model.HandleName) ? "" : $" for <see cref=\"{model.HandleName}\"/>")} that is disposed using <c>{model.CloseCode}</c>.</summary>");
 							context.AddSource($"{model.ClassName}.g.cs", SourceText.From(classSrc, Encoding.UTF8));

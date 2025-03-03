@@ -9,7 +9,12 @@
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 		public ClassName(IntPtr preexistingHandle = default, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-	
+
+		/// <summary>Gets a <see cref="ClassName"/> object that represents a null handle.</summary>
+#pragma warning disable CS0109 // Member does not hide an inherited member
+		public static new ClassName Null => new(IntPtr.Zero, false);
+#pragma warning restore CS0109 // Member does not hide an inherited member
+
 #2#		/// <summary>Performs an implicit conversion from <see cref="ClassName"/> to <see cref="HandleName"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -20,7 +25,7 @@
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator InheritedHandleName(ClassName h) => h.handle;
 
-#3#		/// <inheritdoc/>
+#3##4#		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() CloseCode
-	}#1#
+#4#   }#1#
 }#1#

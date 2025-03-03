@@ -14,69 +14,69 @@ public delegate bool CloseHandleFunc(IntPtr handle);
 /// <seealso cref="IEquatable{T}"/>
 /// <seealso cref="IHandle"/>
 [DebuggerDisplay("{handle}")]
-public abstract class SafeHandleV : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<SafeHandleV>, IHandle
+public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<SafeHANDLE>, IHandle
 {
-	/// <summary>Initializes a new instance of the <see cref="SafeHandleV"/> class.</summary>
-	public SafeHandleV() : base(true)
+	/// <summary>Initializes a new instance of the <see cref="SafeHANDLE"/> class.</summary>
+	public SafeHANDLE() : base(true)
 	{
 	}
 
-	/// <summary>Initializes a new instance of the <see cref="SafeHandleV"/> class and assigns an existing handle.</summary>
+	/// <summary>Initializes a new instance of the <see cref="SafeHANDLE"/> class and assigns an existing handle.</summary>
 	/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 	/// <param name="ownsHandle">
 	/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 	/// </param>
-	protected SafeHandleV(IntPtr preexistingHandle, bool ownsHandle = true) : base(ownsHandle) => SetHandle(preexistingHandle);
+	protected SafeHANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(ownsHandle) => SetHandle(preexistingHandle);
 
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
 	public bool IsNull => handle == IntPtr.Zero;
 
 	/// <summary>Implements the operator ! which returns <see langword="true"/> if the handle is invalid.</summary>
-	/// <param name="hMem">The <see cref="SafeHandleV"/> instance.</param>
+	/// <param name="hMem">The <see cref="SafeHANDLE"/> instance.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator !(SafeHandleV hMem) => hMem.IsInvalid;
+	public static bool operator !(SafeHANDLE hMem) => hMem.IsInvalid;
 
 #if !NETSTANDARD
 	/// <summary>Implements the operator <see langword="true"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator true(SafeHandleV hMem) => !hMem.IsInvalid;
+	public static bool operator true(SafeHANDLE hMem) => !hMem.IsInvalid;
 
 	/// <summary>Implements the operator <see langword="false"/>.</summary>
 	/// <param name="hMem">The value.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator false(SafeHandleV hMem) => hMem.IsInvalid;
+	public static bool operator false(SafeHANDLE hMem) => hMem.IsInvalid;
 #endif
 
 	/// <summary>Implements the operator !=.</summary>
 	/// <param name="h1">The first handle.</param>
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator !=(SafeHandleV? h1, IHandle? h2) => !(h1 == h2);
+	public static bool operator !=(SafeHANDLE? h1, IHandle? h2) => !(h1 == h2);
 
 	/// <summary>Implements the operator !=.</summary>
 	/// <param name="h1">The first handle.</param>
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator !=(SafeHandleV h1, IntPtr h2) => !(h1 == h2);
+	public static bool operator !=(SafeHANDLE h1, IntPtr h2) => !(h1 == h2);
 
 	/// <summary>Implements the operator ==.</summary>
 	/// <param name="h1">The first handle.</param>
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator ==(SafeHandleV? h1, IHandle? h2) => h1?.Equals(h2) ?? h2 is null;
+	public static bool operator ==(SafeHANDLE? h1, IHandle? h2) => h1?.Equals(h2) ?? h2 is null;
 
 	/// <summary>Implements the operator ==.</summary>
 	/// <param name="h1">The first handle.</param>
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
-	public static bool operator ==(SafeHandleV h1, IntPtr h2) => h1?.Equals(h2) ?? false;
+	public static bool operator ==(SafeHANDLE h1, IntPtr h2) => h1?.Equals(h2) ?? false;
 
-	/// <summary>Determines whether the specified <see cref="SafeHandleV"/>, is equal to this instance.</summary>
-	/// <param name="other">The <see cref="SafeHandleV"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="SafeHandleV"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(SafeHandleV? other) => ReferenceEquals(this, other) || other is not null && handle == other.handle && IsClosed == other.IsClosed;
+	/// <summary>Determines whether the specified <see cref="SafeHANDLE"/>, is equal to this instance.</summary>
+	/// <param name="other">The <see cref="SafeHANDLE"/> to compare with this instance.</param>
+	/// <returns><c>true</c> if the specified <see cref="SafeHANDLE"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	public bool Equals(SafeHANDLE? other) => ReferenceEquals(this, other) || other is not null && handle == other.handle && IsClosed == other.IsClosed;
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
@@ -120,9 +120,9 @@ public abstract class SafeHandleV : SafeHandleZeroOrMinusOneIsInvalid, IEquatabl
 	}
 
 	/// <summary>Throws an <see cref="ObjectDisposedException"/> if disposed.</summary>
-	/// <typeparam name="T">A <see cref="SafeHandleV"/> instance.</typeparam>
+	/// <typeparam name="T">A <see cref="SafeHANDLE"/> instance.</typeparam>
 	/// <param name="h">The handle.</param>
 	/// <returns>The handle if not disposed.</returns>
 	/// <exception cref="ObjectDisposedException">Thrown if handle is disposed.</exception>
-	protected static T ThrowIfDisposed<T>(T h) where T : SafeHandleV => h is null || h.IsInvalid ? throw new ObjectDisposedException(typeof(T).Name) : h;
+	protected static T ThrowIfDisposed<T>(T h) where T : SafeHANDLE => h is null || h.IsInvalid ? throw new ObjectDisposedException(typeof(T).Name) : h;
 }
