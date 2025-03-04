@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.CfgMgr32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;CfgMgr32</PackageTags>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions

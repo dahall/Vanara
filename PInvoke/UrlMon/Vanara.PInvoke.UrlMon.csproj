@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.UrlMon</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;UrlMon</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions

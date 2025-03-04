@@ -19,7 +19,6 @@ AUTOGROW AUTOSHRINK CLFS_MGMT_NOTIFICATION CLFS_MGMT_POLICY CLFS_NODE_ID CLS_ARC
 
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />

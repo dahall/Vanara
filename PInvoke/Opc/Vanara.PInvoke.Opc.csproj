@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.Opc</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;Opc</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Interfaces

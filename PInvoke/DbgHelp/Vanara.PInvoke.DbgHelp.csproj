@@ -8,7 +8,6 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyName>Vanara.PInvoke.DbgHelp</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageTags>pinvoke;vanara;net-extensions;interop;DbgHelp</PackageTags>
     <PackageReleaseNotes>Currently implements:
 

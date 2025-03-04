@@ -35,6 +35,7 @@ public abstract class ExtenderProviderBase<TExtend> : Component, IExtenderProvid
 
 	/// <summary>Sets the site.</summary>
 	/// <value>The site.</value>
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public override ISite? Site
 	{
 		set

@@ -41,6 +41,7 @@ public class ThemedImageDraw : CustomDrawBase
 
 	/// <summary>Gets or sets the background color of the control.</summary>
 	/// <returns>A <see cref="T:System.Drawing.Color"/> value representing the background color.</returns>
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public override Color BackColor
 	{
 		get => OnGlass ? Color.Transparent : base.BackColor;

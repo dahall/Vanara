@@ -21,7 +21,6 @@ Interfaces
 INetDiagExtensibleHelper INetDiagHelper INetDiagHelperEx INetDiagHelperInfo INetDiagHelperUtilFactory
 
 </PackageReleaseNotes>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>

@@ -15,7 +15,6 @@ Enumerations
 BatteryStatus, EdgeTraversalType, EnergySaverStatus, FirewallAction, FirewallAuthenticateType, FirewallPolicyModifyState, FirewallProfileType, JobLimit, NetworkInterfaceAccessType, NetworkInterfaceAdministrativeStatus, NetworkInterfaceConnectionType, NetworkInterfaceDirectionType, NetworkInterfaceMediaType, NetworkInterfacePhysicalMedium, PathCharType, PowerCapabilities, PowerSupplyStatus, RuleDirection, RuleInterfaceType, ScanResult, ServiceControllerAccessRights, ShareOfflineSettings
 
 </PackageReleaseNotes>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
@@ -23,7 +22,7 @@ BatteryStatus, EdgeTraversalType, EnergySaverStatus, FirewallAction, FirewallAut
     <Reference Include="System.ServiceProcess" Condition=" $(TargetFramework.StartsWith('net4')) " />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'net45' ">
-    <PackageReference Include="System.Drawing.Common" Version="8.0.5" Condition=" $(TargetFramework.StartsWith('net8')) " />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.5" Condition=" $(TargetFramework.StartsWith('net8')) Or $(TargetFramework.StartsWith('net9')) " />
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore')) Or $(TargetFramework.StartsWith('net5')) " />
     <PackageReference Include="System.Management" Version="6.0.2" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0' " />
     <PackageReference Include="System.Management" Version="8.0.0" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' And '$(TargetFramework)' != 'net5.0' " />

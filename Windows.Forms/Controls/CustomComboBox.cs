@@ -119,6 +119,7 @@ public abstract class CustomComboBox : ComboBox, IPopupControlHost
 	/// <summary>Gets or sets the size of the drop-down control itself.</summary>
 	/// <value>The size of the drop-down control.</value>
 	[Category("Custom Drop-Down"), Browsable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Size ControlSize
 	{
 		get => sizeOriginal;
@@ -143,6 +144,7 @@ public abstract class CustomComboBox : ComboBox, IPopupControlHost
 	/// <summary>Gets or sets drop-down control itself.</summary>
 	/// <value>The drop down control.</value>
 	[Browsable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Control? DropDownControl { get => dropDownCtrl; set => AssignControl(value); }
 
 	/// <summary>Gets or sets the height in pixels of the drop-down portion of the <see cref="T:System.Windows.Forms.ComboBox"/>.</summary>
@@ -217,6 +219,7 @@ public abstract class CustomComboBox : ComboBox, IPopupControlHost
 	/// <summary>Gets or sets the size of the drop-down area.</summary>
 	/// <value>The size of the drop-down area.</value>
 	[Category("Custom Drop-Down")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Size DropSize
 	{
 		get => sizeCombo;
@@ -414,6 +417,7 @@ public abstract class CustomComboBox : ComboBox, IPopupControlHost
 	/// class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
 	/// version="1" Unrestricted="true"/>
 	/// </PermissionSet>
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public new string Text
 	{
 		get => base.Items.Count == 0 ? string.Empty : base.Items[0]!.ToString()!;
@@ -816,6 +820,7 @@ public abstract class CustomComboBox : ComboBox, IPopupControlHost
 		}
 
 		/// <summary>Type of resize mode, grips are automatically drawn at bottom-left and bottom-right corners.</summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public PopupResizeMode ResizeMode
 		{
 			get => resizeMode; set

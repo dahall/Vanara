@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows HttpApi.dll for HTTP Server API Version 2.0.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyName>Vanara.PInvoke.HttpApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;httpapi;http server;windows</PackageTags>

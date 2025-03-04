@@ -247,6 +247,7 @@ public class InputDialog : CommonDialog
 		}
 
 		/// <summary>Gets or sets the width of the control.</summary>
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new int Width
 		{
 			get => base.Width;
@@ -614,6 +615,7 @@ public class InputDialog : CommonDialog
 
 		private class RegexTextBox : TextBox
 		{
+			[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 			public string? RegexPattern { get; set; }
 
 			protected override void OnKeyPress(KeyPressEventArgs e) =>

@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.Ole</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;com;ole;ole32;oleaut32;propsys</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions

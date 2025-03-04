@@ -8,7 +8,6 @@
     <AssemblyName>Vanara.PInvoke.FwpUClnt</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageTags>pinvoke;vanara;net-extensions;interop;FwpUClnt;Windows Filtering Platform</PackageTags>
     <PackageReleaseNotes>Currently implements:
 

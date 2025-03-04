@@ -103,7 +103,7 @@ public abstract class AttributedComponentDesigner<TComponent> : ComponentDesigne
 	}
 
 	/// <summary>Gets the design-time verbs supported by the component that is associated with the designer.</summary>
-	public override DesignerVerbCollection? Verbs => verbs;
+	public override DesignerVerbCollection Verbs => verbs ?? [];
 
 	/// <summary>Gets the design-time action lists supported by the component associated with the designer.</summary>
 	public override DesignerActionListCollection ActionLists =>
@@ -191,8 +191,8 @@ public abstract class AttributedComponentDesignerEx<TComponent> : AttributedComp
 	{
 		if (disposing)
 		{
-			if (BehaviorService != null & adorner != null)
-				BehaviorService?.Adorners.Remove(adorner);
+			if (BehaviorService != null && adorner != null)
+				BehaviorService?.Adorners.Remove(adorner!);
 			var ss = SelectionService;
 			if (ss != null)
 				ss.SelectionChanged -= OnSelectionChanged;
@@ -204,9 +204,9 @@ public abstract class AttributedComponentDesignerEx<TComponent> : AttributedComp
 	}
 
 	/// <summary>Gets the service.</summary>
-	/// <typeparam name="TS">The type of the s.</typeparam>
+	/// <typeparam name="TS">The type of the service.</typeparam>
 	/// <returns></returns>
-	protected virtual TS GetService<TS>() where TS : class => (TS)GetService(typeof(TS));
+	protected virtual TS GetService<TS>() where TS : class => GetService(typeof(TS)) as TS ?? throw new InvalidCastException($"Unable to cast to {typeof(TS).FullName}");
 
 	/// <summary>Called when [component changed].</summary>
 	/// <param name="sender">The sender.</param>
@@ -241,7 +241,7 @@ public abstract class AttributedControlDesigner<TControl> : ControlDesigner wher
 	}
 
 	/// <summary>Gets the design-time verbs supported by the component that is associated with the designer.</summary>
-	public override DesignerVerbCollection? Verbs => verbs;
+	public override DesignerVerbCollection Verbs => verbs ?? [];
 
 	/// <summary>Gets the design-time action lists supported by the component associated with the designer.</summary>
 	public override DesignerActionListCollection ActionLists =>
@@ -307,7 +307,7 @@ public abstract class AttributedControlDesignerEx<TControl> : AttributedControlD
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	/// <summary>Gets the <see cref="T:System.Windows.Forms.Design.Behavior.BehaviorService"/> from the design environment.</summary>
-	public new BehaviorService BehaviorService => base.BehaviorService;
+	public new BehaviorService BehaviorService => base.BehaviorService ?? throw new InvalidOperationException();
 
 	/// <summary>Gets the glyphs.</summary>
 	/// <value>The glyphs.</value>
@@ -346,7 +346,8 @@ public abstract class AttributedControlDesignerEx<TControl> : AttributedControlD
 	{
 		if (disposing)
 		{
-			BehaviorService?.Adorners.Remove(adorner);
+			if (adorner is not null)
+				BehaviorService?.Adorners.Remove(adorner);
 			var ss = SelectionService;
 			if (ss != null)
 				ss.SelectionChanged -= OnSelectionChanged;
@@ -360,7 +361,7 @@ public abstract class AttributedControlDesignerEx<TControl> : AttributedControlD
 	/// <summary>Gets the service.</summary>
 	/// <typeparam name="TS">The type of the s.</typeparam>
 	/// <returns></returns>
-	protected virtual TS GetService<TS>() where TS : class => (TS)GetService(typeof(TS));
+	protected virtual TS GetService<TS>() where TS : class => GetService(typeof(TS)) as TS ?? throw new InvalidCastException($"Unable to cast to {typeof(TS).FullName}");
 
 	/// <summary>Called when a component has changed.</summary>
 	/// <param name="sender">The sender.</param>
@@ -447,7 +448,7 @@ public abstract class AttributedParentControlDesigner<TControl> : ParentControlD
 	}
 
 	/// <summary>Gets the design-time verbs supported by the component that is associated with the designer.</summary>
-	public override DesignerVerbCollection? Verbs => verbs;
+	public override DesignerVerbCollection Verbs => verbs ?? [];
 
 	/// <summary>Gets the design-time action lists supported by the component associated with the designer.</summary>
 	public override DesignerActionListCollection ActionLists =>
@@ -498,7 +499,7 @@ public abstract class AttributedParentControlDesignerEx<TControl> : AttributedPa
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	/// <summary>Gets the <see cref="T:System.Windows.Forms.Design.Behavior.BehaviorService"/> from the design environment.</summary>
-	public new BehaviorService BehaviorService => base.BehaviorService;
+	public new BehaviorService BehaviorService => base.BehaviorService ?? throw new InvalidOperationException();
 
 	/// <summary>Gets the glyphs.</summary>
 	/// <value>The glyphs.</value>
@@ -549,7 +550,7 @@ public abstract class AttributedParentControlDesignerEx<TControl> : AttributedPa
 	/// <summary>Gets the service.</summary>
 	/// <typeparam name="TS">The type of the s.</typeparam>
 	/// <returns></returns>
-	protected virtual TS GetService<TS>() where TS : class => (TS)GetService(typeof(TS));
+	protected virtual TS GetService<TS>() where TS : class => GetService(typeof(TS)) as TS ?? throw new InvalidCastException($"Unable to cast to {typeof(TS).FullName}");
 
 	/// <summary>Called when [component changed].</summary>
 	/// <param name="sender">The sender.</param>

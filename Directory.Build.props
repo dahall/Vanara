@@ -1,6 +1,8 @@
 <Project>
   <PropertyGroup>
     <TargetFrameworks>net48;net5.0;net6.0;net7.0;net8.0-windows;net9.0-windows;netstandard2.0;netcoreapp3.1</TargetFrameworks>
+    <!-- Defined variable for projects that do not support .NET Standard -->
+    <TargetFrameworksNotStd>net48;net6.0;net7.0;net8.0-windows;net9.0-windows;netcoreapp3.1</TargetFrameworksNotStd>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>4.1.0</Version>
@@ -27,7 +29,7 @@
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
   <ItemGroup Condition="'$(MSBuildProjectName)'!='Vanara.Core' And '$(MSBuildProjectName)'!='Vanara.CodeGen'">
-    <ProjectReference Include="..\..\CodeGen\Vanara.CodeGen.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\Vanara.CodeGen.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
   </ItemGroup>
     
   <Import Project="Package.targets" />

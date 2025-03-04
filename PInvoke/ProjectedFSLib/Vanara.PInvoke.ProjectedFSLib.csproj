@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.ProjectedFSLib</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;ProjectedFSLib;Projected File System</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions

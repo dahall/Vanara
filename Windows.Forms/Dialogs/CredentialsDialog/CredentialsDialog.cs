@@ -96,6 +96,7 @@ public class CredentialsDialog : CommonDialog
 	public SecureString? SecurePassword { get; private set; }
 
 	/// <summary>Gets or sets a value that determines if the combo box is populated with local administrators only.</summary>
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public bool ShowAdminsOnly { get; set; }
 
 	/// <summary>Gets or sets a boolean indicating if the save check box should be shown.</summary>

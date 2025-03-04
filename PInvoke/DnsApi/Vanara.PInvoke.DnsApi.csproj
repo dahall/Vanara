@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.DnsApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;DnsApi;windows dns;dns</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions

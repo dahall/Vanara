@@ -587,6 +587,17 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool UmsThreadYield(IntPtr SchedulerParam);
 
+	public partial struct PUMS_CONTEXT
+	{
+		/// <summary>Gets a value indicating whether this instance is suspended.</summary>
+		/// <value><c>true</c> if this instance is suspended; otherwise, <c>false</c>.</value>
+		public bool IsSuspended => QueryUmsThreadInformation<bool>(this, RTL_UMS_THREAD_INFO_CLASS.UmsThreadIsSuspended);
+
+		/// <summary>Gets a value indicating whether this instance is terminated.</summary>
+		/// <value><c>true</c> if this instance is terminated; otherwise, <c>false</c>.</value>
+		public bool IsTerminated => QueryUmsThreadInformation<bool>(this, RTL_UMS_THREAD_INFO_CLASS.UmsThreadIsTerminated);
+	}
+
 	/// <summary>
 	/// Specifies attributes for a user-mode scheduling (UMS) scheduler thread. The EnterUmsSchedulingMode function uses this structure.
 	/// </summary>

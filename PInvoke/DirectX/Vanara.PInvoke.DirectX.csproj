@@ -6,7 +6,6 @@
     <AssemblyName>Vanara.PInvoke.DirectX</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;directx</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 </PackageReleaseNotes>

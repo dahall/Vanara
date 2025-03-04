@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.Ws2_32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;Ws2_32;sockets;winsock;winsock2;interop</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions

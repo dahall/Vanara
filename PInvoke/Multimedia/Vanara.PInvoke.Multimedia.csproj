@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.Multimedia</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;winmm;windows multimedia;wav;waveform;audio;msacm32;avifil32</PackageTags>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions

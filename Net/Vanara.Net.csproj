@@ -14,7 +14,6 @@ CustomDnsBootstapper, DhcpClient, DistributedRoutingTable, DnsService, DrtBootst
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
     <RootNamespace>Vanara.Net</RootNamespace>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\Dhcp\Vanara.PInvoke.Dhcp.csproj" />

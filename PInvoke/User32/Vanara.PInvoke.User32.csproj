@@ -6,13 +6,9 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows User32.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <!--<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>-->
     <AssemblyName>Vanara.PInvoke.User32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions

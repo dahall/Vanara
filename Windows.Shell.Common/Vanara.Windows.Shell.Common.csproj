@@ -7,7 +7,6 @@
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
     <RootNamespace>Vanara.Windows.Shell</RootNamespace>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Classes

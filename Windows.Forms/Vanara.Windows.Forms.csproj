@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Classes for user interface related items derived from the Vanara PInvoke libraries. Includes extensions for almost all common controls to give post Vista capabilities, WinForms controls (panel, commandlink, enhanced combo boxes, IPAddress, split button, trackbar and themed controls), shutdown/restart/lock control, buffered painting, resource files, access control editor, simplifed designer framework for Windows.Forms.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net45;net48;net6.0;net7.0;net8.0-windows;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworksNotStd)</TargetFrameworks>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>Vanara.Windows.Forms</AssemblyName>
