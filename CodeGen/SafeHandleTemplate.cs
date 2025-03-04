@@ -15,7 +15,12 @@
 		public static new ClassName Null => new(IntPtr.Zero, false);
 #pragma warning restore CS0109 // Member does not hide an inherited member
 
-#2#		/// <summary>Performs an implicit conversion from <see cref="ClassName"/> to <see cref="HandleName"/>.</summary>
+#2#		/// <summary>Initializes a new instance of the <see cref="ClassName"/> class and assigns an existing handle.</summary>
+		/// <param name="preexistingHandle">An <see cref="HandleName"/> object that represents the pre-existing handle to use.</param>
+		/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+		public ClassName(HandleName preexistingHandle = default, bool ownsHandle = true) : base((IntPtr)preexistingHandle, ownsHandle) { }
+	
+		/// <summary>Performs an implicit conversion from <see cref="ClassName"/> to <see cref="HandleName"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HandleName(ClassName h) => h.handle;

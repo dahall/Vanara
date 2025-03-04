@@ -32,6 +32,11 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
 	public bool IsNull => handle == IntPtr.Zero;
 
+	/// <summary>Performs an explicit conversion from <see cref="SafeHANDLE"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="h">The safe handle.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static explicit operator IntPtr(SafeHANDLE h) => h.DangerousGetHandle();
+
 	/// <summary>Implements the operator ! which returns <see langword="true"/> if the handle is invalid.</summary>
 	/// <param name="hMem">The <see cref="SafeHANDLE"/> instance.</param>
 	/// <returns>The result of the operator.</returns>
