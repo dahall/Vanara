@@ -15,14 +15,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <language>en-US</language>
     <dependencies>
-      <group targetFramework="net6.0">
-        <dependency id="Vanara.PInvoke.Shared" version="4.0.6" exclude="Build,Analyzers" />
+      <group targetFramework="net8.0">
+        <dependency id="Vanara.PInvoke.Shared" version="4.1.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
     <releaseNotes></releaseNotes>
   </metadata>
   <files>
-    <file src="bin\Release\net6.0\x64\Vanara.PInvoke.VssApi*.???" target="lib\net6.0" />
+    <file src="bin\Release\net8.0\x64\Vanara.PInvoke.VssApi*.???" target="lib\net8.0" />
     <file src="..\..\docs\icons\Vanara64x64.png" target="Vanara64x64.png" />
     <file src="pkgreadme.md" target="pkgreadme.md" />
   </files>
