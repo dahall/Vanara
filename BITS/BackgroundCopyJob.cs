@@ -208,7 +208,11 @@ public class BackgroundCopyJob : IDisposable
 			var xstore = new X509Store(store, (StoreLocation)(loc + 1));
 			xstore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
 			return xstore.Certificates.Find(X509FindType.FindBySubjectName, subj, false).OfType<X509Certificate2>().FirstOrDefault() ??
+#if NET9_0_OR_GREATER
+				X509CertificateLoader.LoadCertificate(blob.ToArray<byte>(20));
+#else
 				new X509Certificate2(blob.ToArray<byte>(20));
+#endif
 		}
 	}
 
