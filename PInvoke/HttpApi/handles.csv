@@ -1,0 +1,3 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,HttpApi,HREQQUEUE,IHandle,Provides a handle to a v2 HTTP Request Queue.,SafeHREQQUEUE,SafeHANDLE,HttpCloseRequestQueue(handle).Succeeded,
+Vanara.PInvoke,HttpApi,HREQQUEUEv1,IHandle,Provides a handle to a v1 HTTP Request Queue.,SafeHREQQUEUEv1,SafeHANDLE,Kernel32.CloseHandle(handle),

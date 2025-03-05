@@ -21,6 +21,9 @@ BOOTSTRAPADDRESSES DRT_ADDRESS DRT_ADDRESS_LIST DRT_BOOTSTRAP_PROVIDER DRT_BOOTS
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Cryptography\Vanara.PInvoke.Cryptography.csproj" />
     <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>

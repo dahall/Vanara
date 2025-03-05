@@ -1,0 +1,3 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,CimFs,CIMFS_IMAGE_HANDLE,IHandle,Provides a handle to a resource conflict list.,SafeCIMFS_IMAGE_HANDLE,SafeHANDLE,{ CimCloseImage(handle); return true; },
+Vanara.PInvoke,CimFs,CIMFS_STREAM_HANDLE,IHandle,Provides a handle to a CIMFS stream handle.,SafeCIMFS_STREAM_HANDLE,SafeHANDLE,{ CimCloseStream(handle); return true; },

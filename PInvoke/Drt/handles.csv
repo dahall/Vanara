@@ -1,0 +1,6 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,Drt,DRT_BOOTSTRAP_RESOLVE_CONTEXT,IHandle,Provides a handle to a DRT resolution.,,,,
+Vanara.PInvoke,Drt,HDRT,IHandle,Provides a handle to a distributed routing table.,SafeHDRT,SafeHANDLE,{ DrtClose(handle); return true; },
+Vanara.PInvoke,Drt,HDRT_REGISTRATION_CONTEXT,IHandle,Provides a handle to a DRT registration context.,,,,
+Vanara.PInvoke,Drt,HDRT_SEARCH_CONTEXT,IHandle,Provides a handle to a DRT search context.,,,,
+Vanara.PInvoke,Drt,HDRT_TRANSPORT,IHandle,Provides a handle to a DRT transport.,SafeHDRT_TRANSPORT,SafeHANDLE,DrtDeleteIpv6UdpTransport(handle).Succeeded,

@@ -1672,54 +1672,6 @@ public static partial class DnsApi
 	public static extern bool DnsWriteQuestionToBuffer([In, Out] IntPtr pDnsBuffer, ref uint pdwBufferSize,
 		[MarshalAs(UnmanagedType.LPWStr)] string pszName, DNS_TYPE wType, ushort Xid, [MarshalAs(UnmanagedType.Bool)] bool fRecursionDesired);
 
-	/// <summary>Provides a handle to a DNS Context.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HDNSCONTEXT : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HDNSCONTEXT"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HDNSCONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HDNSCONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HDNSCONTEXT NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HDNSCONTEXT"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HDNSCONTEXT h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HDNSCONTEXT"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDNSCONTEXT(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HDNSCONTEXT h1, HDNSCONTEXT h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HDNSCONTEXT h1, HDNSCONTEXT h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HDNSCONTEXT h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>Provides a <see cref="SafeHandle"/> for a list of allocated <c>DNS_CACHE_ENTRY</c> values that is disposed using <see cref="DnsFree"/>.</summary>
 	public class SafeDnsCacheDataTable : SafeHANDLE, IEnumerable<DNS_CACHE_ENTRY>
 	{
@@ -1756,23 +1708,9 @@ public static partial class DnsApi
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for a DNS record list that is disposed using <see cref="DnsRecordListFree"/>.</summary>
-	public class SafeDnsRecordList : SafeHANDLE, IEnumerable<DNS_RECORD>
+	[AutoSafeHandle("{ DnsRecordListFree(handle); return true; }")]
+	public partial class SafeDnsRecordList : IEnumerable<DNS_RECORD>
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeDnsRecordList"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeDnsRecordList(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeDnsRecordList"/> class.</summary>
-		private SafeDnsRecordList() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeDnsRecordList"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator IntPtr(SafeDnsRecordList h) => h.handle;
-
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
 		/// <exception cref="NotImplementedException"></exception>
@@ -1793,36 +1731,6 @@ public static partial class DnsApi
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
 		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { DnsRecordListFree(handle); return true; }
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HDNSCONTEXT"/> that is disposed using <see cref="DnsReleaseContextHandle"/>.</summary>
-	public class SafeHDNSCONTEXT : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHDNSCONTEXT"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHDNSCONTEXT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHDNSCONTEXT"/> class.</summary>
-		private SafeHDNSCONTEXT() : base() { }
-
-		/// <summary>Performs an explicit conversion from <see cref="SafeHDNSCONTEXT"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
-		public static explicit operator IntPtr(SafeHDNSCONTEXT h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHDNSCONTEXT"/> to <see cref="HDNSCONTEXT"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDNSCONTEXT(SafeHDNSCONTEXT h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { DnsReleaseContextHandle(handle); return true; }
 	}
 
 	internal class DnsProxyStringMem : ISimpleMemoryMethods

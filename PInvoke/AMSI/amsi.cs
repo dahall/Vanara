@@ -222,170 +222,21 @@ public static partial class AMSI
 	[DllImport(Lib_Amsi, SetLastError = false, EntryPoint = "AmsiOpenSession")]
 	private static extern HRESULT AmsiOpenSessionInternal([In] HAMSICONTEXT amsiContext, out HAMSISESSION amsiSession);
 
-	/// <summary>Provides a handle to an AMSI context.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HAMSICONTEXT : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HAMSICONTEXT"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HAMSICONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HAMSICONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HAMSICONTEXT NULL { get; } = default;
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HAMSICONTEXT"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HAMSICONTEXT h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HAMSICONTEXT"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HAMSICONTEXT(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HAMSICONTEXT h1, HAMSICONTEXT h2) => h1.handle != h2.handle;
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HAMSICONTEXT h1, HAMSICONTEXT h2) => h1.handle == h2.handle;
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is IHandle h && handle == h.DangerousGetHandle() || obj is IntPtr p && handle == p;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to an AMSI session.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HAMSISESSION : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HAMSISESSION"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HAMSISESSION(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HAMSISESSION"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HAMSISESSION NULL { get; } = default;
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HAMSISESSION"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HAMSISESSION h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HAMSISESSION"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HAMSISESSION(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HAMSISESSION h1, HAMSISESSION h2) => h1.handle != h2.handle;
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HAMSISESSION h1, HAMSISESSION h2) => h1.handle == h2.handle;
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is IHandle h && handle == h.DangerousGetHandle() || obj is IntPtr p && handle == p;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HAMSICONTEXT"/> that is disposed using <see cref="AmsiUninitialize"/>.</summary>
-	public class SafeHAMSICONTEXT : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHAMSICONTEXT"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHAMSICONTEXT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHAMSICONTEXT"/> class.</summary>
-		private SafeHAMSICONTEXT() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHAMSICONTEXT"/> to <see cref="HAMSICONTEXT"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HAMSICONTEXT(SafeHAMSICONTEXT h) => h.handle;
-
-		/// <summary>Represents a NULL handle.</summary>
-		public static readonly SafeHAMSICONTEXT Null = new(IntPtr.Zero, false);
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { AmsiUninitialize(handle); return true; }
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HAMSISESSION"/> that is disposed using <see cref="AmsiCloseSession"/>.</summary>
-	public class SafeHAMSISESSION : SafeHANDLE
+	public partial class SafeHAMSISESSION
 	{
 		private SafeHAMSICONTEXT ctx;
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHAMSISESSION"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHAMSISESSION(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => ctx = SafeHAMSICONTEXT.Null;
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHAMSISESSION"/> class.</summary>
-		/// <param name="context">The context.</param>
-		public SafeHAMSISESSION(HAMSICONTEXT context) : base() => Open(ctx = new(context.DangerousGetHandle(), false));
 
 		/// <summary>Initializes a new instance of the <see cref="SafeHAMSISESSION"/> class.</summary>
 		/// <param name="appName">The name, version, or GUID string of the app calling the AMSI API.</param>
 		public SafeHAMSISESSION(string appName) : base()
 		{
 			AmsiInitialize(appName, out SafeHAMSICONTEXT hc).ThrowIfFailed();
-			Open(ctx = hc);
+			AmsiOpenSessionInternal(ctx = hc, out HAMSISESSION h).ThrowIfFailed();
+			SetHandle((IntPtr)h);
 		}
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHAMSISESSION"/> class.</summary>
-		private SafeHAMSISESSION() : base() => ctx = SafeHAMSICONTEXT.Null;
 
 		/// <summary>Gets or sets the handle of type HAMSICONTEXT that was initially received from AmsiInitialize.</summary>
 		/// <value>The context handle.</value>
 		public HAMSICONTEXT Context { get => ctx; set => ctx = new SafeHAMSICONTEXT((IntPtr)value, false); }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHAMSISESSION"/> to <see cref="HAMSISESSION"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HAMSISESSION(SafeHAMSISESSION h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { AmsiCloseSession(Context, handle); ctx?.Dispose(); return true; }
-
-		private void Open(HAMSICONTEXT context)
-		{
-			AmsiOpenSessionInternal(context, out HAMSISESSION h).ThrowIfFailed();
-			SetHandle((IntPtr)h);
-		}
 	}
 }

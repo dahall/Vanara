@@ -1,0 +1,3 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,AMSI,HAMSICONTEXT,IHandle,Handle to an AMSI context.,SafeHAMSICONTEXT,SafeHANDLE,{ AmsiUninitialize(handle); return true; },
+Vanara.PInvoke,AMSI,HAMSISESSION,IHandle,Handle to an AMSI session.,SafeHAMSISESSION,SafeHANDLE,"{ AmsiCloseSession(Context, handle); ctx?.Dispose(); return true; }",

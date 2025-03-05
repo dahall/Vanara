@@ -450,77 +450,10 @@ public static partial class Avrt
 	public static extern bool AvSetMmThreadPriority([In] HAVRT AvrtHandle, [In] AVRT_PRIORITY Priority);
 
 	/// <summary>Provides a handle to an AvRt task.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HAVRT : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HAVRT"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HAVRT(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HAVRT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HAVRT NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Implements the operator !.</summary>
-		/// <param name="h1">The handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !(HAVRT h1) => h1.IsNull;
-
-		/// <summary>Performs an explicit conversion from <see cref="HAVRT"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HAVRT h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HAVRT"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HAVRT(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HAVRT h1, HAVRT h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HAVRT h1, HAVRT h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HAVRT h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
+	[AutoHandle]
+	public partial struct HAVRT { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HAVRT"/> that is disposed using <see cref="AvRevertMmThreadCharacteristics"/>.</summary>
-	public class SafeHAVRT : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHAVRT"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHAVRT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHAVRT"/> class.</summary>
-		private SafeHAVRT() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHAVRT"/> to <see cref="HAVRT"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HAVRT(SafeHAVRT h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => AvRevertMmThreadCharacteristics((HAVRT)handle);
-	}
+	[AutoSafeHandle("AvRevertMmThreadCharacteristics(handle)", typeof(HAVRT))]
+	public partial class SafeHAVRT { }
 }

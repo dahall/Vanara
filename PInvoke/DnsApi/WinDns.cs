@@ -3853,7 +3853,8 @@ public static partial class DnsApi
 
 	/// <summary>Represents a DNS service running on the network.</summary>
 	[PInvokeData("windns.h")]
-	public class SafePDNS_SERVICE_INSTANCE : SafeHANDLE
+	[AutoSafeHandle("{ DnsServiceFreeInstance(handle); return true; }")]
+	public partial class SafePDNS_SERVICE_INSTANCE
 	{
 		private uint _dwInterfaceIndex;
 		private IPEndPoint? _ip4Address;
@@ -3865,12 +3866,6 @@ public static partial class DnsApi
 		private ushort _wPriority;
 		private ushort _wWeight;
 		private bool populated = false;
-
-		/// <summary>Initializes a new instance of the <see cref="SafePDNS_SERVICE_INSTANCE"/> class.</summary>
-		/// <param name="pDnsServiceInst">A valid pointer to a DNS_SERVICE_INSTANCE instance.</param>
-		public SafePDNS_SERVICE_INSTANCE(IntPtr pDnsServiceInst) : base(pDnsServiceInst, true) { }
-
-		private SafePDNS_SERVICE_INSTANCE() { }
 
 		/// <summary>A value that contains the interface index on which the service was discovered.</summary>
 		public uint dwInterfaceIndex => PopulateFetch(ref _dwInterfaceIndex);
@@ -3902,14 +3897,6 @@ public static partial class DnsApi
 
 		/// <summary>A value that represents the service weight.</summary>
 		public ushort wWeight => PopulateFetch(ref _wWeight);
-
-		/// <summary>Performs an implicit conversion from <see cref="SafePDNS_SERVICE_INSTANCE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="instance">The instance.</param>
-		/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
-		public static implicit operator IntPtr(SafePDNS_SERVICE_INSTANCE instance) => instance.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { DnsServiceFreeInstance(handle); return true; }
 
 		// [MemberNotNull(nameof(_ip4Address), nameof(_ip6Address), nameof(_pszHostName), nameof(_pszInstanceName), nameof(_props))]
 		private T? PopulateFetch<T>(ref T? value)

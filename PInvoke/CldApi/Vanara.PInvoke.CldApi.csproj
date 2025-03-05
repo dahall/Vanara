@@ -21,6 +21,9 @@ ACKDATA ACKDEHYDRATE ACKDELETE ACKRENAME CANCEL CANCELFETCHDATA CF_CALLBACK_INFO
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
   </ItemGroup>
 </Project>

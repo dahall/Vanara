@@ -21,6 +21,9 @@ FWPM_ACTION0 FWPM_CALLOUT0 FWPM_CALLOUT_CHANGE0 FWPM_CALLOUT_ENUM_TEMPLATE0 FWPM
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Rpc\Vanara.PInvoke.Rpc.csproj" />
     <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>

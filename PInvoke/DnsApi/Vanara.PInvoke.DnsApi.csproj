@@ -21,6 +21,9 @@ DNS_AAAA_DATA DNS_ADDR DNS_ADDR_ARRAY DNS_APPLICATION_SETTINGS DNS_ATMA_DATA DNS
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>
 </Project>

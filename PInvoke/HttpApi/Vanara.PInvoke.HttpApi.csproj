@@ -21,6 +21,9 @@ FROMFILEHANDLE FROMFRAGMENTCACHE FROMFRAGMENTCACHEEX FROMMEMORY HREQQUEUE HREQQU
 </PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>
 </Project>
