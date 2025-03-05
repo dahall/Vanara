@@ -3652,52 +3652,8 @@ public static partial class Ole32
 	public static extern HRESULT WriteFmtUserTypeStg([In] IStorage pstg, CLIPFORMAT cf, [MarshalAs(UnmanagedType.LPWStr)] string lpszUserType);
 
 	/// <summary>Provides a handle to a menu descriptor.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HOLEMENU : IHandle
-	{
-		private IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HOLEMENU"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HOLEMENU(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HOLEMENU"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HOLEMENU NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HOLEMENU"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HOLEMENU h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HOLEMENU"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HOLEMENU(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HOLEMENU h1, HOLEMENU h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HOLEMENU h1, HOLEMENU h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HOLEMENU h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
+	[AutoHandle]
+	public partial struct HOLEMENU { }
 
 	/// <summary>Provides a handle to an OLE 1 stream.</summary>
 	[PInvokeData("ole2.h")]

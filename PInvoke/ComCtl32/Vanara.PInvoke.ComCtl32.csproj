@@ -28,6 +28,9 @@ IImageList IImageList2
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>
 </Project>

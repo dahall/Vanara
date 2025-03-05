@@ -1401,44 +1401,10 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HDPA instance at disposal using DPA_Destroy.</summary>
-	public class SafeHDPA : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="HDPA"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHDPA(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHDPA() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHDPA"/> to <see cref="HDPA"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDPA(SafeHDPA h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DPA_Destroy(this);
-	}
+	[AutoSafeHandle("DPA_Destroy(handle)", typeof(HDPA))]
+	public partial class SafeHDPA { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HDSA instance at disposal using DSA_Destroy.</summary>
-	public class SafeHDSA : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="HDSA"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHDSA(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHDSA() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHDSA"/> to <see cref="HDSA"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HDSA(SafeHDSA h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DSA_Destroy(this);
-	}
+	[AutoSafeHandle("DSA_Destroy(handle)", typeof(HDSA))]
+	public partial class SafeHDSA { }
 }

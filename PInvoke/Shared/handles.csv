@@ -3,7 +3,7 @@ Vanara.PInvoke,,HANDLE,IHandle,Provides a generic Windows handle.,,,,
 Vanara.PInvoke,,HACCEL,IUserHandle,Provides a handle to an accelerator table.,,,,
 Vanara.PInvoke,,HBITMAP,IGraphicsObjectHandle,Provides a handle to a bitmap.,,,,HGDIOBJ
 Vanara.PInvoke,,HBRUSH,IGraphicsObjectHandle,Provides a handle to drawing brush.,,,,HGDIOBJ
-Vanara.PInvoke,,HCOLORSPACE,IGraphicsObjectHandle,Provides a handle to a color space.,,,,HGDIOBJ
+Vanara.PInvoke,,HCOLORSPACE,IHandle,Provides a handle to a color space.,,,,
 Vanara.PInvoke,,HCURSOR,IGraphicsObjectHandle,Provides a handle to cursor.,,,,HGDIOBJ
 Vanara.PInvoke,,HDC,IHandle,Provides a handle to a graphic device context.,,,,
 Vanara.PInvoke,,HDESK,IKernelHandle,Provides a handle to a desktop.,,,,
