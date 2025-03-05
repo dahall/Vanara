@@ -1,5 +1,8 @@
 ﻿namespace Vanara.PInvoke;
 
+/// <summary>Signals that a structure or class holds a handle to a device context.</summary>
+public interface IDeviceContextHandle : IHandle { }
+
 /// <summary>Signals that a structure or class holds a handle to a graphics object.</summary>
 public interface IGraphicsObjectHandle : IUserHandle { }
 

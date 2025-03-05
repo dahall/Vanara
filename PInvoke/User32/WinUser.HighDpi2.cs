@@ -690,53 +690,8 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "CF31D96A-EC84-4911-81A2-82EC90D417B9")]
 	public static extern DPI_HOSTING_BEHAVIOR SetThreadDpiHostingBehavior(DPI_HOSTING_BEHAVIOR value);
 
-	/// <summary>Provides a handle to a DPI awareness context.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct DPI_AWARENESS_CONTEXT : IHandle
+	public partial struct DPI_AWARENESS_CONTEXT
 	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="DPI_AWARENESS_CONTEXT"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public DPI_AWARENESS_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="DPI_AWARENESS_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static DPI_AWARENESS_CONTEXT NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="DPI_AWARENESS_CONTEXT"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(DPI_AWARENESS_CONTEXT h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="DPI_AWARENESS_CONTEXT"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator DPI_AWARENESS_CONTEXT(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(DPI_AWARENESS_CONTEXT h1, DPI_AWARENESS_CONTEXT h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(DPI_AWARENESS_CONTEXT h1, DPI_AWARENESS_CONTEXT h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is DPI_AWARENESS_CONTEXT h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-
 		/// <summary>
 		/// DPI unaware. This window does not scale for DPI changes and is always assumed to have a scale factor of 100% (96 DPI). It
 		/// will be automatically scaled by the system on any other DPI setting.

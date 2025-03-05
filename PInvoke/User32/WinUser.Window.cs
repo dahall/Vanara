@@ -10031,24 +10031,9 @@ public static partial class User32
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> to a window or dialog that releases a created HWND instance at disposal using DestroyWindow.
 	/// </summary>
-	public class SafeHWND : SafeHANDLE, IUserHandle
+	[AutoSafeHandle(null, typeof(HWND))]
+	public partial class SafeHWND : IUserHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="HWND"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHWND(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHWND() : base()
-		{
-		}
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHWND"/> to <see cref="HWND"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HWND(SafeHWND h) => h.handle;
-
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle()
 		{

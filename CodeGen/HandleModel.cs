@@ -31,6 +31,7 @@ internal record HandleModel(string Namespace, string ParentClassName, string Han
 		templateText = ReplaceMarker(templateText, "#3#", InheritedHandleName);
 		templateText = ReplaceMarker(templateText, "#4#", CloseCode);
 		var closeCode = string.IsNullOrEmpty(CloseCode) ? "" : (CloseCode!.Trim().StartsWith("{") ? CloseCode : $"=> {CloseCode};");
+		var baseClassName = BaseClassName + (InterfaceName is "IHandle" or "Vanara.PInvoke.IHandle" or "" ? "" : $", {InterfaceName}");
 		return Util.ReplaceWholeWords(templateText, new Dictionary<string, string>()
 		{
 			{ "HandleName", HandleName },
@@ -38,7 +39,7 @@ internal record HandleModel(string Namespace, string ParentClassName, string Han
 			{ "ParentClassName", ParentClassName },
 			{ "ClassName", ClassName ?? "" },
 			{ "SummaryText", summaryText },
-			{ "BaseClassName", BaseClassName ?? ""},
+			{ "BaseClassName", baseClassName},
 			{ "CloseCode", closeCode },
 			{ "InheritedHandleName", InheritedHandleName ?? "" },
 		});

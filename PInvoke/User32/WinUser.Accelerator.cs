@@ -244,24 +244,6 @@ public static partial class User32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HACCEL"/> that is disposed using <see cref="DestroyAcceleratorTable"/>.</summary>
-	public class SafeHACCEL : SafeHANDLE, IUserHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHACCEL"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHACCEL(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHACCEL"/> class.</summary>
-		private SafeHACCEL() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHACCEL"/> to <see cref="HACCEL"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HACCEL(SafeHACCEL h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DestroyAcceleratorTable(this);
-	}
+	[AutoSafeHandle("DestroyAcceleratorTable(handle)", typeof(HACCEL))]
+	public partial class SafeHACCEL : IUserHandle { }
 }

@@ -21,6 +21,9 @@ ACCEL ACCESSTIMEOUT ALTTABINFO ANIMATIONINFO AUDIODESCRIPTION BSMINFO CBTACTIVAT
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
   </ItemGroup>

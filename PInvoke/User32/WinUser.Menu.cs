@@ -4096,26 +4096,8 @@ public static partial class User32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HMENU"/> that is disposed using <see cref="DestroyMenu"/>.</summary>
-	public class SafeHMENU : SafeHANDLE, IUserHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHMENU"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHMENU(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHMENU"/> class.</summary>
-		private SafeHMENU() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHMENU"/> to <see cref="HMENU"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HMENU(SafeHMENU h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DestroyMenu(this);
-	}
+	[AutoSafeHandle("DestroyMenu(handle)", typeof(HMENU))]
+	public partial class SafeHMENU : IUserHandle { }
 
 	/// <summary>
 	/// <para>Contains extended parameters for the TrackPopupMenuEx function.</para>

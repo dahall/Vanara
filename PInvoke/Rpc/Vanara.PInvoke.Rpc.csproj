@@ -21,6 +21,12 @@ MIDL_SERVER_INFO MIDL_STUB_DESC RPC_AUTHZ_HANDLE RPC_AUTH_IDENTITY_HANDLE RPC_BI
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
   </ItemGroup>
 </Project>

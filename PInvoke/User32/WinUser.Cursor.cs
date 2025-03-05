@@ -980,27 +980,8 @@ public static partial class User32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HCURSOR instance at disposal using DestroyCursor.</summary>
-	public class SafeHCURSOR : SafeHANDLE, IUserHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="HCURSOR"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHCURSOR(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHCURSOR() : base()
-		{
-		}
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHCURSOR"/> to <see cref="HCURSOR"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCURSOR(SafeHCURSOR h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DestroyCursor(this);
-	}
+	[AutoSafeHandle("DestroyCursor(handle)", typeof(HCURSOR))]
+	public partial class SafeHCURSOR : IUserHandle { }
 
 	/// <summary>Predefined cursors for <see cref="LoadCursor(HINSTANCE, ResourceId)"/>.</summary>
 	[PInvokeData("winuser.h", MSDNShortId = "loadcursor")]

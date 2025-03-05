@@ -453,6 +453,9 @@ public static partial class Rpc
 	[PInvokeData("rpcdce.h", MSDNShortId = "NF:rpcdce.RpcBindingFree")]
 	public static extern Win32Error RpcBindingFree(ref RPC_BINDING_HANDLE Binding);
 
+	[DllImport(Lib_rpcrt4, SetLastError = false, ExactSpelling = true)]
+	private static extern Win32Error RpcBindingFree(ref IntPtr Binding);
+
 	/// <summary>The <c>RpcBindingFree</c> function releases binding-handle resources.</summary>
 	/// <param name="Binding">Pointer to the server binding to be freed.</param>
 	/// <returns>

@@ -44,7 +44,7 @@ public class HandlesFromFileGenerator : IIncrementalGenerator
 					if (model.Namespace != string.Empty)
 					{
 						bool found = false;
-						if (model.HandleName != string.Empty && model.InterfaceName != string.Empty)
+						if (model.HandleName != string.Empty && model.InterfaceName != string.Empty && model.SummaryText != string.Empty)
 						{
 							var src = model.GetHandleCode();
 							context.AddSource($"{model.HandleName}.g.cs", SourceText.From(src, Encoding.UTF8));

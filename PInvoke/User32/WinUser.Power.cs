@@ -404,36 +404,10 @@ public static partial class User32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <c>HPOWERNOTIFY</c> that is disposed using <see cref="UnregisterPowerSettingNotification"/>.</summary>
-	public class SafeHPOWERSETTINGNOTIFY : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHPOWERSETTINGNOTIFY"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHPOWERSETTINGNOTIFY(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHPOWERSETTINGNOTIFY"/> class.</summary>
-		private SafeHPOWERSETTINGNOTIFY() : base() { }
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => UnregisterPowerSettingNotification(handle);
-	}
+	[AutoSafeHandle("UnregisterPowerSettingNotification(handle)")]
+	public partial class SafeHPOWERSETTINGNOTIFY { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <c>HPOWERNOTIFY</c> that is disposed using <see cref="UnregisterSuspendResumeNotification"/>.</summary>
-	public class SafeHSUSPRESUMENOTIFY : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHSUSPRESUMENOTIFY"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHSUSPRESUMENOTIFY(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHSUSPRESUMENOTIFY"/> class.</summary>
-		private SafeHSUSPRESUMENOTIFY() : base() { }
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => UnregisterSuspendResumeNotification(handle);
-	}
+	[AutoSafeHandle("UnregisterSuspendResumeNotification(handle)")]
+	public partial class SafeHSUSPRESUMENOTIFY { }
 }

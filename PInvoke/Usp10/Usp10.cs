@@ -1879,18 +1879,9 @@ public static partial class Usp10
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <c>SCRIPT_STRING_ANALYSIS</c> that is disposed using <see cref="ScriptStringFree"/>.</summary>
-	public class SafeSCRIPT_STRING_ANALYSIS : SafeHANDLE
+	[AutoSafeHandle("ScriptStringFree(ref handle).Succeeded")]
+	public partial class SafeSCRIPT_STRING_ANALYSIS
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSCRIPT_STRING_ANALYSIS"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeSCRIPT_STRING_ANALYSIS(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeSCRIPT_STRING_ANALYSIS"/> class.</summary>
-		private SafeSCRIPT_STRING_ANALYSIS() : base() { }
-
 		private unsafe delegate TRet* GetVal<TRet>(SafeSCRIPT_STRING_ANALYSIS ssa) where TRet : unmanaged;
 
 		/// <summary>Returns a logical attributes buffer for an analyzed string.</summary>
@@ -2089,9 +2080,6 @@ public static partial class Usp10
 			ScriptStringXtoCP(this, x, out ret.cp, out ret.trailing).ThrowIfFailed();
 			return ret;
 		}
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => ScriptStringFree(ref handle).Succeeded;
 
 		private unsafe TRet? RetOrDef<TRet>(GetVal<TRet> f) where TRet : unmanaged
 		{

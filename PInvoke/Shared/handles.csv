@@ -5,7 +5,7 @@ Vanara.PInvoke,,HBITMAP,IGraphicsObjectHandle,Provides a handle to a bitmap.,,,,
 Vanara.PInvoke,,HBRUSH,IGraphicsObjectHandle,Provides a handle to drawing brush.,,,,HGDIOBJ
 Vanara.PInvoke,,HCOLORSPACE,IHandle,Provides a handle to a color space.,,,,
 Vanara.PInvoke,,HCURSOR,IGraphicsObjectHandle,Provides a handle to cursor.,,,,HGDIOBJ
-Vanara.PInvoke,,HDC,IHandle,Provides a handle to a graphic device context.,,,,
+Vanara.PInvoke,,HDC,IDeviceContextHandle,Provides a handle to a graphic device context.,,,,
 Vanara.PInvoke,,HDESK,IKernelHandle,Provides a handle to a desktop.,,,,
 Vanara.PInvoke,,HDPA,IKernelHandle,Provides a handle to a DPA.,,,,
 Vanara.PInvoke,,HDROP,IShellHandle,Provides a handle to a Windows drop operation.,,,,

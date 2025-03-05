@@ -2835,60 +2835,15 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	public static extern short VkKeyScanW(char ch);
 
-	/// <summary>Provides a handle to an input locale identifier.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HKL : IHandle
+	public partial struct HKL
 	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HKL"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HKL(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HKL"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HKL NULL => new(IntPtr.Zero);
-
 		/// <summary>Gets the device identifier tied to the HKL.</summary>
 		/// <value>The device identifier.</value>
 		public ushort DeviceId => Macros.HIWORD(unchecked((uint)handle.ToInt32()));
 
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
 		/// <summary>Gets the language identifier tied to the HKL.</summary>
 		/// <value>The language identifier.</value>
 		public LANGID LangId => new(Macros.LOWORD(unchecked((uint)handle.ToInt32())));
-
-		/// <summary>Performs an explicit conversion from <see cref="HKL"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HKL h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HKL"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HKL(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HKL h1, HKL h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HKL h1, HKL h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HKL h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>Contains information about a simulated keyboard event.</summary>
@@ -2973,27 +2928,5 @@ public static partial class User32
 		/// <para>An additional value associated with the keystroke. Use the GetMessageExtraInfo function to obtain this information.</para>
 		/// </summary>
 		public IntPtr dwExtraInfo;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HKL"/> that is disposed using <see cref="UnloadKeyboardLayout"/>.</summary>
-	public class SafeHKL : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHKL"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHKL(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHKL"/> class.</summary>
-		private SafeHKL() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHKL"/> to <see cref="HKL"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HKL(SafeHKL h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => UnloadKeyboardLayout(this);
 	}
 }

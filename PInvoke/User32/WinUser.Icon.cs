@@ -1368,30 +1368,11 @@ public static partial class User32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HICON instance at disposal using DestroyIcon.</summary>
-	public class SafeHICON : SafeHANDLE, IUserHandle
+	[AutoSafeHandle("DestroyIcon(handle)", typeof(HICON))]
+	public partial class SafeHICON : IUserHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHICON"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHICON(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHICON() : base()
-		{
-		}
-
-		/// <summary>Gets an instance equal to HICON = NULL.</summary>
-		/// <value>A null value for <see cref="SafeHICON"/>.</value>
-		public static SafeHICON Null => new(IntPtr.Zero, false);
-
 		/// <summary>Gets the size of this icon in pixels.</summary>
 		public SIZE Size => GetSize(handle);
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHICON"/> to <see cref="HICON"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HICON(SafeHICON h) => h.handle;
 
 #if WPF && !NETSTANDARD2_0
 		/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="SafeHICON"/>.</summary>
@@ -1402,8 +1383,5 @@ public static partial class User32
 		/// <summary>Creates a <see cref="SafeHBITMAP"/> from this HICON instance.</summary>
 		/// <returns>A bitmap handle.</returns>
 		public SafeHBITMAP ToHBITMAP() => ((HICON)this).ToHBITMAP();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DestroyIcon(this);
 	}
 }
