@@ -24,6 +24,12 @@ IAVIEditStream IAVIFile IAVIStream IAVIStreaming IGetFrame
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ComDlg32\Vanara.PInvoke.ComDlg32.csproj" />
   </ItemGroup>
 </Project>

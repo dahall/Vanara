@@ -1870,18 +1870,8 @@ public static partial class NtDll
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to an enlistment that releases its handle at disposal using NTClose.</summary>
-	public class SafeEnlistmentHandle : SafeNtHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeResourceManagerHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeEnlistmentHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeResourceManagerHandle"/> class.</summary>
-		private SafeEnlistmentHandle() : base() { }
-	}
+	[AutoSafeHandle(null, null, typeof(SafeNtHandle))]
+	public partial class SafeEnlistmentHandle { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to an object that releases a created handle at disposal using NtClose.</summary>
 	public abstract class SafeNtHandle : SafeHANDLE
@@ -1891,74 +1881,32 @@ public static partial class NtDll
 		/// <param name="ownsHandle">
 		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 		/// </param>
-		public SafeNtHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+		protected SafeNtHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeNtHandle"/> class.</summary>
 		protected SafeNtHandle() : base() { }
 
 #pragma warning disable CS0612 // Type or member is obsolete
-
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() => NtClose(handle).Succeeded;
-
 #pragma warning restore CS0612 // Type or member is obsolete
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a resource manager that releases its handle at disposal using NTClose.</summary>
-	public class SafeResourceManagerHandle : SafeNtHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeResourceManagerHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeResourceManagerHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeResourceManagerHandle"/> class.</summary>
-		private SafeResourceManagerHandle() : base() { }
-	}
+	[AutoSafeHandle(null, null, typeof(SafeNtHandle))]
+	public partial class SafeResourceManagerHandle { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a section that releases its handle at disposal using NTClose.</summary>
-	public class SafeSectionHandle : SafeNtHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSectionHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeSectionHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeSectionHandle"/> class.</summary>
-		private SafeSectionHandle() : base() { }
-	}
+	[AutoSafeHandle(null, null, typeof(SafeNtHandle))]
+	public partial class SafeSectionHandle { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a transaction that releases its handle at disposal using NTClose.</summary>
-	public class SafeTransactionHandle : SafeNtHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeTransactionHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeTransactionHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeTransactionHandle"/> class.</summary>
-		private SafeTransactionHandle() : base() { }
-	}
+	[AutoSafeHandle(null, null, typeof(SafeNtHandle))]
+	public partial class SafeTransactionHandle { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a transaction manager that releases its handle at disposal using NTClose.</summary>
-	public class SafeTransactionManagerHandle : SafeNtHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeTransactionManagerHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeTransactionManagerHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeTransactionManagerHandle"/> class.</summary>
-		private SafeTransactionManagerHandle() : base() { }
-	}
+	[AutoSafeHandle(null, null, typeof(SafeNtHandle))]
+	public partial class SafeTransactionManagerHandle { }
 
 	/*
 	NtDeviceIoControlFile

@@ -763,50 +763,6 @@ public static partial class Lz32
 	public static extern int LZSeek(HLZFILE hFile, int lOffset, SeekOrigin iOrigin);
 
 	/// <summary>Provides a handle to a compressed file.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HLZFILE : IHandle
-	{
-		private readonly int handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HLZFILE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="int"/> object that represents the pre-existing handle to use.</param>
-		public HLZFILE(int preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HLZFILE"/> object with <c>0</c>.</summary>
-		public static HLZFILE NULL => new(0);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == 0;
-
-		/// <summary>Performs an explicit conversion from <see cref="HLZFILE"/> to <see cref="int"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator int(HLZFILE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="HLZFILE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HLZFILE(int h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HLZFILE h1, HLZFILE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HLZFILE h1, HLZFILE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HLZFILE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => (IntPtr)handle;
-	}
+	[AutoHandle]
+	public partial struct HLZFILE { }
 }

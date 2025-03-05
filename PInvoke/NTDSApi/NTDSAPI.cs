@@ -2942,21 +2942,9 @@ public static partial class NTDSApi
 		[Optional] string? pszValue, DsReplInfoFlags dwFlags, uint dwEnumerationContext, out SafeDsReplicaInfo ppInfo);
 
 	/// <summary>Provides a handle to a domain controller info structure.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct DCInfoHandle : IHandle
+	[AutoHandle]
+	public partial struct DCInfoHandle
 	{
-		private IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="DCInfoHandle"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public DCInfoHandle(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-
 		/// <summary>Gets a list of stored structures from this handle.</summary>
 		/// <typeparam name="T">The type of structure found in the list.</typeparam>
 		/// <param name="count">The count.</param>
@@ -5175,18 +5163,9 @@ public static partial class NTDSApi
 	}
 
 	/// <summary>Provides a handle to an array of one or more service principal names (SPNs).</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct SpnArrayHandle : IHandle
+	[AutoHandle]
+	public partial struct SpnArrayHandle
 	{
-		private IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="SpnArrayHandle"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public SpnArrayHandle(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-
 		/// <summary>Gets the list of service principle names (SPNs) from this handle.</summary>
 		/// <param name="count">The count returned in the pcSpn parameter of <see cref="DsGetSpn"/>.</param>
 		/// <returns>The list of SPNs.</returns>
@@ -5194,24 +5173,8 @@ public static partial class NTDSApi
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to an authentication identity that releases its handle at disposal using DsFreePasswordCredentials.</summary>
-	public class SafeAuthIdentityHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeAuthIdentityHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeAuthIdentityHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeAuthIdentityHandle"/> class.</summary>
-		private SafeAuthIdentityHandle() : base() { }
-
-		/// <summary>Gets a value that marshals as NULL so that the local thread's identity is used.</summary>
-		public static readonly SafeAuthIdentityHandle LocalThreadIdentity = new();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { DsFreePasswordCredentials(handle); return true; }
-	}
+	[AutoSafeHandle("{ DsFreePasswordCredentials(handle); return true; }")]
+	public partial class SafeAuthIdentityHandle { }
 
 	/// <summary>Provides a safe handle to an array of DS_REPSYNCALL_ERRINFO structures returned from <see cref="DsReplicaSyncAll"/>.</summary>
 	/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
@@ -5241,24 +5204,8 @@ public static partial class NTDSApi
 	/// <seealso cref="Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid"/>
 	[SuppressUnmanagedCodeSecurity, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
 	[PInvokeData("NTDSApi.h")]
-	public class SafeDsHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeDsHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeDsHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeDsHandle"/> class.</summary>
-		private SafeDsHandle() : base() { }
-
-		/// <summary>Gets a <c>NULL</c> equivalent for a bound directory services handle.</summary>
-		public static SafeDsHandle Null { get; } = new SafeDsHandle(IntPtr.Zero);
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DsUnBind(ref handle).Succeeded;
-	}
+	[AutoSafeHandle("DsUnBind(ref handle).Succeeded")]
+	public partial class SafeDsHandle { }
 
 	/// <summary>
 	/// A <see cref="SafeHandle"/> for the results from <see

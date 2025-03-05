@@ -24,6 +24,9 @@ INetDiagExtensibleHelper INetDiagHelper INetDiagHelperEx INetDiagHelperInfo INet
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
     <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>

@@ -584,18 +584,9 @@ public static partial class FwpUClnt
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for memory returned by FWP functions that is disposed using <see cref="FwpmFreeMemory0"/>.</summary>
-	public class SafeFwpmMem : SafeHANDLE
+	[AutoSafeHandle("{ FwpmFreeMemory0(ref handle); handle = default; return true; }")]
+	public partial class SafeFwpmMem
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeFwpmMem"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeFwpmMem(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeFwpmMem"/> class.</summary>
-		private SafeFwpmMem() : base(IntPtr.Zero, true) { }
-
 		/// <summary>Performs an explicit conversion from <see cref="SafeFwpmMem"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
 		/// <param name="h">The safe handle.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -615,9 +606,6 @@ public static partial class FwpUClnt
 		/// <typeparam name="T">The type of the structure to extract.</typeparam>
 		/// <returns>The structure or <see langword="null"/> if the handle is invalid.</returns>
 		public T? ToStructure<T>() where T : struct => handle.ToNullableStructure<T>();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { FwpmFreeMemory0(ref handle); handle = default; return true; }
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for memory returned by FWP functions that is disposed using <see cref="FwpmFreeMemory0"/>.</summary>

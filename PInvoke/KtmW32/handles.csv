@@ -1,0 +1,5 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,KtmW32,HENLISTMENT,IKernelHandle,Provides a handle to an enlistment.,SafeHENLISTMENT,Kernel32.SafeKernelHandle,,
+Vanara.PInvoke,KtmW32,HRESMGR,IKernelHandle,Provides a handle to a resource manager.,SafeHRESMGR,Kernel32.SafeKernelHandle,,
+Vanara.PInvoke,KtmW32,HTRXNMGR,IKernelHandle,Provides a handle to a Transaction Manager (TM).,SafeHTRXNMGR,Kernel32.SafeKernelHandle,,
+Vanara.PInvoke,KtmW32,Kernel32.HTRXN,,,SafeHTRXN,Kernel32.SafeKernelHandle,,

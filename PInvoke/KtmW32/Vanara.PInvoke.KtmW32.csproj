@@ -21,6 +21,12 @@ HENLISTMENT HRESMGR HTRXNMGR TRANSACTION_NOTIFICATION TRANSACTION_NOTIFICATION_R
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
   </ItemGroup>
 </Project>

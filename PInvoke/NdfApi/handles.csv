@@ -1,0 +1,2 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,NdfApi,NDFHANDLE,IHandle,The handle to a Network Diagnostics Framework (NDF) object.,SafeNDFHANDLE,SafeHANDLE,NdfCloseIncident(handle).Succeeded,
