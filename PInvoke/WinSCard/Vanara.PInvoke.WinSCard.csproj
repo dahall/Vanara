@@ -21,6 +21,9 @@ OPENCARDNAME OPENCARDNAME_EX OPENCARD_SEARCH_CRITERIA SCARDHANDLE SCARD_ATRMASK 
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,3 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,Wer,HREPORT,IHandle,Provides a handle to a problem report.,SafeHREPORT,SafeHANDLE,WerReportCloseHandle(handle).Succeeded,
+Vanara.PInvoke,Wer,HREPORTSTORE,IHandle,Provides a handle to a error report store.,SafeHREPORTSTORE,SafeHANDLE,{ WerStoreClose(handle); return true; },

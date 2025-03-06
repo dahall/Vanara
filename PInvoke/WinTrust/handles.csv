@@ -1,0 +1,5 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,WinTrust,HCATALOG,IHandle,Provides a handle to a catalog.,SafeHCATALOG,SafeHANDLE,CryptCATClose(handle),
+Vanara.PInvoke,WinTrust,HCATINFO,IHandle,Provides a handle to a catalog information context.,,,,
+Vanara.PInvoke,WinTrust,HCATADMIN,IHandle,Provides a handle to a catalog administrator context.,SafeHCATADMIN,SafeHANDLE,CryptCATAdminReleaseContext(handle),
+Vanara.PInvoke,WinTrust,HCRYPTMSG,IHandle,Provides a handle to a cryptography message.,,,,

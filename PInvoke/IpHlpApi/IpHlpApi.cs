@@ -9694,7 +9694,6 @@ public static partial class IpHlpApi
 	}
 
 	/// <summary>Provides a handle to a notification registration for a timestamp capability change.</summary>
-	[StructLayout(LayoutKind.Sequential)]
 	[AutoHandle]
 	public partial struct HIFTIMESTAMPCHANGE { }
 

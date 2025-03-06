@@ -21,6 +21,9 @@ BP_ANIMATIONPARAMS BP_PAINTPARAMS DTBGOPTS DTTOPTS HANIMATIONBUFFER HPAINTBUFFER
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>
 </Project>

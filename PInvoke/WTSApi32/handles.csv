@@ -1,0 +1,3 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,WTSApi32,HVIRTUALCHANNEL,IHandle,Provides a handle to a virtual channel.,SafeHVIRTUALCHANNEL,SafeHANDLE,WTSVirtualChannelClose(handle),
+Vanara.PInvoke,WTSApi32,HWTSSERVER,IHandle,Provides a handle to a WTS server.,SafeHWTSSERVER,SafeHANDLE,{ WTSCloseServer(handle); return true; },

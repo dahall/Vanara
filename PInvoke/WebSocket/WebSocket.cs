@@ -1272,59 +1272,6 @@ public static partial class WebSocket
 		}
 	}
 
-	/// <summary>Provides a handle to a WebSocket.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct WEB_SOCKET_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="WEB_SOCKET_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public WEB_SOCKET_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="WEB_SOCKET_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WEB_SOCKET_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Implements the operator !.</summary>
-		/// <param name="h1">The handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !(WEB_SOCKET_HANDLE h1) => h1.IsNull;
-
-		/// <summary>Performs an explicit conversion from <see cref="WEB_SOCKET_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(WEB_SOCKET_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WEB_SOCKET_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WEB_SOCKET_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(WEB_SOCKET_HANDLE h1, WEB_SOCKET_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(WEB_SOCKET_HANDLE h1, WEB_SOCKET_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is WEB_SOCKET_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>The <c>WEB_SOCKET_HTTP_HEADER</c> structure contains an HTTP header.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/websocket/ns-websocket-web_socket_http_header typedef struct
 	// _WEB_SOCKET_HTTP_HEADER { PCHAR pcName; ULONG ulNameLength; PCHAR pcValue; ULONG ulValueLength; } WEB_SOCKET_HTTP_HEADER, *PWEB_SOCKET_HTTP_HEADER;
@@ -1404,25 +1351,5 @@ public static partial class WebSocket
 			pvValue = value;
 			ulValueSize = value.Size;
 		}
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WEB_SOCKET_HANDLE"/> that is disposed using <see cref="WebSocketDeleteHandle"/>.</summary>
-	public class SafeWEB_SOCKET_HANDLE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeWEB_SOCKET_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
-		public SafeWEB_SOCKET_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeWEB_SOCKET_HANDLE"/> class.</summary>
-		private SafeWEB_SOCKET_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeWEB_SOCKET_HANDLE"/> to <see cref="WEB_SOCKET_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WEB_SOCKET_HANDLE(SafeWEB_SOCKET_HANDLE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { WebSocketDeleteHandle(handle); return true; }
 	}
 }

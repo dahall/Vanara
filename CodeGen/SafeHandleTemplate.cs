@@ -3,6 +3,7 @@
 #1#public static partial class ParentClassName
 {
 #1#	SummaryText
+	/// <seealso cref="BaseClassName"/>
 	public partial class ClassName : BaseClassName
 	{
 		/// <summary>Initializes a new instance of the <see cref="ClassName"/> class and assigns an existing handle.</summary>

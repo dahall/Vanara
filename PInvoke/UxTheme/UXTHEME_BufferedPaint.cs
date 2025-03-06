@@ -474,102 +474,6 @@ After:
 		public static BP_ANIMATIONPARAMS Empty => new() { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
 	}
 
-	/// <summary>Provides a handle to an animation buffer.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HANIMATIONBUFFER : IHandle
-	{
-		private IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HANIMATIONBUFFER"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HANIMATIONBUFFER(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HANIMATIONBUFFER"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HANIMATIONBUFFER NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HANIMATIONBUFFER"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HANIMATIONBUFFER h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HANIMATIONBUFFER"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HANIMATIONBUFFER(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HANIMATIONBUFFER h1, HANIMATIONBUFFER h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HANIMATIONBUFFER h1, HANIMATIONBUFFER h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HANIMATIONBUFFER h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to a paint buffer.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HPAINTBUFFER : IHandle
-	{
-		private IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HPAINTBUFFER"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HPAINTBUFFER(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HPAINTBUFFER"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPAINTBUFFER NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HPAINTBUFFER"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HPAINTBUFFER h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPAINTBUFFER"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPAINTBUFFER(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HPAINTBUFFER h1, HPAINTBUFFER h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HPAINTBUFFER h1, HPAINTBUFFER h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HPAINTBUFFER h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>Defines paint operation parameters for <c>BeginBufferedPaint</c>.</summary>
 	// typedef struct _BP_PAINTPARAMS { DWORD cbSize; DWORD dwFlags; const RECT *prcExclude; const BLENDFUNCTION *pBlendFunction;}
 	// BP_PAINTPARAMS, *PBP_PAINTPARAMS; https://msdn.microsoft.com/en-us/library/windows/desktop/bb773228(v=vs.85).aspx
@@ -665,52 +569,38 @@ After:
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HANIMATIONBUFFER"/> that is disposed using <see cref="EndBufferedAnimation"/>.</summary>
-	public class SafeHANIMATIONBUFFER : SafeHANDLE
+	/// <remarks>Initializes a new instance of the <see cref="SafeHANIMATIONBUFFER"/> class and assigns an existing handle.</remarks>
+	/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+	/// <param name="updateTargetDC">The value to pass <see cref="EndBufferedAnimation"/> when closing this handle.</param>
+	/// <param name="ownsHandle">
+	/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+	/// </param>
+	public class SafeHANIMATIONBUFFER(IntPtr preexistingHandle, bool updateTargetDC = true, bool ownsHandle = true) : SafeHANDLE(preexistingHandle, ownsHandle)
 	{
-		private readonly bool fUpdateTarget = true;
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHANIMATIONBUFFER"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="updateTargetDC">The value to pass <see cref="EndBufferedAnimation"/> when closing this handle.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHANIMATIONBUFFER(IntPtr preexistingHandle, bool updateTargetDC = true, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => fUpdateTarget = updateTargetDC;
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHANIMATIONBUFFER"/> class.</summary>
-		private SafeHANIMATIONBUFFER() : base() { }
-
 		/// <summary>Performs an implicit conversion from <see cref="SafeHANIMATIONBUFFER"/> to <see cref="HANIMATIONBUFFER"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HANIMATIONBUFFER(SafeHANIMATIONBUFFER h) => h.handle;
 
 		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => EndBufferedAnimation(this, fUpdateTarget).Succeeded;
+		protected override bool InternalReleaseHandle() => EndBufferedAnimation(this, updateTargetDC).Succeeded;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPAINTBUFFER"/> that is disposed using <see cref="EndBufferedPaint"/>.</summary>
-	public class SafeHPAINTBUFFER : SafeHANDLE
+	/// <remarks>Initializes a new instance of the <see cref="SafeHPAINTBUFFER"/> class and assigns an existing handle.</remarks>
+	/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+	/// <param name="updateTargetDC">The value to pass <see cref="EndBufferedPaint"/> when closing this handle.</param>
+	/// <param name="ownsHandle">
+	/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+	/// </param>
+	public class SafeHPAINTBUFFER(IntPtr preexistingHandle, bool updateTargetDC = true, bool ownsHandle = true) : SafeHANDLE(preexistingHandle, ownsHandle)
 	{
-		private readonly bool fUpdateTarget = true;
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHPAINTBUFFER"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="updateTargetDC">The value to pass <see cref="EndBufferedPaint"/> when closing this handle.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHPAINTBUFFER(IntPtr preexistingHandle, bool updateTargetDC = true, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => fUpdateTarget = updateTargetDC;
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHPAINTBUFFER"/> class.</summary>
-		private SafeHPAINTBUFFER() : base() { }
-
 		/// <summary>Performs an implicit conversion from <see cref="SafeHPAINTBUFFER"/> to <see cref="HPAINTBUFFER"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HPAINTBUFFER(SafeHPAINTBUFFER h) => h.handle;
 
 		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => EndBufferedPaint(this, fUpdateTarget).Succeeded;
+		protected override bool InternalReleaseHandle() => EndBufferedPaint(this, updateTargetDC).Succeeded;
 	}
 }

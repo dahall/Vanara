@@ -4399,58 +4399,10 @@ public static partial class Ws2_32
 		public LPNSPV2CLIENTSESSIONRUNDOWN NSPv2ClientSessionRundown;
 	}
 
-	/// <summary>Provides a handle to a WSA event.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct WSAEVENT : ISyncHandle
+	public partial struct WSAEVENT
 	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="WSAEVENT"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public WSAEVENT(IntPtr preexistingHandle) => handle = preexistingHandle;
-
 		/// <summary>Represents an invalid event handle.</summary>
 		public static WSAEVENT WSA_INVALID_EVENT => new(IntPtr.Zero);
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="WSAEVENT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSAEVENT NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is invalid.</summary>
-		public bool IsInvalid => handle == IntPtr.Zero;
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="WSAEVENT"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(WSAEVENT h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSAEVENT"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSAEVENT(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(WSAEVENT h1, WSAEVENT h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(WSAEVENT h1, WSAEVENT h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is WSAEVENT h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>The <c>WSANAMESPACE_INFOEX</c> structure contains all registration information for a namespace provider.</summary>

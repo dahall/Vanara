@@ -1,0 +1,3 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,WinHTTP,HINTERNET,IHandle,Provides a handle to an internet connection.,SafeHINTERNET,SafeHANDLE,WinHttpCloseHandle(handle),
+Vanara.PInvoke,WinHTTP,WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE,IHandle,Provides a handle that identifies the registration of the callback function.,,,,

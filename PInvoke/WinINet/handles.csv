@@ -1,0 +1,4 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,WinINet,HCACHEENTRYSTREAM,IHandle,Provides a handle to a cache entry sream.,SafeHCACHEENTRYSTREAM,SafeHANDLE,UnlockUrlCacheEntryStream(handle),
+Vanara.PInvoke,WinINet,HFINDCACHE,IHandle,Provides a handle to a url cache enumeration.,,,,
+Vanara.PInvoke,WinINet,HINTERNET,IHandle,Provides a handle to an internet connection.,SafeHINTERNET,SafeHANDLE,InternetCloseHandle(handle),

@@ -1,0 +1,3 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,Ws2_32,SOCKET,IHandle,Provides a handle to a socket.,SafeSOCKET,SafeHANDLE,closesocket(handle) == 0,
+Vanara.PInvoke,Ws2_32,WSAEVENT,ISyncHandle,Provides a handle to a socket.,SafeWSAEVENT,SafeHANDLE,WSACloseEvent(handle),

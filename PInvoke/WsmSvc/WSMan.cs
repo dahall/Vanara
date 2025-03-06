@@ -2288,54 +2288,6 @@ public static partial class WsmSvc
 	public static extern void WSManSignalShell(WSMAN_SHELL_HANDLE shell, [In, Optional] WSMAN_COMMAND_HANDLE command,
 		[Optional] uint flags, [MarshalAs(UnmanagedType.LPWStr)] string code, in WSMAN_SHELL_ASYNC async, out WSMAN_OPERATION_HANDLE signalOperation);
 
-	/// <summary>Provides a handle to a Windows Remote Client unique identifier.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct WSMAN_API_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="WSMAN_API_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public WSMAN_API_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="WSMAN_API_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSMAN_API_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="WSMAN_API_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(WSMAN_API_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSMAN_API_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_API_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(WSMAN_API_HANDLE h1, WSMAN_API_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(WSMAN_API_HANDLE h1, WSMAN_API_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is WSMAN_API_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>Defines the authentication method and the credentials used for server or proxy authentication.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wsman/ns-wsman-wsman_authentication_credentials typedef struct
 	// _WSMAN_AUTHENTICATION_CREDENTIALS { DWORD authenticationMechanism; union { WSMAN_USERNAME_PASSWORD_CREDS userAccount; PCWSTR
@@ -2427,54 +2379,6 @@ public static partial class WsmSvc
 
 		/// <summary>Defines an array of strings that specify the arguments.</summary>
 		public IntPtr args;
-	}
-
-	/// <summary>Provides a handle to a remote management command.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct WSMAN_COMMAND_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="WSMAN_COMMAND_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public WSMAN_COMMAND_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="WSMAN_COMMAND_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSMAN_COMMAND_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="WSMAN_COMMAND_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(WSMAN_COMMAND_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSMAN_COMMAND_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_COMMAND_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(WSMAN_COMMAND_HANDLE h1, WSMAN_COMMAND_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(WSMAN_COMMAND_HANDLE h1, WSMAN_COMMAND_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is WSMAN_COMMAND_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>Contains inbound and outbound data used in the Windows Remote Management (WinRM) API.</summary>
@@ -2660,54 +2564,6 @@ public static partial class WsmSvc
 		/// <summary>Defines the value associated with key.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string value;
-	}
-
-	/// <summary>Provides a handle to a remote management operation.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct WSMAN_OPERATION_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="WSMAN_OPERATION_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public WSMAN_OPERATION_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="WSMAN_OPERATION_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSMAN_OPERATION_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="WSMAN_OPERATION_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(WSMAN_OPERATION_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSMAN_OPERATION_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_OPERATION_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(WSMAN_OPERATION_HANDLE h1, WSMAN_OPERATION_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(WSMAN_OPERATION_HANDLE h1, WSMAN_OPERATION_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is WSMAN_OPERATION_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>Represents a specific resource endpoint for which the plug-in must perform the request.</summary>
@@ -3016,54 +2872,6 @@ public static partial class WsmSvc
 		public string httpURL;
 	}
 
-	/// <summary>Provides a handle to a remote managment session.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct WSMAN_SESSION_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="WSMAN_SESSION_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public WSMAN_SESSION_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="WSMAN_SESSION_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSMAN_SESSION_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="WSMAN_SESSION_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(WSMAN_SESSION_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSMAN_SESSION_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_SESSION_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(WSMAN_SESSION_HANDLE h1, WSMAN_SESSION_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(WSMAN_SESSION_HANDLE h1, WSMAN_SESSION_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is WSMAN_SESSION_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>
 	/// Defines an asynchronous structure to be passed to all shell operations. It contains an optional user context and the callback function.
 	/// </summary>
@@ -3097,54 +2905,6 @@ public static partial class WsmSvc
 		/// value that is set as part of the WSMAN_SHELL_STARTUP_INFO structure in the WSManCreateShell method.
 		/// </summary>
 		public uint idleTimeoutMs;
-	}
-
-	/// <summary>Provides a handle to a remote management shell.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct WSMAN_SHELL_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="WSMAN_SHELL_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public WSMAN_SHELL_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="WSMAN_SHELL_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static WSMAN_SHELL_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="WSMAN_SHELL_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(WSMAN_SHELL_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WSMAN_SHELL_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_SHELL_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(WSMAN_SHELL_HANDLE h1, WSMAN_SHELL_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(WSMAN_SHELL_HANDLE h1, WSMAN_SHELL_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is WSMAN_SHELL_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>
@@ -3256,104 +3016,8 @@ public static partial class WsmSvc
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string? password;
 	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSMAN_API_HANDLE"/> that is disposed using <see cref="WSManDeinitialize"/>.</summary>
-	public class SafeWSMAN_API_HANDLE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_API_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeWSMAN_API_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_API_HANDLE"/> class.</summary>
-		private SafeWSMAN_API_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeWSMAN_API_HANDLE"/> to <see cref="WSMAN_API_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_API_HANDLE(SafeWSMAN_API_HANDLE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => WSManDeinitialize(handle).Succeeded;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSMAN_OPERATION_HANDLE"/> that is disposed using <see cref="WSManCloseOperation"/>.</summary>
-	public class SafeWSMAN_OPERATION_HANDLE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_OPERATION_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeWSMAN_OPERATION_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_OPERATION_HANDLE"/> class.</summary>
-		private SafeWSMAN_OPERATION_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeWSMAN_OPERATION_HANDLE"/> to <see cref="WSMAN_OPERATION_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_OPERATION_HANDLE(SafeWSMAN_OPERATION_HANDLE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => WSManCloseOperation(handle).Succeeded;
-	}
-
-	/// <summary>
-	/// Provides a <see cref="SafeHandle"/> for <see cref="WSMAN_SESSION_HANDLE"/> that is disposed using <see
-	/// cref="WSManCloseSession(WSMAN_SESSION_HANDLE, uint)"/>.
-	/// </summary>
-	public class SafeWSMAN_SESSION_HANDLE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_SESSION_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeWSMAN_SESSION_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_SESSION_HANDLE"/> class.</summary>
-		private SafeWSMAN_SESSION_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeWSMAN_SESSION_HANDLE"/> to <see cref="WSMAN_SESSION_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_SESSION_HANDLE(SafeWSMAN_SESSION_HANDLE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => WSManCloseSession(handle).Succeeded;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSMAN_SHELL_HANDLE"/> that is disposed using <see cref="WSManCloseShell"/>.</summary>
-	public class SafeWSMAN_SHELL_HANDLE : SafeHANDLE
+	public partial class SafeWSMAN_SHELL_HANDLE
 	{
 		private WSMAN_SHELL_ASYNC async;
-
-		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_SHELL_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="async">The asynchronous information used in the WSManCreateShell method.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeWSMAN_SHELL_HANDLE(IntPtr preexistingHandle, in WSMAN_SHELL_ASYNC async, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => this.async = async;
-
-		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_SHELL_HANDLE"/> class.</summary>
-		private SafeWSMAN_SHELL_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeWSMAN_SHELL_HANDLE"/> to <see cref="WSMAN_SHELL_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSMAN_SHELL_HANDLE(SafeWSMAN_SHELL_HANDLE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle()
-		{
-			if (async.completionFunction is null)
-				return false;
-			WSManCloseShell(handle, 0, async);
-			return true;
-		}
 	}
 }

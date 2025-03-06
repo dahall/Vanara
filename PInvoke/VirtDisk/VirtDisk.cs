@@ -2725,54 +2725,6 @@ public static partial class VirtDisk
 		}
 	}
 
-	/// <summary>Provides a handle to a virtual disk.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct VIRTUAL_DISK_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="VIRTUAL_DISK_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public VIRTUAL_DISK_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="VIRTUAL_DISK_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static VIRTUAL_DISK_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="VIRTUAL_DISK_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(VIRTUAL_DISK_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="VIRTUAL_DISK_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator VIRTUAL_DISK_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(VIRTUAL_DISK_HANDLE h1, VIRTUAL_DISK_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(VIRTUAL_DISK_HANDLE h1, VIRTUAL_DISK_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is VIRTUAL_DISK_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>
 	/// Contains the progress and result data for the current virtual disk operation, used by the GetVirtualDiskOperationProgress function.
 	/// </summary>
@@ -2983,24 +2935,5 @@ public static partial class VirtDisk
 			/// <summary></summary>
 			public Guid SnapshotId;
 		}
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="VIRTUAL_DISK_HANDLE"/> that is disposed using <see cref="CloseHandle"/>.</summary>
-	public class SafeVIRTUAL_DISK_HANDLE : SafeKernelHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeVIRTUAL_DISK_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeVIRTUAL_DISK_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeVIRTUAL_DISK_HANDLE"/> class.</summary>
-		private SafeVIRTUAL_DISK_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeVIRTUAL_DISK_HANDLE"/> to <see cref="VIRTUAL_DISK_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator VIRTUAL_DISK_HANDLE(SafeVIRTUAL_DISK_HANDLE h) => h.handle;
 	}
 }
