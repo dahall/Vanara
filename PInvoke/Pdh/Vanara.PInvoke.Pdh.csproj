@@ -21,6 +21,9 @@ PDH_BROWSE_DLG_CONFIG PDH_BROWSE_DLG_CONFIG_H PDH_COUNTER_INFO PDH_COUNTER_INFO_
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
   </ItemGroup>
 </Project>

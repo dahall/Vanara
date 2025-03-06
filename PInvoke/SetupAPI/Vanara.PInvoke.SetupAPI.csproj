@@ -21,6 +21,9 @@ CABINET_INFO DEVPROPCOMPKEY DEVPROPERTY DEVPROPKEY FILEPATHS FILEPATHS_SIGNERINF
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

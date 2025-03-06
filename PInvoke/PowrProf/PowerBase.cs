@@ -610,19 +610,6 @@ public static partial class PowrProf
 	public static extern Win32Error PowerUnregisterSuspendResumeNotification(HANDLE RegistrationHandle);
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for a registered power suspend/resume notification that is disposed using <see cref="PowerUnregisterSuspendResumeNotification"/>.</summary>
-	public class SafeHPOWERSRNOTIFY : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHPOWERSRNOTIFY"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHPOWERSRNOTIFY(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHPOWERSRNOTIFY"/> class.</summary>
-		private SafeHPOWERSRNOTIFY() : base() { }
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => PowerUnregisterSuspendResumeNotification(handle).Succeeded;
-	}
+	[AutoSafeHandle("PowerUnregisterSuspendResumeNotification(handle).Succeeded")]
+	public partial class SafeHPOWERSRNOTIFY { }
 }

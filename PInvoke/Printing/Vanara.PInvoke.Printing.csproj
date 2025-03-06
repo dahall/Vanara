@@ -24,6 +24,9 @@ IPrintDocumentPackageStatusEvent IPrintDocumentPackageTarget IPrintDocumentPacka
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\Opc\Vanara.PInvoke.Opc.csproj" />
   </ItemGroup>

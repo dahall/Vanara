@@ -1,0 +1,7 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,P2P,HPEEREVENT,IHandle,Provides a handle to a peer collaboration network event.,SafeCollabHPEEREVENT,SafeHANDLE,PeerCollabUnregisterEvent(handle).Succeeded,
+Vanara.PInvoke,P2P,HGRAPH,IHandle,Provides a handle to a Peer Graph.,,,,
+Vanara.PInvoke,P2P,HPEERENUM,IHandle,Provides a handle to a peer enumeration.,SafeHPEERENUM,SafeHANDLE,PeerEndEnumeration(handle).Succeeded,
+Vanara.PInvoke,P2P,HREGISTRATION,IHandle,Provides a handle to the PNRP registration for the calling peer node.,,,,
+Vanara.PInvoke,P2P,HRESOLUTION,IHandle,Provides a handle to an asynchronous peer name resolution operation.,,,,
+Vanara.PInvoke,P2P,HGROUP,IHandle,Provides a handle to a peer group.,SafeGroupHPEEREVENT,SafeHANDLE,PeerGroupUnregisterEvent(handle).Succeeded,

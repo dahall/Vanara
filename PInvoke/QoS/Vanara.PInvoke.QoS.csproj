@@ -21,6 +21,9 @@ ADDRESS_LIST_DESCRIPTOR AD_GENERAL_PARAMS AD_GUARANTEED CONTROL_SERVICE ENUMERAT
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>
 </Project>

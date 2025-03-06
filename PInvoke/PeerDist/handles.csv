@@ -1,0 +1,5 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,PeerDist,PEERDIST_CONTENT_HANDLE,IHandle,Provides a handle to peer distribution conent.,,,,
+Vanara.PInvoke,PeerDist,PEERDIST_CONTENTINFO_HANDLE,IHandle,Provides a handle to peer distribution content info.,,,,
+Vanara.PInvoke,PeerDist,PEERDIST_INSTANCE_HANDLE,IHandle,Provides a handle to a peer distribution instance.,,,,
+Vanara.PInvoke,PeerDist,PEERDIST_STREAM_HANDLE,IHandle,Provides a handle to a peer distribution stream.,,,,

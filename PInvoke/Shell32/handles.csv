@@ -1,0 +1,4 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,Shell32,HLOCK,IHandle,Provides a handle to a notification lock.,,,,
+Vanara.PInvoke,Shell32,HPIF,IHandle,Provides a handle to a .pif file.,SafeHPIF,SafeHANDLE,"PifMgr_CloseProperties(this, CLOSEPROPS.CLOSEPROPS_DISCARD) == default",
+Vanara.PInvoke,Shell32,HPSXA,IHandle,Provides a handle to a property sheet array.,SafeHPSXA,SafeHANDLE,{ SHDestroyPropSheetExtArray(this); return true; },

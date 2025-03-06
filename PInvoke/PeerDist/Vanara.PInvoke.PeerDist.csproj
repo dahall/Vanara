@@ -21,6 +21,9 @@ PEERDIST_CLIENT_BASIC_INFO PEERDIST_CONTENTINFO_HANDLE PEERDIST_CONTENT_HANDLE P
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

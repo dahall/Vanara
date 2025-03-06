@@ -1,0 +1,4 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,Pdh,PDH_HCOUNTER,IHandle,Provides a handle to a PDH counter.,SafePDH_HCOUNTER,SafeHANDLE,PdhRemoveCounter(handle).Succeeded,
+Vanara.PInvoke,Pdh,PDH_HLOG,IHandle,Provides a handle to a PDH log.,SafePDH_HLOG,SafeHANDLE,"PdhCloseLog(handle, CloseAssocQueries ? 1U : 0).Succeeded",
+Vanara.PInvoke,Pdh,PDH_HQUERY,IHandle,Provides a handle to a PDH query.,SafePDH_HQUERY,SafeHANDLE,PdhCloseQuery(handle).Succeeded,

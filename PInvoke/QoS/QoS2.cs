@@ -2652,60 +2652,6 @@ public static partial class Qwave
 	private static int QOS_HEADER_OVERHEAD(ADDRESS_FAMILY af, IPPROTO protocol) =>
 			(af == ADDRESS_FAMILY.AF_INET ? 20 : 40) + (protocol == IPPROTO.IPPROTO_TCP ? 20 : 8);
 
-	/// <summary>Provides a handle to a QOS session.</summary>
-	[PInvokeData("qos2.h")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HQOS : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HQOS"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HQOS(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HQOS"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HQOS NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Implements the operator !.</summary>
-		/// <param name="h1">The handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !(HQOS h1) => h1.IsNull;
-
-		/// <summary>Performs an explicit conversion from <see cref="HQOS"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HQOS h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HQOS"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HQOS(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HQOS h1, HQOS h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HQOS h1, HQOS h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HQOS h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>The <c>QOS_FLOW_FUNDAMENTALS</c> structure contains basic information about a flow.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/qos2/ns-qos2-qos_flow_fundamentals typedef struct _QOS_FLOW_FUNDAMENTALS { BOOL
 	// BottleneckBandwidthSet; UINT64 BottleneckBandwidth; BOOL AvailableBandwidthSet; UINT64 AvailableBandwidth; BOOL RTTSet; UINT32 RTT; }
@@ -2803,27 +2749,5 @@ public static partial class Qwave
 
 		/// <summary>Minor version of the QOS protocol.</summary>
 		public ushort MinorVersion;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HQOS"/> that is disposed using <see cref="QOSCloseHandle"/>.</summary>
-	public class SafeHQOS : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHQOS"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHQOS(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHQOS"/> class.</summary>
-		private SafeHQOS() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHQOS"/> to <see cref="HQOS"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HQOS(SafeHQOS h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => QOSCloseHandle(handle);
 	}
 }
