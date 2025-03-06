@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <TargetFrameworks/>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Configurations>Debug;Release;DebugNoTests</Configurations>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <LangVersion>latest</LangVersion>

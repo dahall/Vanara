@@ -37,7 +37,7 @@ public class PSIDTests
 		Assert.That(() => s = ConvertSidToStringSid(pSid), Throws.Nothing);
 		Assert.That(s, Is.EqualTo("S-1-1-0"));
 		Assert.That(GetSidSubAuthority(pSid, 0), Is.EqualTo(0));
-		var len = GetLengthSid(pSid);
+		SizeT len = GetLengthSid(pSid);
 		var p2 = new SafePSID(len);
 		b = CopySid(len, (IntPtr)p2, pSid);
 		Assert.That(EqualSid(p2, pSid));
@@ -132,7 +132,7 @@ public class PSIDTests
 	[Test]
 	public void InitializeSidTest()
 	{
-		using var pSid = new SafePSID(32);
+		using var pSid = new SafePSID((SizeT)32);
 		Assert.That(InitializeSid(pSid, KnownSIDAuthority.SECURITY_LOCAL_SID_AUTHORITY, 2), ResultIs.Successful);
 	}
 
@@ -173,7 +173,7 @@ public class PSIDTests
 		var id2 = new SecurityIdentifier((IntPtr)sid3);
 		Assert.That(id2.IsWellKnown(WellKnownSidType.WorldSid));
 
-		using var sid4 = new SafePSID(100);
+		using var sid4 = new SafePSID((SizeT)100);
 		Assert.That(!sid4.IsClosed);
 		Assert.That(!sid4.IsValidSid);
 		Assert.That((int)sid4.Size, Is.EqualTo(100));

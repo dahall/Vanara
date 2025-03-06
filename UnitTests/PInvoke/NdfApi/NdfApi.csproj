@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.NdfApi</AssemblyName>
     <RegisterForComInterop>false</RegisterForComInterop>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>$(TargetFramework)-windows</TargetFramework>
     <EnableComHosting>true</EnableComHosting>
   </PropertyGroup>
   <ItemGroup>
