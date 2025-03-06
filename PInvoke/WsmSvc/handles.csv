@@ -3,4 +3,4 @@ Vanara.PInvoke,WsmSvc,WSMAN_API_HANDLE,IHandle,Provides a handle to a Windows Re
 Vanara.PInvoke,WsmSvc,WSMAN_COMMAND_HANDLE,IHandle,Provides a handle to a remote management command.,,,,
 Vanara.PInvoke,WsmSvc,WSMAN_OPERATION_HANDLE,IHandle,Provides a handle to a remote management operation.,SafeWSMAN_OPERATION_HANDLE,SafeHANDLE,WSManCloseOperation(handle).Succeeded,
 Vanara.PInvoke,WsmSvc,WSMAN_SESSION_HANDLE,IHandle,Provides a handle to a remote managment session.,SafeWSMAN_SESSION_HANDLE,SafeHANDLE,WSManCloseSession(handle).Succeeded,
-Vanara.PInvoke,WsmSvc,WSMAN_SHELL_HANDLE,IHandle,Provides a handle to a remote management shell.,SafeWSMAN_SHELL_HANDLE,SafeWSMAN_SESSION_HANDLE,"{ if (async.completionFunction is null) return false; WSManCloseShell(handle, 0, async); return true; }",
+Vanara.PInvoke,WsmSvc,WSMAN_SHELL_HANDLE,IHandle,Provides a handle to a remote management shell.,,,,

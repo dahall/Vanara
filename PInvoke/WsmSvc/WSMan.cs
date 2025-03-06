@@ -3016,8 +3016,32 @@ public static partial class WsmSvc
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string? password;
 	}
-	public partial class SafeWSMAN_SHELL_HANDLE
+
+	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSMAN_SHELL_HANDLE"/> that is disposed using <see cref="WSManCloseShell"/>.</summary>
+	public class SafeWSMAN_SHELL_HANDLE : SafeHANDLE
 	{
 		private WSMAN_SHELL_ASYNC async;
+
+		/// <summary>Initializes a new instance of the <see cref="SafeWSMAN_SHELL_HANDLE"/> class and assigns an existing handle.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		/// <param name="async">The asynchronous information used in the WSManCreateShell method.</param>
+		/// <param name="ownsHandle">
+		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+		/// </param>
+		public SafeWSMAN_SHELL_HANDLE(IntPtr preexistingHandle, in WSMAN_SHELL_ASYNC async, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => this.async = async;
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeWSMAN_SHELL_HANDLE"/> to <see cref="WSMAN_SHELL_HANDLE"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator WSMAN_SHELL_HANDLE(SafeWSMAN_SHELL_HANDLE h) => h.handle;
+
+		/// <inheritdoc/>
+		protected override bool InternalReleaseHandle()
+		{
+			if (async.completionFunction is null)
+				return false;
+			WSManCloseShell(handle, 0, async);
+			return true;
+		}
 	}
 }

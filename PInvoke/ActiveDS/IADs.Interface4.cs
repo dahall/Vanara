@@ -2785,8 +2785,21 @@ public static partial class ActiveDS
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> for <see cref="ADS_SEARCH_HANDLE"/> that is disposed using <see cref="IDirectorySearch.CloseSearchHandle"/>.
 	/// </summary>
-	[AutoSafeHandle("{ try { ids?.CloseSearchHandle(handle); return true; } catch { return false; } }", typeof(ADS_SEARCH_HANDLE))]
-	public partial class SafeADS_SEARCH_HANDLE { }
+	public class SafeADS_SEARCH_HANDLE : SafeHANDLE
+	{
+		private readonly IDirectorySearch? ids;
+
+		/// <summary>Initializes a new instance of the <see cref="SafeADS_SEARCH_HANDLE"/> class.</summary>
+		internal SafeADS_SEARCH_HANDLE(IDirectorySearch? ids = null, ADS_SEARCH_HANDLE h = default) : base((IntPtr)h, true) => this.ids = ids;
+
+		/// <summary>Performs an implicit conversion from <see cref="SafeADS_SEARCH_HANDLE"/> to <see cref="ADS_SEARCH_HANDLE"/>.</summary>
+		/// <param name="h">The safe handle instance.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator ADS_SEARCH_HANDLE(SafeADS_SEARCH_HANDLE h) => h.handle;
+
+		/// <inheritdoc/>
+		protected override bool InternalReleaseHandle() { try { ids?.CloseSearchHandle(handle); return true; } catch { return false; } }
+	}
 
 	/*internal class VariantMarshaler<T> : ICustomMarshaler
 	{

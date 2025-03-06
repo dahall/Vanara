@@ -789,14 +789,50 @@ public static partial class Msi
 	}
 
 	/// <summary>Provides a handle to a MSI instance.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="MSIHANDLE"/> struct.</remarks>
+	/// <param name="preexistingHandle">An <see cref="ulong"/> object that represents the pre-existing handle to use.</param>
 	[PInvokeData("msi.h")]
-	[AutoHandle]
-	public partial struct MSIHANDLE
+	[StructLayout(LayoutKind.Sequential)]
+	public readonly struct MSIHANDLE(ulong preexistingHandle) : IHandle
 	{
+		private readonly ulong handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="MSIHANDLE"/> object with zero.</summary>
+		public static MSIHANDLE NULL => new(0UL);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == 0UL;
+
 		/// <summary>Performs an explicit conversion from <see cref="MSIHANDLE"/> to <see cref="ulong"/>.</summary>
 		/// <param name="h">The handle.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator ulong(MSIHANDLE h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="ulong"/> to <see cref="MSIHANDLE"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator MSIHANDLE(ulong h) => new(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(MSIHANDLE h1, MSIHANDLE h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(MSIHANDLE h1, MSIHANDLE h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object? obj) => obj is MSIHANDLE h && handle == h.handle;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => new(unchecked((long)handle));
 	}
 
 	/// <summary>

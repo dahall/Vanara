@@ -6042,24 +6042,24 @@ public static partial class Odbc32
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> for <see cref="SQLHDBC"/> that is disposed using <see cref="SQLFreeHandle(SQL_HANDLE, IntPtr)"/>.
 	/// </summary>
-	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_DBC, handle).SQL_SUCCEEDED()")]
+	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_DBC, handle).SQL_SUCCEEDED()", typeof(SQLHDBC))]
 	public partial class SafeSQLHDBC : ISQLHANDLE { }
 
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> for <see cref="SQLHDESC"/> that is disposed using <see cref="SQLFreeHandle(SQL_HANDLE, IntPtr)"/>.
 	/// </summary>
-	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_DESC, handle).SQL_SUCCEEDED()")]
+	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_DESC, handle).SQL_SUCCEEDED()", typeof(SQLHDESC))]
 	public partial class SafeSQLHDESC : ISQLHANDLE { }
 
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> for <see cref="SQLHENV"/> that is disposed using <see cref="SQLFreeHandle(SQL_HANDLE, IntPtr)"/>.
 	/// </summary>
-	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_ENV, handle).SQL_SUCCEEDED()")]
+	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_ENV, handle).SQL_SUCCEEDED()", typeof(SQLHENV))]
 	public partial class SafeSQLHENV : ISQLHANDLE { }
 
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> for <see cref="SQLHSTMT"/> that is disposed using <see cref="SQLFreeHandle(SQL_HANDLE, IntPtr)"/>.
 	/// </summary>
-	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_STMT, handle).SQL_SUCCEEDED()")]
+	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_STMT, handle).SQL_SUCCEEDED()", typeof(SQLHSTMT))]
 	public partial class SafeSQLHSTMT : ISQLHANDLE { }
 }

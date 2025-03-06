@@ -175,7 +175,7 @@ public class DnsService : IDisposable
 		{
 			Version = DNS_QUERY_REQUEST_VERSION1,
 			InterfaceIndex = (uint)(adapter?.GetIPProperties().GetIPv4Properties().Index ?? 0),
-			pServiceInstance = pSvcInst,
+			pServiceInstance = (IntPtr)pSvcInst,
 			pQueryContext = ctx,
 			pRegisterCompletionCallback = RegCallback,
 			unicastEnabled = unicastEnabled

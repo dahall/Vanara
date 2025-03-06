@@ -4958,4 +4958,12 @@ public static partial class WinSCard
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 36)]
 		public byte[] rgbAtr;
 	}
+
+	public partial struct SCARDHANDLE
+	{
+		/// <summary>Performs an explicit conversion from <see cref="SCARDHANDLE"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator UIntPtr(SCARDHANDLE h) => h.handle.ToUIntPtr();
+	}
 }

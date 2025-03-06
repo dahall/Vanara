@@ -5174,7 +5174,11 @@ public static partial class NTDSApi
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to an authentication identity that releases its handle at disposal using DsFreePasswordCredentials.</summary>
 	[AutoSafeHandle("{ DsFreePasswordCredentials(handle); return true; }")]
-	public partial class SafeAuthIdentityHandle { }
+	public partial class SafeAuthIdentityHandle
+	{
+		/// <summary>Gets a value that marshals as NULL so that the local thread's identity is used.</summary>
+		public static readonly SafeAuthIdentityHandle LocalThreadIdentity = new();
+	}
 
 	/// <summary>Provides a safe handle to an array of DS_REPSYNCALL_ERRINFO structures returned from <see cref="DsReplicaSyncAll"/>.</summary>
 	/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>

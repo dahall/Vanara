@@ -1712,8 +1712,8 @@ public static partial class DnsApi
 	public partial class SafeDnsRecordList : IEnumerable<DNS_RECORD>
 	{
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
-		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
-		/// <exception cref="NotImplementedException"></exception>
+																						/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
+																						/// <exception cref="NotImplementedException"></exception>
 		public IEnumerator<DNS_RECORD> GetEnumerator() => handle.LinkedListToIEnum<DNS_RECORD>(r => r.pNext).GetEnumerator();
 
 		/// <summary>Gets a sequence of pointers to each of the records.</summary>
