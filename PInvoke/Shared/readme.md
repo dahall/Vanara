@@ -97,7 +97,7 @@ Struct | Description
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.DmaV3](https://github.com/dahall/Vanara/search?l=C%23&q=DmaV3) | 
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Generic](https://github.com/dahall/Vanara/search?l=C%23&q=Generic) | 
 [Vanara.PInvoke.HACCEL](https://github.com/dahall/Vanara/search?l=C%23&q=HACCEL) | Provides a handle to an accelerator table.
-[Vanara.PInvoke.HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=HANDLE) | Provides a generic handle.
+[Vanara.PInvoke.HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=HANDLE) | Provides a generic Windows handle.
 [Vanara.PInvoke.HBITMAP](https://github.com/dahall/Vanara/search?l=C%23&q=HBITMAP) | Provides a handle to a bitmap.
 [Vanara.PInvoke.HBRUSH](https://github.com/dahall/Vanara/search?l=C%23&q=HBRUSH) | Provides a handle to drawing brush.
 [Vanara.PInvoke.HCOLORSPACE](https://github.com/dahall/Vanara/search?l=C%23&q=HCOLORSPACE) | Provides a handle to a color space.
@@ -176,6 +176,7 @@ Interface | Description
 ---- | ----
 [Vanara.PInvoke.IClipboardFormatter](https://github.com/dahall/Vanara/search?l=C%23&q=IClipboardFormatter) | A formatter used to get and set objects on the clipboard. When implemented, use the `Vanara.PInvoke.ClipCorrespondingTypeAttribute.Formatter` property to
 [Vanara.Collections.ICOMEnum&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=ICOMEnum%26lt%3BT%26gt%3B) | A generic interface to identify matching COM enumerator interfaces
+[Vanara.PInvoke.IDeviceContextHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IDeviceContextHandle) | Signals that a structure or class holds a handle to a device context.
 [Vanara.PInvoke.IErrorProvider](https://github.com/dahall/Vanara/search?l=C%23&q=IErrorProvider) | Common properties and methods for errors.
 [Vanara.PInvoke.IGraphicsObjectHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IGraphicsObjectHandle) | Signals that a structure or class holds a handle to a graphics object.
 [Vanara.PInvoke.IKernelHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IKernelHandle) | Signals that a structure or class holds a handle to a kernel object.
@@ -227,7 +228,6 @@ Class | Description
 [Vanara.InteropServices.SafeAnysizeStructBase&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAnysizeStructBase%26lt%3BT%26gt%3B) | For structures with a single array as the last field that are intended to be variable length, this class manages the structure and automatically marshals the correct structure to memory.
 [Vanara.InteropServices.SafeAnysizeStructMarshaler&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAnysizeStructMarshaler%26lt%3BT%26gt%3B) | A marshaler implementation of `Vanara.InteropServices.IVanaraMarshaler` to set the marshaler as an attribute using `Vanara.InteropServices.SafeAnysizeStruct`. Use the cookie paramter of `Vanara.InteropServices.SafeAnysizeStructMarshaler.#ctor(System.String)` to specify the name of the field in <typeparamref name="T" /> that specifies the number of elements in the last field of <typeparamref name="T" />.
 [Vanara.InteropServices.SafeElementArray&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeElementArray%26lt%3BT%26gt%3B) | A safe unmanaged array of structures allocated on the global heap with a prefix type (usually a uint or int) that determines the count of elements.
-[Vanara.PInvoke.SafeHANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=SafeHANDLE) | Base class for all native handles.
 [Vanara.InteropServices.SafeNativeArray&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNativeArray%26lt%3BT%26gt%3B) | A safe unmanaged array of structures allocated on the global heap. Array size determined by allocated memory size divided by size of structure.
 [Vanara.InteropServices.SafeNativeArrayBase&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNativeArrayBase%26lt%3BT%26gt%3B) | A safe unmanaged array of structures. Array size determined by size of structure.
 [Vanara.InteropServices.SafeNativeLinkedList&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeNativeLinkedList%26lt%3BT%26gt%3B) | A safe unmanaged linked list of structures allocated on the global heap.

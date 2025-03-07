@@ -65,7 +65,7 @@ Native Structure | Header | Managed Structure
 [HFLOW](https://www.google.com/search?num=5&q=HFLOW+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Traffic.HFLOW](https://github.com/dahall/Vanara/search?l=C%23&q=HFLOW)  
 [HFLOWENUM](https://www.google.com/search?num=5&q=HFLOWENUM+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Traffic.HFLOWENUM](https://github.com/dahall/Vanara/search?l=C%23&q=HFLOWENUM)  
 [HIFC](https://www.google.com/search?num=5&q=HIFC+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Traffic.HIFC](https://github.com/dahall/Vanara/search?l=C%23&q=HIFC)  
-[HQOS](https://www.google.com/search?num=5&q=HQOS+site%3Alearn.microsoft.com) | qos2.h | [Vanara.PInvoke.Qwave.HQOS](https://github.com/dahall/Vanara/search?l=C%23&q=HQOS)  
+[HQOS](https://www.google.com/search?num=5&q=HQOS+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Qwave.HQOS](https://github.com/dahall/Vanara/search?l=C%23&q=HQOS)  
 [ICMP](https://www.google.com/search?num=5&q=ICMP+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Traffic.IP_PATTERN.UNION.ICMP](https://github.com/dahall/Vanara/search?l=C%23&q=ICMP)  
 [IP_PATTERN](https://www.google.com/search?num=5&q=IP_PATTERN+site%3Alearn.microsoft.com) | traffic.h | [Vanara.PInvoke.Traffic.IP_PATTERN](https://github.com/dahall/Vanara/search?l=C%23&q=IP_PATTERN)  
 [IPX](https://www.google.com/search?num=5&q=IPX+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Traffic.IPX_PATTERN.IPX](https://github.com/dahall/Vanara/search?l=C%23&q=IPX)  

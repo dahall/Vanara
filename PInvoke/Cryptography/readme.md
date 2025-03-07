@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows crypt32.dl
 
 - Includes methods from crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll, cryptui.dll, cryptnet.dll, cryptdlg.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Cryptography?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Cryptography?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Cryptography)  
-### Methods - 100% API coverage (369 of 369 functions)  
+### Methods - 100% API coverage (370 of 370 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](https://www.google.com/search?num=5&q=BCryptAddContextFunction+site%3Alearn.microsoft.com) | bcrypt.dll | bcrypt.h | [Vanara.PInvoke.BCrypt.BCryptAddContextFunction](https://github.com/dahall/Vanara/search?l=C%23&q=BCryptAddContextFunction)  
@@ -187,6 +187,7 @@ Native Method | Native DLL | Header | Managed Method
 [CryptDecodeObjectEx](https://www.google.com/search?num=5&q=CryptDecodeObjectEx+site%3Alearn.microsoft.com) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptDecodeObjectEx](https://github.com/dahall/Vanara/search?l=C%23&q=CryptDecodeObjectEx)  
 [CryptDecryptAndVerifyMessageSignature](https://www.google.com/search?num=5&q=CryptDecryptAndVerifyMessageSignature+site%3Alearn.microsoft.com) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptDecryptAndVerifyMessageSignature](https://github.com/dahall/Vanara/search?l=C%23&q=CryptDecryptAndVerifyMessageSignature)  
 [CryptDecryptMessage](https://www.google.com/search?num=5&q=CryptDecryptMessage+site%3Alearn.microsoft.com) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptDecryptMessage](https://github.com/dahall/Vanara/search?l=C%23&q=CryptDecryptMessage)  
+[CryptDestroyKey](https://www.google.com/search?num=5&q=CryptDestroyKey+site%3Alearn.microsoft.com) | advapi32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptDestroyKey](https://github.com/dahall/Vanara/search?l=C%23&q=CryptDestroyKey)  
 [CryptEncodeObject](https://www.google.com/search?num=5&q=CryptEncodeObject+site%3Alearn.microsoft.com) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptEncodeObject](https://github.com/dahall/Vanara/search?l=C%23&q=CryptEncodeObject)  
 [CryptEncodeObjectEx](https://www.google.com/search?num=5&q=CryptEncodeObjectEx+site%3Alearn.microsoft.com) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptEncodeObjectEx](https://github.com/dahall/Vanara/search?l=C%23&q=CryptEncodeObjectEx)  
 [CryptEncryptMessage](https://www.google.com/search?num=5&q=CryptEncryptMessage+site%3Alearn.microsoft.com) | crypt32.dll | wincrypt.h | [Vanara.PInvoke.Crypt32.CryptEncryptMessage](https://github.com/dahall/Vanara/search?l=C%23&q=CryptEncryptMessage)  
