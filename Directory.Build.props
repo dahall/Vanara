@@ -5,8 +5,8 @@
     <TargetFrameworksNotStd>net48;net6.0;net7.0;net8.0-windows;net9.0-windows;netcoreapp3.1</TargetFrameworksNotStd>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <Version>4.1.0</Version>
-    <PackageVersion>4.1.0</PackageVersion>
+    <Version>4.1.1</Version>
+    <PackageVersion>4.1.1</PackageVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -25,7 +25,7 @@
   </PropertyGroup>
 
   <!-- Custom generator -->
-  <PropertyGroup Condition="'$(MSBuildProjectExtension)'=='.csproj'" >
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)'=='.csproj'">
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
   <ItemGroup Condition="'$(MSBuildProjectName)'!='Vanara.Core' And '$(MSBuildProjectName)'!='Vanara.CodeGen'">

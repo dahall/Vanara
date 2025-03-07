@@ -12,7 +12,8 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <IsRoslynComponent>true</IsRoslynComponent>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-	<NoPackageAnalysis>true</NoPackageAnalysis>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <PackFolder>analyzers\cs</PackFolder>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +31,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
     <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" PrivateAssets="all" GeneratePathProperty="true" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="$(PkgLumenWorksCsvReader)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
 
