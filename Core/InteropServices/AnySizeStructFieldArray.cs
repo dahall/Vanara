@@ -7,6 +7,7 @@ namespace Vanara.InteropServices;
 /// cref="UnmanagedType.ByValArray"/> but only when using an <c>unmanaged</c> type for <typeparamref name="T"/>.
 /// </summary>
 /// <typeparam name="T">The type of the array element.</typeparam>
+[Obsolete("Prone to memory overruns. Use marshaling instead.")]
 public struct AnySizeStructUnmanagedFieldArray<T> where T : unmanaged
 {
 	internal T elem;
@@ -41,6 +42,7 @@ public struct AnySizeStructUnmanagedFieldArray<T> where T : unmanaged
 /// cref="UnmanagedType.ByValArray"/> but only when using an <c>unmanaged</c> type for <typeparamref name="T"/>.
 /// </summary>
 /// <typeparam name="T">The type of the array element.</typeparam>
+[Obsolete("Prone to memory overruns. Use marshaling instead.")]
 public struct AnySizeStructFieldArray<T> where T : struct
 {
 	/// <summary>The elem</summary>
