@@ -57,7 +57,7 @@ public struct ArrayPointer<T> where T : unmanaged
 	/// <summary>Performs an implicit conversion from <see cref="ArrayPointer{T}"/> to <see cref="IntPtr"/>.</summary>
 	/// <param name="ap">The <see cref="ArrayPointer{T}"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator IntPtr(ArrayPointer<T> ap) => ap.ptr;
+	public static explicit operator IntPtr(ArrayPointer<T> ap) => ap.ptr;
 
 	/// <summary>Performs an implicit conversion from <see cref="ArrayPointer{T}"/> to <typeparamref name="T"/>*.</summary>
 	/// <param name="ap">The <see cref="ArrayPointer{T}"/> instance.</param>
@@ -264,6 +264,11 @@ public struct ManagedStructPointer<T> where T : struct
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator ManagedStructPointer<T>(SafeAllocatedMemoryHandle p) => new() { ptr = p };
 
+	/// <summary>Performs an explicit conversion from <see cref="ManagedStructPointer{T}"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="p">The pointer instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static explicit operator IntPtr(ManagedStructPointer<T> p) => p.ptr;
+
 	/// <summary>
 	/// <para>Destructively assigns a created pointer to allocated memory containing <paramref name="item"/>.</para>
 	/// <note type="warning">This function will overwrite the value of the underlying pointer without releasing any allocated memory already
@@ -348,6 +353,11 @@ public struct StructPointer<T> where T : unmanaged
 	/// <param name="ap">The <typeparamref name="T"/>*.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static unsafe implicit operator StructPointer<T>(T* ap) => new() { ptr = (IntPtr)ap };
+
+	/// <summary>Performs an explicit conversion from <see cref="StructPointer{T}"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="p">The pointer instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static explicit operator IntPtr(StructPointer<T> p) => p.ptr;
 }
 
 /// <summary>A pointer to an array of entries in a structure.</summary>
@@ -385,6 +395,11 @@ public struct ManagedArrayPointer<T> where T : struct
 	/// <param name="p">The <see cref="SafeAllocatedMemoryHandle"/> to assign to this pointer.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator ManagedArrayPointer<T>(SafeAllocatedMemoryHandle p) => new() { ptr = p };
+
+	/// <summary>Performs an explicit conversion from <see cref="ManagedArrayPointer{T}"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="p">The pointer instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static explicit operator IntPtr(ManagedArrayPointer<T> p) => p.ptr;
 
 	/// <summary>
 	/// <para>Destructively assigns a created pointer to allocated memory containing <paramref name="items"/>.</para>
