@@ -2605,4 +2605,8 @@ public static partial class P2P
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupUpdateRecord")]
 	public static extern HRESULT PeerGroupUpdateRecord(HGROUP hGroup, in PEER_RECORD pRecord);
+
+	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPEEREVENT"/> that is disposed using <see cref="PeerGroupUnregisterEvent"/>.</summary>
+	[AutoSafeHandle("PeerGroupUnregisterEvent(handle).Succeeded", typeof(HPEEREVENT))]
+	public partial class SafeGroupHPEEREVENT { }
 }

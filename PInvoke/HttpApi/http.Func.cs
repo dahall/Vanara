@@ -5826,6 +5826,22 @@ public static partial class HttpApi
 	private static extern Win32Error HttpPrepareUrl([In, Optional] IntPtr Reserved, [Optional] uint Flags, [MarshalAs(UnmanagedType.LPWStr)] string Url,
 		out SafeHeapBlock PreparedUrl);
 
+	public partial struct HREQQUEUE
+	{
+		/// <summary>Performs an implicit conversion from <see cref="HREQQUEUE"/> to <see cref="HREQQUEUEv1"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HREQQUEUEv1(HREQQUEUE h) => h.handle;
+	}
+
+	public partial class SafeHREQQUEUE
+	{
+		/// <summary>Performs an implicit conversion from <see cref="HREQQUEUE"/> to <see cref="HREQQUEUEv1"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HREQQUEUEv1(SafeHREQQUEUE h) => h.handle;
+	}
+
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HTTP_SERVER_SESSION_ID"/> that is disposed using <see cref="HttpCloseServerSession"/>.</summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public class SafeHTTP_SERVER_SESSION_ID : IDisposable

@@ -2095,6 +2095,21 @@ public static partial class HttpApi
 
 		/// <summary>A pointer to an array of <see cref="HTTP_RESPONSE_INFO"/> structures containing more information about the request.</summary>
 		public IntPtr pResponseInfo;
+
+		/// <summary>Performs an implicit conversion from <see cref="HTTP_RESPONSE_V1"/> to <see cref="HTTP_RESPONSE_V2"/>.</summary>
+		/// <param name="v1">The v1 value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HTTP_RESPONSE_V2(HTTP_RESPONSE_V1 v1) => new HTTP_RESPONSE_V2
+		{
+			Flags = v1.Flags,
+			Version = v1.Version,
+			StatusCode = v1.StatusCode,
+			ReasonLength = v1.ReasonLength,
+			pReason = v1.pReason,
+			Headers = v1.Headers,
+			EntityChunkCount = v1.EntityChunkCount,
+			pEntityChunks = v1.pEntityChunks,
+		};
 	}
 
 	/// <summary>
