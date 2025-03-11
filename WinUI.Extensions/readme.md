@@ -1,5 +1,10 @@
+# Vanara.WinUI.Extensions.dll
 ## Assembly report for Vanara.WinUI.Extensions.dll
-Extension methods and conversions from Vanara P/Invoke types and methods to UWP and WinUI types and methods.
+Extension methods and conversions from Vanara P/Invoke types and methods to UWP and WinUI 3 types and methods.
+
+## Requirements
+- Windows App SDK 1.5
+- .net Framework 5
 ### Classes
 Class | Description
 ---- | ----
