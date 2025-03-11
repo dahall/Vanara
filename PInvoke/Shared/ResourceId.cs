@@ -172,13 +172,13 @@ public struct ResourceId : IEquatable<string>, IEquatable<IntPtr>, IEquatable<in
 	public readonly bool Equals(int other) => ptr.ToInt32().Equals(other);
 
 	/// <inheritdoc/>
-	public readonly bool Equals(string? other) => string.Equals(ToString(), other);
+	public bool Equals(string? other) => string.Equals(ToString(), other);
 
 	/// <inheritdoc/>
 	public readonly bool Equals(IntPtr other) => ptr.Equals(other);
 
 	/// <inheritdoc/>
-	public readonly bool Equals(ResourceId other) => string.Equals(other.ToString(), ToString());
+	public bool Equals(ResourceId other) => string.Equals(other.ToString(), ToString());
 
 	/// <inheritdoc/>
 	public IntPtr DangerousGetHandle() => ptr;
