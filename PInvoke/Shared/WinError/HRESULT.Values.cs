@@ -10041,4 +10041,21 @@ public partial struct HRESULT
 
 	/// <summary>The GPU was busy at the moment when a call was made to perform an operation, and did not execute or schedule the operation.</summary>
 	public const int DXGI_ERROR_WAS_STILL_DRAWING = unchecked((int)0x887A000A);
+
+	/// <summary>
+	/// The IDCompositionDevice::CreateTargetForHwnd method was called with hwnd and topmost parameters for which a visual tree already exists.
+	/// </summary>
+	public const int DCOMPOSITION_ERROR_WINDOW_ALREADY_COMPOSED = unchecked((int)0x88980800);
+
+	/// <summary>
+	/// The surface was already being rendered when the application called the IDCompositionSurface::BeginDraw,
+	/// IDCompositionSurface::SuspendDraw, or IDCompositionSurface::ResumeDraw method.
+	/// </summary>
+	public const int DCOMPOSITION_ERROR_SURFACE_BEING_RENDERED = unchecked((int)0x88980801);
+
+	/// <summary>
+	/// The application called the IDCompositionSurface::SuspendDraw, IDCompositionSurface::ResumeDraw, or IDCompositionSurface::EndDraw
+	/// method for a surface that is not being rendered.
+	/// </summary>
+	public const int DCOMPOSITION_ERROR_SURFACE_NOT_BEING_RENDERED = unchecked((int)0x88980802);
 }
