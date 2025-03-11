@@ -1,4 +1,5 @@
-﻿namespace Vanara.PInvoke;
+﻿
+namespace Vanara.PInvoke;
 
 /// <summary>
 /// An LUID is a 64-bit value guaranteed to be unique only on the system on which it was generated. The uniqueness of a locally
@@ -6,7 +7,7 @@
 /// <para>Applications must use functions and structures to manipulate LUID values.</para>
 /// </summary>
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public struct LUID
+public struct LUID : IEquatable<LUID>
 {
 	/// <summary>Low order bits.</summary>
 	public uint LowPart;
@@ -19,7 +20,7 @@ public struct LUID
 	/// Name of the system on which to perform the lookup. Specifying <c>null</c> will query the local system.
 	/// </param>
 	/// <returns>The name retrieved for the LUID.</returns>
-	public string GetName(string? systemName = null)
+	public readonly string GetName(string? systemName = null)
 	{
 		var sb = new StringBuilder(1024);
 		var sz = (uint)sb.Capacity;
@@ -68,4 +69,31 @@ public struct LUID
 	{
 		try { return GetName(); } catch { return $"0x{Macros.MAKELONG64(LowPart, (uint)HighPart):X}"; }
 	}
+
+	/// <inheritdoc/>
+	public override bool Equals(object? obj) => obj is LUID lUID && Equals(lUID);
+
+	/// <inheritdoc/>
+	public readonly bool Equals(LUID other) => LowPart == other.LowPart && HighPart == other.HighPart;
+
+	/// <inheritdoc/>
+	public override int GetHashCode()
+	{
+		int hashCode = -1615512156;
+		hashCode = hashCode * -1521134295 + LowPart.GetHashCode();
+		hashCode = hashCode * -1521134295 + HighPart.GetHashCode();
+		return hashCode;
+	}
+
+	/// <summary>Implements the operator ==.</summary>
+	/// <param name="left">The left.</param>
+	/// <param name="right">The right.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator ==(LUID left, LUID right) => left.Equals(right);
+
+	/// <summary>Implements the operator !=.</summary>
+	/// <param name="left">The left.</param>
+	/// <param name="right">The right.</param>
+	/// <returns>The result of the operator.</returns>
+	public static bool operator !=(LUID left, LUID right) => !(left == right);
 }
