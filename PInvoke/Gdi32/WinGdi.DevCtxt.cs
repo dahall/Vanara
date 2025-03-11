@@ -1199,20 +1199,88 @@ public static partial class Gdi32
 	public static extern int SaveDC(HDC hdc);
 
 	/// <summary>
-	/// The SelectObject function selects an object into the specified device context (DC). The new object replaces the previous object
-	/// of the same type.
+	/// The <b>SelectObject</b> function selects an object into the specified device context (DC). The new object replaces the previous
+	/// object of the same type.
 	/// </summary>
-	/// <param name="hDC">A handle to the DC.</param>
-	/// <param name="hObject">
-	/// A handle to the object to be selected. The specified object must have been created by using one of the following functions.
+	/// <param name="hdc">A handle to the DC.</param>
+	/// <param name="h">
+	/// <para>A handle to the object to be selected. The specified object must have been created by using one of the following functions.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Object</description>
+	/// <description>Functions</description>
+	/// </listheader>
+	/// <item>
+	/// <description><b>Bitmap</b></description>
+	/// <description>
+	/// <c>CreateBitmap</c>, <c>CreateBitmapIndirect</c>, <c>CreateCompatibleBitmap</c>, <c>CreateDIBitmap</c>, <c>CreateDIBSection</c>
+	/// Bitmaps can only be selected into memory DC's. A single bitmap cannot be selected into more than one DC at the same time.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>Brush</b></description>
+	/// <description>
+	/// <c>CreateBrushIndirect</c>, <c>CreateDIBPatternBrush</c>, <c>CreateDIBPatternBrushPt</c>, <c>CreateHatchBrush</c>,
+	/// <c>CreatePatternBrush</c>, <c>CreateSolidBrush</c>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>Font</b></description>
+	/// <description><c>CreateFont</c>, <c>CreateFontIndirect</c></description>
+	/// </item>
+	/// <item>
+	/// <description><b>Pen</b></description>
+	/// <description><c>CreatePen</c>, <c>CreatePenIndirect</c></description>
+	/// </item>
+	/// <item>
+	/// <description><b>Region</b></description>
+	/// <description>
+	/// <c>CombineRgn</c>, <c>CreateEllipticRgn</c>, <c>CreateEllipticRgnIndirect</c>, <c>CreatePolygonRgn</c>, <c>CreateRectRgn</c>, <c>CreateRectRgnIndirect</c>
+	/// </description>
+	/// </item>
+	/// </list>
 	/// </param>
 	/// <returns>
-	/// If the selected object is not a region and the function succeeds, the return value is a handle to the object being replaced. If
-	/// the selected object is a region and the function succeeds, the return value is one of the following values.
+	/// <para>
+	/// If the selected object is not a region and the function succeeds, the return value is a handle to the object being replaced. If the
+	/// selected object is a region and the function succeeds, the return value is one of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Value</description>
+	/// <description>Meaning</description>
+	/// </listheader>
+	/// <item>
+	/// <description>SIMPLEREGION</description>
+	/// <description>Region consists of a single rectangle.</description>
+	/// </item>
+	/// <item>
+	/// <description>COMPLEXREGION</description>
+	/// <description>Region consists of more than one rectangle.</description>
+	/// </item>
+	/// <item>
+	/// <description>NULLREGION</description>
+	/// <description>Region is empty.</description>
+	/// </item>
+	/// </list>
+	/// <para></para>
+	/// <para>If an error occurs and the selected object is not a region, the return value is <b>NULL</b>. Otherwise, it is HGDI_ERROR.</para>
 	/// </returns>
-	[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
-	[PInvokeData("Wingdi.h", MSDNShortId = "dd162957")]
-	public static extern HGDIOBJ SelectObject(HDC hDC, HGDIOBJ hObject);
+	/// <remarks>
+	/// <para>
+	/// This function returns the previously selected object of the specified type. An application should always replace a new object with
+	/// the original, default object after it has finished drawing with the new object.
+	/// </para>
+	/// <para>An application cannot select a single bitmap into more than one DC at a time.</para>
+	/// <para><b>ICM:</b> If the object being selected is a brush or a pen, color management is performed.</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see <c>Setting the Pen or Brush Color</c>.</para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-selectobject
+	// HGDIOBJ SelectObject( [in] HDC hdc, [in] HGDIOBJ h );
+	[PInvokeData("wingdi.h", MSDNShortId = "NF:wingdi.SelectObject")]
+	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+	public static extern HGDIOBJ SelectObject([In] HDC hdc, [In] HGDIOBJ h);
 
 	/// <summary>
 	/// <c>SetDCPenColor</c> function sets the current device context (DC) pen color to the specified color value. If the device cannot

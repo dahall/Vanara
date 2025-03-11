@@ -872,169 +872,8 @@ public static partial class P2P
 		return hEnum.GetItems<T>();
 	}
 
-	/// <summary>Provides a handle to a peer enumeration.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HPEERENUM : IHandle
+	public partial class SafeHPEERENUM
 	{
-		private IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HPEERENUM"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HPEERENUM(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HPEERENUM"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPEERENUM NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HPEERENUM"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HPEERENUM h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPEERENUM"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPEERENUM(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HPEERENUM h1, HPEERENUM h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HPEERENUM h1, HPEERENUM h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HPEERENUM h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to the PNRP registration for the calling peer node.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HREGISTRATION : IHandle
-	{
-		private IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HREGISTRATION"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HREGISTRATION(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HREGISTRATION"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HREGISTRATION NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HREGISTRATION"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HREGISTRATION h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HREGISTRATION"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HREGISTRATION(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HREGISTRATION h1, HREGISTRATION h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HREGISTRATION h1, HREGISTRATION h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HREGISTRATION h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to an asynchronous peer name resolution operation.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HRESOLUTION : IHandle
-	{
-		private IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HRESOLUTION"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HRESOLUTION(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HRESOLUTION"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HRESOLUTION NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HRESOLUTION"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HRESOLUTION h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HRESOLUTION"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HRESOLUTION(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HRESOLUTION h1, HRESOLUTION h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HRESOLUTION h1, HRESOLUTION h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HRESOLUTION h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPEERENUM"/> that is disposed using <see cref="PeerEndEnumeration"/>.</summary>
-	/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
-	public class SafeHPEERENUM : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHPEERENUM"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHPEERENUM(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHPEERENUM"/> class.</summary>
-		private SafeHPEERENUM() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHPEERENUM"/> to <see cref="HPEERENUM"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPEERENUM(SafeHPEERENUM h) => h.handle;
-
 		/// <summary>Gets the enumerated items.</summary>
 		/// <typeparam name="T">The type of the structure that can be enumerated.</typeparam>
 		/// <returns>A <see cref="SafePeerList{T}"/> that exposes the enumeration.</returns>
@@ -1051,32 +890,17 @@ public static partial class P2P
 			else
 				return new SafePeerList<T>();
 		}
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => PeerEndEnumeration(handle).Succeeded;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for data that is disposed using <see cref="PeerFreeData"/>.</summary>
-	public class SafePeerData : SafeHANDLE
+	[AutoSafeHandle("{ PeerFreeData(handle); return true; }")]
+	public partial class SafePeerData
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafePeerData"/> class.</summary>
-		protected internal SafePeerData() : base() { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePeerData"/> class.</summary>
-		/// <param name="preexistingHandle">An <see cref="T:System.IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		protected SafePeerData(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
 		/// <summary>
 		/// Marshals data from an unmanaged block of memory to a newly allocated managed object of the type specified by a generic type parameter.
 		/// </summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		public T ToStructure<T>() where T : struct => handle.ToStructure<T>();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { PeerFreeData(handle); return true; }
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for an array that is disposed using <see cref="PeerFreeData"/>.</summary>

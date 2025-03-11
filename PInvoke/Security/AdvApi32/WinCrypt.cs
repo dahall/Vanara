@@ -8296,52 +8296,10 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCRYPTHASH"/> that is disposed using <see cref="CryptDestroyHash"/>.</summary>
-	public class SafeHCRYPTHASH : SafeHANDLE
-	{
-		/// <summary>Represents a NULL handle for <see cref="SafeHCRYPTHASH"/>. This must be used instead of <see langword="null"/>.</summary>
-		public static readonly SafeHCRYPTHASH Null = new(IntPtr.Zero, false);
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCRYPTHASH"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHCRYPTHASH(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCRYPTHASH"/> class.</summary>
-		private SafeHCRYPTHASH() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHCRYPTHASH"/> to <see cref="HCRYPTHASH"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCRYPTHASH(SafeHCRYPTHASH h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CryptDestroyHash(handle);
-	}
+	[AutoSafeHandle("CryptDestroyHash(handle)", typeof(HCRYPTHASH))]
+	public partial class SafeHCRYPTHASH { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCRYPTPROV"/> that is disposed using <see cref="CryptReleaseContext"/>.</summary>
-	public class SafeHCRYPTPROV : SafeHANDLE
-	{
-		/// <summary>Represents a NULL handle for <see cref="SafeHCRYPTPROV"/>. This must be used instead of <see langword="null"/>.</summary>
-		public static readonly SafeHCRYPTPROV Null = new(IntPtr.Zero, false);
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCRYPTPROV"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHCRYPTPROV(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCRYPTPROV"/> class.</summary>
-		private SafeHCRYPTPROV() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHCRYPTPROV"/> to <see cref="HCRYPTPROV"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCRYPTPROV(SafeHCRYPTPROV h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CryptReleaseContext(handle);
-	}
+	[AutoSafeHandle("CryptReleaseContext(handle)", typeof(HCRYPTPROV))]
+	public partial class SafeHCRYPTPROV { }
 }

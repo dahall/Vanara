@@ -5847,54 +5847,6 @@ public static partial class ShlwApi
 	[PInvokeData("shlwapi.h", MSDNShortId = "14af733b-81b4-40a2-b93b-6f387b181f12")]
 	public static extern SHELLPLATFORM WhichPlatform();
 
-	/// <summary>Provides a handle to a user specific registry key.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HUSKEY : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HUSKEY"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HUSKEY(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HUSKEY"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HUSKEY NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public readonly bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HUSKEY"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HUSKEY h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HUSKEY"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HUSKEY(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HUSKEY h1, HUSKEY h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HUSKEY h1, HUSKEY h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override readonly bool Equals(object? obj) => obj is HUSKEY h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public readonly IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>
 	/// <para>Used by the QISearch function to describe a single interface.</para>
 	/// </summary>
@@ -5925,27 +5877,5 @@ public static partial class ShlwApi
 		/// <para>The offset, in bytes, from the base of the object to the start of the interface.</para>
 		/// </summary>
 		public uint dwOffset;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HUSKEY"/> that is disposed using <see cref="SHRegCloseUSKey"/>.</summary>
-	public class SafeHUSKEY : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHUSKEY"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHUSKEY(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHUSKEY"/> class.</summary>
-		private SafeHUSKEY() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHUSKEY"/> to <see cref="HUSKEY"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HUSKEY(SafeHUSKEY h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => SHRegCloseUSKey(this).Succeeded;
 	}
 }

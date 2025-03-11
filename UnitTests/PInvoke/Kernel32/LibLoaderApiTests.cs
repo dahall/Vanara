@@ -56,16 +56,14 @@ public class LibLoaderApiTests
 	public void FindResourceTest()
 	{
 		using SafeHINSTANCE hLib = LoadLibraryEx(@"comctl32.dll", IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
-		IntPtr ptr = (IntPtr)FindResource(hLib, 65, ResourceType.RT_STRING);
-		Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
+		Assert.That(FindResource(hLib, 65, ResourceType.RT_STRING), ResultIs.ValidHandle);
 	}
 
 	[Test]
 	public void FindResourceExTest()
 	{
 		using SafeHINSTANCE hLib = LoadLibraryEx(@"comctl32.dll", IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
-		IntPtr ptr = (IntPtr)FindResourceEx(hLib, 65, ResourceType.RT_STRING, 1033);
-		Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
+		Assert.That(FindResourceEx(hLib, 65, ResourceType.RT_STRING, default), ResultIs.Not.ValidHandle);
 	}
 
 	[Test]

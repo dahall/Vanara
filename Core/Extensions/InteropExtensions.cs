@@ -460,7 +460,11 @@ public static partial class InteropExtensions
 	/// <returns>An HRESULT that indicates the success or failure of the call.</returns>
 	public static int QueryInterface(this object iUnk, Guid iid, out object? ppv)
 	{
+#if NET9_0_OR_GREATER
+		var hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), in iid, out IntPtr ippv);
+#else
 		var hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref iid, out IntPtr ippv);
+#endif
 		ppv = hr == 0 ? Marshal.GetObjectForIUnknown(ippv) : null;
 		return hr;
 	}

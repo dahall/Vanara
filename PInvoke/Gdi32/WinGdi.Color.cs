@@ -1491,26 +1491,4 @@ public static partial class Gdi32
 		/// <summary>The intensity of red in the color.</summary>
 		public byte rgbtRed;
 	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCOLORSPACE"/> that is disposed using <see cref="DeleteColorSpace"/>.</summary>
-	public class SafeHCOLORSPACE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHCOLORSPACE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHCOLORSPACE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCOLORSPACE"/> class.</summary>
-		private SafeHCOLORSPACE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHCOLORSPACE"/> to <see cref="HCOLORSPACE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCOLORSPACE(SafeHCOLORSPACE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DeleteColorSpace(handle);
-	}
 }

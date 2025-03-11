@@ -3809,25 +3809,6 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HPROPSHEETPAGE instance at disposal using DestroyPropertySheetPage.</summary>
-	public class SafeHPROPSHEETPAGE : SafeHANDLE, IUserHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="HPROPSHEETPAGE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHPROPSHEETPAGE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHPROPSHEETPAGE() : base()
-		{
-		}
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHPROPSHEETPAGE"/> to <see cref="HPROPSHEETPAGE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPROPSHEETPAGE(SafeHPROPSHEETPAGE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DestroyPropertySheetPage(this);
-	}
+	[AutoSafeHandle("DestroyPropertySheetPage(handle)", typeof(HPROPSHEETPAGE))]
+	public partial class SafeHPROPSHEETPAGE : IUserHandle { }
 }

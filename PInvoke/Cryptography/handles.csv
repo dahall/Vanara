@@ -1,0 +1,30 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,BCrypt,BCRYPT_ALG_HANDLE,IBCryptHandle,Provides a handle to a CNG object.,SafeBCRYPT_ALG_HANDLE,SafeHANDLE,BCryptCloseAlgorithmProvider(handle).Succeeded,BCRYPT_HANDLE
+Vanara.PInvoke,BCrypt,BCRYPT_HANDLE,IBCryptHandle,Provides a handle to a cryptography object.,,,,
+Vanara.PInvoke,BCrypt,BCRYPT_HASH_HANDLE,IBCryptHandle,Provides a handle to a multi-hash state.,SafeBCRYPT_HASH_HANDLE,SafeHANDLE,BCryptDestroyHash(handle).Succeeded,BCRYPT_HANDLE
+Vanara.PInvoke,BCrypt,BCRYPT_KEY_HANDLE,IBCryptHandle,Provides a handle to a key pair.,SafeBCRYPT_KEY_HANDLE,SafeHANDLE,BCryptDestroyKey(handle).Succeeded,BCRYPT_HANDLE
+Vanara.PInvoke,BCrypt,BCRYPT_SECRET_HANDLE,IBCryptHandle,Provides a handle to a secret agreement.,SafeBCRYPT_SECRET_HANDLE,SafeHANDLE,BCryptDestroySecret(handle).Succeeded,BCRYPT_HANDLE
+Vanara.PInvoke,Crypt32,HCERT_SERVER_OCSP_RESPONSE,IHandle,Provides a handle to an online certificate status protocol (OCSP) response.,,,,
+Vanara.PInvoke,Crypt32,HCERTCHAINENGINE,IHandle,Provides a handle to a Certificate Chain Engine.,SafeHCERTCHAINENGINE,SafeHANDLE,{ CertFreeCertificateChainEngine(handle); return true; },
+Vanara.PInvoke,Crypt32,HCERTSTORE,IHandle,Provides a handle to a certificate store.,SafeHCERTSTORE,SafeHANDLE,"CertCloseStore(handle, Flag)",
+Vanara.PInvoke,Crypt32,HCRYPTDEFAULTCONTEXT,IHandle,Provides a handle to a cryptographic default context.,,,,
+Vanara.PInvoke,Crypt32,HCRYPTHASH,IHandle,Provides a handle to a CryptoApi hash.,,,,
+Vanara.PInvoke,Crypt32,HCRYPTKEY,IHandle,Provides a handle to a CryptoApi key.,SafeHCRYPTKEY,SafeHANDLE,CryptDestroyKey(handle),
+Vanara.PInvoke,Crypt32,HCRYPTMSG,IHandle,Provides a handle to a cryptographic-signed message.,SafeHCRYPTMSG,SafeHANDLE,CryptMsgClose(handle),
+Vanara.PInvoke,Crypt32,HCRYPTOIDFUNCADDR,IHandle,Provides a handle to a OID function address.,,,,
+Vanara.PInvoke,Crypt32,HCRYPTOIDFUNCSET,IHandle,Provides a handle to an OID function set.,,,,
+Vanara.PInvoke,Crypt32,HCRYPTPROV,IHandle,Provides a handle to a CryptoAPI provider.,,,,
+Vanara.PInvoke,Crypt32,PCCERT_CHAIN_CONTEXT,IHandle,Provides a handle to a CERT_CHAIN_CONTEXT.,SafePCCERT_CHAIN_CONTEXT,SafeHANDLE,{ CertFreeCertificateChain(handle); return true; },
+Vanara.PInvoke,Crypt32,PCCERT_CONTEXT,IHandle,Provides a handle to a CERT_CONTEXT.,SafePCCERT_CONTEXT,SafeHANDLE,CertFreeCertificateContext(handle),
+Vanara.PInvoke,Crypt32,PCCERT_SERVER_OCSP_RESPONSE_CONTEXT,IHandle,Provides a handle to a CERT_SERVER_OCSP_RESPONSE_CONTEXT.,SafePCCERT_SERVER_OCSP_RESPONSE_CONTEXT,SafeHANDLE,{ CertFreeServerOcspResponseContext(handle); return true; },
+Vanara.PInvoke,Crypt32,PCCRL_CONTEXT,IHandle,Provides a handle to a CLR_CONTEXT.,SafePCCRL_CONTEXT,SafeHANDLE,CertFreeCRLContext(handle),
+Vanara.PInvoke,Crypt32,PCCRYPT_OID_INFO,IHandle,Provides a pointer to a CRYPT_OID_INFO.,,,,
+Vanara.PInvoke,Crypt32,PCCTL_CONTEXT,IHandle,Provides a handle to a CTL_CONTEXT.,SafePCCTL_CONTEXT,SafeHANDLE,CertFreeCTLContext(handle),
+Vanara.PInvoke,NCrypt,NCRYPT_HANDLE,IHandle,Provides a handle to a key storage object.,,,,
+Vanara.PInvoke,NCrypt,NCRYPT_HASH_HANDLE,IHandle,Provides a handle to a hash handle.,,,,
+Vanara.PInvoke,NCrypt,NCRYPT_KEY_HANDLE,IHandle,Provides a handle to a key.,SafeNCRYPT_KEY_HANDLE,SafeHANDLE,NCryptFreeObject(handle).Succeeded,NCRYPT_HANDLE
+Vanara.PInvoke,NCrypt,NCRYPT_PROV_HANDLE,IHandle,Provides a handle to a provider handle.,SafeNCRYPT_PROV_HANDLE,SafeHANDLE,NCryptFreeObject(handle).Succeeded,NCRYPT_HANDLE
+Vanara.PInvoke,NCrypt,NCRYPT_SECRET_HANDLE,IHandle,Provides a handle to a secret agreement value.,SafeNCRYPT_SECRET_HANDLE,SafeHANDLE,NCryptFreeObject(handle).Succeeded,NCRYPT_HANDLE
+Vanara.PInvoke,CryptUI,PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT,IHandle,Provides a pointer to a CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT structure.,SafePCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT,SafeHANDLE,CryptUIWizFreeDigitalSignContext(handle),
+Vanara.PInvoke,NCrypt,NCRYPT_DESCRIPTOR_HANDLE,IHandle,Provides a handle to a protection descriptor.,SafeNCRYPT_DESCRIPTOR_HANDLE,SafeHANDLE,NCryptCloseProtectionDescriptor(this).Succeeded,
+Vanara.PInvoke,NCrypt,NCRYPT_STREAM_HANDLE,IHandle,Provides a handle to a data protection stream object.,SafeNCRYPT_STREAM_HANDLE,SafeHANDLE,NCryptStreamClose(this).Succeeded,

@@ -26,12 +26,12 @@ internal class JumpListItemCollectionEditor : System.ComponentModel.Design.Colle
 	/// <param name="editValue">The edit value.</param>
 	/// <param name="value">The value.</param>
 	/// <returns></returns>
-	protected override object SetItems(object editValue, object[] value)
+	protected override object? SetItems(object? editValue, object[]? value)
 	{
 		if (editValue is JumpList c)
 		{
 			c.Clear();
-			foreach (var i in value.Cast<IJumpListItem>())
+			foreach (var i in value?.Cast<IJumpListItem>() ?? [])
 				c.Add(i);
 		}
 		return editValue;
@@ -48,7 +48,7 @@ internal class JumpListItemCollectionEditor : System.ComponentModel.Design.Colle
 		return base.CreateInstance(itemType);
 	}
 
-	protected override string GetDisplayText(object value) => value is JumpListSeparator ? "-----------" : value.ToString() ?? "";
+	protected override string GetDisplayText(object? value) => value is JumpListSeparator ? "-----------" : value?.ToString() ?? "";
 
 	/*protected override string HelpTopic => base.HelpTopic;
 

@@ -132,10 +132,12 @@ public class ShellFileOperationDialog : Component
 	/// A ShellItem that represents the item currently being operated on by the operation engine. This property is only used in Windows
 	/// 7 and later. In earlier versions, this property should be <see langword="null"/>
 	/// </summary>
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public ShellItem? CurrentItem { get => currentItem; set { currentItem = value; UpdateLocations(); } }
 
 	/// <summary>A ShellItem that represents the target Shell item.</summary>
 	[MaybeNull]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public ShellItem Destination { get => destItem; set { destItem = value ?? throw new ArgumentNullException(nameof(Destination)); if (Source is not null) UpdateLocations(); } }
 
 	/// <summary>Gets the elapsed time.</summary>
@@ -165,6 +167,7 @@ public class ShellFileOperationDialog : Component
 
 	/// <summary>Gets or sets progress dialog operations mode.</summary>
 	/// <value>The mode.</value>
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public OperationMode Mode
 	{
 		get => mode;
@@ -179,6 +182,7 @@ public class ShellFileOperationDialog : Component
 
 	/// <summary>Sets which progress dialog operation is occurring, and whether we are in pre-flight or undo mode.</summary>
 	/// <value>Specifies operation. See <see cref="OperationType"/>.</value>
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public OperationType Operation
 	{
 		get => operation;
@@ -258,6 +262,7 @@ public class ShellFileOperationDialog : Component
 
 	/// <summary>A ShellItem that represents the source Shell item.</summary>
 	[MaybeNull]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public ShellItem Source { get => sourceItem; set { sourceItem = value ?? throw new ArgumentNullException(nameof(Source)); if (Destination is not null) UpdateLocations(); } }
 
 	/// <summary>Gets operation status for progress dialog.</summary>

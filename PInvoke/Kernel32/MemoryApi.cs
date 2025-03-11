@@ -4118,21 +4118,8 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HSECTION"/> that is disposed using <see cref="CloseHandle"/>.</summary>
-	public class SafeHSECTION : SafeKernelHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHSECTION"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
-		public SafeHSECTION(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHSECTION"/> class.</summary>
-		private SafeHSECTION() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHSECTION"/> to <see cref="HSECTION"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HSECTION(SafeHSECTION h) => h.handle;
-	}
+	[AutoSafeHandle(null, typeof(HSECTION), typeof(SafeKernelHandle))]
+	public partial class SafeHSECTION { }
 
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> to a memory resource notification object that releases its instance at disposal using CloseHandle.

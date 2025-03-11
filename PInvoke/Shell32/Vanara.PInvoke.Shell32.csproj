@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.Shell32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions
@@ -28,12 +27,11 @@ DFConstraint DShellFolderViewEvents Folder Folder2 Folder3 FolderItem FolderItem
     <NoWarn>$(NoWarn);SYSLIB0011;0618;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
-    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
-    <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
   </ItemGroup>
 </Project>

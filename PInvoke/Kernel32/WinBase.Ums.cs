@@ -587,70 +587,8 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool UmsThreadYield(IntPtr SchedulerParam);
 
-	/// <summary>Provides a handle to a completion list.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct PUMS_COMPLETION_LIST : IHandle
+	public partial struct PUMS_CONTEXT
 	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="PUMS_COMPLETION_LIST"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public PUMS_COMPLETION_LIST(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="PUMS_COMPLETION_LIST"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PUMS_COMPLETION_LIST NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="PUMS_COMPLETION_LIST"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(PUMS_COMPLETION_LIST h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PUMS_COMPLETION_LIST"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PUMS_COMPLETION_LIST(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(PUMS_COMPLETION_LIST h1, PUMS_COMPLETION_LIST h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(PUMS_COMPLETION_LIST h1, PUMS_COMPLETION_LIST h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is PUMS_COMPLETION_LIST h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to a UMS context.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct PUMS_CONTEXT : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="PUMS_CONTEXT"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public PUMS_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="PUMS_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PUMS_CONTEXT NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
 		/// <summary>Gets a value indicating whether this instance is suspended.</summary>
 		/// <value><c>true</c> if this instance is suspended; otherwise, <c>false</c>.</value>
 		public bool IsSuspended => QueryUmsThreadInformation<bool>(this, RTL_UMS_THREAD_INFO_CLASS.UmsThreadIsSuspended);
@@ -658,37 +596,6 @@ public static partial class Kernel32
 		/// <summary>Gets a value indicating whether this instance is terminated.</summary>
 		/// <value><c>true</c> if this instance is terminated; otherwise, <c>false</c>.</value>
 		public bool IsTerminated => QueryUmsThreadInformation<bool>(this, RTL_UMS_THREAD_INFO_CLASS.UmsThreadIsTerminated);
-
-		/// <summary>Performs an explicit conversion from <see cref="PUMS_CONTEXT"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(PUMS_CONTEXT h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PUMS_CONTEXT"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PUMS_CONTEXT(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(PUMS_CONTEXT h1, PUMS_CONTEXT h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(PUMS_CONTEXT h1, PUMS_CONTEXT h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is PUMS_CONTEXT h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>
@@ -753,51 +660,5 @@ public static partial class Kernel32
 
 		/// <summary>Gets a default instance of this structure with the fields pre-set to default values.</summary>
 		public static readonly UMS_SYSTEM_THREAD_INFORMATION Default = new() { UmsVersion = UMS_VERSION };
-	}
-
-	/// <summary>
-	/// Provides a <see cref="SafeHandle"/> to a UMS completion list that releases a created UmsCompletionList instance at disposal using DeleteUmsCompletionList.
-	/// </summary>
-	public class SafePUMS_COMPLETION_LIST : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafePUMS_COMPLETION_LIST"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafePUMS_COMPLETION_LIST(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePUMS_COMPLETION_LIST"/> class.</summary>
-		private SafePUMS_COMPLETION_LIST() : base() { }
-
-		/// <summary>Converts to PUMS_COMPLETION_LIST.</summary>
-		/// <param name="l">Safe list.</param>
-		public static implicit operator PUMS_COMPLETION_LIST(SafePUMS_COMPLETION_LIST l) => l.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DeleteUmsCompletionList(handle);
-	}
-
-	/// <summary>
-	/// Provides a <see cref="SafeHandle"/> to a UMS thread context that releases a created UmsThreadContext instance at disposal using DeleteUmsThreadContext.
-	/// </summary>
-	public class SafePUMS_CONTEXT : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafePUMS_CONTEXT"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafePUMS_CONTEXT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePUMS_CONTEXT"/> class.</summary>
-		private SafePUMS_CONTEXT() : base() { }
-
-		/// <summary>Converts to PUMS_CONTEXT.</summary>
-		/// <param name="c">Safe context.</param>
-		public static implicit operator PUMS_CONTEXT(SafePUMS_CONTEXT c) => c.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DeleteUmsThreadContext(handle);
 	}
 }

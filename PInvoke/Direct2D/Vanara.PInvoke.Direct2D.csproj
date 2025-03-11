@@ -24,10 +24,7 @@ ID2D1AnalysisTransform ID2D1Bitmap ID2D1Bitmap1 ID2D1BitmapBrush ID2D1BitmapBrus
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\DWrite\Vanara.PInvoke.DWrite.csproj" />
-    <ProjectReference Include="..\DXGI\Vanara.PInvoke.DXGI.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

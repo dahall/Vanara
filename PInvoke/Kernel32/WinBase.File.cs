@@ -5850,18 +5850,6 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Represents a search handle used in a subsequent call to the <c>FindNextVolumeMountPoint</c> and retrieved by <c>FindFirstVolumeMountPoint</c>.</summary>
-	public class SafeVolumeMountPointHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeVolumeMountPointHandle"/> class.</summary>
-		/// <param name="handle">The handle.</param>
-		/// <param name="own">if set to <c>true</c> handle should be released at disposal.</param>
-		public SafeVolumeMountPointHandle(IntPtr handle, bool own = true) : base(IntPtr.Zero, true) { }
-
-		private SafeVolumeMountPointHandle() : base()
-		{
-		}
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => FindVolumeMountPointClose(handle);
-	}
+	[AutoSafeHandle("FindVolumeMountPointClose(handle)")]
+	public partial class SafeVolumeMountPointHandle { }
 }

@@ -88,18 +88,9 @@ public static partial class NetApi32
 	public static extern Win32Error NetApiBufferSize(IntPtr Buffer, out uint ByteCount);
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a buffer that releases a created handle at disposal using NetApiBufferFree.</summary>
-	public class SafeNetApiBuffer : SafeHANDLE
+	[AutoSafeHandle("NetApiBufferFree(handle) == 0")]
+	public partial class SafeNetApiBuffer
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeNetApiBuffer"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeNetApiBuffer(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeNetApiBuffer"/> class.</summary>
-		private SafeNetApiBuffer() : base() { }
-
 		/// <summary>
 		/// Gets or sets the size of the buffer in bytes. When setting, this reallocates the existing buffer and does not guarantee that
 		/// the currently allocated memory will be untouched or destroyed.
@@ -138,9 +129,6 @@ public static partial class NetApi32
 		/// <typeparam name="T">The structure type to extract.</typeparam>
 		/// <returns>Extracted structure or default(T) if the buffer is invalid.</returns>
 		public T ToStructure<T>() where T : struct => IsInvalid ? default : handle.ToStructure<T>();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => NetApiBufferFree(handle) == 0;
 	}
 
 	/// <summary>A custom marshaler for functions using NetApiBuffer so that managed strings can be used.</summary>

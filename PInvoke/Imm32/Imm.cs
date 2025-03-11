@@ -2491,73 +2491,8 @@ public static partial class Imm32
 	}
 
 	/// <summary>Provides a handle to an input context.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HIMC : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HIMC"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HIMC(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HIMC"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HIMC NULL { get; } = default;
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HIMC"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HIMC h)
-		{
-			return h.handle;
-		}
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HIMC"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HIMC(IntPtr h)
-		{
-			return new(h);
-		}
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HIMC h1, HIMC h2)
-		{
-			return !h1.Equals(h2);
-		}
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HIMC h1, HIMC h2)
-		{
-			return h1.Equals(h2);
-		}
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj)
-		{
-			return (obj is IHandle h && handle == h.DangerousGetHandle()) || (obj is IntPtr p && handle == p);
-		}
-
-		/// <inheritdoc/>
-		public override int GetHashCode()
-		{
-			return handle.GetHashCode();
-		}
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle()
-		{
-			return handle;
-		}
-	}
+	[AutoHandle]
+	public partial struct HIMC { }
 
 	/// <summary>Contains information about IME menu items.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/imm/ns-imm-imemenuiteminfoa typedef struct tagIMEMENUITEMINFOA { UINT cbSize;

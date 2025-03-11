@@ -7802,15 +7802,9 @@ public static partial class WinBio
 
 	/// <summary>A safe handle for memory allocated by WinBio methods and freed using <see cref="WinBioFree"/>.</summary>
 	/// <seealso cref="SafeHANDLE"/>
-	public class SafeWinBioMemory : SafeHANDLE
+	[AutoSafeHandle("WinBioFree(handle).Succeeded")]
+	public partial class SafeWinBioMemory
 	{
-		private SafeWinBioMemory() : base(IntPtr.Zero, true) { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeWinBioMemory"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="m">The <see cref="SafeWinBioMemory"/> instance.</param>
-		/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
-		public static implicit operator IntPtr(SafeWinBioMemory m) => m.DangerousGetHandle();
-
 		/// <summary>
 		/// Marshals data from an unmanaged block of memory to a newly allocated managed object of the type specified by a generic type parameter.
 		/// </summary>
@@ -7819,13 +7813,6 @@ public static partial class WinBio
 		/// <param name="offset">The number of bytes to skip before reading the element.</param>
 		/// <returns>A managed object that contains the data pointed to by this safe handle.</returns>
 		public T ToStructure<T>(SizeT allocatedBytes, uint offset = 0) where T : struct => handle.ToStructure<T>(allocatedBytes, (int)offset);
-
-		/// <summary>
-		/// Internal method that actually releases the handle. This is called by <see cref="M:Vanara.PInvoke.SafeHANDLE.ReleaseHandle"/>
-		/// for valid handles and afterwards zeros the handle.
-		/// </summary>
-		/// <returns><c>true</c> to indicate successful release of the handle; <c>false</c> otherwise.</returns>
-		protected override bool InternalReleaseHandle() => WinBioFree(handle).Succeeded;
 	}
 
 	/// <summary>A structure handler based on unmanaged memory allocated by AllocCoTaskMem.</summary>

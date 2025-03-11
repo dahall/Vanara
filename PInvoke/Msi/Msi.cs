@@ -789,15 +789,13 @@ public static partial class Msi
 	}
 
 	/// <summary>Provides a handle to a MSI instance.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="MSIHANDLE"/> struct.</remarks>
+	/// <param name="preexistingHandle">An <see cref="ulong"/> object that represents the pre-existing handle to use.</param>
 	[PInvokeData("msi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct MSIHANDLE : IHandle
+	public readonly struct MSIHANDLE(ulong preexistingHandle) : IHandle
 	{
-		private readonly ulong handle;
-
-		/// <summary>Initializes a new instance of the <see cref="MSIHANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="ulong"/> object that represents the pre-existing handle to use.</param>
-		public MSIHANDLE(ulong preexistingHandle) => handle = preexistingHandle;
+		private readonly ulong handle = preexistingHandle;
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="MSIHANDLE"/> object with zero.</summary>
 		public static MSIHANDLE NULL => new(0UL);

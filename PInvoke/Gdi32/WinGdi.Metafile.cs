@@ -1786,48 +1786,4 @@ public static partial class Gdi32
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator METARECORD(IntPtr ptr) => new(ptr);
 	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HENHMETAFILE"/> that is disposed using <see cref="DeleteEnhMetaFile"/>.</summary>
-	public class SafeHENHMETAFILE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHENHMETAFILE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHENHMETAFILE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHENHMETAFILE"/> class.</summary>
-		private SafeHENHMETAFILE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHENHMETAFILE"/> to <see cref="HENHMETAFILE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HENHMETAFILE(SafeHENHMETAFILE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DeleteEnhMetaFile(this);
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HMETAFILE"/> that is disposed using <see cref="DeleteMetaFile"/>.</summary>
-	public class SafeHMETAFILE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHMETAFILE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHMETAFILE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHMETAFILE"/> class.</summary>
-		private SafeHMETAFILE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHMETAFILE"/> to <see cref="HMETAFILE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HMETAFILE(SafeHMETAFILE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DeleteMetaFile(handle);
-	}
 }

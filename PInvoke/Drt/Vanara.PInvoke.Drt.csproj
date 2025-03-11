@@ -18,13 +18,13 @@ Structures
 BOOTSTRAPADDRESSES DRT_ADDRESS DRT_ADDRESS_LIST DRT_BOOTSTRAP_PROVIDER DRT_BOOTSTRAP_RESOLVE_CONTEXT DRT_DATA DRT_EVENT_DATA DRT_REGISTRATION DRT_SEARCH_INFO DRT_SEARCH_RESULT DRT_SECURITY_PROVIDER DRT_SETTINGS HDRT HDRT_REGISTRATION_CONTEXT HDRT_SEARCH_CONTEXT HDRT_TRANSPORT LEAFSETKEYCHANGE REGISTRATIONSTATECHANGE STATUSCHANGE UNION
 
 </PackageReleaseNotes>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Cryptography\Vanara.PInvoke.Cryptography.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>
 </Project>

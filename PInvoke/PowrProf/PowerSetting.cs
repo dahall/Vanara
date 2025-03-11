@@ -450,38 +450,10 @@ public static partial class PowrProf
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> for <see cref="PowerRegisterForEffectivePowerModeNotifications"/> that is disposed using <see cref="PowerUnregisterFromEffectivePowerModeNotifications"/>.
 	/// </summary>
-	public class SafeEffectivePowerModeNotificationHandle : SafeHANDLE
-	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SafeEffectivePowerModeNotificationHandle"/> class and assigns an existing handle.
-		/// </summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeEffectivePowerModeNotificationHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeEffectivePowerModeNotificationHandle"/> class.</summary>
-		private SafeEffectivePowerModeNotificationHandle() : base() { }
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => PowerUnregisterFromEffectivePowerModeNotifications(handle).Succeeded;
-	}
+	[AutoSafeHandle("PowerUnregisterFromEffectivePowerModeNotifications(handle).Succeeded")]
+	public partial class SafeEffectivePowerModeNotificationHandle { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for a registered power notification that is disposed using <see cref="PowerSettingUnregisterNotification"/>.</summary>
-	public class SafeHPOWERNOTIFY : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHPOWERNOTIFY"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHPOWERNOTIFY(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHPOWERNOTIFY"/> class.</summary>
-		private SafeHPOWERNOTIFY() : base() { }
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => PowerSettingUnregisterNotification(handle).Succeeded;
-	}
+	[AutoSafeHandle("PowerSettingUnregisterNotification(handle).Succeeded")]
+	public partial class SafeHPOWERNOTIFY { }
 }

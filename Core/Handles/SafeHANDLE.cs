@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
-/// <summary>Delegate for a method that closes a handle and reports success. Used by SafeHANDLE.</summary>
+/// <summary>Delegate for a method that closes a handle and reports success. Used by SafeHandleBase.</summary>
 /// <param name="handle">The handle.</param>
 /// <returns><see langword="true"/> if handle was closed or if handle is already closed; otherwise <see langword="false"/>.</returns>
 public delegate bool CloseHandleFunc(IntPtr handle);
@@ -31,6 +31,11 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
 	public bool IsNull => handle == IntPtr.Zero;
+
+	/// <summary>Performs an explicit conversion from <see cref="SafeHANDLE"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="h">The safe handle.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static explicit operator IntPtr(SafeHANDLE h) => h.DangerousGetHandle();
 
 	/// <summary>Implements the operator ! which returns <see langword="true"/> if the handle is invalid.</summary>
 	/// <param name="hMem">The <see cref="SafeHANDLE"/> instance.</param>
@@ -72,11 +77,6 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 	/// <param name="h2">The second handle.</param>
 	/// <returns>The result of the operator.</returns>
 	public static bool operator ==(SafeHANDLE h1, IntPtr h2) => h1?.Equals(h2) ?? false;
-
-	/// <summary>Performs an implicit conversion from <see cref="SafeHANDLE"/> to <see cref="HANDLE"/>.</summary>
-	/// <param name="h">The safe handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HANDLE(SafeHANDLE h) => h.handle;
 
 	/// <summary>Determines whether the specified <see cref="SafeHANDLE"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="SafeHANDLE"/> to compare with this instance.</param>

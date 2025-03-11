@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.Multimedia</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;winmm;windows multimedia;wav;waveform;audio;msacm32;avifil32</PackageTags>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions
@@ -25,10 +24,12 @@ IAVIEditStream IAVIFile IAVIStream IAVIStreaming IGetFrame
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <None Remove="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ComDlg32\Vanara.PInvoke.ComDlg32.csproj" />
-    <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
-    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

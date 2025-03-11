@@ -98,6 +98,7 @@ public class CollapsiblePanel : Control, ISupportInitialize
 
 	/// <summary>Gets the custom style.</summary>
 	/// <value>The custom style.</value>
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 	public Style CustomStyle { get; internal set; }
 
 	/// <summary>Gets or sets the header text.</summary>

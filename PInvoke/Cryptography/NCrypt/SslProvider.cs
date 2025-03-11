@@ -1719,22 +1719,9 @@ public static partial class NCrypt
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for an SSL buffer that is disposed using <see cref="SslFreeBuffer"/>.</summary>
-	public class SafeSslBuffer : SafeHANDLE
+	[AutoSafeHandle("SslFreeBuffer(handle).Succeeded", null, typeof(SafeHANDLE))]
+	public partial class SafeSslBuffer
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSslBuffer"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeSslBuffer(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeSslBuffer"/> class.</summary>
-		private SafeSslBuffer() : base() { }
-
-		/// <summary>Gets an uninitialized instance of the safe-handle.</summary>
-		/// <value>A NULL instance of <see cref="SafeSslBuffer"/>.</value>
-		public static SafeSslBuffer NULL => new(IntPtr.Zero, true);
-
 		/// <summary>
 		/// Marshals data from an unmanaged block of memory to a newly allocated managed object of the type specified by a generic type parameter.
 		/// </summary>
@@ -1749,8 +1736,5 @@ public static partial class NCrypt
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory.</param>
 		/// <returns>An array of type <typeparamref name="T"/> containing the elements of the native array.</returns>
 		public T[]? ToArray<T>(int count, SizeT allocatedBytes = default) where T : struct => handle.ToArray<T>(count, 0, allocatedBytes);
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => SslFreeBuffer(handle).Succeeded;
 	}
 }

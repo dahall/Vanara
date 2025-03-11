@@ -1,0 +1,13 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,Gdi32,HSECTION,IHandle,Represents a handle to a DIB section.,,,,
+Vanara.PInvoke,Gdi32,HCOLORSPACE,,,SafeHCOLORSPACE,SafeHANDLE,DeleteColorSpace(handle),
+Vanara.PInvoke,Gdi32,HENHMETAFILE,,,SafeHENHMETAFILE,SafeHANDLE,DeleteEnhMetaFile(handle),
+Vanara.PInvoke,Gdi32,HMETAFILE,,,SafeHMETAFILE,SafeHANDLE,DeleteMetaFile(handle),
+Vanara.PInvoke,Gdi32,HBITMAP,,,SafeHBITMAP,SafeGraphicsObjectHandle,,HGDIOBJ
+Vanara.PInvoke,Gdi32,HBRUSH,,,SafeHBRUSH,SafeGraphicsObjectHandle,,HGDIOBJ
+Vanara.PInvoke,Gdi32,HDC,,,SafeHDC,SafeHANDLE,DeleteDC(handle),
+Vanara.PInvoke,Gdi32,HFONT,,,SafeHFONT,SafeGraphicsObjectHandle,,HGDIOBJ
+Vanara.PInvoke,Gdi32,HPALETTE,,,SafeHPALETTE,SafeGraphicsObjectHandle,,HGDIOBJ
+Vanara.PInvoke,Gdi32,HPEN,,,SafeHPEN,SafeGraphicsObjectHandle,,HGDIOBJ
+Vanara.PInvoke,Gdi32,HRGN,,,SafeHRGN,SafeGraphicsObjectHandle,,HGDIOBJ
+Vanara.PInvoke,Gdi32,HSPOOLFILE,IHandle,Provides a handle to a spool file.,SafeHSPOOLFILE,SafeHANDLE,GdiDeleteSpoolFileHandle(handle),

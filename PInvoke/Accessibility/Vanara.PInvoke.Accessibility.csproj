@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.Accessibility</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions
@@ -24,12 +23,12 @@ AccessibleChildren AccessibleObjectFromEvent AccessibleObjectFromPoint Accessibl
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
     <Reference Include="Accessibility" />
   </ItemGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3')) Or $(TargetFramework.StartsWith('net8')) ">
+  <!--<PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3')) Or $(TargetFramework.StartsWith('net8')) ">-->
+  <PropertyGroup>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

@@ -28,7 +28,7 @@ public class WinSaferTests
 			//Assert.That(SaferSetLevelInformation(hLvl, SAFER_OBJECT_INFO_CLASS.SaferObjectDescription, str, str.Size), ResultIs.Successful);
 			Assert.That(SaferGetLevelInformation(hLvl, SAFER_OBJECT_INFO_CLASS.SaferObjectDescription, retstr, retstr.Size, out _), ResultIs.Successful);
 			//Assert.That(retstr.ToString(), Is.EqualTo(str.ToString()));
-			TestContext.WriteLine(retstr);
+			TestContext.WriteLine((string?)retstr);
 		}
 	}
 

@@ -3745,23 +3745,6 @@ public static partial class UxTheme
 	}
 
 	/// <summary>Represents a safe handle for a theme. Use in place of HTHEME.</summary>
-	public class SafeHTHEME : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHTHEME"/> class.</summary>
-		/// <param name="hTheme">The h theme.</param>
-		/// <param name="ownsHandle">if set to <c>true</c> [owns handle].</param>
-		public SafeHTHEME(IntPtr hTheme, bool ownsHandle = true) : base(hTheme, ownsHandle) { }
-
-		private SafeHTHEME() : base()
-		{
-		}
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHTHEME"/> to <see cref="HTHEME"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HTHEME(SafeHTHEME h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CloseThemeData(this).Succeeded;
-	}
+	[AutoSafeHandle("CloseThemeData(this).Succeeded", typeof(HTHEME))]
+	public partial class SafeHTHEME { }
 }

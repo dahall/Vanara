@@ -1,0 +1,2 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,CldApi,HCFFILE,IHandle,Provides a handle to a CF opened file.,SafeHCFFILE,SafeHANDLE,{ CfCloseHandle(handle); return true; },

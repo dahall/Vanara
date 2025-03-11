@@ -2544,54 +2544,6 @@ public static partial class AdvApi32
 	// public static extern NTSTATUS LsaFreeMemory(IntPtr Buffer);
 	private static extern NTStatus LsaFreeMemory(IntPtr Buffer);
 
-	/// <summary>Provides a handle to an LSA enumeration.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct LSA_ENUMERATION_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="LSA_ENUMERATION_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public LSA_ENUMERATION_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="LSA_ENUMERATION_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static LSA_ENUMERATION_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="LSA_ENUMERATION_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(LSA_ENUMERATION_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="LSA_ENUMERATION_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator LSA_ENUMERATION_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(LSA_ENUMERATION_HANDLE h1, LSA_ENUMERATION_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(LSA_ENUMERATION_HANDLE h1, LSA_ENUMERATION_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is LSA_ENUMERATION_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>Used with the LsaEnumerateAccountsWithUserRight function to return a pointer to a SID.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_lsa_enumeration_information typedef struct
 	// _LSA_ENUMERATION_INFORMATION { PSID Sid; } LSA_ENUMERATION_INFORMATION, *PLSA_ENUMERATION_INFORMATION;
@@ -2806,54 +2758,6 @@ public static partial class AdvApi32
 			[FieldOffset(0)]
 			public LSA_FOREST_TRUST_BINARY_DATA Data;
 		}
-	}
-
-	/// <summary>Provides a handle to a LSA handle.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct LSA_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="LSA_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public LSA_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="LSA_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static LSA_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="LSA_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(LSA_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="LSA_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator LSA_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(LSA_HANDLE h1, LSA_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(LSA_HANDLE h1, LSA_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is LSA_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>The <c>LSA_REFERENCED_DOMAIN_LIST</c> structure contains information about the domains referenced in a lookup operation.</summary>
@@ -3146,30 +3050,6 @@ public static partial class AdvApi32
 				return ret;
 			}
 		}
-	}
-
-	/// <summary>
-	/// Provides a <see cref="SafeHandle"/> to a LSA handle that releases a created LSA_HANDLE instance at disposal using LsaClose.
-	/// </summary>
-	public class SafeLSA_HANDLE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="LSA_HANDLE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeLSA_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="LSA_HANDLE"/> class.</summary>
-		private SafeLSA_HANDLE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeLSA_HANDLE"/> to <see cref="LSA_HANDLE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator LSA_HANDLE(SafeLSA_HANDLE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => LsaClose(this).Succeeded;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="LSA_UNICODE_STRING"/> that manages its own memory allocations.</summary>

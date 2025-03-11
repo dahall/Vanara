@@ -3945,115 +3945,8 @@ public static partial class Crypt32
 		public IntPtr pvSystemStore;
 	}
 
-	/// <summary>Provides a handle to a certificate store.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HCERTSTORE : IHandle
+	public partial class SafeHCERTSTORE
 	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HCERTSTORE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HCERTSTORE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HCERTSTORE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCERTSTORE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HCERTSTORE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HCERTSTORE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCERTSTORE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCERTSTORE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HCERTSTORE h1, HCERTSTORE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HCERTSTORE h1, HCERTSTORE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HCERTSTORE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to a cryptographic-signed message.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HCRYPTMSG : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HCRYPTMSG"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HCRYPTMSG(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HCRYPTMSG"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCRYPTMSG NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HCRYPTMSG"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HCRYPTMSG h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCRYPTMSG"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCRYPTMSG(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HCRYPTMSG h1, HCRYPTMSG h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HCRYPTMSG h1, HCRYPTMSG h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HCRYPTMSG h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCERTSTORE"/> that is disposed using <see cref="CertCloseStore"/>.</summary>
-	public class SafeHCERTSTORE : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHCERTSTORE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHCERTSTORE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCERTSTORE"/> class.</summary>
-		private SafeHCERTSTORE() : base() { }
-
 		/// <summary>
 		/// Typically, this property uses the default value zero. The default is to close the store with memory remaining allocated for
 		/// contexts that have not been freed. In this case, no check is made to determine whether memory for contexts remains allocated.
@@ -4064,14 +3957,6 @@ public static partial class Crypt32
 		/// </para>
 		/// </summary>
 		public CertCloseStoreFlags Flag { get; set; } = 0;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHCERTSTORE"/> to <see cref="HCERTSTORE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCERTSTORE(SafeHCERTSTORE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CertCloseStore(handle, Flag);
 	}
 
 	/// <summary>Certificate Store Provider constants.</summary>

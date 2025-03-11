@@ -1,0 +1,5 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,PrntvPt,HPTPROVIDER,IHandle,Provides a handle to a print provider.,SafeHPTPROVIDER,SafeHANDLE,PTCloseProvider(handle).Succeeded,
+Vanara.PInvoke,WinSpool,HPRINTER,IHandle,Provides a handle to a printer.,SafeHPRINTER,SafeHANDLE,ClosePrinter(handle),
+Vanara.PInvoke,WinSpool,HPRINTERCHANGENOTIFICATION,ISyncHandle,Provides a handle to a printer change notification.,SafeHPRINTERCHANGENOTIFICATION,SafeHANDLE,FindClosePrinterChangeNotification(handle),
+Vanara.PInvoke,WinSpool,HSPOOLFILE,IHandle,Provides a handle to a spool file.,SafeHSPOOLFILE,SafeHANDLE,"CloseSpoolFileHandle(hPrinter, handle)",HFILE

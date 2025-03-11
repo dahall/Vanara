@@ -24,9 +24,6 @@ ID3D11On12Device ID3D11On12Device1 ID3D11On12Device2 ID3D12CommandAllocator ID3D
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\D3DCompiler\Vanara.PInvoke.D3DCompiler.csproj" />
     <ProjectReference Include="..\Direct3D11\Vanara.PInvoke.Direct3D11.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

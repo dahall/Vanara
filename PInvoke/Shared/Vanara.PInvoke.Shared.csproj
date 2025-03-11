@@ -28,11 +28,10 @@ CharacterSet, CM_DEVCAP, CM_FILE, CM_INSTALL_STATE, CM_REMOVAL_POLICY, CM_RESOUR
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Handles\HANDLE.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>HANDLE.tt</DependentUpon>
-    </None>
+    <None Remove="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="handles.csv" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
@@ -41,19 +40,6 @@ CharacterSet, CM_DEVCAP, CM_FILE, CM_INSTALL_STATE, CM_REMOVAL_POLICY, CM_RESOUR
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Handles\HANDLE.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>HANDLE.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Handles\HANDLE.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>HANDLE.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>

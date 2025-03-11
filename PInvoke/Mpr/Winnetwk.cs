@@ -3121,19 +3121,8 @@ public static partial class Mpr
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a WNet enumeration that releases a created WNetEnumHandle instance at disposal using WNetCloseEnum.</summary>
-	public class SafeWNetEnumHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeWNetEnumHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
-		public SafeWNetEnumHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeWNetEnumHandle"/> class.</summary>
-		private SafeWNetEnumHandle() : base() { }
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => WNetCloseEnum(handle).Succeeded;
-	}
+	[AutoSafeHandle("WNetCloseEnum(handle).Succeeded")]
+	public partial class SafeWNetEnumHandle { }
 
 	/// <summary>A provider exception for WNet functions.</summary>
 	/// <seealso cref="System.Exception"/>

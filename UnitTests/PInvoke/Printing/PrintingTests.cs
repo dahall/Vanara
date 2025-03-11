@@ -424,7 +424,7 @@ public class PrintingTests
 
 		Assert.That(SetPort(null, port, PORT_STATUS.PORT_STATUS_OFFLINE, PORT_STATUS_TYPE.PORT_STATUS_TYPE_ERROR), ResultIs.Successful);
 		Assert.That(SetPort(null, port, "Off-line", PORT_STATUS_TYPE.PORT_STATUS_TYPE_ERROR), ResultIs.Successful);
-		Assert.That(SetPort(null, port, 0, 0), ResultIs.Successful);
+		Assert.That(SetPort(null, port, 0, default(IntPtr)), ResultIs.Successful);
 	}
 
 	[Test]

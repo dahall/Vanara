@@ -2780,21 +2780,9 @@ After:
 	}
 
 	/// <summary>Pointer to a LOADED_IMAGE structure.</summary>
-	/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
-	public class SafeLOADED_IMAGE : SafeHandle
+	[AutoSafeHandle("ImageHlp.ImageUnload(handle)")]
+	public partial class SafeLOADED_IMAGE
 	{
-		private SafeLOADED_IMAGE() : base(IntPtr.Zero, true)
-		{
-		}
-
-		/// <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
-		public override bool IsInvalid => handle == IntPtr.Zero;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeLOADED_IMAGE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="i">The <see cref="SafeLOADED_IMAGE"/> instance.</param>
-		/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
-		public static implicit operator IntPtr(SafeLOADED_IMAGE i) => i.handle;
-
 		/// <summary>Performs an implicit conversion from <see cref="SafeLOADED_IMAGE"/> to <see cref="LOADED_IMAGE"/>.</summary>
 		/// <param name="i">The <see cref="SafeLOADED_IMAGE"/> instance.</param>
 		/// <returns>The resulting <see cref="LOADED_IMAGE"/> instance from the conversion.</returns>
@@ -2804,12 +2792,5 @@ After:
 		/// <param name="i">The <see cref="SafeLOADED_IMAGE"/> instance.</param>
 		/// <returns>The resulting <see cref="LOADED_IMAGE_UNSAFE"/> pointer from the conversion.</returns>
 		public static unsafe explicit operator LOADED_IMAGE_UNSAFE*(SafeLOADED_IMAGE i) => (LOADED_IMAGE_UNSAFE*)i.handle;
-
-		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
-		/// <returns>
-		/// true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it
-		/// generates a releaseHandleFailed MDA Managed Debugging Assistant.
-		/// </returns>
-		protected override bool ReleaseHandle() => ImageHlp.ImageUnload(handle);
 	}
 }

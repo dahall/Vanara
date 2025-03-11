@@ -1825,115 +1825,10 @@ public static partial class WinTrust
 		public HANDLE hSorted;
 	}
 
-	/// <summary>Provides a handle to a catalog.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HCATALOG : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HCATALOG"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HCATALOG(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HCATALOG"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCATALOG NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HCATALOG"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HCATALOG h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCATALOG"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCATALOG(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HCATALOG h1, HCATALOG h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HCATALOG h1, HCATALOG h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HCATALOG h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to a catalog information context.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HCATINFO : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HCATINFO"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HCATINFO(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HCATINFO"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HCATINFO NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HCATINFO"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HCATINFO h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HCATINFO"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCATINFO(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HCATINFO h1, HCATINFO h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HCATINFO h1, HCATINFO h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HCATINFO h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="CRYPTCATCDF"/> that is disposed using <see cref="CryptCATCDFClose"/>.</summary>
-	public class SafeCRYPTCATCDF : SafeHANDLE
+	[AutoSafeHandle("CryptCATCDFClose(handle)")]
+	public partial class SafeCRYPTCATCDF
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeCRYPTCATCDF"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeCRYPTCATCDF(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeCRYPTCATCDF"/> class.</summary>
-		private SafeCRYPTCATCDF() : base() { }
-
 		/// <summary>
 		/// Gets the structure with the data behind this handle. If the handle is invalid, this value is the default for the structure.
 		/// </summary>
@@ -1943,71 +1838,18 @@ public static partial class WinTrust
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator CRYPTCATCDF(SafeCRYPTCATCDF h) => h.Value;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CryptCATCDFClose(handle);
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCATADMIN"/> that is disposed using <see cref="CryptCATAdminReleaseContext"/>.</summary>
-	public class SafeHCATADMIN : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHCATADMIN"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHCATADMIN(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCATADMIN"/> class.</summary>
-		private SafeHCATADMIN() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHCATADMIN"/> to <see cref="HCATADMIN"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCATADMIN(SafeHCATADMIN h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CryptCATAdminReleaseContext(handle);
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCATALOG"/> that is disposed using <see cref="CryptCATClose"/>.</summary>
-	public class SafeHCATALOG : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHCATALOG"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHCATALOG(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCATALOG"/> class.</summary>
-		private SafeHCATALOG() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHCATALOG"/> to <see cref="HCATALOG"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCATALOG(SafeHCATALOG h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CryptCATClose(handle);
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCATINFO"/> that is disposed using <see cref="CryptCATAdminReleaseCatalogContext"/>.</summary>
-	public class SafeHCATINFO : SafeHANDLE
+	/// <remarks>Initializes a new instance of the <see cref="SafeHCATINFO"/> class and assigns an existing handle.</remarks>
+	/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+	/// <param name="hCatAdmin">A handle to Category Administrator context.</param>
+	/// <param name="ownsHandle">
+	/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+	/// </param>
+	public class SafeHCATINFO(IntPtr preexistingHandle, WinTrust.SafeHCATADMIN hCatAdmin, bool ownsHandle = true) : SafeHANDLE(preexistingHandle, ownsHandle)
 	{
-		private readonly SafeHCATADMIN hAdmin;
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCATINFO"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="hCatAdmin">A handle to Category Administrator context.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHCATINFO(IntPtr preexistingHandle, SafeHCATADMIN hCatAdmin, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) =>
-			hAdmin = hCatAdmin ?? throw new ArgumentNullException(nameof(hCatAdmin));
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCATINFO"/> class.</summary>
-		private SafeHCATINFO() : base() => hAdmin = new(IntPtr.Zero, false);
+		private readonly SafeHCATADMIN hAdmin = hCatAdmin ?? throw new ArgumentNullException(nameof(hCatAdmin));
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeHCATINFO"/> to <see cref="HCATINFO"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>

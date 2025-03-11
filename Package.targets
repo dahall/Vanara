@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup Label="VanaraPackage">
-    <Version>4.1.0</Version>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Vanara.snk</AssemblyOriginatorKeyFile>
     <Authors>David Hall</Authors>
     <Company>GitHub Community</Company>

@@ -7591,78 +7591,28 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Represents a self-closing change notification handle created by the FindFirstChangeNotification function.</summary>
-	public class SafeFindChangeNotificationHandle : SafeSyncHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeFindChangeNotificationHandle"/> class.</summary>
-		/// <param name="handle">The handle.</param>
-		public SafeFindChangeNotificationHandle(IntPtr handle) : base(handle) { }
-
-		private SafeFindChangeNotificationHandle() : base()
-		{
-		}
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => FindCloseChangeNotification(handle);
-	}
+	[AutoSafeHandle("FindCloseChangeNotification(handle)", null, typeof(SafeSyncHandle))]
+	public partial class SafeFindChangeNotificationHandle { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> that releases a created HFILE instance at disposal using CloseHandle.</summary>
-	public class SafeHFILE : SafeSyncHandle
+	[AutoSafeHandle(null, typeof(HFILE), typeof(SafeSyncHandle))]
+	public partial class SafeHFILE
 	{
-		/// <summary>Initializes a new instance of the <see cref="HFILE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHFILE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHFILE"/> class.</summary>
-		protected SafeHFILE() : base()
-		{
-		}
-
 		/// <summary>Performs an implicit conversion from <see cref="Microsoft.Win32.SafeHandles.SafeFileHandle"/> to <see cref="SafeHFILE"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator SafeHFILE(Microsoft.Win32.SafeHandles.SafeFileHandle h) => new(h.DangerousGetHandle(), false);
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHFILE"/> to <see cref="HFILE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HFILE(SafeHFILE h) => h.handle;
 	}
 
 	/// <summary>
 	/// Represents a self-closing file search handle opened by the FindFirstFile, FindFirstFileEx, FindFirstFileNameW,
 	/// FindFirstFileNameTransactedW, FindFirstFileTransacted, FindFirstStreamTransactedW, or FindFirstStreamW functions.
 	/// </summary>
-	/// <seealso cref="GenericSafeHandle"/>
-	public class SafeSearchHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSearchHandle"/> class.</summary>
-		/// <param name="handle">The handle.</param>
-		public SafeSearchHandle(IntPtr handle) : base(handle) { }
-
-		private SafeSearchHandle() : base()
-		{
-		}
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => FindClose(handle);
-	}
+	[AutoSafeHandle("FindClose(handle)", null, typeof(SafeHANDLE))]
+	public partial class SafeSearchHandle { }
 
 	/// <summary>Represents a self-closing volume search handle opened by the FindFirstVolume.</summary>
 	/// <seealso cref="GenericSafeHandle"/>
-	public class SafeVolumeSearchHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeVolumeSearchHandle"/> class.</summary>
-		/// <param name="handle">The handle.</param>
-		public SafeVolumeSearchHandle(IntPtr handle) : base(handle) { }
-
-		private SafeVolumeSearchHandle() : base()
-		{
-		}
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => FindVolumeClose(handle);
-	}
+	[AutoSafeHandle("FindVolumeClose(handle)", null, typeof(SafeHANDLE))]
+	public partial class SafeVolumeSearchHandle { }
 }

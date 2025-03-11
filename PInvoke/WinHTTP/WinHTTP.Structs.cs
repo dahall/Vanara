@@ -8,54 +8,6 @@ namespace Vanara.PInvoke;
 /// <summary>Items from the WinHTTP.dll.</summary>
 public static partial class WinHTTP
 {
-	/// <summary>Provides a handle to an internet connection.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HINTERNET : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HINTERNET"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HINTERNET(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HINTERNET"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HINTERNET NULL { get; } = default;
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HINTERNET"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HINTERNET h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HINTERNET"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HINTERNET(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HINTERNET h1, HINTERNET h2) => h1.handle != h2.handle;
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HINTERNET h1, HINTERNET h2) => h1.handle == h2.handle;
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is IHandle h && handle == h.DangerousGetHandle() || obj is IntPtr p && handle == p;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>The <c>HTTP_VERSION_INFO</c> structure contains the global HTTP version.</summary>
 	/// <remarks><c>Note</c> For Windows XP and Windows 2000, see the Run-Time Requirements section of the WinHttp start page.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-http_version_info typedef struct _HTTP_VERSION_INFO { DWORD
@@ -658,61 +610,6 @@ public static partial class WinHTTP
 		/// </para>
 		/// </summary>
 		public WINHTTP_MATCH_CONNECTION_GUID_FLAG ullFlags;
-	}
-
-	/// <summary>Provides a handle that identifies the registration of the callback function.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>
-		/// Returns an invalid handle by instantiating a <see cref="WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE"/> object with <see cref="IntPtr.Zero"/>.
-		/// </summary>
-		public static WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Implements the operator !.</summary>
-		/// <param name="h1">The handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !(WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h1) => h1.IsNull;
-
-		/// <summary>Performs an explicit conversion from <see cref="WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h1, WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h1, WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is WINHTTP_PROXY_CHANGE_REGISTRATION_HANDLE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>The <c>WINHTTP_PROXY_INFO</c> structure contains the session or default proxy configuration.</summary>
@@ -1517,27 +1414,5 @@ public static partial class WinHTTP
 		/// <para>The type of data in the buffer.</para>
 		/// </summary>
 		public WINHTTP_WEB_SOCKET_BUFFER_TYPE eBufferType;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HINTERNET"/> that is disposed using <see cref="WinHttpCloseHandle"/>.</summary>
-	public class SafeHINTERNET : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHINTERNET"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHINTERNET(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHINTERNET"/> class.</summary>
-		private SafeHINTERNET() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHINTERNET"/> to <see cref="HINTERNET"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HINTERNET(SafeHINTERNET h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => WinHttpCloseHandle(handle);
 	}
 }

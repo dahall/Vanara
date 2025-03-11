@@ -18,12 +18,9 @@ Structures
 GOFFSET OPENTYPE_FEATURE_RECORD OPENTYPE_TAG SafeSCRIPT_CACHE SCRIPT_ANALYSIS SCRIPT_CHARPROP SCRIPT_CONTROL SCRIPT_DIGITSUBSTITUTE SCRIPT_FONTPROPERTIES SCRIPT_GLYPHPROP SCRIPT_ITEM SCRIPT_LOGATTR SCRIPT_PROPERTIES SCRIPT_STATE SCRIPT_TABDEF SCRIPT_VISATTR TEXTRANGE_PROPERTIES
 
 </PackageReleaseNotes>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

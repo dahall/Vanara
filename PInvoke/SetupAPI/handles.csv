@@ -1,0 +1,6 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,SetupAPI,HDEVINFO,IHandle,Provides a handle to a device information set.,,,,
+Vanara.PInvoke,SetupAPI,HDSKSPC,IHandle,Provides a handle to a disk-space list.,SafeHDSKSPC,SafeHANDLE,SetupDestroyDiskSpaceList(handle),
+Vanara.PInvoke,SetupAPI,HINF,IHandle,Provides a handle to an open INF file.,SafeHINF,SafeHANDLE,{ SetupCloseInfFile(handle); return true; },
+Vanara.PInvoke,SetupAPI,HSPFILEQ,IHandle,Provides a handle to a file queue.,SafeHSPFILEQ,SafeHANDLE,SetupCloseFileQueue(handle),
+Vanara.PInvoke,SetupAPI,HSPFILELOG,IHandle,Provides a handle to a log file.,SafeHSPFILELOG,SafeHANDLE,SetupTerminateFileLog(handle),

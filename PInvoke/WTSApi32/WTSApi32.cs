@@ -2455,106 +2455,13 @@ public static partial class WTSApi32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool WTSWaitSystemEvent(HVIRTUALCHANNEL hServer, WTS_EVENT EventMask, out WTS_EVENT pEventFlags);
 
-	/// <summary>Provides a handle to a virtual channel.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HVIRTUALCHANNEL : IHandle
+	public partial struct HWTSSERVER
 	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HVIRTUALCHANNEL"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HVIRTUALCHANNEL(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HVIRTUALCHANNEL"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HVIRTUALCHANNEL NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HVIRTUALCHANNEL"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HVIRTUALCHANNEL h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HVIRTUALCHANNEL"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HVIRTUALCHANNEL(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HVIRTUALCHANNEL h1, HVIRTUALCHANNEL h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HVIRTUALCHANNEL h1, HVIRTUALCHANNEL h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HVIRTUALCHANNEL h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to a WTS server.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HWTSSERVER : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HWTSSERVER"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HWTSSERVER(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HWTSSERVER"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static readonly HWTSSERVER NULL = new(IntPtr.Zero);
-
 		/// <summary>A constant representing the handle of the current WTS server.</summary>
 		public static readonly HWTSSERVER WTS_CURRENT_SERVER_HANDLE = NULL;
 
 		/// <summary>A constant representing the handle of the current WTS server.</summary>
 		public static readonly HWTSSERVER WTS_CURRENT_SERVER = NULL;
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HWTSSERVER"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HWTSSERVER h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HWTSSERVER"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HWTSSERVER(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HWTSSERVER h1, HWTSSERVER h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HWTSSERVER h1, HWTSSERVER h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HWTSSERVER h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>Contains the client network address of a Remote Desktop Services session.</summary>
@@ -3768,66 +3675,16 @@ public static partial class WTSApi32
 		public string TerminalServerHomeDirDrive;
 	}
 
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HVIRTUALCHANNEL"/> that is disposed using <see cref="WTSVirtualChannelClose"/>.</summary>
-	public class SafeHVIRTUALCHANNEL : SafeHANDLE
+	public partial class SafeHWTSSERVER
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHVIRTUALCHANNEL"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHVIRTUALCHANNEL(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHVIRTUALCHANNEL"/> class.</summary>
-		private SafeHVIRTUALCHANNEL() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHVIRTUALCHANNEL"/> to <see cref="HVIRTUALCHANNEL"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HVIRTUALCHANNEL(SafeHVIRTUALCHANNEL h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => WTSVirtualChannelClose(handle);
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HWTSSERVER"/> that is disposed using <see cref="WTSCloseServer"/>.</summary>
-	public class SafeHWTSSERVER : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHWTSSERVER"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHWTSSERVER(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHWTSSERVER"/> class.</summary>
-		private SafeHWTSSERVER() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHWTSSERVER"/> to <see cref="HWTSSERVER"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HWTSSERVER(SafeHWTSSERVER h) => h.handle;
-
 		/// <summary>Gets the handle of the current server (WTS_CURRENT_SERVER).</summary>
 		public static SafeHWTSSERVER Current => new(IntPtr.Zero, false);
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { WTSCloseServer(handle); return true; }
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for WTS memory that is disposed using <see cref="WTSFreeMemory"/>.</summary>
-	public class SafeWTSMemoryHandle : SafeHANDLE
+	[AutoSafeHandle("{ WTSFreeMemory(handle); return true; }")]
+	public partial class SafeWTSMemoryHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeWTSMemoryHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeWTSMemoryHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeWTSMemoryHandle"/> class.</summary>
-		private SafeWTSMemoryHandle() : base() { }
-
 		/// <summary>
 		/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note
 		/// type="note">This call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all
@@ -3858,8 +3715,5 @@ public static partial class WTSApi32
 		/// <returns>The span representation of the structure.</returns>
 		public virtual Span<T> AsSpan<T>(int length) => handle.AsSpan<T>(length);
 #endif
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { WTSFreeMemory(handle); return true; }
 	}
 }

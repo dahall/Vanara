@@ -1,0 +1,7 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,Qwave,HQOS,IHandle,Provides a handle to a QOS session.,SafeHQOS,SafeHANDLE,QOSCloseHandle(handle),
+Vanara.PInvoke,Traffic,HCLIENT,IHandle,Provides a handle to a traffic control client.,SafeHCLIENT,SafeHANDLE,TcDeregisterClient(handle).Succeeded,
+Vanara.PInvoke,Traffic,HFILTER,IHandle,Provides a handle to a traffic filter.,SafeHFILTER,SafeHANDLE,TcDeleteFilter(handle).Succeeded,
+Vanara.PInvoke,Traffic,HFLOW,IHandle,Provides a handle to a traffic flow.,SafeHFLOW,SafeHANDLE,TcDeleteFlow(handle).Succeeded,
+Vanara.PInvoke,Traffic,HFLOWENUM,IHandle,Provides a handle to a flow enumeration.,,,,
+Vanara.PInvoke,Traffic,HIFC,IHandle,Provides a handle to a traffic interface.,SafeHIFC,SafeHANDLE,TcCloseInterface(handle).Succeeded,

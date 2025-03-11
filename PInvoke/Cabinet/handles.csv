@@ -1,0 +1,5 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,Cabinet,COMPRESSOR_HANDLE,IHandle,Provides a handle to a compressor.,SafeCOMPRESSOR_HANDLE,SafeHANDLE,CloseCompressor(handle),
+Vanara.PInvoke,Cabinet,DECOMPRESSOR_HANDLE,IHandle,Provides a handle to a decompressor.,SafeDECOMPRESSOR_HANDLE,SafeHANDLE,CloseDecompressor(handle),
+Vanara.PInvoke,Cabinet,HFCI,IHandle,Provides a handle to a file compression interface.,SafeHFCI,SafeHANDLE,FCIDestroy(handle),
+Vanara.PInvoke,Cabinet,HFDI,IHandle,Provides a handle to a file decompression interface.,SafeHFDI,SafeHANDLE,FDIDestroy(handle),

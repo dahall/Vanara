@@ -1,0 +1,7 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,CfgMgr32,CONFLICT_LIST,IHandle,Provides a handle to a resource conflict list.,SafeCONFLICT_LIST,SafeHANDLE,CM_Free_Resource_Conflict_Handle(handle) == 0,
+Vanara.PInvoke,CfgMgr32,HCMNOTIFICATION,IHandle,Provides a handle to a notification context.,SafeHCMNOTIFICATION,SafeHANDLE,CM_Unregister_Notification(handle) == 0,
+Vanara.PInvoke,CfgMgr32,HMACHINE,IHandle,Provides a handle to a device instance.,SafeHMACHINE,SafeHANDLE,CM_Disconnect_Machine(handle) == 0,
+Vanara.PInvoke,CfgMgr32,LOG_CONF,IHandle,Provides a handle to a logical configuration.,SafeLOG_CONF,SafeHANDLE,CM_Free_Log_Conf_Handle(handle) == 0,
+Vanara.PInvoke,CfgMgr32,RES_DES,IHandle,Provides a handle to a resource descriptor.,SafeRES_DES,SafeHANDLE,CM_Free_Res_Des_Handle(handle) == 0,
+Vanara.PInvoke,CfgMgr32,HSWDEVICE,IHandle,Provides a handle to a software device.,SafeHSWDEVICE,SafeHANDLE,{ SwDeviceClose(handle); return true; },

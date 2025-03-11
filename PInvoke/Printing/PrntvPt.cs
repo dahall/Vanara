@@ -655,95 +655,13 @@ public static partial class PrntvPt
 	[PInvokeData("prntvpt.h", MSDNShortId = "ce979c89-9f9d-4e89-b142-beed414caa3f")]
 	public static extern HRESULT UnbindPTProviderThunk(HPTPROVIDER hProvider);
 
-	/// <summary>Provides a handle to a print provider.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HPTPROVIDER : IHandle
-	{
-		private IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HPTPROVIDER"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HPTPROVIDER(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HPTPROVIDER"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HPTPROVIDER NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HPTPROVIDER"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HPTPROVIDER h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPTPROVIDER"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPTPROVIDER(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HPTPROVIDER h1, HPTPROVIDER h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HPTPROVIDER h1, HPTPROVIDER h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HPTPROVIDER h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPTPROVIDER"/> that is disposed using <see cref="PTCloseProvider"/>.</summary>
-	public class SafeHPTPROVIDER : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHPTPROVIDER"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHPTPROVIDER(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHPTPROVIDER"/> class.</summary>
-		private SafeHPTPROVIDER() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHPTPROVIDER"/> to <see cref="HPTPROVIDER"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HPTPROVIDER(SafeHPTPROVIDER h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => PTCloseProvider(handle).Succeeded;
-	}
-
 	/// <summary>Provides a <see cref="SafeHandle"/> for memory allocated by a PTxx function that is disposed using <see cref="PTReleaseMemory"/>.</summary>
-	public class SafePTMemory : SafeHANDLE
+	[AutoSafeHandle("PTReleaseMemory(handle).Succeeded")]
+	public partial class SafePTMemory
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafePTMemory"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafePTMemory(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePTMemory"/> class.</summary>
-		private SafePTMemory() : base() { }
-
 		/// <summary>Converts the memory held by this object to a structure.</summary>
 		/// <typeparam name="T">The type of the structure.</typeparam>
 		/// <returns>A structure marshaled from this memory.</returns>
 		public T? ToStructure<T>() => IsInvalid ? default : handle.ToStructure<T>();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => PTReleaseMemory(handle).Succeeded;
 	}
 }

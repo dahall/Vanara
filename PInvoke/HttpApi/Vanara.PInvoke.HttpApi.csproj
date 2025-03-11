@@ -6,7 +6,6 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows HttpApi.dll for HTTP Server API Version 2.0.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyName>Vanara.PInvoke.HttpApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;httpapi;http server;windows</PackageTags>
@@ -22,9 +21,9 @@ FROMFILEHANDLE FROMFRAGMENTCACHE FROMFRAGMENTCACHEEX FROMMEMORY HREQQUEUE HREQQU
 </PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>
 </Project>

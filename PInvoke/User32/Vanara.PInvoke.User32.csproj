@@ -6,13 +6,9 @@
   <PropertyGroup>
     <Description>PInvoke API (methods, structures and constants) imported from Windows User32.dll.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <!--<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>-->
     <AssemblyName>Vanara.PInvoke.User32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions
@@ -25,8 +21,9 @@ ACCEL ACCESSTIMEOUT ALTTABINFO ANIMATIONINFO AUDIODESCRIPTION BSMINFO CBTACTIVAT
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
   </ItemGroup>

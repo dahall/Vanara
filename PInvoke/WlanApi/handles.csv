@@ -1,0 +1,4 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,WlanApi,HWFDSERVICE,IHandle,Provides a handle to a Wi-Fi Direct service.,SafeHWFDSERVICE,SafeHANDLE,WFDCloseHandle(handle).Succeeded,
+Vanara.PInvoke,WlanApi,HWFDSESSION,IHandle,Provides a handle to a WFD session.,SafeHWFDSESSION,SafeHANDLE,WFDCancelOpenSession(handle).Succeeded,
+Vanara.PInvoke,WlanApi,HWLANSESSION,IHandle,Provides a handle to a WLAN session.,SafeHWLANSESSION,SafeHANDLE,WlanCloseHandle(handle).Succeeded,

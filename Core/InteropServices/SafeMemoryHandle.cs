@@ -110,14 +110,14 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <param name="len">The length.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	string? ToString(SizeT len, CharSet charSet = CharSet.Unicode);
+	string? ToString(int len, CharSet charSet = CharSet.Unicode);
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <param name="len">The length.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the string pointer.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	string? ToString(SizeT len, SizeT prefixBytes, CharSet charSet = CharSet.Unicode);
+	string? ToString(int len, SizeT prefixBytes, CharSet charSet = CharSet.Unicode);
 
 	/// <summary>
 	/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character
@@ -840,14 +840,14 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="len">The length.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	public string? ToString(SizeT len, CharSet charSet = CharSet.Unicode) => ToString(len, 0, charSet);
+	public string? ToString(int len, CharSet charSet = CharSet.Unicode) => ToString(len, 0, charSet);
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <param name="len">The length.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the string pointer.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	public string? ToString(SizeT len, SizeT prefixBytes, CharSet charSet = CharSet.Unicode)
+	public string? ToString(int len, SizeT prefixBytes, CharSet charSet = CharSet.Unicode)
 	{
 		var str = CallLocked(p => StringHelper.GetString(p.Offset(prefixBytes), charSet, sz == 0 ? long.MaxValue : sz - prefixBytes));
 		return len == -1 ? str : str?.Substring(0, Math.Min(len, str.Length));

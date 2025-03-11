@@ -674,54 +674,6 @@ public static partial class Kernel32
 		}
 	}
 
-	/// <summary>Provides a handle to a snapshot.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HSNAPSHOT : IKernelHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HSNAPSHOT"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HSNAPSHOT(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HSNAPSHOT"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HSNAPSHOT NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HSNAPSHOT"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HSNAPSHOT h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HSNAPSHOT"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HSNAPSHOT(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HSNAPSHOT h1, HSNAPSHOT h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HSNAPSHOT h1, HSNAPSHOT h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HSNAPSHOT h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>
 	/// <para>Describes an entry from a list of the modules belonging to the specified process.</para>
 	/// </summary>
@@ -925,26 +877,9 @@ public static partial class Kernel32
 		public static readonly THREADENTRY32 Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(THREADENTRY32)) };
 	}
 
-	/// <summary>Provides a <see cref="SafeHandle"/> to a snapshot that releases a created HSNAPSHOT instance at disposal using CloseHandle.</summary>
-	public class SafeHSNAPSHOT : SafeKernelHandle
+	public partial class SafeHSNAPSHOT
 	{
-		/// <summary>Initializes a new instance of the <see cref="HSNAPSHOT"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHSNAPSHOT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHSNAPSHOT() : base()
-		{
-		}
-
 		private delegate bool FirstNext<TStruct>(HSNAPSHOT h, ref TStruct str) where TStruct : struct;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHSNAPSHOT"/> to <see cref="HSNAPSHOT"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HSNAPSHOT(SafeHSNAPSHOT h) => h.handle;
 
 		/// <summary>Retrieves information about the heaps that have been allocated by a specified process.</summary>
 		/// <returns>A enumeration of <see cref="HEAPLIST32"/> structures.</returns>

@@ -36,8 +36,10 @@ internal class CollapsiblePanelHeader : Control
 	[DefaultValue(false)]
 	public bool Collapsed { get; set; }
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	internal PushButtonState ButtonState { get; set; } = PushButtonState.Normal;
 
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	internal int HorzPadding { get; set; } = 12;
 
 	/// <summary>

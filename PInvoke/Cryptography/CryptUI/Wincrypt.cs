@@ -1967,84 +1967,11 @@ public static partial class CryptUI
 		[MarshalAs(UnmanagedType.LPWStr)] public string pwszPassword;
 	}
 
-	/// <summary>Provides a pointer to a CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT structure.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT : IHandle
+	public partial struct PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT
 	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>
-		/// Returns an invalid handle by instantiating a <see cref="PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> object with <see cref="IntPtr.Zero"/>.
-		/// </summary>
-		public static PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h) => h.handle;
-
 		/// <summary>Performs an explicit conversion from <see cref="PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> to <see cref="CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/>.</summary>
 		/// <param name="h">The handle.</param>
 		/// <returns>The resulting <see cref="CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> instance from the conversion.</returns>
 		public static explicit operator CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT(PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h) => h.handle.ToStructure<CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT>();
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h1, PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h1, PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>
-	/// Provides a <see cref="SafeHandle"/> for <see cref="PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> that is disposed using <see cref="CryptUIWizFreeDigitalSignContext"/>.
-	/// </summary>
-	public class SafePCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT : SafeHANDLE
-	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SafePCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> class and assigns an existing handle.
-		/// </summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafePCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> class.</summary>
-		private SafePCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafePCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> to <see cref="PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT(SafePCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CryptUIWizFreeDigitalSignContext(handle);
 	}
 }

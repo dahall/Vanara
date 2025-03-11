@@ -25,9 +25,7 @@ IAccessor IADOConnectionConstruction IAlterIndex IAlterTable IBindResource IChap
     <NoWarn>$(NoWarn);CS8785</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Odbc32\Vanara.PInvoke.Odbc32.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

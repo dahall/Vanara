@@ -934,18 +934,9 @@ public static partial class WcmApi
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for WCM memory that is disposed using <see cref="WcmFreeMemory"/>.</summary>
-	public class SafeWcmMemory : SafeHANDLE
+	[AutoSafeHandle("{ WcmFreeMemory(handle); return true; }")]
+	public partial class SafeWcmMemory
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeWcmMemory"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeWcmMemory(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeWcmMemory"/> class.</summary>
-		private SafeWcmMemory() : base() { }
-
 		/// <summary>Converts this memory to a string value.</summary>
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory.</param>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -958,14 +949,6 @@ public static partial class WcmApi
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory.</param>
 		/// <returns>A managed object that contains the requested data.</returns>
 		public T? ToStructure<T>(SizeT allocatedBytes = default) => handle.ToStructure<T>(allocatedBytes);
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeWcmMemory"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="mem">The memory.</param>
-		/// <returns>The resulting <see cref="IntPtr"/> instance from the conversion.</returns>
-		public static implicit operator IntPtr(SafeWcmMemory mem) => mem.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { WcmFreeMemory(handle); return true; }
 	}
 
 	internal class WcmMarshaler<T> : ICustomMarshaler

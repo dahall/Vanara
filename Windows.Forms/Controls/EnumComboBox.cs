@@ -88,6 +88,7 @@ public class EnumComboBox : CustomComboBox
 	/// <summary>
 	/// Gets or sets the value of the member property specified by the <see cref="P:System.Windows.Forms.ListControl.ValueMember"/> property.
 	/// </summary>
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public new object? SelectedValue
 	{
 		get

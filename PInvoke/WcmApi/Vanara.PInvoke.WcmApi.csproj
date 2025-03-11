@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.WcmApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;WcmApi;windows connection manager</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions
@@ -22,7 +21,6 @@ WCM_BILLING_CYCLE_INFO WCM_CONNECTION_COST_DATA WCM_DATAPLAN_STATUS WCM_POLICY_V
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

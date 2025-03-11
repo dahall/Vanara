@@ -3,7 +3,6 @@
   <PropertyGroup>
     <Description>Extension methods and conversions from Vanara P/Invoke types and methods to Windows Forms types and methods.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <!--<TargetFrameworks>net45;net48;net6.0-windows;netstandard2.0;netcoreapp3.1</TargetFrameworks>-->
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>Vanara.Windows.Extensions</AssemblyName>
@@ -21,7 +20,6 @@ Corners
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>
   <ItemGroup Condition=" !$(TargetFramework.StartsWith('net4')) ">

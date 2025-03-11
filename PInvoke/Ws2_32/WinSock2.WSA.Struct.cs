@@ -693,28 +693,6 @@ public static partial class Ws2_32
 		public readonly WSANSCLASSINFO[]? ClassInfos => lpClassInfos.ToArray<WSANSCLASSINFO>((int)dwCount);
 	}
 
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="WSAEVENT"/> that is disposed using <see cref="WSACloseEvent"/>.</summary>
-	public class SafeWSAEVENT : SafeHANDLE, ISyncHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeWSAEVENT"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeWSAEVENT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeWSAEVENT"/> class.</summary>
-		private SafeWSAEVENT() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeWSAEVENT"/> to <see cref="WSAEVENT"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator WSAEVENT(SafeWSAEVENT h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => WSACloseEvent(handle);
-	}
-
 	/// <summary>
 	/// A disposable class to manage initialization of the WSA library. See remarks for use.
 	/// </summary>

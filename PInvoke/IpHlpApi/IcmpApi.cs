@@ -1677,19 +1677,6 @@ public static partial class IpHlpApi
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for an IMCP handle that is disposed using <see cref="IcmpCloseHandle"/>.</summary>
-	public class SafeIcmpHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeIcmpHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeIcmpHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeIcmpHandle"/> class.</summary>
-		private SafeIcmpHandle() : base() { }
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => IcmpCloseHandle(handle);
-	}
+	[AutoSafeHandle("IcmpCloseHandle(handle)")]
+	public partial class SafeIcmpHandle { }
 }

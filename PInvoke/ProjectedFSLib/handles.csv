@@ -1,0 +1,3 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,ProjectedFSLib,PRJ_DIR_ENTRY_BUFFER_HANDLE,IHandle,Provides a handle to a directory entry buffer.,,,,
+Vanara.PInvoke,ProjectedFSLib,PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT,IHandle,Provides a handle to a namespace virtualization context.,,,,

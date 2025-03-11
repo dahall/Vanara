@@ -2550,17 +2550,9 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Safe image list handle. Be aware that if this is instantiated with ownership of the handle, it will be destroyed on disposal.</summary>
-	public class SafeHIMAGELIST : SafeHANDLE
+	[AutoSafeHandle("ImageList_Destroy(handle)", typeof(HIMAGELIST))]
+	public partial class SafeHIMAGELIST
 	{
-		/// <summary>Initializes a new instance of the <see cref="HIMAGELIST"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHIMAGELIST(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHIMAGELIST() : base() { }
-
 		/// <summary>Gets the IImageList interface for this handle.</summary>
 		/// <value>The interface.</value>
 		public IImageList Interface => HIMAGELIST_QueryInterface<IImageList>(handle);
@@ -2569,12 +2561,5 @@ public static partial class ComCtl32
 		/// <param name="iil">An IImageList object.</param>
 		/// <returns>A safe HIMAGELIST handle.</returns>
 		public static SafeHIMAGELIST FromIImageList(IImageList iil) => ImageList_Duplicate(IImageListToHIMAGELIST(iil));
-		/// <summary>Performs an implicit conversion from <see cref="SafeHIMAGELIST"/> to <see cref="HIMAGELIST"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HIMAGELIST(SafeHIMAGELIST h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => ImageList_Destroy(this);
 	}
 }

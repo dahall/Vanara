@@ -1,0 +1,6 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,Rpc,RPC_AUTH_IDENTITY_HANDLE,IHandle,Provides a RPC_AUTH_IDENTITY_HANDLE.,,,,
+Vanara.PInvoke,Rpc,RPC_AUTHZ_HANDLE,IHandle,Provides a RPC_AUTHZ_HANDLE.,,,,
+Vanara.PInvoke,Rpc,RPC_BINDING_HANDLE,IHandle,Provides a handle to an RPC binding.,SafeRPC_BINDING_HANDLE,SafeHANDLE,RpcBindingFree(ref handle).Succeeded,
+Vanara.PInvoke,Rpc,RPC_IF_HANDLE,IHandle,Provides a handle to an RPC interface.,,,,
+Vanara.PInvoke,Rpc,RPC_INTERFACE_GROUP,IHandle,Provides a handle to an RPC interface group.,,,,

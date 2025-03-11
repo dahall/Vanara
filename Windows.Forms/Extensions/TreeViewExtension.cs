@@ -59,7 +59,7 @@ public static partial class TreeViewExtension
 		else if (ext.Equals(".exe", StringComparison.InvariantCultureIgnoreCase) || ext.Equals(".lnk", StringComparison.InvariantCultureIgnoreCase))
 			ext = Path.GetFileName(systemItemPath);
 
-		if (!tv.ImageList.Images.ContainsKey(ext))
+		if (tv.ImageList is not null && !tv.ImageList.Images.ContainsKey(ext))
 		{
 			try
 			{
@@ -81,7 +81,7 @@ public static partial class TreeViewExtension
 	/// <summary>Sets the <see cref="TVITEM"/> values.</summary>
 	/// <param name="node">The <see cref="TreeNode"/> instance for which to set details.</param>
 	/// <param name="tvItem">The <see cref="TVITEMEX"/> instance.</param>
-	public static bool SetItem(this TreeNode node, ref TVITEMEX tvItem) => SendMessage(node.TreeView.Handle, TreeViewMessage.TVM_SETITEM, default, ref tvItem).ToInt32() != 0;
+	public static bool SetItem(this TreeNode node, ref TVITEMEX tvItem) => SendMessage(node.TreeView?.Handle ?? default, TreeViewMessage.TVM_SETITEM, default, ref tvItem).ToInt32() != 0;
 
 	/// <summary>Gets the node values.</summary>
 	/// <param name="node">The <see cref="TreeNode"/> instance for which to get details.</param>
@@ -96,7 +96,7 @@ public static partial class TreeViewExtension
 			mask = mask.SetFlags(TreeViewItemMask.TVIF_HANDLE).SetFlags(TreeViewItemMask.TVIF_TEXT, false),
 			stateMask = stateMask
 		};
-		SendMessage(node.TreeView.Handle, TreeViewMessage.TVM_GETITEM, default, ref tvItem);
+		SendMessage(node.TreeView?.Handle ?? default, TreeViewMessage.TVM_GETITEM, default, ref tvItem);
 		return tvItem;
 	}
 

@@ -2061,115 +2061,11 @@ Label_000B:
 		return list;
 	}
 
-	/// <summary>Provides a handle to a resource.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HRSRC : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HRSRC"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HRSRC(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HRSRC"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HRSRC NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HRSRC"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HRSRC h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HRSRC"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HRSRC(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HRSRC h1, HRSRC h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HRSRC h1, HRSRC h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HRSRC h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a handle to resource data.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HRSRCDATA : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HRSRCDATA"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HRSRCDATA(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HRSRCDATA"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HRSRCDATA NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HRSRCDATA"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HRSRCDATA h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HRSRCDATA"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HRSRCDATA(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HRSRCDATA h1, HRSRCDATA h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HRSRCDATA h1, HRSRCDATA h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HRSRCDATA h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HINSTANCE instance at disposal using FreeLibrary.</summary>
 	[PInvokeData("LibLoaderAPI.h")]
-	public class SafeHINSTANCE : SafeHANDLE
+	[AutoSafeHandle("FreeLibrary(handle)", typeof(HINSTANCE), typeof(SafeHANDLE))]
+	public partial class SafeHINSTANCE
 	{
-		/// <summary>Initializes a new instance of the <see cref="HINSTANCE"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHINSTANCE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHINSTANCE() : base() { }
-
 		/// <summary>
 		/// Gets a value indicating whether the module was loaded as a data file (LOAD_LIBRARY_AS_DATAFILE or
 		/// LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE). Equivalent to LDR_IS_DATAFILE.
@@ -2185,11 +2081,6 @@ Label_000B:
 		/// Gets a value indicating whether the module was loaded as either a data file or an image file. Equivalent to LDR_IS_RESOURCE.
 		/// </summary>
 		public bool IsResource => (handle.ToInt64() & 3) != 0;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHINSTANCE"/> to <see cref="HINSTANCE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HINSTANCE(SafeHINSTANCE h) => h.handle;
 
 		/// <summary>Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).</summary>
 		/// <param name="procName">The function or variable name.</param>
@@ -2228,8 +2119,5 @@ Label_000B:
 		/// <para>If the function fails, an exception with the error is thrown.</para>
 		/// </returns>
 		public T GetProcAddress<T>(int ordinal) where T : Delegate => GetProcAddress<T>($"#{ordinal}");
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => FreeLibrary(this);
 	}
 }

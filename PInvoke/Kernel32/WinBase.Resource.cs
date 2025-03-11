@@ -120,77 +120,10 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool UpdateResource([In] HUPDRES hUpdate, SafeResourceId lpType, SafeResourceId lpName, ushort wLanguage, [In, Optional] IntPtr lpData, uint cbData);
 
-	/// <summary>Provides a handle to an update resource.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HUPDRES : IHandle
+	public partial class SafeHUPDRES
 	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HUPDRES"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HUPDRES(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HUPDRES"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HUPDRES NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HUPDRES"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HUPDRES h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HUPDRES"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HUPDRES(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HUPDRES h1, HUPDRES h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HUPDRES h1, HUPDRES h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HUPDRES h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HUPDRES"/> that is disposed using <see cref="EndUpdateResource"/>.</summary>
-	public class SafeHUPDRES : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHUPDRES"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHUPDRES(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHUPDRES"/> class.</summary>
-		private SafeHUPDRES() : base() { }
-
 		/// <summary>Indicates whether to discard any changes rather than write the resource updates to the file.</summary>
 		/// <value><c>true</c> to ignore changes; otherwise, <c>false</c>.</value>
 		public bool IgnoreChanges { get; set; } = false;
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHUPDRES"/> to <see cref="HUPDRES"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HUPDRES(SafeHUPDRES h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => EndUpdateResource(handle, IgnoreChanges);
 	}
 }

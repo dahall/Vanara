@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>net45;net48;net6.0;net7.0;net8.0-windows;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworksNotStd)</TargetFrameworks>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
@@ -20,7 +20,6 @@ NavigationLogDirection, SFVMUD, ShellBrowserViewMode, TaskbarItemTabThumbnailOpt
 
 </PackageReleaseNotes>
     <RootNamespace>Vanara.Windows.Shell</RootNamespace>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
@@ -33,8 +32,6 @@ NavigationLogDirection, SFVMUD, ShellBrowserViewMode, TaskbarItemTabThumbnailOpt
     <PackageReference Include="System.Drawing.Common" Version="8.0.5" Condition=" $(TargetFramework.StartsWith('netstandard')) " />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\Windows.Shell.Common\Vanara.Windows.Shell.Common.csproj" />
   </ItemGroup>
 </Project>

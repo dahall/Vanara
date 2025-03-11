@@ -1,0 +1,3 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,UxTheme,HANIMATIONBUFFER,IHandle,Provides a handle to an animation buffer.,,,,
+Vanara.PInvoke,UxTheme,HPAINTBUFFER,IHandle,Provides a handle to a paint buffer.,,,,

@@ -9639,24 +9639,6 @@ public static partial class NetApi32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for password policy that is disposed using <see cref="NetValidatePasswordPolicyFree"/>.</summary>
 	/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
-	public class SafePwdPolicy : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafePwdPolicy"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafePwdPolicy(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePwdPolicy"/> class.</summary>
-		private SafePwdPolicy() : base() { }
-
-		/// <summary>
-		/// Internal method that actually releases the handle. This is called by <see cref="M:Vanara.PInvoke.SafeHANDLE.ReleaseHandle"/>
-		/// for valid handles and afterwards zeros the handle.
-		/// </summary>
-		/// <returns><c>true</c> to indicate successful release of the handle; <c>false</c> otherwise.</returns>
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => NetValidatePasswordPolicyFree(handle).Succeeded;
-	}
+	[AutoSafeHandle("NetValidatePasswordPolicyFree(handle).Succeeded")]
+	public partial class SafePwdPolicy { }
 }

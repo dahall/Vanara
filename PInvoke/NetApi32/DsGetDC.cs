@@ -1535,19 +1535,6 @@ public static partial class NetApi32
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> to a domain controller enumeration handle that is released at disposal using DsGetDcClose.
 	/// </summary>
-	public class SafeDCEnumHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeDCEnumHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeDCEnumHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeDCEnumHandle"/> class.</summary>
-		private SafeDCEnumHandle() : base() { }
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { DsGetDcClose(handle); return true; }
-	}
+	[AutoSafeHandle("{ DsGetDcClose(handle); return true; }")]
+	public partial class SafeDCEnumHandle { }
 }

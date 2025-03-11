@@ -169,7 +169,7 @@ public partial class ExplorerBrowserTestForm : Form
 		try
 		{
 			// Navigate to a known folder
-			explorerBrowser.Navigate(ShellItem.Open(((KFItem)knownFolderCombo.SelectedItem).ShellItem));
+			explorerBrowser.Navigate(ShellItem.Open(((KFItem)knownFolderCombo.SelectedItem!).ShellItem));
 		}
 		catch (COMException)
 		{
@@ -217,7 +217,7 @@ public partial class ExplorerBrowserTestForm : Form
 				navigationHistoryCombo.Items.Clear();
 				foreach (var shobj in explorerBrowser.History.Locations)
 				{
-					navigationHistoryCombo.Items.Add(shobj.Name);
+					navigationHistoryCombo.Items.Add(shobj.Name!);
 				}
 			}
 			if (explorerBrowser.History.CurrentLocationIndex == -1)

@@ -232,6 +232,7 @@ public class ShellBrowser : UserControl, IWin32Window, IShellBrowser, Shell32.IS
 	/// <summary>The Registry Key where Browser ViewStates get serialized</summary>
 	/// <example>Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Streams\\</example>
 	[Category("Behavior"), Description("The Registry Key where Browser ViewStates get serialized.")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public string ViewStateRegistryKey { get; set; } =
 		$"Software\\{Application.CompanyName}\\{Application.ProductName}\\ShellBrowser\\ViewStateStreams";
 

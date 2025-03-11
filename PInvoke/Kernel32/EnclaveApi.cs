@@ -972,19 +972,6 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for an enclave handle that is disposed using <see cref="DeleteEnclave(IntPtr)"/>.</summary>
-	public class SafeEnclaveHandle : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeEnclaveHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeEnclaveHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeEnclaveHandle"/> class.</summary>
-		private SafeEnclaveHandle() : base() { }
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => DeleteEnclave(handle);
-	}
+	[AutoSafeHandle("DeleteEnclave(handle)", null, typeof(SafeHANDLE))]
+	public partial class SafeEnclaveHandle { }
 }

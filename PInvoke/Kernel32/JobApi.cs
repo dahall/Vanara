@@ -1556,54 +1556,6 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool TerminateJobObject([In] HJOB hJob, uint uExitCode);
 
-	/// <summary>Provides a handle to a job object.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct HJOB : ISyncHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HJOB"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HJOB(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HJOB"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HJOB NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HJOB"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HJOB h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HJOB"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HJOB(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HJOB h1, HJOB h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HJOB h1, HJOB h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HJOB h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>
 	/// Contains I/O accounting information for a process or a job object. For a job object, the counters include all operations
 	/// performed by all processes that have ever been associated with the job, in addition to all processes currently associated with
@@ -3714,25 +3666,5 @@ public static partial class Kernel32
 		/// <para>This member can be NULL if you do not want to specify any deny-only SIDs.</para>
 		/// </summary>
 		public IntPtr RestrictedSids;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> to a job object that releases a created HJOB instance at disposal using CloseHandle.</summary>
-	public class SafeHJOB : SafeSyncHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="HJOB"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHJOB(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		private SafeHJOB() : base()
-		{
-		}
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHJOB"/> to <see cref="HJOB"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HJOB(SafeHJOB h) => h.handle;
 	}
 }

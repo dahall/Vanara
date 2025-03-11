@@ -59,6 +59,7 @@ public class TaskbarButton : ExtenderProviderBase<Form>, INotifyPropertyChanged
 	/// <summary>Gets a value indicating whether the taskbar button has been created.</summary>
 	/// <value><see langword="true"/> if the taskbar button was created; otherwise, <see langword="false"/>.</value>
 	[Browsable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public bool IsTaskbarButtonCreated { get; internal set; } = false;
 
 	/// <summary>Signals the object that initialization is starting.</summary>

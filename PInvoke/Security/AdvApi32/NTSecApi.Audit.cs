@@ -1006,18 +1006,9 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for memory allocated by audit functions that is disposed using <see cref="AuditFree"/>.</summary>
-	public class SafeAuditMemoryHandle : SafeHANDLE
+	[AutoSafeHandle("{ AuditFree(handle); return true; }")]
+	public partial class SafeAuditMemoryHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeAuditMemoryHandle"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeAuditMemoryHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeAuditMemoryHandle"/> class.</summary>
-		private SafeAuditMemoryHandle() : base() { }
-
 		/// <summary>
 		/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
 		/// call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note>
@@ -1043,9 +1034,6 @@ public static partial class AdvApi32
 			if (IsInvalid) return default;
 			return handle.ToStructure<T>();
 		}
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { AuditFree(handle); return true; }
 	}
 
 	/// <summary>A custom marshaler for functions using memeroy allocated by audit functions so that managed strings can be used.</summary>

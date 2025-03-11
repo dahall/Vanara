@@ -1,6 +1,6 @@
-﻿#if NET7_0_OR_GREATER
-using NUnit.Framework;
-using GMatrix4x4 = System.Numerics.Matrix<System.Single>;
+﻿using NUnit.Framework;
+using Vanara;
+using GMatrix4x4 = Vanara.Matrix<float>;
 using GScalar = System.Single;
 
 namespace System.Numerics.Tests;
@@ -25,7 +25,7 @@ public class GenericMatrixFloatTests
 		GMatrix4x4 vr = GMatrix4x4.CreateIdentity(4);
 
 		GMatrix4x4 bad = GMatrix4x4.CreateIdentity(3);
-		Assert.Throws<ArgumentException>(() => vl + bad);
+		Assert.That(() => vl + bad, Throws.ArgumentException);
 
 		var val = vl + vr;
 		Assert.Equals(val.Columns, vl.Columns);
@@ -102,7 +102,7 @@ public class GenericMatrixFloatTests
 		Assert.Equals(val.GetHashCode(), val.GetHashCode());
 
 		GMatrix4x4 val2 = GenerateIncrementalMatrixNumber(4f);
-		Assert.AreNotEqual(val.GetHashCode(), val2.GetHashCode());
+		Assert.That(val.GetHashCode(), Is.Not.EqualTo(val2.GetHashCode()));
 	}
 
 	[Test]
@@ -161,7 +161,7 @@ public class GenericMatrixFloatTests
 		GMatrix4x4 vl = new float[,] { { 1, 2, 3 }, { 4, 5, 6 } };
 		GMatrix4x4 vr = new float[,] { { 10, 11 }, { 20, 21 }, { 30, 31 } };
 
-		Assert.Throws<ArgumentException>(() => vl * GenerateIncrementalMatrixNumber());
+		Assert.That(() => vl * GenerateIncrementalMatrixNumber(), Throws.ArgumentException);
 
 		var val = vl * vr;
 		Assert.Equals(val.Columns, vr.Columns);
@@ -197,14 +197,14 @@ public class GenericMatrixFloatTests
 		Assert.That(val[0, 0] == 1f);
 		Assert.That(val[0, 1] == 0f);
 
-		Assert.Throws<ArgumentOutOfRangeException>(() => val[0, 4] == 0f);
-		Assert.Throws<ArgumentOutOfRangeException>(() => val[4, 0] == 0f);
+		Assert.That(() => val[0, 4] == 0f, Throws.TypeOf<ArgumentOutOfRangeException>());
+		Assert.That(() => val[4, 0] == 0f, Throws.TypeOf<ArgumentOutOfRangeException>());
 
 		val[0, 0] = 2f;
 		Assert.That(val[0, 0] == 2f);
 
-		Assert.Throws<ArgumentOutOfRangeException>(() => val[0, 4] = 0f);
-		Assert.Throws<ArgumentOutOfRangeException>(() => val[4, 0] = 0f);
+		Assert.That(() => val[0, 4] = 0f, Throws.TypeOf<ArgumentOutOfRangeException>());
+		Assert.That(() => val[4, 0] = 0f, Throws.TypeOf<ArgumentOutOfRangeException>());
 	}
 
 	[Test]
@@ -237,7 +237,7 @@ public class GenericMatrixFloatTests
 		GMatrix4x4 vr = GenerateIncrementalMatrixNumber(-5f);
 
 		GMatrix4x4 bad = GMatrix4x4.CreateIdentity(3);
-		Assert.Throws<ArgumentException>(() => vl - bad);
+		Assert.That(() => vl - bad, Throws.ArgumentException);
 
 		Assert.That(vl != vr);
 		var val = vl - vr;
@@ -284,4 +284,3 @@ public class GenericMatrixFloatTests
 		Assert.Equals(cvec2, val.ColumnVector(2));
 	}
 }
-#endif

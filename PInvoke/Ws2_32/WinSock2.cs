@@ -1736,70 +1736,12 @@ public static partial class Ws2_32
 		public Win32Error registrationResult;
 	}
 
-	/// <summary>Provides a handle to a socket.</summary>
-	/// <seealso cref="Vanara.PInvoke.IHandle"/>
 	[PInvokeData("winsock2.h")]
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct SOCKET : IHandle
+	public partial struct SOCKET
 	{
-		/// <summary>The handle</summary>
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="SOCKET"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public SOCKET(IntPtr preexistingHandle) => handle = preexistingHandle;
-
 		/// <summary>Represents an invalid socket which is different than a null socket.</summary>
 		/// <value>The invalid socket.</value>
 		public static SOCKET INVALID_SOCKET => new(new IntPtr(-1));
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="SOCKET"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		/// <value>Returns a <see cref="SOCKET"/> value.</value>
-		public static SOCKET NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		/// <value><see langword="true"/> if this instance is null; otherwise, <see langword="false"/>.</value>
-		public readonly bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="SOCKET"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(SOCKET h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SOCKET"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SOCKET(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(SOCKET h1, SOCKET h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(SOCKET h1, SOCKET h2) => h1.Equals(h2);
-
-		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
-		/// <returns>
-		/// <see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.
-		/// </returns>
-		/// <inheritdoc/>
-		public override readonly bool Equals(object? obj) => obj is SOCKET h && handle == h.handle;
-
-		/// <summary>Returns a hash code for this instance.</summary>
-		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-		/// <inheritdoc/>
-		public override readonly int GetHashCode() => handle.GetHashCode();
-
-		/// <summary>Returns the value of the handle field.</summary>
-		/// <returns>An IntPtr representing the value of the handle field.</returns>
-		/// <inheritdoc/>
-		public readonly IntPtr DangerousGetHandle() => handle;
 
 		/// <inheritdoc/>
 		public override readonly string ToString() => handle.ToString();
@@ -2515,39 +2457,16 @@ public static partial class Ws2_32
 		public uint[] ChainEntries;
 	}
 
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="SOCKET"/> that is disposed using <see cref="closesocket"/>.</summary>
-	public class SafeSOCKET : SafeHANDLE
+	public partial class SafeSOCKET
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSOCKET"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeSOCKET(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeSOCKET"/> class.</summary>
-		private SafeSOCKET() : base() { }
-
 		/// <summary>Represents an invalid socket which is different than a null socket.</summary>
 		/// <value>The invalid socket.</value>
 		public static SafeSOCKET INVALID_SOCKET => new(new IntPtr(-1), false);
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="SafeSOCKET"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		/// <value>Returns a <see cref="SafeSOCKET"/> value.</value>
-		public static SafeSOCKET NULL => new(IntPtr.Zero, false);
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeSOCKET"/> to <see cref="SOCKET"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SOCKET(SafeSOCKET h) => h.handle;
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeSOCKET"/> to <see cref="SOCKET"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator SOCKET?(SafeSOCKET? h) => h?.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => closesocket(this) == 0;
 	}
 
 	/// <summary>

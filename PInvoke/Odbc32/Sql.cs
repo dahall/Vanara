@@ -2205,8 +2205,7 @@ public static partial class Odbc32
 		SQL_FETCH_BY_BOOKMARK = 7,
 	}
 
-	public interface ISQLHANDLE : IHandle
-	{ }
+	public interface ISQLHANDLE : IHandle { }
 
 	public static SQL_C SQL_C_TCHAR() => Marshal.SystemDefaultCharSize == 1 ? SQL_C.SQL_C_CHAR : SQL_C.SQL_C_WCHAR;
 
@@ -6043,96 +6042,24 @@ public static partial class Odbc32
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> for <see cref="SQLHDBC"/> that is disposed using <see cref="SQLFreeHandle(SQL_HANDLE, IntPtr)"/>.
 	/// </summary>
-	public class SafeSQLHDBC : SafeHANDLE, ISQLHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSQLHDBC"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeSQLHDBC(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeSQLHDBC"/> class.</summary>
-		private SafeSQLHDBC() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeSQLHDBC"/> to <see cref="SQLHDBC"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SQLHDBC(SafeSQLHDBC h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_DBC, handle).SQL_SUCCEEDED();
-	}
+	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_DBC, handle).SQL_SUCCEEDED()", typeof(SQLHDBC))]
+	public partial class SafeSQLHDBC : ISQLHANDLE { }
 
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> for <see cref="SQLHDESC"/> that is disposed using <see cref="SQLFreeHandle(SQL_HANDLE, IntPtr)"/>.
 	/// </summary>
-	public class SafeSQLHDESC : SafeHANDLE, ISQLHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSQLHDESC"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeSQLHDESC(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeSQLHDESC"/> class.</summary>
-		private SafeSQLHDESC() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeSQLHDESC"/> to <see cref="SQLHDESC"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SQLHDESC(SafeSQLHDESC h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_DESC, handle).SQL_SUCCEEDED();
-	}
+	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_DESC, handle).SQL_SUCCEEDED()", typeof(SQLHDESC))]
+	public partial class SafeSQLHDESC : ISQLHANDLE { }
 
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> for <see cref="SQLHENV"/> that is disposed using <see cref="SQLFreeHandle(SQL_HANDLE, IntPtr)"/>.
 	/// </summary>
-	public class SafeSQLHENV : SafeHANDLE, ISQLHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSQLHENV"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeSQLHENV(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeSQLHENV"/> class.</summary>
-		private SafeSQLHENV() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeSQLHENV"/> to <see cref="SQLHENV"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SQLHENV(SafeSQLHENV h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_ENV, handle).SQL_SUCCEEDED();
-	}
+	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_ENV, handle).SQL_SUCCEEDED()", typeof(SQLHENV))]
+	public partial class SafeSQLHENV : ISQLHANDLE { }
 
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> for <see cref="SQLHSTMT"/> that is disposed using <see cref="SQLFreeHandle(SQL_HANDLE, IntPtr)"/>.
 	/// </summary>
-	public class SafeSQLHSTMT : SafeHANDLE, ISQLHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSQLHSTMT"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeSQLHSTMT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeSQLHSTMT"/> class.</summary>
-		private SafeSQLHSTMT() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeSQLHSTMT"/> to <see cref="SQLHSTMT"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SQLHSTMT(SafeSQLHSTMT h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_STMT, handle).SQL_SUCCEEDED();
-	}
+	[AutoSafeHandle("SQLFreeHandle(SQL_HANDLE.SQL_HANDLE_STMT, handle).SQL_SUCCEEDED()", typeof(SQLHSTMT))]
+	public partial class SafeSQLHSTMT : ISQLHANDLE { }
 }

@@ -6152,54 +6152,6 @@ public static partial class Secur32
 	[PInvokeData("sspi.h", MSDNShortId = "bebeef92-1d6e-4879-846f-12d706db0653")]
 	public static extern HRESULT VerifySignature(in CtxtHandle phContext, in SecBufferDesc pMessage, uint MessageSeqNo, out SECQOP pfQOP);
 
-	/// <summary>Provides a handle to a auth identity.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct PSEC_WINNT_AUTH_IDENTITY_OPAQUE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public PSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static PSEC_WINNT_AUTH_IDENTITY_OPAQUE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(PSEC_WINNT_AUTH_IDENTITY_OPAQUE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(PSEC_WINNT_AUTH_IDENTITY_OPAQUE h1, PSEC_WINNT_AUTH_IDENTITY_OPAQUE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(PSEC_WINNT_AUTH_IDENTITY_OPAQUE h1, PSEC_WINNT_AUTH_IDENTITY_OPAQUE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is PSEC_WINNT_AUTH_IDENTITY_OPAQUE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
-
 	/// <summary>Allows you to pass a particular user name and password to the run-time library for the purpose of authentication.</summary>
 	/// <remarks>
 	/// <para>When this structure is used with RPC, the structure must remain valid for the lifetime of the binding handle.</para>
@@ -7565,18 +7517,9 @@ public static partial class Secur32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for a context buffer that is disposed using <see cref="FreeContextBuffer"/>.</summary>
-	public class SafeContextBuffer : SafeHANDLE
+	[AutoSafeHandle("FreeContextBuffer(handle).Succeeded")]
+	public partial class SafeContextBuffer
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeContextBuffer"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeContextBuffer(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeContextBuffer"/> class.</summary>
-		private SafeContextBuffer() : base() { }
-
 		/// <summary>
 		/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
 		/// call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note>
@@ -7604,9 +7547,6 @@ public static partial class Secur32
 			if (IsInvalid) return default;
 			return handle.ToStructure<T>();
 		}
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => FreeContextBuffer(handle).Succeeded;
 	}
 
 	/// <summary>Provides a safe version of <see cref="CredHandle"/> that is disposed using <see cref="FreeCredentialsHandle"/>.</summary>
@@ -7820,35 +7760,6 @@ public static partial class Secur32
 		}
 	}
 
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> that is disposed using <see cref="SspiFreeAuthIdentity"/>.</summary>
-	public class SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE : SafeHANDLE
-	{
-		/// <summary>
-		/// Represents a null instance.
-		/// </summary>
-		public static readonly SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE Null = new();
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> class and assigns an existing handle.
-		/// </summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> class.</summary>
-		private SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> to <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator PSEC_WINNT_AUTH_IDENTITY_OPAQUE(SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { SspiZeroAuthIdentity(handle); SspiFreeAuthIdentity(handle); return true; }
-	}
-
 	/// <summary>
 	/// The <c>SafeSecBufferDesc</c> structure describes an array of SecBuffer structures to pass from a transport application to a
 	/// security package. It handles cleaning up allocated memory.
@@ -7973,23 +7884,13 @@ public static partial class Secur32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for Sspi allocated memory that is disposed using <see cref="SspiLocalFree"/>.</summary>
-	public class SafeSspiLocalMem : SafeHANDLE
+	[AutoSafeHandle("{ SspiLocalFree(handle); return true; }")]
+	public partial class SafeSspiLocalMem
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSspiLocalMem"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
-		public SafeSspiLocalMem(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeSspiLocalMem"/> class.</summary>
-		private SafeSspiLocalMem() : base() { }
-
 		/// <summary>Gets the bytes associated with this memory.</summary>
 		/// <param name="count">The count of bytes to get.</param>
 		/// <returns>A byte array.</returns>
 		public byte[] GetBytes(uint count) => handle.ToByteArray((int)count) ?? new byte[0];
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { SspiLocalFree(handle); return true; }
 	}
 
 	internal class SspiStringMarshaler : ICustomMarshaler

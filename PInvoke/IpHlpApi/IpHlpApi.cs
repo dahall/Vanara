@@ -9694,52 +9694,8 @@ public static partial class IpHlpApi
 	}
 
 	/// <summary>Provides a handle to a notification registration for a timestamp capability change.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct HIFTIMESTAMPCHANGE : IHandle
-	{
-		private readonly IntPtr handle;
-
-		/// <summary>Initializes a new instance of the <see cref="HIFTIMESTAMPCHANGE"/> struct.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		public HIFTIMESTAMPCHANGE(IntPtr preexistingHandle) => handle = preexistingHandle;
-
-		/// <summary>Returns an invalid handle by instantiating a <see cref="HIFTIMESTAMPCHANGE"/> object with <see cref="IntPtr.Zero"/>.</summary>
-		public static HIFTIMESTAMPCHANGE NULL => new(IntPtr.Zero);
-
-		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
-		public bool IsNull => handle == IntPtr.Zero;
-
-		/// <summary>Performs an explicit conversion from <see cref="HIFTIMESTAMPCHANGE"/> to <see cref="IntPtr"/>.</summary>
-		/// <param name="h">The handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator IntPtr(HIFTIMESTAMPCHANGE h) => h.handle;
-
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HIFTIMESTAMPCHANGE"/>.</summary>
-		/// <param name="h">The pointer to a handle.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HIFTIMESTAMPCHANGE(IntPtr h) => new(h);
-
-		/// <summary>Implements the operator !=.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HIFTIMESTAMPCHANGE h1, HIFTIMESTAMPCHANGE h2) => !(h1 == h2);
-
-		/// <summary>Implements the operator ==.</summary>
-		/// <param name="h1">The first handle.</param>
-		/// <param name="h2">The second handle.</param>
-		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HIFTIMESTAMPCHANGE h1, HIFTIMESTAMPCHANGE h2) => h1.Equals(h2);
-
-		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is HIFTIMESTAMPCHANGE h && handle == h.handle;
-
-		/// <inheritdoc/>
-		public override int GetHashCode() => handle.GetHashCode();
-
-		/// <inheritdoc/>
-		public IntPtr DangerousGetHandle() => handle;
-	}
+	[AutoHandle]
+	public partial struct HIFTIMESTAMPCHANGE { }
 
 	/// <summary>
 	/// <para>Describes the timestamping capabilities of a network interface card's (NIC's) hardware.</para>

@@ -286,24 +286,12 @@ public static partial class NetApi32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a buffer that releases a created handle at disposal using DsRoleFreeMemory.</summary>
-	public class SafeDcRoleBuffer : SafeHANDLE
+	[AutoSafeHandle("{ DsRoleFreeMemory(handle); return true; }")]
+	public partial class SafeDcRoleBuffer
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeDcRoleBuffer"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeDcRoleBuffer(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeDcRoleBuffer"/> class.</summary>
-		private SafeDcRoleBuffer() : base() { }
-
 		/// <summary>Returns an extracted structure from this buffer.</summary>
 		/// <typeparam name="T">The structure type to extract.</typeparam>
 		/// <returns>Extracted structure or default(T) if the buffer is invalid.</returns>
 		public T ToStructure<T>() where T : struct => IsInvalid ? default : handle.ToStructure<T>();
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { DsRoleFreeMemory(handle); return true; }
 	}
 }

@@ -5467,26 +5467,4 @@ public static partial class Crypt32
 		/// </summary>
 		public IntPtr pStrongSignPara;
 	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HCRYPTMSG"/> that is disposed using <see cref="CryptMsgClose"/>.</summary>
-	public class SafeHCRYPTMSG : SafeHANDLE
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafeHCRYPTMSG"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeHCRYPTMSG(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeHCRYPTMSG"/> class.</summary>
-		private SafeHCRYPTMSG() : base() { }
-
-		/// <summary>Performs an implicit conversion from <see cref="SafeHCRYPTMSG"/> to <see cref="HCRYPTMSG"/>.</summary>
-		/// <param name="h">The safe handle instance.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator HCRYPTMSG(SafeHCRYPTMSG h) => h.handle;
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() => CryptMsgClose(handle);
-	}
 }

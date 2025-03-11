@@ -2700,25 +2700,4 @@ public static partial class Kernel32
 	[PInvokeData("winbase.h", MSDNShortId = "909BF5F7-0622-4B22-A2EC-27722389700A")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	private static extern bool InitializeContext(IntPtr Buffer, uint ContextFlags, out IntPtr Context, ref uint ContextLength);
-
-	/// <summary>A performance data handle.</summary>
-	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct PerformanceDataHandle
-	{
-		private readonly IntPtr handle;
-	}
-
-	/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created PowerRequestObject instance at disposal using CloseHandle.</summary>
-	public class SafePowerRequestObject : SafeKernelHandle
-	{
-		/// <summary>Initializes a new instance of the <see cref="SafePowerRequestObject"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafePowerRequestObject(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafePowerRequestObject"/> class.</summary>
-		private SafePowerRequestObject() : base() { }
-	}
 }

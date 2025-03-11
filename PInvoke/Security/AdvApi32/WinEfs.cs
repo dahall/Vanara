@@ -546,20 +546,9 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="ENCRYPTION_CERTIFICATE_HASH_LIST"/> that is disposed using <see cref="FreeEncryptionCertificateHashList"/>.</summary>
-	public class SafeENCRYPTION_CERTIFICATE_HASH_LIST : SafeHANDLE
+	[AutoSafeHandle("{ FreeEncryptionCertificateHashList(handle); return true; }")]
+	public partial class SafeENCRYPTION_CERTIFICATE_HASH_LIST
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SafeENCRYPTION_CERTIFICATE_HASH_LIST"/> class and assigns an existing handle.
-		/// </summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeENCRYPTION_CERTIFICATE_HASH_LIST(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeENCRYPTION_CERTIFICATE_HASH_LIST"/> class.</summary>
-		private SafeENCRYPTION_CERTIFICATE_HASH_LIST() : base() { }
-
 		/// <summary>Gets the certificate hash items.</summary>
 		public ENCRYPTION_CERTIFICATE_HASH[] Items
 		{
@@ -581,9 +570,6 @@ public static partial class AdvApi32
 		/// <param name="l">The list.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator ENCRYPTION_CERTIFICATE_HASH_LIST(SafeENCRYPTION_CERTIFICATE_HASH_LIST l) { unsafe { return *l.GetList(); } }
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { FreeEncryptionCertificateHashList(handle); return true; }
 
 		private unsafe ENCRYPTION_CERTIFICATE_HASH_LIST* GetList() => (ENCRYPTION_CERTIFICATE_HASH_LIST*)(void*)handle;
 	}

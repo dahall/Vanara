@@ -18,11 +18,12 @@ Structures
 PEERDIST_CLIENT_BASIC_INFO PEERDIST_CONTENTINFO_HANDLE PEERDIST_CONTENT_HANDLE PEERDIST_CONTENT_TAG PEERDIST_INSTANCE_HANDLE PEERDIST_PUBLICATION_OPTIONS PEERDIST_RETRIEVAL_OPTIONS PEERDIST_STATUS_INFO PEERDIST_STREAM_HANDLE
 
 </PackageReleaseNotes>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <AdditionalFiles Include="handles.csv" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

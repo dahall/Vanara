@@ -1,0 +1,2 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,FhSvcCtl,FH_SERVICE_PIPE_HANDLE,IHandle,Provides a handle to a communication channel.,SafeFH_SERVICE_PIPE_HANDLE,SafeHANDLE,FhServiceClosePipe(handle).Succeeded,

@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.WinBio</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;WinBio;windows biometric framework;biometric</PackageTags>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Functions
@@ -22,7 +21,6 @@ ACCOUNTSID AUTHORIZATION CAPTURESAMPLE CONTROLUNIT DELETETEMPLATE ENROLLBEGIN EN
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

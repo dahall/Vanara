@@ -9,7 +9,6 @@
     <AssemblyName>Vanara.PInvoke.Opc</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;Opc</PackageTags>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
 Interfaces
@@ -19,8 +18,6 @@ IOpcCertificateEnumerator IOpcCertificateSet IOpcDigitalSignature IOpcDigitalSig
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\UrlMon\Vanara.PInvoke.UrlMon.csproj" />
   </ItemGroup>
 </Project>

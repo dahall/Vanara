@@ -52,6 +52,7 @@ public class ProgressDialog : CommonDialog
 	/// <summary>Background task to run when calling <see cref="CommonDialog.ShowDialog()"/> without any specified action.</summary>
 	/// <value>The background task.</value>
 	[Browsable(false)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public Func<CancellationToken, IProgress<ProgressEventArgs>, Task>? BackgroundTask { get; set; }
 
 	/// <summary>Gets or sets the cancel button text.</summary>

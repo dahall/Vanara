@@ -1,4 +1,5 @@
-﻿using Vanara.Extensions.Reflection;
+﻿using System.Drawing;
+using Vanara.Extensions.Reflection;
 using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke;
@@ -3184,7 +3185,7 @@ After:
 	}
 
 	/// <summary>A SafeHandle to track DC handles retrieved via <see cref="GetDC"/>.</summary>
-	public class SafeReleaseHDC : SafeHANDLE
+	public class SafeReleaseHDC : SafeHANDLE, IDeviceContextHandle
 	{
 		private readonly HWND hWnd;
 
@@ -3195,8 +3196,6 @@ After:
 		/// <param name="hwnd">A handle to the window whose DC is to be retrieved. If this value is NULL, GetDC retrieves the DC for the entire screen.</param>
 		/// <param name="ownsHandle"><see langword="true" /> to reliably release the handle during the finalization phase; otherwise, <see langword="false" /> (not recommended).</param>
 		public SafeReleaseHDC(IntPtr preexistingHandle, HWND hwnd = default, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => hWnd = hwnd;
-
-		private SafeReleaseHDC(HWND hwnd = default) : base() => hWnd = hwnd;
 
 		/// <summary>A NULL value for this handle.</summary>
 		public static readonly SafeReleaseHDC Null = new(IntPtr.Zero, default, false);

@@ -1,0 +1,2 @@
+﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
+Vanara.PInvoke,ShlwApi,HUSKEY,IHandle,Provides a handle to a user specific registry key.,SafeHUSKEY,SafeHANDLE,SHRegCloseUSKey(this).Succeeded,

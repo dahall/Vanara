@@ -972,18 +972,9 @@ public static partial class Schannel
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for an Ssl Certificate that is disposed using <see cref="SslFreeCertificate"/>.</summary>
-	public class SafeSslCertificate : SafeHANDLE
+	[AutoSafeHandle("{ SslFreeCertificate(handle); return true; }")]
+	public partial class SafeSslCertificate
 	{
-		/// <summary>Initializes a new instance of the <see cref="SafeSslCertificate"/> class and assigns an existing handle.</summary>
-		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-		/// <param name="ownsHandle">
-		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-		/// </param>
-		public SafeSslCertificate(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeSslCertificate"/> class.</summary>
-		private SafeSslCertificate() : base() { }
-
 		/// <summary>
 		/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
 		/// </summary>
@@ -994,8 +985,5 @@ public static partial class Schannel
 			if (IsInvalid) return default;
 			return handle.ToStructure<T>();
 		}
-
-		/// <inheritdoc/>
-		protected override bool InternalReleaseHandle() { SslFreeCertificate(handle); return true; }
 	}
 }

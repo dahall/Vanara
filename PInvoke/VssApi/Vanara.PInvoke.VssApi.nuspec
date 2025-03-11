@@ -2,9 +2,9 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>Vanara.PInvoke.VssApi</id>
-    <version>4.0.5</version>
+    <version>4.1.1</version>
     <description>PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).</description>
-    <copyright>Copyright © 2017-2024</copyright>
+    <copyright>Copyright © 2017-2025</copyright>
     <authors>David Hall</authors>
     <tags>pinvoke,vanara,net-extensions,interop,VSS,VssApi,volume shadow copy service</tags>
     <license type="expression">MIT</license>
@@ -15,15 +15,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <language>en-US</language>
     <dependencies>
-      <group targetFramework="net6.0">
-        <dependency id="Vanara.Core" version="4.0.4" exclude="Build,Analyzers" />
-        <dependency id="Vanara.PInvoke.Shared" version="4.0.4" exclude="Build,Analyzers" />
+      <group targetFramework="net8.0-windows7.0">
+        <dependency id="Vanara.PInvoke.Shared" version="4.1.1" exclude="Build,Analyzers" />
       </group>
     </dependencies>
     <releaseNotes></releaseNotes>
   </metadata>
   <files>
-    <file src="bin\Release\net6.0\x64\Vanara.PInvoke.VssApi*.???" target="lib\net6.0" />
+    <file src="bin\Release\net8.0-windows\x64\Vanara.PInvoke.VssApi*.???" target="lib\net8.0-windows7.0" />
     <file src="..\..\docs\icons\Vanara64x64.png" target="Vanara64x64.png" />
     <file src="pkgreadme.md" target="pkgreadme.md" />
   </files>

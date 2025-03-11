@@ -4,6 +4,7 @@
     <Description>Extension methods and conversions from Vanara P/Invoke types and methods to UWP and WinUI types and methods.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <TargetFrameworks>net5.0-windows;net6.0;net7.0;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworksNotStd)</TargetFrameworks>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <AssemblyName>Vanara.WinUI.Extensions</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>

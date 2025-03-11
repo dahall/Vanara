@@ -453,8 +453,7 @@ public static partial class Shell32
 		public static HRESULT QueryInterface(in object iUnk, in Guid riid, out object? ppv)
 		{
 			Guid tmp = riid;
-			HRESULT hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref tmp, out IntPtr ippv);
-			ppv = hr.Succeeded ? Marshal.GetObjectForIUnknown(ippv) : null;
+			HRESULT hr = iUnk.QueryInterface(riid, out ppv);
 			System.Diagnostics.Debug.WriteLine($"Successful QI:\t{riid}");
 			return hr;
 		}

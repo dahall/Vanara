@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+
+namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -468,7 +470,89 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362509")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool BackupRead([In] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [MarshalAs(UnmanagedType.Bool)] bool bAbort,
-		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
+		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, ref IntPtr lpContext);
+
+	/// <summary>
+	/// The <c>BackupRead</c> function can be used to back up a file or directory, including the security information. The function reads
+	/// data associated with a specified file or directory into a buffer, which can then be written to the backup medium using the
+	/// <c>WriteFile</c> function.
+	/// <para>This method appropriately closes the read operation after reading all the streams.</para>
+	/// </summary>
+	/// <param name="hFile"><para>
+	/// Handle to the file or directory to be backed up. To obtain the handle, call the <c>CreateFile</c> function. The SACLs are not read
+	/// unless the file handle was created with the <c>ACCESS_SYSTEM_SECURITY</c> access right. For more information, see File Security and
+	/// Access Rights.
+	/// </para>
+	/// <para>
+	/// The handle must be synchronous (nonoverlapped). This means that the FILE_FLAG_OVERLAPPED flag must not be set when <c>CreateFile</c>
+	/// is called. This function does not validate that the handle it receives is synchronous, so it does not return an error code for a
+	/// synchronous handle, but calling it with an asynchronous (overlapped) handle can result in subtle errors that are very difficult to debug.
+	/// </para>
+	/// <para>
+	/// The <c>BackupRead</c> function may fail if <c>CreateFile</c> was called with the flag <c>FILE_FLAG_NO_BUFFERING</c>. In this case,
+	/// the <c>GetLastError</c> function returns the value <c>ERROR_INVALID_PARAMETER</c>.
+	/// </para></param>
+	/// <param name="bProcessSecurity"><para>Indicates whether the function will restore the access-control list (ACL) data for the file or directory.</para>
+	/// <para>If bProcessSecurity is <c>TRUE</c>, the ACL data will be backed up.</para></param>
+	/// <param name="lpBufferInfo">Returns a list of tuples with each stream's information (as a <see cref="WIN32_STREAM_ID" /> value, and optionally the contents.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is <see cref="Win32Error.NO_ERROR" />.</para>
+	/// <para>If the function fails, the return value indicates which error occurred.</para>
+	/// </returns>
+	[PInvokeData("Winbase.h", MSDNShortId = "aa362509")]
+	public static Win32Error BackupRead([In] HFILE hFile, [Optional] bool bProcessSecurity, out List<WIN32_STREAM_ID> lpBufferInfo)
+	{
+		lpBufferInfo = [];
+		unsafe
+		{
+			// Use header to prevent unknown allocation of name value
+			WIN32_STREAM_ID_HEADER hdr = new();
+			var hdrSize = (uint)sizeof(WIN32_STREAM_ID_HEADER);
+
+			IntPtr lpContext = default;
+			try
+			{
+				while (true)
+				{
+					// Read the next stream header:
+					var ret = BackupRead(hFile, (IntPtr)(void*)&hdr, hdrSize, out var bytesRead, false, bProcessSecurity, ref lpContext);
+					if (!ret)
+						return GetLastError();
+					// Last stream found, so exit loop
+					if (bytesRead == 0)
+						break;
+					// Unexpected error -- this should always be right
+					if (bytesRead != hdrSize)
+						return Win32Error.ERROR_INVALID_DATA;
+
+					// Get the name if available
+					string? name = null;
+					if (hdr.dwStreamNameSize > 0)
+					{
+						using SafeLPWSTR pName = new(((int)hdr.dwStreamNameSize / 2) + 1);
+						bool nameRead = BackupRead(hFile, pName, hdr.dwStreamNameSize, out bytesRead, false, bProcessSecurity, ref lpContext);
+						if (!nameRead)
+							return GetLastError();
+						name = pName;
+					}
+
+					// Capture the details about the stream
+					WIN32_STREAM_ID entry = hdr;
+					entry.cStreamName = name ?? "";
+					lpBufferInfo.Add(entry);
+
+					if (!BackupSeek(hFile, hdr.Size.LowPart(), (uint)hdr.Size.HighPart(), out _, out _, ref lpContext))
+						return GetLastError();
+				}
+			}
+			finally
+			{
+				// Close the backup
+				BackupRead(hFile, IntPtr.Zero, 0, out _, true, bProcessSecurity, ref lpContext);
+			}
+		}
+		return 0;
+	}
 
 	/// <summary>
 	/// The <c>BackupSeek</c> function seeks forward in a data stream initially accessed by using the <c>BackupRead</c> or <c>BackupWrite</c> function.
@@ -573,7 +657,7 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362511")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool BackupWrite([In] HFILE hFile, [In] IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [MarshalAs(UnmanagedType.Bool)] bool bAbort,
-		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
+		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, ref IntPtr lpContext);
 
 	/// <summary>The <c>CreateTapePartition</c> function reformats a tape.</summary>
 	/// <param name="hDevice">
@@ -1881,5 +1965,101 @@ public static partial class Kernel32
 		/// <summary>Unicode string that specifies the name of the alternative data stream.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 		public string cStreamName;
+
+		/// <summary>Performs an implicit conversion from <see cref="WIN32_STREAM_ID_HEADER"/> to <see cref="WIN32_STREAM_ID"/>.</summary>
+		/// <param name="h">The header.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator WIN32_STREAM_ID(in WIN32_STREAM_ID_HEADER h) =>
+			new() { dwStreamId = h.dwStreamId, dwStreamAttributes = h.dwStreamAttributes, Size = h.Size, dwStreamNameSize = h.dwStreamNameSize };
+	}
+
+	/// <summary>The <c>WIN32_STREAM_ID</c> structure contains stream data.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-win32_stream_id typedef struct _WIN32_STREAM_ID { DWORD
+	// dwStreamId; DWORD dwStreamAttributes; LARGE_INTEGER Size; DWORD dwStreamNameSize; WCHAR cStreamName[ANYSIZE_ARRAY]; } WIN32_STREAM_ID, *LPWIN32_STREAM_ID;
+	[PInvokeData("winbase.h", MSDNShortId = "NS:winbase._WIN32_STREAM_ID")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Size = 20, Pack = 4)]
+	public struct WIN32_STREAM_ID_HEADER
+	{
+		/// <summary>
+		/// <para>Type of data. This member can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>BACKUP_ALTERNATE_DATA</c> 0x00000004</description>
+		/// <description>Alternative data streams. This corresponds to the NTFS $DATA stream type on a named data stream.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_DATA</c> 0x00000001</description>
+		/// <description>Standard data. This corresponds to the NTFS $DATA stream type on the default (unnamed) data stream.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_EA_DATA</c> 0x00000002</description>
+		/// <description>Extended attribute data. This corresponds to the NTFS $EA stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_LINK</c> 0x00000005</description>
+		/// <description>Hard link information. This corresponds to the NTFS $FILE_NAME stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_OBJECT_ID</c> 0x00000007</description>
+		/// <description>Objects identifiers. This corresponds to the NTFS $OBJECT_ID stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_PROPERTY_DATA</c> 0x00000006</description>
+		/// <description>Property data.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_REPARSE_DATA</c> 0x00000008</description>
+		/// <description>Reparse points. This corresponds to the NTFS $REPARSE_POINT stream type.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_SECURITY_DATA</c> 0x00000003</description>
+		/// <description>Security descriptor data.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_SPARSE_BLOCK</c> 0x00000009</description>
+		/// <description>Sparse file. This corresponds to the NTFS $DATA stream type for a sparse file.</description>
+		/// </item>
+		/// <item>
+		/// <description><c>BACKUP_TXFS_DATA</c> 0x0000000A</description>
+		/// <description>
+		/// Transactional NTFS (TxF) data stream. This corresponds to the NTFS $TXF_DATA stream type. <c>Windows Server 2003 and
+		/// Windows XP:  </c> This value is not supported.
+		/// </description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public BACKUP_STREAM_ID dwStreamId;
+
+		/// <summary>
+		/// <para>Attributes of data to facilitate cross-operating system transfer. This member can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Value</description>
+		/// <description>Meaning</description>
+		/// </listheader>
+		/// <item>
+		/// <description><c>STREAM_MODIFIED_WHEN_READ</c></description>
+		/// <description>
+		/// Attribute set if the stream contains data that is modified when read. Allows the backup application to know that verification of
+		/// data will fail.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description><c>STREAM_CONTAINS_SECURITY</c></description>
+		/// <description>Stream contains security data (general attributes). Allows the stream to be ignored on cross-operations restore.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public BACKUP_STREAM_ATTR dwStreamAttributes;
+
+		/// <summary>Size of data, in bytes.</summary>
+		public long Size;
+
+		/// <summary>Length of the name of the alternative data stream, in bytes.</summary>
+		public uint dwStreamNameSize;
 	}
 }
