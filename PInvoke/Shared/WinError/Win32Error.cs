@@ -114,11 +114,17 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static bool ThrowLastErrorIfFalse(bool value, string? message = null) => ThrowLastErrorIf(value, v => !v, message);
 
-	/// <summary>Throws the last error if the value is an invalid handle.</summary>
+	/// <summary>Throws the last error if the value is an invalid SafeHandle.</summary>
 	/// <param name="value">The SafeHandle to check.</param>
 	/// <param name="message">The message.</param>
 	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static T ThrowLastErrorIfInvalid<T>(T value, string? message = null) where T : SafeHandle => ThrowLastErrorIf(value, v => v.IsInvalid, message);
+
+	/// <summary>Throws the last error if the value is an invalid handle.</summary>
+	/// <param name="value">The handle to check.</param>
+	/// <param name="message">The message.</param>
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
+	public static T ThrowLastErrorIfInvalidHandle<T>(T value, string? message = null) where T : IHandle => ThrowLastErrorIf(value, v => v.IsInvalid, message);
 
 	/// <summary>Throws the last error if the value is a NULL pointer (IntPtr.Zero).</summary>
 	/// <param name="value">The pointer to check.</param>
