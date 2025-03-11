@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using static Vanara.PInvoke.Macros;
 
@@ -87,7 +88,7 @@ public struct ResourceId : IEquatable<string>, IEquatable<IntPtr>, IEquatable<in
 	/// <value>The identifier.</value>
 	public int id
 	{
-		get => IS_INTRESOURCE(ptr) ? (ushort)ptr.ToInt32() : 0;
+		readonly get => IS_INTRESOURCE(ptr) ? (ushort)ptr.ToInt32() : 0;
 		set
 		{
 			if (value is > ushort.MaxValue or <= 0) throw new ArgumentOutOfRangeException(nameof(id));
@@ -97,7 +98,10 @@ public struct ResourceId : IEquatable<string>, IEquatable<IntPtr>, IEquatable<in
 
 	/// <summary>Determines whether this value is an integer identifier for a resource.</summary>
 	/// <returns>If the value is a resource identifier, the return value is <see langword="true"/>. Otherwise, the return value is <see langword="false"/>.</returns>
-	public bool IsIntResource => IS_INTRESOURCE(ptr);
+	public readonly bool IsIntResource => IS_INTRESOURCE(ptr);
+
+	/// <inheritdoc/>
+	public readonly bool IsInvalid => ptr == IntPtr.Zero;
 
 	/// <summary>Represent a NULL value.</summary>
 	public static readonly ResourceId NULL = new();
@@ -138,66 +142,43 @@ public struct ResourceId : IEquatable<string>, IEquatable<IntPtr>, IEquatable<in
 	/// <returns>The result of the conversion.</returns>
 	public static explicit operator string(ResourceId r) => r.ToString();
 
-	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
-	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	/// <inheritdoc/>
 	public override bool Equals(object? obj)
 	{
-		switch (obj)
+		try
 		{
-			case null:
-				return false;
-
-			case string s:
-				return Equals(s);
-
-			case int i:
-				return Equals(i);
-
-			case IntPtr p:
-				return Equals(p);
-
-			case ResourceId r:
-				return Equals(r);
-
-			case IHandle h:
-				return Equals(h.DangerousGetHandle());
-
-			default:
-				if (!obj.GetType().IsPrimitive) return false;
-				try { return Equals(Convert.ToInt32(obj)); } catch { return false; }
+			return obj switch
+			{
+				null => false,
+				string s => Equals(s),
+				int i => Equals(i),
+				IntPtr p => Equals(p),
+				ResourceId r => Equals(r),
+				IHandle h => Equals(h.DangerousGetHandle()),
+				IConvertible c => Equals(c.ToInt32(null)),
+				_ => obj.GetType().IsPrimitive && Equals(Convert.ToInt32(obj)),
+			};
 		}
+		catch { return false; }
 	}
 
-	/// <summary>Returns a hash code for this instance.</summary>
-	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+	/// <inheritdoc/>
 	public override int GetHashCode() => ptr.GetHashCode();
 
-	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
-	/// <returns>A <see cref="string"/> that represents this instance.</returns>
+	/// <inheritdoc/>
 	public override string ToString() => IS_INTRESOURCE(ptr) ? $"#{ptr.ToInt32()}" : Marshal.PtrToStringAuto(ptr) ?? "";
 
-	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-	/// <param name="other">An object to compare with this object.</param>
-	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(int other) => ptr.ToInt32().Equals(other);
+	/// <inheritdoc/>
+	public readonly bool Equals(int other) => ptr.ToInt32().Equals(other);
 
-	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-	/// <param name="other">An object to compare with this object.</param>
-	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	/// <exception cref="NotImplementedException"></exception>
-	public bool Equals(string? other) => string.Equals(ToString(), other);
+	/// <inheritdoc/>
+	public readonly bool Equals(string? other) => string.Equals(ToString(), other);
 
-	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-	/// <param name="other">An object to compare with this object.</param>
-	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(IntPtr other) => ptr.Equals(other);
+	/// <inheritdoc/>
+	public readonly bool Equals(IntPtr other) => ptr.Equals(other);
 
-	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-	/// <param name="other">An object to compare with this object.</param>
-	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	/// <exception cref="NotImplementedException"></exception>
-	public bool Equals(ResourceId other) => string.Equals(other.ToString(), ToString());
+	/// <inheritdoc/>
+	public readonly bool Equals(ResourceId other) => string.Equals(other.ToString(), ToString());
 
 	/// <inheritdoc/>
 	public IntPtr DangerousGetHandle() => ptr;
@@ -221,6 +202,9 @@ public struct ResourceIdOrHandle<THandle> : IEquatable<string>, IEquatable<int>,
 			ptr = (IntPtr)(ushort)value;
 		}
 	}
+
+	/// <inheritdoc/>
+	public readonly bool IsInvalid => ptr == IntPtr.Zero;
 
 	/// <summary>Represent a NULL value.</summary>
 	public static readonly ResourceIdOrHandle<THandle> NULL = new();

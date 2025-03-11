@@ -5846,6 +5846,9 @@ public static partial class Odbc32
 		/// <summary>Returns an invalid handle by instantiating a <see cref="SQLHDBC"/> object with <see cref="IntPtr.Zero"/>.</summary>
 		public static SQLHDBC NULL => new(IntPtr.Zero);
 
+		/// <inheritdoc/>
+		public bool IsInvalid => IsNull;
+
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public readonly bool IsNull => handle == IntPtr.Zero;
 
@@ -5896,6 +5899,9 @@ public static partial class Odbc32
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="SQLHDESC"/> object with <see cref="IntPtr.Zero"/>.</summary>
 		public static SQLHDESC NULL => new(IntPtr.Zero);
+
+		/// <inheritdoc/>
+		public bool IsInvalid => IsNull;
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public readonly bool IsNull => handle == IntPtr.Zero;
@@ -5948,6 +5954,9 @@ public static partial class Odbc32
 		/// <summary>Returns an invalid handle by instantiating a <see cref="SQLHENV"/> object with <see cref="IntPtr.Zero"/>.</summary>
 		public static SQLHENV NULL => new(IntPtr.Zero);
 
+		/// <inheritdoc/>
+		public bool IsInvalid => IsNull;
+
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public readonly bool IsNull => handle == IntPtr.Zero;
 
@@ -5998,6 +6007,9 @@ public static partial class Odbc32
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="SQLHSTMT"/> object with <see cref="IntPtr.Zero"/>.</summary>
 		public static SQLHSTMT NULL => new(IntPtr.Zero);
+
+		/// <inheritdoc/>
+		public bool IsInvalid => IsNull;
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public readonly bool IsNull => handle == IntPtr.Zero;

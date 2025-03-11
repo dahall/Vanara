@@ -42,6 +42,9 @@ public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	/// <value>The handle.</value>
 	public HWND Handle => hwnd ?? HWND.NULL;
 
+	/// <inheritdoc/>
+	public bool IsInvalid => hwnd?.IsInvalid ?? true;
+
 	/// <summary>Gets or sets the callback method used to filter window messages.</summary>
 	/// <value>The callback method.</value>
 	public BasicMessageWindowFilter? MessageFilter { get; set; }

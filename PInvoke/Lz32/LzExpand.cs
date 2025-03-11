@@ -775,6 +775,9 @@ public static partial class Lz32
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HLZFILE"/> object with <c>0</c>.</summary>
 		public static HLZFILE NULL => new(0);
 
+		/// <inheritdoc/>
+		public bool IsInvalid => IsNull;
+
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == 0;
 

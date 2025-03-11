@@ -62,6 +62,9 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// <value>The window handle.</value>
 	public HWND Handle => hwnd ?? HWND.NULL;
 
+	/// <inheritdoc/>
+	public bool IsInvalid => hwnd?.IsInvalid ?? true;
+
 	/// <summary>Gets or sets information about the window.</summary>
 	/// <value>The information indexer.</value>
 	public ISupportIndexer<WindowLongFlags, IntPtr> Param => paramIndexer ??= new ParamIndexer(this);

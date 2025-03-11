@@ -219,6 +219,9 @@ public class SafeTempHDC(IDeviceContext? dc) : IDisposable, IGraphicsObjectHandl
 {
 	private readonly IntPtr hdc = dc?.GetHdc() ?? default;
 
+	/// <inheritdoc/>
+	public bool IsInvalid => IsNull;
+
 	/// <summary>Gets a value indicating whether this instance has a NULL handle.</summary>
 	/// <value><see langword="true"/> if this has a NULL handle; otherwise, <see langword="false"/>.</value>
 	public bool IsNull => hdc == default;
