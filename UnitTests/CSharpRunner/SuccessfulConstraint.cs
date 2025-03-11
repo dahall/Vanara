@@ -210,14 +210,13 @@ public class ValidHandleConstraint : OpConstraint
 				break;
 
 			case IHandle ih:
+				success = !ih.IsInvalid;
 				val = ih.DangerousGetHandle();
-				var l = val.ToInt64();
-				success = l is not 0 and not (-1);
 				break;
 
 			case IntPtr p:
 				val = p;
-				l = val.ToInt64();
+				long l = val.ToInt64();
 				success = l is not 0 and not (-1);
 				break;
 
