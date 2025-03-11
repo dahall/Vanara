@@ -503,9 +503,9 @@ public static partial class Ole32
 				return ret | VARTYPE.VT_HRESULT;
 			if (elemtype.IsCOMObject)
 			{
-#pragma warning disable IL2065 // The method has a DynamicallyAccessedMembersAttribute (which applies to the implicit 'this' parameter), but the value used for the 'this' parameter can not be statically analyzed.
+#pragma warning disable IL2065, IL2070, IL2075 // The method has a DynamicallyAccessedMembersAttribute (which applies to the implicit 'this' parameter), but the value used for the 'this' parameter can not be statically analyzed.
 				Type[] intf = elemtype!.GetInterfaces();
-#pragma warning restore IL2065 // The method has a DynamicallyAccessedMembersAttribute (which applies to the implicit 'this' parameter), but the value used for the 'this' parameter can not be statically analyzed.
+#pragma warning restore IL2065, IL2070, IL2075 // The method has a DynamicallyAccessedMembersAttribute (which applies to the implicit 'this' parameter), but the value used for the 'this' parameter can not be statically analyzed.
 				if (intf.Contains(typeof(IStream))) return ret | VARTYPE.VT_STREAM;
 				if (intf.Contains(typeof(IStorage))) return ret | VARTYPE.VT_STORAGE;
 				return ret | VARTYPE.VT_UNKNOWN;

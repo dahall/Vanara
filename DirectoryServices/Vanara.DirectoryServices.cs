@@ -1559,8 +1559,8 @@ public class ADsPropertyCache : /*DynamicObject,*/ IDictionary<string, object?>
 
 	private static SafePSECURITY_DESCRIPTOR ISD2SD(object isd)
 	{
-		SecurityDescriptorToBinarySD((IADsSecurityDescriptor)isd, out var sd, out _).ThrowIfFailed();
-		return new SafePSECURITY_DESCRIPTOR(sd, true);
+		SecurityDescriptorToBinarySD((IADsSecurityDescriptor)isd, out var sd).ThrowIfFailed();
+		return sd!;
 	}
 
 	private IEnumerable<IADsPropertyEntry> EnumProps()

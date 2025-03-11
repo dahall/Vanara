@@ -134,7 +134,7 @@ public static partial class ActiveDS
 	/// </param>
 	/// <param name="ppszDestData">
 	/// <para>Type: <c>LPWSTR*</c></para>
-	/// <para>Pointer to a null-terminated Unicode string that receives the converted data.</para>
+	/// <para>Pointer to a null-terminated Unicode string that receives the converted data. This memory does NOT need to be freed.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>HRESULT</c></para>
@@ -144,8 +144,7 @@ public static partial class ActiveDS
 	/// <para>
 	/// In ADSI, search filters must be Unicode strings. Sometimes, a filter contains data that is normally represented by an opaque BLOB of
 	/// data. For example, you may want to include an object security identifier in a search filter, which is of binary data. In this case,
-	/// you must first call the <c>ADsEncodeBinaryData</c> function to convert the binary data to the Unicode string format. When the data is
-	/// no longer required, call the FreeADsMem function to free the converted Unicode string; that is, <c>ppszDestData</c>.
+	/// you must first call the <c>ADsEncodeBinaryData</c> function to convert the binary data to the Unicode string format.
 	/// </para>
 	/// <para>
 	/// The <c>ADsEncodeBinaryData</c> function does not encode byte values that represent alpha-numeric characters. It will, instead, place
@@ -153,14 +152,12 @@ public static partial class ActiveDS
 	/// characters. For example, if the binary data is 0x05|0x1A|0x1B|0x43|0x32, the encoded string will contain "\05\1A\1BC2". This has no
 	/// effect on the filter and the search filters will work correctly with these types of strings.
 	/// </para>
-	/// <para>Examples</para>
-	/// <para>The following code example shows how to use this function.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsencodebinarydata HRESULT ADsEncodeBinaryData( [in] PBYTE
 	// pbSrcData, [in] DWORD dwSrcLen, [out] LPWSTR *ppszDestData );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT ADsEncodeBinaryData([In] IntPtr pbSrcData, uint dwSrcLen, out IntPtr ppszDestData);
+	public static extern HRESULT ADsEncodeBinaryData([In] IntPtr pbSrcData, uint dwSrcLen, [Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AdsUnicodeStringMarshaler))] out string? ppszDestData);
 
 	/// <summary>
 	/// The <c>ADsEncodeBinaryData</c> function converts a binary large object (BLOB) to the Unicode format suitable to be embedded in a
@@ -176,7 +173,7 @@ public static partial class ActiveDS
 	/// </param>
 	/// <param name="ppszDestData">
 	/// <para>Type: <c>LPWSTR*</c></para>
-	/// <para>Pointer to a null-terminated Unicode string that receives the converted data.</para>
+	/// <para>Pointer to a null-terminated Unicode string that receives the converted data. This memory does NOT need to be freed.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>HRESULT</c></para>
@@ -186,8 +183,7 @@ public static partial class ActiveDS
 	/// <para>
 	/// In ADSI, search filters must be Unicode strings. Sometimes, a filter contains data that is normally represented by an opaque BLOB of
 	/// data. For example, you may want to include an object security identifier in a search filter, which is of binary data. In this case,
-	/// you must first call the <c>ADsEncodeBinaryData</c> function to convert the binary data to the Unicode string format. When the data is
-	/// no longer required, call the FreeADsMem function to free the converted Unicode string; that is, <c>ppszDestData</c>.
+	/// you must first call the <c>ADsEncodeBinaryData</c> function to convert the binary data to the Unicode string format.
 	/// </para>
 	/// <para>
 	/// The <c>ADsEncodeBinaryData</c> function does not encode byte values that represent alpha-numeric characters. It will, instead, place
@@ -202,7 +198,7 @@ public static partial class ActiveDS
 	// pbSrcData, [in] DWORD dwSrcLen, [out] LPWSTR *ppszDestData );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, uint dwSrcLen, out IntPtr ppszDestData);
+	public static extern HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, uint dwSrcLen, [Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AdsUnicodeStringMarshaler))] out string? ppszDestData);
 
 	/// <summary>
 	/// The <c>ADsEncodeBinaryData</c> function converts a binary large object (BLOB) to the Unicode format suitable to be embedded in a
@@ -225,13 +221,8 @@ public static partial class ActiveDS
 	/// </para>
 	/// </remarks>
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
-	public static HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, out string? ppszDestData)
-	{
-		var hr = ADsEncodeBinaryData(pbSrcData, (uint)pbSrcData.Length, out var ppsz);
-		ppszDestData = hr.Succeeded ? Marshal.PtrToStringUni(ppsz) : null;
-		if (hr.Succeeded) FreeADsMem(ppsz);
-		return hr;
-	}
+	public static HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, out string? ppszDestData) =>
+		ADsEncodeBinaryData(pbSrcData, (uint)pbSrcData.Length, out ppszDestData);
 
 	/// <summary>
 	/// The <c>ADsEnumerateNext</c> function enumerates through a specified number of elements from the current cursor position of the
@@ -877,15 +868,10 @@ public static partial class ActiveDS
 	/// </para>
 	/// </param>
 	/// <param name="ppSecurityDescriptor">
-	/// <para>Type: <c>PSECURITY_DESCRIPTOR*</c></para>
+	/// <para>Type: <c>SafePSECURITY_DESCRIPTOR</c></para>
 	/// <para>
-	/// Address of a SECURITY_DESCRIPTOR pointer that receives the binary security descriptor data. The caller must free this memory by
-	/// passing this pointer to the FreeADsMem function.
+	/// A SECURITY_DESCRIPTOR that receives the binary security descriptor data. This memory does not need to be freed.
 	/// </para>
-	/// </param>
-	/// <param name="pdwSDLength">
-	/// <para>Type: <c>PDWORD</c></para>
-	/// <para>Address of a <c>DWORD</c> value that receives the length, in bytes of the binary security descriptor data.</para>
 	/// </param>
 	/// <param name="pszServerName">
 	/// <para>Type: <c>LPCWSTR</c></para>
@@ -927,9 +913,36 @@ public static partial class ActiveDS
 	// SecurityDescriptorToBinarySD( [in] VARIANT vVarSecDes, [out] PSECURITY_DESCRIPTOR *ppSecurityDescriptor, [out] PDWORD pdwSDLength,
 	// [in] LPCWSTR pszServerName, [in] LPCWSTR userName, [in] LPCWSTR passWord, [in] DWORD dwFlags );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.SecurityDescriptorToBinarySD")]
+	public static HRESULT SecurityDescriptorToBinarySD([In] object? vVarSecDes, out AdvApi32.SafePSECURITY_DESCRIPTOR? ppSecurityDescriptor,
+		[Optional] string? pszServerName, [Optional] string? userName, [Optional] string? passWord, [Optional] ADS_AUTHENTICATION dwFlags)
+	{
+		var hr = SecurityDescriptorToBinarySD(vVarSecDes, out var p, out var l, pszServerName, userName, passWord, dwFlags);
+		ppSecurityDescriptor = hr.Succeeded ? new AdvApi32.SafePSECURITY_DESCRIPTOR(p.AsReadOnlySpan<byte>(l).ToArray()) : null;
+		if (hr.Succeeded) FreeADsMem(p);
+		return hr;
+	}
+
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT SecurityDescriptorToBinarySD([In, MarshalAs(UnmanagedType.Struct)] object? vVarSecDes,
-		out PSECURITY_DESCRIPTOR ppSecurityDescriptor, out uint pdwSDLength, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszServerName,
+	private static extern HRESULT SecurityDescriptorToBinarySD([In, MarshalAs(UnmanagedType.Struct)] object? vVarSecDes,
+		out IntPtr ppSecurityDescriptor, out uint pdwSDLength, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszServerName,
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? userName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? passWord,
 		[Optional] ADS_AUTHENTICATION dwFlags);
+
+	/// <summary>A custom marshaler for functions using <see cref="AllocADsMem"/> and <see cref="FreeADsMem"/> so that managed strings can be used.</summary>
+	/// <seealso cref="ICustomMarshaler"/>
+	internal class AdsUnicodeStringMarshaler : ICustomMarshaler
+	{
+		public static ICustomMarshaler GetInstance(string _) => new AdsUnicodeStringMarshaler();
+
+		void ICustomMarshaler.CleanUpManagedData(object ManagedObj) { }
+
+		void ICustomMarshaler.CleanUpNativeData(IntPtr pNativeData) { if (pNativeData != IntPtr.Zero) Marshal.FreeCoTaskMem(pNativeData); }
+
+		int ICustomMarshaler.GetNativeDataSize() => IntPtr.Size;
+
+		IntPtr ICustomMarshaler.MarshalManagedToNative(object? ManagedObj) =>
+			ManagedObj is string s ? StringHelper.AllocString(s, CharSet.Unicode, i => AllocADsMem((uint)i), out _) : IntPtr.Zero;
+
+		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) { try { return StringHelper.GetString(pNativeData, CharSet.Unicode)!; } finally { FreeADsMem(pNativeData); } }
+	}
 }

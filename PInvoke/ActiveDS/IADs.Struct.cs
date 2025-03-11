@@ -154,7 +154,7 @@ public static partial class ActiveDS
 	public struct ADS_CASEIGNORE_LIST
 	{
 		/// <summary>Pointer to the next <c>ADS_CASEIGNORE_LIST</c> in the list of case-insensitive strings.</summary>
-		public IntPtr Next;
+		public ManagedStructPointer<ADS_CASEIGNORE_LIST> Next;
 
 		/// <summary>The null-terminated Unicode string value of the current entry of the list.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -555,7 +555,7 @@ public static partial class ActiveDS
 	public struct ADS_OCTET_LIST
 	{
 		/// <summary>Pointer to the next <c>ADS_OCTET_LIST</c> entry in the list.</summary>
-		public IntPtr Next;
+		public StructPointer<ADS_OCTET_LIST> Next;
 
 		/// <summary>Contains the length, in bytes, of the list.</summary>
 		public uint Length;
@@ -1175,8 +1175,8 @@ public static partial class ActiveDS
 			ADSTYPE.ADSTYPE_UTC_TIME => UTCTime.ToDateTime(DateTimeKind.Utc),
 			ADSTYPE.ADSTYPE_LARGE_INTEGER => LargeInteger,
 			ADSTYPE.ADSTYPE_PROV_SPECIFIC => ProviderSpecific.lpValue.ToByteArray((int)ProviderSpecific.dwLength),
-			ADSTYPE.ADSTYPE_CASEIGNORE_LIST => pCaseIgnoreList.LinkedListToIEnum<ADS_CASEIGNORE_LIST>(l => l.Next).Select(i => i.String).ToArray(),
-			ADSTYPE.ADSTYPE_OCTET_LIST => pOctetList.LinkedListToIEnum<ADS_OCTET_LIST>(l => l.Next).Select(i => i.Data.ToByteArray((int)i.Length)).ToArray(),
+			ADSTYPE.ADSTYPE_CASEIGNORE_LIST => pCaseIgnoreList.LinkedListToIEnum<ADS_CASEIGNORE_LIST>(l => (IntPtr)l.Next).Select(i => i.String).ToArray(),
+			ADSTYPE.ADSTYPE_OCTET_LIST => pOctetList.LinkedListToIEnum<ADS_OCTET_LIST>(l => (IntPtr)l.Next).Select(i => i.Data.ToByteArray((int)i.Length)).ToArray(),
 			ADSTYPE.ADSTYPE_PATH => pPath.ToNullableStructure<ADS_PATH>(),
 			ADSTYPE.ADSTYPE_POSTALADDRESS => pPostalAddress.ToNullableStructure<ADS_POSTALADDRESS>()?.PostalAddress,
 			ADSTYPE.ADSTYPE_TIMESTAMP => Timestamp,
@@ -1283,7 +1283,7 @@ public static partial class ActiveDS
 						{
 							ADS_OCTET_LIST oli = new() { Data = xptr, Length = (uint)ola[idx].Length, Next = iptr.Offset(ssz) };
 							iptr.Write(oli);
-							iptr = oli.Next;
+							iptr = (IntPtr)oli.Next;
 							xptr = xptr.Offset(xptr.Write(ola[idx]));
 						}
 						pOctetList = mem = pola;

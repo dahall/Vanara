@@ -553,9 +553,9 @@ public class ActiveDSTests
 		var psd = (IADsSecurityDescriptor)varSec;
 		TestContext.WriteLine($"{psd!.Owner}, {psd!.Group}");
 
-		Assert.That(SecurityDescriptorToBinarySD(psd, out var pSDbin, out _), ResultIs.Successful);
+		Assert.That(SecurityDescriptorToBinarySD(psd, out var pSDbin), ResultIs.ValidHandle);
 		try { Assert.That(pSD.Equals(pSDbin)); }
-		finally { FreeADsMem((IntPtr)pSDbin); }
+		finally { FreeADsMem((IntPtr)pSDbin!); }
 	}
 
 	internal static void Write(string pName, Func<object?> f)

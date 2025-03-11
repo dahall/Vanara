@@ -2198,7 +2198,7 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-getobjectinformation HRESULT
 		// GetObjectInformation( [out] PADS_OBJECT_INFO *ppObjInfo );
-		void GetObjectInformation(out IntPtr ppObjInfo);
+		void GetObjectInformation(out ManagedStructPointer<ADS_OBJECT_INFO> ppObjInfo);
 
 		/// <summary>
 		/// The <c>IDirectoryObject::GetObjectAttributes</c> method retrieves one or more specified attributes of the directory service object.
@@ -2241,7 +2241,7 @@ public static partial class ActiveDS
 		// [in] LPWSTR *pAttributeNames, [in] DWORD dwNumberAttributes, [out] PADS_ATTR_INFO *ppAttributeEntries, [out] DWORD
 		// *pdwNumAttributesReturned );
 		void GetObjectAttributes([In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? pAttributeNames,
-			[In] uint dwNumberAttributes, out IntPtr ppAttributeEntries, out uint pdwNumAttributesReturned);
+			[In] uint dwNumberAttributes, out ManagedArrayPointer<ADS_ATTR_INFO> ppAttributeEntries, out uint pdwNumAttributesReturned);
 
 		/// <summary>
 		/// The <c>IDirectoryObject::SetObjectAttributes</c> method modifies data in one or more specified object attributes defined in the
@@ -2278,7 +2278,7 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-setobjectattributes HRESULT SetObjectAttributes(
 		// [in] PADS_ATTR_INFO pAttributeEntries, [in] DWORD dwNumAttributes, [out] DWORD *pdwNumAttributesModified );
-		void SetObjectAttributes([In] IntPtr pAttributeEntries, [In] uint dwNumAttributes, out uint pdwNumAttributesModified);
+		void SetObjectAttributes([In] ManagedArrayPointer<ADS_ATTR_INFO> pAttributeEntries, [In] uint dwNumAttributes, out uint pdwNumAttributesModified);
 
 		/// <summary>The <c>IDirectoryObject::CreateDSObject</c> method creates a child of the current directory service object.</summary>
 		/// <param name="pszRDNName">Provides the relative distinguished name (relative path) of the object to be created.</param>
@@ -2297,7 +2297,7 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-createdsobject HRESULT CreateDSObject( [in]
 		// LPWSTR pszRDNName, [in] PADS_ATTR_INFO pAttributeEntries, [in] DWORD dwNumAttributes, [out] IDispatch **ppObject );
-		void CreateDSObject([In, MarshalAs(UnmanagedType.LPWStr)] string pszRDNName, [In] IntPtr pAttributeEntries, [In] uint dwNumAttributes, [MarshalAs(UnmanagedType.IDispatch)] out object ppObject);
+		void CreateDSObject([In, MarshalAs(UnmanagedType.LPWStr)] string pszRDNName, [In] ManagedArrayPointer<ADS_ATTR_INFO> pAttributeEntries, [In] uint dwNumAttributes, [MarshalAs(UnmanagedType.IDispatch)] out object ppObject);
 
 		/// <summary>The <c>IDirectoryObject::DeleteDSObject</c> method deletes a leaf object in a directory tree.</summary>
 		/// <param name="pszRDNName">The relative distinguished name (relative path) of the object to be deleted.</param>
@@ -2325,8 +2325,8 @@ public static partial class ActiveDS
 		try
 		{
 			ido.GetObjectInformation(out var p);
-			var ret = p.ToStructure<ADS_OBJECT_INFO>();
-			FreeADsMem(p);
+			var ret = p.Value;
+			FreeADsMem((IntPtr)p);
 			return ret;
 		}
 		catch { }
@@ -2361,8 +2361,8 @@ public static partial class ActiveDS
 		try
 		{
 			ido.GetObjectAttributes(pAttributeNames, unchecked((uint)(pAttributeNames?.Length ?? -1)), out var p, out var c);
-			ADS_ATTR_INFO[] ret = p.ToArray<ADS_ATTR_INFO>((int)c) ?? [];
-			FreeADsMem(p);
+			ADS_ATTR_INFO[] ret = p.ToArray(c) ?? [];
+			FreeADsMem((IntPtr)p);
 			return ret;
 		}
 		catch { }
@@ -2584,19 +2584,12 @@ public static partial class ActiveDS
 		/// <param name="hSearchHandle">Provides a handle to the search context.</param>
 		/// <param name="ppszColumnName">
 		/// Provides the address of a pointer to a method-allocated string containing the requested column name. If <c>NULL</c>, no
-		/// subsequent rows contain data.
+		/// subsequent rows contain data. The caller does NOT need to free this memory.
 		/// </param>
-		/// <remarks>
-		/// <para>
-		/// This method allocates sufficient memory for the column name, but the caller must call the FreeADsMem helper function to free this
-		/// memory when it is no longer needed.
-		/// </para>
-		/// <para>Examples</para>
-		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-getnextcolumnname HRESULT GetNextColumnName(
 		// [in] ADS_SEARCH_HANDLE hSearchHandle, [out] LPWSTR *ppszColumnName );
 		[PreserveSig]
-		HRESULT GetNextColumnName([In] ADS_SEARCH_HANDLE hSearchHandle, out StrPtrUni ppszColumnName);
+		HRESULT GetNextColumnName([In] ADS_SEARCH_HANDLE hSearchHandle, [Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AdsUnicodeStringMarshaler))] out string? ppszColumnName);
 
 		/// <summary>The <c>IDirectorySearch::GetColumn</c> method gets data from a named column of the search result.</summary>
 		/// <param name="hSearchResult">Provides a handle to the search context.</param>
@@ -2721,16 +2714,13 @@ public static partial class ActiveDS
 	/// <returns>The requested column name. If <see langword="null"/>, no subsequent rows contain data.</returns>
 	public static string? GetNextColumnName(this IDirectorySearch ids, [In] ADS_SEARCH_HANDLE hSearchHandle)
 	{
-		string? ret = null;
 		try
 		{
-			HRESULT hr = ids.GetNextColumnName(hSearchHandle, out var s);
-			hr.ThrowIfFailed();
-			ret = hr == HRESULT.S_ADS_NOMORE_COLUMNS ? null : s.ToString();
-			FreeADsMem((IntPtr)s);
+			ids.GetNextColumnName(hSearchHandle, out var s).ThrowIfFailed();
+			return s;
 		}
 		catch { }
-		return ret;
+		return null;
 	}
 
 	/// <summary>
