@@ -53,6 +53,10 @@ public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	/// <value>The name of the class.</value>
 	public string? ClassName => wCls?.ClassName;
 
+	/// <summary>Gets the window class registered for this window.</summary>
+	/// <value>The window class.</value>
+	public WindowClass? WindowClass => wCls;
+
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	public void Dispose()
 	{

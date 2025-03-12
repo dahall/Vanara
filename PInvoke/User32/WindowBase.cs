@@ -25,6 +25,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	private static readonly object createWindowSyncObject = new();
 	private readonly WeakReference weakThisPtr;
 	private bool createdClass = false;
+	private GCHandle gcWnd;
 	private SafeHWND? hwnd;
 	private bool isDisposed;
 	private ParamIndexer? paramIndexer;
@@ -68,6 +69,10 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// <summary>Gets or sets information about the window.</summary>
 	/// <value>The information indexer.</value>
 	public ISupportIndexer<WindowLongFlags, IntPtr> Param => paramIndexer ??= new ParamIndexer(this);
+
+	/// <summary>Gets the window class registered for this window.</summary>
+	/// <value>The window class.</value>
+	public WindowClass? WindowClass => wCls;
 
 	/// <summary>Creates a window and its handle with the specified creation parameters.</summary>
 	/// <param name="wc">The window class. If <see langword="null"/>, a new window class is created that is unique to this window.</param>
@@ -138,23 +143,16 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 
 				if ((wCls = wc) is null)
 				{
-					wCls = WindowClass.MakeVisibleWindowClass($"{GetType().Name}+{Guid.NewGuid()}", null);
+					wCls = WindowClass.MakeVisibleWindowClass($"{GetType().Name}+{Guid.NewGuid():N}", null);
 					createdClass = true;
 				}
 				size ??= new(CW_USEDEFAULT, CW_USEDEFAULT);
 				position ??= new(CW_USEDEFAULT, CW_USEDEFAULT);
-				GCHandle gcWnd = GCHandle.Alloc(this);
-				try
-				{
-					if (text?.Length > short.MaxValue)
-						text = text.Substring(0, short.MaxValue);
-					hwnd = Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(exStyle, wCls.ClassName, text, style, position.Value.X,
-						position.Value.Y, size.Value.Width, size.Value.Height, parent, hMenu, wCls.wc.hInstance, GCHandle.ToIntPtr(gcWnd)));
-				}
-				finally
-				{
-					gcWnd.Free();
-				}
+				gcWnd = GCHandle.Alloc(this);
+				if (text?.Length > short.MaxValue)
+					text = text.Substring(0, short.MaxValue);
+				hwnd = Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(exStyle, wCls.ClassName, text, style, position.Value.X,
+					position.Value.Y, size.Value.Width, size.Value.Height, parent, hMenu, wCls.wc.hInstance, GCHandle.ToIntPtr(gcWnd)));
 			}
 		}
 	}
@@ -265,6 +263,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 		lock (this)
 			Detach();
 		if (createdClass) wCls?.Unregister();
+		gcWnd.Free();
 		isDisposed = true;
 	}
 

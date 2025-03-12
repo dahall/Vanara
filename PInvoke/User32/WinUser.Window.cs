@@ -25,7 +25,7 @@ public static partial class User32
 	/// <returns>To continue enumeration, the callback function must return <c>TRUE</c>; to stop enumeration, it must return <c>FALSE</c>.</returns>
 	// BOOL CALLBACK EnumChildProc( _In_ HWND hwnd, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633493(v=vs.85).aspx
 	[PInvokeData("Winuser.h", MSDNShortId = "ms633493")]
-	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public delegate bool EnumWindowsProc([In] HWND hwnd, [In] IntPtr lParam);
 
@@ -59,7 +59,7 @@ public static partial class User32
 	/// </returns>
 	// LRESULT CALLBACK WindowProc( _In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633573(v=vs.85).aspx
 	[PInvokeData("Winuser.h", MSDNShortId = "ms633573")]
-	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	public delegate IntPtr WindowProc([In] HWND hwnd, [In] uint uMsg, [In] IntPtr wParam, [In] IntPtr lParam);
 
 	/// <summary>
@@ -161,7 +161,7 @@ public static partial class User32
 	/// </para>
 	/// </returns>
 	// int CALLBACK WinMain( _In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx
-	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms633559")]
 	public delegate int WinMain([In] HINSTANCE hInstance, [In] HINSTANCE hPrevInstance, [In][MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
 
@@ -7472,7 +7472,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowtext")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowText(HWND hWnd, [MarshalAs(UnmanagedType.LPTStr)] string lpString);
+	public static extern bool SetWindowText(HWND hWnd, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpString);
 
 	/// <summary>
 	/// <para>Shows or hides all pop-up windows owned by the specified window.</para>
@@ -9791,7 +9791,7 @@ public static partial class User32
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>
-		/// The size, in bytes, of this structure. Set this member to . Be sure to set this member before calling the GetClassInfoEx function.
+		/// The size, in bytes, of this structure. Set this member to <c>sizeof(WNDCLASSEX)</c>. Be sure to set this member before calling the GetClassInfoEx function.
 		/// </para>
 		/// </summary>
 		public uint cbSize;

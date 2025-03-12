@@ -7,6 +7,10 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture()]
 public partial class User32Tests
 {
+	private static readonly Lazy<bool> IsWide = new(() => StringHelper.GetCharSize() == 2);
+	private const string caption = "Hello, World!\0";
+	private const int captionLen = 13;
+
 	[Test]
 	public void WindowClassCtorTest()
 	{
@@ -49,19 +53,20 @@ public partial class User32Tests
 		bool created = false;
 		using WindowBase wnd = new();
 		wnd.Created += () => created = true;
-		wnd.CreateHandle(null, parent: HWND.HWND_MESSAGE);
+		wnd.CreateHandle(null, caption);
 		Assert.That(wnd.ClassName, Is.Not.Null);
 		Assert.That(created);
 		Assert.That(wnd.Handle, Is.Not.EqualTo(HWND.NULL));
-		Assert.That(GetWindowTextLength(wnd.Handle), Is.Zero);
-		Assert.That(SetWindowText(wnd.Handle, "Hello, World!\0"));
-		Assert.That(GetWindowTextLength(wnd.Handle), Is.EqualTo(13));
+		Assert.That(IsWindowUnicode(wnd.Handle), Is.EqualTo(IsWide.Value));
+		Assert.That(GetWindowTextLengthW(wnd.Handle), Is.EqualTo(captionLen));
+		Assert.That(SetWindowTextW(wnd.Handle, caption));
+		Assert.That(GetWindowTextLengthW(wnd.Handle), Is.EqualTo(captionLen));
 	}
 
 	[Test]
 	public void WindowPumpTest()
 	{
-		VisibleWindow.Run(WndProc, "Hello");
+		VisibleWindow.Run(WndProc, caption);
 
 		static IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 		{
@@ -72,7 +77,7 @@ public partial class User32Tests
 	}
 
 	[Test]
-	public void WindowRunTest() => VisibleWindow.Run<MyWin>("Hello");
+	public void WindowRunTest() => VisibleWindow.Run<MyWin>(caption);
 
 	public class MyWin : VisibleWindow
 	{
