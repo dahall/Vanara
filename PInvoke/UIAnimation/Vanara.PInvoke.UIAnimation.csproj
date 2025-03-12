@@ -21,6 +21,7 @@ IDCompositionAnimation IUIAnimationInterpolator IUIAnimationInterpolator2 IUIAni
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dcomp\Vanara.PInvoke.Dcomp.csproj" />
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
   </ItemGroup>
 </Project>
