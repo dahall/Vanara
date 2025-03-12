@@ -432,7 +432,7 @@ public static partial class WindowsCodecs
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicformatconverter-initialize HRESULT Initialize(
 		// IWICBitmapSource *pISource, REFWICPixelFormatGUID dstFormat, WICBitmapDitherType dither, IWICPalette *pIPalette, double
 		// alphaThresholdPercent, WICBitmapPaletteType paletteTranslate );
-		void Initialize(IWICBitmapSource pISource, in Guid dstFormat, WICBitmapDitherType dither, IWICPalette pIPalette, double alphaThresholdPercent, WICBitmapPaletteType paletteTranslate);
+		void Initialize(IWICBitmapSource pISource, in Guid dstFormat, WICBitmapDitherType dither, [Optional] IWICPalette? pIPalette, double alphaThresholdPercent, WICBitmapPaletteType paletteTranslate);
 
 		/// <summary>Determines if the source pixel format can be converted to the destination pixel format.</summary>
 		/// <param name="srcPixelFormat">
