@@ -3,7 +3,7 @@
     <TargetFrameworks/>
     <TargetFramework>net8.0</TargetFramework>
     <Configurations>Debug;Release;DebugNoTests</Configurations>
-    <Platforms>AnyCPU;x64;x86</Platforms>
+    <Platforms>AnyCPU</Platforms>
     <LangVersion>latest</LangVersion>
     <Product>Vanara</Product>
     <Nullable>enable</Nullable>
