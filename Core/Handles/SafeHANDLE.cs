@@ -89,7 +89,7 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 	public override bool Equals(object? obj) => obj switch
 	{
 		IHandle ih => handle.Equals(ih.DangerousGetHandle()),
-		SafeHandle sh => handle.Equals(sh.DangerousGetHandle()),
+		SafeHandle sh => Equals(sh),
 		IntPtr p => handle.Equals(p),
 		_ => base.Equals(obj),
 	};

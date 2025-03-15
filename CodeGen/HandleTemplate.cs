@@ -75,7 +75,13 @@ namespace Namespace;
 #endif
 
 		/// <inheritdoc/>
-		public readonly override bool Equals(object obj) => obj is HandleName h && handle == h.handle;
+		public readonly override bool Equals(object obj) => obj switch
+		{
+			IntPtr p => handle == p,
+			IHandle i => handle == i.DangerousGetHandle(),
+			SafeHandle h => handle == h.DangerousGetHandle(),
+			_ => false
+		};
 
 		/// <inheritdoc/>
 		public readonly override int GetHashCode() => handle.GetHashCode();
