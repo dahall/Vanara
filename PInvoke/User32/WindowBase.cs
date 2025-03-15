@@ -17,7 +17,7 @@ public interface IWindowHandle : IHandle
 /// <seealso cref="MarshalByRefObject"/>
 /// <seealso cref="IDisposable"/>
 /// <seealso cref="IHandle"/>
-public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWindowInit, IWindowHandle
+public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWndProcProvider, IWindowHandle
 {
 	/// <summary>A window procedure override delegate.</summary>
 	protected WindowProc? customWndProc;
@@ -29,9 +29,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	private SafeHWND? hwnd;
 	private bool isDisposed;
 	private ParamIndexer? paramIndexer;
-	private IntPtr prevWndProcPtr, defWndProc;
 	private WindowClass? wCls;
-	private WindowProc? wndProc, userDefWndProc;
 
 	/// <summary>Initializes a new instance of the <see cref="WindowBase"/> class without creating the window.</summary>
 	public WindowBase() => weakThisPtr = new(this);
@@ -40,7 +38,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// <param name="wndProcOverride">The window procedure override delegate.</param>
 	public WindowBase(WindowProc wndProcOverride) : this() => customWndProc = wndProcOverride;
 
-	internal WindowBase(HWND hwnd) : this() => wCls = WindowClass.GetInstanceFromWindow(hwnd) ?? throw Win32Error.GetLastError().GetException()!;
+	internal WindowBase(HWND hwnd) : this() => wCls = Win32Error.ThrowLastErrorIfNull(WindowClass.GetInstanceFromWindow(this.hwnd = new(hwnd, false)));
 
 	/// <summary>Finalizes an instance of the <see cref="BasicMessageWindow"/> class.</summary>
 	~WindowBase() => Dispose(false);
@@ -57,7 +55,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 
 	/// <summary>Gets a <see cref="CREATESTRUCT"/> structure with all creation parameters.</summary>
 	/// <value>The <see cref="CREATESTRUCT"/> structure with all creation parameters.</value>
-	public CREATESTRUCT CreateParam { get; internal set; }
+	public CREATESTRUCT CreateParam { get; internal set; } = default;
 
 	/// <summary>Gets the window handle.</summary>
 	/// <value>The window handle.</value>
@@ -73,6 +71,13 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// <summary>Gets the window class registered for this window.</summary>
 	/// <value>The window class.</value>
 	public WindowClass? WindowClass => wCls;
+
+	WindowProc IWndProcProvider.WndProc => WndProc;
+
+	/// <summary>Performs an implicit conversion from <see cref="WindowBase"/> to <see cref="HWND"/>.</summary>
+	/// <param name="w">The <see cref="WindowBase"/> instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator HWND(WindowBase? w) => w?.Handle ?? HWND.NULL;
 
 	/// <summary>Creates a window and its handle with the specified creation parameters.</summary>
 	/// <param name="wc">The window class. If <see langword="null"/>, a new window class is created that is unique to this window.</param>
@@ -167,14 +172,6 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// <inhertdoc/>
 	IntPtr IHandle.DangerousGetHandle() => hwnd?.DangerousGetHandle() ?? IntPtr.Zero;
 
-	/// <inheritdoc/>
-	IntPtr IWindowInit.InitWndProcOnNCCreate(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
-	{
-		lock (this)
-			Attach(hwnd, true);
-		return InternalWndProc(hwnd, msg, IntPtr.Zero, lParam);
-	}
-
 	/// <summary>Writes message information to the debugger.</summary>
 	/// <param name="msg">The message code.</param>
 	/// <param name="sourceFilePath">The source file path.</param>
@@ -195,31 +192,14 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	internal static void DebugWriteMethod([CallerFilePath] string sourceFilePath = "", [CallerMemberName] string? caller = "") =>
 			Debug.WriteLine($"{caller} ({sourceFilePath})");
 
-	/// <summary>
-	/// Attaches the specified window handle to this instance and associates this instance's <see cref="WindowProc"/> handlers using GWL_WNDPROC.
-	/// </summary>
-	/// <param name="hwnd">The window handle.</param>
-	/// <param name="own">if set to <see langword="true"/>, the window will be destroyed and handle released on disposal.</param>
-	protected virtual void Attach(HWND hwnd, bool own)
+	/// <summary>If this object is disposed, throws <see cref="ObjectDisposedException"/>.</summary>
+	[DebuggerStepThrough]
+	protected virtual void CheckDisposed()
 	{
-		CheckDisposed();
-		Debug.Assert(!hwnd.IsNull, "Attempt assigning invalid handle.");
-		CheckDetached();
-
-		// Set handle
-		this.hwnd = new((IntPtr)hwnd, own);
-
-		// Set handle's WNDPROC to this class'
-		userDefWndProc ??= DefWindowProc;
-		defWndProc = Param[WindowLongFlags.GWLP_WNDPROC];
-		wndProc = InternalWndProc;
-		Param[WindowLongFlags.GWLP_WNDPROC] = Marshal.GetFunctionPointerForDelegate(wndProc);
-		Debug.Assert(defWndProc != Param[WindowLongFlags.GWLP_WNDPROC], "Subclassed ourself!");
-
-		OnHandleChanged(hwnd);
+		if (isDisposed) throw new ObjectDisposedException(nameof(WindowBase));
 	}
 
-	/// <summary>Invokes the default window procedure associated with this window.</summary>
+	/// <summary>Invokes the default window procedure associated with this window. This should almost never be overridden.</summary>
 	/// <param name="hwnd">A handle to the window procedure that received the message.</param>
 	/// <param name="msg">The message.</param>
 	/// <param name="wParam">
@@ -230,27 +210,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// </param>
 	/// <returns>The return value is the result of the message processing and depends on the message.</returns>
 	protected virtual IntPtr DefWndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam) =>
-		defWndProc == default ? DefWindowProc(hwnd, msg, wParam, lParam) : CallWindowProc(defWndProc, hwnd, msg, wParam, lParam);
-
-	/// <summary>
-	/// Detaches this instance's <see cref="WindowProc"/> handlers using GWL_WNDPROC, restoring previous assignment, and destroys the window
-	/// and closes the handle if owned.
-	/// </summary>
-	protected virtual void Detach()
-	{
-		if (hwnd is null) return;
-
-		if (!hwnd.IsInvalid && prevWndProcPtr != IntPtr.Zero)
-		{
-			Param[WindowLongFlags.GWLP_WNDPROC] = prevWndProcPtr;
-			prevWndProcPtr = IntPtr.Zero;
-		}
-
-		hwnd.Dispose();
-		hwnd = null;
-
-		OnHandleChanged(HWND.NULL);
-	}
+		User32.DefWindowProc(hwnd, msg, wParam, lParam);
 
 	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
 	/// <param name="disposing">
@@ -261,14 +221,15 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 		if (isDisposed)
 			return;
 		lock (this)
-			Detach();
+		{
+			hwnd?.Dispose();
+			hwnd = null;
+		}
+
 		if (createdClass) wCls?.Unregister();
 		gcWnd.Free();
 		isDisposed = true;
 	}
-
-	/// <summary>Called when this classes <see cref="InternalWndProc"/> method becomes primary.</summary>
-	protected virtual void OnHandleChanged(HWND newHandle) => DebugWriteMethod();
 
 	/// <summary>Called when the <see cref="WindowProc"/> call throws an exception.</summary>
 	/// <param name="ex">The exception.</param>
@@ -288,41 +249,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 	/// Additional message information. The content of this parameter depends on the value of the <paramref name="msg"/> parameter.
 	/// </param>
 	/// <returns>The return value is the result of the message processing and depends on the message.</returns>
-	protected virtual IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam) => DefWndProc(hwnd, msg, wParam, lParam);
-
-	/// <summary>Performs an implicit conversion from <see cref="WindowBase"/> to <see cref="HWND"/>.</summary>
-	/// <param name="w">The <see cref="WindowBase"/> instance.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HWND(WindowBase? w) => w?.Handle ?? HWND.NULL;
-
-	[DebuggerStepThrough]
-	private void CheckDetached()
-	{
-		if (hwnd is not null)
-			throw new InvalidOperationException("Attempt to overwrite existing window handle.");
-	}
-
-	[DebuggerStepThrough]
-	private void CheckDisposed()
-	{
-		if (isDisposed) throw new ObjectDisposedException(nameof(WindowBase));
-	}
-
-	/// <summary>
-	/// This is the real <see cref="WindowProc"/> instance for the window. It calls either <see cref="WndProc(HWND, uint, IntPtr, IntPtr)"/>
-	/// or <see cref="DefWndProc(HWND, uint, IntPtr, IntPtr)"/> depending on status.
-	/// <para>It is responsible for setting <see cref="CreateParam"/> and calling <see cref="Created"/> and <see cref="Destroyed"/>.</para>
-	/// </summary>
-	/// <param name="hwnd">A handle to the window procedure that received the message.</param>
-	/// <param name="msg">The message.</param>
-	/// <param name="wParam">
-	/// Additional message information. The content of this parameter depends on the value of the <paramref name="msg"/> parameter.
-	/// </param>
-	/// <param name="lParam">
-	/// Additional message information. The content of this parameter depends on the value of the <paramref name="msg"/> parameter.
-	/// </param>
-	/// <returns>The return value is the result of the message processing and depends on the message.</returns>
-	private IntPtr InternalWndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
+	protected virtual IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 	{
 		DebugWriteMessageInfo(msg);
 		if (msg == (uint)WindowMessage.WM_NCCREATE)
@@ -333,8 +260,8 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 
 		try
 		{
-			if (weakThisPtr.IsAlive && weakThisPtr.Target != null)
-				return (customWndProc ?? WndProc)(hwnd, msg, wParam, lParam);
+			if (!isDisposed && weakThisPtr.IsAlive && weakThisPtr.Target != null && customWndProc is not null)
+				return customWndProc(hwnd, msg, wParam, lParam);
 			else
 				return DefWndProc(hwnd, msg, wParam, lParam);
 		}
@@ -359,12 +286,15 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWin
 		}
 	}
 
-	private class ParamIndexer : ISupportIndexer<WindowLongFlags, IntPtr>
+	[DebuggerStepThrough]
+	private void CheckDetached()
 	{
-		private readonly IWindowInstance win;
+		if (hwnd is not null && !hwnd.IsNull)
+			throw new InvalidOperationException("Attempt to overwrite existing window handle.");
+	}
 
-		public ParamIndexer(IWindowInstance win) => this.win = win;
-
+	private class ParamIndexer(IWindowInstance win) : ISupportIndexer<WindowLongFlags, IntPtr>
+	{
 		public IntPtr this[WindowLongFlags flag]
 		{
 			get => win.Handle != HWND.NULL ? GetWindowLongAuto(win.Handle, flag) : throw new ObjectDisposedException(nameof(IWindowInstance));

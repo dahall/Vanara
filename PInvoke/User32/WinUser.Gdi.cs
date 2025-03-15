@@ -2763,10 +2763,14 @@ public static partial class User32
 	public static IntPtr SetWindowLong(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong)
 	{
 		Kernel32.SetLastError(0);
-		if (IntPtr.Size == 4)
-			return Win32Error.ThrowLastErrorIfNull((IntPtr)SetWindowLongPtr32(hWnd, nIndex, dwNewLong));
-		else
-			return Win32Error.ThrowLastErrorIfNull(SetWindowLongPtr64(hWnd, nIndex, dwNewLong));
+		return (IntPtr.Size, IsWindowUnicode(hWnd)) switch
+		{
+			(4, false) => (IntPtr)SetWindowLongA(hWnd, nIndex, dwNewLong.ToInt32()),
+			(4, true) => (IntPtr)SetWindowLongW(hWnd, nIndex, dwNewLong.ToInt32()),
+			(8, false) => SetWindowLongPtrA(hWnd, nIndex, dwNewLong),
+			(8, true) => SetWindowLongPtrW(hWnd, nIndex, dwNewLong),
+			_ => throw new PlatformNotSupportedException(),
+		};
 	}
 
 	/// <summary>
@@ -2959,64 +2963,17 @@ public static partial class User32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetUserObjectSecurity(HANDLE hObj, in SECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID);
 
-	/// <summary>
-	/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
-	/// </summary>
-	/// <param name="hWnd">
-	/// A handle to the window and, indirectly, the class to which the window belongs. The SetWindowLongPtr function fails if the process
-	/// that owns the window specified by the hWnd parameter is at a higher process privilege in the UIPI hierarchy than the process the
-	/// calling thread resides in.
-	/// </param>
-	/// <param name="nIndex">
-	/// The zero-based offset to the value to be set. Valid values are in the range zero through the number of bytes of extra window
-	/// memory, minus the size of an integer. Alternately, this can be a value from <see cref="WindowLongFlags"/>.
-	/// </param>
-	/// <param name="dwNewLong">The replacement value.</param>
-	/// <returns>
-	/// If the function succeeds, the return value is the previous value of the specified offset. If the function fails, the return value
-	/// is zero. To get extended error information, call GetLastError.
-	/// <para>
-	/// If the previous value is zero and the function succeeds, the return value is zero, but the function does not clear the last error
-	/// information. To determine success or failure, clear the last error information by calling SetLastError with 0, then call
-	/// SetWindowLongPtr. Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.
-	/// </para>
-	/// </returns>
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
+	private static extern int SetWindowLongA(HWND hWnd, WindowLongFlags nIndex, int dwNewLong);
 
-/* Unmerged change from project 'Vanara.PInvoke.User32 (net45)'
-Before:
-	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLong")]
-	[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return", Justification = "This declaration is not used on 64-bit Windows.")]
-	[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "2", Justification = "This declaration is not used on 64-bit Windows.")]
-After:
-	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLong")]
-*/
-	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLong")]
-	private static extern int SetWindowLongPtr32(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+	private static extern int SetWindowLongW(HWND hWnd, WindowLongFlags nIndex, int dwNewLong);
 
-	/// <summary>
-	/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
-	/// </summary>
-	/// <param name="hWnd">
-	/// A handle to the window and, indirectly, the class to which the window belongs. The SetWindowLongPtr function fails if the process
-	/// that owns the window specified by the hWnd parameter is at a higher process privilege in the UIPI hierarchy than the process the
-	/// calling thread resides in.
-	/// </param>
-	/// <param name="nIndex">
-	/// The zero-based offset to the value to be set. Valid values are in the range zero through the number of bytes of extra window
-	/// memory, minus the size of an integer. Alternately, this can be a value from <see cref="WindowLongFlags"/>.
-	/// </param>
-	/// <param name="dwNewLong">The replacement value.</param>
-	/// <returns>
-	/// If the function succeeds, the return value is the previous value of the specified offset. If the function fails, the return value
-	/// is zero. To get extended error information, call GetLastError.
-	/// <para>
-	/// If the previous value is zero and the function succeeds, the return value is zero, but the function does not clear the last error
-	/// information. To determine success or failure, clear the last error information by calling SetLastError with 0, then call
-	/// SetWindowLongPtr. Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.
-	/// </para>
-	/// </returns>
-	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLongPtr")]
-	private static extern IntPtr SetWindowLongPtr64(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
+	private static extern IntPtr SetWindowLongPtrA(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
+
+	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+	private static extern IntPtr SetWindowLongPtrW(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
 
 	/// <summary>
 	/// Grants or denies access to a handle to a User object to a job that has a user-interface restriction. When access is granted, all

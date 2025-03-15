@@ -31,7 +31,7 @@ public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 	public BasicMessageWindow(BasicMessageWindowFilter? callback = null)
 	{
 		MessageFilter = callback;
-		weakSelfRef = new WeakReference(this);
+		weakSelfRef = new(this);
 		hwnd = CreateWindow();
 	}
 
@@ -77,7 +77,7 @@ public class BasicMessageWindow : MarshalByRefObject, IDisposable, IHandle
 		{
 			if (!Handle.IsNull)
 				throw new InvalidOperationException("Window handle already exists.");
-			wCls = new WindowClass($"{GetType().Name}+{Guid.NewGuid()}", default, WndProc, hbrBkgd: WindowClass.NullBrush);
+			wCls = new WindowClass($"{GetType().Name}+{Guid.NewGuid():N}", default, WndProc, hbrBkgd: WindowClass.NullBrush);
 			return Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(0, wCls.ClassName, hWndParent: HWND.HWND_MESSAGE, hInstance: wCls.wc.hInstance));
 		}
 	}

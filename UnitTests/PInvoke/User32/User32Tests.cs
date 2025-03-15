@@ -108,16 +108,18 @@ public partial class User32Tests
 	[Test]
 	public void CreateWindowExTest()
 	{
-		WindowClass wc = new("MyWindowClass");
-		SafeCoTaskMemHandle mem = new(128);
+		WindowClass wc = WindowClass.MakeVisibleWindowClass("MyWindowClass", null);
+		using SafeCoTaskMemHandle mem = new(128);
 		SafeHWND wnd = new(IntPtr.Zero, false);
 		Assert.That(wnd = CreateWindowEx(0, wc.ClassName, "1234567890", WindowStyles.WS_OVERLAPPEDWINDOW, lpParam: mem), ResultIs.ValidHandle);
+		Assert.That(IsWindowUnicode(wnd), Is.EqualTo(IsWide.Value));
 		Assert.That(GetWindowTextLength(wnd), Is.EqualTo(10));
 		Assert.That(SetWindowText(wnd, "Hello, World!\0"));
 		Assert.That(GetWindowTextLength(wnd), Is.EqualTo(13));
 		StringBuilder sb = new(256);
 		Assert.That(GetWindowText(wnd, sb, sb.Capacity), Is.EqualTo(13));
 		Assert.That(sb.ToString(), Is.EqualTo("Hello, World!"));
+		wnd.Dispose();
 	}
 
 	[Test]
@@ -518,43 +520,43 @@ public partial class User32Tests
 	{
 		// Try set bool value
 		SystemParametersInfo(SPI.SPI_GETBLOCKSENDINPUTRESETS, out bool bval);
-		Assert.That(SystemParametersInfo(SPI.SPI_SETBLOCKSENDINPUTRESETS, bval ? 1u : 0u, IntPtr.Zero, 0));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETBLOCKSENDINPUTRESETS, bval ? 1u : 0u, IntPtr.Zero, 0), ResultIs.Successful);
 
 		// Try set generic bool value
-		Assert.That(SystemParametersInfo(SPI.SPI_SETBLOCKSENDINPUTRESETS, bval));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETBLOCKSENDINPUTRESETS, bval), ResultIs.Successful);
 
 		// Try set integral value
 		SystemParametersInfo(SPI.SPI_GETFOCUSBORDERHEIGHT, out uint ival);
-		Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, 0, (IntPtr)(int)ival, SPIF.SPIF_SENDCHANGE));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, 0, (IntPtr)(int)ival, SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
 
 		// Try set generic integral value
-		Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, ival));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETFOCUSBORDERHEIGHT, ival, false, false), ResultIs.Successful);
 
 		// Try set enum value
 		SystemParametersInfo(SPI.SPI_GETCONTACTVISUALIZATION, out ContactVisualization cv);
 		uint cvu = (uint)cv;
 		using (var pi = new PinnedObject(cvu))
-			Assert.That(SystemParametersInfo(SPI.SPI_SETCONTACTVISUALIZATION, 0, pi, SPIF.SPIF_SENDCHANGE));
+			Assert.That(SystemParametersInfo(SPI.SPI_SETCONTACTVISUALIZATION, 0, pi, SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
 
 		// Try set generic enum value
-		Assert.That(SystemParametersInfo(SPI.SPI_SETCONTACTVISUALIZATION, cv));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETCONTACTVISUALIZATION, cv), ResultIs.Successful);
 
 		// Try set struct value
-		Assert.That(SystemParametersInfo(SPI.SPI_GETWORKAREA, out RECT area));
+		Assert.That(SystemParametersInfo(SPI.SPI_GETWORKAREA, out RECT area), ResultIs.Successful);
 		area.right /= 2;
 		using (var ptr = new PinnedObject(area))
-			Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, (uint)Marshal.SizeOf(typeof(RECT)), (IntPtr)ptr, SPIF.SPIF_SENDCHANGE));
+			Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, (uint)Marshal.SizeOf(typeof(RECT)), (IntPtr)ptr, SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
 
 		// Try set generic struct value
 		area.right *= 2;
-		Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, area));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, area), ResultIs.Successful);
 
 		// Try set string value
 		var sb = new StringBuilder(Kernel32.MAX_PATH, Kernel32.MAX_PATH);
-		Assert.That(SystemParametersInfo(SPI.SPI_GETDESKWALLPAPER, (uint)sb.Capacity, sb, 0));
+		Assert.That(SystemParametersInfo(SPI.SPI_GETDESKWALLPAPER, (uint)sb.Capacity, sb, 0), ResultIs.Successful);
 		var wp = TestCaseSources.ImageFile;
-		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)wp.Length, wp, SPIF.SPIF_SENDCHANGE));
-		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)sb.Length, sb.ToString(), SPIF.SPIF_SENDCHANGE));
+		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)wp.Length, wp, SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
+		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)sb.Length, sb.ToString(), SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
 	}
 
 	[Test]
