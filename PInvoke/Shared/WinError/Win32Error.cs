@@ -132,6 +132,12 @@ public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, ICo
 	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
 	public static IntPtr ThrowLastErrorIfNull(IntPtr value, string? message = null) => ThrowLastErrorIf(value, v => v == IntPtr.Zero, message);
 
+	/// <summary>Throws the last error if the value is a NULL pointer (IntPtr.Zero).</summary>
+	/// <param name="value">The pointer to check.</param>
+	/// <param name="message">The message.</param>
+	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
+	public static T ThrowLastErrorIfNull<T>(T? value, string? message = null) where T : class => ThrowLastErrorIf(value, v => v is null, message)!;
+
 	/// <summary>Throws if the last error failed, unless the error is the specified value.</summary>
 	/// <param name="exception">The failure code to ignore.</param>
 	/// <param name="message">The message to associate with the exception.</param>
