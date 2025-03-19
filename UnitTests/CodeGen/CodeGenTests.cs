@@ -44,6 +44,29 @@ using Vanara.Generators;
 //	}
 //}
 
+//namespace Vanara.PInvoke
+//{
+//	public interface IUnkHolderIgnore
+//	{
+//		HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+//	}
+//	public static partial class Test32
+//	{
+//		[System.Runtime.InteropServices.MarshalAs(UnmanagedType.Bool)]
+//		public static bool field1;
+
+//		public interface IUnkHolder
+//		{
+//			HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+//			HRESULT Ignore1(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown)] object? p3);
+//			HRESULT Ignore2([System.Runtime.InteropServices.MarshalAs(UnmanagedType.LPArray)] int[] p3);
+//		}
+
+//		[System.Runtime.InteropServices.DllImport("test32.dll")]
+//		public static extern HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+//	}
+//}
+
 namespace Vanara.PInvoke.Tests
 {
 	[TestFixture]
@@ -132,6 +155,40 @@ namespace Vanara.PInvoke.Tests
 			CreateGeneratorDriverAndRun(compilation, new HandlesFromFileGenerator(), fn, out var output, out var diag);
 			Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Not.Empty);
 			Assert.That(diag[0].Id, Is.EqualTo(errId));
+		}
+
+		[Test]
+		public void IUnkMethodGenTest()
+		{
+			const string src = @"
+				namespace Vanara.PInvoke
+				{
+					public interface IUnkHolderIgnore
+					{
+						//HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+					}
+					public static partial class Test32
+					{
+						//[System.Runtime.InteropServices.MarshalAs(UnmanagedType.Bool)]
+						//public static bool field1;
+
+						public interface IUnkHolder
+						{
+							HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+							//HRESULT Ignore1(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown)] object? p3);
+							//HRESULT Ignore2([System.Runtime.InteropServices.MarshalAs(UnmanagedType.LPArray)] int[] p3);
+						}
+
+						[System.Runtime.InteropServices.DllImport(""test32.dll"")]
+						public static extern HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+					}
+				}
+			";
+			var compilation = GetCompilation(src);
+			//CreateGeneratorDriverAndRun(compilation, new IUnkMethodGenerator(), null, out var output, out var diag);
+			//Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(2));
+			//Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
+			//TestContext.WriteLine(string.Join($"\n{new string('=', 80)}\n", output.SyntaxTrees.Skip(1)));
 		}
 
 		private static void CreateGeneratorDriverAndRun(CSharpCompilation compilation, IIncrementalGenerator sourceGenerator, string? additionalFile, out Compilation output, out System.Collections.Immutable.ImmutableArray<Diagnostic> diag) =>
