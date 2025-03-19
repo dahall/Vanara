@@ -3573,7 +3573,7 @@ public static partial class Kernel32
 		public ProcessorRelationUnion RelationUnion;
 
 		/// <summary>Union tied to the relationship.</summary>
-		[StructLayout(LayoutKind.Explicit, Size = 16)]
+		[StructLayout(LayoutKind.Explicit)]
 		public struct ProcessorRelationUnion
 		{
 			/// <summary>This structure contains valid data only if the <c>Relationship</c> member is RelationProcessorCore.</summary>
@@ -3596,6 +3596,9 @@ public static partial class Kernel32
 			/// </para>
 			/// </summary>
 			[FieldOffset(0)] public CACHE_DESCRIPTOR Cache;
+
+			/// <summary>Reserved. Do not use.</summary>
+			[FieldOffset(0)] private unsafe fixed ulong Reserved[2];
 		}
 	}
 
