@@ -953,7 +953,7 @@ public static partial class WinTrust
 	// *pgActionID, LPVOID pWVTData );
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wintrust.h", MSDNShortId = "b7efac6a-ac9f-477a-aada-63fe32208e6f")]
-	public static extern Win32Error WinVerifyTrust(HWND hwnd, in Guid pgActionID, IntPtr pWVTData);
+	public static extern Win32Error WinVerifyTrust([In, Optional] HWND hwnd, in Guid pgActionID, IntPtr pWVTData);
 
 	/// <summary>
 	/// <para>
@@ -1102,7 +1102,7 @@ public static partial class WinTrust
 	// GUID *pgActionID, WINTRUST_DATA *pWinTrustData );
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wintrust.h", MSDNShortId = "209c9953-a4a5-4ff0-961f-92e97ccce23d")]
-	public static extern HRESULT WinVerifyTrustEx(HWND hwnd, in Guid pgActionID, [In] WINTRUST_DATA pWinTrustData);
+	public static extern HRESULT WinVerifyTrustEx([In, Optional] HWND hwnd, in Guid pgActionID, [In] WINTRUST_DATA pWinTrustData);
 
 	/// <summary>
 	/// <para>

@@ -834,6 +834,48 @@ public static partial class WinTrust
 
 	/// <summary>
 	/// <para>
+	/// [The <b>CryptCATCDFEnumMembersByCDFTagEx</b> function is available for use in the operating systems specified in the Requirements
+	/// section. It may be altered or unavailable in subsequent versions.]
+	/// </para>
+	/// <para>
+	/// The <b>CryptCATCDFEnumMembersByCDFTagEx</b> function enumerates the individual file members in the <b>CatalogFiles</b> section of a
+	/// catalog definition file (CDF). <b>CryptCATCDFEnumMembersByCDFTagEx</b> is called by <c>MakeCat</c>.
+	/// </para>
+	/// <para>
+	/// <para>Note</para>
+	/// <para>
+	/// This function has no associated header file or import library. To call this function, you must create a user-defined header file and
+	/// use the <c><b>LoadLibrary</b></c> and <c><b>GetProcAddress</b></c> functions to dynamically link to Mssign32.dll.
+	/// </para>
+	/// </para>
+	/// <para></para>
+	/// </summary>
+	/// <param name="pCDF">A pointer to a <c><b>CRYPTCATCDF</b></c> structure.</param>
+	/// <param name="pwszPrevCDFTag">A pointer to a <b>null</b>-terminated string that identifies the catalog file member.</param>
+	/// <param name="pfnParseError">A pointer to a user-defined function to handle file parse errors.</param>
+	/// <param name="ppMember">A pointer to a <c><b>CRYPTCATMEMBER</b></c> structure that contains the file member information.</param>
+	/// <param name="fContinueOnError">A value that specifies whether to keep in memory a reference to the last enumerated member.</param>
+	/// <param name="pvReserved">This parameter is reserved; do not use it.</param>
+	/// <returns>
+	/// Upon success, this function returns a pointer to a <b>null</b>-terminated string that identifies a file member in the
+	/// <b>CatalogFiles</b> section of a CDF. The <b>CryptCATCDFEnumMembersByCDFTagEx</b> function returns a <b>NULL</b> pointer if it fails.
+	/// </returns>
+	/// <remarks>
+	/// You typically call this function in a loop to enumerate all of the catalog file members in a CDF. Before entering the loop, set
+	/// pwszPrevCDFTag to <b>NULL</b>. The function returns a pointer to the first member. Set pwszPrevCDFTag to the return value of the
+	/// function for subsequent iterations of the loop.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/seccrypto/cryptcatcdfenummembersbycdftagex LPWSTR WINAPI
+	// CryptCATCDFEnumMembersByCDFTagEx( _In_ CRYPTCATCDF *pCDF, _Inout_ LPWSTR pwszPrevCDFTag, _In_ PFN_CDF_PARSE_ERROR_CALLBACK
+	// pfnParseError, _In_ CRYPTCATMEMBER **ppMember, _In_ BOOL fContinueOnError, _In_ LPVOID pvReserved );
+	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
+	[return: MarshalAs(UnmanagedType.LPWStr)]
+	public static extern string? CryptCATCDFEnumMembersByCDFTagEx(in CRYPTCATCDF pCDF, [MarshalAs(UnmanagedType.LPWStr)] string? pwszPrevCDFTag,
+		[In, Optional, MarshalAs(UnmanagedType.FunctionPtr)] PfnCdfParseErrorCallback? pfnParseError, in ManagedStructPointer<CRYPTCATMEMBER> ppMember,
+		[In, MarshalAs(UnmanagedType.Bool)] bool fContinueOnError, [In, Optional] IntPtr pvReserved);
+
+	/// <summary>
+	/// <para>
 	/// [The <c>CryptCATCDFOpen</c> function is available for use in the operating systems specified in the Requirements section. It may
 	/// be altered or unavailable in subsequent versions.]
 	/// </para>
@@ -1115,7 +1157,7 @@ public static partial class WinTrust
 	// HANDLE hCatalog, IN CRYPTCATMEMBER *pCatMember, LPWSTR pwszReferenceTag );
 	[DllImport(Lib.Wintrust, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "e36966ea-741e-4380-85cd-5a3c9db38e6d")]
-	public static extern IntPtr CryptCATGetAttrInfo(HCATALOG hCatalog, in CRYPTCATMEMBER pCatMember, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag);
+	public static extern ManagedStructPointer<CRYPTCATATTRIBUTE> CryptCATGetAttrInfo(HCATALOG hCatalog, in CRYPTCATMEMBER pCatMember, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag);
 
 	/// <summary>
 	/// <para>
@@ -1140,7 +1182,7 @@ public static partial class WinTrust
 	// IN HANDLE hCatalog, LPWSTR pwszReferenceTag );
 	[DllImport(Lib.Wintrust, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mscat.h", MSDNShortId = "ff265232-f57e-4ab0-ba07-05e6d6745ae3")]
-	public static extern IntPtr CryptCATGetMemberInfo(HCATALOG hCatalog, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag);
+	public static extern ManagedStructPointer<CRYPTCATMEMBER> CryptCATGetMemberInfo(HCATALOG hCatalog, [MarshalAs(UnmanagedType.LPWStr)] string pwszReferenceTag);
 
 	/// <summary>
 	/// <para>
@@ -1688,7 +1730,7 @@ public static partial class WinTrust
 	/// </para>
 	/// <para>
 	/// The <c>CRYPTCATMEMBER</c> structure provides information about a catalog member. This structure is used by the
-	/// CryptCATGetMemberInfo and CryptCATEnumerateAttr functions.
+	/// <see cref="CryptCATGetMemberInfo"/> and <see cref="CryptCATEnumerateAttr(HCATALOG, CRYPTCATMEMBER)"/> functions.
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/ns-mscat-cryptcatmember typedef struct CRYPTCATMEMBER_ { DWORD cbStruct;
@@ -1703,10 +1745,12 @@ public static partial class WinTrust
 		public uint cbStruct;
 
 		/// <summary>A pointer to a null-terminated string that contains the reference tag value.</summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string pwszReferenceTag;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pwszReferenceTag;
 
 		/// <summary>A pointer to a null-terminated string that contains the file name.</summary>
-		[MarshalAs(UnmanagedType.LPWStr)] public string pwszFileName;
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pwszFileName;
 
 		/// <summary><c>GUID</c> that identifies the subject type.</summary>
 		public Guid gSubjectType;
@@ -1715,7 +1759,7 @@ public static partial class WinTrust
 		public uint fdwMemberFlags;
 
 		/// <summary>A pointer to a <c>SIP_INDIRECT_DATA</c> structure.</summary>
-		public IntPtr pIndirectData;
+		public StructPointer<SIP_INDIRECT_DATA> pIndirectData;
 
 		/// <summary>Value that specifies the certificate version.</summary>
 		public uint dwCertVersion;
