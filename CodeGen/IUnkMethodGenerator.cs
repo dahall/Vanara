@@ -1,12 +1,15 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
-using Vanara.PInvoke;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Vanara.Generators;
 
-/// <summary></summary>
+/// <summary>
+/// A method generator that looks for methods with the <see cref="MarshalAsAttribute"/> on a <see cref="Nullable"/>&lt;<see
+/// cref="object"/>&gt; parameter where <see cref="UnmanagedType.IUnknown"/> is set with an <c>IidParameterIndex</c> property set, and then
+/// creates an extension method that calls that method infering the IID from the specified type.
+/// </summary>
 [Generator(LanguageNames.CSharp)]
 public class IUnkMethodGenerator : IIncrementalGenerator
 {
@@ -26,22 +29,24 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 	}
 
 	private static bool IsValidSyntax(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
-		syntaxNode is ParameterSyntax ms && 
-		ms.Identifier.Text == "p3" &&
-		((ms.Parent?.Parent?.Parent is ClassDeclarationSyntax cs && cs.IsPartial()) || ((ms.Parent?.Parent?.Parent is InterfaceDeclarationSyntax && ms.Parent?.Parent?.Parent?.Parent is ClassDeclarationSyntax ccs && ccs.IsPartial())));
+		syntaxNode is ParameterSyntax ps && ps.Parent?.Parent is MethodDeclarationSyntax ms &&
+		((ms?.Parent is ClassDeclarationSyntax cs && cs.IsPartial()) || ((ms?.Parent is InterfaceDeclarationSyntax && ms?.Parent?.Parent is ClassDeclarationSyntax ccs && ccs.IsPartial())));
 
 	private static void Execute(SourceProductionContext context, (Compilation compilation, ImmutableArray<(ParameterSyntax, AttributeData)> classes) unit)
 	{
+		var outToken = Token(SyntaxKind.OutKeyword);
+		var refToken = Token(SyntaxKind.RefKeyword);
+
 		foreach ((ParameterSyntax decl, AttributeData attr) in unit.classes)
 		{
 			// Confirm that attribute has UnmanagedType.IUnknown or Interface and IidParameterIndex argument
 			if (!ValidateAttr(attr, out var iidindex)) continue;
 
 			// Split method info into modifiers, return type, method name, and arg list
-			if (decl.Parent?.Parent is not MethodDeclarationSyntax methodDecl)
-				continue;
+			MethodDeclarationSyntax methodDecl = (MethodDeclarationSyntax)decl.Parent!.Parent!;
 			var modifiers = methodDecl.Modifiers;
 			var returnType = methodDecl.ReturnType;
+			bool returnIsVoid = returnType.ToString() == "void";
 			var methodName = methodDecl.Identifier;
 			var argList = methodDecl.ParameterList.Parameters;
 
@@ -54,7 +59,7 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 			var iidParam = argList[iidindex];
 			var paramType = iidParam.Type?.ToString();
 			var hasInModifier = iidParam.Modifiers.Any(SyntaxKind.InKeyword);
-			var hasStructAttribute = hasInModifier ? false : iidParam.AttributeLists
+			var hasStructAttribute = !hasInModifier && iidParam.AttributeLists
 				.SelectMany(al => al.Attributes)
 				.Any(attr => attr.Name.ToString() == "MarshalAs" && attr.ArgumentList?.Arguments.FirstOrDefault()?.ToString() == "UnmanagedType.Struct");
 			if (paramType != "System.Guid" || !hasInModifier && !hasStructAttribute)
@@ -86,7 +91,7 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 				continue;
 			}
 
-			MethodDeclarationSyntax? methodSig1 = null, methodSig2 = null;
+			MethodDeclarationSyntax? methodSig = null;
 
 			// Handle interface methods
 			if (decl.Parent?.Parent?.Parent is InterfaceDeclarationSyntax interfaceDecl)
@@ -96,54 +101,119 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 				const string thisParamName = "__baseInterface";
 				const string genericType = "T";
 				var newArgList = argList.
-					Replace(decl, SyntaxFactory.Parameter(decl.Identifier).WithType(SyntaxFactory.ParseTypeName($"out {genericType}?"))).
+					Replace(decl, Parameter(default, TokenList([outToken]), ParseTypeName(genericType+'?'), decl.Identifier, default)).
 					RemoveAt(iidindex).
-					Insert(0, SyntaxFactory.Parameter(SyntaxFactory.Identifier(thisParamName)).WithType(SyntaxFactory.ParseTypeName($"this {interfaceName}")));
+					Insert(0, Parameter(default, TokenList([Token(SyntaxKind.ThisKeyword)]), ParseTypeName(interfaceName), Identifier(thisParamName), default));
 
 				// Create the invocation expression capturing the return value if the return type is not `void`
-				var iArgs = argList.
-					Replace(decl, SyntaxFactory.Parameter(SyntaxFactory.Identifier("__ppv"))).
-					Select(arg => SyntaxFactory.Argument(SyntaxFactory.IdentifierName(arg.Identifier)).WithRefKindKeyword(SyntaxFactory.Token(SyntaxKind.OutKeyword))).ToArray();
-				iArgs[iidindex] = SyntaxFactory.Argument(SyntaxFactory.ParseExpression($"typeof({genericType}).GUID"));
-				var invocationExpression = SyntaxFactory.InvocationExpression(
-					SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-						SyntaxFactory.IdentifierName(thisParamName), SyntaxFactory.IdentifierName(methodName)),
-						SyntaxFactory.ArgumentList(SyntaxFactory.SeparatedList(iArgs)));
+				var iArgs = argList.Select(param => 
+				{
+					if (param == decl)
+						return Argument(null, outToken, DeclarationExpression(IdentifierName("var"), SingleVariableDesignation(Identifier("__ppv"))));
+
+					var arg = Argument(IdentifierName(param.Identifier));
+					if (param.Modifiers.Count > 0)
+					{
+						if (param.Modifiers.First().ValueText == "out")
+							return arg.WithRefKindKeyword(outToken);
+						else if (param.Modifiers.First().ValueText == "ref")
+							return arg.WithRefKindKeyword(refToken);
+					}
+					return arg;
+				}).ToList();
+				iArgs[iidindex] = Argument(ParseExpression($"typeof({genericType}).GUID"));
+				var invocationExpression = InvocationExpression(
+					MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+						IdentifierName(thisParamName), IdentifierName(methodName)),
+						ArgumentList(SeparatedList(iArgs)));
+
+				StatementSyntax invoker = returnIsVoid ? ExpressionStatement(invocationExpression) :
+					LocalDeclarationStatement(VariableDeclaration(returnType, SeparatedList([
+						VariableDeclarator(Identifier("__ret"), null, EqualsValueClause(invocationExpression))
+					])));
 
 				// Craete the assignment expression
-				var assignmentExpression = SyntaxFactory.AssignmentExpression(
+				var assignmentExpression = AssignmentExpression(
 					SyntaxKind.SimpleAssignmentExpression,
-					SyntaxFactory.IdentifierName(decl.Identifier),
-					SyntaxFactory.CastExpression(SyntaxFactory.ParseTypeName($"({genericType}?)"), SyntaxFactory.IdentifierName("ppv"))
+					IdentifierName(decl.Identifier),
+					BinaryExpression(SyntaxKind.AsExpression, IdentifierName("__ppv"), ParseTypeName(genericType))
 				);
 
 				// If return type is not `void`, return the result of the invocation
-				StatementSyntax? returnStatement = returnType.ToString() != "void" ? SyntaxFactory.ReturnStatement(SyntaxFactory.IdentifierName(decl.Identifier)) : null;
+				StatementSyntax? returnStatement = !returnIsVoid ? ReturnStatement(IdentifierName("__ret")) : null;
 
 				// Create the statement syntax
-				List<StatementSyntax> stmts1 = [SyntaxFactory.ExpressionStatement(invocationExpression),
-					SyntaxFactory.ExpressionStatement(assignmentExpression)];
+				List<StatementSyntax> stmts1 = [invoker, ExpressionStatement(assignmentExpression)];
 				if (returnStatement != null)
 					stmts1.Add(returnStatement);
 
-				methodSig1 = SyntaxFactory.MethodDeclaration(returnType, methodName)
-					.AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword), SyntaxFactory.Token(SyntaxKind.StaticKeyword))
-					.AddTypeParameterListParameters(SyntaxFactory.TypeParameter(genericType))
-					.WithParameterList(SyntaxFactory.ParameterList(newArgList))
-					.WithConstraintClauses(new(SyntaxFactory.TypeParameterConstraintClause($"{genericType} : class")))
-					.AddBodyStatements(stmts1.ToArray());
-
-				methodSig2 = methodSig1;
+				methodSig = MethodDeclaration(returnType, methodName)
+					.AddModifiers(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword))
+					.AddTypeParameterListParameters(TypeParameter(genericType))
+					.WithParameterList(ParameterList(newArgList))
+					.WithConstraintClauses(SyntaxList.Create([TypeParameterConstraintClause(IdentifierName(genericType), SingletonSeparatedList<TypeParameterConstraintSyntax>(ClassOrStructConstraint(SyntaxKind.ClassConstraint)))]))
+					.AddBodyStatements([.. stmts1]);
 			}
 			// Handle class methods
 			else if (decl.Parent?.Parent?.Parent is ClassDeclarationSyntax classDecl)
 			{
+				// Create the extension method signature
+				const string genericType = "T";
+				var newArgList = argList.
+					Replace(decl, Parameter(default, TokenList([outToken]), ParseTypeName(genericType + '?'), decl.Identifier, default)).
+					RemoveAt(iidindex);
 
+				// Create the invocation expression capturing the return value if the return type is not `void`
+				var iArgs = argList.Select(param =>
+				{
+					if (param == decl)
+						return Argument(null, outToken, DeclarationExpression(IdentifierName("var"), SingleVariableDesignation(Identifier("__ppv"))));
+
+					var arg = Argument(IdentifierName(param.Identifier));
+					if (param.Modifiers.Count > 0)
+					{
+						if (param.Modifiers.First().ValueText == "out")
+							return arg.WithRefKindKeyword(outToken);
+						else if (param.Modifiers.First().ValueText == "ref")
+							return arg.WithRefKindKeyword(refToken);
+					}
+					return arg;
+				}).ToList();
+				iArgs[iidindex] = Argument(ParseExpression($"typeof({genericType}).GUID"));
+				var invocationExpression = InvocationExpression(IdentifierName(methodName),
+					ArgumentList(SeparatedList(iArgs)));
+
+				StatementSyntax invoker = returnIsVoid ? ExpressionStatement(invocationExpression) :
+					LocalDeclarationStatement(VariableDeclaration(returnType, SeparatedList([
+						VariableDeclarator(Identifier("__ret"), null, EqualsValueClause(invocationExpression))
+					])));
+
+				// Craete the assignment expression
+				var assignmentExpression = AssignmentExpression(
+					SyntaxKind.SimpleAssignmentExpression,
+					IdentifierName(decl.Identifier),
+					BinaryExpression(SyntaxKind.AsExpression, IdentifierName("__ppv"), ParseTypeName(genericType))
+				);
+
+				// If return type is not `void`, return the result of the invocation
+				StatementSyntax? returnStatement = !returnIsVoid ? ReturnStatement(IdentifierName("__ret")) : null;
+
+				// Create the statement syntax
+				List<StatementSyntax> stmts1 = [invoker, ExpressionStatement(assignmentExpression)];
+				if (returnStatement != null)
+					stmts1.Add(returnStatement);
+
+				methodSig = MethodDeclaration(returnType, methodName)
+					.AddModifiers(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword))
+					.AddTypeParameterListParameters(TypeParameter(genericType))
+					.WithParameterList(ParameterList(newArgList))
+					.WithConstraintClauses(SyntaxList.Create([TypeParameterConstraintClause(IdentifierName(genericType), SingletonSeparatedList<TypeParameterConstraintSyntax>(ClassOrStructConstraint(SyntaxKind.ClassConstraint)))]))
+					.AddBodyStatements([.. stmts1]);
 			}
 
-			if (methodSig1 == null || methodSig2 == null)
+			if (methodSig == null)
 			{
-				context.ReportError("VANGEN015", "Unable to create methods.");
+				context.ReportError("VANGEN015", "Unable to create method.");
 				continue;
 			}
 
@@ -156,6 +226,7 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 			// Output nested classes
 			var nestedClasses = new Stack<ClassDeclarationSyntax>();
 			var currentClass = parentClass;
+			StringBuilder stackName = new();
 			while (currentClass != null)
 			{
 				nestedClasses.Push(currentClass);
@@ -164,39 +235,35 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 			while (nestedClasses.Count > 0)
 			{
 				var nc = nestedClasses.Pop();
+				stackName.Append(nc.Identifier.Text).Append('_');
 				output.AppendLine($"{nc.Modifiers} class {nc.Identifier} {{");
 			}
 
 			// Output the extension methods
-			output.AppendLine(methodSig1.NormalizeWhitespace().ToFullString());
-			output.AppendLine(methodSig2.NormalizeWhitespace().ToFullString());
+			output.AppendLine(methodSig.NormalizeWhitespace().ToFullString());
 
 			// Close the classes and namespace
 			for (int i = 0; i <= nestedClasses.Count; i++)
 				output.AppendLine("}");
 
 			// Add the generated source to the context
-			context.AddSource($"{parentClass.Identifier.Text}_Generated.cs", output.ToString());
+			if (decl.Parent?.Parent?.Parent is InterfaceDeclarationSyntax id)
+				stackName.Append(id.Identifier.Text).Append('_');
+			context.AddSource($"{stackName}{methodName.Text}.g.cs", output.ToString());
 		}
 
 		static bool ValidateAttr(AttributeData attr, out int iidindex)
 		{
 			iidindex = -1;
-			if (attr.AttributeClass?.ToDisplayString() == attributeFullName)
+			if (attr.ConstructorArguments.FirstOrDefault().Value is int unmanagedTypeValue &&
+				(unmanagedTypeValue == (int)UnmanagedType.IUnknown || unmanagedTypeValue == (int)UnmanagedType.Interface))
 			{
-				iidindex = 1;
-				return true;
-				//var firstArg = attr.ConstructorArguments.FirstOrDefault();
-				//if (firstArg.Value is int unmanagedTypeValue &&
-				//	(unmanagedTypeValue == (int)UnmanagedType.IUnknown || unmanagedTypeValue == (int)UnmanagedType.Interface))
-				//{
-				//	var iidParameterIndex = attr.NamedArguments.FirstOrDefault(na => na.Key == "IidParameterIndex");
-				//	if (iidParameterIndex.Key != null)
-				//	{
-				//		iidindex = (int)iidParameterIndex.Value.Value!;
-				//		return true;
-				//	}
-				//}
+				var iidParameterIndex = attr.NamedArguments.FirstOrDefault(na => na.Key == "IidParameterIndex");
+				if (iidParameterIndex.Key != null)
+				{
+					iidindex = (int)iidParameterIndex.Value.Value!;
+					return true;
+				}
 			}
 			return false;
 		}
@@ -208,11 +275,12 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 //{
 //	public interface IUnkHolder
 //	{
-//		void GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
+//		void GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
+//		int GetObjRet(in System.ConsoleKeyInfo p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3, out int p4);
 //	}
 
 //	[System.Runtime.InteropServices.DllImport("test32.dll")]
-//	public static extern int GetObjC(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
+//	public static extern int GetObjC(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
 //}
 
 //public static partial class TestClass
@@ -223,22 +291,17 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 //		p3 = ppv as T;
 //	}
 
-//	public static T GetObj<T>(this IUnkHolder __baseInterface, object? p1) where T : class
+//	public static int GetObjRet<T>(this IUnkHolder __baseInterface, in System.ConsoleKeyInfo p1, out T? p3, out int p4) where T : class
 //	{
-//		__baseInterface.GetObj(p1, typeof(T).GUID, out var ppv);
-//		return (T)ppv!;
-//	}
-
-//	public static HRESULT GetObjC<T>(object? p1, out T? p3) where T : class
-//	{
-//		HRESULT ret = GetObjC(p1, typeof(T).GUID, out var ppv);
+//		int __ret = __baseInterface.GetObjRet(p1, typeof(T).GUID, out var ppv, out p4);
 //		p3 = ppv as T;
-//		return ret;
+//		return __ret;
 //	}
 
-//	public static T GetObjC<T>(object? p1) where T : class
+//	public static int GetObjC<T>(object? p1, out T? p3) where T : class
 //	{
-//		GetObjC(p1, typeof(T).GUID, out var ppv).ThrowIfFailed();
-//		return (T)ppv!;
+//		int __ret = GetObjC(p1, typeof(T).GUID, out var ppv);
+//		p3 = ppv as T;
+//		return __ret;
 //	}
 //}

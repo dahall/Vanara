@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -100,7 +101,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(3));
 			Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
 
-			TestContext.WriteLine(string.Join($"\n{new string('=', 80)}\n", output.SyntaxTrees));
+			WriteTrees(TestContext.Out, output.SyntaxTrees, false);
 		}
 
 		[Test]
@@ -131,7 +132,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(3));
 			Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
 
-			TestContext.WriteLine(string.Join($"\n{new string('=', 80)}\n", output.SyntaxTrees));
+			WriteTrees(TestContext.Out, output.SyntaxTrees, false);
 		}
 
 		[Test]
@@ -142,7 +143,7 @@ namespace Vanara.PInvoke.Tests
 
 			Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
 
-			TestContext.WriteLine(string.Join($"\n{new string('=', 80)}\n", output.SyntaxTrees.Skip(1)));
+			WriteTrees(TestContext.Out, output.SyntaxTrees);
 		}
 
 		[TestCase("handlesbad1.csv", "VANGEN001")]
@@ -174,7 +175,8 @@ namespace Vanara.PInvoke.Tests
 
 						public interface IUnkHolder
 						{
-							HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+							HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3, ref MyStruct p4, out long p5);
+							void GetObj2(float p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? p3);
 							//HRESULT Ignore1(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown)] object? p3);
 							//HRESULT Ignore2([System.Runtime.InteropServices.MarshalAs(UnmanagedType.LPArray)] int[] p3);
 						}
@@ -185,10 +187,10 @@ namespace Vanara.PInvoke.Tests
 				}
 			";
 			var compilation = GetCompilation(src);
-			//CreateGeneratorDriverAndRun(compilation, new IUnkMethodGenerator(), null, out var output, out var diag);
-			//Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(2));
-			//Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
-			//TestContext.WriteLine(string.Join($"\n{new string('=', 80)}\n", output.SyntaxTrees.Skip(1)));
+			CreateGeneratorDriverAndRun(compilation, new IUnkMethodGenerator(), null, out var output, out var diag);
+			Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
+			Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(4));
+			WriteTrees(TestContext.Out, output.SyntaxTrees);
 		}
 
 		private static void CreateGeneratorDriverAndRun(CSharpCompilation compilation, IIncrementalGenerator sourceGenerator, string? additionalFile, out Compilation output, out System.Collections.Immutable.ImmutableArray<Diagnostic> diag) =>
@@ -202,6 +204,16 @@ namespace Vanara.PInvoke.Tests
 			[CSharpSyntaxTree.ParseText(sourceCode)],
 			AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic).Select(a => MetadataReference.CreateFromFile(a.Location)).Cast<MetadataReference>(),
 			new(OutputKind.DynamicallyLinkedLibrary));
+
+		private static void WriteTrees(TextWriter tw, IEnumerable<SyntaxTree> trees, bool skipFirst = true)
+		{
+			foreach (var tree in trees.Skip(skipFirst ? 1 : 0))
+			{
+				var fn = Path.GetFileName(tree.FilePath);
+				tw.WriteLine($"== {fn} {new string('=', 78-fn.Length)}");
+				tw.WriteLine(tree);
+			}
+		}
 	}
 
 	internal class InMemoryAdditionalText(string path, string content) : AdditionalText

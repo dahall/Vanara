@@ -19,7 +19,6 @@
   <ItemGroup>
     <Compile Remove="C:\Users\dahal\Documents\GitHubRepos\Vanara\AsmDef.cs" />
     <Compile Remove="HandleTemplate.cs" />
-    <Compile Remove="IUnkMethodGenerator.cs" />
     <Compile Remove="SafeHandleTemplate.cs" />
   </ItemGroup>
 
@@ -33,7 +32,6 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.12.0" />
     <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" PrivateAssets="all" GeneratePathProperty="true" />
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="IUnkMethodGenerator.cs" />
     <None Include="$(PkgLumenWorksCsvReader)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
 
