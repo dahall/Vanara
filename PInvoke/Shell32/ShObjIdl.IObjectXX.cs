@@ -249,6 +249,6 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iobjectwithselection-getselection HRESULT
 		// GetSelection( REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetSelection(in Guid riid, [MaybeNull, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppv);
+		HRESULT GetSelection(in Guid riid, [MaybeNull, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppv);
 	}
 }

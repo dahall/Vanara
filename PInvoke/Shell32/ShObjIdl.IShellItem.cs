@@ -430,7 +430,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iparseandcreateitem-getitem
 		// HRESULT GetItem( REFIID riid, void **ppv );
-		void GetItem(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppv);
+		void GetItem(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppv);
 	}
 
 	/// <summary>

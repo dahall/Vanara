@@ -221,7 +221,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcommandallocator HRESULT
 		// CreateCommandAllocator( [in] D3D12_COMMAND_LIST_TYPE type, REFIID riid, [out] void **ppCommandAllocator );
 		[PreserveSig]
-		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppCommandAllocator);
+		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppCommandAllocator);
 
 		/// <summary>Creates a graphics pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -253,7 +253,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-creategraphicspipelinestate HRESULT
 		// CreateGraphicsPipelineState( [in] const D3D12_GRAPHICS_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a compute pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -285,7 +285,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcomputepipelinestate HRESULT
 		// CreateComputePipelineState( [in] const D3D12_COMPUTE_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a command list.</summary>
 		/// <param name="nodeMask">
@@ -350,7 +350,7 @@ public static partial class D3D12
 		// ID3D12PipelineState *pInitialState, [in] REFIID riid, [out] void **ppCommandList );
 		[PreserveSig]
 		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, [In, Optional] ID3D12PipelineState? pInitialState,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppCommandList);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppCommandList);
 
 		/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
 		/// <param name="Feature">
@@ -568,7 +568,7 @@ public static partial class D3D12
 		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -1749,7 +1749,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createfence HRESULT CreateFence( UINT64
 		// InitialValue, D3D12_FENCE_FLAGS Flags, REFIID riid, [out] void **ppFence );
 		[PreserveSig]
-		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppFence);
+		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppFence);
 
 		/// <summary>
 		/// Gets the reason that the device was removed, or <b>S_OK</b> if the device isn't removed. To be called back when a device is
@@ -2139,7 +2139,7 @@ public static partial class D3D12
 		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
 		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppPipelineLibrary);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
 		/// <param name="ppFences">
@@ -2239,7 +2239,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device2-createpipelinestate HRESULT CreatePipelineState(
 		// const D3D12_PIPELINE_STATE_STREAM_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreatePipelineState(in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreatePipelineState(in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>
 		/// Creates a special-purpose diagnostic heap in system memory from an address. The created heap can persist even in the event of a
@@ -2282,7 +2282,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device3-openexistingheapfromaddress HRESULT
 		// OpenExistingHeapFromAddress( [in] const void *pAddress, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromAddress([In] IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromAddress([In] IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvHeap);
 
 		/// <summary>
 		/// Creates a special-purpose diagnostic heap in system memory from a file mapping object. The created heap can persist even in the
@@ -2325,7 +2325,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device3-openexistingheapfromfilemapping HRESULT
 		// OpenExistingHeapFromFileMapping( HANDLE hFileMapping, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromFileMapping([In] IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromFileMapping([In] IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvHeap);
 
 		/// <summary>Asynchronously makes objects resident for the device.</summary>
 		/// <param name="Flags">
@@ -2434,7 +2434,7 @@ public static partial class D3D12
 		// **ppCommandList );
 		[PreserveSig]
 		new HRESULT CreateCommandList1(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, D3D12_COMMAND_LIST_FLAGS flags, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppCommandList);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppCommandList);
 
 		/// <summary>
 		/// <para>
@@ -2464,7 +2464,7 @@ public static partial class D3D12
 		// CreateProtectedResourceSession( [in] const D3D12_PROTECTED_RESOURCE_SESSION_DESC *pDesc, [in] REFIID riid, [out] void **ppSession );
 		[PreserveSig]
 		new HRESULT CreateProtectedResourceSession(in D3D12_PROTECTED_RESOURCE_SESSION_DESC pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppSession);
 
 		/// <summary>
 		/// Creates both a resource and an implicit heap (optionally for a protected session), such that the heap is big enough to contain
@@ -2709,7 +2709,7 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT CreateReservedResource1(in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
 			[In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, [In, Optional] ID3D12ProtectedResourceSession? pProtectedSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppvResource);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppvResource);
 
 		/// <summary>
 		/// <para>
@@ -2807,7 +2807,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createlifetimetracker HRESULT
 		// CreateLifetimeTracker( [in] ID3D12LifetimeOwner *pOwner, [in] REFIID riid, [out] void **ppvTracker );
 		[PreserveSig]
-		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvTracker);
+		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvTracker);
 
 		/// <summary>
 		/// You can call <b>RemoveDevice</b> to indicate to the Direct3D 12 runtime that the GPU device encountered a problem, and can no
@@ -2954,7 +2954,7 @@ public static partial class D3D12
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
 		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppMetaCommand);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
 		/// <param name="pDesc">The description of the state object to create.</param>
@@ -2977,7 +2977,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createstateobject HRESULT CreateStateObject(
 		// [in] const D3D12_STATE_OBJECT_DESC *pDesc, REFIID riid, [out] void **ppStateObject );
 		[PreserveSig]
-		new HRESULT CreateStateObject(in D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppStateObject);
+		new HRESULT CreateStateObject(in D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppStateObject);
 
 		/// <summary>Query the driver for resource requirements to build an acceleration structure.</summary>
 		/// <param name="pDesc">
@@ -3130,7 +3130,7 @@ public static partial class D3D12
 		// D3D12_STATE_OBJECT_DESC *pAddition, ID3D12StateObject *pStateObjectToGrowFrom, REFIID riid, void **ppNewStateObject );
 		[PreserveSig]
 		new HRESULT AddToStateObject(in D3D12_STATE_OBJECT_DESC pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppNewStateObject);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppNewStateObject);
 
 		/// <summary>
 		/// <para>
@@ -3166,7 +3166,7 @@ public static partial class D3D12
 		// CreateProtectedResourceSession1( const D3D12_PROTECTED_RESOURCE_SESSION_DESC1 *pDesc, REFIID riid, void **ppSession );
 		[PreserveSig]
 		new HRESULT CreateProtectedResourceSession1(in D3D12_PROTECTED_RESOURCE_SESSION_DESC1 pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppSession);
 
 		/// <summary>
 		/// <para>
@@ -3506,7 +3506,7 @@ public static partial class D3D12
 		// CreateShaderCacheSession( const D3D12_SHADER_CACHE_SESSION_DESC *pDesc, REFIID riid, void **ppvSession );
 		[PreserveSig]
 		new HRESULT CreateShaderCacheSession(in D3D12_SHADER_CACHE_SESSION_DESC pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvSession);
 
 		/// <summary>
 		/// Modifies the behavior of caches used internally by Direct3D or by the driver. <b>ShaderCacheControl</b> may be used only in
@@ -3573,7 +3573,7 @@ public static partial class D3D12
 		// const D3D12_COMMAND_QUEUE_DESC *pDesc, REFIID CreatorID, REFIID riid, void **ppCommandQueue );
 		[PreserveSig]
 		new HRESULT CreateCommandQueue1(in D3D12_COMMAND_QUEUE_DESC pDesc, in Guid CreatorID, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppCommandQueue);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppCommandQueue);
 
 		/// <summary>
 		/// <para>Creates a committed resource with an initial layout rather than an initial state.</para>
@@ -4012,7 +4012,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcommandallocator HRESULT
 		// CreateCommandAllocator( [in] D3D12_COMMAND_LIST_TYPE type, REFIID riid, [out] void **ppCommandAllocator );
 		[PreserveSig]
-		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppCommandAllocator);
+		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppCommandAllocator);
 
 		/// <summary>Creates a graphics pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -4044,7 +4044,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-creategraphicspipelinestate HRESULT
 		// CreateGraphicsPipelineState( [in] const D3D12_GRAPHICS_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a compute pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -4076,7 +4076,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcomputepipelinestate HRESULT
 		// CreateComputePipelineState( [in] const D3D12_COMPUTE_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a command list.</summary>
 		/// <param name="nodeMask">
@@ -4141,7 +4141,7 @@ public static partial class D3D12
 		// ID3D12PipelineState *pInitialState, [in] REFIID riid, [out] void **ppCommandList );
 		[PreserveSig]
 		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, [In, Optional] ID3D12PipelineState? pInitialState,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppCommandList);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppCommandList);
 
 		/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
 		/// <param name="Feature">
@@ -4359,7 +4359,7 @@ public static partial class D3D12
 		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -5540,7 +5540,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createfence HRESULT CreateFence( UINT64
 		// InitialValue, D3D12_FENCE_FLAGS Flags, REFIID riid, [out] void **ppFence );
 		[PreserveSig]
-		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppFence);
+		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppFence);
 
 		/// <summary>
 		/// Gets the reason that the device was removed, or <b>S_OK</b> if the device isn't removed. To be called back when a device is
@@ -5930,7 +5930,7 @@ public static partial class D3D12
 		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
 		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppPipelineLibrary);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
 		/// <param name="ppFences">
@@ -6030,7 +6030,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device2-createpipelinestate HRESULT CreatePipelineState(
 		// const D3D12_PIPELINE_STATE_STREAM_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreatePipelineState(in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreatePipelineState(in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>
 		/// Creates a special-purpose diagnostic heap in system memory from an address. The created heap can persist even in the event of a
@@ -6073,7 +6073,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device3-openexistingheapfromaddress HRESULT
 		// OpenExistingHeapFromAddress( [in] const void *pAddress, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromAddress([In] IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromAddress([In] IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvHeap);
 
 		/// <summary>
 		/// Creates a special-purpose diagnostic heap in system memory from a file mapping object. The created heap can persist even in the
@@ -6116,7 +6116,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device3-openexistingheapfromfilemapping HRESULT
 		// OpenExistingHeapFromFileMapping( HANDLE hFileMapping, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromFileMapping([In] IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromFileMapping([In] IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvHeap);
 
 		/// <summary>Asynchronously makes objects resident for the device.</summary>
 		/// <param name="Flags">
@@ -6225,7 +6225,7 @@ public static partial class D3D12
 		// **ppCommandList );
 		[PreserveSig]
 		new HRESULT CreateCommandList1(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, D3D12_COMMAND_LIST_FLAGS flags, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppCommandList);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppCommandList);
 
 		/// <summary>
 		/// <para>
@@ -6255,7 +6255,7 @@ public static partial class D3D12
 		// CreateProtectedResourceSession( [in] const D3D12_PROTECTED_RESOURCE_SESSION_DESC *pDesc, [in] REFIID riid, [out] void **ppSession );
 		[PreserveSig]
 		new HRESULT CreateProtectedResourceSession(in D3D12_PROTECTED_RESOURCE_SESSION_DESC pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppSession);
 
 		/// <summary>
 		/// Creates both a resource and an implicit heap (optionally for a protected session), such that the heap is big enough to contain
@@ -6500,7 +6500,7 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT CreateReservedResource1(in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
 			[In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, [In, Optional] ID3D12ProtectedResourceSession? pProtectedSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppvResource);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppvResource);
 
 		/// <summary>
 		/// <para>
@@ -6598,7 +6598,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createlifetimetracker HRESULT
 		// CreateLifetimeTracker( [in] ID3D12LifetimeOwner *pOwner, [in] REFIID riid, [out] void **ppvTracker );
 		[PreserveSig]
-		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvTracker);
+		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvTracker);
 
 		/// <summary>
 		/// You can call <b>RemoveDevice</b> to indicate to the Direct3D 12 runtime that the GPU device encountered a problem, and can no
@@ -6745,7 +6745,7 @@ public static partial class D3D12
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
 		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppMetaCommand);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
 		/// <param name="pDesc">The description of the state object to create.</param>
@@ -6768,7 +6768,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createstateobject HRESULT CreateStateObject(
 		// [in] const D3D12_STATE_OBJECT_DESC *pDesc, REFIID riid, [out] void **ppStateObject );
 		[PreserveSig]
-		new HRESULT CreateStateObject(in D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppStateObject);
+		new HRESULT CreateStateObject(in D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppStateObject);
 
 		/// <summary>Query the driver for resource requirements to build an acceleration structure.</summary>
 		/// <param name="pDesc">
@@ -6921,7 +6921,7 @@ public static partial class D3D12
 		// D3D12_STATE_OBJECT_DESC *pAddition, ID3D12StateObject *pStateObjectToGrowFrom, REFIID riid, void **ppNewStateObject );
 		[PreserveSig]
 		new HRESULT AddToStateObject(in D3D12_STATE_OBJECT_DESC pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppNewStateObject);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppNewStateObject);
 
 		/// <summary>
 		/// <para>
@@ -6957,7 +6957,7 @@ public static partial class D3D12
 		// CreateProtectedResourceSession1( const D3D12_PROTECTED_RESOURCE_SESSION_DESC1 *pDesc, REFIID riid, void **ppSession );
 		[PreserveSig]
 		new HRESULT CreateProtectedResourceSession1(in D3D12_PROTECTED_RESOURCE_SESSION_DESC1 pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppSession);
 
 		/// <summary>
 		/// <para>
@@ -7297,7 +7297,7 @@ public static partial class D3D12
 		// CreateShaderCacheSession( const D3D12_SHADER_CACHE_SESSION_DESC *pDesc, REFIID riid, void **ppvSession );
 		[PreserveSig]
 		new HRESULT CreateShaderCacheSession(in D3D12_SHADER_CACHE_SESSION_DESC pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvSession);
 
 		/// <summary>
 		/// Modifies the behavior of caches used internally by Direct3D or by the driver. <b>ShaderCacheControl</b> may be used only in
@@ -7364,7 +7364,7 @@ public static partial class D3D12
 		// const D3D12_COMMAND_QUEUE_DESC *pDesc, REFIID CreatorID, REFIID riid, void **ppCommandQueue );
 		[PreserveSig]
 		new HRESULT CreateCommandQueue1(in D3D12_COMMAND_QUEUE_DESC pDesc, in Guid CreatorID, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppCommandQueue);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppCommandQueue);
 
 		/// <summary>
 		/// <para>Creates a committed resource with an initial layout rather than an initial state.</para>
@@ -7810,7 +7810,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcommandallocator HRESULT
 		// CreateCommandAllocator( [in] D3D12_COMMAND_LIST_TYPE type, REFIID riid, [out] void **ppCommandAllocator );
 		[PreserveSig]
-		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppCommandAllocator);
+		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppCommandAllocator);
 
 		/// <summary>Creates a graphics pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -7842,7 +7842,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-creategraphicspipelinestate HRESULT
 		// CreateGraphicsPipelineState( [in] const D3D12_GRAPHICS_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a compute pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -7874,7 +7874,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcomputepipelinestate HRESULT
 		// CreateComputePipelineState( [in] const D3D12_COMPUTE_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a command list.</summary>
 		/// <param name="nodeMask">
@@ -7939,7 +7939,7 @@ public static partial class D3D12
 		// ID3D12PipelineState *pInitialState, [in] REFIID riid, [out] void **ppCommandList );
 		[PreserveSig]
 		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, [In, Optional] ID3D12PipelineState? pInitialState,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppCommandList);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppCommandList);
 
 		/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
 		/// <param name="Feature">
@@ -8157,7 +8157,7 @@ public static partial class D3D12
 		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -9338,7 +9338,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createfence HRESULT CreateFence( UINT64
 		// InitialValue, D3D12_FENCE_FLAGS Flags, REFIID riid, [out] void **ppFence );
 		[PreserveSig]
-		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppFence);
+		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppFence);
 
 		/// <summary>
 		/// Gets the reason that the device was removed, or <b>S_OK</b> if the device isn't removed. To be called back when a device is
@@ -9728,7 +9728,7 @@ public static partial class D3D12
 		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
 		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppPipelineLibrary);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
 		/// <param name="ppFences">
@@ -9828,7 +9828,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device2-createpipelinestate HRESULT CreatePipelineState(
 		// const D3D12_PIPELINE_STATE_STREAM_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreatePipelineState(in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreatePipelineState(in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>
 		/// Creates a special-purpose diagnostic heap in system memory from an address. The created heap can persist even in the event of a
@@ -9871,7 +9871,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device3-openexistingheapfromaddress HRESULT
 		// OpenExistingHeapFromAddress( [in] const void *pAddress, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromAddress([In] IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromAddress([In] IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvHeap);
 
 		/// <summary>
 		/// Creates a special-purpose diagnostic heap in system memory from a file mapping object. The created heap can persist even in the
@@ -9914,7 +9914,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device3-openexistingheapfromfilemapping HRESULT
 		// OpenExistingHeapFromFileMapping( HANDLE hFileMapping, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromFileMapping([In] IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromFileMapping([In] IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvHeap);
 
 		/// <summary>Asynchronously makes objects resident for the device.</summary>
 		/// <param name="Flags">
@@ -10023,7 +10023,7 @@ public static partial class D3D12
 		// **ppCommandList );
 		[PreserveSig]
 		new HRESULT CreateCommandList1(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, D3D12_COMMAND_LIST_FLAGS flags, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppCommandList);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppCommandList);
 
 		/// <summary>
 		/// <para>
@@ -10053,7 +10053,7 @@ public static partial class D3D12
 		// CreateProtectedResourceSession( [in] const D3D12_PROTECTED_RESOURCE_SESSION_DESC *pDesc, [in] REFIID riid, [out] void **ppSession );
 		[PreserveSig]
 		new HRESULT CreateProtectedResourceSession(in D3D12_PROTECTED_RESOURCE_SESSION_DESC pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppSession);
 
 		/// <summary>
 		/// Creates both a resource and an implicit heap (optionally for a protected session), such that the heap is big enough to contain
@@ -10298,7 +10298,7 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT CreateReservedResource1(in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
 			[In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, [In, Optional] ID3D12ProtectedResourceSession? pProtectedSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppvResource);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppvResource);
 
 		/// <summary>
 		/// <para>
@@ -10396,7 +10396,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createlifetimetracker HRESULT
 		// CreateLifetimeTracker( [in] ID3D12LifetimeOwner *pOwner, [in] REFIID riid, [out] void **ppvTracker );
 		[PreserveSig]
-		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvTracker);
+		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvTracker);
 
 		/// <summary>
 		/// You can call <b>RemoveDevice</b> to indicate to the Direct3D 12 runtime that the GPU device encountered a problem, and can no
@@ -10543,7 +10543,7 @@ public static partial class D3D12
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
 		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppMetaCommand);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
 		/// <param name="pDesc">The description of the state object to create.</param>
@@ -10566,7 +10566,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createstateobject HRESULT CreateStateObject(
 		// [in] const D3D12_STATE_OBJECT_DESC *pDesc, REFIID riid, [out] void **ppStateObject );
 		[PreserveSig]
-		new HRESULT CreateStateObject(in D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppStateObject);
+		new HRESULT CreateStateObject(in D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppStateObject);
 
 		/// <summary>Query the driver for resource requirements to build an acceleration structure.</summary>
 		/// <param name="pDesc">
@@ -10719,7 +10719,7 @@ public static partial class D3D12
 		// D3D12_STATE_OBJECT_DESC *pAddition, ID3D12StateObject *pStateObjectToGrowFrom, REFIID riid, void **ppNewStateObject );
 		[PreserveSig]
 		new HRESULT AddToStateObject(in D3D12_STATE_OBJECT_DESC pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppNewStateObject);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppNewStateObject);
 
 		/// <summary>
 		/// <para>
@@ -10755,7 +10755,7 @@ public static partial class D3D12
 		// CreateProtectedResourceSession1( const D3D12_PROTECTED_RESOURCE_SESSION_DESC1 *pDesc, REFIID riid, void **ppSession );
 		[PreserveSig]
 		new HRESULT CreateProtectedResourceSession1(in D3D12_PROTECTED_RESOURCE_SESSION_DESC1 pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppSession);
 
 		/// <summary>
 		/// <para>
@@ -11095,7 +11095,7 @@ public static partial class D3D12
 		// CreateShaderCacheSession( const D3D12_SHADER_CACHE_SESSION_DESC *pDesc, REFIID riid, void **ppvSession );
 		[PreserveSig]
 		new HRESULT CreateShaderCacheSession(in D3D12_SHADER_CACHE_SESSION_DESC pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvSession);
 
 		/// <summary>
 		/// Modifies the behavior of caches used internally by Direct3D or by the driver. <b>ShaderCacheControl</b> may be used only in
@@ -11162,7 +11162,7 @@ public static partial class D3D12
 		// const D3D12_COMMAND_QUEUE_DESC *pDesc, REFIID CreatorID, REFIID riid, void **ppCommandQueue );
 		[PreserveSig]
 		new HRESULT CreateCommandQueue1(in D3D12_COMMAND_QUEUE_DESC pDesc, in Guid CreatorID, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppCommandQueue);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppCommandQueue);
 
 		/// <summary>
 		/// <para>Creates a committed resource with an initial layout rather than an initial state.</para>
@@ -11612,7 +11612,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcommandallocator HRESULT
 		// CreateCommandAllocator( [in] D3D12_COMMAND_LIST_TYPE type, REFIID riid, [out] void **ppCommandAllocator );
 		[PreserveSig]
-		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppCommandAllocator);
+		new HRESULT CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE type, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppCommandAllocator);
 
 		/// <summary>Creates a graphics pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -11644,7 +11644,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-creategraphicspipelinestate HRESULT
 		// CreateGraphicsPipelineState( [in] const D3D12_GRAPHICS_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreateGraphicsPipelineState(in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a compute pipeline state object.</summary>
 		/// <param name="pDesc">
@@ -11676,7 +11676,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcomputepipelinestate HRESULT
 		// CreateComputePipelineState( [in] const D3D12_COMPUTE_PIPELINE_STATE_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreateComputePipelineState(in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>Creates a command list.</summary>
 		/// <param name="nodeMask">
@@ -11741,7 +11741,7 @@ public static partial class D3D12
 		// ID3D12PipelineState *pInitialState, [in] REFIID riid, [out] void **ppCommandList );
 		[PreserveSig]
 		new HRESULT CreateCommandList(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, [In] ID3D12CommandAllocator pCommandAllocator, [In, Optional] ID3D12PipelineState? pInitialState,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppCommandList);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppCommandList);
 
 		/// <summary>Gets information about the features that are supported by the current graphics driver.</summary>
 		/// <param name="Feature">
@@ -11959,7 +11959,7 @@ public static partial class D3D12
 		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -13140,7 +13140,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createfence HRESULT CreateFence( UINT64
 		// InitialValue, D3D12_FENCE_FLAGS Flags, REFIID riid, [out] void **ppFence );
 		[PreserveSig]
-		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppFence);
+		new HRESULT CreateFence(ulong InitialValue, D3D12_FENCE_FLAGS Flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppFence);
 
 		/// <summary>
 		/// Gets the reason that the device was removed, or <b>S_OK</b> if the device isn't removed. To be called back when a device is
@@ -13530,7 +13530,7 @@ public static partial class D3D12
 		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
 		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppPipelineLibrary);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
 		/// <param name="ppFences">
@@ -13630,7 +13630,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device2-createpipelinestate HRESULT CreatePipelineState(
 		// const D3D12_PIPELINE_STATE_STREAM_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
-		new HRESULT CreatePipelineState(in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppPipelineState);
+		new HRESULT CreatePipelineState(in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppPipelineState);
 
 		/// <summary>
 		/// Creates a special-purpose diagnostic heap in system memory from an address. The created heap can persist even in the event of a
@@ -13673,7 +13673,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device3-openexistingheapfromaddress HRESULT
 		// OpenExistingHeapFromAddress( [in] const void *pAddress, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromAddress([In] IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromAddress([In] IntPtr pAddress, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvHeap);
 
 		/// <summary>
 		/// Creates a special-purpose diagnostic heap in system memory from a file mapping object. The created heap can persist even in the
@@ -13716,7 +13716,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device3-openexistingheapfromfilemapping HRESULT
 		// OpenExistingHeapFromFileMapping( HANDLE hFileMapping, REFIID riid, [out] void **ppvHeap );
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromFileMapping([In] IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvHeap);
+		new HRESULT OpenExistingHeapFromFileMapping([In] IntPtr hFileMapping, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvHeap);
 
 		/// <summary>Asynchronously makes objects resident for the device.</summary>
 		/// <param name="Flags">
@@ -13825,7 +13825,7 @@ public static partial class D3D12
 		// **ppCommandList );
 		[PreserveSig]
 		new HRESULT CreateCommandList1(uint nodeMask, D3D12_COMMAND_LIST_TYPE type, D3D12_COMMAND_LIST_FLAGS flags, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppCommandList);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppCommandList);
 
 		/// <summary>
 		/// <para>
@@ -13855,7 +13855,7 @@ public static partial class D3D12
 		// CreateProtectedResourceSession( [in] const D3D12_PROTECTED_RESOURCE_SESSION_DESC *pDesc, [in] REFIID riid, [out] void **ppSession );
 		[PreserveSig]
 		new HRESULT CreateProtectedResourceSession(in D3D12_PROTECTED_RESOURCE_SESSION_DESC pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppSession);
 
 		/// <summary>
 		/// Creates both a resource and an implicit heap (optionally for a protected session), such that the heap is big enough to contain
@@ -14100,7 +14100,7 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT CreateReservedResource1(in D3D12_RESOURCE_DESC pDesc, D3D12_RESOURCE_STATES InitialState,
 			[In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, [In, Optional] ID3D12ProtectedResourceSession? pProtectedSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppvResource);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppvResource);
 
 		/// <summary>
 		/// <para>
@@ -14198,7 +14198,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createlifetimetracker HRESULT
 		// CreateLifetimeTracker( [in] ID3D12LifetimeOwner *pOwner, [in] REFIID riid, [out] void **ppvTracker );
 		[PreserveSig]
-		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvTracker);
+		new HRESULT CreateLifetimeTracker([In] ID3D12LifetimeOwner pOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvTracker);
 
 		/// <summary>
 		/// You can call <b>RemoveDevice</b> to indicate to the Direct3D 12 runtime that the GPU device encountered a problem, and can no
@@ -14345,7 +14345,7 @@ public static partial class D3D12
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
 		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppMetaCommand);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
 		/// <param name="pDesc">The description of the state object to create.</param>
@@ -14368,7 +14368,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createstateobject HRESULT CreateStateObject(
 		// [in] const D3D12_STATE_OBJECT_DESC *pDesc, REFIID riid, [out] void **ppStateObject );
 		[PreserveSig]
-		new HRESULT CreateStateObject(in D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppStateObject);
+		new HRESULT CreateStateObject(in D3D12_STATE_OBJECT_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppStateObject);
 
 		/// <summary>Query the driver for resource requirements to build an acceleration structure.</summary>
 		/// <param name="pDesc">
@@ -14521,7 +14521,7 @@ public static partial class D3D12
 		// D3D12_STATE_OBJECT_DESC *pAddition, ID3D12StateObject *pStateObjectToGrowFrom, REFIID riid, void **ppNewStateObject );
 		[PreserveSig]
 		new HRESULT AddToStateObject(in D3D12_STATE_OBJECT_DESC pAddition, [In] ID3D12StateObject pStateObjectToGrowFrom, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppNewStateObject);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppNewStateObject);
 
 		/// <summary>
 		/// <para>
@@ -14557,7 +14557,7 @@ public static partial class D3D12
 		// CreateProtectedResourceSession1( const D3D12_PROTECTED_RESOURCE_SESSION_DESC1 *pDesc, REFIID riid, void **ppSession );
 		[PreserveSig]
 		new HRESULT CreateProtectedResourceSession1(in D3D12_PROTECTED_RESOURCE_SESSION_DESC1 pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppSession);
 
 		/// <summary>
 		/// <para>
@@ -14897,7 +14897,7 @@ public static partial class D3D12
 		// CreateShaderCacheSession( const D3D12_SHADER_CACHE_SESSION_DESC *pDesc, REFIID riid, void **ppvSession );
 		[PreserveSig]
 		new HRESULT CreateShaderCacheSession(in D3D12_SHADER_CACHE_SESSION_DESC pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvSession);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvSession);
 
 		/// <summary>
 		/// Modifies the behavior of caches used internally by Direct3D or by the driver. <b>ShaderCacheControl</b> may be used only in
@@ -14964,7 +14964,7 @@ public static partial class D3D12
 		// const D3D12_COMMAND_QUEUE_DESC *pDesc, REFIID CreatorID, REFIID riid, void **ppCommandQueue );
 		[PreserveSig]
 		new HRESULT CreateCommandQueue1(in D3D12_COMMAND_QUEUE_DESC pDesc, in Guid CreatorID, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppCommandQueue);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppCommandQueue);
 
 		/// <summary>
 		/// <para>Creates a committed resource with an initial layout rather than an initial state.</para>

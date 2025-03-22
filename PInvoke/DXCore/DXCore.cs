@@ -947,7 +947,7 @@ public static partial class DXCore
 		// HRESULT STDMETHODCALLTYPE GetFactory( REFIID riid, _COM_Outptr_ void** ppvFactory ) = 0; template &lt;class T&gt; HRESULT
 		// GetFactory(_COM_Outptr_ T** ppvFactory);
 		[PreserveSig]
-		HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvFactory);
+		HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvFactory);
 	}
 
 	/// <summary>
@@ -1352,7 +1352,7 @@ public static partial class DXCore
 		// HRESULT STDMETHODCALLTYPE GetFactory( REFIID riid, _COM_Outptr_ void** ppvFactory ) = 0; template &lt;class T&gt; HRESULT
 		// GetFactory(_COM_Outptr_ T** ppvFactory);
 		[PreserveSig]
-		new HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvFactory);
+		new HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvFactory);
 
 		/// <summary>TBD</summary>
 		/// <param name="property">TBD</param>
@@ -1446,7 +1446,7 @@ public static partial class DXCore
 		// CreateAdapterList( uint32_t numAttributes, _In_reads_(numAttributes) const GUID *filterAttributes, _COM_Outptr_ T **ppvAdapterList);
 		[PreserveSig]
 		HRESULT CreateAdapterList(int numAttributes, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] filterAttributes,
-			in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppvAdapterList);
+			in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppvAdapterList);
 
 		/// <summary>
 		/// Retrieves the DXCore adapter object ( <c>IDXCoreAdapter</c>) for a specified LUID, if available. For programming guidance, and
@@ -1498,7 +1498,7 @@ public static partial class DXCore
 		// virtual HRESULT STDMETHODCALLTYPE GetAdapterByLuid( const LUID &amp;adapterLUID, REFIID riid, _COM_Outptr_ void **ppvAdapter) =
 		// 0; template&lt;class T&gt; HRESULT STDMETHODCALLTYPE GetAdapterByLuid( const LUID &amp;adapterLUID, _COM_Outptr_ T **ppvAdapter);
 		[PreserveSig]
-		HRESULT GetAdapterByLuid(in LUID adapterLUID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvAdapter);
+		HRESULT GetAdapterByLuid(in LUID adapterLUID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvAdapter);
 
 		/// <summary>
 		/// Determines whether a specified notification type is supported by the operating system (OS). For programming guidance, and code
@@ -1768,7 +1768,7 @@ public static partial class DXCore
 		// CreateAdapterList( uint32_t numAttributes, _In_reads_(numAttributes) const GUID *filterAttributes, _COM_Outptr_ T **ppvAdapterList);
 		[PreserveSig]
 		new HRESULT CreateAdapterList(int numAttributes, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] filterAttributes,
-			in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppvAdapterList);
+			in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppvAdapterList);
 
 		/// <summary>
 		/// Retrieves the DXCore adapter object ( <c>IDXCoreAdapter</c>) for a specified LUID, if available. For programming guidance, and
@@ -1820,7 +1820,7 @@ public static partial class DXCore
 		// virtual HRESULT STDMETHODCALLTYPE GetAdapterByLuid( const LUID &amp;adapterLUID, REFIID riid, _COM_Outptr_ void **ppvAdapter) =
 		// 0; template&lt;class T&gt; HRESULT STDMETHODCALLTYPE GetAdapterByLuid( const LUID &amp;adapterLUID, _COM_Outptr_ T **ppvAdapter);
 		[PreserveSig]
-		new HRESULT GetAdapterByLuid(in LUID adapterLUID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvAdapter);
+		new HRESULT GetAdapterByLuid(in LUID adapterLUID, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvAdapter);
 
 		/// <summary>
 		/// Determines whether a specified notification type is supported by the operating system (OS). For programming guidance, and code
@@ -2094,7 +2094,7 @@ public static partial class DXCore
 		[PreserveSig]
 		HRESULT CreateAdapterListByWorkload(DXCoreWorkload workload, DXCoreRuntimeFilterFlags runtimeFilter,
 			DXCoreHardwareTypeFilterFlags hardwareTypeFilter, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppvAdapterList);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvAdapterList);
 	}
 
 	/// <summary>
@@ -2158,7 +2158,7 @@ public static partial class DXCore
 		// HRESULT STDMETHODCALLTYPE GetAdapter( uint32_t index, REFIID riid, _COM_Outptr_ void **ppvAdapter) = 0; template&lt;class T&gt;
 		// HRESULT STDMETHODCALLTYPE GetAdapter( uint32_t index, _COM_Outptr_ T **ppvAdapter);
 		[PreserveSig]
-		HRESULT GetAdapter(uint index, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvAdapter);
+		HRESULT GetAdapter(uint index, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvAdapter);
 
 		/// <summary>
 		/// Retrieves the number of adapters in a DXCore adapter list object. For programming guidance, and code examples, see <c>Using
@@ -2239,7 +2239,7 @@ public static partial class DXCore
 		// HRESULT STDMETHODCALLTYPE GetFactory( REFIID riid, _COM_Outptr_ void** ppvFactory) = 0; template &lt;class T&gt; HRESULT
 		// GetFactory( _COM_Outptr_ T** ppvFactory);
 		[PreserveSig]
-		HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvFactory);
+		HRESULT GetFactory(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvFactory);
 
 		/// <summary>
 		/// Sorts a DXCore adapter list object based on a provided input array of sort criteria, where array items earlier in the array of

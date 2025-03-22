@@ -2074,7 +2074,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecoder1-getprotectedresourcesession
 		// HRESULT GetProtectedResourceSession( REFIID riid, void **ppProtectedSession );
 		[PreserveSig]
-		HRESULT GetProtectedResourceSession(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppProtectedSession);
+		HRESULT GetProtectedResourceSession(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppProtectedSession);
 	}
 
 	/// <summary>
@@ -2475,7 +2475,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice-createvideodecoder HRESULT
 		// CreateVideoDecoder( const D3D12_VIDEO_DECODER_DESC *pDesc, REFIID riid, void **ppVideoDecoder );
 		[PreserveSig]
-		HRESULT CreateVideoDecoder(in D3D12_VIDEO_DECODER_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppVideoDecoder);
+		HRESULT CreateVideoDecoder(in D3D12_VIDEO_DECODER_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppVideoDecoder);
 
 		/// <summary>Allocates a video decoder heap that contains the resolution-dependent driver resources and state.</summary>
 		/// <param name="pVideoDecoderHeapDesc">A pointer to a <c>D3D12_VIDEO_DECODER_HEAP_DESC</c> describing the decoding configuration.</param>
@@ -2485,7 +2485,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice-createvideodecoderheap HRESULT
 		// CreateVideoDecoderHeap( const D3D12_VIDEO_DECODER_HEAP_DESC *pVideoDecoderHeapDesc, REFIID riid, void **ppVideoDecoderHeap );
 		[PreserveSig]
-		HRESULT CreateVideoDecoderHeap(in D3D12_VIDEO_DECODER_HEAP_DESC pVideoDecoderHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppVideoDecoderHeap);
+		HRESULT CreateVideoDecoderHeap(in D3D12_VIDEO_DECODER_HEAP_DESC pVideoDecoderHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppVideoDecoderHeap);
 
 		/// <summary>Creates a video processor instance.</summary>
 		/// <param name="NodeMask">
@@ -2512,7 +2512,7 @@ public static partial class D3D12
 		[PreserveSig]
 		HRESULT CreateVideoProcessor(uint NodeMask, in D3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC pOutputStreamDesc, int NumInputStreamDescs,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC[] pInputStreamDescs,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppVideoProcessor);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppVideoProcessor);
 	}
 
 	/// <summary>
@@ -2552,7 +2552,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice-createvideodecoder HRESULT
 		// CreateVideoDecoder( const D3D12_VIDEO_DECODER_DESC *pDesc, REFIID riid, void **ppVideoDecoder );
 		[PreserveSig]
-		new HRESULT CreateVideoDecoder(in D3D12_VIDEO_DECODER_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppVideoDecoder);
+		new HRESULT CreateVideoDecoder(in D3D12_VIDEO_DECODER_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppVideoDecoder);
 
 		/// <summary>Allocates a video decoder heap that contains the resolution-dependent driver resources and state.</summary>
 		/// <param name="pVideoDecoderHeapDesc">A pointer to a <c>D3D12_VIDEO_DECODER_HEAP_DESC</c> describing the decoding configuration.</param>
@@ -2562,7 +2562,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice-createvideodecoderheap HRESULT
 		// CreateVideoDecoderHeap( const D3D12_VIDEO_DECODER_HEAP_DESC *pVideoDecoderHeapDesc, REFIID riid, void **ppVideoDecoderHeap );
 		[PreserveSig]
-		new HRESULT CreateVideoDecoderHeap(in D3D12_VIDEO_DECODER_HEAP_DESC pVideoDecoderHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppVideoDecoderHeap);
+		new HRESULT CreateVideoDecoderHeap(in D3D12_VIDEO_DECODER_HEAP_DESC pVideoDecoderHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppVideoDecoderHeap);
 
 		/// <summary>Creates a video processor instance.</summary>
 		/// <param name="NodeMask">
@@ -2589,7 +2589,7 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT CreateVideoProcessor(uint NodeMask, in D3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC pOutputStreamDesc, int NumInputStreamDescs,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC[] pInputStreamDescs,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppVideoProcessor);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppVideoProcessor);
 
 		/// <summary>Creates an <c>ID3D12VideoMotionEstimator</c>, which maintains context for video motion estimation operations.</summary>
 		/// <param name="pDesc">
@@ -2607,7 +2607,7 @@ public static partial class D3D12
 		// *pProtectedResourceSession, REFIID riid, void **ppVideoMotionEstimator );
 		[PreserveSig]
 		HRESULT CreateVideoMotionEstimator(in D3D12_VIDEO_MOTION_ESTIMATOR_DESC pDesc, [In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppVideoMotionEstimator);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppVideoMotionEstimator);
 
 		/// <summary>Allocates heap that contains motion vectors for video motion estimation.</summary>
 		/// <param name="pDesc">
@@ -2625,7 +2625,7 @@ public static partial class D3D12
 		// *pProtectedResourceSession, REFIID riid, void **ppVideoMotionVectorHeap );
 		[PreserveSig]
 		HRESULT CreateVideoMotionVectorHeap(in D3D12_VIDEO_MOTION_VECTOR_HEAP_DESC pDesc, [In] ID3D12ProtectedResourceSession? pProtectedResourceSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppVideoMotionVectorHeap);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppVideoMotionVectorHeap);
 	}
 
 	/// <summary>
@@ -2666,7 +2666,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice-createvideodecoder HRESULT
 		// CreateVideoDecoder( const D3D12_VIDEO_DECODER_DESC *pDesc, REFIID riid, void **ppVideoDecoder );
 		[PreserveSig]
-		new HRESULT CreateVideoDecoder(in D3D12_VIDEO_DECODER_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppVideoDecoder);
+		new HRESULT CreateVideoDecoder(in D3D12_VIDEO_DECODER_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppVideoDecoder);
 
 		/// <summary>Allocates a video decoder heap that contains the resolution-dependent driver resources and state.</summary>
 		/// <param name="pVideoDecoderHeapDesc">A pointer to a <c>D3D12_VIDEO_DECODER_HEAP_DESC</c> describing the decoding configuration.</param>
@@ -2676,7 +2676,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice-createvideodecoderheap HRESULT
 		// CreateVideoDecoderHeap( const D3D12_VIDEO_DECODER_HEAP_DESC *pVideoDecoderHeapDesc, REFIID riid, void **ppVideoDecoderHeap );
 		[PreserveSig]
-		new HRESULT CreateVideoDecoderHeap(in D3D12_VIDEO_DECODER_HEAP_DESC pVideoDecoderHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppVideoDecoderHeap);
+		new HRESULT CreateVideoDecoderHeap(in D3D12_VIDEO_DECODER_HEAP_DESC pVideoDecoderHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppVideoDecoderHeap);
 
 		/// <summary>Creates a video processor instance.</summary>
 		/// <param name="NodeMask">
@@ -2703,7 +2703,7 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT CreateVideoProcessor(uint NodeMask, in D3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC pOutputStreamDesc, int NumInputStreamDescs,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC[] pInputStreamDescs,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppVideoProcessor);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppVideoProcessor);
 
 		/// <summary>Creates an <c>ID3D12VideoMotionEstimator</c>, which maintains context for video motion estimation operations.</summary>
 		/// <param name="pDesc">
@@ -2721,7 +2721,7 @@ public static partial class D3D12
 		// *pProtectedResourceSession, REFIID riid, void **ppVideoMotionEstimator );
 		[PreserveSig]
 		new HRESULT CreateVideoMotionEstimator(in D3D12_VIDEO_MOTION_ESTIMATOR_DESC pDesc, [In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppVideoMotionEstimator);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppVideoMotionEstimator);
 
 		/// <summary>Allocates heap that contains motion vectors for video motion estimation.</summary>
 		/// <param name="pDesc">
@@ -2739,7 +2739,7 @@ public static partial class D3D12
 		// *pProtectedResourceSession, REFIID riid, void **ppVideoMotionVectorHeap );
 		[PreserveSig]
 		new HRESULT CreateVideoMotionVectorHeap(in D3D12_VIDEO_MOTION_VECTOR_HEAP_DESC pDesc, [In] ID3D12ProtectedResourceSession? pProtectedResourceSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppVideoMotionVectorHeap);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppVideoMotionVectorHeap);
 
 		/// <summary>
 		/// Creates a video decoder instance that contains the resolution-independent driver resources and state, with support for protected resources.
@@ -2757,7 +2757,7 @@ public static partial class D3D12
 		// riid, void **ppVideoDecoder );
 		[PreserveSig]
 		HRESULT CreateVideoDecoder1(in D3D12_VIDEO_DECODER_DESC pDesc, [In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppVideoDecoder);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppVideoDecoder);
 
 		/// <summary>
 		/// Allocates a video decoder heap that contains the resolution-dependent driver resources and state, with support for protected resources.
@@ -2774,7 +2774,7 @@ public static partial class D3D12
 		// *pProtectedResourceSession, REFIID riid, void **ppVideoDecoderHeap );
 		[PreserveSig]
 		HRESULT CreateVideoDecoderHeap1(in D3D12_VIDEO_DECODER_HEAP_DESC pVideoDecoderHeapDesc, [In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppVideoDecoderHeap);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppVideoDecoderHeap);
 
 		/// <summary>Creates a video processor instance with support for protected resources.</summary>
 		/// <param name="NodeMask">
@@ -2804,7 +2804,7 @@ public static partial class D3D12
 		HRESULT CreateVideoProcessor1(uint NodeMask, in D3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC pOutputStreamDesc, int NumInputStreamDescs,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC[] pInputStreamDescs,
 			[In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object ppVideoProcessor);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object? ppVideoProcessor);
 
 		/// <summary>Creates a video extension command.</summary>
 		/// <param name="pDesc">The <c>D3D12_VIDEO_EXTENSION_COMMAND_DESC</c> describing the command to be created.</param>
@@ -2827,7 +2827,7 @@ public static partial class D3D12
 		[PreserveSig]
 		HRESULT CreateVideoExtensionCommand(in D3D12_VIDEO_EXTENSION_COMMAND_DESC pDesc, [In] IntPtr pCreationParameters, SizeT CreationParametersDataSizeInBytes,
 			[In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppVideoExtensionCommand);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppVideoExtensionCommand);
 
 		/// <summary>Executes a video extension command.</summary>
 		/// <param name="pExtensionCommand">
@@ -2903,7 +2903,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice-createvideodecoder HRESULT
 		// CreateVideoDecoder( const D3D12_VIDEO_DECODER_DESC *pDesc, REFIID riid, void **ppVideoDecoder );
 		[PreserveSig]
-		new HRESULT CreateVideoDecoder(in D3D12_VIDEO_DECODER_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppVideoDecoder);
+		new HRESULT CreateVideoDecoder(in D3D12_VIDEO_DECODER_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppVideoDecoder);
 
 		/// <summary>Allocates a video decoder heap that contains the resolution-dependent driver resources and state.</summary>
 		/// <param name="pVideoDecoderHeapDesc">A pointer to a <c>D3D12_VIDEO_DECODER_HEAP_DESC</c> describing the decoding configuration.</param>
@@ -2913,7 +2913,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice-createvideodecoderheap HRESULT
 		// CreateVideoDecoderHeap( const D3D12_VIDEO_DECODER_HEAP_DESC *pVideoDecoderHeapDesc, REFIID riid, void **ppVideoDecoderHeap );
 		[PreserveSig]
-		new HRESULT CreateVideoDecoderHeap(in D3D12_VIDEO_DECODER_HEAP_DESC pVideoDecoderHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppVideoDecoderHeap);
+		new HRESULT CreateVideoDecoderHeap(in D3D12_VIDEO_DECODER_HEAP_DESC pVideoDecoderHeapDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppVideoDecoderHeap);
 
 		/// <summary>Creates a video processor instance.</summary>
 		/// <param name="NodeMask">
@@ -2940,7 +2940,7 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT CreateVideoProcessor(uint NodeMask, in D3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC pOutputStreamDesc, int NumInputStreamDescs,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC[] pInputStreamDescs,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppVideoProcessor);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppVideoProcessor);
 
 		/// <summary>Creates an <c>ID3D12VideoMotionEstimator</c>, which maintains context for video motion estimation operations.</summary>
 		/// <param name="pDesc">
@@ -2958,7 +2958,7 @@ public static partial class D3D12
 		// *pProtectedResourceSession, REFIID riid, void **ppVideoMotionEstimator );
 		[PreserveSig]
 		new HRESULT CreateVideoMotionEstimator(in D3D12_VIDEO_MOTION_ESTIMATOR_DESC pDesc, [In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppVideoMotionEstimator);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppVideoMotionEstimator);
 
 		/// <summary>Allocates heap that contains motion vectors for video motion estimation.</summary>
 		/// <param name="pDesc">
@@ -2976,7 +2976,7 @@ public static partial class D3D12
 		// *pProtectedResourceSession, REFIID riid, void **ppVideoMotionVectorHeap );
 		[PreserveSig]
 		new HRESULT CreateVideoMotionVectorHeap(in D3D12_VIDEO_MOTION_VECTOR_HEAP_DESC pDesc, [In] ID3D12ProtectedResourceSession? pProtectedResourceSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppVideoMotionVectorHeap);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppVideoMotionVectorHeap);
 
 		/// <summary>
 		/// Creates a video decoder instance that contains the resolution-independent driver resources and state, with support for protected resources.
@@ -2994,7 +2994,7 @@ public static partial class D3D12
 		// riid, void **ppVideoDecoder );
 		[PreserveSig]
 		new HRESULT CreateVideoDecoder1(in D3D12_VIDEO_DECODER_DESC pDesc, [In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppVideoDecoder);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppVideoDecoder);
 
 		/// <summary>
 		/// Allocates a video decoder heap that contains the resolution-dependent driver resources and state, with support for protected resources.
@@ -3011,7 +3011,7 @@ public static partial class D3D12
 		// *pProtectedResourceSession, REFIID riid, void **ppVideoDecoderHeap );
 		[PreserveSig]
 		new HRESULT CreateVideoDecoderHeap1(in D3D12_VIDEO_DECODER_HEAP_DESC pVideoDecoderHeapDesc, [In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppVideoDecoderHeap);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppVideoDecoderHeap);
 
 		/// <summary>Creates a video processor instance with support for protected resources.</summary>
 		/// <param name="NodeMask">
@@ -3041,7 +3041,7 @@ public static partial class D3D12
 		new HRESULT CreateVideoProcessor1(uint NodeMask, in D3D12_VIDEO_PROCESS_OUTPUT_STREAM_DESC pOutputStreamDesc, int NumInputStreamDescs,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_VIDEO_PROCESS_INPUT_STREAM_DESC[] pInputStreamDescs,
 			[In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object ppVideoProcessor);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object? ppVideoProcessor);
 
 		/// <summary>Creates a video extension command.</summary>
 		/// <param name="pDesc">The <c>D3D12_VIDEO_EXTENSION_COMMAND_DESC</c> describing the command to be created.</param>
@@ -3064,7 +3064,7 @@ public static partial class D3D12
 		[PreserveSig]
 		new HRESULT CreateVideoExtensionCommand(in D3D12_VIDEO_EXTENSION_COMMAND_DESC pDesc, [In] IntPtr pCreationParameters, SizeT CreationParametersDataSizeInBytes,
 			[In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object ppVideoExtensionCommand);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppVideoExtensionCommand);
 
 		/// <summary>Executes a video extension command.</summary>
 		/// <param name="pExtensionCommand">
@@ -3113,7 +3113,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice3-createvideoencoder HRESULT
 		// CreateVideoEncoder( const D3D12_VIDEO_ENCODER_DESC *pDesc, REFIID riid, void **ppVideoEncoder );
 		[PreserveSig]
-		HRESULT CreateVideoEncoder(in D3D12_VIDEO_ENCODER_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppVideoEncoder);
+		HRESULT CreateVideoEncoder(in D3D12_VIDEO_ENCODER_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppVideoEncoder);
 
 		/// <summary>Creates a new instance of <c>ID3D12VideoEncoderHeap</c>.</summary>
 		/// <param name="pDesc">
@@ -3124,7 +3124,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice3-createvideoencoderheap HRESULT
 		// CreateVideoEncoderHeap( const D3D12_VIDEO_ENCODER_HEAP_DESC *pDesc, REFIID riid, void **ppVideoEncoderHeap );
 		[PreserveSig]
-		HRESULT CreateVideoEncoderHeap(in D3D12_VIDEO_ENCODER_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppVideoEncoderHeap);
+		HRESULT CreateVideoEncoderHeap(in D3D12_VIDEO_ENCODER_HEAP_DESC pDesc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppVideoEncoderHeap);
 	}
 
 	/// <summary>Encapsulates a list of graphics commands for video encoding, including motion estimation.</summary>

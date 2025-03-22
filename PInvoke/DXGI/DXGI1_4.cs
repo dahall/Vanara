@@ -210,7 +210,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Enumerate adapter (video card) outputs.</summary>
 		/// <param name="Output">
@@ -662,7 +662,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Enumerates the adapters (video cards).</summary>
 		/// <param name="Adapter">
@@ -1374,7 +1374,7 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_4/nf-dxgi1_4-idxgifactory4-enumadapterbyluid HRESULT EnumAdapterByLuid(
 		// [in] LUID AdapterLuid, [in] REFIID riid, [out] void **ppvAdapter );
 		[PreserveSig]
-		HRESULT EnumAdapterByLuid(LUID AdapterLuid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvAdapter);
+		HRESULT EnumAdapterByLuid(LUID AdapterLuid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvAdapter);
 
 		/// <summary>Provides an adapter which can be provided to D3D12CreateDevice to use the WARP renderer.</summary>
 		/// <param name="riid">
@@ -1396,7 +1396,7 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_4/nf-dxgi1_4-idxgifactory4-enumwarpadapter HRESULT EnumWarpAdapter(
 		// [in] REFIID riid, [out] void **ppvAdapter );
 		[PreserveSig]
-		HRESULT EnumWarpAdapter(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvAdapter);
+		HRESULT EnumWarpAdapter(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvAdapter);
 	}
 
 	/// <summary>
@@ -1542,7 +1542,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Get a description of the output.</summary>
 		/// <returns>
@@ -2272,7 +2272,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Retrieves the device.</summary>
 		/// <param name="riid">

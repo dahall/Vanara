@@ -1262,7 +1262,7 @@ public static partial class D3D12
 		// **ppPipelineState );
 		[PreserveSig]
 		HRESULT LoadGraphicsPipeline([MarshalAs(UnmanagedType.LPWStr)] string pName, in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppPipelineState);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineState);
 
 		/// <summary>
 		/// Retrieves the requested PSO from the library. The input desc is matched against the data in the current library database, and
@@ -1303,7 +1303,7 @@ public static partial class D3D12
 		// **ppPipelineState );
 		[PreserveSig]
 		HRESULT LoadComputePipeline([MarshalAs(UnmanagedType.LPWStr)] string pName, in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppPipelineState);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineState);
 
 		/// <summary>Returns the amount of memory required to serialize the current contents of the database.</summary>
 		/// <returns>
@@ -1561,7 +1561,7 @@ public static partial class D3D12
 		// **ppPipelineState );
 		[PreserveSig]
 		new HRESULT LoadGraphicsPipeline([MarshalAs(UnmanagedType.LPWStr)] string pName, in D3D12_GRAPHICS_PIPELINE_STATE_DESC pDesc,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppPipelineState);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineState);
 
 		/// <summary>
 		/// Retrieves the requested PSO from the library. The input desc is matched against the data in the current library database, and
@@ -1602,7 +1602,7 @@ public static partial class D3D12
 		// **ppPipelineState );
 		[PreserveSig]
 		new HRESULT LoadComputePipeline([MarshalAs(UnmanagedType.LPWStr)] string pName, in D3D12_COMPUTE_PIPELINE_STATE_DESC pDesc,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppPipelineState);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineState);
 
 		/// <summary>Returns the amount of memory required to serialize the current contents of the database.</summary>
 		/// <returns>
@@ -1684,7 +1684,7 @@ public static partial class D3D12
 		// LPCWSTR pName, [in] const D3D12_PIPELINE_STATE_STREAM_DESC *pDesc, REFIID riid, [out] void **ppPipelineState );
 		[PreserveSig]
 		HRESULT LoadPipeline([MarshalAs(UnmanagedType.LPWStr)] string pName, in D3D12_PIPELINE_STATE_STREAM_DESC pDesc, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppPipelineState);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineState);
 	}
 
 	/// <summary>Represents the state of all currently set shaders as well as certain fixed function state objects.</summary>
@@ -5017,7 +5017,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12swapchainassistant-getswapchainobject HRESULT
 		// GetSwapChainObject( REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetSwapChainObject(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppv);
+		HRESULT GetSwapChainObject(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppv);
 
 		/// <summary/>
 		/// <param name="riidResource"/>
@@ -5028,7 +5028,7 @@ public static partial class D3D12
 		// HRESULT GetCurrentResourceAndCommandQueue( REFIID riidResource, void **ppvResource, REFIID riidQueue, void **ppvQueue );
 		[PreserveSig]
 		HRESULT GetCurrentResourceAndCommandQueue(in Guid riidResource, [MarshalAs(UnmanagedType.Interface)] out object ppvResource,
-			in Guid riidQueue, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvQueue);
+			in Guid riidQueue, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvQueue);
 
 		/// <summary/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12swapchainassistant-insertimplicitsync HRESULT InsertImplicitSync();

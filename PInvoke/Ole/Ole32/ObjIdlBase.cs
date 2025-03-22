@@ -387,7 +387,7 @@ public static partial class Ole32
 		// IUnknown *pCtrlUnk, REFIID riid2, IUnknown **ppv );
 		[PreserveSig]
 		HRESULT CreateCall(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? pCtrlUnk,
-			in Guid riid2, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppv);
+			in Guid riid2, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 	}
 
 	/// <summary>
@@ -1352,7 +1352,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-iglobalinterfacetable-getinterfacefromglobal HRESULT
 		// GetInterfaceFromGlobal( DWORD dwCookie, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT GetInterfaceFromGlobal([In] uint dwCookie, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+		HRESULT GetInterfaceFromGlobal([In] uint dwCookie, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 	}
 
 	/// <summary>
@@ -2572,7 +2572,7 @@ public static partial class Ole32
 		// IUnknown *pUnkOuter, REFIID riid, IRpcProxyBuffer **ppProxy, void **ppv );
 		[PreserveSig]
 		HRESULT CreateProxy([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, in Guid riid, out IRpcProxyBuffer ppProxy,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Creates a stub for the remote use of the specified interface.</summary>
 		/// <param name="riid">The identifier of the interface for which a stub is to be created.</param>

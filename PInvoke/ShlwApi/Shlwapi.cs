@@ -3481,7 +3481,7 @@ public static partial class ShlwApi
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6852867a-30a5-4d4e-b790-3746104e3ed8")]
 	public static extern HRESULT SHGetViewStatePropertyBag([Optional] IntPtr pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszBagName,
-		SHGVSPB dwFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+		SHGVSPB dwFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>
 	/// <para>

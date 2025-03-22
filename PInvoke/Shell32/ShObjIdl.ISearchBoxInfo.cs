@@ -37,7 +37,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-isearchboxinfo-getcondition HRESULT GetCondition(
 		// REFIID riid, void **ppv );
-		void GetCondition(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppv);
+		void GetCondition(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppv);
 
 		/// <summary>Retrieves the contents of the search box as plain text.</summary>
 		/// <param name="ppsz">

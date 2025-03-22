@@ -697,7 +697,7 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "7295a55b-12c7-4ed0-a7a4-9ecee16afdec")]
 	public static extern HRESULT CoCreateInstance(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown), Optional] object? pUnkOuter,
-		CLSCTX dwClsContext, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+		CLSCTX dwClsContext, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>
 	/// <para>Creates an instance of a specific class on a specific computer.</para>
@@ -1355,7 +1355,7 @@ public static partial class Ole32
 	// riid, void **ppInterface );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "b82e32c0-840d-402e-90d5-ff678c51faf1")]
-	public static extern HRESULT CoGetCallContext(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppInterface);
+	public static extern HRESULT CoGetCallContext(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppInterface);
 
 	/// <summary>Returns a pointer to a <c>DWORD</c> that contains the apartment ID of the caller's thread.</summary>
 	/// <param name="lpdwTID">
@@ -1441,7 +1441,7 @@ public static partial class Ole32
 	// dwThreadId, REFIID iid, void **ppUnk );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "d38161af-d662-4430-99b7-6563efda6f4e")]
-	public static extern HRESULT CoGetCancelObject(uint dwThreadId, in Guid iid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppUnk);
+	public static extern HRESULT CoGetCancelObject(uint dwThreadId, in Guid iid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppUnk);
 
 	/// <summary>
 	/// <para>
@@ -1590,7 +1590,7 @@ public static partial class Ole32
 	// rclsid, DWORD dwClsContext, LPVOID pvReserved, REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
-	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>
 	/// <para>
@@ -1739,7 +1739,7 @@ public static partial class Ole32
 	// rclsid, DWORD dwClsContext, LPVOID pvReserved, REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
-	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [In, Optional] COSERVERINFO? pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
+	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [In, Optional] COSERVERINFO? pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>Returns a pointer to an implementation of IObjContext for the current context.</summary>
 	/// <param name="pToken">A pointer to an implementation of IObjContext for the current context.</param>
@@ -1919,7 +1919,7 @@ public static partial class Ole32
 	// APTTYPE aptType, REFIID riid, void **ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "97a0e7da-e8bb-4bde-a8ba-35c90a1351d2")]
-	public static extern HRESULT CoGetDefaultContext(APTTYPE aptType, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+	public static extern HRESULT CoGetDefaultContext(APTTYPE aptType, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// Unmarshals a buffer containing an interface pointer and releases the stream when an interface pointer has been marshaled from
@@ -2100,7 +2100,7 @@ public static partial class Ole32
 	// REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "97a0c6c3-a011-44dc-b428-aabdad7d4364")]
-	public static extern HRESULT CoGetObjectContext(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppv);
+	public static extern HRESULT CoGetObjectContext(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppv);
 
 	/// <summary>Returns the CLSID of the DLL that implements the proxy and stub for the specified interface.</summary>
 	/// <param name="riid">The interface whose proxy/stub CLSID is to be returned.</param>
@@ -3989,7 +3989,7 @@ public static partial class Ole32
 	// REFCLSID rclsid, REFIID riid, LPVOID *ppv );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "42c08149-c251-47f7-a81f-383975d7081c")]
-	public static extern HRESULT DllGetClassObject(in Guid rclsid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+	public static extern HRESULT DllGetClassObject(in Guid rclsid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// The <c>FreePropVariantArray</c> function calls PropVariantClear on each of the PROPVARIANT structures in the rgvars array to

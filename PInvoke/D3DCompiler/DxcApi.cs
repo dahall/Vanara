@@ -650,7 +650,7 @@ public static partial class DXC
 		[PreserveSig]
 		HRESULT Compile(in DxcBuffer pSource, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[]? pArguments,
 			uint argCount, [In, Optional] IDxcIncludeHandler? pIncludeHandler, in Guid riid,
-			[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object ppResult);
+			[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object? ppResult);
 
 		/// <summary>Disassemble a program.</summary>
 		/// <param name="pObject">The program to disassemble: dxil container or bitcode.</param>
@@ -659,7 +659,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxccompiler3-disassemble HRESULT Disassemble( const
 		// DxcBuffer *pObject, REFIID riid, LPVOID *ppResult );
 		[PreserveSig]
-		HRESULT Disassemble(in DxcBuffer pObject, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppResult);
+		HRESULT Disassemble(in DxcBuffer pObject, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppResult);
 	}
 
 	/// <summary>
@@ -837,7 +837,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxccontainerreflection-getpartreflection HRESULT
 		// GetPartReflection( UINT32 idx, REFIID iid, void **ppvObject );
 		[PreserveSig]
-		HRESULT GetPartReflection(uint idx, in Guid iid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppvObject);
+		HRESULT GetPartReflection(uint idx, in Guid iid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppvObject);
 	}
 
 	/// <summary>
@@ -1684,7 +1684,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcutils-createreflection HRESULT CreateReflection( const
 		// DxcBuffer *pData, REFIID iid, void **ppvReflection );
 		[PreserveSig]
-		HRESULT CreateReflection(in DxcBuffer pData, in Guid iid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppvReflection);
+		HRESULT CreateReflection(in DxcBuffer pData, in Guid iid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppvReflection);
 
 		/// <summary>Build arguments that can be passed to the <c>Compile</c> method.</summary>
 		/// <param name="pSourceName">An optional file name. Used in errors and include handlers.</param>

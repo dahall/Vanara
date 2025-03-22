@@ -1587,7 +1587,7 @@ public static partial class SearchApi
 		// GetItemsChangedSink( ISearchNotifyInlineSite *pISearchNotifyInlineSite, REFIID riid, void **ppv, GUID
 		// *pGUIDCatalogResetSignature, GUID *pGUIDCheckPointSignature, DWORD *pdwLastCheckPointNumber );
 		[PInvokeData("searchapi.h")]
-		void GetItemsChangedSink([In, MarshalAs(UnmanagedType.Interface)] ISearchNotifyInlineSite pISearchNotifyInlineSite, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber);
+		void GetItemsChangedSink([In, MarshalAs(UnmanagedType.Interface)] ISearchNotifyInlineSite pISearchNotifyInlineSite, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber);
 
 		/// <summary>Not implemented.</summary>
 		/// <param name="dwCookie">Type: <c>DWORD</c></param>
@@ -1905,7 +1905,7 @@ public static partial class SearchApi
 		// GetItemsChangedSink( ISearchNotifyInlineSite *pISearchNotifyInlineSite, REFIID riid, void **ppv, GUID
 		// *pGUIDCatalogResetSignature, GUID *pGUIDCheckPointSignature, DWORD *pdwLastCheckPointNumber );
 		[PInvokeData("searchapi.h")]
-		new void GetItemsChangedSink([In, MarshalAs(UnmanagedType.Interface)] ISearchNotifyInlineSite pISearchNotifyInlineSite, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber);
+		new void GetItemsChangedSink([In, MarshalAs(UnmanagedType.Interface)] ISearchNotifyInlineSite pISearchNotifyInlineSite, [In] in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber);
 
 		/// <summary>Not implemented.</summary>
 		/// <param name="dwCookie">Type: <c>DWORD</c></param>
@@ -2930,7 +2930,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchlanguagesupport-loadwordbreaker HRESULT
 		// LoadWordBreaker( LCID lcid, REFIID riid, void **ppWordBreaker, LCID *pLcidUsed );
 		[PInvokeData("searchapi.h")]
-		void LoadWordBreaker(LCID lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppWordBreaker, out LCID pLcidUsed);
+		void LoadWordBreaker(LCID lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppWordBreaker, out LCID pLcidUsed);
 
 		/// <summary>Retrieves an interface to the word stemmer registered for the specified language code identifier (LCID).</summary>
 		/// <param name="lcid">
@@ -2952,7 +2952,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-isearchlanguagesupport-loadstemmer HRESULT
 		// LoadStemmer( LCID lcid, REFIID riid, void **ppStemmer, LCID *pLcidUsed );
 		[PInvokeData("searchapi.h")]
-		void LoadStemmer(LCID lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppStemmer, out LCID pLcidUsed);
+		void LoadStemmer(LCID lcid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppStemmer, out LCID pLcidUsed);
 
 		/// <summary>
 		/// Determines whether the query token is a prefix of the document token, disregarding case, width, and (optionally) diacritics.

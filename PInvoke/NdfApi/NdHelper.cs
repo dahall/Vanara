@@ -1151,7 +1151,7 @@ public static partial class NdfApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/ndhelper/nf-ndhelper-inetdiaghelperutilfactory-createutilityinstance HRESULT
 		// CreateUtilityInstance( [in] REFIID riid, [out] void **ppvObject );
 		[PreserveSig]
-		HRESULT CreateUtilityInstance(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvObject);
+		HRESULT CreateUtilityInstance(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvObject);
 	}
 
 	/// <summary>The <c>DiagnosticsInfo</c> structure contains the estimate of diagnosis time, and flags for invocation.</summary>

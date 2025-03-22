@@ -581,7 +581,7 @@ public static partial class Oleacc
 	// HWND hwnd, DWORD dwId, REFIID riid, void **ppvObject );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "297ac50f-2a58-477b-ba57-5d1416c191b3")]
-	public static extern HRESULT AccessibleObjectFromWindow(HWND hwnd, uint dwId, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvObject);
+	public static extern HRESULT AccessibleObjectFromWindow(HWND hwnd, uint dwId, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvObject);
 
 	/// <summary>
 	/// Allows an assistive technology (AT) application to notify the system that it is interacting with UI through a Windows Automation API
@@ -733,7 +733,7 @@ public static partial class Oleacc
 	// HWND hwnd, LONG idObject, REFIID riid, void **ppvObject );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "50b6f391-98a4-4276-840f-028cc18e99ef")]
-	public static extern HRESULT CreateStdAccessibleObject(HWND hwnd, int idObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvObject);
+	public static extern HRESULT CreateStdAccessibleObject(HWND hwnd, int idObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvObject);
 
 	/// <summary>
 	/// Creates an accessible object that has the properties and methods of the specified class of system-provided user interface element.
@@ -796,7 +796,7 @@ public static partial class Oleacc
 	// HWND hwnd, LPCSTR pClassName, LONG idObject, REFIID riid, void **ppvObject );
 	[DllImport(Lib.Oleacc, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("oleacc.h", MSDNShortId = "724b2a38-f7ca-4423-acd4-0871623d1201")]
-	public static extern HRESULT CreateStdAccessibleProxy(HWND hwnd, [MarshalAs(UnmanagedType.LPTStr)] string pClassName, int idObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppvObject);
+	public static extern HRESULT CreateStdAccessibleProxy(HWND hwnd, [MarshalAs(UnmanagedType.LPTStr)] string pClassName, int idObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvObject);
 
 	/// <summary>Retrieves the version number and build number of the Microsoft Active Accessibility file Oleacc.dll.</summary>
 	/// <param name="pVer">
@@ -1055,7 +1055,7 @@ public static partial class Oleacc
 	// REFIID riid, WPARAM wParam, void **ppvObject );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "97e766fd-e142-40d1-aba7-408b45d33426")]
-	public static extern HRESULT ObjectFromLresult(IntPtr lResult, in Guid riid, IntPtr wParam, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvObject);
+	public static extern HRESULT ObjectFromLresult(IntPtr lResult, in Guid riid, IntPtr wParam, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvObject);
 
 	/// <summary>Retrieves the window handle that corresponds to a particular instance of an IAccessible interface.</summary>
 	/// <param name="arg1">

@@ -300,7 +300,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Enumerate adapter (video card) outputs.</summary>
 		/// <param name="Output">
@@ -788,7 +788,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Enumerates the adapters (video cards).</summary>
 		/// <param name="Adapter">
@@ -1500,7 +1500,7 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_4/nf-dxgi1_4-idxgifactory4-enumadapterbyluid HRESULT EnumAdapterByLuid(
 		// [in] LUID AdapterLuid, [in] REFIID riid, [out] void **ppvAdapter );
 		[PreserveSig]
-		new HRESULT EnumAdapterByLuid(LUID AdapterLuid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvAdapter);
+		new HRESULT EnumAdapterByLuid(LUID AdapterLuid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvAdapter);
 
 		/// <summary>Provides an adapter which can be provided to D3D12CreateDevice to use the WARP renderer.</summary>
 		/// <param name="riid">
@@ -1522,7 +1522,7 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_4/nf-dxgi1_4-idxgifactory4-enumwarpadapter HRESULT EnumWarpAdapter(
 		// [in] REFIID riid, [out] void **ppvAdapter );
 		[PreserveSig]
-		new HRESULT EnumWarpAdapter(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvAdapter);
+		new HRESULT EnumWarpAdapter(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvAdapter);
 
 		/// <summary>Used to check for hardware feature support.</summary>
 		/// <param name="Feature">
@@ -1601,7 +1601,7 @@ public static partial class DXGI
 		// EnumAdapterByGpuPreference( [in] UINT Adapter, [in] DXGI_GPU_PREFERENCE GpuPreference, [in] REFIID riid, [out] void **ppvAdapter );
 		[PreserveSig]
 		HRESULT EnumAdapterByGpuPreference(uint Adapter, DXGI_GPU_PREFERENCE GpuPreference, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvAdapter);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvAdapter);
 	}
 
 	/// <summary>This interface enables registration for notifications to detect adapter enumeration state changes.</summary>
@@ -1744,7 +1744,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Enumerates the adapters (video cards).</summary>
 		/// <param name="Adapter">
@@ -2456,7 +2456,7 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_4/nf-dxgi1_4-idxgifactory4-enumadapterbyluid HRESULT EnumAdapterByLuid(
 		// [in] LUID AdapterLuid, [in] REFIID riid, [out] void **ppvAdapter );
 		[PreserveSig]
-		new HRESULT EnumAdapterByLuid(LUID AdapterLuid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvAdapter);
+		new HRESULT EnumAdapterByLuid(LUID AdapterLuid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvAdapter);
 
 		/// <summary>Provides an adapter which can be provided to D3D12CreateDevice to use the WARP renderer.</summary>
 		/// <param name="riid">
@@ -2478,7 +2478,7 @@ public static partial class DXGI
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_4/nf-dxgi1_4-idxgifactory4-enumwarpadapter HRESULT EnumWarpAdapter(
 		// [in] REFIID riid, [out] void **ppvAdapter );
 		[PreserveSig]
-		new HRESULT EnumWarpAdapter(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object ppvAdapter);
+		new HRESULT EnumWarpAdapter(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppvAdapter);
 
 		/// <summary>Used to check for hardware feature support.</summary>
 		/// <param name="Feature">
@@ -2557,7 +2557,7 @@ public static partial class DXGI
 		// EnumAdapterByGpuPreference( [in] UINT Adapter, [in] DXGI_GPU_PREFERENCE GpuPreference, [in] REFIID riid, [out] void **ppvAdapter );
 		[PreserveSig]
 		new HRESULT EnumAdapterByGpuPreference(uint Adapter, DXGI_GPU_PREFERENCE GpuPreference, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvAdapter);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvAdapter);
 
 		/// <summary>Registers to receive notification of changes whenever the adapter enumeration state changes.</summary>
 		/// <param name="hEvent">A handle to the event object.</param>
@@ -2715,7 +2715,7 @@ public static partial class DXGI
 		// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-idxgiobject-getparent HRESULT GetParent( REFIID riid, void
 		// **ppParent );
 		[PreserveSig]
-		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object ppParent);
+		new HRESULT GetParent(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppParent);
 
 		/// <summary>Get a description of the output.</summary>
 		/// <returns>
