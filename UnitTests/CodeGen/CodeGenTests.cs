@@ -166,31 +166,34 @@ namespace Vanara.PInvoke.Tests
 				{
 					public interface IUnkHolderIgnore
 					{
-						//HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+						[PreserveSig]
+						HRESULT Ignore(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
 					}
 					public static partial class Test32
 					{
-						//[System.Runtime.InteropServices.MarshalAs(UnmanagedType.Bool)]
-						//public static bool field1;
+						[System.Runtime.InteropServices.MarshalAs(UnmanagedType.Bool)]
+						public static bool field1;
 
 						public interface IUnkHolder
 						{
-							HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3, ref MyStruct p4, out long p5);
-							void GetObj2(float p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] object? p3);
-							//HRESULT Ignore1(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown)] object? p3);
-							//HRESULT Ignore2([System.Runtime.InteropServices.MarshalAs(UnmanagedType.LPArray)] int[] p3);
+							[PreserveSig]
+							HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3, ref MyStruct p4, out long p5);
+							void GetObj2(float p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
+							HRESULT Ignore1(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown)] object? p3);
+							HRESULT Ignore2(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown)] out object? p3);
+							HRESULT Ignore3([System.Runtime.InteropServices.MarshalAs(UnmanagedType.LPArray)] int[] p3);
 						}
 
 						[System.Runtime.InteropServices.DllImport(""test32.dll"")]
-						public static extern HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+						public static extern HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
 					}
 				}
 			";
 			var compilation = GetCompilation(src);
 			CreateGeneratorDriverAndRun(compilation, new IUnkMethodGenerator(), null, out var output, out var diag);
+			WriteTrees(TestContext.Out, output.SyntaxTrees);
 			Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Is.Empty);
 			Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(4));
-			WriteTrees(TestContext.Out, output.SyntaxTrees);
 		}
 
 		private static void CreateGeneratorDriverAndRun(CSharpCompilation compilation, IIncrementalGenerator sourceGenerator, string? additionalFile, out Compilation output, out System.Collections.Immutable.ImmutableArray<Diagnostic> diag) =>

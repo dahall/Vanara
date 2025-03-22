@@ -11,5 +11,8 @@ internal static class TypeDeclarationSyntaxExtensions
 		tds.TypeParameterList is { Parameters.Count: > 0 };
 
 	public static void ReportError(this SourceProductionContext context, string id, string message, params string[] fields) =>
-		context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(id, "Error", message, "Vanara.Generator", DiagnosticSeverity.Error, true, customTags: fields), Location.None));
+		context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(id, "Error", message, "Vanara.Generator", DiagnosticSeverity.Error, true, string.Join("\r\n", fields)), Location.None));
+
+	public static void ReportError(this SourceProductionContext context, SyntaxNode node, string id, string message, params string[] fields) =>
+		context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(id, "Error", message, "Vanara.Generator", DiagnosticSeverity.Error, true, string.Join("\r\n", fields)), Location.Create(node.SyntaxTree, node.Span)));
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
+﻿//#define TEST
+using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -29,7 +30,10 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 	}
 
 	private static bool IsValidSyntax(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
-		syntaxNode is ParameterSyntax ps && ps.Parent?.Parent is MethodDeclarationSyntax ms &&
+		syntaxNode is ParameterSyntax ps && ps.Type?.ToString() == "object?" && ps.Modifiers.Any(SyntaxKind.OutKeyword) && ps.Parent?.Parent is MethodDeclarationSyntax ms && !ms.Modifiers.Any(SyntaxKind.NewKeyword) &&
+#if TEST
+		ps.Identifier.ValueText == "p3" &&
+#endif
 		((ms?.Parent is ClassDeclarationSyntax cs && cs.IsPartial()) || ((ms?.Parent is InterfaceDeclarationSyntax && ms?.Parent?.Parent is ClassDeclarationSyntax ccs && ccs.IsPartial())));
 
 	private static void Execute(SourceProductionContext context, (Compilation compilation, ImmutableArray<(ParameterSyntax, AttributeData)> classes) unit)
@@ -39,8 +43,14 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 
 		foreach ((ParameterSyntax decl, AttributeData attr) in unit.classes)
 		{
+			context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("VANINFO", "Param info", $"{decl}", "Vanara.Generator", DiagnosticSeverity.Info, true), Location.Create(decl.SyntaxTree, decl.Span)));
+
 			// Confirm that attribute has UnmanagedType.IUnknown or Interface and IidParameterIndex argument
-			if (!ValidateAttr(attr, out var iidindex)) continue;
+			if (!ValidateAttr(decl, attr, out var iidindex))
+			{
+				context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor("VANINFO", "Info", $"Invalid attribute: {decl.AttributeLists[0].Attributes[0]} : {decl.Parent!.Parent}", "Vanara.Generator", DiagnosticSeverity.Info, true), Location.Create(decl.SyntaxTree, decl.Span)));
+				continue;
+			}
 
 			// Split method info into modifiers, return type, method name, and arg list
 			MethodDeclarationSyntax methodDecl = (MethodDeclarationSyntax)decl.Parent!.Parent!;
@@ -53,7 +63,7 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 			// Confirm IidParameterIndex points to a "in Guid" or "[UnmanagedType.Struct] Guid" value
 			if (iidindex < 0 || iidindex >= argList.Count)
 			{
-				context.ReportError("VANGEN010", "IidParameterIndex does not reference a valid parameter index.");
+				context.ReportError(methodDecl, "VANGEN010", $"IidParameterIndex does not reference a valid parameter index. method: {methodDecl} iid={iidindex}");
 				continue;
 			}
 			var iidParam = argList[iidindex];
@@ -64,14 +74,14 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 				.Any(attr => attr.Name.ToString() == "MarshalAs" && attr.ArgumentList?.Arguments.FirstOrDefault()?.ToString() == "UnmanagedType.Struct");
 			if (paramType != "System.Guid" || !hasInModifier && !hasStructAttribute)
 			{
-				context.ReportError("VANGEN011", "IidParameterIndex does not reference a parameter of type Guid.");
+				context.ReportError(methodDecl, "VANGEN011", $"IidParameterIndex does not reference a parameter of type Guid. method: {methodDecl} iid={iidindex}");
 				continue;
 			}
 
 			// Confirm interface type is Nullable<object>
 			if (decl.Type?.ToString() != "object?")
 			{
-				context.ReportError("VANGEN012", "The parameter type is not nullable System.Object.");
+				context.ReportError(decl, "VANGEN012", "The parameter type is not nullable System.Object.");
 				continue;
 			}
 
@@ -79,7 +89,7 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 			var parentClass = decl.Parent?.Parent?.Parent is ClassDeclarationSyntax cs ? cs : (decl.Parent?.Parent?.Parent is InterfaceDeclarationSyntax && decl.Parent?.Parent?.Parent?.Parent is ClassDeclarationSyntax ccs ? ccs : null);
 			if (parentClass == null)
 			{
-				context.ReportError("VANGEN013", "Unable to find the parent class into which to insert the methods.");
+				context.ReportError(decl, "VANGEN013", "Unable to find the parent class into which to insert the methods.");
 				continue;
 			}
 
@@ -87,7 +97,7 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 			var ns = parentClass.Ancestors().OfType<NamespaceDeclarationSyntax>().FirstOrDefault()?.Name.ToString();
 			if (ns == null)
 			{
-				context.ReportError("VANGEN014", "Unable to find the namespace into which to insert the methods.");
+				context.ReportError(parentClass, "VANGEN014", "Unable to find the namespace into which to insert the methods.");
 				continue;
 			}
 
@@ -252,9 +262,18 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 			context.AddSource($"{stackName}{methodName.Text}.g.cs", output.ToString());
 		}
 
-		static bool ValidateAttr(AttributeData attr, out int iidindex)
+		static bool ValidateAttr(ParameterSyntax decl, AttributeData attr, out int iidindex)
 		{
 			iidindex = -1;
+#if TEST
+			// This is for testing only
+			if (decl.Identifier.ValueText == "p3")
+			{
+				string attrText = decl.AttributeLists.SelectMany(l => l.Attributes).FirstOrDefault(a => attributeFullName.StartsWith(a.Name.ToString()))?.ToString() ?? "";
+				var m = Regex.Match(attrText, @"IidParameterIndex\s*=\s*(\d+)");
+				return m.Success && int.TryParse(m.Groups[1].Value, out iidindex);
+			}
+#endif
 			if (attr.ConstructorArguments.FirstOrDefault().Value is int unmanagedTypeValue &&
 				(unmanagedTypeValue == (int)UnmanagedType.IUnknown || unmanagedTypeValue == (int)UnmanagedType.Interface))
 			{
