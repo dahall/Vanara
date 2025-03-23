@@ -1588,7 +1588,7 @@ public static partial class Ole32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetclassobject HRESULT CoGetClassObject( REFCLSID
 	// rclsid, DWORD dwClsContext, LPVOID pvReserved, REFIID riid, LPVOID *ppv );
-	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true), SuppressAutoGen]
 	[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
 	public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, [Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 

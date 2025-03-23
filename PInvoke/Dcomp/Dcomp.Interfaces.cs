@@ -2189,104 +2189,6 @@ public static partial class Dcomp
 		void Scroll([In, Optional] PRECT? scrollRect, [In, Optional] PRECT? clipRect, int offsetX, int offsetY);
 	}
 
-	/// <summary>
-	/// Initiates drawing on this Microsoft DirectComposition surface object. The update rectangle must be within the boundaries of the
-	/// surface; otherwise, this method fails.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface to retrieve.</typeparam>
-	/// <param name="surface">The surface.</param>
-	/// <param name="updateRect">
-	/// <para>Type: <b>const <c>RECT</c>*</b></para>
-	/// <para>The rectangle to be updated. If this parameter is NULL, the entire bitmap is updated.</para>
-	/// </param>
-	/// <param name="updateObject">Receives an interface pointer of the type specified.</param>
-	/// <param name="updateOffset">
-	/// <para>Type: <b><c>POINT</c>*</b></para>
-	/// <para>
-	/// The offset into the surface where the application should draw updated content. This offset will reference the upper left corner of
-	/// the update rectangle.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>If the function succeeds, it returns S_OK. Otherwise, it returns an <b>HRESULT</b> error code.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// This method enables an application to incrementally update the contents of a DirectComposition surface object. The application must
-	/// use the following sequence:
-	/// </para>
-	/// <list type="number">
-	/// <item>
-	/// <description>Call <b>BeginDraw</b> to initiate the incremental update.</description>
-	/// </item>
-	/// <item>
-	/// <description>Use the retrieved surface as a render target and draw the updated contents at the retrieved offset.</description>
-	/// </item>
-	/// <item>
-	/// <description>Call the <c>IDCompositionSurface::EndDraw</c> method to finish the update.</description>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// The update object returned by this method is either a Direct2D device context or a DXGI surface, depending on the value of the
-	/// <i>iid</i> parameter and on how the DirectComposition surface object was created. If the <i>iid</i> parameter is
-	/// __uuidof(ID2D1DeviceContext), then the returned object is a Direct2D device context that already has the DirectComposition surface
-	/// selected as a render target. Otherwise, it is a DXGI surface which the application may use as a render target. In either case, the
-	/// returned object is associated with the Direct2D or DXGI device passed by the application to the DCompositionCreateDevice2 function or
-	/// the <c>IDCompositionDevice2::CreateSurfaceFactory</c> method.
-	/// </para>
-	/// <para>
-	/// The <i>iid</i> parameter may only be __uuidof(ID2D1DeviceContext) if the DirectComposition surface object was created from a
-	/// DirectComposition device or surface factory that was, itself, created with an associated Direct2D device. In particular, the
-	/// application must have called either the DCompositionCreateDevice2 function or the <c>IDCompositionDevice2::CreateSurfaceFactory</c>
-	/// method with a Direct2D device as the <i>renderingDevice</i> parameter. If the DirectComposition surface was created via a surface
-	/// factory that was not associated with a Direct2D device, or if it was created directly via the IDCompositionDevice2 interface and the
-	/// device was not directly associated with a Direct2D device, then passing __uuidof(ID2D1DeviceContext) as the iid parameter causes this
-	/// method to return E_INVALIDARG.
-	/// </para>
-	/// <para>
-	/// If the application successfully retrieves a Direct2D device context as the update object, then the application should not call either
-	/// the ID2D1DeviceContext::BeginDraw or ID2D1DeviceContext::EndDraw methods on the returned Direct2D device context.
-	/// </para>
-	/// <para>
-	/// The retrieved offset is not necessarily the same as the top-left corner of the requested update rectangle. The application must
-	/// transform its rendering primitives to draw within a rectangle of the same width and height as the input rectangle, but at the given
-	/// offset. The application should not draw outside of this rectangle.
-	/// </para>
-	/// <para>
-	/// If the <i>updateRectangle</i> parameter is NULL, the entire surface is updated. In that case, because the retrieved offset still
-	/// might not be (0,0), the application still needs to transform its rendering primitives accordingly.
-	/// </para>
-	/// <para>
-	/// If the surface is not a virtual surface, then the first time the application calls this method for a particular non-virtual surface,
-	/// the update rectangle must cover the entire surface, either by specifying the full surface in the requested update rectangle, or by
-	/// specifying NULL as the <i>updateRectangle</i> parameter. For virtual surfaces, the first call may be any sub-rectangle of the surface.
-	/// </para>
-	/// <para>
-	/// Because each call to this method might retrieve a different object in the <i>updateObject</i> surface, the application should not
-	/// cache the retrieved surface pointer. The application should release the retrieved pointer as soon as it finishes drawing.
-	/// </para>
-	/// <para>
-	/// The retrieved surface rectangle does not contain the previous contents of the bitmap. The application must update every pixel in the
-	/// update rectangle, either by first clearing the render target, or by issuing enough rendering primitives to fully cover the update
-	/// rectangle. Because the initial contents of the update surface are undefined, failing to update every pixel leads to undefined behavior.
-	/// </para>
-	/// <para>
-	/// Only one DirectComposition surface can be updated at a time. An application must suspend drawing on one surface before beginning or
-	/// resuming to draw on another surface. If the application calls <b>BeginDraw</b> twice, either for the same surface or for another
-	/// surface belonging to the same DirectComposition device, without an intervening call to <c>IDCompositionSurface::EndDraw</c>, the
-	/// second call fails. If the application calls <c>IDCompositionDevice2::Commit</c> without calling <b>EndDraw</b>, the update remains
-	/// pending. The update takes effect only after the application calls <b>EndDraw</b> and then calls the
-	/// <b>IDCompositionDevice2::Commit</b> method.
-	/// </para>
-	/// </remarks>
-	public static HRESULT BeginDraw<T>(this IDCompositionSurface surface, [In, Optional] PRECT? updateRect, out T? updateObject, out POINT updateOffset) where T : class
-	{
-		var hr = surface.BeginDraw(updateRect, typeof(T).GUID, out var ppv, out updateOffset);
-		updateObject = hr.Succeeded ? ppv as T : null;
-		return hr;
-	}
-
 	/// <summary>Represents a sparsely allocated bitmap that can be associated with a visual for composition in a visual tree.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcomp/nn-dcomp-idcompositionvirtualsurface
 	[PInvokeData("dcomp.h", MSDNShortId = "NN:dcomp.IDCompositionVirtualSurface")]
@@ -7337,7 +7239,7 @@ public static partial class Dcomp
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dcomp/nf-dcomp-idcompositiontexture-getavailablefence
 		// HRESULT GetAvailableFence( UINT64 *fenceValue, REFIID iid, void **availableFence );
-		void GetAvailableFence(out ulong fenceValue, in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object? availableFence);
+		void GetAvailableFence(out ulong fenceValue, in Guid iid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? availableFence);
 	}
 
 	/// <summary/>

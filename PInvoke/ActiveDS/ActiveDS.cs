@@ -384,41 +384,6 @@ public static partial class ActiveDS
 	public static extern HRESULT ADsGetObject([MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, in Guid riid,
 		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppObject);
 
-	/// <summary>The <c>ADsGetObject</c> function binds to an object given its path and a specified interface identifier.</summary>
-	/// <typeparam name="T">The type of the interface to retrieve.</typeparam>
-	/// <param name="lpszPathName">
-	/// The null-terminated Unicode string that specifies the path used to bind to the object in the underlying directory service. For more
-	/// information and code examples for binding strings for this parameter, see LDAP ADsPath and WinNT ADsPath.
-	/// </param>
-	/// <param name="ppObject">The requested Interface.</param>
-	/// <returns>
-	/// <para>Type: <c>HRESULT</c></para>
-	/// <para>This method supports the standard <c>HRESULT</c> return values, as well as the following.</para>
-	/// <para>For more information about other return values, see ADSI Error Codes.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// A C/C++ client calls the <c>ADsGetObject</c> helper function to bind to an ADSI object. It is equivalent to a Visual Basic client
-	/// calling the GetObject function. They both take an ADsPath as input and returns a pointer to the requested interface. By default the
-	/// binding uses ADS_SECURE_AUTHENTICATION option with the security context of the calling thread. However, if the authentication fails,
-	/// the secure bind is downgraded to an anonymous bind, for example, a simple bind without user credentials. To securely bind to an ADSI
-	/// object, use the ADsOpenObject function instead of the <c>ADsGetObject</c> function.
-	/// </para>
-	/// <para>
-	/// It is possible to bind to an ADSI object with a user credential different from that of the currently logged-on user. To perform this
-	/// operation, use the ADsOpenObject function.
-	/// </para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsgetobject HRESULT ADsGetObject( [in] LPCWSTR lpszPathName,
-	// [in] REFIID riid, [out] VOID **ppObject );
-	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsGetObject")]
-	public static HRESULT ADsGetObject<T>(string lpszPathName, out T? ppObject) where T : class
-	{
-		var hr = ADsGetObject(lpszPathName, typeof(T).GUID, out var o);
-		ppObject = hr.Succeeded ? (T)o! : null;
-		return hr;
-	}
-
 	/// <summary>
 	/// The <c>ADsOpenObject</c> function binds to an ADSI object using explicit user name and password credentials. <c>ADsOpenObject</c> is
 	/// a wrapper function for IADsOpenDSObject and is equivalent to the IADsOpenDSObject::OpenDsObject method.
@@ -521,97 +486,6 @@ public static partial class ActiveDS
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT ADsOpenObject([MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, [MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszUserName,
 		[MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszPassword, [Optional] ADS_AUTHENTICATION dwReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object? ppObject);
-
-	/// <summary>
-	/// The <c>ADsOpenObject</c> function binds to an ADSI object using explicit user name and password credentials. <c>ADsOpenObject</c> is
-	/// a wrapper function for IADsOpenDSObject and is equivalent to the IADsOpenDSObject::OpenDsObject method.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface to retrieve.</typeparam>
-	/// <param name="lpszPathName">
-	/// The null-terminated Unicode string that specifies the ADsPath of the ADSI object. For more information and code examples of binding
-	/// strings for this parameter, see LDAP ADsPath and WinNT ADsPath.
-	/// </param>
-	/// <param name="lpszUserName">
-	/// The null-terminated Unicode string that specifies the user name to supply to the directory service to use for credentials. This
-	/// string should always be in the format "&lt;domain\&gt;&lt;user name&gt;" to avoid ambiguity. For example, if DomainA and DomainB have
-	/// a trust relationship and both domains have a user with the name "user1", it is not possible to predict which domain
-	/// <c>ADsOpenObject</c> will use to validate "user1".
-	/// </param>
-	/// <param name="lpszPassword">
-	/// The null-terminated Unicode string that specifies the password to supply to the directory service to use for credentials.
-	/// </param>
-	/// <param name="ppObject">The requested interface.</param>
-	/// <param name="dwReserved">Provider-specific authentication flags used to define the binding options. For more information, see ADS_AUTHENTICATION_ENUM.</param>
-	/// <returns>
-	/// <para>Type: <c>HRESULT</c></para>
-	/// <para>This method supports the standard <c>HRESULT</c> return values, including the following.</para>
-	/// <para>For more information, see ADSI Error Codes.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>This function should not be used just to validate user credentials.</para>
-	/// <para>
-	/// A C/C++ client calls the <c>ADsOpenObject</c> helper function to bind to an ADSI object, using the user name and password supplied as
-	/// credentials for the appropriate directory service. If <c>lpszUsername</c> and <c>lpszPassword</c> are <c>NULL</c> and
-	/// <c>ADS_SECURE_AUTHENTICATION</c> is set, ADSI binds to the object using the security context of the calling thread, which is either
-	/// the security context of the user account under which the application is running or of the client user account that the calling thread impersonates.
-	/// </para>
-	/// <para>
-	/// The credentials passed to the <c>ADsOpenObject</c> function are used only with the particular object bound to and do not affect the
-	/// security context of the calling thread. This means that, in the example below, the call to <c>ADsOpenObject</c> will use different
-	/// credentials than the call to ADsGetObject.
-	/// </para>
-	/// <para>To work with the WinNT: provider, you can pass in <c>lpszUsername</c> as one of the following strings:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <description>The name of a user account, that is, "jeffsmith".</description>
-	/// </item>
-	/// <item>
-	/// <description>The Windows style user name, that is, "Fabrikam\jeffsmith".</description>
-	/// </item>
-	/// </list>
-	/// <para>With the LDAP provider for Active Directory, you may pass in <c>lpszUsername</c> as one of the following strings:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <description>
-	/// The name of a user account, such as "jeffsmith". To use a user name by itself, you must set only the <c>ADS_SECURE_AUTHENTICATION</c>
-	/// flag in the <c>dwReserved</c> parameter.
-	/// </description>
-	/// </item>
-	/// <item>
-	/// <description>The user path from a previous version of Windows, such as "Fabrikam\jeffsmith".</description>
-	/// </item>
-	/// <item>
-	/// <description>
-	/// Distinguished Name, such as "CN=Jeff Smith,OU=Sales,DC=Fabrikam,DC=Com". To use a DN, the <c>dwReserved</c> parameter must be zero or
-	/// it must include the <c>ADS_USE_SSL</c> flag.
-	/// </description>
-	/// </item>
-	/// <item>
-	/// <description>
-	/// User Principal Name (UPN), such as "jeffsmith@Fabrikam.com". To use a UPN, assign the appropriate UPN value for the
-	/// <c>userPrincipalName</c> attribute of the target user object.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// If Kerberos authentication is required for the successful completion of a specific directory request using the LDAP provider, the
-	/// <c>lpszPathName</c> binding string must use either a serverless ADsPath, such as "LDAP://CN=Jeff Smith,CN=admin,DC=Fabrikam,DC=com",
-	/// or it must use an ADsPath with a fully qualified DNS server name, such as "LDAP://central3.corp.Fabrikam.com/CN=Jeff
-	/// Smith,CN=admin,DC=Fabrikam,DC=com". Binding to the server using a flat NETBIOS name or a short DNS name, for example, using the short
-	/// name "central3" instead of "central3.corp.Fabrikam.com", may or may not yield Kerberos authentication.
-	/// </para>
-	/// <para>The following code example shows how to bind to a directory service object with the requested user credentials.</para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsopenobject HRESULT ADsOpenObject( [in] LPCWSTR lpszPathName,
-	// [in] LPCWSTR lpszUserName, [in] LPCWSTR lpszPassword, [in] DWORD dwReserved, [in] REFIID riid, [out] void **ppObject );
-	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsOpenObject")]
-	public static HRESULT ADsOpenObject<T>(string lpszPathName, out T? ppObject, [Optional] ADS_AUTHENTICATION dwReserved, [Optional] string? lpszUserName,
-		[Optional] string? lpszPassword) where T : class
-	{
-		var hr = ADsOpenObject(lpszPathName, lpszUserName, lpszPassword, dwReserved, typeof(T).GUID, out var o);
-		ppObject = hr.Succeeded ? (T)o! : null;
-		return hr;
-	}
 
 	/// <summary>
 	/// The <c>ADsSetLastError</c> sets the last-error code value for the calling thread. Directory service providers can use this function

@@ -340,7 +340,7 @@ public static partial class UrlMon
 		// void **ppvObj );
 		[PreserveSig]
 		HRESULT MonikerBindToStorage(IMoniker pMk, IBindCtx pBC, IBindStatusCallback pBSC, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown)] out object? ppvObj);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvObj);
 
 		/// <summary>Binds a moniker to an object.</summary>
 		/// <param name="pMk">[in] The address of the IMoniker interface of the moniker.</param>
@@ -393,7 +393,7 @@ public static partial class UrlMon
 		// void **ppvObj );
 		[PreserveSig]
 		HRESULT MonikerBindToObject(IMoniker pMk, IBindCtx pBC, IBindStatusCallback pBSC, in Guid riid,
-			[MarshalAs(UnmanagedType.IUnknown)] out object? ppvObj);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvObj);
 	}
 
 	/// <summary>

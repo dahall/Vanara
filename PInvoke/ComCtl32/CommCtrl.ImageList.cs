@@ -2059,7 +2059,7 @@ public static partial class ComCtl32
 	// HRESULT ImageList_ReadEx( _In_ DWORD dwFlags, _In_ LPSTREAM pstm, _Out_ REFIID riid, _Out_ void **ppv); https://msdn.microsoft.com/en-us/library/windows/desktop/bb761562(v=vs.85).aspx
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb761562")]
-	public static extern void ImageList_ReadEx(ILP dwFlags, IStream pstm, out Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+	public static extern void ImageList_ReadEx(ILP dwFlags, IStream pstm, out Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>Removes an image from an image list.</summary>
 	/// <param name="himl">

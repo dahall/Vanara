@@ -1324,7 +1324,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgelement-getattributevalue(pcwstr_refiid_void)
 		// HRESULT GetAttributeValue( [in] PCWSTR name, [in] REFIID riid, void **value );
 		[PreserveSig]
-		HRESULT GetAttributeValue([MarshalAs(UnmanagedType.LPWStr)] string name, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? value);
+		HRESULT GetAttributeValue([MarshalAs(UnmanagedType.LPWStr)] string name, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? value);
 	}
 
 	/// <summary>Interface describing an SVG fill or stroke value.</summary>
@@ -1827,22 +1827,6 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgstrokedasharray-getdashescount UINT32 GetDashesCount();
 		[PreserveSig]
 		uint GetDashesCount();
-	}
-
-	/// <summary>Gets an attribute of this element as an interface type.</summary>
-	/// <typeparam name="T">The type of the requested interface.</typeparam>
-	/// <param name="elem">The <see cref="ID2D1SvgElement"/> instance.</param>
-	/// <param name="name">The name of the attribute.</param>
-	/// <param name="value">The value of the attribute.</param>
-	/// <returns>
-	/// This method returns an HRESULT success or error code. Returns an error if the attribute name is not valid on this element. Returns
-	/// an error if the attribute cannot be expressed as the specified string type. Returns an error if the attribute is not specified.
-	/// </returns>
-	public static HRESULT GetAttributeValue<T>(this ID2D1SvgElement elem, string name, out T? value) where T : ID2D1SvgAttribute
-	{
-		var hr = elem.GetAttributeValue(name, typeof(T).GUID, out var obj);
-		value = hr.Succeeded ? (T)obj! : default;
-		return hr;
 	}
 
 	/// <summary>Gets an attribute of this element as an interface type.</summary>

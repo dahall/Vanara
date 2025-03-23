@@ -3791,7 +3791,7 @@ public static partial class D3D12
 		HRESULT CreateReservedResource2(in D3D12_RESOURCE_DESC pDesc, D3D12_BARRIER_LAYOUT InitialLayout,
 			[In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, [In, Optional] ID3D12ProtectedResourceSession? pProtectedSession,
 			int NumCastableFormats, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] DXGI_FORMAT[]? pCastableFormats,
-			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 7)] out object? ppvResource);
+			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object? ppvResource);
 	}
 
 	/// <summary>Represents a virtual adapter. This interface extends <c>ID3D12Device8</c> to add methods to manage shader caches.</summary>

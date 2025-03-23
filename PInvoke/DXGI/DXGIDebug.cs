@@ -785,7 +785,7 @@ public static partial class DXGI
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxgidebug/nf-dxgidebug-dxgigetdebuginterface HRESULT DXGIGetDebugInterface(
 	// REFIID riid, void **ppDebug );
 	[PInvokeData("dxgidebug.h", MSDNShortId = "NF:dxgidebug.DXGIGetDebugInterface"), DllImport("dxgidebug.dll", SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT DXGIGetDebugInterface(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppDebug);
+	public static extern HRESULT DXGIGetDebugInterface(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppDebug);
 
 	/// <summary>Describes a debug message filter, which contains lists of message types to allow and deny.</summary>
 	/// <remarks>

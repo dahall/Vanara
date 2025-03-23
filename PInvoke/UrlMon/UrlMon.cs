@@ -1404,7 +1404,7 @@ public static partial class UrlMon
 	[PInvokeData("Urlmon.h")]
 	public static extern HRESULT CoGetClassObjectFromURL(in Guid rclsid, [MarshalAs(UnmanagedType.LPWStr)] string szCodeURL, uint dwFileVersionMS,
 		uint dwFileVersionLS, [MarshalAs(UnmanagedType.LPWStr)] string szContentType, IBindCtx pBindCtx, CLSCTX dwClsContext,
-		[Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
+		[Optional] IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 8)] out object? ppv);
 
 	/// <summary>Combines a base Uniform Resource Identifier (URI) and a relative URI into a full URI.</summary>
 	/// <param name="pBaseUri">A pointer to the <c>IUri</c> interface of the base URI.</param>

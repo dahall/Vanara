@@ -498,7 +498,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransferdestination-createitem HRESULT
 		// CreateItem( LPCWSTR pszName, DWORD dwAttributes, ULONGLONG ullSize, TRANSFER_SOURCE_FLAGS flags, REFIID riidItem, void
 		// **ppvItem, REFIID riidResources, void **ppvResources );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT CreateItem([MarshalAs(UnmanagedType.LPWStr)] string pszName, FileFlagsAndAttributes dwAttributes, ulong ullSize, TRANSFER_SOURCE_FLAGS flags, in Guid riidItem,
 			[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object? ppvItem, in Guid riidResources, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 6)] out object? ppvResources);
 	}

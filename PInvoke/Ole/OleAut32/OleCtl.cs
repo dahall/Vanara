@@ -155,7 +155,7 @@ public static partial class OleAut32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/olectl/nf-olectl-olecreatepictureindirect WINOLECTLAPI
 	// OleCreatePictureIndirect( LPPICTDESC lpPictDesc, REFIID riid, BOOL fOwn, LPVOID *lplpvObj );
-	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true), SuppressAutoGen]
 	[PInvokeData("olectl.h", MSDNShortId = "fb021348-07d4-4974-a71e-abb1b8d760c4")]
 	public static extern HRESULT OleCreatePictureIndirect(in PICTDESC lpPictDesc, in Guid riid, [MarshalAs(UnmanagedType.Bool)] bool fOwn,
 		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? lplpvObj);

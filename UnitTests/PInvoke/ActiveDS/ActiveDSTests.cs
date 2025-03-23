@@ -210,7 +210,7 @@ public class ActiveDSTests
 	[Test]
 	public void IADsFileShareTest()
 	{
-		Assert.That(ADsOpenObject(adsFs, out IADsFileService? fs), ResultIs.Successful);
+		Assert.That(ADsOpenObject(adsFs, ppObject: out IADsFileService? fs), ResultIs.Successful);
 		Write("Description", () => fs!.Description);
 		Write("MaxUserCount", () => fs!.MaxUserCount);
 
@@ -411,7 +411,7 @@ public class ActiveDSTests
 	[Test]
 	public void IADsUserTest()
 	{
-		Assert.That(ADsOpenObject(adsUser, out IADsUser? pUser), ResultIs.Successful);
+		Assert.That(ADsOpenObject(adsUser, ppObject: out IADsUser? pUser), ResultIs.Successful);
 		//Assert.That(ADsOpenObject("LDAP://ldap.forumsys.com:389/CN=guass,CN=users,DC=example,DC=com", out IADsUser? pUser,
 		//	ADS_AUTHENTICATION.ADS_READONLY_SERVER | ADS_AUTHENTICATION.ADS_SERVER_BIND, "read-only-admin", "password"), ResultIs.Successful);
 		TestContext.WriteLine($"{pUser?.Name}, {pUser?.Class}, {pUser?.ADsPath}");

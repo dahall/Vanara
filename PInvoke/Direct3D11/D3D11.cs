@@ -3394,7 +3394,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-opensharedresource HRESULT OpenSharedResource(
 		// [in] HANDLE hResource, [in] REFIID ReturnedInterface, [out, optional] void **ppResource );
 		[PreserveSig]
-		HRESULT OpenSharedResource([In] IntPtr hResource, in Guid ReturnedInterface, [MarshalAs(UnmanagedType.Interface)] out object? ppResource);
+		HRESULT OpenSharedResource([In] IntPtr hResource, in Guid ReturnedInterface, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppResource);
 
 		/// <summary>Get the support of a given format on the installed video device.</summary>
 		/// <param name="Format">

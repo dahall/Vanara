@@ -4286,7 +4286,7 @@ public static partial class DXGI
 	// https://docs.microsoft.com/en-us/windows/win32/api/dxgi1_3/nf-dxgi1_3-dxgigetdebuginterface1 HRESULT DXGIGetDebugInterface1( UINT
 	// Flags, REFIID riid, void **pDebug );
 	[DllImport(Lib.DXGI, SetLastError = false, ExactSpelling = true), PInvokeData("dxgi1_3.h", MSDNShortId = "0FE0EAF5-3ADC-426F-9DA9-FEDEC519EEF0")]
-	public static extern HRESULT DXGIGetDebugInterface1([Optional] uint Flags, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? pDebug);
+	public static extern HRESULT DXGIGetDebugInterface1([Optional] uint Flags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? pDebug);
 
 	/// <summary>Retrieves an interface that Windows Store apps use for debugging the Microsoft DirectX Graphics Infrastructure (DXGI).</summary>
 	/// <typeparam name="T">

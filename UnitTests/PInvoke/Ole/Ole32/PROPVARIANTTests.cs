@@ -291,8 +291,8 @@ public class PROPVARIANTTests
 				return "string";
 
 			case VARTYPE.VT_STORAGE:
-				_ = StgCreateStorageEx(Path.GetTempFileName(), STGM.STGM_DELETEONRELEASE | STGM.STGM_CREATE | STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, STGFMT.STGFMT_DOCFILE, 0, IntPtr.Zero, IntPtr.Zero, typeof(IStorage).GUID, out object iptr);
-				return (IStorage)iptr;
+				_ = StgCreateStorageEx(Path.GetTempFileName(), STGM.STGM_DELETEONRELEASE | STGM.STGM_CREATE | STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, STGFMT.STGFMT_DOCFILE, 0, IntPtr.Zero, IntPtr.Zero, out IStorage? iptr);
+				return iptr!;
 
 			case VARTYPE.VT_STREAM:
 				_ = SHCreateStreamOnFileEx(TestCaseSources.SmallFile, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, 0, false, null, out IStream stm);

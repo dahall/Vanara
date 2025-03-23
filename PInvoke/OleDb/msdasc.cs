@@ -275,7 +275,7 @@ public static partial class OleDb
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms723098(v=vs.85) HRESULT CreateDBInstance( REFCLSID
 		// clsidProvider, IUnknown * pUnkOuter, DWORD dwClsCtx, LPOLESTR pwszReserved, REFIID riid, IUnknown ** ppDataSource);
 		void CreateDBInstance(in Guid clsidProvider, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, CLSCTX dwClsCtx,
-			[In, Optional] string? pwszReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppDataSource);
+			[In, Optional] string? pwszReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppDataSource);
 
 		/// <summary>Creates a data source object; analogous to <c>CoCreateInstanceEx</c>.</summary>
 		/// <param name="clsidProvider">The CLSID of the provider to instantiate.</param>

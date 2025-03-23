@@ -66,8 +66,8 @@ public class Ole32Tests
 
 		// creates a new storage object using NTFS implementation
 		StgOpenStorageEx(TestCaseSources.LogFile, STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE,
-			STGFMT.STGFMT_ANY, default, default, default, typeof(IPropertySetStorage).GUID, out object iptr).ThrowIfFailed();
-		using ComReleaser<IPropertySetStorage> istg = ComReleaserFactory.Create((IPropertySetStorage)iptr);
+			STGFMT.STGFMT_ANY, default, default, default, typeof(IPropertySetStorage).GUID, out object? iptr).ThrowIfFailed();
+		using ComReleaser<IPropertySetStorage> istg = ComReleaserFactory.Create((IPropertySetStorage)iptr!);
 
 		PROPSPEC[] prcs = new[] { PROPERTYKEY.System.Title.Id, PROPERTYKEY.System.Author.Id, PROPERTYKEY.System.Comment.Id }.Select(propid => new PROPSPEC(propid)).ToArray();
 		string[] vals = prcs.Select((prc, idx) => "VALUE" + idx).ToArray();

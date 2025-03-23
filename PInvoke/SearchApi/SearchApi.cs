@@ -6083,7 +6083,7 @@ public static partial class SearchApi
 	public static ISearchItemsChangedSink GetItemsChangedSink(this ISearchCatalogManager mgr, ISearchNotifyInlineSite pISearchNotifyInlineSite, out Guid pGUIDCatalogResetSignature, out Guid pGUIDCheckPointSignature, out uint pdwLastCheckPointNumber)
 	{
 		mgr.GetItemsChangedSink(pISearchNotifyInlineSite, typeof(ISearchItemsChangedSink).GUID, out var ppv, out pGUIDCatalogResetSignature, out pGUIDCheckPointSignature, out pdwLastCheckPointNumber);
-		return (ISearchItemsChangedSink)ppv;
+		return (ISearchItemsChangedSink)ppv!;
 	}
 
 	/// <summary>Describes security authentication information for content access.</summary>

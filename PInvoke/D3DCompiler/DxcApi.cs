@@ -1546,7 +1546,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcresult-getoutput HRESULT GetOutput( DXC_OUT_KIND
 		// dxcOutKind, REFIID iid, void **ppvObject, IDxcBlobWide **ppOutputName );
 		[PreserveSig]
-		HRESULT GetOutput(DXC_OUT_KIND dxcOutKind, in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppvObject, out IDxcBlobWide ppOutputName);
+		HRESULT GetOutput(DXC_OUT_KIND dxcOutKind, in Guid iid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvObject, out IDxcBlobWide ppOutputName);
 
 		/// <summary>Retrieves the number of outputs available in this result.</summary>
 		/// <returns>The number of outputs available in this result.</returns>
@@ -1881,10 +1881,10 @@ public static partial class DXC
 	/// <param name="ppResult">An <c>IDxcResult</c> representing the compiler output status, buffer, and errors.</param>
 	/// <returns>An error code.</returns>
 	public static HRESULT Compile(this IDxcCompiler3 cmp, in DxcBuffer pSource, [In, Optional] string[]? pArguments,
-		[In, Optional] IDxcIncludeHandler? pIncludeHandler, out IDxcResult ppResult)
+		[In, Optional] IDxcIncludeHandler? pIncludeHandler, out IDxcResult? ppResult)
 	{
 		var hr = cmp.Compile(pSource, pArguments, (uint)(pArguments?.Length ?? 0), pIncludeHandler, typeof(IDxcResult).GUID, out var ppv);
-		ppResult = (IDxcResult)ppv;
+		ppResult = (IDxcResult?)ppv;
 		return hr;
 	}
 
@@ -1893,10 +1893,10 @@ public static partial class DXC
 	/// <param name="pObject">The program to disassemble: dxil container or bitcode.</param>
 	/// <param name="ppResult">An <c>IDxcResult</c> representing the compiler output status, buffer, and errors.</param>
 	/// <returns>An error code.</returns>
-	public static HRESULT Disassemble(this IDxcCompiler3 cmp, in DxcBuffer pObject, out IDxcResult ppResult)
+	public static HRESULT Disassemble(this IDxcCompiler3 cmp, in DxcBuffer pObject, out IDxcResult? ppResult)
 	{
 		var hr = cmp.Disassemble(pObject, typeof(IDxcResult).GUID, out var ppv);
-		ppResult = (IDxcResult)ppv;
+		ppResult = (IDxcResult?)ppv;
 		return hr;
 	}
 
@@ -1927,32 +1927,7 @@ public static partial class DXC
 	// REFCLSID rclsid, REFIID riid, LPVOID *ppv );
 	[PInvokeData("dxcapi.h", MSDNShortId = "NF:dxcapi.DxcCreateInstance")]
 	[DllImport(Lib_Dxilconv, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT DxcCreateInstance(in Guid rclsid, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
-
-	/// <summary>Creates a single uninitialized object of the class associated with a specified CLSID. Also see <c>DxcCreateInstance2</c>.</summary>
-	/// <typeparam name="T">The type of the interface to be used to communicate with the object.</typeparam>
-	/// <param name="rclsid">The CLSID associated with the data and code that will be used to create the object.</param>
-	/// <param name="ppv">
-	/// Address of pointer variable that receives the interface pointer requested in riid. Upon successful return, <c>*ppv</c> contains the
-	/// requested interface pointer. Upon failure, <c>*ppv</c> contains NULL.
-	/// </param>
-	/// <returns>While this function is similar to <b>CoCreateInstance</b>, there's no COM involvement.</returns>
-	/// <remarks>
-	/// <para>
-	/// To make it more convenient for you to use <b>GetProcAddress</b> to call <b>DxcCreateInstance</b>, the <b>DxcCreateInstanceProc</b>
-	/// typedef is provided:
-	/// </para>
-	/// <para><c>typedef HRESULT (__stdcall *DxcCreateInstanceProc)( _In_ REFCLSID rclsid, _In_ REFIID riid, _Out_ LPVOID* ppv );</c></para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-dxccreateinstance DXC_API_IMPORT HRESULT DxcCreateInstance(
-	// REFCLSID rclsid, REFIID riid, LPVOID *ppv );
-	[PInvokeData("dxcapi.h", MSDNShortId = "NF:dxcapi.DxcCreateInstance")]
-	public static HRESULT DxcCreateInstance<T>(in Guid rclsid, out T? ppv) where T : class
-	{
-		var hr = DxcCreateInstance(rclsid, typeof(T).GUID, out var pv);
-		ppv = hr.Succeeded ? (T)pv! : null;
-		return hr;
-	}
+	public static extern HRESULT DxcCreateInstance(in Guid rclsid, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// Creates a single uninitialized object of the class associated with a specified CLSID (can be used to create an instance of the
@@ -1980,40 +1955,8 @@ public static partial class DXC
 	// IMalloc *pMalloc, REFCLSID rclsid, REFIID riid, LPVOID *ppv );
 	[PInvokeData("dxcapi.h", MSDNShortId = "NF:dxcapi.DxcCreateInstance2")]
 	[DllImport(Lib_Dxilconv, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT DxcCreateInstance2(IMalloc pMalloc, in Guid rclsid, in Guid riid,
+	public static extern HRESULT DxcCreateInstance2(Vanara.PInvoke.Ole32.IMalloc pMalloc, in Guid rclsid, in Guid riid,
 	   [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
-
-	/// <summary>
-	/// Creates a single uninitialized object of the class associated with a specified CLSID (can be used to create an instance of the
-	/// compiler with a custom memory allocator). Also see <c>DxcCreateInstance</c>.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface to be used to communicate with the object.</typeparam>
-	/// <param name="pMalloc">An <b>IMalloc</b> interface pointer representing a custom memory allocator.</param>
-	/// <param name="rclsid">The CLSID associated with the data and code that will be used to create the object.</param>
-	/// <param name="ppv">
-	/// Address of pointer variable that receives the interface pointer requested in riid. Upon successful return, <c>*ppv</c> contains the
-	/// requested interface pointer. Upon failure, <c>*ppv</c> contains NULL.
-	/// </param>
-	/// <returns>While this function is similar to <b>CoCreateInstance</b>, there's no COM involvement.</returns>
-	/// <remarks>
-	/// <para>
-	/// To make it more convenient for you to use <b>GetProcAddress</b> to call <b>DxcCreateInstance2</b>, the <b>DxcCreateInstance2Proc</b>
-	/// typedef is provided:
-	/// </para>
-	/// <para>
-	/// <c>typedef HRESULT(__stdcall *DxcCreateInstance2Proc)( _In_ IMalloc *pMalloc, _In_ REFCLSID rclsid, _In_ REFIID riid, _Out_ LPVOID*
-	/// ppv );</c>
-	/// </para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-dxccreateinstance2 DXC_API_IMPORT HRESULT DxcCreateInstance2(
-	// IMalloc *pMalloc, REFCLSID rclsid, REFIID riid, LPVOID *ppv );
-	[PInvokeData("dxcapi.h", MSDNShortId = "NF:dxcapi.DxcCreateInstance2")]
-	public static HRESULT DxcCreateInstance2<T>(IMalloc pMalloc, in Guid rclsid, out T? ppv) where T : class
-	{
-		var hr = DxcCreateInstance2(pMalloc, rclsid, typeof(T).GUID, out var pv);
-		ppv = hr.Succeeded ? (T)pv! : null;
-		return hr;
-	}
 
 	/// <summary>Gets the SHA of the latest commit.</summary>
 	/// <param name="vi2">The <see cref="IDxcVersionInfo2"/> instance.</param>

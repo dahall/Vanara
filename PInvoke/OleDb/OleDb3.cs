@@ -222,7 +222,7 @@ public static partial class OleDb
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms725450(v=vs.85) HRESULT GetSourceRowset( REFIID riid,
 		// IUnknown **ppRowset, HROW *phRow );
 		[PreserveSig]
-		HRESULT GetSourceRowset(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppRowset, out HROW phRow);
+		HRESULT GetSourceRowset(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppRowset, out HROW phRow);
 
 		/// <summary>
 		/// Returns an interface pointer to be used to access an object-valued column. <c>IRow::Open</c> will generally return a rowset, row,
@@ -353,7 +353,7 @@ public static partial class OleDb
 		// *pColumnID, REFGUID rguidColumnType, DWORD dwFlags, REFIID riid, IUnknown **ppUnk );
 		[PreserveSig]
 		HRESULT Open([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in DBID pColumnID, in Guid rguidColumnType,
-			[In, Optional] uint dwBindFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppUnk);
+			[In, Optional] uint dwBindFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppUnk);
 	}
 
 	/// <summary>The <c>IRowChange</c> interface allows a consumer to quickly set columns of a row.</summary>

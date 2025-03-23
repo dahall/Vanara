@@ -562,7 +562,7 @@ public static partial class CoreAudio
 		// https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/nf-mmdeviceapi-immdevice-activate HRESULT Activate( REFIID
 		// iid, DWORD dwClsCtx, PROPVARIANT *pActivationParams, void **ppInterface );
 		[PreserveSig]
-		HRESULT Activate([In] in Guid iid, [In] CLSCTX dwClsCtx, [In, Optional] PROPVARIANT? pActivationParams, [MarshalAs(UnmanagedType.IUnknown)] out object? ppInterface);
+		HRESULT Activate([In] in Guid iid, [In] CLSCTX dwClsCtx, [In, Optional] PROPVARIANT? pActivationParams, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppInterface);
 
 		/// <summary>The <c>OpenPropertyStore</c> method retrieves an interface to the device's property store.</summary>
 		/// <param name="stgmAccess">

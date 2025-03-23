@@ -7091,7 +7091,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11_4/nf-d3d11_4-id3d11device5-opensharedfence HRESULT OpenSharedFence(
 		// [in] HANDLE hFence, REFIID ReturnedInterface, [out, optional] void **ppFence );
 		[PreserveSig]
-		HRESULT OpenSharedFence([In] HANDLE hFence, in Guid ReturnedInterface, [MarshalAs(UnmanagedType.Interface)] out object? ppFence);
+		HRESULT OpenSharedFence([In] HANDLE hFence, in Guid ReturnedInterface, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppFence);
 
 		/// <summary>
 		/// <para>Creates a fence object.</para>

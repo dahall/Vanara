@@ -2569,7 +2569,7 @@ public static partial class D3D12
 		// CreateCommittedResource( [in] const D3D12_HEAP_PROPERTIES *pHeapProperties, [in] D3D12_HEAP_FLAGS HeapFlags, [in] const
 		// D3D12_RESOURCE_DESC *pDesc, [in] D3D12_RESOURCE_STATES InitialResourceState, [in, optional] const D3D12_CLEAR_VALUE
 		// *pOptimizedClearValue, [in] REFIID riidResource, [out, optional] void **ppvResource );
-		[PreserveSig]
+		[PreserveSig, SuppressAutoGen]
 		HRESULT CreateCommittedResource(in D3D12_HEAP_PROPERTIES pHeapProperties, D3D12_HEAP_FLAGS HeapFlags, in D3D12_RESOURCE_DESC pDesc,
 			D3D12_RESOURCE_STATES InitialResourceState, [In, Optional] StructPointer<D3D12_CLEAR_VALUE> pOptimizedClearValue, in Guid riidResource,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)] out object? ppvResource);
@@ -5803,36 +5803,6 @@ public static partial class D3D12
 		return ppv!;
 	}
 
-	/// <summary>Creates a command allocator object.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="type">
-	/// A <c>D3D12_COMMAND_LIST_TYPE</c>-typed value that specifies the type of command allocator to create. The type of command allocator
-	/// can be the type that records either direct command lists or bundles.
-	/// </param>
-	/// <param name="ppCommandAllocator">
-	/// A pointer to a memory block that receives a pointer to the <c>ID3D12CommandAllocator</c> interface for the command allocator.
-	/// </param>
-	/// <returns>
-	/// This method returns <b>E_OUTOFMEMORY</b> if there is insufficient memory to create the command allocator. See <c>Direct3D 12 Return
-	/// Codes</c> for other possible return values.
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The device creates command lists from the command allocator. Examples The <c>D3D12Bundles</c> sample uses
-	/// <b>ID3D12Device::CreateCommandAllocator</b> as follows:
-	/// </para>
-	/// <para>
-	/// <c>ThrowIfFailed(pDevice-&gt;CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&amp;m_commandAllocator)));
-	/// ThrowIfFailed(pDevice-&gt;CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_BUNDLE, IID_PPV_ARGS(&amp;m_bundleAllocator)));</c>
-	/// </para>
-	/// <para>Refer to the <c>Example Code in the D3D12 Reference</c>.</para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcommandallocator HRESULT
-	// CreateCommandAllocator( [in] D3D12_COMMAND_LIST_TYPE type, REFIID riid, [out] void **ppCommandAllocator );
-	public static HRESULT CreateCommandAllocator<T>(this ID3D12Device device, D3D12_COMMAND_LIST_TYPE type, out T? ppCommandAllocator) where T : class =>
-		FunctionHelper.IidGetObj(device.CreateCommandAllocator, type, out ppCommandAllocator);
-
 	/// <summary>Creates a command list.</summary>
 	/// <typeparam name="T">The type of the interface to return.</typeparam>
 	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
@@ -5873,71 +5843,6 @@ public static partial class D3D12
 	{
 		device.CreateCommandList(nodeMask, type, pCommandAllocator, pInitialState, out T? ppv).ThrowIfFailed();
 		return ppv!;
-	}
-
-	/// <summary>Creates a command list.</summary>
-	/// <typeparam name="T">The type of the interface to return.</typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="nodeMask">
-	/// <para>Type: <b><c>UINT</c></b></para>
-	/// <para>
-	/// For single-GPU operation, set this to zero. If there are multiple GPU nodes, then set a bit to identify the node (the device's
-	/// physical adapter) for which to create the command list. Each bit in the mask corresponds to a single node. Only one bit must be
-	/// set. Also see <c>Multi-adapter systems</c>.
-	/// </para>
-	/// </param>
-	/// <param name="type">
-	/// <para>Type: <b><c>D3D12_COMMAND_LIST_TYPE</c></b></para>
-	/// <para>Specifies the type of command list to create.</para>
-	/// </param>
-	/// <param name="pCommandAllocator">
-	/// <para>Type: <b><c>ID3D12CommandAllocator</c>*</b></para>
-	/// <para>A pointer to the command allocator object from which the device creates command lists.</para>
-	/// </param>
-	/// <param name="pInitialState">
-	/// <para>Type: <b><c>ID3D12PipelineState</c>*</b></para>
-	/// <para>
-	/// An optional pointer to the pipeline state object that contains the initial pipeline state for the command list. If it is
-	/// <c>nullptr</c>, then the runtime sets a dummy initial pipeline state, so that drivers don't have to deal with undefined state.
-	/// The overhead for this is low, particularly for a command list, for which the overall cost of recording the command list likely
-	/// dwarfs the cost of a single initial state setting. So there's little cost in not setting the initial pipeline state parameter,
-	/// if doing so is inconvenient.
-	/// </para>
-	/// <para>
-	/// For bundles, on the other hand, it might make more sense to try to set the initial state parameter (since bundles are likely
-	/// smaller overall, and can be reused frequently).
-	/// </para>
-	/// </param>
-	/// <param name="ppCommandList">
-	/// <para>Type: <b>void**</b></para>
-	/// <para>
-	/// A pointer to a memory block that receives a pointer to the <c>ID3D12CommandList</c> or <c>ID3D12GraphicsCommandList</c>
-	/// interface for the command list.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>If the function succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <c><b>HRESULT</b></c><c>error code</c>.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>Return value</description>
-	/// <description>Description</description>
-	/// </listheader>
-	/// <item>
-	/// <description>E_OUTOFMEMORY</description>
-	/// <description>There is insufficient memory to create the command list.</description>
-	/// </item>
-	/// </list>
-	/// <para>See <c>Direct3D 12 return codes</c> for other possible return values.</para>
-	/// </returns>
-	/// <remarks>The device creates command lists from the command allocator.</remarks>
-	public static HRESULT CreateCommandList<T>(this ID3D12Device device, uint nodeMask, D3D12_COMMAND_LIST_TYPE type,
-		[In] ID3D12CommandAllocator pCommandAllocator, [In, Optional] ID3D12PipelineState? pInitialState,
-		out T? ppCommandList) where T : class
-	{
-		var hr = device.CreateCommandList(nodeMask, type, pCommandAllocator, pInitialState, typeof(T).GUID, out var ppv);
-		ppCommandList = (T)ppv!;
-		return hr;
 	}
 
 	/// <summary>
@@ -6234,37 +6139,6 @@ public static partial class D3D12
 	{
 		device.CreateFence(InitialValue, Flags, typeof(T).GUID, out var ppv).ThrowIfFailed();
 		return (T)ppv!;
-	}
-
-	/// <summary>Creates a fence object.</summary>
-	/// <typeparam name="T">
-	/// The type of the interface to return.
-	/// <para>The fence interface (<c>ID3D12Fence</c>).</para>
-	/// </typeparam>
-	/// <param name="device">The <see cref="ID3D12Device"/> instance.</param>
-	/// <param name="InitialValue">
-	/// <para>Type: <b><c>UINT64</c></b></para>
-	/// <para>The initial value for the fence.</para>
-	/// </param>
-	/// <param name="Flags">
-	/// <para>Type: <b><c>D3D12_FENCE_FLAGS</c></b></para>
-	/// <para>
-	/// A combination of <c>D3D12_FENCE_FLAGS</c>-typed values that are combined by using a bitwise OR operation. The resulting value
-	/// specifies options for the fence.
-	/// </para>
-	/// </param>
-	/// <param name="ppFence">
-	/// <para>A <c>ID3D12Fence</c> interface that is used to access the fence.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>Returns <b>S_OK</b> if successful; otherwise, returns one of the <c>Direct3D 12 Return Codes</c>.</para>
-	/// </returns>
-	public static HRESULT CreateFence<T>(this ID3D12Device device, ulong InitialValue, D3D12_FENCE_FLAGS Flags, out T? ppFence) where T : class
-	{
-		var hr = device.CreateFence(InitialValue, Flags, typeof(T).GUID, out var ppv);
-		ppFence = (T?)ppv;
-		return hr;
 	}
 
 	/// <summary>Creates a graphics pipeline state object.</summary>
