@@ -49,22 +49,44 @@ using Vanara.Generators;
 //{
 //	public interface IUnkHolderIgnore
 //	{
-//		HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+//		[PreserveSig]
+//		HRESULT Ignore(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
 //	}
 //	public static partial class Test32
 //	{
 //		[System.Runtime.InteropServices.MarshalAs(UnmanagedType.Bool)]
-//		public static bool field1;
+//		public static readonly bool field1;
 
 //		public interface IUnkHolder
 //		{
-//			HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+//			/// <summary>Gets the object.</summary>
+//			/// <param name="p1">The p1.</param>
+//			/// <param name="p2">The p2.</param>
+//			/// <param name="p3">The p3.</param>
+//			/// <param name="p4">The p4.</param>
+//			/// <param name="p5">The p5.</param>
+//			/// <returns>The ret.</returns>
+//			[PreserveSig]
+//			HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3, ref NativeOverlapped p4, out long p5);
+//			/// <summary>Gets the obj2.</summary>
+//			/// <param name="p1">The p1.</param>
+//			/// <param name="p2">The p2.</param>
+//			/// <param name="p3">The p3.</param>
+//			void GetObj2(float p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
 //			HRESULT Ignore1(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown)] object? p3);
-//			HRESULT Ignore2([System.Runtime.InteropServices.MarshalAs(UnmanagedType.LPArray)] int[] p3);
+//			HRESULT Ignore2(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown)] out object? p3);
+//			HRESULT Ignore3([System.Runtime.InteropServices.MarshalAs(UnmanagedType.LPArray)] int[] p3);
+//			[SuppressAutoGen]
+//			void Ignore4(float p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
 //		}
 
+//		/// <summary>Gets the object.</summary>
+//		/// <param name="p1">The p1.</param>
+//		/// <param name="p2">The p2.</param>
+//		/// <param name="p3">The p3.</param>
+//		/// <returns>The ret.</returns>
 //		[System.Runtime.InteropServices.DllImport("test32.dll")]
-//		public static extern HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] object? p3);
+//		public static extern HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
 //	}
 //}
 
@@ -172,18 +194,36 @@ namespace Vanara.PInvoke.Tests
 					public static partial class Test32
 					{
 						[System.Runtime.InteropServices.MarshalAs(UnmanagedType.Bool)]
-						public static bool field1;
+						public static readonly bool field1;
 
 						public interface IUnkHolder
 						{
+							/// <summary>Gets the object.</summary>
+							/// <param name=""p1"">The p1.</param>
+							/// <param name=""p2"">The p2.</param>
+							/// <param name=""p3"">The p3.</param>
+							/// <param name=""p4"">The p4.</param>
+							/// <param name=""p5"">The p5.</param>
+							/// <returns>The ret.</returns>
 							[PreserveSig]
-							HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3, ref MyStruct p4, out long p5);
+							HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3, ref NativeOverlapped p4, out long p5);
+							/// <summary>Gets the obj2.</summary>
+							/// <param name=""p1"">The p1.</param>
+							/// <param name=""p2"">The p2.</param>
+							/// <param name=""p3"">The p3.</param>
 							void GetObj2(float p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
 							HRESULT Ignore1(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown)] object? p3);
 							HRESULT Ignore2(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown)] out object? p3);
 							HRESULT Ignore3([System.Runtime.InteropServices.MarshalAs(UnmanagedType.LPArray)] int[] p3);
+							[SuppressAutoGen]
+							void Ignore4(float p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
 						}
 
+						/// <summary>Gets the object.</summary>
+						/// <param name=""p1"">The p1.</param>
+						/// <param name=""p2"">The p2.</param>
+						/// <param name=""p3"">The p3.</param>
+						/// <returns>The ret.</returns>
 						[System.Runtime.InteropServices.DllImport(""test32.dll"")]
 						public static extern HRESULT GetObj(object? p1, in System.Guid p2, [System.Runtime.InteropServices.MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? p3);
 					}
