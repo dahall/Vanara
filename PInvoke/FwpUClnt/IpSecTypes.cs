@@ -1,4 +1,6 @@
 ﻿#pragma warning disable IDE1006 // Naming Styles
+using System;
+
 namespace Vanara.PInvoke;
 
 public static partial class FwpUClnt
@@ -348,6 +350,18 @@ public static partial class FwpUClnt
 
 		/// <summary/>
 		IPSEC_POLICY_FLAG_SITE_TO_SITE_TUNNEL = 0x00010000,
+
+		/// <summary/>
+		IPSEC_POLICY_FLAG_BANDWIDTH1 = 0x10000000,
+
+		/// <summary/>
+		IPSEC_POLICY_FLAG_BANDWIDTH2 = 0x20000000,
+
+		/// <summary/>
+		IPSEC_POLICY_FLAG_BANDWIDTH3 = 0x40000000,
+
+		/// <summary/>
+		IPSEC_POLICY_FLAG_BANDWIDTH4 = 0x80000000,
 	}
 
 	/// <summary>Flags for IPSEC_SA_BUNDLE0.</summary>
@@ -2388,6 +2402,54 @@ public static partial class FwpUClnt
 		public ulong token;
 	}
 
+	/// <summary>Undocumented.</summary>
+	[PInvokeData("ipsectypes.h")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct IPSEC_TRAFFIC_SELECTOR_POLICY0
+	{
+		/// <summary/>
+		public uint flags;
+		/// <summary/>
+		public uint numLocalTrafficSelectors;
+		/// <summary/>
+		public ArrayPointer<IPSEC_TRAFFIC_SELECTOR0> localTrafficSelectors;
+		/// <summary/>
+		public uint numRemoteTrafficSelectors;
+		/// <summary/>
+		public ArrayPointer<IPSEC_TRAFFIC_SELECTOR0> remoteTrafficSelectors;
+	}
+
+	/// <summary>Undocumented.</summary>
+	[PInvokeData("ipsectypes.h")]
+	[StructLayout(LayoutKind.Sequential, Pack = 4)]
+	public struct IPSEC_TRAFFIC_SELECTOR0
+	{
+		/// <summary/>
+		public byte protocolId;
+		/// <summary/>
+		public ushort portStart;
+		/// <summary/>
+		public ushort portEnd;
+		/// <summary/>
+		public FWP_IP_VERSION ipVersion;
+		/// <summary/>
+		public IN_ADDR startV4Address
+		{
+			readonly get => new(MemoryMarshal.Cast<byte, uint>(startV6Address.bytes)[0]);
+			set { Span<uint> v6 = new([value, 0, 0, 0]); startV6Address = MemoryMarshal.Cast<uint, byte>(v6).ToArray(); }
+		}
+		/// <summary/>
+		public IN6_ADDR startV6Address;
+		/// <summary/>
+		public IN_ADDR endV4Address
+		{
+			readonly get => new(MemoryMarshal.Cast<byte, uint>(endV6Address.bytes)[0]);
+			set { Span<uint> v6 = new([value, 0, 0, 0]); endV6Address = MemoryMarshal.Cast<uint, byte>(v6).ToArray(); }
+		}
+		/// <summary/>
+		public IN6_ADDR endV6Address;
+	}
+
 	/// <summary>The <c>IPSEC_TRAFFIC_STATISTICS0</c> structure stores IPsec traffic statistics. IPSEC_TRAFFIC_STATISTICS1 is available.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ipsectypes/ns-ipsectypes-ipsec_traffic_statistics0 typedef struct
 	// IPSEC_TRAFFIC_STATISTICS0_ { UINT64 encryptedByteCount; UINT64 authenticatedAHByteCount; UINT64 authenticatedESPByteCount; UINT64
@@ -3053,7 +3115,7 @@ public static partial class FwpUClnt
 		/// <para>Array of quick mode proposals.</para>
 		/// <para>See <see cref="IPSEC_PROPOSAL0"/> for more information.</para>
 		/// </summary>
-		public IntPtr ipsecProposals;
+		public ArrayPointer<IPSEC_PROPOSAL0> ipsecProposals;
 
 		/// <summary>
 		/// <para>Tunnel endpoints of the IPsec security association (SA) generated from this policy.</para>
@@ -3068,7 +3130,7 @@ public static partial class FwpUClnt
 		/// <para>The AuthIP extended mode authentication policy.</para>
 		/// <para>See IKEEXT_EM_POLICY0 for more information.</para>
 		/// </summary>
-		public IntPtr emPolicy;
+		public StructPointer<IKEEXT_EM_POLICY0> emPolicy;
 	}
 
 	/// <summary>
@@ -3142,7 +3204,7 @@ public static partial class FwpUClnt
 		/// <para>Array of quick mode proposals.</para>
 		/// <para>See IPSEC_PROPOSAL0 for more information.</para>
 		/// </summary>
-		public IntPtr ipsecProposals;
+		public ArrayPointer<IPSEC_PROPOSAL0> ipsecProposals;
 
 		/// <summary>
 		/// <para>Tunnel endpoints of the IPsec security association (SA) generated from this policy.</para>
@@ -3157,7 +3219,7 @@ public static partial class FwpUClnt
 		/// <para>The AuthIP extended mode authentication policy.</para>
 		/// <para>See IKEEXT_EM_POLICY1 for more information.</para>
 		/// </summary>
-		public IntPtr emPolicy;
+		public StructPointer<IKEEXT_EM_POLICY1> emPolicy;
 	}
 
 	/// <summary>
@@ -3244,7 +3306,7 @@ public static partial class FwpUClnt
 		/// <para>Type: IPSEC_PROPOSAL0*</para>
 		/// <para>Array of quick mode proposals.</para>
 		/// </summary>
-		public IntPtr ipsecProposals;
+		public ArrayPointer<IPSEC_PROPOSAL0> ipsecProposals;
 
 		/// <summary>
 		/// <para>Type: IPSEC_TUNNEL_ENDPOINTS2</para>
@@ -3262,13 +3324,127 @@ public static partial class FwpUClnt
 		/// <para>Type: IKEEXT_EM_POLICY2*</para>
 		/// <para>The AuthIP extended mode authentication policy.</para>
 		/// </summary>
-		public IntPtr emPolicy;
+		public StructPointer<IKEEXT_EM_POLICY2> emPolicy;
 
 		/// <summary>
 		/// <para>Type: <c>UINT32</c></para>
 		/// <para>The forward path SA lifetime indicating the length of time for this connection.</para>
 		/// </summary>
 		public uint fwdPathSaLifetime;
+	}
+
+	/// <summary>Undocumented.</summary>
+	[PInvokeData("ipsectypes.h", MSDNShortId = "NS:ipsectypes.IPSEC_TUNNEL_POLICY3_")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct IPSEC_TUNNEL_POLICY3
+	{
+		/// <summary>
+		/// <para>Type: <c>UINT32</c></para>
+		/// <para>A combination of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>IPsec policy flag</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_ND_SECURE</c></term>
+		/// <term>Do negotiation discovery in secure ring.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_ND_BOUNDARY</c></term>
+		/// <term>Do negotiation discovery in the untrusted perimeter zone.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_CLEAR_DF_ON_TUNNEL</c></term>
+		/// <term>Clear the "DontFragment" bit on the outer IP header of an IPsec tunneled packet.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_DONT_NEGOTIATE_SECOND_LIFETIME</c></term>
+		/// <term>If set, Internet Key Exchange (IKE) will not send the ISAKMP attribute for 'seconds' lifetime during quick mode negotiation.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_DONT_NEGOTIATE_BYTE_LIFETIME</c></term>
+		/// <term>If set, IKE will not send the ISAKMP attribute for 'byte' lifetime during quick mode negotiation.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_ENABLE_V6_IN_V4_TUNNELING</c></term>
+		/// <term>Negotiate IPv6 inside IPv4 IPsec tunneling. Applicable only for tunnel mode policy, and supported only by IKEv2.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_ENABLE_SERVER_ADDR_ASSIGNMENT</c></term>
+		/// <term>Enable calls to RAS VPN server for address assignment. Applicable only for tunnel mode policy, and supported only by IKEv2.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_TUNNEL_ALLOW_OUTBOUND_CLEAR_CONNECTION</c></term>
+		/// <term>
+		/// Allow outbound connections to bypass the tunnel policy. Applicable only for tunnel mode policy on a tunnel gateway. Do not set on
+		/// a tunnel client.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_TUNNEL_BYPASS_ALREADY_SECURE_CONNECTION</c></term>
+		/// <term>Allow ESP or UDP 500/4500 traffic to bypass the tunnel. Applicable only for tunnel mode policy.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_TUNNEL_BYPASS_ICMPV6</c></term>
+		/// <term>Allow ICMPv6 traffic to bypass the tunnel. Applicable only for tunnel mode policy.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_KEY_MANAGER_ALLOW_DICTATE_KEY</c></term>
+		/// <term>Allow key dictation for quick mode policy. Applicable only for AuthIP policy.</term>
+		/// </item>
+		/// <item>
+		/// <term><c>IPSEC_POLICY_FLAG_KEY_MANAGER_ALLOW_NOTIFY_KEY</c></term>
+		/// <term>Allow key notification for quick mode policy. Applicable for AuthIP/IKE/IKEv2 policy.</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public IPSEC_POLICY_FLAG flags;
+
+		/// <summary>
+		/// <para>Type: <c>UINT32</c></para>
+		/// <para>Number of quick mode proposals in the policy.</para>
+		/// </summary>
+		public uint numIpsecProposals;
+
+		/// <summary>
+		/// <para>Type: IPSEC_PROPOSAL0*</para>
+		/// <para>Array of quick mode proposals.</para>
+		/// </summary>
+		public ArrayPointer<IPSEC_PROPOSAL0> ipsecProposals;
+
+		/// <summary>
+		/// <para>Type: IPSEC_TUNNEL_ENDPOINTS2</para>
+		/// <para>Tunnel endpoints of the IPsec security association (SA) generated from this policy.</para>
+		/// </summary>
+		public IPSEC_TUNNEL_ENDPOINTS2 tunnelEndpoints;
+
+		/// <summary>
+		/// <para>Type: IPSEC_SA_IDLE_TIMEOUT0</para>
+		/// <para>Specifies the SA idle timeout in IPsec policy.</para>
+		/// </summary>
+		public IPSEC_SA_IDLE_TIMEOUT0 saIdleTimeout;
+
+		/// <summary>
+		/// <para>Type: IKEEXT_EM_POLICY2*</para>
+		/// <para>The AuthIP extended mode authentication policy.</para>
+		/// </summary>
+		public StructPointer<IKEEXT_EM_POLICY2> emPolicy;
+
+		/// <summary>
+		/// <para>Type: <c>UINT32</c></para>
+		/// <para>The forward path SA lifetime indicating the length of time for this connection.</para>
+		/// </summary>
+		public uint fwdPathSaLifetime;
+
+		/// <summary>Undocumented.</summary>
+		public uint compartmentId;
+
+		/// <summary>Undocumented.</summary>
+		public uint numTrafficSelectorPolicy;
+
+		/// <summary>Undocumented.</summary>
+		public ArrayPointer<IPSEC_TRAFFIC_SELECTOR_POLICY0> trafficSelectorPolicies;
 	}
 
 	/// <summary>
