@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows User32.dll
 
 - Includes methods from user32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.User32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.User32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.User32)  
-### Methods - 100% API coverage (568 of 568 functions)  
+### Methods - 100% API coverage (569 of 569 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -509,8 +509,9 @@ Native Method | Header | Managed Method
 [SetWindowContextHelpId](https://www.google.com/search?num=5&q=SetWindowContextHelpId+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWindowContextHelpId](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowContextHelpId)  
 [SetWindowDisplayAffinity](https://www.google.com/search?num=5&q=SetWindowDisplayAffinity+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWindowDisplayAffinity](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowDisplayAffinity)  
 [SetWindowFeedbackSetting](https://www.google.com/search?num=5&q=SetWindowFeedbackSetting+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWindowFeedbackSetting](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowFeedbackSetting)  
-[SetWindowLong](https://www.google.com/search?num=5&q=SetWindowLong+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.SetWindowLongPtr32](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowLongPtr32)  
-[SetWindowLongPtr](https://www.google.com/search?num=5&q=SetWindowLongPtr+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.SetWindowLongPtr64](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowLongPtr64)  
+[SetWindowLong](https://www.google.com/search?num=5&q=SetWindowLongA+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.SetWindowLongA](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowLongA)  
+[SetWindowLongPtrA](https://www.google.com/search?num=5&q=SetWindowLongPtrA+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.SetWindowLongPtrA](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowLongPtrA)  
+[SetWindowLongPtrW](https://www.google.com/search?num=5&q=SetWindowLongPtrW+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.SetWindowLongPtrW](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowLongPtrW)  
 [SetWindowPlacement](https://www.google.com/search?num=5&q=SetWindowPlacement+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWindowPlacement](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowPlacement)  
 [SetWindowPos](https://www.google.com/search?num=5&q=SetWindowPos+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWindowPos](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowPos)  
 [SetWindowRgn](https://www.google.com/search?num=5&q=SetWindowRgn+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetWindowRgn](https://github.com/dahall/Vanara/search?l=C%23&q=SetWindowRgn)  

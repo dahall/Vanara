@@ -119,6 +119,7 @@ Class | Description
 [Vanara.Matrix.SpanAction](https://github.com/dahall/Vanara/search?l=C%23&q=SpanAction) | A delegate that acts on a `System.Span` to set the values of the matrix.
 [Vanara.Collections.SparseArray&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SparseArray%26lt%3BT%26gt%3B) | A sparse array based on a dictionary.
 [Vanara.Extensions.StringHelper](https://github.com/dahall/Vanara/search?l=C%23&q=StringHelper) | A safe class that represents an object that is pinned in memory.
+[Vanara.PInvoke.SuppressAutoGenAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=SuppressAutoGenAttribute) | An attribute that can be applied to a code element to suppress the automatic generation of P/Invoke methods for that element.
 [Vanara.Collections.VirtualReadOnlyList&lt;T&gt;.TryGetDelegate](https://github.com/dahall/Vanara/search?l=C%23&q=TryGetDelegate) | Delegate for a method that tries to get the element at the specified index.
 [Vanara.Collections.GenericVirtualReadOnlyDictionary&lt;T&gt;.TryGetValueDelegate](https://github.com/dahall/Vanara/search?l=C%23&q=TryGetValueDelegate) | Delegate for the implementation of the `Vanara.Collections.GenericVirtualReadOnlyDictionary.TryGetValue(,@)` method.
 [Vanara.PInvoke.Collections.UntypedNativeMemoryEnumerator](https://github.com/dahall/Vanara/search?l=C%23&q=UntypedNativeMemoryEnumerator) | Provides an enumerator over native memory.

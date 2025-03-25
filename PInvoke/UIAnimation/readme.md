@@ -25,7 +25,7 @@ Native Structure | Header | Managed Structure
 ### Interfaces  
 Native Interface | Header | Managed Interface  
 --- | --- | ---  
-[IDCompositionAnimation](https://www.google.com/search?num=5&q=IDCompositionAnimation+site%3Alearn.microsoft.com) | dcompanimation.h | [Vanara.PInvoke.UIAnimation.IDCompositionAnimation](https://github.com/dahall/Vanara/search?l=C%23&q=IDCompositionAnimation)  
+[IDCompositionAnimation](https://www.google.com/search?num=5&q=IDCompositionAnimation+site%3Alearn.microsoft.com) |  |   
 [IUIAnimationInterpolator](https://www.google.com/search?num=5&q=IUIAnimationInterpolator+site%3Alearn.microsoft.com) | uianimation.h | [Vanara.PInvoke.UIAnimation.IUIAnimationInterpolator](https://github.com/dahall/Vanara/search?l=C%23&q=IUIAnimationInterpolator)  
 [IUIAnimationInterpolator2](https://www.google.com/search?num=5&q=IUIAnimationInterpolator2+site%3Alearn.microsoft.com) | uianimation.h | [Vanara.PInvoke.UIAnimation.IUIAnimationInterpolator2](https://github.com/dahall/Vanara/search?l=C%23&q=IUIAnimationInterpolator2)  
 [IUIAnimationLoopIterationChangeHandler2](https://www.google.com/search?num=5&q=IUIAnimationLoopIterationChangeHandler2+site%3Alearn.microsoft.com) | uianimation.h | [Vanara.PInvoke.UIAnimation.IUIAnimationLoopIterationChangeHandler2](https://github.com/dahall/Vanara/search?l=C%23&q=IUIAnimationLoopIterationChangeHandler2)  

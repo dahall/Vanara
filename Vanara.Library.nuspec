@@ -18,6 +18,7 @@
     <language>en-US</language>
     <dependencies>
       <dependency id="Vanara.BITS" version="4.1.2" />
+      <dependency id="" version="4.1.2" />
       <dependency id="Vanara.Core" version="4.1.2" />
       <dependency id="Vanara.DirectoryServices" version="4.1.2" />
       <dependency id="Vanara.Management" version="4.1.2" />
@@ -41,6 +42,7 @@
       <dependency id="Vanara.PInvoke.D3DCompiler" version="4.1.2" />
       <dependency id="Vanara.PInvoke.DavClnt" version="4.1.2" />
       <dependency id="Vanara.PInvoke.DbgHelp" version="4.1.2" />
+      <dependency id="Vanara.PInvoke.Dcomp" version="4.1.2" />
       <dependency id="Vanara.PInvoke.Dhcp" version="4.1.2" />
       <dependency id="Vanara.PInvoke.Direct2D" version="4.1.2" />
       <dependency id="Vanara.PInvoke.Direct3D11" version="4.1.2" />
