@@ -9776,6 +9776,30 @@ public static partial class BCrypt
 		/// <para>Windows 10: Support for this algorithm begins.</para>
 		/// </summary>
 		public const string BCRYPT_XTS_AES_ALGORITHM = "XTS-AES";
+
+		/// <summary/>
+		public const string BCRYPT_CHACHA20_POLY1305_ALGORITHM = "CHACHA20_POLY1305";
+
+		/// <summary/>
+		public const string BCRYPT_SHA3_256_ALGORITHM = "SHA3-256";
+
+		/// <summary/>
+		public const string BCRYPT_SHA3_384_ALGORITHM = "SHA3-384";
+
+		/// <summary/>
+		public const string BCRYPT_SHA3_512_ALGORITHM = "SHA3-512";
+
+		/// <summary/>
+		public const string BCRYPT_CSHAKE128_ALGORITHM = "CSHAKE128";
+
+		/// <summary/>
+		public const string BCRYPT_CSHAKE256_ALGORITHM = "CSHAKE256";
+
+		/// <summary/>
+		public const string BCRYPT_KMAC128_ALGORITHM = "KMAC128";
+
+		/// <summary/>
+		public const string BCRYPT_KMAC256_ALGORITHM = "KMAC256";
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="NCryptBuffer"/> that is disposed using <see cref="BCryptFreeBuffer"/>.</summary>

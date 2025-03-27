@@ -4911,4 +4911,124 @@ public static partial class NCrypt
 		/// <returns>A managed object that contains the data pointed to by this object.</returns>
 		public T? ToStructure<T>() => handle.ToStructure<T>();
 	}
+
+	/// <summary>
+	/// The following identifiers are used to identify standard encryption algorithms in various functions and structures, such as
+	/// the CRYPT_INTERFACE_REG structure. Third party providers may have additional algorithms that they support.
+	/// </summary>
+	public static class NCryptStandardAlgorithmId
+	{
+		/// <summary>The 112-bit triple data encryption standard symmetric encryption algorithm. Standard: SP800-67, SP800-38A</summary>
+		public const string NCRYPT_3DES_112_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_3DES_112_ALGORITHM;
+
+		/// <summary>The triple data encryption standard symmetric encryption algorithm. Standard: SP800-67, SP800-38A</summary>
+		public const string NCRYPT_3DES_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_3DES_ALGORITHM;
+
+		/// <summary>The advanced encryption standard symmetric encryption algorithm. Standard: FIPS 197</summary>
+		public const string NCRYPT_AES_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_AES_ALGORITHM;
+
+		/// <summary>
+		/// Crypto API (CAPI) key derivation function algorithm. Used by the BCryptKeyDerivation and NCryptKeyDerivation functions.
+		/// </summary>
+		public const string NCRYPT_CAPI_KDF_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_CAPI_KDF_ALGORITHM;
+
+		/// <summary>The data encryption standard symmetric encryption algorithm. Standard: FIPS 46-3, FIPS 81</summary>
+		public const string NCRYPT_DES_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_DES_ALGORITHM;
+
+		/// <summary>The extended data encryption standard symmetric encryption algorithm. Standard: None</summary>
+		public const string NCRYPT_DESX_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_DESX_ALGORITHM;
+
+		/// <summary>The Diffie-Hellman key exchange algorithm. Standard: PKCS #3</summary>
+		public const string NCRYPT_DH_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_DH_ALGORITHM;
+
+		/// <summary>
+		/// The digital signature algorithm. Standard: FIPS 186-2
+		/// <para>
+		/// Windows 8: Beginning with Windows 8, this algorithm supports FIPS 186-3. Keys less than or equal to 1024 bits adhere to FIPS
+		/// 186-2 and keys greater than 1024 to FIPS 186-3.
+		/// </para>
+		/// </summary>
+		public const string NCRYPT_DSA_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_DSA_ALGORITHM;
+
+		/// <summary>
+		/// Generic prime elliptic curve Diffie-Hellman key exchange algorithm (see Remarks for more information). Standard: SP800-56A.
+		/// </summary>
+		public const string NCRYPT_ECDH_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_ECDH_ALGORITHM;
+
+		/// <summary>The 256-bit prime elliptic curve Diffie-Hellman key exchange algorithm. Standard: SP800-56A</summary>
+		public const string NCRYPT_ECDH_P256_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_ECDH_P256_ALGORITHM;
+
+		/// <summary>The 384-bit prime elliptic curve Diffie-Hellman key exchange algorithm. Standard: SP800-56A</summary>
+		public const string NCRYPT_ECDH_P384_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_ECDH_P384_ALGORITHM;
+
+		/// <summary>The 521-bit prime elliptic curve Diffie-Hellman key exchange algorithm. Standard: SP800-56A</summary>
+		public const string NCRYPT_ECDH_P521_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_ECDH_P521_ALGORITHM;
+
+		/// <summary>
+		/// Generic prime elliptic curve digital signature algorithm (see Remarks for more information). Standard: ANSI X9.62.
+		/// </summary>
+		public const string NCRYPT_ECDSA_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_ECDSA_ALGORITHM;
+
+		/// <summary>The 256-bit prime elliptic curve digital signature algorithm (FIPS 186-2). Standard: FIPS 186-2, X9.62</summary>
+		public const string NCRYPT_ECDSA_P256_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_ECDSA_P256_ALGORITHM;
+
+		/// <summary>The 384-bit prime elliptic curve digital signature algorithm (FIPS 186-2). Standard: FIPS 186-2, X9.62</summary>
+		public const string NCRYPT_ECDSA_P384_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_ECDSA_P384_ALGORITHM;
+
+		/// <summary>The 521-bit prime elliptic curve digital signature algorithm (FIPS 186-2). Standard: FIPS 186-2, X9.62</summary>
+		public const string NCRYPT_ECDSA_P521_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_ECDSA_P521_ALGORITHM;
+
+		/// <summary>The MD2 hash algorithm. Standard: RFC 1319</summary>
+		public const string NCRYPT_MD2_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_MD2_ALGORITHM;
+
+		/// <summary>The MD4 hash algorithm. Standard: RFC 1320</summary>
+		public const string NCRYPT_MD4_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_MD4_ALGORITHM;
+
+		/// <summary>The MD5 hash algorithm. Standard: RFC 1321</summary>
+		public const string NCRYPT_MD5_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_MD5_ALGORITHM;
+
+		/// <summary>
+		/// Password-based key derivation function 2 (PBKDF2) algorithm. Used by the BCryptKeyDerivation and NCryptKeyDerivation functions.
+		/// </summary>
+		public const string NCRYPT_PBKDF2_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_PBKDF2_ALGORITHM;
+
+		/// <summary>The RC2 block symmetric encryption algorithm. Standard: RFC 2268</summary>
+		public const string NCRYPT_RC2_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_RC2_ALGORITHM;
+
+		/// <summary>The RSA public key algorithm. Standard: PKCS #1 v1.5 and v2.0.</summary>
+		public const string NCRYPT_RSA_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_RSA_ALGORITHM;
+
+		/// <summary>
+		/// The RSA signature algorithm. This algorithm is not currently supported. You can use the BCRYPT_RSA_ALGORITHM algorithm to
+		/// perform RSA signing operations. Standard: PKCS #1 v1.5 and v2.0.
+		/// </summary>
+		public const string NCRYPT_RSA_SIGN_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_RSA_SIGN_ALGORITHM;
+
+		/// <summary>The 160-bit secure hash algorithm. Standard: FIPS 180-2, FIPS 198.</summary>
+		public const string NCRYPT_SHA1_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_SHA1_ALGORITHM;
+
+		/// <summary>The 256-bit secure hash algorithm. Standard: FIPS 180-2, FIPS 198.</summary>
+		public const string NCRYPT_SHA256_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_SHA256_ALGORITHM;
+
+		/// <summary>The 384-bit secure hash algorithm. Standard: FIPS 180-2, FIPS 198.</summary>
+		public const string NCRYPT_SHA384_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_SHA384_ALGORITHM;
+
+		/// <summary>The 512-bit secure hash algorithm. Standard: FIPS 180-2, FIPS 198.</summary>
+		public const string NCRYPT_SHA512_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_SHA512_ALGORITHM;
+
+		/// <summary>
+		/// Counter mode, hash-based message authentication code (HMAC) key derivation function algorithm. Used by the
+		/// BCryptKeyDerivation and NCryptKeyDerivation functions.
+		/// </summary>
+		public const string NCRYPT_SP800108_CTR_HMAC_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_SP800108_CTR_HMAC_ALGORITHM;
+
+		/// <summary>SP800-56A key derivation function algorithm. Used by the BCryptKeyDerivation and NCryptKeyDerivation functions.</summary>
+		public const string NCRYPT_SP80056A_CONCAT_ALGORITHM = BCrypt.StandardAlgorithmId.BCRYPT_SP80056A_CONCAT_ALGORITHM;
+
+		/// <summary/>
+		public const string NCRYPT_KEY_STORAGE_ALGORITHM = "KEY_STORAGE";
+
+		/// <summary>This identifier is for creating persistent stored HMAC keys in the TPM KSP.</summary>
+		public const string NCRYPT_HMAC_SHA256_ALGORITHM = "HMAC-SHA256";
+	}
 }
