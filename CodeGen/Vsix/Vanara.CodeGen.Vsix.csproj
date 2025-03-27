@@ -2,6 +2,10 @@
 <Project>
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.props" />
 
+  <ProjectExtensions>
+    <IncludeAssembly/>
+  </ProjectExtensions>
+
   <PropertyGroup>
     <TargetFrameworks />
     <TargetFramework>net472</TargetFramework>

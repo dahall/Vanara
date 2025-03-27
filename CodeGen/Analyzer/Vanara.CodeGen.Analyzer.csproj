@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ProjectExtensions>
+    <IncludeAssembly/>
+  </ProjectExtensions>
+
   <PropertyGroup>
     <TargetFrameworks />
     <TargetFramework>netstandard2.0</TargetFramework>

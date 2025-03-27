@@ -1,4 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+  <ProjectExtensions>
+    <IncludeAssembly/>
+  </ProjectExtensions>
 
   <PropertyGroup>
     <TargetFrameworks />
