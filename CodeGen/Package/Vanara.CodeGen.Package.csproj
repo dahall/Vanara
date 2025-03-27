@@ -22,7 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CodeFixes\Vanara.CodeGen.CodeFixes.csproj" />
     <ProjectReference Include="..\Analyzer\Vanara.CodeGen.Analyzer.csproj" />
-    <!--<ProjectReference Include="..\Generator\Vanara.CodeGen.csproj" />-->
+    <ProjectReference Include="..\Generator\Vanara.CodeGen.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,7 +31,7 @@
 
   <Target Name="_AddAnalyzersToOutput">
     <ItemGroup>
-      <!--<TfmSpecificPackageFile Include="$(OutputPath)\Vanara.CodeGen.dll" PackagePath="analyzers/dotnet/cs" />-->
+      <TfmSpecificPackageFile Include="$(OutputPath)\Vanara.CodeGen.dll" PackagePath="analyzers/dotnet/cs" />
       <TfmSpecificPackageFile Include="$(OutputPath)\Vanara.CodeGen.Analyzer.dll" PackagePath="analyzers/dotnet/cs" />
       <TfmSpecificPackageFile Include="$(OutputPath)\Vanara.CodeGen.CodeFixes.dll" PackagePath="analyzers/dotnet/cs" />
     </ItemGroup>

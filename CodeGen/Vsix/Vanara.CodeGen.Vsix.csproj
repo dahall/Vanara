@@ -37,7 +37,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CodeFixes\Vanara.CodeGen.CodeFixes.csproj" />
     <ProjectReference Include="..\Analyzer\Vanara.CodeGen.Analyzer.csproj" />
-    <!--<ProjectReference Include="..\Generator\Vanara.CodeGen.csproj" />-->
+    <ProjectReference Include="..\Generator\Vanara.CodeGen.csproj" />
   </ItemGroup>
 
   <ItemGroup>
