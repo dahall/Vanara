@@ -9,7 +9,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>Analyzer, code fixer, and code generator for Vanara assemblies.</Description>
+    <Description>Analyzer, code fixer, and code generator for Vanara assemblies. Current implementations:
+
+* Handle generator from file or attributed structures and classes to ensure consisisent implementation of handles.
+* Extension method generator for any method that has an 'object' marshaled as a COM interface with an IID specifier.
+* Analyzer to ensure that 'null' or 'default' is not used as a parameter value for a SafeHandle or HANDLE.</Description>
     <AssemblyName>Vanara.CodeGen</AssemblyName>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <PackageId>$(AssemblyName)</PackageId>
@@ -17,7 +21,16 @@
     <DevelopmentDependency>true</DevelopmentDependency>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput</TargetsForTfmSpecificContentInPackage>
+    <Title>Vanara Code Analysis and Generators</Title>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CodeFixes\Vanara.CodeGen.CodeFixes.csproj" />
