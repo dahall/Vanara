@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace Vanara;
 
 /// <summary>A struct that allows for bit manipulation of a value type.</summary>
@@ -28,7 +26,7 @@ public struct BitField<T>(T data = default) where T : unmanaged, IConvertible
 		set => data = (T)Convert.ChangeType((ValidateRange(range) & ~(((1UL << (range.End.Value - range.Start.Value + 1)) - 1UL) << range.Start.Value)) | (Convert.ToUInt64(value) << range.Start.Value), typeof(T));
 	}
 
-	/// <summary>Performs an implicit conversion from <see cref="Vanara.Marshaler.BitField{T}"/> to <see cref="T"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="BitField{T}"/> to <typeparamref name="T"/>.</summary>
 	/// <param name="bf">The <see cref="BitField{T}"/> value.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator T(BitField<T> bf) => bf.data;

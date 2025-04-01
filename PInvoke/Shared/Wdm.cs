@@ -1413,25 +1413,25 @@ public struct DEVICE_CAPABILITIES
 	/// </summary>
 	public ushort Version;
 
-	private uint _flags;
+	private BitField<uint> _flags;
 
 	/// <summary>Specifies whether the device hardware supports the D1 power state. Drivers should not change this value.</summary>
-	public bool DeviceD1 { get => BitHelper.GetBit(_flags, 0); set => BitHelper.SetBit(ref _flags, 0, value); }
+	public bool DeviceD1 { get => _flags[0]; set => _flags[0] = value; }
 
 	/// <summary>Specifies whether the device hardware supports the D2 power state. Drivers should not change this value.</summary>
-	public bool DeviceD2 { get => BitHelper.GetBit(_flags, 1); set => BitHelper.SetBit(ref _flags, 1, value); }
+	public bool DeviceD2 { get => _flags[1]; set => _flags[1] = value; }
 
 	/// <summary>
 	/// Specifies whether the device supports physical-device locking that prevents device ejection. This member pertains to ejecting
 	/// the device from its slot, rather than ejecting a piece of removable media from the device.
 	/// </summary>
-	public bool LockSupported { get => BitHelper.GetBit(_flags, 2); set => BitHelper.SetBit(ref _flags, 2, value); }
+	public bool LockSupported { get => _flags[2]; set => _flags[2] = value; }
 
 	/// <summary>
 	/// Specifies whether the device supports software-controlled device ejection while the system is in the <c>PowerSystemWorking</c>
 	/// state. This member pertains to ejecting the device from its slot, rather than ejecting a piece of removable media from the device.
 	/// </summary>
-	public bool EjectSupported { get => BitHelper.GetBit(_flags, 3); set => BitHelper.SetBit(ref _flags, 3, value); }
+	public bool EjectSupported { get => _flags[3]; set => _flags[3] = value; }
 
 	/// <summary>
 	/// <para>
@@ -1451,28 +1451,28 @@ public struct DEVICE_CAPABILITIES
 	/// <c>SurpriseRemovalOK</c> is also set to <c>TRUE</c>.
 	/// </para>
 	/// </summary>
-	public bool Removable { get => BitHelper.GetBit(_flags, 4); set => BitHelper.SetBit(ref _flags, 4, value); }
+	public bool Removable { get => _flags[4]; set => _flags[4] = value; }
 
 	/// <summary>Specifies whether the device is a docking peripheral.</summary>
-	public bool DockDevice { get => BitHelper.GetBit(_flags, 5); set => BitHelper.SetBit(ref _flags, 5, value); }
+	public bool DockDevice { get => _flags[5]; set => _flags[5] = value; }
 
 	/// <summary>
 	/// Specifies whether the device's instance ID is unique system-wide. This bit is clear if the instance ID is unique only within the
 	/// scope of the bus. For more information, see Device Identification Strings.
 	/// </summary>
-	public bool UniqueID { get => BitHelper.GetBit(_flags, 6); set => BitHelper.SetBit(ref _flags, 6, value); }
+	public bool UniqueID { get => _flags[6]; set => _flags[6] = value; }
 
 	/// <summary>
 	/// Specifies whether Device Manager should suppress all installation dialog boxes; except required dialog boxes such as "no
 	/// compatible drivers found."
 	/// </summary>
-	public bool SilentInstall { get => BitHelper.GetBit(_flags, 7); set => BitHelper.SetBit(ref _flags, 7, value); }
+	public bool SilentInstall { get => _flags[7]; set => _flags[7] = value; }
 
 	/// <summary>
 	/// Specifies whether the driver for the underlying bus can drive the device if there is no function driver (for example, SCSI
 	/// devices in pass-through mode). This mode of operation is called raw mode.
 	/// </summary>
-	public bool RawDeviceOK { get => BitHelper.GetBit(_flags, 8); set => BitHelper.SetBit(ref _flags, 8, value); }
+	public bool RawDeviceOK { get => _flags[8]; set => _flags[8] = value; }
 
 	/// <summary>
 	/// <para>
@@ -1490,27 +1490,27 @@ public struct DEVICE_CAPABILITIES
 	/// back up the driver stack.
 	/// </para>
 	/// </summary>
-	public bool SurpriseRemovalOK { get => BitHelper.GetBit(_flags, 9); set => BitHelper.SetBit(ref _flags, 9, value); }
+	public bool SurpriseRemovalOK { get => _flags[9]; set => _flags[9] = value; }
 
 	/// <summary>
 	/// Specifies whether the device can respond to an external wake signal while in the D0 state. Drivers should not change this value.
 	/// </summary>
-	public bool WakeFromD0 { get => BitHelper.GetBit(_flags, 10); set => BitHelper.SetBit(ref _flags, 10, value); }
+	public bool WakeFromD0 { get => _flags[10]; set => _flags[10] = value; }
 
 	/// <summary>
 	/// Specifies whether the device can respond to an external wake signal while in the D1 state. Drivers should not change this value.
 	/// </summary>
-	public bool WakeFromD1 { get => BitHelper.GetBit(_flags, 11); set => BitHelper.SetBit(ref _flags, 11, value); }
+	public bool WakeFromD1 { get => _flags[11]; set => _flags[11] = value; }
 
 	/// <summary>
 	/// Specifies whether the device can respond to an external wake signal while in the D2 state. Drivers should not change this value.
 	/// </summary>
-	public bool WakeFromD2 { get => BitHelper.GetBit(_flags, 12); set => BitHelper.SetBit(ref _flags, 12, value); }
+	public bool WakeFromD2 { get => _flags[12]; set => _flags[12] = value; }
 
 	/// <summary>
 	/// Specifies whether the device can respond to an external wake signal while in the D3 state. Drivers should not change this value.
 	/// </summary>
-	public bool WakeFromD3 { get => BitHelper.GetBit(_flags, 13); set => BitHelper.SetBit(ref _flags, 13, value); }
+	public bool WakeFromD3 { get => _flags[13]; set => _flags[13] = value; }
 
 	/// <summary>
 	/// <para>When set, this flag specifies that the device's hardware is disabled.</para>
@@ -1523,39 +1523,39 @@ public struct DEVICE_CAPABILITIES
 	/// this bit is ignored.
 	/// </para>
 	/// </summary>
-	public bool HardwareDisabled { get => BitHelper.GetBit(_flags, 14); set => BitHelper.SetBit(ref _flags, 14, value); }
+	public bool HardwareDisabled { get => _flags[14]; set => _flags[14] = value; }
 
 	/// <summary>Reserved for future use.</summary>
-	public bool NonDynamic { get => BitHelper.GetBit(_flags, 15); set => BitHelper.SetBit(ref _flags, 15, value); }
+	public bool NonDynamic { get => _flags[15]; set => _flags[15] = value; }
 
 	/// <summary>Reserved for future use.</summary>
-	public bool WarmEjectSupported { get => BitHelper.GetBit(_flags, 16); set => BitHelper.SetBit(ref _flags, 16, value); }
+	public bool WarmEjectSupported { get => _flags[16]; set => _flags[16] = value; }
 
 	/// <summary>
 	/// Do not display the device in the user interface. If this bit is set, the device is displayed in the user interface, even if the
 	/// device is present but fails to start. Only bus drivers and associated bus filter drivers should set this bit. (Also see the
 	/// <c>PNP_DEVICE_DONT_DISPLAY_IN_UI</c> flag in the PNP_DEVICE_STATE structure.)
 	/// </summary>
-	public bool NoDisplayInUI { get => BitHelper.GetBit(_flags, 17); set => BitHelper.SetBit(ref _flags, 17, value); }
+	public bool NoDisplayInUI { get => _flags[17]; set => _flags[17] = value; }
 
 	/// <summary>Reserved for system use.</summary>
-	public bool Reserved1 { get => BitHelper.GetBit(_flags, 18); set => BitHelper.SetBit(ref _flags, 18, value); }
+	public bool Reserved1 { get => _flags[18]; set => _flags[18] = value; }
 
 	/// <summary>
 	/// Indicates whether the driver or ACPI is responsible for handling the wake event. If set, the driver is responsible for handling
 	/// the wake event. ACPI arms the device when it receives an IRP_MN_WAIT_WAKE IRP, but does not connect the interrupt, complete the
 	/// IRP to notify the device stack of a wake event.
 	/// </summary>
-	public bool WakeFromInterrupt { get => BitHelper.GetBit(_flags, 19); set => BitHelper.SetBit(ref _flags, 19, value); }
+	public bool WakeFromInterrupt { get => _flags[19]; set => _flags[19] = value; }
 
 	/// <summary>Indicates whether the device is a secure device.</summary>
-	public bool SecureDevice { get => BitHelper.GetBit(_flags, 20); set => BitHelper.SetBit(ref _flags, 20, value); }
+	public bool SecureDevice { get => _flags[20]; set => _flags[20] = value; }
 
 	/// <summary>For a VGA device, indicates whether the parent bridge has the VGA decoding bit set.</summary>
-	public bool ChildOfVgaEnabledBridge { get => BitHelper.GetBit(_flags, 21); set => BitHelper.SetBit(ref _flags, 21, value); }
+	public bool ChildOfVgaEnabledBridge { get => _flags[21]; set => _flags[21] = value; }
 
 	/// <summary>Indictates whether the device has IO decode enabled on boot.</summary>
-	public bool DecodeIoOnBoot { get => BitHelper.GetBit(_flags, 22); set => BitHelper.SetBit(ref _flags, 22, value); }
+	public bool DecodeIoOnBoot { get => _flags[22]; set => _flags[22] = value; }
 
 	/// <summary>
 	/// <para>Specifies an address indicating where the device is located on its underlying bus.</para>

@@ -1271,7 +1271,7 @@ public static partial class Kernel32
 		/// <summary>Specifies the total size of the data returned, in bytes. This may include data that follows this structure.</summary>
 		public uint Size;
 
-		private byte flags;
+		private BitField<byte> flags;
 
 		/// <summary>
 		/// <para>The thin provisioning–enabled status.</para>
@@ -1290,7 +1290,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool ThinProvisioningEnabled { get => BitHelper.GetBit(flags, 0); set => BitHelper.SetBit(ref flags, 0, value); }
+		public bool ThinProvisioningEnabled { get => flags[0]; set => flags[0] = value; }
 
 		/// <summary>
 		/// <para>Reads to unmapped regions return zeros.</para>
@@ -1309,7 +1309,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool ThinProvisioningReadZeros { get => BitHelper.GetBit(flags, 1); set => BitHelper.SetBit(ref flags, 1, value); }
+		public bool ThinProvisioningReadZeros { get => flags[1]; set => flags[1] = value; }
 
 		/// <summary>
 		/// <para>Deterministic read after trim support.</para>
@@ -1328,7 +1328,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public byte AnchorSupported { get => BitHelper.GetBits(flags, 2, 3); set => BitHelper.SetBits(ref flags, 2, 3, value); }
+		public byte AnchorSupported { get => flags[2..4]; set => flags[2..4] = value; }
 
 		/// <summary>
 		/// <para>The validity of unmap granularity alignment for the device.</para>
@@ -1347,7 +1347,7 @@ public static partial class Kernel32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public bool UnmapGranularityAlignmentValid { get => BitHelper.GetBit(flags, 5); set => BitHelper.SetBit(ref flags, 5, value); }
+		public bool UnmapGranularityAlignmentValid { get => flags[5]; set => flags[5] = value; }
 
 		/// <summary>Reserved.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 7)]
