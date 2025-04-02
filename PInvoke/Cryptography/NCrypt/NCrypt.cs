@@ -571,7 +571,9 @@ public static partial class NCrypt
 	// pbClaimBlob, DWORD cbClaimBlob, DWORD *pcbResult, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "EBEE3A67-0693-4B85-88B1-580CB2152703")]
-	public static extern HRESULT NCryptCreateClaim(NCRYPT_KEY_HANDLE hSubjectKey, NCRYPT_KEY_HANDLE hAuthorityKey, uint dwClaimType, [Optional] NCryptBufferDesc[]? pParameterList, IntPtr pbClaimBlob, uint cbClaimBlob, out uint pcbResult, uint dwFlags = 0);
+	public static extern HRESULT NCryptCreateClaim(NCRYPT_KEY_HANDLE hSubjectKey, NCRYPT_KEY_HANDLE hAuthorityKey, uint dwClaimType,
+		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
+		IntPtr pbClaimBlob, uint cbClaimBlob, out uint pcbResult, uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>NCryptCreatePersistedKey</c> function creates a new key and stores it in the specified key storage provider. After you
@@ -685,7 +687,8 @@ public static partial class NCrypt
 	// dwLegacyKeySpec, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "eeb1842f-fd9e-4edf-9db8-7b4e91760e9b")]
-	public static extern HRESULT NCryptCreatePersistedKey(NCRYPT_PROV_HANDLE hProvider, out SafeNCRYPT_KEY_HANDLE phKey, string pszAlgId, [Optional] string? pszKeyName, [Optional] Crypt32.PrivateKeyType dwLegacyKeySpec, [Optional] CreatePersistedFlags dwFlags);
+	public static extern HRESULT NCryptCreatePersistedKey(NCRYPT_PROV_HANDLE hProvider, out SafeNCRYPT_KEY_HANDLE phKey, string pszAlgId, [Optional] string? pszKeyName,
+		[Optional] Crypt32.PrivateKeyType dwLegacyKeySpec, [Optional] CreatePersistedFlags dwFlags);
 
 	/// <summary>The <c>NCryptDecrypt</c> function decrypts a block of encrypted data.</summary>
 	/// <param name="hKey">The handle of the key to use to decrypt the data.</param>
@@ -1117,8 +1120,9 @@ public static partial class NCrypt
 	// DWORD *pcbResult, ULONG dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "0ff08c6a-5f30-43ca-9db8-cda3e0704b0a")]
-	public static extern HRESULT NCryptDeriveKey(NCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] NCryptBufferDesc? pParameterList, SafeAllocatedMemoryHandle pbDerivedKey,
-		uint cbDerivedKey, out uint pcbResult, [Optional] BCrypt.DeriveKeyFlags dwFlags);
+	public static extern HRESULT NCryptDeriveKey(NCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF,
+		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
+		SafeAllocatedMemoryHandle pbDerivedKey, uint cbDerivedKey, out uint pcbResult, [Optional] BCrypt.DeriveKeyFlags dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -1376,8 +1380,9 @@ public static partial class NCrypt
 	// DWORD *pcbResult, ULONG dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "0ff08c6a-5f30-43ca-9db8-cda3e0704b0a")]
-	public static extern HRESULT NCryptDeriveKey(NCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] NCryptBufferDesc? pParameterList, [Optional] IntPtr pbDerivedKey,
-		[Optional] uint cbDerivedKey, out uint pcbResult, [Optional] BCrypt.DeriveKeyFlags dwFlags);
+	public static extern HRESULT NCryptDeriveKey(NCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF,
+		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
+		[Out, Optional] IntPtr pbDerivedKey, [Optional] uint cbDerivedKey, out uint pcbResult, [Optional] BCrypt.DeriveKeyFlags dwFlags);
 
 	/// <summary>The <c>NCryptEncrypt</c> function encrypts a block of data.</summary>
 	/// <param name="hKey">The handle of the key to use to encrypt the data.</param>
@@ -1982,7 +1987,9 @@ public static partial class NCrypt
 	// cbOutput, DWORD *pcbResult, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "1588eb29-4026-4d1c-8bee-a035df38444a")]
-	public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [Optional] NCryptBufferDesc? pParameterList, SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, [Optional] NCryptUIFlags dwFlags);
+	public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType,
+		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
+		SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>
 	/// <para>The <c>NCryptExportKey</c> function exports a CNG key to a memory BLOB.</para>
@@ -2215,7 +2222,216 @@ public static partial class NCrypt
 	// cbOutput, DWORD *pcbResult, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "1588eb29-4026-4d1c-8bee-a035df38444a")]
-	public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [Optional] NCryptBufferDesc? pParameterList, [Optional] IntPtr pbOutput, [Optional] uint cbOutput, out uint pcbResult, [Optional] NCryptUIFlags dwFlags);
+	public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType,
+		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
+		[Optional] IntPtr pbOutput, [Optional] uint cbOutput, out uint pcbResult, [Optional] NCryptUIFlags dwFlags);
+
+	/// <summary>The <c>NCryptExportKey</c> function exports a CNG key to a memory BLOB.</summary>
+	/// <param name="hKey">A handle of the key to export.</param>
+	/// <param name="hExportKey">
+	/// A handle to a cryptographic key of the destination user. The key data within the exported key BLOB is encrypted by using this key.
+	/// This ensures that only the destination user is able to make use of the key BLOB.
+	/// </param>
+	/// <param name="pszBlobType">
+	/// <para>
+	/// A null-terminated Unicode string that contains an identifier that specifies the type of BLOB to export. This can be one of the
+	/// following values.
+	/// </para>
+	/// <para>BCRYPT_DH_PRIVATE_BLOB</para>
+	/// <para>
+	/// Export a Diffie-Hellman public/private key pair. The pbOutput buffer receives a BCRYPT_DH_KEY_BLOB structure immediately followed by
+	/// the key data.
+	/// </para>
+	/// <para>BCRYPT_DH_PUBLIC_BLOB</para>
+	/// <para>
+	/// Export a Diffie-Hellman public key. The pbOutput buffer receives a BCRYPT_DH_KEY_BLOB structure immediately followed by the key data.
+	/// </para>
+	/// <para>BCRYPT_DSA_PRIVATE_BLOB</para>
+	/// <para>
+	/// Export a DSA public/private key pair. The pbOutput buffer receives a BCRYPT_DSA_KEY_BLOB structure immediately followed by the key data.
+	/// </para>
+	/// <para>BCRYPT_DSA_PUBLIC_BLOB</para>
+	/// <para>Export a DSA public key. The pbOutput buffer receives a BCRYPT_DSA_KEY_BLOB structure immediately followed by the key data.</para>
+	/// <para>BCRYPT_ECCPRIVATE_BLOB</para>
+	/// <para>
+	/// Export an elliptic curve cryptography (ECC) private key. The pbOutput buffer receives a BCRYPT_ECCKEY_BLOB structure immediately
+	/// followed by the key data.
+	/// </para>
+	/// <para>BCRYPT_ECCPUBLIC_BLOB</para>
+	/// <para>Export an ECC public key. The pbOutput buffer receives a BCRYPT_ECCKEY_BLOB structure immediately followed by the key data.</para>
+	/// <para>BCRYPT_PUBLIC_KEY_BLOB</para>
+	/// <para>
+	/// Export a generic public key of any type. The type of key in this BLOB is determined by the <c>Magic</c> member of the BCRYPT_KEY_BLOB structure.
+	/// </para>
+	/// <para>BCRYPT_PRIVATE_KEY_BLOB</para>
+	/// <para>
+	/// Export a generic private key of any type. The private key does not necessarily contain the public key. The type of key in this BLOB
+	/// is determined by the <c>Magic</c> member of the BCRYPT_KEY_BLOB structure.
+	/// </para>
+	/// <para>BCRYPT_RSAFULLPRIVATE_BLOB</para>
+	/// <para>
+	/// Export a full RSA public/private key pair. The pbOutput buffer receives a BCRYPT_RSAKEY_BLOB structure immediately followed by the
+	/// key data. This BLOB will include additional key material compared to the <c>BCRYPT_RSAPRIVATE_BLOB</c> type.
+	/// </para>
+	/// <para>BCRYPT_RSAPRIVATE_BLOB</para>
+	/// <para>
+	/// Export an RSA public/private key pair. The pbOutput buffer receives a BCRYPT_RSAKEY_BLOB structure immediately followed by the key data.
+	/// </para>
+	/// <para>BCRYPT_RSAPUBLIC_BLOB</para>
+	/// <para>Export an RSA public key. The pbOutput buffer receives a BCRYPT_RSAKEY_BLOB structure immediately followed by the key data.</para>
+	/// <para>LEGACY_DH_PRIVATE_BLOB</para>
+	/// <para>
+	/// Export a legacy Diffie-Hellman Version 3 Private Key BLOB that contains a Diffie-Hellman public/private key pair that can be imported
+	/// by using CryptoAPI.
+	/// </para>
+	/// <para>LEGACY_DH_PUBLIC_BLOB</para>
+	/// <para>
+	/// Export a legacy Diffie-Hellman Version 3 Private Key BLOB that contains a Diffie-Hellman public key that can be imported by using CryptoAPI.
+	/// </para>
+	/// <para>LEGACY_DSA_PRIVATE_BLOB</para>
+	/// <para>Export a DSA public/private key pair in a form that can be imported by using CryptoAPI.</para>
+	/// <para>LEGACY_DSA_PUBLIC_BLOB</para>
+	/// <para>Export a DSA public key in a form that can be imported by using CryptoAPI.</para>
+	/// <para>LEGACY_RSAPRIVATE_BLOB</para>
+	/// <para>Export an RSA public/private key pair in a form that can be imported by using CryptoAPI.</para>
+	/// <para>LEGACY_RSAPUBLIC_BLOB</para>
+	/// <para>Export an RSA public key in a form that can be imported by using CryptoAPI.</para>
+	/// <para>NCRYPT_CIPHER_KEY_BLOB</para>
+	/// <para>Export a cipher key in a NCRYPT_KEY_BLOB_HEADER structure.</para>
+	/// <para><c>Windows 8 and Windows Server 2012:</c> Support for this value begins.</para>
+	/// <para>NCRYPT_OPAQUETRANSPORT_BLOB</para>
+	/// <para>
+	/// Export a key in a format that is specific to a single CSP and is suitable for transport. Opaque BLOBs are not transferable and must
+	/// be imported by using the same CSP that generated the BLOB.
+	/// </para>
+	/// <para>NCRYPT_PKCS7_ENVELOPE_BLOB</para>
+	/// <para>
+	/// Export a PKCS #7 envelope BLOB. The parameters identified by the pParameterList parameter either can or must contain the following
+	/// parameters, as indicated by the Required or optional column.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Parameter</term>
+	/// <term>Required or optional</term>
+	/// </listheader>
+	/// <item>
+	/// <term>NCRYPTBUFFER_CERT_BLOB</term>
+	/// <term>Required</term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPTBUFFER_PKCS_ALG_OID</term>
+	/// <term>Required</term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPTBUFFER_PKCS_ALG_PARAM</term>
+	/// <term>Optional</term>
+	/// </item>
+	/// </list>
+	/// <para>NCRYPT_PKCS8_PRIVATE_KEY_BLOB</para>
+	/// <para>
+	/// Export a PKCS #8 private key BLOB. The parameters identified by the pParameterList parameter either can or must contain the following
+	/// parameters, as indicated by the Required or optional column.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Parameter</term>
+	/// <term>Required or optional</term>
+	/// </listheader>
+	/// <item>
+	/// <term>NCRYPTBUFFER_PKCS_ALG_OID</term>
+	/// <term>Optional</term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPTBUFFER_PKCS_ALG_PARAM</term>
+	/// <term>Optional</term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPTBUFFER_PKCS_SECRET</term>
+	/// <term>Optional</term>
+	/// </item>
+	/// </list>
+	/// <para>NCRYPT_PROTECTED_KEY_BLOB</para>
+	/// <para>Export a protected key in a NCRYPT_KEY_BLOB_HEADER structure.</para>
+	/// <para><c>Windows 8 and Windows Server 2012:</c> Support for this value begins.</para>
+	/// </param>
+	/// <param name="pbOutput">The address of a buffer that receives the key BLOB.</param>
+	/// <param name="pParameterList">
+	/// The address of an NCryptBufferDesc structure that receives parameter information for the key. This parameter can be <c>NULL</c> if
+	/// this information is not needed.
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>
+	/// Flags that modify function behavior. This can be zero or a combination of one or more of the following values. The set of valid flags
+	/// is specific to each key storage provider. The following flag applies to all providers.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>NCRYPT_SILENT_FLAG</term>
+	/// <term>
+	/// Requests that the key service provider (KSP) not display any user interface. If the provider must display the UI to operate, the call
+	/// fails and the KSP should set the NTE_SILENT_CONTEXT error code as the last error.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>The function was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_FLAGS</term>
+	/// <term>The dwFlags parameter contains a value that is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_KEY_STATE</term>
+	/// <term>
+	/// The key specified by the hKey parameter is not valid. The most common cause of this error is that the key was not completed by using
+	/// the NCryptFinalizeKey function.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_TYPE</term>
+	/// <term>The key specified by the hKey parameter cannot be exported into the BLOB type specified by the pszBlobType parameter.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_INVALID_HANDLE</term>
+	/// <term>The hKey or the hExportKey parameter is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_INVALID_PARAMETER</term>
+	/// <term>One or more parameters are not valid.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// A service must not call this function from its StartService Function. If a service calls this function from its StartService
+	/// function, a deadlock can occur, and the service may stop responding.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ncrypt/nf-ncrypt-ncryptexportkey SECURITY_STATUS NCryptExportKey(
+	// NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, LPCWSTR pszBlobType, NCryptBufferDesc *pParameterList, PBYTE pbOutput, DWORD
+	// cbOutput, DWORD *pcbResult, DWORD dwFlags );
+	[PInvokeData("ncrypt.h", MSDNShortId = "1588eb29-4026-4d1c-8bee-a035df38444a")]
+	public static HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, string pszBlobType, 
+		out SafeAllocatedMemoryHandle pbOutput, [Optional] NCryptBufferDesc? pParameterList, [Optional] NCryptUIFlags dwFlags)
+	{
+		pbOutput = SafeHGlobalHandle.Null;
+		var hr = NCryptExportKey(hKey, hExportKey, pszBlobType, pParameterList, IntPtr.Zero, 0, out var sz, dwFlags);
+		if (hr.Failed) return hr;
+		pbOutput = new SafeHGlobalHandle(sz);
+		return NCryptExportKey(hKey, hExportKey, pszBlobType, pParameterList, pbOutput, (uint)pbOutput.Size, out _, dwFlags);
+	}
 
 	/// <summary>
 	/// <para>
@@ -2664,7 +2880,8 @@ public static partial class NCrypt
 	// NCRYPT_KEY_HANDLE *phKey, PBYTE pbData, DWORD cbData, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "ede0e7e0-cb2c-44c0-b724-58db3480b781")]
-	public static extern HRESULT NCryptImportKey(NCRYPT_PROV_HANDLE hProvider, NCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, NCryptBufferDesc? pParameterList,
+	public static extern HRESULT NCryptImportKey(NCRYPT_PROV_HANDLE hProvider, NCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType,
+		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
 		out SafeNCRYPT_KEY_HANDLE phKey, SafeAllocatedMemoryHandle pbData, uint cbData, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>
@@ -2852,7 +3069,8 @@ public static partial class NCrypt
 	// NCRYPT_KEY_HANDLE *phKey, PBYTE pbData, DWORD cbData, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "ede0e7e0-cb2c-44c0-b724-58db3480b781")]
-	public static extern HRESULT NCryptImportKey(NCRYPT_PROV_HANDLE hProvider, NCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, NCryptBufferDesc pParameterList,
+	public static extern HRESULT NCryptImportKey(NCRYPT_PROV_HANDLE hProvider, NCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType,
+		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc pParameterList,
 		out SafeNCRYPT_KEY_HANDLE phKey, [Optional] IntPtr pbData, [Optional] uint cbData, [Optional] NCryptUIFlags dwFlags);
 
 	/// <summary>
@@ -3142,7 +3360,8 @@ public static partial class NCrypt
 	// NCRYPT_KEY_HANDLE hKey, NCryptBufferDesc *pParameterList, PUCHAR pbDerivedKey, DWORD cbDerivedKey, DWORD *pcbResult, ULONG dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "5D2D61B1-022E-412F-A19E-11057930A615")]
-	public static extern HRESULT NCryptKeyDerivation(NCRYPT_KEY_HANDLE hKey, in NCryptBufferDesc pParameterList, IntPtr pbDerivedKey, uint cbDerivedKey, out uint pcbResult, KeyDerivationFlags dwFlags);
+	public static extern HRESULT NCryptKeyDerivation(NCRYPT_KEY_HANDLE hKey, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc pParameterList,
+		IntPtr pbDerivedKey, uint cbDerivedKey, out uint pcbResult, KeyDerivationFlags dwFlags);
 
 	/// <summary>
 	/// The <c>NCryptKeyDerivation</c> function creates a key from another key by using the specified key derivation function. The
@@ -3967,6 +4186,136 @@ public static partial class NCrypt
 	[PInvokeData("ncrypt.h", MSDNShortId = "ad1148aa-5f64-4867-9e17-6b41cc0c20b7")]
 	public static extern HRESULT NCryptSetProperty(NCRYPT_HANDLE hObject, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, byte[] pbInput, uint cbInput, [Optional] SetPropFlags dwFlags);
 
+	/// <summary>The <c>NCryptSetProperty</c> function sets the value for a named property for a CNG key storage object.</summary>
+	/// <typeparam name="T">The type of the input value.</typeparam>
+	/// <param name="hObject">The handle of the key storage object to set the property for.</param>
+	/// <param name="pszProperty">
+	/// A pointer to a null-terminated Unicode string that contains the name of the property to set. This can be one of the predefined Key
+	/// Storage Property Identifiers or a custom property identifier.
+	/// </param>
+	/// <param name="pbInput">The new property value.</param>
+	/// <param name="dwFlags">
+	/// <para>Flags that modify function behavior. This can be zero or a combination of one or more of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>NCRYPT_PERSIST_FLAG</term>
+	/// <term>
+	/// The property should be stored in key storage along with the key material. This flag can only be used when the hObject parameter is
+	/// the handle of a persisted key. The maximum size of the data for any persisted property is NCRYPT_MAX_PROPERTY_DATA bytes.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPT_PERSIST_ONLY_FLAG</term>
+	/// <term>
+	/// Do not overwrite any built-in values for this property and only set the user-persisted properties of the key. The maximum size of the
+	/// data for any persisted property is NCRYPT_MAX_PROPERTY_DATA bytes. This flag cannot be used with the NCRYPT_SECURITY_DESCR_PROPERTY property.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPT_SILENT_FLAG</term>
+	/// <term>
+	/// Requests that the key service provider (KSP) not display any user interface. If the provider must display the UI to operate, the call
+	/// fails and the KSP should set the NTE_SILENT_CONTEXT error code as the last error.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// For the <c>NCRYPT_SECURITY_DESCR_PROPERTY</c> property, this parameter must also contain one of the following values, which
+	/// identifies the part of the security descriptor to set.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>OWNER_SECURITY_INFORMATION</term>
+	/// <term>
+	/// Set the security identifier (SID) of the object's owner. Use the SetSecurityDescriptorOwner function to set the owner SID in the
+	/// SECURITY_DESCRIPTOR structure.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>GROUP_SECURITY_INFORMATION</term>
+	/// <term>
+	/// Set the SID of the object's primary group. Use the SetSecurityDescriptorGroup function to set the group SID in the
+	/// SECURITY_DESCRIPTOR structure.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>DACL_SECURITY_INFORMATION</term>
+	/// <term>
+	/// Set the discretionary access control list (DACL). Use the SetSecurityDescriptorSacl function to set the DACL in the
+	/// SECURITY_DESCRIPTOR structure.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>SACL_SECURITY_INFORMATION</term>
+	/// <term>
+	/// Set the system access control list (SACL). Use the SetSecurityDescriptorDacl function to set the SACL in the SECURITY_DESCRIPTOR structure.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>LABEL_SECURITY_INFORMATION</term>
+	/// <term>
+	/// Set the mandatory label access control entry in the SACL of the object. Use the SetSecurityDescriptorDacl function to set the SACL in
+	/// the SECURITY_DESCRIPTOR structure. For more information about the mandatory label access control entry, see Windows Integrity
+	/// Mechanism Design.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>The function was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_BAD_FLAGS</term>
+	/// <term>The dwFlags parameter contains a value that is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_INVALID_HANDLE</term>
+	/// <term>The hObject parameter is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_INVALID_PARAMETER</term>
+	/// <term>One or more parameters are not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_NO_MEMORY</term>
+	/// <term>A memory allocation failure occurred.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_NOT_SUPPORTED</term>
+	/// <term>The specified property is not supported for the object.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// A service must not call this function from its StartService Function. If a service calls this function from its StartService
+	/// function, a deadlock can occur, and the service may stop responding.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ncrypt/nf-ncrypt-ncryptsetproperty SECURITY_STATUS NCryptSetProperty(
+	// NCRYPT_HANDLE hObject, LPCWSTR pszProperty, PBYTE pbInput, DWORD cbInput, DWORD dwFlags );
+	[PInvokeData("ncrypt.h", MSDNShortId = "ad1148aa-5f64-4867-9e17-6b41cc0c20b7")]
+	public static HRESULT NCryptSetProperty<T>(NCRYPT_HANDLE hObject, string pszProperty, in T pbInput, [Optional] SetPropFlags dwFlags)
+	{
+		using var mem = SafeCoTaskMemHandle.CreateFromStructure(pbInput);
+		return NCryptSetProperty(hObject, pszProperty, (IntPtr)mem, (uint)mem.Size, dwFlags);
+	}
+
 	/// <summary>The <c>NCryptSignHash</c> function creates a signature of a hash value.</summary>
 	/// <param name="hKey">The handle of the key to use to sign the hash.</param>
 	/// <param name="pPaddingInfo">
@@ -4198,7 +4547,9 @@ public static partial class NCrypt
 	// pbClaimBlob, DWORD cbClaimBlob, NCryptBufferDesc *pOutput, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncrypt.h", MSDNShortId = "D3C837A5-49D7-4099-B8FE-37364A275A73")]
-	public static extern HRESULT NCryptVerifyClaim(NCRYPT_KEY_HANDLE hSubjectKey, [Optional] NCRYPT_KEY_HANDLE hAuthorityKey, uint dwClaimType, [Optional] NCryptBufferDesc[]? pParameterList, [In] IntPtr pbClaimBlob, uint cbClaimBlob, out NCryptBufferDesc pOutput, uint dwFlags = 0);
+	public static extern HRESULT NCryptVerifyClaim(NCRYPT_KEY_HANDLE hSubjectKey, [Optional] NCRYPT_KEY_HANDLE hAuthorityKey, uint dwClaimType,
+		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
+		[In] IntPtr pbClaimBlob, uint cbClaimBlob, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] out NCryptBufferDesc pOutput, uint dwFlags = 0);
 
 	/// <summary>The <c>NCryptVerifySignature</c> function verifies that the specified signature matches the specified hash.</summary>
 	/// <param name="hKey">
@@ -4574,7 +4925,7 @@ public static partial class NCrypt
 		public NCryptBuffer(KeyDerivationBufferType bufferType, string buffer)
 		{
 			BufferType = bufferType;
-			pvBuffer = Encoding.Unicode.GetBytes(buffer);
+			pvBuffer = StringHelper.GetBytes(buffer, true, CharSet.Unicode);
 		}
 	}
 
@@ -4805,12 +5156,20 @@ public static partial class NCrypt
 	}
 
 	/// <summary>The <c>BCryptBufferDesc</c> structure is used to contain a set of generic CNG buffers.</summary>
-	// typedef struct _BCryptBufferDesc { ULONG ulVersion; ULONG cBuffers; PBCryptBuffer pBuffers;} BCryptBufferDesc, *PBCryptBufferDesc; https://msdn.microsoft.com/en-us/library/windows/desktop/aa375370(v=vs.85).aspx
+	/// <remarks>Initializes a new instance of the <see cref="NCryptBufferDesc"/> class.</remarks>
+	// typedef struct _BCryptBufferDesc { ULONG ulVersion; ULONG cBuffers; PBCryptBuffer pBuffers;} BCryptBufferDesc, *PBCryptBufferDesc; https://msdn.microsoft.com/en-us/library/windows/desktop/aa375370(dsz=vs.85).aspx
 	[PInvokeData("Bcrypt.h", MSDNShortId = "aa375370")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public class NCryptBufferDesc : IDisposable
+	public class NCryptBufferDesc : IVanaraMarshaler
 	{
 		private const uint BCRYPTBUFFER_VERSION = 0;
+
+		/// <summary>Initializes a new instance of the <see cref="NCryptBufferDesc"/> class.</summary>
+		/// <param name="buffers">The buffers.</param>
+		public NCryptBufferDesc(params NCryptBuffer[] buffers) => pBuffers = buffers;
+
+		/// <summary>Initializes a new instance of the <see cref="NCryptBufferDesc"/> class.</summary>
+		public NCryptBufferDesc() : this([]) { }
 
 		/// <summary>
 		/// <para>The version of the structure. This must be the following value.</para>
@@ -4829,70 +5188,57 @@ public static partial class NCrypt
 		/// </summary>
 		public uint ulVersion = BCRYPTBUFFER_VERSION;
 
-		/// <summary>The number of elements in the <c>pBuffers</c> array.</summary>
-		public uint cBuffers;
-
 		/// <summary>
 		/// The address of an array of <c>BCryptBuffer</c> structures that contain the buffers. The <c>cBuffers</c> member contains the
 		/// number of elements in this array.
 		/// </summary>
-		private IntPtr _pBuffers;
+		public NCryptBuffer[] pBuffers { get; set; }
 
-		/// <summary>
-		/// The address of an array of <c>BCryptBuffer</c> structures that contain the buffers. The <c>cBuffers</c> member contains the
-		/// number of elements in this array.
-		/// </summary>
-		public NCryptBuffer[] pBuffers
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<NCryptBufferInt>();
+
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
-#pragma warning disable CA2021 // Do not call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types
-			get => _pBuffers.ToIEnum<_NCryptBuffer>((int)cBuffers).Cast<NCryptBuffer>().ToArray();
-#pragma warning restore CA2021 // Do not call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types
-			set
+			if (managedObject is not NCryptBufferDesc m) return SafeCoTaskMemHandle.Null;
+			int dsz = Marshal.SizeOf<NCryptBufferDescInt>();
+			int bsz = Marshal.SizeOf<NCryptBufferInt>();
+			SafeCoTaskMemHandle ret = new(dsz + (m.pBuffers.Length * bsz) + m.pBuffers.Sum(s => s.pvBuffer.Length));
+			for (int i = 0, doff = dsz + (m.pBuffers.Length * bsz); i < m.pBuffers.Length; doff += m.pBuffers[i++].pvBuffer.Length)
 			{
-				((IDisposable)this).Dispose();
-				_pBuffers = value == null || value.Length == 0 ? IntPtr.Zero : InteropExtensions.MarshalToPtr(value.Select(b => new _NCryptBuffer(b)), Marshal.AllocCoTaskMem, out var _);
-				cBuffers = (uint)(value?.Length ?? 0);
+				ret.Write(new NCryptBufferInt { BufferType = m.pBuffers[i].BufferType, cbBuffer = (uint)m.pBuffers[i].pvBuffer.Length, pvBuffer = ret.DangerousGetHandle().Offset(doff) }, false, dsz + (i * bsz));
+				ret.Write(m.pBuffers[i].pvBuffer, false, doff);
 			}
+			ret.Write(new NCryptBufferDescInt { ulVersion = m.ulVersion, cBuffers = (uint)m.pBuffers.Length, pBuffers = ret.DangerousGetHandle().Offset(dsz) });
+			return ret;
 		}
 
-		/// <summary>Initializes a new instance of the <see cref="NCryptBufferDesc"/> class.</summary>
-		public NCryptBufferDesc(params NCryptBuffer[] buffers) => pBuffers = buffers;
-
-		/// <inheritdoc/>
-		void IDisposable.Dispose()
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
-			if (_pBuffers == IntPtr.Zero) return;
-			foreach (var b in _pBuffers.ToIEnum<_NCryptBuffer>((int)cBuffers))
-				Marshal.FreeCoTaskMem(b.pvBuffer);
-			Marshal.FreeCoTaskMem(_pBuffers);
-			_pBuffers = IntPtr.Zero;
+			if (pNativeData == IntPtr.Zero || allocatedBytes == 0) return null;
+			if (allocatedBytes < Marshal.SizeOf<NCryptBufferDescInt>()) throw new InsufficientMemoryException();
+			var native = Marshal.PtrToStructure<NCryptBufferDescInt>(pNativeData);
+			return new NCryptBufferDesc()
+			{
+				ulVersion = native.ulVersion,
+				pBuffers = Array.ConvertAll(native.pBuffers.ToArray<NCryptBufferInt>(native.cBuffers) ?? [], b => (NCryptBuffer)b)
+			};
 		}
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		private struct _NCryptBuffer
+		private struct NCryptBufferDescInt
 		{
-			/// <summary>
-			/// <para>The size, in bytes, of the buffer.</para>
-			/// </summary>
+			public uint ulVersion;
+			public uint cBuffers;
+			public IntPtr pBuffers;
+		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		private struct NCryptBufferInt
+		{
 			public uint cbBuffer;
-
-			/// <summary>A value that identifies the type of data that is contained by the buffer.</summary>
 			public KeyDerivationBufferType BufferType;
-
-			/// <summary>
-			/// <para>The address of the buffer. The size of this buffer is contained in the <c>cbBuffer</c> member.</para>
-			/// <para>The format and contents of this buffer are identified by the <c>BufferType</c> member.</para>
-			/// </summary>
 			public IntPtr pvBuffer;
 
-			public _NCryptBuffer(in NCryptBuffer b)
-			{
-				cbBuffer = (uint)(b.pvBuffer?.Length ?? 0);
-				BufferType = b.BufferType;
-				pvBuffer = b.pvBuffer?.MarshalToPtr(Marshal.AllocCoTaskMem, out var _) ?? IntPtr.Zero;
-			}
-
-			public static implicit operator NCryptBuffer(_NCryptBuffer b) => new() { BufferType = b.BufferType, pvBuffer = b.pvBuffer.ToByteArray((int)b.cbBuffer) ?? new byte[0] };
+			public static implicit operator NCryptBuffer(NCryptBufferInt b) => new(b.BufferType, b.pvBuffer.ToByteArray(b.cbBuffer) ?? []);
 		}
 	}
 

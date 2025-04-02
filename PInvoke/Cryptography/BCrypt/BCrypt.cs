@@ -2177,7 +2177,8 @@ public static partial class BCrypt
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "33c3cbf7-6c08-42ed-ac3f-feb71f3a9cbf")]
 	public static extern NTStatus BCryptDeriveKey(BCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF,
-		[Optional] NCryptBufferDesc? pParameterList, SafeAllocatedMemoryHandle pbDerivedKey, uint cbDerivedKey, out uint pcbResult, DeriveKeyFlags dwFlags);
+		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
+		SafeAllocatedMemoryHandle pbDerivedKey, uint cbDerivedKey, out uint pcbResult, DeriveKeyFlags dwFlags);
 
 	/// <summary>The <c>BCryptDeriveKey</c> function derives a key from a secret agreement value.</summary>
 	/// <param name="hSharedSecret">
@@ -2501,7 +2502,8 @@ public static partial class BCrypt
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "33c3cbf7-6c08-42ed-ac3f-feb71f3a9cbf")]
 	public static extern NTStatus BCryptDeriveKey(BCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF,
-		[Optional] NCryptBufferDesc? pParameterList, [Optional] IntPtr pbDerivedKey, [Optional] uint cbDerivedKey, out uint pcbResult, DeriveKeyFlags dwFlags);
+		[Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
+		[Optional] IntPtr pbDerivedKey, [Optional] uint cbDerivedKey, out uint pcbResult, DeriveKeyFlags dwFlags);
 
 	/// <summary>
 	/// <para>The <c>BCryptDeriveKeyCapi</c> function derives a key from a hash value.</para>
@@ -6777,8 +6779,8 @@ public static partial class BCrypt
 	// BCRYPT_KEY_HANDLE hKey, BCryptBufferDesc *pParameterList, PUCHAR pbDerivedKey, ULONG cbDerivedKey, ULONG *pcbResult, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "D0B91FFE-2E72-4AE3-A84F-DC598C02CF53")]
-	public static extern NTStatus BCryptKeyDerivation(BCRYPT_KEY_HANDLE hKey, [Optional] NCryptBufferDesc? pParameterList, IntPtr pbDerivedKey,
-		uint cbDerivedKey, out uint pcbResult, KeyDerivationFlags dwFlags);
+	public static extern NTStatus BCryptKeyDerivation(BCRYPT_KEY_HANDLE hKey, [Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
+		IntPtr pbDerivedKey, uint cbDerivedKey, out uint pcbResult, KeyDerivationFlags dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -6959,7 +6961,7 @@ public static partial class BCrypt
 	// BCRYPT_KEY_HANDLE hKey, BCryptBufferDesc *pParameterList, PUCHAR pbDerivedKey, ULONG cbDerivedKey, ULONG *pcbResult, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "D0B91FFE-2E72-4AE3-A84F-DC598C02CF53")]
-	public static extern NTStatus BCryptKeyDerivation(BCRYPT_KEY_HANDLE hKey, [Optional] NCryptBufferDesc? pParameterList,
+	public static extern NTStatus BCryptKeyDerivation(BCRYPT_KEY_HANDLE hKey, [Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc? pParameterList,
 		SafeAllocatedMemoryHandle pbDerivedKey, uint cbDerivedKey, out uint pcbResult, KeyDerivationFlags dwFlags);
 
 	/// <summary>
@@ -7175,7 +7177,8 @@ public static partial class BCrypt
 	// cbOperations, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "5FD28AC3-46D2-4F06-BF06-F5FEF8E531F5")]
-	public static extern NTStatus BCryptProcessMultiOperations(BCRYPT_HANDLE hObject, BCRYPT_MULTI_OPERATION_TYPE operationType, [In] BCRYPT_MULTI_HASH_OPERATION[] pOperations, uint cbOperations, uint dwFlags = 0);
+	public static extern NTStatus BCryptProcessMultiOperations(BCRYPT_HANDLE hObject, BCRYPT_MULTI_OPERATION_TYPE operationType,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] BCRYPT_MULTI_HASH_OPERATION[] pOperations, uint cbOperations, uint dwFlags = 0);
 
 	/// <summary>
 	/// <para>
@@ -7271,7 +7274,95 @@ public static partial class BCrypt
 	// BCryptQueryContextConfiguration( ULONG dwTable, LPCWSTR pszContext, ULONG *pcbBuffer, PCRYPT_CONTEXT_CONFIG *ppBuffer );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "3e2ae471-cad6-4bfe-9e30-7b2a7014bc08")]
-	public static extern NTStatus BCryptQueryContextConfiguration(ContextConfigTable dwTable, [MarshalAs(UnmanagedType.LPWStr)] string pszContext, out uint pcbBuffer, out SafeBCryptBuffer ppBuffer);
+	public static extern NTStatus BCryptQueryContextConfiguration(ContextConfigTable dwTable, [MarshalAs(UnmanagedType.LPWStr)] string pszContext,
+		ref uint pcbBuffer, ref IntPtr ppBuffer);
+
+	/// <summary>
+	/// <para>
+	/// [ <c>BCryptQueryContextConfiguration</c> is available for use in the operating systems specified in the Requirements section. It may
+	/// be altered or unavailable in subsequent versions.]
+	/// </para>
+	/// <para>The <c>BCryptQueryContextConfiguration</c> function retrieves the current configuration for the specified CNG context.</para>
+	/// </summary>
+	/// <param name="dwTable">
+	/// <para>Identifies the configuration table that the context exists in. This can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CRYPT_LOCAL</term>
+	/// <term>The context exists in the local-machine configuration table.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_DOMAIN</term>
+	/// <term>This value is not available for use.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pszContext">
+	/// <para>
+	/// A pointer to a null-terminated Unicode string that contains the identifier of the context to obtain the configuration information for.
+	/// </para>
+	/// </param>
+	/// <param name="ppBuffer">A CRYPT_CONTEXT_CONFIG structure that receives the context configuration information retrieved by this function.</param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_SUCCESS</term>
+	/// <term>The function was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_BUFFER_TOO_SMALL</term>
+	/// <term>
+	/// The ppBuffer parameter is not NULL, and the value pointed to by the pcbBuffer parameter is not large enough to hold the set of contexts.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>One or more parameters are not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_NO_MEMORY</term>
+	/// <term>A memory allocation failure occurred.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_NOT_FOUND</term>
+	/// <term>The specified context could not be found.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Each context has only one set of configuration information, so although the ppBuffer parameter appears to be a used as an array, this
+	/// function treats this as an array with only one element. The following example helps clarify how this parameter is used.
+	/// </para>
+	/// <para><c>BCryptQueryContextConfiguration</c> can be called only in user mode.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptquerycontextconfiguration NTSTATUS
+	// BCryptQueryContextConfiguration( ULONG dwTable, LPCWSTR pszContext, ULONG *pcbBuffer, PCRYPT_CONTEXT_CONFIG *ppBuffer );
+	[PInvokeData("bcrypt.h", MSDNShortId = "3e2ae471-cad6-4bfe-9e30-7b2a7014bc08")]
+	public static NTStatus BCryptQueryContextConfiguration(ContextConfigTable dwTable, [MarshalAs(UnmanagedType.LPWStr)] string pszContext,
+		out CRYPT_CONTEXT_CONFIG? ppBuffer) =>
+		Query((ref uint sz, ref IntPtr p) => BCryptQueryContextConfiguration(dwTable, pszContext, ref sz, ref p), out ppBuffer);
+
+	private delegate NTStatus BCQueryFunc(ref uint sz, ref IntPtr ptr);
+
+	private static NTStatus Query<T>(BCQueryFunc func, out T? data) where T : struct
+	{
+		var sz = 0U;
+		var ptr = IntPtr.Zero;
+		var ret = func(ref sz, ref ptr);
+		data = ret.Succeeded ? ptr.ToStructure<T>() : null;
+		return ret;
+	}
 
 	/// <summary>
 	/// <para>
@@ -7422,7 +7513,141 @@ public static partial class BCrypt
 	// *pcbBuffer, PCRYPT_CONTEXT_FUNCTION_CONFIG *ppBuffer );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "4eea9efe-bf45-4926-86fc-9b12b6d292cd")]
-	public static extern NTStatus BCryptQueryContextFunctionConfiguration(ContextConfigTable dwTable, string pszContext, InterfaceId dwInterface, string pszFunction, out uint pcbBuffer, out SafeBCryptBuffer ppBuffer);
+	public static extern NTStatus BCryptQueryContextFunctionConfiguration(ContextConfigTable dwTable, string pszContext, InterfaceId dwInterface,
+		string pszFunction, ref uint pcbBuffer, ref IntPtr ppBuffer);
+
+	/// <summary>
+	/// <para>
+	/// [ <c>BCryptQueryContextFunctionConfiguration</c> is available for use in the operating systems specified in the Requirements section.
+	/// It may be altered or unavailable in subsequent versions.]
+	/// </para>
+	/// <para>
+	/// The <c>BCryptQueryContextFunctionConfiguration</c> function obtains the cryptographic function configuration information for an
+	/// existing CNG context.
+	/// </para>
+	/// </summary>
+	/// <param name="dwTable">
+	/// <para>Identifies the configuration table that the context exists in. This can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CRYPT_LOCAL</term>
+	/// <term>The context exists in the local-machine configuration table.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_DOMAIN</term>
+	/// <term>This value is not available for use.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pszContext">
+	/// <para>
+	/// A pointer to a null-terminated Unicode string that contains the identifier of the context to obtain the function configuration
+	/// information for.
+	/// </para>
+	/// </param>
+	/// <param name="dwInterface">
+	/// <para>
+	/// Identifies the cryptographic interface to obtain the function configuration information for. This can be one of the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BCRYPT_ASYMMETRIC_ENCRYPTION_INTERFACE</term>
+	/// <term>Obtain the function configuration information from the list of asymmetric encryption functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_CIPHER_INTERFACE</term>
+	/// <term>Obtain the function configuration information from the list of cipher functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_HASH_INTERFACE</term>
+	/// <term>Obtain the function configuration information from the list of hash functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_RNG_INTERFACE</term>
+	/// <term>Obtain the function configuration information from the list of random number generator functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_SECRET_AGREEMENT_INTERFACE</term>
+	/// <term>Obtain the function configuration information from the list of secret agreement functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_SIGNATURE_INTERFACE</term>
+	/// <term>Obtain the function configuration information from the list of signature functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPT_KEY_STORAGE_INTERFACE</term>
+	/// <term>Obtain the function configuration information from the list of key storage functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPT_SCHANNEL_INTERFACE</term>
+	/// <term>Obtain the function configuration information from the list of Schannel functions.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pszFunction">
+	/// <para>
+	/// A pointer to a null-terminated Unicode string that contains the identifier of the cryptographic function to obtain the configuration
+	/// information for.
+	/// </para>
+	/// </param>
+	/// <param name="ppBuffer">
+	/// A CRYPT_CONTEXT_FUNCTION_CONFIG structure that receives the function configuration information retrieved by this function. The value
+	/// pointed to by the pcbBuffer parameter contains the size of this buffer.
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_SUCCESS</term>
+	/// <term>The function was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_BUFFER_TOO_SMALL</term>
+	/// <term>
+	/// The ppBuffer parameter is not NULL, and the value pointed to by the pcbBuffer parameter is not large enough to hold the set of contexts.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>One or more parameters are not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_NO_MEMORY</term>
+	/// <term>A memory allocation failure occurred.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_NOT_FOUND</term>
+	/// <term>The specified context or function could not be found.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Each cryptographic function has only one set of configuration information, so although the ppBuffer parameter appears to be a used as
+	/// an array, this function treats this as an array with only one element. The following example helps clarify how this parameter is used.
+	/// </para>
+	/// <para><c>BCryptQueryContextFunctionConfiguration</c> can be called only in user mode.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptquerycontextfunctionconfiguration NTSTATUS
+	// BCryptQueryContextFunctionConfiguration( ULONG dwTable, LPCWSTR pszContext, ULONG dwInterface, LPCWSTR pszFunction, ULONG
+	// *pcbBuffer, PCRYPT_CONTEXT_FUNCTION_CONFIG *ppBuffer );
+	[PInvokeData("bcrypt.h", MSDNShortId = "4eea9efe-bf45-4926-86fc-9b12b6d292cd")]
+	public static NTStatus BCryptQueryContextFunctionConfiguration(ContextConfigTable dwTable, string pszContext, InterfaceId dwInterface,
+		string pszFunction, out CRYPT_CONTEXT_FUNCTION_CONFIG? ppBuffer) =>
+		Query((ref uint sz, ref IntPtr p) => BCryptQueryContextFunctionConfiguration(dwTable, pszContext, dwInterface, pszFunction, ref sz, ref p), out ppBuffer);
 
 	/// <summary>
 	/// <para>
@@ -7562,7 +7787,148 @@ public static partial class BCrypt
 	// pszProperty, ULONG *pcbValue, PUCHAR *ppbValue );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "c8814a13-ac28-4583-927f-c787e0a25faf")]
-	public static extern NTStatus BCryptQueryContextFunctionProperty(ContextConfigTable dwTable, string pszContext, InterfaceId dwInterface, string pszFunction, string pszProperty, out uint pcbValue, out SafeBCryptBuffer ppbValue);
+	public static extern NTStatus BCryptQueryContextFunctionProperty(ContextConfigTable dwTable, string pszContext, InterfaceId dwInterface,
+		string pszFunction, string pszProperty, ref uint pcbValue, ref IntPtr ppbValue);
+
+	/// <summary>
+	/// <para>
+	/// The <c>BCryptQueryContextFunctionProperty</c> function obtains the value of a named property for a cryptographic function in an
+	/// existing CNG context.
+	/// </para>
+	/// </summary>
+	/// <param name="dwTable">
+	/// <para>Identifies the configuration table that the context exists in. This can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CRYPT_LOCAL</term>
+	/// <term>The context exists in the local-machine configuration table.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_DOMAIN</term>
+	/// <term>This value is not available for use.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pszContext">
+	/// <para>
+	/// A pointer to a null-terminated Unicode string that contains the identifier of the context to obtain the function property from.
+	/// </para>
+	/// </param>
+	/// <param name="dwInterface">
+	/// <para>Identifies the cryptographic interface that the function exists in. This can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BCRYPT_ASYMMETRIC_ENCRYPTION_INTERFACE</term>
+	/// <term>The function exists in the list of asymmetric encryption functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_CIPHER_INTERFACE</term>
+	/// <term>The function exists in the list of cipher functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_HASH_INTERFACE</term>
+	/// <term>The function exists in the list of hash functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_RNG_INTERFACE</term>
+	/// <term>The function exists in the list of random number generator functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_SECRET_AGREEMENT_INTERFACE</term>
+	/// <term>The function exists in the list of secret agreement functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_SIGNATURE_INTERFACE</term>
+	/// <term>The function exists in the list of signature functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPT_KEY_STORAGE_INTERFACE</term>
+	/// <term>The function exists in the list of key storage functions.</term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPT_SCHANNEL_INTERFACE</term>
+	/// <term>The function exists in the list of Schannel functions.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pszFunction">
+	/// <para>
+	/// A pointer to a null-terminated Unicode string that contains the identifier of the cryptographic function to obtain the property for.
+	/// </para>
+	/// </param>
+	/// <param name="pszProperty">
+	/// <para>A pointer to a null-terminated Unicode string that contains the identifier of the property to obtain.</para>
+	/// </param>
+	/// <param name="ppbValue">
+	/// <para>
+	/// The address of a pointer to a buffer that receives the property data. The size and format of this buffer depends on the format of
+	/// the property being retrieved. The value pointed to by the pcbValue parameter contains the size of this buffer.
+	/// </para>
+	/// <para>
+	/// If the value pointed to by this parameter is <c>NULL</c>, this function will allocate the required memory. This memory must be
+	/// freed when it is no longer needed by passing this pointer to the BCryptFreeBuffer function.
+	/// </para>
+	/// <para>
+	/// If this parameter is <c>NULL</c>, this function will place the required size, in bytes, in the variable pointed to by the
+	/// pcbValue parameter and return <c>STATUS_BUFFER_TOO_SMALL</c>.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_SUCCESS</term>
+	/// <term>The function was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_BUFFER_TOO_SMALL</term>
+	/// <term>
+	/// The ppbValue parameter is not NULL, and the value pointed to by the pcbValue parameter is not large enough to hold the set of contexts.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>One or more parameters are not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_NO_MEMORY</term>
+	/// <term>A memory allocation failure occurred.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_NOT_FOUND</term>
+	/// <term>The specified context, function, or property could not be found.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para><c>BCryptQueryContextFunctionProperty</c> can be called only in user mode.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptquerycontextfunctionproperty NTSTATUS
+	// BCryptQueryContextFunctionProperty( ULONG dwTable, LPCWSTR pszContext, ULONG dwInterface, LPCWSTR pszFunction, LPCWSTR
+	// pszProperty, ULONG *pcbValue, PUCHAR *ppbValue );
+	[PInvokeData("bcrypt.h", MSDNShortId = "c8814a13-ac28-4583-927f-c787e0a25faf")]
+	public static NTStatus BCryptQueryContextFunctionProperty(ContextConfigTable dwTable, string pszContext, InterfaceId dwInterface,
+		string pszFunction, string pszProperty, out SafeBCryptBuffer ppbValue)
+	{
+		var sz = 0U;
+		var ptr = IntPtr.Zero;
+		var ret = BCryptQueryContextFunctionProperty(dwTable, pszContext, dwInterface, pszFunction, pszProperty, ref sz, ref ptr);
+		ppbValue = ret.Succeeded ? new SafeBCryptBuffer(ptr, true) { Size = sz } : SafeBCryptBuffer.Null;
+		return ret;
+	}
 
 	/// <summary>The <c>BCryptQueryProviderRegistration</c> function retrieves information about a CNG provider.</summary>
 	/// <param name="pszProvider">
@@ -7693,7 +8059,139 @@ public static partial class BCrypt
 	// *ppBuffer );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "28b8bca9-442f-4d58-86aa-8aa274777ede")]
-	public static extern NTStatus BCryptQueryProviderRegistration([MarshalAs(UnmanagedType.LPWStr)] string pszProvider, ProviderInfoType dwMode, InterfaceId dwInterface, out uint pcbBuffer, out SafeBCryptBuffer ppBuffer);
+	public static extern NTStatus BCryptQueryProviderRegistration([MarshalAs(UnmanagedType.LPWStr)] string pszProvider, ProviderInfoType dwMode,
+		InterfaceId dwInterface, ref uint pcbBuffer, ref IntPtr ppBuffer);
+
+	/// <summary>The <c>BCryptQueryProviderRegistration</c> function retrieves information about a CNG provider.</summary>
+	/// <param name="pszProvider">
+	/// A pointer to a null-terminated Unicode string that contains the name of the provider to obtain information about.
+	/// </param>
+	/// <param name="dwMode">
+	/// <para>Specifies the type of information to retrieve. This can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CRYPT_ANY</term>
+	/// <term>Retrieve any information for the provider.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_UM</term>
+	/// <term>Retrieve the user mode information for the provider.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_KM</term>
+	/// <term>Retrieve the kernel mode information for the provider.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_MM</term>
+	/// <term>Retrieve both the user mode and kernel mode information for the provider.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="dwInterface">
+	/// <para>Specifies the interface to retrieve information for. This can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>BCRYPT_ASYMMETRIC_ENCRYPTION_INTERFACE</term>
+	/// <term>Retrieve the asymmetric encryption interface.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_CIPHER_INTERFACE</term>
+	/// <term>Retrieve the cipher interface.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_HASH_INTERFACE</term>
+	/// <term>Retrieve the hash interface.</term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPT_KEY_STORAGE_INTERFACE</term>
+	/// <term>Retrieve the key storage interface.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_RNG_INTERFACE</term>
+	/// <term>Retrieve the random number generator interface.</term>
+	/// </item>
+	/// <item>
+	/// <term>NCRYPT_SCHANNEL_INTERFACE</term>
+	/// <term>Retrieve the Schannel interface.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_SECRET_AGREEMENT_INTERFACE</term>
+	/// <term>Retrieve the secret agreement interface.</term>
+	/// </item>
+	/// <item>
+	/// <term>BCRYPT_SIGNATURE_INTERFACE</term>
+	/// <term>Retrieve the signature interface.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="ppBuffer">
+	/// <para>A pointer to a buffer pointer that receives a CRYPT_PROVIDER_REG structure and other data that describes the provider.</para>
+	/// <para>
+	/// If this parameter is <c>NULL</c>, this function will return <c>STATUS_BUFFER_TOO_SMALL</c> and place in the value pointed to by
+	/// the pcbBuffer parameter, the required size, in bytes, of all data.
+	/// </para>
+	/// <para>
+	/// If this parameter is the address of a <c>NULL</c> pointer, this function will allocate the required memory, fill it in with the
+	/// provider information, and place a pointer to this memory in this parameter. When you have finished using this memory, free it by
+	/// passing this pointer to the BCryptFreeBuffer function.
+	/// </para>
+	/// <para>
+	/// If this parameter is the address of a non- <c>NULL</c> pointer, this function will copy the provider information into this
+	/// buffer. The pcbBuffer parameter must contain the size, in bytes, of the entire buffer. If the buffer is not large enough to hold
+	/// all of the provider information, this function will return <c>STATUS_BUFFER_TOO_SMALL</c>.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>Returns a status code that indicates the success or failure of the function.</para>
+	/// <para>Possible return codes include, but are not limited to, the following.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>STATUS_SUCCESS</term>
+	/// <term>The function was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_INVALID_PARAMETER</term>
+	/// <term>One or more parameters are not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_BUFFER_TOO_SMALL</term>
+	/// <term>The size specified by the pcbBuffer parameter is not large enough to hold all of the data.</term>
+	/// </item>
+	/// <item>
+	/// <term>STATUS_NOT_FOUND</term>
+	/// <term>No provider could be found that matches the specified criteria.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks><c>BCryptQueryProviderRegistration</c> can be called only in user mode.</remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptqueryproviderregistration NTSTATUS
+	// BCryptQueryProviderRegistration( LPCWSTR pszProvider, ULONG dwMode, ULONG dwInterface, ULONG *pcbBuffer, PCRYPT_PROVIDER_REG
+	// *ppBuffer );
+	[PInvokeData("bcrypt.h", MSDNShortId = "28b8bca9-442f-4d58-86aa-8aa274777ede")]
+	public static NTStatus BCryptQueryProviderRegistration(string pszProvider, ProviderInfoType dwMode, InterfaceId dwInterface, out SafeCoTaskMemStruct<CRYPT_PROVIDER_REG> ppBuffer)
+	{
+		ppBuffer = SafeCoTaskMemStruct<CRYPT_PROVIDER_REG>.Null;
+		var pBuffer = (IntPtr)1;
+		var pcbBuffer = 0U;
+		var status = BCryptQueryProviderRegistration(pszProvider, dwMode, dwInterface, ref pcbBuffer, ref pBuffer);
+		if (status != NTStatus.STATUS_BUFFER_TOO_SMALL)
+			return status;
+		ppBuffer = new SafeCoTaskMemStruct<CRYPT_PROVIDER_REG>((int)pcbBuffer);
+		var pppBuf = ppBuffer.DangerousGetHandle();
+		return BCryptQueryProviderRegistration(pszProvider, dwMode, dwInterface, ref pcbBuffer, ref pppBuf);
+	}
 
 	/// <summary>
 	/// <para>[ <c>BCryptRegisterConfigChangeNotify</c> is deprecated beginning with Windows 10.]</para>
@@ -9215,6 +9713,152 @@ public static partial class BCrypt
 		internal IEnumerable<string?> _rgpszContexts => rgpszContexts.ToStringEnum((int)cContexts, CharSet.Unicode);
 	}
 
+	/// <summary>The <b>CRYPT_IMAGE_REG</b> structure contains image registration information about a CNG provider.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-crypt_image_reg
+	// typedef struct _CRYPT_IMAGE_REG { PWSTR pszImage; ULONG cInterfaces; PCRYPT_INTERFACE_REG *rgpInterfaces; } CRYPT_IMAGE_REG, *PCRYPT_IMAGE_REG;
+	[PInvokeData("bcrypt.h", MSDNShortId = "NS:bcrypt._CRYPT_IMAGE_REG")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CRYPT_IMAGE_REG
+	{
+		/// <summary>A pointer to a null-terminated Unicode string that contains only the file name of the provider module.</summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string pszImage;
+
+		/// <summary>Contains the number of elements in the <b>rgpInterfaces</b> array.</summary>
+		public uint cInterfaces;
+
+		/// <summary>A pointer to an array of <c>CRYPT_INTERFACE_REG</c> structure pointers that specify the types of cryptographic interfaces that are supported by the provider. For example, if the provider supports both a cipher interface (<b>BCRYPT_CIPHER_INTERFACE</b>) and a hash interface (<b>BCRYPT_HASH_INTERFACE</b>), this array would contain two <b>CRYPT_INTERFACE_REG</b> structure pointers, one for the cipher interface and one for the hash interface.</summary>
+		public ArrayPointer<CRYPT_INTERFACE_REG> rgpInterfaces;
+	}
+
+	/// <summary>The <b>CRYPT_INTERFACE_REG</b> structure is used to contain information about the type of interface supported by a CNG provider.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-crypt_interface_reg
+	// typedef struct _CRYPT_INTERFACE_REG { ULONG dwInterface; ULONG dwFlags; ULONG cFunctions; PWSTR *rgpszFunctions; } CRYPT_INTERFACE_REG, *PCRYPT_INTERFACE_REG;
+	[PInvokeData("bcrypt.h", MSDNShortId = "NS:bcrypt._CRYPT_INTERFACE_REG")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CRYPT_INTERFACE_REG
+	{
+		/// <summary>
+		///   <para>Contains the identifier of the interface type. This can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>BCRYPT_ASYMMETRIC_ENCRYPTION_INTERFACE</b></description>
+		///       <description>The provider supports the asymmetric encryption interface.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>BCRYPT_CIPHER_INTERFACE</b></description>
+		///       <description>The provider supports the cipher interface.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>BCRYPT_HASH_INTERFACE</b></description>
+		///       <description>The provider supports the hash interface.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>NCRYPT_KEY_STORAGE_INTERFACE</b></description>
+		///       <description>The provider supports the key storage interface.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>BCRYPT_RNG_INTERFACE</b></description>
+		///       <description>The provider supports the random number generator interface.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>NCRYPT_SCHANNEL_INTERFACE</b></description>
+		///       <description>The provider supports the Schannel interface.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>BCRYPT_SECRET_AGREEMENT_INTERFACE</b></description>
+		///       <description>The provider supports the secret agreement interface.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>BCRYPT_SIGNATURE_INTERFACE</b></description>
+		///       <description>The provider supports the signature interface.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public InterfaceId dwInterface;
+
+		/// <summary>
+		///   <para>Contains flags that modify the behavior of the interface. This can be one of the following values.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPT_DOMAIN</b></description>
+		///       <description>This value is not available for use.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CRYPT_LOCAL</b></description>
+		///       <description>The interface is registered in the local configuration table.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public ContextConfigTable dwFlags;
+
+		/// <summary>Contains the number of elements in the <b>rgpszFunctions</b> array.</summary>
+		public uint cFunctions;
+
+		/// <summary>An array of null-terminated Unicode strings that contains the identifiers of the algorithms that are supported by this interface. These identifiers can be the standard <c>CNG Algorithm Identifiers</c> or the identifiers for other registered algorithms.</summary>
+		public IntPtr rgpszFunctions;
+	}
+
+	/// <summary>The <b>CRYPT_PROVIDER_REG</b> structure is used to contain registration information for a CNG provider.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-crypt_provider_reg typedef struct _CRYPT_PROVIDER_REG { ULONG
+	// cAliases; PWSTR *rgpszAliases; PCRYPT_IMAGE_REG pUM; PCRYPT_IMAGE_REG pKM; } CRYPT_PROVIDER_REG, *PCRYPT_PROVIDER_REG;
+	[PInvokeData("bcrypt.h", MSDNShortId = "NS:bcrypt._CRYPT_PROVIDER_REG")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CRYPT_PROVIDER_REG
+	{
+		/// <summary>
+		/// Contains the number of elements in the <b>rgpszAliases</b> array. If the provider has no aliases, this member will be zero and
+		/// the <b>rgpszAliases</b> member will be <b>NULL</b>.
+		/// </summary>
+		public uint cAliases;
+
+		/// <summary>
+		/// An array of null-terminated Unicode strings that contains the aliases of the provider. If the provider has no aliases, this
+		/// member will contain <b>NULL</b> and the <b>cAliases</b> member will contain zero.
+		/// </summary>
+		public IntPtr rgpszAliases;
+
+		/// <summary>
+		/// A pointer to a <c>CRYPT_IMAGE_REG</c> structure that contains the registration information for the user mode provider. If this
+		/// member is <b>NULL</b>, the provider is not registered for user mode.
+		/// </summary>
+		public ManagedStructPointer<CRYPT_IMAGE_REG> pUM;
+
+		/// <summary>
+		/// A pointer to a <c>CRYPT_IMAGE_REG</c> structure that contains the registration information for the kernel mode provider. If this
+		/// member is <b>NULL</b>, the provider is not registered for kernel mode.
+		/// </summary>
+		public ManagedStructPointer<CRYPT_IMAGE_REG> pKM;
+	}
+
 	/// <summary>
 	/// <para>The <c>CRYPT_PROVIDERS</c> structure contains information about the registered CNG providers.</para>
 	/// </summary>
@@ -9806,6 +10450,9 @@ public static partial class BCrypt
 	[AutoSafeHandle("{ BCryptFreeBuffer(handle); return true; }", null, typeof(SafeHANDLE))]
 	public partial class SafeBCryptBuffer
 	{
+		/// <summary>Gets the size of the buffer.</summary>
+		public SizeT Size { get; internal set; }
+
 		/// <summary>Marshals data to a newly allocated managed object of the type specified by a generic type parameter.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		/// <returns>A managed object that this buffer points to.</returns>

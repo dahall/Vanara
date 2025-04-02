@@ -1027,7 +1027,8 @@ public static partial class NCrypt
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "c9408eb3-711d-42c3-a4ba-e388689da34e")]
 	public static extern HRESULT SslGenerateMasterKey(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hPrivateKey, NCRYPT_KEY_HANDLE hPublicKey,
-		out NCRYPT_KEY_HANDLE phMasterKey, SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite, [In] NCryptBufferDesc pParameterList,
+		out NCRYPT_KEY_HANDLE phMasterKey, SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc pParameterList,
 		[Out, Optional] IntPtr pbOutput, uint cbOutput, out uint pcbResult, SslHost dwFlags);
 
 	/// <summary>The <c>SslGenerateSessionKeys</c> function generates a set of Secure Sockets Layer protocol (SSL) session keys.</summary>
@@ -1070,7 +1071,7 @@ public static partial class NCrypt
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "88465f30-8591-411e-8618-8a381d4c22e9")]
 	public static extern HRESULT SslGenerateSessionKeys(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hMasterKey, out NCRYPT_KEY_HANDLE phReadKey,
-		out NCRYPT_KEY_HANDLE phWriteKey, [In] NCryptBufferDesc pParameterList, uint dwFlags = 0);
+		out NCRYPT_KEY_HANDLE phWriteKey, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc pParameterList, uint dwFlags = 0);
 
 	/// <summary>
 	/// The <c>SslGetCipherSuitePRFHashAlgorithm</c> function returns the Cryptography API: Next Generation (CNG) Algorithm Identifier of
@@ -1369,7 +1370,8 @@ public static partial class NCrypt
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sslprovider.h", MSDNShortId = "052e38ee-658c-47dc-8098-c9a1fd359e1c")]
 	public static extern HRESULT SslImportMasterKey(NCRYPT_PROV_HANDLE hSslProvider, NCRYPT_KEY_HANDLE hPrivateKey, out NCRYPT_KEY_HANDLE phMasterKey,
-		SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite, [In] NCryptBufferDesc pParameterList, [In] IntPtr pbEncryptedKey, uint cbEncryptedKey, SslHost dwFlags);
+		SslProviderProtocolId dwProtocol, SslProviderCipherSuiteId dwCipherSuite,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<NCryptBufferDesc>))] NCryptBufferDesc pParameterList, [In] IntPtr pbEncryptedKey, uint cbEncryptedKey, SslHost dwFlags);
 
 	/// <summary>
 	/// The <c>SslIncrementProviderReferenceCount</c> function increments the reference count to a Secure Sockets Layer protocol (SSL)
