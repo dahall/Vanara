@@ -7,16 +7,21 @@ namespace Vanara.PInvoke;
 /// <summary>Helper methods to work with asynchronous methods using <see cref="NativeOverlapped"/>.</summary>
 public static class OverlappedAsync
 {
-	private static readonly System.Collections.Generic.HashSet<HFILE> boundHandles = new();
+	private static readonly System.Collections.Generic.HashSet<HFILE> boundHandles = [];
 
 	/// <summary>Cleans up at the end of the <see cref="Overlapped.Pack(IOCompletionCallback, object)"/> callback method.</summary>
 	/// <param name="asyncResult">The asynchronous result.</param>
+	/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="Timeout.Infinite"/> (-1) to wait indefinitely.</param>
+	/// <param name="exitContext">
+	/// <see langword="true"/> to exit the synchronization domain for the context before the wait (if in a synchronized context), and
+	/// reacquire it afterward; otherwise, <see langword="false"/>.
+	/// </param>
 	/// <returns>The object passed into the <see cref="Overlapped.Pack(IOCompletionCallback, object)"/> method.</returns>
 	/// <exception cref="ArgumentNullException">asyncResult</exception>
 	/// <exception cref="ArgumentException">Argument must be of type AsyncResult - asyncResult</exception>
 	/// <exception cref="InvalidOperationException">Asynchronous end method called twice.</exception>
 	/// <exception cref="Win32Exception">Another Win32 error.</exception>
-	public static object? EndOverlappedFunction(IAsyncResult asyncResult)
+	public static object? EndOverlappedFunction(IAsyncResult asyncResult, int millisecondsTimeout = Timeout.Infinite, bool exitContext = false)
 	{
 		if (asyncResult == null)
 			throw new ArgumentNullException(nameof(asyncResult));
@@ -28,7 +33,7 @@ public static class OverlappedAsync
 		if (!handle.SafeWaitHandle.IsClosed)
 			try
 			{
-				handle.WaitOne();
+				handle.WaitOne(millisecondsTimeout, exitContext);
 			}
 			finally
 			{
