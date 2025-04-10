@@ -33,7 +33,11 @@ public static class OverlappedAsync
 		if (!handle.SafeWaitHandle.IsClosed)
 			try
 			{
-				handle.WaitOne(millisecondsTimeout, exitContext);
+				if (!handle.WaitOne(millisecondsTimeout, exitContext))
+				{
+					unsafe { CancelIoEx(result.Handle, result.Overlapped); }
+					throw new TimeoutException("The operation has timed out.", new Win32Exception(Marshal.GetLastWin32Error()));
+				}
 			}
 			finally
 			{
@@ -113,6 +117,10 @@ public static class OverlappedAsync
 		if (boundHandles.Add(hDevice))
 			ThreadPool.BindHandle(new Microsoft.Win32.SafeHandles.SafeFileHandle((IntPtr)hDevice, false));
 	}
+
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	private static unsafe extern bool CancelIoEx([In] HFILE hFile, [In, Optional] NativeOverlapped* lpOverlapped);
 
 	/// <summary>Holds all pertinent information for handling results and errors in an overlapped set of method calls.</summary>
 	/// <seealso cref="IAsyncResult"/>
