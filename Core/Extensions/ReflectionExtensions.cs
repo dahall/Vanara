@@ -12,6 +12,14 @@ namespace Vanara.Extensions.Reflection
 	{
 		private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
 
+		/// <summary>Gets the alignment of a type.</summary>
+		public static int AlignOf<T>() where T : unmanaged { unsafe { return sizeof(AlignOfHelper<T>) - sizeof(T); } }
+
+		/// <summary>Retrieves the non-<see cref="Nullable{T}"/> type for the provided type.</summary>
+		/// <param name="type">The type.</param>
+		/// <returns>If the type is <see cref="Nullable{T}"/>, returns <c>T</c>; otherwise, returns <paramref name="type"/>.</returns>
+		public static Type AsNonNullable(this Type type) => type.IsNullable() ? type.GetGenericArguments()[0] : type;
+
 		/// <summary>Converts the given value object to the specified type.</summary>
 		/// <param name="value">The <see cref="object"/> to convert.</param>
 		/// <param name="type">The <see cref="Type"/> to conver the <paramref name="value"/> paramter to.</param>
@@ -45,14 +53,14 @@ namespace Vanara.Extensions.Reflection
 			catch
 			{
 				// See if type has conversion constructor
-				var ci = type.GetConstructor(new[] { value.GetType() });
+				var ci = type.GetConstructor([value.GetType()]);
 				if (ci is not null)
-					return ci.Invoke(new[] { value });
+					return ci.Invoke([value]);
 
 				// See if type has static conversion method
-				var mi = type.GetMethod("op_Implicit", new[] { value.GetType() }) ?? type.GetMethod("op_Explicit", new[] { value.GetType() });
+				var mi = type.GetMethod("op_Implicit", [value.GetType()]) ?? type.GetMethod("op_Explicit", [value.GetType()]);
 				if (mi is not null)
-					return mi.Invoke(null, new[] { value });
+					return mi.Invoke(null, [value]);
 
 				// If both value and type are value types, and type is smaller, try to do binary conversion
 				try
@@ -80,6 +88,13 @@ namespace Vanara.Extensions.Reflection
 			while (type.BaseType != null)
 				yield return type = type.BaseType;
 		}
+
+		/// <summary>Gets the alignment of the type.</summary>
+		public static int GetAlignment(this Type type) =>
+			(int)typeof(ReflectionExtensions).GetMethod(nameof(AlignOf), Type.EmptyTypes)!.MakeGenericMethod(type).Invoke(null, null)!;
+
+		/// <summary>Gets the number of bits in the type's blitted value.</summary>
+		public static int GetBitSize(this Type type) { unsafe { return Marshal.SizeOf(type) * 8; } }
 
 		/// <summary>Searches for the constants defined for <paramref name="type"/>, using the specified binding constraints.</summary>
 		/// <param name="type">The type to search.</param>
@@ -234,6 +249,37 @@ namespace Vanara.Extensions.Reflection
 			return (T?)mi.Invoke(obj, args);
 		}
 
+		/// <summary>Gets a value that determines if the type is an array that can be blitted.</summary>
+		public static bool IsBlittableArray(this Type? type)
+		{
+			if (type is null || !type.IsArray || type.GetArrayRank() != 1)
+				return false;
+			while (type is not null && type.IsArray) type = type.GetElementType();
+			return type.IsBlittablePrimitive();
+		}
+
+		/// <summary>Gets a value that determines if the field is a blittable type.</summary>
+		public static bool IsBlittableField(this FieldInfo fieldInfo) => fieldInfo.FieldType.IsBlittablePrimitive() || fieldInfo.FieldType == typeof(bool) || fieldInfo.FieldType.IsEnum || fieldInfo.FieldType.IsBlittableStruct();
+
+		/// <summary>Gets a value that determines if the type is a primitive type that can be blitted.</summary>
+		public static bool IsBlittablePrimitive(this Type? type) => type is not null && (IsIntegral(type) || IsNativeSized(type) || IsFloatingPoint(type));
+
+		/// <summary>Gets a value that determines if the type is a floating point type.</summary>
+		public static bool IsFloatingPoint(this Type? type) => Type.GetTypeCode(type) is TypeCode.Single or TypeCode.Double;
+
+		/// <summary>Gets a value that determines if the type is an integral type.</summary>
+		public static bool IsIntegral(this Type? type) => Type.GetTypeCode(type) is >= TypeCode.SByte and <= TypeCode.UInt64;
+
+		/// <summary>Gets a value that determines if the type is <see cref="IntPtr"/> or <see cref="UIntPtr"/>.</summary>
+		public static bool IsNativeSized(this Type? type) => type == typeof(IntPtr) || type == typeof(UIntPtr);
+
+		/// <summary>Gets a value that determines if this integer is a factorial of 2.</summary>
+		public static bool IsPow2(this int value)
+		{
+			if (value < 0) throw new ArgumentOutOfRangeException(nameof(value), "Value must be positive.");
+			return value != 0 && (value & (value - 1)) == 0;
+		}
+
 		/// <summary>Sets a named field on an object.</summary>
 		/// <typeparam name="T">The type of the field to be set.</typeparam>
 		/// <typeparam name="TS">The type of the object on which to the set the field.</typeparam>
@@ -242,7 +288,7 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="value">The field value to set on the object.</param>
 		public static void SetFieldValue<T, TS>(this TS? obj, string fieldName, T? value) where TS : class
 		{
-			try { obj?.GetType().InvokeMember(fieldName, BindingFlags.SetField | bindingFlags, null, obj, new object?[] { value }, null); }
+			try { obj?.GetType().InvokeMember(fieldName, BindingFlags.SetField | bindingFlags, null, obj, [value], null); }
 			catch { }
 		}
 
@@ -266,8 +312,17 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="value">The property value to set on the object.</param>
 		public static void SetPropertyValue<T>(this object obj, string propName, T value)
 		{
-			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | bindingFlags, null, obj, new object?[] { value }, null); }
+			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | bindingFlags, null, obj, [value], null); }
 			catch { }
+		}
+
+		private static bool IsBlittableStruct(this Type? type) => type is not null && type.IsValueType && !type.IsPrimitive && type.IsLayoutSequential && type.GetFields(bindingFlags).All(IsBlittableField);
+
+		[StructLayout(LayoutKind.Sequential)]
+		private struct AlignOfHelper<T> where T : unmanaged
+		{
+			public byte dummy;
+			public T data;
 		}
 	}
 }
@@ -299,29 +354,6 @@ namespace Vanara.Extensions
 			return default;
 		}
 
-		/// <summary>Gets all loaded types in the <see cref="AppDomain"/>.</summary>
-		/// <param name="appDomain">The application domain.</param>
-		/// <returns>All loaded types.</returns>
-		public static IEnumerable<Type> GetAllTypes(this AppDomain appDomain) => appDomain.GetAssemblies().SelectMany(a => a.GetTypes());
-
-		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
-		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
-		/// <param name="element">An object derived from the MemberInfo class that describes a constructor, event, field, method, or property member of a class.</param>
-		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
-		/// <param name="predicate">An optional predicate to refine the results.</param>
-		/// <returns></returns>
-		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this MemberInfo element, bool inherit = false, Func<TAttr, bool>? predicate = null) where TAttr : Attribute =>
-			element.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
-
-		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
-		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
-		/// <param name="type">The type of the <see cref="Type"/> to examine.</param>
-		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
-		/// <param name="predicate">An optional predicate to refine the results.</param>
-		/// <returns></returns>
-		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this Type type, bool inherit = false, Func<TAttr, bool>? predicate = null) where TAttr : Attribute =>
-			type.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
-
 		/// <summary>Finds the type of the element of a type. Returns null if this type does not enumerate.</summary>
 		/// <param name="type">The type to check.</param>
 		/// <returns>The element type, if found; otherwise, <see langword="null"/>.</returns>
@@ -348,6 +380,29 @@ namespace Vanara.Extensions
 			bool IsIEnum(Type t) => t == typeof(IEnumerable);
 			bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
 		}
+
+		/// <summary>Gets all loaded types in the <see cref="AppDomain"/>.</summary>
+		/// <param name="appDomain">The application domain.</param>
+		/// <returns>All loaded types.</returns>
+		public static IEnumerable<Type> GetAllTypes(this AppDomain appDomain) => appDomain.GetAssemblies().SelectMany(a => a.GetTypes());
+
+		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
+		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
+		/// <param name="element">An object derived from the MemberInfo class that describes a constructor, event, field, method, or property member of a class.</param>
+		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
+		/// <param name="predicate">An optional predicate to refine the results.</param>
+		/// <returns></returns>
+		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this MemberInfo element, bool inherit = false, Func<TAttr, bool>? predicate = null) where TAttr : Attribute =>
+			element.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
+
+		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
+		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
+		/// <param name="type">The type of the <see cref="Type"/> to examine.</param>
+		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
+		/// <param name="predicate">An optional predicate to refine the results.</param>
+		/// <returns></returns>
+		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this Type type, bool inherit = false, Func<TAttr, bool>? predicate = null) where TAttr : Attribute =>
+			type.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
 
 		/// <summary>Gets the fields of a structure with sequential layout in the order in which they appear in memory.</summary>
 		/// <param name="type">The type of the structure.</param>
@@ -391,19 +446,6 @@ namespace Vanara.Extensions
 			return o.InvokeMethod<T>(methodName, args);
 		}
 
-		/// <summary>Invokes a named static method of a type with parameters.</summary>
-		/// <typeparam name="T">The expected type of the method's return value.</typeparam>
-		/// <param name="type">The type containing the static method.</param>
-		/// <param name="methodName">Name of the method.</param>
-		/// <param name="args">The arguments to provide to the method invocation.</param>
-		/// <returns>The value returned from the method.</returns>
-		public static T? InvokeStaticMethod<T>(this Type type, string methodName, params object?[]? args)
-		{
-			var argTypes = args == null || args.Length == 0 ? Type.EmptyTypes : Array.ConvertAll(args, o => o?.GetType() ?? typeof(object));
-			var mi = type.GetMethod(methodName, staticBindingFlags, null, argTypes, null) ?? throw new ArgumentException(@"Method not found", nameof(methodName));
-			return (T?)mi.Invoke(null, args);
-		}
-
 #if !NETSTANDARD2_0
 		/// <summary>Invokes a method from a derived base class.</summary>
 		/// <param name="methodInfo">The <see cref="MethodInfo"/> instance from the derived class for the method to invoke.</param>
@@ -421,7 +463,7 @@ namespace Vanara.Extensions
 				returnType = methodInfo.ReturnType;
 
 			var type = targetObject.GetType();
-			var dynamicMethod = new DynamicMethod("", returnType, new[] { type, typeof(object) }, type);
+			var dynamicMethod = new DynamicMethod("", returnType, [type, typeof(object)], type);
 			var iLGenerator = dynamicMethod.GetILGenerator();
 			iLGenerator.Emit(OpCodes.Ldarg_0); // this
 
@@ -442,9 +484,22 @@ namespace Vanara.Extensions
 			iLGenerator.Emit(OpCodes.Call, methodInfo);
 			iLGenerator.Emit(OpCodes.Ret);
 
-			return dynamicMethod.Invoke(null, new[] { targetObject, arguments });
+			return dynamicMethod.Invoke(null, [targetObject, arguments]);
 		}
 #endif
+
+		/// <summary>Invokes a named static method of a type with parameters.</summary>
+		/// <typeparam name="T">The expected type of the method's return value.</typeparam>
+		/// <param name="type">The type containing the static method.</param>
+		/// <param name="methodName">Name of the method.</param>
+		/// <param name="args">The arguments to provide to the method invocation.</param>
+		/// <returns>The value returned from the method.</returns>
+		public static T? InvokeStaticMethod<T>(this Type type, string methodName, params object?[]? args)
+		{
+			var argTypes = args == null || args.Length == 0 ? Type.EmptyTypes : Array.ConvertAll(args, o => o?.GetType() ?? typeof(object));
+			var mi = type.GetMethod(methodName, staticBindingFlags, null, argTypes, null) ?? throw new ArgumentException(@"Method not found", nameof(methodName));
+			return (T?)mi.Invoke(null, args);
+		}
 
 		/// <summary>Determines whether the specified method is compatible with a delegate.</summary>
 		/// <typeparam name="TDel">The type of the delegate.</typeparam>
