@@ -1502,7 +1502,7 @@ public static partial class PropSys
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-ipropertystorefactory-getpropertystore HRESULT
 		// GetPropertyStore( GETPROPERTYSTOREFLAGS flags, IUnknown *pUnkFactory, REFIID riid, void **ppv );
-		void GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [Optional, MarshalAs(UnmanagedType.IUnknown)] ICreateObject? pUnkFactory, in Guid riid, out IPropertyStore ppv);
+		void GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [Optional] ICreateObject? pUnkFactory, in Guid riid, out IPropertyStore ppv);
 
 		/// <summary>
 		/// <para>
