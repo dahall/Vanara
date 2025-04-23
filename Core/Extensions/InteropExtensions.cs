@@ -342,6 +342,33 @@ public static partial class InteropExtensions
 	/// <summary>
 	/// Marshals data from a managed list of specified type to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
 	/// </summary>
+	/// <param name="items">
+	/// The array of items to marshal. If this is an array of strings, it will be marshaled as a concatenated list with default character encoding.
+	/// </param>
+	/// <param name="memAlloc">
+	/// The function that allocates the memory for the block of items (typically <see cref="Marshal.AllocCoTaskMem(int)"/> or <see cref="Marshal.AllocHGlobal(int)"/>.
+	/// </param>
+	/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
+	/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+	/// <param name="memLock">
+	/// The function used to lock memory before assignment. If <see langword="null"/>, the result from <paramref name="memAlloc"/> will be used.
+	/// </param>
+	/// <param name="memUnlock">The optional function to unlock memory after assignment.</param>
+	/// <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
+	/// <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
+	public static IntPtr MarshalToPtr(this Array items, Func<int, IntPtr> memAlloc, out int bytesAllocated, SizeT prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
+	{
+		if (items.Rank != 1)
+			throw new ArgumentException("Only single dimension arrays are supported.", nameof(items));
+		if (items.GetType().GetElementType() == typeof(string))
+			return items.Cast<string?>().MarshalToPtr(StringListPackMethod.Concatenated, memAlloc, out bytesAllocated, CharSet.Auto, prefixBytes, memLock, memUnlock);
+		return (IntPtr)typeof(IEnumerable<>).MakeGenericType(items.GetType().GetElementType()!).GetMethod(nameof(MarshalToPtr), new[] { typeof(IEnumerable<>), typeof(Func<int, IntPtr>), typeof(int).MakeByRefType(), typeof(SizeT), typeof(Func<IntPtr, IntPtr>), typeof(Func<IntPtr, bool>) })!
+			.MakeGenericMethod(items.GetType().GetElementType()!).Invoke(null, new object?[] { items, memAlloc, bytesAllocated = 0, prefixBytes, memLock, memUnlock }!)!;
+	}
+
+	/// <summary>
+	/// Marshals data from a managed list of specified type to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
+	/// </summary>
 	/// <typeparam name="T">
 	/// A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a
 	/// formatted class.
