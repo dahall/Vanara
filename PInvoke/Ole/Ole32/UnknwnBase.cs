@@ -93,7 +93,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/desktop/api/unknwn/nf-unknwn-iclassfactory-createinstance HRESULT CreateInstance(
 		// IUnknown *pUnkOuter, REFIID riid, void **ppvObject );
 		[PreserveSig]
-		HRESULT CreateInstance([In, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvObject);
+		HRESULT CreateInstance([In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppvObject);
 
 		/// <summary>Locks an object application open in memory. This enables instances to be created more quickly.</summary>
 		/// <param name="fLock">If <c>TRUE</c>, increments the lock count; if <c>FALSE</c>, decrements the lock count.</param>
