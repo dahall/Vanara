@@ -362,8 +362,13 @@ public static partial class InteropExtensions
 			throw new ArgumentException("Only single dimension arrays are supported.", nameof(items));
 		if (items.GetType().GetElementType() == typeof(string))
 			return items.Cast<string?>().MarshalToPtr(StringListPackMethod.Concatenated, memAlloc, out bytesAllocated, CharSet.Auto, prefixBytes, memLock, memUnlock);
-		return (IntPtr)typeof(IEnumerable<>).MakeGenericType(items.GetType().GetElementType()!).GetMethod(nameof(MarshalToPtr), new[] { typeof(IEnumerable<>), typeof(Func<int, IntPtr>), typeof(int).MakeByRefType(), typeof(SizeT), typeof(Func<IntPtr, IntPtr>), typeof(Func<IntPtr, bool>) })!
-			.MakeGenericMethod(items.GetType().GetElementType()!).Invoke(null, new object?[] { items, memAlloc, bytesAllocated = 0, prefixBytes, memLock, memUnlock }!)!;
+		bytesAllocated = 0;
+#pragma warning disable IL2060
+		return (IntPtr)typeof(InteropExtensions).GetMethods()
+			.First(static m => m.Name == "MarshalToPtr" && m.GetParameters()[0].ParameterType.Name == "T[]")
+			.MakeGenericMethod(items.GetType().GetElementType()!)
+			.Invoke(null, new object?[] { items, memAlloc, bytesAllocated, prefixBytes, memLock, memUnlock }!)!;
+#pragma warning restore IL2060
 	}
 
 	/// <summary>
