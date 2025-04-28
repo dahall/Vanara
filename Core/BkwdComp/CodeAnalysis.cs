@@ -1,6 +1,6 @@
 ﻿namespace System.Diagnostics.CodeAnalysis;
 
-#if !NET5_0_OR_GREATER && !NETCOREAPP3_1_OR_GREATER
+#if !NET5_0_OR_GREATER && !NETCOREAPP3_1_OR_GREATER && !NETSTANDARD2_1_OR_GREATER
 /// <summary>Specifies that null is allowed as an input even if the corresponding type disallows it.</summary>
 /// <remarks>
 /// To override a method that has a parameter annotated with this attribute, use the <c>?</c> operator. For example: <c>override
