@@ -1361,7 +1361,7 @@ public static partial class Kernel32
 
 	/// <summary>Safe handle for memory heaps.</summary>
 	/// <seealso cref="GenericSafeHandle"/>
-	public class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>
+	public partial class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeHeapBlock"/> class.</summary>
 		/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>

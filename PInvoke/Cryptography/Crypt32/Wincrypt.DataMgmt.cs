@@ -6392,7 +6392,7 @@ public static partial class Crypt32
 
 	/// <summary>Safe handle for crypto memory.</summary>
 	/// <seealso cref="SafeMemoryHandle{T}"/>
-	public class SafeCryptMem : SafeMemoryHandleExt<CryptMemMethods>
+	public partial class SafeCryptMem : SafeMemoryHandleExt<CryptMemMethods>
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
