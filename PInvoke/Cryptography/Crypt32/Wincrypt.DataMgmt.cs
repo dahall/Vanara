@@ -6419,4 +6419,12 @@ public static partial class Crypt32
 		/// <returns>SafeMemoryHandleExt object to an native (unmanaged) string</returns>
 		public SafeCryptMem(string s, CharSet charSet = CharSet.Unicode) : base(s, charSet) { }
 	}
+
+#if NET7_0_OR_GREATER
+	public partial class SafeCryptMem : ICreateSafeMemoryHandle
+	{
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(SizeT size) => new SafeCryptMem(size);
+	}
+#endif
 }

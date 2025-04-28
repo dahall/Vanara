@@ -1501,6 +1501,14 @@ public static partial class Kernel32
 		public static implicit operator SafeHeapBlock(IntPtr ptr) => new(ptr, 0, true);
 	}
 
+#if NET7_0_OR_GREATER
+	public partial class SafeHeapBlock : ICreateSafeMemoryHandle
+	{
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(SizeT size) => new SafeHeapBlock(size);
+	}
+#endif
+
 	public partial class SafeHHEAP
 	{
 		/// <summary>Gets or sets the heap features that are enabled.</summary>

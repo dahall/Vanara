@@ -7,7 +7,7 @@ public static partial class Kernel32
 {
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated as moveable HGLOBAL.</summary>
 	/// <seealso cref="SafeHandle"/>
-	public class SafeMoveableHGlobalHandle : SafeMemoryHandleExt<MoveableHGlobalMemoryMethods>
+	public partial class SafeMoveableHGlobalHandle : SafeMemoryHandleExt<MoveableHGlobalMemoryMethods>
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
 		/// <param name="handle">The handle.</param>
@@ -92,4 +92,12 @@ public static partial class Kernel32
 		/// <returns>The output from the action.</returns>
 		public new T CallLocked<T>(Func<IntPtr, T> action) => base.CallLocked(action);
 	}
+
+#if NET7_0_OR_GREATER
+	public partial class SafeMoveableHGlobalHandle : ICreateSafeMemoryHandle
+	{
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(SizeT size) => new SafeMoveableHGlobalHandle(size);
+	}
+#endif
 }

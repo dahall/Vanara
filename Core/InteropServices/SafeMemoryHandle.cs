@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security;
@@ -59,7 +58,7 @@ public interface IMemoryMethods : ISimpleMemoryMethods
 }
 
 /// <summary>Interface for classes that support safe memory pointers.</summary>
-public interface ISafeMemoryHandle : IDisposable
+public partial interface ISafeMemoryHandle : IDisposable
 {
 	/// <summary>Gets a value indicating whether the handle value is invalid.</summary>
 	bool IsInvalid { get; }
@@ -146,6 +145,19 @@ public interface ISafeMemoryHandle : IDisposable
 	/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
 	T? ToStructure<T>(SizeT prefixBytes = default);
 }
+
+#if NET7_0_OR_GREATER
+/// <summary>
+/// Extension interface for <see cref="SafeAllocatedMemoryHandleBase"/> that allows the creation of a new instance of the memory handle.
+/// </summary>
+public partial interface ICreateSafeMemoryHandle : ISafeMemoryHandle
+{
+	/// <summary>Creates an instance of the memory handle allocating the specified size, and optionally zeroing the memory.</summary>
+	/// <param name="size">The number of bytes to allocate.</param>
+	/// <returns>A safe handle to the allocated memory.</returns>
+	static abstract ISafeMemoryHandle Create(SizeT size);
+}
+#endif
 
 /// <summary>Interface to capture unmanaged simple (alloc/free) memory methods.</summary>
 public interface ISimpleMemoryMethods

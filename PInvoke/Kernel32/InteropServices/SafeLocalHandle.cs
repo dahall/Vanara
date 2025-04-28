@@ -36,7 +36,7 @@ public sealed class LocalMemoryMethods : MemoryMethodsBase
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
 /// <seealso cref="SafeHandle"/>
-public class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
+public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeLocalHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -111,3 +111,11 @@ public class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator SafeLocalHandle(IntPtr ptr) => new(ptr, 0, true);
 }
+
+#if NET7_0_OR_GREATER
+public partial class SafeLocalHandle : ICreateSafeMemoryHandle
+{
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(SizeT size) => new SafeLocalHandle(size);
+}
+#endif

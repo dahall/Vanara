@@ -76,7 +76,7 @@ public sealed class HGlobalMemoryMethods : IMemoryMethods
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
 /// <seealso cref="SafeHandle"/>
-public class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>
+public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -164,3 +164,11 @@ public class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>
 		return sz;
 	}
 }
+
+#if NET7_0_OR_GREATER
+public partial class SafeHGlobalHandle : ICreateSafeMemoryHandle
+{
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(SizeT size) => new SafeHGlobalHandle(size);
+}
+#endif
