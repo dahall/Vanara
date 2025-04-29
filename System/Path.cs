@@ -61,7 +61,6 @@ public static class PathEx
 	/// <returns>The altered, compacted path string.</returns>
 	public static string Compact(string path, int maxChars) => SBAllocCallRet((s, sz) => PathCompactPathEx(s, path, (uint)maxChars + 1));
 
-#if !NETSTANDARD2_0
 	/// <summary>
 	/// Truncates a file path to fit within a given pixel width by replacing path components with ellipses.
 	/// </summary>
@@ -70,7 +69,6 @@ public static class PathEx
 	/// <param name="dc">A device context used for font metrics. This value can be <see langword="null"/>.</param>
 	/// <returns>The modified string.</returns>
 	public static string Compact(string path, int pixelWidth, System.Drawing.IDeviceContext dc) => SBAllocCallRet((s, sz) => PathCompactPath(dc?.GetHdc() ?? default, s, (uint)pixelWidth), path, (uint)(path?.Length + 1 ?? MAX_PATH));
-#endif
 
 	/// <summary>Converts a file URL to a Microsoft MS-DOS path.</summary>
 	/// <param name="url">The URL.</param>

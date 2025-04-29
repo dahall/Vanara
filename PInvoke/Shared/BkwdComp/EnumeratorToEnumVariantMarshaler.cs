@@ -1,4 +1,4 @@
-﻿#if NETCOREAPP || NETSTANDARD2_0
+﻿#if NETCOREAPP || NETSTANDARD2_0_OR_GREATER
 using System.Collections;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;

@@ -4,6 +4,8 @@ Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
 Imports System.Runtime.InteropServices.CustomMarshalers
 
+#Disable Warning BC40000 ' Type or member is obsolete
+
 Partial Public Module FirewallApi
 
 
