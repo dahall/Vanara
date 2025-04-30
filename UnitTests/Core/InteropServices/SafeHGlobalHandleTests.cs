@@ -66,7 +66,7 @@ public class SafeHGlobalHandleTests
 		Assert.That((int)h.Size, Is.EqualTo(IntPtr.Size + r.Length * (4 + IntPtr.Size)));
 		Assert.That(h.ToStringEnum(4, CharSet.Unicode), Has.Exactly(4).EqualTo("5").And.Exactly(4).Items);
 
-		h = SafeHGlobalHandle.CreateFromStringList(Enumerable.Empty<string>());
+		h = SafeHGlobalHandle.CreateFromStringList([]);
 		Assert.That((int)h.Size, Is.EqualTo(StringHelper.GetCharSize()));
 	}
 

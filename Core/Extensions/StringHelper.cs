@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Security;
 using Vanara.PInvoke;
 
@@ -106,6 +107,21 @@ public static class StringHelper
 		return p;
 	}
 
+	/// <summary>Copies the contents of a managed String to a block of memory allocated from a supplied allocation method.</summary>
+	/// <param name="s">A managed string to be copied.</param>
+	/// <param name="encoder">The character encoder.</param>
+	/// <param name="memAllocator">The method used to allocate the memory.</param>
+	/// <param name="allocatedBytes">Returns the number of allocated bytes for the string.</param>
+	/// <returns>The allocated memory block, or 0 if <paramref name="s"/> is null.</returns>
+	public static IntPtr AllocString(string? s, Encoding encoder, Func<int, IntPtr> memAllocator, out int allocatedBytes)
+	{
+		if (s == null) { allocatedBytes = 0; return IntPtr.Zero; }
+		var b = s.GetBytes(encoder, true);
+		var p = memAllocator(b.Length);
+		Marshal.Copy(b, 0, p, allocatedBytes = b.Length);
+		return p;
+	}
+
 	/// <summary>
 	/// Zeros out the allocated memory behind a secure string and then frees that memory.
 	/// </summary>
@@ -171,6 +187,22 @@ public static class StringHelper
 	public static int GetByteCount(this string? value, Encoding enc, bool nullTerm = true) =>
 		value is null ? 0 : enc.GetByteCount(value) + (nullTerm ? GetCharSize(enc) : 0);
 
+	/// <summary>Gets the encoded character from a pointer to a character array</summary>
+	/// <param name="enc">The character encoding type.</param>
+	/// <param name="ptr">The pointer from which to read the character.</param>
+	/// <returns>The encoded character read at <paramref name="ptr"/>, or <see langword="null"/> if <paramref name="ptr"/> is 0.</returns>
+	public static char? GetChar(this Encoding enc, IntPtr ptr)
+	{
+		if (ptr == default) return null;
+		var chsz = GetCharSize(enc);
+		unsafe
+		{
+			char c = default;
+			Debug.Assert(enc.GetChars((byte*)ptr, chsz, &c, 1) == 1);
+			return c;
+		}
+	}
+
 	/// <summary>Gets the size of a character defined by the supplied <see cref="CharSet"/>.</summary>
 	/// <param name="charSet">The character set to size.</param>
 	/// <returns>The size of a standard character, in bytes, from <paramref name="charSet"/>.</returns>
@@ -179,7 +211,7 @@ public static class StringHelper
 	/// <summary>Gets the size of a character defined by the supplied <see cref="Encoding"/>.</summary>
 	/// <param name="enc">The character encoding type.</param>
 	/// <returns>The size of a standard character, in bytes, from <paramref name="enc"/>.</returns>
-	public static int GetCharSize(Encoding enc) => enc.GetByteCount(new[] { '\0' });
+	public static int GetCharSize(this Encoding enc) => enc.GetByteCount(new[] { '\0' });
 
 	/// <summary>
 	/// Allocates a managed String and copies all characters up to the first null character or the end of the allocated memory pool from a string stored in unmanaged memory into it.
@@ -210,6 +242,42 @@ public static class StringHelper
 			}
 		}
 		return sb.ToString();
+	}
+
+	/// <summary>
+	/// Allocates a managed String and copies all characters up to the first null character or the end of the allocated memory pool from a
+	/// string stored in unmanaged memory into it.
+	/// </summary>
+	/// <param name="ptr">The address of the first character.</param>
+	/// <param name="encoding">The character encoding of the string.</param>
+	/// <param name="readBytes">The number of bytes read.</param>
+	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr" />.</param>
+	/// <returns>
+	/// A managed string that holds a copy of the unmanaged string if the value of the <paramref name="ptr" /> parameter is not null;
+	/// otherwise, this method returns null.
+	/// </returns>
+	public static string? GetString(IntPtr ptr, Encoding encoding, out int readBytes, int allocatedBytes = short.MaxValue)
+	{
+		readBytes = 0;
+		if (IsValue(ptr)) return null;
+		unsafe
+		{
+			var chsz = GetCharSize(encoding);
+			switch (chsz)
+			{
+				case 1:
+					for (byte* uptr = (byte*)ptr; readBytes < allocatedBytes && *uptr != 0; readBytes += chsz, uptr++) ;
+					break;
+				case 4:
+					for (uint* uptr = (uint*)ptr; readBytes < allocatedBytes && *uptr != 0; readBytes += chsz, uptr++) ;
+					break;
+				default:
+					for (ushort* uptr = (ushort*)ptr; readBytes < allocatedBytes && *uptr != 0; readBytes += chsz, uptr++) ;
+					break;
+			};
+			readBytes += chsz;
+			return encoding.GetString((byte*)ptr, readBytes - chsz);
+		}
 	}
 
 	/// <summary>

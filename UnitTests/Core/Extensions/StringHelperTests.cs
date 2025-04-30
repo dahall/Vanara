@@ -108,4 +108,33 @@ public class StringHelperTests
 			Marshal.FreeCoTaskMem(ptr);
 		}
 	}
+
+	[TestCase("BOO", CharSet.Ansi)]
+	[TestCase("BOO", CharSet.Unicode)]
+	[TestCase("BOO", CharSet.None)]
+	[TestCase("", CharSet.Ansi)]
+	[TestCase("", CharSet.Unicode)]
+	[TestCase("", CharSet.None)]
+	[TestCase(null, CharSet.Ansi)]
+	[TestCase(null, CharSet.Unicode)]
+	[TestCase(null, CharSet.None)]
+	public void GetEncStringTest(string value, CharSet cs)
+	{
+		IntPtr ptr = default;
+		try
+		{
+			Encoding encoding = cs switch { CharSet.Ansi => Encoding.UTF8, CharSet.Unicode => Encoding.Unicode, _ => Encoding.UTF32 };
+			ptr = StringHelper.AllocString(value, encoding, Marshal.AllocCoTaskMem, out var count);
+			Assert.That(count, Is.EqualTo((value?.Length + 1) * StringHelper.GetCharSize(encoding) ?? 0));
+			Assert.That(StringHelper.GetString(ptr, encoding, out int sz), Is.EqualTo(value));
+			Assert.That(sz, Is.EqualTo(count));
+			Assert.That(StringHelper.GetString(ptr, encoding, out sz, count * 2), Is.EqualTo(value));
+			Assert.That(sz, Is.EqualTo(count));
+			Assert.That(StringHelper.GetString(ptr, encoding, out _, count / 2), Is.EqualTo(string.IsNullOrEmpty(value) ? value : value.Substring(0, (value.Length + 1) / 2)));
+		}
+		finally
+		{
+			Marshal.FreeCoTaskMem(ptr);
+		}
+	}
 }
