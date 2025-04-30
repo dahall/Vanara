@@ -824,6 +824,27 @@ public static partial class InteropExtensions
 	}
 
 	/// <summary>
+	/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and is
+	/// terminated by two '\0' characters.
+	/// </summary>
+	/// <param name="lptr">The <see cref="IntPtr" /> pointing to the native array.</param>
+	/// <param name="encoder">The character encoding of the strings.</param>
+	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="lptr" />.</param>
+	/// <returns>An enumerated list of strings.</returns>
+	/// <exception cref="System.InsufficientMemoryException"></exception>
+	public static IEnumerable<string> ToStringEnum(this IntPtr lptr, Encoding encoder, [Optional] SizeT prefixBytes, [Optional] SizeT allocatedBytes)
+	{
+		int bytesread = 0, c = 0;
+		if (lptr == IntPtr.Zero) yield break;
+		bytesread = prefixBytes;
+		for (IntPtr ptr = lptr.Offset(prefixBytes); bytesread <= allocatedBytes && encoder.GetChar(ptr).GetValueOrDefault('\0') != '\0'; bytesread += c, ptr = lptr.Offset(bytesread))
+			yield return StringHelper.GetString(ptr, encoder, out c, allocatedBytes - bytesread)!;
+		bytesread += encoder.GetCharSize();
+		if (bytesread > allocatedBytes) throw new InsufficientMemoryException();
+	}
+
+	/// <summary>
 	/// Marshals data from an unmanaged block of memory to a newly allocated managed object of the type specified by <paramref name="destType"/>.
 	/// </summary>
 	/// <param name="ptr">A pointer to an unmanaged block of memory.</param>
@@ -1079,7 +1100,7 @@ public static partial class InteropExtensions
 	public static SizeT Write(this IntPtr ptr, IEnumerable<string?> items, StringListPackMethod packing, CharSet charSet = CharSet.Auto, SizeT offset = default, SizeT allocatedBytes = default)
 	{
 		// Check size
-		SizeT sz = GetStrListSize(items, packing, charSet);
+		int sz = GetStrListSize(items, packing, charSet);
 		if (allocatedBytes > 0 && (sz > 0 && sz + offset > allocatedBytes) || (sz < 0 && -sz + offset > allocatedBytes))
 			throw new InsufficientMemoryException();
 
@@ -1296,7 +1317,7 @@ public static partial class InteropExtensions
 		return alloc;
 	}
 
-	private static SizeT GetStrListSize(IEnumerable<string?> items, StringListPackMethod packing, CharSet charSet)
+	private static int GetStrListSize(IEnumerable<string?> items, StringListPackMethod packing, CharSet charSet)
 	{
 		int chSz = StringHelper.GetCharSize(charSet);
 		if (items is null || !items.Any())

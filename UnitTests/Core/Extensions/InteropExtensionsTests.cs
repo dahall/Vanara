@@ -288,7 +288,7 @@ public class InteropExtensionsTests
 			Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 			Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
 		}
-		using (var sa = SafeHGlobalHandle.CreateFromStringList(Enumerable.Empty<string>(), StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
+		using (var sa = SafeHGlobalHandle.CreateFromStringList([], StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
 		{
 			var ptr = sa.DangerousGetHandle();
 			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
@@ -298,6 +298,40 @@ public class InteropExtensionsTests
 			Assert.That(() => ptr.ToStringEnum(CharSet.Unicode, intSz, sa.Size - 1).Count(), Throws.TypeOf<InsufficientMemoryException>());
 		}
 		Assert.That(IntPtr.Zero.ToStringEnum(CharSet.Unicode, intSz), Is.Empty);
+	}
+
+	[Test()]
+	public void ToEncStringEnumConcatTest()
+	{
+		var rs = new[] { "str1", "str2", "str3" };
+		using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Concatenated, CharSet.Ansi, intSz))
+		{
+			var ptr = sa.DangerousGetHandle();
+			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
+			var se = ptr.ToStringEnum(Encoding.ASCII, intSz, sa.Size);
+			Assert.That(se, Is.EquivalentTo(rs));
+			Assert.That(() => ptr.ToStringEnum(Encoding.ASCII, intSz, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+			Assert.That(() => ptr.ToStringEnum(Encoding.ASCII, intSz, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+		}
+		using (var sa = SafeHGlobalHandle.CreateFromStringList(rs, StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
+		{
+			var ptr = sa.DangerousGetHandle();
+			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
+			var se = ptr.ToStringEnum(Encoding.Unicode, intSz, sa.Size);
+			Assert.That(se, Is.EquivalentTo(rs));
+			Assert.That(() => ptr.ToStringEnum(Encoding.Unicode, intSz, sa.Size - 5).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+			Assert.That(() => ptr.ToStringEnum(Encoding.Unicode, intSz, sa.Size - 1).ToArray(), Throws.TypeOf<InsufficientMemoryException>());
+		}
+		using (var sa = SafeHGlobalHandle.CreateFromStringList([], StringListPackMethod.Concatenated, CharSet.Unicode, intSz))
+		{
+			var ptr = sa.DangerousGetHandle();
+			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
+			var se = ptr.ToStringEnum(Encoding.Unicode, intSz, sa.Size);
+			Assert.That(se, Is.Empty);
+			Assert.That(() => ptr.ToStringEnum(Encoding.Unicode, intSz, intSz).Count(), Throws.TypeOf<InsufficientMemoryException>());
+			Assert.That(() => ptr.ToStringEnum(Encoding.Unicode, intSz, sa.Size - 1).Count(), Throws.TypeOf<InsufficientMemoryException>());
+		}
+		Assert.That(IntPtr.Zero.ToStringEnum(Encoding.Unicode, intSz), Is.Empty);
 	}
 
 	[Test()]
@@ -318,7 +352,7 @@ public class InteropExtensionsTests
 			var se = ptr.ToStringEnum(rs.Length, CharSet.Unicode, intSz);
 			Assert.That(se, Is.EquivalentTo(rs));
 		}
-		using (var sa = SafeHGlobalHandle.CreateFromStringList(Enumerable.Empty<string>(), StringListPackMethod.Packed, CharSet.Unicode, intSz))
+		using (var sa = SafeHGlobalHandle.CreateFromStringList([], StringListPackMethod.Packed, CharSet.Unicode, intSz))
 		{
 			var ptr = sa.DangerousGetHandle();
 			Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
