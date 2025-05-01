@@ -317,6 +317,23 @@ public static class StringHelper
 	/// <summary>Writes the specified string to a pointer to allocated memory.</summary>
 	/// <param name="value">The string value.</param>
 	/// <param name="ptr">The pointer to the allocated memory.</param>
+	/// <param name="encoder">The character encoding of the string.</param>
+	/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
+	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+	/// <returns>The resulting number of bytes written.</returns>
+	public static int Write(string? value, IntPtr ptr, Encoding encoder, bool nullTerm = true, long allocatedBytes = long.MaxValue)
+	{
+		if (value is null) return 0;
+		if (ptr == IntPtr.Zero) throw new ArgumentNullException(nameof(ptr));
+		var bytes = value.GetBytes(encoder, true);
+		if (bytes.Length > allocatedBytes) throw new ArgumentOutOfRangeException(nameof(allocatedBytes));
+		Marshal.Copy(bytes, 0, ptr, bytes.Length);
+		return bytes.Length;
+	}
+
+	/// <summary>Writes the specified string to a pointer to allocated memory.</summary>
+	/// <param name="value">The string value.</param>
+	/// <param name="ptr">The pointer to the allocated memory.</param>
 	/// <param name="byteCnt">The resulting number of bytes written.</param>
 	/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
 	/// <param name="charSet">The character set of the string.</param>
