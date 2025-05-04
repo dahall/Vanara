@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Security;
+using System.Text;
 using Vanara.PInvoke;
 
 namespace Vanara.Extensions;
@@ -256,27 +257,30 @@ public static class StringHelper
 	/// A managed string that holds a copy of the unmanaged string if the value of the <paramref name="ptr" /> parameter is not null;
 	/// otherwise, this method returns null.
 	/// </returns>
-	public static string? GetString(IntPtr ptr, Encoding encoding, out int readBytes, int allocatedBytes = short.MaxValue)
+	public static string? GetString(IntPtr ptr, Encoding encoding, out SizeT readBytes, long allocatedBytes = long.MaxValue)
 	{
 		readBytes = 0;
 		if (IsValue(ptr)) return null;
+		if (allocatedBytes == 0) return string.Empty;
 		unsafe
 		{
 			var chsz = GetCharSize(encoding);
+			int r = 0;
 			switch (chsz)
 			{
 				case 1:
-					for (byte* uptr = (byte*)ptr; readBytes < allocatedBytes && *uptr != 0; readBytes += chsz, uptr++) ;
+					for (byte* uptr = (byte*)ptr; r < allocatedBytes && *uptr != 0; r += chsz, uptr++) ;
 					break;
 				case 4:
-					for (uint* uptr = (uint*)ptr; readBytes < allocatedBytes && *uptr != 0; readBytes += chsz, uptr++) ;
+					for (uint* uptr = (uint*)ptr; r < allocatedBytes && *uptr != 0; r += chsz, uptr++) ;
 					break;
 				default:
-					for (ushort* uptr = (ushort*)ptr; readBytes < allocatedBytes && *uptr != 0; readBytes += chsz, uptr++) ;
+					for (ushort* uptr = (ushort*)ptr; r < allocatedBytes && *uptr != 0; r += chsz, uptr++) ;
 					break;
-			};
-			readBytes += chsz;
-			return encoding.GetString((byte*)ptr, readBytes - chsz);
+			}
+			// Read the null terminator
+			readBytes = r + chsz;
+			return r == 0 ? string.Empty : encoding.GetString((byte*)ptr, r);
 		}
 	}
 
@@ -314,6 +318,16 @@ public static class StringHelper
 		return s != null;
 	}
 
+	/// <summary>Resolves the specified character set, when set to <see cref="CharSet.Auto"/> to the correct value for the system.</summary>
+	/// <param name="charSet">The character set to resolve.</param>
+	/// <returns>Either <see cref="CharSet.Ansi"/> or <see cref="CharSet.Unicode"/>.</returns>
+	public static CharSet Resolve(this CharSet charSet) => charSet == CharSet.Auto ? (Marshal.SystemDefaultCharSize == 1 ? CharSet.Ansi : CharSet.Unicode) : charSet;
+
+	/// <summary>Converts the specified <see cref="CharSet"/> value to its encoding.</summary>
+	/// <param name="charSet">The character set.</param>
+	/// <returns>The matching encoding.</returns>
+	public static Encoding ToEncoding(this CharSet charSet) => charSet.Resolve() == CharSet.Ansi ? Encoding.Default : Encoding.Unicode;
+
 	/// <summary>Writes the specified string to a pointer to allocated memory.</summary>
 	/// <param name="value">The string value.</param>
 	/// <param name="ptr">The pointer to the allocated memory.</param>
@@ -321,14 +335,17 @@ public static class StringHelper
 	/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 	/// <returns>The resulting number of bytes written.</returns>
-	public static int Write(string? value, IntPtr ptr, Encoding encoder, bool nullTerm = true, long allocatedBytes = long.MaxValue)
+	public static int Write(string? value, IntPtr ptr, Encoding encoder, bool nullTerm = true, int allocatedBytes = int.MaxValue)
 	{
 		if (value is null) return 0;
-		if (ptr == IntPtr.Zero) throw new ArgumentNullException(nameof(ptr));
-		var bytes = value.GetBytes(encoder, true);
-		if (bytes.Length > allocatedBytes) throw new ArgumentOutOfRangeException(nameof(allocatedBytes));
-		Marshal.Copy(bytes, 0, ptr, bytes.Length);
-		return bytes.Length;
+		if (nullTerm) value = value + '\0';
+		unsafe
+		{
+			fixed (char* p = value)
+			{
+				return encoder.GetBytes(p, value.Length, (byte*)ptr, allocatedBytes);
+			}
+		}
 	}
 
 	/// <summary>Writes the specified string to a pointer to allocated memory.</summary>
@@ -338,20 +355,8 @@ public static class StringHelper
 	/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
-	public static void Write(string? value, IntPtr ptr, out int byteCnt, bool nullTerm = true, CharSet charSet = CharSet.Auto, long allocatedBytes = long.MaxValue)
-	{
-		if (value is null)
-		{
-			byteCnt = 0;
-			return;
-		}
-		if (ptr == IntPtr.Zero) throw new ArgumentNullException(nameof(ptr));
-		var bytes = GetBytes(value, nullTerm, charSet);
-		if (bytes.Length > allocatedBytes)
-			throw new ArgumentOutOfRangeException(nameof(allocatedBytes));
-		byteCnt = bytes.Length;
-		Marshal.Copy(bytes, 0, ptr, byteCnt);
-	}
+	public static void Write(string? value, IntPtr ptr, out int byteCnt, bool nullTerm = true, CharSet charSet = CharSet.Auto, int allocatedBytes = int.MaxValue) =>
+		byteCnt = Write(value, ptr, charSet.ToEncoding(), nullTerm, allocatedBytes);
 
-	private static bool IsValue(IntPtr ptr) => ptr.ToInt64() >> 16 == 0;
+	internal static bool IsValue(this IntPtr ptr) => unchecked((ulong)ptr.ToInt64()) >> 16 == 0;
 }

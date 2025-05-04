@@ -835,7 +835,7 @@ public static partial class InteropExtensions
 	/// <exception cref="System.InsufficientMemoryException"></exception>
 	public static IEnumerable<string> ToStringEnum(this IntPtr lptr, Encoding encoder, [Optional] SizeT prefixBytes, [Optional] SizeT allocatedBytes)
 	{
-		int bytesread = 0, c = 0;
+		SizeT bytesread = 0, c = 0;
 		if (lptr == IntPtr.Zero) yield break;
 		bytesread = prefixBytes;
 		for (IntPtr ptr = lptr.Offset(prefixBytes); bytesread <= allocatedBytes && encoder.GetChar(ptr).GetValueOrDefault('\0') != '\0'; bytesread += c, ptr = lptr.Offset(bytesread))
@@ -1205,7 +1205,7 @@ public static partial class InteropExtensions
 		// Handle strings (risk is wrong CharSet)
 		if (value is string s)
 		{
-			StringHelper.Write(s, ptr.Offset(offset), out var wrtn, true, CharSet.Auto, allocatedBytes == 0 ? long.MaxValue : allocatedBytes);
+			StringHelper.Write(s, ptr.Offset(offset), out var wrtn, true, CharSet.Auto, allocatedBytes == 0 ? int.MaxValue : allocatedBytes);
 			return wrtn;
 		}
 
