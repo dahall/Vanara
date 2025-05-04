@@ -7,7 +7,7 @@ public static partial class Kernel32
 {
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated as moveable HGLOBAL.</summary>
 	/// <seealso cref="SafeHandle"/>
-	public partial class SafeMoveableHGlobalHandle : SafeMemoryHandleExt<MoveableHGlobalMemoryMethods>
+	public partial class SafeMoveableHGlobalHandle : SafeMemoryHandleExt<MoveableHGlobalMemoryMethods>, ICreateSafeMemoryHandle
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
 		/// <param name="handle">The handle.</param>
@@ -44,6 +44,9 @@ public static partial class Kernel32
 
 		/// <summary>Represents a NULL memory pointer.</summary>
 		public static SafeMoveableHGlobalHandle Null { get; } = new SafeMoveableHGlobalHandle(IntPtr.Zero, false);
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(SizeT size) => new SafeMoveableHGlobalHandle(size);
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
@@ -92,12 +95,4 @@ public static partial class Kernel32
 		/// <returns>The output from the action.</returns>
 		public new T CallLocked<T>(Func<IntPtr, T> action) => base.CallLocked(action);
 	}
-
-#if NET7_0_OR_GREATER
-	public partial class SafeMoveableHGlobalHandle : ICreateSafeMemoryHandle
-	{
-		/// <inheritdoc/>
-		public static ISafeMemoryHandle Create(SizeT size) => new SafeMoveableHGlobalHandle(size);
-	}
-#endif
 }

@@ -76,7 +76,7 @@ public sealed class CoTaskMemoryMethods : IMemoryMethods
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via COM.</summary>
 /// <seealso cref="SafeHandle"/>
-public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>
+public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>, ICreateSafeMemoryHandle
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -117,6 +117,9 @@ public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMetho
 	/// <summary>Represents a NULL memory pointer.</summary>
 	public static SafeCoTaskMemHandle Null => new(IntPtr.Zero, 0, false);
 
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(SizeT size) => new SafeCoTaskMemHandle(size);
+
 	/// <summary>
 	/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
 	/// elements. It is the callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY
@@ -156,11 +159,3 @@ public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMetho
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator SafeCoTaskMemHandle(IntPtr ptr) => new(ptr, 0, true);
 }
-
-#if NET7_0_OR_GREATER
-public partial class SafeCoTaskMemHandle : ICreateSafeMemoryHandle
-{
-	/// <inheritdoc/>
-	public static ISafeMemoryHandle Create(SizeT size) => new SafeCoTaskMemHandle(size);
-}
-#endif

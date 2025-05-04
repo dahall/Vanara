@@ -1361,7 +1361,7 @@ public static partial class Kernel32
 
 	/// <summary>Safe handle for memory heaps.</summary>
 	/// <seealso cref="GenericSafeHandle"/>
-	public partial class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>
+	public partial class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>, ICreateSafeMemoryHandle
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeHeapBlock"/> class.</summary>
 		/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
@@ -1463,6 +1463,9 @@ public static partial class Kernel32
 		/// <value>The heap handle.</value>
 		public HHEAP HeapHandle => mm.HeapHandle;
 
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(SizeT size) => new SafeHeapBlock(size);
+
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
 		/// elements. It is the callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY
@@ -1500,14 +1503,6 @@ public static partial class Kernel32
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator SafeHeapBlock(IntPtr ptr) => new(ptr, 0, true);
 	}
-
-#if NET7_0_OR_GREATER
-	public partial class SafeHeapBlock : ICreateSafeMemoryHandle
-	{
-		/// <inheritdoc/>
-		public static ISafeMemoryHandle Create(SizeT size) => new SafeHeapBlock(size);
-	}
-#endif
 
 	public partial class SafeHHEAP
 	{

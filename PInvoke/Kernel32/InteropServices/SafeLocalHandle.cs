@@ -36,7 +36,7 @@ public sealed class LocalMemoryMethods : MemoryMethodsBase
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
 /// <seealso cref="SafeHandle"/>
-public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
+public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>, ICreateSafeMemoryHandle
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeLocalHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -77,6 +77,9 @@ public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
 	/// <summary>Represents a NULL memory pointer.</summary>
 	public static SafeLocalHandle Null { get; } = new SafeLocalHandle(IntPtr.Zero, 0, false);
 
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(SizeT size) => new SafeLocalHandle(size);
+
 	/// <summary>
 	/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
 	/// elements. It is the callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY structures
@@ -111,11 +114,3 @@ public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator SafeLocalHandle(IntPtr ptr) => new(ptr, 0, true);
 }
-
-#if NET7_0_OR_GREATER
-public partial class SafeLocalHandle : ICreateSafeMemoryHandle
-{
-	/// <inheritdoc/>
-	public static ISafeMemoryHandle Create(SizeT size) => new SafeLocalHandle(size);
-}
-#endif

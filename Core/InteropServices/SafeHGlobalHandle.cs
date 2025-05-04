@@ -76,7 +76,7 @@ public sealed class HGlobalMemoryMethods : IMemoryMethods
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
 /// <seealso cref="SafeHandle"/>
-public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>
+public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethods>, ICreateSafeMemoryHandle
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -121,6 +121,9 @@ public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethod
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator SafeHGlobalHandle(IntPtr ptr) => new(ptr, 0, true);
 
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(SizeT size) => new SafeHGlobalHandle(size);
+
 	/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 	/// <typeparam name="T">Native type</typeparam>
 	/// <param name="value">The value.</param>
@@ -164,11 +167,3 @@ public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethod
 		return sz;
 	}
 }
-
-#if NET7_0_OR_GREATER
-public partial class SafeHGlobalHandle : ICreateSafeMemoryHandle
-{
-	/// <inheritdoc/>
-	public static ISafeMemoryHandle Create(SizeT size) => new SafeHGlobalHandle(size);
-}
-#endif
