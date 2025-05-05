@@ -276,6 +276,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWnd
 			switch ((WindowMessage)msg)
 			{
 				case WindowMessage.WM_CREATE:
+					this.hwnd = new(hwnd, false);
 					Created?.Invoke();
 					break;
 				case WindowMessage.WM_NCDESTROY:
