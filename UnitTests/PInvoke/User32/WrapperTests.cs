@@ -50,12 +50,13 @@ public partial class User32Tests
 	[Test]
 	public void WindowCreateTest()
 	{
-		bool created = false;
+		HWND h = HWND.NULL;
 		using WindowBase wnd = new();
-		wnd.Created += () => created = true;
+		wnd.Created += () => h = wnd.Handle;
 		wnd.CreateHandle(null, caption, style: WindowStyles.WS_OVERLAPPED);
 		Assert.That(wnd.ClassName, Is.Not.Null);
-		Assert.That(created);
+		Assert.That(h.IsInvalid, Is.False);
+		Assert.That(h, Is.EqualTo(wnd.Handle));
 		Assert.That(wnd.Handle, Is.Not.EqualTo(HWND.NULL));
 		Assert.That(IsWindowUnicode(wnd.Handle), Is.EqualTo(IsWide.Value));
 		Assert.That(GetWindowTextLength(wnd.Handle), Is.EqualTo(captionLen));
