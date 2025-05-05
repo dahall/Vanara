@@ -335,15 +335,16 @@ public static class StringHelper
 	/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 	/// <returns>The resulting number of bytes written.</returns>
-	public static int Write(string? value, IntPtr ptr, Encoding encoder, bool nullTerm = true, int allocatedBytes = int.MaxValue)
+	public static int Write(string? value, IntPtr ptr, Encoding encoder, bool nullTerm = true, long allocatedBytes = int.MaxValue)
 	{
+		if (allocatedBytes > int.MaxValue) throw new ArgumentOutOfRangeException(nameof(allocatedBytes), "Must be less than int.MaxValue");
 		if (value is null) return 0;
 		if (nullTerm) value = value + '\0';
 		unsafe
 		{
 			fixed (char* p = value)
 			{
-				return encoder.GetBytes(p, value.Length, (byte*)ptr, allocatedBytes);
+				return encoder.GetBytes(p, value.Length, (byte*)ptr, (int)allocatedBytes);
 			}
 		}
 	}
@@ -355,7 +356,7 @@ public static class StringHelper
 	/// <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value"/> does not equal <c>null</c>.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
-	public static void Write(string? value, IntPtr ptr, out int byteCnt, bool nullTerm = true, CharSet charSet = CharSet.Auto, int allocatedBytes = int.MaxValue) =>
+	public static void Write(string? value, IntPtr ptr, out int byteCnt, bool nullTerm = true, CharSet charSet = CharSet.Auto, long allocatedBytes = int.MaxValue) =>
 		byteCnt = Write(value, ptr, charSet.ToEncoding(), nullTerm, allocatedBytes);
 
 	internal static bool IsValue(this IntPtr ptr) => unchecked((ulong)ptr.ToInt64()) >> 16 == 0;
