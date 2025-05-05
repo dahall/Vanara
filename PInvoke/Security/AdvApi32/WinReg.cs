@@ -3246,6 +3246,57 @@ public static partial class AdvApi32
 		return type.GetValue(mem, sz);
 	}
 
+	/// <summary>Changes the name of the specified registry key.</summary>
+	/// <param name="hKey">
+	/// <para>
+	/// A handle to the key to be renamed. The handle must be opened with the KEY_WRITE access right. For more information, see <c>Registry
+	/// Key Security and Access Rights</c>.
+	/// </para>
+	/// <para>
+	/// This handle is returned by the <c>RegCreateKeyEx</c> or <c>RegOpenKeyEx</c> function, or it can be one of the following <c>Predefined Keys</c>:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>HKEY_CLASSES_ROOT</description>
+	/// </item>
+	/// <item>
+	/// <description>HKEY_CURRENT_CONFIG</description>
+	/// </item>
+	/// <item>
+	/// <description>HKEY_CURRENT_USER</description>
+	/// </item>
+	/// <item>
+	/// <description>HKEY_LOCAL_MACHINE</description>
+	/// </item>
+	/// <item>
+	/// <description>HKEY_USERS</description>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="lpSubKeyName">
+	/// The name of the subkey to be renamed. This key must be a subkey of the key identified by the hKey parameter. This parameter can also
+	/// be <b>NULL</b>, in which case the key identified by the hKey parameter will be renamed.
+	/// </param>
+	/// <param name="lpNewKeyName">The new name of the key. The new name must not already exist.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+	/// <para>
+	/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the <c>FormatMessage</c> function
+	/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error. An error code of STATUS_ACCESS_DENIED indicates
+	/// that the caller does not have the necessary access rights to the specified registry key or subkeys.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// This function can be used to rename an entire registry subtree. The caller must have KEY_CREATE_SUB_KEY access to the parent of the
+	/// specified key and DELETE access to the entire subtree being renamed.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regrenamekey
+	// LSTATUS RegRenameKey( HKEY hKey, LPCWSTR lpSubKeyName, LPCWSTR lpNewKeyName );
+	[PInvokeData("winreg.h", MSDNShortId = "NF:winreg.RegRenameKey")]
+	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+	public static extern Win32Error RegRenameKey(HKEY hKey, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? lpSubKeyName,
+		[MarshalAs(UnmanagedType.LPWStr)] string lpNewKeyName);
+
 	/// <summary>
 	/// <para>
 	/// Replaces the file backing a registry key and all its subkeys with another file, so that when the system is next started, the key
