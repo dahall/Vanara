@@ -791,6 +791,28 @@ public static partial class InteropExtensions
 	}
 
 	/// <summary>
+	/// Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length
+	/// <paramref name="count"/>.
+	/// </summary>
+	/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+	/// <param name="count">The count of expected strings.</param>
+	/// <param name="encoder">The character encoding of the strings.</param>
+	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+	/// <returns>Enumeration of strings.</returns>
+	public static IEnumerable<string?> ToStringEnum(this IntPtr ptr, SizeT count, Encoding encoder, SizeT prefixBytes = default, SizeT allocatedBytes = default)
+	{
+		if (ptr == IntPtr.Zero || count == 0) yield break;
+		if (allocatedBytes > 0 && count * IntPtr.Size + prefixBytes > allocatedBytes)
+			throw new InsufficientMemoryException();
+		for (var i = 0; i < count; i++)
+		{
+			IntPtr sptr = Marshal.ReadIntPtr(ptr.Offset(prefixBytes + i * IntPtr.Size));
+			yield return StringHelper.GetString(sptr, encoder, out _);
+		}
+	}
+
+	/// <summary>
 	/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character
 	/// and is terminated by two '\0' characters.
 	/// </summary>
