@@ -7,6 +7,14 @@ namespace Vanara.Extensions.Tests;
 [TestFixture()]
 public class StringHelperTests
 {
+	private static readonly object?[][] testStrings = [
+		[null, 0, 0],
+		["", 1, 2],
+		["Hello, world!", 14, 28],
+		["你好，世界！", 19, 14],
+		["Surrogate test: \uD83D\uDE00", 21, 38],
+	];
+
 	[Test()]
 	public void AllocCharsTest()
 	{
@@ -30,7 +38,7 @@ public class StringHelperTests
 		StringHelper.FreeString(sptr, CharSet.Unicode);
 	}
 
-	[Test()]
+	[TestCaseSource(nameof(testStrings))]
 	public void AllocStringTest()
 	{
 		var sptr = StringHelper.AllocString("X", CharSet.Ansi);
@@ -87,22 +95,106 @@ public class StringHelperTests
 		Assert.That(StringHelper.GetByteCount(value, nullTerm, cs), Is.EqualTo(ret));
 	}
 
-	[TestCase("BOO", CharSet.Ansi)]
-	[TestCase("BOO", CharSet.Unicode)]
-	[TestCase("", CharSet.Ansi)]
-	[TestCase("", CharSet.Unicode)]
-	[TestCase(null, CharSet.Ansi)]
-	[TestCase(null, CharSet.Unicode)]
-	public void GetStringTest1(string value, CharSet cs)
+	[TestCase(null, 0)]
+	[TestCase("", 1)]
+	[TestCase("Hello, world!", 14)]
+	public void GetAnsiStringTest(string value, int len)
 	{
 		IntPtr ptr = default;
+		CharSet cs = CharSet.Ansi;
 		try
 		{
 			ptr = StringHelper.AllocString(value, cs, Marshal.AllocCoTaskMem, out var count);
-			Assert.That(count, Is.EqualTo((value?.Length + 1) * StringHelper.GetCharSize(cs) ?? 0));
+			Assert.That(count, Is.EqualTo(len));
 			Assert.That(StringHelper.GetString(ptr, cs), Is.EqualTo(value));
 			Assert.That(StringHelper.GetString(ptr, cs, count * 2), Is.EqualTo(value));
-			Assert.That(StringHelper.GetString(ptr, cs, count / 2), Is.EqualTo(string.IsNullOrEmpty(value) ? value : value.Substring(0, (value.Length + 1) / 2)));
+			if (ptr == IntPtr.Zero)
+				Assert.That(value, Is.Null);
+			else
+			{
+				Assert.That(value, Is.Not.Null);
+				var readVal = StringHelper.GetString(ptr, cs, count / 2)!;
+				if (value.Length > 0)
+				{
+					Assert.That(value, Is.Not.EqualTo(readVal));
+					Assert.That(value.StartsWith(readVal));
+				}
+				else
+					Assert.That(readVal, Is.EqualTo(string.Empty));
+			}
+		}
+		finally
+		{
+			Marshal.FreeCoTaskMem(ptr);
+		}
+	}
+
+	[TestCase(null, 0)]
+	[TestCase("", 2)]
+	[TestCase("Hello, world!", 28)]
+	[TestCase("你好，世界！", 14)]
+	[TestCase("Surrogate test: \uD83D\uDE00", 38)]
+	public void GetUniStringTest(string value, int len)
+	{
+		IntPtr ptr = default;
+		CharSet cs = CharSet.Unicode;
+		try
+		{
+			ptr = StringHelper.AllocString(value, cs, Marshal.AllocCoTaskMem, out var count);
+			Assert.That(count, Is.EqualTo(len));
+			Assert.That(StringHelper.GetString(ptr, cs), Is.EqualTo(value));
+			Assert.That(StringHelper.GetString(ptr, cs, count * 2), Is.EqualTo(value));
+			if (ptr == IntPtr.Zero)
+				Assert.That(value, Is.Null);
+			else
+			{
+				Assert.That(value, Is.Not.Null);
+				var readVal = StringHelper.GetString(ptr, cs, count / 2)!;
+				if (value.Length > 0)
+				{
+					Assert.That(value, Is.Not.EqualTo(readVal));
+					Assert.That(value.StartsWith(readVal));
+				}
+				else
+					Assert.That(readVal, Is.EqualTo(string.Empty));
+			}
+		}
+		finally
+		{
+			Marshal.FreeCoTaskMem(ptr);
+		}
+	}
+
+	[TestCase(null, 0)]
+	[TestCase("", 2)]
+	[TestCase("Hello, world!", 28)]
+	[TestCase("你好，世界！", 14)]
+	[TestCase("Surrogate test: \uD83D\uDE00", 38)]
+	public void GetEncUniStringTest(string value, int len)
+	{
+		IntPtr ptr = default;
+		Encoding cs = Encoding.Unicode;
+		try
+		{
+			ptr = StringHelper.AllocString(value, cs, Marshal.AllocCoTaskMem, out var count);
+			Assert.That(count, Is.EqualTo(len));
+			Assert.That(StringHelper.GetString(ptr, cs, out var read), Is.EqualTo(value));
+			Assert.That((int)read, Is.EqualTo(count));
+			Assert.That(StringHelper.GetString(ptr, cs, out _, count * 2), Is.EqualTo(value));
+			if (ptr == IntPtr.Zero)
+				Assert.That(value, Is.Null);
+			else
+			{
+				Assert.That(value, Is.Not.Null);
+				var readVal = StringHelper.GetString(ptr, cs, out _, count / 2)!;
+				if (value.Length > 0)
+				{
+					Assert.That(value, Is.Not.EqualTo(readVal));
+					Assert.That(value.StartsWith(readVal));
+				}
+				else
+					Assert.That(readVal, Is.EqualTo(string.Empty));
+			}
 		}
 		finally
 		{

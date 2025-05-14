@@ -212,7 +212,7 @@ public static class StringHelper
 	/// <summary>Gets the size of a character defined by the supplied <see cref="Encoding"/>.</summary>
 	/// <param name="enc">The character encoding type.</param>
 	/// <returns>The size of a standard character, in bytes, from <paramref name="enc"/>.</returns>
-	public static int GetCharSize(this Encoding enc) => enc.GetByteCount(new[] { '\0' });
+	public static int GetCharSize(this Encoding enc) => enc.IsSingleByte ? 1 : enc.GetByteCount(new[] { '\0' });
 
 	/// <summary>
 	/// Allocates a managed String and copies all characters up to the first null character or the end of the allocated memory pool from a string stored in unmanaged memory into it.
