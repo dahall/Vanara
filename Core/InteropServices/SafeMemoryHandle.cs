@@ -59,11 +59,8 @@ public interface IMemoryMethods : ISimpleMemoryMethods
 }
 
 /// <summary>Interface for classes that support safe memory pointers.</summary>
-public partial interface ISafeMemoryHandle : IDisposable
+public partial interface ISafeMemoryHandle : IDisposable, IHandle
 {
-	/// <summary>Gets a value indicating whether the handle value is invalid.</summary>
-	bool IsInvalid { get; }
-
 	/// <summary>Gets the size of the allocated memory block.</summary>
 	/// <value>The size of the allocated memory block.</value>
 	SizeT Size { get; set; }
@@ -74,17 +71,22 @@ public partial interface ISafeMemoryHandle : IDisposable
 	/// pointers to other objects
 	/// </summary>
 	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	void AddSubReference(IEnumerable<SafeAllocatedMemoryHandle> children);
+	void AddSubReference(params IDisposable[] children);
 
-	/// <summary>Returns the instance as an <see cref="IntPtr"/>. This is a dangerous call as the value is mutable.</summary>
-	/// <returns>An <see cref="IntPtr"/> to the internally held memory.</returns>
-	IntPtr DangerousGetHandle();
+	/// <summary>Fills the allocated memory with a specific byte value.</summary>
+	/// <param name="value">The byte value.</param>
+	/// <param name="length">The number of bytes in the block of memory to be filled.</param>
+	void Fill(byte value, int length);
 
 	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
 	/// <param name="startIndex">The start index.</param>
 	/// <param name="count">The number of bytes to retrieve.</param>
 	/// <returns>A byte array with the copied bytes.</returns>
-	public byte[] GetBytes(int startIndex, int count);
+	byte[] GetBytes(int startIndex, int count);
+
+	/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
+	/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
+	IntPtr TakeOwnership();
 
 	/// <summary>
 	/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
@@ -150,10 +152,22 @@ public partial interface ISafeMemoryHandle : IDisposable
 /// <summary>
 /// Extension interface for <see cref="SafeAllocatedMemoryHandleBase"/> that allows the creation of a new instance of the memory handle.
 /// </summary>
-public partial interface ICreateSafeMemoryHandle : ISafeMemoryHandle
+public partial interface ISafeMemoryHandleFactory : ISafeMemoryHandle
 {
 #if NET7_0_OR_GREATER
-	/// <summary>Creates an instance of the memory handle allocating the specified size, and optionally zeroing the memory.</summary>
+	/// <summary>Creates an instance of the memory handle from an existing handle and size.</summary>
+	/// <param name="handle">The handle to memory allocated in the same manner as the implementer.</param>
+	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
+	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+	/// <returns>A safe handle to the allocated memory.</returns>
+	static abstract ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true);
+
+	/// <summary>Creates an instance of the memory handle and copies the contents of the specified array to unmanaged memory.</summary>
+	/// <param name="bytes">Array of bytes used to initialize allocated memory.</param>
+	/// <returns>A safe handle to the allocated memory.</returns>
+	static abstract ISafeMemoryHandle Create(byte[] bytes);
+
+	/// <summary>Creates an instance of the memory handle allocating the specified size.</summary>
 	/// <param name="size">The number of bytes to allocate.</param>
 	/// <returns>A safe handle to the allocated memory.</returns>
 	static abstract ISafeMemoryHandle Create(SizeT size);
@@ -734,7 +748,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// Maintains reference to other SafeMemoryHandleExt objects, the pointer to which are referred to by this object. This is to ensure
 	/// that such objects being referred to wouldn't be unreferenced until this object is active.
 	/// </summary>
-	private List<SafeAllocatedMemoryHandle>? references;
+	private List<IDisposable>? references;
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
@@ -786,7 +800,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// pointers to other objects
 	/// </summary>
 	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	public void AddSubReference(IEnumerable<SafeAllocatedMemoryHandle> children)
+	public void AddSubReference(IEnumerable<IDisposable> children)
 	{
 		references ??= [];
 		references.AddRange(children);
@@ -798,7 +812,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// pointers to other objects
 	/// </summary>
 	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	public void AddSubReference(params SafeAllocatedMemoryHandle[] children)
+	public void AddSubReference(params IDisposable[] children)
 	{
 		references ??= [];
 		references.AddRange(children);
@@ -963,6 +977,17 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 				Size = reqSz;
 		}
 		return CallLocked(p => p.Write(value, offset, sz));
+	}
+
+	/// <inheritdoc/>
+	protected override void Dispose(bool disposing)
+	{
+		if (disposing && references is not null)
+		{
+			foreach (var d in references) d.Dispose();
+			references = null;
+		}
+		base.Dispose(disposing);
 	}
 
 	/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>

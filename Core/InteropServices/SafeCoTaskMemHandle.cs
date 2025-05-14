@@ -76,7 +76,7 @@ public sealed class CoTaskMemoryMethods : IMemoryMethods
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via COM.</summary>
 /// <seealso cref="SafeHandle"/>
-public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>, ICreateSafeMemoryHandle
+public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMethods>, ISafeMemoryHandleFactory
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -116,6 +116,12 @@ public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMetho
 
 	/// <summary>Represents a NULL memory pointer.</summary>
 	public static SafeCoTaskMemHandle Null => new(IntPtr.Zero, 0, false);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeCoTaskMemHandle(handle, size, ownsHandle);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(byte[] bytes) => new SafeCoTaskMemHandle(bytes);
 
 	/// <inheritdoc/>
 	public static ISafeMemoryHandle Create(SizeT size) => new SafeCoTaskMemHandle(size);

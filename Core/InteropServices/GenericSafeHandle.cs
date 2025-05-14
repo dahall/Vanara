@@ -1,10 +1,11 @@
 ﻿using Microsoft.Win32.SafeHandles;
+using Vanara.PInvoke;
 
 namespace Vanara.InteropServices;
 
 /// <summary>A <see cref="SafeHandle"/> that takes a delegate in the constructor that closes the supplied handle.</summary>
 /// <seealso cref="SafeHandle"/>
-public class GenericSafeHandle : SafeHandleZeroOrMinusOneIsInvalid
+public class GenericSafeHandle : SafeHandleZeroOrMinusOneIsInvalid, IHandle
 {
 	/// <summary>Initializes a new instance of the <see cref="GenericSafeHandle"/> class.</summary>
 	protected GenericSafeHandle() : base(true) { }

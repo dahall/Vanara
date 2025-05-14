@@ -1361,7 +1361,7 @@ public static partial class Kernel32
 
 	/// <summary>Safe handle for memory heaps.</summary>
 	/// <seealso cref="GenericSafeHandle"/>
-	public partial class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>, ICreateSafeMemoryHandle
+	public partial class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>, ISafeMemoryHandleFactory
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeHeapBlock"/> class.</summary>
 		/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
@@ -1462,6 +1462,12 @@ public static partial class Kernel32
 		/// <summary>Gets the heap handle associated with this block.</summary>
 		/// <value>The heap handle.</value>
 		public HHEAP HeapHandle => mm.HeapHandle;
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeHeapBlock(handle, size, ownsHandle);
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(byte[] bytes) => new SafeHeapBlock(bytes);
 
 		/// <inheritdoc/>
 		public static ISafeMemoryHandle Create(SizeT size) => new SafeHeapBlock(size);

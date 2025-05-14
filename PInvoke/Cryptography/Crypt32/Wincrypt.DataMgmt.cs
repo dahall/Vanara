@@ -6392,7 +6392,7 @@ public static partial class Crypt32
 
 	/// <summary>Safe handle for crypto memory.</summary>
 	/// <seealso cref="SafeMemoryHandle{T}"/>
-	public partial class SafeCryptMem : SafeMemoryHandleExt<CryptMemMethods>, ICreateSafeMemoryHandle
+	public partial class SafeCryptMem : SafeMemoryHandleExt<CryptMemMethods>, ISafeMemoryHandleFactory
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
@@ -6418,6 +6418,12 @@ public static partial class Crypt32
 		/// <param name="charSet">The character set of the string.</param>
 		/// <returns>SafeMemoryHandleExt object to an native (unmanaged) string</returns>
 		public SafeCryptMem(string s, CharSet charSet = CharSet.Unicode) : base(s, charSet) { }
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeCryptMem(handle, size, ownsHandle);
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(byte[] bytes) => new SafeCryptMem(bytes);
 
 		/// <inheritdoc/>
 		public static ISafeMemoryHandle Create(SizeT size) => new SafeCryptMem(size);

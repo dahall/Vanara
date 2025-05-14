@@ -36,7 +36,7 @@ public sealed class LocalMemoryMethods : MemoryMethodsBase
 
 /// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
 /// <seealso cref="SafeHandle"/>
-public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>, ICreateSafeMemoryHandle
+public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>, ISafeMemoryHandleFactory
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeLocalHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -76,6 +76,12 @@ public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>, 
 
 	/// <summary>Represents a NULL memory pointer.</summary>
 	public static SafeLocalHandle Null { get; } = new SafeLocalHandle(IntPtr.Zero, 0, false);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeLocalHandle(handle, size, ownsHandle);
+
+	/// <inheritdoc/>
+	public static ISafeMemoryHandle Create(byte[] bytes) => new SafeLocalHandle(bytes);
 
 	/// <inheritdoc/>
 	public static ISafeMemoryHandle Create(SizeT size) => new SafeLocalHandle(size);

@@ -7,7 +7,7 @@ public static partial class Kernel32
 {
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated as moveable HGLOBAL.</summary>
 	/// <seealso cref="SafeHandle"/>
-	public partial class SafeMoveableHGlobalHandle : SafeMemoryHandleExt<MoveableHGlobalMemoryMethods>, ICreateSafeMemoryHandle
+	public partial class SafeMoveableHGlobalHandle : SafeMemoryHandleExt<MoveableHGlobalMemoryMethods>, ISafeMemoryHandleFactory
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
 		/// <param name="handle">The handle.</param>
@@ -44,6 +44,12 @@ public static partial class Kernel32
 
 		/// <summary>Represents a NULL memory pointer.</summary>
 		public static SafeMoveableHGlobalHandle Null { get; } = new SafeMoveableHGlobalHandle(IntPtr.Zero, false);
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeMoveableHGlobalHandle(handle, ownsHandle);
+
+		/// <inheritdoc/>
+		public static ISafeMemoryHandle Create(byte[] bytes) => new SafeMoveableHGlobalHandle(bytes);
 
 		/// <inheritdoc/>
 		public static ISafeMemoryHandle Create(SizeT size) => new SafeMoveableHGlobalHandle(size);
