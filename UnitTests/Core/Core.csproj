@@ -5,8 +5,12 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="InteropServices\StructMarshalerTests.cs" />
+    <None Include="Marshaler\TestStructures.cs" />
+    <None Include="Marshaler\UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="InteropServices\StructMarshalerTests.cs" />
+    <Compile Remove="Marshaler\TestStructures.cs" />
+    <Compile Remove="Marshaler\UnitTest1.cs" />
   </ItemGroup>
 </Project>
