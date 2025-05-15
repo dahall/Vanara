@@ -939,7 +939,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	byte IConvertible.ToByte(IFormatProvider? provider)
 	{
 		var ul = Value;
-		if (ul < byte.MaxValue)
+		if (ul <= byte.MaxValue)
 			return (byte)ul;
 		if (ul is uint.MaxValue or ulong.MaxValue)
 			return byte.MaxValue;
@@ -956,7 +956,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	decimal IConvertible.ToDecimal(IFormatProvider? provider)
 	{
 		var ul = Value;
-		if (ul < decimal.MaxValue)
+		if (ul <= decimal.MaxValue)
 			return ul;
 		if (ul is uint.MaxValue or ulong.MaxValue)
 			return decimal.MaxValue;
@@ -967,7 +967,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	double IConvertible.ToDouble(IFormatProvider? provider)
 	{
 		var ul = Value;
-		if (ul < double.MaxValue)
+		if (ul <= double.MaxValue)
 			return ul;
 		if (ul is uint.MaxValue or ulong.MaxValue)
 			return double.MaxValue;
@@ -978,7 +978,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	short IConvertible.ToInt16(IFormatProvider? provider)
 	{
 		var ul = Value;
-		if (ul < (ulong)short.MaxValue)
+		if (ul <= (ulong)short.MaxValue)
 			return (short)ul;
 		if (ul is uint.MaxValue or ulong.MaxValue)
 			return short.MaxValue;
@@ -989,7 +989,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	int IConvertible.ToInt32(IFormatProvider? provider)
 	{
 		var ul = Value;
-		if (ul < int.MaxValue)
+		if (ul <= int.MaxValue)
 			return (int)ul;
 		if (ul is uint.MaxValue or ulong.MaxValue)
 			return int.MaxValue;
@@ -1000,7 +1000,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	long IConvertible.ToInt64(IFormatProvider? provider)
 	{
 		var ul = Value;
-		if (ul < long.MaxValue)
+		if (ul <= long.MaxValue)
 			return (long)ul;
 		if (ul is uint.MaxValue or ulong.MaxValue)
 			return long.MaxValue;
@@ -1011,7 +1011,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	sbyte IConvertible.ToSByte(IFormatProvider? provider)
 	{
 		var ul = Value;
-		if (ul < (ulong)sbyte.MaxValue)
+		if (ul <= (ulong)sbyte.MaxValue)
 			return (sbyte)ul;
 		if (ul is uint.MaxValue or ulong.MaxValue)
 			return sbyte.MaxValue;
@@ -1022,7 +1022,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	float IConvertible.ToSingle(IFormatProvider? provider)
 	{
 		var ul = Value;
-		if (ul < float.MaxValue)
+		if (ul <= float.MaxValue)
 			return ul;
 		if (ul is uint.MaxValue or ulong.MaxValue)
 			return float.MaxValue;
@@ -1036,7 +1036,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	ushort IConvertible.ToUInt16(IFormatProvider? provider)
 	{
 		var ul = Value;
-		if (ul < ushort.MaxValue)
+		if (ul <= ushort.MaxValue)
 			return (ushort)ul;
 		if (ul is uint.MaxValue or ulong.MaxValue)
 			return ushort.MaxValue;
@@ -1047,7 +1047,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	uint IConvertible.ToUInt32(IFormatProvider? provider)
 	{
 		var ul = Value;
-		if (ul < uint.MaxValue)
+		if (ul <= uint.MaxValue)
 			return (uint)ul;
 		if (ul is uint.MaxValue or ulong.MaxValue)
 			return uint.MaxValue;
