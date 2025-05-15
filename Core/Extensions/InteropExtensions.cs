@@ -159,6 +159,23 @@ public static partial class InteropExtensions
 		new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
 
 	/// <summary>
+	/// Gets the length of a null terminated array of numeric values. <note type="warning">This is a very dangerous function and can result
+	/// in memory access errors if the <paramref name="lptr"/> does not point to a null-terminated array of pointers.</note>
+	/// </summary>
+	/// <param name="lptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+	/// <param name="elemType">Type of the array element.</param>
+	/// <returns>The number of non-zero values in the array. If <paramref name="lptr"/> is equal to IntPtr.Zero, this result is 0.</returns>
+	public static int GetNulledArrayLength(this IntPtr lptr, Type elemType)
+	{
+		if (lptr == IntPtr.Zero) return 0;
+		int c = 0, elemSize = Marshal.SizeOf(elemType);
+		object defVal = Activator.CreateInstance(elemType)!;
+		while (!Equals(Marshal.PtrToStructure(lptr.Offset(c++ * elemSize), elemType), defVal)) { }
+
+		return c - 1;
+	}
+
+	/// <summary>
 	/// Gets the length of a null terminated array of pointers. <note type="warning">This is a very dangerous function and can result in
 	/// memory access errors if the <paramref name="lptr"/> does not point to a null-terminated array of pointers.</note>
 	/// </summary>
@@ -857,13 +874,16 @@ public static partial class InteropExtensions
 	/// <exception cref="System.InsufficientMemoryException"></exception>
 	public static IEnumerable<string> ToStringEnum(this IntPtr lptr, Encoding encoder, [Optional] SizeT prefixBytes, [Optional] SizeT allocatedBytes)
 	{
-		SizeT bytesread = 0, c = 0;
+		SizeT c, bytesread = prefixBytes;
 		if (lptr == IntPtr.Zero) yield break;
-		bytesread = prefixBytes;
+		if (allocatedBytes == default) allocatedBytes = IntPtr.Size == 4 ? int.MaxValue : long.MaxValue;
 		for (IntPtr ptr = lptr.Offset(prefixBytes); bytesread <= allocatedBytes && encoder.GetChar(ptr).GetValueOrDefault('\0') != '\0'; bytesread += c, ptr = lptr.Offset(bytesread))
-			yield return StringHelper.GetString(ptr, encoder, out c, allocatedBytes - bytesread)!;
+		{
+			var s = StringHelper.GetString(ptr, encoder, out c, allocatedBytes - bytesread)!;
+			yield return s;
+		}
 		bytesread += encoder.GetCharSize();
-		if (bytesread > allocatedBytes) throw new InsufficientMemoryException();
+		if (allocatedBytes > 0 && bytesread > allocatedBytes) throw new InsufficientMemoryException();
 	}
 
 	/// <summary>
