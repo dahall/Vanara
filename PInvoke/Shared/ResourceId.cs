@@ -91,7 +91,7 @@ public struct ResourceId : IEquatable<string>, IEquatable<IntPtr>, IEquatable<in
 		readonly get => IS_INTRESOURCE(ptr) ? (ushort)ptr.ToInt32() : 0;
 		set
 		{
-			if (value is > ushort.MaxValue or <= 0) throw new ArgumentOutOfRangeException(nameof(id));
+			if (value is > ushort.MaxValue or < 0) throw new ArgumentOutOfRangeException(nameof(id));
 			ptr = (IntPtr)(ushort)value;
 		}
 	}
