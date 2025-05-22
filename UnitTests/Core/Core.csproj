@@ -6,11 +6,13 @@
   <ItemGroup>
     <None Include="InteropServices\StructMarshalerTests.cs" />
     <None Include="Marshaler\TestStructures.cs" />
-    <None Include="Marshaler\UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="InteropServices\StructMarshalerTests.cs" />
     <Compile Remove="Marshaler\TestStructures.cs" />
-    <Compile Remove="Marshaler\UnitTest1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.18.1" />
+    <PackageReference Include="NUnit.DeepObjectCompare" Version="2.0.1" />
   </ItemGroup>
 </Project>

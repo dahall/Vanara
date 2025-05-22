@@ -1,18 +1,33 @@
 using AutoFixture;
 using AutoFixture.Kernel;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using Vanara.Marshaler;
 
-namespace UnitTests;
+namespace Vanara.Marshaler.Tests;
 
-public class Tests
+[TestFixture]
+public class MarshalerTests
 {
-	static readonly byte[] control = [0x77, 0x77, 0x77, 0x77, 0, 0, 0, 0, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 7, 0, 0, 0, 0, 0, 0, 0];
-	static SimpleStruct value = new() { iVal = 0x77777777, lVal = 0x7777777777777777, bVal = 7 };
+	private static readonly byte[] control = [0x77, 0x77, 0x77, 0x77, 0, 0, 0, 0, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 7, 0, 0, 0, 0, 0, 0, 0];
+	private static Struct01 value = new() { iVal = 0x77777777, lVal = 0x7777777777777777, bVal = 7 };
 
-	[TestCaseSource(nameof(GetStructList), new object?[] { 1, 27 })]
+	[Test]
+	public unsafe void SimpleStructTest()
+	{
+		const int sz = 24;
+		Assert.That(Marshaler.SizeOf<Struct01>(), Is.EqualTo(sz));
+		using var result = Marshaler.ValueToPtr(value);
+		Assert.That(result?.DangerousGetHandle() ?? IntPtr.Zero, Is.Not.Zero);
+		UnmanagedMemoryStream stream = new((byte*)(result?.DangerousGetHandle() ?? IntPtr.Zero), sz);
+		byte[] data = new byte[sz];
+		stream.Read(data, 0, sz);
+		Assert.That(data, Is.EquivalentTo(control));
+	}
+
+	[TestCaseSource(nameof(GetStructList), new object?[] { 1, 33 })]
 	public void StructSizeTest(Type objType)
 	{
 		TestSize(Bitness.X32bit);
@@ -22,35 +37,7 @@ public class Tests
 			Assert.That(Marshaler.SizeOf(objType, new(b)), Is.EqualTo(objType.GetExpectedSize(b)), b.ToString());
 	}
 
-	private static IEnumerable<Type> GetStructList(int start, int end)
-	{
-		for (int i = start; i <= end; i++)
-			yield return Assembly.GetExecutingAssembly().DefinedTypes.First(t => t.Name == $"Struct{i:D2}");
-	}
-
-	[Test]
-	public unsafe void SimpleStructTest()
-	{
-		const int sz = 24;
-		Assert.That(Marshaler.SizeOf<SimpleStruct>(), Is.EqualTo(sz));
-		using var result = Marshaler.StructureToPtr(value);
-		Assert.That((IntPtr)result, Is.Not.Zero);
-		UnmanagedMemoryStream stream = new((byte*)(IntPtr)result, sz);
-		byte[] data = new byte[sz];
-		stream.Read(data, 0, sz);
-		Assert.That(data, Is.EquivalentTo(control));
-	}
-
-	//[Test]
-	//public void ToPtrTest()
-	//{
-	//	var obj = new Fixture().Create<Struct01>();
-	//	using var result = Marshaler.StructureToPtr(value);
-	//	var obj2 = Marshaler.PtrToStructure<Struct01>((IntPtr)result);
-	//	Assert.That(obj, Is.EqualTo(obj2), "Structs are not equal");
-	//}
-
-	[TestCaseSource(nameof(GetStructList), new object?[] { 26, 26 })]
+	[TestCaseSource(nameof(GetStructList), new object?[] { 1, 33 })]
 	public void ToPtrTest(Type objType)
 	{
 		Fixture fixture = new();
@@ -87,16 +74,31 @@ public class Tests
 					bitFieldOverflow = 0x0DF7,
 					bitFieldLong = 0x0EC9,
 				},
+				40 => new Struct40 { bVal = 1 },
 				_ => null,
 			};
 		}
 		else
 			obj = new SpecimenContext(fixture).Resolve(new SeededRequest(objType, Activator.CreateInstance(objType)));
-		using var result = Marshaler.StructureToPtr(obj);
-		var obj2 = Marshaler.PtrToStructure(objType, (IntPtr)result);
+		using var result = Marshaler.ValueToPtr(obj);
+		var obj2 = Marshaler.PtrToValue(objType, result?.DangerousGetHandle() ?? IntPtr.Zero);
 		Assert.That(obj, NUnit.DeepObjectCompare.Is.DeepEqualTo(obj2), $"{objType.Name} structs are not equal");
 	}
 
+	private static IEnumerable<Type> GetStructList(int start, int end)
+	{
+		for (int i = start; i <= end; i++)
+			yield return Assembly.GetExecutingAssembly().DefinedTypes.First(t => t.Name == $"Struct{i:D2}");
+	}
+
+	//[Test]
+	//public void ToPtrTest()
+	//{
+	//	var obj = new Fixture().Create<Struct01>();
+	//	using var result = Marshaler.StructureToPtr(value);
+	//	var obj2 = Marshaler.PtrToStructure<Struct01>((IntPtr)result);
+	//	Assert.That(obj, Is.EqualTo(obj2), "Structs are not equal");
+	//}
 	//static JsonSerializerOptions jsonOptions = new() { IncludeFields = true, };
 	//public static void AreEqualByJson(object? expected, object? actual)
 	//{
@@ -259,26 +261,26 @@ internal struct Struct16
 	public bool val1;
 }
 
-[Marshaled(CharSet = CharSet.Ansi), Info(Bitness.Auto, 1)]
+[Marshaled(StringEncoding = StringEncoding.Default), Info(Bitness.Auto, 1)]
 internal struct Struct17
 {
 	public char val1;
 }
 
-[Marshaled(CharSet = CharSet.Unicode), Info(Bitness.Auto, 2)]
+[Marshaled(StringEncoding = StringEncoding.Unicode), Info(Bitness.Auto, 2)]
 internal struct Struct18
 {
 	public char val1;
 }
 
-[Marshaled(CharSet = CharSet.Ansi), Info(Bitness.Auto, 2)]
+[Marshaled(StringEncoding = StringEncoding.Default), Info(Bitness.Auto, 2)]
 internal struct Struct19
 {
 	public char val1;
 	public byte val2;
 }
 
-[Marshaled(CharSet = CharSet.Unicode), Info(Bitness.Auto, 4)]
+[Marshaled(StringEncoding = StringEncoding.Unicode), Info(Bitness.Auto, 4)]
 internal struct Struct20
 {
 	public char val1;
@@ -324,7 +326,7 @@ internal struct Struct23
 	public uint bitFieldLong;
 }
 
-[Marshaled(CharSet = CharSet.Unicode), Info(Bitness.X32bit, 24), Info(Bitness.X64bit, 48)]
+[Marshaled(StringEncoding = StringEncoding.Unicode), Info(Bitness.X32bit, 24), Info(Bitness.X64bit, 48)]
 internal struct Struct24
 {
 	[MarshalAs(UnmanagedType.LPStr)]
@@ -355,40 +357,139 @@ internal struct Struct25
 	public decimal val2;
 }
 
-#endregion
-
 [Marshaled, Info(Bitness.X32bit, 16), Info(Bitness.X64bit, 32)]
 internal struct Struct26
 {
 	private int cval1;
 
-	[MarshalFieldAs.ArrayPtr(ArrayLayout.LPArray, SizeFieldName = nameof(cval1))]
+	[MarshalFieldAs.Array(ArrayLayout.LPArray, SizeFieldName = nameof(cval1))]
 	public int[] val1;
 
 	private uint cval2;
 
-	[MarshalFieldAs.ArrayPtr(ArrayLayout.LPArray, SizeFieldName = nameof(cval2))]
+	[MarshalFieldAs.Array(ArrayLayout.LPArray, SizeFieldName = nameof(cval2))]
 	public Struct21[]? val2;
 }
 
 [Marshaled, Info(Bitness.X32bit, 36), Info(Bitness.X64bit, 64)]
 internal struct Struct27
 {
-	[MarshalFieldAs.ArrayPtr(ArrayLayout.ByValArray, SizeConst = 3)]
+	[MarshalFieldAs.Array(ArrayLayout.ByValArray, SizeConst = 3)]
 	public int[] val1;
 
 	[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
 	public Struct21[] val2;
 }
 
-file static class TExt
+[Marshaled, Info(Bitness.X32bit, 16), Info(Bitness.X64bit, 32)]
+internal struct Struct28
+{
+	[MarshalFieldAs.Array(ArrayLayout.StringPtrArrayNullTerm, StringEncoding = StringEncoding.Default)]
+	public string[] val1;
+
+	private uint cval2;
+
+	[MarshalFieldAs.Array(ArrayLayout.StringPtrArray, SizeFieldName = nameof(cval2))]
+	public string?[] val2;
+
+	[MarshalFieldAs.Array(ArrayLayout.ConcatenatedStringArray, StringEncoding = StringEncoding.UTF8)]
+	public string[] val3;
+}
+
+[Marshaled, Info(Bitness.Auto, 320)]
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+internal struct Struct29
+{
+	[MarshalFieldAs.FixedString(64, false, StringEncoding.Unicode)]
+	public string val1;
+
+	[MarshalFieldAs.FixedString(128, true, StringEncoding.UTF8)]
+	public string val2;
+
+	[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+	public string val3;
+}
+
+#endregion Structs
+
+[Marshaled, Info(Bitness.Auto, 24)]
+internal struct Struct30
+{
+	[MarshalFieldAs.SizeOf]
+	public uint size;
+
+	private uint arrayCount;
+
+	[MarshalFieldAs.Array(ArrayLayout.ByValAnySizeArray, SizeFieldName = nameof(arrayCount))]
+	public Guid[] array;
+}
+
+[Marshaled, Info(Bitness.Auto, 4)]
+internal struct Struct31
+{
+	private ushort fnlen;
+
+	[MarshalFieldAs.AppendedString(nameof(fnlen))]
+	public string fn;
+}
+
+[Marshaled, Info(Bitness.Auto, 2)]
+internal struct Struct32
+{
+	private ushort fnlen;
+
+	[MarshalFieldAs.AppendedString(nameof(fnlen), 0)]
+	public string fn;
+}
+
+[Marshaled, Info(Bitness.Auto, 4)]
+internal struct Struct33
+{
+	private uint arrayCount;
+
+	[MarshalFieldAs.Array(ArrayLayout.ByValAppendedArray, SizeFieldName = nameof(arrayCount))]
+	public Guid[] array;
+}
+
+[StructLayout(LayoutKind.Explicit), Info(Bitness.Auto, 8)]
+internal struct Struct40
+{
+	[FieldOffset(0)]
+	public int iVal;
+	[FieldOffset(0)]
+	public long lVal;
+	[FieldOffset(0)]
+	public byte bVal;
+}
+
+[Marshaled, Info(Bitness.Auto, 48)]
+internal struct Struct41
+{
+	public int iVal;
+
+	[MarshalFieldAs.UnionField]
+	[MarshalAs(UnmanagedType.LPWStr)]
+	public string? union1Value1;
+
+	[MarshalFieldAs.UnionField]
+	public IntPtr union1Value2;
+
+	[MarshalFieldAs.UnionField]
+	public Struct01? union1Value3;
+
+	public Struct40 unionSet;
+
+	public uint uVal;
+}
+
+internal static class TExt
 {
 	public static int GetExpectedSize(this Type type, Bitness bitness) =>
 		type.GetCustomAttributes<InfoAttribute>().FirstOrDefault(a => a.Bitness == bitness || a.Bitness == Bitness.Auto)?.Size ?? 0;
 }
 
 [AttributeUsage(AttributeTargets.Struct, Inherited = false, AllowMultiple = true)]
-file sealed class InfoAttribute(Bitness bitness, int size) : Attribute
+internal sealed class InfoAttribute(Bitness bitness, int size) : Attribute
 {
 	public Bitness Bitness { get; } = bitness;
 	public int Size { get; } = size;

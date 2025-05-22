@@ -5,22 +5,32 @@ namespace Vanara.Marshaler;
 /// <summary>Indicates the data layout of the marshaled array.</summary>
 public enum ArrayLayout
 {
-	/// <summary>Array of sequential values with a fixed size specified by SizeConst property. ArraySubType property should be used.</summary>
+	/// <summary>
+	/// Array of sequential values with a fixed size specified by SizeConst property. ArraySubType property should be used if marshaling
+	/// needed for subtype. SizeConst must be used.
+	/// </summary>
 	ByValArray,
 
-	/*// OLE defined SAFEARRAY
-	SafeArray,*/
+	/// <summary>
+	/// Array of sequential values with a size specified by another field whose first value is the last field in a structure with all
+	/// remaining fields appended to the end of the structure in memory. ArraySubType property should be used if marshaling needed for
+	/// subtype. StringLenFieldName must be used.
+	/// </summary>
+	ByValAnySizeArray,
+
+	/// <summary>
+	/// Array of sequential values with a size specified by another field whose values are appended to the end of the structure in memory.
+	/// ArraySubType property should be used if marshaling needed for subtype. StringLenFieldName must be used.
+	/// </summary>
+	ByValAppendedArray,
 
 	/// <summary>
 	/// Pointer to an array of sequential values with a size specified by another field. ArraySubType property should be used if marshaling
-	/// needed for subtype. SizeFieldName must be used.
+	/// needed for subtype. StringLenFieldName must be used.
 	/// </summary>
 	LPArray,
 
-	/*// Pointer to an array of sequential values terminated by a null or default value. ArraySubType property should be used if marshaling needed for subtype.
-	LPArrayNullTerm,*/
-
-	/// <summary>Pointer to an array of pointers to strings. SizeFieldName must be used.</summary>
+	/// <summary>Pointer to an array of pointers to strings. StringLenFieldName must be used.</summary>
 	StringPtrArray,
 
 	/// <summary>
@@ -30,6 +40,12 @@ public enum ArrayLayout
 
 	/// <summary>Pointer to a null-terminated array of pointers to strings. Size is inferred from the array.</summary>
 	ConcatenatedStringArray,
+
+	/*// OLE defined SAFEARRAY
+	SafeArray,*/
+
+	/*// Pointer to an array of sequential values terminated by a null or default value. ArraySubType property should be used if marshaling needed for subtype.
+	LPArrayNullTerm,*/
 }
 
 /// <summary>Specifies the number of bits in a pointer for a marshaled value.</summary>
@@ -114,27 +130,55 @@ public class MarshaledAttribute(LayoutModel layout = LayoutModel.Sequential) : A
 /// <summary>A set of attributes to facilitate custom marshaling.</summary>
 public static class MarshalFieldAs
 {
-	internal interface IMarshalAsAttr
-	{ }
+	internal interface IMarshalAsAttr { }
+
+	/// <summary>
+	/// Attribute that is applied to a string as the final field in a structure to indicate that the string value is appended to the end of
+	/// the structure. The string is null-terminated. The <paramref name="embeddedCharacters"/> value determines if any characters are
+	/// counted in the native size of the structure.
+	/// </summary>
+	/// <param name="stringLenFieldName">
+	/// The name of the field that holds the length of the string, in characters. If <see langword="null"/>, the string will be read until a
+	/// <c>'\0'</c> value is found.
+	/// </param>
+	/// <param name="embeddedCharacters">The number of characters embedded in the structure's native size.</param>
+	/// <param name="stringEncoding">The character encoding of the string.</param>
+	/// <seealso cref="System.Attribute"/>
+	/// <seealso cref="Vanara.Marshaler.MarshalFieldAs.IMarshalAsAttr"/>
+	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+	public class AppendedStringAttribute(string? stringLenFieldName, int embeddedCharacters = 1, StringEncoding stringEncoding = StringEncoding.Unicode) : Attribute, IMarshalAsAttr
+	{
+		/// <summary>
+		/// Gets the number of characters embedded in the structure's native size. For ANYSIZE strings, this value is the default of <c>1</c>.
+		/// </summary>
+		/// <value>The number of characters embedded in the structure's native size.</value>
+		public int EmbeddedCharacters { get; } = embeddedCharacters;
+
+		/// <summary>
+		/// Gets or sets the name of the field that holds the length of the string, in characters. If <see langword="null"/>, the string will
+		/// be read until a <c>'\0'</c> value is found.
+		/// </summary>
+		/// <value>The name of the field that holds the length of the string, in characters.</value>
+		public string? StringLenFieldName { get; set; } = stringLenFieldName;
+
+		/// <summary>Gets or sets the character encoding.</summary>
+		/// <value>The character encoding.</value>
+		public StringEncoding StringEncoding { get; set; } = stringEncoding;
+
+		internal Encoding Encoding => StringEncoding.ToEncoding();
+	}
 
 	/// <summary>
 	/// Attribute that can be applied to fields in a structure or class to indicate that the field is an array of values in a specified
 	/// layout and size.
 	/// </summary>
-	/// <param name="layout"></param>
+	/// <param name="layout">A value that indicates how the array is stored within memory.</param>
 	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-	public class ArrayPtrAttribute(ArrayLayout layout) : Attribute, IMarshalAsAttr
+	public class ArrayAttribute(ArrayLayout layout) : Attribute, IMarshalAsAttr
 	{
 		/// <summary>Gets the layout of the marshaled array.</summary>
 		/// <value>The array layout.</value>
 		public ArrayLayout Layout { get; } = layout;
-
-		/// <summary>
-		/// Gets or sets a value indicating whether to use the first element of this array as a field value. This follows the Win32 API
-		/// pattern of using a fixed array with an <c>ANYSIZE</c> size value.
-		/// </summary>
-		/// <value><see langword="true"/> if the first element of this array is used as a field value; otherwise, <see langword="false"/>.</value>
-		public bool SingleElementPlaceholder { get; set; } = false;
 
 		/// <summary>Gets or sets the size of the array as a constant value.</summary>
 		/// <value>The size of the array as a constant value.</value>

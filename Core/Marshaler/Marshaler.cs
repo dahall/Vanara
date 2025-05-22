@@ -88,7 +88,7 @@ public static partial class Marshaler
 	public static int SizeOf(Type type, MarshalerOptions? opts = null)
 	{
 		if (!type.IsMarshaledType())
-			return Vanara.Extensions.InteropExtensions.SizeOf(type);
+			return InteropExtensions.SizeOf(type);
 		var ti = MarshaledTypeInfo.Get(type, opts);
 		ti.DebugDump();
 		return ti.NativeSize;

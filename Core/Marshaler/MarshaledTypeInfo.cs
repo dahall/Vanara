@@ -29,7 +29,7 @@ public static partial class Marshaler
 			options.UpdateEncoding(type.GetCustomAttribute<MarshaledAttribute>()?.StringEncoding);
 
 			var layout = Type.GetCustomAttribute<MarshaledAttribute>()?.Layout ?? LayoutModel.Sequential;
-			var fields = Type.GetFields(Extensions.allInstFields);
+			var fields = Type.GetFields(allInstFields);
 
 			for (var i = 0; i < fields.Length; i++)
 			{
@@ -99,10 +99,6 @@ public static partial class Marshaler
 						continue;
 					}
 
-					// Create a dictionary of delegates that can convert from intrisic types to other intrinsics
-					// and then from intrinsic to the memory and back
-					// Use MemoryPool to allocate memory for the structure and all its substructures and allocations rather than trying to pack/serialize the entire tree
-
 					throw new MarshalException($"Unable to marshal the fd '{fi.DeclaringType!.FullName}.{fi.Name}' due to an unrecognized fd type and attribute combination.");
 				}
 
@@ -120,24 +116,36 @@ public static partial class Marshaler
 			}
 
 			// Calculate the offset of each fd of the structure and the total size of the structure
-			var div = Alignment;
-			var offset = Fields[0].Size;
-			for (var i = 1; i < Fields.Count; i++)
+			int div = Alignment, size = 0;
+			switch (layout)
 			{
-				var pad = div - offset % div;
-				var fd = Fields[i];
-				if (pad == 0 || fd.MaxFieldSize <= pad)
-				{
-					fd.Offset = offset;
-					offset += fd.Size;
-				}
-				else
-				{
-					fd.Offset = offset + pad;
-					offset += fd.Size + pad;
-				}
+				case LayoutModel.Union:
+					size = Fields.Max(f => f.Size);
+					break;
+
+				case LayoutModel.Sequential:
+				default:
+					{
+						var offset = Fields[0].Size;
+						for (var i = 1; i < Fields.Count; i++)
+						{
+							var pad = div - offset % div;
+							var fd = Fields[i];
+							if (pad == 0 || fd.MaxFieldSize <= pad)
+							{
+								fd.Offset = offset;
+								offset += fd.Size;
+							}
+							else
+							{
+								fd.Offset = offset + pad;
+								offset += fd.Size + pad;
+							}
+						}
+						size = offset % div == 0 ? offset : offset + div - offset % div;
+						break;
+					}
 			}
-			var size = offset % div == 0 ? offset : offset + div - (offset % div);
 
 			NativeSize = Math.Max(size, type.GetCustomAttribute<MarshaledAttribute>()?.Size ?? 0);
 		}
@@ -191,23 +199,27 @@ public static partial class Marshaler
 
 			opts ??= new();
 			var ti = Get(value.GetType(), opts);
-			var p = CreateSafeMemory<TMem>(ti.NativeSize);
 
 			// Walk through each fd of each object recursively setting any general values, like SizeOf and ArrayPtr references.
-			Preprocess(ti, value);
+			int asz = Preprocess(ti, value);
+
+			// Create memory for the write
+			var p = CreateSafeMemory<TMem>(ti.NativeSize + asz);
 
 			// Walk through each fd of each object recursively and pass value to the matched fd data
 			WriteFields(ti, value, p.DangerousGetHandle());
 			return p;
 
-			void Preprocess(MarshaledTypeInfo mti, object obj)
+			int Preprocess(MarshaledTypeInfo mti, object obj)
 			{
+				int addSz = 0;
 				for (int i = 0; i < mti.Fields.Count; i++)
 				{
 					if (mti.Fields[i] is not IPreprocessMarshaler fd)
 						continue;
-					fd.PreprocessWrite(mti, obj);
+					addSz += fd.PreprocessWrite(mti, obj);
 				}
+				return addSz;
 			}
 
 			void WriteFields(MarshaledTypeInfo mti, object obj, IntPtr ptr)
@@ -290,7 +302,7 @@ public static partial class Marshaler
 #pragma warning restore CS0618 // Type or member is obsolete
 
 				MarshalAsAttribute ma when ft == typeof(string) => ma.Value is UnmanagedType.BStr or UnmanagedType.LPStr or UnmanagedType.LPWStr or UnmanagedType.LPTStr or (UnmanagedType)48 ?
-					new StringMarshaler(fi, options) : (ma.Value is UnmanagedType.ByValTStr ? new FixedStringMarshaler(fi, ma.SizeConst, options) :
+					new StringMarshaler(fi, options) : (ma.Value is UnmanagedType.ByValTStr ? new FixedStringMarshaler(fi, ma.SizeConst, true, (StringEncoding)GetDeclCharSet(fi), options) :
 					throw new MarshalException("Only the BStr, ByValTStr, LPStr, LPWStr, LPTStr, and LPUTF8Str marshal type can be applied to string fields.")),
 
 				MarshalAsAttribute ma when ma.Value is UnmanagedType.IUnknown or UnmanagedType.Interface or UnmanagedType.IDispatch =>
@@ -303,10 +315,13 @@ public static partial class Marshaler
 
 				MarshalAsAttribute ma when ma.Value is UnmanagedType.ByValArray => ft.IsArray ? new FixedArrayMarshaler(fi, ma.SizeConst, options) : throw new MarshalException("The ByValArray marshal type can be applied to array fields."),
 
-				MarshalAsAttribute ma when ma.Value is UnmanagedType.CustomMarshaler => ((ma.MarshalType is not null && Type.GetType(ma.MarshalType!) is not null) || ma.MarshalTypeRef is not null) ?
-					new CustomMarshalerMarshaler(fi, options) : throw new MarshalException("The CustomMarshaler marshal type must specify either a MarshalType or MarshalTypeRef value."),
+				MarshalAsAttribute ma when ma.Value is UnmanagedType.CustomMarshaler =>
+					new CustomMarshalerMarshaler(fi, GetCustMarshType(ma) ?? throw new MarshalException("The CustomMarshaler marshal type must specify either a MarshalType or MarshalTypeRef value."), options),
 
-				MarshalFieldAs.ArrayPtrAttribute arrAttr => GetArrayField(arrAttr),
+				MarshalFieldAs.AppendedStringAttribute arrAttr => fi.FieldType == typeof(string) ? new AppendedStringMarshaler(fi, arrAttr, options) :
+					throw new MarshalException("MarshalFieldAs.AppendedStringAttribute may only be applied to strings."),
+
+				MarshalFieldAs.ArrayAttribute arrAttr => GetArrayField(arrAttr),
 
 				MarshalFieldAs.UnionFieldAttribute => null,
 
@@ -318,13 +333,20 @@ public static partial class Marshaler
 
 				MarshalFieldAs.SizeOfAttribute _ => ft.IsIntegral() ? new SizeOfMarshaler(fi, options) : throw new MarshalException("The MarshalFieldAs.SizeOf attribute may only be applied to integral types."),
 
-				MarshalFieldAs.FixedStringAttribute fsa => ft == typeof(string) ? new FixedStringMarshaler(fi, fsa.NullTerm ? fsa.Length + 1 : fsa.Length, options) :
+				MarshalFieldAs.FixedStringAttribute fsa => ft == typeof(string) ? new FixedStringMarshaler(fi, fsa.Length, fsa.NullTerm, fsa.StringEncoding, options) :
 					throw new MarshalException("The MarshalFieldAs.FixedString attribute may only be applied to string types."),
 
 				MarshalFieldAs.IMarshalAsAttr ia when ia.GetType().IsGenericType && ia.GetType().GetGenericTypeDefinition() == typeof(MarshalFieldAs.BitFieldAttribute<>) => null,
 
 				_ => throw new MarshalException($"Unable to marshal the fd '{fi.DeclaringType!.FullName}.{fi.Name}' due to an unrecognized fd type and attribute combination."),
 			};
+
+			static CharSet GetDeclCharSet(FieldInfo fi) => (fi.DeclaringType?.GetCustomAttribute<StructLayoutAttribute>())?.CharSet ?? CharSet.Auto;
+
+#pragma warning disable IL2057 // Unrecognized value passed to the parameter of method. It's not possible to guarantee the availability of the target type.
+			static Type? GetCustMarshType(MarshalAsAttribute ma) => ma.MarshalTypeRef is not null ? ma.MarshalTypeRef :
+				!string.IsNullOrEmpty(ma.MarshalType) ? Type.GetType(ma.MarshalType, false) : null;
+#pragma warning restore IL2057 // Unrecognized value passed to the parameter of method. It's not possible to guarantee the availability of the target type.
 
 			static Type? GetMarshaledType(UnmanagedType umtype) => umtype switch
 			{
@@ -349,18 +371,16 @@ public static partial class Marshaler
 				_ => null,
 			};
 
-			TypeMarshaler GetArrayField(MarshalFieldAs.ArrayPtrAttribute arrAttr)
+			TypeMarshaler GetArrayField(MarshalFieldAs.ArrayAttribute arrAttr)
 			{
 				// Check for bad configs
 				if (!fi.FieldType.IsArray)
-					throw new MarshalException("ArrayPtrAttribute can only be applied to array types.");
-				if (arrAttr.Layout is ArrayLayout.ByValArray or ArrayLayout.LPArray or ArrayLayout.StringPtrArray &&
-					arrAttr.SizeConst == 0 && arrAttr.SizeFieldName is null)
-					throw new MarshalException("ArrayPtrAttribute must have either SizeConst or SizeFieldName set.");
-				if (arrAttr.SizeFieldName is not null && (fi.DeclaringType!.GetField(arrAttr.SizeFieldName, Extensions.allInstFields) is null || !fi.DeclaringType!.GetField(arrAttr.SizeFieldName, Extensions.allInstFields)!.FieldType.IsIntegral()))
+					throw new MarshalException("ArrayAttribute can only be applied to array types.");
+				if (arrAttr.Layout is ArrayLayout.ByValArray or ArrayLayout.ByValAnySizeArray or ArrayLayout.ByValAppendedArray
+					or ArrayLayout.LPArray or ArrayLayout.StringPtrArray && arrAttr.SizeConst == 0 && arrAttr.SizeFieldName is null)
+					throw new MarshalException("ArrayAttribute with specified layout must set either SizeConst or StringLenFieldName.");
+				if (arrAttr.SizeFieldName is not null && (fi.DeclaringType!.GetField(arrAttr.SizeFieldName, allInstFields) is null || !fi.DeclaringType!.GetField(arrAttr.SizeFieldName, allInstFields)!.FieldType.IsIntegral()))
 					throw new MarshalException($"Size fd '{arrAttr.SizeFieldName}' not found in {fi.DeclaringType!.Name} or type of field is not an integral number.");
-				if (arrAttr.SingleElementPlaceholder && arrAttr.Layout != ArrayLayout.ByValArray)
-					throw new MarshalException("Arrays with SingleElementPlaceholder set to true can only be applied to ByValArray layouts.");
 
 				// Check to make sure the array type can be marshaled
 				var elemType = fi.FieldType.GetElementType();
@@ -369,7 +389,7 @@ public static partial class Marshaler
 
 				return arrAttr.Layout switch
 				{
-					ArrayLayout.ByValArray => new FixedArrayMarshaler(fi, arrAttr.SizeConst, options),
+					ArrayLayout.ByValArray or ArrayLayout.ByValAnySizeArray or ArrayLayout.ByValAppendedArray => new FixedArrayMarshaler(fi, arrAttr, options),
 					ArrayLayout.LPArray /*or ArrayLayout.LPArrayNullTerm or ArrayLayout.SafeArray*/ => new ArrayMarshaler(fi, arrAttr, options),
 					ArrayLayout.StringPtrArray or ArrayLayout.StringPtrArrayNullTerm or ArrayLayout.ConcatenatedStringArray => new StringArrayMarshaler(fi, arrAttr, options),
 					_ => throw new MarshalException("Unknown array layout."),

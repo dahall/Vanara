@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -28,13 +29,13 @@ public static partial class Marshaler
 
 	internal interface IPreprocessMarshaler
 	{
-		void PreprocessWrite(MarshaledTypeInfo mti, object obj);
+		int PreprocessWrite(MarshaledTypeInfo mti, object obj);
 	}
 
 	internal abstract class TypeMarshaler(MarshalerOptions options, int size = 0)
 	{
 		public int Offset;
-		public abstract int Alignment { get; }
+		public abstract int Alignment { get; protected set; }
 		public virtual Encoding Encoding => Options.Encoding;
 		public virtual int MaxFieldSize => Size;
 		public MarshalerOptions Options { get; } = options;
@@ -58,21 +59,28 @@ public static partial class Marshaler
 
 	internal abstract class DirectData : TypeMarshaler
 	{
-		public DirectData(Type nativeType, MarshalerOptions options) : base(options)
-		{
-			NativeType = RealType(nativeType);
-			Size = Marshaler.SizeOf(NativeType, options);
-			Alignment = NativeType.IsMarshaledType() ? MarshaledTypeInfo.Get(NativeType, options).Alignment : NativeType.GetAlignment();
-		}
+		private Type nativeType;
 
-		public virtual Type NativeType { get; protected set; }
-		public override int Alignment { get; }
+		public DirectData(Type nativeType, MarshalerOptions options) : base(options) => NativeType = RealType(nativeType);
+
+		[MemberNotNull(nameof(nativeType))]
+		public virtual Type NativeType
+		{
+			get => nativeType ?? throw new InvalidOperationException("NativeType must not be null.");
+			protected set
+			{
+				nativeType = value ?? throw new ArgumentNullException(nameof(NativeType));
+				Size = SizeOf(nativeType, Options);
+				Alignment = nativeType.IsMarshaledType() ? MarshaledTypeInfo.Get(nativeType, Options).Alignment : nativeType.GetAlignment();
+			}
+		}
+		public override int Alignment { get; protected set; }
 		public override int MaxFieldSize => NativeType.HasMembers() ? Alignment : Size;
 	}
 
 	internal abstract class IndirectMarshaler(FieldInfo fieldInfo, MarshalerOptions options) : TypeMarshaler(options, (int)options.Bitness / 8), IProvideFieldInfo
 	{
-		public override int Alignment { get; } = (int)options.Bitness / 8;
+		public override int Alignment { get; protected set; } = (int)options.Bitness / 8;
 		public FieldInfo FieldInfo { get; } = fieldInfo;
 
 		protected IntPtr ReadPtr(IntPtr ptr, int offset)
@@ -84,7 +92,7 @@ public static partial class Marshaler
 
 		protected void WritePtr(IHandle alloc, IntPtr ptr, int offset, ISafeMemoryHandle p)
 		{
-			if (p is IHandle and IDisposable h)
+			if (alloc is IDisposable h)
 				p.AddSubReference(h);
 			else
 				throw new InvalidOperationException("Memory handle must be a IDisposable.");
@@ -92,16 +100,16 @@ public static partial class Marshaler
 		}
 	}
 
-	internal class ArrayMarshaler(FieldInfo fieldInfo, MarshalFieldAs.ArrayPtrAttribute arrAttr, MarshalerOptions options) :
+	internal class ArrayMarshaler(FieldInfo fieldInfo, MarshalFieldAs.ArrayAttribute arrAttr, MarshalerOptions options) :
 		IndirectMarshaler(fieldInfo, options), IPreprocessMarshaler
 	{
 		private readonly int size = arrAttr.SizeConst > 0 ? arrAttr.SizeConst : 0;
 		private readonly FieldInfo? sizeField = arrAttr.SizeFieldName != null ? fieldInfo.DeclaringType?.GetField(arrAttr.SizeFieldName, Extensions.allInstFields) : null;
 		public override Encoding Encoding { get; } = arrAttr.Encoding;
 
-		public void PreprocessWrite(MarshaledTypeInfo mti, object obj)
+		public int PreprocessWrite(MarshaledTypeInfo mti, object obj)
 		{
-			if (obj is null) return;
+			if (obj is null) return 0;
 			var arr = FieldInfo.GetValue(obj) as Array;
 			if (arr is not null && arr!.Rank != 1)
 				throw new MarshalException($"Field {FieldInfo.DeclaringType!.FullName}.{FieldInfo.Name} must be a one-dimensional array.");
@@ -112,6 +120,7 @@ public static partial class Marshaler
 			}
 			else if ((arr?.Length ?? 0) < size)
 				throw new MarshalException($"Field {FieldInfo.DeclaringType!.FullName}.{FieldInfo.Name} must be at least {size} elements long.");
+			return 0;
 		}
 		public override void Read(IntPtr ptr, int offset, MarshaledTypeInfo mti, object? obj)
 		{
@@ -126,13 +135,13 @@ public static partial class Marshaler
 			var aptr = ReadPtr(ptr, offset);
 			var arr = arrAttr.Layout switch
 			{
-				ArrayLayout.LPArray => FixedArrayMarshaler.ReadArray(ptr, offset, FieldInfo.FieldType.GetElementType()!, sz, Options),
+				ArrayLayout.LPArray => FixedArrayMarshaler.ReadArray(aptr, 0, FieldInfo.FieldType.GetElementType()!, sz, Options),
 				//case ArrayLayout.LPArrayNullTerm:
-				//	sz = aptr.GetNulledPtrArrayLength();
+				//	len = aptr.GetNulledPtrArrayLength();
 				//	aptr.ToArray
 				//	break;
 				//case ArrayLayout.SafeArray:
-				//	sz = aptr.GetNulledPtrArrayLength();
+				//	len = aptr.GetNulledPtrArrayLength();
 				//	break;
 				_ => throw new MarshalException($"Invalid array layout {arrAttr.Layout}."),
 			};
@@ -155,7 +164,7 @@ public static partial class Marshaler
 					break;
 				//case ArrayLayout.LPArrayNullTerm:
 				//	// TODO: Add support for marshaling an array with a null terminator
-				//	sz = items.length + 1;
+				//	len = items.length + 1;
 				//	break;
 				//case ArrayLayout.SafeArray:
 				//	// TODO: Add support for SAFEARRAY allocation
@@ -212,10 +221,10 @@ public static partial class Marshaler
 				offset += str.GetByteCount(options);
 				continue;
 			}
-			if (item is Array arr)
+			if (item is Array str)
 			{
-				ptr.Write(arr, offset, options);
-				offset += arr.GetByteCount(options);
+				ptr.Write(str, offset, options);
+				offset += str.GetByteCount(options);
 				continue;
 			}
 			if (item is IEnumerable<object> objList)
@@ -244,16 +253,16 @@ public static partial class Marshaler
 	}
 */
 
-	internal class StringArrayMarshaler(FieldInfo fieldInfo, MarshalFieldAs.ArrayPtrAttribute arrAttr, MarshalerOptions options) :
+	internal class StringArrayMarshaler(FieldInfo fieldInfo, MarshalFieldAs.ArrayAttribute arrAttr, MarshalerOptions options) :
 		IndirectMarshaler(fieldInfo, options), IPreprocessMarshaler
 	{
 		private readonly int size = arrAttr.SizeConst > 0 ? arrAttr.SizeConst : 0;
 		private readonly FieldInfo? sizeField = arrAttr.SizeFieldName != null ? fieldInfo.DeclaringType?.GetField(arrAttr.SizeFieldName, Extensions.allInstFields) : null;
 		public override Encoding Encoding { get; } = arrAttr.Encoding;
 
-		public void PreprocessWrite(MarshaledTypeInfo mti, object obj)
+		public int PreprocessWrite(MarshaledTypeInfo mti, object obj)
 		{
-			if (obj is null || arrAttr.Layout is ArrayLayout.StringPtrArrayNullTerm or ArrayLayout.ConcatenatedStringArray) return;
+			if (obj is null || arrAttr.Layout is ArrayLayout.StringPtrArrayNullTerm or ArrayLayout.ConcatenatedStringArray) return 0;
 
 			var arr = FieldInfo.GetValue(obj) as string[];
 			if (sizeField is not null)
@@ -264,11 +273,14 @@ public static partial class Marshaler
 			}
 			else if ((arr?.Length ?? 0) < size)
 				throw new MarshalException($"Field {FieldInfo.DeclaringType!.FullName}.{FieldInfo.Name} must be at least {size} elements long.");
+
+			return 0;
 		}
 		public override void Read(IntPtr ptr, int offset, MarshaledTypeInfo mti, object? obj)
 		{
 			if (obj is null || ptr == default) return;
 			string?[]? arr = null;
+			var saptr = ReadPtr(ptr, offset);
 			switch (arrAttr.Layout)
 			{
 				case ArrayLayout.StringPtrArray:
@@ -279,14 +291,14 @@ public static partial class Marshaler
 						var szVal = szfi.ReadValueFromPtr(ptr, szfi.Offset) ?? throw new MarshalException($"Field {sizeField.DeclaringType!.FullName}.{sizeField.Name} must provide an integral value.");
 						sz = (int)Convert.ChangeType(szVal, typeof(int));
 					}
-					arr = [.. ptr.ToStringEnum(sz, Encoding, offset)];
+					arr = [.. saptr.ToStringEnum(sz, Encoding, 0)];
 					break;
 				case ArrayLayout.StringPtrArrayNullTerm:
-					sz = ptr.GetNulledPtrArrayLength();
-					arr = [.. ptr.ToStringEnum(sz, Encoding, offset)];
+					sz = saptr.GetNulledArrayLength(RealType(typeof(IntPtr)));
+					arr = [.. saptr.ToStringEnum(sz, Encoding, 0)];
 					break;
 				case ArrayLayout.ConcatenatedStringArray:
-					arr = [.. ptr.ToStringEnum(Encoding, offset)];
+					arr = [.. saptr.ToStringEnum(Encoding)];
 					break;
 				default:
 					throw new MarshalException("Invalid string array layout.");
@@ -296,8 +308,7 @@ public static partial class Marshaler
 		public override void Write<TMem>(object? value, nint ptr, int offset, ISafeMemoryHandle p)
 		{
 			if (value is null || ptr == default) return;
-			Debug.Assert(value.GetType() == typeof(string[]));
-			var sa = (string[])value;
+			var sa = (string[])FieldInfo.GetValue(value)!;
 			if (arrAttr.Layout is ArrayLayout.StringPtrArrayNullTerm or ArrayLayout.ConcatenatedStringArray && sa.Any(s => s is null))
 				throw new MarshalException($"Field {FieldInfo.DeclaringType!.FullName}.{FieldInfo.Name} must not contain null strings.");
 
@@ -319,15 +330,16 @@ public static partial class Marshaler
 			};
 
 			var aptr = Extensions.CreateSafeMemory<TMem>(totsz);
-			var sptrs = new IntPtr[sa.Length + arrAttr.Layout == ArrayLayout.StringPtrArrayNullTerm ? 1 : 0];
-			for (int i = 0, soff = 0; i < stringsAsBytes.Length; i++)
+			var sptrs = new IntPtr[sa.Length + (arrAttr.Layout == ArrayLayout.StringPtrArrayNullTerm ? 1 : 0)];
+			for (int i = 0, soff = soffset; i < stringsAsBytes.Length; i++)
 			{
 				sptrs[i] = aptr.DangerousGetHandle().Offset(soff);
 				soff += aptr.DangerousGetHandle().Write(stringsAsBytes[i], soff, totsz);
 			}
 
-			for (int i = 0; i < sptrs.Length; i++)
-				aptr.DangerousGetHandle().Write(sptrs[i].AdjustBitness(Options.Bitness), i * ptrsz, totsz);
+			if (arrAttr.Layout is ArrayLayout.StringPtrArray or ArrayLayout.StringPtrArrayNullTerm)
+				for (int i = 0; i < sptrs.Length; i++)
+					aptr.DangerousGetHandle().Write(sptrs[i].AdjustBitness(Options.Bitness), i * ptrsz, totsz);
 
 			WritePtr(aptr, ptr, offset, p);
 		}
@@ -391,8 +403,10 @@ public static partial class Marshaler
 	}
 
 	// TODO: Complete
-	internal class CustomMarshalerMarshaler(FieldInfo fieldInfo, MarshalerOptions options) : IndirectMarshaler(fieldInfo, options)
+	internal class CustomMarshalerMarshaler(FieldInfo fieldInfo, Type customMarshaler, MarshalerOptions options) : IndirectMarshaler(fieldInfo, options)
 	{
+		public Type CustomMarshaler { get; } = customMarshaler;
+
 		public override void Read(nint ptr, int offset, MarshaledTypeInfo mti, object? obj) => throw new NotImplementedException();
 		public override void Write<TMem>(object? value, nint ptr, int offset, ISafeMemoryHandle p) => throw new NotImplementedException();
 	}
@@ -426,25 +440,59 @@ public static partial class Marshaler
 		}
 	}
 
-	internal class FixedArrayMarshaler : DirectMarshaler
+	internal class FixedArrayMarshaler : DirectMarshaler, IPreprocessMarshaler
 	{
+		private readonly ArrayLayout layout;
+		private readonly FieldInfo? sizeField;
+		private readonly int elemSize;
 		public int Length { get; }
 
-		public FixedArrayMarshaler(FieldInfo fieldInfo, int length, MarshalerOptions options) : base(fieldInfo, fieldInfo.FieldType.GetElementType()!, options)
+		public FixedArrayMarshaler(FieldInfo fieldInfo, MarshalFieldAs.ArrayAttribute arrAttr, MarshalerOptions options) : base(fieldInfo, fieldInfo.FieldType.GetElementType()!, options)
 		{
-			Length = length;
-			Size = Length * base.Size;
+			layout = arrAttr.Layout;
+			elemSize = base.Size;
+			sizeField = arrAttr.SizeFieldName != null ? fieldInfo.DeclaringType?.GetField(arrAttr.SizeFieldName, Extensions.allInstFields) : null;
+			Length = arrAttr.Layout switch { ArrayLayout.ByValArray => arrAttr.SizeConst, ArrayLayout.ByValAnySizeArray => 1, _ => 0 };
+			Size = Length * elemSize;
+		}
+		public FixedArrayMarshaler(FieldInfo fieldInfo, int sizeConst, MarshalerOptions options) :
+			this(fieldInfo, new MarshalFieldAs.ArrayAttribute(ArrayLayout.ByValArray) { SizeConst = sizeConst }, options) { }
+		public int PreprocessWrite(MarshaledTypeInfo mti, object obj)
+		{
+			if (obj is null) return 0;
+			var arr = FieldInfo.GetValue(obj) as Array;
+			if (arr is not null && arr!.Rank != 1)
+				throw new MarshalException($"Field {FieldInfo.DeclaringType!.FullName}.{FieldInfo.Name} must be a one-dimensional array.");
+			if (sizeField is not null)
+			{
+				var writeVal = Convert.ChangeType(arr?.Length ?? 0, sizeField.FieldType);
+				sizeField.SetValue(obj, writeVal);
+				if (arr is not null && layout is ArrayLayout.ByValAnySizeArray or ArrayLayout.ByValAppendedArray)
+					return (arr.Length - (layout == ArrayLayout.ByValAnySizeArray ? 1 : 0)) * elemSize;
+			}
+			else if (layout is ArrayLayout.ByValAnySizeArray or ArrayLayout.ByValAppendedArray)
+				throw new MarshalException($"Field {FieldInfo.DeclaringType!.FullName}.{FieldInfo.Name} must have an associated size field.");
+			else if ((arr?.Length ?? 0) < Length)
+				throw new MarshalException($"Field {FieldInfo.DeclaringType!.FullName}.{FieldInfo.Name} must be at least {Length} elements long.");
+			return 0;
 		}
 		public override void Read(nint ptr, int offset, MarshaledTypeInfo mti, object? obj)
 		{
-			if (obj is null) return;
-			FieldInfo.SetValue(obj, ReadArray(ptr, offset, NativeType, Length, Options));
+			if (obj is null || ptr == default) return;
+			int len = Length;
+			if (sizeField is not null)
+			{
+				var szfi = mti.Fields.OfType<DirectMarshaler>().Where(f => f.FieldInfo.Name == sizeField.Name).FirstOrDefault() ?? throw new MarshalException($"Field {sizeField.DeclaringType!.FullName}.{sizeField.Name} must exist.");
+				var szVal = szfi.ReadValueFromPtr(ptr, szfi.Offset) ?? throw new MarshalException($"Field {sizeField.DeclaringType!.FullName}.{sizeField.Name} must provide an integral value.");
+				len = (int)Convert.ChangeType(szVal, typeof(int));
+			}
+			FieldInfo.SetValue(obj, ReadArray(ptr, offset, NativeType, len, Options));
 		}
 		public override void Write<TMem>(object? value, nint ptr, int offset, ISafeMemoryHandle p)
 		{
-			if (value is null) return;
+			if (value is null || ptr == default) return;
 			Array writeVal = (Array?)FieldInfo.GetValue(value) ?? Array.CreateInstance(NativeType, Length);
-			if (writeVal.Rank != 1 || writeVal.Length != Length)
+			if (writeVal.Rank != 1 || (writeVal.Length != Length && layout == ArrayLayout.ByValArray))
 				throw new MarshalException($"Field {FieldInfo.DeclaringType!.FullName}.{FieldInfo.Name} must be a one-dimensional array of length {Length}.");
 			WriteArray<TMem>(writeVal, NativeType, ptr, offset, p, Options);
 		}
@@ -485,10 +533,85 @@ public static partial class Marshaler
 		}
 	}
 
-	// TODO: Complete
-	internal class FixedStringMarshaler(FieldInfo fieldInfo, int stringLength, MarshalerOptions options) : DirectMarshaler(fieldInfo, typeof(IntPtr), options)
+	internal class AppendedStringMarshaler : DirectMarshaler, IPreprocessMarshaler
 	{
-		public int StringLength { get; } = stringLength;
+		private readonly FieldInfo? sizeField;
+
+		public AppendedStringMarshaler(FieldInfo fieldInfo, MarshalFieldAs.AppendedStringAttribute arrAttr, MarshalerOptions options) : base(fieldInfo, typeof(byte), options)
+		{
+			Encoding = arrAttr.Encoding;
+			NativeType = RealType(typeof(char));
+			Size = Encoding.GetCharSize() * arrAttr.EmbeddedCharacters;
+			sizeField = arrAttr.StringLenFieldName != null ? fieldInfo.DeclaringType?.GetField(arrAttr.StringLenFieldName, Extensions.allInstFields) : null;
+		}
+
+		public override Encoding Encoding { get; }
+
+		public int PreprocessWrite(MarshaledTypeInfo mti, object obj)
+		{
+			if (obj is null) return 0;
+			var str = FieldInfo.GetValue(obj) as string;
+			if (sizeField is not null)
+			{
+				var writeVal = Convert.ChangeType(str?.Length ?? 0, sizeField.FieldType);
+				sizeField.SetValue(obj, writeVal);
+			}
+			return str is null ? 0 : str.GetByteCount(Encoding, true) - Size;
+		}
+		public override void Read(nint ptr, int offset, MarshaledTypeInfo mti, object? obj)
+		{
+			if (obj is null) return;
+			int len = int.MaxValue;
+			if (sizeField is not null)
+			{
+				var szfi = mti.Fields.OfType<DirectMarshaler>().Where(f => f.FieldInfo.Name == sizeField.Name).FirstOrDefault() ?? throw new MarshalException($"Field {sizeField.DeclaringType!.FullName}.{sizeField.Name} must exist.");
+				var szVal = szfi.ReadValueFromPtr(ptr, szfi.Offset) ?? throw new MarshalException($"Field {sizeField.DeclaringType!.FullName}.{sizeField.Name} must provide an integral value.");
+				len = (int)Convert.ChangeType(szVal, typeof(int));
+			}
+			FieldInfo.SetValue(obj, StringHelper.GetString(ptr.Offset(offset), Encoding, out _, len * Encoding.GetCharSize()));
+		}
+		public override void Write<TMem>(object? value, nint ptr, int offset, ISafeMemoryHandle p)
+		{
+			if (value is null) return;
+			var s = FieldInfo.GetValue(value) as string;
+			ptr.Offset(offset).FillMemory(0, Size);
+			if (s is not null)
+				StringHelper.Write(s, ptr.Offset(offset), Encoding, true);
+		}
+	}
+
+	internal class FixedStringMarshaler : DirectMarshaler
+	{
+		private readonly int maxLen;
+		private readonly bool nullTerm;
+
+		public FixedStringMarshaler(FieldInfo fieldInfo, int stringLength, bool nullTerm, StringEncoding encoding, MarshalerOptions options) : base(fieldInfo, typeof(byte), options)
+		{
+			StringLength = stringLength;
+			maxLen = nullTerm ? StringLength - 1 : StringLength;
+			this.nullTerm = nullTerm;
+			Encoding = encoding.ToEncoding();
+			NativeType = RealType(typeof(char));
+			Size = Encoding.GetCharSize() * StringLength;
+		}
+
+		public override Encoding Encoding { get; }
+		public override int MaxFieldSize => Alignment;
+		public int StringLength { get; }
+
+		public override void Read(nint ptr, int offset, MarshaledTypeInfo mti, object? obj)
+		{
+			if (obj is null) return;
+			FieldInfo.SetValue(obj, StringHelper.GetString(ptr.Offset(offset), Encoding, out _, Size));
+		}
+		public override void Write<TMem>(object? value, nint ptr, int offset, ISafeMemoryHandle p)
+		{
+			if (value is null) return;
+			var s = FieldInfo.GetValue(value) as string;
+			ptr.Offset(offset).FillMemory(0, Size);
+			if (s is not null)
+				StringHelper.Write(s.Substring(0, Math.Min(s.Length, maxLen)), ptr.Offset(offset), Encoding, nullTerm, Size);
+		}
 	}
 
 	internal class FuncPtrMarshaler(FieldInfo fieldInfo, MarshalerOptions options) : DirectMarshaler(fieldInfo, typeof(IntPtr), options)
@@ -512,12 +635,13 @@ public static partial class Marshaler
 
 	internal class SizeOfMarshaler(FieldInfo fieldInfo, MarshalerOptions options) : DirectMarshaler(fieldInfo, fieldInfo.FieldType, options), IPreprocessMarshaler
 	{
-		public void PreprocessWrite(MarshaledTypeInfo mti, object obj)
+		public int PreprocessWrite(MarshaledTypeInfo mti, object obj)
 		{
-			if (obj is null) return;
+			if (obj is null) return 0;
 			ulong ul = (ulong)Convert.ChangeType(FieldInfo.GetValue(obj), typeof(ulong))!;
 			if (ul == 0)
 				FieldInfo.SetValue(obj, Convert.ChangeType(mti.NativeSize, FieldInfo.FieldType));
+			return 0;
 		}
 	}
 

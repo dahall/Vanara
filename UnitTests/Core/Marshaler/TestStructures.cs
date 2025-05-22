@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using Vanara.Marshaler;
 
-namespace UnitTests;
+namespace Vanara.Marshaler.Tests;
 
 // 32, 64: 16
 [Marshaled]
@@ -94,7 +94,7 @@ internal struct NativeUnionStruct
 [Marshaled]
 internal struct TestByValArrayStruct
 {
-	[MarshalFieldAs.ArrayPtr(ArrayLayout.ByValArray, SizeConst = 4)]
+	[MarshalFieldAs.Array(ArrayLayout.ByValArray, SizeConst = 4)]
 	public Guid[] pointerToArray;
 }
 
@@ -112,7 +112,7 @@ internal struct TestAnySizeArrayStruct
 
 	private uint arrayCount;
 
-	[MarshalFieldAs.ArrayPtr(ArrayLayout.ByValArray, SizeFieldName = nameof(arrayCount), SingleElementPlaceholder = true)]
+	[MarshalFieldAs.Array(ArrayLayout.ByValAnySizeArray, SizeFieldName = nameof(arrayCount))]
 	public Guid[] array;
 }
 
@@ -129,7 +129,7 @@ internal struct TestArrayPtrStruct
 {
 	private uint arrayCount;
 
-	[MarshalFieldAs.ArrayPtr(ArrayLayout.LPArray, SizeFieldName = nameof(arrayCount))]
+	[MarshalFieldAs.Array(ArrayLayout.LPArray, SizeFieldName = nameof(arrayCount))]
 	public Guid[] array;
 }
 
@@ -159,7 +159,7 @@ internal struct NativeSimpleStruct
 [Marshaled]
 internal struct MultiDimArrayStruct
 {
-	[MarshalFieldAs.ArrayPtr(ArrayLayout.ByValArray, SizeConst = 16)]
+	[MarshalFieldAs.Array(ArrayLayout.ByValArray, SizeConst = 16)]
 	public float[,] pointerToArray;
 }
 
