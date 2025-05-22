@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Threading;
 using Vanara.PInvoke.Tests;
 using static Vanara.PInvoke.Shell32;
 
@@ -10,7 +11,8 @@ public class ShellContextMenuTests
 	[Test]
 	public void CreateTest()
 	{
-		using var shi = ShellItem.Open(TestCaseSources.TempDir);
+		//using var shi = ShellItem.Open(TestCaseSources.TempDir);
+		using var shi = ShellItem.Open(@"C:\Windows");
 		using var menu = new ShellContextMenu(shi);
 		var items = menu.GetItems(CMF.CMF_EXTENDEDVERBS | CMF.CMF_EXPLORE | CMF.CMF_CANRENAME | CMF.CMF_ITEMMENU);
 		for (var i = 0; i < items.Length; i++)
@@ -29,6 +31,23 @@ public class ShellContextMenuTests
 	}
 
 	[Test]
+	public void CreateTest3()
+	{
+		using var shi = ShellItem.Open(TestCaseSources.WordDoc);
+		var items = shi.ContextMenu.GetItems(CMF.CMF_EXTENDEDVERBS);
+		shi.ContextMenu.InvokeVerb(items[0].Verb!);
+		Thread.Sleep(2000);
+		Assert.That(!Vanara.PInvoke.User32.FindWindow(null, "Microsoft Word").IsNull);
+	}
+
+	[Test]
+	public void ShowTest()
+	{
+		using var shi = ShellItem.Open(@"C:\Windows");
+		shi.ContextMenu.ShowContextMenu(new(100,100), onMenuItemClicked: (m, i, w) => TestContext.WriteLine($"Clicked {i}"));
+	}
+
+	[Test]
 	public void TestRepeatFail()
 	{
 		for (int i = 0; i < 20; i++)
@@ -43,8 +62,15 @@ public class ShellContextMenuTests
 	public void InvokeVerbTest()
 	{
 		using var shi = ShellItem.Open(TestCaseSources.ImageFile);
-		using var menu = shi.ContextMenu;
-		menu.InvokeVerb("open");
+		shi.ContextMenu.InvokeVerb("open");
+	}
+
+	[Test]
+	public void InvokeVerbTest2()
+	{
+		using var shi = ShellItem.Open(TestCaseSources.TempDir);
+		Assert.That(shi.IsFolder);
+		shi.ContextMenu.InvokeVerb("Powershell");
 	}
 
 	static void ShowMII(ShellContextMenu.MenuItemInfo mii, int c, int indent = 0)

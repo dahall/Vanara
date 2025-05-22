@@ -656,12 +656,6 @@ public static partial class Shell32
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CMINVOKECOMMANDINFOEX
 	{
-		/// <summary>The byte size of <c>CMINVOKECOMMANDINFO</c>.</summary>
-		public const uint cbCMINVOKECOMMANDINFO = 56;
-
-		/// <summary>The byte size of <see cref="CMINVOKECOMMANDINFOEX"/>.</summary>
-		public const uint cbCMINVOKECOMMANDINFOEX = 104;
-
 		/// <summary>
 		/// The size of this structure, in bytes. This member should be filled in by callers of IContextMenu::InvokeCommand and tested by
 		/// the implementations to know that the structure is a CMINVOKECOMMANDINFOEX structure rather than CMINVOKECOMMANDINFO.
@@ -778,7 +772,7 @@ public static partial class Shell32
 		/// <param name="commandId">The menu-identifier offset of the command to carry out.</param>
 		public CMINVOKECOMMANDINFOEX(int commandId) : this()
 		{
-			cbSize = cbCMINVOKECOMMANDINFOEX;
+			cbSize = (uint)Marshal.SizeOf(typeof(CMINVOKECOMMANDINFOEX));
 			lpVerb = commandId;
 		}
 
@@ -832,7 +826,7 @@ public static partial class Shell32
 			POINT? location = default, bool allowAsync = false, bool shiftDown = false, bool ctrlDown = false, uint hotkey = 0,
 			bool logUsage = false, bool noZoneChecks = false, string? parameters = null)
 		{
-			cbSize = cbCMINVOKECOMMANDINFOEX;
+			cbSize = (uint)Marshal.SizeOf(typeof(CMINVOKECOMMANDINFOEX));
 			hwnd = parent;
 			fMask = (parent.IsNull ? CMIC.CMIC_MASK_FLAG_NO_UI : 0) | (hotkey != 0 ? CMIC.CMIC_MASK_HOTKEY : 0);
 			lpVerb = verb;

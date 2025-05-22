@@ -32,44 +32,31 @@ public class ShellContextMenu : IDisposable
 	private readonly IContextMenu3? m_ComInterface3;
 	private readonly BasicMessageWindow m_MessageWindow;
 	private bool disposedValue;
+	private CMF initVal = CMF.CMF_RESERVED;
 
 	static ShellContextMenu() => Ole32.OleInitialize(default); // Not sure why necessary, but it fails without
 
-	/// <summary>Initialises a new instance of the <see cref="ShellContextMenu"/> class.</summary>
-	/// <param name="items">The items to which the context menu should refer.</param>
-	public ShellContextMenu(params ShellItem[] items)
+	/// <summary>Initializes a new instance of the <see cref="ShellContextMenu"/> class.</summary>
+	/// <param name="contextMenu">The interface for the context menu.</param>
+	/// <exception cref="System.ArgumentNullException">contextMenu</exception>
+	public ShellContextMenu(IContextMenu contextMenu)
 	{
-		if (items is null)
-			throw new ArgumentNullException(nameof(items));
-
-		if (items.Length == 1 && items[0].IsFolder)
-		{
-			var isf = items[0] is ShellFolder sf ? sf.IShellFolder : items[0].IShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
-			ComInterface = isf.CreateViewObject<IContextMenu>(HWND.NULL)!;
-		}
-		else
-		{
-			if (Array.IndexOf(items, ShellFolder.Desktop) != -1)
-				throw new Exception("If the desktop folder is specified, it must be the only item.");
-
-			var pidls = new IntPtr[items.Length];
-			ShellFolder? parent = null;
-
-			for (var n = 0; n < items.Length; ++n)
-			{
-				if (n == 0)
-					parent = items[n].Parent;
-				else if (items[n].Parent != parent)
-					throw new Exception("All shell items must have the same parent");
-				pidls[n] = (IntPtr)items[n].PIDL.LastId;
-			}
-
-			ComInterface = parent!.IShellFolder.GetUIObjectOf<IContextMenu>(HWND.NULL, pidls);
-		}
-		m_ComInterface2 = ComInterface as IContextMenu2;
-		m_ComInterface3 = ComInterface as IContextMenu3;
+		ComInterface = contextMenu ?? throw new ArgumentNullException(nameof(contextMenu));
+		m_ComInterface2 = contextMenu as IContextMenu2;
+		m_ComInterface3 = contextMenu as IContextMenu3;
 		m_MessageWindow = new BasicMessageWindow(WindowMessageFilter);
 	}
+
+	/// <summary>Initialises a new instance of the <see cref="ShellContextMenu"/> class.</summary>
+	/// <param name="items">The items to which the context menu should refer.</param>
+	public ShellContextMenu(params ShellItem[] items) : this(MenuFromItems(items))
+	{
+		if (ComInterface is IShellExtInit ext)
+			ext.Initialize(items[0].IsFolder ? items[0].PIDL : items[0].Parent!.PIDL).ThrowIfFailed("Failed to initialize IShellExtInit.");
+	}
+
+	/// <summary>Occurs when a new menu handle has been created and populated by Windows.</summary>
+	public event EventHandler<MenuCreatedEventArgs>? MenuCreated;
 
 	/// <summary>Finalizes an instance of the <see cref="ShellContextMenu"/> class.</summary>
 	~ShellContextMenu()
@@ -108,8 +95,7 @@ public class ShellContextMenu : IDisposable
 	/// <value>The menu item information.</value>
 	public MenuItemInfo[] GetItems(CMF menuOptions = CMF.CMF_EXTENDEDVERBS)
 	{
-		using var hmenu = CreatePopupMenu();
-		ComInterface.QueryContextMenu(hmenu, 0, m_CmdFirst, int.MaxValue, menuOptions).ThrowIfFailed();
+		using SafeHMENU hmenu = PopulateMenu(menuOptions);
 		return MenuItemInfo.GetMenuItems(hmenu, this);
 	}
 
@@ -125,18 +111,13 @@ public class ShellContextMenu : IDisposable
 			}
 			else
 			{
-				if (m_ComInterface3 is not null)
+				if (m_ComInterface3 is not null && m_ComInterface3.HandleMenuMsg2(msg, wParam, lParam, out var lRet).Succeeded)
 				{
-					if (m_ComInterface3.HandleMenuMsg2(msg, wParam, lParam, out var lRet).Succeeded)
-						lReturn = lRet;
+					lReturn = lRet;
 					return true;
 				}
-				else if (m_ComInterface2 is not null)
-				{
-					if (m_ComInterface2.HandleMenuMsg(msg, wParam, lParam).Succeeded)
-						lReturn = default;
+				else if (m_ComInterface2 is not null && m_ComInterface2.HandleMenuMsg(msg, wParam, lParam).Succeeded)
 					return true;
-				}
 			}
 		}
 		catch { }
@@ -195,10 +176,9 @@ public class ShellContextMenu : IDisposable
 	{
 		CMINVOKECOMMANDINFOEX invoke = new(verb, show, parent, location, allowAsync, shiftDown, ctrlDown, hotkey, logUsage, noZoneChecks, parameters);
 		// This is a little hack to get the menu to show up. If we don't call QueryContextMenu first, the menu won't show up. attr: @zhuxb711
-		using var hmenu = CreatePopupMenu();
-		ComInterface.QueryContextMenu(hmenu, 0, m_CmdFirst, int.MaxValue, CMF.CMF_OPTIMIZEFORINVOKE);
-		// End hack
-		ComInterface.InvokeCommand(invoke).ThrowIfFailed();
+		if (initVal == CMF.CMF_RESERVED)
+			using (var hmenu = PopulateMenu(CMF.CMF_OPTIMIZEFORINVOKE)) { }
+		ComInterface.InvokeCommand(invoke).ThrowIfFailed($"Invoke menu failed for {verb}.");
 	}
 
 	/// <summary>Invokes the Copy command on the shell item(s).</summary>
@@ -240,19 +220,25 @@ public class ShellContextMenu : IDisposable
 	/// may be displayed. Failing to specify an HWND when calling from a UI thread (one with windows already created) will result in
 	/// reentrancy and possible bugs in the implementation of this call.
 	/// </param>
-	public void InvokeVerb(string verb, [Optional] ShowWindowCommand show, [Optional] HWND parent) =>
+	public void InvokeVerb(string verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default) =>
 		InvokeCommand(new SafeResourceId(verb), show, parent);
 
 	/// <summary>Shows a context menu for a shell item.</summary>
 	/// <param name="pos">The position on the screen that the menu should be displayed at.</param>
-	/// <param name="menuOptions">The options that determine which items are requested from <see cref="IContextMenu"/>.</param>
-	public void ShowContextMenu(POINT pos, CMF menuOptions = CMF.CMF_EXTENDEDVERBS)
+	/// <param name="menuOptions">The options that determine which items are requested from <see cref="IContextMenu" />.</param>
+	/// <param name="onMenuItemClicked">The delegate to call when a menu item is clicked; If <see langword="null" />, <see cref="InvokeCommand" /> is called.</param>
+	/// <param name="hWnd">The optional parent window handle.</param>
+	public void ShowContextMenu(POINT pos, CMF menuOptions = CMF.CMF_EXTENDEDVERBS, Action<HMENU, int, HWND>? onMenuItemClicked = null, HWND hWnd = default)
 	{
-		using var hmenu = CreatePopupMenu();
-		ComInterface.QueryContextMenu(hmenu, 0, m_CmdFirst, int.MaxValue, menuOptions).ThrowIfFailed();
+		using var hmenu = PopulateMenu(menuOptions);
 		var command = TrackPopupMenuEx(hmenu, TrackPopupMenuFlags.TPM_RETURNCMD, pos.X, pos.Y, m_MessageWindow.Handle);
-		if (command > 0)
-			InvokeCommand((int)command - m_CmdFirst);
+		if (command >= m_CmdFirst)
+		{
+			if (onMenuItemClicked != null)
+				onMenuItemClicked(hmenu, (int)command - m_CmdFirst, hWnd);
+			else
+				InvokeCommand((int)command - m_CmdFirst, parent: hWnd);
+		}
 	}
 
 	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
@@ -277,6 +263,44 @@ public class ShellContextMenu : IDisposable
 	{
 		using SafeCoTaskMemString mStr = new(4096);
 		return ComInterface.GetCommandString((IntPtr)command, stringType, default, mStr, (uint)mStr.Capacity).Succeeded ? (string?)mStr : null;
+	}
+
+	private SafeHMENU PopulateMenu(CMF menuOptions)
+	{
+		var hmenu = CreatePopupMenu();
+		ComInterface.QueryContextMenu(hmenu, 0, m_CmdFirst, int.MaxValue, initVal = menuOptions).ThrowIfFailed();
+		MenuCreated?.Invoke(this, new(hmenu));
+		return hmenu;
+	}
+
+	private static IContextMenu MenuFromItems(ShellItem[] items)
+	{
+		if (items is null || items.Length == 0)
+			throw new ArgumentNullException(nameof(items));
+
+		//if (items.Length == 1 && items[0].IsFolder)
+		//{
+		//	var isf = items[0] is ShellFolder sf ? sf.IShellFolder : items[0].IShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
+		//	return isf.CreateViewObject<IContextMenu>(HWND.NULL)!;
+		//}
+		//else
+		{
+			if (Array.IndexOf(items, ShellFolder.Desktop) != -1)
+				throw new Exception("If the desktop folder is specified, it must be the only item.");
+
+			ShellFolder? parent = items[0].Parent;
+			var pidls = new IntPtr[items.Length];
+			pidls[0] = (IntPtr)items[0].PIDL.LastId;
+
+			for (var n = 1; n < items.Length; ++n)
+			{
+				if (items[n].Parent != parent)
+					throw new Exception("All shell items must have the same parent");
+				pidls[n] = (IntPtr)items[n].PIDL.LastId;
+			}
+
+			return parent!.IShellFolder.GetUIObjectOf<IContextMenu>(HWND.NULL, pidls);
+		}
 	}
 
 #if WINFORMS && HASMENU
@@ -347,20 +371,24 @@ public class ShellContextMenu : IDisposable
 	/// <summary>Provides information about a single menu entry discovered in a native menu.</summary>
 	public class MenuItemInfo
 	{
-		internal MenuItemInfo(HMENU hMenu, uint idx, ShellContextMenu? scm)
+		/// <summary>Initializes a new instance of the <see cref="MenuItemInfo"/> class.</summary>
+		/// <param name="hMenu">The menu handle.</param>
+		/// <param name="idx">The identifier or position of the menu item to get information about. If zero or positive, it is </param>
+		/// <param name="scm">The ShellContextMenu parent instance.</param>
+		internal MenuItemInfo(HMENU hMenu, int idx, ShellContextMenu? scm)
 		{
-			using var strmem = new SafeHGlobalHandle(512);
-			var mii = new MENUITEMINFO
+			using SafeLPTSTR strmem = new(512);
+			MENUITEMINFO mii = new()
 			{
 				cbSize = (uint)Marshal.SizeOf(typeof(MENUITEMINFO)),
 				fMask = MenuItemInfoMask.MIIM_ID | MenuItemInfoMask.MIIM_SUBMENU | MenuItemInfoMask.MIIM_FTYPE | MenuItemInfoMask.MIIM_STRING | MenuItemInfoMask.MIIM_STATE | MenuItemInfoMask.MIIM_BITMAP,
 				fType = MenuItemType.MFT_STRING,
-				dwTypeData = (IntPtr)strmem,
-				cch = strmem.Size / (uint)StringHelper.GetCharSize()
+				dwTypeData = strmem,
+				cch = (uint)strmem.Capacity
 			};
-			Win32Error.ThrowLastErrorIfFalse(GetMenuItemInfo(hMenu, idx, true, ref mii));
+			Win32Error.ThrowLastErrorIfFalse(GetMenuItemInfo(hMenu, (uint)Math.Abs(idx), idx >= 0, ref mii));
 			Id = unchecked((int)(mii.wID - m_CmdFirst));
-			Text = mii.fType.IsFlagSet(MenuItemType.MFT_SEPARATOR) ? "-" : mii.fType.IsFlagSet(MenuItemType.MFT_STRING) ? strmem.ToString(-1, CharSet.Auto) ?? "" : "";
+			Text = mii.fType.IsFlagSet(MenuItemType.MFT_SEPARATOR) ? "-" : mii.fType.IsFlagSet(MenuItemType.MFT_STRING) ? strmem.ToString() ?? "" : "";
 			Type = mii.fType;
 			State = mii.fState;
 			BitmapHandle = mii.hbmpItem;
@@ -465,7 +493,7 @@ public class ShellContextMenu : IDisposable
 				return [];
 
 			var SubMenus = new MenuItemInfo[GetMenuItemCount(hMenu)];
-			for (uint i = 0; i < SubMenus.Length; i++)
+			for (int i = 0; i < SubMenus.Length; i++)
 			{
 				SubMenus[i] = new MenuItemInfo(hMenu, i, scm);
 				System.Diagnostics.Debug.WriteLine($"Processing submenu {i} ({SubMenus[i].Text})");
@@ -480,4 +508,17 @@ public class ShellContextMenu : IDisposable
 			return SubMenus;
 		}
 	}
+}
+
+/// <summary>
+/// Event arguments for <see cref="ShellContextMenu.MenuCreated"/> events giving access to the menu handle that was created and filled by the system.
+/// </summary>
+/// <seealso cref="System.EventArgs"/>
+public class MenuCreatedEventArgs : EventArgs
+{
+	internal MenuCreatedEventArgs(HMENU hMenu) => MenuHandle = hMenu;
+
+	/// <summary>Gets the menu handle.</summary>
+	/// <value>The menu handle.</value>
+	public HMENU MenuHandle { get; }
 }
