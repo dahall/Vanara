@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
@@ -72,17 +73,21 @@ public static partial class ImageListExtension
 		var dhiml = ImageList_Duplicate(himl);
 		var iil = dhiml.Interface;
 		// Get internal handle class
-		var nilfi = typeof(ImageList).GetField("nativeImageList", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic) ?? throw new PlatformNotSupportedException();
+		var nilfi = typeof(ImageList).GetField("nativeImageList", BindingFlags.Instance | BindingFlags.NonPublic) ?? typeof(ImageList).GetField("_nativeImageList", BindingFlags.Instance | BindingFlags.NonPublic) ?? throw new PlatformNotSupportedException();
 		Type nil = nilfi.FieldType;
 		// Create a new instance with the handle param
 #pragma warning disable IL2058 // Parameters passed to method cannot be analyzed. Consider using methods 'System.Type.GetType' and `System.Activator.CreateInstance` instead.
-		var nili = nil.Assembly.CreateInstance(nil.FullName!, false, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null, new object[] { dhiml.DangerousGetHandle() }, null, null);
+		Type? hType = nil.GetProperty("HIMAGELIST", BindingFlags.Instance | BindingFlags.NonPublic)?.PropertyType;
+		var nili = hType is null
+			? nil.Assembly.CreateInstance(nil.FullName!, false, BindingFlags.Instance | BindingFlags.NonPublic, null, [dhiml.DangerousGetHandle()], null, null)
+			: nil.Assembly.CreateInstance(nil.FullName!, false, BindingFlags.Instance | BindingFlags.NonPublic, null, 
+			[hType.Assembly.CreateInstance(hType.FullName!, false, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public, null, [dhiml.DangerousGetHandle()], null, null)!], null, null);
 #pragma warning restore IL2058 // Parameters passed to method cannot be analyzed. Consider using methods 'System.Type.GetType' and `System.Activator.CreateInstance` instead.
-							  // Create a new ImageList and initialize with settings from handle
+		// Create a new ImageList and initialize with settings from handle
 		var il = new ImageList();
 		nilfi.SetValue(il, nili);
-		var depthfi = typeof(ImageList).GetField("colorDepth", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-		var szfi = typeof(ImageList).GetField("imageSize", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+		var depthfi = typeof(ImageList).GetField("colorDepth", BindingFlags.Instance | BindingFlags.NonPublic) ?? typeof(ImageList).GetField("_colorDepth", BindingFlags.Instance | BindingFlags.NonPublic);
+		var szfi = typeof(ImageList).GetField("imageSize", BindingFlags.Instance | BindingFlags.NonPublic) ?? typeof(ImageList).GetField("_imageSize", BindingFlags.Instance | BindingFlags.NonPublic);
 		if (depthfi == null || szfi == null) throw new PlatformNotSupportedException();
 		var add1 = false;
 		if (iil.GetImageCount() == 0)
@@ -94,7 +99,7 @@ public static partial class ImageListExtension
 		var depth = (ColorDepth)(((uint)bmp.PixelFormat & 0x3C00) >> 8);
 		if (add1) iil.SetImageCount(0);
 		depthfi.SetValue(il, depth);
-		var sz = iil.GetIconSize();
+		Size sz = iil.GetIconSize();
 		szfi.SetValue(il, sz);
 		return il;
 	}
