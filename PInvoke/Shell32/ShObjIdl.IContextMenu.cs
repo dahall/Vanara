@@ -181,6 +181,7 @@ public static partial class Shell32
 
 	/// <summary>Flags specifying the information to return.</summary>
 	[PInvokeData("Shobjidl.h")]
+	[Flags]
 	public enum GCS : uint
 	{
 		/// <summary>Sets pszName to an ANSI string containing the language-independent command name for the menu item.</summary>
@@ -234,7 +235,7 @@ public static partial class Shell32
 		/// A pointer to a CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.
 		/// </param>
 		[PreserveSig]
-		HRESULT InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
+		HRESULT InvokeCommand([In] IntPtr pici);
 
 		/// <summary>
 		/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name
@@ -306,7 +307,7 @@ public static partial class Shell32
 		/// A pointer to a CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.
 		/// </param>
 		[PreserveSig]
-		new HRESULT InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
+		new HRESULT InvokeCommand([In] IntPtr pici);
 
 		/// <summary>
 		/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name
@@ -380,7 +381,7 @@ public static partial class Shell32
 		/// A pointer to a CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.
 		/// </param>
 		[PreserveSig]
-		new HRESULT InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
+		new HRESULT InvokeCommand([In] IntPtr pici);
 
 		/// <summary>
 		/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name
@@ -463,7 +464,37 @@ public static partial class Shell32
 		HRESULT CallBack([Optional] IShellFolder? psf, [Optional] HWND hwndOwner, [Optional] IDataObject? pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
 	}
 
-	/*
+	/// <summary>Carries out the command associated with a shortcut menu item.</summary>
+	/// <param name="menu">The <see cref="IContextMenu"/> interface.</param>
+	/// <param name="pici">A CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.</param>
+	/// <returns>The result of the invocation.</returns>
+	/// <exception cref="System.ArgumentNullException">menu</exception>
+	public static HRESULT InvokeCommand<T>(this IContextMenu menu, in T pici) where T : struct
+	{
+		if (menu is null) throw new ArgumentNullException(nameof(menu));
+		using SafeCoTaskMemStruct<T> mem = pici;
+		return menu.InvokeCommand(mem);
+	}
+
+	/// <summary>
+	/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name
+	/// for the command.
+	/// </summary>
+	/// <param name="menu">The <see cref="IContextMenu"/> interface.</param>
+	/// <param name="idCmd">Menu command identifier offset.</param>
+	/// <param name="uType">Flags specifying the information to return.</param>
+	/// <param name="pszName">The reference of the buffer to receive the null-terminated string being retrieved.</param>
+	/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+	public static HRESULT GetCommandString(this IContextMenu menu, ResourceId idCmd, GCS uType, out string? pszName)
+	{
+		if (menu is null) throw new ArgumentNullException(nameof(menu));
+		using SafeCoTaskMemHandle mem = new(Environment.SystemPageSize);
+		var cch = uType.IsFlagSet(GCS.GCS_UNICODE) ? (uint)(mem.Size / 2) : (uint)mem.Size;
+		var ret = menu.GetCommandString(idCmd, uType, IntPtr.Zero, mem, cch);
+		pszName = ret.Succeeded ? mem.ToString((int)cch, uType.IsFlagSet(GCS.GCS_UNICODE) ? CharSet.Unicode : CharSet.Ansi) : null;
+		return ret;
+	}
+
 	/// <summary>Contains information needed by IContextMenu::InvokeCommand to invoke a shortcut menu command.</summary>
 	/// <remarks>
 	/// Although the IContextMenu::InvokeCommand declaration specifies a <c>CMINVOKECOMMANDINFO</c> structure for the pici parameter, it
@@ -475,13 +506,13 @@ public static partial class Shell32
 	// DWORD dwHotKey; HANDLE hIcon; } CMINVOKECOMMANDINFO;
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "NS:shobjidl_core._CMINVOKECOMMANDINFO")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CMINVOKECOMMANDINFO
+	public struct CMINVOKECOMMANDINFO(string verb)
 	{
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
 		/// <para>The size of this structure, in bytes.</para>
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CMINVOKECOMMANDINFO>();
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -584,7 +615,7 @@ public static partial class Shell32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPStr)]
-		public string lpVerb;
+		public string lpVerb = verb;
 
 		/// <summary>
 		/// <para>Type: <c>LPCSTR</c></para>
@@ -594,14 +625,14 @@ public static partial class Shell32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPStr)]
-		public string lpParameters;
+		public string? lpParameters;
 
 		/// <summary>
 		/// <para>Type: <c>LPCSTR</c></para>
 		/// <para>An optional working directory name. This member is always <c>NULL</c> for menu items inserted by a Shell extension.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPStr)]
-		public string lpDirectory;
+		public string? lpDirectory;
 
 		/// <summary>
 		/// <para>Type: <c>int</c></para>
@@ -627,7 +658,169 @@ public static partial class Shell32
 		/// </summary>
 		public HICON hIcon;
 	}
-	*/
+
+	/// <summary>Contains information needed by IContextMenu::InvokeCommand to invoke a shortcut menu command.</summary>
+	/// <remarks>
+	/// Although the IContextMenu::InvokeCommand declaration specifies a <c>CMINVOKECOMMANDINFO</c> structure for the pici parameter, it
+	/// can also accept a CMINVOKECOMMANDINFOEX structure. If you are implementing this method, you must inspect <c>cbSize</c> to
+	/// determine which structure has been passed.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/ns-shobjidl_core-cminvokecommandinfo typedef struct
+	// _CMINVOKECOMMANDINFO { DWORD cbSize; DWORD fMask; HWND hwnd; LPCSTR lpVerb; LPCSTR lpParameters; LPCSTR lpDirectory; int nShow;
+	// DWORD dwHotKey; HANDLE hIcon; } CMINVOKECOMMANDINFO;
+	[PInvokeData("shobjidl_core.h", MSDNShortId = "NS:shobjidl_core._CMINVOKECOMMANDINFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CMINVOKECOMMANDINFOP(int cmd)
+	{
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The size of this structure, in bytes.</para>
+		/// </summary>
+		public uint cbSize = (uint)Marshal.SizeOf<CMINVOKECOMMANDINFO>();
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Zero, or one or more of the following flags.</para>
+		/// <para>CMIC_MASK_HOTKEY</para>
+		/// <para>The <c>dwHotKey</c> member is valid.</para>
+		/// <para>CMIC_MASK_ICON</para>
+		/// <para>The <c>hIcon</c> member is valid. As of Windows Vista this flag is not used.</para>
+		/// <para>CMIC_MASK_FLAG_NO_UI</para>
+		/// <para>
+		/// The system is prevented from displaying user interface elements (for example, error messages) while carrying out a command.
+		/// </para>
+		/// <para>CMIC_MASK_NO_CONSOLE</para>
+		/// <para>
+		/// If a shortcut menu handler needs to create a new process, it will normally create a new console. Setting the
+		/// <c>CMIC_MASK_NO_CONSOLE</c> flag suppresses the creation of a new console.
+		/// </para>
+		/// <para>CMIC_MASK_FLAG_SEP_VDM</para>
+		/// <para>
+		/// This flag is valid only when referring to a 16-bit Windows-based application. If set, the application that the shortcut
+		/// points to runs in a private Virtual DOS Machine (VDM). See Remarks.
+		/// </para>
+		/// <para>CMIC_MASK_ASYNCOK</para>
+		/// <para>Wait for the DDE conversation to terminate before returning.</para>
+		/// <para>CMIC_MASK_NOASYNC</para>
+		/// <para>
+		/// <c>Windows Vista and later.</c> The implementation of IContextMenu::InvokeCommand should be synchronous, not returning
+		/// before it is complete. Since this is recommended, calling applications that specify this flag cannot guarantee that this
+		/// request will be honored if they are not familiar with the implementation of the verb that they are invoking.
+		/// </para>
+		/// <para>CMIC_MASK_SHIFT_DOWN</para>
+		/// <para>
+		/// The SHIFT key is pressed. Use this instead of polling the current state of the keyboard that may have changed since the verb
+		/// was invoked.
+		/// </para>
+		/// <para>CMIC_MASK_CONTROL_DOWN</para>
+		/// <para>
+		/// The CTRL key is pressed. Use this instead of polling the current state of the keyboard that may have changed since the verb
+		/// was invoked.
+		/// </para>
+		/// <para>CMIC_MASK_FLAG_LOG_USAGE</para>
+		/// <para>
+		/// Indicates that the implementation of IContextMenu::InvokeCommand might want to keep track of the item being invoked for
+		/// features like the "Recent documents" menu.
+		/// </para>
+		/// <para>CMIC_MASK_NOZONECHECKS</para>
+		/// <para>Do not perform a zone check. This flag allows ShellExecuteEx to bypass zone checking put into place by IAttachmentExecute.</para>
+		/// </summary>
+		public CMIC fMask;
+
+		/// <summary>
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// A handle to the window that is the owner of the shortcut menu. An extension can also use this handle as the owner of any
+		/// message boxes or dialog boxes it displays.
+		/// </para>
+		/// </summary>
+		public HWND hwnd;
+
+		/// <summary>
+		/// <para>Type: <c>LPCSTR</c></para>
+		/// <para>
+		/// The address of a null-terminated string that specifies the language-independent name of the command to carry out. This
+		/// member is typically a string when a command is being activated by an application. The system provides predefined constant
+		/// values for the following command strings.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Constant</term>
+		/// <term>Command string</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CMDSTR_RUNAS</term>
+		/// <term>"RunAs"</term>
+		/// </item>
+		/// <item>
+		/// <term>CMDSTR_PRINT</term>
+		/// <term>"Print"</term>
+		/// </item>
+		/// <item>
+		/// <term>CMDSTR_PREVIEW</term>
+		/// <term>"Preview"</term>
+		/// </item>
+		/// <item>
+		/// <term>CMDSTR_OPEN</term>
+		/// <term>"Open"</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// This is not a fixed set; new canonical verbs can be invented by context menu handlers and applications can invoke them.
+		/// </para>
+		/// <para>
+		/// If a canonical verb exists and a menu handler does not implement the canonical verb, it must return a failure code to enable
+		/// the next handler to be able to handle this verb. Failing to do this will break functionality in the system including ShellExecute.
+		/// </para>
+		/// <para>
+		/// Alternatively, rather than a pointer, this parameter can be MAKEINTRESOURCE(offset) where offset is the menu-identifier
+		/// offset of the command to carry out. Implementations can use the IS_INTRESOURCE macro to detect that this alternative is
+		/// being employed. The Shell uses this alternative when the user chooses a menu command.
+		/// </para>
+		/// </summary>
+		public nint lpVerb = cmd;
+
+		/// <summary>
+		/// <para>Type: <c>LPCSTR</c></para>
+		/// <para>
+		/// An optional string containing parameters that are passed to the command. The format of this string is determined by the
+		/// command that is to be invoked. This member is always <c>NULL</c> for menu items inserted by a Shell extension.
+		/// </para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.LPStr)]
+		public string? lpParameters;
+
+		/// <summary>
+		/// <para>Type: <c>LPCSTR</c></para>
+		/// <para>An optional working directory name. This member is always <c>NULL</c> for menu items inserted by a Shell extension.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.LPStr)]
+		public string? lpDirectory;
+
+		/// <summary>
+		/// <para>Type: <c>int</c></para>
+		/// <para>A set of SW_ values to pass to the ShowWindow function if the command displays a window or starts an application.</para>
+		/// </summary>
+		public ShowWindowCommand nShow;
+
+		/// <summary>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// An optional keyboard shortcut to assign to any application activated by the command. If the <c>fMask</c> parameter does not
+		/// specify <c>CMIC_MASK_HOTKEY</c>, this member is ignored.
+		/// </para>
+		/// </summary>
+		public uint dwHotKey;
+
+		/// <summary>
+		/// <para>Type: <c>HANDLE</c></para>
+		/// <para>
+		/// An icon to use for any application activated by the command. If the <c>fMask</c> member does not specify
+		/// <c>CMIC_MASK_ICON</c>, this member is ignored.
+		/// </para>
+		/// </summary>
+		public HICON hIcon;
+	}
 
 	/// <summary>
 	/// Contains extended information about a shortcut menu command. This structure is an extended version of CMINVOKECOMMANDINFO that
@@ -772,8 +965,9 @@ public static partial class Shell32
 		/// <param name="commandId">The menu-identifier offset of the command to carry out.</param>
 		public CMINVOKECOMMANDINFOEX(int commandId) : this()
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(CMINVOKECOMMANDINFOEX));
+			cbSize = (uint)Marshal.SizeOf<CMINVOKECOMMANDINFOEX>();
 			lpVerb = commandId;
+			nShow = ShowWindowCommand.SW_NORMAL;
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="CMINVOKECOMMANDINFOEX"/> struct with its fields.</summary>
@@ -822,34 +1016,37 @@ public static partial class Shell32
 		/// Do not perform a zone check. This flag allows ShellExecuteEx to bypass zone checking put into place by IAttachmentExecute.
 		/// </param>
 		/// <param name="parameters">Optional parameters.</param>
+		/// <param name="useUnicode">if set to <see langword="true"/>, set the CMIC_MASK_UNICODE flag.</param>
 		public CMINVOKECOMMANDINFOEX(ResourceId verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default,
 			POINT? location = default, bool allowAsync = false, bool shiftDown = false, bool ctrlDown = false, uint hotkey = 0,
-			bool logUsage = false, bool noZoneChecks = false, string? parameters = null)
+			bool logUsage = false, bool noZoneChecks = false, string? parameters = null, bool useUnicode = false)
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(CMINVOKECOMMANDINFOEX));
-			hwnd = parent;
-			fMask = (parent.IsNull ? CMIC.CMIC_MASK_FLAG_NO_UI : 0) | (hotkey != 0 ? CMIC.CMIC_MASK_HOTKEY : 0);
-			lpVerb = verb;
-			nShow = show;
-			dwHotKey = hotkey;
+			cbSize = (uint)Marshal.SizeOf<CMINVOKECOMMANDINFOEX>();
+			fMask = hotkey != 0 ? CMIC.CMIC_MASK_HOTKEY : 0;
 			if (allowAsync) fMask |= CMIC.CMIC_MASK_ASYNCOK;
 			if (shiftDown) fMask |= CMIC.CMIC_MASK_SHIFT_DOWN;
 			if (ctrlDown) fMask |= CMIC.CMIC_MASK_CONTROL_DOWN;
 			if (logUsage) fMask |= CMIC.CMIC_MASK_FLAG_LOG_USAGE;
 			if (noZoneChecks) fMask |= CMIC.CMIC_MASK_NOZONECHECKS;
+			hwnd = parent;
+			lpVerb = verb;
+			if (parameters != null)
+			{
+				lpParameters = parameters;
+				fMask |= CMIC.CMIC_MASK_UNICODE;
+			}
+			nShow = show;
+			dwHotKey = hotkey;
 			if (location.HasValue)
 			{
 				ptInvoke = location.Value;
 				fMask |= CMIC.CMIC_MASK_PTINVOKE;
 			}
-			if (!verb.IsIntResource)
+
+			if (useUnicode)
 			{
-				lpVerbW = (string)verb;
-				fMask |= CMIC.CMIC_MASK_UNICODE;
-			}
-			if (parameters != null)
-			{
-				lpParameters = lpParametersW = parameters;
+				lpVerbW = lpVerb.ToString();
+				lpParametersW = lpParameters;
 				fMask |= CMIC.CMIC_MASK_UNICODE;
 			}
 		}

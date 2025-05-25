@@ -35,7 +35,7 @@ public class ShellContextMenuTests
 	{
 		using var shi = ShellItem.Open(TestCaseSources.WordDoc);
 		var items = shi.ContextMenu.GetItems(CMF.CMF_EXTENDEDVERBS);
-		shi.ContextMenu.InvokeVerb(items[0].Verb!);
+		shi.ContextMenu.InvokeCommand(items[0].Id);
 		Thread.Sleep(2000);
 		Assert.That(!Vanara.PInvoke.User32.FindWindow(null, "Microsoft Word").IsNull);
 	}
@@ -43,8 +43,15 @@ public class ShellContextMenuTests
 	[Test]
 	public void ShowTest()
 	{
-		using var shi = ShellItem.Open(@"C:\Windows");
-		shi.ContextMenu.ShowContextMenu(new(100,100), onMenuItemClicked: (m, i, w) => TestContext.WriteLine($"Clicked {i}"));
+		using var shi = ShellItem.Open(TestCaseSources.ImageFile);
+		shi.ContextMenu.ShowContextMenu(new(100,100), onMenuItemClicked: (m, i, w) => shi.InvokeVerb(shi.ContextMenu.GetVerbForCommand(i) ?? "open"));
+	}
+
+	[Test]
+	public void ShowTest2()
+	{
+		using var shi = ShellItem.Open(TestCaseSources.ImageFile);
+		shi.ContextMenu.ShowContextMenu(new(100,100));
 	}
 
 	[Test]

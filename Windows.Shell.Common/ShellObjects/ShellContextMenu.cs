@@ -1,4 +1,5 @@
 ﻿// Credit due to Gong-Shell from which this was largely taken.
+using System.Diagnostics;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32;
@@ -73,7 +74,7 @@ public class ShellContextMenu : IDisposable
 	{
 		// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
 		Dispose(disposing: true);
-		System.GC.SuppressFinalize(this);
+		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>Gets the help text for a specified command.</summary>
@@ -122,6 +123,25 @@ public class ShellContextMenu : IDisposable
 		}
 		catch { }
 		return false;
+	}
+
+	/// <summary>Invokes the command.</summary>
+	/// <param name="cmd">
+	/// The menu-identifier offset of the command to carry out. The Shell uses this alternative when the user chooses a menu command.
+	/// </param>
+	/// <param name="parent">
+	/// A handle to the window that is the owner of the shortcut menu. An extension can also use this handle as the owner of any message
+	/// boxes or dialog boxes it displays. Callers must specify a legitimate HWND that can be used as the owner window for any UI that may be
+	/// displayed. Failing to specify an HWND when calling from a UI thread (one with windows already created) will result in reentrancy and
+	/// possible bugs in the implementation of this call.
+	/// </param>
+	public void InvokeCommand(int cmd, HWND parent)
+	{
+		CMINVOKECOMMANDINFOP ci = new(cmd) { hwnd = parent, nShow = ShowWindowCommand.SW_NORMAL };
+		// This is a little hack to get the menu to show up. If we don't call QueryContextMenu first, the menu won't show up. attr: @zhuxb711
+		if (initVal == CMF.CMF_RESERVED)
+			PopulateMenu(CMF.CMF_OPTIMIZEFORINVOKE);
+		ComInterface.InvokeCommand(ci).ThrowIfFailed($"Invoke menu failed for {cmd}.");
 	}
 
 	/// <summary>Invokes the command.</summary>
@@ -177,7 +197,7 @@ public class ShellContextMenu : IDisposable
 		CMINVOKECOMMANDINFOEX invoke = new(verb, show, parent, location, allowAsync, shiftDown, ctrlDown, hotkey, logUsage, noZoneChecks, parameters);
 		// This is a little hack to get the menu to show up. If we don't call QueryContextMenu first, the menu won't show up. attr: @zhuxb711
 		if (initVal == CMF.CMF_RESERVED)
-			using (var hmenu = PopulateMenu(CMF.CMF_OPTIMIZEFORINVOKE)) { }
+			PopulateMenu(CMF.CMF_OPTIMIZEFORINVOKE);
 		ComInterface.InvokeCommand(invoke).ThrowIfFailed($"Invoke menu failed for {verb}.");
 	}
 
@@ -220,8 +240,14 @@ public class ShellContextMenu : IDisposable
 	/// may be displayed. Failing to specify an HWND when calling from a UI thread (one with windows already created) will result in
 	/// reentrancy and possible bugs in the implementation of this call.
 	/// </param>
-	public void InvokeVerb(string verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default) =>
-		InvokeCommand(new SafeResourceId(verb), show, parent);
+	public void InvokeVerb(string verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default)
+	{
+		CMINVOKECOMMANDINFO invoke = new(verb) { hwnd = parent, nShow = show };
+		// This is a little hack to get the menu to show up. If we don't call QueryContextMenu first, the menu won't show up. attr: @zhuxb711
+		if (initVal == CMF.CMF_RESERVED)
+			PopulateMenu(CMF.CMF_OPTIMIZEFORINVOKE);
+		ComInterface.InvokeCommand(invoke).ThrowIfFailed(); // $"Invoke menu failed for {verb}."
+	}
 
 	/// <summary>Shows a context menu for a shell item.</summary>
 	/// <param name="pos">The position on the screen that the menu should be displayed at.</param>
@@ -234,10 +260,18 @@ public class ShellContextMenu : IDisposable
 		var command = TrackPopupMenuEx(hmenu, TrackPopupMenuFlags.TPM_RETURNCMD, pos.X, pos.Y, m_MessageWindow.Handle);
 		if (command >= m_CmdFirst)
 		{
+			var cmd = (int)command - m_CmdFirst;
+			Debug.WriteLine($"Popup command {GetCommandString(cmd, GCS.GCS_UNICODE)}, verb=\"{GetVerbForCommand(cmd)}\"");
 			if (onMenuItemClicked != null)
-				onMenuItemClicked(hmenu, (int)command - m_CmdFirst, hWnd);
+				onMenuItemClicked(hmenu, cmd, hWnd);
 			else
-				InvokeCommand((int)command - m_CmdFirst, parent: hWnd);
+			{
+				string? verb = GetVerbForCommand(cmd);
+				if (verb is null)
+					InvokeCommand(cmd, parent: hWnd);
+				else
+					InvokeVerb(verb, parent: hWnd);
+			}
 		}
 	}
 
@@ -259,11 +293,8 @@ public class ShellContextMenu : IDisposable
 		}
 	}
 
-	private string? GetCommandString(int command, GCS stringType)
-	{
-		using SafeCoTaskMemString mStr = new(4096);
-		return ComInterface.GetCommandString((IntPtr)command, stringType, default, mStr, (uint)mStr.Capacity).Succeeded ? (string?)mStr : null;
-	}
+	private string? GetCommandString(int command, GCS stringType) =>
+		ComInterface.GetCommandString(command, stringType, out var mStr).Succeeded ? mStr : null;
 
 	private SafeHMENU PopulateMenu(CMF menuOptions)
 	{
@@ -278,12 +309,12 @@ public class ShellContextMenu : IDisposable
 		if (items is null || items.Length == 0)
 			throw new ArgumentNullException(nameof(items));
 
-		//if (items.Length == 1 && items[0].IsFolder)
-		//{
-		//	var isf = items[0] is ShellFolder sf ? sf.IShellFolder : items[0].IShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
-		//	return isf.CreateViewObject<IContextMenu>(HWND.NULL)!;
-		//}
-		//else
+		if (items.Length == 1 && items[0].IsFolder)
+		{
+			var isf = items[0] is ShellFolder sf ? sf.IShellFolder : items[0].IShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
+			return isf.CreateViewObject<IContextMenu>(HWND.NULL)!;
+		}
+		else
 		{
 			if (Array.IndexOf(items, ShellFolder.Desktop) != -1)
 				throw new Exception("If the desktop folder is specified, it must be the only item.");
@@ -381,8 +412,8 @@ public class ShellContextMenu : IDisposable
 			MENUITEMINFO mii = new()
 			{
 				cbSize = (uint)Marshal.SizeOf(typeof(MENUITEMINFO)),
-				fMask = MenuItemInfoMask.MIIM_ID | MenuItemInfoMask.MIIM_SUBMENU | MenuItemInfoMask.MIIM_FTYPE | MenuItemInfoMask.MIIM_STRING | MenuItemInfoMask.MIIM_STATE | MenuItemInfoMask.MIIM_BITMAP,
-				fType = MenuItemType.MFT_STRING,
+				fMask = MenuItemInfoMask.MIIM_ID | MenuItemInfoMask.MIIM_STATE | MenuItemInfoMask.MIIM_SUBMENU | MenuItemInfoMask.MIIM_TYPE,
+				//fType = MenuItemType.MFT_STRING,
 				dwTypeData = strmem,
 				cch = (uint)strmem.Capacity
 			};
@@ -496,7 +527,7 @@ public class ShellContextMenu : IDisposable
 			for (int i = 0; i < SubMenus.Length; i++)
 			{
 				SubMenus[i] = new MenuItemInfo(hMenu, i, scm);
-				System.Diagnostics.Debug.WriteLine($"Processing submenu {i} ({SubMenus[i].Text})");
+				Debug.WriteLine($"Processing submenu {i} ({SubMenus[i].Text})");
 				if (scm != null && SubMenus[i].Type == MenuItemType.MFT_STRING)
 				{
 					var id = SubMenus[i].Id;
