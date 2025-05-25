@@ -80,7 +80,7 @@ public class ShellContextMenu : IDisposable
 	/// <summary>Gets the help text for a specified command.</summary>
 	/// <param name="command">The menu command identifier offset.</param>
 	/// <returns>The help text value if available; otherwise <see langword="null"/>.</returns>
-	public string? GetHelpTextForCommand(int command) => GetCommandString(command, GCS.GCS_HELPTEXTW);
+	public string? GetHelpTextForCommand(int command) => GetCommandString(command, GCS.GCS_HELPTEXTA);
 
 	/// <summary>Gets the icon location for a specified command.</summary>
 	/// <param name="command">The menu command identifier offset.</param>
@@ -90,7 +90,7 @@ public class ShellContextMenu : IDisposable
 	/// <summary>Gets the verb for a specified command.</summary>
 	/// <param name="command">The menu command identifier offset.</param>
 	/// <returns>The verb if available; otherwise <see langword="null"/>.</returns>
-	public string? GetVerbForCommand(int command) => GetCommandString(command, GCS.GCS_VERBW);
+	public string? GetVerbForCommand(int command) => GetCommandString(command, GCS.GCS_VERBA);
 
 	/// <summary>Gets the information of all the menu items supported by the underlying interface.</summary>
 	/// <value>The menu item information.</value>

@@ -82,7 +82,10 @@ public class ShellContextMenuTests
 
 	static void ShowMII(ShellContextMenu.MenuItemInfo mii, int c, int indent = 0)
 	{
-		TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}; Verb={mii.Verb}; Tooltip={mii.HelpText}; IconLoc={mii.VerbIconLocation}");
+		if (mii.Text is "" or "-")
+			TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}");
+		else
+			TestContext.WriteLine($"{new string(' ', indent * 3)}{c + 1}) \"{mii.Text}\" (#{mii.Id}) - Type={mii.Type}; State={mii.State}; Verb={mii.Verb}; Tooltip={mii.HelpText}; IconLoc={mii.VerbIconLocation}");
 		for (int j = 0; j < mii.SubMenus.Length; j++)
 			ShowMII(mii.SubMenus[j], j, indent + 1);
 	}
