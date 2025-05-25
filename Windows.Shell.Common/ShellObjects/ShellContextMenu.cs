@@ -252,7 +252,7 @@ public class ShellContextMenu : IDisposable
 	/// <summary>Shows a context menu for a shell item.</summary>
 	/// <param name="pos">The position on the screen that the menu should be displayed at.</param>
 	/// <param name="menuOptions">The options that determine which items are requested from <see cref="IContextMenu" />.</param>
-	/// <param name="onMenuItemClicked">The delegate to call when a menu item is clicked; If <see langword="null" />, <see cref="InvokeCommand" /> is called.</param>
+	/// <param name="onMenuItemClicked">The delegate to call when a menu item is clicked; If <see langword="null" />, <see cref="InvokeCommand(int, HWND)" /> is called.</param>
 	/// <param name="hWnd">The optional parent window handle.</param>
 	public void ShowContextMenu(POINT pos, CMF menuOptions = CMF.CMF_EXTENDEDVERBS, Action<HMENU, int, HWND>? onMenuItemClicked = null, HWND hWnd = default)
 	{

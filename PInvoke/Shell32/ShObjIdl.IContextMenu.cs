@@ -181,7 +181,6 @@ public static partial class Shell32
 
 	/// <summary>Flags specifying the information to return.</summary>
 	[PInvokeData("Shobjidl.h")]
-	[Flags]
 	public enum GCS : uint
 	{
 		/// <summary>Sets pszName to an ANSI string containing the language-independent command name for the menu item.</summary>
@@ -489,9 +488,10 @@ public static partial class Shell32
 	{
 		if (menu is null) throw new ArgumentNullException(nameof(menu));
 		using SafeCoTaskMemHandle mem = new(Environment.SystemPageSize);
-		var cch = uType.IsFlagSet(GCS.GCS_UNICODE) ? (uint)(mem.Size / 2) : (uint)mem.Size;
+		bool isUnicode = (uType & GCS.GCS_UNICODE) != 0;
+		var cch = isUnicode ? (uint)(mem.Size / 2) : (uint)mem.Size;
 		var ret = menu.GetCommandString(idCmd, uType, IntPtr.Zero, mem, cch);
-		pszName = ret.Succeeded ? mem.ToString((int)cch, uType.IsFlagSet(GCS.GCS_UNICODE) ? CharSet.Unicode : CharSet.Ansi) : null;
+		pszName = ret.Succeeded ? mem.ToString((int)cch, isUnicode ? CharSet.Unicode : CharSet.Ansi) : null;
 		return ret;
 	}
 
