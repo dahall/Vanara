@@ -738,8 +738,18 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// </param>
 	public void InvokeVerb(string verb, string? args = null, bool hideUI = false)
 	{
-		using var pVerb = new SafeResourceId(verb);
-		ContextMenu.InvokeCommand(pVerb, parent: hideUI ? HWND.NULL : GetDesktopWindow(), parameters: args);
+		//using var pVerb = new SafeResourceId(verb);
+		//ContextMenu.InvokeCommand(pVerb, parent: hideUI ? HWND.NULL : GetDesktopWindow(), parameters: args);
+		SHELLEXECUTEINFO sei = new()
+		{
+			cbSize = Marshal.SizeOf<SHELLEXECUTEINFO>(),
+			fMask = ShellExecuteMaskFlags.SEE_MASK_INVOKEIDLIST,
+			hwnd = hideUI ? HWND.NULL : GetDesktopWindow(),
+			lpVerb = verb,
+			nShellExecuteShow = ShowWindowCommand.SW_SHOWNORMAL,
+			lpIDList = (IntPtr)PIDL,
+		};
+		Win32Error.ThrowLastErrorIfFalse(ShellExecuteEx(ref sei));
 	}
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
