@@ -10,6 +10,8 @@ namespace Vanara.PInvoke;
 public static partial class AdvApi32
 {
 	/// <summary/>
+	public const ushort CLAIM_SECURITY_ATTRIBUTES_INFORMATION_VERSION_V1 = 1;
+	/// <summary/>
 	public const uint SECURITY_DESCRIPTOR_REVISION = 1;
 	/// <summary/>
 	public const uint SECURITY_DESCRIPTOR_REVISION1 = 1;
@@ -2830,27 +2832,27 @@ public static partial class AdvApi32
 		[StructLayout(LayoutKind.Explicit)]
 		public struct VALUESUNION
 		{
-			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>LONG64</c> of type CLAIM_SECURITY_ATTRIBUTE_TYPE_INT64.</summary>
+			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>LONG64</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_INT64"/>.</summary>
 			[FieldOffset(0)]
-			public IntPtr pInt64;
+			public ArrayPointer<long> pInt64;
 
-			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>ULONG64</c> of type CLAIM_SECURITY_ATTRIBUTE_TYPE_UINT64.</summary>
+			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>ULONG64</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_UINT64"/>.</summary>
 			[FieldOffset(0)]
-			public IntPtr pUint64;
+			public ArrayPointer<long> pUint64;
 
-			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>PWSTR</c> of type CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING.</summary>
+			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>PWSTR</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING"/>.</summary>
 			[FieldOffset(0)]
-			public IntPtr ppString;
+			public ArrayPointer<StrPtrUni> ppString;
 
 			/// <summary>
-			/// Pointer to an array of <c>ValueCount</c> members where each member is a fully qualified binary name value of type CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE.
+			/// Pointer to an array of <c>ValueCount</c> members where each member is a fully qualified binary name value of type <see cref="CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE"/>.
 			/// </summary>
 			[FieldOffset(0)]
-			public IntPtr pFqbn;
+			public ArrayPointer<ManagedStructPointer<CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE>> pFqbn;
 
-			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is an octet string of type CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE.</summary>
+			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is an octet string of type <see cref="CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE"/>.</summary>
 			[FieldOffset(0)]
-			public IntPtr pOctetString;
+			public ArrayPointer<StructPointer<CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE>> pOctetString;
 		}
 	}
 
@@ -2860,7 +2862,7 @@ public static partial class AdvApi32
 	public struct CLAIM_SECURITY_ATTRIBUTES_INFORMATION
 	{
 		/// <summary>A default instance which sets the <see cref="Version"/> field.</summary>
-		public static readonly CLAIM_SECURITY_ATTRIBUTES_INFORMATION Default = new() { Version = 1 };
+		public static readonly CLAIM_SECURITY_ATTRIBUTES_INFORMATION Default = new() { Version = CLAIM_SECURITY_ATTRIBUTES_INFORMATION_VERSION_V1 };
 
 		/// <summary>The version of the security attribute. This must be 1.</summary>
 		public ushort Version;
@@ -2883,7 +2885,7 @@ public static partial class AdvApi32
 		{
 			/// <summary>Pointer to an array that contains the AttributeCount member of the CLAIM_SECURITY_ATTRIBUTE_V1 structure.</summary>
 			[FieldOffset(0)]
-			public IntPtr pAttributeV1;
+			public ManagedArrayPointer<CLAIM_SECURITY_ATTRIBUTE_V1> pAttributeV1;
 		}
 	}
 
@@ -3394,6 +3396,30 @@ public static partial class AdvApi32
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString() => $"{(Sid.IsValidSid() ? Sid.ToString("N") : "")}:{Attributes}";
+	}
+
+	/// <summary>The <b>SID_AND_ATTRIBUTES_HASH</b> structure specifies a hash values for the specified array of <c>security identifiers</c> (SIDs).</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-sid_and_attributes_hash
+	// typedef struct _SID_AND_ATTRIBUTES_HASH { DWORD SidCount; PSID_AND_ATTRIBUTES SidAttr; SID_HASH_ENTRY Hash[SID_HASH_SIZE]; } SID_AND_ATTRIBUTES_HASH, *PSID_AND_ATTRIBUTES_HASH;
+	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._SID_AND_ATTRIBUTES_HASH")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SID_AND_ATTRIBUTES_HASH
+	{
+		const int SID_HASH_SIZE = 32;
+
+		/// <summary>The number of SIDs pointed to by the <i>SidAttr</i> parameter.</summary>
+		public uint SidCount;
+
+		/// <summary>A pointer to an array of <c>SID_AND_ATTRIBUTES</c> structures that represent SIDs and their attributes.</summary>
+		public ManagedArrayPointer<SID_AND_ATTRIBUTES> SidAttr;
+
+		/// <summary>
+		///   <para>An array of pointers to hash values. These values correspond to the <c>SID_AND_ATTRIBUTES</c> structures pointed to by the <i>SidAttr</i> parameter.</para>
+		///   <para>The <b>SID_HASH_ENTRY</b> data type is defined in Winnt.h as a <b>ULONG_PTR</b>.</para>
+		///   <para>The <b>SID_HASH_SIZE</b> array dimension is defined in Winnt.h as 32.</para>
+		/// </summary>
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = SID_HASH_SIZE)]
+		public UIntPtr[] Hash;
 	}
 
 	/// <summary>The SID_IDENTIFIER_AUTHORITY structure represents the top-level authority of a security identifier (SID).</summary>
@@ -4190,13 +4216,13 @@ public static partial class AdvApi32
 	public struct TOKEN_ACCESS_INFORMATION
 	{
 		/// <summary>A pointer to a SID_AND_ATTRIBUTES_HASH structure that specifies a hash of the token's security identifier (SID).</summary>
-		public IntPtr SidHash;
+		public ManagedArrayPointer<SID_AND_ATTRIBUTES_HASH> SidHash;
 
 		/// <summary>A pointer to a SID_AND_ATTRIBUTES_HASH structure that specifies a hash of the token's restricted SID.</summary>
-		public IntPtr RestrictedSidHash;
+		public ManagedArrayPointer<SID_AND_ATTRIBUTES_HASH> RestrictedSidHash;
 
 		/// <summary>A pointer to a TOKEN_PRIVILEGES structure that specifies information about the token's privileges.</summary>
-		public IntPtr Privileges;
+		public ManagedStructPointer<TOKEN_PRIVILEGES> Privileges;
 
 		/// <summary>A LUID structure that specifies the token's identity.</summary>
 		public LUID AuthenticationId;
@@ -4229,7 +4255,7 @@ public static partial class AdvApi32
 		/// Pointer to a SID_AND_ATTRIBUTES_HASH structure that specifies a hash of the token's capability SIDs.
 		/// <para><c>Windows Server 2008 R2, Windows 7, Windows Server 2008 and Windows Vista:</c> This member is not available.</para>
 		/// </summary>
-		public IntPtr CapabilitiesHash;
+		public ManagedStructPointer<SID_AND_ATTRIBUTES_HASH> CapabilitiesHash;
 
 		/// <summary>The protected process trust level of the token.</summary>
 		public PSID TrustLevelSid;
@@ -4320,7 +4346,7 @@ public static partial class AdvApi32
 		public uint SidLength;
 
 		/// <summary>A pointer to an array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</summary>
-		public IntPtr Sids;
+		public ManagedArrayPointer<SID_AND_ATTRIBUTES> Sids;
 
 		/// <summary>Number of restricted SIDs.</summary>
 		public uint RestrictedSidCount;
@@ -4334,7 +4360,7 @@ public static partial class AdvApi32
 		/// The Attributes members of the SID_AND_ATTRIBUTES structures can have the same values as those listed for the preceding Sids member.
 		/// </para>
 		/// </summary>
-		public IntPtr RestrictedSids;
+		public ManagedArrayPointer<SID_AND_ATTRIBUTES> RestrictedSids;
 
 		/// <summary>Number of privileges.</summary>
 		public uint PrivilegeCount;
@@ -4343,7 +4369,7 @@ public static partial class AdvApi32
 		public uint PrivilegeLength;
 
 		/// <summary>Array of privileges.</summary>
-		public IntPtr Privileges;
+		public ArrayPointer<LUID_AND_ATTRIBUTES> Privileges;
 
 		/// <summary>Locally unique identifier (LUID) of the authenticator of the token.</summary>
 		public LUID AuthenticationId;
