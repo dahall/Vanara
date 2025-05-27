@@ -4911,7 +4911,7 @@ public static partial class AdvApi32
 
 		internal PSID_IDENTIFIER_AUTHORITY(IntPtr existingPtr)
 		{
-			if (existingPtr == IntPtr.Zero)
+			if (existingPtr != IntPtr.Zero)
 				Value = existingPtr.ToByteArray(6)!;
 		}
 
