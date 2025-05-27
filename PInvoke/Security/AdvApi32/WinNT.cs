@@ -2730,8 +2730,7 @@ public static partial class AdvApi32
 		/// A pointer to a string of Unicode characters that contains the name of the security attribute. This string must be at least 4
 		/// bytes in length.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPWStr)]
-		public string Name;
+		public StrPtrUni Name;
 
 		/// <summary>
 		/// <para>
@@ -2838,7 +2837,7 @@ public static partial class AdvApi32
 
 			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>ULONG64</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_UINT64"/>.</summary>
 			[FieldOffset(0)]
-			public ArrayPointer<long> pUint64;
+			public ArrayPointer<ulong> pUint64;
 
 			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>PWSTR</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING"/>.</summary>
 			[FieldOffset(0)]
