@@ -191,9 +191,10 @@ public class SecurityBaseApiTests
 
 		var attrValues = new[] { 12L, 32L };
 		using var pattrValues = SafeHGlobalHandle.CreateFromList(attrValues);
+		using SafeLPWSTR pName = new("Int");
 		var csattr = new CLAIM_SECURITY_ATTRIBUTE_V1
 		{
-			Name = "Int",
+			Name = pName,
 			ValueType = CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_INT64,
 			ValueCount = (uint)attrValues.Length,
 			Values = new CLAIM_SECURITY_ATTRIBUTE_V1.VALUESUNION { pInt64 = pattrValues }
