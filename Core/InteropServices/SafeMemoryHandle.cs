@@ -559,10 +559,40 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 /// <seealso cref="SafeHandle"/>
 public abstract class SafeAllocatedMemoryHandle : SafeAllocatedMemoryHandleBase
 {
+	/// <summary>
+	/// Maintains reference to other SafeMemoryHandleExt objects, the pointer to which are referred to by this object. This is to ensure
+	/// that such objects being referred to wouldn't be unreferenced until this object is active.
+	/// </summary>
+	private List<IDisposable>? references;
+
 	/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
 	protected SafeAllocatedMemoryHandle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) { }
+
+	/// <summary>
+	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
+	/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
+	/// pointers to other objects
+	/// </summary>
+	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
+	public void AddSubReference(IEnumerable<IDisposable> children)
+	{
+		references ??= [];
+		references.AddRange(children);
+	}
+
+	/// <summary>
+	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
+	/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
+	/// pointers to other objects
+	/// </summary>
+	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
+	public void AddSubReference(params IDisposable[] children)
+	{
+		references ??= [];
+		references.AddRange(children);
+	}
 
 	/// <summary>Fills the allocated memory with a specific byte value.</summary>
 	/// <param name="value">The byte value.</param>
@@ -579,6 +609,17 @@ public abstract class SafeAllocatedMemoryHandle : SafeAllocatedMemoryHandleBase
 
 	/// <summary>Zero out all allocated memory.</summary>
 	public virtual void Zero() => Fill(0, Size);
+
+	/// <inheritdoc/>
+	protected override void Dispose(bool disposing)
+	{
+		if (disposing && references is not null)
+		{
+			foreach (var d in references) d.Dispose();
+			references = null;
+		}
+		base.Dispose(disposing);
+	}
 }
 
 /// <summary>Abstract base class for all SafeAllocatedMemoryHandle derivatives that apply a specific memory handling routine set.</summary>
@@ -744,12 +785,6 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 /// <seealso cref="SafeHandle"/>
 public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeMemoryHandle where TMem : IMemoryMethods, new()
 {
-	/// <summary>
-	/// Maintains reference to other SafeMemoryHandleExt objects, the pointer to which are referred to by this object. This is to ensure
-	/// that such objects being referred to wouldn't be unreferenced until this object is active.
-	/// </summary>
-	private List<IDisposable>? references;
-
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
 	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
@@ -793,30 +828,6 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// </summary>
 	/// <param name="source">The source memory block.</param>
 	protected SafeMemoryHandleExt(SafeAllocatedMemoryHandle source) : base(source) { }
-
-	/// <summary>
-	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
-	/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
-	/// pointers to other objects
-	/// </summary>
-	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	public void AddSubReference(IEnumerable<IDisposable> children)
-	{
-		references ??= [];
-		references.AddRange(children);
-	}
-
-	/// <summary>
-	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
-	/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
-	/// pointers to other objects
-	/// </summary>
-	/// <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
-	public void AddSubReference(params IDisposable[] children)
-	{
-		references ??= [];
-		references.AddRange(children);
-	}
 
 	/// <summary>
 	/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
@@ -977,17 +988,6 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 				Size = reqSz;
 		}
 		return CallLocked(p => p.Write(value, offset, sz));
-	}
-
-	/// <inheritdoc/>
-	protected override void Dispose(bool disposing)
-	{
-		if (disposing && references is not null)
-		{
-			foreach (var d in references) d.Dispose();
-			references = null;
-		}
-		base.Dispose(disposing);
 	}
 
 	/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
