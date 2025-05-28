@@ -2,6 +2,7 @@
   <PropertyGroup>
     <AssemblyName>UnitTest.Core</AssemblyName>
     <Nullable>enable</Nullable>
+    <NoWarn>CS8002</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <None Include="InteropServices\StructMarshalerTests.cs" />

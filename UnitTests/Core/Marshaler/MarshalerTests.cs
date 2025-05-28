@@ -118,6 +118,7 @@ public class MarshalerTests
 }
 
 #region Structs
+#pragma warning disable CS0649, CS0169
 
 [Marshaled, Info(Bitness.Auto, 24)]
 internal struct Struct01
