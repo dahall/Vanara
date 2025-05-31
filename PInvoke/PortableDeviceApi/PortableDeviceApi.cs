@@ -2481,7 +2481,7 @@ public static partial class PortableDeviceApi
 		// HRESULT GetDeviceServices( [in] LPCWSTR pszPnPDeviceID, [in] REFGUID guidServiceCategory, [in, out] LPWSTR *pServices, [in,
 		// out] DWORD *pcServices );
 		void GetDeviceServices([MarshalAs(UnmanagedType.LPWStr)] string pszPnPDeviceID, in Guid guidServiceCategory,
-			[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[] pServices, ref uint pcServices);
+			[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? pServices, ref uint pcServices);
 
 		/// <summary>The <c>GetDeviceForService</c> method retrieves the device associated with the specified service.</summary>
 		/// <param name="pszPnPServiceID">The Plug and Play (PnP) identifier of the service.</param>
