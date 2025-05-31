@@ -111,17 +111,60 @@ public class ExaminedMessagePump : MessagePump
 	/// <inhertdoc/>
 	protected override int RunLoop()
 	{
-		MSG msg;
-		do
+		int bRet;
+		while ((bRet = GetMessage(out MSG msg)) != 0)
 		{
-			if (PeekMessage(out msg, default, 0, 0, PM.PM_REMOVE) && (PreProcess?.Invoke(ref msg) ?? true))
+			if (bRet == -1)
+				Win32Error.ThrowLastError();
+			if (PreProcess?.Invoke(ref msg) ?? true)
 			{
 				TranslateMessage(msg);
 				if (PostTranslate?.Invoke(ref msg) ?? true)
 					DispatchMessage(msg);
-				PostProcess?.Invoke(ref msg);
 			}
-		} while (Macros.LOWORD(msg.message) != quitMsg);
-		return 0;
+			PostProcess?.Invoke(ref msg);
+		}
+		return bRet;
+	}
+}
+
+/// <summary>Represents a message pump that processes Windows messages and supports keyboard accelerators.</summary>
+/// <remarks>
+/// This class extends the functionality of a standard message pump by integrating an accelerator table, allowing the application to handle
+/// keyboard shortcuts efficiently. It processes messages in a loop, invoking pre-processing, post-processing, and accelerator key handling
+/// as needed.
+/// </remarks>
+public class MessagePumpWithAccelerators : MessagePump
+{
+	/// <summary>Initializes a new instance of the <see cref="MessagePumpWithAccelerators"/> class.</summary>
+	/// <param name="hWndParent">The handle to the parent window of the message pump.</param>
+	/// <param name="hAccel">The handle to the accelerator table associated with the application.</param>
+	public MessagePumpWithAccelerators(HWND hWndParent, HACCEL hAccel = default)
+	{
+		AcceleratorTableHandle = hAccel;
+		ParentWindowHandle = hWndParent;
+	}
+
+	/// <summary>Gets or sets the handle to the accelerator table associated with the application.</summary>
+	public virtual HACCEL AcceleratorTableHandle { get; set; }
+
+	/// <summary>Gets or sets the handle to the parent window of the message pump.</summary>
+	public virtual HWND ParentWindowHandle { get; set; }
+
+	/// <inheritdoc/>
+	protected override int RunLoop()
+	{
+		int bRet;
+		while ((bRet = GetMessage(out MSG msg)) != 0)
+		{
+			if (bRet == -1)
+				Win32Error.ThrowLastError();
+			if (AcceleratorTableHandle.IsNull || TranslateAccelerator(ParentWindowHandle, AcceleratorTableHandle, msg) == 0)
+			{
+				TranslateMessage(msg);
+				DispatchMessage(msg);
+			}
+		}
+		return bRet;
 	}
 }

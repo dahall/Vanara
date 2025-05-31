@@ -56,7 +56,7 @@ public static partial class User32
 	// hAccelSrc, LPACCEL lpAccelDst, int cAccelEntries );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern int CopyAcceleratorTable(HACCEL hAccelSrc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ACCEL[] lpAccelDst, int cAccelEntries);
+	public static extern int CopyAcceleratorTable(HACCEL hAccelSrc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ACCEL[]? lpAccelDst, int cAccelEntries);
 
 	/// <summary>Creates an accelerator table.</summary>
 	/// <param name="paccel">
@@ -216,31 +216,46 @@ public static partial class User32
 	// hWnd, HACCEL hAccTable, LPMSG lpMsg );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern int TranslateAccelerator(HWND hWnd, HACCEL hAccTable, in MSG lpMsg);
+	public static extern int TranslateAccelerator([In] HWND hWnd, [In] HACCEL hAccTable, in MSG lpMsg);
 
-	/// <summary>
-	/// <para>Defines an accelerator key used in an accelerator table.</para>
-	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagaccel typedef struct tagACCEL { #if ... BYTE fVirt;
-	// WORD key; #if ... WORD cmd; #else WORD fVirt; #endif #else DWORD cmd; #endif } ACCEL, *LPACCEL;
+	/// <summary>Defines an accelerator key used in an accelerator table.</summary>
+	/// <param name="cmd">
+	/// The accelerator identifier. This value is placed in the low-order word of the wParam parameter of the WM_COMMAND or WM_SYSCOMMAND
+	/// message when the accelerator is pressed.
+	/// </param>
+	/// <param name="charCode">The accelerator key as a character code.</param>
+	/// <param name="fVirt">The accelerator behavior.</param>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagaccel typedef struct tagACCEL { #if ... BYTE fVirt; WORD
+	// key; #if ... WORD cmd; #else WORD fVirt; #endif #else DWORD cmd; #endif } ACCEL, *LPACCEL;
 	[PInvokeData("winuser.h")]
-	[StructLayout(LayoutKind.Sequential)]
-	public struct ACCEL
+	[StructLayout(LayoutKind.Sequential, Pack = 2)]
+	public struct ACCEL(ushort cmd, ushort charCode, FVIRT fVirt = 0)
 	{
-		/// <summary>The accelerator behavior. This member can be one or more of the following values.</summary>
-		public FVIRT fVirt;
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ACCEL"/> structure with the specified virtual key, modifier flags, and command identifier.
+		/// </summary>
+		/// <param name="cmd">
+		/// The command identifier associated with the accelerator. This is typically used to identify the action triggered by the accelerator.
+		/// </param>
+		/// <param name="virtualKey">The virtual key code associated with the accelerator. This represents a key on the keyboard.</param>
+		/// <param name="fVirt">
+		/// The modifier flags that specify the behavior of the accelerator, such as whether it requires the Alt, Control, or Shift key.
+		/// </param>
+		public ACCEL(ushort cmd, VK virtualKey, FVIRT fVirt = 0) : this(cmd, (ushort)virtualKey, fVirt | FVIRT.FVIRTKEY) { }
+
+		/// <summary>The accelerator behavior.</summary>
+		public FVIRT fVirt = fVirt;
 
 		/// <summary>
-		/// <para>Type: <c>WORD</c></para>
-		/// <para>The accelerator key. This member can be either a virtual-key code or a character code.</para>
+		/// <para>The accelerator key.</para>
 		/// </summary>
-		public ushort key;
+		public ushort key = charCode;
 
 		/// <summary>
-		/// The accelerator identifier. This value is placed in the low-order word of the wParam parameter of the WM_COMMAND or
-		/// WM_SYSCOMMAND message when the accelerator is pressed.
+		/// The accelerator identifier. This value is placed in the low-order word of the wParam parameter of the WM_COMMAND or WM_SYSCOMMAND
+		/// message when the accelerator is pressed.
 		/// </summary>
-		public ushort cmd;
+		public ushort cmd = cmd;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HACCEL"/> that is disposed using <see cref="DestroyAcceleratorTable"/>.</summary>

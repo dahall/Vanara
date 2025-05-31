@@ -65,20 +65,27 @@ public partial class User32Tests
 	}
 
 	[Test]
-	public void WindowPumpTest()
+	public void VisibleWindowRunTest()
 	{
 		VisibleWindow.Run(WndProc, caption);
+	}
 
-		static IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
-		{
-			System.Diagnostics.Debug.WriteLine($"TestWndProc={(WindowMessage)msg} (WrapperTests.cs)");
-			if (msg == (uint)WindowMessage.WM_CREATE) MessageBox(hwnd, "Got it!");
-			return DefWindowProc(hwnd, msg, wParam, lParam);
-		}
+	[Test]
+	public void VisibleWindowRunWithAccelTest()
+	{
+		Accelerator[] a = [new(VK.VK_F2), new(VK.VK_F3), new(0x4D, ConsoleModifiers.Control)];
+		VisibleWindow.Run(WndProc, caption, hAccl: a.CreateHandle());
 	}
 
 	[Test]
 	public void WindowRunTest() => VisibleWindow.Run<MyWin>(caption);
+
+	static IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
+	{
+		//System.Diagnostics.Debug.WriteLine($"TestWndProc={(WindowMessage)msg} (WrapperTests.cs)");
+		//if (msg == (uint)WindowMessage.WM_CREATE) MessageBox(hwnd, "Got it!");
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
 
 	public class MyWin : VisibleWindow
 	{

@@ -441,14 +441,20 @@ public class VisibleWindow : WindowBase
 	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
 	/// </para>
 	/// </param>
+	/// <param name="hAccl">
+	/// An optional handle to an accelerator table. If this parameter is <see cref="HACCEL.IsInvalid"/>, the window will not process accelerators.
+	/// </param>
 	public static void Run<TWin>(WindowClass wc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
-		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default) where TWin : VisibleWindow, new()
+		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new()
 	{
 		using TWin win = new();
 		if (win.Handle.IsNull)
 			win.CreateHandle(wc, text, size, position, style, exStyle, parent, hMenu);
 		win.Show();
-		new MessagePump().Run(win);
+		if (hAccl.IsInvalid)
+			new MessagePump().Run(win);
+		else
+			new MessagePumpWithAccelerators(win.Handle, hAccl).Run(win);
 	}
 
 	/// <summary>
@@ -509,14 +515,20 @@ public class VisibleWindow : WindowBase
 	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
 	/// </para>
 	/// </param>
+	/// <param name="hAccl">
+	/// An optional handle to an accelerator table. If this parameter is <see cref="HACCEL.IsInvalid"/>, the window will not process accelerators.
+	/// </param>
 	public static void Run<TWin>(string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
-		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default) where TWin : VisibleWindow, new()
+		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new()
 	{
 		using TWin win = new();
 		if (win.Handle.IsNull)
 			win.CreateHandle(null, text, size, position, style, exStyle, parent, hMenu);
 		win.Show();
-		new MessagePump().Run(win);
+		if (hAccl.IsInvalid)
+			new MessagePump().Run(win);
+		else
+			new MessagePumpWithAccelerators(win.Handle, hAccl).Run(win);
 	}
 
 	/// <summary>
@@ -578,12 +590,18 @@ public class VisibleWindow : WindowBase
 	/// application determines the child-window identifier; it must be unique for all child windows with the same parent window.
 	/// </para>
 	/// </param>
+	/// <param name="hAccl">
+	/// An optional handle to an accelerator table. If this parameter is <see cref="HACCEL.IsInvalid"/>, the window will not process accelerators.
+	/// </param>
 	public static void Run(WindowProc wndProc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
-		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default)
+		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default)
 	{
 		using VisibleWindow win = new(wndProc, text, size, position, style, exStyle, hMenu, parent);
 		win.Show();
-		new MessagePump().Run(win);
+		if (hAccl.IsInvalid)
+			new MessagePump().Run(win);
+		else
+			new MessagePumpWithAccelerators(win.Handle, hAccl).Run(win);
 	}
 
 	/// <summary>Converts a rectangle from this window's client coordinates to screen coordinates.</summary>
