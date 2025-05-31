@@ -41,22 +41,6 @@ public static partial class Marshaler
 
 				if (fd is null)
 				{
-					/*// Handle union values
-					var unionId = fi.GetCustomAttribute<MarshalFieldAs.UnionFieldAttribute>()?.UnionId;
-					if (unionId is not null)
-					{
-						List<TypeMarshaler> uFields = [fd];
-						while (++i < fields.Length && fields[i].GetCustomAttribute<MarshalFieldAs.UnionFieldAttribute>()?.UnionId == unionId)
-						{
-							fd = GetMarshaler(fields[i], options);
-							uFields.Add(fd);
-							if (fd.NativeType.HasMembers())
-								SubTypes.Add(Get(fields[i].FieldType, options));
-						}
-						Fields.Add(new UnionMarshaler(unionId, uFields, options));
-						continue;
-					}*/
-
 					// Handle bit values
 					var bitAttr = fi.GetCustomAttributes(bfType).FirstOrDefault();
 					if (bitAttr is not null)
@@ -98,6 +82,22 @@ public static partial class Marshaler
 							Fields.Add(new BitMarshaler(curType, bitFields, options));
 						continue;
 					}
+
+					/*// Handle union values
+					var unionId = fi.GetCustomAttribute<MarshalFieldAs.UnionFieldAttribute>()?.UnionId;
+					if (unionId is not null)
+					{
+						List<TypeMarshaler> uFields = [fd];
+						while (++i < fields.Length && fields[i].GetCustomAttribute<MarshalFieldAs.UnionFieldAttribute>()?.UnionId == unionId)
+						{
+							fd = GetMarshaler(fields[i], options);
+							uFields.Add(fd);
+							if (fd.NativeType.HasMembers())
+								SubTypes.Add(Get(fields[i].FieldType, options));
+						}
+						Fields.Add(new UnionMarshaler(unionId, uFields, options));
+						continue;
+					}*/
 
 					throw new MarshalException($"Unable to marshal the fd '{fi.DeclaringType!.FullName}.{fi.Name}' due to an unrecognized fd type and attribute combination.");
 				}

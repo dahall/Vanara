@@ -27,7 +27,7 @@ public class MarshalerTests
 		Assert.That(data, Is.EquivalentTo(control));
 	}
 
-	[TestCaseSource(nameof(GetStructList), new object?[] { 1, 33 })]
+	[TestCaseSource(nameof(GetStructList), new object?[] { 1, 34 })]
 	public void StructSizeTest(Type objType)
 	{
 		TestSize(Bitness.X32bit);
@@ -37,7 +37,7 @@ public class MarshalerTests
 			Assert.That(Marshaler.SizeOf(objType, new(b)), Is.EqualTo(objType.GetExpectedSize(b)), b.ToString());
 	}
 
-	[TestCaseSource(nameof(GetStructList), new object?[] { 1, 33 })]
+	[TestCaseSource(nameof(GetStructList), new object?[] { 1, 34 })]
 	public void ToPtrTest(Type objType)
 	{
 		Fixture fixture = new();
@@ -74,7 +74,7 @@ public class MarshalerTests
 					bitFieldOverflow = 0x0DF7,
 					bitFieldLong = 0x0EC9,
 				},
-				40 => new Struct40 { bVal = 1 },
+				34 => new Struct34 { bVal = 1 },
 				_ => null,
 			};
 		}
@@ -411,8 +411,6 @@ internal struct Struct29
 	public string val3;
 }
 
-#endregion Structs
-
 [Marshaled, Info(Bitness.Auto, 24)]
 internal struct Struct30
 {
@@ -452,8 +450,10 @@ internal struct Struct33
 	public Guid[] array;
 }
 
+#endregion Structs
+
 [StructLayout(LayoutKind.Explicit), Info(Bitness.Auto, 8)]
-internal struct Struct40
+internal struct Struct34
 {
 	[FieldOffset(0)]
 	public int iVal;
@@ -463,8 +463,8 @@ internal struct Struct40
 	public byte bVal;
 }
 
-[Marshaled, Info(Bitness.Auto, 48)]
-internal struct Struct41
+/*[Marshaled, Info(Bitness.Auto, 48)]
+internal struct Struct35
 {
 	public int iVal;
 
@@ -476,12 +476,13 @@ internal struct Struct41
 	public IntPtr union1Value2;
 
 	[MarshalFieldAs.UnionField]
+	[MarshalFieldAs.StructPtr]
 	public Struct01? union1Value3;
 
-	public Struct40 unionSet;
+	public Struct34 unionSet;
 
 	public uint uVal;
-}
+}*/
 
 internal static class TExt
 {

@@ -266,7 +266,7 @@ public static class MarshalFieldAs
 	/// cref="UnionId"/> is not set, then an id is generated for all union fields that also do not have a unionId specified.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-	public class UnionFieldAttribute(string unionId = "") : Attribute, IMarshalAsAttr
+	internal class UnionFieldAttribute(string unionId = "") : Attribute, IMarshalAsAttr
 	{
 		/// <summary>Gets or sets the union identifier.</summary>
 		/// <value>The union identifier.</value>
