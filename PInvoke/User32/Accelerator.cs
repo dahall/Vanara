@@ -6,29 +6,30 @@ namespace Vanara.PInvoke;
 
 /// <summary>A keyboard accelerator that can be used to trigger actions in a <see cref="VisibleWindow"/>.</summary>
 /// <remarks>Initializes a new instance of the <see cref="Accelerator"/> class.</remarks>
+/// <param name="id">The command identifier.</param>
 /// <param name="charCode">The character code.</param>
 /// <param name="modifiers">The modifiers for the accelerator.</param>
-public class Accelerator(ushort charCode, ConsoleModifiers modifiers = 0)
+public class Accelerator(ushort id, ushort charCode, ConsoleModifiers modifiers = 0)
 {
-	private static ushort lastId = 40000; // Starting command ID for accelerators
-
 	private readonly bool vk = false;
 
-	/// <summary>Initializes a new instance of the <see cref="Accelerator"/> class.</summary>
+	/// <summary>Initializes a new instance of the <see cref="Accelerator" /> class.</summary>
+	/// <param name="id">The command identifier.</param>
 	/// <param name="virtualKey">The virtual key.</param>
 	/// <param name="modifiers">The modifiers for the accelerator.</param>
-	public Accelerator(VK virtualKey, ConsoleModifiers modifiers = 0) : this((ushort)virtualKey, modifiers) { vk = true; }
+	public Accelerator(ushort id, VK virtualKey, ConsoleModifiers modifiers = 0) : this(id, (ushort)virtualKey, modifiers) => vk = true;
 
 	/// <summary>Gets the virtual key code.</summary>
 	public ushort CharCode { get; } = charCode;
 
 	/// <summary>Gets the command identifier.</summary>
-	public ushort CommandId { get; } = ++lastId;
+	public ushort CommandId { get; } = id;
 
 	/// <summary>Gets the modifiers for the accelerator.</summary>
 	public ConsoleModifiers Modifiers { get; } = modifiers;
 
-	internal Accelerator(in ACCEL a) : this(a.key, GetModifiers(a.fVirt)) { CommandId = a.cmd; vk = a.fVirt.IsFlagSet(FVIRT.FVIRTKEY); }
+	internal Accelerator(in ACCEL a) : this(a.cmd, a.key, GetModifiers(a.fVirt)) => vk = a.fVirt.IsFlagSet(FVIRT.FVIRTKEY);
+
 	internal ACCEL ToACCEL() => new(CommandId, CharCode, GetFVIRT());
 
 	private FVIRT GetFVIRT()
