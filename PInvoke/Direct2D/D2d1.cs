@@ -943,7 +943,7 @@ public static partial class D2d1
 #pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 		D2D1CreateFactory(factoryType, typeof(T).GUID, opts, out var ppv).ThrowIfFailed();
 #pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
-		return (T)ppv;
+		return (T)ppv!;
 	}
 
 	/// <summary>Tries to invert the specified matrix.</summary>

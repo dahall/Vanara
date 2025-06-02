@@ -73,7 +73,7 @@ public partial class User32Tests
 	[Test]
 	public void VisibleWindowRunWithAccelTest()
 	{
-		Accelerator[] a = [new(VK.VK_F2), new(VK.VK_F3), new(0x4D, ConsoleModifiers.Control)];
+		Accelerator[] a = [new(1001, VK.VK_F2), new(1002, VK.VK_F3), new(1003, 0x4D, ConsoleModifiers.Control)];
 		VisibleWindow.Run(WndProc, caption, hAccl: a.CreateHandle());
 	}
 
