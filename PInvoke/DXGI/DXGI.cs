@@ -934,10 +934,23 @@ public static partial class DXGI
 
 		/// <summary>Initializes a new instance of the <see cref="D3DCOLORVALUE"/> struct.</summary>
 		/// <param name="color">The color.</param>
-		/// <param name="a">The alpha value.</param>
-		public D3DCOLORVALUE(System.Drawing.Color color, float a = 1.0f) : this(color.R / 255f, color.G / 255f, color.B / 255f, a)
+		public D3DCOLORVALUE(System.Drawing.Color color) : this(color.R / 255f, color.G / 255f, color.B / 255f, color.A)
 		{
 		}
+
+		/// <summary>Initializes a new instance of the <see cref="D3DCOLORVALUE" /> struct.</summary>
+		/// <param name="color">The color.</param>
+		/// <param name="a">The alpha value.</param>
+		public D3DCOLORVALUE(COLORREF color, float a = 1f) : this(color.R / 255f, color.G / 255f, color.B / 255f, a)
+		{
+		}
+
+#if !NETSTANDARD2_0
+		/// <summary>Initializes a new instance of the <see cref="D3DCOLORVALUE"/> struct.</summary>
+		/// <param name="color">The color.</param>
+		/// <param name="a">The alpha value.</param>
+		public D3DCOLORVALUE(System.Drawing.KnownColor color, float a = 1.0f) : this(System.Drawing.Color.FromKnownColor(color)) => this.a = a;
+#endif
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is D3DCOLORVALUE dCOLORVALUE && Equals(dCOLORVALUE);
@@ -987,6 +1000,11 @@ public static partial class DXGI
 		/// <param name="cv">The color value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator float[](D3DCOLORVALUE cv) => [cv.r, cv.g, cv.b, cv.a];
+
+		/// <summary>Performs an explicit conversion from <see cref="Vanara.PInvoke.COLORREF"/> to <see cref="D3DCOLORVALUE"/>.</summary>
+		/// <param name="c">The color.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator D3DCOLORVALUE(System.Drawing.Color c) => new(c);
 
 		/// <summary>Performs an explicit conversion from <see cref="float"/>[] to <see cref="D3DCOLORVALUE"/>.</summary>
 		/// <param name="cv">The color value array.</param>

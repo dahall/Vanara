@@ -37,7 +37,8 @@ public static partial class D2d1
 	// [in] D2D1_ARC_SIZE arcSize );
 	[PInvokeData("d2d1helper.h", MSDNShortId = "NF:d2d1helper.ArcSegment")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static D2D1_ARC_SEGMENT ArcSegment(in D2D_POINT_2F point, in D2D_SIZE_F size, [In] float rotationAngle, [In] D2D1_SWEEP_DIRECTION sweepDirection, [In] D2D1_ARC_SIZE arcSize) => new(point, size, rotationAngle, sweepDirection, arcSize);
+	public static D2D1_ARC_SEGMENT ArcSegment(in D2D_POINT_2F point, in D2D_SIZE_F size, [In] float rotationAngle, [In] D2D1_SWEEP_DIRECTION sweepDirection, [In] D2D1_ARC_SIZE arcSize) =>
+		new(point, size, rotationAngle, sweepDirection, arcSize);
 
 	/// <summary>Creates a <c>D2D1_BEZIER_SEGMENT</c> structure.</summary>
 	/// <param name="point1">
