@@ -4740,19 +4740,19 @@ public static partial class DXGI
 	// } D2D_POINT_2U;
 	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_POINT_2U")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D2D_POINT_2U
+	public struct D2D_POINT_2U(uint x, uint y)
 	{
 		/// <summary>
 		/// <para>Type: <b>UINT32</b></para>
 		/// <para>The x-coordinate value of the point.</para>
 		/// </summary>
-		public uint x;
+		public uint x = x;
 
 		/// <summary>
 		/// <para>Type: <b>UINT32</b></para>
 		/// <para>The y-coordinate value of the point.</para>
 		/// </summary>
-		public uint y;
+		public uint y = y;
 	}
 
 	/// <summary>

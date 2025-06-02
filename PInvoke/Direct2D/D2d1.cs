@@ -858,7 +858,72 @@ public static partial class D2d1
 	// factoryType, REFIID riid, const D2D1_FACTORY_OPTIONS *pFactoryOptions, void **ppIFactory );
 	[DllImport(Lib.D2d1, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("d2d1.h", MSDNShortId = "8c0a685a-8f33-4072-a715-bb423cb44f03")]
-	public static extern HRESULT D2D1CreateFactory(D2D1_FACTORY_TYPE factoryType, in Guid riid, [In, Optional] StructPointer<D2D1_FACTORY_OPTIONS> pFactoryOptions, [MarshalAs(UnmanagedType.Interface)] out object ppIFactory);
+	public static extern HRESULT D2D1CreateFactory(D2D1_FACTORY_TYPE factoryType, in Guid riid, [In, Optional] StructPointer<D2D1_FACTORY_OPTIONS> pFactoryOptions, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppIFactory);
+
+	/// <summary>Creates a factory object that can be used to create Direct2D resources.</summary>
+	/// <typeparam name="T">The type of the factory interface to create.</typeparam>
+	/// <param name="factoryType">
+	/// <para>Type: <c>D2D1_FACTORY_TYPE</c></para>
+	/// <para>The threading model of the factory and the resources it creates.</para>
+	/// </param>
+	/// <param name="pFactoryOptions">
+	/// <para>Type: <c>const D2D1_FACTORY_OPTIONS*</c></para>
+	/// <para>The level of detail provided to the debugging layer.</para>
+	/// </param>
+	/// <param name="ppIFactory">
+	/// <para>Type: <c>void**</c></para>
+	/// <para>When this method returns, contains the address to a pointer to the new factory.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>If the function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// The ID2D1Factory interface provides the starting point for Direct2D. In general, an object created from a single instance of a
+	/// factory object can be used with other resources created from that instance, but not with resources created by other factory instances.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-d2d1createfactory HRESULT D2D1CreateFactory( D2D1_FACTORY_TYPE
+	// factoryType, REFIID riid, const D2D1_FACTORY_OPTIONS *pFactoryOptions, void **ppIFactory );
+	[PInvokeData("d2d1.h", MSDNShortId = "8c0a685a-8f33-4072-a715-bb423cb44f03")]
+	public static HRESULT D2D1CreateFactory<T>(D2D1_FACTORY_TYPE factoryType, [In, Optional] D2D1_FACTORY_OPTIONS? pFactoryOptions, [MarshalAs(UnmanagedType.Interface)] out T? ppIFactory) where T : class
+	{
+		using SafeCoTaskMemStruct<D2D1_FACTORY_OPTIONS> opts = pFactoryOptions;
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+		var hr = D2D1CreateFactory(factoryType, typeof(T).GUID, opts, out var ppv);
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+		ppIFactory = (T?)ppv;
+		return hr;
+	}
+
+	/// <summary>Creates a factory object that can be used to create Direct2D resources.</summary>
+	/// <typeparam name="T">The type of the factory interface to create.</typeparam>
+	/// <param name="factoryType">
+	/// <para>Type: <c>D2D1_FACTORY_TYPE</c></para>
+	/// <para>The threading model of the factory and the resources it creates.</para>
+	/// </param>
+	/// <param name="ppIFactory">
+	/// <para>Type: <c>void**</c></para>
+	/// <para>When this method returns, contains the address to a pointer to the new factory.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>If the function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// The ID2D1Factory interface provides the starting point for Direct2D. In general, an object created from a single instance of a
+	/// factory object can be used with other resources created from that instance, but not with resources created by other factory instances.
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-d2d1createfactory HRESULT D2D1CreateFactory( D2D1_FACTORY_TYPE
+	// factoryType, REFIID riid, const D2D1_FACTORY_OPTIONS *pFactoryOptions, void **ppIFactory );
+	[PInvokeData("d2d1.h", MSDNShortId = "8c0a685a-8f33-4072-a715-bb423cb44f03")]
+	public static HRESULT D2D1CreateFactory<T>(D2D1_FACTORY_TYPE factoryType, [MarshalAs(UnmanagedType.Interface)] out T? ppIFactory) where T : class
+	{
+#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+		HRESULT hr = D2D1CreateFactory(factoryType, typeof(T).GUID, default, out var ppv);
+#pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
+		ppIFactory = (T?)ppv;
+		return hr;
+	}
 
 	/// <summary>Creates a factory object that can be used to create Direct2D resources.</summary>
 	/// <typeparam name="T">The type of the factory interface to create.</typeparam>
