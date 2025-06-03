@@ -446,7 +446,7 @@ public class VisibleWindow : WindowBase
 	/// </param>
 	public static int Run<TWin>(WindowClass wc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
 		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new() =>
-		Run<TWin>(new CreateParams(wc, text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h, hAccl));
+		Run<TWin>(new CreateParams(wc, text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h.Handle, hAccl));
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="VisibleWindow"/> class using the parameters, displays the window, and executes a simple
@@ -511,7 +511,7 @@ public class VisibleWindow : WindowBase
 	/// </param>
 	public static int Run<TWin>(string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
 		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new() =>
-		Run<TWin>(new CreateParams(WindowClass.MakeVisibleWindowClass($"{typeof(TWin).Name}+{Guid.NewGuid():N}", null), text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h, hAccl));
+		Run<TWin>(new CreateParams(WindowClass.MakeVisibleWindowClass($"{typeof(TWin).Name}+{Guid.NewGuid():N}", null), text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h.Handle, hAccl));
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="VisibleWindow"/> class using the parameters, displays the window, and executes a simple
