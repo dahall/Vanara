@@ -785,7 +785,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-getpixelsize D2D1_SIZE_U GetPixelSize();
 		[PreserveSig]
-		new D2D_SIZE_U GetPixelSize();
+		new void GetPixelSize(out D2D_SIZE_U size);
 
 		/// <summary>Retrieves the pixel format and alpha mode of the bitmap.</summary>
 		/// <returns>
@@ -3557,12 +3557,12 @@ public static partial class D2d1
 
 		/// <summary>Returns the size of the render target in device-independent pixels.</summary>
 		/// <returns>
-		/// <para>Type: <c>D2D1_SIZE_F</c></para>
+		/// <para>Type: <b><c>D2D1_SIZE_F</c></b></para>
 		/// <para>The current size of the render target in device-independent pixels.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
 		[PreserveSig]
-		new D2D_SIZE_F GetSize();
+		new void GetSize(out D2D_SIZE_F size);
 
 		/// <summary>Returns the size of the render target in device pixels.</summary>
 		/// <returns>
@@ -3571,7 +3571,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelsize D2D1_SIZE_U GetPixelSize();
 		[PreserveSig]
-		new D2D_SIZE_U GetPixelSize();
+		new void GetPixelSize(out D2D_SIZE_U size);
 
 		/// <summary>Gets the maximum size, in device-dependent units (pixels), of any one bitmap dimension supported by the render target.</summary>
 		/// <returns>
