@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using static Vanara.PInvoke.User32;
 
@@ -138,6 +139,15 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWnd
 	public virtual void CreateHandle(WindowClass? wc = null, string? text = null, SIZE? size = default, POINT? position = default,
 		WindowStyles style = 0, WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default)
 	{
+		CreateParams cp = new(wc ?? WindowClass.MakeVisibleWindowClass($"{GetType().Name}+{Guid.NewGuid():N}", null),
+			text ?? "", size, position, style, exStyle, parent, hMenu);
+		CreateHandle(cp);
+	}
+
+	/// <summary>Creates a window and its handle with the specified creation parameters.</summary>
+	/// <param name="cp">The parameters to use to create the window.</param>
+	public virtual void CreateHandle(CreateParams cp)
+	{
 		lock (this)
 		{
 			CheckDetached();
@@ -145,21 +155,30 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWnd
 			{
 				if (hwnd is not null)
 					return;
-
-				if ((wCls = wc) is null)
-				{
-					wCls = WindowClass.MakeVisibleWindowClass($"{GetType().Name}+{Guid.NewGuid():N}", null);
-					createdClass = true;
-				}
-				size ??= new(CW_USEDEFAULT, CW_USEDEFAULT);
-				position ??= new(CW_USEDEFAULT, CW_USEDEFAULT);
 				gcWnd = GCHandle.Alloc(this);
-				if (text?.Length > short.MaxValue)
-					text = text.Substring(0, short.MaxValue);
-				hwnd = Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(exStyle, wCls.ClassName, text, style, position.Value.X,
-					position.Value.Y, size.Value.Width, size.Value.Height, parent, hMenu, wCls.wc.hInstance, GCHandle.ToIntPtr(gcWnd)));
+				hwnd = Win32Error.ThrowLastErrorIfInvalid(CreateWindowEx(cp.ExStyle, cp.Class.ClassName, cp.Text, cp.Style, cp.Position.X,
+					cp.Position.Y, cp.Size.Width, cp.Size.Height, cp.Parent, cp.Menu, cp.Class.wc.hInstance, GCHandle.ToIntPtr(gcWnd)));
 			}
 		}
+	}
+
+	/// <summary>Creates and runs a window of the specified type, using the provided creation parameters and an optional message pump.</summary>
+	/// <typeparam name="T">The type of the window to create. Must derive from <see cref="WindowBase"/> and have a parameterless constructor.</typeparam>
+	/// <param name="cp">The parameters used to create the window. These define properties such as size, position, and style.</param>
+	/// <param name="getPump">
+	/// An optional delegate to get the <see cref="MessagePump"/> instance to process window messages. If not provided, a default message
+	/// pump is used.
+	/// </param>
+	/// <returns>The exit code returned by the message pump after the window is closed.</returns>
+	/// <exception cref="Win32Exception">Thrown if the window fails to be created.</exception>
+	public static int Run<T>(CreateParams cp, Func<HWND, MessagePump>? getPump = null) where T : WindowBase, new()
+	{
+		using var win = new T();
+		win.CreateHandle(cp);
+		if (win.Handle.IsNull)
+			throw new Win32Exception("Failed to create window.");
+		MessagePump pump = getPump?.Invoke(win.Handle) ?? new MessagePump();
+		return pump.Run(win);
 	}
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -302,4 +321,32 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWnd
 			set { if (win.Handle != HWND.NULL) SetWindowLong(win.Handle, flag, value); else throw new ObjectDisposedException(nameof(IWindowInstance)); }
 		}
 	}
+}
+
+/// <summary>
+/// Represents the parameters used to create a window in a Windows-based application.
+/// </summary>
+/// <remarks>This class encapsulates the various attributes required to define a window, such as its size,
+/// position, style,  and parent relationships. It is typically used when calling window creation functions, such as
+/// <c>CreateWindowEx</c>. Each property corresponds to a specific parameter in the underlying Windows API.</remarks>
+public class CreateParams(WindowClass @class, string text, SIZE? size = null, POINT? position = null, User32.WindowStyles style = 0, User32.WindowStylesEx exStyle = 0, HWND parent = default, HMENU menu = default)
+{
+	/// <summary>Gets or sets the window class.</summary>
+	public WindowClass Class { get; set; } = @class;
+	/// <summary>Gets or sets the window text.</summary>
+	public string Text { get; set; } = text;
+	/// <summary>Gets or sets the size of the window.</summary>
+	public SIZE Size { get; set; } = size ?? new(CW_USEDEFAULT, CW_USEDEFAULT);
+	/// <summary>Gets or sets the position of the window.</summary>
+	public POINT Position { get; set; } = position ?? new(CW_USEDEFAULT, CW_USEDEFAULT);
+	/// <summary>Gets or sets the window style.</summary>
+	public WindowStyles Style { get; set; } = style;
+	/// <summary>Gets or sets the extended window style.</summary>
+	public WindowStylesEx ExStyle { get; set; } = exStyle;
+	/// <summary>Gets or sets the parent window handle.</summary>
+	public HWND Parent { get; set; } = parent;
+	/// <summary>Gets or sets the menu handle.</summary>
+	public HMENU Menu { get; set; } = menu;
+	/// <summary>Gets or sets the accelerator table handle.</summary>
+	public HACCEL Accelerator { get; set; } = default;
 }

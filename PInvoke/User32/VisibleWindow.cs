@@ -444,18 +444,9 @@ public class VisibleWindow : WindowBase
 	/// <param name="hAccl">
 	/// An optional handle to an accelerator table. If this parameter is <see cref="HACCEL.IsInvalid"/>, the window will not process accelerators.
 	/// </param>
-	public static void Run<TWin>(WindowClass wc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
-		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new()
-	{
-		using TWin win = new();
-		if (win.Handle.IsNull)
-			win.CreateHandle(wc, text, size, position, style, exStyle, parent, hMenu);
-		win.Show();
-		if (hAccl.IsInvalid)
-			new MessagePump().Run(win);
-		else
-			new MessagePumpWithAccelerators(win.Handle, hAccl).Run(win);
-	}
+	public static int Run<TWin>(WindowClass wc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
+		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new() =>
+		Run<TWin>(new CreateParams(wc, text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h, hAccl));
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="VisibleWindow"/> class using the parameters, displays the window, and executes a simple
@@ -518,18 +509,9 @@ public class VisibleWindow : WindowBase
 	/// <param name="hAccl">
 	/// An optional handle to an accelerator table. If this parameter is <see cref="HACCEL.IsInvalid"/>, the window will not process accelerators.
 	/// </param>
-	public static void Run<TWin>(string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
-		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new()
-	{
-		using TWin win = new();
-		if (win.Handle.IsNull)
-			win.CreateHandle(null, text, size, position, style, exStyle, parent, hMenu);
-		win.Show();
-		if (hAccl.IsInvalid)
-			new MessagePump().Run(win);
-		else
-			new MessagePumpWithAccelerators(win.Handle, hAccl).Run(win);
-	}
+	public static int Run<TWin>(string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
+		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new() =>
+		Run<TWin>(new CreateParams(WindowClass.MakeVisibleWindowClass($"{typeof(TWin).Name}+{Guid.NewGuid():N}", null), text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h, hAccl));
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="VisibleWindow"/> class using the parameters, displays the window, and executes a simple
@@ -593,15 +575,15 @@ public class VisibleWindow : WindowBase
 	/// <param name="hAccl">
 	/// An optional handle to an accelerator table. If this parameter is <see cref="HACCEL.IsInvalid"/>, the window will not process accelerators.
 	/// </param>
-	public static void Run(WindowProc wndProc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
+	public static int Run(WindowProc wndProc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
 		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default)
 	{
 		using VisibleWindow win = new(wndProc, text, size, position, style, exStyle, hMenu, parent);
 		win.Show();
 		if (hAccl.IsInvalid)
-			new MessagePump().Run(win);
+			return new MessagePump().Run(win);
 		else
-			new MessagePumpWithAccelerators(win.Handle, hAccl).Run(win);
+			return new MessagePumpWithAccelerators(win.Handle, hAccl).Run(win);
 	}
 
 	/// <summary>Converts a rectangle from this window's client coordinates to screen coordinates.</summary>

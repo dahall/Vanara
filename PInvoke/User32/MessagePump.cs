@@ -97,6 +97,17 @@ public class MessagePump : IMessagePump
 /// <seealso cref="MessagePump"/>
 public class ExaminedMessagePump : MessagePump
 {
+	/// <summary>Initializes a new instance of the <see cref="ExaminedMessagePump"/> class.</summary>
+	/// <param name="preProcess">A delegate that is called immediately after <c>GetMessage</c> whose result determines if <c>TranslateMessage</c> is called.</param>
+	/// <param name="postTranslate">A delegate that is called immediately after <c>TranslateMessage</c> whose result determines if <c>DispatchMessage</c> is called.</param>
+	/// <param name="postProcess">A delegate that is called after each <c>DispatchMessage</c>.</param>
+	public ExaminedMessagePump(MsgPumpPredicateDelegate? preProcess = null, MsgPumpPredicateDelegate? postTranslate = null, MsgPumpDelegate? postProcess = null)
+	{
+		if (preProcess is not null) PreProcess += preProcess;
+		if (postTranslate is not null) PostTranslate += postTranslate;
+		if (postProcess is not null) PostProcess += postProcess;
+	}
+
 	/// <summary>Occurs after <see cref="DispatchMessage(in MSG)"/>.</summary>
 	public event MsgPumpDelegate? PostProcess;
 
