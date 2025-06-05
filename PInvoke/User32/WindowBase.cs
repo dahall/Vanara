@@ -188,13 +188,13 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWnd
 			createdClass = true;
 			wc = WindowClass.MakeVisibleWindowClass(MakeClassName(), null);
 		}
-		CreateParams cp = new(wc, text ?? "", size, position, style, exStyle, parent, hMenu);
+		CreateWindowParams cp = new(wc, text ?? "", size, position, style, exStyle, parent, hMenu);
 		CreateHandle(cp);
 	}
 
 	/// <summary>Creates a window and its handle with the specified creation parameters.</summary>
 	/// <param name="cp">The parameters to use to create the window.</param>
-	public virtual void CreateHandle(CreateParams cp)
+	public virtual void CreateHandle(CreateWindowParams cp)
 	{
 		lock (this)
 		{
@@ -223,7 +223,7 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWnd
 	/// <param name="show">The show command. If this value is <c>-1</c>, then <see cref="ShowWindow"/> is not called.</param>
 	/// <returns>The exit code returned by the message pump after the window is closed.</returns>
 	/// <exception cref="Win32Exception">Thrown if the window fails to be created.</exception>
-	public static int Run<T>(CreateParams cp, Func<T, MessagePump>? getPump = null, ShowWindowCommand show = (ShowWindowCommand)(-1)) where T : WindowBase, new()
+	public static int Run<T>(CreateWindowParams cp, Func<T, MessagePump>? getPump = null, ShowWindowCommand show = (ShowWindowCommand)(-1)) where T : WindowBase, new()
 	{
 		using var win = new T();
 		win.CreateHandle(cp);
@@ -389,11 +389,11 @@ public class WindowBase : MarshalByRefObject, IDisposable, IWindowInstance, IWnd
 /// parent.</param>
 /// <param name="menu">The handle to the menu associated with the window, specified as an <see cref="HMENU"/>. If <c>default</c>, the
 /// window will have no menu.</param>
-public class CreateParams(WindowClass winClass, string text, SIZE? size = null, POINT? position = null, WindowStyles style = 0,
+public class CreateWindowParams(WindowClass winClass, string text, SIZE? size = null, POINT? position = null, WindowStyles style = 0,
 	WindowStylesEx exStyle = 0, HWND parent = default, HMENU menu = default)
 {
 	/// <summary>
-	/// Initializes a new instance of the <see cref="CreateParams"/> class with the specified parameters for creating a
+	/// Initializes a new instance of the <see cref="CreateWindowParams"/> class with the specified parameters for creating a
 	/// window.
 	/// </summary>
 	/// <remarks>This constructor allows you to specify detailed parameters for creating a window, including its
@@ -410,7 +410,7 @@ public class CreateParams(WindowClass winClass, string text, SIZE? size = null, 
 	/// parent.</param>
 	/// <param name="menu">The handle to the menu associated with the window, specified as an <see cref="HMENU"/>. If <c>default</c>, the
 	/// window will have no menu.</param>
-	public CreateParams(string className, string text, SIZE? size = null, POINT? position = null, WindowStyles style = 0,
+	public CreateWindowParams(string className, string text, SIZE? size = null, POINT? position = null, WindowStyles style = 0,
 		WindowStylesEx exStyle = 0, HWND parent = default, HMENU menu = default) :
 		this(WindowClass.MakeVisibleWindowClass(className!, null), text, size, position, style, exStyle, parent, menu) { }
 

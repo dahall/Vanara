@@ -407,7 +407,7 @@ public class VisibleWindow : WindowBase
 	/// </param>
 	public static int Run<TWin>(WindowClass wc, string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
 		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new() =>
-		Run<TWin>(new CreateParams(wc, text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h.Handle, hAccl), ShowWindowCommand.SW_SHOWNORMAL);
+		Run<TWin>(new CreateWindowParams(wc, text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h.Handle, hAccl), ShowWindowCommand.SW_SHOWNORMAL);
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="VisibleWindow"/> class using the parameters, displays the window, and executes a simple
@@ -472,7 +472,7 @@ public class VisibleWindow : WindowBase
 	/// </param>
 	public static int Run<TWin>(string? text = null, SIZE? size = default, POINT? position = default, WindowStyles style = WindowStyles.WS_OVERLAPPEDWINDOW,
 		WindowStylesEx exStyle = 0, HWND parent = default, HMENU hMenu = default, HACCEL hAccl = default) where TWin : VisibleWindow, new() =>
-		Run<TWin>(new CreateParams(WindowClass.MakeVisibleWindowClass(MakeClassName<TWin>(), null), text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h.Handle, hAccl), ShowWindowCommand.SW_SHOWNORMAL);
+		Run<TWin>(new CreateWindowParams(WindowClass.MakeVisibleWindowClass(MakeClassName<TWin>(), null), text ?? "", size, position, style, exStyle, parent, hMenu) { Accelerator = hAccl }, hAccl.IsInvalid ? null : h => new MessagePumpWithAccelerators(h.Handle, hAccl), ShowWindowCommand.SW_SHOWNORMAL);
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="VisibleWindow"/> class using the parameters, displays the window, and executes a simple
