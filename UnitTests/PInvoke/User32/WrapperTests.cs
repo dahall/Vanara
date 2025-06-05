@@ -8,7 +8,7 @@ namespace Vanara.PInvoke.Tests;
 public partial class User32Tests
 {
 	private static readonly Lazy<bool> IsWide = new(() => StringHelper.GetCharSize() == 2);
-	private const string caption = "Hello, World!\0";
+	private const string caption = "Hello, World!";
 	private const int captionLen = 13;
 
 	[Test]
@@ -59,9 +59,11 @@ public partial class User32Tests
 		Assert.That(h, Is.EqualTo(wnd.Handle));
 		Assert.That(wnd.Handle, Is.Not.EqualTo(HWND.NULL));
 		Assert.That(IsWindowUnicode(wnd.Handle), Is.EqualTo(IsWide.Value));
+		Assert.That(wnd.Text, Is.EqualTo(caption));
 		Assert.That(GetWindowTextLength(wnd.Handle), Is.EqualTo(captionLen));
 		Assert.That(SetWindowText(wnd.Handle, null));
 		Assert.That(GetWindowTextLength(wnd.Handle), Is.Zero);
+		Assert.That(wnd.Text, Is.Empty);
 	}
 
 	[Test]
@@ -77,21 +79,21 @@ public partial class User32Tests
 		VisibleWindow.Run(WndProc, caption, hAccl: a.CreateHandle());
 	}
 
-	[Test]
-	public void WindowRunTest() => VisibleWindow.Run<MyWin>(caption);
-
 	static IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 	{
-		//System.Diagnostics.Debug.WriteLine($"TestWndProc={(WindowMessage)msg} (WrapperTests.cs)");
-		//if (msg == (uint)WindowMessage.WM_CREATE) MessageBox(hwnd, "Got it!");
+		System.Diagnostics.Debug.WriteLine($"TestWndProc={(WindowMessage)msg} (WrapperTests.cs)");
+		if (msg == (uint)WindowMessage.WM_COMMAND) MessageBox(hwnd, $"Got command {Macros.LOWORD(wParam)}");
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
+
+	[Test]
+	public void WindowRunTest() => VisibleWindow.Run<MyWin>(caption);
 
 	public class MyWin : VisibleWindow
 	{
 		protected override IntPtr WndProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam)
 		{
-			//if (msg == (uint)WindowMessage.WM_CREATE) MessageBox(hwnd, "Got it!");
+			System.Diagnostics.Debug.WriteLine($"MyWndProc={(WindowMessage)msg} (WrapperTests.cs)");
 			return base.WndProc(hwnd, msg, wParam, lParam);
 		}
 	}
