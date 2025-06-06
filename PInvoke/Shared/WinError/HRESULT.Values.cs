@@ -9970,78 +9970,6 @@ public partial struct HRESULT
 	/// <summary>The operation cannot be completed because the window is being closed.</summary>
 	public const int UI_E_WINDOW_CLOSED = unchecked((int)0x802A0201);
 
-	/// <summary>You tried to use a resource to which you did not have the required access privileges. This error is most typically caused when you write to a shared resource with read-only access.</summary>
-	public const int DXGI_ERROR_ACCESS_DENIED = unchecked((int)0x887A002B);
-
-	/// <summary>The desktop duplication interface is invalid. The desktop duplication interface typically becomes invalid when a different type of image is displayed on the desktop.</summary>
-	public const int DXGI_ERROR_ACCESS_LOST = unchecked((int)0x887A0026);
-
-	/// <summary>The desired element already exists. This is returned by DXGIDeclareAdapterRemovalSupport if it is not the first time that the function is called.</summary>
-	public const int DXGI_ERROR_ALREADY_EXISTS = unchecked((int)0x887A0036L);
-
-	/// <summary>DXGI can't provide content protection on the swap chain. This error is typically caused by an older driver, or when you use a swap chain that is incompatible with content protection.</summary>
-	public const int DXGI_ERROR_CANNOT_PROTECT_CONTENT = unchecked((int)0x887A002A);
-
-	/// <summary>The application's device failed due to badly formed commands sent by the application. This is an design-time issue that should be investigated and fixed.</summary>
-	public const int DXGI_ERROR_DEVICE_HUNG = unchecked((int)0x887A0006);
-
-	/// <summary>The video card has been physically removed from the system, or a driver upgrade for the video card has occurred. The application should destroy and recreate the device. For help debugging the problem, call ID3D10Device::GetDeviceRemovedReason.</summary>
-	public const int DXGI_ERROR_DEVICE_REMOVED = unchecked((int)0x887A0005);
-
-	/// <summary>The device failed due to a badly formed command. This is a run-time issue; The application should destroy and recreate the device.</summary>
-	public const int DXGI_ERROR_DEVICE_RESET = unchecked((int)0x887A0007);
-
-	/// <summary>The driver encountered a problem and was put into the device removed state.</summary>
-	public const int DXGI_ERROR_DRIVER_INTERNAL_ERROR = unchecked((int)0x887A0020);
-
-	/// <summary>An event (for example, a power cycle) interrupted the gathering of presentation statistics.</summary>
-	public const int DXGI_ERROR_FRAME_STATISTICS_DISJOINT = unchecked((int)0x887A000B);
-
-	/// <summary>The application attempted to acquire exclusive ownership of an output, but failed because some other application (or device within the application) already acquired ownership.</summary>
-	public const int DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE = unchecked((int)0x887A000C);
-
-	/// <summary>The application provided invalid parameter data; this must be debugged and fixed before the application is released.</summary>
-	public const int DXGI_ERROR_INVALID_CALL = unchecked((int)0x887A0001);
-
-	/// <summary>The buffer supplied by the application is not big enough to hold the requested data.</summary>
-	public const int DXGI_ERROR_MORE_DATA = unchecked((int)0x887A0003);
-
-	/// <summary>The supplied name of a resource in a call to IDXGIResource1::CreateSharedHandle is already associated with some other resource.</summary>
-	public const int DXGI_ERROR_NAME_ALREADY_EXISTS = unchecked((int)0x887A002C);
-
-	/// <summary>A global counter resource is in use, and the Direct3D device can't currently use the counter resource.</summary>
-	public const int DXGI_ERROR_NONEXCLUSIVE = unchecked((int)0x887A0021);
-
-	/// <summary>The resource or request is not currently available, but it might become available later.</summary>
-	public const int DXGI_ERROR_NOT_CURRENTLY_AVAILABLE = unchecked((int)0x887A0022);
-
-	/// <summary>When calling IDXGIObject::GetPrivateData, the GUID passed in is not recognized as one previously passed to IDXGIObject::SetPrivateData or IDXGIObject::SetPrivateDataInterface. When calling IDXGIFactory::EnumAdapters or IDXGIAdapter::EnumOutputs, the enumerated ordinal is out of range.</summary>
-	public const int DXGI_ERROR_NOT_FOUND = unchecked((int)0x887A0002);
-
-	/// <summary>Reserved</summary>
-	public const int DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED = unchecked((int)0x887A0023);
-
-	/// <summary>Reserved</summary>
-	public const int DXGI_ERROR_REMOTE_OUTOFMEMORY = unchecked((int)0x887A0024);
-
-	/// <summary>The DXGI output (monitor) to which the swap chain content was restricted is now disconnected or changed.</summary>
-	public const int DXGI_ERROR_RESTRICT_TO_OUTPUT_STALE = unchecked((int)0x887A0029);
-
-	/// <summary>The operation depends on an SDK component that is missing or mismatched.</summary>
-	public const int DXGI_ERROR_SDK_COMPONENT_MISSING = unchecked((int)0x887A002D);
-
-	/// <summary>The Remote Desktop Services session is currently disconnected.</summary>
-	public const int DXGI_ERROR_SESSION_DISCONNECTED = unchecked((int)0x887A0028);
-
-	/// <summary>The requested functionality is not supported by the device or the driver.</summary>
-	public const int DXGI_ERROR_UNSUPPORTED = unchecked((int)0x887A0004);
-
-	/// <summary>The time-out interval elapsed before the next desktop frame was available.</summary>
-	public const int DXGI_ERROR_WAIT_TIMEOUT = unchecked((int)0x887A0027);
-
-	/// <summary>The GPU was busy at the moment when a call was made to perform an operation, and did not execute or schedule the operation.</summary>
-	public const int DXGI_ERROR_WAS_STILL_DRAWING = unchecked((int)0x887A000A);
-
 	/// <summary>
 	/// The IDCompositionDevice::CreateTargetForHwnd method was called with hwnd and topmost parameters for which a visual tree already exists.
 	/// </summary>
@@ -10058,4 +9986,555 @@ public partial struct HRESULT
 	/// method for a surface that is not being rendered.
 	/// </summary>
 	public const int DCOMPOSITION_ERROR_SURFACE_NOT_BEING_RENDERED = unchecked((int)0x88980802);
+
+	/// <summary>The Present operation was invisible to the user.</summary>
+	public const int DXGI_STATUS_OCCLUDED = unchecked((int)0x087A0001L);
+
+	/// <summary>The Present operation was partially invisible to the user.</summary>
+	public const int DXGI_STATUS_CLIPPED = unchecked((int)0x087A0002L);
+
+	/// <summary>The driver is requesting that the DXGI runtime not use shared resources to communicate with the Desktop Window Manager.</summary>
+	public const int DXGI_STATUS_NO_REDIRECTION = unchecked((int)0x087A0004L);
+
+	/// <summary>The Present operation was not visible because the Windows session has switched to another desktop (for example, ctrl-alt-del).</summary>
+	public const int DXGI_STATUS_NO_DESKTOP_ACCESS = unchecked((int)0x087A0005L);
+
+	/// <summary>The Present operation was not visible because the target monitor was being used for some other purpose.</summary>
+	public const int DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE = unchecked((int)0x087A0006L);
+
+	/// <summary>The Present operation was not visible because the display mode changed. DXGI will have re-attempted the presentation.</summary>
+	public const int DXGI_STATUS_MODE_CHANGED = unchecked((int)0x087A0007L);
+
+	/// <summary>The Present operation was not visible because another Direct3D device was attempting to take fullscreen mode at the time.</summary>
+	public const int DXGI_STATUS_MODE_CHANGE_IN_PROGRESS = unchecked((int)0x087A0008L);
+
+
+	//
+	// DXGI error codes
+	//
+
+	/// <summary>The application made a call that is invalid. Either the parameters of the call or the state of some object was incorrect. Enable the D3D debug layer in order to see details via debug messages.</summary>
+	public const int DXGI_ERROR_INVALID_CALL = unchecked((int)0x887A0001L);
+
+	/// <summary>The object was not found. If calling IDXGIFactory::EnumAdaptes, there is no adapter with the specified ordinal.</summary>
+	public const int DXGI_ERROR_NOT_FOUND = unchecked((int)0x887A0002L);
+
+	/// <summary>The caller did not supply a sufficiently large buffer.</summary>
+	public const int DXGI_ERROR_MORE_DATA = unchecked((int)0x887A0003L);
+
+	/// <summary>The specified device interface or feature level is not supported on this system.</summary>
+	public const int DXGI_ERROR_UNSUPPORTED = unchecked((int)0x887A0004L);
+
+	/// <summary>The GPU device instance has been suspended. Use GetDeviceRemovedReason to determine the appropriate action.</summary>
+	public const int DXGI_ERROR_DEVICE_REMOVED = unchecked((int)0x887A0005L);
+
+	/// <summary>The GPU will not respond to more commands, most likely because of an invalid command passed by the calling application.</summary>
+	public const int DXGI_ERROR_DEVICE_HUNG = unchecked((int)0x887A0006L);
+
+	/// <summary>The GPU will not respond to more commands, most likely because some other application submitted invalid commands. The calling application should re-create the device and continue.</summary>
+	public const int DXGI_ERROR_DEVICE_RESET = unchecked((int)0x887A0007L);
+
+	/// <summary>The GPU was busy at the moment when the call was made, and the call was neither executed nor scheduled.</summary>
+	public const int DXGI_ERROR_WAS_STILL_DRAWING = unchecked((int)0x887A000AL);
+
+	/// <summary>An event (such as power cycle) interrupted the gathering of presentation statistics. Any previous statistics should be considered invalid.</summary>
+	public const int DXGI_ERROR_FRAME_STATISTICS_DISJOINT = unchecked((int)0x887A000BL);
+
+	/// <summary>Fullscreen mode could not be achieved because the specified output was already in use.</summary>
+	public const int DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE = unchecked((int)0x887A000CL);
+
+	/// <summary>An internal issue prevented the driver from carrying out the specified operation. The driver's state is probably suspect, and the application should not continue.</summary>
+	public const int DXGI_ERROR_DRIVER_INTERNAL_ERROR = unchecked((int)0x887A0020L);
+
+	/// <summary>A global counter resource was in use, and the specified counter cannot be used by this Direct3D device at this time.</summary>
+	public const int DXGI_ERROR_NONEXCLUSIVE = unchecked((int)0x887A0021L);
+
+	/// <summary>A resource is not available at the time of the call, but may become available later.</summary>
+	public const int DXGI_ERROR_NOT_CURRENTLY_AVAILABLE = unchecked((int)0x887A0022L);
+
+	/// <summary>The application's remote device has been removed due to session disconnect or network disconnect. The application should call IDXGIFactory1::IsCurrent to find out when the remote device becomes available again.</summary>
+	public const int DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED = unchecked((int)0x887A0023L);
+
+	/// <summary>The device has been removed during a remote session because the remote computer ran out of memory.</summary>
+	public const int DXGI_ERROR_REMOTE_OUTOFMEMORY = unchecked((int)0x887A0024L);
+
+	/// <summary>The keyed mutex was abandoned.</summary>
+	public const int DXGI_ERROR_ACCESS_LOST = unchecked((int)0x887A0026L);
+
+	/// <summary>The timeout value has elapsed and the resource is not yet available.</summary>
+	public const int DXGI_ERROR_WAIT_TIMEOUT = unchecked((int)0x887A0027L);
+
+	/// <summary>The output duplication has been turned off because the Windows session ended or was disconnected. This happens when a remote user disconnects, or when "switch user" is used locally.</summary>
+	public const int DXGI_ERROR_SESSION_DISCONNECTED = unchecked((int)0x887A0028L);
+
+	/// <summary>The DXGI output (monitor) to which the swapchain content was restricted, has been disconnected or changed.</summary>
+	public const int DXGI_ERROR_RESTRICT_TO_OUTPUT_STALE = unchecked((int)0x887A0029L);
+
+	/// <summary>DXGI is unable to provide content protection on the swapchain. This is typically caused by an older driver, or by the application using a swapchain that is incompatible with content protection.</summary>
+	public const int DXGI_ERROR_CANNOT_PROTECT_CONTENT = unchecked((int)0x887A002AL);
+
+	/// <summary>The application is trying to use a resource to which it does not have the required access privileges. This is most commonly caused by writing to a shared resource with read-only access.</summary>
+	public const int DXGI_ERROR_ACCESS_DENIED = unchecked((int)0x887A002BL);
+
+	/// <summary>The application is trying to create a shared handle using a name that is already associated with some other resource.</summary>
+	public const int DXGI_ERROR_NAME_ALREADY_EXISTS = unchecked((int)0x887A002CL);
+
+	/// <summary>The application requested an operation that depends on an SDK component that is missing or mismatched.</summary>
+	public const int DXGI_ERROR_SDK_COMPONENT_MISSING = unchecked((int)0x887A002DL);
+
+	/// <summary>The DXGI objects that the application has created are no longer current and need to be recreated for this operation to be performed.</summary>
+	public const int DXGI_ERROR_NOT_CURRENT = unchecked((int)0x887A002EL);
+
+	/// <summary>Insufficient HW protected memory exits for proper function.</summary>
+	public const int DXGI_ERROR_HW_PROTECTION_OUTOFMEMORY = unchecked((int)0x887A0030L);
+
+	/// <summary>Creating this device would violate the process's dynamic code policy.</summary>
+	public const int DXGI_ERROR_DYNAMIC_CODE_POLICY_VIOLATION = unchecked((int)0x887A0031L);
+
+	/// <summary>The operation failed because the compositor is not in control of the output.</summary>
+	public const int DXGI_ERROR_NON_COMPOSITED_UI = unchecked((int)0x887A0032L);
+
+
+	//
+	// DXCore error codes
+	//
+
+	/// <summary>The application failed to unregister from an event it registered for.</summary>
+	public const int DXCORE_ERROR_EVENT_NOT_UNREGISTERED = unchecked((int)0x88800001L);
+
+
+	//
+	// Presentation error codes
+	//
+
+	/// <summary>The presentation manager has been lost and can no longer be used. The application should destroy this presentation manager and create a new presentation manager to use.</summary>
+	public const int PRESENTATION_ERROR_LOST = unchecked((int)0x88810001L);
+
+
+	//
+	// DXGI errors that are internal to the Desktop Window Manager
+	//
+
+	/// <summary>The swapchain has become unoccluded.</summary>
+	public const int DXGI_STATUS_UNOCCLUDED = unchecked((int)0x087A0009L);
+
+	/// <summary>The adapter did not have access to the required resources to complete the Desktop Duplication Present() call, the Present() call needs to be made again</summary>
+	public const int DXGI_STATUS_DDA_WAS_STILL_DRAWING = unchecked((int)0x087A000AL);
+
+	/// <summary>An on-going mode change prevented completion of the call. The call may succeed if attempted later.</summary>
+	public const int DXGI_ERROR_MODE_CHANGE_IN_PROGRESS = unchecked((int)0x887A0025L);
+
+	/// <summary>The present succeeded but the caller should present again on the next V-sync, even if there are no changes to the content.</summary>
+	public const int DXGI_STATUS_PRESENT_REQUIRED = unchecked((int)0x087A002FL);
+
+
+	//
+	// DXGI errors that are produced by the D3D Shader Cache component
+	//
+
+	/// <summary>The cache is corrupt and either could not be opened or could not be reset.</summary>
+	public const int DXGI_ERROR_CACHE_CORRUPT = unchecked((int)0x887A0033L);
+
+	/// <summary>This entry would cause the cache to exceed its quota. On a load operation, this may indicate exceeding the maximum in-memory size.</summary>
+	public const int DXGI_ERROR_CACHE_FULL = unchecked((int)0x887A0034L);
+
+	/// <summary>A cache entry was found, but the key provided does not match the key stored in the entry.</summary>
+	public const int DXGI_ERROR_CACHE_HASH_COLLISION = unchecked((int)0x887A0035L);
+
+	/// <summary>The desired element already exists.</summary>
+	public const int DXGI_ERROR_ALREADY_EXISTS = unchecked((int)0x887A0036L);
+
+
+	//
+	// DXGI errors that are produced by the DDisplay
+	//
+
+	/// <summary>The allocation of the MPO plane has been unpinned</summary>
+	public const int DXGI_ERROR_MPO_UNPINNED = unchecked((int)0x887A0064L);
+
+	/// <summary>SetDisplayMode is required before present can succeed.</summary>
+	public const int DXGI_ERROR_SETDISPLAYMODE_REQUIRED = unchecked((int)0x887A0065L);
+
+
+	//
+	// DXGI DDI
+	//
+
+	/// <summary>The GPU was busy when the operation was requested.</summary>
+	public const int DXGI_DDI_ERR_WASSTILLDRAWING = unchecked((int)0x887B0001L);
+
+	/// <summary>The driver has rejected the creation of this resource.</summary>
+	public const int DXGI_DDI_ERR_UNSUPPORTED = unchecked((int)0x887B0002L);
+
+	/// <summary>The GPU counter was in use by another process or d3d device when application requested access to it.</summary>
+	public const int DXGI_DDI_ERR_NONEXCLUSIVE = unchecked((int)0x887B0003L);
+
+
+	//
+	// Direct3D10
+	//
+
+	/// <summary>The application has exceeded the maximum number of unique state objects per Direct3D device. The limit is 4096 for feature levels up to 11.1.</summary>
+	public const int D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS = unchecked((int)0x88790001L);
+
+	/// <summary>The specified file was not found.</summary>
+	public const int D3D10_ERROR_FILE_NOT_FOUND = unchecked((int)0x88790002L);
+
+
+	//
+	// Direct3D11
+	//
+
+	/// <summary>The application has exceeded the maximum number of unique state objects per Direct3D device. The limit is 4096 for feature levels up to 11.1.</summary>
+	public const int D3D11_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS = unchecked((int)0x887C0001L);
+
+	/// <summary>The specified file was not found.</summary>
+	public const int D3D11_ERROR_FILE_NOT_FOUND = unchecked((int)0x887C0002L);
+
+	/// <summary>The application has exceeded the maximum number of unique view objects per Direct3D device. The limit is 2^20 for feature levels up to 11.1.</summary>
+	public const int D3D11_ERROR_TOO_MANY_UNIQUE_VIEW_OBJECTS = unchecked((int)0x887C0003L);
+
+	/// <summary>The application's first call per command list to Map on a deferred context did not use D3D11_MAP_WRITE_DISCARD.</summary>
+	public const int D3D11_ERROR_DEFERRED_CONTEXT_MAP_WITHOUT_INITIAL_DISCARD = unchecked((int)0x887C0004L);
+
+
+	//
+	// Direct3D12
+	//
+
+	/// <summary>The blob provided does not match the adapter that the device was created on.</summary>
+	public const int D3D12_ERROR_ADAPTER_NOT_FOUND = unchecked((int)0x887E0001L);
+
+	/// <summary>The blob provided was created for a different version of the driver, and must be re-created.</summary>
+	public const int D3D12_ERROR_DRIVER_VERSION_MISMATCH = unchecked((int)0x887E0002L);
+
+	/// <summary>The D3D12 SDK version configuration of the host exe is invalid.</summary>
+	public const int D3D12_ERROR_INVALID_REDIST = unchecked((int)0x887E0003L);
+
+
+	//
+	// Direct2D
+	//
+
+	/// <summary>The object was not in the correct state to process the method.</summary>
+	public const int D2DERR_WRONG_STATE = unchecked((int)0x88990001L);
+
+	/// <summary>The object has not yet been initialized.</summary>
+	public const int D2DERR_NOT_INITIALIZED = unchecked((int)0x88990002L);
+
+	/// <summary>The requested operation is not supported.</summary>
+	public const int D2DERR_UNSUPPORTED_OPERATION = unchecked((int)0x88990003L);
+
+	/// <summary>The geometry scanner failed to process the data.</summary>
+	public const int D2DERR_SCANNER_FAILED = unchecked((int)0x88990004L);
+
+	/// <summary>Direct2D could not access the screen.</summary>
+	public const int D2DERR_SCREEN_ACCESS_DENIED = unchecked((int)0x88990005L);
+
+	/// <summary>A valid display state could not be determined.</summary>
+	public const int D2DERR_DISPLAY_STATE_INVALID = unchecked((int)0x88990006L);
+
+	/// <summary>The supplied vector is zero.</summary>
+	public const int D2DERR_ZERO_VECTOR = unchecked((int)0x88990007L);
+
+	/// <summary>An internal error (Direct2D bug) occurred. On checked builds, we would assert. The application should close this instance of Direct2D and should consider restarting its process.</summary>
+	public const int D2DERR_INTERNAL_ERROR = unchecked((int)0x88990008L);
+
+	/// <summary>The display format Direct2D needs to render is not supported by the hardware device.</summary>
+	public const int D2DERR_DISPLAY_FORMAT_NOT_SUPPORTED = unchecked((int)0x88990009L);
+
+	/// <summary>A call to this method is invalid.</summary>
+	public const int D2DERR_INVALID_CALL = unchecked((int)0x8899000AL);
+
+	/// <summary>No hardware rendering device is available for this operation.</summary>
+	public const int D2DERR_NO_HARDWARE_DEVICE = unchecked((int)0x8899000BL);
+
+	/// <summary>There has been a presentation error that may be recoverable. The caller needs to recreate, rerender the entire frame, and reattempt present.</summary>
+	public const int D2DERR_RECREATE_TARGET = unchecked((int)0x8899000CL);
+
+	/// <summary>Shader construction failed because it was too complex.</summary>
+	public const int D2DERR_TOO_MANY_SHADER_ELEMENTS = unchecked((int)0x8899000DL);
+
+	/// <summary>Shader compilation failed.</summary>
+	public const int D2DERR_SHADER_COMPILE_FAILED = unchecked((int)0x8899000EL);
+
+	/// <summary>Requested DirectX surface size exceeded maximum texture size.</summary>
+	public const int D2DERR_MAX_TEXTURE_SIZE_EXCEEDED = unchecked((int)0x8899000FL);
+
+	/// <summary>The requested Direct2D version is not supported.</summary>
+	public const int D2DERR_UNSUPPORTED_VERSION = unchecked((int)0x88990010L);
+
+	/// <summary>Invalid number.</summary>
+	public const int D2DERR_BAD_NUMBER = unchecked((int)0x88990011L);
+
+	/// <summary>Objects used together must be created from the same factory instance.</summary>
+	public const int D2DERR_WRONG_FACTORY = unchecked((int)0x88990012L);
+
+	/// <summary>A layer resource can only be in use once at any point in time.</summary>
+	public const int D2DERR_LAYER_ALREADY_IN_USE = unchecked((int)0x88990013L);
+
+	/// <summary>The pop call did not match the corresponding push call.</summary>
+	public const int D2DERR_POP_CALL_DID_NOT_MATCH_PUSH = unchecked((int)0x88990014L);
+
+	/// <summary>The resource was realized on the wrong render target.</summary>
+	public const int D2DERR_WRONG_RESOURCE_DOMAIN = unchecked((int)0x88990015L);
+
+	/// <summary>The push and pop calls were unbalanced.</summary>
+	public const int D2DERR_PUSH_POP_UNBALANCED = unchecked((int)0x88990016L);
+
+	/// <summary>Attempt to copy from a render target while a layer or clip rect is applied.</summary>
+	public const int D2DERR_RENDER_TARGET_HAS_LAYER_OR_CLIPRECT = unchecked((int)0x88990017L);
+
+	/// <summary>The brush types are incompatible for the call.</summary>
+	public const int D2DERR_INCOMPATIBLE_BRUSH_TYPES = unchecked((int)0x88990018L);
+
+	/// <summary>An unknown win32 failure occurred.</summary>
+	public const int D2DERR_WIN32_ERROR = unchecked((int)0x88990019L);
+
+	/// <summary>The render target is not compatible with GDI.</summary>
+	public const int D2DERR_TARGET_NOT_GDI_COMPATIBLE = unchecked((int)0x8899001AL);
+
+	/// <summary>A text client drawing effect object is of the wrong type.</summary>
+	public const int D2DERR_TEXT_EFFECT_IS_WRONG_TYPE = unchecked((int)0x8899001BL);
+
+	/// <summary>The application is holding a reference to the IDWriteTextRenderer interface after the corresponding DrawText or DrawTextLayout call has returned. The IDWriteTextRenderer instance will be invalid.</summary>
+	public const int D2DERR_TEXT_RENDERER_NOT_RELEASED = unchecked((int)0x8899001CL);
+
+	/// <summary>The requested size is larger than the guaranteed supported texture size at the Direct3D device's current feature level.</summary>
+	public const int D2DERR_EXCEEDS_MAX_BITMAP_SIZE = unchecked((int)0x8899001DL);
+
+	/// <summary>There was a configuration error in the graph.</summary>
+	public const int D2DERR_INVALID_GRAPH_CONFIGURATION = unchecked((int)0x8899001EL);
+
+	/// <summary>There was a internal configuration error in the graph.</summary>
+	public const int D2DERR_INVALID_INTERNAL_GRAPH_CONFIGURATION = unchecked((int)0x8899001FL);
+
+	/// <summary>There was a cycle in the graph.</summary>
+	public const int D2DERR_CYCLIC_GRAPH = unchecked((int)0x88990020L);
+
+	/// <summary>Cannot draw with a bitmap that has the D2D1_BITMAP_OPTIONS_CANNOT_DRAW option.</summary>
+	public const int D2DERR_BITMAP_CANNOT_DRAW = unchecked((int)0x88990021L);
+
+	/// <summary>The operation cannot complete while there are outstanding references to the target bitmap.</summary>
+	public const int D2DERR_OUTSTANDING_BITMAP_REFERENCES = unchecked((int)0x88990022L);
+
+	/// <summary>The operation failed because the original target is not currently bound as a target.</summary>
+	public const int D2DERR_ORIGINAL_TARGET_NOT_BOUND = unchecked((int)0x88990023L);
+
+	/// <summary>Cannot set the image as a target because it is either an effect or is a bitmap that does not have the D2D1_BITMAP_OPTIONS_TARGET flag set.</summary>
+	public const int D2DERR_INVALID_TARGET = unchecked((int)0x88990024L);
+
+	/// <summary>Cannot draw with a bitmap that is currently bound as the target bitmap.</summary>
+	public const int D2DERR_BITMAP_BOUND_AS_TARGET = unchecked((int)0x88990025L);
+
+	/// <summary>D3D Device does not have sufficient capabilities to perform the requested action.</summary>
+	public const int D2DERR_INSUFFICIENT_DEVICE_CAPABILITIES = unchecked((int)0x88990026L);
+
+	/// <summary>The graph could not be rendered with the context's current tiling settings.</summary>
+	public const int D2DERR_INTERMEDIATE_TOO_LARGE = unchecked((int)0x88990027L);
+
+	/// <summary>The CLSID provided to Unregister did not correspond to a registered effect.</summary>
+	public const int D2DERR_EFFECT_IS_NOT_REGISTERED = unchecked((int)0x88990028L);
+
+	/// <summary>The specified property does not exist.</summary>
+	public const int D2DERR_INVALID_PROPERTY = unchecked((int)0x88990029L);
+
+	/// <summary>The specified sub-property does not exist.</summary>
+	public const int D2DERR_NO_SUBPROPERTIES = unchecked((int)0x8899002AL);
+
+	/// <summary>AddPage or Close called after print job is already closed.</summary>
+	public const int D2DERR_PRINT_JOB_CLOSED = unchecked((int)0x8899002BL);
+
+	/// <summary>Error during print control creation. Indicates that none of the package target types (representing printer formats) are supported by Direct2D print control.</summary>
+	public const int D2DERR_PRINT_FORMAT_NOT_SUPPORTED = unchecked((int)0x8899002CL);
+
+	/// <summary>An effect attempted to use a transform with too many inputs.</summary>
+	public const int D2DERR_TOO_MANY_TRANSFORM_INPUTS = unchecked((int)0x8899002DL);
+
+	/// <summary>An error was encountered while decoding or parsing the requested glyph image.</summary>
+	public const int D2DERR_INVALID_GLYPH_IMAGE = unchecked((int)0x8899002EL);
+
+
+	//
+	// DirectWrite
+	//
+
+	/// <summary>Indicates an error in an input file such as a font file.</summary>
+	public const int DWRITE_E_FILEFORMAT = unchecked((int)0x88985000L);
+
+	/// <summary>Indicates an error originating in DirectWrite code, which is not expected to occur but is safe to recover from.</summary>
+	public const int DWRITE_E_UNEXPECTED = unchecked((int)0x88985001L);
+
+	/// <summary>Indicates the specified font does not exist.</summary>
+	public const int DWRITE_E_NOFONT = unchecked((int)0x88985002L);
+
+	/// <summary>A font file could not be opened because the file, directory, network location, drive, or other storage location does not exist or is unavailable.</summary>
+	public const int DWRITE_E_FILENOTFOUND = unchecked((int)0x88985003L);
+
+	/// <summary>A font file exists but could not be opened due to access denied, sharing violation, or similar error.</summary>
+	public const int DWRITE_E_FILEACCESS = unchecked((int)0x88985004L);
+
+	/// <summary>A font collection is obsolete due to changes in the system.</summary>
+	public const int DWRITE_E_FONTCOLLECTIONOBSOLETE = unchecked((int)0x88985005L);
+
+	/// <summary>The given interface is already registered.</summary>
+	public const int DWRITE_E_ALREADYREGISTERED = unchecked((int)0x88985006L);
+
+	/// <summary>The font cache contains invalid data.</summary>
+	public const int DWRITE_E_CACHEFORMAT = unchecked((int)0x88985007L);
+
+	/// <summary>A font cache file corresponds to a different version of DirectWrite.</summary>
+	public const int DWRITE_E_CACHEVERSION = unchecked((int)0x88985008L);
+
+	/// <summary>The operation is not supported for this type of font.</summary>
+	public const int DWRITE_E_UNSUPPORTEDOPERATION = unchecked((int)0x88985009L);
+
+	/// <summary>The version of the text renderer interface is not compatible.</summary>
+	public const int DWRITE_E_TEXTRENDERERINCOMPATIBLE = unchecked((int)0x8898500AL);
+
+	/// <summary>The flow direction conflicts with the reading direction. They must be perpendicular to each other.</summary>
+	public const int DWRITE_E_FLOWDIRECTIONCONFLICTS = unchecked((int)0x8898500BL);
+
+	/// <summary>The font or glyph run does not contain any colored glyphs.</summary>
+	public const int DWRITE_E_NOCOLOR = unchecked((int)0x8898500CL);
+
+	/// <summary>A font resource could not be accessed because it is remote.</summary>
+	public const int DWRITE_E_REMOTEFONT = unchecked((int)0x8898500DL);
+
+	/// <summary>A font download was canceled.</summary>
+	public const int DWRITE_E_DOWNLOADCANCELLED = unchecked((int)0x8898500EL);
+
+	/// <summary>A font download failed.</summary>
+	public const int DWRITE_E_DOWNLOADFAILED = unchecked((int)0x8898500FL);
+
+	/// <summary>A font download request was not added or a download failed because there are too many active downloads.</summary>
+	public const int DWRITE_E_TOOMANYDOWNLOADS = unchecked((int)0x88985010L);
+
+
+	//
+	// Windows Codecs
+	//
+
+	/// <summary>The codec is in the wrong state.</summary>
+	public const int WINCODEC_ERR_WRONGSTATE = unchecked((int)0x88982F04L);
+
+	/// <summary>The value is out of range.</summary>
+	public const int WINCODEC_ERR_VALUEOUTOFRANGE = unchecked((int)0x88982F05L);
+
+	/// <summary>The image format is unknown.</summary>
+	public const int WINCODEC_ERR_UNKNOWNIMAGEFORMAT = unchecked((int)0x88982F07L);
+
+	/// <summary>The SDK version is unsupported.</summary>
+	public const int WINCODEC_ERR_UNSUPPORTEDVERSION = unchecked((int)0x88982F0BL);
+
+	/// <summary>The component is not initialized.</summary>
+	public const int WINCODEC_ERR_NOTINITIALIZED = unchecked((int)0x88982F0CL);
+
+	/// <summary>There is already an outstanding read or write lock.</summary>
+	public const int WINCODEC_ERR_ALREADYLOCKED = unchecked((int)0x88982F0DL);
+
+	/// <summary>The specified bitmap property cannot be found.</summary>
+	public const int WINCODEC_ERR_PROPERTYNOTFOUND = unchecked((int)0x88982F40L);
+
+	/// <summary>The bitmap codec does not support the bitmap property.</summary>
+	public const int WINCODEC_ERR_PROPERTYNOTSUPPORTED = unchecked((int)0x88982F41L);
+
+	/// <summary>The bitmap property size is invalid.</summary>
+	public const int WINCODEC_ERR_PROPERTYSIZE = unchecked((int)0x88982F42L);
+
+	/// <summary>An unknown error has occurred.</summary>
+	public const int WINCODEC_ERR_CODECPRESENT = unchecked((int)0x88982F43L);
+
+	/// <summary>The bitmap codec does not support a thumbnail.</summary>
+	public const int WINCODEC_ERR_CODECNOTHUMBNAIL = unchecked((int)0x88982F44L);
+
+	/// <summary>The bitmap palette is unavailable.</summary>
+	public const int WINCODEC_ERR_PALETTEUNAVAILABLE = unchecked((int)0x88982F45L);
+
+	/// <summary>Too many scanlines were requested.</summary>
+	public const int WINCODEC_ERR_CODECTOOMANYSCANLINES = unchecked((int)0x88982F46L);
+
+	/// <summary>An internal error occurred.</summary>
+	public const int WINCODEC_ERR_INTERNALERROR = unchecked((int)0x88982F48L);
+
+	/// <summary>The bitmap bounds do not match the bitmap dimensions.</summary>
+	public const int WINCODEC_ERR_SOURCERECTDOESNOTMATCHDIMENSIONS = unchecked((int)0x88982F49L);
+
+	/// <summary>The component cannot be found.</summary>
+	public const int WINCODEC_ERR_COMPONENTNOTFOUND = unchecked((int)0x88982F50L);
+
+	/// <summary>The bitmap size is outside the valid range.</summary>
+	public const int WINCODEC_ERR_IMAGESIZEOUTOFRANGE = unchecked((int)0x88982F51L);
+
+	/// <summary>There is too much metadata to be written to the bitmap.</summary>
+	public const int WINCODEC_ERR_TOOMUCHMETADATA = unchecked((int)0x88982F52L);
+
+	/// <summary>The image is unrecognized.</summary>
+	public const int WINCODEC_ERR_BADIMAGE = unchecked((int)0x88982F60L);
+
+	/// <summary>The image header is unrecognized.</summary>
+	public const int WINCODEC_ERR_BADHEADER = unchecked((int)0x88982F61L);
+
+	/// <summary>The bitmap frame is missing.</summary>
+	public const int WINCODEC_ERR_FRAMEMISSING = unchecked((int)0x88982F62L);
+
+	/// <summary>The image metadata header is unrecognized.</summary>
+	public const int WINCODEC_ERR_BADMETADATAHEADER = unchecked((int)0x88982F63L);
+
+	/// <summary>The stream data is unrecognized.</summary>
+	public const int WINCODEC_ERR_BADSTREAMDATA = unchecked((int)0x88982F70L);
+
+	/// <summary>Failed to write to the stream.</summary>
+	public const int WINCODEC_ERR_STREAMWRITE = unchecked((int)0x88982F71L);
+
+	/// <summary>Failed to read from the stream.</summary>
+	public const int WINCODEC_ERR_STREAMREAD = unchecked((int)0x88982F72L);
+
+	/// <summary>The stream is not available.</summary>
+	public const int WINCODEC_ERR_STREAMNOTAVAILABLE = unchecked((int)0x88982F73L);
+
+	/// <summary>The bitmap pixel format is unsupported.</summary>
+	public const int WINCODEC_ERR_UNSUPPORTEDPIXELFORMAT = unchecked((int)0x88982F80L);
+
+	/// <summary>The operation is unsupported.</summary>
+	public const int WINCODEC_ERR_UNSUPPORTEDOPERATION = unchecked((int)0x88982F81L);
+
+	/// <summary>The component registration is invalid.</summary>
+	public const int WINCODEC_ERR_INVALIDREGISTRATION = unchecked((int)0x88982F8AL);
+
+	/// <summary>The component initialization has failed.</summary>
+	public const int WINCODEC_ERR_COMPONENTINITIALIZEFAILURE = unchecked((int)0x88982F8BL);
+
+	/// <summary>The buffer allocated is insufficient.</summary>
+	public const int WINCODEC_ERR_INSUFFICIENTBUFFER = unchecked((int)0x88982F8CL);
+
+	/// <summary>Duplicate metadata is present.</summary>
+	public const int WINCODEC_ERR_DUPLICATEMETADATAPRESENT = unchecked((int)0x88982F8DL);
+
+	/// <summary>The bitmap property type is unexpected.</summary>
+	public const int WINCODEC_ERR_PROPERTYUNEXPECTEDTYPE = unchecked((int)0x88982F8EL);
+
+	/// <summary>The size is unexpected.</summary>
+	public const int WINCODEC_ERR_UNEXPECTEDSIZE = unchecked((int)0x88982F8FL);
+
+	/// <summary>The property query is invalid.</summary>
+	public const int WINCODEC_ERR_INVALIDQUERYREQUEST = unchecked((int)0x88982F90L);
+
+	/// <summary>The metadata type is unexpected.</summary>
+	public const int WINCODEC_ERR_UNEXPECTEDMETADATATYPE = unchecked((int)0x88982F91L);
+
+	/// <summary>The specified bitmap property is only valid at root level.</summary>
+	public const int WINCODEC_ERR_REQUESTONLYVALIDATMETADATAROOT = unchecked((int)0x88982F92L);
+
+	/// <summary>The query string contains an invalid character.</summary>
+	public const int WINCODEC_ERR_INVALIDQUERYCHARACTER = unchecked((int)0x88982F93L);
+
+	/// <summary>Windows Codecs received an error from the Win32 system.</summary>
+	public const int WINCODEC_ERR_WIN32ERROR = unchecked((int)0x88982F94L);
+
+	/// <summary>The requested level of detail is not present.</summary>
+	public const int WINCODEC_ERR_INVALIDPROGRESSIVELEVEL = unchecked((int)0x88982F95L);
+
+	/// <summary>The scan index is invalid.</summary>
+	public const int WINCODEC_ERR_INVALIDJPEGSCANINDEX = unchecked((int)0x88982F96L);
 }
