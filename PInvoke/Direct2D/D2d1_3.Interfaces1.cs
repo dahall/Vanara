@@ -5747,7 +5747,8 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-enddraw HRESULT EndDraw( D2D1_TAG *tag1,
 		// D2D1_TAG *tag2 );
-		new void EndDraw(out ulong tag1, out ulong tag2);
+		[PreserveSig]
+		new HRESULT EndDraw(out ulong tag1, out ulong tag2);
 
 		/// <summary>Retrieves the pixel format and alpha mode of the render target.</summary>
 		/// <returns>
@@ -8607,7 +8608,8 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-enddraw HRESULT EndDraw( D2D1_TAG *tag1,
 		// D2D1_TAG *tag2 );
-		new void EndDraw(out ulong tag1, out ulong tag2);
+		[PreserveSig]
+		new HRESULT EndDraw(out ulong tag1, out ulong tag2);
 
 		/// <summary>Retrieves the pixel format and alpha mode of the render target.</summary>
 		/// <returns>

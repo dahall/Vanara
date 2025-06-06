@@ -2589,7 +2589,8 @@ public static partial class D2d1
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-enddraw HRESULT EndDraw( D2D1_TAG *tag1,
 		// D2D1_TAG *tag2 );
-		void EndDraw(out ulong tag1, out ulong tag2);
+		[PreserveSig]
+		HRESULT EndDraw(out ulong tag1, out ulong tag2);
 
 		/// <summary>Retrieves the pixel format and alpha mode of the render target.</summary>
 		/// <returns>
@@ -3329,8 +3330,30 @@ public static partial class D2d1
 
 	/// <summary>Clears the drawing area to the specified color.</summary>
 	/// <param name="t">The <see cref="ID2D1RenderTarget"/> instance.</param>
-	/// <param name="clearColor"><para>Type: [in] <clearColor>const D2D1_COLOR_F &amp;</clearColor></para>
-	/// <para>The color to which the drawing area is cleared.</para></param>
+	/// <param name="clearColor">The color to which the drawing area is cleared.</param>
+	/// <returns>None</returns>
+	/// <remarks>
+	/// <para>
+	/// Direct2D interprets the clearColor as straight alpha (not premultiplied). If the render target's alpha mode is
+	/// D2D1_ALPHA_MODE_IGNORE, the alpha channel of clearColor is ignored and replaced with 1.0f (fully opaque).
+	/// </para>
+	/// <para>
+	/// If the render target has an active clip (specified by PushAxisAlignedClip), the clear command is applied only to the area within the
+	/// clip region.
+	/// </para>
+	/// </remarks>
+	public static void Clear(this ID2D1RenderTarget t, D3DCOLORVALUE clearColor)
+	{
+		unsafe
+		{
+			t.Clear(&clearColor);
+		}
+	}
+
+	/// <summary>Clears the drawing area to the specified color.</summary>
+	/// <param name="t">The <see cref="ID2D1RenderTarget" /> instance.</param>
+	/// <param name="clearColor">The color to which the drawing area is cleared.</param>
+	/// <param name="a">The alpha component of the color.</param>
 	/// <returns>None</returns>
 	/// <remarks>
 	/// <para>
@@ -3342,13 +3365,8 @@ public static partial class D2d1
 	/// within the clip region.
 	/// </para>
 	/// </remarks>
-	public static void Clear(this ID2D1RenderTarget t, D3DCOLORVALUE clearColor)
-	{
-		unsafe
-		{
-			t.Clear(&clearColor);
-		}
-	}
+	public static void Clear(this ID2D1RenderTarget t, System.Drawing.Color clearColor, float a = 0f) =>
+		Clear(t, new(clearColor, a));
 
 	/// <summary>Creates an ID2D1Bitmap by copying the specified Microsoft Windows Imaging Component (WIC) bitmap.</summary>
 	/// <param name="target">The <see cref="ID2D1RenderTarget"/> instance.</param>
@@ -3633,4 +3651,62 @@ public static partial class D2d1
 	/// </returns>
 	/// <remarks>The layer automatically resizes itself, as needed.</remarks>
 	public static ID2D1Layer CreateLayer(this ID2D1RenderTarget target, D2D_SIZE_F size) { unsafe { return target.CreateLayer(&size); } }
+
+	/// <summary>Ends drawing operations on the render target and indicates the current error state and associated tags.</summary>
+	/// <param name="target">The <see cref="ID2D1RenderTarget"/> instance.</param>
+	/// <returns>
+	/// <para>Type: <c>HRESULT</c></para>
+	/// <para>
+	/// If the method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code and sets tag1 and tag2 to
+	/// the tags that were active when the error occurred.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>Drawing operations can only be issued between a BeginDraw and <c>EndDraw</c> call.</para>
+	/// <para>
+	/// BeginDraw and <c>EndDraw</c> are use to indicate that a render target is in use by the Direct2D system. Different
+	/// implementations of ID2D1RenderTarget might behave differently when <c>BeginDraw</c> is called. An ID2D1BitmapRenderTarget
+	/// may be locked between <c>BeginDraw</c>/ <c>EndDraw</c> calls, a DXGI surface render target might be acquired on
+	/// <c>BeginDraw</c> and released on <c>EndDraw</c>, while an ID2D1HwndRenderTarget may begin batching at <c>BeginDraw</c> and
+	/// may present on <c>EndDraw</c>, for example.
+	/// </para>
+	/// <para>
+	/// The BeginDraw method must be called before rendering operations can be called, though state-setting and state-retrieval
+	/// operations can be performed even outside of <c>BeginDraw</c>/ <c>EndDraw</c>.
+	/// </para>
+	/// <para>
+	/// After BeginDraw is called, a render target will normally build up a batch of rendering commands, but defer processing of
+	/// these commands until either an internal buffer is full, the Flush method is called, or until <c>EndDraw</c> is called. The
+	/// <c>EndDraw</c> method causes any batched drawing operations to complete, and then returns an <c>HRESULT</c> indicating the
+	/// success of the operations and, optionally, the tag state of the render target at the time the error occurred. The
+	/// <c>EndDraw</c> method always succeeds: it should not be called twice even if a previous <c>EndDraw</c> resulted in a failing <c>HRESULT</c>.
+	/// </para>
+	/// <para>
+	/// If <c>EndDraw</c> is called without a matched call to BeginDraw, it returns an error indicating that <c>BeginDraw</c> must
+	/// be called before <c>EndDraw</c>.
+	/// </para>
+	/// <para>
+	/// Calling <c>BeginDraw</c> twice on a render target puts the target into an error state where nothing further is drawn, and
+	/// returns an appropriate <c>HRESULT</c> and error information when <c>EndDraw</c> is called.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-enddraw HRESULT EndDraw( D2D1_TAG *tag1,
+	// D2D1_TAG *tag2 );
+	public static HRESULT EndDraw(this ID2D1RenderTarget target) => target.EndDraw(out _, out _);
+
+	/// <summary>Returns the size of the render target in device-independent pixels.</summary>
+	/// <returns>
+	/// <para>Type: <b><c>D2D1_SIZE_F</c></b></para>
+	/// <para>The current size of the render target in device-independent pixels.</para>
+	/// </returns>
+	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
+	public static D2D_SIZE_F GetSize(this ID2D1RenderTarget target) { target.GetSize(out D2D_SIZE_F size); return size; }
+
+	/// <summary>Returns the size of the render target in device pixels.</summary>
+	/// <returns>
+	/// <para>Type: <c>D2D1_SIZE_U</c></para>
+	/// <para>The size of the render target in device pixels.</para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelsize D2D1_SIZE_U GetPixelSize();
+	public static D2D_SIZE_U GetPixelSize(this ID2D1RenderTarget target) { target.GetPixelSize(out D2D_SIZE_U size); return size; }
 }
