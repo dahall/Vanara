@@ -4067,21 +4067,34 @@ public static partial class DXGI
 		/// </remarks>
 		public static D2D_MATRIX_3X2_F Identity() => new() { _11 = 1, _22 = 1 };
 
-		/// <summary>Creates a translation transformation that has the specified x and y displacements.</summary>
-		/// <param name="x">The distance to translate along the x-axis.</param>
+		/// <summary>Creates a rotation transformation that has the specified angle and center point.</summary>
+		/// <param name="angle">The rotation angle in degrees. A positive angle creates a clockwise rotation, and a negative angle creates a counterclockwise rotation.</param>
+		/// <param name="center">The point about which the rotation is performed.</param>
+		/// <returns>The new rotation transformation.</returns>
+		public static D2D_MATRIX_3X2_F Rotation(float angle, D2D_POINT_2F center = default)
+		{
+			D2D1MakeRotateMatrix(angle, center, out var m);
+			return m;
+
+			[DllImport("d2d1.dll", SetLastError = false, ExactSpelling = true)]
+			static extern void D2D1MakeRotateMatrix([In] float angle, [In] D2D_POINT_2F center, out D2D_MATRIX_3X2_F matrix);
+		}
+
+		/// <summary>Creates a translation transformation that has the specified angle and y displacements.</summary>
+		/// <param name="x">The distance to translate along the angle-axis.</param>
 		/// <param name="y">The distance to translate along the y-axis.</param>
 		/// <returns>A transformation matrix that translates an object the specified horizontal and vertical distance.</returns>
 		public static D2D_MATRIX_3X2_F Translation(float x, float y) => new() { _11 = 1, _22 = 1, _31 = x, _32 = y };
 
 		/// <summary>Creates a scale transformation that has the specified scale factors and center point.</summary>
-		/// <param name="width">The x-axis scale factor of the scale transformation.</param>
+		/// <param name="width">The angle-axis scale factor of the scale transformation.</param>
 		/// <param name="height">The y-axis scale factor of the scale transformation.</param>
-		/// <param name="x">The x-coordinate of the point about which the scale is performed.</param>
+		/// <param name="x">The angle-coordinate of the point about which the scale is performed.</param>
 		/// <param name="y">The y-coordinate of the point about which the scale is performed.</param>
 		/// <returns>The new scale transformation.</returns>
 		/// <remarks>
 		/// <para>
-		/// This method creates a scale transformation for the specified centerPoint and the x-axis and y-axis scale factors. If you prefer
+		/// This method creates a scale transformation for the specified centerPoint and the angle-axis and y-axis scale factors. If you prefer
 		/// to create a D2D1_SIZE_F structure to store the scale factors, call the other Scale method.
 		/// </para>
 		/// <para>
@@ -4418,7 +4431,7 @@ public static partial class DXGI
 		/// <para>The result matrix</para>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-rotationarbitraryaxis
-		// Matrix4x4F RotationArbitraryAxis( FLOAT x, FLOAT y, FLOAT z, FLOAT degree );
+		// Matrix4x4F RotationArbitraryAxis( FLOAT angle, FLOAT y, FLOAT z, FLOAT degree );
 		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.RotationArbitraryAxis")]
 		public static D2D_MATRIX_4X4_F RotationArbitraryAxis(float x, float y, float z, float degree)
 		{
@@ -4464,7 +4477,7 @@ public static partial class DXGI
 		/// <para>The result matrix.</para>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1helper/nf-d2d1_1helper-matrix4x4f-scale
-		// Matrix4x4F Scale( FLOAT x, FLOAT y, FLOAT z );
+		// Matrix4x4F Scale( FLOAT angle, FLOAT y, FLOAT z );
 		[PInvokeData("d2d1_1helper.h", MSDNShortId = "NF:d2d1_1helper.Matrix4x4F.Scale")]
 		public static D2D_MATRIX_4X4_F Scale(float x, float y, float z) => new() { _11 = x, _22 = y, _33 = z, _44 = 1 };
 
@@ -4627,14 +4640,14 @@ public static partial class DXGI
 	}
 
 	/// <summary>Represents an x-coordinate and y-coordinate pair, expressed as floating-point values, in two-dimensional space.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2f typedef struct D2D_POINT_2F { FLOAT x; FLOAT
+	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2f typedef struct D2D_POINT_2F { FLOAT angle; FLOAT
 	// y; } D2D_POINT_2F;
 	[PInvokeData("dcommon.h", MSDNShortId = "2ee55d63-594b-482d-9e31-2378369c6c30"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_POINT_2F(float x = 0f, float y = 0f) : IEquatable<D2D_POINT_2F>
 	{
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
-		/// <para>The x-coordinate of the point.</para>
+		/// <para>The angle-coordinate of the point.</para>
 		/// </summary>
 		public float x = x;
 
@@ -4687,14 +4700,14 @@ public static partial class DXGI
 	}
 
 	/// <summary>Represents an x-coordinate and y-coordinate pair, expressed as floating-point values, in two-dimensional space.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2f typedef struct D2D_POINT_2F { FLOAT x; FLOAT
+	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2f typedef struct D2D_POINT_2F { FLOAT angle; FLOAT
 	// y; } D2D_POINT_2F;
 	[PInvokeData("dcommon.h", MSDNShortId = "2ee55d63-594b-482d-9e31-2378369c6c30"), StructLayout(LayoutKind.Sequential)]
 	public class PD2D_POINT_2F(float x, float y)
 	{
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
-		/// <para>The x-coordinate of the point.</para>
+		/// <para>The angle-coordinate of the point.</para>
 		/// </summary>
 		public float x = x;
 
@@ -4736,7 +4749,7 @@ public static partial class DXGI
 	/// <summary>
 	/// Represents an x-coordinate and y-coordinate pair, expressed as an unsigned 32-bit integer value, in two-dimensional space.
 	/// </summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2u typedef struct D2D_POINT_2U { UINT32 x; UINT32 y;
+	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_point_2u typedef struct D2D_POINT_2U { UINT32 angle; UINT32 y;
 	// } D2D_POINT_2U;
 	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_POINT_2U")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -4744,7 +4757,7 @@ public static partial class DXGI
 	{
 		/// <summary>
 		/// <para>Type: <b>UINT32</b></para>
-		/// <para>The x-coordinate value of the point.</para>
+		/// <para>The angle-coordinate value of the point.</para>
 		/// </summary>
 		public uint x = x;
 
@@ -4764,13 +4777,13 @@ public static partial class DXGI
 	[PInvokeData("dcommon.h", MSDNShortId = "84bd7ab0-f273-46f8-b261-86cd1d7f3868"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_RECT_F(float left = 0f, float top = 0f, float right = 0f, float bottom = 0f) : IEquatable<D2D_RECT_F>
 	{
-		/// <summary>The x-coordinate of the upper-left corner of the rectangle.</summary>
+		/// <summary>The angle-coordinate of the upper-left corner of the rectangle.</summary>
 		public float left = left;
 
 		/// <summary>The y-coordinate of the upper-left corner of the rectangle.</summary>
 		public float top = top;
 
-		/// <summary>The x-coordinate of the lower-right corner of the rectangle.</summary>
+		/// <summary>The angle-coordinate of the lower-right corner of the rectangle.</summary>
 		public float right = right;
 
 		/// <summary>The y-coordinate of the lower-right corner of the rectangle.</summary>
@@ -4843,7 +4856,7 @@ public static partial class DXGI
 	{
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
-		/// <para>The x-coordinate of the upper-left corner of the rectangle.</para>
+		/// <para>The angle-coordinate of the upper-left corner of the rectangle.</para>
 		/// </summary>
 		public uint left = left;
 
@@ -4855,7 +4868,7 @@ public static partial class DXGI
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
-		/// <para>The x-coordinate of the lower-right corner of the rectangle.</para>
+		/// <para>The angle-coordinate of the lower-right corner of the rectangle.</para>
 		/// </summary>
 		public uint right = right;
 
@@ -4918,7 +4931,7 @@ public static partial class DXGI
 	{
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
-		/// <para>The x-coordinate of the upper-left corner of the rectangle.</para>
+		/// <para>The angle-coordinate of the upper-left corner of the rectangle.</para>
 		/// </summary>
 		public float left = left;
 
@@ -4930,7 +4943,7 @@ public static partial class DXGI
 
 		/// <summary>
 		/// <para>Type: <c>FLOAT</c></para>
-		/// <para>The x-coordinate of the lower-right corner of the rectangle.</para>
+		/// <para>The angle-coordinate of the lower-right corner of the rectangle.</para>
 		/// </summary>
 		public float right = right;
 
@@ -5065,11 +5078,11 @@ public static partial class DXGI
 
 	/// <summary>A vector of 2 FLOAT values (x, y).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_2f
-	// typedef struct D2D_VECTOR_2F { FLOAT x; FLOAT y; } D2D_VECTOR_2F;
+	// typedef struct D2D_VECTOR_2F { FLOAT angle; FLOAT y; } D2D_VECTOR_2F;
 	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_2F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_VECTOR_2F(float x = 0f, float y = 0f)
 	{
-		/// <summary>The x value of the vector.</summary>
+		/// <summary>The angle value of the vector.</summary>
 		public float x = x;
 
 		/// <summary>The y value of the vector.</summary>
@@ -5088,11 +5101,11 @@ public static partial class DXGI
 
 	/// <summary>A vector of 3 FLOAT values (x, y, z).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_3f
-	// typedef struct D2D_VECTOR_3F { FLOAT x; FLOAT y; FLOAT z; } D2D_VECTOR_3F;
+	// typedef struct D2D_VECTOR_3F { FLOAT angle; FLOAT y; FLOAT z; } D2D_VECTOR_3F;
 	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_3F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_VECTOR_3F(float x = 0f, float y = 0f, float z = 0f)
 	{
-		/// <summary>The x value of the vector.</summary>
+		/// <summary>The angle value of the vector.</summary>
 		public float x = x;
 
 		/// <summary>The y value of the vector.</summary>
@@ -5118,11 +5131,11 @@ public static partial class DXGI
 
 	/// <summary>A vector of 4 FLOAT values (x, y, z, w).</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_vector_4f
-	// typedef struct D2D_VECTOR_4F { FLOAT x; FLOAT y; FLOAT z; FLOAT w; } D2D_VECTOR_4F;
+	// typedef struct D2D_VECTOR_4F { FLOAT angle; FLOAT y; FLOAT z; FLOAT w; } D2D_VECTOR_4F;
 	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_VECTOR_4F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_VECTOR_4F(float x = 0f, float y = 0f, float z = 0f, float w = 0f)
 	{
-		/// <summary>The x value of the vector.</summary>
+		/// <summary>The angle value of the vector.</summary>
 		public float x = x;
 
 		/// <summary>The y value of the vector.</summary>
@@ -5186,7 +5199,7 @@ public static partial class DXGI
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
-		/// <para>The x position of the left hand side of the box.</para>
+		/// <para>The angle position of the left hand side of the box.</para>
 		/// </summary>
 		public uint left;
 
@@ -5204,7 +5217,7 @@ public static partial class DXGI
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
-		/// <para>The x position of the right hand side of the box.</para>
+		/// <para>The angle position of the right hand side of the box.</para>
 		/// </summary>
 		public uint right;
 
@@ -5221,7 +5234,7 @@ public static partial class DXGI
 		public uint back;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D10_BOX" /> struct.</summary>
-		/// <param name="Left">The x position of the left hand side of the box.</param>
+		/// <param name="Left">The angle position of the left hand side of the box.</param>
 		/// <param name="Right">The y position of the top of the box.</param>
 		/// <param name="Top">The y position of the top of the box.</param>
 		/// <param name="Bottom">The y position of the bottom of the box.</param>
