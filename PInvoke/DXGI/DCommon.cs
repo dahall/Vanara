@@ -3932,28 +3932,28 @@ public static partial class DXGI
 
 	/// <summary>Represents a 3-by-2 matrix.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_matrix_3x2_f typedef struct D2D_MATRIX_3X2_F { union {
-	// struct { FLOAT m11; FLOAT m12; FLOAT m21; FLOAT m22; FLOAT dx; FLOAT dy; }; struct { FLOAT _11; FLOAT _12; FLOAT _21; FLOAT _22;
+	// struct { FLOAT m11; FLOAT m12; FLOAT m21; FLOAT m22; FLOAT dx; FLOAT dy; }; struct { FLOAT m11; FLOAT _12; FLOAT _21; FLOAT _22;
 	// FLOAT _31; FLOAT _32; }; FLOAT m[3, 2]; }; } D2D_MATRIX_3X2_F;
 	[PInvokeData("dcommon.h", MSDNShortId = "c8a54bad-4376-479b-8529-1e407623e473"), StructLayout(LayoutKind.Sequential)]
-	public struct D2D_MATRIX_3X2_F : IEquatable<DXGI_MATRIX_3X2_F>
+	public struct D2D_MATRIX_3X2_F(float m11 = 0f, float m12 = 0f, float m21 = 0f, float m22 = 0f, float m31 = 0f, float m32 = 0f) : IEquatable<DXGI_MATRIX_3X2_F>
 	{
 		/// <summary>The value in the first row and first column of the matrix.</summary>
-		public float _11;
+		public float _11 = m11;
 
 		/// <summary>The value in the first row and second column of the matrix.</summary>
-		public float _12;
+		public float _12 = m12;
 
 		/// <summary>The value in the second row and first column of the matrix.</summary>
-		public float _21;
+		public float _21 = m21;
 
 		/// <summary>The value in the second row and second column of the matrix.</summary>
-		public float _22;
+		public float _22 = m22;
 
 		/// <summary>The value in the third row and first column of the matrix.</summary>
-		public float _31;
+		public float _31 = m31;
 
 		/// <summary>The value in the third row and second column of the matrix.</summary>
-		public float _32;
+		public float _32 = m32;
 
 		/// <summary>Horizontal scaling / cosine of rotation</summary>
 		public float m11 { get => _11; set => _11 = value; }
@@ -4041,10 +4041,16 @@ public static partial class DXGI
 		public static implicit operator Matrix(D2D_MATRIX_3X2_F value) => new(value.m);
 
 		/// <summary>Multiplies two matrices together to compute the product.</summary>
-		/// <param name="left">The first matrix.</param>
-		/// <param name="right">The second matrix.</param>
+		/// <param name="a">The first matrix.</param>
+		/// <param name="b">The second matrix.</param>
 		/// <returns>The product matrix.</returns>
-		public static DXGI_MATRIX_3X2_F operator *(DXGI_MATRIX_3X2_F left, DXGI_MATRIX_3X2_F right) => new() { m = new Matrix(left.m) * new Matrix(right.m) };
+		public static DXGI_MATRIX_3X2_F operator *(DXGI_MATRIX_3X2_F a, DXGI_MATRIX_3X2_F b) => new(
+			a._11 * b._11 + a._12* b._21,
+			a._11 * b._12 + a._12 * b._22,
+			a._21 * b._11 + a._22 * b._21,
+			a._21 * b._12 + a._22 * b._22,
+			a._31 * b._11 + a._32 * b._21 + b._31,
+			a._31 * b._12 + a._32 * b._22 + b._32);
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="left">The left comparible.</param>
@@ -4080,12 +4086,6 @@ public static partial class DXGI
 			static extern void D2D1MakeRotateMatrix([In] float angle, [In] D2D_POINT_2F center, out D2D_MATRIX_3X2_F matrix);
 		}
 
-		/// <summary>Creates a translation transformation that has the specified angle and y displacements.</summary>
-		/// <param name="x">The distance to translate along the angle-axis.</param>
-		/// <param name="y">The distance to translate along the y-axis.</param>
-		/// <returns>A transformation matrix that translates an object the specified horizontal and vertical distance.</returns>
-		public static D2D_MATRIX_3X2_F Translation(float x, float y) => new() { _11 = 1, _22 = 1, _31 = x, _32 = y };
-
 		/// <summary>Creates a scale transformation that has the specified scale factors and center point.</summary>
 		/// <param name="width">The angle-axis scale factor of the scale transformation.</param>
 		/// <param name="height">The y-axis scale factor of the scale transformation.</param>
@@ -4104,6 +4104,42 @@ public static partial class DXGI
 		/// </remarks>
 		public static D2D_MATRIX_3X2_F Scale(float width, float height, float x = 0f, float y = 0f) => new() { _11 = width, _22 = height, _31 = x - width * x, _32 = y - height * y };
 
+		/// <summary>Creates a skew transformation that has the specified x-axis and y-axis values and center point.</summary>
+		/// <param name="angleX">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The x-axis skew angle, which is measured in degrees counterclockwise from the y-axis.</para>
+		/// </param>
+		/// <param name="angleY">
+		/// <para>Type: <b>FLOAT</b></para>
+		/// <para>The y-axis skew angle, which is measured in degrees clockwise from the x-axis.</para>
+		/// </param>
+		/// <param name="center">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The point about which the skew is performed.</para>
+		/// </param>
+		/// <returns>The new skew transformation.</returns>
+		/// <remarks>
+		/// The typical y-axis skew means skews the angle in degrees counterclockwise from the x-axis. However, because the y-axis in
+		/// Direct2D is inverted, the y-axis skew angle in Direct2D means skew the angle in degrees clockwise from the x-axis.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1helper/nf-d2d1helper-matrix3x2f-skew Matrix3x2F Skew( FLOAT angleX, FLOAT
+		// angleY, D2D1_POINT_2F center );
+		[PInvokeData("d2d1helper.h", MSDNShortId = "NF:d2d1helper.Matrix3x2F.Skew")]
+		public static D2D_MATRIX_3X2_F Skew(float angleX, float angleY, D2D_POINT_2F center = default)
+		{
+			D2D1MakeSkewMatrix(angleX, angleY, center, out var m);
+			return m;
+
+			[DllImport("d2d1.dll", SetLastError = false, ExactSpelling = true)]
+			static extern void D2D1MakeSkewMatrix([In] float angleX, [In] float angleY, [In] D2D_POINT_2F center, out D2D_MATRIX_3X2_F matrix);
+		}
+
+		/// <summary>Creates a translation transformation that has the specified angle and y displacements.</summary>
+		/// <param name="x">The distance to translate along the angle-axis.</param>
+		/// <param name="y">The distance to translate along the y-axis.</param>
+		/// <returns>A transformation matrix that translates an object the specified horizontal and vertical distance.</returns>
+		public static D2D_MATRIX_3X2_F Translation(float x, float y) => new() { _11 = 1, _22 = 1, _31 = x, _32 = y };
+
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is DXGI_MATRIX_3X2_F f && Equals(f);
 
@@ -4117,7 +4153,7 @@ public static partial class DXGI
 	/// <summary>Describes a 4-by-3 floating point matrix.</summary>
 	/// <remarks>The <c>D2D1_MATRIX_4X3_F</c> structure is type defined from a <c>D2D_MATRIX_4X3_F</c> structure in D2d1_1.h.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dcommon/ns-dcommon-d2d_matrix_4x3_f
-	// typedef struct D2D_MATRIX_4X3_F { union { struct { FLOAT _11; FLOAT _12; FLOAT _13; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _31; FLOAT _32; FLOAT _33; FLOAT _41; FLOAT _42; FLOAT _43; } DUMMYSTRUCTNAME; FLOAT m[4, 3]; } DUMMYUNIONNAME; } D2D_MATRIX_4X3_F;
+	// typedef struct D2D_MATRIX_4X3_F { union { struct { FLOAT m11; FLOAT _12; FLOAT _13; FLOAT _21; FLOAT _22; FLOAT _23; FLOAT _31; FLOAT _32; FLOAT _33; FLOAT _41; FLOAT _42; FLOAT _43; } DUMMYSTRUCTNAME; FLOAT m[4, 3]; } DUMMYUNIONNAME; } D2D_MATRIX_4X3_F;
 	[PInvokeData("dcommon.h", MSDNShortId = "NS:dcommon.D2D_MATRIX_4X3_F"), StructLayout(LayoutKind.Sequential)]
 	public struct D2D_MATRIX_4X3_F
 	{
