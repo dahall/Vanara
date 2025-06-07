@@ -797,15 +797,15 @@ public static partial class User32
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_HSCROLL(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, HWND, uint, int> fn)
+	public static LRESULT HANDLE_WM_HSCROLL(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, HWND, SBCMD, int> fn)
 	{
-		fn(hwnd, (HWND)lParam, LOWORD(wParam), (short)HIWORD(wParam));
+		fn(hwnd, (HWND)lParam, (SBCMD)LOWORD(wParam), (short)HIWORD(wParam));
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_HSCROLLCLIPBOARD(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, HWND, uint, int> fn)
+	public static LRESULT HANDLE_WM_HSCROLLCLIPBOARD(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, HWND, SBCMD, int> fn)
 	{
-		fn(hwnd, (HWND)wParam, LOWORD(lParam), (short)HIWORD(lParam));
+		fn(hwnd, (HWND)lParam, (SBCMD)LOWORD(wParam), (short)HIWORD(wParam));
 		return IntPtr.Zero;
 	}
 
@@ -1257,15 +1257,15 @@ public static partial class User32
 	public static LRESULT HANDLE_WM_VKEYTOITEM(HWND hwnd, WPARAM wParam, LPARAM lParam, Func<HWND, uint, HWND, int, int> fn)
 		=> (LRESULT)(uint)fn(hwnd, LOWORD(wParam), (HWND)lParam, (short)HIWORD(wParam));
 
-	public static LRESULT HANDLE_WM_VSCROLL(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, HWND, uint, int> fn)
+	public static LRESULT HANDLE_WM_VSCROLL(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, HWND, SBCMD, int> fn)
 	{
-		fn(hwnd, (HWND)lParam, LOWORD(wParam), (short)HIWORD(wParam));
+		fn(hwnd, (HWND)lParam, (SBCMD)LOWORD(wParam), (short)HIWORD(wParam));
 		return IntPtr.Zero;
 	}
 
-	public static LRESULT HANDLE_WM_VSCROLLCLIPBOARD(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, HWND, uint, int> fn)
+	public static LRESULT HANDLE_WM_VSCROLLCLIPBOARD(HWND hwnd, WPARAM wParam, LPARAM lParam, Action<HWND, HWND, SBCMD, int> fn)
 	{
-		fn(hwnd, (HWND)wParam, LOWORD(lParam), (short)HIWORD(lParam));
+		fn(hwnd, (HWND)lParam, (SBCMD)LOWORD(wParam), (short)HIWORD(wParam));
 		return IntPtr.Zero;
 	}
 

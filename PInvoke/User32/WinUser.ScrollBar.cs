@@ -204,7 +204,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnableScrollBar(HWND hWnd, uint wSBflags, uint wArrows);
+	public static extern bool EnableScrollBar(HWND hWnd, SB wSBflags, ESB_FLAGS wArrows);
 
 	/// <summary>The <c>GetScrollBarInfo</c> function retrieves information about the specified scroll bar.</summary>
 	/// <param name="hwnd">
@@ -353,7 +353,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetScrollInfo(HWND hwnd, int nBar, ref SCROLLINFO lpsi);
+	public static extern bool GetScrollInfo(HWND hwnd, SB nBar, ref SCROLLINFO lpsi);
 
 	/// <summary>
 	/// <para>
@@ -421,7 +421,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getscrollpos int GetScrollPos( HWND hWnd, int nBar );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int GetScrollPos(HWND hWnd, int nBar);
+	public static extern int GetScrollPos(HWND hWnd, SB nBar);
 
 	/// <summary>
 	/// <para>
@@ -498,7 +498,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetScrollRange(HWND hWnd, int nBar, out int lpMinPos, out int lpMaxPos);
+	public static extern bool GetScrollRange(HWND hWnd, SB nBar, out int lpMinPos, out int lpMaxPos);
 
 	/// <summary>The <c>ScrollDC</c> function scrolls a rectangle of bits horizontally and vertically.</summary>
 	/// <param name="hDC">
@@ -848,7 +848,7 @@ public static partial class User32
 	// LPCSCROLLINFO lpsi, BOOL redraw );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int SetScrollInfo(HWND hwnd, int nBar, in SCROLLINFO lpsi, [MarshalAs(UnmanagedType.Bool)] bool redraw);
+	public static extern int SetScrollInfo(HWND hwnd, SB nBar, in SCROLLINFO lpsi, [MarshalAs(UnmanagedType.Bool)] bool redraw);
 
 	/// <summary>
 	/// <para>
@@ -929,7 +929,7 @@ public static partial class User32
 	// nPos, BOOL bRedraw );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int SetScrollPos(HWND hWnd, int nBar, int nPos, [MarshalAs(UnmanagedType.Bool)] bool bRedraw);
+	public static extern int SetScrollPos(HWND hWnd, SB nBar, int nPos, [MarshalAs(UnmanagedType.Bool)] bool bRedraw);
 
 	/// <summary>
 	/// <para>The <c>SetScrollRange</c> function sets the minimum and maximum scroll box positions for the specified scroll bar.</para>
@@ -1023,7 +1023,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetScrollRange(HWND hWnd, int nBar, int nMinPos, int nMaxPos, [MarshalAs(UnmanagedType.Bool)] bool bRedraw);
+	public static extern bool SetScrollRange(HWND hWnd, SB nBar, int nMinPos, int nMaxPos, [MarshalAs(UnmanagedType.Bool)] bool bRedraw);
 
 	/// <summary>The <c>ShowScrollBar</c> function shows or hides the specified scroll bar.</summary>
 	/// <param name="hWnd">
@@ -1073,7 +1073,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShowScrollBar(HWND hWnd, int wBar, [MarshalAs(UnmanagedType.Bool)] bool bShow);
+	public static extern bool ShowScrollBar(HWND hWnd, SB wBar, [MarshalAs(UnmanagedType.Bool)] bool bShow);
 
 	/// <summary>The <c>SCROLLBARINFO</c> structure contains scroll bar information.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagscrollbarinfo typedef struct tagSCROLLBARINFO { DWORD
@@ -1202,13 +1202,13 @@ public static partial class User32
 	// UINT fMask; int nMin; int nMax; UINT nPage; int nPos; int nTrackPos; } SCROLLINFO, *LPSCROLLINFO;
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct SCROLLINFO
+	public struct SCROLLINFO(SIF mask = SIF.SIF_ALL)
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>Specifies the size, in bytes, of this structure. The caller must set this to sizeof( <c>SCROLLINFO</c>).</para>
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf(typeof(SCROLLINFO));
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
@@ -1247,7 +1247,7 @@ public static partial class User32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public SIF fMask;
+		public SIF fMask = mask;
 
 		/// <summary>
 		/// <para>Type: <c>int</c></para>
