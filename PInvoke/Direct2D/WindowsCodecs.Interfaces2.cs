@@ -979,7 +979,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicimagingfactory-createencoder HRESULT
 		// CreateEncoder( REFGUID guidContainerFormat, const GUID *pguidVendor, IWICBitmapEncoder **ppIEncoder );
-		IWICBitmapDecoder CreateEncoder(in Guid guidContainerFormat, [In] SafeGuidPtr pguidVendor);
+		IWICBitmapEncoder CreateEncoder(in Guid guidContainerFormat, [In] SafeGuidPtr pguidVendor);
 
 		/// <summary>Creates a new instance of the IWICPalette class.</summary>
 		/// <returns>
@@ -1592,7 +1592,7 @@ public static partial class WindowsCodecs
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-iwicimagingfactory-createencoder HRESULT
 		// CreateEncoder( REFGUID guidContainerFormat, const GUID *pguidVendor, IWICBitmapEncoder **ppIEncoder );
-		new IWICBitmapDecoder CreateEncoder(in Guid guidContainerFormat, [In] SafeGuidPtr pguidVendor);
+		new IWICBitmapEncoder CreateEncoder(in Guid guidContainerFormat, [In] SafeGuidPtr pguidVendor);
 
 		/// <summary>Creates a new instance of the IWICPalette class.</summary>
 		/// <returns>
