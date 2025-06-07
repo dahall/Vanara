@@ -3515,6 +3515,20 @@ public static partial class D2d1
 	public static ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget target, in D3DCOLORVALUE color, in D2D1_BRUSH_PROPERTIES brushProperties) =>
 		target.CreateSolidColorBrush(color, new(brushProperties, out _));
 
+	/// <summary>Creates a new ID2D1SolidColorBrush that has the specified color and opacity.</summary>
+	/// <param name="target">The <see cref="ID2D1RenderTarget"/> instance.</param>
+	/// <param name="color">The brush's color.</param>
+	/// <param name="brushProperties">
+	/// <para>Type: [in] <c>const D2D1_BRUSH_PROPERTIES &amp;</c></para>
+	/// <para>The base opacity of the brush.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: [out] <c>ID2D1SolidColorBrush**</c></para>
+	/// <para>When this method returns, contains the address of a pointer to the new brush. This parameter is passed uninitialized.</para>
+	/// </returns>
+	public static ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget target, System.Drawing.Color color, in D2D1_BRUSH_PROPERTIES brushProperties) =>
+		target.CreateSolidColorBrush((D3DCOLORVALUE)color, new(brushProperties, out _));
+
 	/// <summary>Creates an ID2D1LinearGradientBrush object for painting areas with a linear gradient.</summary>
 	/// <param name="target">The <see cref="ID2D1RenderTarget"/> instance.</param>
 	/// <param name="linearGradientBrushProperties">
