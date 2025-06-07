@@ -1048,7 +1048,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1simplifiedgeometrysink-addlines void AddLines( const
 		// D2D1_POINT_2F *points, UINT32 pointsCount );
 		[PreserveSig]
-		new void AddLines([In] D2D_POINT_2F[] points, uint pointsCount);
+		new void AddLines([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D_POINT_2F[] points, uint pointsCount);
 
 		/// <summary>Creates a sequence of cubic Bezier curves and adds them to the geometry sink.</summary>
 		/// <param name="beziers">
@@ -1068,7 +1068,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1simplifiedgeometrysink-addbeziers void AddBeziers( const
 		// D2D1_BEZIER_SEGMENT *beziers, UINT32 beziersCount );
 		[PreserveSig]
-		new void AddBeziers([In] D2D1_BEZIER_SEGMENT[] beziers, uint beziersCount);
+		new void AddBeziers([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_BEZIER_SEGMENT[] beziers, uint beziersCount);
 
 		/// <summary>Ends the current figure; optionally, closes it.</summary>
 		/// <param name="figureEnd">
@@ -1152,7 +1152,7 @@ public static partial class D2d1
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometrysink-addquadraticbeziers void
 		// AddQuadraticBeziers( const D2D1_QUADRATIC_BEZIER_SEGMENT *beziers, UINT32 beziersCount );
 		[PreserveSig]
-		void AddQuadraticBeziers([In] D2D1_QUADRATIC_BEZIER_SEGMENT[] beziers, uint beziersCount);
+		void AddQuadraticBeziers([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_QUADRATIC_BEZIER_SEGMENT[] beziers, uint beziersCount);
 
 		/// <summary>Adds a single arc to the path geometry.</summary>
 		/// <param name="arc">
