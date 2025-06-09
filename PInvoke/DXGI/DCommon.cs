@@ -4006,19 +4006,15 @@ public static partial class DXGI
 		[PInvokeData("d2d1helper.h", MSDNShortId = "NF:d2d1helper.Matrix3x2F.IsIdentity")]
 		public bool IsIdentity => Equals(Identity());
 
-		/// <summary>Uses this matrix to transform the specified point and returns the result.</summary>
-		/// <param name="point">
-		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
-		/// <para>The point to transform.</para>
-		/// </param>
+		/// <summary>Indicates whether the matrix is invertible.</summary>
 		/// <returns>
-		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
-		/// <para>The transformed point.</para>
+		/// <para>Type: <b>bool</b></para>
+		/// <para>true if the matrix is invertible; otherwise, false.</para>
 		/// </returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1helper/nf-d2d1helper-matrix3x2f-transformpoint
-		// D2D1_POINT_2F TransformPoint( D2D1_POINT_2F point );
-		[PInvokeData("d2d1helper.h", MSDNShortId = "NF:d2d1helper.Matrix3x2F.TransformPoint")]
-		public D2D_POINT_2F TransformPoint(in D2D_POINT_2F point) => new() { x = point.x * _11 + point.y * _21 + _31, y = point.x * _12 + point.y * _22 + _32 };
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1helper/nf-d2d1helper-matrix3x2f-isinvertible
+		// bool IsInvertible();
+		[PInvokeData("d2d1helper.h", MSDNShortId = "NF:d2d1helper.Matrix3x2F.IsInvertible")]
+		public bool IsInvertible => Determinant != 0f;
 
 		/// <summary>Performs an implicit conversion from <see cref="float"/>[,] to <see cref="D2D_MATRIX_3X2_F"/>.</summary>
 		/// <param name="value">The value.</param>
@@ -4148,6 +4144,36 @@ public static partial class DXGI
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => m.GetHashCode();
+
+		/// <summary>Tries to invert the matrix.</summary>
+		/// <returns><see langword="true" /> if the matrix was inverted; otherwise, <see langword="false" />.</returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-d2d1invertmatrix
+		[PInvokeData("d2d1.h", MSDNShortId = "NF:d2d1.D2D1InvertMatrix")]
+		public bool Invert()
+		{
+			var det = Determinant;
+			if (det == 0 || Math.Abs(det) < float.Epsilon)
+				return false;
+
+			float invDet = 1.0f / det;
+			this = new D2D_MATRIX_3X2_F(_22 * invDet, -_12 * invDet, -_21 * invDet, _11 * invDet,
+				(_21 * _32 - _31 * _22) * invDet, (_31 * _12 - _11 * _32) * invDet);
+			return true;
+		}
+
+		/// <summary>Uses this matrix to transform the specified point and returns the result.</summary>
+		/// <param name="point">
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The point to transform.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b><c>D2D1_POINT_2F</c></b></para>
+		/// <para>The transformed point.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1helper/nf-d2d1helper-matrix3x2f-transformpoint
+		// D2D1_POINT_2F TransformPoint( D2D1_POINT_2F point );
+		[PInvokeData("d2d1helper.h", MSDNShortId = "NF:d2d1helper.Matrix3x2F.TransformPoint")]
+		public D2D_POINT_2F TransformPoint(in D2D_POINT_2F point) => new() { x = point.x * _11 + point.y * _21 + _31, y = point.x * _12 + point.y * _22 + _32 };
 	}
 
 	/// <summary>Describes a 4-by-3 floating point matrix.</summary>
@@ -5107,9 +5133,14 @@ public static partial class DXGI
 		public static bool operator !=(D2D_SIZE_U left, D2D_SIZE_U right) => !(left == right);
 
 		/// <summary>Performs an explicit conversion from <see cref="System.Drawing.Size"/> to <see cref="D2D_SIZE_U"/>.</summary>
-		/// <param name="sz">The sz.</param>
+		/// <param name="sz">The size.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator D2D_SIZE_U(Size sz) => new((uint)sz.Width, (uint)sz.Height);
+
+		/// <summary>Performs an explicit conversion from <see cref="SIZE"/> to <see cref="D2D_SIZE_U"/>.</summary>
+		/// <param name="sz">The size.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator D2D_SIZE_U(SIZE sz) => new((uint)sz.Width, (uint)sz.Height);
 	}
 
 	/// <summary>A vector of 2 FLOAT values (x, y).</summary>
