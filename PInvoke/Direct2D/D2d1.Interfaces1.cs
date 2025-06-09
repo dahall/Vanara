@@ -3571,7 +3571,7 @@ public static partial class D2d1
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1geometry-fillcontainspoint(d2d1_point_2f_constd2d1_matrix_3x2_f__float_bool)
 	// HRESULT FillContainsPoint( D2D1_POINT_2F point, const D2D1_MATRIX_3X2_F &amp; worldTransform, FLOAT flatteningTolerance, BOOL
 	// *contains );
-	public static bool FillContainsPoint(this ID2D1Geometry geometry, D2D_POINT_2F point, float flatteningTolerance, D2D_MATRIX_3X2_F? worldTransform = null)
+	public static bool FillContainsPoint(this ID2D1Geometry geometry, D2D_POINT_2F point, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, D2D_MATRIX_3X2_F? worldTransform = null)
 	{
 		using SafeHGlobalStruct<D2D_MATRIX_3X2_F> mem = worldTransform;
 		return geometry.FillContainsPoint(point, mem, flatteningTolerance);

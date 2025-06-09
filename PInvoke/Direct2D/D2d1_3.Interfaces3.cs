@@ -8055,7 +8055,7 @@ public static partial class D2d1
 		// HRESULT StreamAsGeometry( [in, optional] ID2D1InkStyle *inkStyle, [in, optional] const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 		// flatteningTolerance, [in] ID2D1SimplifiedGeometrySink *geometrySink );
 		void StreamAsGeometry([In, Optional] ID2D1InkStyle? inkStyle, [In, Optional] StructPointer<D2D1_MATRIX_3X2_F> worldTransform,
-			float flatteningTolerance, [In] ID2D1SimplifiedGeometrySink geometrySink);
+			float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE, [In] ID2D1SimplifiedGeometrySink? geometrySink = null);
 
 		/// <summary>Retrieve the bounds of the geometry, with an optional applied transform.</summary>
 		/// <param name="inkStyle">
@@ -8675,8 +8675,8 @@ public static partial class D2d1
 	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_3/nf-d2d1_3-id2d1ink-streamasgeometry(id2d1inkstyle_constd2d1_matrix_3x2_f_float_id2d1simplifiedgeometrysink)
 	// HRESULT StreamAsGeometry( [in, optional] ID2D1InkStyle *inkStyle, [in, optional] const D2D1_MATRIX_3X2_F *worldTransform, FLOAT
 	// flatteningTolerance, [in] ID2D1SimplifiedGeometrySink *geometrySink );
-	public static void StreamAsGeometry(this ID2D1Ink ink, [In] ID2D1SimplifiedGeometrySink geometrySink, float flatteningTolerance,
-		[In, Optional] ID2D1InkStyle? inkStyle, [In, Optional] D2D1_MATRIX_3X2_F? worldTransform)
+	public static void StreamAsGeometry(this ID2D1Ink ink, [In] ID2D1SimplifiedGeometrySink geometrySink, float flatteningTolerance = D2D1_DEFAULT_FLATTENING_TOLERANCE,
+		[In] ID2D1InkStyle? inkStyle = null, [In] D2D1_MATRIX_3X2_F? worldTransform = null)
 	{
 		SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> m = worldTransform;
 		ink.StreamAsGeometry(inkStyle, m, flatteningTolerance, geometrySink);
