@@ -769,4 +769,14 @@ public static partial class D2d1
 		[PreserveSig]
 		void GetTransform(out D2D_MATRIX_3X2_F transform);
 	}
+
+	/// <summary>Specifies the color of this solid-color brush.</summary>
+	/// <param name="brush">The brush.</param>
+	/// <param name="color">
+	/// <para>Type: <c>const D2D1_COLOR_F</c></para>
+	/// <para>The color of this solid-color brush.</para>
+	/// </param>
+	/// <returns>None</returns>
+	public static void SetColor(this ID2D1SolidColorBrush brush, System.Drawing.Color color) =>
+		brush.SetColor((D3DCOLORVALUE)color);
 }

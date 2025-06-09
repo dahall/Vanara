@@ -3512,7 +3512,7 @@ public static partial class D2d1
 	/// <para>Type: [out] <c>ID2D1SolidColorBrush**</c></para>
 	/// <para>When this method returns, contains the address of a pointer to the new brush. This parameter is passed uninitialized.</para>
 	/// </returns>
-	public static ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget target, in D3DCOLORVALUE color, in D2D1_BRUSH_PROPERTIES brushProperties) =>
+	public static ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget target, in D3DCOLORVALUE color, in D2D1_BRUSH_PROPERTIES? brushProperties = null) =>
 		target.CreateSolidColorBrush(color, new(brushProperties, out _));
 
 	/// <summary>Creates a new ID2D1SolidColorBrush that has the specified color and opacity.</summary>
@@ -3526,7 +3526,7 @@ public static partial class D2d1
 	/// <para>Type: [out] <c>ID2D1SolidColorBrush**</c></para>
 	/// <para>When this method returns, contains the address of a pointer to the new brush. This parameter is passed uninitialized.</para>
 	/// </returns>
-	public static ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget target, System.Drawing.Color color, in D2D1_BRUSH_PROPERTIES brushProperties) =>
+	public static ID2D1SolidColorBrush CreateSolidColorBrush(this ID2D1RenderTarget target, System.Drawing.Color color, in D2D1_BRUSH_PROPERTIES? brushProperties = null) =>
 		target.CreateSolidColorBrush((D3DCOLORVALUE)color, new(brushProperties, out _));
 
 	/// <summary>Creates an ID2D1LinearGradientBrush object for painting areas with a linear gradient.</summary>
