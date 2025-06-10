@@ -5140,7 +5140,7 @@ public static partial class DXGI
 		/// <summary>Performs an explicit conversion from <see cref="SIZE"/> to <see cref="D2D_SIZE_U"/>.</summary>
 		/// <param name="sz">The size.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static explicit operator D2D_SIZE_U(SIZE sz) => new((uint)sz.Width, (uint)sz.Height);
+		public static implicit operator D2D_SIZE_U(SIZE sz) => new((uint)sz.Width, (uint)sz.Height);
 	}
 
 	/// <summary>A vector of 2 FLOAT values (x, y).</summary>
