@@ -2629,7 +2629,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		new D2D1_PIXEL_FORMAT GetPixelFormat();
+		new void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Sets the dots per inch (DPI) of the render target.</summary>
 		/// <param name="dpiX">
@@ -2846,7 +2846,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1layer-getsize D2D1_SIZE_F GetSize();
 		[PreserveSig]
-		D2D_SIZE_F GetSize();
+		void GetSize(out D2D_SIZE_F size);
 	}
 
 	/// <summary>Paints an area with a linear gradient.</summary>
@@ -3530,4 +3530,12 @@ public static partial class D2d1
 		using SafeCoTaskMemStruct<D2D1_MATRIX_3X2_F> p = worldTransform;
 		geom.Widen(strokeWidth, strokeStyle, p, flatteningTolerance, geometrySink);
 	}
+
+	/// <summary>Gets the size of the layer in device-independent pixels.</summary>
+	/// <returns>
+	/// <para>Type: <clearColor>D2D1_SIZE_F</clearColor></para>
+	/// <para>The size of the layer in device-independent pixels.</para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1layer-getsize D2D1_SIZE_F GetSize();
+	public static D2D_SIZE_F GetSize(this ID2D1Layer layer) { layer.GetSize(out var v); return v; }
 }

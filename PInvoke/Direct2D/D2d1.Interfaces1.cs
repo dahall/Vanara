@@ -47,7 +47,7 @@ public static partial class D2d1
 		/// <remarks>A DIP is 1/96 of an inch. To retrieve the size in device pixels, use the ID2D1Bitmap::GetPixelSizemethod.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-getsize D2D1_SIZE_F GetSize();
 		[PreserveSig]
-		D2D_SIZE_F GetSize();
+		void GetSize(out D2D_SIZE_F size);
 
 		/// <summary>Returns the size, in device-dependent units (pixels), of the bitmap.</summary>
 		/// <returns>
@@ -65,7 +65,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		D2D1_PIXEL_FORMAT GetPixelFormat();
+		void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Return the dots per inch (DPI) of the bitmap.</summary>
 		/// <param name="dpiX">
@@ -1811,7 +1811,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		new D2D1_PIXEL_FORMAT GetPixelFormat();
+		new void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Sets the dots per inch (DPI) of the render target.</summary>
 		/// <param name="dpiX">
@@ -3424,7 +3424,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		new D2D1_PIXEL_FORMAT GetPixelFormat();
+		new void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Sets the dots per inch (DPI) of the render target.</summary>
 		/// <param name="dpiX">
@@ -3576,4 +3576,29 @@ public static partial class D2d1
 		using SafeHGlobalStruct<D2D_MATRIX_3X2_F> mem = worldTransform;
 		return geometry.FillContainsPoint(point, mem, flatteningTolerance);
 	}
+
+	/// <summary>Returns the size, in device-independent pixels (DIPs), of the bitmap.</summary>
+	/// <returns>
+	/// <para>Type: <c>D2D1_SIZE_F</c></para>
+	/// <para>The size, in DIPs, of the bitmap.</para>
+	/// </returns>
+	/// <remarks>A DIP is 1/96 of an inch. To retrieve the size in device pixels, use the ID2D1Bitmap::GetPixelSizemethod.</remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-getsize D2D1_SIZE_F GetSize();
+	public static D2D_SIZE_F GetSize(this ID2D1Bitmap bmp) { bmp.GetSize(out var v); return v; }
+
+	/// <summary>Returns the size, in device-dependent units (pixels), of the bitmap.</summary>
+	/// <returns>
+	/// <para>Type: <c>D2D1_SIZE_U</c></para>
+	/// <para>The size, in pixels, of the bitmap.</para>
+	/// </returns>
+		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-getpixelsize D2D1_SIZE_U GetPixelSize();
+	public static D2D_SIZE_U GetPixelSize(this ID2D1Bitmap bmp) { bmp.GetPixelSize(out var v); return v; }
+
+	/// <summary>Retrieves the pixel format and alpha mode of the bitmap.</summary>
+	/// <returns>
+	/// <para>Type: <c>D2D1_PIXEL_FORMAT</c></para>
+	/// <para>The pixel format and alpha mode of the bitmap.</para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1bitmap-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
+	public static D2D1_PIXEL_FORMAT GetPixelFormat(this ID2D1Bitmap bmp) { bmp.GetPixelFormat(out var v); return v; }
 }

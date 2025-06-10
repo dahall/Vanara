@@ -1333,7 +1333,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		new D2D1_PIXEL_FORMAT GetPixelFormat();
+		new void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Sets the dots per inch (DPI) of the render target.</summary>
 		/// <param name="dpiX">

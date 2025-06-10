@@ -2599,7 +2599,7 @@ public static partial class D2d1
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
 		[PreserveSig]
-		D2D1_PIXEL_FORMAT GetPixelFormat();
+		void GetPixelFormat(out D2D1_PIXEL_FORMAT format);
 
 		/// <summary>Sets the dots per inch (DPI) of the render target.</summary>
 		/// <param name="dpiX">
@@ -3715,6 +3715,14 @@ public static partial class D2d1
 	/// </returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getsize D2D1_SIZE_F GetSize();
 	public static D2D_SIZE_F GetSize(this ID2D1RenderTarget target) { target.GetSize(out D2D_SIZE_F size); return size; }
+
+	/// <summary>Retrieves the pixel format and alpha mode of the render target.</summary>
+	/// <returns>
+	/// <para>Type: <c>D2D1_PIXEL_FORMAT</c></para>
+	/// <para>The pixel format and alpha mode of the render target.</para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-id2d1rendertarget-getpixelformat D2D1_PIXEL_FORMAT GetPixelFormat();
+	public static D2D1_PIXEL_FORMAT GetPixelFormat(this ID2D1RenderTarget target) { target.GetPixelFormat(out var v); return v; }
 
 	/// <summary>Returns the size of the render target in device pixels.</summary>
 	/// <returns>
