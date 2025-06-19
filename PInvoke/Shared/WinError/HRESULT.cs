@@ -658,12 +658,6 @@ public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HR
 			: throw new ArgumentException(@"Object cannot be converted to a UInt32 value for comparison.", nameof(obj));
 	}
 
-	/// <summary>Indicates whether the current object is equal to an <see cref="int" />.</summary>
-	/// <typeparam name="T">An <see langword="enum"/> value type.</typeparam>
-	/// <param name="other">An <see langword="enum"/> value to compare with this object.</param>
-	/// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
-	public bool Equals<T>(T other) where T : Enum => Equals(Convert.ToInt32(other));
-
 	/// <summary>Indicates whether the current object is equal to an <see cref="int"/>.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
