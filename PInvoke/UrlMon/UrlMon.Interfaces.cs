@@ -764,6 +764,256 @@ public static partial class UrlMon
 		void OnObjectAvailable(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object punk);
 	}
 
+	/// <summary>Enables client applications to determine the security of the browser components.</summary>
+	/// <remarks>Use SID_SInternetSecurityManager to request this interface when you use <c><b>IServiceProvider::QueryService</b></c>.</remarks>
+	// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537130(v=vs.85)
+	[PInvokeData("Urlmon.h")]
+	[ComImport, Guid("79eac9ee-baf9-11ce-8c82-00aa004ba90b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IInternetSecurityManager
+	{
+		/// <summary>Sets the security site manager.</summary>
+		/// <param name="pSite">The address of the IInternetSecurityMgrSite interface to set.</param>
+		// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537141(v=vs.85) HRESULT
+		// SetSecuritySite( [in]&#160;IInternetSecurityMgrSite *pSite );
+		void SetSecuritySite([In, Optional] IInternetSecurityMgrSite? pSite);
+
+		/// <summary>Gets the security site manager.</summary>
+		/// <returns>A pointer to the current IInternetSecurityMgrSite interface.</returns>
+		// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537124(v=vs.85) HRESULT
+		// GetSecuritySite( [out]&#160;IInternetSecurityMgrSite **ppSite );
+		[return: MarshalAs(UnmanagedType.Interface)]
+		IInternetSecurityMgrSite GetSecuritySite();
+
+		/// <summary>Gets the zone index for the specified URL.</summary>
+		/// <param name="pwszUrl">[in] A string value that contains the URL. Compare to <c><b>MapUrlToZoneEx2</b></c>.</param>
+		/// <param name="pdwZone">[out] An unsigned long integer variable that receives the zone index.</param>
+		/// <param name="dwFlags">[in] An unsigned long integer value that specifies <c><b>MapUrlToZone Flags</b></c> to control the mapping.</param>
+		/// <remarks>
+		/// <b>Security Warning:</b> Incorrect implementation of this method can compromise the security of your application. A custom
+		/// implementation of <c><b>IInternetSecurityManager::MapUrlToZone</b></c> should return only zones for URLs that the default
+		/// application cannot or should not handle. For all other URLs, this method should return <c><b>INET_E_DEFAULT_ACTION</b></c>.
+		/// Attempting to duplicate the default implementation can result in the incorrect mapping of zones and might leave users susceptible
+		/// to spoofing or elevation of privilege attacks. Review <c>Security Considerations: URL Security Zones API</c> before you contine.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537133(v=vs.85) HRESULT
+		// MapUrlToZone( [in]&#160;&#160;LPCWSTR pwszUrl, [out]&#160;DWORD &#160;&#160;*pdwZone, [in]&#160;&#160;DWORD &#160;&#160;dwFlags );
+		void MapUrlToZone([MarshalAs(UnmanagedType.LPWStr)] string pwszUrl, out uint pdwZone, MUTZ dwFlags);
+
+		/// <summary>Gets the security identification of the specified URL.</summary>
+		/// <param name="pwszUrl">[in] A string value that specifies the URL.</param>
+		/// <param name="pbSecurityId">[out] A buffer that specifies the scheme, domain name, and zone associated with the URL.</param>
+		/// <param name="pcbSecurityId">[in, out] An unsigned long integer value that specifies the size of the buffer being passed in.</param>
+		/// <param name="dwReserved">
+		/// [in] An unsigned long integer that specifies the domain to use. If set to zero, the full domain name is used. Otherwise, a string
+		/// value containing a suffix to the domain name can be specified. This larger domain name—the full domain name combined with the
+		/// suffix—is used as the security identifier.
+		/// </param>
+		/// <remarks>
+		/// <para>
+		/// Upon successful completion, pbSecurityId contains the scheme, domain, and zone information, as well as whether the specified
+		/// pwszUrl was derived from a <c>Mark of the Web</c>.
+		/// </para>
+		/// <para>
+		/// The pcbSecurityId parameter contains the actual size of the data stored in the buffer. The largest buffer size returned by
+		/// <c><b>IInternetSecurityManager::GetSecurityId</b></c> is 512 bytes, or MAX_SIZE_SECURITY_ID.
+		/// </para>
+		/// <para>
+		/// <b>Security Warning:</b> An incorrect implementation of this method can compromise the security of your application. A custom
+		/// implementation of <c><b>IInternetSecurityManager::GetSecurityId</b></c> should generate only IDs for hosts that cannot be handled
+		/// by the default implementation. For all other hosts, this method should return <c>INET_E_DEFAULT_ACTION</c>. Attempting to
+		/// duplicate the default implementation might result in the creation of IDs that are less secure and are susceptible to a spoofing
+		/// attack. Review <c>Security Considerations: URL Security Zones API</c> before you continue.
+		/// </para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537122(v=vs.85) HRESULT
+		// GetSecurityId( [in]&#160;&#160;&#160;&#160;&#160;&#160;LPCWSTR &#160;&#160;pwszUrl, [out]&#160;&#160;&#160;&#160;&#160;BYTE
+		// &#160;&#160;&#160;&#160;&#160;*pbSecurityId, [in, out]&#160;DWORD &#160;&#160;&#160;&#160;*pcbSecurityId,
+		// [in]&#160;&#160;&#160;&#160;&#160;&#160;DWORD_PTR dwReserved );
+		void GetSecurityId([MarshalAs(UnmanagedType.LPWStr)] string pwszUrl, [Out] IntPtr pbSecurityId,
+			ref uint pcbSecurityId, [In, Optional] IntPtr dwReserved);
+
+		/// <summary>
+		/// Determines the policy for the specified action and displays a user interface, if the policy indicates that the user should be queried.
+		/// </summary>
+		/// <param name="pwszUrl">[in] A constant pointer to a wide character string that specifies the URL.</param>
+		/// <param name="dwAction">
+		/// [in] A <b>DWORD</b> that specifies the action to be performed. This can be one of the <c><b>URL Action Flags</b></c> values.
+		/// </param>
+		/// <param name="pPolicy">
+		/// [out] Required. A pointer to a buffer that receives the policy and action for the specified URL. This must be one of the
+		/// <c><b>URL Policy Flags</b></c> values.
+		/// </param>
+		/// <param name="cbPolicy">[in] A <b>DWORD</b> that specifies the size of the buffer pPolicy.</param>
+		/// <param name="pContext">
+		/// [in] A pointer to a buffer that contains the context information (a <b>CLSID</b>) used by the delegation routines. Can be set to <b>NULL</b>.
+		/// </param>
+		/// <param name="cbContext">[in] A <b>DWORD</b> that specifies the size of the buffer cbContext.</param>
+		/// <param name="dwFlags">[in] A <b>DWORD</b> that specifies a <c><b>PUAF</b></c> enumeration value or values.</param>
+		/// <param name="dwReserved">[in] Reserved. Must be set to NULL.</param>
+		/// <remarks>
+		/// <para>
+		/// This method can also return an <b>HRESULT</b> derived from the Microsoft Win32 error code ERROR_NOT_FOUND to indicate that the
+		/// URL action cannot be read from the registry.
+		/// </para>
+		/// <para>
+		/// <b>Security Warning:</b> Incorrect implementation this method can compromise the security of your application. A custom
+		/// implementation of <c><b>IInternetSecurityManager::ProcessUrlAction</b></c> should only process URL actions that the default
+		/// application cannot or should not handle. For all other URL actions, this method should return
+		/// <c><b>INET_E_DEFAULT_ACTION</b></c>. Attempting to duplicate the default implementation might result in incorrectly processing
+		/// URL actions and might leave users susceptible to elevation of privilege attacks. Review <c>Security Considerations: URL Security
+		/// Zones API</c> before continuing.
+		/// </para>
+		/// <para>
+		/// Microsoft Internet Explorer 6 for Windows XP Service Pack 2 (SP2) and later. Use the
+		/// <c><b>CoInternetIsFeatureEnabledForUrl</b></c> function instead of this method to determine the URL policy for the
+		/// <c><b>URLACTION_FEATURE_MIME_SNIFFING</b></c> URL action, the <b>URLACTION_FEATURE_WINDOW_RESTRICTIONS</b> URL action, or the
+		/// <b>URLACTION_FEATURE_ZONE_ELEVATION</b> URL action.
+		/// </para>
+		/// <para>
+		/// <b>Note</b>  If you create your own implementation of this method, you must set the pPolicy value before you return a success
+		/// code (S_OK or S_FALSE).
+		/// </para>
+		/// <para></para>
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537136(v=vs.85) HRESULT
+		// ProcessUrlAction( [in]&#160;&#160;LPCWSTR pwszUrl, [in]&#160;&#160;DWORD &#160;&#160;dwAction, [out]&#160;BYTE
+		// &#160;&#160;&#160;*pPolicy, [in]&#160;&#160;DWORD &#160;&#160;cbPolicy, [in]&#160;&#160;BYTE &#160;&#160;&#160;*pContext,
+		// [in]&#160;&#160;DWORD &#160;&#160;cbContext, [in]&#160;&#160;DWORD &#160;&#160;dwFlags, [in]&#160;&#160;DWORD
+		// &#160;&#160;dwReserved );
+		void ProcessUrlAction([MarshalAs(UnmanagedType.LPWStr)] string pwszUrl, URLPOLICY dwAction, [Out] IntPtr pPolicy,
+			uint cbPolicy, [In, Optional] IntPtr pContext, uint cbContext, PUAF dwFlags, uint dwReserved = 0);
+
+		/// <summary>This method retrieves the custom policy associated with the URL and specified key in the given context.</summary>
+		/// <param name="pwszUrl">[in] Address of a string value that contains the URL.</param>
+		/// <param name="guidKey">[in] Globally unique identifier associated with the custom policy.</param>
+		/// <param name="ppPolicy">[out] Address of a pointer to the buffer to store the policy information.</param>
+		/// <param name="pcbPolicy">[out] Address of an unsigned long integer value that specifies the policy buffer size.</param>
+		/// <param name="pContext">[in] Address of a buffer that contains the context information.</param>
+		/// <param name="cbContext">[in] Unsigned long integer value that specifies the size of the context buffer.</param>
+		/// <param name="dwReserved">[in] Reserved. Must be set to zero.</param>
+		/// <remarks>
+		/// This method can also return the HRESULT, derived from the Win32 error code ERROR_NOT_FOUND, to indicate that the action could not
+		/// be read from the registry.
+		/// </remarks>
+		// https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms928856(v=msdn.10)
+		void QueryCustomPolicy([MarshalAs(UnmanagedType.LPWStr)] string pwszUrl, in Guid guidKey, out IntPtr ppPolicy,
+			out uint pcbPolicy, [In] IntPtr pContext, uint cbContext, uint dwReserved = 0);
+
+		/// <summary>Maps a pattern into the specified zone.</summary>
+		/// <param name="dwZone">
+		/// <para>An unsigned long integer value that specifies the zone index. Can be one of the following values.</para>
+		/// <para>URLZONE_LOCAL_MACHINE</para>
+		/// <para>Pattern is mapped into the local machine zone.</para>
+		/// <para>URLZONE_INTRANET</para>
+		/// <para>Pattern is mapped into the intranet zone.</para>
+		/// <para>URLZONE_TRUSTED</para>
+		/// <para>Pattern is mapped into the trusted zone.</para>
+		/// <para>URLZONE_INTERNET</para>
+		/// <para>Pattern is mapped into the Internet zone.</para>
+		/// <para>URLZONE_UNTRUSTED</para>
+		/// <para>Pattern is mapped into the untrusted zone.</para>
+		/// <para>(URLZONE_USER_MIN...URLZONE_USER_MAX)</para>
+		/// <para>Pattern is mapped into a user defined zone.</para>
+		/// </param>
+		/// <param name="lpszPattern">
+		/// <para>A string value that contains the URL pattern with a limited number of wildcards.</para>
+		/// <para>The following table displays valid and invalid pattern values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Example Pattern</description>
+		/// <description>Validity</description>
+		/// </listheader>
+		/// <item>
+		/// <description>*://*.example.com</description>
+		/// <description>Valid</description>
+		/// </item>
+		/// <item>
+		/// <description>http://*.contoso.co.uk</description>
+		/// <description>Valid</description>
+		/// </item>
+		/// <item>
+		/// <description>*://server.contoso.com</description>
+		/// <description>Valid</description>
+		/// </item>
+		/// <item>
+		/// <description>ftp://192.168.0.0/</description>
+		/// <description>Valid</description>
+		/// </item>
+		/// <item>
+		/// <description>https://example/</description>
+		/// <description>Valid</description>
+		/// </item>
+		/// <item>
+		/// <description>file:\example\share</description>
+		/// <description>Valid</description>
+		/// </item>
+		/// <item>
+		/// <description>*://172.16-31.0.0.*</description>
+		/// <description>Valid</description>
+		/// </item>
+		/// <item>
+		/// <description>http://*.server.example.com</description>
+		/// <description>Invalid</description>
+		/// </item>
+		/// <item>
+		/// <description>ftp://*</description>
+		/// <description>Invalid</description>
+		/// </item>
+		/// </list>
+		/// <para><br/></para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// An unsigned long integer value that indicates whether the mappings should be added or deleted. This can be one of the SZM_FLAGS values.
+		/// </param>
+		/// <remarks>
+		/// The method can also return the HRESULT derived from the Microsoft Win32 error code ERROR_FILE_EXISTS, which indicates that the
+		/// URL already exists in another zone.
+		/// </remarks>
+		void SetZoneMapping(URLZONE dwZone, [MarshalAs(UnmanagedType.LPWStr)] string lpszPattern, SZM_FLAGS dwFlags);
+
+		/// <summary>Gets the complete set of patterns mapped to a zone.</summary>
+		/// <param name="dwZone">
+		/// <para>An unsigned long integer value that specifies the zone index. Can be one of the following values.</para>
+		/// <para>URLZONE_LOCAL_MACHINE</para>
+		/// <para>Pattern is mapped into the local machine zone.</para>
+		/// <para>URLZONE_INTRANET</para>
+		/// <para>Pattern is mapped into the intranet zone.</para>
+		/// <para>URLZONE_TRUSTED</para>
+		/// <para>Pattern is mapped into the trusted zone.</para>
+		/// <para>URLZONE_INTERNET</para>
+		/// <para>Pattern is mapped into the Internet zone.</para>
+		/// <para>URLZONE_UNTRUSTED</para>
+		/// <para>Pattern is mapped into the untrusted zone.</para>
+		/// <para>(URLZONE_USER_MIN...URLZONE_USER_MAX)</para>
+		/// <para>Pattern is mapped into a user defined zone.</para>
+		/// </param>
+		/// <param name="ppenumString">A pointer to the IEnumString interface that enumerates the strings for the security zone mappings.</param>
+		/// <param name="dwFlags">Reserved. Must be set to 0.</param>
+		// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537127(v=vs.85) HRESULT
+		// GetZoneMappings( [in]&#160;&#160;DWORD &#160;&#160;&#160;&#160;&#160;&#160;dwZone, [out]&#160;IEnumString **ppenumString,
+		// [in]&#160;&#160;DWORD &#160;&#160;&#160;&#160;&#160;&#160;dwFlags );
+		void GetZoneMappings(URLZONE dwZone, out IEnumString? ppenumString, uint dwFlags = 0);
+	}
+
+	/// <summary>Exposes methods that enable components to manage the user interface of the security manager.</summary>
+	// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537098(v=vs.85)
+	[PInvokeData("Urlmon.h")]
+	[ComImport, Guid("79eac9ed-baf9-11ce-8c82-00aa004ba90b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IInternetSecurityMgrSite
+	{
+		/// <summary>Gets the handle to the parent window.</summary>
+		/// <returns>The handle to the parent window.</returns>
+		// https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537095(v=vs.85) HRESULT
+		// GetWindow( [out]&#160;HWND *phwnd );
+		HWND GetWindow();
+
+		/// <summary>Enables the use of modeless pop-up windows.</summary>
+		/// <param name="fEnable">
+		/// A Boolean value that specifies whether modeless pop-up windows are used. TRUE enables modeless pop-up windows; FALSE disables them.
+		/// </param>
+		void EnableModeless(bool fEnable);
+	}
+
 	/// <summary>Implemented by the client application to create temporary pluggable protocol handlers.</summary>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa767757(v%3Dvs.85)
 	[PInvokeData("Urlmon.h")]

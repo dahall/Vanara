@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows Speech API.</Description>
+    <AssemblyName>Vanara.PInvoke.SpeechApi</AssemblyName>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageTags>pinvoke;vanara;net-extensions;interop;speech</PackageTags>
+    <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
+    <NoWarn>SYSLIB1096;CS1591;CS0618</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreAudio\Vanara.PInvoke.CoreAudio.csproj" />
+    <ProjectReference Include="..\Shell32\Vanara.PInvoke.Shell32.csproj" />
+    <ProjectReference Include="..\UrlMon\Vanara.PInvoke.UrlMon.csproj" />
+  </ItemGroup>
+</Project>
