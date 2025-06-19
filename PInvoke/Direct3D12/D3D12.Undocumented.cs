@@ -26044,28 +26044,23 @@ public static partial class D3D12
 		D3D12_PROGRAM_IDENTIFIER GetProgramIdentifier([MarshalAs(UnmanagedType.LPWStr)] string pProgramName);
 	}
 
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Explicit)]
 	public struct D3D12_DISPATCH_GRAPH_DESC
 	{
+		[FieldOffset(0)]
 		public D3D12_DISPATCH_MODE Mode;
 
-		public D3D12_DISPATCH_GRAPH_DESC__union_0 __union_1;
+		[FieldOffset(8)]
+		public D3D12_NODE_CPU_INPUT NodeCPUInput;
 
-		[StructLayout(LayoutKind.Explicit)]
-		public struct D3D12_DISPATCH_GRAPH_DESC__union_0
-		{
-			[FieldOffset(0)]
-			public D3D12_NODE_CPU_INPUT NodeCPUInput;
+		[FieldOffset(8)]
+		public ulong NodeGPUInput;
 
-			[FieldOffset(0)]
-			public ulong NodeGPUInput;
+		[FieldOffset(8)]
+		public D3D12_MULTI_NODE_CPU_INPUT MultiNodeCPUInput;
 
-			[FieldOffset(0)]
-			public D3D12_MULTI_NODE_CPU_INPUT MultiNodeCPUInput;
-
-			[FieldOffset(0)]
-			public ulong MultiNodeGPUInput;
-		}
+		[FieldOffset(8)]
+		public ulong MultiNodeGPUInput;
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
@@ -26093,8 +26088,13 @@ public static partial class D3D12
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_PROGRAM_IDENTIFIER
 	{
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-		public ulong[] OpaqueData;
+		private unsafe fixed ulong _OpaqueData[4];
+
+		public ulong[] OpaqueData 
+		{
+			get { unsafe { ulong[] ret = new ulong[4]; for (int i = 0; i < 4; i++) ret[i] = _OpaqueData[i]; return ret; } }
+			set { if (value is null || value.Length != 4) throw new ArgumentOutOfRangeException(); unsafe { for (int i = 0; i < 4; i++) _OpaqueData[i] = value[i]; } }
+		}
 	}
 
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_SAMPLER_DESC")]
@@ -26179,19 +26179,18 @@ public static partial class D3D12
 	{
 		public D3D12_PROGRAM_TYPE Type;
 
-		public D3D12_SET_PROGRAM_DESC__union_0 __union_1;
+		public D3D12_SET_WORK_GRAPH_DESC WorkGraph;
 
-		[StructLayout(LayoutKind.Explicit)]
-		public struct D3D12_SET_PROGRAM_DESC__union_0
+		public D3D12_SET_GENERIC_PIPELINE_DESC GenericPipeline
 		{
-			[FieldOffset(0)]
-			public D3D12_SET_GENERIC_PIPELINE_DESC GenericPipeline;
+			get => new() { ProgramIdentifier = WorkGraph.ProgramIdentifier };
+			set => WorkGraph = new() { ProgramIdentifier = value.ProgramIdentifier };
+		}
 
-			[FieldOffset(0)]
-			public D3D12_SET_RAYTRACING_PIPELINE_DESC RaytracingPipeline;
-
-			[FieldOffset(0)]
-			public D3D12_SET_WORK_GRAPH_DESC WorkGraph;
+		public D3D12_SET_RAYTRACING_PIPELINE_DESC RaytracingPipeline
+		{
+			get => new() { ProgramIdentifier = WorkGraph.ProgramIdentifier };
+			set => WorkGraph = new() { ProgramIdentifier = value.ProgramIdentifier };
 		}
 	}
 
@@ -26302,5 +26301,204 @@ public static partial class D3D12
 		public D3D12_COMPARISON_FUNC StencilFunc;
 		public byte StencilReadMask;
 		public byte StencilWriteMask;
+	}
+
+	public static void swap<T>(ref T a, ref T b) where T : struct
+	{
+		T temp = a;
+		a = b;
+		b = temp;
+	}
+
+	public delegate HRESULT DxcCreateInstanceProc(in Guid rclsid, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
+
+	public enum D3D12_WORK_GRAPHS_TIER
+	{
+		D3D12_WORK_GRAPHS_TIER_NOT_SUPPORTED = 0,
+		D3D12_WORK_GRAPHS_TIER_1_0 = 10
+	}
+
+	public enum D3D12_EXECUTE_INDIRECT_TIER
+	{
+		D3D12_EXECUTE_INDIRECT_TIER_1_0 = 10,
+		D3D12_EXECUTE_INDIRECT_TIER_1_1 = 11
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_FEATURE_DATA_D3D12_OPTIONS21
+	{
+		public D3D12_WORK_GRAPHS_TIER WorkGraphsTier;
+		public D3D12_EXECUTE_INDIRECT_TIER ExecuteIndirectTier;
+		public BOOL SampleCmpGradientAndBiasSupported;
+		public BOOL ExtendedCommandInfoSupported;
+	}
+
+	[Flags]
+	public enum D3D12_WORK_GRAPH_FLAGS
+	{
+		D3D12_WORK_GRAPH_FLAG_NONE = 0,
+		D3D12_WORK_GRAPH_FLAG_INCLUDE_ALL_AVAILABLE_NODES = 0x1
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_WORK_GRAPH_DESC
+	{
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string ProgramName;
+		public D3D12_WORK_GRAPH_FLAGS Flags;
+		public uint NumEntrypoints;
+		public ManagedArrayPointer<D3D12_NODE_ID> pEntrypoints;
+		public uint NumExplicitlyDefinedNodes;
+		public ManagedArrayPointer<D3D12_NODE> pExplicitlyDefinedNodes;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_NODE_ID
+	{
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string Name;
+		public uint ArrayIndex;
+	}
+
+	public enum D3D12_NODE_TYPE
+	{
+		D3D12_NODE_TYPE_SHADER = 0
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_NODE
+	{
+		public D3D12_NODE_TYPE NodeType;
+		public D3D12_SHADER_NODE Shader;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_NODE_OUTPUT_OVERRIDES
+	{
+		public uint OutputIndex;
+		public ManagedStructPointer<D3D12_NODE_ID> pNewName;
+		public StructPointer<BOOL> pAllowSparseNodes;
+		public StructPointer<uint> pMaxRecords;
+		public StructPointer<uint> pMaxRecordsSharedWithOutputIndex;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_BROADCASTING_LAUNCH_OVERRIDES
+	{
+		public StructPointer<uint> pLocalRootArgumentsTableIndex;
+		public StructPointer<BOOL> pProgramEntry;
+		public ManagedStructPointer<D3D12_NODE_ID> pNewName;
+		public ManagedStructPointer<D3D12_NODE_ID> pShareInputOf;
+		public ArrayPointer<uint> pDispatchGrid;
+		public ArrayPointer<uint> pMaxDispatchGrid;
+		public uint NumOutputOverrides;
+		public ArrayPointer<D3D12_NODE_OUTPUT_OVERRIDES> pOutputOverrides;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_COALESCING_LAUNCH_OVERRIDES
+	{
+		public StructPointer<uint> pLocalRootArgumentsTableIndex;
+		public StructPointer<BOOL> pProgramEntry;
+		public ManagedStructPointer<D3D12_NODE_ID> pNewName;
+		public ManagedStructPointer<D3D12_NODE_ID> pShareInputOf;
+		public uint NumOutputOverrides;
+		public ArrayPointer<D3D12_NODE_OUTPUT_OVERRIDES> pOutputOverrides;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_THREAD_LAUNCH_OVERRIDES
+	{
+		public StructPointer<uint> pLocalRootArgumentsTableIndex;
+		public StructPointer<BOOL> pProgramEntry;
+		public ManagedStructPointer<D3D12_NODE_ID> pNewName;
+		public ManagedStructPointer<D3D12_NODE_ID> pShareInputOf;
+		public uint NumOutputOverrides;
+		public ArrayPointer<D3D12_NODE_OUTPUT_OVERRIDES> pOutputOverrides;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_COMMON_COMPUTE_NODE_OVERRIDES
+	{
+		public StructPointer<uint> pLocalRootArgumentsTableIndex;
+		public StructPointer<BOOL> pProgramEntry;
+		public ManagedStructPointer<D3D12_NODE_ID> pNewName;
+		public ManagedStructPointer<D3D12_NODE_ID> pShareInputOf;
+		public uint NumOutputOverrides;
+		public ArrayPointer<D3D12_NODE_OUTPUT_OVERRIDES> pOutputOverrides;
+	}
+
+	public enum D3D12_NODE_OVERRIDES_TYPE
+	{
+		D3D12_NODE_OVERRIDES_TYPE_NONE = 0,
+		D3D12_NODE_OVERRIDES_TYPE_BROADCASTING_LAUNCH = 1,
+		D3D12_NODE_OVERRIDES_TYPE_COALESCING_LAUNCH = 2,
+		D3D12_NODE_OVERRIDES_TYPE_THREAD_LAUNCH = 3,
+		D3D12_NODE_OVERRIDES_TYPE_COMMON_COMPUTE = 4
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_SHADER_NODE
+	{
+		[MarshalAs(UnmanagedType.LPWStr)]
+		public string Shader;
+		public D3D12_NODE_OVERRIDES_TYPE OverridesType;
+		public IntPtr pOverrides;
+		//const D3D12_BROADCASTING_LAUNCH_OVERRIDES* pBroadcastingLaunchOverrides;
+		//const D3D12_COALESCING_LAUNCH_OVERRIDES* pCoalescingLaunchOverrides;
+		//const D3D12_THREAD_LAUNCH_OVERRIDES* pThreadLaunchOverrides;
+		//const D3D12_COMMON_COMPUTE_NODE_OVERRIDES* pCommonComputeNodeOverrides;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct D3D12_WORK_GRAPH_MEMORY_REQUIREMENTS
+	{
+		public ulong MinSizeInBytes;
+		public ulong MaxSizeInBytes;
+		public uint SizeGranularityInBytes;
+	}
+
+	[ComImport, Guid("065acf71-f863-4b89-82f4-02e4d5886757"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface ID3D12WorkGraphProperties
+	{
+		[PreserveSig]
+		uint GetNumWorkGraphs();
+
+		[PreserveSig]
+		[return: MarshalAs(UnmanagedType.LPWStr)]
+		string GetProgramName(uint WorkGraphIndex);
+
+		[PreserveSig]
+		uint GetWorkGraphIndex([MarshalAs(UnmanagedType.LPWStr)] string pProgramName);
+
+		[PreserveSig]
+		uint GetNumNodes(uint WorkGraphIndex);
+
+		[PreserveSig]
+		ManagedStructPointer<D3D12_NODE_ID> GetNodeID(ManagedStructPointer<D3D12_NODE_ID> RetVal, uint WorkGraphIndex, uint NodeIndex);
+
+		[PreserveSig]
+		uint GetNodeIndex(uint WorkGraphIndex, D3D12_NODE_ID NodeID);
+
+		[PreserveSig]
+		uint GetNodeLocalRootArgumentsTableIndex(uint WorkGraphIndex, uint NodeIndex);
+
+		[PreserveSig]
+		uint GetNumEntrypoints(uint WorkGraphIndex);
+
+		[PreserveSig]
+		ManagedStructPointer<D3D12_NODE_ID> GetEntrypointID(ManagedStructPointer<D3D12_NODE_ID> RetVal, uint WorkGraphIndex, uint EntrypointIndex);
+
+		[PreserveSig]
+		uint GetEntrypointIndex(uint WorkGraphIndex, D3D12_NODE_ID NodeID);
+
+		[PreserveSig]
+		uint GetEntrypointRecordSizeInBytes(uint WorkGraphIndex, uint EntrypointIndex);
+
+		[PreserveSig]
+		void GetWorkGraphMemoryRequirements(uint WorkGraphIndex, out D3D12_WORK_GRAPH_MEMORY_REQUIREMENTS pWorkGraphMemoryRequirements);
+
+		[PreserveSig]
+		uint GetEntrypointRecordAlignmentInBytes(uint WorkGraphIndex, uint EntrypointIndex);
 	}
 }
