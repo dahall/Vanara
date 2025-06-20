@@ -226,6 +226,9 @@ public enum FileFlagsAndAttributes : uint
 	/// </summary>
 	FILE_FLAG_FIRST_PIPE_INSTANCE = 0x00080000,
 
+	/// <summary>Prevent lpFileName from being redirected by reparse points or symbolic links.</summary>
+	FILE_FLAGS_DISALLOW_PATH_REDIRECTS = 0x00000001,
+
 	/// <summary>Impersonates a client at the Anonymous impersonation level.</summary>
 	SECURITY_ANONYMOUS = 0x00000000,
 

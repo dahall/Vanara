@@ -763,6 +763,69 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool TerminateEnclave(IntPtr lpAddress, [MarshalAs(UnmanagedType.Bool)] bool fWait);
 
+	/// <summary>Copies data from an untrusted address (outside of the enclave) into the enclave.</summary>
+	/// <param name="EnclaveAddress">An address within the enclave to which to copy data.</param>
+	/// <param name="UnsecureAddress">An address outside of the enclave from which to copy data.</param>
+	/// <param name="NumberOfBytes">The number of bytes to copy.</param>
+	/// <returns>
+	/// An HRESULT value that indicates success or failure. The function returns <c>S_OK</c> if the copy operation was successful. Otherwise,
+	/// it returns an HRESULT error code.
+	/// </returns>
+	/// <remarks>
+	/// Note that the <c>EnclaveCopyOutOfEnclave</c> and <b>EnclaveCopyIntoEnclave</b> APIs will still continue to work (and access the
+	/// address space of the containing process) even when access is restricted using <c>EnclaveRestrictContainingProcessAccess</c>.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclavecopyintoenclave HRESULT
+	// EnclaveCopyIntoEnclave( VOID *EnclaveAddress, const VOID *UnsecureAddress, SIZE_T NumberOfBytes );
+	[PInvokeData("winenclaveapi.h", MSDNShortId = "NF:winenclaveapi.EnclaveCopyIntoEnclave")]
+	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
+	public static extern HRESULT EnclaveCopyIntoEnclave([In] IntPtr EnclaveAddress, [In] IntPtr UnsecureAddress, SizeT NumberOfBytes);
+
+	/// <summary>Copies data from the enclave to an untrusted address (outside of the enclave).</summary>
+	/// <param name="UnsecureAddress">An address outside of the enclave to which to copy data.</param>
+	/// <param name="EnclaveAddress">An address within the enclave from which to copy data.</param>
+	/// <param name="NumberOfBytes">The number of bytes to copy.</param>
+	/// <returns>
+	/// An HRESULT value that indicates success or failure. The function returns <c>S_OK</c> if the copy operation was successful. Otherwise,
+	/// it returns an HRESULT error code.
+	/// </returns>
+	/// <remarks>
+	/// Note that the <b>EnclaveCopyOutOfEnclave</b> and <c>EnclaveCopyIntoEnclave</c> APIs will still continue to work (and access the
+	/// address space of the containing process) even when access is restricted using <c>EnclaveRestrictContainingProcessAccess</c>.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclavecopyoutofenclave HRESULT
+	// EnclaveCopyOutOfEnclave( VOID *UnsecureAddress, const VOID *EnclaveAddress, SIZE_T NumberOfBytes );
+	[PInvokeData("winenclaveapi.h", MSDNShortId = "NF:winenclaveapi.EnclaveCopyOutOfEnclave")]
+	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
+	public static extern HRESULT EnclaveCopyOutOfEnclave([In] IntPtr UnsecureAddress, [In] IntPtr EnclaveAddress, SizeT NumberOfBytes);
+
+	/// <summary>
+	/// Restricts (or restores) access by an enclave to the address space of its containing process. This policy applies to all threads in
+	/// the enclave.
+	/// </summary>
+	/// <param name="RestrictAccess">
+	/// Set this value to <c>TRUE</c> if the process should restrict (i.e. disable) access to the address space of the containing process.
+	/// Otherwise, set it to <c>FALSE</c> if restrictions should be relaxed, and the containing address space should be accessible.
+	/// </param>
+	/// <param name="PreviouslyRestricted">A pointer to a variable that will receive the previous state of the restriction.</param>
+	/// <returns>An <c>HRESULT</c> value that indicates the success or failure of the operation.</returns>
+	/// <remarks>
+	/// <para>
+	/// Note that the <c>EnclaveCopyOutOfEnclave</c> and <c>EnclaveCopyIntoEnclave</c> APIs will still continue to work (and access the
+	/// address space of the containing process) even when access is restricted using <b>EnclaveRestrictContainingProcessAccess</b>.
+	/// </para>
+	/// <para>
+	/// Access to the containing process's address space can also be restricted by setting the <c>IMAGE_ENCLAVE_POLICY_STRICT_MEMORY</c> flag
+	/// in the enclave's image configuration. The <b>EnclaveRestrictContainingProcessAccess</b> API can be used to change this policy at runtime.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclaverestrictcontainingprocessaccess HRESULT
+	// EnclaveRestrictContainingProcessAccess( BOOL RestrictAccess, PBOOL PreviouslyRestricted );
+	[PInvokeData("winenclaveapi.h", MSDNShortId = "NF:winenclaveapi.EnclaveRestrictContainingProcessAccess")]
+	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
+	public static extern HRESULT EnclaveRestrictContainingProcessAccess([MarshalAs(UnmanagedType.Bool)] bool RestrictAccess,
+		[MarshalAs(UnmanagedType.Bool)] out bool PreviouslyRestricted);
+
 	/// <summary>
 	/// Contains architecture-specific information to use to create an enclave when the enclave type is <c>ENCLAVE_TYPE_SGX</c>, which
 	/// specifies an enclave for the Intel Software Guard Extensions (SGX) architecture extension.
