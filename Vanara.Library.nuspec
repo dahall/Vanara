@@ -18,7 +18,11 @@
     <language>en-US</language>
     <dependencies>
       <dependency id="Vanara.BITS" version="4.1.5" />
+      <dependency id="" version="4.1.5" />
+      <dependency id="" version="4.1.5" />
+      <dependency id="" version="4.1.5" />
       <dependency id="Vanara.CodeGen" version="4.1.5" />
+      <dependency id="Vanara.CodeGen.Vsix" version="4.1.5" />
       <dependency id="Vanara.Core" version="4.1.5" />
       <dependency id="Vanara.DirectoryServices" version="4.1.5" />
       <dependency id="Vanara.Management" version="4.1.5" />
@@ -108,6 +112,7 @@
       <dependency id="Vanara.PInvoke.SHCore" version="4.1.5" />
       <dependency id="Vanara.PInvoke.Shell32" version="4.1.5" />
       <dependency id="Vanara.PInvoke.ShlwApi" version="4.1.5" />
+      <dependency id="Vanara.PInvoke.SpeechApi" version="4.1.5" />
       <dependency id="Vanara.PInvoke.SpellCheckingApi" version="4.1.5" />
       <dependency id="Vanara.PInvoke.TaskSchd" version="4.1.5" />
       <dependency id="Vanara.PInvoke.TextServicesFramework" version="4.1.5" />

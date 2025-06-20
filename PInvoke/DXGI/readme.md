@@ -3,12 +3,14 @@ PInvoke API (methods, structures and constants) imported from Windows DXGI.dll.
 
 - Includes methods from dxgi.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.DXGI?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.DXGI?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DXGI)  
-### Methods - 100% API coverage (7 of 7 functions)  
+### Methods - 100% API coverage (9 of 9 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CreateDXGIFactory](https://www.google.com/search?num=5&q=CreateDXGIFactory+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.CreateDXGIFactory](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDXGIFactory)  
 [CreateDXGIFactory1](https://www.google.com/search?num=5&q=CreateDXGIFactory1+site%3Alearn.microsoft.com) | dxgi.h | [Vanara.PInvoke.DXGI.CreateDXGIFactory1](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDXGIFactory1)  
 [CreateDXGIFactory2](https://www.google.com/search?num=5&q=CreateDXGIFactory2+site%3Alearn.microsoft.com) | dxgi1_3.h | [Vanara.PInvoke.DXGI.CreateDXGIFactory2](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDXGIFactory2)  
+[D2D1MakeRotateMatrix](https://www.google.com/search?num=5&q=D2D1MakeRotateMatrix+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DXGI.D2D_MATRIX_3X2_F.&lt;Rotation&gt;g__D2D1MakeRotateMatrix|42_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BRotation%26gt%3Bg__D2D1MakeRotateMatrix%7C42_0)  
+[D2D1MakeSkewMatrix](https://www.google.com/search?num=5&q=D2D1MakeSkewMatrix+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.DXGI.D2D_MATRIX_3X2_F.&lt;Skew&gt;g__D2D1MakeSkewMatrix|44_0](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BSkew%26gt%3Bg__D2D1MakeSkewMatrix%7C44_0)  
 [DXGIDeclareAdapterRemovalSupport](https://www.google.com/search?num=5&q=DXGIDeclareAdapterRemovalSupport+site%3Alearn.microsoft.com) | dxgi1_6.h | [Vanara.PInvoke.DXGI.DXGIDeclareAdapterRemovalSupport](https://github.com/dahall/Vanara/search?l=C%23&q=DXGIDeclareAdapterRemovalSupport)  
 [DXGIDisableVBlankVirtualization](https://www.google.com/search?num=5&q=DXGIDisableVBlankVirtualization+site%3Alearn.microsoft.com) | dxgi1_6.h | [Vanara.PInvoke.DXGI.DXGIDisableVBlankVirtualization](https://github.com/dahall/Vanara/search?l=C%23&q=DXGIDisableVBlankVirtualization)  
 [DXGIGetDebugInterface](https://www.google.com/search?num=5&q=DXGIGetDebugInterface+site%3Alearn.microsoft.com) | dxgidebug.h | [Vanara.PInvoke.DXGI.DXGIGetDebugInterface](https://github.com/dahall/Vanara/search?l=C%23&q=DXGIGetDebugInterface)  

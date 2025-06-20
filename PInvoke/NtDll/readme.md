@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 5% API coverage (39 of 660 functions)  
+### Methods - 5% API coverage (39 of 661 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Alearn.microsoft.com) |  |   
@@ -400,6 +400,7 @@ Native Method | Header | Managed Method
 [RtlpWow64SetContextOnAmd64](https://www.google.com/search?num=5&q=RtlpWow64SetContextOnAmd64+site%3Alearn.microsoft.com) |  |   
 [RtlQueryAllFeatureConfigurations](https://www.google.com/search?num=5&q=RtlQueryAllFeatureConfigurations+site%3Alearn.microsoft.com) |  |   
 [RtlQueryAllInternalFeatureConfigurations](https://www.google.com/search?num=5&q=RtlQueryAllInternalFeatureConfigurations+site%3Alearn.microsoft.com) |  |   
+[RtlQueryAllInternalRuntimeFeatureConfigurations](https://www.google.com/search?num=5&q=RtlQueryAllInternalRuntimeFeatureConfigurations+site%3Alearn.microsoft.com) |  |   
 [RtlQueryDepthSList](https://www.google.com/search?num=5&q=RtlQueryDepthSList+site%3Alearn.microsoft.com) |  |   
 [RtlQueryFeatureConfiguration](https://www.google.com/search?num=5&q=RtlQueryFeatureConfiguration+site%3Alearn.microsoft.com) |  |   
 [RtlQueryFeatureConfigurationChangeStamp](https://www.google.com/search?num=5&q=RtlQueryFeatureConfigurationChangeStamp+site%3Alearn.microsoft.com) |  |   

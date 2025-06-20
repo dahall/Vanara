@@ -347,6 +347,7 @@ Native Enum | Header | Managed Enum
 [DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY](https://www.google.com/search?num=5&q=DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY](https://github.com/dahall/Vanara/search?l=C%23&q=DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY)  
 [EscapeFunction](https://www.google.com/search?num=5&q=EscapeFunction+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.EscapeFunction](https://github.com/dahall/Vanara/search?l=C%23&q=EscapeFunction)  
 [ETO](https://www.google.com/search?num=5&q=ETO+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.ETO](https://github.com/dahall/Vanara/search?l=C%23&q=ETO)  
+[ExtPenStyle](https://www.google.com/search?num=5&q=ExtPenStyle+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Gdi32.ExtPenStyle](https://github.com/dahall/Vanara/search?l=C%23&q=ExtPenStyle)  
 [FEATURESETTING](https://www.google.com/search?num=5&q=FEATURESETTING+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.FEATURESETTING](https://github.com/dahall/Vanara/search?l=C%23&q=FEATURESETTING)  
 [FloodFillType](https://www.google.com/search?num=5&q=FloodFillType+site%3Alearn.microsoft.com) | wingdi.h | [Vanara.PInvoke.Gdi32.FloodFillType](https://github.com/dahall/Vanara/search?l=C%23&q=FloodFillType)  
 [FontType](https://www.google.com/search?num=5&q=FontType+site%3Alearn.microsoft.com) | Wingdi.h | [Vanara.PInvoke.Gdi32.FontType](https://github.com/dahall/Vanara/search?l=C%23&q=FontType)  

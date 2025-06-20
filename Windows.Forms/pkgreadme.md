@@ -1,7 +1,7 @@
 ﻿![Vanara](https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/VanaraHeading.png)
 ### **Vanara.Windows.Forms NuGet Package**
 [![Version](https://img.shields.io/nuget/v/Vanara.Windows.Forms?label=NuGet&style=flat-square)](https://github.com/dahall/Vanara/releases)
-[![Build status](https://img.shields.io/appveyor/build/dahall/vanara?label=AppVeyor%20build&style=flat-square)](https://ci.appveyor.com/project/dahall/vanara)
+[![Build status](https://github.com/dahall/Vanara/actions/workflows/cibuild.yml/badge.svg?branch=master)](https://github.com/dahall/Vanara/actions/workflows/cibuild.yml)
 
 Classes for user interface related items derived from the Vanara PInvoke libraries. Includes extensions for almost all common controls to give post Vista capabilities, WinForms controls (panel, commandlink, enhanced combo boxes, IPAddress, split button, trackbar and themed controls), shutdown/restart/lock control, buffered painting, resource files, access control editor, simplifed designer framework for Windows.Forms.
 
@@ -11,7 +11,7 @@ Classes for user interface related items derived from the Vanara PInvoke librari
 
 ### **Issues?**
 
-First check if it's already fixed by trying the [AppVeyor build](https://ci.appveyor.com/nuget/vanara-prerelease).
+First check if it's already fixed by trying the [MyGet build](https://www.myget.org/feed/Packages/vanara).
 If you're still running into problems, file an [issue](https://github.com/dahall/Vanara/issues).
 
 ### **Included in Vanara.Windows.Forms**

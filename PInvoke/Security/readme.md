@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows AdvApi32.d
 
 - Includes methods from advapi32.dll, secur32.dll, authz.dll, sspicli.dll, schannel.dll, tdh.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Security?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Security?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Security)  
-### Methods - 100% API coverage (586 of 586 functions)  
+### Methods - 100% API coverage (587 of 587 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortSystemShutdown](https://www.google.com/search?num=5&q=AbortSystemShutdownA+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.AbortSystemShutdown](https://github.com/dahall/Vanara/search?l=C%23&q=AbortSystemShutdown)  
@@ -465,6 +465,7 @@ Native Method | Native DLL | Header | Managed Method
 [RegQueryReflectionKey](https://www.google.com/search?num=5&q=RegQueryReflectionKey+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.RegQueryReflectionKey](https://github.com/dahall/Vanara/search?l=C%23&q=RegQueryReflectionKey)  
 [RegQueryValue](https://www.google.com/search?num=5&q=RegQueryValueA+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.RegQueryValue](https://github.com/dahall/Vanara/search?l=C%23&q=RegQueryValue)  
 [RegQueryValueEx](https://www.google.com/search?num=5&q=RegQueryValueExA+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.RegQueryValueEx](https://github.com/dahall/Vanara/search?l=C%23&q=RegQueryValueEx)  
+[RegRenameKey](https://www.google.com/search?num=5&q=RegRenameKey+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.RegRenameKey](https://github.com/dahall/Vanara/search?l=C%23&q=RegRenameKey)  
 [RegReplaceKey](https://www.google.com/search?num=5&q=RegReplaceKeyA+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.RegReplaceKey](https://github.com/dahall/Vanara/search?l=C%23&q=RegReplaceKey)  
 [RegRestoreKey](https://www.google.com/search?num=5&q=RegRestoreKeyA+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.RegRestoreKey](https://github.com/dahall/Vanara/search?l=C%23&q=RegRestoreKey)  
 [RegSaveKey](https://www.google.com/search?num=5&q=RegSaveKeyA+site%3Alearn.microsoft.com) | advapi32.dll | winreg.h | [Vanara.PInvoke.AdvApi32.RegSaveKey](https://github.com/dahall/Vanara/search?l=C%23&q=RegSaveKey)  
@@ -1110,6 +1111,7 @@ Native Structure | Header | Managed Structure
 [SERVICE_TRIGGER_SPECIFIC_DATA_ITEM](https://www.google.com/search?num=5&q=SERVICE_TRIGGER_SPECIFIC_DATA_ITEM+site%3Alearn.microsoft.com) | winsvc.h | [Vanara.PInvoke.AdvApi32.SERVICE_TRIGGER_SPECIFIC_DATA_ITEM](https://github.com/dahall/Vanara/search?l=C%23&q=SERVICE_TRIGGER_SPECIFIC_DATA_ITEM)  
 [SID](https://www.google.com/search?num=5&q=SID+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.AdvApi32.SID](https://github.com/dahall/Vanara/search?l=C%23&q=SID)  
 [SID_AND_ATTRIBUTES](https://www.google.com/search?num=5&q=SID_AND_ATTRIBUTES+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.AdvApi32.SID_AND_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=SID_AND_ATTRIBUTES)  
+[SID_AND_ATTRIBUTES_HASH](https://www.google.com/search?num=5&q=SID_AND_ATTRIBUTES_HASH+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.AdvApi32.SID_AND_ATTRIBUTES_HASH](https://github.com/dahall/Vanara/search?l=C%23&q=SID_AND_ATTRIBUTES_HASH)  
 [SID_IDENTIFIER_AUTHORITY](https://www.google.com/search?num=5&q=SID_IDENTIFIER_AUTHORITY+site%3Alearn.microsoft.com) | Winnt.h | [Vanara.PInvoke.AdvApi32.SID_IDENTIFIER_AUTHORITY](https://github.com/dahall/Vanara/search?l=C%23&q=SID_IDENTIFIER_AUTHORITY)  
 [STRUCTTYPE](https://www.google.com/search?num=5&q=STRUCTTYPE+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Tdh.EVENT_PROPERTY_INFO.STRUCTTYPE](https://github.com/dahall/Vanara/search?l=C%23&q=STRUCTTYPE)  
 [SYSTEM_ACCESS_FILTER_ACE](https://www.google.com/search?num=5&q=SYSTEM_ACCESS_FILTER_ACE+site%3Alearn.microsoft.com) | winnt.h | [Vanara.PInvoke.AdvApi32.SYSTEM_ACCESS_FILTER_ACE](https://github.com/dahall/Vanara/search?l=C%23&q=SYSTEM_ACCESS_FILTER_ACE)  

@@ -955,7 +955,10 @@ Native Structure | Header | Managed Structure
 ### Classes  
 Native Class | Header | Managed Class  
 --- | --- | ---  
+[Accelerator](https://www.google.com/search?num=5&q=Accelerator+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Accelerator](https://github.com/dahall/Vanara/search?l=C%23&q=Accelerator)  
+[AcceleratorExtension](https://www.google.com/search?num=5&q=AcceleratorExtension+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.AcceleratorExtension](https://github.com/dahall/Vanara/search?l=C%23&q=AcceleratorExtension)  
 [BasicMessageWindow](https://www.google.com/search?num=5&q=BasicMessageWindow+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.BasicMessageWindow](https://github.com/dahall/Vanara/search?l=C%23&q=BasicMessageWindow)  
+[CreateWindowParams](https://www.google.com/search?num=5&q=CreateWindowParams+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.CreateWindowParams](https://github.com/dahall/Vanara/search?l=C%23&q=CreateWindowParams)  
 [DlgItemTemplate](https://www.google.com/search?num=5&q=DlgItemTemplate+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.DLGTEMPLATE_MGD.DlgItemTemplate](https://github.com/dahall/Vanara/search?l=C%23&q=DlgItemTemplate)  
 [DlgItemTemplateEx](https://www.google.com/search?num=5&q=DlgItemTemplateEx+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.DLGTEMPLATEEX_MGD.DlgItemTemplateEx](https://github.com/dahall/Vanara/search?l=C%23&q=DlgItemTemplateEx)  
 [DLGTEMPLATE_MGD](https://www.google.com/search?num=5&q=DLGTEMPLATE_MGD+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.DLGTEMPLATE_MGD](https://github.com/dahall/Vanara/search?l=C%23&q=DLGTEMPLATE_MGD)  
@@ -968,6 +971,7 @@ Native Class | Header | Managed Class
 [ICONINFO](https://www.google.com/search?num=5&q=ICONINFO+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.User32.ICONINFO](https://github.com/dahall/Vanara/search?l=C%23&q=ICONINFO)  
 [LOGFONTExtension](https://www.google.com/search?num=5&q=LOGFONTExtension+site%3Alearn.microsoft.com) |  | [Vanara.Extensions.LOGFONTExtension](https://github.com/dahall/Vanara/search?l=C%23&q=LOGFONTExtension)  
 [MessagePump](https://www.google.com/search?num=5&q=MessagePump+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.MessagePump](https://github.com/dahall/Vanara/search?l=C%23&q=MessagePump)  
+[MessagePumpWithAccelerators](https://www.google.com/search?num=5&q=MessagePumpWithAccelerators+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.MessagePumpWithAccelerators](https://github.com/dahall/Vanara/search?l=C%23&q=MessagePumpWithAccelerators)  
 [MsgExtensions](https://www.google.com/search?num=5&q=MsgExtensions+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.MsgExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=MsgExtensions)  
 [MsgParamsAttribute](https://www.google.com/search?num=5&q=MsgParamsAttribute+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.MsgParamsAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=MsgParamsAttribute)  
 [ObjectIdentifiers](https://www.google.com/search?num=5&q=ObjectIdentifiers+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ObjectIdentifiers](https://github.com/dahall/Vanara/search?l=C%23&q=ObjectIdentifiers)  
