@@ -905,16 +905,14 @@ public static partial class SpeechApi
 
 		SizeT cTotalChars = ppWords.Sum(w => w.Length + 1);
 
-		StringBuilder pphoneId = new(cTotalChars);
+		SPPHONEID[] pphoneId = new SPPHONEID[cTotalChars];
 
 		SPPHRASE Phrase = new() { cbSize = (uint)Marshal.SizeOf(typeof(SPPHRASE)) };
 
 		if (LangId == default)
 			LangId = SpGetUserDefaultUILanguage();
 
-		SPPHRASEELEMENT[] pPhraseElement = new SPPHRASEELEMENT[ppWords.Length];
-		Array.Clear(pPhraseElement, 0, pPhraseElement.Length);
-
+		SPPHRASEELEMENT_M[] pPhraseElement = new SPPHRASEELEMENT_M[ppWords.Length];
 		HRESULT hr = HRESULT.S_OK;
 		for (int i = 0; hr.Succeeded && i < ppWords.Length; i++)
 		{
@@ -937,9 +935,9 @@ public static partial class SpeechApi
 							break;
 					}
 
-					pphoneId.Clear();
+					Array.Clear(pphoneId, 0, pphoneId.Length);
 					cpPhoneConv.PhoneToId(pszThirdPart, pphoneId);
-					pPhraseElement[i].pszPronunciation = pphoneId.ToString();
+					pPhraseElement[i].pszPronunciation = pphoneId;
 				}
 			}
 			else
