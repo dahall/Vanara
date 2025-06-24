@@ -136,10 +136,7 @@ public static partial class Marshaler
 			var arr = arrAttr.Layout switch
 			{
 				ArrayLayout.LPArray => FixedArrayMarshaler.ReadArray(aptr, 0, FieldInfo.FieldType.GetElementType()!, sz, Options),
-				//case ArrayLayout.LPArrayNullTerm:
-				//	len = aptr.GetNulledPtrArrayLength();
-				//	aptr.ToArray
-				//	break;
+				ArrayLayout.LPArrayNullTerm => ReadArrayUntilDefault(aptr, 0, FieldInfo.FieldType.GetElementType()!, Options),
 				//case ArrayLayout.SafeArray:
 				//	len = aptr.GetNulledPtrArrayLength();
 				//	break;
@@ -154,18 +151,18 @@ public static partial class Marshaler
 			if (items is null)
 				return;
 			ISafeMemoryHandle aptr;
-			int sz = 0;
+			int sz;
+			var elemType = FieldInfo.FieldType.GetElementType()!;
 			switch (arrAttr.Layout)
 			{
 				case ArrayLayout.LPArray:
-					var elemType = FieldInfo.FieldType.GetElementType()!;
 					aptr = Extensions.CreateSafeMemory<TMem>(sz = SizeOf(elemType, Options) * items.Length);
 					FixedArrayMarshaler.WriteArray<TMem>(items, elemType, aptr.DangerousGetHandle(), 0, p, Options);
 					break;
-				//case ArrayLayout.LPArrayNullTerm:
-				//	// TODO: Add support for marshaling an array with a null terminator
-				//	len = items.length + 1;
-				//	break;
+				case ArrayLayout.LPArrayNullTerm:
+					aptr = Extensions.CreateSafeMemory<TMem>(sz = SizeOf(elemType, Options) * (items.Length + 1));
+					FixedArrayMarshaler.WriteArray<TMem>(items, elemType, aptr.DangerousGetHandle(), 0, p, Options);
+					break;
 				//case ArrayLayout.SafeArray:
 				//	// TODO: Add support for SAFEARRAY allocation
 				//	var s = new SafeArrayMarshal(items);
@@ -174,6 +171,37 @@ public static partial class Marshaler
 					throw new MarshalException($"Invalid array layout {arrAttr.Layout}.");
 			}
 			WritePtr(aptr, ptr, offset, p);
+		}
+
+		/// <summary>
+		/// Reads an array of elements from a pointer, stopping when the default value of the element type is encountered.
+		/// </summary>
+		internal static Array? ReadArrayUntilDefault(nint ptr, int offset, Type elemType, MarshalerOptions options)
+		{
+			if (ptr == default) return null;
+			var size = SizeOf(elemType, options);
+			var list = new List<object?>();
+			int i = 0;
+			object? defVal = elemType.IsValueType ? Activator.CreateInstance(elemType) : null;
+			while (true)
+			{
+				var elemPtr = ptr.Offset(offset + i * size);
+				object? elem;
+				if (elemType.IsMarshaledType())
+					elem = MarshaledTypeInfo.ReadInstanceFromMemory(elemType, elemPtr, options);
+				else
+					elem = elemPtr.ToStructure(elemType);
+
+				if ((elem == null && defVal == null) || (elem != null && elem.Equals(defVal)))
+					break;
+
+				list.Add(elem);
+				i++;
+			}
+			var arr = Array.CreateInstance(elemType, list.Count);
+			for (int j = 0; j < list.Count; j++)
+				arr.SetValue(list[j], j);
+			return arr;
 		}
 	}
 

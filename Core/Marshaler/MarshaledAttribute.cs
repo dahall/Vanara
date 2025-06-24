@@ -26,7 +26,7 @@ public enum ArrayLayout
 
 	/// <summary>
 	/// Pointer to an array of sequential values with a size specified by another field. ArraySubType property should be used if marshaling
-	/// needed for subtype. StringLenFieldName must be used.
+	/// needed for subtype. SizeFieldName must be used.
 	/// </summary>
 	LPArray,
 
@@ -41,11 +41,11 @@ public enum ArrayLayout
 	/// <summary>Pointer to a null-terminated array of pointers to strings. Size is inferred from the array.</summary>
 	ConcatenatedStringArray,
 
+	/// <summary>Pointer to an array of sequential values terminated by a null or default value. ArraySubType property should be used if marshaling needed for subtype.</summary>
+	LPArrayNullTerm,
+
 	/*// OLE defined SAFEARRAY
 	SafeArray,*/
-
-	/*// Pointer to an array of sequential values terminated by a null or default value. ArraySubType property should be used if marshaling needed for subtype.
-	LPArrayNullTerm,*/
 }
 
 /// <summary>Specifies the number of bits in a pointer for a marshaled value.</summary>
@@ -95,6 +95,19 @@ public enum StringEncoding
 	/// <summary>UTF-32 encoding.</summary>
 	[CorrespondingType(typeof(UTF32Encoding))]
 	UTF32 = 13,
+}
+
+/// <summary>
+/// Indicates that a struct has an alternative type that can be used for marshaling purposes.
+/// </summary>
+[System.AttributeUsage(AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
+public class MarshaledAlternativeAttribute : Attribute
+{
+	/// <summary>Initializes a new instance of the <see cref="MarshaledAlternativeAttribute"/> class.</summary>
+	public MarshaledAlternativeAttribute(Type altType) => AlternateType = altType ?? throw new ArgumentNullException(nameof(altType));
+
+	/// <summary>Gets the alternate type.</summary>
+	public Type AlternateType { get; }
 }
 
 /// <summary>Attribute that can be applied to classes and structures to indicate that they support custom marshaling.</summary>

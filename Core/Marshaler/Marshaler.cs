@@ -101,7 +101,7 @@ public static partial class Marshaler
 	/// <param name="opts">The optional options to use when marshaling.</param>
 	/// <returns>A pointer to an unmanaged block of memory, which is allocated using <typeparamref name="TMem"/> methods.</returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining), DebuggerStepThrough]
-	public static ISafeMemoryHandle ValueToPtr<T, TMem>(T value, MarshalerOptions? opts = null) where TMem : ISafeMemoryHandleFactory =>
+	public static ISafeMemoryHandle ValueToPtr<TMem>(object? value, MarshalerOptions? opts = null) where TMem : ISafeMemoryHandleFactory =>
 		MarshaledTypeInfo.WriteInstanceToMemory<TMem>(value, opts);
 
 	/// <summary>Marshals data from a managed object to an unmanaged block of memory.</summary>
@@ -110,6 +110,6 @@ public static partial class Marshaler
 	/// <param name="opts">The optional options to use when marshaling.</param>
 	/// <returns>A pointer to an unmanaged block of memory, which is allocated using <see cref="SafeCoTaskMemHandle"/> methods.</returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining), DebuggerStepThrough]
-	public static ISafeMemoryHandle ValueToPtr<T>(T value, MarshalerOptions? opts = null) =>
+	public static ISafeMemoryHandle ValueToPtr(object? value, MarshalerOptions? opts = null) =>
 		MarshaledTypeInfo.WriteInstanceToMemory<SafeCoTaskMemHandle>(value, opts);
 }

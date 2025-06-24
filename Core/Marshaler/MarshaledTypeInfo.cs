@@ -390,7 +390,7 @@ public static partial class Marshaler
 				return arrAttr.Layout switch
 				{
 					ArrayLayout.ByValArray or ArrayLayout.ByValAnySizeArray or ArrayLayout.ByValAppendedArray => new FixedArrayMarshaler(fi, arrAttr, options),
-					ArrayLayout.LPArray /*or ArrayLayout.LPArrayNullTerm or ArrayLayout.SafeArray*/ => new ArrayMarshaler(fi, arrAttr, options),
+					ArrayLayout.LPArray or ArrayLayout.LPArrayNullTerm /*or ArrayLayout.SafeArray*/ => new ArrayMarshaler(fi, arrAttr, options),
 					ArrayLayout.StringPtrArray or ArrayLayout.StringPtrArrayNullTerm or ArrayLayout.ConcatenatedStringArray => new StringArrayMarshaler(fi, arrAttr, options),
 					_ => throw new MarshalException("Unknown array layout."),
 				};
