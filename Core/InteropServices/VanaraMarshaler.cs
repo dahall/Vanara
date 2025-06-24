@@ -48,6 +48,12 @@ public static class VanaraMarshaler
 			marshaler = Activator.CreateInstance(t) as IVanaraMarshaler;
 			return marshaler != null;
 		}
+		var mattr = t.GetCustomAttributes<Vanara.Marshaler.MarshaledAttribute>(false).FirstOrDefault();
+		if (mattr != null)
+		{
+			marshaler = new MarshalerOnVanaraMarshaler(t);
+			return marshaler != null;
+		}
 		marshaler = null;
 		return false;
 	}
@@ -66,9 +72,8 @@ public static class VanaraMarshaler
 /// <seealso cref="ICustomMarshaler"/>
 public class VanaraCustomMarshaler<T> : ICustomMarshaler
 {
-	private SafeAllocatedMemoryHandle? mem;
 	private readonly string? cookie;
-
+	private SafeAllocatedMemoryHandle? mem;
 	private VanaraCustomMarshaler(string? cookie) => this.cookie = cookie;
 
 	/// <summary>Gets the instance.</summary>
@@ -114,4 +119,14 @@ public class VanaraMarshalerAttribute : Attribute
 
 	/// <summary>Gets the type that will marshal this class or structure.</summary>
 	public Type MarshalType { get; }
+}
+
+/// <summary>Generic class implementing <see cref="IVanaraMarshaler"/> to process types that support the <see cref="Vanara.Marshaler.MarshaledAttribute"/>.</summary>
+/// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
+internal class MarshalerOnVanaraMarshaler(Type type, Vanara.Marshaler.MarshalerOptions? opts = null) : IVanaraMarshaler
+{
+	SizeT IVanaraMarshaler.GetNativeSize() => Vanara.Marshaler.Marshaler.SizeOf(type, opts);
+	SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) =>
+		managedObject is null ? SafeCoTaskMemHandle.Null : (SafeAllocatedMemoryHandle)Vanara.Marshaler.Marshaler.ValueToPtr(managedObject!, opts);
+	object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes) => Vanara.Marshaler.Marshaler.PtrToValue(type, pNativeData, opts);
 }
