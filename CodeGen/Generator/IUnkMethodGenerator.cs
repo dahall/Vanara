@@ -299,7 +299,7 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 
 				// Output the usings statements for the parentClass
 				foreach (var u in parentClass.Ancestors().OfType<CompilationUnitSyntax>().First().Usings.Where(i => i.GlobalKeyword.Value is null))
-					output.WriteLine($"{u.ToFullString()}");
+					output.Write($"{u.ToFullString()}");
 
 				// Output the namespace
 				output.WriteLine($"namespace {ns} {{");
@@ -323,7 +323,7 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 				}
 
 				// Output the extension methods
-				output.WriteLine(methodSig.NormalizeWhitespace().ToFullString());
+				output.WriteLine(methodSig.NormalizeWhitespace("\t").ToFullString());
 
 				// Close the classes and namespace
 				for (int i = 0; i <= nestedClasses.Count; i++)
