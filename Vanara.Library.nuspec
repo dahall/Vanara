@@ -18,11 +18,7 @@
     <language>en-US</language>
     <dependencies>
       <dependency id="Vanara.BITS" version="4.1.6" />
-      <dependency id="" version="4.1.6" />
-      <dependency id="" version="4.1.6" />
-      <dependency id="" version="4.1.6" />
       <dependency id="Vanara.CodeGen" version="4.1.6" />
-      <dependency id="Vanara.CodeGen.Vsix" version="4.1.6" />
       <dependency id="Vanara.Core" version="4.1.6" />
       <dependency id="Vanara.DirectoryServices" version="4.1.6" />
       <dependency id="Vanara.Management" version="4.1.6" />
@@ -125,7 +121,6 @@
       <dependency id="Vanara.PInvoke.UxTheme" version="4.1.6" />
       <dependency id="Vanara.PInvoke.Version" version="4.1.6" />
       <dependency id="Vanara.PInvoke.VirtDisk" version="4.1.6" />
-      <dependency id="" version="4.1.6" />
       <dependency id="Vanara.PInvoke.WcmApi" version="4.1.6" />
       <dependency id="Vanara.PInvoke.WcnApi" version="4.1.6" />
       <dependency id="Vanara.PInvoke.WebSocket" version="4.1.6" />
