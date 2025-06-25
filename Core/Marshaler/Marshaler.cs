@@ -95,7 +95,6 @@ public static partial class Marshaler
 	}
 
 	/// <summary>Marshals data from a managed object to an unmanaged block of memory.</summary>
-	/// <typeparam name="T">The type of the managed object.</typeparam>
 	/// <typeparam name="TMem">The type of the memory.</typeparam>
 	/// <param name="value">A managed object that holds the data to be marshaled. The object must be a structure or an instance of a formatted class.</param>
 	/// <param name="opts">The optional options to use when marshaling.</param>
@@ -105,7 +104,6 @@ public static partial class Marshaler
 		MarshaledTypeInfo.WriteInstanceToMemory<TMem>(value, opts);
 
 	/// <summary>Marshals data from a managed object to an unmanaged block of memory.</summary>
-	/// <typeparam name="T">The type of the managed object.</typeparam>
 	/// <param name="value">A managed object that holds the data to be marshaled. The object must be a structure or an instance of a formatted class.</param>
 	/// <param name="opts">The optional options to use when marshaling.</param>
 	/// <returns>A pointer to an unmanaged block of memory, which is allocated using <see cref="SafeCoTaskMemHandle"/> methods.</returns>

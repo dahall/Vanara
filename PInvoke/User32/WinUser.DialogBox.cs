@@ -1963,7 +1963,282 @@ public static partial class User32
 	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-	public static extern IntPtr SendDlgItemMessage(HWND hDlg, int nIDDlgItem, uint Msg, IntPtr wParam, IntPtr lParam);
+	public static extern IntPtr SendDlgItemMessage(HWND hDlg, int nIDDlgItem, uint Msg, [In, Optional] IntPtr wParam, [In, Out, Optional] IntPtr lParam);
+
+	/// <summary>
+	/// <para>Sends a message to the specified control in a dialog box.</para>
+	/// </summary>
+	/// <param name="hDlg">
+	/// <para>Type: <c>HWND</c></para>
+	/// <para>A handle to the dialog box that contains the control.</para>
+	/// </param>
+	/// <param name="nIDDlgItem">
+	/// <para>Type: <c>int</c></para>
+	/// <para>The identifier of the control that receives the message.</para>
+	/// </param>
+	/// <param name="Msg">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>The message to be sent.</para>
+	/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+	/// </param>
+	/// <param name="wParam">
+	/// <para>Type: <c>WPARAM</c></para>
+	/// <para>Additional message-specific information.</para>
+	/// </param>
+	/// <param name="lParam">
+	/// <para>Type: <c>LPARAM</c></para>
+	/// <para>Additional message-specific information.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>LRESULT</c></para>
+	/// <para>The return value specifies the result of the message processing and depends on the message sent.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>SendDlgItemMessage</c> function does not return until the message has been processed.</para>
+	/// <para>Using <c>SendDlgItemMessage</c> is identical to retrieving a handle to the specified control and calling the SendMessage function.</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Creating a Modeless Dialog Box.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
+	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
+	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
+	public static extern IntPtr SendDlgItemMessage(HWND hDlg, int nIDDlgItem, uint Msg, [In, Optional] IntPtr wParam, string? lParam);
+
+	/// <summary>
+	/// <para>Sends a message to the specified control in a dialog box.</para>
+	/// </summary>
+	/// <param name="hDlg">
+	/// <para>Type: <c>HWND</c></para>
+	/// <para>A handle to the dialog box that contains the control.</para>
+	/// </param>
+	/// <param name="nIDDlgItem">
+	/// <para>Type: <c>int</c></para>
+	/// <para>The identifier of the control that receives the message.</para>
+	/// </param>
+	/// <param name="Msg">
+	/// <para>Type: <c>UINT</c></para>
+	/// <para>The message to be sent.</para>
+	/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+	/// </param>
+	/// <param name="wParam">
+	/// <para>Type: <c>WPARAM</c></para>
+	/// <para>Additional message-specific information.</para>
+	/// </param>
+	/// <param name="lParam">
+	/// <para>Type: <c>LPARAM</c></para>
+	/// <para>Additional message-specific information.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>LRESULT</c></para>
+	/// <para>The return value specifies the result of the message processing and depends on the message sent.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>SendDlgItemMessage</c> function does not return until the message has been processed.</para>
+	/// <para>Using <c>SendDlgItemMessage</c> is identical to retrieving a handle to the specified control and calling the SendMessage function.</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Creating a Modeless Dialog Box.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
+	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
+	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
+	public static extern IntPtr SendDlgItemMessage(HWND hDlg, int nIDDlgItem, uint Msg, [In, Optional] IntPtr wParam, [In, Out] StringBuilder lParam);
+
+	/// <summary>Sends a message to the specified control in a dialog box.</summary>
+	/// <typeparam name="TMsg">The type of the MSG.</typeparam>
+	/// <typeparam name="TWP">The type of the WPARAM.</typeparam>
+	/// <param name="hDlg"><para>Type: <c>HWND</c></para>
+	/// <para>A handle to the dialog box that contains the control.</para></param>
+	/// <param name="nIDDlgItem"><para>Type: <c>int</c></para>
+	/// <para>The identifier of the control that receives the message.</para></param>
+	/// <param name="Msg"><para>Type: <c>UINT</c></para>
+	/// <para>The message to be sent.</para>
+	/// <para>For lists of the system-provided messages, see System-Defined Messages.</para></param>
+	/// <param name="wParam"><para>Type: <c>WPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <param name="lParam"><para>Type: <c>LPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <returns>
+	/// <para>Type: <c>LRESULT</c></para>
+	/// <para>The return value specifies the result of the message processing and depends on the message sent.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>SendDlgItemMessage</c> function does not return until the message has been processed.</para>
+	/// <para>Using <c>SendDlgItemMessage</c> is identical to retrieving a handle to the specified control and calling the SendMessage function.</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Creating a Modeless Dialog Box.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
+	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
+	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, TWP wParam, [In, Out, Optional] IntPtr lParam)
+		where TMsg : struct, IConvertible where TWP : struct, IConvertible
+		=> SendDlgItemMessage(hDlg, nIDDlgItem, Convert.ToUInt32(Msg), (IntPtr)Convert.ToInt64(wParam), lParam);
+
+	/// <summary>Sends a message to the specified control in a dialog box.</summary>
+	/// <typeparam name="TMsg">The type of the MSG.</typeparam>
+	/// <typeparam name="TWP">The type of the WPARAM.</typeparam>
+	/// <param name="hDlg"><para>Type: <c>HWND</c></para>
+	/// <para>A handle to the dialog box that contains the control.</para></param>
+	/// <param name="nIDDlgItem"><para>Type: <c>int</c></para>
+	/// <para>The identifier of the control that receives the message.</para></param>
+	/// <param name="Msg"><para>Type: <c>UINT</c></para>
+	/// <para>The message to be sent.</para>
+	/// <para>For lists of the system-provided messages, see System-Defined Messages.</para></param>
+	/// <param name="wParam"><para>Type: <c>WPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <param name="lParam"><para>Type: <c>LPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <returns>
+	/// <para>Type: <c>LRESULT</c></para>
+	/// <para>The return value specifies the result of the message processing and depends on the message sent.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>SendDlgItemMessage</c> function does not return until the message has been processed.</para>
+	/// <para>Using <c>SendDlgItemMessage</c> is identical to retrieving a handle to the specified control and calling the SendMessage function.</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Creating a Modeless Dialog Box.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
+	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
+	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, in TWP wParam, [In, Out, Optional] IntPtr lParam)
+		where TMsg : struct, IConvertible where TWP : struct
+	{
+		using var wmem = SafeCoTaskMemHandle.CreateFromStructure(wParam);
+		return SendDlgItemMessage(hDlg, nIDDlgItem, Convert.ToUInt32(Msg), wmem, lParam);
+	}
+
+	/// <summary>Sends a message to the specified control in a dialog box.</summary>
+	/// <typeparam name="TMsg">The type of the MSG.</typeparam>
+	/// <typeparam name="TWP">The type of the WPARAM.</typeparam>
+	/// <param name="hDlg"><para>Type: <c>HWND</c></para>
+	/// <para>A handle to the dialog box that contains the control.</para></param>
+	/// <param name="nIDDlgItem"><para>Type: <c>int</c></para>
+	/// <para>The identifier of the control that receives the message.</para></param>
+	/// <param name="Msg"><para>Type: <c>UINT</c></para>
+	/// <para>The message to be sent.</para>
+	/// <para>For lists of the system-provided messages, see System-Defined Messages.</para></param>
+	/// <param name="wParam"><para>Type: <c>WPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <param name="lParam"><para>Type: <c>LPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <returns>
+	/// <para>Type: <c>LRESULT</c></para>
+	/// <para>The return value specifies the result of the message processing and depends on the message sent.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>SendDlgItemMessage</c> function does not return until the message has been processed.</para>
+	/// <para>Using <c>SendDlgItemMessage</c> is identical to retrieving a handle to the specified control and calling the SendMessage function.</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Creating a Modeless Dialog Box.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
+	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
+	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, TWP wParam, string? lParam)
+		where TMsg : struct, IConvertible where TWP : struct, IConvertible
+		=> SendDlgItemMessage(hDlg, nIDDlgItem, Convert.ToUInt32(Msg), (IntPtr)Convert.ToInt64(wParam), lParam);
+
+	/// <summary>Sends a message to the specified control in a dialog box.</summary>
+	/// <typeparam name="TMsg">The type of the MSG.</typeparam>
+	/// <typeparam name="TWP">The type of the WPARAM.</typeparam>
+	/// <param name="hDlg"><para>Type: <c>HWND</c></para>
+	/// <para>A handle to the dialog box that contains the control.</para></param>
+	/// <param name="nIDDlgItem"><para>Type: <c>int</c></para>
+	/// <para>The identifier of the control that receives the message.</para></param>
+	/// <param name="Msg"><para>Type: <c>UINT</c></para>
+	/// <para>The message to be sent.</para>
+	/// <para>For lists of the system-provided messages, see System-Defined Messages.</para></param>
+	/// <param name="wParam"><para>Type: <c>WPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <param name="lParam"><para>Type: <c>LPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <returns>
+	/// <para>Type: <c>LRESULT</c></para>
+	/// <para>The return value specifies the result of the message processing and depends on the message sent.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>SendDlgItemMessage</c> function does not return until the message has been processed.</para>
+	/// <para>Using <c>SendDlgItemMessage</c> is identical to retrieving a handle to the specified control and calling the SendMessage function.</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Creating a Modeless Dialog Box.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
+	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
+	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, in TWP wParam, string? lParam)
+		where TMsg : struct, IConvertible where TWP : struct
+	{
+		using var wmem = SafeCoTaskMemHandle.CreateFromStructure(wParam);
+		return SendDlgItemMessage(hDlg, nIDDlgItem, Convert.ToUInt32(Msg), wmem, lParam);
+	}
+
+	/// <summary>Sends a message to the specified control in a dialog box.</summary>
+	/// <typeparam name="TMsg">The type of the MSG.</typeparam>
+	/// <typeparam name="TWP">The type of the WPARAM.</typeparam>
+	/// <param name="hDlg"><para>Type: <c>HWND</c></para>
+	/// <para>A handle to the dialog box that contains the control.</para></param>
+	/// <param name="nIDDlgItem"><para>Type: <c>int</c></para>
+	/// <para>The identifier of the control that receives the message.</para></param>
+	/// <param name="Msg"><para>Type: <c>UINT</c></para>
+	/// <para>The message to be sent.</para>
+	/// <para>For lists of the system-provided messages, see System-Defined Messages.</para></param>
+	/// <param name="wParam"><para>Type: <c>WPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <param name="lParam"><para>Type: <c>LPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <returns>
+	/// <para>Type: <c>LRESULT</c></para>
+	/// <para>The return value specifies the result of the message processing and depends on the message sent.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>SendDlgItemMessage</c> function does not return until the message has been processed.</para>
+	/// <para>Using <c>SendDlgItemMessage</c> is identical to retrieving a handle to the specified control and calling the SendMessage function.</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Creating a Modeless Dialog Box.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
+	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
+	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, TWP wParam, [In, Out] StringBuilder lParam)
+		where TMsg : struct, IConvertible where TWP : struct, IConvertible
+		=> SendDlgItemMessage(hDlg, nIDDlgItem, Convert.ToUInt32(Msg), (IntPtr)Convert.ToInt64(wParam), lParam);
+
+	/// <summary>Sends a message to the specified control in a dialog box.</summary>
+	/// <typeparam name="TMsg">The type of the MSG.</typeparam>
+	/// <typeparam name="TWP">The type of the WPARAM.</typeparam>
+	/// <param name="hDlg"><para>Type: <c>HWND</c></para>
+	/// <para>A handle to the dialog box that contains the control.</para></param>
+	/// <param name="nIDDlgItem"><para>Type: <c>int</c></para>
+	/// <para>The identifier of the control that receives the message.</para></param>
+	/// <param name="Msg"><para>Type: <c>UINT</c></para>
+	/// <para>The message to be sent.</para>
+	/// <para>For lists of the system-provided messages, see System-Defined Messages.</para></param>
+	/// <param name="wParam"><para>Type: <c>WPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <param name="lParam"><para>Type: <c>LPARAM</c></para>
+	/// <para>Additional message-specific information.</para></param>
+	/// <returns>
+	/// <para>Type: <c>LRESULT</c></para>
+	/// <para>The return value specifies the result of the message processing and depends on the message sent.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>SendDlgItemMessage</c> function does not return until the message has been processed.</para>
+	/// <para>Using <c>SendDlgItemMessage</c> is identical to retrieving a handle to the specified control and calling the SendMessage function.</para>
+	/// <para>Examples</para>
+	/// <para>For an example, see Creating a Modeless Dialog Box.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
+	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
+	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, in TWP wParam, [In, Out] StringBuilder lParam)
+		where TMsg : struct, IConvertible where TWP : struct
+	{
+		using var wmem = SafeCoTaskMemHandle.CreateFromStructure(wParam);
+		return SendDlgItemMessage(hDlg, nIDDlgItem, Convert.ToUInt32(Msg), wmem, lParam);
+	}
 
 	/// <summary>
 	/// <para>Sets the text of a control in a dialog box to the string representation of a specified integer value.</para>
