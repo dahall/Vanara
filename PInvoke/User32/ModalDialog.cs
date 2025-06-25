@@ -20,7 +20,7 @@ public abstract class ModalDialog(SafeHINSTANCE hInst, ResourceId dlgId) : IWind
 	public ModalDialog(HINSTANCE hInst, ResourceId dlgId) : this(new SafeHINSTANCE(hInst, false), dlgId) { }
 
 	/// <summary>Initializes a new instance of the <see cref="ModalDialog"/> class.</summary>
-	/// <param name="hInst">The path of the library that holds the dialog resource.</param>
+	/// <param name="libraryPath">The path of the library that holds the dialog resource.</param>
 	/// <param name="dlgId">
 	/// The dialog box template. This parameter is either the pointer to a null-terminated character string that specifies the name of the
 	/// dialog box template or an integer value that specifies the resource identifier of the dialog box template.
@@ -64,7 +64,7 @@ public abstract class ModalDialog(SafeHINSTANCE hInst, ResourceId dlgId) : IWind
 	/// <param name="wParam">Additional message-specific information. The meaning of this parameter depends on the value of <paramref name="message"/>.</param>
 	/// <param name="lParam">Additional message-specific information. The meaning of this parameter depends on the value of <paramref name="message"/>.</param>
 	/// <returns>A pointer that depends on the message being processed. Typically, returning zero indicates that the message was not handled.</returns>
-	protected virtual IntPtr DialogProc(HWND hDlg, uint message, nint wParam, nint lParam) => 0;
+	protected virtual IntPtr DialogProc(HWND hDlg, uint message, nint wParam, nint lParam) => IntPtr.Zero;
 
 	/// <summary>Called when the dialog recieves the WM_CLOSE message.</summary>
 	/// <remarks>
@@ -72,7 +72,7 @@ public abstract class ModalDialog(SafeHINSTANCE hInst, ResourceId dlgId) : IWind
 	/// implementation returns a value of <see langword="0"/>.
 	/// </remarks>
 	/// <returns>The value passed to <c>EndDialog</c> to be returned as the result of <c>DialogBoxParam</c>.</returns>
-	protected virtual IntPtr OnClosing() => 0;
+	protected virtual IntPtr OnClosing() => IntPtr.Zero;
 
 	/// <summary>Handles a command event triggered by a control. Called when the dialog receives the WM_COMMAND message.</summary>
 	/// <remarks>This method is intended to be overridden in derived classes to provide custom handling for command events.</remarks>
@@ -105,7 +105,7 @@ public abstract class ModalDialog(SafeHINSTANCE hInst, ResourceId dlgId) : IWind
 
 			case WindowMessage.WM_COMMAND:
 				HANDLE_WM_COMMAND(hDlg, wParam, lParam, (h1, i, h2, u) => OnCommand(i, h2, u));
-				return 0;
+				return IntPtr.Zero;
 
 			case WindowMessage.WM_CLOSE:
 				EndDialog(Handle, OnClosing());
@@ -118,6 +118,6 @@ public abstract class ModalDialog(SafeHINSTANCE hInst, ResourceId dlgId) : IWind
 			default:
 				return DialogProc(hDlg, message, wParam, lParam);
 		}
-		return 1; // Handled
+		return new(1); // Handled
 	}
 }
