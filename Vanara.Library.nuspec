@@ -111,6 +111,7 @@
       <dependency id="Vanara.PInvoke.SpeechApi" version="4.1.6" />
       <dependency id="Vanara.PInvoke.SpellCheckingApi" version="4.1.6" />
       <dependency id="Vanara.PInvoke.TaskSchd" version="4.1.6" />
+      <dependency id="Vanara.PInvoke.TelephonyApi" version="4.1.6" />
       <dependency id="Vanara.PInvoke.TextServicesFramework" version="4.1.6" />
       <dependency id="Vanara.PInvoke.UIAnimation" version="4.1.6" />
       <dependency id="Vanara.PInvoke.UIAutomation" version="4.1.6" />
