@@ -24,7 +24,7 @@ IAccessControl IActivationFilter IAdviseSink2 IAdviseSinkEx IAgileObject IAgileR
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <NoWarn>0618</NoWarn>
+    <NoWarn>0618;IL2050;IL2070;IL2072</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rpc\Vanara.PInvoke.Rpc.csproj" />

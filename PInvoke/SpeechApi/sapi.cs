@@ -1,4 +1,5 @@
-﻿using Vanara.Marshaler;
+﻿#pragma warning disable CS0649
+using Vanara.Marshaler;
 
 namespace Vanara.PInvoke;
 
