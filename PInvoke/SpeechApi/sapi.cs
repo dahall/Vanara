@@ -1,4 +1,6 @@
 ﻿#pragma warning disable CS0649
+using System.Collections;
+using System.Collections.Generic;
 using Vanara.Marshaler;
 
 namespace Vanara.PInvoke;
@@ -1636,6 +1638,55 @@ public static partial class SpeechApi
 
 		public SPEVENTENUM eEventId { readonly get => (SPEVENTENUM)_eEventId; set => _eEventId = (ushort)value; }
 
+		/// <summary>Gets and sets the underlying value for <see cref="lParam"/> based on object type and <see cref="elParamType"/> value.</summary>
+		/// <exception cref="System.ArgumentException">Unsupported type for lParamValue - value</exception>
+		public object? lParamValue
+		{
+			readonly get => elParamType switch
+			{
+				SPEVENTLPARAMTYPE.SPET_LPARAM_IS_UNDEFINED => null,
+				SPEVENTLPARAMTYPE.SPET_LPARAM_IS_STRING => StringHelper.GetString(lParam, CharSet.Unicode),
+				SPEVENTLPARAMTYPE.SPET_LPARAM_IS_POINTER => new SafeCoTaskMemHandle(lParam, wParam.ToInt64(), false),
+				SPEVENTLPARAMTYPE.SPET_LPARAM_IS_TOKEN => Marshal.GetObjectForIUnknown(lParam) as ISpObjectToken,
+				SPEVENTLPARAMTYPE.SPET_LPARAM_IS_OBJECT => Marshal.GetObjectForIUnknown(lParam),
+				_ => throw new InvalidOperationException("Unknown lParam type"),
+			};
+			set
+			{
+				Dispose();
+				if (value is null)
+				{
+					elParamType = SPEVENTLPARAMTYPE.SPET_LPARAM_IS_UNDEFINED;
+					lParam = IntPtr.Zero;
+				}
+				else if (value is string str)
+				{
+					elParamType = SPEVENTLPARAMTYPE.SPET_LPARAM_IS_STRING;
+					lParam = StringHelper.AllocString(str, CharSet.Unicode, Marshal.AllocCoTaskMem);
+				}
+				else if (value is ISafeMemoryHandle ptr)
+				{
+					elParamType = SPEVENTLPARAMTYPE.SPET_LPARAM_IS_POINTER;
+					wParam = (IntPtr)(long)ptr.Size;
+					lParam = ptr.DangerousGetHandle();
+				}
+				else if (value is ISpObjectToken token)
+				{
+					elParamType = SPEVENTLPARAMTYPE.SPET_LPARAM_IS_TOKEN;
+					lParam = Marshal.GetIUnknownForObject(token);
+				}
+				else if (value.GetType().IsCOMObject)
+				{
+					elParamType = SPEVENTLPARAMTYPE.SPET_LPARAM_IS_OBJECT;
+					lParam = Marshal.GetIUnknownForObject(value);
+				}
+				else
+				{
+					throw new ArgumentException("Unsupported type for lParamValue", nameof(value));
+				}
+			}
+		}
+
 		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
 		public void Dispose()
 		{
@@ -1699,8 +1750,58 @@ public static partial class SpeechApi
 		public uint ulCount;
 	}
 
+	/// <summary>
+	/// <para>
+	/// You can create pronunciations for words that are not currently in the lexicon using the phonemes represented in the attached
+	/// appendices. The proposed phoneme set is composed of a symbolic phonetic representation (SYM).
+	/// </para>
+	/// <para>
+	/// You can enter the SYM representation to create the pronunciation by using the XML PRON tag, or by creating a new lexicon entry. Each
+	/// phoneme should be space delimited.
+	/// </para>
+	/// <para>
+	/// The engine is passed a USHORT structure called SPPHONEID (a number between 1 and n where n is the total number of phonemes for that
+	/// language). The conversion from the SYM to SPPHONEID occurs in the SAPI PhoneConverter.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Mark Up Tag</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <description>PRON SYM</description>
+	/// <description>Tag used to insert a pronunciation using symbolic representation</description>
+	/// </item>
+	/// </list>
+	/// <para>Example: pronunciation for "hello"</para>
+	/// <para><c>&lt;PRON SYM = "h eh l ow"/&gt;</c></para>
+	/// <para>For improved accuracy, the primary (1), secondary (2) stress markers, and the syllabic markers (-) can be added to the pronunciation.</para>
+	/// <para>Example: pronunciation for "hello" using the primary stress (1) and syllabic (-) markers:</para>
+	/// <para><c>&lt;PRON SYM = "h eh - l ow 1"/&gt;</c></para>
+	/// <para>
+	/// SAPI-compliant engines are required to accept the PHONEID representation, and produce an articulation. The specific allophonic
+	/// articulation is defined by the engine. There is no provision for support of phonemes outside the SAPI phoneme set.
+	/// </para>
+	/// <list type="bullet">
+	/// <item>
+	/// <para><b>Main goals for defining the language dependent phoneme set:</b></para>
+	/// </item>
+	/// <list type="bullet">
+	/// <item>
+	/// <para>Provide an engine-independent architecture for application developers to create user and application lexicons.</para>
+	/// </item>
+	/// <item>
+	/// <para>
+	/// Make the English phonetic table simple enough to be used and understood by non-linguists who use the American English phoneme set.
+	/// </para>
+	/// </item>
+	/// </list>
+	/// </list>
+	/// </summary>
+	// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ee125161(v=vs.85)
+	[PInvokeData("sapi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SPPHONEID(ushort value) : IConvertible
+	public readonly struct SPPHONEID(ushort value) : IConvertible
 	{
 		private readonly ushort value = value;
 
@@ -2403,8 +2504,7 @@ public static partial class SpeechApi
 	}
 
 	[AutoHandle]
-	public partial struct SPSTATEHANDLE
-	{ }
+	public partial struct SPSTATEHANDLE { }
 
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	public struct SPTEXTSELECTIONINFO
@@ -2448,19 +2548,34 @@ public static partial class SpeechApi
 		public uint dwReserved2;
 	}
 
+	/// <summary>
+	/// This structure contains information about changes to a word in a lexicon, and is used with <c>ISpLexicon</c> to define word changes.
+	/// Words are formed into a word list represented by an <c>SPWORDLIST</c> structure. For use of words and word lists, see
+	/// <c>ISpLexicon::GetWords</c> and <c>ISpLexicon::GetGenerationChange</c>.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms895959(v=msdn.10)
+	[PInvokeData("sapi.h")]
 	[StructLayout(LayoutKind.Sequential, Pack = 8)]
 	public struct SPWORD
 	{
+		/// <summary>Pointer to the next <b>SPWORD</b> structure in the list of words ( <b>SPWORDLIST</b>).</summary>
 		public unsafe SPWORD* pNextWord;
 
+		/// <summary>Language identifier of the word.</summary>
 		public LANGID LangId;
 
+		/// <summary>Reserved for future use.</summary>
 		public ushort wReserved;
 
+		/// <summary>
+		/// Change state for the word and its pronunciation in the lexicon. Possible values are defined for the <c>SPWORDTYPE</c> enumeration.
+		/// </summary>
 		public SPWORDTYPE eWordType;
 
+		/// <summary>Pointer to the offset of the word entry.</summary>
 		public StrPtrUni pszWord;
 
+		/// <summary>Pointer to an <c>SPWORDPRONUNCIATION</c> structure containing the first possible pronunciation of the word.</summary>
 		public unsafe SPWORDPRONUNCIATION* pFirstWordPronunciation;
 	}
 
@@ -2472,6 +2587,9 @@ public static partial class SpeechApi
 		public IntPtr pvBuffer;
 
 		public unsafe SPWORD* pFirstWord;
+
+		/// <summary>Releases the memory allocated for the structure.</summary>
+		public void Dispose() => Marshal.FreeCoTaskMem(pvBuffer);
 	}
 
 	[StructLayout(LayoutKind.Sequential, Pack = 8, CharSet = CharSet.Unicode)]
@@ -2498,5 +2616,8 @@ public static partial class SpeechApi
 		public IntPtr pvBuffer;
 
 		public unsafe SPWORDPRONUNCIATION* pFirstWordPronunciation;
+
+		/// <summary>Releases the memory allocated for the structure.</summary>
+		public void Dispose() => Marshal.FreeCoTaskMem(pvBuffer);
 	}
 }
