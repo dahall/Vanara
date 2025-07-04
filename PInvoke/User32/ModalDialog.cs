@@ -34,6 +34,9 @@ public abstract class ModalDialog(SafeHINSTANCE hInst, ResourceId dlgId) : IWind
 	/// <inheritdoc/>
 	bool IHandle.IsInvalid => Handle.IsInvalid;
 
+	/// <summary>Gets the handle to the loaded library instance.</summary>
+	public HINSTANCE LibHandle => hInst;
+
 	/// <summary>Closes the dialog and optionally sets a result value.</summary>
 	public virtual void Close() => SendMessage(Handle, WindowMessage.WM_CLOSE);
 
