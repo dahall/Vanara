@@ -232,7 +232,7 @@ public static partial class SpeechApi
 		/// The REFGUID for the format to set. Typically this will be SPDFID_WaveFormatEx. This is required for the SAPI multimedia objects.
 		/// </param>
 		/// <param name="pWaveFormatEx">Address of the WAVEFORMATEX structure containing the wave file format information.</param>
-		void SetFormat(in Guid rguidFmtId, in WAVEFORMATEX pWaveFormatEx);
+		void SetFormat(in Guid rguidFmtId, [In] StructPointer<WAVEFORMATEX> pWaveFormatEx);
 
 		/// <summary>Retrieves the current status of the audio device.</summary>
 		/// <returns>An SPAUDIOSTATUS filled with the status details.</returns>
@@ -3741,7 +3741,7 @@ public static partial class SpeechApi
 		/// The REFGUID for the format to set. Typically this will be SPDFID_WaveFormatEx. This is required for the SAPI multimedia objects.
 		/// </param>
 		/// <param name="pWaveFormatEx">Address of the WAVEFORMATEX structure containing the wave file format information.</param>
-		new void SetFormat(in Guid rguidFmtId, in WAVEFORMATEX pWaveFormatEx);
+		new void SetFormat(in Guid rguidFmtId, [In] StructPointer<WAVEFORMATEX> pWaveFormatEx);
 
 		/// <summary>Retrieves the current status of the audio device.</summary>
 		/// <returns>An SPAUDIOSTATUS filled with the status details.</returns>
@@ -5530,7 +5530,7 @@ public static partial class SpeechApi
 		[return: MarshalAs(UnmanagedType.Interface)]
 		ISpStreamFormat? GetBaseStream();
 
-		void SetFormat(in Guid rguidFormatIdOfConvertedStream, in WAVEFORMATEX pWaveFormatExOfConvertedStream);
+		void SetFormat(in Guid rguidFormatIdOfConvertedStream, [In] StructPointer<WAVEFORMATEX> pWaveFormatExOfConvertedStream);
 
 		void ResetSeekPosition();
 
