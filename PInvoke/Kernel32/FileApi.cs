@@ -8078,6 +8078,287 @@ public static partial class Kernel32
 	public static extern bool ReadFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
 
 	/// <summary>
+	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
+	/// supported by the device.
+	/// </summary>
+	/// <param name="hFile">
+	/// A handle to the device (for example, a file, file stream, physical disk, volume, console buffer, tape drive, socket,
+	/// communications resource, mailslot, or pipe). The hFile parameter must have been created with read access.
+	/// </param>
+	/// <param name="lpBuffer">A pointer to the buffer that receives the data read from a file or device.</param>
+	/// <returns>
+	/// If the function succeeds, the return value is nonzero (TRUE). If the function fails, or is completing asynchronously, the return
+	/// value is zero(FALSE). To get extended error information, call the GetLastError function.
+	/// </returns>
+	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
+	public static bool ReadFile<T>(HFILE hFile, out T lpBuffer) where T : struct
+	{
+		var size = Vanara.Extensions.InteropExtensions.SizeOf<T>();
+		using SafeCoTaskMemHandle buffer = new(size);
+		if (!ReadFile(hFile, buffer, size, out var bytesRead, IntPtr.Zero))
+		{
+			lpBuffer = default;
+			return false;
+		}
+		lpBuffer = buffer.ToStructure<T>();
+		return true;
+	}
+
+	/// <summary>
+	/// <para>
+	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
+	/// supported by the device.
+	/// </para>
+	/// <para>
+	/// This function is designed for both synchronous and asynchronous operations. For a similar function designed solely for asynchronous
+	/// operation, see ReadFileEx.
+	/// </para>
+	/// </summary>
+	/// <param name="hFile">
+	/// <para>
+	/// A handle to the device (for example, a file, file stream, physical disk, volume, console buffer, tape drive, socket, communications
+	/// resource, mailslot, or pipe).
+	/// </para>
+	/// <para>
+	/// The <c>hFile</c> parameter must have been created with read access. For more information, see Generic Access Rights and File Security
+	/// and Access Rights.
+	/// </para>
+	/// <para>
+	/// For asynchronous read operations, <c>hFile</c> can be any handle that is opened with the <c>FILE_FLAG_OVERLAPPED</c> flag by the
+	/// CreateFile function, or a socket handle returned by the socket or accept function.
+	/// </para>
+	/// </param>
+	/// <param name="lpBuffer">
+	/// <para>A pointer to the buffer that receives the data read from a file or device.</para>
+	/// <para>
+	/// This buffer must remain valid for the duration of the read operation. The caller must not use this buffer until the read operation is completed.
+	/// </para>
+	/// </param>
+	/// <param name="lpNumberOfBytesRead">
+	/// <para>
+	/// A pointer to the variable that receives the number of bytes read when using a synchronous <c>hFile</c> parameter. <c>ReadFile</c>
+	/// sets this value to zero before doing any work or error checking. Use <c>NULL</c> for this parameter if this is an asynchronous
+	/// operation to avoid potentially erroneous results.
+	/// </para>
+	/// <para>This parameter can be <c>NULL</c> only when the <c>lpOverlapped</c> parameter is not <c>NULL</c>.</para>
+	/// <para>For more information, see the Remarks section.</para>
+	/// </param>
+	/// <param name="lpOverlapped">
+	/// <para>
+	/// A pointer to an OVERLAPPED structure is required if the <c>hFile</c> parameter was opened with <c>FILE_FLAG_OVERLAPPED</c>, otherwise
+	/// it can be <c>NULL</c>.
+	/// </para>
+	/// <para>
+	/// If <c>hFile</c> is opened with <c>FILE_FLAG_OVERLAPPED</c>, the <c>lpOverlapped</c> parameter must point to a valid and unique
+	/// OVERLAPPED structure, otherwise the function can incorrectly report that the read operation is complete.
+	/// </para>
+	/// <para>
+	/// For an <c>hFile</c> that supports byte offsets, if you use this parameter you must specify a byte offset at which to start reading
+	/// from the file or device. This offset is specified by setting the <c>Offset</c> and <c>OffsetHigh</c> members of the OVERLAPPED
+	/// structure. For an <c>hFile</c> that does not support byte offsets, <c>Offset</c> and <c>OffsetHigh</c> are ignored.
+	/// </para>
+	/// <para>
+	/// For more information about different combinations of <c>lpOverlapped</c> and <c>FILE_FLAG_OVERLAPPED</c>, see the Remarks section and
+	/// the <c>Synchronization and File Position</c> section.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero ( <c>TRUE</c>).</para>
+	/// <para>
+	/// If the function fails, or is completing asynchronously, the return value is zero ( <c>FALSE</c>). To get extended error information,
+	/// call the GetLastError function.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>The <c>ReadFile</c> function returns when one of the following conditions occur:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>The number of bytes requested is read.</term>
+	/// </item>
+	/// <item>
+	/// <term>A write operation completes on the write end of the pipe.</term>
+	/// </item>
+	/// <item>
+	/// <term>An asynchronous handle is being used and the read is occurring asynchronously.</term>
+	/// </item>
+	/// <item>
+	/// <term>An error occurs.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// The <c>ReadFile</c> function may fail with <c>ERROR_INVALID_USER_BUFFER</c> or <c>ERROR_NOT_ENOUGH_MEMORY</c> whenever there are too
+	/// many outstanding asynchronous I/O requests.
+	/// </para>
+	/// <para>To cancel all pending asynchronous I/O operations, use either:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>CancelIo—this function only cancels operations issued by the calling thread for the specified file handle.</term>
+	/// </item>
+	/// <item>
+	/// <term>CancelIoEx—this function cancels all operations issued by the threads for the specified file handle.</term>
+	/// </item>
+	/// </list>
+	/// <para>Use CancelSynchronousIo to cancel pending synchronous I/O operations.</para>
+	/// <para>I/O operations that are canceled complete with the error <c>ERROR_OPERATION_ABORTED</c>.</para>
+	/// <para>
+	/// The <c>ReadFile</c> function may fail with <c>ERROR_NOT_ENOUGH_QUOTA</c>, which means the calling process's buffer could not be
+	/// page-locked. For additional information, see SetProcessWorkingSetSize.
+	/// </para>
+	/// <para>If part of a file is locked by another process and the read operation overlaps the locked portion, this function fails.</para>
+	/// <para>
+	/// Accessing the input buffer while a read operation is using the buffer may lead to corruption of the data read into that buffer.
+	/// Applications must not read from, write to, reallocate, or free the input buffer that a read operation is using until the read
+	/// operation completes. This can be particularly problematic when using an asynchronous file handle. Additional information regarding
+	/// synchronous versus asynchronous file handles can be found in the Synchronization and File Position section and in the CreateFile
+	/// reference topic.
+	/// </para>
+	/// <para>
+	/// Characters can be read from the console input buffer by using <c>ReadFile</c> with a handle to console input. The console mode
+	/// determines the exact behavior of the <c>ReadFile</c> function. By default, the console mode is <c>ENABLE_LINE_INPUT</c>, which
+	/// indicates that <c>ReadFile</c> should read until it reaches a carriage return. If you press Ctrl+C, the call succeeds, but
+	/// GetLastError returns <c>ERROR_OPERATION_ABORTED</c>. For more information, see CreateFile.
+	/// </para>
+	/// <para>
+	/// When reading from a communications device, the behavior of <c>ReadFile</c> is determined by the current communication time-out as set
+	/// and retrieved by using the SetCommTimeouts and GetCommTimeouts functions. Unpredictable results can occur if you fail to set the
+	/// time-out values. For more information about communication time-outs, see COMMTIMEOUTS.
+	/// </para>
+	/// <para>
+	/// If <c>ReadFile</c> attempts to read from a mailslot that has a buffer that is too small, the function returns <c>FALSE</c> and
+	/// GetLastError returns <c>ERROR_INSUFFICIENT_BUFFER</c>.
+	/// </para>
+	/// <para>
+	/// There are strict requirements for successfully working with files opened with CreateFile using the <c>FILE_FLAG_NO_BUFFERING</c>
+	/// flag. For details see File Buffering.
+	/// </para>
+	/// <para>If <c>hFile</c> was opened with <c>FILE_FLAG_OVERLAPPED</c>, the following conditions are in effect:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// The <c>lpOverlapped</c> parameter must point to a valid and unique OVERLAPPED structure, otherwise the function can incorrectly
+	/// report that the read operation is complete.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// The <c>lpNumberOfBytesRead</c> parameter should be set to <c>NULL</c>. Use the GetOverlappedResult function to get the actual number
+	/// of bytes read. If the <c>hFile</c> parameter is associated with an I/O completion port, you can also get the number of bytes read by
+	/// calling the GetQueuedCompletionStatus function.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>Synchronization and File Position</para>
+	/// <para>
+	/// If <c>hFile</c> is opened with <c>FILE_FLAG_OVERLAPPED</c>, it is an asynchronous file handle; otherwise it is synchronous. The rules
+	/// for using the OVERLAPPED structure are slightly different for each, as previously noted.
+	/// </para>
+	/// <para>
+	/// <c>Note</c> If a file or device is opened for asynchronous I/O, subsequent calls to functions such as <c>ReadFile</c> using that
+	/// handle generally return immediately, but can also behave synchronously with respect to blocked execution. For more information see http://support.microsoft.com/kb/156932.
+	/// </para>
+	/// <para>Considerations for working with asynchronous file handles:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// <c>ReadFile</c> may return before the read operation is complete. In this scenario, <c>ReadFile</c> returns <c>FALSE</c> and the
+	/// GetLastError function returns <c>ERROR_IO_PENDING</c>, which allows the calling process to continue while the system completes the
+	/// read operation.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>The <c>lpOverlapped</c> parameter must not be <c>NULL</c> and should be used with the following facts in mind:</term>
+	/// </item>
+	/// </list>
+	/// <para>Considerations for working with synchronous file handles:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// If <c>lpOverlapped</c> is <c>NULL</c>, the read operation starts at the current file position and <c>ReadFile</c> does not return
+	/// until the operation is complete, and the system updates the file pointer before <c>ReadFile</c> returns.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If <c>lpOverlapped</c> is not <c>NULL</c>, the read operation starts at the offset that is specified in the OVERLAPPED structure and
+	/// <c>ReadFile</c> does not return until the read operation is complete. The system updates the <c>OVERLAPPED</c> offset before
+	/// <c>ReadFile</c> returns.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If <c>lpOverlapped</c> is <c>NULL</c>, then when a synchronous read operation reaches the end of a file, <c>ReadFile</c> returns
+	/// <c>TRUE</c> and sets
+	/// <code>*lpNumberOfBytesRead</code>
+	/// to zero.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// If <c>lpOverlapped</c> is not <c>NULL</c>, then when a synchronous read operation reaches the end of a file, <c>ReadFile</c> returns
+	/// <c>FALSE</c> and GetLastError returns <c>ERROR_HANDLE_EOF</c>.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>For more information, see CreateFile and Synchronous and Asynchronous I/O.</para>
+	/// <para>Pipes</para>
+	/// <para>
+	/// If an anonymous pipe is being used and the write handle has been closed, when <c>ReadFile</c> attempts to read using the pipe's
+	/// corresponding read handle, the function returns <c>FALSE</c> and GetLastError returns <c>ERROR_BROKEN_PIPE</c>.
+	/// </para>
+	/// <para>
+	/// If a named pipe is being read in message mode and the next message is longer than the <c>nNumberOfBytesToRead</c> parameter
+	/// specifies, <c>ReadFile</c> returns <c>FALSE</c> and GetLastError returns <c>ERROR_MORE_DATA</c>. The remainder of the message can be
+	/// read by a subsequent call to the <c>ReadFile</c> or PeekNamedPipe function.
+	/// </para>
+	/// <para>
+	/// If the <c>lpNumberOfBytesRead</c> parameter is zero when <c>ReadFile</c> returns <c>TRUE</c> on a pipe, the other end of the pipe
+	/// called the WriteFile function with <c>nNumberOfBytesToWrite</c> set to zero.
+	/// </para>
+	/// <para>For more information about pipes, see Pipes.</para>
+	/// <para>Transacted Operations</para>
+	/// <para>
+	/// If there is a transaction bound to the file handle, then the function returns data from the transacted view of the file. A transacted
+	/// read handle is guaranteed to show the same view of a file for the duration of the handle. For more information, see About
+	/// Transactional NTFS.
+	/// </para>
+	/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Technology</term>
+	/// <term>Supported</term>
+	/// </listheader>
+	/// <item>
+	/// <term>Server Message Block (SMB) 3.0 protocol</term>
+	/// <term>Yes</term>
+	/// </item>
+	/// <item>
+	/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+	/// <term>Yes</term>
+	/// </item>
+	/// <item>
+	/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+	/// <term>Yes</term>
+	/// </item>
+	/// <item>
+	/// <term>Cluster Shared Volume File System (CsvFS)</term>
+	/// <term>Yes</term>
+	/// </item>
+	/// <item>
+	/// <term>Resilient File System (ReFS)</term>
+	/// <term>Yes</term>
+	/// </item>
+	/// </list>
+	/// <para>Examples</para>
+	/// <para>
+	/// For a code example that shows you how to test for end-of-file, see Testing for the End of a File. For other examples, see Creating
+	/// and Using a Temporary File and Opening a File for Reading or Writing.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
+	public static bool ReadFile(HFILE hFile, ISafeMemoryHandle lpBuffer, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped) =>
+		ReadFile(hFile, lpBuffer.DangerousGetHandle(), lpBuffer.Size, out lpNumberOfBytesRead, lpOverlapped);
+
+	/// <summary>
 	/// <para>
 	/// Reads data from the specified file or input/output (I/O) device. It reports its completion status asynchronously, calling the
 	/// specified completion routine when reading is completed or canceled and the calling thread is in an alertable wait state.
