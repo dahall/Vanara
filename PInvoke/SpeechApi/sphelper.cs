@@ -968,7 +968,7 @@ public static partial class SpeechApi
 	}
 
 	public static unsafe HRESULT SPBindToFile(string pFileName, SPFILEMODE eMode, out ISpStream ppStream, Guid? pFormatId = default,
-		[In] WAVEFORMATEX* pWaveFormatEx = default, ulong ullEventInterest = SPFEI_ALL_EVENTS)
+		[In] WAVEFORMATEX* pWaveFormatEx = default, SPEVENTENUM ullEventInterest = SPEVENTENUM.SPFEI_ALL_EVENTS)
 	{
 		try
 		{

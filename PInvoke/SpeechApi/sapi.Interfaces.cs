@@ -5437,7 +5437,8 @@ public static partial class SpeechApi
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms719484(v=vs.85)
-		void BindToFile([In, MarshalAs(UnmanagedType.LPWStr)] string pszFileName, [In] SPFILEMODE eMode, [In, Optional] StructPointer<Guid> pFormatId, [In, Optional] StructPointer<WAVEFORMATEX> pWaveFormatEx, [In] ulong ullEventInterest);
+		void BindToFile([In, MarshalAs(UnmanagedType.LPWStr)] string pszFileName, [In] SPFILEMODE eMode, [In, Optional] StructPointer<Guid> pFormatId,
+			[In, Optional] StructPointer<WAVEFORMATEX> pWaveFormatEx, [In] SPEVENTENUM ullEventInterest);
 
 		void Close();
 	}
@@ -5727,7 +5728,7 @@ public static partial class SpeechApi
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms719484(v=vs.85)
-	public static void BindToFile(this ISpStream str, string pszFileName, SPFILEMODE eMode, [In, Optional] Guid? pFormatId, [In, Optional] WAVEFORMATEX? pWaveFormatEx, ulong ullEventInterest) =>
+	public static void BindToFile(this ISpStream str, string pszFileName, SPFILEMODE eMode, [In, Optional] Guid? pFormatId, [In, Optional] WAVEFORMATEX? pWaveFormatEx, SPEVENTENUM ullEventInterest) =>
 		str.BindToFile(pszFileName, eMode, new(pFormatId, out _), new(pWaveFormatEx, out _), ullEventInterest);
 
 	/// <summary><b>ISpObjectToken::Remove</b> removes an object token.</summary>
