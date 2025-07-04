@@ -7921,7 +7921,7 @@ public static partial class MsftEdit
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPStr)]
-		public string lpDefaultChar;
+		public string? lpDefaultChar;
 
 		/// <summary>
 		/// <para>Type: <c>LPBOOL</c></para>
@@ -7931,7 +7931,7 @@ public static partial class MsftEdit
 		/// represented in the specified code page. Otherwise, the flag is <c>FALSE</c>. This member can be NULL.
 		/// </para>
 		/// </summary>
-		public IntPtr lpUsedDefChar;
+		public StructPointer<BOOL> lpUsedDefChar;
 	}
 
 	/// <summary>
