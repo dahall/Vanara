@@ -443,14 +443,14 @@ public static partial class SpeechApi
 		}
 	}
 
-	public class CSpStreamFormat : IEquatable<CSpStreamFormat>
+	public class CSpStreamFormat() : IEquatable<CSpStreamFormat>
 	{
 		public Guid m_guidFormatId = Guid.Empty;
 		public SafeCoTaskMemStruct<WAVEFORMATEX> m_pCoMemWaveFormatEx = SafeCoTaskMemStruct<WAVEFORMATEX>.Null;
 
-		public CSpStreamFormat(SPSTREAMFORMAT eFormat, out HRESULT phr) => phr = SpConvertStreamFormatEnum(eFormat, out m_guidFormatId, out m_pCoMemWaveFormatEx);
+		public CSpStreamFormat(SPSTREAMFORMAT eFormat, out HRESULT phr) : this() => phr = SpConvertStreamFormatEnum(eFormat, out m_guidFormatId, out m_pCoMemWaveFormatEx);
 
-		public unsafe CSpStreamFormat([In] WAVEFORMATEX* pWaveFormatEx, out HRESULT phr) => phr = AssignFormat(pWaveFormatEx);
+		public unsafe CSpStreamFormat([In] WAVEFORMATEX* pWaveFormatEx, out HRESULT phr) : this() => phr = AssignFormat(pWaveFormatEx);
 
 		public static bool operator !=(CSpStreamFormat? left, CSpStreamFormat? right) => !(left == right);
 
@@ -1318,7 +1318,7 @@ public static partial class SpeechApi
 		return hr;
 	}
 
-	public static HRESULT SpEnumTokens(string pszCategoryId, string pszReqAttribs, string pszOptAttribs, out IEnumSpObjectTokens ppEnum)
+	public static HRESULT SpEnumTokens(string pszCategoryId, string? pszReqAttribs, string? pszOptAttribs, out IEnumSpObjectTokens ppEnum)
 	{
 		ppEnum = default!;
 

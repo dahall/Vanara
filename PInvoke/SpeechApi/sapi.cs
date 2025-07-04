@@ -65,9 +65,6 @@ public static partial class SpeechApi
 	public const string SpeechUserTraining = "UserTraining";
 	public const string SpeechVoiceCategoryTTSRate = "DefaultTTSRate";
 	public const string SpeechVoiceSkipTypeSentence = "Sentence";
-	public const ulong SPFEI_ALL_EVENTS = 0xEFFFFFFFFFFFFFFFUL;
-	public const ulong SPFEI_ALL_SR_EVENTS = 0x003FFFFC00000000UL | SPFEI_FLAGCHECK;
-	public const ulong SPFEI_ALL_TTS_EVENTS = 0x000000000000FFFEUL | SPFEI_FLAGCHECK;
 	public const ulong SPFEI_FLAGCHECK = (1UL << (int)SPEVENTENUM.SPEI_RESERVED1) | (1UL << (int)SPEVENTENUM.SPEI_RESERVED2);
 	public const string SPINFDICTATION = "*+";
 	public const string SPMMSYS_AUDIO_IN_TOKEN_ID = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\AudioInput\\TokenEnums\\MMAudioIn\\";
@@ -1249,7 +1246,10 @@ public static partial class SpeechApi
 		SPEI_MAX_SR = 55,
 		SPEI_RESERVED1 = 30,
 		SPEI_RESERVED2 = 33,
-		SPEI_RESERVED3 = 63
+		SPEI_RESERVED3 = 63,
+		SPFEI_ALL_EVENTS = 0xEFFFFFFFFFFFFFFFUL,
+		SPFEI_ALL_SR_EVENTS = 0x003FFFFC00000000UL | SPFEI_FLAGCHECK,
+		SPFEI_ALL_TTS_EVENTS = 0x000000000000FFFEUL | SPFEI_FLAGCHECK,
 	}
 
 	public enum SPEVENTLPARAMTYPE : ushort
@@ -1551,6 +1551,14 @@ public static partial class SpeechApi
 		SP_VISEME_19,
 		SP_VISEME_20,
 		SP_VISEME_21
+	}
+
+	public enum SPVLIMITS
+	{
+		SPMIN_VOLUME = 0,
+		SPMAX_VOLUME = 100,
+		SPMIN_RATE = -10,
+		SPMAX_RATE = 10
 	}
 
 	public enum SPVPRIORITY
