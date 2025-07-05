@@ -58,13 +58,101 @@ public interface IMemoryMethods : ISimpleMemoryMethods
 	IntPtr ReAllocMem(IntPtr hMem, int size);
 }
 
-/// <summary>Interface for classes that support safe memory pointers.</summary>
-public partial interface ISafeMemoryHandle : IDisposable, IHandle
+/// <summary>Defines the base functionality for a safe memory handle, providing methods and properties for managing allocated memory.</summary>
+/// <remarks>
+/// This interface represents a safe memory handle that supports operations such as copying memory, retrieving bytes, locking, and unlocking.
+/// It is designed to abstract memory management in scenarios where direct memory manipulation is required. Implementations of this interface
+/// may provide additional functionality, such as span-based access or event handling.
+/// </remarks>
+public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[]>, IComparable<IReadOnlyList<byte>>
 {
-	/// <summary>Gets the size of the allocated memory block.</summary>
-	/// <value>The size of the allocated memory block.</value>
+#if DEBUG
+	/// <summary>Dumps memory to byte string.</summary>
+	[ExcludeFromCodeCoverage]
+	string Dump { get; }
+#endif
+
+	/// <summary>Gets a value indicating whether this memory supports locking.</summary>
+	/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
+	bool Lockable { get; }
+
+	/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
+	/// <value>The size in bytes of the allocated memory block.</value>
 	SizeT Size { get; set; }
 
+	/// <summary>Occurs when the handle has changed.</summary>
+	event EventHandler<IntPtr>? HandleChanged;
+
+#if ALLOWSPAN
+	/// <summary>Casts this allocated memory to a <c>Span&lt;Byte&gt;</c>.</summary>
+	/// <returns>A span of type <see cref="byte"/>.</returns>
+	Span<byte> AsBytes();
+
+	/// <summary>Creates a new span over this allocated memory.</summary>
+	/// <returns>The span representation of the structure.</returns>
+	ReadOnlySpan<T> AsReadOnlySpan<T>(int length);
+
+	/// <summary>Creates a new span over this allocated memory.</summary>
+	/// <returns>The span representation of the structure.</returns>
+	Span<T> AsSpan<T>(int length);
+#endif
+
+	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
+	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length"/> bytes.</param>
+	/// <param name="length">The number of bytes to copy.</param>
+	void CopyTo(IntPtr dest, SizeT length);
+
+	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
+	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
+	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length" /> bytes.</param>
+	/// <param name="length">The number of bytes to copy.</param>
+	void CopyTo(SizeT start, IntPtr dest, SizeT length);
+
+	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
+	/// <param name="dest">A safe handle to allocated memory.</param>
+	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
+	/// <exception cref="System.ArgumentNullException">dest</exception>
+	/// <exception cref="System.ArgumentOutOfRangeException">destOffset</exception>
+	void CopyTo(ISafeMemoryHandleBase dest, SizeT destOffset = default);
+
+	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
+	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
+	/// <param name="length">The number of bytes to copy.</param>
+	/// <param name="dest">A safe handle to allocated memory.</param>
+	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
+	/// <exception cref="System.ArgumentNullException">dest</exception>
+	/// <exception cref="System.ArgumentOutOfRangeException">destOffset - The destination buffer is not large enough.</exception>
+	void CopyTo(SizeT start, SizeT length, ISafeMemoryHandleBase dest, SizeT destOffset = default);
+
+	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
+	/// <returns>A byte array with the copied bytes.</returns>
+	byte[] GetBytes();
+
+	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
+	/// <param name="startIndex">The start index.</param>
+	/// <param name="count">The number of bytes to retrieve.</param>
+	/// <returns>A byte array with the copied bytes.</returns>
+	byte[] GetBytes(int startIndex, int count);
+
+	/// <summary>Gets a hash code value for all bytes within the allocated memory.</summary>
+	/// <returns>A hash code.</returns>
+	int GetContentHashCode();
+
+	/// <summary>Locks this instance.</summary>
+	void Lock();
+
+	/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
+	/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
+	IntPtr TakeOwnership();
+
+	/// <summary>Decrements the lock count.</summary>
+	/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
+	bool Unlock();
+}
+
+/// <summary>Interface for classes that support safe memory pointers.</summary>
+public partial interface ISafeMemoryHandle : ISafeMemoryHandleBase
+{
 	/// <summary>
 	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that
 	/// such objects being referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of
@@ -77,16 +165,6 @@ public partial interface ISafeMemoryHandle : IDisposable, IHandle
 	/// <param name="value">The byte value.</param>
 	/// <param name="length">The number of bytes in the block of memory to be filled.</param>
 	void Fill(byte value, int length);
-
-	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
-	/// <param name="startIndex">The start index.</param>
-	/// <param name="count">The number of bytes to retrieve.</param>
-	/// <returns>A byte array with the copied bytes.</returns>
-	byte[] GetBytes(int startIndex, int count);
-
-	/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
-	/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
-	IntPtr TakeOwnership();
 
 	/// <summary>
 	/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
@@ -290,8 +368,8 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// <seealso cref="System.IComparable{T}" />
 /// <seealso cref="System.IEquatable{T}" />
 /// <seealso cref="SafeHandle" />
-public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<SafeAllocatedMemoryHandleBase>, IComparable<IReadOnlyList<byte>>,
-	IEquatable<SafeAllocatedMemoryHandleBase>, IHandle
+public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, ISafeMemoryHandleBase, IComparable<SafeAllocatedMemoryHandleBase>,
+	IEquatable<SafeAllocatedMemoryHandleBase>
 {
 	/// <summary>Occurs when the handle has changed.</summary>
 	public event EventHandler<IntPtr>? HandleChanged;
@@ -420,11 +498,11 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
 	/// <exception cref="System.ArgumentNullException">dest</exception>
 	/// <exception cref="System.ArgumentOutOfRangeException">destOffset</exception>
-	public void CopyTo(SafeAllocatedMemoryHandleBase dest, SizeT destOffset = default)
+	public void CopyTo(ISafeMemoryHandleBase dest, SizeT destOffset = default)
 	{
 		if (dest is null) throw new ArgumentNullException(nameof(dest));
 		if (dest.Size < destOffset + Size) throw new ArgumentOutOfRangeException(nameof(destOffset), "The destination buffer is not large enough.");
-		CallLocked(p => p.CopyTo(dest.handle, Size));
+		CallLocked(p => p.CopyTo(dest.DangerousGetHandle(), Size));
 	}
 
 	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
@@ -440,11 +518,11 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, IComparable<Sa
 	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
 	/// <exception cref="System.ArgumentNullException">dest</exception>
 	/// <exception cref="System.ArgumentOutOfRangeException">destOffset - The destination buffer is not large enough.</exception>
-	public void CopyTo(SizeT start, SizeT length, SafeAllocatedMemoryHandleBase dest, SizeT destOffset = default)
+	public void CopyTo(SizeT start, SizeT length, ISafeMemoryHandleBase dest, SizeT destOffset = default)
 	{
 		if (dest is null) throw new ArgumentNullException(nameof(dest));
 		if (dest.Size < destOffset + length - start) throw new ArgumentOutOfRangeException(nameof(destOffset), "The destination buffer is not large enough.");
-		CallLocked(p => p.CopyTo(start, dest.handle.Offset(destOffset), length));
+		CallLocked(p => p.CopyTo(start, dest.DangerousGetHandle().Offset(destOffset), length));
 	}
 
 	/// <inheritdoc/>
