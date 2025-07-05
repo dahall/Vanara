@@ -108,7 +108,7 @@ public abstract class ModalDialog(SafeHINSTANCE hInst, ResourceId dlgId) : IWind
 
 			case WindowMessage.WM_COMMAND:
 				HANDLE_WM_COMMAND(hDlg, wParam, lParam, (h1, i, h2, u) => OnCommand(i, h2, u));
-				return IntPtr.Zero;
+				break;
 
 			case WindowMessage.WM_CLOSE:
 				EndDialog(Handle, OnClosing());
