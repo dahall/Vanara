@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Dcomp.dll 
 
 - Includes methods from dcomp.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Dcomp?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Dcomp?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Dcomp)  
-### Methods - 75% API coverage (12 of 16 functions)  
+### Methods - 100% API coverage (12 of 12 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [CreatePresentationFactory](https://www.google.com/search?num=5&q=CreatePresentationFactory+site%3Alearn.microsoft.com) | presentation.h | [Vanara.PInvoke.Dcomp.CreatePresentationFactory](https://github.com/dahall/Vanara/search?l=C%23&q=CreatePresentationFactory)  
@@ -18,10 +18,6 @@ Native Method | Header | Managed Method
 [DCompositionGetStatistics](https://www.google.com/search?num=5&q=DCompositionGetStatistics+site%3Alearn.microsoft.com) | dcomp.h | [Vanara.PInvoke.Dcomp.DCompositionGetStatistics](https://github.com/dahall/Vanara/search?l=C%23&q=DCompositionGetStatistics)  
 [DCompositionGetTargetStatistics](https://www.google.com/search?num=5&q=DCompositionGetTargetStatistics+site%3Alearn.microsoft.com) | dcomp.h | [Vanara.PInvoke.Dcomp.DCompositionGetTargetStatistics](https://github.com/dahall/Vanara/search?l=C%23&q=DCompositionGetTargetStatistics)  
 [DCompositionWaitForCompositorClock](https://www.google.com/search?num=5&q=DCompositionWaitForCompositorClock+site%3Alearn.microsoft.com) | dcomp.h | [Vanara.PInvoke.Dcomp.DCompositionWaitForCompositorClock](https://github.com/dahall/Vanara/search?l=C%23&q=DCompositionWaitForCompositorClock)  
-[DllGetActivationFactory](https://www.google.com/search?num=5&q=DllGetActivationFactory+site%3Alearn.microsoft.com) |  |   
-[DwmEnableMMCSS](https://www.google.com/search?num=5&q=DwmEnableMMCSS+site%3Alearn.microsoft.com) |  |   
-[DwmFlush](https://www.google.com/search?num=5&q=DwmFlush+site%3Alearn.microsoft.com) |  |   
-[DwmpEnableDDASupport](https://www.google.com/search?num=5&q=DwmpEnableDDASupport+site%3Alearn.microsoft.com) |  |   
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

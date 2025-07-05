@@ -3,11 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows Direct3D11
 
 - Includes methods from d3d11.dll, d3dcsx.dll, d3d11sdklayers.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Direct3D11?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Direct3D11?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Direct3D11)  
-### Methods - 26% API coverage (13 of 50 functions)  
+### Methods - 27% API coverage (13 of 47 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[CreateDirect3D11DeviceFromDXGIDevice](https://www.google.com/search?num=5&q=CreateDirect3D11DeviceFromDXGIDevice+site%3Alearn.microsoft.com) |  |   
-[CreateDirect3D11SurfaceFromDXGISurface](https://www.google.com/search?num=5&q=CreateDirect3D11SurfaceFromDXGISurface+site%3Alearn.microsoft.com) |  |   
 [D3D11CreateDevice](https://www.google.com/search?num=5&q=D3D11CreateDevice+site%3Alearn.microsoft.com) | d3d11.h | [Vanara.PInvoke.D3D11.D3D11CreateDevice](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11CreateDevice)  
 [D3D11CreateDeviceAndSwapChain](https://www.google.com/search?num=5&q=D3D11CreateDeviceAndSwapChain+site%3Alearn.microsoft.com) | d3d11.h | [Vanara.PInvoke.D3D11.D3D11CreateDeviceAndSwapChain](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11CreateDeviceAndSwapChain)  
 [D3D11On12CreateDevice](https://www.google.com/search?num=5&q=D3D11On12CreateDevice+site%3Alearn.microsoft.com) | d3d11on12.h | [Vanara.PInvoke.D3D11.D3D11On12CreateDevice](https://github.com/dahall/Vanara/search?l=C%23&q=D3D11On12CreateDevice)  
@@ -55,7 +53,6 @@ Native Method | Header | Managed Method
 [D3DX11CreateFFT3DReal](https://www.google.com/search?num=5&q=D3DX11CreateFFT3DReal+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateFFT3DReal](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateFFT3DReal)  
 [D3DX11CreateScan](https://www.google.com/search?num=5&q=D3DX11CreateScan+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateScan](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateScan)  
 [D3DX11CreateSegmentedScan](https://www.google.com/search?num=5&q=D3DX11CreateSegmentedScan+site%3Alearn.microsoft.com) | d3dcsx.h | [Vanara.PInvoke.D3D11.D3DX11CreateSegmentedScan](https://github.com/dahall/Vanara/search?l=C%23&q=D3DX11CreateSegmentedScan)  
-[EnableFeatureLevelUpgrade](https://www.google.com/search?num=5&q=EnableFeatureLevelUpgrade+site%3Alearn.microsoft.com) |  |   
 ### Enumerations  
 Native Enum | Header | Managed Enum  
 --- | --- | ---  

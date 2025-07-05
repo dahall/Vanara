@@ -972,6 +972,7 @@ Native Class | Header | Managed Class
 [LOGFONTExtension](https://www.google.com/search?num=5&q=LOGFONTExtension+site%3Alearn.microsoft.com) |  | [Vanara.Extensions.LOGFONTExtension](https://github.com/dahall/Vanara/search?l=C%23&q=LOGFONTExtension)  
 [MessagePump](https://www.google.com/search?num=5&q=MessagePump+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.MessagePump](https://github.com/dahall/Vanara/search?l=C%23&q=MessagePump)  
 [MessagePumpWithAccelerators](https://www.google.com/search?num=5&q=MessagePumpWithAccelerators+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.MessagePumpWithAccelerators](https://github.com/dahall/Vanara/search?l=C%23&q=MessagePumpWithAccelerators)  
+[ModalDialog](https://www.google.com/search?num=5&q=ModalDialog+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ModalDialog](https://github.com/dahall/Vanara/search?l=C%23&q=ModalDialog)  
 [MsgExtensions](https://www.google.com/search?num=5&q=MsgExtensions+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.MsgExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=MsgExtensions)  
 [MsgParamsAttribute](https://www.google.com/search?num=5&q=MsgParamsAttribute+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.MsgParamsAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=MsgParamsAttribute)  
 [ObjectIdentifiers](https://www.google.com/search?num=5&q=ObjectIdentifiers+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ObjectIdentifiers](https://github.com/dahall/Vanara/search?l=C%23&q=ObjectIdentifiers)  
