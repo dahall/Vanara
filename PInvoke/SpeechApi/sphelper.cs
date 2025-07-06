@@ -707,7 +707,7 @@ public static partial class SpeechApi
 			if (!m_pCoMemWaveFormatEx.IsInvalid)
 			{
 				ppCoMemWFEX = new(m_pCoMemWaveFormatEx.Size);
-				m_pCoMemWaveFormatEx.CopyTo(ppCoMemWFEX, m_pCoMemWaveFormatEx.Size);
+				m_pCoMemWaveFormatEx.CopyTo(ppCoMemWFEX);
 			}
 			else
 			{
