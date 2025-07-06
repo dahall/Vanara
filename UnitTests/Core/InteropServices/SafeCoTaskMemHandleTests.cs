@@ -100,7 +100,9 @@ public class SafeCoTaskMemHandleTests
 		Assert.That(h.IsClosed && h.IsInvalid);
 
 		h = Marshal.AllocCoTaskMem(5);
+		h.DangerousOverrideSize(5);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
+		Assert.That(!h.Equals(SafeHGlobalHandle.Null));
 		Assert.That(h, Is.Not.EqualTo(SafeHGlobalHandle.Null));
 		h.Dispose();
 		Assert.That(h.IsClosed && h.IsInvalid);

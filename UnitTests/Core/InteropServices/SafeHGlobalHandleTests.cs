@@ -101,6 +101,7 @@ public class SafeHGlobalHandleTests
 		Assert.That(h.IsClosed && h.IsInvalid);
 
 		h = Marshal.AllocHGlobal(5);
+		h.DangerousOverrideSize(5);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
 		Assert.That(h, Is.Not.EqualTo(SafeHGlobalHandle.Null));
 		h.Dispose();

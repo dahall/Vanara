@@ -110,10 +110,9 @@ public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[
 
 	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
 	/// <param name="dest">A safe handle to allocated memory.</param>
-	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
 	/// <exception cref="System.ArgumentNullException">dest</exception>
 	/// <exception cref="System.ArgumentOutOfRangeException">destOffset</exception>
-	void CopyTo(ISafeMemoryHandleBase dest, SizeT destOffset = default);
+	void CopyTo(ISafeMemoryHandleBase dest);
 
 	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
 	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
@@ -123,6 +122,13 @@ public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[
 	/// <exception cref="System.ArgumentNullException">dest</exception>
 	/// <exception cref="System.ArgumentOutOfRangeException">destOffset - The destination buffer is not large enough.</exception>
 	void CopyTo(SizeT start, SizeT length, ISafeMemoryHandleBase dest, SizeT destOffset = default);
+
+	/// <summary>
+	/// Overrides the stored size of the allocated memory. This should be used with extreme caution only in cases where the the derived class
+	/// is returned from a P/Invoke call and no size has been set in a constructor.
+	/// </summary>
+	/// <param name="newSize">The size to be set as the new size of the allocated memory.</param>
+	void DangerousOverrideSize(SizeT newSize);
 
 	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
 	/// <returns>A byte array with the copied bytes.</returns>
@@ -488,44 +494,36 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, ISafeMemoryHan
 		return ret;
 	}
 
-	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
-	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length"/> bytes.</param>
-	/// <param name="length">The number of bytes to copy.</param>
-	public void CopyTo(IntPtr dest, SizeT length) => CallLocked(p => p.CopyTo(dest, length));
+	/// <inheritdoc/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void CopyTo(IntPtr dest, SizeT length) => CopyTo(0, dest, length);
 
-	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
-	/// <param name="dest">A safe handle to allocated memory.</param>
-	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
-	/// <exception cref="System.ArgumentNullException">dest</exception>
-	/// <exception cref="System.ArgumentOutOfRangeException">destOffset</exception>
-	public void CopyTo(ISafeMemoryHandleBase dest, SizeT destOffset = default)
-	{
-		if (dest is null) throw new ArgumentNullException(nameof(dest));
-		if (dest.Size < destOffset + Size) throw new ArgumentOutOfRangeException(nameof(destOffset), "The destination buffer is not large enough.");
-		CallLocked(p => p.CopyTo(dest.DangerousGetHandle(), Size));
-	}
-
-	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
-	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
-	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length" /> bytes.</param>
-	/// <param name="length">The number of bytes to copy.</param>
+	/// <inheritdoc/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void CopyTo(SizeT start, IntPtr dest, SizeT length) => CallLocked(p => p.CopyTo(start, dest, length));
 
-	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
-	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
-	/// <param name="length">The number of bytes to copy.</param>
-	/// <param name="dest">A safe handle to allocated memory.</param>
-	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
-	/// <exception cref="System.ArgumentNullException">dest</exception>
-	/// <exception cref="System.ArgumentOutOfRangeException">destOffset - The destination buffer is not large enough.</exception>
+	/// <inheritdoc/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public void CopyTo(ISafeMemoryHandleBase dest) => CopyTo(0, Size, dest);
+
+	/// <inheritdoc/>
 	public void CopyTo(SizeT start, SizeT length, ISafeMemoryHandleBase dest, SizeT destOffset = default)
 	{
 		if (dest is null) throw new ArgumentNullException(nameof(dest));
-		if (dest.Size < destOffset + length - start) throw new ArgumentOutOfRangeException(nameof(destOffset), "The destination buffer is not large enough.");
-		CallLocked(p => p.CopyTo(start, dest.DangerousGetHandle().Offset(destOffset), length));
+		if (start + length > Size) throw new ArgumentOutOfRangeException(nameof(start), "The start offset and length exceed the size of the memory block.");
+		if (dest.Size < destOffset + length) throw new ArgumentOutOfRangeException(nameof(destOffset), "The destination buffer is not large enough.");
+		CopyTo(start, dest.DangerousGetHandle().Offset(destOffset), length);
 	}
 
+	/// <summary>
+	/// Overrides the stored size of the allocated memory. This should be used with extreme caution only in cases where the the derived class
+	/// is returned from a P/Invoke call and no size has been set in a constructor.
+	/// </summary>
+	/// <param name="newSize">The size to be set as the new size of the allocated memory.</param>
+	public abstract void DangerousOverrideSize(SizeT newSize);
+
 	/// <inheritdoc/>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool Equals(SafeAllocatedMemoryHandleBase? other) => CompareTo(other) == 0;
 
 	/// <inheritdoc/>
@@ -788,7 +786,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	/// is returned from a P/Invoke call and no size has been set in a constructor.
 	/// </summary>
 	/// <param name="newSize">The size to be set as the new size of the allocated memory.</param>
-	public void DangerousOverrideSize(SizeT newSize) => sz = newSize;
+	public override void DangerousOverrideSize(SizeT newSize) => sz = newSize;
 
 	/// <summary>Locks this instance.</summary>
 	public override void Lock()
