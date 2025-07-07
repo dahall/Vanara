@@ -49,7 +49,7 @@ public abstract class ModalDialog(SafeHINSTANCE hInst, ResourceId dlgId) : IWind
 	/// The handle to the parent window of the dialog box. If <see langword="default"/>, the dialog box will have no parent.
 	/// </param>
 	/// <returns>A handle to the dialog box result. The value depends on the dialog box procedure's return value.</returns>
-	public virtual IntPtr Show(HWND hParent = default) => DialogBoxParam(hInst, dlgId, hParent, InternalDialogProc);
+	public virtual IntPtr Show(HWND hParent = default) => DialogBox(hInst, dlgId, hParent, InternalDialogProc);
 
 	/// <inheritdoc/>
 	nint IHandle.DangerousGetHandle() => Handle.DangerousGetHandle();
@@ -103,11 +103,15 @@ public abstract class ModalDialog(SafeHINSTANCE hInst, ResourceId dlgId) : IWind
 			case WindowMessage.WM_INITDIALOG:
 				Handle = hDlg;
 				if (!OnInitDialog())
+				{
 					DestroyWindow(hDlg);
+					return IntPtr.Zero;
+				}
 				break;
 
 			case WindowMessage.WM_COMMAND:
-				HANDLE_WM_COMMAND(hDlg, wParam, lParam, (h1, i, h2, u) => OnCommand(i, h2, u));
+				if (!Handle.IsNull)
+					HANDLE_WM_COMMAND(hDlg, wParam, lParam, (h1, i, h2, u) => OnCommand(i, h2, u));
 				break;
 
 			case WindowMessage.WM_CLOSE:
