@@ -1,9 +1,9 @@
 ## Vanara.PInvoke.Kernel32  
 PInvoke API (methods, structures and constants) imported from Windows Kernel32.dll.
 
-- Includes methods from kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll  
+- Includes methods from kernel32.dll, kernelbase.dll, normaliz.dll, vertdll.dll, bindlink.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Kernel32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Kernel32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Kernel32)  
-### Methods - 100% API coverage (1160 of 1160 functions)  
+### Methods - 100% API coverage (1162 of 1162 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=AcquireSRWLockExclusive)  
@@ -97,6 +97,7 @@ Native Method | Native DLL | Header | Managed Method
 [CopyFileFromAppW](https://www.google.com/search?num=5&q=CopyFileFromAppW+site%3Alearn.microsoft.com) | kernelbase.dll | fileapifromapp.h | [Vanara.PInvoke.Kernel32.CopyFileFromAppW](https://github.com/dahall/Vanara/search?l=C%23&q=CopyFileFromAppW)  
 [CopyFileTransacted](https://www.google.com/search?num=5&q=CopyFileTransactedA+site%3Alearn.microsoft.com) | kernel32.dll | winbase.h | [Vanara.PInvoke.Kernel32.CopyFileTransacted](https://github.com/dahall/Vanara/search?l=C%23&q=CopyFileTransacted)  
 [CreateActCtx](https://www.google.com/search?num=5&q=CreateActCtxA+site%3Alearn.microsoft.com) | kernel32.dll | Winbase.h | [Vanara.PInvoke.Kernel32.CreateActCtx](https://github.com/dahall/Vanara/search?l=C%23&q=CreateActCtx)  
+[CreateBindLink](https://www.google.com/search?num=5&q=CreateBindLink+site%3Alearn.microsoft.com) | bindlink.dll | bindlink.h | [Vanara.PInvoke.Kernel32.CreateBindLink](https://github.com/dahall/Vanara/search?l=C%23&q=CreateBindLink)  
 [CreateBoundaryDescriptor](https://www.google.com/search?num=5&q=CreateBoundaryDescriptorA+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.CreateBoundaryDescriptor](https://github.com/dahall/Vanara/search?l=C%23&q=CreateBoundaryDescriptor)  
 [CreateConsoleScreenBuffer](https://www.google.com/search?num=5&q=CreateConsoleScreenBuffer+site%3Alearn.microsoft.com) | kernel32.dll | Wincon.h | [Vanara.PInvoke.Kernel32.CreateConsoleScreenBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=CreateConsoleScreenBuffer)  
 [CreateDirectory](https://www.google.com/search?num=5&q=CreateDirectoryA+site%3Alearn.microsoft.com) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.CreateDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=CreateDirectory)  
@@ -879,6 +880,7 @@ Native Method | Native DLL | Header | Managed Method
 [ReleaseSemaphoreWhenCallbackReturns](https://www.google.com/search?num=5&q=ReleaseSemaphoreWhenCallbackReturns+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReleaseSemaphoreWhenCallbackReturns](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseSemaphoreWhenCallbackReturns)  
 [ReleaseSRWLockExclusive](https://www.google.com/search?num=5&q=ReleaseSRWLockExclusive+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReleaseSRWLockExclusive](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseSRWLockExclusive)  
 [ReleaseSRWLockShared](https://www.google.com/search?num=5&q=ReleaseSRWLockShared+site%3Alearn.microsoft.com) | kernel32.dll | WinBase.h | [Vanara.PInvoke.Kernel32.ReleaseSRWLockShared](https://github.com/dahall/Vanara/search?l=C%23&q=ReleaseSRWLockShared)  
+[RemoveBindLink](https://www.google.com/search?num=5&q=RemoveBindLink+site%3Alearn.microsoft.com) | bindlink.dll | bindlink.h | [Vanara.PInvoke.Kernel32.RemoveBindLink](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveBindLink)  
 [RemoveDirectory](https://www.google.com/search?num=5&q=RemoveDirectoryA+site%3Alearn.microsoft.com) | kernel32.dll | FileAPI.h | [Vanara.PInvoke.Kernel32.RemoveDirectory](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveDirectory)  
 [RemoveDirectory2](https://www.google.com/search?num=5&q=RemoveDirectory2A+site%3Alearn.microsoft.com) | kernel32.dll | fileapi.h | [Vanara.PInvoke.Kernel32.RemoveDirectory2](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveDirectory2)  
 [RemoveDirectoryFromAppW](https://www.google.com/search?num=5&q=RemoveDirectoryFromAppW+site%3Alearn.microsoft.com) | kernelbase.dll | fileapifromapp.h | [Vanara.PInvoke.Kernel32.RemoveDirectoryFromAppW](https://github.com/dahall/Vanara/search?l=C%23&q=RemoveDirectoryFromAppW)  
@@ -1226,6 +1228,7 @@ Native Enum | Header | Managed Enum
 [CopyProgressResult](https://www.google.com/search?num=5&q=CopyProgressResult+site%3Alearn.microsoft.com) | WinBase.h | [Vanara.PInvoke.Kernel32.CopyProgressResult](https://github.com/dahall/Vanara/search?l=C%23&q=CopyProgressResult)  
 [CP_FLAGS](https://www.google.com/search?num=5&q=CP_FLAGS+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Kernel32.CP_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=CP_FLAGS)  
 [CPU_SET_INFORMATION_TYPE](https://www.google.com/search?num=5&q=CPU_SET_INFORMATION_TYPE+site%3Alearn.microsoft.com) | Processthreadapi.h | [Vanara.PInvoke.Kernel32.CPU_SET_INFORMATION_TYPE](https://github.com/dahall/Vanara/search?l=C%23&q=CPU_SET_INFORMATION_TYPE)  
+[CREATE_BIND_LINK_FLAGS](https://www.google.com/search?num=5&q=CREATE_BIND_LINK_FLAGS+site%3Alearn.microsoft.com) | bindlink.h | [Vanara.PInvoke.Kernel32.CREATE_BIND_LINK_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=CREATE_BIND_LINK_FLAGS)  
 [CREATE_EVENT_FLAGS](https://www.google.com/search?num=5&q=CREATE_EVENT_FLAGS+site%3Alearn.microsoft.com) | synchapi.h | [Vanara.PInvoke.Kernel32.CREATE_EVENT_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=CREATE_EVENT_FLAGS)  
 [CREATE_MUTEX_FLAGS](https://www.google.com/search?num=5&q=CREATE_MUTEX_FLAGS+site%3Alearn.microsoft.com) | synchapi.h | [Vanara.PInvoke.Kernel32.CREATE_MUTEX_FLAGS](https://github.com/dahall/Vanara/search?l=C%23&q=CREATE_MUTEX_FLAGS)  
 [CREATE_PROCESS](https://www.google.com/search?num=5&q=CREATE_PROCESS+site%3Alearn.microsoft.com) | WinBase.h | [Vanara.PInvoke.Kernel32.CREATE_PROCESS](https://github.com/dahall/Vanara/search?l=C%23&q=CREATE_PROCESS)  
