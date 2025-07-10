@@ -223,6 +223,9 @@ public static partial class Crypt32
 
 		/// <summary>Used by the Schannel.dll operations system. This ALG_ID should not be used by applications.</summary>
 		CALG_TLS1PRF = 0x0000800a,
+
+		/// <summary>Keys used to encrypt/decrypt session keys. The handle to the CSP is contained in the hCryptProv member.</summary>
+		AT_KEYEXCHANGE = CertKeySpec.AT_KEYEXCHANGE,
 	}
 
 	/// <summary>The type of an ALG_ID.</summary>
@@ -1500,7 +1503,7 @@ public static partial class Crypt32
 		public uint cbCertEncoded;
 
 		/// <summary>The address of a CERT_INFO structure that contains the certificate information.</summary>
-		public IntPtr pCertInfo;
+		public StructPointer<CERT_INFO> pCertInfo;
 
 		/// <summary>A handle to the certificate store that contains the certificate context.</summary>
 		public HCERTSTORE hCertStore;
@@ -1549,7 +1552,7 @@ public static partial class Crypt32
 		public uint cExtension;
 
 		/// <summary>Array of structures, each holding information of type CERT_EXTENSION about a certificate or CRL.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>The <c>CERT_ID</c> structure is used as a flexible means of uniquely identifying a certificate.</summary>
@@ -1657,7 +1660,7 @@ public static partial class Crypt32
 		public uint cExtension;
 
 		/// <summary>An array of pointers to CERT_EXTENSION structures, each of which contains extension information about the certificate.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>
@@ -1730,7 +1733,7 @@ public static partial class Crypt32
 		public uint cRDNAttr;
 
 		/// <summary>Array of CERT_RDN_ATTR structures.</summary>
-		public IntPtr rgRDNAttr;
+		public ManagedArrayPointer<CERT_RDN_ATTR> rgRDNAttr;
 	}
 
 	/// <summary>
@@ -2189,7 +2192,7 @@ public static partial class Crypt32
 
 		/// <summary>Pointer to a CERT_STRONG_SIGN_SERIALIZED_INFO structure that specifies the parameters.</summary>
 		[FieldOffset(8)]
-		public IntPtr pSerializedInfo;
+		public StructPointer<CERT_STRONG_SIGN_SERIALIZED_INFO> pSerializedInfo;
 
 		/// <summary>
 		/// <para>
@@ -2222,6 +2225,79 @@ public static partial class Crypt32
 		/// </summary>
 		[FieldOffset(8)]
 		public StrPtrAnsi pszOID;
+	}
+
+	/// <summary>Contains the <i>signature algorithm</i>/<i>hash algorithm</i> and <i>public key algorithm</i>/<i>bit length</i> pairs that can be used for strong signing. This structure is used by the <c>CERT_STRONG_SIGN_PARA</c> structure.</summary>
+	/// <remarks>
+	/// <para>This structure is used by the <c>CERT_STRONG_SIGN_PARA</c> structure which is directly referenced by the following functions:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description><c>CertIsStrongHashToSign</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CryptMsgControl</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CryptMsgVerifyCountersignatureEncodedEx</c></description>
+	/// </item>
+	/// </list>
+	/// <para>Also, <c>CERT_STRONG_SIGN_PARA</c> is indirectly referenced by the following:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description><c>CryptDecodeMessage</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CryptDecryptAndVerifyMessageSignature</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CertGetCertificateChain</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CertSelectCertificateChains</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CryptVerifyDetachedMessageSignature</c></description>
+	/// </item>
+	/// <item>
+	/// <description><c>CryptVerifyMessageSignature</c></description>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_strong_sign_serialized_info typedef struct
+	// _CERT_STRONG_SIGN_SERIALIZED_INFO { DWORD dwFlags; LPWSTR pwszCNGSignHashAlgids; LPWSTR pwszCNGPubKeyMinBitLengths; }
+	// CERT_STRONG_SIGN_SERIALIZED_INFO, *PCERT_STRONG_SIGN_SERIALIZED_INFO;
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CERT_STRONG_SIGN_SERIALIZED_INFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CERT_STRONG_SIGN_SERIALIZED_INFO
+	{
+		/// <summary>
+		///   <para>By default, certificate strong signing parameters do not apply to certificate revocation lists (CRLs) or online certificate status protocol (OCSP) responses. You can set one or both of the following values to enable strong signing on CRLs and OCSP responses.</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <description>Value</description>
+		///       <description>Meaning</description>
+		///     </listheader>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CERT_STRONG_SIGN_ENABLE_CRL_CHECK</b> 0x1</description>
+		///       <description>Enable strong signing of CRLs.</description>
+		///     </item>
+		///     <item>
+		///       <description>
+		///         <c></c>
+		///         <c></c> <b>CERT_STRONG_SIGN_ENABLE_OCSP_CHECK</b> 0x2</description>
+		///       <description>Enable strong signing of OCSP responses.</description>
+		///     </item>
+		///   </list>
+		/// </summary>
+		public uint dwFlags;
+
+		/// <summary>Pointer to a null-terminated Unicode string that contains a set of <i>signature algorithm</i>/<i>hash algorithm</i> pairs. A Unicode semicolon (L";") separates the pairs. This is shown by the following example.</summary>
+		public StrPtrUni pwszCNGSignHashAlgids;
+
+		/// <summary>Pointer to a null-terminated Unicode string that contains a set of <i>public key algorithm</i>/<i>bit length</i> pairs. A Unicode semicolon (L";") separates the pairs. This is shown by the following example.</summary>
+		public StrPtrUni pwszCNGPubKeyMinBitLengths;
 	}
 
 	/// <summary>
@@ -2491,7 +2567,7 @@ public static partial class Crypt32
 		public uint cbCrlEncoded;
 
 		/// <summary>A pointer to CRL_INFO structure containing the CRL information.</summary>
-		public IntPtr pCrlInfo;
+		public StructPointer<CRL_INFO> pCrlInfo;
 
 		/// <summary>A handle to the certificate store.</summary>
 		public HCERTSTORE hCertStore;
@@ -2525,7 +2601,7 @@ public static partial class Crypt32
 		public uint cExtension;
 
 		/// <summary>Array of pointers to CERT_EXTENSION structures, each providing information about the revoked certificate.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>The <c>CRL_INFO</c> structure contains the information of a certificate revocation list (CRL).</summary>
@@ -2582,13 +2658,13 @@ public static partial class Crypt32
 		public uint cCRLEntry;
 
 		/// <summary>Array of pointers to CRL_ENTRY structures. Each of these structures represents a revoked certificate.</summary>
-		public IntPtr rgCRLEntry;
+		public ArrayPointer<CRL_ENTRY> rgCRLEntry;
 
 		/// <summary>Number of elements in the <c>rgExtension</c> array.</summary>
 		public uint cExtension;
 
 		/// <summary>Array of pointers to CERT_EXTENSION structures, each holding information about the CRL.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>
@@ -2627,7 +2703,7 @@ public static partial class Crypt32
 		/// Pointer to an array of CRYPT_INTEGER_BLOB structures. The <c>cbData</c> member of the <c>CRYPT_INTEGER_BLOB</c> structure
 		/// indicates the length of the <c>pbData</c> member. The <c>pbData</c> member contains the attribute information.
 		/// </summary>
-		public IntPtr rgValue;
+		public ArrayPointer<CRYPTOAPI_BLOB> rgValue;
 	}
 
 	/// <summary>
@@ -2765,7 +2841,7 @@ public static partial class Crypt32
 		/// </para>
 		/// <para>When the <c>dwProvType</c> member is zero, this member is not used and must be <c>NULL</c>.</para>
 		/// </summary>
-		public IntPtr rgProvParam;
+		public ArrayPointer<CRYPT_KEY_PROV_PARAM> rgProvParam;
 
 		/// <summary>
 		/// <para>The specification of the private key to retrieve.</para>
@@ -2789,6 +2865,32 @@ public static partial class Crypt32
 		/// </list>
 		/// </summary>
 		public CertKeySpec dwKeySpec;
+	}
+
+	/// <summary>
+	/// The <b>CRYPT_KEY_PROV_PARAM</b> structure contains information about a <c>key container</c> parameter. This structure is used with
+	/// the <c>CRYPT_KEY_PROV_INFO</c> structure.
+	/// </summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_key_prov_param typedef struct _CRYPT_KEY_PROV_PARAM {
+	// DWORD dwParam; BYTE *pbData; DWORD cbData; DWORD dwFlags; } CRYPT_KEY_PROV_PARAM, *PCRYPT_KEY_PROV_PARAM;
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CRYPT_KEY_PROV_PARAM")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CRYPT_KEY_PROV_PARAM
+	{
+		/// <summary>Identifies the parameter. For possible values, see the <i>dwParam</i> parameter of the <c>CryptSetProvParam</c> function.</summary>
+		public uint dwParam;
+
+		/// <summary>
+		/// The address of a buffer that contains the parameter data. For more information, see the <i>pbData</i> parameter of the
+		/// <c>CryptSetProvParam</c> function.
+		/// </summary>
+		public IntPtr pbData;
+
+		/// <summary>The size, in bytes, of the <b>pbData</b> buffer.</summary>
+		public uint cbData;
+
+		/// <summary>This member is reserved for future use and is zero.</summary>
+		public uint dwFlags;
 	}
 
 	/// <summary>
@@ -2843,7 +2945,7 @@ public static partial class Crypt32
 		/// <summary>
 		/// A pointer to a CRYPT_TIMESTAMP_INFO structure that contains a signed data content type in Cryptographic Message Syntax (CMS) format.
 		/// </summary>
-		public IntPtr pTimeStamp;
+		public StructPointer<CRYPT_TIMESTAMP_INFO> pTimeStamp;
 	}
 
 	/// <summary>
@@ -2897,7 +2999,7 @@ public static partial class Crypt32
 		/// Optional. A pointer to a CRYPT_TIMESTAMP_ACCURACY structure that contains the time deviation around the UTC time at which
 		/// the time stamp token was created by the TSA.
 		/// </summary>
-		public IntPtr pvAccuracy;
+		public StructPointer<CRYPT_TIMESTAMP_ACCURACY> pvAccuracy;
 
 		/// <summary>This member is reserved.</summary>
 		[MarshalAs(UnmanagedType.Bool)] public bool fOrdering;
@@ -2915,7 +3017,7 @@ public static partial class Crypt32
 		public uint cExtension;
 
 		/// <summary>A pointer to an array of CERT_EXTENSION structures that contain extension information returned from the request.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>The <c>CRYPT_TIMESTAMP_PARA</c> structure defines additional parameters for the time stamp request.</summary>
@@ -2950,7 +3052,7 @@ public static partial class Crypt32
 		/// <summary>
 		/// A pointer to an array of CERT_EXTENSION structures that contain extension information that is passed in the request.
 		/// </summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>
@@ -3022,7 +3124,7 @@ public static partial class Crypt32
 		public uint cbCtlEncoded;
 
 		/// <summary>A pointer to CTL_INFO structure contain the CTL information.</summary>
-		public IntPtr pCtlInfo;
+		public StructPointer<CTL_INFO> pCtlInfo;
 
 		/// <summary>A handle to the certificate store.</summary>
 		public HCERTSTORE hCertStore;
@@ -3056,7 +3158,7 @@ public static partial class Crypt32
 		public uint cAttribute;
 
 		/// <summary>Array of CRYPT_ATTRIBUTE structures, each holding information about the subject.</summary>
-		public IntPtr rgAttribute;
+		public ArrayPointer<CRYPT_ATTRIBUTE> rgAttribute;
 	}
 
 	/// <summary>The <c>CTL_INFO</c> structure contains the information stored in a Certificate Trust List (CTL).</summary>
@@ -3122,13 +3224,13 @@ public static partial class Crypt32
 		public uint cCTLEntry;
 
 		/// <summary>Array of CTL_ENTRY structures.</summary>
-		public IntPtr rgCTLEntry;
+		public ArrayPointer<CTL_ENTRY> rgCTLEntry;
 
 		/// <summary>Number of elements in the <c>rgExtension</c> array.</summary>
 		public uint cExtension;
 
 		/// <summary>Array of CERT_EXTENSION structures.</summary>
-		public IntPtr rgExtension;
+		public ArrayPointer<CERT_EXTENSION> rgExtension;
 	}
 
 	/// <summary>

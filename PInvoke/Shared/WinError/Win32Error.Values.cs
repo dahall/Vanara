@@ -9397,4 +9397,457 @@ public partial struct Win32Error
 
 	/// <summary>The name could not be resolved to an IP Address.</summary>
 	public const uint ISDSC_INVALID_HOST = 0xEFFF0068;
+
+	/// <summary>Bad UID.</summary>
+	public const uint NTE_BAD_UID = 0x80090001;
+
+	/// <summary>Bad Hash.</summary>
+	public const uint NTE_BAD_HASH = 0x80090002;
+
+	/// <summary>Bad Key.</summary>
+	public const uint NTE_BAD_KEY = 0x80090003;
+
+	/// <summary>Bad Length.</summary>
+	public const uint NTE_BAD_LEN = 0x80090004;
+
+	/// <summary>Bad Data.</summary>
+	public const uint NTE_BAD_DATA = 0x80090005;
+
+	/// <summary>Invalid Signature.</summary>
+	public const uint NTE_BAD_SIGNATURE = 0x80090006;
+
+	/// <summary>Bad Version of provider.</summary>
+	public const uint NTE_BAD_VER = 0x80090007;
+
+	/// <summary>Invalid algorithm specified.</summary>
+	public const uint NTE_BAD_ALGID = 0x80090008;
+
+	/// <summary>Invalid flags specified.</summary>
+	public const uint NTE_BAD_FLAGS = 0x80090009;
+
+	/// <summary>Invalid type specified.</summary>
+	public const uint NTE_BAD_TYPE = 0x8009000A;
+
+	/// <summary>Key not valid for use in specified state.</summary>
+	public const uint NTE_BAD_KEY_STATE = 0x8009000B;
+
+	/// <summary>Hash not valid for use in specified state.</summary>
+	public const uint NTE_BAD_HASH_STATE = 0x8009000C;
+
+	/// <summary>Key does not exist.</summary>
+	public const uint NTE_NO_KEY = 0x8009000D;
+
+	/// <summary>Insufficient memory available for the operation.</summary>
+	public const uint NTE_NO_MEMORY = 0x8009000E;
+
+	/// <summary>Object already exists.</summary>
+	public const uint NTE_EXISTS = 0x8009000F;
+
+	/// <summary>Access denied.</summary>
+	public const uint NTE_PERM = 0x80090010;
+
+	/// <summary>Object was not found.</summary>
+	public const uint NTE_NOT_FOUND = 0x80090011;
+
+	/// <summary>Data already encrypted.</summary>
+	public const uint NTE_DOUBLE_ENCRYPT = 0x80090012;
+
+	/// <summary>Invalid provider specified.</summary>
+	public const uint NTE_BAD_PROVIDER = 0x80090013;
+
+	/// <summary>Invalid provider type specified.</summary>
+	public const uint NTE_BAD_PROV_TYPE = 0x80090014;
+
+	/// <summary>Provider's public key is invalid.</summary>
+	public const uint NTE_BAD_PUBLIC_KEY = 0x80090015;
+
+	/// <summary>Keyset does not exist</summary>
+	public const uint NTE_BAD_KEYSET = 0x80090016;
+
+	/// <summary>Provider type not defined.</summary>
+	public const uint NTE_PROV_TYPE_NOT_DEF = 0x80090017;
+
+	/// <summary>Provider type as registered is invalid.</summary>
+	public const uint NTE_PROV_TYPE_ENTRY_BAD = 0x80090018;
+
+	/// <summary>The keyset is not defined.</summary>
+	public const uint NTE_KEYSET_NOT_DEF = 0x80090019;
+
+	/// <summary>Keyset as registered is invalid.</summary>
+	public const uint NTE_KEYSET_ENTRY_BAD = 0x8009001A;
+
+	/// <summary>Provider type does not match registered value.</summary>
+	public const uint NTE_PROV_TYPE_NO_MATCH = 0x8009001B;
+
+	/// <summary>The digital signature file is corrupt.</summary>
+	public const uint NTE_SIGNATURE_FILE_BAD = 0x8009001C;
+
+	/// <summary>Provider DLL failed to initialize correctly.</summary>
+	public const uint NTE_PROVIDER_DLL_FAIL = 0x8009001D;
+
+	/// <summary>Provider DLL could not be found.</summary>
+	public const uint NTE_PROV_DLL_NOT_FOUND = 0x8009001E;
+
+	/// <summary>The Keyset parameter is invalid.</summary>
+	public const uint NTE_BAD_KEYSET_PARAM = 0x8009001F;
+
+	/// <summary>An internal error occurred.</summary>
+	public const uint NTE_FAIL = 0x80090020;
+
+	/// <summary>A base error occurred.</summary>
+	public const uint NTE_SYS_ERR = 0x80090021;
+
+	/// <summary>Provider could not perform the action since the context was acquired as silent.</summary>
+	public const uint NTE_SILENT_CONTEXT = 0x80090022;
+
+	/// <summary>The security token does not have storage space available for an additional container.</summary>
+	public const uint NTE_TOKEN_KEYSET_STORAGE_FULL = 0x80090023;
+
+	/// <summary>The profile for the user is a temporary profile.</summary>
+	public const uint NTE_TEMPORARY_PROFILE = 0x80090024;
+
+	/// <summary>The key parameters could not be set because the CSP uses fixed parameters.</summary>
+	public const uint NTE_FIXEDPARAMETER = 0x80090025;
+
+	/// <summary>The supplied handle is invalid.</summary>
+	public const uint NTE_INVALID_HANDLE = 0x80090026;
+
+	/// <summary>The parameter is incorrect.</summary>
+	public const uint NTE_INVALID_PARAMETER = 0x80090027;
+
+	/// <summary>The buffer supplied to a function was too small.</summary>
+	public const uint NTE_BUFFER_TOO_SMALL = 0x80090028;
+
+	/// <summary>The requested operation is not supported.</summary>
+	public const uint NTE_NOT_SUPPORTED = 0x80090029;
+
+	/// <summary>No more data is available.</summary>
+	public const uint NTE_NO_MORE_ITEMS = 0x8009002A;
+
+	/// <summary>The supplied buffers overlap incorrectly.</summary>
+	public const uint NTE_BUFFERS_OVERLAP = 0x8009002B;
+
+	/// <summary>The specified data could not be decrypted.</summary>
+	public const uint NTE_DECRYPTION_FAILURE = 0x8009002C;
+
+	/// <summary>An internal consistency check failed.</summary>
+	public const uint NTE_INTERNAL_ERROR = 0x8009002D;
+
+	/// <summary>This operation requires input from the user.</summary>
+	public const uint NTE_UI_REQUIRED = 0x8009002E;
+
+	/// <summary>The cryptographic provider does not support HMAC.</summary>
+	public const uint NTE_HMAC_NOT_SUPPORTED = 0x8009002F;
+
+	/// <summary>The device that is required by this cryptographic provider is not ready for use.</summary>
+	public const uint NTE_DEVICE_NOT_READY = 0x80090030;
+
+	/// <summary>The dictionary attack mitigation is triggered and the provided authorization was ignored by the provider.</summary>
+	public const uint NTE_AUTHENTICATION_IGNORED = 0x80090031;
+
+	/// <summary>The validation of the provided data failed the integrity or signature validation.</summary>
+	public const uint NTE_VALIDATION_FAILED = 0x80090032;
+
+	/// <summary>Incorrect password.</summary>
+	public const uint NTE_INCORRECT_PASSWORD = 0x80090033;
+
+	/// <summary>Encryption failed.</summary>
+	public const uint NTE_ENCRYPTION_FAILURE = 0x80090034;
+
+	/// <summary>The device that is required by this cryptographic provider is not found on this platform.</summary>
+	public const uint NTE_DEVICE_NOT_FOUND = 0x80090035;
+
+	/// <summary>The action was cancelled by the user.</summary>
+	public const uint NTE_USER_CANCELLED = 0x80090036;
+
+	/// <summary>The password is no longer valid and must be changed.</summary>
+	public const uint NTE_PASSWORD_CHANGE_REQUIRED = 0x80090037;
+
+	/// <summary>The operation cannot be completed from Terminal Server client sessions.</summary>
+	public const uint NTE_NOT_ACTIVE_CONSOLE = 0x80090038;
+
+	/// <summary>VBS key isolation is not available.</summary>
+	public const uint NTE_VBS_UNAVAILABLE = 0x80090039;
+
+	/// <summary>Cannot decrypt a VBS-isolated key.</summary>
+	public const uint NTE_VBS_CANNOT_DECRYPT_KEY = 0x8009003A;
+
+	/// <summary>Not enough memory is available to complete this request</summary>
+	public const uint SEC_E_INSUFFICIENT_MEMORY = 0x80090300;
+
+	/// <summary>The handle specified is invalid</summary>
+	public const uint SEC_E_INVALID_HANDLE = 0x80090301;
+
+	/// <summary>The function requested is not supported</summary>
+	public const uint SEC_E_UNSUPPORTED_FUNCTION = 0x80090302;
+
+	/// <summary>The specified target is unknown or unreachable</summary>
+	public const uint SEC_E_TARGET_UNKNOWN = 0x80090303;
+
+	/// <summary>The Local Security Authority cannot be contacted</summary>
+	public const uint SEC_E_INTERNAL_ERROR = 0x80090304;
+
+	/// <summary>The requested security package does not exist</summary>
+	public const uint SEC_E_SECPKG_NOT_FOUND = 0x80090305;
+
+	/// <summary>The caller is not the owner of the desired credentials</summary>
+	public const uint SEC_E_NOT_OWNER = 0x80090306;
+
+	/// <summary>The security package failed to initialize, and cannot be installed</summary>
+	public const uint SEC_E_CANNOT_INSTALL = 0x80090307;
+
+	/// <summary>The token supplied to the function is invalid</summary>
+	public const uint SEC_E_INVALID_TOKEN = 0x80090308;
+
+	/// <summary>The security package is not able to marshall the logon buffer, so the logon attempt has failed</summary>
+	public const uint SEC_E_CANNOT_PACK = 0x80090309;
+
+	/// <summary>The per-message Quality of Protection is not supported by the security package</summary>
+	public const uint SEC_E_QOP_NOT_SUPPORTED = 0x8009030A;
+
+	/// <summary>The security context does not allow impersonation of the client</summary>
+	public const uint SEC_E_NO_IMPERSONATION = 0x8009030B;
+
+	/// <summary>The logon attempt failed</summary>
+	public const uint SEC_E_LOGON_DENIED = 0x8009030C;
+
+	/// <summary>The credentials supplied to the package were not recognized</summary>
+	public const uint SEC_E_UNKNOWN_CREDENTIALS = 0x8009030D;
+
+	/// <summary>No credentials are available in the security package</summary>
+	public const uint SEC_E_NO_CREDENTIALS = 0x8009030E;
+
+	/// <summary>The message or signature supplied for verification has been altered</summary>
+	public const uint SEC_E_MESSAGE_ALTERED = 0x8009030F;
+
+	/// <summary>The message supplied for verification is out of sequence</summary>
+	public const uint SEC_E_OUT_OF_SEQUENCE = 0x80090310;
+
+	/// <summary>No authority could be contacted for authentication.</summary>
+	public const uint SEC_E_NO_AUTHENTICATING_AUTHORITY = 0x80090311;
+
+	/// <summary>The function completed successfully, but must be called again to complete the context</summary>
+	public const uint SEC_I_CONTINUE_NEEDED = 0x00090312;
+
+	/// <summary>The function completed successfully, but CompleteToken must be called</summary>
+	public const uint SEC_I_COMPLETE_NEEDED = 0x00090313;
+
+	/// <summary>The function completed successfully, but both CompleteToken and this function must be called to complete the context</summary>
+	public const uint SEC_I_COMPLETE_AND_CONTINUE = 0x00090314;
+
+	/// <summary>The logon was completed, but no network authority was available. The logon was made using locally known information</summary>
+	public const uint SEC_I_LOCAL_LOGON = 0x00090315;
+
+	/// <summary>Schannel has received a TLS extension the SSPI caller subscribed to.</summary>
+	public const uint SEC_I_GENERIC_EXTENSION_RECEIVED = 0x00090316;
+
+	/// <summary>The requested security package does not exist</summary>
+	public const uint SEC_E_BAD_PKGID = 0x80090316;
+
+	/// <summary>The context has expired and can no longer be used.</summary>
+	public const uint SEC_E_CONTEXT_EXPIRED = 0x80090317;
+
+	/// <summary>The context has expired and can no longer be used.</summary>
+	public const uint SEC_I_CONTEXT_EXPIRED = 0x00090317;
+
+	/// <summary>The supplied message is incomplete. The signature was not verified.</summary>
+	public const uint SEC_E_INCOMPLETE_MESSAGE = 0x80090318;
+
+	/// <summary>The credentials supplied were not complete, and could not be verified. The context could not be initialized.</summary>
+	public const uint SEC_E_INCOMPLETE_CREDENTIALS = 0x80090320;
+
+	/// <summary>The buffers supplied to a function was too small.</summary>
+	public const uint SEC_E_BUFFER_TOO_SMALL = 0x80090321;
+
+	/// <summary>The credentials supplied were not complete, and could not be verified. Additional information can be returned from the context.</summary>
+	public const uint SEC_I_INCOMPLETE_CREDENTIALS = 0x00090320;
+
+	/// <summary>The context data must be renegotiated with the peer.</summary>
+	public const uint SEC_I_RENEGOTIATE = 0x00090321;
+
+	/// <summary>The target principal name is incorrect.</summary>
+	public const uint SEC_E_WRONG_PRINCIPAL = 0x80090322;
+
+	/// <summary>There is no LSA mode context associated with this context.</summary>
+	public const uint SEC_I_NO_LSA_CONTEXT = 0x00090323;
+
+	/// <summary>The clocks on the client and server machines are skewed.</summary>
+	public const uint SEC_E_TIME_SKEW = 0x80090324;
+
+	/// <summary>The certificate chain was issued by an authority that is not trusted.</summary>
+	public const uint SEC_E_UNTRUSTED_ROOT = 0x80090325;
+
+	/// <summary>The message received was unexpected or badly formatted.</summary>
+	public const uint SEC_E_ILLEGAL_MESSAGE = 0x80090326;
+
+	/// <summary>An unknown error occurred while processing the certificate.</summary>
+	public const uint SEC_E_CERT_UNKNOWN = 0x80090327;
+
+	/// <summary>The received certificate has expired.</summary>
+	public const uint SEC_E_CERT_EXPIRED = 0x80090328;
+
+	/// <summary>The specified data could not be encrypted.</summary>
+	public const uint SEC_E_ENCRYPT_FAILURE = 0x80090329;
+
+	/// <summary>The specified data could not be decrypted.</summary>
+	public const uint SEC_E_DECRYPT_FAILURE = 0x80090330;
+
+	/// <summary>The client and server cannot communicate, because they do not possess a common algorithm.</summary>
+	public const uint SEC_E_ALGORITHM_MISMATCH = 0x80090331;
+
+	/// <summary>The security context could not be established due to a failure in the requested quality of service (e.g. mutual authentication or delegation).</summary>
+	public const uint SEC_E_SECURITY_QOS_FAILED = 0x80090332;
+
+	/// <summary>A security context was deleted before the context was completed. This is considered a logon failure.</summary>
+	public const uint SEC_E_UNFINISHED_CONTEXT_DELETED = 0x80090333;
+
+	/// <summary>The client is trying to negotiate a context and the server requires user-to-user but didn't send a TGT reply.</summary>
+	public const uint SEC_E_NO_TGT_REPLY = 0x80090334;
+
+	/// <summary>Unable to accomplish the requested task because the local machine does not have any IP addresses.</summary>
+	public const uint SEC_E_NO_IP_ADDRESSES = 0x80090335;
+
+	/// <summary>The supplied credential handle does not match the credential associated with the security context.</summary>
+	public const uint SEC_E_WRONG_CREDENTIAL_HANDLE = 0x80090336;
+
+	/// <summary>The crypto system or checksum function is invalid because a required function is unavailable.</summary>
+	public const uint SEC_E_CRYPTO_SYSTEM_INVALID = 0x80090337;
+
+	/// <summary>The number of maximum ticket referrals has been exceeded.</summary>
+	public const uint SEC_E_MAX_REFERRALS_EXCEEDED = 0x80090338;
+
+	/// <summary>The local machine must be a Kerberos KDC (domain controller) and it is not.</summary>
+	public const uint SEC_E_MUST_BE_KDC = 0x80090339;
+
+	/// <summary>The other end of the security negotiation is requires strong crypto but it is not supported on the local machine.</summary>
+	public const uint SEC_E_STRONG_CRYPTO_NOT_SUPPORTED = 0x8009033A;
+
+	/// <summary>The KDC reply contained more than one principal name.</summary>
+	public const uint SEC_E_TOO_MANY_PRINCIPALS = 0x8009033B;
+
+	/// <summary>Expected to find PA data for a hint of what etype to use, but it was not found.</summary>
+	public const uint SEC_E_NO_PA_DATA = 0x8009033C;
+
+	/// <summary>The client certificate does not contain a valid UPN, or does not match the client name in the logon request. Please contact your administrator.</summary>
+	public const uint SEC_E_PKINIT_NAME_MISMATCH = 0x8009033D;
+
+	/// <summary>Smartcard logon is required and was not used.</summary>
+	public const uint SEC_E_SMARTCARD_LOGON_REQUIRED = 0x8009033E;
+
+	/// <summary>A system shutdown is in progress.</summary>
+	public const uint SEC_E_SHUTDOWN_IN_PROGRESS = 0x8009033F;
+
+	/// <summary>An invalid request was sent to the KDC.</summary>
+	public const uint SEC_E_KDC_INVALID_REQUEST = 0x80090340;
+
+	/// <summary>The KDC was unable to generate a referral for the service requested.</summary>
+	public const uint SEC_E_KDC_UNABLE_TO_REFER = 0x80090341;
+
+	/// <summary>The encryption type requested is not supported by the KDC.</summary>
+	public const uint SEC_E_KDC_UNKNOWN_ETYPE = 0x80090342;
+
+	/// <summary>An unsupported preauthentication mechanism was presented to the Kerberos package.</summary>
+	public const uint SEC_E_UNSUPPORTED_PREAUTH = 0x80090343;
+
+	/// <summary>The requested operation cannot be completed. The computer must be trusted for delegation and the current user account must be configured to allow delegation.</summary>
+	public const uint SEC_E_DELEGATION_REQUIRED = 0x80090345;
+
+	/// <summary>Client's supplied SSPI channel bindings were incorrect.</summary>
+	public const uint SEC_E_BAD_BINDINGS = 0x80090346;
+
+	/// <summary>The received certificate was mapped to multiple accounts.</summary>
+	public const uint SEC_E_MULTIPLE_ACCOUNTS = 0x80090347;
+
+	/// <summary> SEC_E_NO_KERB_KEY</summary>
+	public const uint SEC_E_NO_KERB_KEY = 0x80090348;
+
+	/// <summary>The certificate is not valid for the requested usage.</summary>
+	public const uint SEC_E_CERT_WRONG_USAGE = 0x80090349;
+
+	/// <summary>The system cannot contact a domain controller to service the authentication request. Please try again later.</summary>
+	public const uint SEC_E_DOWNGRADE_DETECTED = 0x80090350;
+
+	/// <summary>The smartcard certificate used for authentication has been revoked. Please contact your system administrator. There may be additional information in the event log.</summary>
+	public const uint SEC_E_SMARTCARD_CERT_REVOKED = 0x80090351;
+
+	/// <summary>An untrusted certificate authority was detected while processing the smartcard certificate used for authentication. Please contact your system administrator.</summary>
+	public const uint SEC_E_ISSUING_CA_UNTRUSTED = 0x80090352;
+
+	/// <summary>The revocation status of the smartcard certificate used for authentication could not be determined. Please contact your system administrator.</summary>
+	public const uint SEC_E_REVOCATION_OFFLINE_C = 0x80090353;
+
+	/// <summary>The smartcard certificate used for authentication was not trusted. Please contact your system administrator.</summary>
+	public const uint SEC_E_PKINIT_CLIENT_FAILURE = 0x80090354;
+
+	/// <summary>The smartcard certificate used for authentication has expired. Please contact your system administrator.</summary>
+	public const uint SEC_E_SMARTCARD_CERT_EXPIRED = 0x80090355;
+
+	/// <summary>The Kerberos subsystem encountered an error. A service for user protocol request was made against a domain controller which does not support service for user.</summary>
+	public const uint SEC_E_NO_S4U_PROT_SUPPORT = 0x80090356;
+
+	/// <summary>An attempt was made by this server to make a Kerberos constrained delegation request for a target outside of the server's realm. This is not supported, and indicates a misconfiguration on this server's allowed to delegate to list. Please contact your administrator.</summary>
+	public const uint SEC_E_CROSSREALM_DELEGATION_FAILURE = 0x80090357;
+
+	/// <summary>The revocation status of the domain controller certificate used for smartcard authentication could not be determined. There is additional information in the system event log. Please contact your system administrator.</summary>
+	public const uint SEC_E_REVOCATION_OFFLINE_KDC = 0x80090358;
+
+	/// <summary>An untrusted certificate authority was detected while processing the domain controller certificate used for authentication. There is additional information in the system event log. Please contact your system administrator.</summary>
+	public const uint SEC_E_ISSUING_CA_UNTRUSTED_KDC = 0x80090359;
+
+	/// <summary>The domain controller certificate used for smartcard logon has expired. Please contact your system administrator with the contents of your system event log.</summary>
+	public const uint SEC_E_KDC_CERT_EXPIRED = 0x8009035A;
+
+	/// <summary>The domain controller certificate used for smartcard logon has been revoked. Please contact your system administrator with the contents of your system event log.</summary>
+	public const uint SEC_E_KDC_CERT_REVOKED = 0x8009035B;
+
+	/// <summary>A signature operation must be performed before the user can authenticate.</summary>
+	public const uint SEC_I_SIGNATURE_NEEDED = 0x0009035C;
+
+	/// <summary>One or more of the parameters passed to the function was invalid.</summary>
+	public const uint SEC_E_INVALID_PARAMETER = 0x8009035D;
+
+	/// <summary>Client policy does not allow credential delegation to target server.</summary>
+	public const uint SEC_E_DELEGATION_POLICY = 0x8009035E;
+
+	/// <summary>Client policy does not allow credential delegation to target server with NLTM only authentication.</summary>
+	public const uint SEC_E_POLICY_NLTM_ONLY = 0x8009035F;
+
+	/// <summary>The recipient rejected the renegotiation request.</summary>
+	public const uint SEC_I_NO_RENEGOTIATION = 0x00090360;
+
+	/// <summary>The required security context does not exist.</summary>
+	public const uint SEC_E_NO_CONTEXT = 0x80090361;
+
+	/// <summary>The PKU2U protocol encountered an error while attempting to utilize the associated certificates.</summary>
+	public const uint SEC_E_PKU2U_CERT_FAILURE = 0x80090362;
+
+	/// <summary>The identity of the server computer could not be verified.</summary>
+	public const uint SEC_E_MUTUAL_AUTH_FAILED = 0x80090363;
+
+	/// <summary>The returned buffer is only a fragment of the message.  More fragments need to be returned.</summary>
+	public const uint SEC_I_MESSAGE_FRAGMENT = 0x00090364;
+
+	/// <summary>Only https scheme is allowed.</summary>
+	public const uint SEC_E_ONLY_HTTPS_ALLOWED = 0x80090365;
+
+	/// <summary>The function completed successfully, but must be called again to complete the context.  Early start can be used.</summary>
+	public const uint SEC_I_CONTINUE_NEEDED_MESSAGE_OK = 0x00090366;
+
+	/// <summary>No common application protocol exists between the client and the server. Application protocol negotiation failed.</summary>
+	public const uint SEC_E_APPLICATION_PROTOCOL_MISMATCH = 0x80090367;
+
+	/// <summary>An asynchronous SSPI routine has been called and the work is pending completion.</summary>
+	public const uint SEC_I_ASYNC_CALL_PENDING = 0x00090368;
+
+	/// <summary>You can't sign in with a user ID in this format. Try using your email address instead.</summary>
+	public const uint SEC_E_INVALID_UPN_NAME = 0x80090369;
+
+	/// <summary>The buffer supplied by the SSPI caller to receive generic extensions is too small.</summary>
+	public const uint SEC_E_EXT_BUFFER_TOO_SMALL = 0x8009036A;
+
+	/// <summary>Not enough secbuffers were supplied to generate a token.</summary>
+	public const uint SEC_E_INSUFFICIENT_BUFFERS = 0x8009036B;
+
+	/// <summary>The TLS session cannot be resumed.</summary>
+	public const uint SEC_I_INVALID_SESSION_STATE = 0x8009036C;
 }

@@ -3224,7 +3224,7 @@ public static partial class Crypt32
 		/// begin with a certificate contained in the root store or an otherwise trusted, self-signed certificate. If the original chain
 		/// begins with a trusted certificate, there will be only a single simple chain in the array.
 		/// </summary>
-		public IntPtr rgpChain;
+		public ArrayPointer<StructPointer<CERT_SIMPLE_CHAIN>> rgpChain;
 
 		/// <summary>The number of chains in the <c>rgpLowerQualityChainContext</c> array.</summary>
 		public uint cLowerQualityChainContext;
@@ -3232,7 +3232,7 @@ public static partial class Crypt32
 		/// <summary>
 		/// An array of pointers to CERT_CHAIN_CONTEXT structures. Returned when CERT_CHAIN_RETURN_LOWER_QUALITY_CONTEXTS is set in dwFlags.
 		/// </summary>
-		public IntPtr rgpLowerQualityChainContext;
+		public ArrayPointer<StructPointer<CERT_CHAIN_CONTEXT>> rgpLowerQualityChainContext;
 
 		/// <summary>A Boolean value set to <c>TRUE</c> if <c>dwRevocationFreshnessTime</c> is available.</summary>
 		[MarshalAs(UnmanagedType.Bool)] public bool fHasRevocationFreshnessTime;
@@ -3253,7 +3253,7 @@ public static partial class Crypt32
 		{
 			var ret = new CERT_SIMPLE_CHAIN*[(int)cChain];
 			for (int i = 0; i < cChain; i++)
-				ret[i] = ((CERT_SIMPLE_CHAIN**)rgpChain)[i];
+				ret[i] = ((CERT_SIMPLE_CHAIN**)(IntPtr)rgpChain)[i];
 			return ret;
 		}
 
@@ -3262,7 +3262,7 @@ public static partial class Crypt32
 		{
 			var ret = new CERT_CHAIN_CONTEXT*[(int)cLowerQualityChainContext];
 			for (int i = 0; i < cLowerQualityChainContext; i++)
-				ret[i] = ((CERT_CHAIN_CONTEXT**)rgpLowerQualityChainContext)[i];
+				ret[i] = ((CERT_CHAIN_CONTEXT**)(IntPtr)rgpLowerQualityChainContext)[i];
 			return ret;
 		}
 	}
@@ -3295,13 +3295,13 @@ public static partial class Crypt32
 		/// A pointer to a CERT_REVOCATION_INFO structure with information on the revocation status of the certificate. If revocation
 		/// checking was not enabled, <c>pRevocationInfo</c> is <c>NULL</c>.
 		/// </summary>
-		public IntPtr pRevocationInfo;
+		public StructPointer<CERT_REVOCATION_INFO> pRevocationInfo;
 
 		/// <summary>A pointer to a CERT_ENHKEY_USAGE structure. If <c>NULL</c>, any issuance policy is acceptable.</summary>
-		public IntPtr pIssuanceUsage;
+		public StructPointer<CTL_USAGE> pIssuanceUsage;
 
 		/// <summary>A pointer to a CERT_ENHKEY_USAGE structure. If <c>NULL</c>, any enhanced key usage is acceptable.</summary>
-		public IntPtr pApplicationUsage;
+		public StructPointer<CTL_USAGE> pApplicationUsage;
 
 		/// <summary>
 		/// A pointer to a <c>null</c>-terminated wide character string that contains extended error information. If <c>NULL</c>, there
@@ -3380,7 +3380,7 @@ public static partial class Crypt32
 		public uint dwFreshnessTime;
 
 		/// <summary>For CRL base revocation checking, a non- <c>NULL</c> pointer to a CERT_REVOCATION_CRL_INFO structure.</summary>
-		public IntPtr pCrlInfo;
+		public StructPointer<CERT_REVOCATION_CRL_INFO> pCrlInfo;
 	}
 
 	/// <summary>
@@ -3430,7 +3430,7 @@ public static partial class Crypt32
 		/// </para>
 		/// <para><c>Note</c> The time does not affect trust list, revocation, or root store checking.</para>
 		/// </summary>
-		public IntPtr pTime;
+		public StructPointer<FILETIME> pTime;
 
 		/// <summary>
 		/// The handle of any additional store to search for supporting certificates and certificate trust lists (CTLs). This parameter
@@ -3439,7 +3439,7 @@ public static partial class Crypt32
 		public HCERTSTORE hAdditionalStore;
 
 		/// <summary>A pointer to a CERT_CHAIN_PARA structure that includes chain-building parameters.</summary>
-		public IntPtr pChainPara;
+		public StructPointer<CERT_CHAIN_PARA> pChainPara;
 
 		/// <summary>
 		/// <para>Flag values that indicate special processing during chain build.</para>
@@ -3601,13 +3601,13 @@ public static partial class Crypt32
 		/// An array of pointers to CERT_CHAIN_ELEMENT structures. <c>rgpElement</c>[0] is the end certificate chain element.
 		/// <c>rgpElement</c>[ <c>cElement</c>–1] is the self-signed "root" certificate element.
 		/// </summary>
-		public IntPtr rgpElement;
+		public ArrayPointer<StructPointer<CERT_CHAIN_ELEMENT>> rgpElement;
 
 		/// <summary>
 		/// A pointer to a CERT_TRUST_LIST_INFO structure that contains a pointer to a certificate trust list (CTL) connecting this
 		/// chain to a next certificate chain. If the current chain is the final chain, <c>pTrustListInfo</c> is <c>NULL</c>.
 		/// </summary>
-		public IntPtr pTrustListInfo;
+		public StructPointer<CERT_TRUST_LIST_INFO> pTrustListInfo;
 
 		/// <summary>BOOL. If <c>TRUE</c>, <c>dwRevocationFreshnessTime</c> has been calculated.</summary>
 		[MarshalAs(UnmanagedType.Bool)] public bool fHasRevocationFreshnessTime;
@@ -3623,7 +3623,7 @@ public static partial class Crypt32
 		{
 			var ret = new CERT_CHAIN_ELEMENT*[(int)cElement];
 			for (int i = 0; i < cElement; i++)
-				ret[i] = ((CERT_CHAIN_ELEMENT**)rgpElement)[i];
+				ret[i] = ((CERT_CHAIN_ELEMENT**)(IntPtr)rgpElement)[i];
 			return ret;
 		}
 	}
@@ -3642,7 +3642,7 @@ public static partial class Crypt32
 		/// A pointer to a structure that includes a subject identifier, the count of attributes associated with a CTL, and an array of
 		/// those attributes.
 		/// </summary>
-		public IntPtr pCtlEntry;
+		public StructPointer<CTL_ENTRY> pCtlEntry;
 
 		/// <summary>A pointer to a CTL context.</summary>
 		public PCCTL_CONTEXT pCtlContext;
@@ -3650,13 +3650,13 @@ public static partial class Crypt32
 
 	public partial class SafePCCERT_CONTEXT
 	{
-		/// <summary>
-		/// Performs an explicit conversion from <see cref="SafePCCERT_CONTEXT"/> to <see cref="CERT_CONTEXT"/>.
-		/// </summary>
+		/// <summary>Performs an explicit conversion from <see cref="SafePCCERT_CONTEXT"/> to <see cref="CERT_CONTEXT"/>.</summary>
 		/// <param name="h">The h.</param>
-		/// <returns>
-		/// The resulting <see cref="CERT_CONTEXT"/> instance from the conversion.
-		/// </returns>
+		/// <returns>The resulting <see cref="CERT_CONTEXT"/> instance from the conversion.</returns>
 		public static unsafe explicit operator CERT_CONTEXT*(SafePCCERT_CONTEXT h) => (CERT_CONTEXT*)(void*)h.handle;
+
+		/// <summary>Extracts a reference to <see cref="CERT_CONTEXT"/> from the <see cref="SafePCCERT_CONTEXT"/> handle.</summary>
+		/// <returns>The resulting <see cref="CERT_CONTEXT"/> reference.</returns>
+		public ref CERT_CONTEXT AsRef() => ref handle.AsRef<CERT_CONTEXT>();
 	}
 }
