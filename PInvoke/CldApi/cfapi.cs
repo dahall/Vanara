@@ -1217,6 +1217,21 @@ public static partial class CldApi
 		/// filtering; otherwise, the platform skips setting any fields whose value is 0.
 		/// </summary>
 		CF_UPDATE_FLAG_PASSTHROUGH_FS_METADATA = 0x00000100,
+
+		/// <summary>
+		/// Effective on placeholder files only. Marks the placeholder always full.  
+		/// Once hydrated, any attempt to dehydrate will fail with
+		/// ERROR_CLOUD_FILE_DEHYDRATION_DISALLOWED.
+		/// </summary>
+		CF_UPDATE_FLAG_ALWAYS_FULL = 0x00000200,
+
+		/// <summary>
+		/// Effective on placeholder files only. Clears the always‑full state, allowing
+		/// dehydration again. Cannot be combined with CF_UPDATE_FLAG_ALWAYS_FULL; doing
+		/// so returns ERROR_CLOUD_FILE_INVALID_REQUEST.
+		/// </summary>
+		CF_UPDATE_FLAG_ALLOW_PARTIAL = 0x00000400,
+
 	}
 
 	/// <summary>Contains common callback information.</summary>
