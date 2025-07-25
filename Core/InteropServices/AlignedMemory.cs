@@ -80,7 +80,7 @@ public class AlignedMemory<TMem> : SafeAllocatedMemoryHandle where TMem : IMemor
 	/// <see langword="true"/> if the handle is released successfully; otherwise, in the event of a catastrophic failure,
 	/// <see langword="false"/>. In this case, it generates a releaseHandleFailed MDA Managed Debugging Assistant.
 	/// </returns>
-	protected override bool ReleaseHandle()
+	protected override bool InternalReleaseHandle()
 	{
 		mm.FreeMem(rawMemPtr);
 		sz = 0;

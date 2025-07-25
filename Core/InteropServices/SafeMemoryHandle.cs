@@ -369,12 +369,11 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// <summary>
 /// Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory. This class assumes read-only memory.
 /// </summary>
-/// <seealso cref="System.Runtime.InteropServices.SafeHandle" />
 /// <seealso cref="System.IComparable{T}" />
 /// <seealso cref="System.IComparable{T}" />
 /// <seealso cref="System.IEquatable{T}" />
-/// <seealso cref="SafeHandle" />
-public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, ISafeMemoryHandleBase, IComparable<SafeAllocatedMemoryHandleBase>,
+/// <seealso cref="SafeHANDLE" />
+public abstract class SafeAllocatedMemoryHandleBase : SafeHANDLE, ISafeMemoryHandleBase, IComparable<SafeAllocatedMemoryHandleBase>,
 	IEquatable<SafeAllocatedMemoryHandleBase>
 {
 	/// <summary>Occurs when the handle has changed.</summary>
@@ -383,13 +382,16 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, ISafeMemoryHan
 	/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandleBase"/> class.</summary>
 	/// <param name="handle">The handle.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	protected SafeAllocatedMemoryHandleBase(IntPtr handle, bool ownsHandle) : base(IntPtr.Zero, ownsHandle) => SetHandle(handle);
+	protected SafeAllocatedMemoryHandleBase(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) { }
 
 #if DEBUG
 	/// <summary>Dumps memory to byte string.</summary>
 	[ExcludeFromCodeCoverage]
 	public string Dump => Size == 0 ? "" : string.Join(" ", GetBytes(0, Size).Select(b => b.ToString("X2")).ToArray());
 #endif
+
+	/// <inheritdoc/>
+	public override bool IsInvalid => handle == IntPtr.Zero;
 
 	/// <summary>Gets a value indicating whether this memory supports locking.</summary>
 	/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
@@ -404,32 +406,15 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, ISafeMemoryHan
 	/// <returns>The result of the conversion.</returns>
 	public static unsafe explicit operator byte*(SafeAllocatedMemoryHandleBase hMem) => (byte*)hMem.handle;
 
+	/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="h">The safe handle.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator IntPtr(SafeAllocatedMemoryHandleBase h) => h.DangerousGetHandle();
+
 	/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="SafeBuffer"/>.</summary>
 	/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static explicit operator SafeBuffer(SafeAllocatedMemoryHandleBase hMem) => new SafeBufferImpl(hMem);
-
-	/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="IntPtr"/>.</summary>
-	/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator IntPtr(SafeAllocatedMemoryHandleBase hMem) => hMem.handle;
-
-	/// <summary>Implements the operator ! which returns <see langword="true"/> if the handle is invalid.</summary>
-	/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
-	/// <returns>The result of the operator.</returns>
-	public static bool operator !(SafeAllocatedMemoryHandleBase hMem) => hMem.IsInvalid;
-
-#if !NETSTANDARD
-	/// <summary>Implements the operator <see langword="true"/>.</summary>
-	/// <param name="hMem">The value.</param>
-	/// <returns>The result of the operator.</returns>
-	public static bool operator true(SafeAllocatedMemoryHandleBase hMem) => !hMem.IsInvalid;
-
-	/// <summary>Implements the operator <see langword="false"/>.</summary>
-	/// <param name="hMem">The value.</param>
-	/// <returns>The result of the operator.</returns>
-	public static bool operator false(SafeAllocatedMemoryHandleBase hMem) => hMem.IsInvalid;
-#endif
 
 #if ALLOWSPAN
 	/// <summary>Creates a new span over this allocated memory.</summary>
@@ -531,10 +516,9 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, ISafeMemoryHan
 	{
 		null => false,
 		SafeAllocatedMemoryHandleBase m => Equals(m),
-		IntPtr p => handle.Equals(p),
 		byte[] b => CompareTo(Array.AsReadOnly(b)) == 0,
 		IReadOnlyList<byte> e => CompareTo(e) == 0,
-		_ => throw new ArgumentException("Unable to compare type.", nameof(obj)),
+		_ => base.Equals(obj),
 	};
 
 	/// <summary>Gets a hash code value for all bytes within the allocated memory.</summary>
@@ -552,7 +536,7 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, ISafeMemoryHan
 	}
 
 	/// <inheritdoc/>
-	public override int GetHashCode() => handle.GetHashCode();
+	public override int GetHashCode() => base.GetHashCode();
 
 	/// <summary>Locks this instance.</summary>
 	public virtual void Lock()
@@ -563,9 +547,8 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, ISafeMemoryHan
 	/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
 	public virtual bool Unlock() => false;
 
-	/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
-	/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
-	public virtual IntPtr TakeOwnership()
+	/// <inheritdoc/>
+	public override IntPtr ReleaseOwnership()
 	{
 		while (Unlock()) ;
 		var h = handle;
@@ -574,6 +557,11 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHandle, ISafeMemoryHan
 		Size = 0;
 		return h;
 	}
+
+	/// <summary>Releases the owned handle without releasing the allocated memory and returns a pointer to the current memory.</summary>
+	/// <returns>A pointer to the currently allocated memory. The caller now has the responsibility to free this memory.</returns>
+	[Obsolete("Use 'ReleaseOwnership' instead of 'TakeOwnership' to relinquish ownership. This method will be removed in a future release.")]
+	public virtual IntPtr TakeOwnership() => ReleaseOwnership();
 
 	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
 	/// <returns>A byte array with the copied bytes.</returns>
@@ -841,7 +829,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	/// true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it
 	/// generates a releaseHandleFailed MDA Managed Debugging Assistant.
 	/// </returns>
-	protected override bool ReleaseHandle()
+	protected override bool InternalReleaseHandle()
 	{
 		while (Unlock()) ;
 		mm.FreeMem(handle);

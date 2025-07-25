@@ -140,7 +140,7 @@ public class MemoryApiTests
 	{
 		RECT val = new(8, 16, 32, 64);
 		using SafeMoveableHGlobalHandle h = SafeMoveableHGlobalHandle.CreateFromStructure(val);
-		HGLOBAL myh = h.TakeOwnership();
+		HGLOBAL myh = h.ReleaseOwnership();
 		try
 		{
 			IntPtr p = GlobalLock(myh);

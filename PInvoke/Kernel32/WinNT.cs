@@ -1516,7 +1516,7 @@ public static partial class Kernel32
 	// ARM64_NT_NEON128 V[32]; DWORD Fpcr; DWORD Fpsr; DWORD Bcr[ARM64_MAX_BREAKPOINTS]; DWORD64 Bvr[ARM64_MAX_BREAKPOINTS]; DWORD
 	// Wcr[ARM64_MAX_WATCHPOINTS]; DWORD64 Wvr[ARM64_MAX_WATCHPOINTS]; } ARM64_NT_CONTEXT, *PARM64_NT_CONTEXT;
 	[PInvokeData("winnt.h", MSDNShortId = "a6c201b3-4402-4de4-89c7-e6e2fbcd27f7")]
-	public class SafeCONTEXT : SafeHandle
+	public class SafeCONTEXT : SafeHANDLE
 	{
 		private readonly SafeHGlobalHandle buffer;
 
@@ -1567,7 +1567,7 @@ public static partial class Kernel32
 			handle.ToStructure<TContext>(buffer.Size - handle.ToInt32() + buffer.DangerousGetHandle().ToInt32());
 
 		/// <inheritdoc/>
-		protected override bool ReleaseHandle()
+		protected override bool InternalReleaseHandle()
 		{
 			buffer.Dispose();
 			SetHandle(IntPtr.Zero);

@@ -66,10 +66,6 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	/// <value>The character set.</value>
 	public CharSet CharSet { get; private set; } = CharSet.Unicode;
 
-	/// <summary>Gets a value indicating whether this instance contains a <see langword="null"/> pointer.</summary>
-	/// <value><see langword="true"/> if this instance is null; otherwise, <see langword="false"/>.</value>
-	public bool IsNull => handle == IntPtr.Zero;
-
 	/// <summary>Gets the number of characters in the current <see cref="SafeMemString{TMem}"/> object.</summary>
 	public int Length => ToString()?.Length ?? 0;
 
@@ -311,7 +307,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 		null => false,
 		SafeMemString<TMem> ms => Equals(ms),
 		string s => Equals(s),
-		SafeAllocatedMemoryHandle m => m == handle,
+		SafeAllocatedMemoryHandle m => m.Equals(handle),
 		_ => false,
 	};
 

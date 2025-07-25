@@ -1066,9 +1066,8 @@ public static partial class ElsCore
 	/// Managed pointer to an array of <see cref="MAPPING_SERVICE_INFO"/> structures. This value is returned by <see
 	/// cref="MappingGetServices(in MAPPING_ENUM_OPTIONS, out SafeMAPPING_SERVICE_INFOArray)"/>. It is disposed by calling <see cref="MappingFreeServices(IntPtr)"/>.
 	/// </summary>
-	/// <seealso cref="SafeHandle"/>
 	/// <seealso cref="IReadOnlyList{T}"/>
-	public class SafeMAPPING_SERVICE_INFOArray : SafeHandle, IReadOnlyList<MAPPING_SERVICE_INFO>
+	public class SafeMAPPING_SERVICE_INFOArray : SafeHANDLE, IReadOnlyList<MAPPING_SERVICE_INFO>
 	{
 		private static readonly SizeT elemSize = Marshal.SizeOf(typeof(MAPPING_SERVICE_INFO));
 
@@ -1103,6 +1102,6 @@ public static partial class ElsCore
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
 		/// <inheritdoc/>
-		protected override bool ReleaseHandle() => MappingFreeServices(handle).Succeeded;
+		protected override bool InternalReleaseHandle() => MappingFreeServices(handle).Succeeded;
 	}
 }
