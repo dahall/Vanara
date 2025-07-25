@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ProjectExtensions>
-    <IncludeAssembly/>
+    <IncludeAssembly />
   </ProjectExtensions>
 
   <PropertyGroup>
@@ -22,11 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Analyzer\Vanara.CodeGen.Analyzer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="CodeFixResources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="CodeFixResources.resx" />
-    <EmbeddedResource Update="CodeFixResources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="CodeFixResources.Designer.cs" />
   </ItemGroup>
 
 </Project>

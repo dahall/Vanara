@@ -5,4 +5,5 @@
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
+MarshalerStructNoAttrAnalyzer | Usage | Warning | MarshalerStructNoAttrAnalyzer
 SafeHANDLENullAnalyzer | Usage | Warning | SafeHANDLENullAnalyzer

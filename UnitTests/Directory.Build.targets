@@ -18,6 +18,6 @@
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Condition="!$(MSBuildProjectDirectory.EndsWith('CSharpRunner'))" Include="$(MSBuildThisFileDirectory)CSharpRunner\Shared.csproj" />
+    <ProjectReference Condition="!$(MSBuildProjectDirectory.EndsWith('CSharpRunner')) AND !$(MSBuildProjectDirectory.Contains('CodeGen'))" Include="$(MSBuildThisFileDirectory)CSharpRunner\Shared.csproj" />
   </ItemGroup>
 </Project>

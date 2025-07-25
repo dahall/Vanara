@@ -34,36 +34,37 @@ namespace Vanara.CodeGen
 			var diagnostic = context.Diagnostics[0];
 			var diagnosticSpan = diagnostic.Location.SourceSpan;
 
-			var argumentSyntax = root.FindNode(diagnosticSpan).FirstAncestorOrSelf<ArgumentSyntax>();
-			if (argumentSyntax is null) return;
+			var nodeSyntax = root.FindNode(diagnosticSpan).FirstAncestorOrSelf<LiteralExpressionSyntax>();
+			if (nodeSyntax is null) return;
 
 			context.RegisterCodeFix(
 				CodeAction.Create(
 					title: Title,
-					createChangedDocument: c => ReplaceWithSafeHandleNullAsync(context.Document, argumentSyntax, c),
+					createChangedDocument: c => ReplaceWithSafeHandleNullAsync(context, nodeSyntax, c),
 					equivalenceKey: Title),
 				diagnostic);
 		}
 
-		private async Task<Document> ReplaceWithSafeHandleNullAsync(Document document, ArgumentSyntax argumentSyntax, CancellationToken cancellationToken)
+		private async Task<Document> ReplaceWithSafeHandleNullAsync(CodeFixContext context, LiteralExpressionSyntax nodeSyntax, CancellationToken cancellationToken)
 		{
-			var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-			if (semanticModel is null) return document;
+			var semanticModel = await context.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+			if (semanticModel is null) return context.Document;
 
-			var parameterSymbol = argumentSyntax.Parent is null ? null : semanticModel.GetSymbolInfo(argumentSyntax.Parent).Symbol as IParameterSymbol;
-			if (parameterSymbol is null) return document;
+			//var parameterSymbol = nodeSyntax.Parent is null ? null : semanticModel.GetSymbolInfo(nodeSyntax.Parent).Symbol as IParameterSymbol;
+			//if (parameterSymbol is null) return context.Document;
 
-			var safeHandleTypeName = parameterSymbol.Type.Name;
-			var nullPropertyName = $"{safeHandleTypeName}.NULL";
+			//var safeHandleTypeName = parameterSymbol.Type.Name;
+			var safeHandleTypeName = context.Diagnostics[0].Properties["SafeHandleType"];
+			var nullPropertyName = $"{safeHandleTypeName}.Null";
 
 			var nullPropertyExpression = SyntaxFactory.ParseExpression(nullPropertyName)
 				.WithAdditionalAnnotations(Microsoft.CodeAnalysis.Formatting.Formatter.Annotation, Simplifier.Annotation);
 
-			var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-			if (root is null) return document;
+			var root = await context.Document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+			if (root is null) return context.Document;
 
-			var newRoot = root.ReplaceNode(argumentSyntax.Expression, nullPropertyExpression);
-			return document.WithSyntaxRoot(newRoot);
+			var newRoot = root.ReplaceNode(nodeSyntax, nullPropertyExpression);
+			return context.Document.WithSyntaxRoot(newRoot);
 		}
 	}
 }
