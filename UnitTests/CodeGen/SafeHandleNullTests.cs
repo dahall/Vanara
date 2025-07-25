@@ -31,7 +31,6 @@ public class SafeHandleNullTests
 		}
 		""";
 
-	static string? s = null;
 	static readonly LinePosition pos = new(14, 15);
 
 	[Test]
@@ -44,8 +43,8 @@ public class SafeHandleNullTests
 	[TestCase("SafeTestHandle h = new(default, false)", null)]
 	[TestCase("SafeTestHandle h = default", "SafeTestHandle")]
 	[TestCase("SafeTestHandle h = null", "SafeTestHandle")]
-	[TestCase("SafeTestHandle? h = default", "SafeTestHandle")]
-	[TestCase("SafeTestHandle? h = null", "SafeTestHandle")]
+	[TestCase("SafeTestHandle? h = default", null)]
+	[TestCase("SafeTestHandle? h = null", null)]
 	public async Task AnalyzeNoFix(string value, string? arg)
 	{
 		var source = test.Replace("[VALUE]", value);
@@ -59,8 +58,8 @@ public class SafeHandleNullTests
 	[TestCase("SafeTestHandle h = new(default, false)", "SafeTestHandle h = new(default, false)", null)]
 	[TestCase("SafeTestHandle h = default", "SafeTestHandle h = SafeTestHandle.Null", "SafeTestHandle")]
 	[TestCase("SafeTestHandle h = null", "SafeTestHandle h = SafeTestHandle.Null", "SafeTestHandle")]
-	[TestCase("SafeTestHandle? h = default", "SafeTestHandle? h = SafeTestHandle.Null", "SafeTestHandle")]
-	[TestCase("SafeTestHandle? h = null", "SafeTestHandle? h = SafeTestHandle.Null", "SafeTestHandle")]
+	[TestCase("SafeTestHandle? h = default", "SafeTestHandle? h = default", null)]
+	[TestCase("SafeTestHandle? h = null", "SafeTestHandle? h = null", null)]
 	public async Task AnalyzeWithFix(string value, string fixedParams, string? arg)
 	{
 		var source = test.Replace("[VALUE]", value);
