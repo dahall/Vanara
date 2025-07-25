@@ -249,7 +249,7 @@ public static partial class SpeechApi
 	///}</code>
 	/// </example>
 	// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/ms718425(v=vs.85)
-	public static HRESULT InitFromPhrase(this ISpPhraseBuilder b, in SPPHRASE_M pPhrase)
+	public static HRESULT InitFromPhrase(this ISpPhraseBuilder b, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<SPPHRASE_M>))] in SPPHRASE_M pPhrase)
 	{
 		using var mem = Marshaler.Marshaler.ValueToPtr(pPhrase, new(Marshaler.StringEncoding.Unicode));
 		return b.InitFromPhrase(mem.DangerousGetHandle());
