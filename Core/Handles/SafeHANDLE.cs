@@ -88,6 +88,7 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 	public override bool Equals(object? obj) => obj switch
 	{
+		null => false,
 		IHandle ih => handle.Equals(ih.DangerousGetHandle()),
 		SafeHandle sh => Equals(sh),
 		IntPtr p => handle.Equals(p),
@@ -100,7 +101,7 @@ public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable
 
 	/// <summary>Releases the ownership of the underlying handle and returns the current handle.</summary>
 	/// <returns>The value of the current handle.</returns>
-	public IntPtr ReleaseOwnership()
+	public virtual IntPtr ReleaseOwnership()
 	{
 		var ret = handle;
 		SetHandleAsInvalid();
