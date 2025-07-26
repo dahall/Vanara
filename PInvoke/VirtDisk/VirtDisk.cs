@@ -2790,15 +2790,15 @@ public static partial class VirtDisk
 		public OPEN_VIRTUAL_DISK_VERSION Version;
 
 		/// <summary>This structure is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_1 (1).</summary>
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public OPEN_VIRTUAL_DISK_PARAMETERS_Version1 Version1;
 
 		/// <summary>This structure is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_2 (2).</summary>
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public OPEN_VIRTUAL_DISK_PARAMETERS_Version2 Version2;
 
 		/// <summary>This structure is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_3 (3).</summary>
-		[FieldOffset(8)]
+		[FieldOffset(4)]
 		public OPEN_VIRTUAL_DISK_PARAMETERS_Version3 Version3;
 
 		/// <summary>Initializes a new instance of the <see cref="OPEN_VIRTUAL_DISK_PARAMETERS"/> struct setting Version to OPEN_VIRTUAL_DISK_VERSION_1.</summary>
