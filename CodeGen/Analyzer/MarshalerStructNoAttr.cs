@@ -12,7 +12,7 @@ using Vanara.Marshaler;
 public class MarshalerStructNoAttrAnalyzer : DiagnosticAnalyzer
 {
 	/// <summary>The ID for diagnostics produced by the MarshalerStructNoAttrAnalyzer.</summary>
-	public const string DiagnosticId = "MarshalerStructNoAttrAnalyzer";
+	public const string DiagnosticId = "VA0001";
 	private static readonly LocalizableString Title = "Missing attribute for marshaled structure parameter";
 	private static readonly LocalizableString MessageFormat = "Parameters of type '{0}' must have a custom marshaler attribute";
 	private const string Category = "Usage";

@@ -31,6 +31,7 @@
   <ItemGroup Condition="'$(MSBuildProjectName)'!='Vanara.Core' And !$(MSBuildProjectName.StartsWith('Vanara.CodeGen'))">
     <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\Generator\Vanara.CodeGen.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\Analyzer\Vanara.CodeGen.Analyzer.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\CodeFixes\Vanara.CodeGen.CodeFixes.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)Core\Vanara.Core.csproj" OutputItemType="Analyzer" />
   </ItemGroup>
     

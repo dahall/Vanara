@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 public class SafeHANDLENullAnalyzer : DiagnosticAnalyzer
 {
 	/// <summary>The ID for diagnostics produced by the SafeHANDLENullAnalyzer.</summary>
-	public const string DiagnosticId = "SafeHANDLENullAnalyzer";
+	public const string DiagnosticId = "VA0002";
 	private static readonly LocalizableString Title = "Use SafeHANDLE NULL for default value";
 	private static readonly LocalizableString MessageFormat = "Use '{0}.NULL' instead of 'null' or 'default' for argument values of type '{0}'";
 	private const string Category = "Usage";
