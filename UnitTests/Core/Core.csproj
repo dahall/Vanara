@@ -16,4 +16,7 @@
     <PackageReference Include="AutoFixture" Version="4.18.1" />
     <PackageReference Include="NUnit.DeepObjectCompare" Version="2.0.1" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+  </ItemGroup>
 </Project>

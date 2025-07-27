@@ -25,11 +25,12 @@ ArrayLayout, Bitness, CorrespondingAction, FileAttributeConstant, FileOpConstant
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  <ItemGroup>
+    <PackageReference Include="System.ValueTuple" Version="4.6.1" Condition=" '$(TargetFramework)' == 'netstandard2.0' " />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) Or $(TargetFramework.StartsWith('netstandard')) ">
-    <PackageReference Include="System.Memory" Version="4.5.5" />
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.5" Condition=" $(TargetFramework.StartsWith('net4')) Or '$(TargetFramework)' == 'netstandard2.0' " />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" Condition=" '$(TargetFramework)' == 'netstandard2.1' " />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="InteropServices\SafeIDispatch.cs" />
