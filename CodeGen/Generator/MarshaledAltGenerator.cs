@@ -62,6 +62,7 @@ public class MarshaledAlternativeGenerator : IIncrementalGenerator
 
 				// Output the nullable directive and the warning disable directive
 				output.WriteLine("#nullable enable");
+				output.WriteLine("#pragma warning disable CS1591");
 				//if (methodDecl.GetLeadingTrivia().Where(t => t.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)).Count() == 0)
 				//	output.WriteLine("#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member");
 
@@ -75,6 +76,7 @@ public class MarshaledAlternativeGenerator : IIncrementalGenerator
 
 				// Output nested classes
 				StringBuilder stackName = new();
+				var nestedClassCount = nestedClasses.Count;
 				while (nestedClasses.Count > 0)
 				{
 					var nc = nestedClasses.Pop();
@@ -124,7 +126,7 @@ public class MarshaledAlternativeGenerator : IIncrementalGenerator
 				output.WriteLine("}");
 
 				// Close the classes and namespace
-				for (int i = 0; i <= nestedClasses.Count; i++)
+				for (int i = 0; i < nestedClassCount; i++)
 				{
 					output.Indent--;
 					output.WriteLine("}");
@@ -150,16 +152,15 @@ public class MarshaledAlternativeGenerator : IIncrementalGenerator
 			if (altFieldType.GetAttributes().FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == "Vanara.Marshaler.MarshalFieldAs.ArrayAttribute") is { } arrAttr &&
 				altFieldType.Type is IArrayTypeSymbol arrType)
 			{
-				Vanara.Marshaler.ArrayLayout al = (Vanara.Marshaler.ArrayLayout)(arrAttr.ConstructorArguments.FirstOrDefault().Value ?? -1);
-				if (al == Marshaler.ArrayLayout.LPArray && 
-					arrAttr.NamedArguments.FirstOrDefault(a => a.Key == "SizeFieldName").Value.Value is string sizeFieldName)
+				int al = (int?)arrAttr.ConstructorArguments.FirstOrDefault().Value ?? -1;
+				if (al == 3 /*LPArray*/ && arrAttr.NamedArguments.FirstOrDefault(a => a.Key == "SizeFieldName").Value.Value is string sizeFieldName)
 				{
 					if (fieldType.Type.IsValueType && (fieldType.Type.Name.Contains("ArrayPointer")))
 						return $"System.Array.ConvertAll({valueName}.{fieldName}.ToArray(System.Convert.ToInt32({valueName}.{sizeFieldName})), i => ({arrType.ElementType.Name})i)";
 					if (fieldType.Type.IsValueType && fieldType.Type.Name is "IntPtr" or "nint")
 						return $"{valueName}.{fieldName}.ToArray<{arrType.ElementType.Name}>(System.Convert.ToInt32({valueName}.{sizeFieldName}))";
 				}
-				else if (al == Marshaler.ArrayLayout.LPArrayNullTerm)
+				else if (al == 7 /*LPArrayNullTerm*/)
 				{
 					return $"{valueName}.{fieldName}.ToArray(Vanara.Extensions.InteropExtensions.GetNulledArrayLength((System.IntPtr){valueName}.{fieldName}, typeof({arrType.ElementType.Name})))";
 				}
@@ -170,8 +171,13 @@ public class MarshaledAlternativeGenerator : IIncrementalGenerator
 				return $"{valueName}.{fieldName}.ToString()";
 
 			// Handle unsafe pointers
-			if (fieldType.Type is IPointerTypeSymbol pType && altFieldType.Type.Name.Contains("StructPointer"))
-				return $"(System.IntPtr){valueName}.{fieldName}";
+			if (fieldType.Type is IPointerTypeSymbol pType)
+			{
+				if (altFieldType.Type.Name.Contains("StructPointer"))
+					return $"(System.IntPtr){valueName}.{fieldName}";
+				else
+					return $"*{valueName}.{fieldName}";
+			}
 
 			// Handle other types
 			return $"{valueName}.{fieldName}";

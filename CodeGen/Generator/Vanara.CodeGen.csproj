@@ -14,6 +14,7 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <IsRoslynComponent>true</IsRoslynComponent>
+    <!--<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,12 +29,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" >
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" OutputItemType="Analyzer" />
+    <!--<ProjectReference Include="..\..\Core\Vanara.Core.csproj" OutputItemType="Analyzer" />-->
   </ItemGroup>
 
   <PropertyGroup>

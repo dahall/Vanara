@@ -36,7 +36,7 @@
   </ItemGroup>
     
   <Import Project="Package.targets" />
-  <Import Condition="('$(MSBuildProjectExtension)'=='.csproj' Or '$(MSBuildProjectExtension)'=='.vbproj') And !$(MSBuildProjectDirectory.Contains('UnitTests')) And !$(MSBuildProjectName.StartsWith('Vanara.CodeGen'))" Project="$(MSBuildThisFileDirectory)SourceLink.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)SourceLink.targets" Condition="('$(MSBuildProjectExtension)'=='.csproj' Or '$(MSBuildProjectExtension)'=='.vbproj') And !$(MSBuildProjectDirectory.Contains('UnitTests')) And !$(MSBuildProjectName.StartsWith('Vanara.CodeGen'))" />
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)docs\icons\Vanara64x64.png" Pack="true" PackagePath="\" />
     <Compile Include="$(MSBuildThisFileDirectory)AsmDef.cs" Link="AsmDef.cs" Condition="'$(MSBuildProjectExtension)'=='.csproj' And !$(MSBuildProjectName.StartsWith('Vanara.CodeGen'))" />
