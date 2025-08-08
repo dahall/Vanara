@@ -7,7 +7,8 @@ namespace Namespace;
 #1#public static partial class ParentClassName
 {
 #1#	SummaryText[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
-	public readonly partial struct HandleName : InterfaceName
+#3#	[Vanara.InteropServices.CorrespondingType(typeof(ClassName))]
+#3#	public readonly partial struct HandleName : InterfaceName
 	{
 		private readonly IntPtr handle;
 

@@ -12,10 +12,12 @@ internal record HandleModel(string Namespace, string ParentClassName, string Han
 		handleTemplateText ??= Util.ReadAllTextFromAsmResource(handleTemplateResourceName);
 		var templateText = ReplaceMarker(handleTemplateText, "#1#", ParentClassName);
 		templateText = ReplaceMarker(templateText, "#2#", InheritedHandleName);
+		templateText = ReplaceMarker(templateText, "#3#", ClassName);
 		return Util.ReplaceWholeWords(templateText, new Dictionary<string, string>()
 		{
 			{ "HandleName", HandleName },
 			{ "Namespace", Namespace },
+			{ "ClassName", ClassName ?? "" },
 			{ "ParentClassName", ParentClassName },
 			{ "InterfaceName", InterfaceName },
 			{ "SummaryText", SummaryText is null ? "" : $"/// <summary>{SummaryText}</summary>\r\n" },
