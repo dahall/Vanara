@@ -17,7 +17,7 @@ SystemFoundationExtensions
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
+  <ItemGroup Condition=" $(NET40_OR_GREATER) ">
     <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +26,6 @@ SystemFoundationExtensions
     <ProjectReference Include="..\Windows.Shell.Common\Vanara.Windows.Shell.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
+    <PackageReference Include="System.Runtime.WindowsRuntime" />
   </ItemGroup>
 </Project>

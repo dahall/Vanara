@@ -13,10 +13,10 @@
     <Compile Remove="Marshaler\TestStructures.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoFixture" Version="4.18.1" />
-    <PackageReference Include="NUnit.DeepObjectCompare" Version="2.0.1" />
+    <PackageReference Include="AutoFixture" />
+    <PackageReference Include="NUnit.DeepObjectCompare" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Update="Microsoft.NET.Test.Sdk" />
   </ItemGroup>
 </Project>

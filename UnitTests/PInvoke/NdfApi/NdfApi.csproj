@@ -7,6 +7,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\NdfApi\Vanara.PInvoke.NdfApi.csproj" />
-    <PackageReference Include="dSPACE.Runtime.InteropServices" Version="1.10.0" />
+    <PackageReference Include="dSPACE.Runtime.InteropServices" />
   </ItemGroup>
 </Project>

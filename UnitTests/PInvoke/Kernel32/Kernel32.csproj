@@ -8,6 +8,6 @@
     <ProjectReference Include="..\..\..\PInvoke\Security\Vanara.PInvoke.Security.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Update="Microsoft.NET.Test.Sdk" />
   </ItemGroup>
 </Project>

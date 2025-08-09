@@ -22,7 +22,7 @@ Corners
   <ItemGroup>
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
   </ItemGroup>
-  <ItemGroup Condition=" !$(TargetFramework.StartsWith('net4')) ">
-    <PackageReference Include="System.Drawing.Common" Version="9.0.7" Condition=" $(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('net8')) Or $(TargetFramework.StartsWith('net9')) " />
+  <ItemGroup Condition=" !$(NET40_OR_GREATER) ">
+    <PackageReference Include="System.Drawing.Common" Condition=" $(DRAWING_COMMON_COND) " />
   </ItemGroup>
 </Project>

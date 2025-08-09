@@ -4,11 +4,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="9.0.7" />
-  </ItemGroup>
-  <ItemGroup>
-    <!--<Reference Include="System.ServiceProcess" />-->
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\CredUI\Vanara.PInvoke.CredUI.csproj" />

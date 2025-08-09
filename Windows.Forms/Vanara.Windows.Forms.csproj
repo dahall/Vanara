@@ -24,7 +24,7 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <NoWarn>0618</NoWarn>
+    <NoWarn>$(NoWarn);0618</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="_InProgress_\**\*" />
@@ -36,7 +36,7 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
     <None Remove="Controls\ExplorerBrowser.bmp" />
     <None Remove="Controls\ShellNamespaceTreeControl.bmp" />
   </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+  <ItemGroup Condition=" $(NET40_OR_GREATER) ">
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />

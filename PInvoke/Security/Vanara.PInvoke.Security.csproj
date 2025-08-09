@@ -27,8 +27,8 @@ ACCESS_ALLOWED_ACE ACCESS_ALLOWED_CALLBACK_ACE ACCESS_ALLOWED_CALLBACK_OBJECT_AC
     <ProjectReference Include="..\Cryptography\Vanara.PInvoke.Cryptography.csproj" />
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="System.Security.AccessControl" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+  <ItemGroup Condition=" $(NETSTANDARD2_0) ">
+    <PackageReference Include="System.Security.AccessControl" />
+    <PackageReference Include="Microsoft.Win32.Registry" />
   </ItemGroup>
 </Project>

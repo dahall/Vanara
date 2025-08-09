@@ -18,16 +18,14 @@ AccountLogonRights, DesiredAccess, SystemPrivilege
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <Choose>
-    <When Condition=" $(TargetFramework.StartsWith('net4')) ">
+    <When Condition=" $(NET40_OR_GREATER) ">
       <ItemGroup>
         <Reference Include="System.DirectoryServices" />
       </ItemGroup>
     </When>
     <Otherwise>
       <ItemGroup>
-        <PackageReference Include="System.DirectoryServices" Version="6.0.1" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0' " />
-        <PackageReference Include="System.DirectoryServices" Version="8.0.0" Condition=" '$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0' " />
-        <PackageReference Include="System.DirectoryServices" Version="9.0.7" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' And '$(TargetFramework)' != 'net5.0' And '$(TargetFramework)' != 'net6.0' And '$(TargetFramework)' != 'net7.0' " />
+        <PackageReference Include="System.DirectoryServices" />
       </ItemGroup>
     </Otherwise>
   </Choose>

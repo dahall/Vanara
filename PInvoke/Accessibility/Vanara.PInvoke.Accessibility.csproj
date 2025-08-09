@@ -20,10 +20,9 @@ AccessibleChildren AccessibleObjectFromEvent AccessibleObjectFromPoint Accessibl
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <NoWarn>0618</NoWarn>
   </PropertyGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('net4')) ">
+  <ItemGroup Condition=" $(NET40_OR_GREATER) ">
     <Reference Include="Accessibility" />
   </ItemGroup>
-  <!--<PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp3')) Or $(TargetFramework.StartsWith('net8')) ">-->
   <PropertyGroup>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWindowsForms>true</UseWindowsForms>

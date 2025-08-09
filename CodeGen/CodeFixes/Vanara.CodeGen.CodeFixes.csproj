@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <ProjectExtensions>
     <IncludeAssembly />
   </ProjectExtensions>
-
   <PropertyGroup>
     <TargetFrameworks />
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -11,17 +9,13 @@
     <IsPackable>false</IsPackable>
     <RootNamespace>Vanara.Generators</RootNamespace>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="C:\Users\dahal\Documents\GitHubRepos\Vanara\AsmDef.cs" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Analyzer\Vanara.CodeGen.Analyzer.csproj" />
   </ItemGroup>
-
 </Project>

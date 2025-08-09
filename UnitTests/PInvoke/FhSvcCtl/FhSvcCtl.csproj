@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>UnitTest.PInvoke.FhSvcCtl</AssemblyName>
-    <!--<SelfContained Condition=" $(TargetFramework.StartsWith('net8')) ">true</SelfContained>
-    <RuntimeIdentifier Condition=" !$(TargetFramework.StartsWith('net8')) ">win10-x64</RuntimeIdentifier>-->
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\PInvoke\FhSvcCtl\Vanara.PInvoke.FhSvcCtl.csproj" />
