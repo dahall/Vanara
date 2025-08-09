@@ -667,8 +667,9 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "D52E98BD-726F-4AC0-A034-02896B1D1687")]
 	public static extern Win32Error FindPackagesByPackageFamily(string packageFamilyName, PACKAGE_FLAGS packageFilters, ref uint count,
-		[Optional, SizeDef(nameof(count))] StrPtrUni[]? packageFullNames, ref uint bufferLength, [Optional] IntPtr buffer,
-		[Optional, SizeDef(nameof(count))] uint[]? packageProperties);
+		[Optional, SizeDef(nameof(count)), MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] StrPtrUni[]? packageFullNames, ref uint bufferLength,
+		[Optional, SizeDef(nameof(bufferLength))] IntPtr buffer,
+		[Optional, SizeDef(nameof(count)), MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? packageProperties);
 
 	/// <summary>Finds the packages with the specified family name for the current user.</summary>
 	/// <param name="packageFamilyName"><para>Type: <c>PCWSTR</c></para>
@@ -697,7 +698,7 @@ public static partial class Kernel32
 		uint count = 0, bufferLength = 0;
 		packageFullNames = [];
 		packageProperties = [];
-		Win32Error err = FindPackagesByPackageFamily(packageFamilyName, packageFilters, ref count, bufferLength: ref bufferLength);
+		Win32Error err = FindPackagesByPackageFamily(packageFamilyName, packageFilters, ref count, null, ref bufferLength, default, null);
 		if (count == 0 || err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			return err;
 
@@ -1860,7 +1861,7 @@ public static partial class Kernel32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getpackagepathbyfullname2 LONG GetPackagePathByFullName2(
 	// PCWSTR packageFullName, PackagePathType packagePathType, UINT32 *pathLength, PWSTR path );
-	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h")]
 	public static extern Win32Error GetPackagePathByFullName2([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, PackagePathType packagePathType,
 		ref uint pathLength, [Optional, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(pathLength), SizingMethod.Query)] StringBuilder? path);

@@ -245,9 +245,8 @@ public class FileApiTests
 	[Test]
 	public void GetFullPathNameTest()
 	{
-		StringBuilder sb = new(1024);
-		uint u = GetFullPathName("notepad.exe", (uint)sb.Capacity, sb, out _);
-		Assert.That(u, Is.Not.Zero);
+		var sb = GetFullPathName("notepad.exe", out var idx);
+		Assert.That(idx, Is.Not.Zero);
 		TestContext.WriteLine(sb);
 	}
 
@@ -357,9 +356,8 @@ public class FileApiTests
 	[Test]
 	public void GetVolumePathNamesForVolumeNameTest()
 	{
-		StringBuilder sb = new(1024);
-		Assert.That(GetVolumePathNamesForVolumeName(EnumVolumes().First(), sb, (uint)sb.Capacity, out uint l), Is.True);
-		TestContext.WriteLine(sb);
+		Assert.That(GetVolumePathNamesForVolumeName(EnumVolumes().First(), out var sb), Is.True);
+		TestContext.WriteLine(string.Join("\n", sb));
 	}
 
 	[Test]

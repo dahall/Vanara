@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace Vanara.PInvoke;
+﻿namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -43,7 +40,7 @@ public static partial class Kernel32
 	// InterlockedFlushSList( PSLIST_HEADER ListHead );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("interlockedapi.h", MSDNShortId = "3fde3377-8a98-4976-a350-2c173b209e8c")]
-	public static unsafe extern SLIST_ENTRY* InterlockedFlushSList(in SLIST_HEADER ListHead);
+	public static extern StructPointer<SLIST_ENTRY> InterlockedFlushSList(in SLIST_HEADER ListHead);
 
 	/// <summary>
 	/// <para>Removes an item from the front of a singly linked list. Access to the list is synchronized on a multiprocessor system.</para>
@@ -66,7 +63,7 @@ public static partial class Kernel32
 	// InterlockedPopEntrySList( PSLIST_HEADER ListHead );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("interlockedapi.h", MSDNShortId = "10760fd4-5973-4ab0-991c-7a5951c798a4")]
-	public static unsafe extern SLIST_ENTRY* InterlockedPopEntrySList(in SLIST_HEADER ListHead);
+	public static extern StructPointer<SLIST_ENTRY> InterlockedPopEntrySList(in SLIST_HEADER ListHead);
 
 	/// <summary>
 	/// <para>Inserts an item at the front of a singly linked list. Access to the list is synchronized on a multiprocessor system.</para>
@@ -92,7 +89,7 @@ public static partial class Kernel32
 	// InterlockedPushEntrySList( PSLIST_HEADER ListHead, __drv_aliasesMem PSLIST_ENTRY ListEntry );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("interlockedapi.h", MSDNShortId = "60e3b6f7-f556-4699-be90-db7330cfb8ca")]
-	public static unsafe extern SLIST_ENTRY* InterlockedPushEntrySList(in SLIST_HEADER ListHead, IntPtr ListEntry);
+	public static extern StructPointer<SLIST_ENTRY> InterlockedPushEntrySList(in SLIST_HEADER ListHead, StructPointer<SLIST_ENTRY> ListEntry);
 
 	/// <summary>
 	/// Inserts a singly-linked list at the front of another singly linked list. Access to the lists is synchronized on a multiprocessor system.
@@ -112,7 +109,7 @@ public static partial class Kernel32
 	// ListEnd, _In_ ULONG Count); https://msdn.microsoft.com/en-us/library/windows/desktop/hh448545(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "hh448545")]
-	public static unsafe extern SLIST_ENTRY* InterlockedPushListSList(in SLIST_HEADER ListHead, SLIST_ENTRY* List, SLIST_ENTRY* ListEnd, uint Count);
+	public static extern StructPointer<SLIST_ENTRY> InterlockedPushListSList(in SLIST_HEADER ListHead, StructPointer<SLIST_ENTRY> List, StructPointer<SLIST_ENTRY> ListEnd, uint Count);
 
 	/// <summary>
 	/// <para>
@@ -151,7 +148,7 @@ public static partial class Kernel32
 	// InterlockedPushListSListEx( PSLIST_HEADER ListHead, PSLIST_ENTRY List, PSLIST_ENTRY ListEnd, ULONG Count );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("interlockedapi.h", MSDNShortId = "f4f334c6-fda8-4c5f-9177-b672c8aed6b3")]
-	public static unsafe extern SLIST_ENTRY* InterlockedPushListSListEx(in SLIST_HEADER ListHead, SLIST_ENTRY* List, SLIST_ENTRY* ListEnd, uint Count);
+	public static extern StructPointer<SLIST_ENTRY> InterlockedPushListSListEx(in SLIST_HEADER ListHead, StructPointer<SLIST_ENTRY> List, StructPointer<SLIST_ENTRY> ListEnd, uint Count);
 
 	/// <summary>
 	/// <para>Retrieves the number of entries in the specified singly linked list.</para>
@@ -190,7 +187,7 @@ public static partial class Kernel32
 	public struct SLIST_ENTRY
 	{
 		/// <summary>Pointer to the next entry in the list, or <c>NULL</c> if there is no next entry in the list.</summary>
-		public unsafe SLIST_ENTRY* Next;
+		public unsafe StructPointer<SLIST_ENTRY> Next;
 
 		/// <summary>The next entry in the list, or <see langword="null"/> if there is no next entry in the list.</summary>
 		public ref SLIST_ENTRY NextEntry { get { unsafe { return ref ((IntPtr)Next).AsRef<SLIST_ENTRY>(); } } }

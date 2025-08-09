@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.IO;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 
@@ -7,14 +8,14 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class AppModelTests
 {
-	public string? pkgFamilyName = "DesktopView_cw5n1h2txyewy", pkgFullName = "DesktopView_10.0.22621.1_neutral_neutral_cw5n1h2txyewy";
+	public string? pkgFamilyName = "Microsoft.WindowsTerminal_8wekyb3d8bbwe", pkgFullName = "Microsoft.WindowsTerminal_1.22.12111.0_x64__8wekyb3d8bbwe", pkgAppId = "App", pkgAppExe = "WindowsTerminal.exe";
 
 	//[OneTimeSetUp]
-	public void _Setup()
-	{
-		FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetCurrentPackageFamilyName(ref sz, sb), out pkgFamilyName).ThrowIfFailed();
-		FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetCurrentPackageFullName(ref sz, sb), out pkgFullName).ThrowIfFailed();
-	}
+	//public void _Setup()
+	//{
+	//	FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetCurrentPackageFamilyName(ref sz, sb), out pkgFamilyName).ThrowIfFailed();
+	//	FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetCurrentPackageFullName(ref sz, sb), out pkgFullName).ThrowIfFailed();
+	//}
 
 	[Test]
 	public void AppPolicyGetTest()
@@ -27,32 +28,46 @@ public class AppModelTests
 		TestContext.WriteLine($"File:{fileAccess}; TermMeth:{termMeth}; DevDiag:{diag}; InitType:{iType}");
 	}
 
-	//[Test]
+	[Test]
 	public void AppFromTokenTest()
 	{
-		using SafeHTOKEN hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_ALL_ACCESS);
-		StringBuilder sb = new(1024, 1024);
-		uint sbSz = (uint)sb.Capacity;
-		ResetSb();
-		Assert.That(GetApplicationUserModelIdFromToken(hTok, ref sbSz, sb), Is.EqualTo((Win32Error)0));
-		WriteSb("AppUserModelId");
+		Assert.That(FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetPackagePathByFullName2(pkgFullName!, PackagePathType.PackagePathType_Effective, ref sz, sb), out var pkgPath), ResultIs.Successful);
 
-		ResetSb();
-		Assert.That(GetPackageFamilyNameFromToken(hTok, ref sbSz, sb), Is.EqualTo((Win32Error)0));
-		WriteSb("PkgFamilyName");
+		// Luanch the package by its path and get its process handle
+		using var hProc = CreateProcess(Path.Combine(pkgPath!, pkgAppExe!));
+		Assert.That(hProc, ResultIs.ValidHandle);
+		Sleep(500);
+		try
+		{
+			using SafeHTOKEN hTok = SafeHTOKEN.FromProcess(hProc, TokenAccess.TOKEN_QUERY);
 
-		ResetSb();
-		Assert.That(GetPackageFullNameFromToken(hTok, ref sbSz, sb), Is.EqualTo((Win32Error)0));
-		WriteSb("PkgFullName");
+			StringBuilder sb = new(1024, 1024);
+			uint sbSz = (uint)sb.Capacity;
+			ResetSb();
+			Assert.That(GetApplicationUserModelIdFromToken(hTok, ref sbSz, sb), Is.EqualTo((Win32Error)0));
+			WriteSb("AppUserModelId");
 
-		void ResetSb() { sb.Clear(); sbSz = (uint)sb.Capacity; }
-		void WriteSb(string prefix) => TestContext.WriteLine($"{prefix}:{sb}");
+			ResetSb();
+			Assert.That(GetPackageFamilyNameFromToken(hTok, ref sbSz, sb), Is.EqualTo((Win32Error)0));
+			WriteSb("PkgFamilyName");
+
+			ResetSb();
+			Assert.That(GetPackageFullNameFromToken(hTok, ref sbSz, sb), Is.EqualTo((Win32Error)0));
+			WriteSb("PkgFullName");
+
+			void ResetSb() { sb.Clear(); sbSz = (uint)sb.Capacity; }
+			void WriteSb(string prefix) => TestContext.WriteLine($"{prefix}:{sb}");
+		}
+		finally
+		{
+			TerminateProcess(hProc, 0);
+		}
 	}
 
 	[Test]
 	public void FindPackagesByPackageFamilyTest()
 	{
-		Assert.That(FindPackagesByPackageFamily(pkgFamilyName!, PACKAGE_FLAGS.PACKAGE_FILTER_HEAD | PACKAGE_FLAGS.PACKAGE_INFORMATION_BASIC, out string?[] fullNames, out uint[] props), ResultIs.Successful);
+		Assert.That(FindPackagesByPackageFamily(pkgFamilyName!, PACKAGE_FLAGS.PACKAGE_FILTER_HEAD | PACKAGE_FLAGS.PACKAGE_FILTER_DIRECT, out string?[] fullNames, out uint[] props), ResultIs.Successful);
 		for (int i = 0; i < fullNames.Length; i++)
 			TestContext.WriteLine($"{pkgFamilyName} = {fullNames[i]} : {props[i]}");
 		Assert.That(fullNames, Is.Not.Empty);
@@ -68,13 +83,20 @@ public class AppModelTests
 	[Test]
 	public void GetPackageApplicationIdsTest()
 	{
-		PACKAGE_INFO_REFERENCE pir = new();
-		Assert.That(OpenPackageInfoByFullName(pkgFullName!, 0, ref pir), ResultIs.Successful);
-		uint sz = 0;
-		Assert.That(GetPackageApplicationIds(pir, ref sz, default, out _), ResultIs.FailureCode(Win32Error.ERROR_INSUFFICIENT_BUFFER));
-		using SafeCoTaskMemHandle buffer = new(sz);
-		Assert.That(GetPackageApplicationIds(pir, ref sz, buffer, out uint c), ResultIs.Successful);
-		TestContext.WriteLine($"{pkgFullName} : {c}");
-		TestContext.Write(buffer.DangerousGetHandle().ToHexDumpString(buffer.Size, showLocation: false));
+		Assert.That(OpenPackageInfoByFullName(pkgFullName!, default, out var pir), ResultIs.Successful);
+		Assert.That(GetPackageApplicationIds(pir, out var buffer), ResultIs.Successful);
+		buffer.WriteValues();
+	}
+
+	[Test]
+	public void GetPackageInfo2Test()
+	{
+		Assert.That(OpenPackageInfoByFullName(pkgFullName!, default, out var pir), ResultIs.Successful);
+		uint l = 0;
+		Assert.That(GetPackageInfo2(pir, PACKAGE_INFORMATION.PACKAGE_INFORMATION_FULL, PackagePathType.PackagePathType_Effective, ref l, default, out var c), ResultIs.Failure);
+		using SafeNativeArray<PACKAGE_INFO> vals = new((int)c) { Size = l };
+		Assert.That(GetPackageInfo2(pir, PACKAGE_INFORMATION.PACKAGE_INFORMATION_FULL, PackagePathType.PackagePathType_Effective, ref l, vals, out c), ResultIs.Successful);
+		foreach (var v in vals)
+			v.WriteValues();
 	}
 }

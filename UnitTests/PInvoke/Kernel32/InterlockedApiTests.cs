@@ -33,19 +33,19 @@ public class InterlockedApiTests
 		// Remove 10 items from the list and display the signature.
 		for (uint Count = max; Count >= 1; Count -= 1)
 		{
-			IntPtr pListEntry = InterlockedPopEntrySList(listHead);
+			var pListEntry = InterlockedPopEntrySList(listHead);
 
-			PROGRAM_ITEM? programItem = pListEntry.ToNullableStructure<PROGRAM_ITEM>();
+			PROGRAM_ITEM? programItem = ((IntPtr)pListEntry).ToNullableStructure<PROGRAM_ITEM>();
 			if (!programItem.HasValue)
 				Assert.Fail("NULL from InterlockedPopEntrySList");
 			Assert.That(Count, Is.EqualTo(programItem!.Value.Signature));
 
-			Marshal.FreeHGlobal(pListEntry);
+			Marshal.FreeHGlobal((IntPtr)pListEntry);
 		}
 
 		// Flush the list and verify that the items are gone.
-		Assert.That(InterlockedFlushSList(listHead), Is.EqualTo(IntPtr.Zero));
-		Assert.That(InterlockedPopEntrySList(listHead), Is.EqualTo(IntPtr.Zero));
+		Assert.That((IntPtr)InterlockedFlushSList(listHead), Is.EqualTo(IntPtr.Zero));
+		Assert.That((IntPtr)InterlockedPopEntrySList(listHead), Is.EqualTo(IntPtr.Zero));
 	}
 
 	[Test]
@@ -64,12 +64,12 @@ public class InterlockedApiTests
 		}
 
 		// Add list and check
-		Assert.That(InterlockedPushListSListEx(listHead, items[0], items[max - 1], max), Is.EqualTo(IntPtr.Zero));
+		Assert.That((IntPtr)InterlockedPushListSListEx(listHead, items[0], items[max - 1], max), Is.EqualTo(IntPtr.Zero));
 		Assert.That(QueryDepthSList(listHead), Is.EqualTo(max));
 
 		// Flush the list and verify that the items are gone.
-		Assert.That(InterlockedFlushSList(listHead), Is.EqualTo(items[0]));
-		Assert.That(InterlockedPopEntrySList(listHead), Is.EqualTo(IntPtr.Zero));
+		Assert.That((IntPtr)InterlockedFlushSList(listHead), Is.EqualTo(items[0]));
+		Assert.That((IntPtr)InterlockedPopEntrySList(listHead), Is.EqualTo(IntPtr.Zero));
 
 		// Free items
 		for (uint Count = 0U; Count < max; Count += 1)
