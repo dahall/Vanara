@@ -4,15 +4,13 @@ using System.Globalization;
 namespace Vanara;
 
 /// <summary>Managed instance of the OLE DATE type.</summary>
+/// <remarks>Initializes a new instance of the <see cref="DATE"/> struct.</remarks>
+/// <param name="value">The value.</param>
 [StructLayout(LayoutKind.Sequential), Serializable]
 [TypeConverter(typeof(DATETypeConverter))]
-public struct DATE : IEquatable<DATE>, IComparable<DATE>, IEquatable<DateTime>, IComparable<DateTime>, IConvertible, IComparable
+public struct DATE(DateTime value) : IEquatable<DATE>, IComparable<DATE>, IEquatable<DateTime>, IComparable<DateTime>, IConvertible, IComparable
 {
-	private double value;
-
-	/// <summary>Initializes a new instance of the <see cref="DATE"/> struct.</summary>
-	/// <param name="value">The value.</param>
-	public DATE(DateTime value) => this.value = value.ToOADate();
+	private double value = value.ToOADate();
 
 	/// <summary>Gets the value.</summary>
 	/// <value>The value.</value>

@@ -33,7 +33,7 @@ public static class StructHelper
 	/// </remarks>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public unsafe static T[] FieldToArray<T>(ref T fieldReference, int count, int offset = 0) where T : unmanaged =>
-		count == 0 ? new T[0] : DangerousAddressOf(ref fieldReference).ToArray<T>(count, offset) ?? new T[0];
+		count == 0 ? [] : DangerousAddressOf(ref fieldReference).ToArray<T>(count, offset) ?? [];
 
 	/// <summary>Creates a new instance of <typeparamref name="T"/> with a size field set to the size of its unmanaged type.</summary>
 	/// <typeparam name="T">The type to return .</typeparam>

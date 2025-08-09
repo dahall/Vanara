@@ -212,15 +212,13 @@ public abstract class SafeAnysizeStructBase<T> : SafeMemoryHandle<CoTaskMemoryMe
 /// </summary>
 /// <typeparam name="T">The structure type to be marshaled.</typeparam>
 /// <seealso cref="IVanaraMarshaler"/>
-public class SafeAnysizeStructMarshaler<T> : IVanaraMarshaler
+/// <remarks>Initializes a new instance of the <see cref="SafeAnysizeStructMarshaler{T}"/> class.</remarks>
+/// <param name="cookie">
+/// The name of the field in <typeparamref name="T"/> that specifies the number of elements in the last field of <typeparamref name="T"/>.
+/// </param>
+public class SafeAnysizeStructMarshaler<T>(string cookie) : IVanaraMarshaler
 {
-	private readonly string sizeFieldName;
-
-	/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStructMarshaler{T}"/> class.</summary>
-	/// <param name="cookie">
-	/// The name of the field in <typeparamref name="T"/> that specifies the number of elements in the last field of <typeparamref name="T"/>.
-	/// </param>
-	public SafeAnysizeStructMarshaler(string cookie) => sizeFieldName = cookie;
+	private readonly string sizeFieldName = cookie;
 
 	SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(T));
 

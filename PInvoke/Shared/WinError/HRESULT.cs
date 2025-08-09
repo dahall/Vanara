@@ -709,8 +709,8 @@ public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HR
 		}
 		if (!string.IsNullOrEmpty(message))
 		{
-			var constructor = exceptionForHR.GetType().GetConstructor(new Type[] { typeof(string) })!;
-			exceptionForHR = constructor.Invoke(new object[] { message! }) as Exception;
+			var constructor = exceptionForHR.GetType().GetConstructor([typeof(string)])!;
+			exceptionForHR = constructor.Invoke([message!]) as Exception;
 			# if NETCOREAPP3_0_OR_GREATER
 			exceptionForHR!.HResult = _value;
 			#endif

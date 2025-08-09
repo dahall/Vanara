@@ -3,25 +3,19 @@
 namespace Vanara.PInvoke;
 
 /// <summary>The <c>SIZE</c> structure specifies the width and height of a rectangle.</summary>
+/// <remarks>Initializes a new instance of the <see cref="SIZE"/> struct.</remarks>
+/// <param name="width">The width.</param>
+/// <param name="height">The height.</param>
 // typedef struct tagSIZE { LONG cx; LONG cy;} SIZE, *PSIZE; https://msdn.microsoft.com/en-us/library/windows/desktop/dd145106(v=vs.85).aspx
 [PInvokeData("Windef.h", MSDNShortId = "dd145106")]
 [StructLayout(LayoutKind.Sequential), Serializable]
-public struct SIZE : IEquatable<SIZE>
+public struct SIZE(int width, int height) : IEquatable<SIZE>
 {
 	/// <summary>Specifies the rectangle's width. The units depend on which function uses this.</summary>
-	public int cx;
+	public int cx = width;
 
 	/// <summary>Specifies the rectangle's height. The units depend on which function uses this.</summary>
-	public int cy;
-
-	/// <summary>Initializes a new instance of the <see cref="SIZE"/> struct.</summary>
-	/// <param name="width">The width.</param>
-	/// <param name="height">The height.</param>
-	public SIZE(int width, int height)
-	{
-		cx = width;
-		cy = height;
-	}
+	public int cy = height;
 
 	/// <summary>Specifies the rectangle's height. The units depend on which function uses this.</summary>
 	public int Height { get => cy; set => cy = value; }

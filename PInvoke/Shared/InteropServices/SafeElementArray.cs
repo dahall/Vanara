@@ -75,7 +75,7 @@ public class SafeElementArray<TElem, TPrefix, TMem> : SafeMemoryHandle<TMem>, IR
 	/// <value>The elements of the array.</value>
 	protected TElem[] Elements
 	{
-		get => handle.ToArray<TElem>(IntCount, PrefixSize, Size) ?? new TElem[0];
+		get => handle.ToArray<TElem>(IntCount, PrefixSize, Size) ?? [];
 		set
 		{
 			Size = GetElemSize != null ? PrefixSize + value.Sum(GetElemSize) : GetRequiredSize(value.Length);

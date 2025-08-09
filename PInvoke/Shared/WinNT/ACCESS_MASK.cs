@@ -1,9 +1,11 @@
 ﻿namespace Vanara.PInvoke;
 
 /// <summary>Access flags.</summary>
+/// <remarks>Initializes a new instance of the <see cref="ACCESS_MASK"/> struct.</remarks>
+/// <param name="val">The value.</param>
 [PInvokeData("winnt.h")]
 [StructLayout(LayoutKind.Sequential)]
-public partial struct ACCESS_MASK : IEquatable<ACCESS_MASK>
+public partial struct ACCESS_MASK(uint val) : IEquatable<ACCESS_MASK>
 {
 	[Flags]
 	private enum _ACCESS_MASK : uint
@@ -87,11 +89,7 @@ public partial struct ACCESS_MASK : IEquatable<ACCESS_MASK>
 	/// <summary>The right to change the owner in the object's security descriptor.</summary>
 	public const uint WRITE_OWNER = (uint)_ACCESS_MASK.WRITE_OWNER;
 
-	private readonly uint value;
-
-	/// <summary>Initializes a new instance of the <see cref="ACCESS_MASK"/> struct.</summary>
-	/// <param name="val">The value.</param>
-	public ACCESS_MASK(uint val) => value = val;
+	private readonly uint value = val;
 
 	/// <summary>Initializes a new instance of the <see cref="ACCESS_MASK"/> struct.</summary>
 	/// <param name="mask">The mask.</param>

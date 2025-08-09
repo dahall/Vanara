@@ -104,11 +104,9 @@ public class IEnumFromCom<TItem> : IEnumFromNext<TItem>
 		return true;
 	}
 
-	private class ComEnumWrapper<T> where T : class, ICOMEnum<TItem>
+	private class ComEnumWrapper<T>(T o) where T : class, ICOMEnum<TItem>
 	{
-		private readonly T obj;
-
-		public ComEnumWrapper(T o) => obj = o;
+		private readonly T obj = o;
 
 		public void ComObjReset() => ComInvoke("Reset");
 

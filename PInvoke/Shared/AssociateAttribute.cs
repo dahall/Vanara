@@ -5,18 +5,17 @@ namespace Vanara.PInvoke;
 
 /// <summary>Associates a Guid with an element.</summary>
 /// <seealso cref="Attribute"/>
+/// <remarks>Initializes a new instance of the <see cref="PInvokeDataAttribute"/> class.</remarks>
+/// <param name="guid">A GUID.</param>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Delegate | AttributeTargets.Enum | AttributeTargets.Event |
 				AttributeTargets.Field | AttributeTargets.Interface | AttributeTargets.Method |
 				AttributeTargets.Property | AttributeTargets.Struct, AllowMultiple = true, Inherited = false)]
-public class AssociateAttribute : Attribute
+public class AssociateAttribute(string guid) : Attribute
 {
-	/// <summary>Initializes a new instance of the <see cref="PInvokeDataAttribute"/> class.</summary>
-	/// <param name="guid">A GUID.</param>
-	public AssociateAttribute(string guid) => Guid = new Guid(guid);
 
 	/// <summary>Gets or sets the GUID associated with this element.</summary>
 	/// <value>A GUID value.</value>
-	public Guid Guid { get; }
+	public Guid Guid { get; } = new Guid(guid);
 
 	/// <summary>Retrieves the Guid associated with an enum value.</summary>
 	/// <typeparam name="T">An enum type.</typeparam>

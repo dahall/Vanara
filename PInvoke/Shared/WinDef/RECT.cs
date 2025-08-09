@@ -15,33 +15,25 @@ namespace Vanara.PInvoke;
 /// function, the rectangle is filled up to, but not including, the right column and bottom row of pixels. This structure is identical to
 /// the RECT structure.
 /// </remarks>
+/// <remarks>Initializes a new instance of the <see cref="RECT"/> struct.</remarks>
+/// <param name="left">The left.</param>
+/// <param name="top">The top.</param>
+/// <param name="right">The right.</param>
+/// <param name="bottom">The bottom.</param>
 [StructLayout(LayoutKind.Sequential), TypeConverter(typeof(RECTConverter))]
-public struct RECT : IEquatable<PRECT>, IEquatable<RECT>, IEquatable<Rectangle>
+public struct RECT(int left, int top, int right, int bottom) : IEquatable<PRECT>, IEquatable<RECT>, IEquatable<Rectangle>
 {
 	/// <summary>The x-coordinate of the upper-left corner of the rectangle.</summary>
-	public int left;
+	public int left = left;
 
 	/// <summary>The y-coordinate of the upper-left corner of the rectangle.</summary>
-	public int top;
+	public int top = top;
 
 	/// <summary>The x-coordinate of the lower-right corner of the rectangle.</summary>
-	public int right;
+	public int right = right;
 
 	/// <summary>The y-coordinate of the lower-right corner of the rectangle.</summary>
-	public int bottom;
-
-	/// <summary>Initializes a new instance of the <see cref="RECT"/> struct.</summary>
-	/// <param name="left">The left.</param>
-	/// <param name="top">The top.</param>
-	/// <param name="right">The right.</param>
-	/// <param name="bottom">The bottom.</param>
-	public RECT(int left, int top, int right, int bottom)
-	{
-		this.left = left;
-		this.top = top;
-		this.right = right;
-		this.bottom = bottom;
-	}
+	public int bottom = bottom;
 
 	/// <summary>Initializes a new instance of the <see cref="RECT"/> struct.</summary>
 	/// <param name="r">The rectangle.</param>
@@ -386,7 +378,7 @@ internal class PRECTConverter : RECTConverter
 	{
 		if (value is PRECT prect && destinationType == typeof(InstanceDescriptor))
 		{
-			var ctor = typeof(PRECT).GetConstructor(new[] { typeof(int), typeof(int), typeof(int), typeof(int) });
+			var ctor = typeof(PRECT).GetConstructor([typeof(int), typeof(int), typeof(int), typeof(int)]);
 			return new InstanceDescriptor(ctor, new object[] { prect.left, prect.top, prect.right, prect.bottom });
 		}
 		return base.ConvertTo(context, culture, value, destinationType);
@@ -412,7 +404,7 @@ internal class PRECTConverter : RECTConverter
 	public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
 	{
 		var props = TypeDescriptor.GetProperties(typeof(PRECT), attributes);
-		return props.Sort(new[] { "left", "top", "right", "bottom" });
+		return props.Sort(["left", "top", "right", "bottom"]);
 	}
 }
 
@@ -459,7 +451,7 @@ internal class RECTConverter : TypeConverter
 
 		if (destinationType == typeof(InstanceDescriptor))
 		{
-			var ctor = typeof(RECT).GetConstructor(new[] { typeof(int), typeof(int), typeof(int), typeof(int) });
+			var ctor = typeof(RECT).GetConstructor([typeof(int), typeof(int), typeof(int), typeof(int)]);
 			return new InstanceDescriptor(ctor, new[] { rect.left, rect.top, rect.right, rect.bottom });
 		}
 
@@ -488,7 +480,7 @@ internal class RECTConverter : TypeConverter
 	public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
 	{
 		var props = TypeDescriptor.GetProperties(typeof(RECT), attributes);
-		return props.Sort(new[] { "left", "top", "right", "bottom" });
+		return props.Sort(["left", "top", "right", "bottom"]);
 	}
 
 	public override bool GetPropertiesSupported(ITypeDescriptorContext? context) => true;

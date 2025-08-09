@@ -35,7 +35,7 @@ public class StringPtrArrayMarshaler : ICustomMarshaler
 		if (ManagedObj == null) return IntPtr.Zero;
 		string[]? sa = null;
 		if (ManagedObj is string s)
-			sa = new string[] { s };
+			sa = [s];
 		if (ManagedObj is string[] _sa)
 			sa = _sa;
 		return sa != null

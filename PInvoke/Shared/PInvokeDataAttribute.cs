@@ -40,14 +40,13 @@
 
 	/// <summary>Captures information about P/Invoke calls.</summary>
 	/// <seealso cref="Attribute"/>
+	/// <remarks>Initializes a new instance of the <see cref="PInvokeDataAttribute"/> class.</remarks>
+	/// <param name="header">The header.</param>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Delegate | AttributeTargets.Enum | AttributeTargets.Event |
 					AttributeTargets.Field | AttributeTargets.Interface | AttributeTargets.Method |
 					AttributeTargets.Property | AttributeTargets.Struct, AllowMultiple = true, Inherited = false)]
-	public class PInvokeDataAttribute : Attribute
+	public class PInvokeDataAttribute(string header) : Attribute
 	{
-		/// <summary>Initializes a new instance of the <see cref="PInvokeDataAttribute"/> class.</summary>
-		/// <param name="header">The header.</param>
-		public PInvokeDataAttribute(string header) => Header = header;
 
 		/// <summary>Gets or sets the DLL in which this element is defined.</summary>
 		/// <value>The DLL file name without the path (e.g. "advapi32.dll").</value>
@@ -55,7 +54,7 @@
 
 		/// <summary>Gets or sets the header in which this element is defined.</summary>
 		/// <value>The header file name without the path (e.g. "winuser.h").</value>
-		public string Header { get; set; }
+		public string Header { get; set; } = header;
 
 		/// <summary>Gets or sets the minimum supported client.</summary>
 		/// <value>The minimum supported client.</value>

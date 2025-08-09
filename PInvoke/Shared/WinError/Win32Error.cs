@@ -5,16 +5,14 @@ using System.Security;
 namespace Vanara.PInvoke;
 
 /// <summary>Represents a Win32 Error Code. This can be used in place of a return value.</summary>
+/// <remarks>Initializes a new instance of the <see cref="Win32Error"/> struct with an error value.</remarks>
+/// <param name="i">The error value.</param>
 [StructLayout(LayoutKind.Sequential, Pack = 4)]
 [TypeConverter(typeof(Win32ErrorTypeConverter))]
 [PInvokeData("winerr.h")]
-public partial struct Win32Error : IEquatable<Win32Error>, IEquatable<uint>, IConvertible, IComparable<Win32Error>, IComparable, IErrorProvider
+public partial struct Win32Error(uint i) : IEquatable<Win32Error>, IEquatable<uint>, IConvertible, IComparable<Win32Error>, IComparable, IErrorProvider
 {
-	internal readonly uint value;
-
-	/// <summary>Initializes a new instance of the <see cref="Win32Error"/> struct with an error value.</summary>
-	/// <param name="i">The error value.</param>
-	public Win32Error(uint i) => value = i;
+	internal readonly uint value = i;
 
 	/// <summary>Gets a value indicating whether this <see cref="Win32Error"/> is a failure.</summary>
 	/// <value><see langword="true"/> if failed; otherwise, <see langword="false"/>.</value>

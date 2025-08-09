@@ -25,14 +25,12 @@ public class GenericStringMarshaler<TMem> : GenericStringMarshalerBase<TMem> whe
 /// <see cref="CharSet.Unicode"/> is used.
 /// </remarks>
 /// <seealso cref="ICustomMarshaler"/>
-public abstract class GenericStringMarshalerBase<TMem> : ICustomMarshaler where TMem : ISimpleMemoryMethods, new()
+/// <remarks>Initializes a new instance of the <see cref="GenericStringMarshalerBase{TMem}"/> class.</remarks>
+/// <param name="charSet">The character set.</param>
+public abstract class GenericStringMarshalerBase<TMem>(CharSet charSet) : ICustomMarshaler where TMem : ISimpleMemoryMethods, new()
 {
 	private static readonly TMem mem = new();
-	private readonly CharSet charSet;
-
-	/// <summary>Initializes a new instance of the <see cref="GenericStringMarshalerBase{TMem}"/> class.</summary>
-	/// <param name="charSet">The character set.</param>
-	protected GenericStringMarshalerBase(CharSet charSet) => this.charSet = charSet;
+	private readonly CharSet charSet = charSet;
 
 	/// <summary>Performs necessary cleanup of the managed data when it is no longer needed.</summary>
 	/// <param name="ManagedObj">The managed object to be destroyed.</param>

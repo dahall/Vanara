@@ -44,15 +44,9 @@ public abstract class IndirectResource
 	/// <summary>Gets the module file name.</summary>
 	/// <value>The module file name.</value>
 	[Browsable(false)]
-	public string? ModuleFileName
-	{
-		get
-		{
-			return RawValue is null || RawValue.Length == 0 || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{'
+	public string? ModuleFileName => RawValue is null || RawValue.Length == 0 || RawValue[0] != '@' || RawValue.Length > 1 && RawValue[1] == '{'
 				? null
 				: RawValue.TrimStart('@').Split(',')[0];
-		}
-	}
 
 	/// <summary>Gets the resource name used to lookup the resource within a package.</summary>
 	/// <value>The resource lookup name.</value>

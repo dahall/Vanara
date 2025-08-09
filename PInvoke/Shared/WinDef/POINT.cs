@@ -206,7 +206,7 @@ internal class POINTConverter : TypeConverter
 			}
 			if (destinationType == typeof(InstanceDescriptor))
 			{
-				ConstructorInfo? ctor = typeof(POINT).GetConstructor(new[] { typeof(int), typeof(int) });
+				ConstructorInfo? ctor = typeof(POINT).GetConstructor([typeof(int), typeof(int)]);
 				if (ctor is not null)
 				{
 					return new InstanceDescriptor(ctor, new[] { pt.X, pt.Y });
@@ -235,7 +235,7 @@ internal class POINTConverter : TypeConverter
 	public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
 	{
 		PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(POINT), attributes);
-		return props.Sort(new[] { "X", "Y" });
+		return props.Sort(["X", "Y"]);
 	}
 
 	public override bool GetPropertiesSupported(ITypeDescriptorContext? context) => true;
