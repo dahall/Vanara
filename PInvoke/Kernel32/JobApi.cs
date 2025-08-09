@@ -1,4 +1,7 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -1066,6 +1069,7 @@ public static partial class Kernel32
 		uint cbJobObjectInfoLength, out uint lpReturnLength);
 
 	/// <summary>Retrieves limit and job state information from the job object.</summary>
+	/// <typeparam name="T">The type of the return value.</typeparam>
 	/// <param name="hJob">
 	/// <para>
 	/// A handle to the job whose information is being queried. The <c>CreateJobObject</c> or <c>OpenJobObject</c> function returns this
@@ -1120,23 +1124,6 @@ public static partial class Kernel32
 	/// <term>The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_EXTENDED_LIMIT_INFORMATION structure.</term>
 	/// </item>
 	/// <item>
-	/// <term>JobObjectGroupInformation11</term>
-	/// <term>
-	/// The lpJobObjectInfo parameter is a pointer to a buffer that receives the list of processor groups to which the job is currently
-	/// assigned. The variable pointed to by the lpReturnLength parameter is set to the size of the group data. Divide this value by to
-	/// determine the number of groups.Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>JobObjectGroupInformationEx14</term>
-	/// <term>
-	/// The lpJobObjectInfo parameter is a pointer to a buffer that receives an array of GROUP_AFFINITY structures that indicate the
-	/// affinity of the job in the processor groups to which the job is currently assigned. The variable pointed to by the lpReturnLength
-	/// parameter is set to the size of the group affinity data. Divide this value by to determine the number of groups.Windows 7,
-	/// Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
 	/// <term>JobObjectLimitViolationInformation13</term>
 	/// <term>
 	/// The lpJobObjectInfo parameter is a pointer to a JOBOBJECT_LIMIT_VIOLATION_INFORMATION structure. Windows 7, Windows Server 2008
@@ -1188,9 +1175,68 @@ public static partial class Kernel32
 	public static T QueryInformationJobObject<T>([In, AddAsMember] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet(jobObjectInfoClass, typeof(T))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
-		using var mem = SafeHGlobalHandle.CreateFromStructure<T>();
-		Win32Error.ThrowLastErrorIfFalse(QueryInformationJobObject(hJob, jobObjectInfoClass, mem, mem.Size, out _));
-		return mem.ToStructure<T>();
+		using SafeCoTaskMemStruct<T> mem = new();
+		var err = QueryInformationJobObject(hJob, jobObjectInfoClass, mem, mem.Size, out var sz);
+		if ((typeof(T) == typeof(JOBOBJECT_BASIC_PROCESS_ID_LIST) && sz > sizeof(uint) * 2) || typeof(T) == typeof(JOBOBJECT_SECURITY_LIMIT_INFORMATION))
+		{
+			mem.Size = sz;
+			err = QueryInformationJobObject(hJob, jobObjectInfoClass, mem, sz, out _);
+		}
+		Win32Error.ThrowLastErrorIfFalse(err);
+		return mem.Value;
+	}
+
+	/// <summary>Retrieves limit and job state information from the job object.</summary>
+	/// <typeparam name="T">The element type of the return array.</typeparam>
+	/// <param name="hJob">
+	/// <para>
+	/// A handle to the job whose information is being queried. The <c>CreateJobObject</c> or <c>OpenJobObject</c> function returns this
+	/// handle. The handle must have the <c>JOB_OBJECT_QUERY</c> access right. For more information, see Job Object Security and Access Rights.
+	/// </para>
+	/// <para>
+	/// If this value is NULL and the calling process is associated with a job, the job associated with the calling process is used. If
+	/// the job is nested, the immediate job of the calling process is used.
+	/// </para>
+	/// </param>
+	/// <param name="jobObjectInfoClass">
+	/// <para>The information class for the limits to be queried. This parameter can be one of the following values.</para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>JobObjectGroupInformation 11</term>
+	/// <term>
+	/// The lpJobObjectInfo parameter is a pointer to a buffer that receives the list of processor groups to which the job is currently
+	/// assigned. The variable pointed to by the lpReturnLength parameter is set to the size of the group data. Divide this value by to
+	/// determine the number of groups.Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>JobObjectGroupInformationEx 14</term>
+	/// <term>
+	/// The lpJobObjectInfo parameter is a pointer to a buffer that receives an array of GROUP_AFFINITY structures that indicate the
+	/// affinity of the job in the processor groups to which the job is currently assigned. The variable pointed to by the lpReturnLength
+	/// parameter is set to the size of the group affinity data. Divide this value by to determine the number of groups.Windows 7,
+	/// Windows Server 2008 R2, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This flag is not supported.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <returns>The limit or job state information. The format of this data depends on the value of the JobObjectInfoClass parameter.</returns>
+	public static T[] QueryInformationJobObjectArray<T>([In, AddAsMember] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass) where T : struct
+	{
+		if (!CorrespondingTypeAttribute.CanGet(jobObjectInfoClass, typeof(T[]))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
+		using SafeNativeArray<T> mem = new(1);
+		var err = QueryInformationJobObject(hJob, jobObjectInfoClass, mem, mem.Size, out var sz) ? Win32Error.ERROR_SUCCESS : GetLastError();
+		if (err.Succeeded) return sz == 0 ? [] : mem.ToArray();
+		err.ThrowUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+		mem.Size = sz;
+		Win32Error.ThrowLastErrorIfFalse(QueryInformationJobObject(hJob, jobObjectInfoClass, mem, sz, out sz));
+		return mem.DangerousGetHandle().ToArray<T>(sz / Marshal.SizeOf<T>(), 0, sz)!;
 	}
 
 	/// <summary>Gets information about the control of the I/O rate for a job object.</summary>
