@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 //using System.IO;
 using System.Linq;
@@ -325,6 +326,50 @@ public static partial class Kernel32
 	}
 
 	/// <summary>
+	/// Locks the specified file for exclusive access by the calling process. This function can operate either synchronously or
+	/// asynchronously and can request either an exclusive or a shared lock.
+	/// </summary>
+	/// <param name="hFile">
+	/// A handle to the file. The handle must have been created with either the <c>GENERIC_READ</c> or <c>GENERIC_WRITE</c> access right. For
+	/// more information, see File Security and Access Rights.
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>This parameter may be one or more of the following values.</para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>LOCKFILE_EXCLUSIVE_LOCK = 0x00000002</term>
+	/// <term>The function requests an exclusive lock. Otherwise, it requests a shared lock.</term>
+	/// </item>
+	/// <item>
+	/// <term>LOCKFILE_FAIL_IMMEDIATELY = 0x00000001</term>
+	/// <term>The function returns immediately if it is unable to acquire the requested lock. Otherwise, it waits.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="nNumberOfBytesToLock">The length of the byte range to lock.</param>
+	/// <param name="requestCallback">An AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
+	/// <param name="stateObject">
+	/// A user-defined object that contains information about the operation. This object is passed to the requestCallback delegate when the
+	/// operation is complete.
+	/// </param>
+	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
+	public static IAsyncResult BeginLockFileEx(HFILE hFile, LOCKFILE dwFlags, ulong nNumberOfBytesToLock, AsyncCallback requestCallback, object? stateObject)
+	{
+		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+		unsafe
+		{
+			var ret = LockFileEx(hFile, dwFlags, default, (uint)nNumberOfBytesToLock, (uint)(nNumberOfBytesToLock >> 32), ar.Overlapped);
+			return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
+		}
+	}
+
+	/// <summary>
 	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
 	/// supported by the device.
 	/// </summary>
@@ -340,12 +385,74 @@ public static partial class Kernel32
 	/// the operation is complete.
 	/// </param>
 	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
-	public static unsafe IAsyncResult BeginReadFile(HFILE hFile, byte[] buffer, uint numberOfBytesToRead, AsyncCallback requestCallback, object? stateObject)
+	public static IAsyncResult BeginReadFile(HFILE hFile, byte[] buffer, uint numberOfBytesToRead, AsyncCallback requestCallback, object? stateObject)
 	{
 		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
-		fixed (byte* pIn = buffer)
+		unsafe
 		{
-			var ret = ReadFile(hFile, pIn, numberOfBytesToRead, null, ar.Overlapped);
+			fixed (byte* pIn = buffer)
+			{
+				var ret = ReadFile(hFile, pIn, numberOfBytesToRead, null, ar.Overlapped);
+				return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
+			}
+		}
+	}
+
+	/// <summary>
+	/// <para>Reads data from a file and stores it in an array of buffers.</para>
+	/// <para>
+	/// The function starts reading data from the file at a position that is specified by an <c>OVERLAPPED</c> structure. The
+	/// <c>ReadFileScatter</c> function operates asynchronously.
+	/// </para>
+	/// </summary>
+	/// <param name="hFile">
+	/// <para>A handle to the file to be read.</para>
+	/// <para>
+	/// The file handle must be created with the <c>GENERIC_READ</c> right, and the <c>FILE_FLAG_OVERLAPPED</c> and
+	/// <c>FILE_FLAG_NO_BUFFERING</c> flags. For more information, see File Security and Access Rights.
+	/// </para>
+	/// </param>
+	/// <param name="aSegmentArray">
+	/// <para>A pointer to an array of <c>FILE_SEGMENT_ELEMENT</c> buffers that receives the data. For a description of this union, see Remarks.</para>
+	/// <para>Each element can receive one page of data.</para>
+	/// <para>
+	/// The array must contain enough elements to store nNumberOfBytesToRead bytes of data, plus one element for the terminating <c>NULL</c>.
+	/// For example, if there are 40 KB to be read and the page size is 4 KB, the array must have 11 elements that includes 10 for the data
+	/// and one for the <c>NULL</c>.
+	/// </para>
+	/// <para>
+	/// Each buffer must be at least the size of a system memory page and must be aligned on a system memory page size boundary. The system
+	/// reads one system memory page of data into each buffer.
+	/// </para>
+	/// <para>
+	/// The function stores the data in the buffers in sequential order. For example, it stores data into the first buffer, then into the
+	/// second buffer, and so on until each buffer is filled and all the data is stored, or there are no more buffers.
+	/// </para>
+	/// </param>
+	/// <param name="requestCallback">An AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
+	/// <param name="stateObject">
+	/// A user-defined object that contains information about the operation. This object is passed to the requestCallback delegate when the
+	/// operation is complete.
+	/// </param>
+	/// <returns>
+	/// An IAsyncResult instance that references the asynchronous request.
+	/// <para>
+	/// If <c>ReadFileScatter</c> attempts to read past the end-of-file (EOF), the call to <c>GetOverlappedResult</c> for that operation
+	/// returns <c>FALSE</c> and <c>GetLastError</c> returns <c>ERROR_HANDLE_EOF</c>.
+	/// </para>
+	/// <para>
+	/// If the function returns before the read operation is complete, the function returns zero (0), and <c>GetLastError</c> returns <c>ERROR_IO_PENDING</c>.
+	/// </para>
+	/// </returns>
+	public static IAsyncResult BeginReadFileScatter(HFILE hFile, [In, Out] FILE_SEGMENT_ELEMENT[] aSegmentArray, AsyncCallback requestCallback, object? stateObject)
+	{
+		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+		var fsi = GetFileInformationByHandleEx<FILE_STORAGE_INFO>(hFile, FILE_INFO_BY_HANDLE_CLASS.FileStorageInfo);
+		var sectorSize = fsi.FileSystemEffectivePhysicalBytesPerSectorForAtomicity;
+		uint toRead = (uint)(aSegmentArray.Length - 1) * sectorSize;
+		unsafe
+		{
+			var ret = ReadFileScatter(hFile, aSegmentArray, toRead, default, ar.Overlapped);
 			return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
 		}
 	}
@@ -394,12 +501,93 @@ public static partial class Kernel32
 	/// the operation is complete.
 	/// </param>
 	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
-	public static unsafe IAsyncResult BeginWriteFile(HFILE hFile, byte[] buffer, uint numberOfBytesToWrite, AsyncCallback requestCallback, object? stateObject)
+	public static IAsyncResult BeginWriteFile(HFILE hFile, byte[] buffer, uint numberOfBytesToWrite, AsyncCallback requestCallback, object? stateObject)
 	{
 		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
-		fixed (byte* pIn = buffer)
+		unsafe
 		{
-			var ret = WriteFile(hFile, pIn, numberOfBytesToWrite, null, ar.Overlapped);
+			fixed (byte* pIn = buffer)
+			{
+				var ret = WriteFile(hFile, pIn, numberOfBytesToWrite, null, ar.Overlapped);
+				return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
+			}
+		}
+	}
+
+	/// <summary>
+	/// <para>Retrieves data from an array of buffers and writes the data to a file.</para>
+	/// <para>
+	/// The function starts writing data to the file at a position that is specified by an <c>OVERLAPPED</c> structure. The
+	/// <c>WriteFileGather</c> function operates asynchronously.
+	/// </para>
+	/// </summary>
+	/// <param name="hFile">
+	/// <para>
+	/// A handle to the file. The file handle must be created with the <c>GENERIC_WRITE</c> access right, and the
+	/// <c>FILE_FLAG_OVERLAPPED</c> and <c>FILE_FLAG_NO_BUFFERING</c> flags. For more information, see File Security and Access Rights.
+	/// </para>
+	/// </param>
+	/// <param name="aSegmentArray">
+	/// <para>
+	/// A pointer to an array of <c>FILE_SEGMENT_ELEMENT</c> buffers that contain the data. For a description of this union, see Remarks.
+	/// </para>
+	/// <para>Each element contains the address of one page of data.</para>
+	/// <para>
+	/// Each buffer must be at least the size of a system memory page and must be aligned on a system memory page size boundary. The
+	/// system writes one system memory page of data from each buffer.
+	/// </para>
+	/// <para>
+	/// The function gathers the data from the buffers in a sequential order. For example, it writes data to the file from the first
+	/// buffer, then the second buffer, and so on until there is no more data.
+	/// </para>
+	/// <para>
+	/// Due to the asynchronous operation of this function, precautions must be taken to ensure that this parameter always references
+	/// valid memory for the lifetime of the asynchronous writes. For instance, a common programming error is to use local stack storage
+	/// and then allow execution to run out of scope.
+	/// </para>
+	/// </param>
+	/// <param name="requestCallback">An AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
+	/// <param name="stateObject">
+	/// A user-defined object that contains information about the operation. This object is passed to the requestCallback delegate when the
+	/// operation is complete.
+	/// </param>
+	/// <returns>An IAsyncResult instance that references the asynchronous request.
+	/// <para>
+	/// If the function returns before the write operation is complete, the function returns zero (0), and the <c>GetLastError</c>
+	/// function returns <c>ERROR_IO_PENDING</c>.
+	/// </para>
+	/// </returns>
+	public static IAsyncResult BeginWriteFileGather(HFILE hFile, [In, Out] FILE_SEGMENT_ELEMENT[] aSegmentArray, AsyncCallback requestCallback, object? stateObject)
+	{
+		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+		var fsi = GetFileInformationByHandleEx<FILE_STORAGE_INFO>(hFile, FILE_INFO_BY_HANDLE_CLASS.FileStorageInfo);
+		var sectorSize = fsi.FileSystemEffectivePhysicalBytesPerSectorForAtomicity;
+		uint toWrite = (uint)(aSegmentArray.Length - 1) * sectorSize;
+		unsafe
+		{
+			var ret = WriteFileGather(hFile, aSegmentArray, toWrite, default, ar.Overlapped);
+			return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
+		}
+	}
+
+	/// <summary>Unlocks a region in the specified file. This function can operate either synchronously or asynchronously.</summary>
+	/// <param name="hFile">
+	/// A handle to the file. The handle must have been created with either the <c>GENERIC_READ</c> or <c>GENERIC_WRITE</c> access right. For
+	/// more information, see File Security and Access Rights.
+	/// </param>
+	/// <param name="nNumberOfBytesToUnlock">The low-order part of the length of the byte range to unlock.</param>
+	/// <param name="requestCallback">An AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
+	/// <param name="stateObject">
+	/// A user-defined object that contains information about the operation. This object is passed to the requestCallback delegate when the
+	/// operation is complete.
+	/// </param>
+	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
+	public static IAsyncResult BeginUnlockFileEx(HFILE hFile, ulong nNumberOfBytesToUnlock, AsyncCallback requestCallback, object? stateObject)
+	{
+		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
+		unsafe
+		{
+			var ret = UnlockFileEx(hFile, default, (uint)nNumberOfBytesToUnlock, (uint)(nNumberOfBytesToUnlock >> 32), ar.Overlapped);
 			return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
 		}
 	}
@@ -507,61 +695,25 @@ public static partial class Kernel32
 	///     </listheader>
 	///     <item>
 	///       <description>
-	///         <b>0</b>
-	///         <span id="cbc_1" codelanguage="CSharp" x-lang="CSharp">
-	///           <div class="highlight-title">
-	///             <span tabindex="0" class="highlight-copycode"></span>C#</div>
-	///           <div class="code">
-	///             <pre xml:space="preserve">
-	///               <span class="highlight-number">0x00000000</span>
-	///    </pre>
-	///           </div>
-	///         </span>
+	///         <b>0</b><br/><c>0x00000000</c>
 	///       </description>
 	///       <description>Prevents other processes from opening a file or device if they request delete, read, or write access.</description>
 	///     </item>
 	///     <item>
 	///       <description>
-	///         <b>FILE_SHARE_READ</b>
-	///         <span id="cbc_2" codelanguage="CSharp" x-lang="CSharp">
-	///           <div class="highlight-title">
-	///             <span tabindex="0" class="highlight-copycode"></span>C#</div>
-	///           <div class="code">
-	///             <pre xml:space="preserve">
-	///               <span class="highlight-number">0x00000001</span>
-	///    </pre>
-	///           </div>
-	///         </span>
+	///         <b>FILE_SHARE_READ</b><br/><c>0x00000001</c>
 	///       </description>
 	///       <description>Enables subsequent open operations on a file or device to request read access. Otherwise, other processes cannot open the file or device if they request read access. If this flag is not specified, but the file or device has been opened for read access, the function fails.</description>
 	///     </item>
 	///     <item>
 	///       <description>
-	///         <b>FILE_SHARE_WRITE</b>
-	///         <span id="cbc_3" codelanguage="CSharp" x-lang="CSharp">
-	///           <div class="highlight-title">
-	///             <span tabindex="0" class="highlight-copycode"></span>C#</div>
-	///           <div class="code">
-	///             <pre xml:space="preserve">
-	///               <span class="highlight-number">0x00000002</span>
-	///    </pre>
-	///           </div>
-	///         </span>
+	///         <b>FILE_SHARE_WRITE</b><br/><c>0x00000002</c>
 	///       </description>
 	///       <description>Enables subsequent open operations on a file or device to request write access. Otherwise, other processes cannot open the file or device if they request write access. If this flag is not specified, but the file or device has been opened for write access or has a file mapping with write access, the function fails.</description>
 	///     </item>
 	///     <item>
 	///       <description>
-	///         <b>FILE_SHARE_DELETE</b>
-	///         <span id="cbc_4" codelanguage="CSharp" x-lang="CSharp">
-	///           <div class="highlight-title">
-	///             <span tabindex="0" class="highlight-copycode"></span>C#</div>
-	///           <div class="code">
-	///             <pre xml:space="preserve">
-	///               <span class="highlight-number">0x00000004</span>
-	///    </pre>
-	///           </div>
-	///         </span>
+	///         <b>FILE_SHARE_DELETE</b><br/><c>0x00000004</c>
 	///       </description>
 	///       <description>Enables subsequent open operations on a file or device to request delete access. Otherwise, other processes cannot open the file or device if they request delete access. If this flag is not specified, but the file or device has been opened for delete access, the function fails.<b>Note:</b> Delete access allows both delete and rename operations.</description>
 	///     </item>
@@ -576,16 +728,7 @@ public static partial class Kernel32
 	///     </listheader>
 	///     <item>
 	///       <description>
-	///         <b>DIRECTORY_FLAGS_DISALLOW_PATH_REDIRECTS</b>
-	///         <span id="cbc_5" codelanguage="CSharp" x-lang="CSharp">
-	///           <div class="highlight-title">
-	///             <span tabindex="0" class="highlight-copycode"></span>C#</div>
-	///           <div class="code">
-	///             <pre xml:space="preserve">
-	///               <span class="highlight-number">0x00000001</span>
-	///    </pre>
-	///           </div>
-	///         </span>
+	///         <b>DIRECTORY_FLAGS_DISALLOW_PATH_REDIRECTS</b><br/><c>0x00000001</c>
 	///       </description>
 	///       <description>Prevent <c>lpPathName</c> from being redirected by reparse points or symbolic links.</description>
 	///     </item>
@@ -717,7 +860,7 @@ public static partial class Kernel32
 	// HANDLE CreateDirectory2A( LPCSTR lpPathName, DWORD dwDesiredAccess, DWORD dwShareMode, DIRECTORY_FLAGS DirectoryFlags, LPSECURITY_ATTRIBUTES lpSecurityAttributes );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateDirectory2A")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
-	public static extern HANDLE CreateDirectory2(string lpPathName, FileAccess dwDesiredAccess, FileShare dwShareMode, DIRECTORY_FLAGS DirectoryFlags,
+	public static extern SafeHFILE CreateDirectory2(string lpPathName, FileAccess dwDesiredAccess, FileShare dwShareMode, DIRECTORY_FLAGS DirectoryFlags,
 		[In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes);
 
 	/// <summary>
@@ -769,61 +912,25 @@ public static partial class Kernel32
 	///     </listheader>
 	///     <item>
 	///       <description>
-	///         <b>0</b>
-	///         <span id="cbc_1" codelanguage="CSharp" x-lang="CSharp">
-	///           <div class="highlight-title">
-	///             <span tabindex="0" class="highlight-copycode"></span>C#</div>
-	///           <div class="code">
-	///             <pre xml:space="preserve">
-	///               <span class="highlight-number">0x00000000</span>
-	///    </pre>
-	///           </div>
-	///         </span>
+	///         <b>0</b><br/><c>0x00000000</c>
 	///       </description>
 	///       <description>Prevents other processes from opening a file or device if they request delete, read, or write access.</description>
 	///     </item>
 	///     <item>
 	///       <description>
-	///         <b>FILE_SHARE_READ</b>
-	///         <span id="cbc_2" codelanguage="CSharp" x-lang="CSharp">
-	///           <div class="highlight-title">
-	///             <span tabindex="0" class="highlight-copycode"></span>C#</div>
-	///           <div class="code">
-	///             <pre xml:space="preserve">
-	///               <span class="highlight-number">0x00000001</span>
-	///    </pre>
-	///           </div>
-	///         </span>
+	///         <b>FILE_SHARE_READ</b><br/><c>0x00000001</c>
 	///       </description>
 	///       <description>Enables subsequent open operations on a file or device to request read access. Otherwise, other processes cannot open the file or device if they request read access. If this flag is not specified, but the file or device has been opened for read access, the function fails.</description>
 	///     </item>
 	///     <item>
 	///       <description>
-	///         <b>FILE_SHARE_WRITE</b>
-	///         <span id="cbc_3" codelanguage="CSharp" x-lang="CSharp">
-	///           <div class="highlight-title">
-	///             <span tabindex="0" class="highlight-copycode"></span>C#</div>
-	///           <div class="code">
-	///             <pre xml:space="preserve">
-	///               <span class="highlight-number">0x00000002</span>
-	///    </pre>
-	///           </div>
-	///         </span>
+	///         <b>FILE_SHARE_WRITE</b><br/><c>0x00000002</c>
 	///       </description>
 	///       <description>Enables subsequent open operations on a file or device to request write access. Otherwise, other processes cannot open the file or device if they request write access. If this flag is not specified, but the file or device has been opened for write access or has a file mapping with write access, the function fails.</description>
 	///     </item>
 	///     <item>
 	///       <description>
-	///         <b>FILE_SHARE_DELETE</b>
-	///         <span id="cbc_4" codelanguage="CSharp" x-lang="CSharp">
-	///           <div class="highlight-title">
-	///             <span tabindex="0" class="highlight-copycode"></span>C#</div>
-	///           <div class="code">
-	///             <pre xml:space="preserve">
-	///               <span class="highlight-number">0x00000004</span>
-	///    </pre>
-	///           </div>
-	///         </span>
+	///         <b>FILE_SHARE_DELETE</b><br/><c>0x00000004</c>
 	///       </description>
 	///       <description>Enables subsequent open operations on a file or device to request delete access. Otherwise, other processes cannot open the file or device if they request delete access. If this flag is not specified, but the file or device has been opened for delete access, the function fails.<b>Note:</b> Delete access allows both delete and rename operations.</description>
 	///     </item>
@@ -838,16 +945,7 @@ public static partial class Kernel32
 	///     </listheader>
 	///     <item>
 	///       <description>
-	///         <b>DIRECTORY_FLAGS_DISALLOW_PATH_REDIRECTS</b>
-	///         <span id="cbc_5" codelanguage="CSharp" x-lang="CSharp">
-	///           <div class="highlight-title">
-	///             <span tabindex="0" class="highlight-copycode"></span>C#</div>
-	///           <div class="code">
-	///             <pre xml:space="preserve">
-	///               <span class="highlight-number">0x00000001</span>
-	///    </pre>
-	///           </div>
-	///         </span>
+	///         <b>DIRECTORY_FLAGS_DISALLOW_PATH_REDIRECTS</b><br/><c>0x00000001</c>
 	///       </description>
 	///       <description>Prevent <c>lpPathName</c> from being redirected by reparse points or symbolic links.</description>
 	///     </item>
@@ -979,7 +1077,7 @@ public static partial class Kernel32
 	// HANDLE CreateDirectory2A( LPCSTR lpPathName, DWORD dwDesiredAccess, DWORD dwShareMode, DIRECTORY_FLAGS DirectoryFlags, LPSECURITY_ATTRIBUTES lpSecurityAttributes );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateDirectory2A")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
-	public static extern HANDLE CreateDirectory2(string lpPathName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode, DIRECTORY_FLAGS DirectoryFlags,
+	public static extern SafeHFILE CreateDirectory2(string lpPathName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode, DIRECTORY_FLAGS DirectoryFlags,
 		[In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes);	
 
 	/// <summary>
@@ -3816,7 +3914,7 @@ public static partial class Kernel32
 	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	public static extern HANDLE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
+	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		FileMode dwCreationDisposition, in CREATEFILE3_EXTENDED_PARAMETERS pCreateExParams);
 
 	/// <summary>
@@ -4327,7 +4425,7 @@ public static partial class Kernel32
 	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	public static extern HANDLE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
+	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
 		CreationOption dwCreationDisposition, in CREATEFILE3_EXTENDED_PARAMETERS pCreateExParams);
 
 	/// <summary>
@@ -4838,7 +4936,7 @@ public static partial class Kernel32
 	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	public static extern HANDLE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
+	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		FileMode dwCreationDisposition, [In, Optional] StructPointer<CREATEFILE3_EXTENDED_PARAMETERS> pCreateExParams);
 
 	/// <summary>
@@ -5349,7 +5447,7 @@ public static partial class Kernel32
 	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	public static extern HANDLE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
+	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
 		CreationOption dwCreationDisposition, [In, Optional] StructPointer<CREATEFILE3_EXTENDED_PARAMETERS> pCreateExParams);
 
 	/// <summary>Defines, redefines, or deletes MS-DOS device names.</summary>
@@ -5464,7 +5562,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "924b1456-b2c5-4d52-aacf-6172608c73ea")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DefineDosDevice(DDD dwFlags, string lpDeviceName, string lpTargetPath);
+	public static extern bool DefineDosDevice(DDD dwFlags, string lpDeviceName, [Optional] string? lpTargetPath);
 
 	/// <summary>Deletes an existing file.</summary>
 	/// <param name="lpFileName">The name of the file to be deleted.</param>
@@ -6026,7 +6124,7 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364419")]
-	public static extern SafeVolumeSearchHandle FindFirstVolume([In, Out] StringBuilder lpszVolumeName, uint cchBufferLength);
+	public static extern SafeVolumeSearchHandle FindFirstVolume([In, Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
 
 	/// <summary>Requests that the operating system signal a change notification handle the next time it detects an appropriate change.</summary>
 	/// <param name="hChangeHandle">A handle to a change notification handle created by the <c>FindFirstChangeNotification</c> function.</param>
@@ -6071,7 +6169,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364431")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindNextVolume(SafeVolumeSearchHandle hFindVolume, [In, Out] StringBuilder lpszVolumeName, uint cchBufferLength);
+	public static extern bool FindNextVolume(SafeVolumeSearchHandle hFindVolume, [In, Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
 
 	/// <summary>
 	/// Closes the specified volume search handle. The FindFirstVolume and FindNextVolume functions use this search handle to locate volumes.
@@ -6236,7 +6334,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364952")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetFileInformationByHandle([In] HFILE hFile, out BY_HANDLE_FILE_INFORMATION lpFileInformation);
+	public static extern bool GetFileInformationByHandle([In, AddAsMember] HFILE hFile, out BY_HANDLE_FILE_INFORMATION lpFileInformation);
 
 	/// <summary>
 	/// <para>Retrieves the size of the specified file, in bytes.</para>
@@ -6292,7 +6390,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364957")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetFileSizeEx([In] HFILE hFile, out long lpFileSize);
+	public static extern bool GetFileSizeEx([In, AddAsMember] HFILE hFile, out long lpFileSize);
 
 	/// <summary>
 	/// <para>Retrieves the date and time that a file or directory was created, last accessed, and last modified.</para>
@@ -6332,7 +6430,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "ms724320")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetFileTime([In] HFILE hFile, out FILETIME lpCreationTime, out FILETIME lpLastAccessTime, out FILETIME lpLastWriteTime);
+	public static extern bool GetFileTime([In, AddAsMember] HFILE hFile, out FILETIME lpCreationTime, out FILETIME lpLastAccessTime, out FILETIME lpLastWriteTime);
 
 	/// <summary>
 	/// <para>Retrieves the file type of the specified file.</para>
@@ -6383,7 +6481,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetFileType( _In_ HANDLE hFile);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364960")]
-	public static extern FileType GetFileType([In] HFILE hFile);
+	public static extern FileType GetFileType([In, AddAsMember] HFILE hFile);
 
 	/// <summary>
 	/// <para>Retrieves the final path for the specified file.</para>
@@ -6485,7 +6583,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetFinalPathNameByHandle( _In_ HANDLE hFile, _Out_ LPTSTR lpszFilePath, _In_ DWORD cchFilePath, _In_ DWORD dwFlags);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364962")]
-	public static extern uint GetFinalPathNameByHandle([In] HFILE hFile, StringBuilder? lpszFilePath, uint cchFilePath, FinalPathNameOptions dwFlags);
+	public static extern uint GetFinalPathNameByHandle([In, AddAsMember] HFILE hFile, StringBuilder? lpszFilePath, uint cchFilePath, FinalPathNameOptions dwFlags);
 
 	/// <summary>
 	/// <para>Retrieves the full path and file name of the specified file.</para>
@@ -6526,7 +6624,37 @@ public static partial class Kernel32
 	// DWORD WINAPI GetFullPathName( _In_ LPCTSTR lpFileName, _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer, _Out_ LPTSTR *lpFilePart);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetFullPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364963")]
-	public static extern uint GetFullPathName(string lpFileName, uint nBufferLength, StringBuilder? lpBuffer, out IntPtr lpFilePart);
+	public static extern uint GetFullPathName(string lpFileName, [Optional] uint nBufferLength, [Optional] StrPtrUni lpBuffer, out StrPtrUni lpFilePart);
+
+	/// <summary>
+	/// <para>Retrieves the full path and file name of the specified file.</para>
+	/// <para>To perform this operation as a transacted operation, use the <c>GetFullPathNameTransacted</c> function.</para>
+	/// <para>For more information about file and path names, see File Names, Paths, and Namespaces.</para>
+	/// </summary>
+	/// <param name="lpFileName">
+	/// <para>The name of the file.</para>
+	/// <para>This parameter can be a short (the 8.3 form) or long file name. This string can also be a share or volume name.</para>
+	/// <para>
+	/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
+	/// characters, call the Unicode version of the function ( <c>GetFullPathNameW</c>), and prepend "\\?\" to the path. For more
+	/// information, see Naming a File.
+	/// </para>
+	/// </param>
+	/// <param name="lpFileIndex">
+	/// <para>The index of the final file name component in the path.</para>
+	/// <para>If lpBuffer refers to a directory and not a file, lpFilePart receives zero.</para>
+	/// </param>
+	/// <returns>The string for the drive and path.</returns>
+	[PInvokeData("FileAPI.h", MSDNShortId = "aa364963")]
+	public static string? GetFullPathName(string lpFileName, out int lpFileIndex)
+	{
+		var len = GetFullPathName(lpFileName, 0, default, out _);
+		if (len == 0) throw new Win32Exception(Marshal.GetLastWin32Error());
+		SafeCoTaskMemString sb = new((int)len + 1, CharSet.Unicode);
+		len = GetFullPathName(lpFileName, (uint)sb.Capacity, (IntPtr)sb, out var filePart);
+		lpFileIndex = filePart.IsNull ? 0 : (int)((nint)filePart - sb.DangerousGetHandle());
+		return (string?)sb;
+	}
 
 	/// <summary>
 	/// <para>Retrieves a bitmask representing the currently available disk drives.</para>
@@ -6657,7 +6785,8 @@ public static partial class Kernel32
 	// DWORD WINAPI GetLongPathName( _In_ LPCTSTR lpszShortPath, _Out_ LPTSTR lpszLongPath, _In_ DWORD cchBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetLongPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364980")]
-	public static extern uint GetLongPathName(string lpszShortPath, StringBuilder? lpszLongPath, uint cchBuffer);
+	public static extern uint GetLongPathName(string lpszShortPath, [Optional, SizeDef(nameof(cchBuffer), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpszLongPath,
+		[Optional] uint cchBuffer);
 
 	/// <summary>
 	/// <para>Retrieves the short path form of the specified path.</para>
@@ -6695,7 +6824,8 @@ public static partial class Kernel32
 	// DWORD WINAPI GetShortPathName( _In_ LPCTSTR lpszLongPath, _Out_ LPTSTR lpszShortPath, _In_ DWORD cchBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetShortPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364989")]
-	public static extern uint GetShortPathName(string lpszLongPath, StringBuilder? lpszShortPath, uint cchBuffer);
+	public static extern uint GetShortPathName([MaxLength(MAX_PATH - 14)] string lpszLongPath, [Optional, SizeDef(nameof(cchBuffer), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpszShortPath,
+		[Optional] uint cchBuffer);
 
 	/// <summary>
 	/// Creates a name for a temporary file. If a unique file name is generated, an empty file is created and the handle to it is
@@ -6816,7 +6946,8 @@ public static partial class Kernel32
 	// LPCSTR lpPrefixString, UINT uUnique, LPSTR lpTempFileName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "0a30055f-a3b9-439f-9304-40ee8a07b967")]
-	public static extern uint GetTempFileName(string lpPathName, string lpPrefixString, uint uUnique, [Out] StringBuilder lpTempFileName);
+	public static extern uint GetTempFileName([MaxLength(MAX_PATH - 14)] string lpPathName, [MaxLength(3)] string lpPrefixString,
+		uint uUnique, [Out, SizeDef(MAX_PATH)] StringBuilder lpTempFileName);
 
 	/// <summary>
 	/// <para>Retrieves the path of the directory designated for temporary files.</para>
@@ -6842,7 +6973,8 @@ public static partial class Kernel32
 	// DWORD WINAPI GetTempPath( _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364992")]
-	public static extern uint GetTempPath(uint nBufferLength, StringBuilder? lpBuffer);
+	public static extern uint GetTempPath([Optional, Range(0, MAX_PATH + 1)] uint nBufferLength,
+		[Optional, SizeDef(nameof(nBufferLength), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer);
 
 	/// <summary>Retrieves the path of the directory designated for temporary files, based on the privileges of the calling process.</summary>
 	/// <param name="BufferLength">The size of the string buffer identified by lpBuffer, in <c>TCHARs</c>.</param>
@@ -6932,7 +7064,8 @@ public static partial class Kernel32
 	// DWORD GetTempPath2W( [in] DWORD BufferLength, [out] LPWSTR Buffer );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetTempPath2W")]
-	public static extern uint GetTempPath2(uint BufferLength, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? Buffer);
+	public static extern uint GetTempPath2([Optional, Range(0, MAX_PATH + 1)] uint BufferLength,
+		[Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(BufferLength), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? Buffer);
 
 	/// <summary>Retrieves information about the file system and volume associated with the specified root directory.</summary>
 	/// <param name="lpRootPathName">
@@ -7016,8 +7149,9 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364993")]
-	public static extern bool GetVolumeInformation([Optional] string? lpRootPathName, StringBuilder? lpVolumeNameBuffer, int nVolumeNameSize,
-		out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags, StringBuilder? lpFileSystemNameBuffer, int nFileSystemNameSize);
+	public static extern bool GetVolumeInformation([Optional] string? lpRootPathName, [SizeDef(nameof(nVolumeNameSize))] StringBuilder? lpVolumeNameBuffer,
+		[Range(0, MAX_PATH + 1)] int nVolumeNameSize, out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags,
+		[SizeDef(nameof(nVolumeNameSize))] StringBuilder? lpFileSystemNameBuffer, [Range(0, MAX_PATH + 1)] int nFileSystemNameSize);
 
 	/// <summary>Retrieves information about the file system and volume associated with the specified root directory.</summary>
 	/// <param name="rootPathName">
@@ -7087,13 +7221,9 @@ public static partial class Kernel32
 	public static bool GetVolumeInformation([Optional] string? rootPathName, out string volumeName, out uint volumeSerialNumber,
 		out uint maximumComponentLength, out FileSystemFlags fileSystemFlags, out string fileSystemName)
 	{
-		var sb1 = new StringBuilder(MAX_PATH + 1);
-		var sb2 = new StringBuilder(MAX_PATH + 1);
-		var ret = GetVolumeInformation(rootPathName, sb1, sb1.Capacity, out var sn, out var cl, out FileSystemFlags flags, sb2, sb2.Capacity);
+		StringBuilder sb1 = new(MAX_PATH + 1), sb2 = new(MAX_PATH + 1);
+		var ret = GetVolumeInformation(rootPathName, sb1, sb1.Capacity, out volumeSerialNumber, out maximumComponentLength, out fileSystemFlags, sb2, sb2.Capacity);
 		volumeName = sb1.ToString();
-		volumeSerialNumber = sn;
-		maximumComponentLength = cl;
-		fileSystemFlags = flags;
 		fileSystemName = sb2.ToString();
 		return ret;
 	}
@@ -7259,8 +7389,166 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa964920")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetVolumeInformationByHandleW([In] HFILE hFile, StringBuilder? lpVolumeNameBuffer, uint nVolumeNameSize,
-		out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags, StringBuilder? lpFileSystemNameBuffer, uint nFileSystemNameSize);
+	public static extern bool GetVolumeInformationByHandleW([In, AddAsMember] HFILE hFile, [SizeDef(nameof(nVolumeNameSize))] StringBuilder? lpVolumeNameBuffer,
+		[Range(0, MAX_PATH + 1)] uint nVolumeNameSize, out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags,
+		[SizeDef(nameof(nVolumeNameSize))] StringBuilder? lpFileSystemNameBuffer, [Range(0, MAX_PATH + 1)] uint nFileSystemNameSize);
+
+	/// <summary>
+	/// <para>Retrieves information about the file system and volume associated with the specified file.</para>
+	/// <para>To retrieve the current compression state of a file or directory, use <c>FSCTL_GET_COMPRESSION</c>.</para>
+	/// </summary>
+	/// <param name="hFile">A handle to the file.</param>
+	/// <param name="lpVolumeNameBuffer">
+	/// A pointer to a buffer that receives the name of a specified volume. The maximum buffer size is .
+	/// </param>
+	/// <param name="lpVolumeSerialNumber">
+	/// <para>A pointer to a variable that receives the volume serial number.</para>
+	/// <para>
+	/// This function returns the volume serial number that the operating system assigns when a hard disk is formatted. To programmatically
+	/// obtain the hard disk's serial number that the manufacturer assigns, use the Windows Management Instrumentation (WMI)
+	/// <c>Win32_PhysicalMedia</c> property <c>SerialNumber</c>.
+	/// </para>
+	/// </param>
+	/// <param name="lpMaximumComponentLength">
+	/// <para>
+	/// A pointer to a variable that receives the maximum length, in <c>WCHAR</c> s, of a file name component that a specified file system supports.
+	/// </para>
+	/// <para>A file name component is the portion of a file name between backslashes.</para>
+	/// <para>
+	/// The value that is stored in the variable that *lpMaximumComponentLength points to is used to indicate that a specified file system
+	/// supports long names. For example, for a FAT file system that supports long names, the function stores the value 255, rather than the
+	/// previous 8.3 indicator. Long names can also be supported on systems that use the NTFS file system.
+	/// </para>
+	/// </param>
+	/// <param name="lpFileSystemFlags">
+	/// <para>A pointer to a variable that receives flags associated with the specified file system.</para>
+	/// <para>
+	/// This parameter can be one or more of the following flags. However, <c>FILE_FILE_COMPRESSION</c> and <c>FILE_VOL_IS_COMPRESSED</c> are
+	/// mutually exclusive.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>FILE_CASE_PRESERVED_NAMES0x00000002</term>
+	/// <term>The specified volume supports preserved case of file names when it places a name on disk.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_CASE_SENSITIVE_SEARCH0x00000001</term>
+	/// <term>The specified volume supports case-sensitive file names.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_FILE_COMPRESSION0x00000010</term>
+	/// <term>The specified volume supports file-based compression.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NAMED_STREAMS0x00040000</term>
+	/// <term>The specified volume supports named streams.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_PERSISTENT_ACLS0x00000008</term>
+	/// <term>
+	/// The specified volume preserves and enforces access control lists (ACL). For example, the NTFS file system preserves and enforces
+	/// ACLs, and the FAT file system does not.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_READ_ONLY_VOLUME0x00080000</term>
+	/// <term>The specified volume is read-only.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_SEQUENTIAL_WRITE_ONCE0x00100000</term>
+	/// <term>The specified volume supports a single sequential write.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_SUPPORTS_ENCRYPTION0x00020000</term>
+	/// <term>The specified volume supports the Encrypted File System (EFS). For more information, see File Encryption.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_SUPPORTS_EXTENDED_ATTRIBUTES0x00800000</term>
+	/// <term>
+	/// The specified volume supports extended attributes. An extended attribute is a piece of application-specific metadata that an
+	/// application can associate with a file and is not part of the file's data.Windows Vista and Windows Server 2008: This value is not supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_SUPPORTS_HARD_LINKS0x00400000</term>
+	/// <term>
+	/// The specified volume supports hard links. For more information, see Hard Links and Junctions.Windows Vista and Windows Server
+	/// 2008: This value is not supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_SUPPORTS_OBJECT_IDS0x00010000</term>
+	/// <term>The specified volume supports object identifiers.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_SUPPORTS_OPEN_BY_FILE_ID0x01000000</term>
+	/// <term>
+	/// The file system supports open by FileID. For more information, see FILE_ID_BOTH_DIR_INFO.Windows Vista and Windows Server 2008: This
+	/// value is not supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_SUPPORTS_REPARSE_POINTS0x00000080</term>
+	/// <term>The specified volume supports re-parse points.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_SUPPORTS_SPARSE_FILES0x00000040</term>
+	/// <term>The specified volume supports sparse files.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_SUPPORTS_TRANSACTIONS0x00200000</term>
+	/// <term>The specified volume supports transactions. For more information, see About KTM.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_SUPPORTS_USN_JOURNAL0x02000000</term>
+	/// <term>
+	/// The specified volume supports update sequence number (USN) journals. For more information, see Change Journal Records.Windows Vista
+	/// and Windows Server 2008: This value is not supported.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_UNICODE_ON_DISK0x00000004</term>
+	/// <term>The specified volume supports Unicode in file names as they appear on disk.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_VOLUME_IS_COMPRESSED0x00008000</term>
+	/// <term>The specified volume is a compressed volume.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_VOLUME_QUOTAS0x00000020</term>
+	/// <term>The specified volume supports disk quotas.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="lpFileSystemNameBuffer">
+	/// A pointer to a buffer that receives the name of the file system, for example, the FAT file system or the NTFS file system. The buffer
+	/// size is specified by the nFileSystemNameSize parameter.
+	/// </param>
+	/// <returns>
+	/// <para>If all the requested information is retrieved, the return value is nonzero.</para>
+	/// <para>If not all the requested information is retrieved, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+	/// </returns>
+	// BOOL WINAPI GetVolumeInformationByHandleW( _In_ HANDLE hFile, _Out_opt_ LPWSTR lpVolumeNameBuffer, _In_ DWORD nVolumeNameSize,
+	// _Out_opt_ LPDWORD lpVolumeSerialNumber, _Out_opt_ LPDWORD lpMaximumComponentLength, _Out_opt_ LPDWORD lpFileSystemFlags, _Out_opt_
+	// LPWSTR lpFileSystemNameBuffer, _In_ DWORD nFileSystemNameSize);
+	[PInvokeData("FileAPI.h", MSDNShortId = "aa964920")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static bool GetVolumeInformationByHandleW([In, AddAsMember] HFILE hFile, out string lpVolumeNameBuffer, out uint lpVolumeSerialNumber,
+		out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags, out string lpFileSystemNameBuffer)
+	{
+		StringBuilder volName = new(MAX_PATH + 1), fsName = new(MAX_PATH + 1);
+		var ret = GetVolumeInformationByHandleW(hFile, volName, (uint)volName.Capacity, out lpVolumeSerialNumber, out lpMaximumComponentLength,
+			out lpFileSystemFlags, fsName, (uint)fsName.Capacity);
+		lpVolumeNameBuffer = volName.ToString();
+		lpFileSystemNameBuffer = fsName.ToString();
+		return ret;
+	}
 
 	/// <summary>
 	/// <para>
@@ -7295,7 +7583,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364994")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetVolumeNameForVolumeMountPoint(string lpszVolumeMountPoint, StringBuilder? lpszVolumeName, uint cchBufferLength);
+	public static extern bool GetVolumeNameForVolumeMountPoint(string lpszVolumeMountPoint, [SizeDef(nameof(cchBufferLength))] StringBuilder? lpszVolumeName, [Range(0, 50)] uint cchBufferLength);
 
 	/// <summary>
 	/// <para>Retrieves the volume mount point where the specified path is mounted.</para>
@@ -7324,44 +7612,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364996")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetVolumePathName(string lpszFileName, StringBuilder? lpszVolumePathName, uint cchBufferLength);
-
-	/// <summary>
-	/// <para>Retrieves a list of drive letters and mounted folder paths for the specified volume.</para>
-	/// </summary>
-	/// <param name="lpszVolumeName">
-	/// <para>A volume <c>GUID</c> path for the volume. A volume <c>GUID</c> path is of the form "\\?\Volume{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}\".</para>
-	/// </param>
-	/// <param name="lpszVolumePathNames">
-	/// <para>
-	/// A pointer to a buffer that receives the list of drive letters and mounted folder paths. The list is an array of null-terminated
-	/// strings terminated by an additional <c>NULL</c> character. If the buffer is not large enough to hold the complete list, the
-	/// buffer holds as much of the list as possible.
-	/// </para>
-	/// </param>
-	/// <param name="cchBufferLength">
-	/// <para>The length of the lpszVolumePathNames buffer, in <c>TCHARs</c>, including all <c>NULL</c> characters.</para>
-	/// </param>
-	/// <param name="lpcchReturnLength">
-	/// <para>
-	/// If the call is successful, this parameter is the number of <c>TCHARs</c> copied to the lpszVolumePathNames buffer. Otherwise,
-	/// this parameter is the size of the buffer required to hold the complete list, in <c>TCHARs</c>.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. If the buffer is
-	/// not large enough to hold the complete list, the error code is <c>ERROR_MORE_DATA</c> and the lpcchReturnLength parameter receives
-	/// the required buffer size.
-	/// </para>
-	/// </returns>
-	// BOOL WINAPI GetVolumePathNamesForVolumeName( _In_ LPCTSTR lpszVolumeName, _Out_ LPTSTR lpszVolumePathNames, _In_ DWORD
-	// cchBufferLength, _Out_ PDWORD lpcchReturnLength);
-	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-	[PInvokeData("FileAPI.h", MSDNShortId = "aa364998")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetVolumePathNamesForVolumeName(string lpszVolumeName, StringBuilder? lpszVolumePathNames, uint cchBufferLength, out uint lpcchReturnLength);
+	public static extern bool GetVolumePathName(string lpszFileName, [SizeDef(nameof(cchBufferLength))] StringBuilder? lpszVolumePathName, uint cchBufferLength);
 
 	/// <summary>
 	/// <para>Retrieves a list of drive letters and mounted folder paths for the specified volume.</para>
@@ -7399,6 +7650,27 @@ public static partial class Kernel32
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364998")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetVolumePathNamesForVolumeName(string lpszVolumeName, [Out, Optional] IntPtr lpszVolumePathNames, uint cchBufferLength, out uint lpcchReturnLength);
+
+	/// <summary>Retrieves a list of drive letters and mounted folder paths for the specified volume.</summary>
+	/// <param name="lpszVolumeName">A volume <c>GUID</c> path for the volume. A volume <c>GUID</c> path is of the form "\\?\Volume{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}\".</param>
+	/// <param name="lpszVolumePathNames">The list of drive letters and mounted folder paths.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+	/// </returns>
+	[PInvokeData("FileAPI.h", MSDNShortId = "aa364998")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static bool GetVolumePathNamesForVolumeName(string lpszVolumeName, out string[] lpszVolumePathNames)
+	{
+		lpszVolumePathNames = [];
+		if (!GetVolumePathNamesForVolumeName(lpszVolumeName, IntPtr.Zero, 0, out uint requiredLength) && GetLastError() != Win32Error.ERROR_MORE_DATA)
+			return false;
+		using SafeCoTaskMemString buffer = new((int)requiredLength + 1, CharSet.Auto);
+		if (!GetVolumePathNamesForVolumeName(lpszVolumeName, buffer, requiredLength, out requiredLength))
+			return false;
+		lpszVolumePathNames = [.. buffer.DangerousGetHandle().ToStringEnum(CharSet.Auto, 0, buffer.Size)];
+		return true;
+	}
 
 	/// <summary>
 	/// <para>Converts a local file time to a file time based on the Coordinated Universal Time (UTC).</para>
@@ -7557,7 +7829,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365203")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool LockFileEx([In] HFILE hFile, LOCKFILE dwFlags, [Optional] uint dwReserved, uint nNumberOfBytesToLockLow, uint nNumberOfBytesToLockHigh, NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool LockFileEx([In, AddAsMember] HFILE hFile, LOCKFILE dwFlags, [Optional] uint dwReserved, uint nNumberOfBytesToLockLow, uint nNumberOfBytesToLockHigh, NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// Retrieves information about MS-DOS device names. The function can obtain the current mapping for a particular MS-DOS device name.
@@ -7643,7 +7915,7 @@ public static partial class Kernel32
 	public static IEnumerable<string> QueryDosDevice([Optional] string? deviceName)
 	{
 		deviceName = deviceName?.TrimEnd('\\');
-		var bytes = 16;
+		var bytes = 65; // MAX_PATH / 4
 		uint retLen;
 		using var mem = new SafeHGlobalHandle(0);
 		do
@@ -7652,7 +7924,10 @@ public static partial class Kernel32
 			retLen = QueryDosDevice(deviceName, mem, mem.Size / Marshal.SystemDefaultCharSize);
 		} while (retLen == 0 && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER);
 		if (retLen == 0) throw new Win32Exception();
-		return mem.ToStringEnum().ToArray();
+		return [.. mem.ToStringEnum()];
+
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		static extern uint QueryDosDevice(string? lpDeviceName, IntPtr lpTargetPath, int ucchMax);
 	}
 
 	/// <summary>
@@ -7694,7 +7969,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-	public static extern bool ReadFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
+	public static extern bool ReadFile([In, AddAsMember] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
 
 	/// <summary>
 	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
@@ -7735,7 +8010,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-	public static extern bool ReadFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
+	public static extern bool ReadFile([In, AddAsMember] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
 
 	/// <summary>
 	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
@@ -7776,7 +8051,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-	public static extern unsafe bool ReadFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToRead, [Optional] uint* lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool ReadFile([In, AddAsMember] HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToRead, [Optional] uint* lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// <para>
@@ -8034,7 +8309,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.ReadFile")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadFile(HFILE hFile, [Out] byte[] lpBuffer, int nNumberOfBytesToRead, out int lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
+	public static extern bool ReadFile([In, AddAsMember] HFILE hFile, [Out] byte[] lpBuffer, int nNumberOfBytesToRead, out int lpNumberOfBytesRead, ref NativeOverlapped lpOverlapped);
 
 	/// <summary>
 	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
@@ -8075,7 +8350,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-	public static extern bool ReadFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
+	public static extern bool ReadFile([In, AddAsMember] HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped);
 
 	/// <summary>
 	/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if
@@ -8091,7 +8366,7 @@ public static partial class Kernel32
 	/// value is zero(FALSE). To get extended error information, call the GetLastError function.
 	/// </returns>
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-	public static bool ReadFile<T>(HFILE hFile, out T lpBuffer) where T : struct
+	public static bool ReadFile<T>([In, AddAsMember] HFILE hFile, out T lpBuffer) where T : struct
 	{
 		var size = Vanara.Extensions.InteropExtensions.SizeOf<T>();
 		using SafeCoTaskMemHandle buffer = new(size);
@@ -8355,7 +8630,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-	public static bool ReadFile(HFILE hFile, ISafeMemoryHandle lpBuffer, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped) =>
+	public static bool ReadFile([In, AddAsMember] HFILE hFile, ISafeMemoryHandle lpBuffer, out uint lpNumberOfBytesRead, [Optional] IntPtr lpOverlapped) =>
 		ReadFile(hFile, lpBuffer.DangerousGetHandle(), lpBuffer.Size, out lpNumberOfBytesRead, lpOverlapped);
 
 	/// <summary>
@@ -8521,7 +8796,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365469")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool ReadFileScatter([In] HFILE hFile, [In] IntPtr aSegmentArray, uint nNumberOfBytesToRead, IntPtr lpReserved, NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool ReadFileScatter([In, AddAsMember] HFILE hFile, [In, Out, MarshalAs(UnmanagedType.LPArray)] FILE_SEGMENT_ELEMENT[] aSegmentArray,
+		uint nNumberOfBytesToRead, [Optional] IntPtr lpReserved, [In, Out] NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// <para>Deletes an existing empty directory.</para>
@@ -8660,7 +8936,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365531")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetEndOfFile([In] HFILE hFile);
+	public static extern bool SetEndOfFile([In, AddAsMember] HFILE hFile);
 
 	/// <summary>
 	/// <para>Sets the attributes for a file or directory.</para>
@@ -8779,7 +9055,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365539")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFileInformationByHandle([In] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, SafeAllocatedMemoryHandle lpFileInformation, uint dwBufferSize);
+	public static extern bool SetFileInformationByHandle([In, AddAsMember] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, SafeAllocatedMemoryHandle lpFileInformation, uint dwBufferSize);
 
 	/// <summary>
 	/// <para>Sets the file information for the specified file.</para>
@@ -8808,7 +9084,7 @@ public static partial class Kernel32
 	/// <para>Returns <see langword="true"/> if successful or <see langword="false"/> otherwise.</para>
 	/// <para>To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	public static bool SetFileInformationByHandle<T>([In] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, T lpFileInformation) where T : struct
+	public static bool SetFileInformationByHandle<T>([In, AddAsMember] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, T lpFileInformation) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanSet(FileInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch.");
 		using var mem = SafeHGlobalHandle.CreateFromStructure(lpFileInformation);
@@ -9200,7 +9476,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365542")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFilePointerEx([In] HFILE hFile, long liDistanceToMove, out long lpNewFilePointer, SeekOrigin dwMoveMethod);
+	public static extern bool SetFilePointerEx([In, AddAsMember] HFILE hFile, long liDistanceToMove, out long lpNewFilePointer, SeekOrigin dwMoveMethod);
 
 	/// <summary>
 	/// <para>Moves the file pointer of the specified file.</para>
@@ -9255,7 +9531,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365542")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFilePointerEx([In] HFILE hFile, long liDistanceToMove, [In, Optional] IntPtr lpNewFilePointer, SeekOrigin dwMoveMethod);
+	public static extern bool SetFilePointerEx([In, AddAsMember] HFILE hFile, long liDistanceToMove, [In, Optional] IntPtr lpNewFilePointer, SeekOrigin dwMoveMethod);
 
 	/// <summary>
 	/// <para>Sets the date and time that the specified file or directory was created, last accessed, or last modified.</para>
@@ -9307,7 +9583,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "ms724933")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFileTime([In] HFILE hFile, [In, Optional] PFILETIME lpCreationTime, [In, Optional] PFILETIME lpLastAccessTime, [In, Optional] PFILETIME lpLastWriteTime);
+	public static extern bool SetFileTime([In, AddAsMember] HFILE hFile, [In, Optional] PFILETIME? lpCreationTime, [In, Optional] PFILETIME? lpLastAccessTime, [In, Optional] PFILETIME? lpLastWriteTime);
 
 	/// <summary>
 	/// <para>Sets the date and time that the specified file or directory was created, last accessed, or last modified.</para>
@@ -9495,7 +9771,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "c6ded2d7-270a-4b75-b2d4-1007a92fe831")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFileValidData([In] HFILE hFile, long ValidDataLength);
+	public static extern bool SetFileValidData([In, AddAsMember] HFILE hFile, long ValidDataLength);
 
 	/// <summary>
 	/// <para>Unlocks a region in an open file. Unlocking a region enables other processes to access the region.</para>
@@ -9528,7 +9804,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365715")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnlockFile([In] HFILE hFile, uint dwFileOffsetLow, uint dwFileOffsetHigh, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh);
+	public static extern bool UnlockFile([In, AddAsMember] HFILE hFile, uint dwFileOffsetLow, uint dwFileOffsetHigh, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh);
 
 	/// <summary>
 	/// <para>Unlocks a region in the specified file. This function can operate either synchronously or asynchronously.</para>
@@ -9635,7 +9911,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-	public static extern bool WriteFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [Optional] IntPtr lpOverlapped);
+	public static extern bool WriteFile([In, AddAsMember] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [Optional] IntPtr lpOverlapped);
 
 	/// <summary>
 	/// Writes data to the specified file or input/output (I/O) device.
@@ -9706,7 +9982,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-	public static extern unsafe bool WriteFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToWrite, [Optional] uint* lpNumberOfBytesWritten, [Optional] NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool WriteFile([In, AddAsMember] HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToWrite, [Optional] uint* lpNumberOfBytesWritten, [Optional] NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// <para>Writes data to the specified file or input/output (I/O) device.</para>
@@ -9993,7 +10269,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.WriteFile")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteFile(HFILE hFile, [In] byte[] lpBuffer, int nNumberOfBytesToWrite, out int lpNumberOfBytesWritten, ref NativeOverlapped lpOverlapped);
+	public static extern bool WriteFile([In, AddAsMember] HFILE hFile, [In] byte[] lpBuffer, int nNumberOfBytesToWrite, out int lpNumberOfBytesWritten, ref NativeOverlapped lpOverlapped);
 
 	/// <summary>
 	/// Writes data to the specified file or input/output (I/O) device.
@@ -10064,7 +10340,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-	public static extern bool WriteFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [Optional] IntPtr lpOverlapped);
+	public static extern bool WriteFile([In, AddAsMember] HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [Optional] IntPtr lpOverlapped);
 
 	/// <summary>
 	/// <para>
@@ -10239,56 +10515,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365749")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool WriteFileGather([In] HFILE hFile, [In] IntPtr aSegmentArray, uint nNumberOfBytesToWrite, IntPtr lpReserved, NativeOverlapped* lpOverlapped);
-
-	/// <summary>
-	/// <para>
-	/// Retrieves information about MS-DOS device names. The function can obtain the current mapping for a particular MS-DOS device name.
-	/// The function can also obtain a list of all existing MS-DOS device names.
-	/// </para>
-	/// <para>
-	/// MS-DOS device names are stored as junctions in the object namespace. The code that converts an MS-DOS path into a corresponding
-	/// path uses these junctions to map MS-DOS devices and drive letters. The <c>QueryDosDevice</c> function enables an application to
-	/// query the names of the junctions used to implement the MS-DOS device namespace as well as the value of each specific junction.
-	/// </para>
-	/// </summary>
-	/// <param name="lpDeviceName">
-	/// <para>
-	/// An MS-DOS device name string specifying the target of the query. The device name cannot have a trailing backslash; for example,
-	/// use "C:", not "C:\".
-	/// </para>
-	/// <para>
-	/// This parameter can be <c>NULL</c>. In that case, the <c>QueryDosDevice</c> function will store a list of all existing MS-DOS
-	/// device names into the buffer pointed to by lpTargetPath.
-	/// </para>
-	/// </param>
-	/// <param name="lpTargetPath">
-	/// <para>
-	/// A pointer to a buffer that will receive the result of the query. The function fills this buffer with one or more null-terminated
-	/// strings. The final null-terminated string is followed by an additional <c>NULL</c>.
-	/// </para>
-	/// <para>
-	/// If lpDeviceName is non- <c>NULL</c>, the function retrieves information about the particular MS-DOS device specified by
-	/// lpDeviceName. The first null-terminated string stored into the buffer is the current mapping for the device. The other
-	/// null-terminated strings represent undeleted prior mappings for the device.
-	/// </para>
-	/// <para>
-	/// If lpDeviceName is <c>NULL</c>, the function retrieves a list of all existing MS-DOS device names. Each null-terminated string
-	/// stored into the buffer is the name of an existing MS-DOS device, for example, \Device\HarddiskVolume1 or \Device\Floppy0.
-	/// </para>
-	/// </param>
-	/// <param name="ucchMax">
-	/// <para>The maximum number of <c>TCHARs</c> that can be stored into the buffer pointed to by lpTargetPath.</para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is the number of <c>TCHARs</c> stored into the buffer pointed to by lpTargetPath.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// <para>If the buffer is too small, the function fails and the last error code is <c>ERROR_INSUFFICIENT_BUFFER</c>.</para>
-	/// </returns>
-	// DWORD WINAPI QueryDosDevice( _In_opt_ LPCTSTR lpDeviceName, _Out_ LPTSTR lpTargetPath, _In_ DWORD ucchMax);
-	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-	[PInvokeData("FileAPI.h", MSDNShortId = "aa365461")]
-	private static extern uint QueryDosDevice(string? lpDeviceName, IntPtr lpTargetPath, int ucchMax);
+	public static extern unsafe bool WriteFileGather([In, AddAsMember] HFILE hFile, [In, Out, MarshalAs(UnmanagedType.LPArray)] FILE_SEGMENT_ELEMENT[] aSegmentArray,
+		uint nNumberOfBytesToWrite, [Optional] IntPtr lpReserved, NativeOverlapped* lpOverlapped);
 
 	/// <summary>Contains information that the GetFileInformationByHandle function retrieves.</summary>
 	[StructLayout(LayoutKind.Sequential)]
@@ -10361,12 +10589,12 @@ public static partial class Kernel32
 	// *PCREATEFILE2_EXTENDED_PARAMETERS, *LPCREATEFILE2_EXTENDED_PARAMETERS;
 	[PInvokeData("FileAPI.h", MSDNShortId = "hh449426")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CREATEFILE2_EXTENDED_PARAMETERS
+	public struct CREATEFILE2_EXTENDED_PARAMETERS()
 	{
 		/// <summary>
 		/// <para>Contains the size of this structure, .</para>
 		/// </summary>
-		public uint dwSize;
+		public uint dwSize = (uint)Marshal.SizeOf<CREATEFILE2_EXTENDED_PARAMETERS>();
 
 		/// <summary>
 		/// <para>The file or device attributes and flags, <c>FILE_ATTRIBUTE_NORMAL</c> being the most common default value for files.</para>
@@ -10735,10 +10963,10 @@ public static partial class Kernel32
 	// *PCREATEFILE3_EXTENDED_PARAMETERS, *LPCREATEFILE3_EXTENDED_PARAMETERS;
 	[PInvokeData("fileapi.h", MSDNShortId = "NS:fileapi._CREATEFILE3_EXTENDED_PARAMETERS")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct CREATEFILE3_EXTENDED_PARAMETERS
+	public struct CREATEFILE3_EXTENDED_PARAMETERS()
 	{
 		/// <summary>Contains the size of this structure, <c>sizeof(CREATEFILE3_EXTENDED_PARAMETERS)</c>.</summary>
-		public uint dwSize;
+		public uint dwSize = (uint)Marshal.SizeOf<CREATEFILE3_EXTENDED_PARAMETERS>();
 
 		/// <summary>
 		///   <para>The file or device attributes and flags, <b>FILE_ATTRIBUTE_NORMAL</b> being the most common default value for files.</para>
@@ -10994,6 +11222,32 @@ public static partial class Kernel32
 		///   <para>When opening a new encrypted file, the file inherits the discretionary access control list from its parent directory. For additional information, see <c>File Encryption</c>.</para>
 		/// </summary>
 		public HFILE hTemplateFile;
+	}
+
+	/// <summary>Represents a segment of an I/O buffer for scatter/gather read/write actions.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-file_segment_element
+	// typedef union _FILE_SEGMENT_ELEMENT { PVOID64 Buffer; ULONGLONG Alignment; } FILE_SEGMENT_ELEMENT, *PFILE_SEGMENT_ELEMENT;
+	[PInvokeData("winnt.h", MSDNShortId = "NS:winnt._FILE_SEGMENT_ELEMENT")]
+	[StructLayout(LayoutKind.Explicit)]
+	public struct FILE_SEGMENT_ELEMENT
+	{
+		/// <summary>
+		/// A pointer to the data for the scatter/gather read/write action.
+		/// <para>
+		/// Assigning a pointer to the Buffer member will sign-extend the value if the code is compiled as 32-bits; this can break
+		/// large-address aware applications running on systems configured with 4-Gigabyte Tuning or running under WOW64 on 64-bit
+		/// Windows.Therefore, use the PtrToPtr64 macro when assigning pointers to Buffer.
+		/// </para>
+		/// </summary>
+		[FieldOffset(0)]
+		public IntPtr Buffer;
+
+		/// <summary>
+		/// An integer representation of the Buffer. The system uses this member to validate that the buffer is properly aligned.
+		/// Applications typically operate on the Buffer member.
+		/// </summary>
+		[FieldOffset(0)]
+		public ulong Alignment;
 	}
 
 	/// <summary>Represents a self-closing change notification handle created by the FindFirstChangeNotification function.</summary>

@@ -601,40 +601,32 @@ public static partial class Kernel32
 	/// <summary>
 	/// Specifies attributes for a user-mode scheduling (UMS) scheduler thread. The EnterUmsSchedulingMode function uses this structure.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="UMS_SCHEDULER_STARTUP_INFO"/> struct.</remarks>
+	/// <param name="schedulerProc">A pointer to an application-defined UmsSchedulerProc entry point function.</param>
+	/// <param name="param">An application-defined parameter to pass to the specified UmsSchedulerProc function.</param>
+	/// <param name="completionList">A pointer to a UMS completion list to associate with the calling thread.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_ums_scheduler_startup_info typedef struct
 	// _UMS_SCHEDULER_STARTUP_INFO { ULONG UmsVersion; PUMS_COMPLETION_LIST CompletionList; PUMS_SCHEDULER_ENTRY_POINT SchedulerProc;
 	// PVOID SchedulerParam; } UMS_SCHEDULER_STARTUP_INFO, *PUMS_SCHEDULER_STARTUP_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "e3f7b1b7-d2b8-432d-bce7-3633292e855b")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct UMS_SCHEDULER_STARTUP_INFO
+	public struct UMS_SCHEDULER_STARTUP_INFO(Kernel32.RtlUmsSchedulerEntryPoint schedulerProc, [Optional] IntPtr param, [Optional] Kernel32.PUMS_COMPLETION_LIST completionList)
 	{
 		/// <summary>The UMS version for which the application was built. This parameter must be <c>UMS_VERSION (0x0100)</c>.</summary>
-		public uint UmsVersion;
+		public uint UmsVersion = UMS_VERSION;
 
 		/// <summary>A pointer to a UMS completion list to associate with the calling thread.</summary>
-		public PUMS_COMPLETION_LIST CompletionList;
+		public PUMS_COMPLETION_LIST CompletionList = completionList;
 
 		/// <summary>
 		/// A pointer to an application-defined UmsSchedulerProc entry point function. The system calls this function when the calling
 		/// thread has been converted to UMS and is ready to run UMS worker threads. Subsequently, it calls this function when a UMS
 		/// worker thread running on the calling thread yields or blocks.
 		/// </summary>
-		public RtlUmsSchedulerEntryPoint SchedulerProc;
+		public RtlUmsSchedulerEntryPoint SchedulerProc = schedulerProc;
 
 		/// <summary>An application-defined parameter to pass to the specified UmsSchedulerProc function.</summary>
-		public IntPtr SchedulerParam;
-
-		/// <summary>Initializes a new instance of the <see cref="UMS_SCHEDULER_STARTUP_INFO"/> struct.</summary>
-		/// <param name="schedulerProc">A pointer to an application-defined UmsSchedulerProc entry point function.</param>
-		/// <param name="param">An application-defined parameter to pass to the specified UmsSchedulerProc function.</param>
-		/// <param name="completionList">A pointer to a UMS completion list to associate with the calling thread.</param>
-		public UMS_SCHEDULER_STARTUP_INFO(RtlUmsSchedulerEntryPoint schedulerProc, [Optional] IntPtr param, [Optional] PUMS_COMPLETION_LIST completionList)
-		{
-			UmsVersion = UMS_VERSION;
-			CompletionList = completionList;
-			SchedulerProc = schedulerProc;
-			SchedulerParam = param;
-		}
+		public IntPtr SchedulerParam = param;
 	}
 
 	/// <summary>

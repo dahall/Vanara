@@ -2845,8 +2845,8 @@ public static partial class Kernel32
 	public static uint[] GetProcessDefaultCpuSets(HPROCESS Process)
 	{
 		uint cnt = (uint)Environment.ProcessorCount;
-		if (cnt == 0) return new uint[0];
-		SafeCoTaskMemHandle iptr = new((int)cnt * Marshal.SizeOf(typeof(uint)));
+		if (cnt == 0) return [];
+		SafeCoTaskMemHandle iptr = new((int)cnt * Marshal.SizeOf<uint>());
 		if (!GetProcessDefaultCpuSets(Process, (IntPtr)iptr, cnt, out cnt)) Win32Error.ThrowLastError();
 		return iptr.ToArray<uint>((int)cnt);
 	}
@@ -3271,7 +3271,7 @@ public static partial class Kernel32
 	{
 		bool isMask = MitigationPolicy == PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask;
 		if (!isMask && !CorrespondingTypeAttribute.CanGet(MitigationPolicy, typeof(T))) throw new ArgumentException($"{MitigationPolicy} cannot be used to get values of type {typeof(T)}.");
-		int sz = isMask ? 16 : Marshal.SizeOf(typeof(T));
+		int sz = isMask ? 16 : Marshal.SizeOf<T>();
 		using SafeCoTaskMemHandle ptr = new(sz);
 		if (!isMask)
 		{
@@ -3827,8 +3827,8 @@ public static partial class Kernel32
 	public static uint[] GetThreadSelectedCpuSets(HTHREAD Thread)
 	{
 		uint cnt = (uint)Environment.ProcessorCount;
-		if (cnt == 0) return new uint[0];
-		SafeCoTaskMemHandle iptr = new((int)cnt * Marshal.SizeOf(typeof(uint)));
+		if (cnt == 0) return [];
+		SafeCoTaskMemHandle iptr = new((int)cnt * Marshal.SizeOf<uint>());
 		if (!GetThreadSelectedCpuSets(Thread, (IntPtr)iptr, cnt, out cnt)) Win32Error.ThrowLastError();
 		return iptr.ToArray<uint>((int)cnt);
 	}
@@ -6079,10 +6079,12 @@ public static partial class Kernel32
 	/// Specifies the memory priority for a thread or process. This structure is used by the <c>GetProcessInformation</c>,
 	/// <c>SetProcessInformation</c>, <c>GetThreadInformation</c>, and <c>SetThreadInformation</c> functions.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="MEMORY_PRIORITY_INFORMATION"/> struct.</remarks>
+	/// <param name="memoryPriority">The memory priority for the thread or process.</param>
 	// typedef struct _MEMORY_PRIORITY_INFORMATION { ULONG MemoryPriority;} MEMORY_PRIORITY_INFORMATION, *PMEMORY_PRIORITY_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/hh448387(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "hh448387")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct MEMORY_PRIORITY_INFORMATION
+	public struct MEMORY_PRIORITY_INFORMATION(Kernel32.MEMORY_PRIORITY memoryPriority)
 	{
 		/// <summary>
 		/// <para>The memory priority for the thread or process. This member can be one of the following values.</para>
@@ -6115,18 +6117,20 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public MEMORY_PRIORITY MemoryPriority;
-
-		/// <summary>Initializes a new instance of the <see cref="MEMORY_PRIORITY_INFORMATION"/> struct.</summary>
-		/// <param name="memoryPriority">The memory priority for the thread or process.</param>
-		public MEMORY_PRIORITY_INFORMATION(MEMORY_PRIORITY memoryPriority) => MemoryPriority = memoryPriority;
+		public MEMORY_PRIORITY MemoryPriority = memoryPriority;
 	}
 
 	/// <summary>Represents a process or thread attribute identifier.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="PROC_THREAD_ATTRIBUTE"/> struct.</remarks>
+	/// <param name="type">The attribute type.</param>
+	/// <param name="Thread">if set to <c>true</c> this is thread specific.</param>
+	/// <param name="Input">if set to <c>true</c> this is an input attribute.</param>
+	/// <param name="Additive">if set to <c>true</c> this is additive.</param>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PROC_THREAD_ATTRIBUTE : IEquatable<PROC_THREAD_ATTRIBUTE>, IEquatable<UIntPtr>
+	public struct PROC_THREAD_ATTRIBUTE(PROC_THREAD_ATTRIBUTE.AttrType type, bool Thread, bool Input, bool Additive) : IEquatable<PROC_THREAD_ATTRIBUTE>, IEquatable<UIntPtr>
 	{
-		private readonly UIntPtr value;
+		private readonly UIntPtr value = (UIntPtr)(((uint)type & PROC_THREAD_ATTRIBUTE_NUMBER) | (Thread ? PROC_THREAD_ATTRIBUTE_THREAD : 0) |
+			(Input ? PROC_THREAD_ATTRIBUTE_INPUT : 0) | (Additive ? PROC_THREAD_ATTRIBUTE_ADDITIVE : 0));
 
 		private const uint PROC_THREAD_ATTRIBUTE_NUMBER = 0x0000FFFF;
 		private const uint PROC_THREAD_ATTRIBUTE_THREAD = 0x00010000;
@@ -6308,15 +6312,6 @@ public static partial class Kernel32
 			[CorrespondingType(typeof(uint))]
 			ProcThreadAttributeDesktopAppPolicy = 18,
 		}
-
-		/// <summary>Initializes a new instance of the <see cref="PROC_THREAD_ATTRIBUTE"/> struct.</summary>
-		/// <param name="type">The attribute type.</param>
-		/// <param name="Thread">if set to <c>true</c> this is thread specific.</param>
-		/// <param name="Input">if set to <c>true</c> this is an input attribute.</param>
-		/// <param name="Additive">if set to <c>true</c> this is additive.</param>
-		public PROC_THREAD_ATTRIBUTE(AttrType type, bool Thread, bool Input, bool Additive) =>
-			value = (UIntPtr)(((uint)type & PROC_THREAD_ATTRIBUTE_NUMBER) | (Thread ? PROC_THREAD_ATTRIBUTE_THREAD : 0) |
-			(Input ? PROC_THREAD_ATTRIBUTE_INPUT : 0) | (Additive ? PROC_THREAD_ATTRIBUTE_ADDITIVE : 0));
 
 		/// <summary>Gets the type associated with this attribute.</summary>
 		public Type? ValidType => LookupType(this);
@@ -6778,11 +6773,14 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Specifies the throttling policies and how to apply them to a target process when that process is subject to power management.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="PROCESS_POWER_THROTTLING_STATE"/> struct.</remarks>
+	/// <param name="controlMask">The control mask.</param>
+	/// <param name="stateMask">The state mask.</param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-process_power_throttling_state typedef
 	// struct _PROCESS_POWER_THROTTLING_STATE { ULONG Version; ULONG ControlMask; ULONG StateMask; } PROCESS_POWER_THROTTLING_STATE, *PPROCESS_POWER_THROTTLING_STATE;
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "394B6509-849C-4B4C-9A46-AF5011A03585")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PROCESS_POWER_THROTTLING_STATE
+	public struct PROCESS_POWER_THROTTLING_STATE(Kernel32.PROCESS_POWER_THROTTLING_MASK controlMask, Kernel32.PROCESS_POWER_THROTTLING_MASK stateMask)
 	{
 		/// <summary/>
 		public const uint PROCESS_POWER_THROTTLING_CURRENT_VERSION = 1;
@@ -6802,7 +6800,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public uint Version;
+		public uint Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
 
 		/// <summary>
 		/// <para>This field enables the caller to take control of the power throttling mechanism.</para>
@@ -6819,7 +6817,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public PROCESS_POWER_THROTTLING_MASK ControlMask;
+		public PROCESS_POWER_THROTTLING_MASK ControlMask = controlMask;
 
 		/// <summary>
 		/// <para>Manages the power throttling mechanism on/off state.</para>
@@ -6836,17 +6834,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public PROCESS_POWER_THROTTLING_MASK StateMask;
-
-		/// <summary>Initializes a new instance of the <see cref="PROCESS_POWER_THROTTLING_STATE"/> struct.</summary>
-		/// <param name="controlMask">The control mask.</param>
-		/// <param name="stateMask">The state mask.</param>
-		public PROCESS_POWER_THROTTLING_STATE(PROCESS_POWER_THROTTLING_MASK controlMask, PROCESS_POWER_THROTTLING_MASK stateMask)
-		{
-			Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
-			ControlMask = controlMask;
-			StateMask = stateMask;
-		}
+		public PROCESS_POWER_THROTTLING_MASK StateMask = stateMask;
 	}
 
 	/// <summary>Specifies whether Protected Process Light (PPL) is enabled.</summary>
@@ -6911,28 +6899,21 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Represents a logical processor in a processor group.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="PROCESSOR_NUMBER"/> struct.</remarks>
+	/// <param name="processorGroup">The processor group to which the logical processor is assigned.</param>
+	/// <param name="logicalProcessor">The number of the logical processor relative to the group.</param>
 	[PInvokeData("WinNT.h", MSDNShortId = "dd405505")]
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct PROCESSOR_NUMBER
+	public struct PROCESSOR_NUMBER(ushort processorGroup, byte logicalProcessor)
 	{
 		/// <summary>The processor group to which the logical processor is assigned.</summary>
-		public ushort Group;
+		public ushort Group = processorGroup;
 
 		/// <summary>The number of the logical processor relative to the group.</summary>
-		public byte Number;
+		public byte Number = logicalProcessor;
 
 		/// <summary>This parameter is reserved.</summary>
-		public byte Reserved;
-
-		/// <summary>Initializes a new instance of the <see cref="PROCESSOR_NUMBER"/> struct.</summary>
-		/// <param name="processorGroup">The processor group to which the logical processor is assigned.</param>
-		/// <param name="logicalProcessor">The number of the logical processor relative to the group.</param>
-		public PROCESSOR_NUMBER(ushort processorGroup, byte logicalProcessor)
-		{
-			Group = processorGroup;
-			Number = logicalProcessor;
-			Reserved = 0;
-		}
+		public byte Reserved = 0;
 	}
 
 	/// <summary>
@@ -7275,7 +7256,7 @@ public static partial class Kernel32
 		public SIZE WindowSize { get => new((int)dwXSize, (int)dwYSize); set { dwXSize = (uint)value.cx; dwYSize = (uint)value.cy; dwFlags = dwFlags.SetFlags(STARTF.STARTF_USESIZE, value != SIZE.Empty); } }
 
 		/// <summary>Gets the default value for this structure with the <c>cb</c> field set to the size of the structure.</summary>
-		public static STARTUPINFO Default => new() { cb = (uint)Marshal.SizeOf(typeof(STARTUPINFO)) };
+		public static STARTUPINFO Default => new() { cb = (uint)Marshal.SizeOf<STARTUPINFO>() };
 	}
 
 	/// <summary>
@@ -7304,7 +7285,7 @@ public static partial class Kernel32
 		public IntPtr lpAttributeList;
 
 		/// <summary>Gets the default value for this structure with the <c>cb</c> field set to the size of the structure.</summary>
-		public static STARTUPINFOEX Default => new() { StartupInfo = new STARTUPINFO { cb = (uint)Marshal.SizeOf(typeof(STARTUPINFOEX)) } };
+		public static STARTUPINFOEX Default => new() { StartupInfo = new STARTUPINFO { cb = (uint)Marshal.SizeOf<STARTUPINFOEX>() } };
 	}
 
 	/// <summary>

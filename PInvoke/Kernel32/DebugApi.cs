@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Runtime.CompilerServices;
+
+namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -390,7 +392,7 @@ public static partial class Kernel32
 		/// per-thread structure. These values are not necessarily small integers that can be used as table indices.
 		/// </para>
 		/// </summary>
-		public uint dwThreadId { get => (uint)padding3264hack.ToInt32(); set => padding3264hack = (IntPtr)dwThreadId; }
+		public uint dwThreadId { readonly get => (uint)padding3264hack.ToInt32(); set => padding3264hack = (IntPtr)dwThreadId; }
 
 		/// <summary>
 		/// Any additional information relating to the debugging event. This union takes on the type and value appropriate to the type of
@@ -695,7 +697,7 @@ public static partial class Kernel32
 			public ushort nDebugStringLength;
 
 			/// <summary>Gets the debugging string in the calling process's address space.</summary>
-			public string? DebugString => ReadString(lpDebugStringData, fUnicode, nDebugStringLength);
+			public readonly string? DebugString => ReadString(lpDebugStringData, fUnicode, nDebugStringLength);
 		}
 
 		/// <summary>Contains the error that caused the RIP debug event.</summary>
@@ -757,83 +759,120 @@ public static partial class Kernel32
 		/// <summary>The low-order part of the base address of the segment.</summary>
 		public ushort BaseLow;
 
-		private uint bits;
+		/// <summary>The high-order portion of the descriptor. This member may be interpreted as bytes or collections of bits, depending on the level of detail required.</summary>
+		public HighWordUnion HighWord;
 
-		/// <summary>The middle bits (16â€“23) of the base address of the segment.</summary>
-		public byte BaseMid { get => GetBits(0, 8); set => SetBits(0, 8, value); }
-
-		/// <summary>
-		/// The type of segment. This member can be one of the following values:
-		/// <list type="bullet">
-		/// <item>
-		/// <term>0: Read-only data segment</term>
-		/// </item>
-		/// <item>
-		/// <term>1: Read-write data segment</term>
-		/// </item>
-		/// <item>
-		/// <term>2: Unused segment</term>
-		/// </item>
-		/// <item>
-		/// <term>3: Read-write expand-down data segment</term>
-		/// </item>
-		/// <item>
-		/// <term>4: Execute-only code segment</term>
-		/// </item>
-		/// <item>
-		/// <term>5: Executable-readable code segment</term>
-		/// </item>
-		/// <item>
-		/// <term>6: Execute-only "conforming" code segment</term>
-		/// </item>
-		/// <item>
-		/// <term>7: Executable-readable "conforming" code segment</term>
-		/// </item>
-		/// </list>
-		/// </summary>
-		public byte Type { get => GetBits(8, 5); set => SetBits(8, 5, value); }
-
-		/// <summary>
-		/// The privilege level of the descriptor. This member is an integer value in the range 0 (most privileged) through 3 (least privileged).
-		/// </summary>
-		public byte Dpl { get => GetBits(13, 2); set => SetBits(13, 2, value); }
-
-		/// <summary>The present flag. This member is 1 if the segment is present in physical memory or 0 if it is not.</summary>
-		public byte Pres { get => GetBits(15, 1); set => SetBits(15, 1, value); }
-
-		/// <summary>The high bits (16â€“19) of the address of the last byte in the segment.</summary>
-		public byte LimitHi { get => GetBits(16, 4); set => SetBits(16, 4, value); }
-
-		/// <summary>
-		/// The space that is available to system programmers. This member might be used for marking segments in some system-specific way.
-		/// </summary>
-		public byte Sys { get => GetBits(20, 1); set => SetBits(20, 1, value); }
-
-		/// <summary>Reserved.</summary>
-		public byte Reserved_0 { get => GetBits(21, 1); set => SetBits(21, 1, value); }
-
-		/// <summary>
-		/// The size of segment. If the segment is a data segment, this member contains 1 if the segment is larger than 64 kilobytes (K)
-		/// or 0 if the segment is smaller than or equal to 64K.
-		/// <para>
-		/// If the segment is a code segment, this member contains 1 if the segment is a code segment and runs with the default (native
-		/// mode) instruction set.This member contains 0 if the code segment is an 80286 code segment and runs with 16-bit offsets and
-		/// the 80286-compatible instruction set.
-		/// </para>
-		/// </summary>
-		public byte Default_Big { get => GetBits(22, 1); set => SetBits(22, 1, value); }
-
-		/// <summary>The granularity. This member contains 0 if the segment is byte granular, 1 if the segment is page granular.</summary>
-		public byte Granularity { get => GetBits(23, 1); set => SetBits(23, 1, value); }
-
-		/// <summary>The high bits (24â€“31) of the base address of the segment.</summary>
-		public byte BaseHi { get => GetBits(24, 8); set => SetBits(24, 8, value); }
-
-		private byte GetBits(int offset, int len) => (byte)((bits & (((1 << len) - 1) << offset)) >> offset);
-
-		private void SetBits(int offset, int len, byte value)
+		/// <summary>The union for the high-order portion of the descriptor. This member may be interpreted as bytes or collections of bits, depending on the level of detail required.</summary>
+		[StructLayout(LayoutKind.Explicit)]
+		public struct HighWordUnion
 		{
-			var mask = (uint)(((1 << len) - 1) << offset); bits = (bits & ~mask) | (uint)(value << offset);
+			/// <summary/>
+			[FieldOffset(0)]
+			public BytesUnion Bytes;
+
+			/// <summary/>
+			[FieldOffset(0)]
+			public BitsUnion Bits;
+
+			/// <summary/>
+			[StructLayout(LayoutKind.Sequential, Pack = 1)]
+			public struct BytesUnion
+			{
+				/// <summary>The middle bits (16-23) of the base address of the segment.</summary>
+				public byte BaseMid;
+
+				/// <summary>Values of the Type, Dpl, and Pres members in the Bits structure.</summary>
+				public byte Flags1;
+
+				/// <summary>Values of the LimitHi, Sys, Reserved_0, Default_Big, and Granularity members in the Bits structure.</summary>
+				public byte Flags2;
+
+				/// <summary>The high bits (24-31) of the base address of the segment.</summary>
+				public byte BaseHi;
+			}
+
+			/// <summary/>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct BitsUnion
+			{
+				internal uint bits;
+
+				/// <summary>The middle bits (16-23) of the base address of the segment.</summary>
+				public byte BaseMid { readonly get => GetBits(0, 8); set => SetBits(0, 8, value); }
+
+				/// <summary>
+				/// The type of segment. This member can be one of the following values:
+				/// <list type="bullet">
+				/// <item>
+				/// <term>0: Read-only data segment</term>
+				/// </item>
+				/// <item>
+				/// <term>1: Read-write data segment</term>
+				/// </item>
+				/// <item>
+				/// <term>2: Unused segment</term>
+				/// </item>
+				/// <item>
+				/// <term>3: Read-write expand-down data segment</term>
+				/// </item>
+				/// <item>
+				/// <term>4: Execute-only code segment</term>
+				/// </item>
+				/// <item>
+				/// <term>5: Executable-readable code segment</term>
+				/// </item>
+				/// <item>
+				/// <term>6: Execute-only "conforming" code segment</term>
+				/// </item>
+				/// <item>
+				/// <term>7: Executable-readable "conforming" code segment</term>
+				/// </item>
+				/// </list>
+				/// </summary>
+				public byte Type { readonly get => GetBits(8, 5); set => SetBits(8, 5, value); }
+
+				/// <summary>
+				/// The privilege level of the descriptor. This member is an integer value in the range 0 (most privileged) through 3 (least privileged).
+				/// </summary>
+				public byte Dpl { readonly get => GetBits(13, 2); set => SetBits(13, 2, value); }
+
+				/// <summary>The present flag. This member is 1 if the segment is present in physical memory or 0 if it is not.</summary>
+				public byte Pres { readonly get => GetBits(15, 1); set => SetBits(15, 1, value); }
+
+				/// <summary>The high bits (16â€“19) of the address of the last byte in the segment.</summary>
+				public byte LimitHi { readonly get => GetBits(16, 4); set => SetBits(16, 4, value); }
+
+				/// <summary>
+				/// The space that is available to system programmers. This member might be used for marking segments in some system-specific way.
+				/// </summary>
+				public byte Sys { readonly get => GetBits(20, 1); set => SetBits(20, 1, value); }
+
+				/// <summary>Reserved.</summary>
+				public byte Reserved_0 { readonly get => GetBits(21, 1); set => SetBits(21, 1, value); }
+
+				/// <summary>
+				/// The size of segment. If the segment is a data segment, this member contains 1 if the segment is larger than 64 kilobytes (K)
+				/// or 0 if the segment is smaller than or equal to 64K.
+				/// <para>
+				/// If the segment is a code segment, this member contains 1 if the segment is a code segment and runs with the default (native
+				/// mode) instruction set.This member contains 0 if the code segment is an 80286 code segment and runs with 16-bit offsets and
+				/// the 80286-compatible instruction set.
+				/// </para>
+				/// </summary>
+				public byte Default_Big { readonly get => GetBits(22, 1); set => SetBits(22, 1, value); }
+
+				/// <summary>The granularity. This member contains 0 if the segment is byte granular, 1 if the segment is page granular.</summary>
+				public byte Granularity { readonly get => GetBits(23, 1); set => SetBits(23, 1, value); }
+
+				/// <summary>The high bits (24â€“31) of the base address of the segment.</summary>
+				public byte BaseHi { readonly get => GetBits(24, 8); set => SetBits(24, 8, value); }
+
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				private readonly byte GetBits(byte offset, byte len) => (byte)BitHelper.GetBits(bits, offset, len);
+
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				private void SetBits(byte offset, byte len, byte value) => BitHelper.SetBits(ref bits, offset, len, value);
+			}
 		}
 	}
 }

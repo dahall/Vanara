@@ -2030,7 +2030,7 @@ public static partial class Kernel32
 		if (!CorrespondingTypeAttribute.CanGet(FileInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch.");
 		SafeHGlobalHandle mem;
 		if (typeof(T) == typeof(FILE_ID_BOTH_DIR_INFO) || typeof(T) == typeof(FILE_FULL_DIR_INFO) || typeof(T) == typeof(FILE_ID_EXTD_DIR_INFO))
-			mem = new SafeHGlobalHandle(Marshal.SizeOf(typeof(T)) + MAX_PATH * 2);
+			mem = new SafeHGlobalHandle(Marshal.SizeOf<T>() + MAX_PATH * 2);
 		else if (typeof(T) == typeof(FILE_REMOTE_PROTOCOL_INFO))
 			mem = SafeHGlobalHandle.CreateFromStructure(FILE_REMOTE_PROTOCOL_INFO.Default);
 		else
@@ -3549,7 +3549,7 @@ public static partial class Kernel32
 		public IntPtr pvCallbackContext;
 
 		/// <summary>Provides a default instance with size field set.</summary>
-		public static readonly COPYFILE2_EXTENDED_PARAMETERS Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(COPYFILE2_EXTENDED_PARAMETERS)) };
+		public static readonly COPYFILE2_EXTENDED_PARAMETERS Default = new() { dwSize = (uint)Marshal.SizeOf<COPYFILE2_EXTENDED_PARAMETERS>() };
 	}
 
 	/// <summary>
@@ -4424,7 +4424,7 @@ public static partial class Kernel32
 		}
 
 		/// <summary>Provides a default instance with size field set.</summary>
-		public static readonly FILE_ID_DESCRIPTOR Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(FILE_ID_DESCRIPTOR)) };
+		public static readonly FILE_ID_DESCRIPTOR Default = new() { dwSize = (uint)Marshal.SizeOf<FILE_ID_DESCRIPTOR>() };
 	}
 
 	/// <summary>
@@ -5085,7 +5085,7 @@ public static partial class Kernel32
 		}
 
 		/// <summary>The default instance with size and version set.</summary>
-		public static readonly FILE_REMOTE_PROTOCOL_INFO Default = new() { StructureSize = (ushort)Marshal.SizeOf(typeof(FILE_REMOTE_PROTOCOL_INFO)), StructureVersion = 2 };
+		public static readonly FILE_REMOTE_PROTOCOL_INFO Default = new() { StructureSize = (ushort)Marshal.SizeOf<FILE_REMOTE_PROTOCOL_INFO>(), StructureVersion = 2 };
 	}
 
 	/// <summary>

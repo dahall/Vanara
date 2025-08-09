@@ -84,7 +84,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("IoAPI.h", MSDNShortId = "aa363791")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CancelIo([In] HFILE hFile);
+	public static extern bool CancelIo([In, AddAsMember] HFILE hFile);
 
 	/// <summary>
 	/// Marks any outstanding I/O operations for the specified file handle. The function only cancels I/O operations in the current
@@ -127,7 +127,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("IoAPI.h", MSDNShortId = "aa363794")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool CancelSynchronousIo([In] HTHREAD hThread);
+	public static extern unsafe bool CancelSynchronousIo([In, AddAsMember] HTHREAD hThread);
 
 	/// <summary>
 	/// <para>
@@ -177,17 +177,6 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is the handle to an I/O completion port:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <term/>
-	/// </item>
-	/// <item>
-	/// <term/>
-	/// </item>
-	/// <item>
-	/// <term/>
-	/// </item>
-	/// </list>
 	/// <para>
 	/// If the function fails, the return value is <c>NULL</c>. To get extended error information, call the <c>GetLastError</c> function.
 	/// </para>
@@ -1009,7 +998,7 @@ public static partial class Kernel32
 	private static unsafe IAsyncResult BeginDeviceIoControl(HFILE hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object? userState)
 	{
 		var ar = OverlappedAsync.SetupOverlappedFunction(hDevice, userCallback, buffer);
-		var intSz = Marshal.SizeOf(typeof(int));
+		var intSz = Marshal.SizeOf<int>();
 		var inSz = BitConverter.ToInt32(buffer, 0);
 		var outSz = BitConverter.ToInt32(buffer, intSz);
 		fixed (byte* pIn = &buffer[intSz * 2], pOut = &buffer[outSz == 0 ? 0 : intSz * 2 + inSz])
@@ -1022,13 +1011,13 @@ public static partial class Kernel32
 	private static T MemRead<T>(byte[] buffer, ref int startIndex) where T : struct
 	{
 		using var pin = new PinnedObject(buffer, startIndex);
-		startIndex += Marshal.SizeOf(typeof(T));
+		startIndex += Marshal.SizeOf<T>();
 		return ((IntPtr)pin).ToStructure<T>();
 	}
 
 	private static int MemWrite<T>(byte[] buffer, T value, int startIndex = 0) where T : struct
 	{
-		var sz = Marshal.SizeOf(typeof(T));
+		var sz = Marshal.SizeOf<T>();
 		using (var pin = new PinnedObject(value))
 			Marshal.Copy(pin, buffer, startIndex, sz);
 		return sz;
@@ -1038,8 +1027,8 @@ public static partial class Kernel32
 	{
 		using var ms = new MemoryStream();
 		using var wtr = new BinaryWriter(ms);
-		wtr.Write(inVal.HasValue ? Marshal.SizeOf(typeof(TIn)) : 0);
-		wtr.Write(outVal.HasValue ? Marshal.SizeOf(typeof(TOut)) : 0);
+		wtr.Write(inVal.HasValue ? Marshal.SizeOf<TIn>() : 0);
+		wtr.Write(outVal.HasValue ? Marshal.SizeOf<TOut>() : 0);
 		if (inVal.HasValue) wtr.Write(inVal.Value);
 		if (outVal.HasValue) wtr.Write(outVal.Value);
 		return ms.ToArray();

@@ -800,7 +800,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms681949")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AssignProcessToJobObject([In] HJOB hJob, [In] HPROCESS hProcess);
+	public static extern bool AssignProcessToJobObject([In, AddAsMember] HJOB hJob, [In] HPROCESS hProcess);
 
 	/// <summary>
 	/// <para>Creates or opens a job object.</para>
@@ -896,7 +896,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684127")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsProcessInJob([In] HPROCESS ProcessHandle, [In] HJOB JobHandle, [MarshalAs(UnmanagedType.Bool)] out bool Result);
+	public static extern bool IsProcessInJob([In] HPROCESS ProcessHandle, [In, AddAsMember] HJOB JobHandle, [MarshalAs(UnmanagedType.Bool)] out bool Result);
 
 	/// <summary>Opens an existing job object.</summary>
 	/// <param name="dwDesiredAccess">
@@ -1185,7 +1185,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <returns>The limit or job state information. The format of this data depends on the value of the JobObjectInfoClass parameter.</returns>
-	public static T QueryInformationJobObject<T>([In] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass) where T : struct
+	public static T QueryInformationJobObject<T>([In, AddAsMember] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet(jobObjectInfoClass, typeof(T))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
 		using var mem = SafeHGlobalHandle.CreateFromStructure<T>();
@@ -1252,7 +1252,7 @@ public static partial class Kernel32
 	/// job. Your code must free the memory for this array by calling the <c>FreeMemoryJobObject</c> function with the address of the array.
 	/// </returns>
 	[PInvokeData("Jobapi2.h", MSDNShortId = "mt280127")]
-	public static JOBOBJECT_IO_RATE_CONTROL_INFORMATION[] QueryIoRateControlInformationJobObject(HJOB hJob, string? VolumeName = null)
+	public static JOBOBJECT_IO_RATE_CONTROL_INFORMATION[] QueryIoRateControlInformationJobObject([In, AddAsMember] HJOB hJob, string? VolumeName = null)
 	{
 		var relId = int.Parse(Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "0")!.ToString()!);
 		if (relId is 0 or >= 1607)
@@ -1500,7 +1500,7 @@ public static partial class Kernel32
 	/// The limits or job state to be set for the job. The format of this data depends on the value of JobObjectInfoClass.
 	/// </param>
 	[PInvokeData("jobapi2.h", MSDNShortId = "46f7c579-e8d3-4434-a6ce-56573cd84387")]
-	public static void SetInformationJobObject<T>([In] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass, in T jobObjectInfo) where T : struct
+	public static void SetInformationJobObject<T>([In, AddAsMember] HJOB hJob, JOBOBJECTINFOCLASS jobObjectInfoClass, in T jobObjectInfo) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanSet(jobObjectInfoClass, typeof(T))) throw new ArgumentException("Type mismatch.", nameof(jobObjectInfoClass));
 		using var mem = SafeHGlobalHandle.CreateFromStructure(jobObjectInfo);
@@ -1526,7 +1526,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Jobapi2.h", MSDNShortId = "mt280128")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetIoRateControlInformationJobObject(HJOB hJob, in JOBOBJECT_IO_RATE_CONTROL_INFORMATION IoRateControlInfo);
+	public static extern bool SetIoRateControlInformationJobObject([In, AddAsMember] HJOB hJob, in JOBOBJECT_IO_RATE_CONTROL_INFORMATION IoRateControlInfo);
 
 	/// <summary>
 	/// Terminates all processes currently associated with the job. If the job is nested, this function terminates all processes
@@ -1554,7 +1554,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686709")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TerminateJobObject([In] HJOB hJob, uint uExitCode);
+	public static extern bool TerminateJobObject([In, AddAsMember] HJOB hJob, uint uExitCode);
 
 	/// <summary>
 	/// Contains I/O accounting information for a process or a job object. For a job object, the counters include all operations
@@ -1952,6 +1952,7 @@ public static partial class Kernel32
 	// ProcessIdList[1];} JOBOBJECT_BASIC_PROCESS_ID_LIST, *PJOBOBJECT_BASIC_PROCESS_ID_LIST; https://msdn.microsoft.com/en-us/library/windows/desktop/ms684150(v=vs.85).aspx
 	[PInvokeData("WinNT.h", MSDNShortId = "ms684150")]
 	[StructLayout(LayoutKind.Sequential)]
+	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<JOBOBJECT_BASIC_PROCESS_ID_LIST>), nameof(NumberOfProcessIdsInList))]
 	public struct JOBOBJECT_BASIC_PROCESS_ID_LIST
 	{
 		/// <summary>The number of process identifiers to be stored in <c>ProcessIdList</c>.</summary>
@@ -1967,7 +1968,8 @@ public static partial class Kernel32
 		/// A variable-length array of process identifiers returned by this call. Array elements 0 through
 		/// <c>NumberOfProcessIdsInList</c> – 1 contain valid process identifiers.
 		/// </summary>
-		public IntPtr ProcessIdList;
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+		public UIntPtr[] ProcessIdList;
 	}
 
 	/// <summary>Contains basic user-interface restrictions for a job object.</summary>

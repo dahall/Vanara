@@ -8715,7 +8715,7 @@ public static partial class Kernel32
 		using var mem = new SafeHGlobalHandle(sz);
 		if (!func(dwFlags, out var c, mem, ref sz))
 			Win32Error.ThrowLastError();
-		return c == 0 ? new string[0] : mem.ToStringEnum(CharSet.Unicode).ToArray();
+		return c == 0 ? new string[0] : [.. mem.ToStringEnum(CharSet.Unicode)];
 	}
 
 	/// <summary>
@@ -8979,7 +8979,7 @@ public static partial class Kernel32
 		public byte[] abBuffer;
 
 		/// <summary>The default instance of this structure with size and version fields preset.</summary>
-		public static readonly FILEMUIINFO Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(FILEMUIINFO)), dwVersion = 1 };
+		public static readonly FILEMUIINFO Default = new() { dwSize = (uint)Marshal.SizeOf<FILEMUIINFO>(), dwVersion = 1 };
 	}
 
 	/// <summary>
@@ -9010,7 +9010,7 @@ public static partial class Kernel32
 		public uint dwDefinedVersion;
 
 		/// <summary>The default instance of this structure with size field preset.</summary>
-		public static readonly NLSVERSIONINFO Default = new() { dwNLSVersionInfoSize = (uint)Marshal.SizeOf(typeof(NLSVERSIONINFO)) };
+		public static readonly NLSVERSIONINFO Default = new() { dwNLSVersionInfoSize = (uint)Marshal.SizeOf<NLSVERSIONINFO>() };
 	}
 
 	/// <summary>Contains version information about an NLS capability.</summary>
@@ -9054,7 +9054,7 @@ public static partial class Kernel32
 		public Guid guidCustomVersion;
 
 		/// <summary>The default instance of this structure with size field preset.</summary>
-		public static readonly NLSVERSIONINFOEX Default = new() { dwNLSVersionInfoSize = (uint)Marshal.SizeOf(typeof(NLSVERSIONINFOEX)) };
+		public static readonly NLSVERSIONINFOEX Default = new() { dwNLSVersionInfoSize = (uint)Marshal.SizeOf<NLSVERSIONINFOEX>() };
 	}
 
 	/// <summary>
@@ -9134,11 +9134,11 @@ public static partial class Kernel32
 		{
 			get
 			{
-				if (dwSize < minSz) return new uint[0];
+				if (dwSize < minSz) return [];
 				var len = Marshal.ReadInt32(mem, 48);
 				var offset = Marshal.ReadInt32(mem, 52);
 				if (len + offset > mem.Size) throw new OutOfMemoryException();
-				return offset == 0 ? new uint[0] : mem.DangerousGetHandle().ToArray<uint>(len, offset)!;
+				return offset == 0 ? [] : mem.DangerousGetHandle().ToArray<uint>(len, offset)!;
 			}
 		}
 
@@ -9147,11 +9147,11 @@ public static partial class Kernel32
 		{
 			get
 			{
-				if (dwSize < minSz) return new uint[0];
+				if (dwSize < minSz) return [];
 				var len = Marshal.ReadInt32(mem, 60);
 				var offset = Marshal.ReadInt32(mem, 64);
 				if (len + offset > mem.Size) throw new OutOfMemoryException();
-				return offset == 0 ? new uint[0] : mem.DangerousGetHandle().ToArray<uint>(len, offset)!;
+				return offset == 0 ? [] : mem.DangerousGetHandle().ToArray<uint>(len, offset)!;
 			}
 		}
 
@@ -9160,11 +9160,11 @@ public static partial class Kernel32
 		{
 			get
 			{
-				if (dwSize < minSz) return new string[0];
+				if (dwSize < minSz) return [];
 				//var len = Marshal.ReadInt32(mem, 48);
 				var offset = Marshal.ReadInt32(mem, 56);
 				if (offset > mem.Size) throw new OutOfMemoryException();
-				return offset == 0 ? new string[0] : mem.DangerousGetHandle().ToStringEnum(CharSet.Unicode, offset).ToArray()!;
+				return offset == 0 ? [] : mem.DangerousGetHandle().ToStringEnum(CharSet.Unicode, offset).ToArray()!;
 			}
 		}
 
@@ -9173,19 +9173,19 @@ public static partial class Kernel32
 		{
 			get
 			{
-				if (dwSize < minSz) return new string[0];
+				if (dwSize < minSz) return [];
 				//var len = Marshal.ReadInt32(mem, 60);
 				var offset = Marshal.ReadInt32(mem, 68);
 				if (offset > mem.Size) throw new OutOfMemoryException();
-				return offset == 0 ? new string[0] : mem.DangerousGetHandle().ToStringEnum(CharSet.Unicode, offset).ToArray()!;
+				return offset == 0 ? [] : mem.DangerousGetHandle().ToStringEnum(CharSet.Unicode, offset).ToArray()!;
 			}
 		}
 
 		/// <summary>Pointer to a 128-bit checksum for the file, if it is either an LN file or a language-specific resource file.</summary>
-		public byte[] pChecksum => dwSize < minSz ? new byte[0] : mem.GetBytes(16, 12);
+		public byte[] pChecksum => dwSize < minSz ? [] : mem.GetBytes(16, 12);
 
 		/// <summary>Pointer to a 128-bit checksum for the file, used for servicing.</summary>
-		public byte[] pServiceChecksum => dwSize < minSz ? new byte[0] : mem.GetBytes(16, 28);
+		public byte[] pServiceChecksum => dwSize < minSz ? [] : mem.GetBytes(16, 28);
 
 		/// <summary>
 		/// The language name string for a language-specific resource file, or to the ultimate fallback language name string for an LN file.

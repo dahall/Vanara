@@ -1078,7 +1078,7 @@ public static partial class Kernel32
 		public HARDWARE_COUNTER_DATA[] HwCounters;
 
 		/// <summary>Gets a default instance with the size pre-set.</summary>
-		public static readonly PERFORMANCE_DATA Default = new() { Size = (ushort)Marshal.SizeOf(typeof(PERFORMANCE_DATA)), Version = PERFORMANCE_DATA_VERSION };
+		public static readonly PERFORMANCE_DATA Default = new() { Size = (ushort)Marshal.SizeOf<PERFORMANCE_DATA>(), Version = PERFORMANCE_DATA_VERSION };
 	}
 
 	/// <summary>The <c>SECURITY_CAPABILITIES</c> structure defines the security capabilities of the app container.</summary>
@@ -1106,40 +1106,33 @@ public static partial class Kernel32
 	/// <para>Specifies attributes for a user-mode scheduling (UMS) worker thread.</para>
 	/// <para>This structure is used with the UpdateProcThreadAttribute function.</para>
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="UMS_CREATE_THREAD_ATTRIBUTES"/> struct.</remarks>
+	/// <param name="ctx">
+	/// A UMS thread context for the worker thread to be created. This pointer is provided by the CreateUmsThreadContext function.
+	/// </param>
+	/// <param name="completionList">
+	/// A UMS completion list. This pointer is provided by the CreateUmsCompletionList function. The newly created worker thread is
+	/// queued to the specified completion list.
+	/// </param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-ums_create_thread_attributes typedef struct
 	// _UMS_CREATE_THREAD_ATTRIBUTES { DWORD UmsVersion; PVOID UmsContext; PVOID UmsCompletionList; } UMS_CREATE_THREAD_ATTRIBUTES, *PUMS_CREATE_THREAD_ATTRIBUTES;
 	[PInvokeData("winnt.h", MSDNShortId = "5d3e1721-c439-49bb-9cb6-8386fa8aaf50")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct UMS_CREATE_THREAD_ATTRIBUTES
+	public struct UMS_CREATE_THREAD_ATTRIBUTES(Kernel32.PUMS_CONTEXT ctx, Kernel32.PUMS_COMPLETION_LIST completionList)
 	{
 		/// <summary>The UMS version for which the application was built. This parameter must be <c>UMS_VERSION</c>.</summary>
-		public uint UmsVersion;
+		public uint UmsVersion = UMS_VERSION;
 
 		/// <summary>
 		/// A pointer to a UMS thread context for the worker thread to be created. This pointer is provided by the CreateUmsThreadContext function.
 		/// </summary>
-		public PUMS_CONTEXT UmsContext;
+		public PUMS_CONTEXT UmsContext = ctx;
 
 		/// <summary>
 		/// A pointer to a UMS completion list. This pointer is provided by the CreateUmsCompletionList function. The newly created
 		/// worker thread is queued to the specified completion list.
 		/// </summary>
-		public PUMS_COMPLETION_LIST UmsCompletionList;
-
-		/// <summary>Initializes a new instance of the <see cref="UMS_CREATE_THREAD_ATTRIBUTES"/> struct.</summary>
-		/// <param name="ctx">
-		/// A UMS thread context for the worker thread to be created. This pointer is provided by the CreateUmsThreadContext function.
-		/// </param>
-		/// <param name="completionList">
-		/// A UMS completion list. This pointer is provided by the CreateUmsCompletionList function. The newly created worker thread is
-		/// queued to the specified completion list.
-		/// </param>
-		public UMS_CREATE_THREAD_ATTRIBUTES(PUMS_CONTEXT ctx, PUMS_COMPLETION_LIST completionList)
-		{
-			UmsVersion = UMS_VERSION;
-			UmsContext = ctx;
-			UmsCompletionList = completionList;
-		}
+		public PUMS_COMPLETION_LIST UmsCompletionList = completionList;
 	}
 
 	/// <summary/>

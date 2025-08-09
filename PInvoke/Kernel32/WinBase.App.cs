@@ -1180,12 +1180,12 @@ public static partial class Kernel32
 		/// <param name="source">The source.</param>
 		public ACTCTX(string source) : this()
 		{
-			cbSize = Marshal.SizeOf(typeof(ACTCTX));
+			cbSize = Marshal.SizeOf<ACTCTX>();
 			lpSource = source;
 		}
 
 		/// <summary>Gets an empty instance with only the cbSize parameter initialized.</summary>
-		public static ACTCTX Empty => new() { cbSize = Marshal.SizeOf(typeof(ACTCTX)) };
+		public static ACTCTX Empty => new() { cbSize = Marshal.SizeOf<ACTCTX>() };
 	}
 
 	/// <summary>
@@ -1409,7 +1409,7 @@ public static partial class Kernel32
 		internal ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION(IntPtr mem)
 		{
 			var c = Marshal.ReadInt32(mem, 0);
-			Elements = mem.Offset(4).ToArray<COMPATIBILITY_CONTEXT_ELEMENT>(c) ?? new COMPATIBILITY_CONTEXT_ELEMENT[0];
+			Elements = mem.Offset(4).ToArray<COMPATIBILITY_CONTEXT_ELEMENT>(c) ?? [];
 		}
 	}
 
@@ -1482,26 +1482,20 @@ public static partial class Kernel32
 	/// pvSubInstance parameter point to an <c>ACTIVATION_CONTEXT_QUERY_INDEX</c> structure. See the sample for
 	/// ASSEMBLY_FILE_DETAILED_INFORMATION for an example of its use.
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="ACTIVATION_CONTEXT_QUERY_INDEX"/> struct.</remarks>
+	/// <param name="asmIndex">One-based index of the assembly whose file table is to be queried.</param>
+	/// <param name="fileIndex">Zero-based index of the file in the above assembly to be queried.</param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-activation_context_query_index typedef struct
 	// _ACTIVATION_CONTEXT_QUERY_INDEX { DWORD ulAssemblyIndex; DWORD ulFileIndexInAssembly; } ACTIVATION_CONTEXT_QUERY_INDEX, *PACTIVATION_CONTEXT_QUERY_INDEX;
 	[PInvokeData("winnt.h", MSDNShortId = "eb15895c-07c9-4b68-83ef-2f2b8e3b271c")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ACTIVATION_CONTEXT_QUERY_INDEX
+	public struct ACTIVATION_CONTEXT_QUERY_INDEX(uint asmIndex, uint fileIndex)
 	{
 		/// <summary>One-based index of the assembly whose file table is to be queried.</summary>
-		public uint ulAssemblyIndex;
+		public uint ulAssemblyIndex = asmIndex;
 
 		/// <summary>Zero-based index of the file in the above assembly to be queried.</summary>
-		public uint ulFileIndexInAssembly;
-
-		/// <summary>Initializes a new instance of the <see cref="ACTIVATION_CONTEXT_QUERY_INDEX"/> struct.</summary>
-		/// <param name="asmIndex">One-based index of the assembly whose file table is to be queried.</param>
-		/// <param name="fileIndex">Zero-based index of the file in the above assembly to be queried.</param>
-		public ACTIVATION_CONTEXT_QUERY_INDEX(uint asmIndex, uint fileIndex)
-		{
-			ulAssemblyIndex = asmIndex;
-			ulFileIndexInAssembly = fileIndex;
-		}
+		public uint ulFileIndexInAssembly = fileIndex;
 	}
 
 	/// <summary>The <c>ACTIVATION_CONTEXT_RUN_LEVEL_INFORMATION</c> structure is used by the QueryActCtxW function.</summary>

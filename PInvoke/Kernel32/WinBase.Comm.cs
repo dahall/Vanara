@@ -1326,7 +1326,7 @@ public static partial class Kernel32
 		public IntPtr wcProviderData;
 
 		/// <summary>Gets a default instance with the size field set.</summary>
-		public static readonly COMMCONFIG Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(COMMCONFIG)), wVersion = 1, dcb = DCB.Default };
+		public static readonly COMMCONFIG Default = new() { dwSize = (uint)Marshal.SizeOf<COMMCONFIG>(), wVersion = 1, dcb = DCB.Default };
 	}
 
 	/// <summary>Contains information about a communications driver.</summary>
@@ -2176,6 +2176,6 @@ public static partial class Kernel32
 		}
 
 		/// <summary>Gets a default instance with the size field set.</summary>
-		public static readonly DCB Default = new() { DCBlength = (uint)Marshal.SizeOf(typeof(DCB)) };
+		public static readonly DCB Default = new() { DCBlength = (uint)Marshal.SizeOf<DCB>() };
 	}
 }

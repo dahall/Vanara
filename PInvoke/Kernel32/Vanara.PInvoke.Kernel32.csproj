@@ -24,6 +24,9 @@ Structures
     <AdditionalFiles Include="handles.csv" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" Condition=" $(TargetFramework.StartsWith('net4')) Or $(TargetFramework.StartsWith('netstandard2')) " />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

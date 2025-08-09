@@ -91,7 +91,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683146")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FlsSetValue(uint dwFlsIndex, IntPtr lpFlsData);
+	public static extern bool FlsSetValue(uint dwFlsIndex, [In, Optional] IntPtr lpFlsData);
 
 	/// <summary>Determines whether the current thread is a fiber.</summary>
 	/// <returns>The function returns <c>TRUE</c> if the thread is a fiber and <c>FALSE</c> otherwise.</returns>

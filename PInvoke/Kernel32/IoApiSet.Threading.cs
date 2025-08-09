@@ -313,7 +313,7 @@ public static partial class Kernel32
 		var unpack = true;
 		try
 		{
-			var inSz = Marshal.SizeOf(typeof(TIn));
+			var inSz = Marshal.SizeOf<TIn>();
 			fixed (byte* pIn = buffer, pOut = &buffer[inSz])
 			{
 				var ret = DeviceIoControl(hDevice, ioControlCode, pIn, (uint)inSz, pOut, (uint)(buffer.Length - inSz), out var bRet,

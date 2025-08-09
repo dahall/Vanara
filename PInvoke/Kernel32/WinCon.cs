@@ -839,7 +839,7 @@ public static partial class Kernel32
 		using var buf = new SafeHGlobalHandle((int)GetConsoleAliasesLength(lpExeName) + StringHelper.GetCharSize());
 		var ret = GetConsoleAliases(buf, buf.Size, lpExeName);
 		if (!ret) Win32Error.ThrowLastError();
-		return buf.ToStringEnum().ToArray();
+		return [.. buf.ToStringEnum()];
 	}
 
 	/// <summary>Retrieves the required size for the buffer used by the <c>GetConsoleAliases</c> function.</summary>
@@ -892,7 +892,7 @@ public static partial class Kernel32
 			ret = GetConsoleAliasExes(buf, buf.Size);
 		}
 		if (!ret) Win32Error.ThrowLastError();
-		return buf.ToStringEnum().ToArray();
+		return [.. buf.ToStringEnum()];
 	}
 
 	/// <summary>Retrieves the required size for the buffer used by the <c>GetConsoleAliasExes</c> function.</summary>
@@ -2952,13 +2952,16 @@ public static partial class Kernel32
 	/// Specifies a Unicode or ANSI character and its attributes. This structure is used by console functions to read from and write to
 	/// a console screen buffer.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="CHAR_INFO"/> struct.</remarks>
+	/// <param name="char">A Unicode character.</param>
+	/// <param name="attr">The character attributes.</param>
 	// typedef struct _CHAR_INFO { union { WCHAR UnicodeChar; CHAR AsciiChar; } Char; WORD Attributes; } CHAR_INFO, *PCHAR_INFO;
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[StructLayout(LayoutKind.Sequential, Pack = 2, CharSet = CharSet.Unicode)]
-	public struct CHAR_INFO
+	public struct CHAR_INFO(char @char, Kernel32.CHARACTER_ATTRIBUTE attr = 0)
 	{
 		/// <summary>Translated Unicode character.</summary>
-		public char Char;
+		public char Char = @char;
 
 		/// <summary>
 		/// <para>The character attributes. This member can be zero or any combination of the following values.</para>
@@ -3031,16 +3034,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public CHARACTER_ATTRIBUTE Attributes;
-
-		/// <summary>Initializes a new instance of the <see cref="CHAR_INFO"/> struct.</summary>
-		/// <param name="char">A Unicode character.</param>
-		/// <param name="attr">The character attributes.</param>
-		public CHAR_INFO(char @char, CHARACTER_ATTRIBUTE attr = 0)
-		{
-			Char = @char;
-			Attributes = attr;
-		}
+		public CHARACTER_ATTRIBUTE Attributes = attr;
 	}
 
 	/// <summary>Contains information about the console cursor.</summary>
@@ -3112,7 +3106,7 @@ public static partial class Kernel32
 		public string FaceName;
 
 		/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-		public static readonly CONSOLE_FONT_INFOEX Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_FONT_INFOEX)) };
+		public static readonly CONSOLE_FONT_INFOEX Default = new() { cbSize = (uint)Marshal.SizeOf<CONSOLE_FONT_INFOEX>() };
 	}
 
 	/// <summary>Contains information about the console history.</summary>
@@ -3135,7 +3129,7 @@ public static partial class Kernel32
 		public uint dwFlags;
 
 		/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-		public static readonly CONSOLE_HISTORY_INFO Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_HISTORY_INFO)) };
+		public static readonly CONSOLE_HISTORY_INFO Default = new() { cbSize = (uint)Marshal.SizeOf<CONSOLE_HISTORY_INFO>() };
 	}
 
 	/// <summary>Contains information for a console read operation.</summary>
@@ -3161,7 +3155,7 @@ public static partial class Kernel32
 		public CONTROL_KEY_STATE dwControlKeyState;
 
 		/// <summary>Gets an empty structure value with the <see cref="nLength"/> field initialized to the correct value.</summary>
-		public static readonly CONSOLE_READCONSOLE_CONTROL Default = new() { nLength = (uint)Marshal.SizeOf(typeof(CONSOLE_READCONSOLE_CONTROL)) };
+		public static readonly CONSOLE_READCONSOLE_CONTROL Default = new() { nLength = (uint)Marshal.SizeOf<CONSOLE_READCONSOLE_CONTROL>() };
 	}
 
 	/// <summary>Contains information about a console screen buffer.</summary>
@@ -3243,7 +3237,7 @@ public static partial class Kernel32
 		public COLORREF[] ColorTable;
 
 		/// <summary>Gets an empty structure value with the <see cref="cbSize"/> field initialized to the correct value.</summary>
-		public static readonly CONSOLE_SCREEN_BUFFER_INFOEX Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_SCREEN_BUFFER_INFOEX)) };
+		public static readonly CONSOLE_SCREEN_BUFFER_INFOEX Default = new() { cbSize = (uint)Marshal.SizeOf<CONSOLE_SCREEN_BUFFER_INFOEX>() };
 	}
 
 	/// <summary>Contains information for a console selection.</summary>
@@ -3297,26 +3291,20 @@ public static partial class Kernel32
 	/// Defines the coordinates of a character cell in a console screen buffer. The origin of the coordinate system (0,0) is at the top,
 	/// left cell of the buffer.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="COORD"/> struct.</remarks>
+	/// <param name="x">The horizontal coordinate or column value.</param>
+	/// <param name="y">The vertical coordinate or row value.</param>
 	// typedef struct _COORD { SHORT X; SHORT Y; } COORD, *PCOORD;
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[DebuggerDisplay("{X}, {Y}")]
 	[StructLayout(LayoutKind.Sequential, Pack = 2)]
-	public struct COORD
+	public struct COORD(int x, int y)
 	{
 		/// <summary>The horizontal coordinate or column value. The units depend on the function call.</summary>
-		public short X;
+		public short X = (short)x;
 
 		/// <summary>The vertical coordinate or row value. The units depend on the function call.</summary>
-		public short Y;
-
-		/// <summary>Initializes a new instance of the <see cref="COORD"/> struct.</summary>
-		/// <param name="x">The horizontal coordinate or column value.</param>
-		/// <param name="y">The vertical coordinate or row value.</param>
-		public COORD(int x, int y)
-		{
-			X = (short)x;
-			Y = (short)y;
-		}
+		public short Y = (short)y;
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -3683,35 +3671,27 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Defines the coordinates of the upper left and lower right corners of a rectangle.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="SMALL_RECT"/> struct.</remarks>
+	/// <param name="left">The x-coordinate of the upper left corner of the rectangle.</param>
+	/// <param name="top">The y-coordinate of the upper left corner of the rectangle.</param>
+	/// <param name="right">The x-coordinate of the lower right corner of the rectangle.</param>
+	/// <param name="bottom">The y-coordinate of the lower right corner of the rectangle.</param>
 	// typedef struct _SMALL_RECT { SHORT Left; SHORT Top; SHORT Right; SHORT Bottom; } SMALL_RECT;
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SMALL_RECT
+	public struct SMALL_RECT(short left, short top, short right, short bottom)
 	{
 		/// <summary>The x-coordinate of the upper left corner of the rectangle.</summary>
-		public short Left;
+		public short Left = left;
 
 		/// <summary>The y-coordinate of the upper left corner of the rectangle.</summary>
-		public short Top;
+		public short Top = top;
 
 		/// <summary>The x-coordinate of the lower right corner of the rectangle.</summary>
-		public short Right;
+		public short Right = right;
 
 		/// <summary>The y-coordinate of the lower right corner of the rectangle.</summary>
-		public short Bottom;
-
-		/// <summary>Initializes a new instance of the <see cref="SMALL_RECT"/> struct.</summary>
-		/// <param name="left">The x-coordinate of the upper left corner of the rectangle.</param>
-		/// <param name="top">The y-coordinate of the upper left corner of the rectangle.</param>
-		/// <param name="right">The x-coordinate of the lower right corner of the rectangle.</param>
-		/// <param name="bottom">The y-coordinate of the lower right corner of the rectangle.</param>
-		public SMALL_RECT(short left, short top, short right, short bottom)
-		{
-			Left = left;
-			Top = top;
-			Right = right;
-			Bottom = bottom;
-		}
+		public short Bottom = bottom;
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>

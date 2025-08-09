@@ -116,7 +116,7 @@ public static partial class Kernel32
 	public static string[] GetEnvironmentStrings()
 	{
 		var ptr = InternalGetEnvironmentStrings();
-		try { return ptr.ToStringEnum().ToArray(); }
+		try { return [.. ptr.ToStringEnum()]; }
 		finally { FreeEnvironmentStrings(ptr); }
 	}
 

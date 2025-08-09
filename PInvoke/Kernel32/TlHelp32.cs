@@ -615,7 +615,7 @@ public static partial class Kernel32
 		public nuint th32HeapID;
 
 		/// <summary>Gets an empty instance with the size value set.</summary>
-		public static readonly HEAPENTRY32 Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(HEAPENTRY32)) };
+		public static readonly HEAPENTRY32 Default = new() { dwSize = (uint)Marshal.SizeOf<HEAPENTRY32>() };
 	}
 
 	/// <summary>
@@ -661,7 +661,7 @@ public static partial class Kernel32
 		public HEAPLIST32_FLAGS dwFlags;
 
 		/// <summary>Gets an empty instance with the size value set.</summary>
-		public static readonly HEAPLIST32 Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(HEAPLIST32)) };
+		public static readonly HEAPLIST32 Default = new() { dwSize = (uint)Marshal.SizeOf<HEAPLIST32>() };
 
 		/// <summary>Retrieves information about the blocks of a heap that have been allocated by a process.</summary>
 		/// <returns>A enumeration of <see cref="HEAPENTRY32"/> structures.</returns>
@@ -747,7 +747,7 @@ public static partial class Kernel32
 		public string szExePath;
 
 		/// <summary>Gets an empty instance with the size value set.</summary>
-		public static readonly MODULEENTRY32 Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(MODULEENTRY32)) };
+		public static readonly MODULEENTRY32 Default = new() { dwSize = (uint)Marshal.SizeOf<MODULEENTRY32>() };
 	}
 
 	/// <summary>
@@ -820,7 +820,7 @@ public static partial class Kernel32
 		public string szExeFile;
 
 		/// <summary>Gets an empty instance with the size value set.</summary>
-		public static readonly PROCESSENTRY32 Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(PROCESSENTRY32)) };
+		public static readonly PROCESSENTRY32 Default = new() { dwSize = (uint)Marshal.SizeOf<PROCESSENTRY32>() };
 	}
 
 	/// <summary>
@@ -874,7 +874,7 @@ public static partial class Kernel32
 		public uint dwFlags;
 
 		/// <summary>Gets an empty instance with the size value set.</summary>
-		public static readonly THREADENTRY32 Default = new() { dwSize = (uint)Marshal.SizeOf(typeof(THREADENTRY32)) };
+		public static readonly THREADENTRY32 Default = new() { dwSize = (uint)Marshal.SizeOf<THREADENTRY32>() };
 	}
 
 	public partial class SafeHSNAPSHOT

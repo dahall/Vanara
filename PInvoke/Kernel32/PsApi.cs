@@ -1179,7 +1179,7 @@ public static partial class Kernel32
 			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
 			mem.Size *= 2;
 		}
-		var cb = Marshal.SizeOf(typeof(PSAPI_WS_WATCH_INFORMATION));
+		var cb = Marshal.SizeOf<PSAPI_WS_WATCH_INFORMATION>();
 		var c = 0;
 		for (var i = 0; i < mem.Size && Marshal.ReadIntPtr(mem, i) != IntPtr.Zero; c++, i += cb) ;
 		return mem.ToArray<PSAPI_WS_WATCH_INFORMATION>(c);
@@ -1291,7 +1291,7 @@ public static partial class Kernel32
 		{
 			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
 		}
-		var cb = Marshal.SizeOf(typeof(PSAPI_WS_WATCH_INFORMATION_EX));
+		var cb = Marshal.SizeOf<PSAPI_WS_WATCH_INFORMATION_EX>();
 		var c = 0;
 		for (var i = 0; i < mem.Size && Marshal.ReadIntPtr(mem, i) != IntPtr.Zero; c++, i += cb) ;
 		return mem.ToArray<PSAPI_WS_WATCH_INFORMATION_EX>(c);
@@ -1491,7 +1491,7 @@ public static partial class Kernel32
 			Array.ConvertAll(QueryWorkingSet(hProcess), b => new PSAPI_WORKING_SET_EX_INFORMATION() { VirtualAddress = b.VirtualPage }) :
 			Array.ConvertAll(virtualAddresses, p => new PSAPI_WORKING_SET_EX_INFORMATION() { VirtualAddress = p });
 
-		var cb = (uint)Marshal.SizeOf(typeof(PSAPI_WORKING_SET_EX_INFORMATION));
+		var cb = (uint)Marshal.SizeOf<PSAPI_WORKING_SET_EX_INFORMATION>();
 		Win32Error.ThrowLastErrorIfFalse(QueryWorkingSetEx(hProcess, info, (uint)info.Length * cb));
 		return info;
 	}
@@ -1645,7 +1645,7 @@ public static partial class Kernel32
 		public uint ThreadCount;
 
 		/// <summary>A default initialized instance.</summary>
-		public static readonly PERFORMANCE_INFORMATION Default = new() { cb = (uint)Marshal.SizeOf(typeof(PERFORMANCE_INFORMATION)) };
+		public static readonly PERFORMANCE_INFORMATION Default = new() { cb = (uint)Marshal.SizeOf<PERFORMANCE_INFORMATION>() };
 	}
 
 	/// <summary>
@@ -1713,7 +1713,7 @@ public static partial class Kernel32
 		public SizeT PeakPagefileUsage;
 
 		/// <summary>A default initialized instance.</summary>
-		public static readonly PROCESS_MEMORY_COUNTERS Default = new() { cb = (uint)Marshal.SizeOf(typeof(PROCESS_MEMORY_COUNTERS)) };
+		public static readonly PROCESS_MEMORY_COUNTERS Default = new() { cb = (uint)Marshal.SizeOf<PROCESS_MEMORY_COUNTERS>() };
 	}
 
 	/// <summary>Contains extended memory statistics for a process.</summary>
@@ -1770,7 +1770,7 @@ public static partial class Kernel32
 		public SizeT PrivateUsage;
 
 		/// <summary>A default initialized instance.</summary>
-		public static readonly PROCESS_MEMORY_COUNTERS_EX Default = new() { cb = (uint)Marshal.SizeOf(typeof(PROCESS_MEMORY_COUNTERS_EX)) };
+		public static readonly PROCESS_MEMORY_COUNTERS_EX Default = new() { cb = (uint)Marshal.SizeOf<PROCESS_MEMORY_COUNTERS_EX>() };
 	}
 
 	/// <summary>Contains working set information for a page.</summary>

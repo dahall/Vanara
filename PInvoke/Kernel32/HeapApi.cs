@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
@@ -801,7 +802,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("heapapi.h", MSDNShortId = "33c262ca-5093-4f44-a8c6-09045bc90f60")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool HeapSetInformation([In] HHEAP HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, [In] IntPtr HeapInformation, SizeT HeapInformationLength);
+	public static extern bool HeapSetInformation([In] HHEAP HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, [In, Optional] IntPtr HeapInformation, [Optional] SizeT HeapInformationLength);
 
 	/// <summary>Enables features for a specified heap.</summary>
 	/// <param name="HeapHandle">
@@ -1061,7 +1062,7 @@ public static partial class Kernel32
 	[PInvokeData("HeapApi.h", MSDNShortId = "aa366710")]
 	public static IEnumerable<PROCESS_HEAP_ENTRY> HeapWalk([In] HHEAP hHeap)
 	{
-		var e = default(PROCESS_HEAP_ENTRY);
+		PROCESS_HEAP_ENTRY e = new();
 		while (HeapWalk(hHeap, ref e))
 			yield return e;
 		var err = Win32Error.GetLastError();
@@ -1082,25 +1083,19 @@ public static partial class Kernel32
 	/// <c>HEAP_OPTIMIZE_RESOURCES_INFORMATION</c> structure. The only legal value for this field is currently 1.
 	/// </para>
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="HEAP_OPTIMIZE_RESOURCES_INFORMATION"/> struct.</remarks>
+	/// <param name="flags">The flags.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_heap_optimize_resources_information typedef struct
 	// _HEAP_OPTIMIZE_RESOURCES_INFORMATION { DWORD Version; DWORD Flags; } HEAP_OPTIMIZE_RESOURCES_INFORMATION, *PHEAP_OPTIMIZE_RESOURCES_INFORMATION;
 	[PInvokeData("winnt.h", MSDNShortId = "c801a08a-0b1a-4ffe-8ec7-c3ea8d913ec8")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HEAP_OPTIMIZE_RESOURCES_INFORMATION
+	public struct HEAP_OPTIMIZE_RESOURCES_INFORMATION(uint flags)
 	{
 		/// <summary>The version</summary>
-		public uint Version;
+		public uint Version = HEAP_OPTIMIZE_RESOURCES_CURRENT_VERSION;
 
 		/// <summary>Undocumented.</summary>
-		public uint Flags;
-
-		/// <summary>Initializes a new instance of the <see cref="HEAP_OPTIMIZE_RESOURCES_INFORMATION"/> struct.</summary>
-		/// <param name="flags">The flags.</param>
-		public HEAP_OPTIMIZE_RESOURCES_INFORMATION(uint flags)
-		{
-			Version = HEAP_OPTIMIZE_RESOURCES_CURRENT_VERSION;
-			Flags = flags;
-		}
+		public uint Flags = flags;
 	}
 
 	/// <summary>Represents a heap summary retrieved with a call to HeapSummary</summary>
@@ -1108,10 +1103,10 @@ public static partial class Kernel32
 	// typedef struct _HEAP_SUMMARY { DWORD cb; SIZE_T cbAllocated; SIZE_T cbCommitted; SIZE_T cbReserved; SIZE_T cbMaxReserve; } HEAP_SUMMARY, *PHEAP_SUMMARY;
 	[PInvokeData("heapapi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct HEAP_SUMMARY
+	public struct HEAP_SUMMARY()
 	{
 		/// <summary>Address of a continuous block of memory.</summary>
-		public uint cb;
+		public uint cb = (uint)Marshal.SizeOf<HEAP_SUMMARY>();
 		/// <summary>The size of the allocated memory.</summary>
 		public SizeT cbAllocated;
 		/// <summary>The size of the committed memory.</summary>
@@ -1122,7 +1117,7 @@ public static partial class Kernel32
 		public SizeT cbMaxReserve;
 
 		/// <summary>Gets this structure with the size field set appropriately.</summary>
-		public static readonly HEAP_SUMMARY Default = new() { cb = (uint)Marshal.SizeOf(typeof(HEAP_SUMMARY)) };
+		public static readonly HEAP_SUMMARY Default = new();
 	}
 
 	public partial struct HHEAP
@@ -1360,7 +1355,6 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Safe handle for memory heaps.</summary>
-	/// <seealso cref="GenericSafeHandle"/>
 	public partial class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>, ISafeMemoryHandleFactory
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeHeapBlock"/> class.</summary>
@@ -1485,7 +1479,7 @@ public static partial class Kernel32
 		/// </param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
 		/// <returns><see cref="SafeHeapBlock"/> object to an native (unmanaged) structure with a trail array of structures</returns>
-		public static SafeHeapBlock CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, mm.AllocMem, out int s, prefixBytes), s);
+		public static SafeHeapBlock CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(count < 0 ? values : values.Take(count), mm.AllocMem, out int s, prefixBytes), s);
 
 		/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
 		/// <param name="values">The list of strings.</param>

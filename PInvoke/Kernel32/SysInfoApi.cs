@@ -759,7 +759,7 @@ public static partial class Kernel32
 			(ref uint sz) => BoolToLastErr((sz = EnumSystemFirmwareTables(FirmwareTableProviderSignature, IntPtr.Zero, 0)) > 0),
 			(IntPtr p, ref uint sz) => BoolToLastErr((sz = EnumSystemFirmwareTables(FirmwareTableProviderSignature, p, sz)) > 0),
 			out tableIdentifiers,
-			(p, sz) => p.ToArray<uint>((int)sz / Marshal.SizeOf(typeof(uint))));
+			(p, sz) => p.ToArray<uint>((int)sz / Marshal.SizeOf<uint>()));
 
 	/// <summary>
 	/// <para>
@@ -1150,7 +1150,7 @@ public static partial class Kernel32
 			(ref uint sz) => BoolToLastErr(GetLogicalProcessorInformation(IntPtr.Zero, ref sz) || sz > 0),
 			(IntPtr p, ref uint sz) => BoolToLastErr(GetLogicalProcessorInformation(p, ref sz)),
 			out info,
-			(p, sz) => p.ToArray<SYSTEM_LOGICAL_PROCESSOR_INFORMATION>((int)sz / Marshal.SizeOf(typeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION))));
+			(p, sz) => p.ToArray<SYSTEM_LOGICAL_PROCESSOR_INFORMATION>((int)sz / Marshal.SizeOf<SYSTEM_LOGICAL_PROCESSOR_INFORMATION>()));
 
 	/// <summary>Retrieves information about the relationships of logical processors and related hardware.</summary>
 	/// <param name="RelationshipType">
@@ -1392,7 +1392,7 @@ public static partial class Kernel32
 			(ref uint sz) => BoolToLastErr(GetProcessorSystemCycleTime(Group, IntPtr.Zero, ref sz) || sz > 0),
 			(IntPtr p, ref uint sz) => BoolToLastErr(GetProcessorSystemCycleTime(Group, p, ref sz)),
 			out cycleTimes,
-			(p, sz) => p.ToArray<SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION>((int)sz / Marshal.SizeOf(typeof(SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION))));
+			(p, sz) => p.ToArray<SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION>((int)sz / Marshal.SizeOf<SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION>()));
 
 	/// <summary>
 	/// <para>
@@ -3015,7 +3015,7 @@ public static partial class Kernel32
 		public SizeT dwAvailVirtual;
 
 		/// <summary>Gets a default instance with the size pre-set.</summary>
-		public static readonly MEMORYSTATUS Default = new() { dwLength = (uint)Marshal.SizeOf(typeof(MEMORYSTATUS)) };
+		public static readonly MEMORYSTATUS Default = new() { dwLength = (uint)Marshal.SizeOf<MEMORYSTATUS>() };
 	}
 
 	/// <summary>
@@ -3079,7 +3079,7 @@ public static partial class Kernel32
 		public ulong ullAvailExtendedVirtual;
 
 		/// <summary>Gets a default instance with the size pre-set.</summary>
-		public static readonly MEMORYSTATUSEX Default = new() { dwLength = (uint)Marshal.SizeOf(typeof(MEMORYSTATUSEX)) };
+		public static readonly MEMORYSTATUSEX Default = new() { dwLength = (uint)Marshal.SizeOf<MEMORYSTATUSEX>() };
 	}
 
 	/// <summary>
@@ -3276,7 +3276,7 @@ public static partial class Kernel32
 		public byte wReserved;
 
 		/// <summary>Gets a default instance with the size pre-set.</summary>
-		public static readonly OSVERSIONINFOEX Default = new() { dwOSVersionInfoSize = (uint)Marshal.SizeOf(typeof(OSVERSIONINFOEX)) };
+		public static readonly OSVERSIONINFOEX Default = new() { dwOSVersionInfoSize = (uint)Marshal.SizeOf<OSVERSIONINFOEX>() };
 	}
 
 	/// <summary>Represents the number and affinity of processors in a processor group.</summary>

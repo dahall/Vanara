@@ -1136,7 +1136,7 @@ public static partial class Kernel32
 			if (isMin7)
 			{
 				CallbackPriority = TP_CALLBACK_PRIORITY.TP_CALLBACK_PRIORITY_NORMAL;
-				Size = (uint)Marshal.SizeOf(typeof(PTP_CALLBACK_ENVIRON));
+				Size = (uint)Marshal.SizeOf<PTP_CALLBACK_ENVIRON>();
 			}
 		}
 

@@ -74,7 +74,7 @@ public struct WIN32_FIND_DATA
 	/// An alternative name for the file.
 	/// <para>This name is in the classic 8.3 file name format.</para>
 	/// </summary>
-	[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)] public string cAlternateFileName;
+	[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)] public string? cAlternateFileName;
 
 	/// <summary>Gets the size of the file, combining <see cref="nFileSizeLow"/> and <see cref="nFileSizeHigh"/>.</summary>
 	/// <value>The size of the file.</value>

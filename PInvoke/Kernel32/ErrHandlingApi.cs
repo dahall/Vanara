@@ -132,7 +132,7 @@ public static partial class Kernel32
 		EXCEPTION_ACCESS_VIOLATION = 0xc0000005,
 	}
 
-	/// <summary>Flags that control the behavior of <see cref="RaiseFailFastException"/>.</summary>
+	/// <summary>Flags that control the behavior of <c>RaiseFailFastException</c>.</summary>
 	public enum FAIL_FAST_FLAGS : uint
 	{
 		/// <summary>None.</summary>
@@ -298,7 +298,7 @@ public static partial class Kernel32
 	// void WINAPI FatalAppExit( _In_ UINT uAction, _In_ LPCTSTR lpMessageText); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679336(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms679336")]
-	public static extern void FatalAppExit([Optional] uint uAction, string lpMessageText);
+	public static extern void FatalAppExit([Optional, Ignore] uint uAction, string lpMessageText);
 
 	/// <summary>
 	/// Formats a message string. The function requires a message definition as input. The message definition can come from a buffer
@@ -487,7 +487,8 @@ public static partial class Kernel32
 	// LPTSTR lpBuffer, _In_ DWORD nSize, _In_opt_ va_list *Arguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
-	public static extern int FormatMessage(FormatMessageFlags dwFlags, [Optional] HINSTANCE lpSource, [Optional] uint dwMessageId, [Optional] uint dwLanguageId, StringBuilder lpBuffer, uint nSize, [Optional] IntPtr Arguments);
+	public static extern int FormatMessage(FormatMessageFlags dwFlags, [Optional] HINSTANCE lpSource, [Optional] uint dwMessageId,
+		[Optional] uint dwLanguageId, [SizeDef(nameof(nSize), SizingMethod.InclNullTerm)] StringBuilder lpBuffer, uint nSize, [Optional] IntPtr Arguments);
 
 	/// <summary>
 	/// Formats a message string. The function requires a message definition as input. The message definition can come from a buffer
@@ -1096,7 +1097,44 @@ public static partial class Kernel32
 	// *lpArguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms680552(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms680552")]
-	public static extern void RaiseException(uint dwExceptionCode, EXCEPTION_FLAG dwExceptionFlags, uint nNumberOfArguments, [In, Optional] IntPtr lpArguments);
+	public static extern void RaiseException(uint dwExceptionCode, EXCEPTION_FLAG dwExceptionFlags, [Optional] uint nNumberOfArguments, [In, Optional] IntPtr lpArguments);
+
+	/// <summary>Raises an exception in the calling thread.</summary>
+	/// <param name="dwExceptionCode">
+	/// <para>
+	/// An application-defined exception code of the exception being raised. The filter expression and exception-handler block of an
+	/// exception handler can use the <c>GetExceptionCode</c> function to retrieve this value.
+	/// </para>
+	/// <para>
+	/// Note that the system will clear bit 28 of dwExceptionCode before displaying a message This bit is a reserved exception bit, used
+	/// by the system for its own purposes.
+	/// </para>
+	/// </param>
+	/// <param name="dwExceptionFlags">
+	/// The exception flags. This can be either zero to indicate a continuable exception, or EXCEPTION_NONCONTINUABLE to indicate a
+	/// noncontinuable exception. Any attempt to continue execution after a noncontinuable exception causes the
+	/// EXCEPTION_NONCONTINUABLE_EXCEPTION exception.
+	/// </param>
+	/// <param name="lpArguments">
+	/// An array of arguments. This parameter can be <c>NULL</c>. These arguments can contain any application-defined data that needs to
+	/// be passed to the filter expression of the exception handler.
+	/// </param>
+	/// <returns>This function does not return a value.</returns>
+	// void WINAPI RaiseException( _In_ DWORD dwExceptionCode, _In_ DWORD dwExceptionFlags, _In_ DWORD nNumberOfArguments, _In_ const ULONG_PTR
+	// *lpArguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms680552(v=vs.85).aspx
+	[PInvokeData("WinBase.h", MSDNShortId = "ms680552")]
+	public static void RaiseException(uint dwExceptionCode, EXCEPTION_FLAG dwExceptionFlags, params object[] lpArguments)
+	{
+		if (lpArguments == null || lpArguments.Length == 0)
+		{
+			RaiseException(dwExceptionCode, dwExceptionFlags);
+			return;
+		}
+
+		lpArguments = Array.ConvertAll(lpArguments, o => o is int or uint ? (IntPtr)unchecked((int)o) : o);
+		using SafeHGlobalHandle pargs = new(InteropExtensions.MarshalObjectsToPtr(lpArguments, Marshal.AllocHGlobal, out var sz, true), sz, true);
+		RaiseException(dwExceptionCode, dwExceptionFlags, (uint)lpArguments.Length, (IntPtr)pargs);
+	}
 
 	/// <summary>
 	/// Raises an exception that bypasses all exception handlers (frame or vector based). Raising this exception terminates the
@@ -1141,11 +1179,56 @@ public static partial class Kernel32
 	// dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/dd941688(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd941688")]
-	public static extern void RaiseFailFastException(ref EXCEPTION_RECORD pExceptionRecord, [In, Optional] IntPtr pContextRecord, [In, Optional] FAIL_FAST_FLAGS dwFlags);
+	public static extern void RaiseFailFastException(ref EXCEPTION_RECORD pExceptionRecord, in CONTEXT pContextRecord, [In, Optional] FAIL_FAST_FLAGS dwFlags);
+
+	/// <summary>
+	/// Raises an exception that bypasses all exception handlers (frame or vector based). Raising this exception terminates the
+	/// application and invokes Windows Error Reporting, if Windows Error Reporting is enabled.
+	/// </summary>
+	/// <param name="pExceptionRecord">
+	/// <para>
+	/// A pointer to an <c>EXCEPTION_RECORD</c> structure that contains the exception information. You must specify the
+	/// <c>ExceptionAddress</c> and <c>ExceptionCode</c> members.
+	/// </para>
+	/// <para>
+	/// If this parameter is <c>NULL</c>, the function creates an exception record and sets the <c>ExceptionCode</c> member to
+	/// STATUS_FAIL_FAST_EXCEPTION. The function will also set the <c>ExceptionAddress</c> member if the dwFlags parameter contains the
+	/// FAIL_FAST_GENERATE_EXCEPTION_ADDRESS flag.
+	/// </para>
+	/// </param>
+	/// <param name="pContextRecord">
+	/// A pointer to a <c>CONTEXT</c> structure that contains the context information. If <c>NULL</c>, this function generates the
+	/// context (however, the context will not exactly match the context of the caller).
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>You can specify zero or the following flag that control this function's behavior:</para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>FAIL_FAST_GENERATE_EXCEPTION_ADDRESS0x1</term>
+	/// <term>
+	/// Causes RaiseFailFastException to set the ExceptionAddress of EXCEPTION_RECORD to the return address of this function (the next
+	/// instruction in the caller after the call to RaiseFailFastException). This function will set the exception address only if
+	/// ExceptionAddress is not NULL.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <returns>This function does not return a value.</returns>
+	// VOID WINAPI RaiseFailFastException( _In_opt_ PEXCEPTION_RECORD pExceptionRecord, _In_opt_ PCONTEXT pContextRecord, _In_ DWORD
+	// dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/dd941688(v=vs.85).aspx
+	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("WinBase.h", MSDNShortId = "dd941688")]
+	public static extern void RaiseFailFastException([In, Optional] StructPointer<EXCEPTION_RECORD> pExceptionRecord, [In, Optional] ManagedStructPointer<CONTEXT> pContextRecord, [In, Optional] FAIL_FAST_FLAGS dwFlags);
 
 	/// <summary>Unregisters a vectored continue handler.</summary>
 	/// <param name="Handler">
-	/// A pointer to a vectored exception handler previously registered using the <c>AddVectoredContinueHandler</c> function.
+	/// A pointer to a vectored exception handler previously registered using the <see cref="AddVectoredContinueHandler"/> function.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -1159,7 +1242,7 @@ public static partial class Kernel32
 
 	/// <summary>Unregisters a vectored continue handler.</summary>
 	/// <param name="Handler">
-	/// A pointer to a vectored exception handler previously registered using the <c>AddVectoredContinueHandler</c> function.
+	/// A pointer to a vectored exception handler previously registered using the <see cref="AddVectoredContinueHandler"/> function.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -1173,7 +1256,7 @@ public static partial class Kernel32
 
 	/// <summary>Unregisters a vectored exception handler.</summary>
 	/// <param name="Handler">
-	/// A handle to the vectored exception handler previously registered using the <c>AddVectoredExceptionHandler</c> function.
+	/// A handle to the vectored exception handler previously registered using the <see cref="AddVectoredContinueHandler"/> function.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -1187,7 +1270,7 @@ public static partial class Kernel32
 
 	/// <summary>Unregisters a vectored exception handler.</summary>
 	/// <param name="Handler">
-	/// A handle to the vectored exception handler previously registered using the <c>AddVectoredExceptionHandler</c> function.
+	/// A handle to the vectored exception handler previously registered using the <see cref="AddVectoredContinueHandler"/> function.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -1363,7 +1446,8 @@ public static partial class Kernel32
 	// LPTOP_LEVEL_EXCEPTION_FILTER WINAPI SetUnhandledExceptionFilter( _In_ LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter); https://msdn.microsoft.com/en-us/library/windows/desktop/ms680634(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms680634")]
-	public static extern PTOP_LEVEL_EXCEPTION_FILTER SetUnhandledExceptionFilter(PTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter);
+	[return: MarshalAs(UnmanagedType.FunctionPtr)]
+	public static extern PTOP_LEVEL_EXCEPTION_FILTER? SetUnhandledExceptionFilter(PTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter);
 
 	/// <summary>Undocumented.</summary>
 	/// <param name="FailedAllocationSize">Size of the failed allocation.</param>
@@ -1417,13 +1501,13 @@ public static partial class Kernel32
 	public struct EXCEPTION_POINTERS
 	{
 		/// <summary>A pointer to an <c>EXCEPTION_RECORD</c> structure that contains a machine-independent description of the exception.</summary>
-		public IntPtr ExceptionRecord;
+		public StructPointer<EXCEPTION_RECORD> ExceptionRecord;
 
 		/// <summary>
 		/// A pointer to a <c>CONTEXT</c> structure that contains a processor-specific description of the state of the processor at the
 		/// time of the exception.
 		/// </summary>
-		public IntPtr ContextRecord;
+		public ManagedStructPointer<CONTEXT> ContextRecord;
 	}
 
 	/// <summary>Describes an exception.</summary>
@@ -1451,7 +1535,7 @@ public static partial class Kernel32
 		/// A pointer to an associated <c>EXCEPTION_RECORD</c> structure. Exception records can be chained together to provide additional
 		/// information when nested exceptions occur.
 		/// </summary>
-		public IntPtr ExceptionRecord;
+		public StructPointer<EXCEPTION_RECORD> ExceptionRecord;
 
 		/// <summary>The address where the exception occurred.</summary>
 		public IntPtr ExceptionAddress;
@@ -1486,7 +1570,7 @@ public static partial class Kernel32
 		/// An associated <c>EXCEPTION_RECORD</c> structure. Exception records can be chained together to provide additional information
 		/// when nested exceptions occur.
 		/// </summary>
-		public EXCEPTION_RECORD? ChainedRecord => ExceptionRecord.ToNullableStructure<EXCEPTION_RECORD>();
+		public EXCEPTION_RECORD? ChainedRecord => ExceptionRecord.Value;
 
 		/// <summary>
 		/// <para>
@@ -1522,7 +1606,7 @@ public static partial class Kernel32
 		/// </summary>
 		public IntPtr[] ExceptionInformation
 		{
-			get => new[] { ExceptionInformation0, ExceptionInformation1, ExceptionInformation2, ExceptionInformation3, ExceptionInformation4, ExceptionInformation5, ExceptionInformation6, ExceptionInformation7, ExceptionInformation8, ExceptionInformation9, ExceptionInformation10, ExceptionInformation11, ExceptionInformation12, ExceptionInformation13, ExceptionInformation14 };
+			readonly get => [ExceptionInformation0, ExceptionInformation1, ExceptionInformation2, ExceptionInformation3, ExceptionInformation4, ExceptionInformation5, ExceptionInformation6, ExceptionInformation7, ExceptionInformation8, ExceptionInformation9, ExceptionInformation10, ExceptionInformation11, ExceptionInformation12, ExceptionInformation13, ExceptionInformation14];
 			set
 			{
 				if (value is null || value.Length != EXCEPTION_MAXIMUM_PARAMETERS)
@@ -1535,26 +1619,22 @@ public static partial class Kernel32
 
 	/// <summary>A safe handle for continue handler handles.</summary>
 	/// <seealso cref="GenericSafeHandle"/>
-	public class SafeContinueHandlerHandle : GenericSafeHandle
+	/// <remarks>Initializes a new instance of the <see cref="SafeContinueHandlerHandle"/> class.</remarks>
+	/// <param name="handle">The handle.</param>
+	public class SafeContinueHandlerHandle(IntPtr handle) : GenericSafeHandle(handle, RemoveVectoredContinueHandler)
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeContinueHandlerHandle"/> class.</summary>
 		public SafeContinueHandlerHandle() : this(IntPtr.Zero) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeContinueHandlerHandle"/> class.</summary>
-		/// <param name="handle">The handle.</param>
-		public SafeContinueHandlerHandle(IntPtr handle) : base(handle, RemoveVectoredContinueHandler) { }
 	}
 
 	/// <summary>A safe handle for exception handler handles.</summary>
 	/// <seealso cref="GenericSafeHandle"/>
-	public class SafeExceptionHandlerHandle : GenericSafeHandle
+	/// <remarks>Initializes a new instance of the <see cref="SafeExceptionHandlerHandle"/> class.</remarks>
+	/// <param name="handle">The handle.</param>
+	public class SafeExceptionHandlerHandle(IntPtr handle) : GenericSafeHandle(handle, RemoveVectoredExceptionHandler)
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeExceptionHandlerHandle"/> class.</summary>
 		public SafeExceptionHandlerHandle() : this(IntPtr.Zero) { }
-
-		/// <summary>Initializes a new instance of the <see cref="SafeExceptionHandlerHandle"/> class.</summary>
-		/// <param name="handle">The handle.</param>
-		public SafeExceptionHandlerHandle(IntPtr handle) : base(handle, RemoveVectoredExceptionHandler) { }
 	}
 }
 

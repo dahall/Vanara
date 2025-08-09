@@ -31,7 +31,7 @@ public enum CorrespondingAction
 /// enumeration value to determine the type to get or set.
 /// </summary>
 /// <seealso cref="Attribute"/>
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Struct, AllowMultiple = true)]
 public class CorrespondingTypeAttribute : Attribute
 {
 	/// <summary>Initializes a new instance of the <see cref="CorrespondingTypeAttribute"/> class.</summary>

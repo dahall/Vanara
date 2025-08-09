@@ -562,8 +562,8 @@ public static partial class Kernel32
 		while (true)
 		{
 			var ret = func(mem, chars);
-			if (ret == 0) return new string[0];
-			if (ret != chars - 2) return mem.ToStringEnum().ToArray();
+			if (ret == 0) return [];
+			if (ret != chars - 2) return [.. mem.ToStringEnum()];
 			if (chars == MaxChars) throw new InsufficientMemoryException();
 			mem.Size = (chars = Math.Min(chars * 2, MaxChars)) * AutoChSz;
 		}
