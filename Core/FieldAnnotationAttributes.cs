@@ -34,6 +34,9 @@ public enum SizingMethod
 
 	/// <summary>Size is returned as the result of the method.</summary>
 	QueryResultInReturn = 0x8,
+
+	/// <summary>Size is determined by checking the last error after a query for ERROR_INSUFFICIENT_BUFFER.</summary>
+	CheckLastError = 0x10,
 }
 
 /// <summary>

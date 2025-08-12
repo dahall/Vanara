@@ -1,9 +1,9 @@
 ﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
-Vanara.PInvoke,,HANDLE,IHandle,Provides a generic Windows handle.,,,,
 Vanara.PInvoke,,HACCEL,IUserHandle,Provides a handle to an accelerator table.,,,,
+Vanara.PInvoke,,HANDLE,,Provides a generic Windows handle.,,,,
 Vanara.PInvoke,,HBITMAP,IGraphicsObjectHandle,Provides a handle to a bitmap.,,,,HGDIOBJ
 Vanara.PInvoke,,HBRUSH,IGraphicsObjectHandle,Provides a handle to drawing brush.,,,,HGDIOBJ
-Vanara.PInvoke,,HCOLORSPACE,IHandle,Provides a handle to a color space.,,,,
+Vanara.PInvoke,,HCOLORSPACE,,Provides a handle to a color space.,,,,
 Vanara.PInvoke,,HCURSOR,IGraphicsObjectHandle,Provides a handle to cursor.,,,,HGDIOBJ
 Vanara.PInvoke,,HDC,IDeviceContextHandle,Provides a handle to a graphic device context.,,,,
 Vanara.PInvoke,,HDESK,IKernelHandle,Provides a handle to a desktop.,,,,
@@ -11,7 +11,7 @@ Vanara.PInvoke,,HDPA,IKernelHandle,Provides a handle to a DPA.,,,,
 Vanara.PInvoke,,HDROP,IShellHandle,Provides a handle to a Windows drop operation.,,,,
 Vanara.PInvoke,,HDSA,IKernelHandle,Provides a handle to a DSA.,,,,
 Vanara.PInvoke,,HDWP,IUserHandle,Provides a handle to a deferred windows position.,,,,
-Vanara.PInvoke,,HENHMETAFILE,IHandle,Provides a handle to an enhanced metafile.,,,,
+Vanara.PInvoke,,HENHMETAFILE,,Provides a handle to an enhanced metafile.,,,,
 Vanara.PInvoke,,HEVENT,ISyncHandle,Provides a handle to a sync event.,,,,
 Vanara.PInvoke,,HFILE,ISyncHandle,Provides a handle to a file.,,,,
 Vanara.PInvoke,,HFONT,IGraphicsObjectHandle,Provides a handle to a font.,,,,HGDIOBJ
@@ -21,7 +21,7 @@ Vanara.PInvoke,,HIMAGELIST,IShellHandle,Provides a handle to a Windows image lis
 Vanara.PInvoke,,HINSTANCE,IKernelHandle,Provides a handle to a module or library instance.,,,,
 Vanara.PInvoke,,HKEY,IKernelHandle,Provides a handle to a Windows registry key.,,,,
 Vanara.PInvoke,,HMENU,IUserHandle,Provides a handle to a menu.,,,,
-Vanara.PInvoke,,HMETAFILE,IHandle,Provides a handle to a metafile.,,,,
+Vanara.PInvoke,,HMETAFILE,,Provides a handle to a metafile.,,,,
 Vanara.PInvoke,,HMONITOR,IKernelHandle,Provides a handle to a monitor.,,,,
 Vanara.PInvoke,,HPALETTE,IGraphicsObjectHandle,Provides a handle to a palette.,,,,HGDIOBJ
 Vanara.PInvoke,,HPEN,IGraphicsObjectHandle,Provides a handle to a drawing pen.,,,,HGDIOBJ
@@ -29,9 +29,9 @@ Vanara.PInvoke,,HPROCESS,ISyncHandle,Provides a handle to a process.,,,,
 Vanara.PInvoke,,HPROPSHEET,IUserHandle,Provides a handle to a Windows property sheet.,,,,
 Vanara.PInvoke,,HPROPSHEETPAGE,IUserHandle,Provides a handle to a property sheet page.,,,,
 Vanara.PInvoke,,HRGN,IGraphicsObjectHandle,Provides a handle to a drawing region.,,,,HGDIOBJ
-Vanara.PInvoke,,HSECTION,IHandle,Provides a handle to a file mapping object.,,,,
-Vanara.PInvoke,,HTASK,IHandle,Provides a handle to a blocking task.,,,,
-Vanara.PInvoke,,HTHEME,IHandle,Provides a handle to a Windows theme.,,,,
+Vanara.PInvoke,,HSECTION,,Provides a handle to a file mapping object.,,,,
+Vanara.PInvoke,,HTASK,,Provides a handle to a blocking task.,,,,
+Vanara.PInvoke,,HTHEME,,Provides a handle to a Windows theme.,,,,
 Vanara.PInvoke,,HTHREAD,ISyncHandle,Provides a handle to a thread.,,,,
 Vanara.PInvoke,,HTHUMBNAIL,IShellHandle,Provides a handle to a Windows thumbnail.,,,,
 Vanara.PInvoke,,HTOKEN,IKernelHandle,Provides a handle to an access token.,,,,

@@ -42,7 +42,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("LzExpand.h", MSDNShortId = "aa364941")]
 	[Obsolete(LZobsoleteMsg)]
-	public static extern int GetExpandedName(string lpszSource, StringBuilder lpszBuffer);
+	public static extern int GetExpandedName(string lpszSource, [SizeDef(1024)] StringBuilder lpszBuffer);
 
 	/// <summary>Closes a file that was opened by using the <c>LZOpenFile</c> function.</summary>
 	/// <param name="hFile">A handle to the file to be closed.</param>
@@ -329,7 +329,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("LzExpand.h", MSDNShortId = "aa365226")]
 	[Obsolete(LZobsoleteMsg)]
-	public static extern int LZRead(int hFile, StringBuilder lpBuffer, int cbRead);
+	public static extern int LZRead(int hFile, [SizeDef(nameof(cbRead))] StringBuilder lpBuffer, int cbRead);
 
 	/// <summary>Moves a file pointer the specified number of bytes from a starting position.</summary>
 	/// <param name="hFile">A handle to the file.</param>
