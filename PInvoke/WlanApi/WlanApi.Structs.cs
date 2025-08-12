@@ -85,26 +85,20 @@ public static partial class WlanApi
 	}
 
 	/// <summary>The <c>DOT11_NETWORK</c> structure contains information about an available wireless network.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="DOT11_NETWORK"/> struct.</remarks>
+	/// <param name="ssid">The SSID of a visible wireless network.</param>
+	/// <param name="bssType">A DOT11_BSS_TYPE value that indicates the BSS type of the network.</param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wlanapi/ns-wlanapi-dot11_network typedef struct _DOT11_NETWORK { DOT11_SSID
 	// dot11Ssid; DOT11_BSS_TYPE dot11BssType; } DOT11_NETWORK, *PDOT11_NETWORK;
 	[PInvokeData("wlanapi.h", MSDNShortId = "95f58433-deef-4c47-8f6c-a9e7b0d52dad")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct DOT11_NETWORK
+	public struct DOT11_NETWORK(string ssid, DOT11_BSS_TYPE bssType = DOT11_BSS_TYPE.dot11_BSS_type_infrastructure)
 	{
 		/// <summary>A DOT11_SSID structure that contains the SSID of a visible wireless network.</summary>
-		public DOT11_SSID dot11Ssid;
+		public DOT11_SSID dot11Ssid = new(ssid);
 
 		/// <summary>A DOT11_BSS_TYPE value that indicates the BSS type of the network.</summary>
-		public DOT11_BSS_TYPE dot11BssType;
-
-		/// <summary>Initializes a new instance of the <see cref="DOT11_NETWORK"/> struct.</summary>
-		/// <param name="ssid">The SSID of a visible wireless network.</param>
-		/// <param name="bssType">A DOT11_BSS_TYPE value that indicates the BSS type of the network.</param>
-		public DOT11_NETWORK(string ssid, DOT11_BSS_TYPE bssType = DOT11_BSS_TYPE.dot11_BSS_type_infrastructure)
-		{
-			dot11BssType = bssType;
-			dot11Ssid = new DOT11_SSID { ucSSID = ssid, uSSIDLength = (uint)(ssid?.Length ?? 0) };
-		}
+		public DOT11_BSS_TYPE dot11BssType = bssType;
 	}
 
 	/// <summary>A <c>DOT11_SSID</c> structure contains the SSID of an interface.</summary>
@@ -128,11 +122,22 @@ public static partial class WlanApi
 		public uint uSSIDLength;
 
 		/// <summary>The SSID. DOT11_SSID_MAX_LENGTH is set to 32.</summary>
-		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = DOT11_SSID_MAX_LENGTH)]
-		public string ucSSID;
+		[MarshalAs(UnmanagedType.ByValArray, SizeConst = DOT11_SSID_MAX_LENGTH)]
+		public byte[] ucSSID;
+
+		/// <summary>Initializes a new instance of the <see cref="DOT11_SSID"/> struct with a UTF-8 string.</summary>
+		public DOT11_SSID(string ssid)
+		{
+			var temp = StringHelper.GetBytes(ssid, Encoding.UTF8, false);
+			if (temp.Length > DOT11_SSID_MAX_LENGTH)
+				throw new ArgumentException($"SSID length exceeds maximum of {DOT11_SSID_MAX_LENGTH} bytes.", nameof(ssid));
+			ucSSID = new byte[DOT11_SSID_MAX_LENGTH];
+			Array.Copy(temp, ucSSID, temp.Length);
+			uSSIDLength = (uint)temp.Length;
+		}
 
 		/// <inheritdoc/>
-		public override string ToString() => ucSSID?.Substring(0, (int)uSSIDLength) ?? "";
+		public readonly override string ToString() => Encoding.UTF8.GetString(ucSSID, 0, (int)uSSIDLength);
 	}
 
 	/// <summary>The <c>EAP_METHOD_TYPE</c> structure contains type, identification, and author information about an EAP method.</summary>
