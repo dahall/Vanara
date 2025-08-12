@@ -36,7 +36,7 @@ public class AutoHandleGenerator : IIncrementalGenerator
 			var ctorp1 = attr.ConstructorArguments.ElementAtOrDefault(0);
 			var ctorp2 = attr.ConstructorArguments.ElementAtOrDefault(1);
 
-			HandleModel model = new(ns, parent!.Identifier.Text, decl.Identifier.Text, ctorp1.Value?.ToString() ?? "Vanara.PInvoke.IHandle", InheritedHandleName: ctorp2.Value?.ToString());
+			HandleModel model = new(ns, parent!.Identifier.Text, decl.Identifier.Text, (ctorp1.Value?.ToString() ?? "Vanara.PInvoke.IHandle").Replace(ns + '.', ""), InheritedHandleName: ctorp2.Value?.ToString());
 			context.AddSource($"{model.HandleName}.g.cs", SourceText.From(model.GetHandleCode(), Encoding.UTF8));
 		}
 	}

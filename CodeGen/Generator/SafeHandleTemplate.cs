@@ -18,7 +18,7 @@
 		public static new ClassName Null => new(IntPtr.Zero, false);
 #pragma warning restore CS0109 // Member does not hide an inherited member
 
-#5#       /// <summary>Performs an implicit conversion from <see cref="ClassName"/> to <see cref="IntPtr"/>.</summary>
+#5#		/// <summary>Performs an implicit conversion from <see cref="ClassName"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The safe handle instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator IntPtr(ClassName h) => h.handle;
@@ -40,5 +40,7 @@
 
 #3##4#		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() CloseCode
-#4#   }#1#
+#4#	}#6#
+
+	//[global::Vanara.PInvoke.DeferAutoMethodTo(typeof(ClassName))] public partial struct HandleName { }#6##1#
 }#1#

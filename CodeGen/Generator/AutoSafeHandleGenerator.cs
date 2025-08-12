@@ -33,13 +33,13 @@ public class AutoSafeHandleGenerator : IIncrementalGenerator
 			var ns = symbol.ContainingNamespace.ToString();
 			string? closeCode = attr.ConstructorArguments.ElementAtOrDefault(0).Value?.ToString();
 			string handleType = attr.ConstructorArguments.ElementAtOrDefault(1).Value?.ToString() ?? "";
-			string baseType = attr.ConstructorArguments.ElementAtOrDefault(2).Value?.ToString() ?? "Vanara.PInvoke.SafeHANDLE";
+			string baseType = (attr.ConstructorArguments.ElementAtOrDefault(2).Value?.ToString() ?? "Vanara.PInvoke.SafeHANDLE").Qualify(ns)!;
 			string? inhType = attr.ConstructorArguments.ElementAtOrDefault(3).Value?.ToString();
 
 			if (decl.Parent is not ClassDeclarationSyntax parent) { context.ReportError("VANGEN004", "Unable to find parent class."); return; }
 
 			HandleModel model = new(ns, parent!.Identifier.Text, handleType, "", "", symbol.Name, baseType, closeCode, inhType);
-			context.AddSource($"{symbol.Name}.g.cs", SourceText.From(model.GetSafeHandleCode(), Encoding.UTF8));
+			context.AddSource($"{symbol.Name}.g.cs", SourceText.From(model.GetSafeHandleCode("", true), Encoding.UTF8));
 		}
 	}
 }
