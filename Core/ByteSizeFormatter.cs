@@ -10,7 +10,7 @@ public class ByteSizeFormatter : Formatter
 	/// <summary>A static instance of <see cref="ByteSizeFormatter"/>.</summary>
 	public static readonly ByteSizeFormatter Instance = new();
 
-	private static readonly string[] suffixes = { " B", " KB", " MB", " GB", " TB", " PB", " EB" };
+	private static readonly string[] suffixes = [" B", " KB", " MB", " GB", " TB", " PB", " EB"];
 
 	/// <summary>
 	/// Converts the string representation of a byte size to its 64-bit signed integer equivalent. A return value indicates whether the

@@ -128,7 +128,7 @@ public static partial class InteropExtensions
 	{
 		if (ptr == IntPtr.Zero || length <= 0) return;
 		// Write multiples of 8 bytes first
-		var lval = value == 0 ? 0L : BitConverter.ToInt64(new[] { value, value, value, value, value, value, value, value }, 0);
+		var lval = value == 0 ? 0L : BitConverter.ToInt64([value, value, value, value, value, value, value, value], 0);
 		for (var ofs = 0L; ofs < length / 8; ofs++)
 			Marshal.WriteInt64(ptr.Offset(ofs * 8), 0, lval);
 		// Write remaining bytes

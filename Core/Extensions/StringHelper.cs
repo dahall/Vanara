@@ -168,7 +168,7 @@ public static class StringHelper
 		var ret = new byte[enc.GetByteCount(value) + (nullTerm ? chSz : 0)];
 		enc.GetBytes(value, 0, value.Length, ret, 0);
 		if (nullTerm)
-			enc.GetBytes(new[] { '\0' }, 0, 1, ret, ret.Length - chSz);
+			enc.GetBytes(['\0'], 0, 1, ret, ret.Length - chSz);
 		return ret;
 	}
 
@@ -212,7 +212,7 @@ public static class StringHelper
 	/// <summary>Gets the size of a character defined by the supplied <see cref="Encoding"/>.</summary>
 	/// <param name="enc">The character encoding type.</param>
 	/// <returns>The size of a standard character, in bytes, from <paramref name="enc"/>.</returns>
-	public static int GetCharSize(this Encoding enc) => enc.IsSingleByte ? 1 : enc.GetByteCount(new[] { '\0' });
+	public static int GetCharSize(this Encoding enc) => enc.IsSingleByte ? 1 : enc.GetByteCount(['\0']);
 
 	/// <summary>
 	/// Allocates a managed String and copies all characters up to the first null character or the end of the allocated memory pool from a string stored in unmanaged memory into it.
@@ -339,7 +339,7 @@ public static class StringHelper
 	{
 		if (allocatedBytes > int.MaxValue) throw new ArgumentOutOfRangeException(nameof(allocatedBytes), "Must be less than int.MaxValue");
 		if (value is null) return 0;
-		if (nullTerm) value = value + '\0';
+		if (nullTerm) value += '\0';
 		unsafe
 		{
 			fixed (char* p = value)

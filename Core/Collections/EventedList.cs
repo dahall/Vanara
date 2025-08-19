@@ -13,7 +13,7 @@ namespace Vanara.Collections;
 [Serializable]
 public class EventedList<T> : IList<T?>, IList where T : class, INotifyPropertyChanged
 {
-	private static readonly T?[] emptyArray = new T[0];
+	private static readonly T?[] emptyArray = [];
 
 	private T?[] internalItems;
 	[NonSerialized] private object? syncRoot;
