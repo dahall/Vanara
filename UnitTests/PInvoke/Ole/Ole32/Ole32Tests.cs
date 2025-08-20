@@ -11,6 +11,34 @@ namespace Vanara.PInvoke.Tests;
 public class Ole32Tests
 {
 	[Test]
+	public void TestStructs()
+	{
+		typeof(DVTARGETDEVICE).Assembly.GetTypes().GetStructSizes(true).WriteValues();
+	}
+
+	[Test]
+	public void DVTARGEDEVICETest()
+	{
+		DVTARGETDEVICE dvtd = new("0123456789", "01234567890123456789", "0123", new() { dmColor = DMCOLOR.DMCOLOR_COLOR });
+		Assert.That(dvtd.tdDriverName, Is.EqualTo("0123456789"));
+		Assert.That(dvtd.tdDeviceName, Is.EqualTo("01234567890123456789"));
+		Assert.That(dvtd.tdPortName, Is.EqualTo("0123"));
+		Assert.That(dvtd.tdExtDevmode.dmColor, Is.EqualTo(DMCOLOR.DMCOLOR_COLOR));
+
+		Assert.That(() => dvtd.tdDeviceName = new string('1', 500), Throws.InstanceOf<ArgumentException>());
+
+		dvtd.tdDeviceName = null;
+		Assert.That(dvtd.tdDriverName, Is.EqualTo("0123456789"));
+		Assert.That(dvtd.tdDeviceName, Is.Null);
+		Assert.That(dvtd.tdPortName, Is.EqualTo("0123"));
+
+		dvtd.tdPortName = null;
+		Assert.That(dvtd.tdDriverName, Is.EqualTo("0123456789"));
+		Assert.That(dvtd.tdDeviceName, Is.Null);
+		Assert.That(dvtd.tdPortName, Is.Null);
+	}
+
+	[Test]
 	public void CoInitializeExTest()
 	{
 		HRESULT hr = CoInitializeEx(IntPtr.Zero, COINIT.COINIT_APARTMENTTHREADED);
@@ -32,7 +60,7 @@ public class Ole32Tests
 	public void PropVariantClearTest()
 	{
 		PROPVARIANT pv = new();
-		_ = InitPropVariantFromStringVector(new[] { "A", "B", "C", "D" }, 4, pv);
+		_ = InitPropVariantFromStringVector(["A", "B", "C", "D"], 4, pv);
 		Assert.That(pv.vt != VARTYPE.VT_EMPTY);
 		Assert.That(PropVariantClear(pv).Succeeded);
 		Assert.That(pv.vt == VARTYPE.VT_EMPTY && pv.uhVal == 0);
@@ -42,7 +70,7 @@ public class Ole32Tests
 	public void PropVariantCopyTest()
 	{
 		using PROPVARIANT pv = new();
-		string[] strArr = new[] { "A", "B", "C", "D" };
+		string[] strArr = ["A", "B", "C", "D"];
 		_ = InitPropVariantFromStringVector(strArr, 4, pv);
 		Assert.That(pv.vt == (VARTYPE.VT_VECTOR | VARTYPE.VT_LPWSTR));
 		Assert.That(pv.Value, Is.EquivalentTo(strArr));
@@ -94,7 +122,7 @@ public class Ole32Tests
 		istg.Item.Open(propSetKey, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, out ipse).ThrowIfFailed();
 		using (ComReleaser<IPropertyStorage> pipse = ComReleaserFactory.Create(ipse))
 		{
-			PROPVARIANT[] prvs = new PROPVARIANT[0];
+			PROPVARIANT[] prvs = [];
 			ipse.ReadMultiple(prcs, out PROPVARIANT[]? prvRead).ThrowIfFailed();
 
 			CollectionAssert.AreEqual(prvRead?.Select(prv => prv.Value) ?? [], vals);
