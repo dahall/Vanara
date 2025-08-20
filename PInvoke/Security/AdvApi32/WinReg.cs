@@ -2311,7 +2311,7 @@ public static partial class AdvApi32
 	/// </returns>
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winreg.h", MSDNShortId = "ms724892")]
-	public static extern Win32Error RegNotifyChangeKeyValue(HKEY hKey, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, RegNotifyChangeFilter dwFilter, SafeEventHandle hEvent, [MarshalAs(UnmanagedType.Bool)] bool fAsynchronous);
+	public static extern Win32Error RegNotifyChangeKeyValue(HKEY hKey, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, RegNotifyChangeFilter dwFilter, HEVENT hEvent, [MarshalAs(UnmanagedType.Bool)] bool fAsynchronous);
 
 	/// <summary>
 	/// <para>Retrieves a handle to the <c>HKEY_CURRENT_USER</c> key for the user the current thread is impersonating.</para>
