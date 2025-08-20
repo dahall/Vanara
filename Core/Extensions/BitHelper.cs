@@ -134,9 +134,9 @@ public static class BitHelper
 #endif
 		where TValue :
 #if NET7_0_OR_GREATER
-		System.Numerics.IBinaryInteger<T>, IConvertible
+		System.Numerics.IBinaryInteger<TValue>, IConvertible
 #else
-		unmanaged, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable
+		unmanaged, IComparable, IComparable<TValue>, IConvertible, IEquatable<TValue>, IFormattable
 #endif
 	{
 		if (startIdx >= Marshal.SizeOf(typeof(T)) * 8) throw new ArgumentOutOfRangeException(nameof(startIdx));
