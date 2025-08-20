@@ -5736,7 +5736,7 @@ public static partial class AdvApi32
 	// EVENT_TRACE_PROPERTIES, *PEVENT_TRACE_PROPERTIES;
 	[PInvokeData("evntrace.h", MSDNShortId = "0c967971-8df1-4679-a8a9-a783f5b35860")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct EVENT_TRACE_PROPERTIES
+	public struct EVENT_TRACE_PROPERTIES(string? logFileName = null, string? providerName = null)
 	{
 		/// <summary/>
 		public const int MaxLoggerNameLength = 1024;
@@ -5750,7 +5750,7 @@ public static partial class AdvApi32
 		/// A <c>WNODE_HEADER</c> structure. You must specify the <c>BufferSize</c>, <c>Flags</c>, and <c>Guid</c> members, and
 		/// optionally the <c>ClientContext</c> member.
 		/// </summary>
-		public WNODE_HEADER Wnode;
+		public WNODE_HEADER Wnode = new(SizeOf, WNODE_FLAG.WNODE_FLAG_TRACED_GUID);
 
 		/// <summary>
 		/// <para>
@@ -5906,7 +5906,7 @@ public static partial class AdvApi32
 		/// directory. If you want access to the files restricted, create a parent directory with the appropriate ACLs.
 		/// </para>
 		/// </summary>
-		public uint LogFileNameOffset;
+		public uint LogFileNameOffset = SizeOf - StrLen * 2;
 
 		/// <summary>
 		/// <para>
@@ -5924,7 +5924,7 @@ public static partial class AdvApi32
 		/// to the offset but you do not copy the session name to the offset—the <c>StartTrace</c> function copies the name for you.
 		/// </para>
 		/// </summary>
-		public uint LoggerNameOffset;
+		public uint LoggerNameOffset = SizeOf - StrLen;
 
 		/// <summary>
 		/// <para>A string that contains the log file name.</para>
@@ -5955,42 +5955,35 @@ public static partial class AdvApi32
 		/// </para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MaxLogFileNameLength)]
-		public string LogFileName;
+		public string LogFileName = logFileName ?? "";
 
 		/// <summary>Reserve buffer space so the ETW system can fill this with the logger name</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MaxLoggerNameLength)]
-		public string LoggerName;
+		public string LoggerName = providerName ?? "";
 
 		/// <summary>Creates a <see cref="EVENT_TRACE_PROPERTIES"/> with default properties set.</summary>
 		/// <param name="sessionId">The session identifier.</param>
 		/// <param name="createForQuery">if set to <c>true</c> creating for a query.</param>
 		/// <returns>An initialized instance of <see cref="EVENT_TRACE_PROPERTIES"/>.</returns>
-		public static EVENT_TRACE_PROPERTIES Create(Guid sessionId, bool createForQuery = false)
+		public EVENT_TRACE_PROPERTIES(Guid sessionId, bool createForQuery = false) : this(null, null)
 		{
-			var output = Create();
-			output.Wnode.Guid = sessionId;
-			output.Wnode.ClientContext = 1;
-			output.LogFileMode = createForQuery ? 0 : LogFileMode.EVENT_TRACE_REAL_TIME_MODE;
-			return output;
+			Wnode.Guid = sessionId;
+			Wnode.ClientContext = 1;
+			LogFileMode = createForQuery ? 0 : LogFileMode.EVENT_TRACE_REAL_TIME_MODE;
 		}
+
+		/// <summary>Creates a <see cref="EVENT_TRACE_PROPERTIES"/> with default properties set.</summary>
+		/// <param name="sessionId">The session identifier.</param>
+		/// <param name="createForQuery">if set to <c>true</c> creating for a query.</param>
+		/// <returns>An initialized instance of <see cref="EVENT_TRACE_PROPERTIES"/>.</returns>
+		public static EVENT_TRACE_PROPERTIES Create(Guid sessionId, bool createForQuery = false) => new(sessionId, createForQuery);
 
 		/// <summary>Creates a <see cref="EVENT_TRACE_PROPERTIES"/> with default properties set.</summary>
 		/// <param name="logFileName">Name of the log file.</param>
 		/// <param name="providerName">Name of the provider.</param>
 		/// <returns>An initialized instance of <see cref="EVENT_TRACE_PROPERTIES"/>.</returns>
 		public static EVENT_TRACE_PROPERTIES Create(string? logFileName = null, string? providerName = null) =>
-			new()
-			{
-				Wnode = new WNODE_HEADER
-				{
-					BufferSize = SizeOf,
-					Flags = WNODE_FLAG.WNODE_FLAG_TRACED_GUID,
-				},
-				LoggerNameOffset = SizeOf - StrLen,
-				LogFileNameOffset = SizeOf - StrLen * 2,
-				LogFileName = logFileName ?? "",
-				LoggerName = providerName ?? ""
-			};
+			new(logFileName, providerName);
 	}
 
 	/// <summary>
@@ -6888,14 +6881,14 @@ public static partial class AdvApi32
 	// LARGE_INTEGER TimeStamp; }; GUID Guid; ULONG ClientContext; ULONG Flags; } WNODE_HEADER, *PWNODE_HEADER;
 	[PInvokeData("evntrace.h", MSDNShortId = "862a8f46-a326-48c6-92b7-8bb667837bb7")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct WNODE_HEADER
+	public struct WNODE_HEADER(uint bufferSize, WNODE_FLAG flags, Guid guid = default, uint clientContext = 1)
 	{
 		/// <summary>
 		/// Total size of memory allocated, in bytes, for the event tracing session properties. The size of memory must include the room
 		/// for the <c>EVENT_TRACE_PROPERTIES</c> structure plus the session name string and log file name string that follow the
 		/// structure in memory.
 		/// </summary>
-		public uint BufferSize;
+		public uint BufferSize = bufferSize;
 
 		/// <summary>Reserved for internal use.</summary>
 		public uint ProviderId;
@@ -6921,7 +6914,7 @@ public static partial class AdvApi32
 		/// <para>You cannot start more than one session with the same session GUID.</para>
 		/// <para><c>Prior to Windows Vista:</c> You can start more than one session with the same session GUID.</para>
 		/// </summary>
-		public Guid Guid;
+		public Guid Guid = guid;
 
 		/// <summary>
 		/// <para>Clock resolution to use when logging the time stamp for each event. The default is Query performance counter (QPC).</para>
@@ -6985,10 +6978,10 @@ public static partial class AdvApi32
 		/// </list>
 		/// <para><c>Windows 2000:</c> The <c>ClientContext</c> member is not supported.</para>
 		/// </summary>
-		public uint ClientContext;
+		public uint ClientContext = clientContext;
 
 		/// <summary>Must contain <c>WNODE_FLAG_TRACED_GUID</c> to indicate that the structure contains event tracing information.</summary>
-		public WNODE_FLAG Flags;
+		public WNODE_FLAG Flags = flags;
 	}
 
 	/// <summary/>
