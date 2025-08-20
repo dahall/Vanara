@@ -239,12 +239,12 @@ public struct SYSTEMTIME : IEquatable<SYSTEMTIME>, IComparable<SYSTEMTIME>
 	[ExcludeFromCodeCoverage]
 	public DayOfWeek DayOfWeek
 	{
-		get => (DayOfWeek)wDayOfWeek;
+		readonly get => (DayOfWeek)wDayOfWeek;
 		set => wDayOfWeek = (ushort)value;
 	}
 
 	/// <summary>Gets the number of ticks that represent the date and time of this instance.</summary>
-	public long Ticks
+	public readonly long Ticks
 	{
 		get
 		{
@@ -327,21 +327,21 @@ public struct SYSTEMTIME : IEquatable<SYSTEMTIME>, IComparable<SYSTEMTIME>
 	/// Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref
 	/// name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 	/// </returns>
-	public int CompareTo(SYSTEMTIME other) => Compare(this, other);
+	public readonly int CompareTo(SYSTEMTIME other) => Compare(this, other);
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(SYSTEMTIME other) => this == other;
+	public readonly bool Equals(SYSTEMTIME other) => this == other;
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj) => base.Equals(obj);
+	public override readonly bool Equals(object? obj) => base.Equals(obj);
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode()
+	public override readonly int GetHashCode()
 	{
 		var u = ToUInt64;
 		return unchecked((int)u) ^ (int)(u >> 32);
@@ -350,7 +350,7 @@ public struct SYSTEMTIME : IEquatable<SYSTEMTIME>, IComparable<SYSTEMTIME>
 	/// <summary>Converts this <see cref="SYSTEMTIME"/> instance to a <see cref="DateTime"/> instance.</summary>
 	/// <param name="kind">Indicates whether this <see cref="SYSTEMTIME"/> instance is local, universal or neither.</param>
 	/// <returns>An equivalent <see cref="DateTime"/> value.</returns>
-	public DateTime ToDateTime(DateTimeKind kind)
+	public readonly DateTime ToDateTime(DateTimeKind kind)
 	{
 		if (wYear == 0 || this == MinValue)
 			return DateTime.MinValue;
@@ -366,7 +366,7 @@ public struct SYSTEMTIME : IEquatable<SYSTEMTIME>, IComparable<SYSTEMTIME>
 	/// <param name="format">A standard or custom date and time format string.</param>
 	/// <param name="provider">An object that supplies culture-specific formatting information.</param>
 	/// <returns>A <see cref="string" /> that represents this instance.</returns>
-	public string ToString(DateTimeKind kind, string? format, IFormatProvider? provider) => ToDateTime(kind).ToString(format, provider);
+	public readonly string ToString(DateTimeKind kind, string? format, IFormatProvider? provider) => ToDateTime(kind).ToString(format, provider);
 
 	private static bool CheckBounds(ushort year, ushort month, ushort day, ushort hour, ushort minute, ushort second, ushort miillisecond) =>
 		year is not < 1601 and not > 30827 && month is not < 1 and not > 12 && day is not < 1 and not > 31 &&
@@ -374,7 +374,7 @@ public struct SYSTEMTIME : IEquatable<SYSTEMTIME>, IComparable<SYSTEMTIME>
 		miillisecond is not < 0 and not > 999;
 
 	[ExcludeFromCodeCoverage]
-	private DayOfWeek ComputedDayOfWeek => (DayOfWeek)((Ticks / 864000000000 + 1) % 7);
+	private readonly DayOfWeek ComputedDayOfWeek => (DayOfWeek)((Ticks / 864000000000 + 1) % 7);
 
 	private readonly ulong ToUInt64 => ((ulong)wYear << 36) | (((ulong)wMonth & 0x000f) << 32) |
 								(((ulong)wDay & 0x001f) << 27) | (((ulong)wHour & 0x000f) << 22) |
