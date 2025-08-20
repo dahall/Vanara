@@ -5,6 +5,9 @@ namespace Vanara.PInvoke;
 
 public partial struct HANDLE
 {
+	/// <summary>Represents an invalid handle.</summary>
+	public static readonly IntPtr INVALID_HANDLE_VALUE = new(-1);
+
 	/// <summary>Performs an implicit conversion from <see cref="HANDLE"/> to <see cref="SafeHandle"/>.</summary>
 	/// <param name="h">The pointer to a handle.</param>
 	/// <returns>The result of the conversion.</returns>
@@ -16,10 +19,21 @@ public partial struct HANDLE
 	public static implicit operator HANDLE(SafeHANDLE h) => new(h.DangerousGetHandle());
 }
 
+public partial struct HEVENT
+{
+	/// <summary>Represents an invalid handle.</summary>
+	public static readonly HEVENT INVALID_HANDLE_VALUE = HANDLE.INVALID_HANDLE_VALUE;
+
+	/// <summary>Performs an implicit conversion from <see cref="System.Threading.EventWaitHandle"/> to <see cref="HEVENT"/>.</summary>
+	/// <param name="h">The pointer to a handle.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator HEVENT(System.Threading.EventWaitHandle h) => new(h?.SafeWaitHandle.DangerousGetHandle() ?? IntPtr.Zero);
+}
+
 public partial struct HFILE
 {
 	/// <summary>Represents an invalid handle.</summary>
-	public static readonly HFILE INVALID_HANDLE_VALUE = new IntPtr(-1);
+	public static readonly HFILE INVALID_HANDLE_VALUE = HANDLE.INVALID_HANDLE_VALUE;
 
 	/// <summary>Performs an implicit conversion from <see cref="SafeFileHandle"/> to <see cref="HFILE"/>.</summary>
 	/// <param name="h">The pointer to a handle.</param>
