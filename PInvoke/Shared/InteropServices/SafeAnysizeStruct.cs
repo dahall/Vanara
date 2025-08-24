@@ -317,10 +317,11 @@ public class AnySizeStringMarshaler<T> : IVanaraMarshaler
 		var str = fiArray.GetValue(managedObject) as string;
 		var len = allMem ? StringHelper.GetByteCount(str, true, charSet) : Convert.ToInt32(fiCount!.GetValue(managedObject));
 		var clen = cntIsBytes ? len / charSz : len;
-		if (cntInclNull && !allMem) --clen;
+		if (clen > 0 && cntInclNull && !allMem) --clen;
 		if (str is not null && str.Length > clen)
 			str = str.Substring(0, clen);
-		h.Size += StringHelper.GetByteCount(str, cntInclNull, charSet) - charSz;
+		if (str is not null)
+			h.Size += StringHelper.GetByteCount(str, cntInclNull, charSet) - charSz;
 		Marshal.StructureToPtr(managedObject, h, false);
 		StringHelper.Write(str, ((IntPtr)h).Offset(strOffset), out _, cntInclNull, charSet);
 		return h;

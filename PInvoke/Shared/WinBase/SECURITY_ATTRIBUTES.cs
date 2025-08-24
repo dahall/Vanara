@@ -10,7 +10,7 @@ namespace Vanara.PInvoke;
 public class SECURITY_ATTRIBUTES
 {
 	/// <summary>The size, in bytes, of this structure. Set this value to the size of the SECURITY_ATTRIBUTES structure.</summary>
-	public int nLength = Marshal.SizeOf(typeof(SECURITY_ATTRIBUTES));
+	public int nLength = Marshal.SizeOf<SECURITY_ATTRIBUTES>();
 
 	/// <summary>
 	/// A pointer to a SECURITY_DESCRIPTOR structure that controls access to the object. If the value of this member is NULL, the object
