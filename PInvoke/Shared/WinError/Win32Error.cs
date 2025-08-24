@@ -50,6 +50,12 @@ public partial struct Win32Error(uint i) : IEquatable<Win32Error>, IEquatable<ui
 	/// <returns>The last error.</returns>
 	[SecurityCritical]
 	[System.Diagnostics.DebuggerStepThrough]
+	public static Exception? GetExceptionForLastError() => new Win32Error(unchecked((uint)Marshal.GetLastWin32Error())).GetException();
+
+	/// <summary>Gets the last error.</summary>
+	/// <returns>The last error.</returns>
+	[SecurityCritical]
+	[System.Diagnostics.DebuggerStepThrough]
 	public static Win32Error GetLastError() => new(unchecked((uint)Marshal.GetLastWin32Error()));
 
 	/// <summary>Performs an explicit conversion from <see cref="int"/> to <see cref="Win32Error"/>.</summary>
