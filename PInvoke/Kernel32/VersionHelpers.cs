@@ -4,13 +4,20 @@ namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
-	/// <summary>Undocumented, but verifies that</summary>
-	/// <returns></returns>
+	/// <summary>Indicates if the current OS allows only a limited number of concurrent interactive sessions.</summary>
+	/// <returns>True if the current OS limits the number of concurrent interactive sessions; otherwise, false.</returns>
+	/// <remarks>
+	/// <para>
+	/// Most editions of Windows have a limit on the number of concurrent interactive sessions. Some editions of Windows—like Windows 10
+	/// Enterprise multi-session, Windows 11 Enterprise multi-session, and some editions of Windows Server—support an unlimited number of
+	/// concurrent interactive session. This function returns true if there is a limit in place.
+	/// </para>
+	/// <para>On Windows Server, this functions returns false only when the Remote Desktop Session Host role is installed.</para>
+	/// </remarks>
 	[PInvokeData("versionhelpers.h")]
 	public static bool IsActiveSessionCountLimited()
 	{
-		var VersionInfo = OSVERSIONINFOEX.Default;
-		VersionInfo.wSuiteMask = SuiteMask.VER_SUITE_TERMINAL;
+		OSVERSIONINFOEX VersionInfo = new() { wSuiteMask = SuiteMask.VER_SUITE_TERMINAL };
 
 		var dwlConditionMask = VerSetConditionMask(0, VERSION_MASK.VER_SUITENAME, VERSION_CONDITION.VER_AND);
 		var fSuiteTerminal = VerifyVersionInfo(ref VersionInfo, VERSION_MASK.VER_SUITENAME, dwlConditionMask);
@@ -164,8 +171,7 @@ public static partial class Kernel32
 	[PInvokeData("versionhelpers.h", MSDNShortId = "7CC1DD25-762B-489F-AC20-1B57764923A2")]
 	public static bool IsWindowsServer()
 	{
-		var osvi = OSVERSIONINFOEX.Default;
-		osvi.wProductType = ProductType.VER_NT_WORKSTATION;
+		OSVERSIONINFOEX osvi = new() { wProductType = ProductType.VER_NT_WORKSTATION };
 
 		var dwlConditionMask = VerSetConditionMask(0, VERSION_MASK.VER_PRODUCT_TYPE, VERSION_CONDITION.VER_EQUAL);
 
@@ -192,10 +198,7 @@ public static partial class Kernel32
 	[PInvokeData("versionhelpers.h", MSDNShortId = "B28DFEC0-A94E-49F6-9DF0-4EE470EC4AF5")]
 	public static bool IsWindowsVersionOrGreater(ushort wMajorVersion, ushort wMinorVersion, ushort wServicePackMajor)
 	{
-		var osvi = OSVERSIONINFOEX.Default;
-		osvi.dwMajorVersion = wMajorVersion;
-		osvi.dwMinorVersion = wMinorVersion;
-		osvi.wServicePackMajor = wServicePackMajor;
+		OSVERSIONINFOEX osvi = new(wMajorVersion, wMinorVersion, wServicePackMajor);
 
 		var dwlConditionMask = VerSetConditionMask(VerSetConditionMask(VerSetConditionMask(0, VERSION_MASK.VER_MAJORVERSION, VERSION_CONDITION.VER_GREATER_EQUAL), VERSION_MASK.VER_MINORVERSION, VERSION_CONDITION.VER_GREATER_EQUAL), VERSION_MASK.VER_SERVICEPACKMAJOR, VERSION_CONDITION.VER_GREATER_EQUAL);
 

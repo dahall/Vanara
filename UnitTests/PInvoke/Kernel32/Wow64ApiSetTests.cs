@@ -54,8 +54,5 @@ public partial class Wow64ApiSetTests
 	}
 
 	[Test]
-	public void Wow64SetThreadDefaultGuestMachineTest()
-	{
-		Assert.That(() => Wow64SetThreadDefaultGuestMachine(IMAGE_FILE_MACHINE.IMAGE_FILE_MACHINE_AMD64), Throws.Nothing);
-	}
+	public void Wow64SetThreadDefaultGuestMachineTest() => Assert.That(() => Wow64SetThreadDefaultGuestMachine(IMAGE_FILE_MACHINE.IMAGE_FILE_MACHINE_AMD64), Throws.Nothing);
 }

@@ -9,8 +9,7 @@ namespace Vanara.PInvoke.Tests;
 public partial class WinBaseTests
 {
 	[Test]
-	public void BackupImportTest()
-	{
+	public void BackupImportTest() =>
 		// No tape drives to test against, so just checking each method runs.
 		Assert.That(() =>
 		{
@@ -29,7 +28,6 @@ public partial class WinBaseTests
 			SetTapePosition(HFILE.NULL, TAPE_POS_METHOD.TAPE_ABSOLUTE_BLOCK, 0, 0, 0, true);
 			WriteTapemark(HFILE.NULL, TAPEMARK_TYPE.TAPE_SHORT_FILEMARKS, 1, true);
 		}, Throws.Nothing);
-	}
 
 	[Test]
 	public static void BackupReadTest()

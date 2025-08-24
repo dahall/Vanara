@@ -9,7 +9,7 @@ public partial class WinNTTests
 	[Test]
 	public void RtlMoveMemoryTest()
 	{
-		string[] strings = new[] { "One", "Two", "Three" };
+		string[] strings = ["One", "Two", "Three"];
 		using SafeHGlobalHandle src = SafeHGlobalHandle.CreateFromStringList(strings);
 		using SafeHGlobalHandle dest = new(src.Size);
 		Assert.That(() => RtlZeroMemory(dest, dest.Size), Throws.Nothing);

@@ -114,7 +114,7 @@ public class MemoryApiTests
 	[Test]
 	public void SafeMoveableHGlobalCreateFromStringListTest()
 	{
-		string[] strings = new[] { "AAAA", "BBBB", "CCCC" };
+		string[] strings = ["AAAA", "BBBB", "CCCC"];
 		using SafeMoveableHGlobalHandle h = SafeMoveableHGlobalHandle.CreateFromStringList(strings);
 		CollectionAssert.AreEqual(strings, h.ToStringEnum());
 	}
@@ -162,7 +162,7 @@ public class MemoryApiTests
 	[Test]
 	public void SafeMoveableHGlobalWriteStringListTest()
 	{
-		string[] strings = new[] { "AAAA", "BBBB", "CCCC" };
+		string[] strings = ["AAAA", "BBBB", "CCCC"];
 		using SafeMoveableHGlobalHandle h = new(256);
 		h.CallLocked(p => p.Write(strings, StringListPackMethod.Concatenated, offset: 64, allocatedBytes: h.Size));
 		CollectionAssert.AreEqual(strings, h.ToStringEnum(prefixBytes: 64));

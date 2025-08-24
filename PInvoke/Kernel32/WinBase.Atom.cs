@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
@@ -30,7 +32,7 @@ public static partial class Kernel32
 	// ATOM WINAPI AddAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649056(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649056")]
-	public static extern ATOM AddAtom(string lpString);
+	public static extern ATOM AddAtom([MaxLength(255)] string lpString);
 
 	/// <summary>Adds a character string to the local atom table and returns a unique value (an atom) identifying the string.</summary>
 	/// <param name="lpString">
@@ -51,7 +53,7 @@ public static partial class Kernel32
 	// ATOM WINAPI AddAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649056(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649056")]
-	public static extern ATOM AddAtom(IntPtr lpString);
+	public static extern ATOM AddAtom([Range(1, short.MaxValue)] nint lpString);
 
 	/// <summary>
 	/// Decrements the reference count of a local string atom. If the atom's reference count is reduced to zero, <c>DeleteAtom</c>
@@ -87,7 +89,7 @@ public static partial class Kernel32
 	// ATOM WINAPI FindAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649058(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649058")]
-	public static extern ATOM FindAtom(string lpString);
+	public static extern ATOM FindAtom([MaxLength(255)] string lpString);
 
 	/// <summary>Searches the local atom table for the specified character string and retrieves the atom associated with that string.</summary>
 	/// <param name="lpString">
@@ -105,7 +107,7 @@ public static partial class Kernel32
 	// ATOM WINAPI FindAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649058(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649058")]
-	public static extern ATOM FindAtom(IntPtr lpString);
+	public static extern ATOM FindAtom([Range(1, short.MaxValue)] nint lpString);
 
 	/// <summary>Retrieves a copy of the character string associated with the specified local atom.</summary>
 	/// <param name="nAtom">
@@ -131,7 +133,7 @@ public static partial class Kernel32
 	// UINT WINAPI GetAtomName( _In_ ATOM nAtom, _Out_ LPTSTR lpBuffer, _In_ int nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649059(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649059")]
-	public static extern uint GetAtomName(ATOM nAtom, StringBuilder lpBuffer, int nSize);
+	public static extern uint GetAtomName(ATOM nAtom, [SizeDef(nameof(nSize))] StringBuilder? lpBuffer, [Range(0, 255)] int nSize);
 
 	/// <summary>Retrieves a copy of the character string associated with the specified local atom.</summary>
 	/// <param name="nAtom">
@@ -161,7 +163,7 @@ public static partial class Kernel32
 	// ATOM WINAPI GlobalAddAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649060(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649060")]
-	public static extern ATOM GlobalAddAtom(string lpString);
+	public static extern ATOM GlobalAddAtom([MaxLength(255)] string lpString);
 
 	/// <summary>Adds a character string to the global atom table and returns a unique value (an atom) identifying the string.</summary>
 	/// <param name="lpString">
@@ -183,7 +185,7 @@ public static partial class Kernel32
 	// ATOM WINAPI GlobalAddAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649060(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649060")]
-	public static extern ATOM GlobalAddAtom(IntPtr lpString);
+	public static extern ATOM GlobalAddAtom([Range(1, short.MaxValue)] nint lpString);
 
 	/// <summary>Adds a character string to the global atom table and returns a unique value (an atom) identifying the string.</summary>
 	/// <param name="lpString">
@@ -206,7 +208,7 @@ public static partial class Kernel32
 	// ATOM WINAPI GlobalAddAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/dn764994(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "dn764994")]
-	public static extern ATOM GlobalAddAtomEx(string lpString, [Optional] ATOM_FLAG Flags);
+	public static extern ATOM GlobalAddAtomEx([MaxLength(255)] string lpString, [Optional] ATOM_FLAG Flags);
 
 	/// <summary>Adds a character string to the global atom table and returns a unique value (an atom) identifying the string.</summary>
 	/// <param name="lpString">
@@ -229,7 +231,7 @@ public static partial class Kernel32
 	// ATOM WINAPI GlobalAddAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/dn764994(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "dn764994")]
-	public static extern ATOM GlobalAddAtomEx(IntPtr lpString, [Optional] ATOM_FLAG Flags);
+	public static extern ATOM GlobalAddAtomEx([Range(1, short.MaxValue)] nint lpString, [Optional] ATOM_FLAG Flags);
 
 	/// <summary>
 	/// Decrements the reference count of a global string atom. If the atom's reference count reaches zero, <c>GlobalDeleteAtom</c>
@@ -271,7 +273,7 @@ public static partial class Kernel32
 	// ATOM WINAPI GlobalFindAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649062(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649062")]
-	public static extern ATOM GlobalFindAtom(string lpString);
+	public static extern ATOM GlobalFindAtom([MaxLength(255)] string lpString);
 
 	/// <summary>
 	/// Searches the global atom table for the specified character string and retrieves the global atom associated with that string.
@@ -291,7 +293,7 @@ public static partial class Kernel32
 	// ATOM WINAPI GlobalFindAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649062(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649062")]
-	public static extern ATOM GlobalFindAtom(IntPtr lpString);
+	public static extern ATOM GlobalFindAtom([Range(1, short.MaxValue)] nint lpString);
 
 	/// <summary>Retrieves a copy of the character string associated with the specified global atom.</summary>
 	/// <param name="nAtom">
@@ -317,7 +319,7 @@ public static partial class Kernel32
 	// UINT WINAPI GlobalGetAtomName( _In_ ATOM nAtom, _Out_ LPTSTR lpBuffer, _In_ int nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649063(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649063")]
-	public static extern uint GlobalGetAtomName(ATOM nAtom, StringBuilder lpBuffer, int nSize);
+	public static extern uint GlobalGetAtomName(ATOM nAtom, [SizeDef(nameof(nSize))] StringBuilder lpBuffer, [Range(0, 255)] int nSize);
 
 	/// <summary>Retrieves a copy of the character string associated with the specified global atom.</summary>
 	/// <param name="nAtom">

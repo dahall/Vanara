@@ -27,5 +27,5 @@ Vanara.PInvoke,Kernel32,PTP_WAIT,,Provides a handle to a threadpool wait.,SafePT
 Vanara.PInvoke,Kernel32,PTP_WORK,,Provides a handle to a threadpool work.,SafePTP_WORK,,{ CloseThreadpoolWork(handle); return true; },
 Vanara.PInvoke,Kernel32,PUMS_COMPLETION_LIST,,Provides a handle to a completion list.,SafePUMS_COMPLETION_LIST,,DeleteUmsCompletionList(handle),
 Vanara.PInvoke,Kernel32,PUMS_CONTEXT,,Provides a handle to a UMS context.,SafePUMS_CONTEXT,,DeleteUmsThreadContext(handle),
-Vanara.PInvoke,Kernel32,TimerQueueHandle,,Provides a handle to a timer queue.,SafeTimerQueueHandle,,"DeleteTimerQueueEx(this, CompletionEvent ?? SafeEventHandle.Null)",
+Vanara.PInvoke,Kernel32,TimerQueueHandle,,Provides a handle to a timer queue.,SafeTimerQueueHandle,,"DeleteTimerQueueEx(this, CompletionEvent)",
 Vanara.PInvoke,Kernel32,TimerQueueTimerHandle,,Provides a handle to a timer queue timer.,,,,

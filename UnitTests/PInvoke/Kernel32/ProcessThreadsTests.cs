@@ -55,7 +55,7 @@ public class ProcessThreadsTests
 	[Test]
 	public void CreateProcessTest4()
 	{
-		bool res = CreateProcess(@"C:\Windows\system32\cmd.exe", null, default, default, false, 0, new[] { @"PATH=C:\Windows", "DOG=Bone" }, null, STARTUPINFO.Default, out SafePROCESS_INFORMATION pi);
+		bool res = CreateProcess(@"C:\Windows\system32\cmd.exe", null, default, default, false, 0, [@"PATH=C:\Windows", "DOG=Bone"], null, STARTUPINFO.Default, out SafePROCESS_INFORMATION pi);
 		if (!res) TestContext.WriteLine(Win32Error.GetLastError());
 		Assert.That(res);
 		using (pi)
@@ -115,10 +115,7 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void GetCurrentProcessIdTest()
-	{
-		Assert.That(GetCurrentProcessId(), Is.GreaterThan(0));
-	}
+	public void GetCurrentProcessIdTest() => Assert.That(GetCurrentProcessId(), Is.GreaterThan(0));
 
 	[Test]
 	public void GetCurrentProcessorNumberTest()
@@ -223,7 +220,7 @@ public class ProcessThreadsTests
 	public void GetProcessMitigationPolicyTest()
 	{
 		HPROCESS hProc = GetCurrentProcess();
-		TestHelper.RunForEach<PROCESS_MITIGATION_POLICY>(typeof(Kernel32), "GetProcessMitigationPolicy", e => new object?[] { hProc, e, null }, (e, ret, param) =>
+		TestHelper.RunForEach<PROCESS_MITIGATION_POLICY>(typeof(Kernel32), "GetProcessMitigationPolicy", e => [hProc, e, null], (e, ret, param) =>
 		{
 			if (!(bool)ret!) TestContext.WriteLine($"{e} -> {Win32Error.GetLastError()}");
 			Assert.That(ret, Is.True);
@@ -329,21 +326,15 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void GetStartupInfoTest()
-	{
-		Assert.That(() =>
-		{
-			GetStartupInfo(out STARTUPINFO si);
-			Assert.That(si.cb, Is.GreaterThan(0));
-			Assert.That(si.lpTitle, Is.Not.Null);
-		}, Throws.Nothing);
-	}
+	public void GetStartupInfoTest() => Assert.That(() =>
+											 {
+												 GetStartupInfo(out STARTUPINFO si);
+												 Assert.That(si.cb, Is.GreaterThan(0));
+												 Assert.That(si.lpTitle, Is.Not.Null);
+											 }, Throws.Nothing);
 
 	[Test]
-	public void GetSystemCpuSetInformationTest()
-	{
-		Assert.That(GetSystemCpuSetInformation(GetCurrentProcess()), Is.Not.Empty);
-	}
+	public void GetSystemCpuSetInformationTest() => Assert.That(GetSystemCpuSetInformation(GetCurrentProcess()), Is.Not.Empty);
 
 	[Test]
 	public void GetSystemTimesTest()
@@ -361,17 +352,11 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void GetThreadInformationTest()
-	{
-		TestHelper.RunForEach<THREAD_INFORMATION_CLASS>(typeof(Kernel32), "GetThreadInformation", e => new object[] { GetCurrentThread(), e },
+	public void GetThreadInformationTest() => TestHelper.RunForEach<THREAD_INFORMATION_CLASS>(typeof(Kernel32), "GetThreadInformation", e => [GetCurrentThread(), e],
 			(e, ret, param) => ret?.WriteValues(), ex => throw ex!);
-	}
 
 	[Test]
-	public void GetThreadIOPendingFlagTest()
-	{
-		Assert.That(GetThreadIOPendingFlag(GetCurrentThread(), out bool pending), Is.True);
-	}
+	public void GetThreadIOPendingFlagTest() => Assert.That(GetThreadIOPendingFlag(GetCurrentThread(), out bool pending), Is.True);
 
 	[Test]
 	public void GetThreadTimesTest()
@@ -382,16 +367,10 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void IsProcessCriticalTest()
-	{
-		Assert.That(IsProcessCritical(GetCurrentProcess(), out bool critical), Is.True);
-	}
+	public void IsProcessCriticalTest() => Assert.That(IsProcessCritical(GetCurrentProcess(), out bool critical), Is.True);
 
 	[Test]
-	public void IsProcessorFeaturePresentTest()
-	{
-		Assert.That(IsProcessorFeaturePresent(PROCESSOR_FEATURE.PF_RDRAND_INSTRUCTION_AVAILABLE), Is.True);
-	}
+	public void IsProcessorFeaturePresentTest() => Assert.That(IsProcessorFeaturePresent(PROCESSOR_FEATURE.PF_RDRAND_INSTRUCTION_AVAILABLE), Is.True);
 
 	[Test]
 	public void OpenProcessTest()
@@ -408,16 +387,10 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void ProcessIdToSessionIdTest()
-	{
-		Assert.That(ProcessIdToSessionId(GetCurrentProcessId(), out uint sess), Is.True);
-	}
+	public void ProcessIdToSessionIdTest() => Assert.That(ProcessIdToSessionId(GetCurrentProcessId(), out uint sess), Is.True);
 
 	[Test]
-	public void QueryProcessAffinityUpdateModeTest()
-	{
-		Assert.That(QueryProcessAffinityUpdateMode(GetCurrentProcess(), out PROCESS_AFFINITY_MODE flag), Is.True);
-	}
+	public void QueryProcessAffinityUpdateModeTest() => Assert.That(QueryProcessAffinityUpdateMode(GetCurrentProcess(), out PROCESS_AFFINITY_MODE flag), Is.True);
 
 	[Test]
 	public void QuerySetProtectedPolicyTest()
@@ -435,7 +408,7 @@ public class ProcessThreadsTests
 	{
 		Assert.That(QueueUserAPC(papc, GetCurrentThread(), IntPtr.Zero), Is.True);
 
-		void papc(IntPtr dwParam) { }
+		static void papc(IntPtr dwParam) { }
 	}
 
 	[Test]
@@ -457,10 +430,7 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void SetProcessAffinityUpdateModeTest()
-	{
-		Assert.That(SetProcessAffinityUpdateMode(GetCurrentProcess(), PROCESS_AFFINITY_MODE.PROCESS_AFFINITY_ENABLE_AUTO_UPDATE), Is.True);
-	}
+	public void SetProcessAffinityUpdateModeTest() => Assert.That(SetProcessAffinityUpdateMode(GetCurrentProcess(), PROCESS_AFFINITY_MODE.PROCESS_AFFINITY_ENABLE_AUTO_UPDATE), Is.True);
 
 	[Test]
 	public void SetProcessInformationTest()
@@ -470,12 +440,7 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void SetProcessMitigationPolicyTest()
-	{
-		Assert.That(SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY.ProcessImageLoadPolicy, new PROCESS_MITIGATION_IMAGE_LOAD_POLICY { Flags = PROCESS_MITIGATION_IMAGE_LOAD_POLICY_FLAGS.NoRemoteImages }), Is.True);
-		//Assert.That(GetProcessMitigationPolicy<ulong[]>(GetCurrentProcess(), PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask, out var p), Is.True);
-		//Assert.That(SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask, p), Is.True);
-	}
+	public void SetProcessMitigationPolicyTest() => Assert.That(SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY.ProcessImageLoadPolicy, new PROCESS_MITIGATION_IMAGE_LOAD_POLICY { Flags = PROCESS_MITIGATION_IMAGE_LOAD_POLICY_FLAGS.NoRemoteImages }), Is.True);//Assert.That(GetProcessMitigationPolicy<ulong[]>(GetCurrentProcess(), PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask, out var p), Is.True);//Assert.That(SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY.ProcessMitigationOptionsMask, p), Is.True);
 
 	[Test]
 	public void SetThreadIdealProcessorExTest()
@@ -511,10 +476,7 @@ public class ProcessThreadsTests
 	}
 
 	[Test]
-	public void SwitchToThreadTest()
-	{
-		Assert.That(SwitchToThread(), Is.True);
-	}
+	public void SwitchToThreadTest() => Assert.That(SwitchToThread(), Is.True);
 
 	[Test]
 	public void TlsTest()

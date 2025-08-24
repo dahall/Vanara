@@ -86,6 +86,18 @@ public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>, 
 	/// <inheritdoc/>
 	public static ISafeMemoryHandle Create(SizeT size) => new SafeLocalHandle(size);
 
+	/// <summary>Creates a <see cref="SafeLocalHandle"/> instance from a specified memory pointer.</summary>
+	/// <remarks>
+	/// The returned <see cref="SafeLocalHandle"/><i>does not</i> take ownership of the memory block to ensure it is properly released when
+	/// no longer in use.
+	/// </remarks>
+	/// <param name="pMem">A pointer to the first byte of the local memory object. This pointer is returned by the <c>LocalLock</c> function.</param>
+	/// <returns>
+	/// A <see cref="SafeLocalHandle"/> that manages the specified memory block or <see cref="Null"/> if <paramref name="pMem"/> was not
+	/// allocated and locked using <c>Local</c> memory functions.
+	/// </returns>
+	public static SafeLocalHandle CreateFromPointer(IntPtr pMem) => new(LocalHandle(pMem), LocalSize(LocalHandle(pMem)), false);
+
 	/// <summary>
 	/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
 	/// elements. It is the callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY structures

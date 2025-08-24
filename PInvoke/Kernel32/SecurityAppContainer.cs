@@ -36,5 +36,6 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("securityappcontainer.h", MSDNShortId = "466CE2DA-332E-4AA7-A0EB-868A646C0979")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetAppContainerNamedObjectPath([Optional] HTOKEN Token, [Optional] PSID AppContainerSid, uint ObjectPathLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder ObjectPath, out uint ReturnLength);
+	public static extern bool GetAppContainerNamedObjectPath([Optional] HTOKEN Token, [Optional] PSID AppContainerSid, uint ObjectPathLength,
+		[MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(ObjectPathLength), SizingMethod.Query, OutVarName = nameof(ReturnLength))] StringBuilder? ObjectPath, out uint ReturnLength);
 }

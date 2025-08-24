@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using static Vanara.PInvoke.FunctionHelper;
 
@@ -628,7 +629,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "d5646fe6-9112-42cd-ace9-00dd1b590ecb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DnsHostnameToComputerName(string Hostname, StringBuilder? ComputerName, ref uint nSize);
+	public static extern bool DnsHostnameToComputerName(string Hostname, [SizeDef(nameof(nSize), SizingMethod.Query)] StringBuilder? ComputerName,
+		[Range(0, MAX_COMPUTERNAME_LENGTH)] ref uint nSize);
 
 	/// <summary>Converts a DNS-style host name to a NetBIOS-style computer name.</summary>
 	/// <param name="Hostname">
@@ -711,7 +713,8 @@ public static partial class Kernel32
 	// BufferSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724259(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724259")]
-	public static extern uint EnumSystemFirmwareTables(FirmwareTableProviderId FirmwareTableProviderSignature, IntPtr pFirmwareTableBuffer, uint BufferSize);
+	public static extern uint EnumSystemFirmwareTables(FirmwareTableProviderId FirmwareTableProviderSignature,
+		[Optional, SizeDef(nameof(BufferSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] IntPtr pFirmwareTableBuffer, uint BufferSize);
 
 	/// <summary>Enumerates all system firmware tables of the specified type.</summary>
 	/// <param name="FirmwareTableProviderSignature">
@@ -797,7 +800,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724295")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetComputerName(StringBuilder? lpBuffer, ref uint lpnSize);
+	public static extern bool GetComputerName([SizeDef(nameof(lpnSize), SizingMethod.Query)] StringBuilder? lpBuffer, [Range(0, MAX_COMPUTERNAME_LENGTH)] ref uint lpnSize);
 
 	/// <summary>
 	/// <para>
@@ -818,7 +821,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a nonzero value.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	public static bool GetComputerName(out string? name) => CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetComputerName(sb, ref sz), out name);
+	public static bool GetComputerName(out string? name) => CallMethodWithStrBuf<uint, bool>(GetComputerName, out name);
 
 	/// <summary>
 	/// Retrieves a NetBIOS or DNS name associated with the local computer. The names are established at system startup, when the system
@@ -937,7 +940,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724301")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetComputerNameEx(COMPUTER_NAME_FORMAT NameType, StringBuilder? lpBuffer, ref uint lpnSize);
+	public static extern bool GetComputerNameEx(COMPUTER_NAME_FORMAT NameType, [SizeDef(nameof(lpnSize), SizingMethod.Query)] StringBuilder? lpBuffer, [Range(0, MAX_COMPUTERNAME_LENGTH)] ref uint lpnSize);
 
 	/// <summary>
 	/// Retrieves a NetBIOS or DNS name associated with the local computer. The names are established at system startup, when the system
@@ -1060,7 +1063,7 @@ public static partial class Kernel32
 	/// <summary>Retrieves the value of the specified firmware environment variable.</summary>
 	/// <param name="lpName">The name of the firmware environment variable. The pointer must not be <c>NULL</c>.</param>
 	/// <param name="lpGuid">
-	/// The GUID that represents the namespace of the firmware environment variable. The GUID must be a string in the format
+	/// The GUID that represents the namespace of the firmware environment variable. The GUID can be a Guid value or a string in the format
 	/// "{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}" where 'x' represents a hexadecimal value.
 	/// </param>
 	/// <param name="pBuffer">A pointer to a buffer that receives the value of the specified firmware environment variable.</param>
@@ -1068,14 +1071,16 @@ public static partial class Kernel32
 	/// <returns>
 	/// <para>If the function succeeds, the return value is the number of bytes stored in the pBuffer buffer.</para>
 	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. Possible error
-	/// codes include ERROR_INVALID_FUNCTION.
+	/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. Possible error codes
+	/// include ERROR_INVALID_FUNCTION.
 	/// </para>
 	/// </returns>
 	// DWORD WINAPI GetFirmwareEnvironmentVariable( _In_ LPCTSTR lpName, _In_ LPCTSTR lpGuid, _Out_ PVOID pBuffer, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724325(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724325")]
-	public static extern uint GetFirmwareEnvironmentVariable(string lpName, string lpGuid, IntPtr pBuffer, uint nSize);
+	public static extern uint GetFirmwareEnvironmentVariable(string lpName,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(GuidToStringMarshaler), MarshalCookie = "B")] object lpGuid,
+		[Out, SizeDef(nameof(nSize))] IntPtr pBuffer, uint nSize);
 
 	/// <summary>
 	/// <para>Retrieves the best estimate of the diagonal size of the built-in screen, in inches.</para>
@@ -1127,7 +1132,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683194")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetLogicalProcessorInformation(IntPtr Buffer, ref uint ReturnLength);
+	public static extern bool GetLogicalProcessorInformation([SizeDef(nameof(ReturnLength), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError)] ArrayPointer<SYSTEM_LOGICAL_PROCESSOR_INFORMATION> Buffer,
+		ref uint ReturnLength);
 
 	/// <summary>
 	/// <para>Retrieves information about logical processors and related hardware.</para>
@@ -1216,7 +1222,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405488")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, IntPtr Buffer, ref uint ReturnedLength);
+	public static extern bool GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType,
+		[SizeDef(nameof(ReturnedLength), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError)] ArrayPointer<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX> Buffer, ref uint ReturnedLength);
 
 	/// <summary>Retrieves information about the relationships of logical processors and related hardware.</summary>
 	/// <param name="RelationshipType">
@@ -1270,7 +1277,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value has error information.</para>
 	/// </returns>
-	public static unsafe Win32Error GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, out SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List info)
+	public static Win32Error GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP RelationshipType, out SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List info)
 	{
 		info = new SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List(0);
 		uint sz = 0;
@@ -1372,7 +1379,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405497")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessorSystemCycleTime(ushort Group, IntPtr Buffer, ref uint ReturnedLength);
+	public static extern bool GetProcessorSystemCycleTime(ushort Group,
+		[SizeDef(nameof(ReturnedLength), SizingMethod.Query | SizingMethod.Bytes)] ArrayPointer<SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION> Buffer, ref uint ReturnedLength);
 
 	/// <summary>
 	/// Retrieves the cycle time each processor in the specified processor group spent executing deferred procedure calls (DPCs) and
@@ -1845,7 +1853,7 @@ public static partial class Kernel32
 	// UINT WINAPI GetSystemDirectory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724373(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724373")]
-	public static extern uint GetSystemDirectory(StringBuilder lpBuffer, uint uSize);
+	public static extern uint GetSystemDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
 
 	/// <summary>
 	/// <para>
@@ -1919,7 +1927,8 @@ public static partial class Kernel32
 	// pFirmwareTableBuffer, _In_ DWORD BufferSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724379(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724379")]
-	public static extern uint GetSystemFirmwareTable(FirmwareTableProviderId FirmwareTableProviderSignature, uint FirmwareTableID, IntPtr pFirmwareTableBuffer, uint BufferSize);
+	public static extern uint GetSystemFirmwareTable(FirmwareTableProviderId FirmwareTableProviderSignature, uint FirmwareTableID,
+		[Optional, SizeDef(nameof(BufferSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] IntPtr pFirmwareTableBuffer, [Optional] uint BufferSize);
 
 	/// <summary>
 	/// <para>Retrieves information about the current system.</para>
@@ -2099,7 +2108,7 @@ public static partial class Kernel32
 	// UINT WINAPI GetSystemWindowsDirectory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724403(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724403")]
-	public static extern uint GetSystemWindowsDirectory(StringBuilder lpBuffer, uint uSize);
+	public static extern uint GetSystemWindowsDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
 
 	/// <summary>
 	/// <para>Retrieves the path of the shared Windows directory on a multi-user system.</para>
@@ -2219,7 +2228,7 @@ public static partial class Kernel32
 	// UINT WINAPI GetWindowsDirectory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724454(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724454")]
-	public static extern uint GetWindowsDirectory(StringBuilder lpBuffer, uint uSize);
+	public static extern uint GetWindowsDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
 
 	/// <summary>
 	/// <para>Retrieves the path of the Windows directory.</para>
@@ -2247,7 +2256,7 @@ public static partial class Kernel32
 	// void WINAPI GlobalMemoryStatus( _Out_ LPMEMORYSTATUS lpBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366586(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366586")]
-	public static extern void GlobalMemoryStatus(ref MEMORYSTATUS lpBuffer);
+	public static extern void GlobalMemoryStatus(out MEMORYSTATUS lpBuffer);
 
 	/// <summary>Retrieves information about the system's current usage of both physical and virtual memory.</summary>
 	/// <param name="lpBuffer">A pointer to a <c>MEMORYSTATUSEX</c> structure that receives information about current memory availability.</param>
@@ -2312,7 +2321,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Windows.h", MSDNShortId = "dn369255")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InstallELAMCertificateInfo(HFILE ELAMFile);
+	public static extern bool InstallELAMCertificateInfo([In] HFILE ELAMFile);
 
 	/// <summary>
 	/// <para>
@@ -2343,7 +2352,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724930")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetComputerName(string lpComputerName);
+	public static extern bool SetComputerName([MaxLength((int)MAX_COMPUTERNAME_LENGTH)] string lpComputerName);
 
 	/// <summary>
 	/// Sets a new NetBIOS or DNS name for the local computer. Name changes made by <c>SetComputerNameEx</c> do not take effect until the
@@ -2452,8 +2461,8 @@ public static partial class Kernel32
 	/// <summary>Sets the value of the specified firmware environment variable.</summary>
 	/// <param name="lpName">The name of the firmware environment variable. The pointer must not be <c>NULL</c>.</param>
 	/// <param name="lpGuid">
-	/// The GUID that represents the namespace of the firmware environment variable. The GUID must be a string in the format
-	/// "{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}". If the system does not support GUID-based namespaces, this parameter is ignored.
+	/// The GUID that represents the namespace of the firmware environment variable. The GUID can be a Guid value or a string in the format
+	/// "{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}" where 'x' represents a hexadecimal value.
 	/// </param>
 	/// <param name="pBuffer">A pointer to the new value for the firmware environment variable.</param>
 	/// <param name="nSize">
@@ -2470,7 +2479,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724934")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFirmwareEnvironmentVariable(string lpName, string lpGuid, [In] IntPtr pBuffer, uint nSize);
+	public static extern bool SetFirmwareEnvironmentVariable(string lpName, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(GuidToStringMarshaler), MarshalCookie = "B")] object lpGuid,
+		[In, SizeDef(nameof(nSize))] IntPtr pBuffer, uint nSize);
 
 	/// <summary>Sets the current local time and date.</summary>
 	/// <param name="lpSystemTime">
@@ -3028,10 +3038,10 @@ public static partial class Kernel32
 	// *LPMEMORYSTATUSEX; https://msdn.microsoft.com/en-us/library/windows/desktop/aa366770(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366770")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct MEMORYSTATUSEX
+	public struct MEMORYSTATUSEX()
 	{
 		/// <summary>The size of the structure, in bytes. You must set this member before calling <c>GlobalMemoryStatusEx</c>.</summary>
-		public uint dwLength;
+		public uint dwLength = (uint)Marshal.SizeOf<MEMORYSTATUSEX>();
 
 		/// <summary>
 		/// A number between 0 and 100 that specifies the approximate percentage of physical memory that is in use (0 indicates no memory
@@ -3079,7 +3089,7 @@ public static partial class Kernel32
 		public ulong ullAvailExtendedVirtual;
 
 		/// <summary>Gets a default instance with the size pre-set.</summary>
-		public static readonly MEMORYSTATUSEX Default = new() { dwLength = (uint)Marshal.SizeOf<MEMORYSTATUSEX>() };
+		public static readonly MEMORYSTATUSEX Default = new();
 	}
 
 	/// <summary>
@@ -3116,16 +3126,16 @@ public static partial class Kernel32
 	// *POSVERSIONINFOEX, *LPOSVERSIONINFOEX; https://msdn.microsoft.com/en-us/library/windows/desktop/ms724833(v=vs.85).aspx
 	[PInvokeData("Winnt.h", MSDNShortId = "ms724833")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
-	public struct OSVERSIONINFOEX
+	public struct OSVERSIONINFOEX(uint majorVer = 0, uint minorVer = 0, ushort spMajor = 0)
 	{
 		/// <summary>The size of this data structure, in bytes. Set this member to .</summary>
-		public uint dwOSVersionInfoSize;
+		public uint dwOSVersionInfoSize = (uint)Marshal.SizeOf<OSVERSIONINFOEX>();
 
 		/// <summary>The major version number of the operating system. For more information, see Remarks.</summary>
-		public uint dwMajorVersion;
+		public uint dwMajorVersion = majorVer;
 
 		/// <summary>The minor version number of the operating system. For more information, see Remarks.</summary>
-		public uint dwMinorVersion;
+		public uint dwMinorVersion = minorVer;
 
 		/// <summary>The build number of the operating system.</summary>
 		public uint dwBuildNumber;
@@ -3138,13 +3148,13 @@ public static partial class Kernel32
 		/// Service Pack has been installed, the string is empty.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-		public string szCSDVersion;
+		public string szCSDVersion = "";
 
 		/// <summary>
 		/// The major version number of the latest Service Pack installed on the system. For example, for Service Pack 3, the major
 		/// version number is 3. If no Service Pack has been installed, the value is zero.
 		/// </summary>
-		public ushort wServicePackMajor;
+		public ushort wServicePackMajor = spMajor;
 
 		/// <summary>
 		/// The minor version number of the latest Service Pack installed on the system. For example, for Service Pack 3, the minor
@@ -3276,7 +3286,7 @@ public static partial class Kernel32
 		public byte wReserved;
 
 		/// <summary>Gets a default instance with the size pre-set.</summary>
-		public static readonly OSVERSIONINFOEX Default = new() { dwOSVersionInfoSize = (uint)Marshal.SizeOf<OSVERSIONINFOEX>() };
+		public static readonly OSVERSIONINFOEX Default = new();
 	}
 
 	/// <summary>Represents the number and affinity of processors in a processor group.</summary>
@@ -3658,27 +3668,39 @@ public static partial class Kernel32
 		/// A NUMA_NODE_RELATIONSHIP structure that describes a NUMA node. This structure contains valid data only if the
 		/// <c>Relationship</c> member is <c>RelationNumaNode</c>.
 		/// </summary>
-		public NUMA_NODE_RELATIONSHIP NumaNode => GetField<NUMA_NODE_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationNumaNode);
+		public readonly NUMA_NODE_RELATIONSHIP NumaNode => GetField<NUMA_NODE_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationNumaNode);
+
+		/// <summary>
+		/// A NUMA_NODE_RELATIONSHIP structure that describes a NUMA node. This structure contains valid data only if the
+		/// <c>Relationship</c> member is <c>RelationNumaNode</c>.
+		/// </summary>
+		public ref NUMA_NODE_RELATIONSHIP NumaNodeRef => ref GetFieldRef<NUMA_NODE_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationNumaNode);
 
 		/// <summary>
 		/// A CACHE_RELATIONSHIP structure that describes cache attributes. This structure contains valid data only if the
 		/// <c>Relationship</c> member is <c>RelationCache</c>.
 		/// </summary>
-		public CACHE_RELATIONSHIP Cache => GetField<CACHE_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationCache);
+		public readonly CACHE_RELATIONSHIP Cache => GetField<CACHE_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationCache);
+
+		/// <summary>
+		/// A CACHE_RELATIONSHIP structure that describes cache attributes. This structure contains valid data only if the
+		/// <c>Relationship</c> member is <c>RelationCache</c>.
+		/// </summary>
+		public ref CACHE_RELATIONSHIP CacheRef => ref GetFieldRef<CACHE_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationCache);
 
 		/// <summary>
 		/// A PROCESSOR_RELATIONSHIP structure that describes processor affinity. This structure contains valid data only if the
 		/// <c>Relationship</c> member is <c>RelationProcessorCore</c> or <c>RelationProcessorPackage</c>.
 		/// </summary>
-		public PROCESSOR_RELATIONSHIP Processor => GetField<PROCESSOR_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorCore, LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorPackage);
+		public readonly PROCESSOR_RELATIONSHIP Processor => GetField<PROCESSOR_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorCore, LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorPackage);
 
 		/// <summary>
 		/// A GROUP_RELATIONSHIP structure that contains information about the processor groups. This structure contains valid data
 		/// only if the <c>Relationship</c> member is <c>RelationGroup</c>.
 		/// </summary>
-		public GROUP_RELATIONSHIP Group => GetField<GROUP_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup);
+		public readonly GROUP_RELATIONSHIP Group => GetField<GROUP_RELATIONSHIP>(LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup);
 
-		private T GetField<T>(params LOGICAL_PROCESSOR_RELATIONSHIP[] r) where T : struct
+		private readonly T GetField<T>(params LOGICAL_PROCESSOR_RELATIONSHIP[] r) where T : struct
 		{
 			if (!r.Contains(Relationship))
 				return default;
@@ -3686,6 +3708,17 @@ public static partial class Kernel32
 			{
 				fixed (void* p = &dummy)
 					return ((IntPtr)p).ToStructure<T>();
+			}
+		}
+
+		private ref T GetFieldRef<T>(params LOGICAL_PROCESSOR_RELATIONSHIP[] r) where T : struct
+		{
+			if (!r.Contains(Relationship))
+				throw new Exception($"Invalid relationship type: {Relationship}");
+			unsafe
+			{
+				fixed (void* p = &dummy)
+					return ref ((IntPtr)p).AsRef<T>();
 			}
 		}
 	}
@@ -3699,7 +3732,7 @@ public static partial class Kernel32
 		public ulong CycleTime;
 	}
 
-	/// <summary>Holds a list of <see cref="SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX"/> structures retrived from <see cref="GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP, IntPtr, ref uint)"/>.</summary>
+	/// <summary>Holds a list of <see cref="SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX"/> structures retrived from <see cref="GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP, out SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List)"/>.</summary>
 	public class SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List : SafeMemoryHandle<CoTaskMemoryMethods>
 	{
 		internal SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List(SizeT size) : base(size)
@@ -3713,9 +3746,17 @@ public static partial class Kernel32
 		/// <summary>Gets a reference to a <see cref="SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX"/> at the specified index.</summary>
 		/// <param name="index">The index.</param>
 		/// <returns>A reference to <see cref="SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX"/>.</returns>
-		public unsafe SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX* this[int index] => (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)(void*)Items[index];
+		public ref SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX this[int index]
+		{
+			get
+			{
+				var ptrs = Items;
+				if (index < 0 || index >= ptrs.Count)
+					throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
+				return ref ptrs[index].AsRef<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>();
+			}
+		}
 
-		/// <summary>Move to next element.</summary>
 		private List<IntPtr> Items
 		{
 			get
@@ -3723,7 +3764,7 @@ public static partial class Kernel32
 				var ret = new List<IntPtr>();
 				for (IntPtr pCurrent = handle, pEnd = pCurrent.Offset(sz); pCurrent != IntPtr.Zero && pCurrent.ToInt64() < pEnd.ToInt64();)
 				{
-					var cSz = pCurrent.ToStructure<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>().Size;
+					var cSz = pCurrent.AsRef<SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX>().Size;
 					if (cSz == 0) break;
 					ret.Add(pCurrent);
 					pCurrent = pCurrent.Offset(cSz);

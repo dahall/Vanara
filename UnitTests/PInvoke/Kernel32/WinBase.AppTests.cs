@@ -9,7 +9,7 @@ public partial class WinBaseTests
 	[Test]
 	public void ActivateActCtxTest()
 	{
-		ACTCTX ctx = new(@"C:\Users\dahall\Documents\GitHubRepos\TaskScheduler\TaskSchedulerMockup\app.manifest");
+		ACTCTX ctx = new(@"C:\Users\dahal\Documents\GitHubRepos\Vanara\PInvoke\ComCtl32\app.manifest");
 		using SafeHACTCTX hctx = CreateActCtx(ctx);
 		Assert.That(hctx, ResultIs.ValidHandle);
 		Assert.That(ActivateActCtx(hctx, out IntPtr cookie), ResultIs.Successful);
@@ -44,28 +44,24 @@ public partial class WinBaseTests
 		Assert.That(ZombifyActCtx(hctx), ResultIs.Successful);
 		Assert.That(DeactivateActCtx(0, cookie), ResultIs.Successful);
 
-		uint callback(IntPtr pvParameter) => 0U;
+		static uint callback(IntPtr pvParameter) => 0U;
 	}
 
 	[Test]
-	public void ApplicationRecoveryTest()
-	{
+	public void ApplicationRecoveryTest() =>
 		// Unable to test functionality so just test for exceptions
 		Assert.That(() =>
 		{
 			ApplicationRecoveryInProgress(out bool c);
 			ApplicationRecoveryFinished(true);
 		}, Throws.Nothing);
-	}
 
 	[Test]
-	public void FindActCtxSectionTest()
-	{
+	public void FindActCtxSectionTest() =>
 		// Unable to test functionality so just test for exceptions
 		Assert.That(() =>
 		{
 			FindActCtxSectionGuid(FIND_ACTCTX_SECTION.FIND_ACTCTX_SECTION_KEY_RETURN_ASSEMBLY_METADATA, default, ACTCTX_SECTION.ACTIVATION_CONTEXT_SECTION_APPLICATION_SETTINGS, Guid.NewGuid(), out ACTCTX_SECTION_KEYED_DATA ret);
 			FindActCtxSectionString(FIND_ACTCTX_SECTION.FIND_ACTCTX_SECTION_KEY_RETURN_ASSEMBLY_METADATA, default, ACTCTX_SECTION.ACTIVATION_CONTEXT_SECTION_APPLICATION_SETTINGS, "Dummy", out ret);
 		}, Throws.Nothing);
-	}
 }

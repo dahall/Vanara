@@ -62,7 +62,7 @@ public class NameSpaceApiTests
 
 //public static class NSRunner
 //{
-//	public static int Main()
+//	public static int MyMain()
 //	{
 //		using (var bdh = CreateBoundaryDescriptor("BND1"))
 //		using (var pns = OpenPrivateNamespace(bdh, "NS1"))

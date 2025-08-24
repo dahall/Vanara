@@ -27,10 +27,7 @@ public class Kernel32Tests
 	}
 
 	[Test]
-	public void CeipIsOptedInTest()
-	{
-		Assert.That(() => CeipIsOptedIn(), Throws.Nothing);
-	}
+	public void CeipIsOptedInTest() => Assert.That(() => CeipIsOptedIn(), Throws.Nothing);
 
 	[Test]
 	public void CreateHardLinkTest()

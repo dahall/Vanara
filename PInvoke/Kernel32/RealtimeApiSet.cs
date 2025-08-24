@@ -294,7 +294,7 @@ public static partial class Kernel32
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("realtimeapiset.h", MSDNShortId = "1859bc0f-8065-4104-b421-1b4c020ad5ea")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryProcessCycleTime(HPROCESS ProcessHandle, out ulong CycleTime);
+	public static extern bool QueryProcessCycleTime([In, AddAsMember] HPROCESS ProcessHandle, out ulong CycleTime);
 
 	/// <summary>Retrieves the cycle time for the specified thread.</summary>
 	/// <param name="ThreadHandle">
@@ -326,7 +326,7 @@ public static partial class Kernel32
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("realtimeapiset.h", MSDNShortId = "5828b073-48af-4118-9206-096b87c978e7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryThreadCycleTime(HTHREAD ThreadHandle, out ulong CycleTime);
+	public static extern bool QueryThreadCycleTime([In, AddAsMember] HTHREAD ThreadHandle, out ulong CycleTime);
 
 	/// <summary>
 	/// Gets the current unbiased interrupt-time count, in units of 100 nanoseconds. The unbiased interrupt-time count does not include

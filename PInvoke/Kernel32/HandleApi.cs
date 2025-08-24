@@ -645,6 +645,31 @@ public static partial class Kernel32
 		/// </param>
 		protected SafeKernelHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
+		/// <summary>Gets or sets properties of an object handle.</summary>
+		/// <value>
+		/// <para>A set of bit flags that specify properties of the object handle or 0. The following values are defined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term><c>HANDLE_FLAG_INHERIT</c> 0x00000001</term>
+		/// <definition> If this flag is set, a child process created with the <c>bInheritHandles</c> parameter of CreateProcess set to
+		/// <c>TRUE</c> will inherit the object handle. </definition>
+		/// </item>
+		/// <item>
+		/// <term><c>HANDLE_FLAG_PROTECT_FROM_CLOSE</c> 0x00000002</term>
+		/// <definition>If this flag is set, calling the CloseHandle function will not close the object handle.</definition>
+		/// </item>
+		/// </list>
+		/// </value>
+		public HANDLE_FLAG Flags
+		{
+			get => GetHandleInformation(handle, out var flags) ? flags : 0;
+			set => Win32Error.ThrowLastErrorIfFalse(SetHandleInformation(handle, HANDLE_FLAG.HANDLE_FLAG_INHERIT | HANDLE_FLAG.HANDLE_FLAG_PROTECT_FROM_CLOSE, value));
+		}
+
 		/// <summary>Duplicates an object handle.</summary>
 		/// <typeparam name="THandle">The type of the handle.</typeparam>
 		/// <typeparam name="TAccess">The type of the access value (enum or uint).</typeparam>
@@ -764,6 +789,41 @@ public static partial class Kernel32
 		/// <returns><see langword="true"/> if the current instance receives a signal; otherwise, <see langword="false"/>.</returns>
 		/// <exception cref="AbandonedMutexException">The wait completed because a thread exited without releasing a mutex.</exception>
 		public bool Wait(uint msec = INFINITE) => WaitForSingleObject(ThrowIfDisposed(this), msec) switch
+		{
+			WAIT_STATUS.WAIT_OBJECT_0 => true,
+			WAIT_STATUS.WAIT_TIMEOUT => false,
+			WAIT_STATUS.WAIT_ABANDONED => throw new AbandonedMutexException(),
+			_ => throw Win32Error.GetLastError().GetException()!,
+		};
+
+		/// <summary>
+		/// <para>
+		/// Waits until the specified object is in the signaled state, an I/O completion routine or asynchronous procedure call (APC) is queued
+		/// to the thread, or the time-out interval elapses.
+		/// </para>
+		/// <para>To wait for multiple objects, use the <c>WaitForMultipleObjectsEx</c>.</para>
+		/// </summary>
+		/// <param name="dwMilliseconds">
+		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the object is signaled, an I/O
+		/// completion routine or APC is queued, or the interval elapses. If dwMilliseconds is zero, the function does not enter a wait state if
+		/// the criteria is not met; it always returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function will return only when the
+		/// object is signaled or an I/O completion routine or APC is queued.
+		/// </param>
+		/// <param name="bAlertable">
+		/// <para>
+		/// If this parameter is <c>TRUE</c> and the thread is in the waiting state, the function returns when the system queues an I/O
+		/// completion routine or APC, and the thread runs the routine or function. Otherwise, the function does not return, and the completion
+		/// routine or APC function is not executed.
+		/// </para>
+		/// <para>
+		/// A completion routine is queued when the <c>ReadFileEx</c> or <c>WriteFileEx</c> function in which it was specified has completed. The
+		/// wait function returns and the completion routine is called only if bAlertable is <c>TRUE</c>, and the calling thread is the thread
+		/// that initiated the read or write operation. An APC is queued when you call <c>QueueUserAPC</c>.
+		/// </para>
+		/// </param>
+		/// <returns><see langword="true"/> if the current instance receives a signal; otherwise, <see langword="false"/>.</returns>
+		/// <exception cref="AbandonedMutexException">The wait completed because a thread exited without releasing a mutex.</exception>
+		public bool Wait(bool bAlertable, uint dwMilliseconds = INFINITE) => WaitForSingleObjectEx(handle, dwMilliseconds, bAlertable) switch
 		{
 			WAIT_STATUS.WAIT_OBJECT_0 => true,
 			WAIT_STATUS.WAIT_TIMEOUT => false,

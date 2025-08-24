@@ -35,6 +35,8 @@ public class SysInfoTests
 	public void GetFirmwareEnvironmentVariableTest()
 	{
 		Assert.That(GetFirmwareEnvironmentVariable("", "{00000000-0000-0000-0000-000000000000}", default, 0), Is.EqualTo(0));
+		Assert.That(GetFirmwareEnvironmentVariable("", Guid.Empty, default, 0), Is.EqualTo(0));
+		Assert.That(() => GetFirmwareEnvironmentVariable("", 38383838, default, 0), Throws.ArgumentException);
 	}
 
 	[Test]
@@ -52,35 +54,32 @@ public class SysInfoTests
 	}
 
 	[Test]
-	public void GetLogicalProcessorInformationExTest()
+	public void GetLogicalProcessorInformationExTest([Values] LOGICAL_PROCESSOR_RELATIONSHIP rel)
 	{
-		unsafe
+		Assert.That(GetLogicalProcessorInformationEx(rel, out SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List info), ResultIs.Successful);
+		using (info)
 		{
-			Assert.That(GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup, out SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List info), ResultIs.Successful);
-			using (info)
+			Assert.That(info.Count, Is.GreaterThan(0));
+			for (int i = 0; i < info.Count; i++)
 			{
-				Assert.That(info.Count, Is.GreaterThan(0));
-				for (int i = 0; i < info.Count; i++)
+				ref SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX pr = ref info[i];
+				switch (pr.Relationship)
 				{
-					SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX* pr = info[i];
-					switch (pr->Relationship)
-					{
-						case LOGICAL_PROCESSOR_RELATIONSHIP.RelationNumaNode:
-							pr->NumaNode.WriteValues();
-							break;
-						case LOGICAL_PROCESSOR_RELATIONSHIP.RelationCache:
-							pr->Cache.WriteValues();
-							break;
-						case LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorCore:
-						case LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorPackage:
-							pr->Processor.WriteValues();
-							break;
-						case LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup:
-							pr->Group.WriteValues();
-							break;
-						default:
-							break;
-					}
+					case LOGICAL_PROCESSOR_RELATIONSHIP.RelationNumaNode:
+						pr.NumaNodeRef.WriteValues();
+						break;
+					case LOGICAL_PROCESSOR_RELATIONSHIP.RelationCache:
+						pr.CacheRef.WriteValues();
+						break;
+					case LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorCore:
+					case LOGICAL_PROCESSOR_RELATIONSHIP.RelationProcessorPackage:
+						pr.Processor.WriteValues();
+						break;
+					case LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup:
+						pr.Group.WriteValues();
+						break;
+					default:
+						break;
 				}
 			}
 		}
@@ -103,10 +102,7 @@ public class SysInfoTests
 	}
 
 	[Test]
-	public void GetOsManufacturingModeTest()
-	{
-		Assert.That(GetOsManufacturingMode(out bool enabled), ResultIs.Successful);
-	}
+	public void GetOsManufacturingModeTest() => Assert.That(GetOsManufacturingMode(out _), ResultIs.Successful);
 
 	[Test]
 	public void GetOsSafeBootModeTest()
@@ -138,16 +134,10 @@ public class SysInfoTests
 	}
 
 	[Test]
-	public void GetSystemDirectoryTest()
-	{
-		Assert.That(GetSystemDirectory(), Has.Length.GreaterThan(0));
-	}
+	public void GetSystemDirectoryTest() => Assert.That(GetSystemDirectory(), Has.Length.GreaterThan(0));
 
 	[Test]
-	public void GetSystemFirmwareTableTest()
-	{
-		Assert.That(GetSystemFirmwareTable(FirmwareTableProviderId.FIRM, 0, default, 0), Is.Zero);
-	}
+	public void GetSystemFirmwareTableTest() => Assert.That(GetSystemFirmwareTable(FirmwareTableProviderId.FIRM, 0, default, 0), Is.Zero);
 
 	[Test]
 	public void GetSystemInfoTest()
@@ -200,49 +190,33 @@ public class SysInfoTests
 	}
 
 	[Test]
-	public void GetSystemWindowsDirectoryTest()
-	{
-		Assert.That(GetSystemWindowsDirectory(), Has.Length.GreaterThan(0));
-	}
+	public void GetSystemWindowsDirectoryTest() => Assert.That(GetSystemWindowsDirectory(), Has.Length.GreaterThan(0));
 
 	[Test]
-	public void GetTickCountTest()
-	{
-		Assert.That(GetTickCount(), Is.Not.Zero);
-	}
+	public void GetTickCountTest() => Assert.That(GetTickCount(), Is.Not.Zero);
 
 	[Test]
-	public void GetTickCount64Test()
-	{
-		Assert.That(GetTickCount64(), Is.Not.Zero);
-	}
+	public void GetTickCount64Test() => Assert.That(GetTickCount64(), Is.Not.Zero);
 
 	[Test]
-	public void GetVersionTest()
-	{
-		Assert.That(GetVersion(), Is.Not.Zero);
-	}
+	public void GetVersionTest() => Assert.That(GetVersion(), Is.Not.Zero);
 
 	[Test]
 	public void GetVersionExTest()
 	{
-		OSVERSIONINFOEX ver = OSVERSIONINFOEX.Default;
+		OSVERSIONINFOEX ver = new();
 		Assert.That(GetVersionEx(ref ver), ResultIs.Successful);
 		Assert.That(ver.wProductType, Is.Not.Zero);
 		ver.WriteValues();
 	}
 
 	[Test]
-	public void GetWindowsDirectoryTest()
-	{
-		Assert.That(GetWindowsDirectory(), Has.Length.GreaterThan(0));
-	}
+	public void GetWindowsDirectoryTest() => Assert.That(GetWindowsDirectory(), Has.Length.GreaterThan(0));
 
 	[Test]
 	public void GlobalMemoryStatusTest()
 	{
-		MEMORYSTATUS status = MEMORYSTATUS.Default;
-		GlobalMemoryStatus(ref status);
+		GlobalMemoryStatus(out var status);
 		Assert.That(status.dwAvailVirtual, Is.Not.Zero);
 		status.WriteValues();
 	}
@@ -260,8 +234,7 @@ public class SysInfoTests
 	public void VerifyVersionInfoTest()
 	{
 		ulong mask = VerSetConditionMask(0, VERSION_MASK.VER_PRODUCT_TYPE, VERSION_CONDITION.VER_EQUAL);
-		OSVERSIONINFOEX ver = OSVERSIONINFOEX.Default;
-		ver.wProductType = ProductType.VER_NT_WORKSTATION;
+		OSVERSIONINFOEX ver = new() { wProductType = ProductType.VER_NT_WORKSTATION };
 		Assert.That(VerifyVersionInfo(ref ver, VERSION_MASK.VER_PRODUCT_TYPE, mask), Is.True);
 	}
 }

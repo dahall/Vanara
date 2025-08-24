@@ -173,7 +173,7 @@ public static partial class Kernel32
 	// UINT WINAPI GlobalFlags( _In_ HGLOBAL hMem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366577(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366577")]
-	public static extern GMEM GlobalFlags([In] HGLOBAL hMem);
+	public static extern GMEM GlobalFlags([In, AddAsMember] HGLOBAL hMem);
 
 	/// <summary>Frees the specified global memory object and invalidates its handle.</summary>
 	/// <param name="hMem">
@@ -237,7 +237,7 @@ public static partial class Kernel32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-globallock LPVOID GlobalLock( HGLOBAL hMem );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "0d7deac2-c9c4-4adc-8a0a-edfc512a4d6c")]
-	public static extern IntPtr GlobalLock(HGLOBAL hMem);
+	public static extern IntPtr GlobalLock([In, AddAsMember] HGLOBAL hMem);
 
 	/// <summary>Changes the size or attributes of a specified global memory object. The size can increase or decrease.</summary>
 	/// <param name="hMem">
@@ -289,7 +289,7 @@ public static partial class Kernel32
 	// HGLOBAL WINAPI GlobalReAlloc( _In_ HGLOBAL hMem, _In_ SIZE_T dwBytes, _In_ UINT uFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366590(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366590")]
-	public static extern HGLOBAL GlobalReAlloc([In] HGLOBAL hMem, SizeT dwBytes, GMEM uFlags);
+	public static extern HGLOBAL GlobalReAlloc([In, AddAsMember] HGLOBAL hMem, SizeT dwBytes, GMEM uFlags);
 
 	/// <summary>Retrieves the current size of the specified global memory object, in bytes.</summary>
 	/// <param name="hMem">
@@ -305,7 +305,7 @@ public static partial class Kernel32
 	// SIZE_T WINAPI GlobalSize( _In_ HGLOBAL hMem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366593(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366593")]
-	public static extern SizeT GlobalSize([In] HGLOBAL hMem);
+	public static extern SizeT GlobalSize([In, AddAsMember] HGLOBAL hMem);
 
 	/// <summary>
 	/// <para>
@@ -350,7 +350,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "580a2873-7f06-47a1-acf5-c2b3c96e15e7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GlobalUnlock(HGLOBAL hMem);
+	public static extern bool GlobalUnlock([In, AddAsMember] HGLOBAL hMem);
 
 	/// <summary>Determines whether the calling process has read access to the memory at the specified address.</summary>
 	/// <param name="lpfn">A pointer to a memory address.</param>
@@ -371,7 +371,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366712")]
 	[Obsolete("This function is obsolete and should not be used. Despite its name, it does not guarantee that the pointer is valid or that the memory pointed to is safe to use.")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsBadCodePtr(IntPtr lpfn);
+	public static extern bool IsBadCodePtr([In] IntPtr lpfn);
 
 	/// <summary>Verifies that the calling process has read access to the specified range of memory.</summary>
 	/// <param name="lp">A pointer to the first byte of the memory block.</param>
@@ -550,7 +550,7 @@ public static partial class Kernel32
 	// UINT WINAPI LocalFlags( _In_ HLOCAL hMem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366728(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366728")]
-	public static extern LMEM LocalFlags([In] HLOCAL hMem);
+	public static extern LMEM LocalFlags([In, AddAsMember] HLOCAL hMem);
 
 	/// <summary>
 	/// <para>Frees the specified local memory object and invalidates its handle.</para>
@@ -684,7 +684,7 @@ public static partial class Kernel32
 	// _Frees_ptr_opt_ HLOCAL hMem, SIZE_T uBytes, UINT uFlags );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "88527ddd-e0c2-4a41-825e-d3a6df77fd2a")]
-	public static extern HLOCAL LocalReAlloc(HLOCAL hMem, SizeT uBytes, LMEM uFlags);
+	public static extern HLOCAL LocalReAlloc([In] HLOCAL hMem, SizeT uBytes, LMEM uFlags);
 
 	/// <summary>
 	/// <para>Retrieves the current size of the specified local memory object, in bytes.</para>
@@ -712,7 +712,7 @@ public static partial class Kernel32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-localsize SIZE_T LocalSize( HLOCAL hMem );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "d1337845-d89c-4cd5-a584-36fe0c682c1a")]
-	public static extern SizeT LocalSize(HLOCAL hMem);
+	public static extern SizeT LocalSize([In] HLOCAL hMem);
 
 	/// <summary>
 	/// Decrements the lock count associated with a memory object that was allocated with <c>LMEM_MOVEABLE</c>. This function has no
@@ -733,45 +733,4 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366747")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool LocalUnlock([In] HLOCAL hMem);
-
-	/// <summary>Unmanaged memory methods for HGLOBAL with GMEM_MOVEABLE.</summary>
-	/// <seealso cref="HGlobalMemoryMethods" />
-	/// <seealso cref="MemoryMethodsBase" />
-	public sealed class MoveableHGlobalMemoryMethods : MemoryMethodsBase
-	{
-		/// <inheritdoc/>
-		public override bool AllocZeroes => true;
-
-		/// <summary>Gets a value indicating whether this memory supports locking.</summary>
-		/// <value><see langword="true"/> if lockable; otherwise, <see langword="false"/>.</value>
-		public override bool Lockable => true;
-
-		/// <summary>Gets a static instance of these methods.</summary>
-		public static readonly IMemoryMethods Instance = new MoveableHGlobalMemoryMethods();
-
-		/// <summary>Gets a handle to a memory allocation of the specified size.</summary>
-		/// <param name="size">The size, in bytes, of memory to allocate.</param>
-		/// <returns>A memory handle.</returns>
-		public override IntPtr AllocMem(int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalAlloc(GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT | GMEM.GMEM_SHARE, size));
-
-		/// <summary>Frees the memory associated with a handle.</summary>
-		/// <param name="hMem">A memory handle.</param>
-		public override void FreeMem(IntPtr hMem) => GlobalFree(hMem);
-
-		/// <summary>Locks the memory of a specified handle and gets a pointer to it.</summary>
-		/// <param name="hMem">A memory handle.</param>
-		/// <returns>A pointer to the locked memory.</returns>
-		public override IntPtr LockMem(IntPtr hMem) => Win32Error.ThrowLastErrorIfNull(GlobalLock(hMem));
-
-		/// <summary>Gets the reallocation method.</summary>
-		/// <param name="hMem">A memory handle.</param>
-		/// <param name="size">The size, in bytes, of memory to allocate.</param>
-		/// <returns>A memory handle.</returns>
-		public override IntPtr ReAllocMem(IntPtr hMem, int size) => Win32Error.ThrowLastErrorIfNull((IntPtr)GlobalReAlloc(hMem, size, GMEM.GMEM_MOVEABLE | GMEM.GMEM_ZEROINIT | GMEM.GMEM_SHARE));
-
-		/// <summary>Unlocks the memory of a specified handle.</summary>
-		/// <param name="hMem">A memory handle.</param>
-		/// <returns><see langword="true"/> if the memory object is still locked after decrementing the lock count; otherwise <see langword="false"/>.</returns>
-		public override bool UnlockMem(IntPtr hMem) => GlobalUnlock(hMem);
-	}
 }

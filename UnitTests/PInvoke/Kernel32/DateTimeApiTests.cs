@@ -10,16 +10,10 @@ public class DateTimeApiTests
 	private SYSTEMTIME st;
 
 	[OneTimeSetUp]
-	public void _Setup()
-	{
-		GetSystemTime(out st);
-	}
+	public void _Setup() => GetSystemTime(out st);
 
 	[SetUp]
-	public void _TestSetup()
-	{
-		sb.Clear();
-	}
+	public void _TestSetup() => sb.Clear();
 
 	[Test]
 	public void GetDateFormatTest()

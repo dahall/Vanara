@@ -46,9 +46,8 @@ public partial class WinBaseTests
 	[Test]
 	public void CommConfigDialogTest()
 	{
-		COMMCONFIG cc = COMMCONFIG.Default;
-		cc.dwProviderSubType = PROV_SUB_TYPE.PST_UNSPECIFIED;
-		Assert.That(CommConfigDialog(pcCommPort, HWND.NULL, ref cc), ResultIs.Successful);
+		COMMCONFIG cc = new() { dwProviderSubType = PROV_SUB_TYPE.PST_UNSPECIFIED };
+		Assert.That(CommConfigDialog(pcCommPort, HWND.NULL, cc), ResultIs.Successful);
 	}
 
 	[Test]
@@ -67,14 +66,11 @@ public partial class WinBaseTests
 	}
 
 	[Test]
-	public void GetCommPortsTest()
-	{
-		Assert.That(() =>
-		{
-			uint[] p = GetCommPorts();
-			p.WriteValues();
-		}, Throws.Nothing);
-	}
+	public void GetCommPortsTest() => Assert.That(() =>
+										   {
+											   uint[] p = GetCommPorts();
+											   p.WriteValues();
+										   }, Throws.Nothing);
 
 	[Test]
 	public void GetCommPropertiesTest()
@@ -88,12 +84,9 @@ public partial class WinBaseTests
 	public void GetSetCommConfigTest()
 	{
 		using SafeHFILE hCom = ComPort;
-		using SafeHGlobalHandle mem = new(2048);
-		uint sz = (uint)mem.Size;
-		Assert.That(GetCommConfig(hCom, mem, ref sz), ResultIs.Successful);
-		COMMCONFIG cc = mem.ToStructure<COMMCONFIG>();
+		Assert.That(GetCommConfig(hCom, out var cc), ResultIs.Successful);
 		cc.WriteValues();
-		Assert.That(SetCommConfig(hCom, mem, (uint)mem.Size), ResultIs.Successful);
+		Assert.That(SetCommConfig(hCom, cc), ResultIs.Successful);
 	}
 
 	[Test]
@@ -131,7 +124,7 @@ public partial class WinBaseTests
 			PrintCommState(dcb);       //  Output to console
 		}
 
-		void PrintCommState(in DCB dcb)
+		static void PrintCommState(in DCB dcb)
 		{
 			// Print some of the DCB structure values
 			TestContext.WriteLine($"nBaudRate = {dcb.BaudRate}, ByteSize = {dcb.ByteSize}, Parity = {dcb.Parity}, StopBits = {dcb.StopBits}");
@@ -150,19 +143,13 @@ public partial class WinBaseTests
 	[Test]
 	public void GetSetDefaultCommConfigTest()
 	{
-		using SafeHGlobalHandle mem = new(2048);
-		uint sz = (uint)mem.Size;
-		Assert.That(GetDefaultCommConfig(pcCommPort, mem, ref sz), ResultIs.Successful);
-		COMMCONFIG cc = mem.ToStructure<COMMCONFIG>();
+		Assert.That(GetDefaultCommConfig(pcCommPort, out var cc), ResultIs.Successful);
 		cc.WriteValues();
-		Assert.That(SetDefaultCommConfig(pcCommPort, mem, (uint)mem.Size), ResultIs.Successful);
+		Assert.That(SetDefaultCommConfig(pcCommPort, cc), ResultIs.Successful);
 	}
 
 	[Test]
-	public void OpenCommPortTest()
-	{
-		Assert.That(OpenCommPort(3, FileAccess.GENERIC_READ | FileAccess.GENERIC_WRITE, 0), ResultIs.ValidHandle);
-	}
+	public void OpenCommPortTest() => Assert.That(OpenCommPort(1, FileAccess.GENERIC_READ | FileAccess.GENERIC_WRITE, 0), ResultIs.ValidHandle);
 
 	[Test]
 	public void PurgeCommTest()

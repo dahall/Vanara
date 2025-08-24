@@ -276,7 +276,7 @@ public class SynchApiTests
 			Assert.That(ghThreads[i].IsNull, Is.False);
 		}
 
-		TestContext.Write("Main thread writing to the shared buffer...\n");
+		TestContext.Write("MyMain thread writing to the shared buffer...\n");
 
 		// Set ghWriteEvent to signaled
 		if (!SetEvent(ghWriteEvent))
@@ -285,7 +285,7 @@ public class SynchApiTests
 			return;
 		}
 
-		TestContext.Write("Main thread waiting for threads to exit...\n");
+		TestContext.Write("MyMain thread waiting for threads to exit...\n");
 
 		// The handle for each thread is signaled when the thread is terminated.
 		switch (WaitForMultipleObjects(ghThreads, true, INFINITE))
@@ -305,7 +305,7 @@ public class SynchApiTests
 		foreach (SafeHTHREAD t in ghThreads)
 			t.Dispose();
 
-		uint ThreadProc(IntPtr _)
+		static uint ThreadProc(IntPtr _)
 		{
 			uint id = GetCurrentThreadId();
 
@@ -352,12 +352,12 @@ public class SynchApiTests
 				Assert.That(ghThreads[i].IsNull, Is.False);
 			}
 
-			TestContext.Write("Main thread writing to the shared buffer...\n");
+			TestContext.Write("MyMain thread writing to the shared buffer...\n");
 
 			// Set ghWriteEvent to signaled
 			Assert.That(SetEvent(ghWriteEvent), ResultIs.Successful);
 
-			TestContext.Write("Main thread waiting for threads to exit...\n");
+			TestContext.Write("MyMain thread waiting for threads to exit...\n");
 
 			// The handle for each thread is signaled when the thread is terminated.
 			switch (WaitForMultipleObjects(ghThreads, true, INFINITE))
@@ -434,7 +434,7 @@ public class SynchApiTests
 			t.Dispose();
 		}
 
-		uint ThreadProc(IntPtr _)
+		static uint ThreadProc(IntPtr _)
 		{
 			uint id = GetCurrentThreadId();
 
@@ -488,7 +488,7 @@ public class SynchApiTests
 			t.Dispose();
 		}
 
-		uint ThreadProc(IntPtr _)
+		static uint ThreadProc(IntPtr _)
 		{
 			uint id = GetCurrentThreadId();
 
@@ -542,7 +542,7 @@ public class SynchApiTests
 			t.Dispose();
 		}
 
-		uint ThreadProc(IntPtr _)
+		static uint ThreadProc(IntPtr _)
 		{
 			uint id = GetCurrentThreadId();
 
@@ -601,7 +601,7 @@ public class SynchApiTests
 			t.Dispose();
 		}
 
-		uint ThreadProc(IntPtr _)
+		static uint ThreadProc(IntPtr _)
 		{
 			uint id = GetCurrentThreadId();
 
@@ -818,7 +818,7 @@ public class SynchApiTests
 		Assert.That(SetWaitableTimer(hTimer, liDueTime), ResultIs.Successful);
 		Assert.That(CancelWaitableTimer(hTimer), ResultIs.Successful);
 
-		void ThreadProc()
+		static void ThreadProc()
 		{
 			using SafeWaitableTimerHandle hThrTimer = OpenWaitableTimer((uint)SynchronizationObjectAccess.TIMER_ALL_ACCESS, false, tName);
 			Assert.That(hThrTimer.IsNull, Is.False);

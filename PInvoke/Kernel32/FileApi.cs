@@ -6583,7 +6583,8 @@ public static partial class Kernel32
 	// DWORD WINAPI GetFinalPathNameByHandle( _In_ HANDLE hFile, _Out_ LPTSTR lpszFilePath, _In_ DWORD cchFilePath, _In_ DWORD dwFlags);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364962")]
-	public static extern uint GetFinalPathNameByHandle([In, AddAsMember] HFILE hFile, StringBuilder? lpszFilePath, uint cchFilePath, FinalPathNameOptions dwFlags);
+	public static extern uint GetFinalPathNameByHandle([In, AddAsMember] HFILE hFile, [SizeDef(nameof(cchFilePath), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpszFilePath,
+		uint cchFilePath, FinalPathNameOptions dwFlags);
 
 	/// <summary>
 	/// <para>Retrieves the full path and file name of the specified file.</para>

@@ -3912,7 +3912,7 @@ public static partial class Kernel32
 	// SIZE_T WINAPI VirtualQuery( _In_opt_ LPCVOID lpAddress, _Out_ PMEMORY_BASIC_INFORMATION lpBuffer, _In_ SIZE_T dwLength);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366902")]
-	public static extern SizeT VirtualQuery([In] IntPtr lpAddress, [Out, SizeDef(nameof(dwLength))] StructPointer<MEMORY_BASIC_INFORMATION> lpBuffer, SizeT dwLength);
+	public static extern SizeT VirtualQuery([In] IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, SizeT dwLength);
 
 	/// <summary>Retrieves information about a range of pages within the virtual address space of a specified process.</summary>
 	/// <param name="hProcess">
@@ -3945,7 +3945,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366907")]
 	public static extern SizeT VirtualQueryEx([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpAddress,
-		[Out, SizeDef(nameof(dwLength))] StructPointer<MEMORY_BASIC_INFORMATION> lpBuffer, SizeT dwLength);
+		out MEMORY_BASIC_INFORMATION lpBuffer, SizeT dwLength);
 
 	/// <summary>
 	/// Unlocks a specified range of pages in the virtual address space of a process, enabling the system to swap the pages out to the

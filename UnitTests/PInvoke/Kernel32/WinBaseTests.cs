@@ -6,7 +6,7 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public partial class WinBaseTests
 {
-	[Test]
+	[TestWhenElevated]
 	public void AddLocalAlternateComputerNameTest()
 	{
 		Assert.That(AddLocalAlternateComputerName("BadName"), ResultIs.Successful);
@@ -18,10 +18,10 @@ public partial class WinBaseTests
 		Assert.That(AddSecureMemoryCacheCallback(callback), ResultIs.Successful);
 		Assert.That(RemoveSecureMemoryCacheCallback(callback), ResultIs.Successful);
 
-		bool callback(IntPtr Addr, SizeT Range) => true;
+		static bool callback(IntPtr Addr, SizeT Range) => true;
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void BaseFlushAppcompatCacheTest()
 	{
 		Assert.That(BaseFlushAppcompatCache(), ResultIs.Successful);
@@ -69,16 +69,10 @@ public partial class WinBaseTests
 	}
 
 	[Test]
-	public void GetComPlusPackageInstallStatusTest()
-	{
-		Assert.That(GetComPlusPackageInstallStatus(), Is.InRange(0, 1));
-	}
+	public void GetComPlusPackageInstallStatusTest() => Assert.That(GetComPlusPackageInstallStatus(), Is.InRange(0, 1));
 
 	[Test]
-	public void GetEnabledXStateFeaturesTest()
-	{
-		Assert.That(GetEnabledXStateFeatures(), Is.Not.Zero);
-	}
+	public void GetEnabledXStateFeaturesTest() => Assert.That(GetEnabledXStateFeatures(), Is.Not.Zero);
 
 	[Test]
 	public void GetMaximumProcessorCountTest()
@@ -122,10 +116,7 @@ public partial class WinBaseTests
 	}
 
 	[Test]
-	public void GetSystemDEPPolicyTest()
-	{
-		Assert.That(GetSystemDEPPolicy().IsValid(), Is.True);
-	}
+	public void GetSystemDEPPolicyTest() => Assert.That(GetSystemDEPPolicy().IsValid(), Is.True);
 
 	[Test]
 	public void IsNativeVhdBootTest()
@@ -135,10 +126,7 @@ public partial class WinBaseTests
 	}
 
 	[Test]
-	public void LoadPackagedLibraryTest()
-	{
-		Assert.That(LoadPackagedLibrary("kernel32").IsInvalid, Is.True);
-	}
+	public void LoadPackagedLibraryTest() => Assert.That(LoadPackagedLibrary("kernel32").IsInvalid, Is.True);
 
 	[Test]
 	public void LocateXStateFeatureTest()
@@ -177,10 +165,7 @@ public partial class WinBaseTests
 	}
 
 	[Test]
-	public void MulDivTest()
-	{
-		Assert.That(MulDiv(0x60000000, 0x60000000, 0x7FFFFFFF), Is.EqualTo(1207959553));
-	}
+	public void MulDivTest() => Assert.That(MulDiv(0x60000000, 0x60000000, 0x7FFFFFFF), Is.EqualTo(1207959553));
 
 	[Test]
 	public void PowerRequestTest()
@@ -206,16 +191,10 @@ public partial class WinBaseTests
 	}
 
 	[Test]
-	public void SetSearchPathModeTest()
-	{
-		Assert.That(SetSearchPathMode(BASE_SEARCH_PATH.BASE_SEARCH_PATH_ENABLE_SAFE_SEARCHMODE), ResultIs.Successful);
-	}
+	public void SetSearchPathModeTest() => Assert.That(SetSearchPathMode(BASE_SEARCH_PATH.BASE_SEARCH_PATH_ENABLE_SAFE_SEARCHMODE), ResultIs.Successful);
 
 	[Test]
-	public void TermsrvAppInstallModeTest()
-	{
-		Assert.That(TermsrvAppInstallMode(), Is.False);
-	}
+	public void TermsrvAppInstallModeTest() => Assert.That(TermsrvAppInstallMode(), Is.False);
 
 	[Test]
 	public void Wow64GetSetThreadContextTest()

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace Vanara.PInvoke;
@@ -7,10 +8,9 @@ namespace Vanara.PInvoke;
 public static partial class Kernel32
 {
 	/// <summary>
-	/// An application-defined callback function used with the <c>CopyFileEx</c>, <c>MoveFileTransacted</c>, and
-	/// <c>MoveFileWithProgress</c> functions. It is called when a portion of a copy or move operation is completed. The
-	/// <c>LPPROGRESS_ROUTINE</c> type defines a pointer to this callback function. <c>CopyProgressRoutine</c> is a placeholder for the
-	/// application-defined function name.
+	/// An application-defined callback function used with the <c>CopyFileEx</c>, <c>MoveFileTransacted</c>, and <c>MoveFileWithProgress</c>
+	/// functions. It is called when a portion of a copy or move operation is completed. The <c>LPPROGRESS_ROUTINE</c> type defines a pointer
+	/// to this callback function. <c>CopyProgressRoutine</c> is a placeholder for the application-defined function name.
 	/// </summary>
 	/// <param name="TotalFileSize">The total size of the file, in bytes.</param>
 	/// <param name="TotalBytesTransferred">
@@ -83,7 +83,8 @@ public static partial class Kernel32
 	// lpData); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363854(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa363854")]
-	public delegate CopyProgressResult CopyProgressRoutine(long TotalFileSize, long TotalBytesTransferred, long StreamSize, long StreamBytesTransferred, uint dwStreamNumber, COPY_CALLBACK_REASON dwCallbackReason, [In] IntPtr hSourceFile, [In] IntPtr hDestinationFile, [In] IntPtr lpData);
+	public delegate CopyProgressResult CopyProgressRoutine(long TotalFileSize, long TotalBytesTransferred, long StreamSize, long StreamBytesTransferred,
+		uint dwStreamNumber, COPY_CALLBACK_REASON dwCallbackReason, [In] HFILE hSourceFile, [In] HFILE hDestinationFile, [In, Optional] IntPtr lpData);
 
 	private delegate THandle FindFirstDelegate<THandle>(StringBuilder sb, ref uint sz) where THandle : SafeHandle;
 
@@ -116,16 +117,16 @@ public static partial class Kernel32
 		COPY_FILE_COPY_SYMLINK = 0x00000800,
 
 		/// <summary>
-		/// If the destination file exists the copy operation fails immediately. If a file or directory exists with the destination name
-		/// then the CopyFile2 function call will fail with either HRESULT_FROM_WIN32(ERROR_ALREADY_EXISTS) or
-		/// HRESULT_FROM_WIN32(ERROR_FILE_EXISTS). If COPY_FILE_RESUME_FROM_PAUSE is also specified then a failure is only triggered if
-		/// the destination file does not have a valid restart header.
+		/// If the destination file exists the copy operation fails immediately. If a file or directory exists with the destination name then
+		/// the CopyFile2 function call will fail with either HRESULT_FROM_WIN32(ERROR_ALREADY_EXISTS) or
+		/// HRESULT_FROM_WIN32(ERROR_FILE_EXISTS). If COPY_FILE_RESUME_FROM_PAUSE is also specified then a failure is only triggered if the
+		/// destination file does not have a valid restart header.
 		/// </summary>
 		COPY_FILE_FAIL_IF_EXISTS = 0x00000001,
 
 		/// <summary>
-		/// The copy is performed using unbuffered I/O, bypassing the system cache resources. This flag is recommended for very large
-		/// file copies. It is not recommended to pause copies that are using this flag.
+		/// The copy is performed using unbuffered I/O, bypassing the system cache resources. This flag is recommended for very large file
+		/// copies. It is not recommended to pause copies that are using this flag.
 		/// </summary>
 		COPY_FILE_NO_BUFFERING = 0x00001000,
 
@@ -141,17 +142,16 @@ public static partial class Kernel32
 		COPY_FILE_RESTARTABLE = 0x00000002,
 
 		/// <summary>
-		/// The copy is attempted, specifying ACCESS_SYSTEM_SECURITY for the source file and ACCESS_SYSTEM_SECURITY | WRITE_DAC |
-		/// WRITE_OWNER for the destination file. If these requests are denied the access request will be reduced to the highest
-		/// privilege level for which access is granted. For more information see SACL Access Right. This can be used to allow the
-		/// CopyFile2ProgressRoutine callback to perform operations requiring higher privileges, such as copying the security attributes
-		/// for the file.
+		/// The copy is attempted, specifying ACCESS_SYSTEM_SECURITY for the source file and ACCESS_SYSTEM_SECURITY | WRITE_DAC | WRITE_OWNER
+		/// for the destination file. If these requests are denied the access request will be reduced to the highest privilege level for
+		/// which access is granted. For more information see SACL Access Right. This can be used to allow the CopyFile2ProgressRoutine
+		/// callback to perform operations requiring higher privileges, such as copying the security attributes for the file.
 		/// </summary>
 		COPY_FILE_REQUEST_SECURITY_PRIVILEGES = 0x00002000,
 
 		/// <summary>
-		/// The destination file is examined to see if it was copied using COPY_FILE_RESTARTABLE. If so the copy is resumed. If not the
-		/// file will be fully copied.
+		/// The destination file is examined to see if it was copied using COPY_FILE_RESTARTABLE. If so the copy is resumed. If not the file
+		/// will be fully copied.
 		/// </summary>
 		COPY_FILE_RESUME_FROM_PAUSE = 0x00004000,
 
@@ -199,50 +199,42 @@ public static partial class Kernel32
 		FILE_ACTION_RENAMED_NEW_NAME = 0x00000005,
 	}
 
-	/// <summary>Specifies the type of information that should be retrieved.</summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ne-minwinbase-file_info_by_name_class typedef enum
-	// _FILE_INFO_BY_NAME_CLASS { FileStatByNameInfo, FileStatLxByNameInfo, FileCaseSensitiveByNameInfo, FileStatBasicByNameInfo,
-	// MaximumFileInfoByNameClass } FILE_INFO_BY_NAME_CLASS, *PFILE_INFO_BY_NAME_CLASS;
-	[PInvokeData("minwinbase.h", MSDNShortId = "NE:minwinbase._FILE_INFO_BY_NAME_CLASS")]
-	public enum FILE_INFO_BY_NAME_CLASS
+	/// <summary>Per-directory case-sensitive information.</summary>
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_CASE_SENSITIVE_INFORMATION")]
+	[Flags]
+	public enum FILE_CS_FLAG : uint
 	{
-		/// <summary>
-		/// <para>Minimal stat info should be queried. See</para>
-		/// <para>FILE_STAT_INFORMATION</para>
-		/// <para>.</para>
-		/// </summary>
-		[CorrespondingType(typeof(FILE_STAT_INFORMATION))]
-		FileStatByNameInfo,
+		/// <summary>Specifies the directory is case-sensitive.</summary>
+		FILE_CS_FLAG_CASE_SENSITIVE_DIR = 0x00000001,
+	}
 
-		/// <summary>
-		/// <para>Additional (Linux-oriented) stat info should be queried. See</para>
-		/// <para>FILE_STAT_LX_INFORMATION</para>
-		/// <para>.</para>
-		/// </summary>
-		[CorrespondingType(typeof(FILE_STAT_LX_INFORMATION))]
-		FileStatLxByNameInfo,
+	/// <summary>Specifies what actions the system should take with a specific file while deleting.</summary>
+	[PInvokeData("WinBase.h")]
+	public enum FILE_DISPOSITION : uint
+	{
+		/// <summary>Specifies the system should not delete a file.</summary>
+		FILE_DISPOSITION_DO_NOT_DELETE = 0x00000000,
 
-		/// <summary>
-		/// <para>Info about case-sensitivity should be queried. See</para>
-		/// <para>FILE_CASE_SENSITIVE_INFORMATION</para>
-		/// <para>.</para>
-		/// </summary>
-		[CorrespondingType(typeof(FILE_CASE_SENSITIVE_INFORMATION))]
-		FileCaseSensitiveByNameInfo,
+		/// <summary>Specifies the system should delete a file.</summary>
+		FILE_DISPOSITION_DELETE = 0x00000001,
 
-		/// <summary>
-		/// <para>Extended stat info should be queried. See</para>
-		/// <para>FILE_STAT_BASIC_INFORMATION</para>
-		/// <para>.</para>
-		/// </summary>
-		[CorrespondingType(typeof(FILE_STAT_BASIC_INFORMATION))]
-		FileStatBasicByNameInfo,
+		/// <summary>Specifies the system should perform a POSIX-style delete. See more info in Remarks.</summary>
+		FILE_DISPOSITION_POSIX_SEMANTICS = 0x00000002,
+
+		/// <summary>Specifies the system should force an image section check.</summary>
+		FILE_DISPOSITION_FORCE_IMAGE_SECTION_CHECK = 0x00000004,
+
+		/// <summary>Specifies if the system sets or clears the on-close state.</summary>
+		FILE_DISPOSITION_ON_CLOSE = 0x00000008,
+
+		/// <summary>Allows read-only files to be deleted. For more information, see the Remarks section below.</summary>
+		FILE_DISPOSITION_IGNORE_READONLY_ATTRIBUTE = 0x00000010,
 	}
 
 	/// <summary>
 	/// <para>
-	/// Identifies the type of file information that <see cref="GetFileInformationByHandleEx"/> should retrieve or
-	/// <see cref="SetFileInformationByHandle"/> should set.
+	/// Identifies the type of file information that <see cref="GetFileInformationByHandleEx"/> should retrieve or <see
+	/// cref="SetFileInformationByHandle"/> should set.
 	/// </para>
 	/// </summary>
 	// typedef enum _FILE_INFO_BY_HANDLE_CLASS { FileBasicInfo = 0, FileStandardInfo = 1, FileNameInfo = 2, FileRenameInfo = 3,
@@ -254,115 +246,87 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "aa364228")]
 	public enum FILE_INFO_BY_HANDLE_CLASS
 	{
-		/// <summary>
-		/// <para>Minimal information for the file should be retrieved or set. Used for file handles. See <c>FILE_BASIC_INFO</c>.</para>
-		/// </summary>
+		/// <summary>Minimal information for the file should be retrieved or set. Used for file handles. See <c>FILE_BASIC_INFO</c>.</summary>
 		[CorrespondingType(typeof(FILE_BASIC_INFO))]
 		FileBasicInfo = 0,
 
 		/// <summary>
-		/// <para>
 		/// Extended information for the file should be retrieved. Used for file handles. Use only when calling
 		/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_STANDARD_INFO</c>.
-		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_STANDARD_INFO), CorrespondingAction.Get)]
 		FileStandardInfo,
 
 		/// <summary>
-		/// <para>
 		/// The file name should be retrieved. Used for any handles. Use only when calling <c>GetFileInformationByHandleEx</c>. See <c>FILE_NAME_INFO</c>.
-		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_NAME_INFO), CorrespondingAction.Get)]
 		FileNameInfo,
 
 		/// <summary>
-		/// <para>
 		/// The file name should be changed. Used for file handles. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_RENAME_INFO</c>.
-		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_RENAME_INFO), CorrespondingAction.Set)]
 		FileRenameInfo,
 
-		/// <summary>
-		/// <para>The file should be deleted. Used for any handles. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_DISPOSITION_INFO</c>.</para>
-		/// </summary>
+		/// <summary>The file should be deleted. Used for any handles. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_DISPOSITION_INFO</c>.</summary>
 		[CorrespondingType(typeof(FILE_DISPOSITION_INFO), CorrespondingAction.Set)]
 		FileDispositionInfo,
 
 		/// <summary>
-		/// <para>
 		/// The file allocation information should be changed. Used for file handles. Use only when calling
 		/// <c>SetFileInformationByHandle</c>. See <c>FILE ALLOCATION INFO</c>.
-		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_ALLOCATION_INFO), CorrespondingAction.Set)]
 		FileAllocationInfo,
 
-		/// <summary>
-		/// <para>The end of the file should be set. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_END_OF_FILE_INFO</c>.</para>
-		/// </summary>
+		/// <summary>The end of the file should be set. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_END_OF_FILE_INFO</c>.</summary>
 		[CorrespondingType(typeof(FILE_END_OF_FILE_INFO), CorrespondingAction.Set)]
 		FileEndOfFileInfo,
 
 		/// <summary>
-		/// <para>
 		/// File stream information for the specified file should be retrieved. Used for any handles. Use only when calling
 		/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_STREAM_INFO</c>.
-		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_STREAM_INFO), CorrespondingAction.Get)]
 		FileStreamInfo,
 
 		/// <summary>
-		/// <para>
 		/// File compression information should be retrieved. Used for any handles. Use only when calling
 		/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_COMPRESSION_INFO</c>.
-		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_COMPRESSION_INFO), CorrespondingAction.Get)]
 		FileCompressionInfo,
 
 		/// <summary>
-		/// <para>
-		/// File attribute information should be retrieved. Used for any handles. Use only when calling
-		/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_ATTRIBUTE_TAG_INFO</c>.
-		/// </para>
+		/// File attribute information should be retrieved. Used for any handles. Use only when calling <c>GetFileInformationByHandleEx</c>.
+		/// See <c>FILE_ATTRIBUTE_TAG_INFO</c>.
 		/// </summary>
 		[CorrespondingType(typeof(FILE_ATTRIBUTE_TAG_INFO), CorrespondingAction.Get)]
 		FileAttributeTagInfo,
 
 		/// <summary>
-		/// <para>
 		/// Files in the specified directory should be retrieved. Used for directory handles. Use only when calling
-		/// <c>GetFileInformationByHandleEx</c>. The number of files returned for each call to <c>GetFileInformationByHandleEx</c>
-		/// depends on the size of the buffer that is passed to the function. Any subsequent calls to <c>GetFileInformationByHandleEx</c>
-		/// on the same handle will resume the enumeration operation after the last file is returned. See <c>FILE_ID_BOTH_DIR_INFO</c>.
-		/// </para>
+		/// <c>GetFileInformationByHandleEx</c>. The number of files returned for each call to <c>GetFileInformationByHandleEx</c> depends on
+		/// the size of the buffer that is passed to the function. Any subsequent calls to <c>GetFileInformationByHandleEx</c> on the same
+		/// handle will resume the enumeration operation after the last file is returned. See <c>FILE_ID_BOTH_DIR_INFO</c>.
 		/// </summary>
 		[CorrespondingType(typeof(FILE_ID_BOTH_DIR_INFO), CorrespondingAction.Get)]
 		FileIdBothDirectoryInfo,
 
 		/// <summary>
-		/// <para>
 		/// Identical to <c>FileIdBothDirectoryInfo</c>, but forces the enumeration operation to start again from the beginning. See <c>FILE_ID_BOTH_DIR_INFO</c>.
-		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_ID_BOTH_DIR_INFO), CorrespondingAction.Get)]
 		FileIdBothDirectoryRestartInfo,
 
-		/// <summary>
-		/// <para>Priority hint information should be set. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_IO_PRIORITY_HINT_INFO</c>.</para>
-		/// </summary>
+		/// <summary>Priority hint information should be set. Use only when calling <c>SetFileInformationByHandle</c>. See <c>FILE_IO_PRIORITY_HINT_INFO</c>.</summary>
 		[CorrespondingType(typeof(FILE_IO_PRIORITY_HINT_INFO), CorrespondingAction.Set)]
 		FileIoPriorityHintInfo,
 
 		/// <summary>
-		/// <para>
 		/// File remote protocol information should be retrieved. Use for any handles. Use only when calling
 		/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_REMOTE_PROTOCOL_INFO</c>.
-		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_REMOTE_PROTOCOL_INFO), CorrespondingAction.Get)]
 		FileRemoteProtocolInfo,
@@ -373,8 +337,8 @@ public static partial class Kernel32
 		/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_FULL_DIR_INFO</c>.
 		/// </para>
 		/// <para>
-		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value
-		/// is not supported before Windows 8 and Windows Server 2012
+		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is
+		/// not supported before Windows 8 and Windows Server 2012
 		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_FULL_DIR_INFO), CorrespondingAction.Get)]
@@ -382,12 +346,12 @@ public static partial class Kernel32
 
 		/// <summary>
 		/// <para>
-		/// Identical to <c>FileFullDirectoryInfo</c>, but forces the enumeration operation to start again from the beginning. Use only
-		/// when calling <c>GetFileInformationByHandleEx</c>. See <c>FILE_FULL_DIR_INFO</c>.
+		/// Identical to <c>FileFullDirectoryInfo</c>, but forces the enumeration operation to start again from the beginning. Use only when
+		/// calling <c>GetFileInformationByHandleEx</c>. See <c>FILE_FULL_DIR_INFO</c>.
 		/// </para>
 		/// <para>
-		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value
-		/// is not supported before Windows 8 and Windows Server 2012
+		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is
+		/// not supported before Windows 8 and Windows Server 2012
 		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_FULL_DIR_INFO), CorrespondingAction.Get)]
@@ -395,12 +359,11 @@ public static partial class Kernel32
 
 		/// <summary>
 		/// <para>
-		/// File storage information should be retrieved. Use for any handles. Use only when calling <c>GetFileInformationByHandleEx</c>.
-		/// See <c>FILE_STORAGE_INFO</c>.
+		/// File storage information should be retrieved. Use for any handles. Use only when calling <c>GetFileInformationByHandleEx</c>. See <c>FILE_STORAGE_INFO</c>.
 		/// </para>
 		/// <para>
-		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value
-		/// is not supported before Windows 8 and Windows Server 2012
+		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is
+		/// not supported before Windows 8 and Windows Server 2012
 		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_STORAGE_INFO), CorrespondingAction.Get)]
@@ -408,12 +371,12 @@ public static partial class Kernel32
 
 		/// <summary>
 		/// <para>
-		/// File alignment information should be retrieved. Use for any handles. Use only when calling
-		/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_ALIGNMENT_INFO</c>.
+		/// File alignment information should be retrieved. Use for any handles. Use only when calling <c>GetFileInformationByHandleEx</c>.
+		/// See <c>FILE_ALIGNMENT_INFO</c>.
 		/// </para>
 		/// <para>
-		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value
-		/// is not supported before Windows 8 and Windows Server 2012
+		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is
+		/// not supported before Windows 8 and Windows Server 2012
 		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_ALIGNMENT_INFO), CorrespondingAction.Get)]
@@ -424,8 +387,8 @@ public static partial class Kernel32
 		/// File information should be retrieved. Use for any handles. Use only when calling <c>GetFileInformationByHandleEx</c>. See <c>FILE_ID_INFO</c>.
 		/// </para>
 		/// <para>
-		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value
-		/// is not supported before Windows 8 and Windows Server 2012
+		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is
+		/// not supported before Windows 8 and Windows Server 2012
 		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_ID_INFO), CorrespondingAction.Get)]
@@ -437,8 +400,8 @@ public static partial class Kernel32
 		/// <c>GetFileInformationByHandleEx</c>. See <c>FILE_ID_EXTD_DIR_INFO</c>.
 		/// </para>
 		/// <para>
-		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value
-		/// is not supported before Windows 8 and Windows Server 2012
+		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is
+		/// not supported before Windows 8 and Windows Server 2012
 		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_ID_EXTD_DIR_INFO), CorrespondingAction.Get)]
@@ -450,19 +413,56 @@ public static partial class Kernel32
 		/// when calling <c>GetFileInformationByHandleEx</c>. See <c>FILE_ID_EXTD_DIR_INFO</c>.
 		/// </para>
 		/// <para>
-		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value
-		/// is not supported before Windows 8 and Windows Server 2012
+		/// <c>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is
+		/// not supported before Windows 8 and Windows Server 2012
 		/// </para>
 		/// </summary>
 		[CorrespondingType(typeof(FILE_ID_EXTD_DIR_INFO), CorrespondingAction.Get)]
 		FileIdExtdDirectoryRestartInfo,
 
-		/// <summary>
-		/// <para>This value is used for validation. Supported values are less than this value.</para>
-		/// </summary>
+		/// <summary/>
+		[CorrespondingType(typeof(FILE_DISPOSITION_INFO_EX), CorrespondingAction.Set)]
+		FileDispositionInfoEx,
+
+		/// <summary/>
+		[CorrespondingType(typeof(FILE_RENAME_INFO_EX), CorrespondingAction.Set)]
+		FileRenameInfoEx,
+
+		/// <summary/>
+		[CorrespondingType(typeof(FILE_CASE_SENSITIVE_INFORMATION))]
+		FileCaseSensitiveInfo,
+
+		/// <summary/>
+		[CorrespondingType(typeof(FILE_NAME_INFO), CorrespondingAction.Get)]
+		FileNormalizedNameInfo,
+
+		/// <summary>This value is used for validation. Supported values are less than this value.</summary>
 		MaximumFileInfoByHandlesClass,
 	}
 
+	/// <summary>Specifies the type of information that should be retrieved.</summary>
+	// https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ne-minwinbase-file_info_by_name_class typedef enum
+	// _FILE_INFO_BY_NAME_CLASS { FileStatByNameInfo, FileStatLxByNameInfo, FileCaseSensitiveByNameInfo, FileStatBasicByNameInfo,
+	// MaximumFileInfoByNameClass } FILE_INFO_BY_NAME_CLASS, *PFILE_INFO_BY_NAME_CLASS;
+	[PInvokeData("minwinbase.h", MSDNShortId = "NE:minwinbase._FILE_INFO_BY_NAME_CLASS")]
+	public enum FILE_INFO_BY_NAME_CLASS
+	{
+		/// <summary>Minimal stat info should be queried. See FILE_STAT_INFORMATION.</summary>
+		[CorrespondingType(typeof(FILE_STAT_INFORMATION))]
+		FileStatByNameInfo,
+
+		/// <summary>Additional (Linux-oriented) stat info should be queried. See FILE_STAT_LX_INFORMATION.</summary>
+		[CorrespondingType(typeof(FILE_STAT_LX_INFORMATION))]
+		FileStatLxByNameInfo,
+
+		/// <summary>Info about case-sensitivity should be queried. See FILE_CASE_SENSITIVE_INFORMATION.</summary>
+		[CorrespondingType(typeof(FILE_CASE_SENSITIVE_INFORMATION))]
+		FileCaseSensitiveByNameInfo,
+
+		/// <summary>Extended stat info should be queried. See FILE_STAT_BASIC_INFORMATION.</summary>
+		[CorrespondingType(typeof(FILE_STAT_BASIC_INFORMATION))]
+		FileStatBasicByNameInfo,
+	}
 	/// <summary>The type of result to return.</summary>
 	[PInvokeData("WinBase.h")]
 	[Flags]
@@ -541,32 +541,32 @@ public static partial class Kernel32
 	{
 		/// <summary>
 		/// If a file named lpNewFileName exists, the function replaces its contents with the contents of the lpExistingFileName file,
-		/// provided that security requirements regarding access control lists (ACLs) are met. For more information, see the Remarks
-		/// section of this topic.This value cannot be used if lpNewFileName or lpExistingFileName names a directory.
+		/// provided that security requirements regarding access control lists (ACLs) are met. For more information, see the Remarks section
+		/// of this topic.This value cannot be used if lpNewFileName or lpExistingFileName names a directory.
 		/// </summary>
 		MOVEFILE_REPLACE_EXISTING = 0x00000001,
 
 		/// <summary>
 		/// If the file is to be moved to a different volume, the function simulates the move by using the CopyFile and DeleteFile
-		/// functions.If the file is successfully copied to a different volume and the original file is unable to be deleted, the
-		/// function succeeds leaving the source file intact.This value cannot be used with MOVEFILE_DELAY_UNTIL_REBOOT.
+		/// functions.If the file is successfully copied to a different volume and the original file is unable to be deleted, the function
+		/// succeeds leaving the source file intact.This value cannot be used with MOVEFILE_DELAY_UNTIL_REBOOT.
 		/// </summary>
 		MOVEFILE_COPY_ALLOWED = 0x00000002,
 
 		/// <summary>
-		/// The system does not move the file until the operating system is restarted. The system moves the file immediately after
-		/// AUTOCHK is executed, but before creating any paging files. Consequently, this parameter enables the function to delete paging
-		/// files from previous startups.This value can be used only if the process is in the context of a user who belongs to the
-		/// administrators group or the LocalSystem account. This value cannot be used with MOVEFILE_COPY_ALLOWED.Windows Server 2003 and
-		/// Windows XP: For information about special situations where this functionality can fail, and a suggested workaround solution,
-		/// see Files are not exchanged when Windows Server 2003 restarts if you use the MoveFileEx function to schedule a replacement
-		/// for some files in the Help and Support Knowledge Base.
+		/// The system does not move the file until the operating system is restarted. The system moves the file immediately after AUTOCHK is
+		/// executed, but before creating any paging files. Consequently, this parameter enables the function to delete paging files from
+		/// previous startups.This value can be used only if the process is in the context of a user who belongs to the administrators group
+		/// or the LocalSystem account. This value cannot be used with MOVEFILE_COPY_ALLOWED.Windows Server 2003 and Windows XP: For
+		/// information about special situations where this functionality can fail, and a suggested workaround solution, see Files are not
+		/// exchanged when Windows Server 2003 restarts if you use the MoveFileEx function to schedule a replacement for some files in the
+		/// Help and Support Knowledge Base.
 		/// </summary>
 		MOVEFILE_DELAY_UNTIL_REBOOT = 0x00000004,
 
 		/// <summary>
-		/// The function does not return until the file is actually moved on the disk.Setting this value guarantees that a move performed
-		/// as a copy and delete operation is flushed to disk before the function returns. The flush occurs at the end of the copy
+		/// The function does not return until the file is actually moved on the disk.Setting this value guarantees that a move performed as
+		/// a copy and delete operation is flushed to disk before the function returns. The flush occurs at the end of the copy
 		/// operation.This value has no effect if MOVEFILE_DELAY_UNTIL_REBOOT is set.
 		/// </summary>
 		MOVEFILE_WRITE_THROUGH = 0x00000008,
@@ -575,8 +575,8 @@ public static partial class Kernel32
 		MOVEFILE_CREATE_HARDLINK = 0x00000010,
 
 		/// <summary>
-		/// The function fails if the source file is a link source, but the file cannot be tracked after the move. This situation can
-		/// occur if the destination is a volume formatted with the FAT file system.
+		/// The function fails if the source file is a link source, but the file cannot be tracked after the move. This situation can occur
+		/// if the destination is a volume formatted with the FAT file system.
 		/// </summary>
 		MOVEFILE_FAIL_IF_NOT_TRACKABLE = 0x00000020
 	}
@@ -629,20 +629,18 @@ public static partial class Kernel32
 		OF_REOPEN = 0x00008000,
 
 		/// <summary>
-		/// For MS-DOS–based file systems, opens a file with compatibility mode, allows any process on a specified computer to open the
-		/// file any number of times.
+		/// For MS-DOS–based file systems, opens a file with compatibility mode, allows any process on a specified computer to open the file
+		/// any number of times.
 		/// <para>
-		/// Other efforts to open a file with other sharing modes fail. This flag is mapped to the FILE_SHARE_READ|FILE_SHARE_WRITE flags
-		/// of the CreateFile function.
+		/// Other efforts to open a file with other sharing modes fail. This flag is mapped to the FILE_SHARE_READ|FILE_SHARE_WRITE flags of
+		/// the CreateFile function.
 		/// </para>
 		/// </summary>
 		OF_SHARE_COMPAT = 0x00000000,
 
 		/// <summary>
 		/// Opens a file without denying read or write access to other processes.
-		/// <para>
-		/// On MS-DOS-based file systems, if the file has been opened in compatibility mode by any other process, the function fails.
-		/// </para>
+		/// <para>On MS-DOS-based file systems, if the file has been opened in compatibility mode by any other process, the function fails.</para>
 		/// <para>This flag is mapped to the FILE_SHARE_READ|FILE_SHARE_WRITE flags of the CreateFile function.</para>
 		/// </summary>
 		OF_SHARE_DENY_NONE = 0x00000040,
@@ -668,8 +666,8 @@ public static partial class Kernel32
 		OF_SHARE_DENY_WRITE = 0x00000020,
 
 		/// <summary>
-		/// Opens a file with exclusive mode, and denies both read/write access to other processes. If a file has been opened in any
-		/// other mode for read/write access, even by the current process, the function fails.
+		/// Opens a file with exclusive mode, and denies both read/write access to other processes. If a file has been opened in any other
+		/// mode for read/write access, even by the current process, the function fails.
 		/// </summary>
 		OF_SHARE_EXCLUSIVE = 0x00000010,
 
@@ -689,8 +687,8 @@ public static partial class Kernel32
 	/// <remarks>
 	/// <para>For more information about priority hints, see Using IRP Priority Hints.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ne-wdm-_io_priority_hint typedef enum _IO_PRIORITY_HINT
-	// { IoPriorityVeryLow , IoPriorityLow , IoPriorityNormal , IoPriorityHigh , IoPriorityCritical , MaxIoPriorityTypes } IO_PRIORITY_HINT;
+	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ne-wdm-_io_priority_hint typedef enum _IO_PRIORITY_HINT {
+	// IoPriorityVeryLow , IoPriorityLow , IoPriorityNormal , IoPriorityHigh , IoPriorityCritical , MaxIoPriorityTypes } IO_PRIORITY_HINT;
 	[PInvokeData("wdm.h", MSDNShortId = "38d19398-b34f-4934-b643-df119ebd9711")]
 	public enum PRIORITY_HINT
 	{
@@ -716,15 +714,15 @@ public static partial class Kernel32
 	/// <summary>
 	/// <para>Indicates the possible types of information that an application that calls the ReadDirectoryChangesExW function can request.</para>
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/minwinbase/ne-minwinbase-_read_directory_notify_information_class typedef
-	// enum _READ_DIRECTORY_NOTIFY_INFORMATION_CLASS { ReadDirectoryNotifyInformation , ReadDirectoryNotifyExtendedInformation }
+	// https://docs.microsoft.com/en-us/windows/desktop/api/minwinbase/ne-minwinbase-_read_directory_notify_information_class typedef enum
+	// _READ_DIRECTORY_NOTIFY_INFORMATION_CLASS { ReadDirectoryNotifyInformation , ReadDirectoryNotifyExtendedInformation }
 	// READ_DIRECTORY_NOTIFY_INFORMATION_CLASS, *PREAD_DIRECTORY_NOTIFY_INFORMATION_CLASS;
 	[PInvokeData("minwinbase.h", MSDNShortId = "193D018B-80FE-45B2-826A-A00D173E32D3")]
 	public enum READ_DIRECTORY_NOTIFY_INFORMATION_CLASS
 	{
 		/// <summary>
-		/// The ReadDirectoryChangesExW function should provide information that describes the changes within the specified directory,
-		/// and return this information in the output buffer in the form of FILE_NOTIFY_INFORMATION structures.
+		/// The ReadDirectoryChangesExW function should provide information that describes the changes within the specified directory, and
+		/// return this information in the output buffer in the form of FILE_NOTIFY_INFORMATION structures.
 		/// </summary>
 		ReadDirectoryNotifyInformation = 1,
 
@@ -770,8 +768,7 @@ public static partial class Kernel32
 		REMOTE_PROTOCOL_INFO_FLAG_INTEGRITY = 0x10,
 
 		/// <summary>
-		/// The remote protocol is using mutual authentication using Kerberos. This is only supported if the StructureVersion member is 2
-		/// or higher.
+		/// The remote protocol is using mutual authentication using Kerberos. This is only supported if the StructureVersion member is 2 or higher.
 		/// <para>Windows 7 and Windows Server 2008 R2: This flag is not supported before Windows 8 and Windows Server 2012.</para>
 		/// </summary>
 		REMOTE_PROTOCOL_INFO_FLAG_MUTUAL_AUTH = 0x20,
@@ -784,15 +781,15 @@ public static partial class Kernel32
 		REPLACEFILE_WRITE_THROUGH = 0x00000001,
 
 		/// <summary>
-		/// Ignores errors that occur while merging information (such as attributes and ACLs) from the replaced file to the replacement
-		/// file. Therefore, if you specify this flag and do not have WRITE_DAC access, the function succeeds but the ACLs are not preserved.
+		/// Ignores errors that occur while merging information (such as attributes and ACLs) from the replaced file to the replacement file.
+		/// Therefore, if you specify this flag and do not have WRITE_DAC access, the function succeeds but the ACLs are not preserved.
 		/// </summary>
 		REPLACEFILE_IGNORE_MERGE_ERRORS = 0x00000002,
 
 		/// <summary>
-		/// Ignores errors that occur while merging ACL information from the replaced file to the replacement file. Therefore, if you
-		/// specify this flag and do not have WRITE_DAC access, the function succeeds but the ACLs are not preserved. To compile an
-		/// application that uses this value, define the _WIN32_WINNT macro as 0x0600 or later.
+		/// Ignores errors that occur while merging ACL information from the replaced file to the replacement file. Therefore, if you specify
+		/// this flag and do not have WRITE_DAC access, the function succeeds but the ACLs are not preserved. To compile an application that
+		/// uses this value, define the _WIN32_WINNT macro as 0x0600 or later.
 		/// <para>Windows Server 2003 and Windows XP: This value is not supported.</para>
 		/// </summary>
 		REPLACEFILE_IGNORE_ACL_ERRORS = 0x00000004,
@@ -802,9 +799,7 @@ public static partial class Kernel32
 	[Flags]
 	public enum StorageInfoFlags
 	{
-		/// <summary>
-		/// When set, this flag indicates that the logical sectors of the storage device are aligned to physical sector boundaries.
-		/// </summary>
+		/// <summary>When set, this flag indicates that the logical sectors of the storage device are aligned to physical sector boundaries.</summary>
 		STORAGE_INFO_FLAGS_ALIGNED_DEVICE = 0x00000001,
 
 		/// <summary>When set, this flag indicates that the partition is aligned to physical sector boundaries on the storage device.</summary>
@@ -812,9 +807,7 @@ public static partial class Kernel32
 	}
 
 	/// <summary>
-	/// <para>
-	/// Defines values that are used with the <c>FindFirstStreamW</c> function to specify the information level of the returned data.
-	/// </para>
+	/// <para>Defines values that are used with the <c>FindFirstStreamW</c> function to specify the information level of the returned data.</para>
 	/// </summary>
 	// typedef enum _STREAM_INFO_LEVELS { FindStreamInfoStandard = 0, FindStreamInfoMaxInfoLevel = 1} STREAM_INFO_LEVELS;
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365675")]
@@ -837,7 +830,13 @@ public static partial class Kernel32
 		SYMBOLIC_LINK_FLAG_FILE = 0x0,
 
 		/// <summary>The link target is a directory.</summary>
-		SYMBOLIC_LINK_FLAG_DIRECTORY = 0x1
+		SYMBOLIC_LINK_FLAG_DIRECTORY = 0x1,
+
+		/// <summary>
+		/// Specify this flag to allow creation of symbolic links when the process is not elevated. In UWP, Developer Mode must first be
+		/// enabled on the machine before this option will function. Under MSIX, developer mode is not required to be enabled for this flag.
+		/// </summary>
+		SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE = 0x2
 	}
 
 	/// <summary>
@@ -858,19 +857,17 @@ public static partial class Kernel32
 
 	/// <summary>Determines whether the specified name can be used to create a file on a FAT file system.</summary>
 	/// <param name="lpName">The file name, in 8.3 format.</param>
-	/// <param name="lpOemName">
-	/// A pointer to a buffer that receives the OEM string that corresponds to Name. This parameter can be <c>NULL</c>.
-	/// </param>
+	/// <param name="lpOemName">A pointer to a buffer that receives the OEM string that corresponds to Name. This parameter can be <c>NULL</c>.</param>
 	/// <param name="OemNameSize">
 	/// The size of the lpOemName buffer, in characters. If lpOemName is <c>NULL</c>, this parameter must be 0 (zero).
 	/// </param>
 	/// <param name="pbNameContainsSpaces">
-	/// Indicates whether or not a name contains spaces. This parameter can be <c>NULL</c>. If the name is not a valid 8.3 FAT file
-	/// system name, this parameter is undefined.
+	/// Indicates whether or not a name contains spaces. This parameter can be <c>NULL</c>. If the name is not a valid 8.3 FAT file system
+	/// name, this parameter is undefined.
 	/// </param>
 	/// <param name="pbNameLegal">
-	/// If the function succeeds, this parameter indicates whether a file name is a valid 8.3 FAT file name when the current OEM code
-	/// page is applied to the file name.
+	/// If the function succeeds, this parameter indicates whether a file name is a valid 8.3 FAT file name when the current OEM code page is
+	/// applied to the file name.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -881,14 +878,14 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa363807")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CheckNameLegalDOS8Dot3(string lpName, [Optional, MarshalAs(UnmanagedType.LPStr)] StringBuilder? lpOemName, [Optional] uint OemNameSize,
-		[MarshalAs(UnmanagedType.Bool)] out bool pbNameContainsSpaces, [MarshalAs(UnmanagedType.Bool)] out bool pbNameLegal);
+	public static extern bool CheckNameLegalDOS8Dot3(string lpName, [Out, Optional, MarshalAs(UnmanagedType.LPStr), SizeDef(nameof(OemNameSize))] StringBuilder? lpOemName,
+		[Optional] uint OemNameSize, [MarshalAs(UnmanagedType.Bool)] out bool pbNameContainsSpaces, [MarshalAs(UnmanagedType.Bool)] out bool pbNameLegal);
 
 	/// <summary>
 	/// <para>Copies an existing file to a new file.</para>
 	/// <para>
-	/// The <c>CopyFileEx</c> function provides two additional capabilities. <c>CopyFileEx</c> can call a specified callback function
-	/// each time a portion of the copy operation is completed, and <c>CopyFileEx</c> can be canceled during the copy operation.
+	/// The <c>CopyFileEx</c> function provides two additional capabilities. <c>CopyFileEx</c> can call a specified callback function each
+	/// time a portion of the copy operation is completed, and <c>CopyFileEx</c> can be canceled during the copy operation.
 	/// </para>
 	/// <para>To perform this operation as a transacted operation, use the <c>CopyFileTransacted</c> function.</para>
 	/// </summary>
@@ -908,8 +905,8 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="bFailIfExists">
-	/// If this parameter is <c>TRUE</c> and the new file specified by lpNewFileName already exists, the function fails. If this
-	/// parameter is <c>FALSE</c> and the new file already exists, the function overwrites the existing file and succeeds.
+	/// If this parameter is <c>TRUE</c> and the new file specified by lpNewFileName already exists, the function fails. If this parameter is
+	/// <c>FALSE</c> and the new file already exists, the function overwrites the existing file and succeeds.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -930,16 +927,10 @@ public static partial class Kernel32
 	/// To extend this limit to 32,767 wide characters, prepend "\?" to the path. For more information, see Naming Files, Paths, and Namespaces.
 	/// </para>
 	/// <para>
-	/// <c>Tip</c> Starting in Windows 10, version 1607, you can opt-in to remove the <c>MAX_PATH</c> character limitation without
-	/// prepending "\\?\". See the "Maximum Path Limitation" section of Naming Files, Paths, and Namespaces for details.
+	/// <c>Tip</c> Starting in Windows 10, version 1607, you can opt-in to remove the <c>MAX_PATH</c> character limitation without prepending
+	/// "\\?\". See the "Maximum Path Limitation" section of Naming Files, Paths, and Namespaces for details.
 	/// </para>
-	/// <para>If</para>
-	/// <para>lpExistingFileName</para>
-	/// <para>does not exist, the</para>
-	/// <para>CopyFile2</para>
-	/// <para>function fails returns</para>
-	/// <para>HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND)</para>
-	/// <para>.</para>
+	/// <para>If lpExistingFileName does not exist, the CopyFile2 function fails returns HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND).</para>
 	/// </param>
 	/// <param name="pwszNewFileName">
 	/// <para>The name of the new file.</para>
@@ -947,8 +938,8 @@ public static partial class Kernel32
 	/// To extend this limit to 32,767 wide characters, prepend "\?" to the path. For more information, see Naming Files, Paths, and Namespaces.
 	/// </para>
 	/// <para>
-	/// <c>Tip</c> Starting in Windows 10, version 1607, you can opt-in to remove the <c>MAX_PATH</c> character limitation without
-	/// prepending "\\?\". See the "Maximum Path Limitation" section of Naming Files, Paths, and Namespaces for details.
+	/// <c>Tip</c> Starting in Windows 10, version 1607, you can opt-in to remove the <c>MAX_PATH</c> character limitation without prepending
+	/// "\\?\". See the "Maximum Path Limitation" section of Naming Files, Paths, and Namespaces for details.
 	/// </para>
 	/// </param>
 	/// <param name="pExtendedParameters">
@@ -962,41 +953,42 @@ public static partial class Kernel32
 	/// <term>Description</term>
 	/// </listheader>
 	/// <item>
-	/// <term>S_OK</term>
-	/// <term>The copy operation completed successfully.</term>
+	/// <description>S_OK</description>
+	/// <description>The copy operation completed successfully.</description>
 	/// </item>
 	/// <item>
-	/// <term>HRESULT_FROM_WIN32(ERROR_REQUEST_PAUSED)</term>
-	/// <term>The copy operation was paused by a COPYFILE2_PROGRESS_PAUSE return from the CopyFile2ProgressRoutine callback function.</term>
+	/// <description>HRESULT_FROM_WIN32(ERROR_REQUEST_PAUSED)</description>
+	/// <description>
+	/// The copy operation was paused by a COPYFILE2_PROGRESS_PAUSE return from the CopyFile2ProgressRoutine callback function.
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>HRESULT_FROM_WIN32(ERROR_REQUEST_ABORTED)</term>
-	/// <term>
+	/// <description>HRESULT_FROM_WIN32(ERROR_REQUEST_ABORTED)</description>
+	/// <description>
 	/// The copy operation was paused by a COPYFILE2_PROGRESS_CANCEL or COPYFILE2_PROGRESS_STOP return from the CopyFile2ProgressRoutine
 	/// callback function.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>HRESULT_FROM_WIN32(ERROR_ALREADY_EXISTS)</term>
-	/// <term>
+	/// <description>HRESULT_FROM_WIN32(ERROR_ALREADY_EXISTS)</description>
+	/// <description>
 	/// The dwCopyFlags member of the COPYFILE2_EXTENDED_PARAMETERS structure passed through the parameter contains the
 	/// COPY_FILE_FAIL_IF_EXISTS flag and a conflicting name existed.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// <item>
-	/// <term>HRESULT_FROM_WIN32(ERROR_FILE_EXISTS)</term>
-	/// <term>
+	/// <description>HRESULT_FROM_WIN32(ERROR_FILE_EXISTS)</description>
+	/// <description>
 	/// The dwCopyFlags member of the COPYFILE2_EXTENDED_PARAMETERS structure passed through the parameter contains the
 	/// COPY_FILE_FAIL_IF_EXISTS flag and a conflicting name existed.
-	/// </term>
+	/// </description>
 	/// </item>
 	/// </list>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// This function preserves extended attributes, OLE structured storage, NTFS file system alternate data streams, and file
-	/// attributes. Security attributes for the existing file are not copied to the new file. To copy security attributes, use the
-	/// SHFileOperation function.
+	/// This function preserves extended attributes, OLE structured storage, NTFS file system alternate data streams, and file attributes.
+	/// Security attributes for the existing file are not copied to the new file. To copy security attributes, use the SHFileOperation function.
 	/// </para>
 	/// <para>
 	/// This function fails with if the destination file already exists and has the <c>FILE_ATTRIBUTE_HIDDEN</c> or
@@ -1013,24 +1005,24 @@ public static partial class Kernel32
 	/// <term>Supported</term>
 	/// </listheader>
 	/// <item>
-	/// <term>Server Message Block (SMB) 3.0 protocol</term>
-	/// <term>Yes</term>
+	/// <description>Server Message Block (SMB) 3.0 protocol</description>
+	/// <description>Yes</description>
 	/// </item>
 	/// <item>
-	/// <term>SMB 3.0 Transparent Failover (TFO)</term>
-	/// <term>Yes</term>
+	/// <description>SMB 3.0 Transparent Failover (TFO)</description>
+	/// <description>Yes</description>
 	/// </item>
 	/// <item>
-	/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
-	/// <term>Yes</term>
+	/// <description>SMB 3.0 with Scale-out File Shares (SO)</description>
+	/// <description>Yes</description>
 	/// </item>
 	/// <item>
-	/// <term>Cluster Shared Volume File System (CsvFS)</term>
-	/// <term>Yes</term>
+	/// <description>Cluster Shared Volume File System (CsvFS)</description>
+	/// <description>Yes</description>
 	/// </item>
 	/// <item>
-	/// <term>Resilient File System (ReFS)</term>
-	/// <term>Yes</term>
+	/// <description>Resilient File System (ReFS)</description>
+	/// <description>Yes</description>
 	/// </item>
 	/// </list>
 	/// </remarks>
@@ -1038,7 +1030,121 @@ public static partial class Kernel32
 	// PCWSTR pwszNewFileName, COPYFILE2_EXTENDED_PARAMETERS *pExtendedParameters );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winbase.h", MSDNShortId = "aa2df686-4b61-4d90-ba0b-c78c5a0d2d59")]
-	public static extern HRESULT CopyFile2(string pwszExistingFileName, string pwszNewFileName, ref COPYFILE2_EXTENDED_PARAMETERS pExtendedParameters);
+	public static extern HRESULT CopyFile2(string pwszExistingFileName, string pwszNewFileName, in COPYFILE2_EXTENDED_PARAMETERS pExtendedParameters);
+
+	/// <summary>
+	/// <para>Copies an existing file to a new file, notifying the application of its progress through a callback function.</para>
+	/// </summary>
+	/// <param name="pwszExistingFileName">
+	/// <para>The name of an existing file.</para>
+	/// <para>
+	/// To extend this limit to 32,767 wide characters, prepend "\?" to the path. For more information, see Naming Files, Paths, and Namespaces.
+	/// </para>
+	/// <para>
+	/// <c>Tip</c> Starting in Windows 10, version 1607, you can opt-in to remove the <c>MAX_PATH</c> character limitation without prepending
+	/// "\\?\". See the "Maximum Path Limitation" section of Naming Files, Paths, and Namespaces for details.
+	/// </para>
+	/// <para>If lpExistingFileName does not exist, the CopyFile2 function fails returns HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND).</para>
+	/// </param>
+	/// <param name="pwszNewFileName">
+	/// <para>The name of the new file.</para>
+	/// <para>
+	/// To extend this limit to 32,767 wide characters, prepend "\?" to the path. For more information, see Naming Files, Paths, and Namespaces.
+	/// </para>
+	/// <para>
+	/// <c>Tip</c> Starting in Windows 10, version 1607, you can opt-in to remove the <c>MAX_PATH</c> character limitation without prepending
+	/// "\\?\". See the "Maximum Path Limitation" section of Naming Files, Paths, and Namespaces for details.
+	/// </para>
+	/// </param>
+	/// <param name="pExtendedParameters">
+	/// <para>Optional address of a COPYFILE2_EXTENDED_PARAMETERS structure.</para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value will return <c>TRUE</c> when passed to the SUCCEEDED macro.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <description>S_OK</description>
+	/// <description>The copy operation completed successfully.</description>
+	/// </item>
+	/// <item>
+	/// <description>HRESULT_FROM_WIN32(ERROR_REQUEST_PAUSED)</description>
+	/// <description>
+	/// The copy operation was paused by a COPYFILE2_PROGRESS_PAUSE return from the CopyFile2ProgressRoutine callback function.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>HRESULT_FROM_WIN32(ERROR_REQUEST_ABORTED)</description>
+	/// <description>
+	/// The copy operation was paused by a COPYFILE2_PROGRESS_CANCEL or COPYFILE2_PROGRESS_STOP return from the CopyFile2ProgressRoutine
+	/// callback function.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>HRESULT_FROM_WIN32(ERROR_ALREADY_EXISTS)</description>
+	/// <description>
+	/// The dwCopyFlags member of the COPYFILE2_EXTENDED_PARAMETERS structure passed through the parameter contains the
+	/// COPY_FILE_FAIL_IF_EXISTS flag and a conflicting name existed.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>HRESULT_FROM_WIN32(ERROR_FILE_EXISTS)</description>
+	/// <description>
+	/// The dwCopyFlags member of the COPYFILE2_EXTENDED_PARAMETERS structure passed through the parameter contains the
+	/// COPY_FILE_FAIL_IF_EXISTS flag and a conflicting name existed.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// This function preserves extended attributes, OLE structured storage, NTFS file system alternate data streams, and file attributes.
+	/// Security attributes for the existing file are not copied to the new file. To copy security attributes, use the SHFileOperation function.
+	/// </para>
+	/// <para>
+	/// This function fails with if the destination file already exists and has the <c>FILE_ATTRIBUTE_HIDDEN</c> or
+	/// <c>FILE_ATTRIBUTE_READONLY</c> attribute set.
+	/// </para>
+	/// <para>
+	/// To compile an application that uses this function, define the <c>_WIN32_WINNT</c> macro as <c>_WIN32_WINNT_WIN8</c> or later. For
+	/// more information, see Using the Windows Headers.
+	/// </para>
+	/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Technology</term>
+	/// <term>Supported</term>
+	/// </listheader>
+	/// <item>
+	/// <description>Server Message Block (SMB) 3.0 protocol</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 Transparent Failover (TFO)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>SMB 3.0 with Scale-out File Shares (SO)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>Cluster Shared Volume File System (CsvFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// <item>
+	/// <description>Resilient File System (ReFS)</description>
+	/// <description>Yes</description>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-copyfile2 HRESULT CopyFile2( PCWSTR pwszExistingFileName,
+	// PCWSTR pwszNewFileName, COPYFILE2_EXTENDED_PARAMETERS *pExtendedParameters );
+	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+	[PInvokeData("winbase.h", MSDNShortId = "aa2df686-4b61-4d90-ba0b-c78c5a0d2d59")]
+	public static extern HRESULT CopyFile2(string pwszExistingFileName, string pwszNewFileName, [In, Optional] ManagedStructPointer<COPYFILE2_EXTENDED_PARAMETERS> pExtendedParameters);
 
 	/// <summary>
 	/// <para>Copies an existing file to a new file, notifying the application of its progress through a callback function.</para>
@@ -1050,9 +1156,7 @@ public static partial class Kernel32
 	/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
 	/// characters, call the Unicode version of the function and prepend "\\?\" to the path. For more information, see Naming a File.
 	/// </para>
-	/// <para>
-	/// If lpExistingFileName does not exist, the <c>CopyFileEx</c> function fails, and the <c>GetLastError</c> function returns <c>ERROR_FILE_NOT_FOUND</c>.
-	/// </para>
+	/// <para>If lpExistingFileName does not exist, the <c>CopyFileEx</c> function fails, and the <c>GetLastError</c> function returns <c>ERROR_FILE_NOT_FOUND</c>.</para>
 	/// </param>
 	/// <param name="lpNewFileName">
 	/// <para>The name of the new file.</para>
@@ -1062,14 +1166,13 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="lpProgressRoutine">
-	/// The address of a callback function of type <c>LPPROGRESS_ROUTINE</c> that is called each time another portion of the file has
-	/// been copied. This parameter can be <c>NULL</c>. For more information on the progress callback function, see the
-	/// <c>CopyProgressRoutine</c> function.
+	/// The address of a callback function of type <c>LPPROGRESS_ROUTINE</c> that is called each time another portion of the file has been
+	/// copied. This parameter can be <c>NULL</c>. For more information on the progress callback function, see the <c>CopyProgressRoutine</c> function.
 	/// </param>
 	/// <param name="lpData">The argument to be passed to the callback function. This parameter can be <c>NULL</c>.</param>
 	/// <param name="pbCancel">
-	/// If this flag is set to <c>TRUE</c> during the copy operation, the operation is canceled. Otherwise, the copy operation will
-	/// continue to completion.
+	/// If this flag is set to <c>TRUE</c> during the copy operation, the operation is canceled. Otherwise, the copy operation will continue
+	/// to completion.
 	/// </param>
 	/// <param name="dwCopyFlags">
 	/// <para>Flags that specify how the file is to be copied. This parameter can be a combination of the following values.</para>
@@ -1120,16 +1223,16 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information call <c>GetLastError</c>.</para>
 	/// <para>
-	/// If lpProgressRoutine returns <c>PROGRESS_CANCEL</c> due to the user canceling the operation, <c>CopyFileEx</c> will return zero
-	/// and <c>GetLastError</c> will return <c>ERROR_REQUEST_ABORTED</c>. In this case, the partially copied destination file is deleted.
+	/// If lpProgressRoutine returns <c>PROGRESS_CANCEL</c> due to the user canceling the operation, <c>CopyFileEx</c> will return zero and
+	/// <c>GetLastError</c> will return <c>ERROR_REQUEST_ABORTED</c>. In this case, the partially copied destination file is deleted.
 	/// </para>
 	/// <para>
 	/// If lpProgressRoutine returns <c>PROGRESS_STOP</c> due to the user stopping the operation, <c>CopyFileEx</c> will return zero and
 	/// <c>GetLastError</c> will return <c>ERROR_REQUEST_ABORTED</c>. In this case, the partially copied destination file is left intact.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CopyFileEx( _In_ LPCTSTR lpExistingFileName, _In_ LPCTSTR lpNewFileName, _In_opt_ LPPROGRESS_ROUTINE
-	// lpProgressRoutine, _In_opt_ LPVOID lpData, _In_opt_ LPBOOL pbCancel, _In_ DWORD dwCopyFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363852(v=vs.85).aspx
+	// BOOL WINAPI CopyFileEx( _In_ LPCTSTR lpExistingFileName, _In_ LPCTSTR lpNewFileName, _In_opt_ LPPROGRESS_ROUTINE lpProgressRoutine,
+	// _In_opt_ LPVOID lpData, _In_opt_ LPBOOL pbCancel, _In_ DWORD dwCopyFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363852(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa363852")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1145,9 +1248,7 @@ public static partial class Kernel32
 	/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
 	/// characters, call the Unicode version of the function and prepend "\\?\" to the path. For more information, see Naming a File.
 	/// </para>
-	/// <para>
-	/// If lpExistingFileName does not exist, the <c>CopyFileEx</c> function fails, and the <c>GetLastError</c> function returns <c>ERROR_FILE_NOT_FOUND</c>.
-	/// </para>
+	/// <para>If lpExistingFileName does not exist, the <c>CopyFileEx</c> function fails, and the <c>GetLastError</c> function returns <c>ERROR_FILE_NOT_FOUND</c>.</para>
 	/// </param>
 	/// <param name="lpNewFileName">
 	/// <para>The name of the new file.</para>
@@ -1157,14 +1258,13 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="lpProgressRoutine">
-	/// The address of a callback function of type <c>LPPROGRESS_ROUTINE</c> that is called each time another portion of the file has
-	/// been copied. This parameter can be <c>NULL</c>. For more information on the progress callback function, see the
-	/// <c>CopyProgressRoutine</c> function.
+	/// The address of a callback function of type <c>LPPROGRESS_ROUTINE</c> that is called each time another portion of the file has been
+	/// copied. This parameter can be <c>NULL</c>. For more information on the progress callback function, see the <c>CopyProgressRoutine</c> function.
 	/// </param>
 	/// <param name="lpData">The argument to be passed to the callback function. This parameter can be <c>NULL</c>.</param>
 	/// <param name="pbCancel">
-	/// If this flag is set to <c>TRUE</c> during the copy operation, the operation is canceled. Otherwise, the copy operation will
-	/// continue to completion.
+	/// If this flag is set to <c>TRUE</c> during the copy operation, the operation is canceled. Otherwise, the copy operation will continue
+	/// to completion.
 	/// </param>
 	/// <param name="dwCopyFlags">
 	/// <para>Flags that specify how the file is to be copied. This parameter can be a combination of the following values.</para>
@@ -1215,16 +1315,16 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information call <c>GetLastError</c>.</para>
 	/// <para>
-	/// If lpProgressRoutine returns <c>PROGRESS_CANCEL</c> due to the user canceling the operation, <c>CopyFileEx</c> will return zero
-	/// and <c>GetLastError</c> will return <c>ERROR_REQUEST_ABORTED</c>. In this case, the partially copied destination file is deleted.
+	/// If lpProgressRoutine returns <c>PROGRESS_CANCEL</c> due to the user canceling the operation, <c>CopyFileEx</c> will return zero and
+	/// <c>GetLastError</c> will return <c>ERROR_REQUEST_ABORTED</c>. In this case, the partially copied destination file is deleted.
 	/// </para>
 	/// <para>
 	/// If lpProgressRoutine returns <c>PROGRESS_STOP</c> due to the user stopping the operation, <c>CopyFileEx</c> will return zero and
 	/// <c>GetLastError</c> will return <c>ERROR_REQUEST_ABORTED</c>. In this case, the partially copied destination file is left intact.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CopyFileEx( _In_ LPCTSTR lpExistingFileName, _In_ LPCTSTR lpNewFileName, _In_opt_ LPPROGRESS_ROUTINE
-	// lpProgressRoutine, _In_opt_ LPVOID lpData, _In_opt_ LPBOOL pbCancel, _In_ DWORD dwCopyFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363852(v=vs.85).aspx
+	// BOOL WINAPI CopyFileEx( _In_ LPCTSTR lpExistingFileName, _In_ LPCTSTR lpNewFileName, _In_opt_ LPPROGRESS_ROUTINE lpProgressRoutine,
+	// _In_opt_ LPVOID lpData, _In_opt_ LPBOOL pbCancel, _In_ DWORD dwCopyFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363852(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa363852")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1233,8 +1333,8 @@ public static partial class Kernel32
 	/// <summary>
 	/// <para>
 	/// Creates a new directory with the attributes of a specified template directory. If the underlying file system supports security on
-	/// files and directories, the function applies a specified security descriptor to the new directory. The new directory retains the
-	/// other attributes of the specified template directory.
+	/// files and directories, the function applies a specified security descriptor to the new directory. The new directory retains the other
+	/// attributes of the specified template directory.
 	/// </para>
 	/// <para>To perform this operation as a transacted operation, use the <c>CreateDirectoryTransacted</c> function.</para>
 	/// </summary>
@@ -1262,8 +1362,8 @@ public static partial class Kernel32
 	/// default security descriptor for a directory are inherited from its parent directory.
 	/// </para>
 	/// <para>
-	/// The target file system must support security on files and directories for this parameter to have an effect. This is indicated
-	/// when <c>GetVolumeInformation</c> returns <c>FS_PERSISTENT_ACLS</c>.
+	/// The target file system must support security on files and directories for this parameter to have an effect. This is indicated when
+	/// <c>GetVolumeInformation</c> returns <c>FS_PERSISTENT_ACLS</c>.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -1300,8 +1400,8 @@ public static partial class Kernel32
 	public static extern bool CreateDirectoryEx(string lpTemplateDirectory, string lpNewDirectory, [In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes);
 
 	/// <summary>
-	/// Establishes a hard link between an existing file and a new file. This function is only supported on the NTFS file system, and
-	/// only for files, not directories.
+	/// Establishes a hard link between an existing file and a new file. This function is only supported on the NTFS file system, and only
+	/// for files, not directories.
 	/// </summary>
 	/// <param name="lpFileName">
 	/// The name of the new file.
@@ -1310,9 +1410,9 @@ public static partial class Kernel32
 	/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
 	/// characters, call the Unicode version of the function and prepend "\\?\" to the path. For more information, see Naming a File.
 	/// </para>
-	/// <note><c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>CreateHardLinkW</c>), you
-	/// can opt-in to remove the <c>MAX_PATH</c> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section
-	/// of Naming Files, Paths, and Namespaces for details.</note>
+	/// <note><c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>CreateHardLinkW</c>), you can
+	/// opt-in to remove the <c>MAX_PATH</c> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section of Naming
+	/// Files, Paths, and Namespaces for details.</note>
 	/// </param>
 	/// <param name="lpExistingFileName">
 	/// The name of the existing file.
@@ -1321,9 +1421,9 @@ public static partial class Kernel32
 	/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
 	/// characters, call the Unicode version of the function and prepend "\\?\" to the path. For more information, see Naming a File.
 	/// </para>
-	/// <note><c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>CreateHardLinkW</c>), you
-	/// can opt-in to remove the <c>MAX_PATH</c> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section
-	/// of Naming Files, Paths, and Namespaces for details.</note>
+	/// <note><c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>CreateHardLinkW</c>), you can
+	/// opt-in to remove the <c>MAX_PATH</c> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section of Naming
+	/// Files, Paths, and Namespaces for details.</note>
 	/// </param>
 	/// <param name="lpSecurityAttributes">Reserved; must be NULL.</param>
 	/// <returns></returns>
@@ -1340,24 +1440,24 @@ public static partial class Kernel32
 	/// extend this limit to 32,767 wide characters, call the Unicode version of the function and prepend "\\?\" to the path. For more
 	/// information, see Naming a File.
 	/// </para>
-	/// <note><c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>CreateSymbolicLinkW</c>),
-	/// you can opt-in to remove the <c>MAX_PATH</c> limitation without prepending "\\?\". See the "Maximum Path Length Limitation"
-	/// section of Naming Files, Paths, and Namespaces for details.</note>
+	/// <note><c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>CreateSymbolicLinkW</c>), you
+	/// can opt-in to remove the <c>MAX_PATH</c> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section of
+	/// Naming Files, Paths, and Namespaces for details.</note>
 	/// </param>
 	/// <param name="lpTargetFileName">
 	/// The name of the target for the symbolic link to be created.
 	/// <para>
-	/// If lpTargetFileName has a device name associated with it, the link is treated as an absolute link; otherwise, the link is treated
-	/// as a relative link.
+	/// If lpTargetFileName has a device name associated with it, the link is treated as an absolute link; otherwise, the link is treated as
+	/// a relative link.
 	/// </para>
 	/// <para>
 	/// This parameter may include the path. In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To
 	/// extend this limit to 32,767 wide characters, call the Unicode version of the function and prepend "\\?\" to the path. For more
 	/// information, see Naming a File.
 	/// </para>
-	/// <note><c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>CreateSymbolicLinkW</c>),
-	/// you can opt-in to remove the <c>MAX_PATH</c> limitation without prepending "\\?\". See the "Maximum Path Length Limitation"
-	/// section of Naming Files, Paths, and Namespaces for details.</note>
+	/// <note><c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>CreateSymbolicLinkW</c>), you
+	/// can opt-in to remove the <c>MAX_PATH</c> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section of
+	/// Naming Files, Paths, and Namespaces for details.</note>
 	/// </param>
 	/// <param name="dwFlags">Indicates whether the link target, lpTargetFileName, is a directory.</param>
 	/// <returns>
@@ -1401,8 +1501,8 @@ public static partial class Kernel32
 
 	/// <summary>
 	/// <para>
-	/// Creates an enumeration of all the hard links to the specified file. The <c>FindFirstFileNameW</c> function returns a handle to
-	/// the enumeration that can be used on subsequent calls to the <c>FindNextFileNameW</c> function.
+	/// Creates an enumeration of all the hard links to the specified file. The <c>FindFirstFileNameW</c> function returns a handle to the
+	/// enumeration that can be used on subsequent calls to the <c>FindNextFileNameW</c> function.
 	/// </para>
 	/// <para>To perform this operation as a transacted operation, use the <c>FindFirstFileNameTransactedW</c> function.</para>
 	/// </summary>
@@ -1424,8 +1524,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>
 	/// <para>
-	/// If the function succeeds, the return value is a search handle that can be used with the <c>FindNextFileNameW</c> function or
-	/// closed with the <c>FindClose</c> function.
+	/// If the function succeeds, the return value is a search handle that can be used with the <c>FindNextFileNameW</c> function or closed
+	/// with the <c>FindClose</c> function.
 	/// </para>
 	/// <para>
 	/// If the function fails, the return value is <c>INVALID_HANDLE_VALUE</c> (0xffffffff). To get extended error information, call the
@@ -1470,8 +1570,8 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is <c>INVALID_HANDLE_VALUE</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// <para>If no streams can be found, the function fails and <c>GetLastError</c> returns <c>ERROR_HANDLE_EOF</c> (38).</para>
 	/// </returns>
-	// HANDLE WINAPI FindFirstStreamW( _In_ LPCWSTR lpFileName, _In_ STREAM_INFO_LEVELS InfoLevel, _Out_ LPVOID lpFindStreamData,
-	// _Reserved_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364424(v=vs.85).aspx
+	// HANDLE WINAPI FindFirstStreamW( _In_ LPCWSTR lpFileName, _In_ STREAM_INFO_LEVELS InfoLevel, _Out_ LPVOID lpFindStreamData, _Reserved_
+	// DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364424(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "FindFirstStreamW", CharSet = CharSet.Unicode)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa364424")]
 	public static extern SafeSearchHandle FindFirstStream(string lpFileName, STREAM_INFO_LEVELS InfoLevel, out WIN32_FIND_STREAM_DATA lpFindStreamData, [Optional] uint dwFlags);
@@ -1485,16 +1585,15 @@ public static partial class Kernel32
 	/// <param name="cchBufferLength">The length of the buffer that receives the path to the mounted folder, in <c>TCHAR</c> s.</param>
 	/// <returns>
 	/// <para>
-	/// If the function succeeds, the return value is a search handle used in a subsequent call to the <c>FindNextVolumeMountPoint</c>
-	/// and <c>FindVolumeMountPointClose</c> functions.
+	/// If the function succeeds, the return value is a search handle used in a subsequent call to the <c>FindNextVolumeMountPoint</c> and
+	/// <c>FindVolumeMountPointClose</c> functions.
 	/// </para>
 	/// <para>
-	/// If the function fails to find a mounted folder on the volume, the return value is the <c>INVALID_HANDLE_VALUE</c> error code. To
-	/// get extended error information, call <c>GetLastError</c>.
+	/// If the function fails to find a mounted folder on the volume, the return value is the <c>INVALID_HANDLE_VALUE</c> error code. To get
+	/// extended error information, call <c>GetLastError</c>.
 	/// </para>
 	/// </returns>
-	// HANDLE WINAPI FindFirstVolumeMountPoint( _In_ LPTSTR lpszRootPathName, _Out_ LPTSTR lpszVolumeMountPoint, _In_ DWORD
-	// cchBufferLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364426(v=vs.85).aspx
+	// HANDLE WINAPI FindFirstVolumeMountPoint( _In_ LPTSTR lpszRootPathName, _Out_ LPTSTR lpszVolumeMountPoint, _In_ DWORD cchBufferLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364426(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa364426")]
 	public static extern SafeVolumeMountPointHandle FindFirstVolumeMountPoint(string lpszRootPathName, StringBuilder lpszVolumeMountPoint, uint cchBufferLength);
@@ -1539,8 +1638,8 @@ public static partial class Kernel32
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. If no more streams
-	/// can be found, <c>GetLastError</c> returns <c>ERROR_HANDLE_EOF</c> (38).
+	/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. If no more streams can
+	/// be found, <c>GetLastError</c> returns <c>ERROR_HANDLE_EOF</c> (38).
 	/// </para>
 	/// </returns>
 	// BOOL WINAPI FindNextStreamW( _In_ HANDLE hFindStream, _Out_ LPVOID lpFindStreamData);
@@ -1550,8 +1649,8 @@ public static partial class Kernel32
 	public static extern bool FindNextStream([In] SafeSearchHandle hFindStream, out WIN32_FIND_STREAM_DATA lpFindStreamData);
 
 	/// <summary>
-	/// Continues a mounted folder search started by a call to the <c>FindFirstVolumeMountPoint</c> function.
-	/// <c>FindNextVolumeMountPoint</c> finds one mounted folder per call.
+	/// Continues a mounted folder search started by a call to the <c>FindFirstVolumeMountPoint</c> function. <c>FindNextVolumeMountPoint</c>
+	/// finds one mounted folder per call.
 	/// </summary>
 	/// <param name="hFindVolumeMountPoint">
 	/// A mounted folder search handle returned by a previous call to the <c>FindFirstVolumeMountPoint</c> function.
@@ -1574,12 +1673,11 @@ public static partial class Kernel32
 	public static extern bool FindNextVolumeMountPoint([In] SafeVolumeMountPointHandle hFindVolumeMountPoint, StringBuilder lpszVolumeMountPoint, uint cchBufferLength);
 
 	/// <summary>
-	/// Closes the specified mounted folder search handle. The <c>FindFirstVolumeMountPoint</c> and <c>FindNextVolumeMountPoint</c>
-	/// functions use this search handle to locate mounted folders on a specified volume.
+	/// Closes the specified mounted folder search handle. The <c>FindFirstVolumeMountPoint</c> and <c>FindNextVolumeMountPoint</c> functions
+	/// use this search handle to locate mounted folders on a specified volume.
 	/// </summary>
 	/// <param name="hFindVolumeMountPoint">
-	/// The mounted folder search handle to be closed. This handle must have been previously opened by the
-	/// <c>FindFirstVolumeMountPoint</c> function.
+	/// The mounted folder search handle to be closed. This handle must have been previously opened by the <c>FindFirstVolumeMountPoint</c> function.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -1592,10 +1690,9 @@ public static partial class Kernel32
 	public static extern bool FindVolumeMountPointClose([In] IntPtr hFindVolumeMountPoint);
 
 	/// <summary>
-	/// Retrieves the actual number of bytes of disk storage used to store a specified file. If the file is located on a volume that
-	/// supports compression and the file is compressed, the value obtained is the compressed size of the specified file. If the file is
-	/// located on a volume that supports sparse files and the file is a sparse file, the value obtained is the sparse size of the
-	/// specified file.
+	/// Retrieves the actual number of bytes of disk storage used to store a specified file. If the file is located on a volume that supports
+	/// compression and the file is compressed, the value obtained is the compressed size of the specified file. If the file is located on a
+	/// volume that supports sparse files and the file is a sparse file, the value obtained is the sparse size of the specified file.
 	/// </summary>
 	/// <param name="lpFileName">
 	/// The name of the file.
@@ -1603,23 +1700,21 @@ public static partial class Kernel32
 	/// Do not specify the name of a file on a nonseeking device, such as a pipe or a communications device, as its file size has no meaning.
 	/// </para>
 	/// <para>
-	/// This parameter may include the path. In the ANSI version of this function, the name is limited to <see cref="MAX_PATH"/>
-	/// characters. To extend this limit to 32,767 wide characters, call the Unicode version of the function and prepend "\\?\" to the
-	/// path. For more information, see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming
-	/// a File</a>.
+	/// This parameter may include the path. In the ANSI version of this function, the name is limited to <see cref="MAX_PATH"/> characters.
+	/// To extend this limit to 32,767 wide characters, call the Unicode version of the function and prepend "\\?\" to the path. For more
+	/// information, see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming a File</a>.
 	/// </para>
 	/// <para>
-	/// <c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>GetCompressedFileSizeW</c>), you
-	/// can opt-in to remove the <see cref="MAX_PATH"/> limitation without prepending "\\?\". See the "Maximum Path Length Limitation"
-	/// section of <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming Files, Paths, and
-	/// Namespaces</a> for details.
+	/// <c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>GetCompressedFileSizeW</c>), you can
+	/// opt-in to remove the <see cref="MAX_PATH"/> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section of
+	/// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming Files, Paths, and Namespaces</a> for details.
 	/// </para>
 	/// </param>
 	/// <param name="lpFileSizeHigh">
 	/// The high-order DWORD of the compressed file size. The function's return value is the low-order DWORD of the compressed file size.
 	/// <para>
-	/// This parameter can be NULL if the high-order DWORD of the compressed file size is not needed.Files less than 4 gigabytes in size
-	/// do not need the high-order DWORD.
+	/// This parameter can be NULL if the high-order DWORD of the compressed file size is not needed.Files less than 4 gigabytes in size do
+	/// not need the high-order DWORD.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -1628,21 +1723,21 @@ public static partial class Kernel32
 	/// into the DWORD pointed to by that parameter. This is the compressed file size for compressed files, the actual file size for
 	/// noncompressed files.
 	/// <para>
-	/// If the function fails, and <paramref name="lpFileSizeHigh"/> is NULL, the return value is INVALID_FILE_SIZE. To get extended
-	/// error information, call GetLastError.
+	/// If the function fails, and <paramref name="lpFileSizeHigh"/> is NULL, the return value is INVALID_FILE_SIZE. To get extended error
+	/// information, call GetLastError.
 	/// </para>
 	/// <para>
-	/// If the return value is INVALID_FILE_SIZE and <paramref name="lpFileSizeHigh"/> is non-NULL, an application must call GetLastError
-	/// to determine whether the function has succeeded (value is NO_ERROR) or failed (value is other than NO_ERROR).
+	/// If the return value is INVALID_FILE_SIZE and <paramref name="lpFileSizeHigh"/> is non-NULL, an application must call GetLastError to
+	/// determine whether the function has succeeded (value is NO_ERROR) or failed (value is other than NO_ERROR).
 	/// </para>
 	/// </returns>
 	/// <remarks>
-	/// An application can determine whether a volume is compressed by calling
-	/// <see cref="GetVolumeInformation(string, out string, out uint, out uint, out FileSystemFlags, out string)"/>, then checking the
-	/// status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed to by that function's lpFileSystemFlags parameter.
+	/// An application can determine whether a volume is compressed by calling <see cref="GetVolumeInformation(string, out string, out uint,
+	/// out uint, out FileSystemFlags, out string)"/>, then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed
+	/// to by that function's lpFileSystemFlags parameter.
 	/// <para>
-	/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse
-	/// file, the value obtained is the actual file size, the same as the value returned by a call to GetFileSize.
+	/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse file,
+	/// the value obtained is the actual file size, the same as the value returned by a call to GetFileSize.
 	/// </para>
 	/// <para>Symbolic link behavior—If the path points to a symbolic link, the function returns the file size of the target.</para>
 	/// </remarks>
@@ -1651,10 +1746,9 @@ public static partial class Kernel32
 	public static extern uint GetCompressedFileSize(string lpFileName, out uint lpFileSizeHigh);
 
 	/// <summary>
-	/// Retrieves the actual number of bytes of disk storage used to store a specified file. If the file is located on a volume that
-	/// supports compression and the file is compressed, the value obtained is the compressed size of the specified file. If the file is
-	/// located on a volume that supports sparse files and the file is a sparse file, the value obtained is the sparse size of the
-	/// specified file.
+	/// Retrieves the actual number of bytes of disk storage used to store a specified file. If the file is located on a volume that supports
+	/// compression and the file is compressed, the value obtained is the compressed size of the specified file. If the file is located on a
+	/// volume that supports sparse files and the file is a sparse file, the value obtained is the sparse size of the specified file.
 	/// </summary>
 	/// <param name="lpFileName">
 	/// The name of the file.
@@ -1662,27 +1756,25 @@ public static partial class Kernel32
 	/// Do not specify the name of a file on a nonseeking device, such as a pipe or a communications device, as its file size has no meaning.
 	/// </para>
 	/// <para>
-	/// This parameter may include the path. In the ANSI version of this function, the name is limited to <see cref="MAX_PATH"/>
-	/// characters. To extend this limit to 32,767 wide characters, call the Unicode version of the function and prepend "\\?\" to the
-	/// path. For more information, see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming
-	/// a File</a>.
+	/// This parameter may include the path. In the ANSI version of this function, the name is limited to <see cref="MAX_PATH"/> characters.
+	/// To extend this limit to 32,767 wide characters, call the Unicode version of the function and prepend "\\?\" to the path. For more
+	/// information, see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming a File</a>.
 	/// </para>
 	/// <para>
-	/// <c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>GetCompressedFileSizeW</c>), you
-	/// can opt-in to remove the <see cref="MAX_PATH"/> limitation without prepending "\\?\". See the "Maximum Path Length Limitation"
-	/// section of <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming Files, Paths, and
-	/// Namespaces</a> for details.
+	/// <c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>GetCompressedFileSizeW</c>), you can
+	/// opt-in to remove the <see cref="MAX_PATH"/> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section of
+	/// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming Files, Paths, and Namespaces</a> for details.
 	/// </para>
 	/// </param>
 	/// <param name="fileSize">The compressed file size.</param>
 	/// <returns>If the function succeeds, the return value is ERROR_SUCCESS, otherwise it is the failure code.</returns>
 	/// <remarks>
-	/// An application can determine whether a volume is compressed by calling
-	/// <see cref="GetVolumeInformation(string, out string, out uint, out uint, out FileSystemFlags, out string)"/>, then checking the
-	/// status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed to by that function's lpFileSystemFlags parameter.
+	/// An application can determine whether a volume is compressed by calling <see cref="GetVolumeInformation(string, out string, out uint,
+	/// out uint, out FileSystemFlags, out string)"/>, then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed
+	/// to by that function's lpFileSystemFlags parameter.
 	/// <para>
-	/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse
-	/// file, the value obtained is the actual file size, the same as the value returned by a call to GetFileSize.
+	/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse file,
+	/// the value obtained is the actual file size, the same as the value returned by a call to GetFileSize.
 	/// </para>
 	/// <para>Symbolic link behavior—If the path points to a symbolic link, the function returns the file size of the target.</para>
 	/// </remarks>
@@ -1699,10 +1791,9 @@ public static partial class Kernel32
 	}
 
 	/// <summary>
-	/// Retrieves the actual number of bytes of disk storage used to store a specified file. If the file is located on a volume that
-	/// supports compression and the file is compressed, the value obtained is the compressed size of the specified file. If the file is
-	/// located on a volume that supports sparse files and the file is a sparse file, the value obtained is the sparse size of the
-	/// specified file.
+	/// Retrieves the actual number of bytes of disk storage used to store a specified file. If the file is located on a volume that supports
+	/// compression and the file is compressed, the value obtained is the compressed size of the specified file. If the file is located on a
+	/// volume that supports sparse files and the file is a sparse file, the value obtained is the sparse size of the specified file.
 	/// </summary>
 	/// <param name="lpFileName">
 	/// The name of the file.
@@ -1710,26 +1801,24 @@ public static partial class Kernel32
 	/// Do not specify the name of a file on a nonseeking device, such as a pipe or a communications device, as its file size has no meaning.
 	/// </para>
 	/// <para>
-	/// This parameter may include the path. In the ANSI version of this function, the name is limited to <see cref="MAX_PATH"/>
-	/// characters. To extend this limit to 32,767 wide characters, call the Unicode version of the function and prepend "\\?\" to the
-	/// path. For more information, see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming
-	/// a File</a>.
+	/// This parameter may include the path. In the ANSI version of this function, the name is limited to <see cref="MAX_PATH"/> characters.
+	/// To extend this limit to 32,767 wide characters, call the Unicode version of the function and prepend "\\?\" to the path. For more
+	/// information, see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming a File</a>.
 	/// </para>
 	/// <para>
-	/// <c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>GetCompressedFileSizeW</c>), you
-	/// can opt-in to remove the <see cref="MAX_PATH"/> limitation without prepending "\\?\". See the "Maximum Path Length Limitation"
-	/// section of <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming Files, Paths, and
-	/// Namespaces</a> for details.
+	/// <c>Tip</c> Starting with Windows 10, version 1607, for the Unicode version of this function ( <c>GetCompressedFileSizeW</c>), you can
+	/// opt-in to remove the <see cref="MAX_PATH"/> limitation without prepending "\\?\". See the "Maximum Path Length Limitation" section of
+	/// <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx">Naming Files, Paths, and Namespaces</a> for details.
 	/// </para>
 	/// </param>
 	/// <returns>The compressed file size.</returns>
 	/// <remarks>
-	/// An application can determine whether a volume is compressed by calling
-	/// <see cref="GetVolumeInformation(string, out string, out uint, out uint, out FileSystemFlags, out string)"/>, then checking the
-	/// status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed to by that function's lpFileSystemFlags parameter.
+	/// An application can determine whether a volume is compressed by calling <see cref="GetVolumeInformation(string, out string, out uint,
+	/// out uint, out FileSystemFlags, out string)"/>, then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed
+	/// to by that function's lpFileSystemFlags parameter.
 	/// <para>
-	/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse
-	/// file, the value obtained is the actual file size, the same as the value returned by a call to GetFileSize.
+	/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse file,
+	/// the value obtained is the actual file size, the same as the value returned by a call to GetFileSize.
 	/// </para>
 	/// <para>Symbolic link behavior—If the path points to a symbolic link, the function returns the file size of the target.</para>
 	/// </remarks>
@@ -1743,15 +1832,15 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="lpPeriodMilliseconds">
 	/// <para>
-	/// A pointer to a variable that receives the period of the reservation, in milliseconds. The period is the time from which the I/O
-	/// is issued to the kernel until the time the I/O should be completed. If no bandwidth has been reserved for this handle, then the
-	/// value returned is the minimum reservation period supported for this volume.
+	/// A pointer to a variable that receives the period of the reservation, in milliseconds. The period is the time from which the I/O is
+	/// issued to the kernel until the time the I/O should be completed. If no bandwidth has been reserved for this handle, then the value
+	/// returned is the minimum reservation period supported for this volume.
 	/// </para>
 	/// </param>
 	/// <param name="lpBytesPerPeriod">
 	/// <para>
-	/// A pointer to a variable that receives the maximum number of bytes per period that can be reserved on the volume. If no bandwidth
-	/// has been reserved for this handle, then the value returned is the maximum number of bytes per period supported for the volume.
+	/// A pointer to a variable that receives the maximum number of bytes per period that can be reserved on the volume. If no bandwidth has
+	/// been reserved for this handle, then the value returned is the maximum number of bytes per period supported for the volume.
 	/// </para>
 	/// </param>
 	/// <param name="pDiscardable">
@@ -1763,8 +1852,8 @@ public static partial class Kernel32
 	/// <param name="lpTransferSize">
 	/// <para>
 	/// The minimum size of any individual I/O request that may be issued by the application. All I/O requests should be multiples of
-	/// TransferSize. If no bandwidth has been reserved for this handle, then the value returned is the minimum transfer size supported
-	/// for this volume.
+	/// TransferSize. If no bandwidth has been reserved for this handle, then the value returned is the minimum transfer size supported for
+	/// this volume.
 	/// </para>
 	/// </param>
 	/// <param name="lpNumOutstandingRequests">
@@ -1803,61 +1892,14 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getfilebandwidthreservation BOOL
-	// GetFileBandwidthReservation( HANDLE hFile, LPDWORD lpPeriodMilliseconds, LPDWORD lpBytesPerPeriod, LPBOOL pDiscardable, LPDWORD
-	// lpTransferSize, LPDWORD lpNumOutstandingRequests );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getfilebandwidthreservation BOOL GetFileBandwidthReservation(
+	// HANDLE hFile, LPDWORD lpPeriodMilliseconds, LPDWORD lpBytesPerPeriod, LPBOOL pDiscardable, LPDWORD lpTransferSize, LPDWORD
+	// lpNumOutstandingRequests );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "3caf38f6-e853-4057-a192-71cda4443dbd")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetFileBandwidthReservation(HFILE hFile, out uint lpPeriodMilliseconds, out uint lpBytesPerPeriod, [MarshalAs(UnmanagedType.Bool)] out bool pDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
-
-	/// <summary>
-	/// <para>Important</para>
-	/// <para>Some information relates to a prerelease product which may be substantially modified before it's commercially released. Microsoft makes no warranties, express or implied, with respect to the information provided here.</para>
-	/// </summary>
-	/// <param name="FileName">The file name/path.</param>
-	/// <param name="FileInformationClass">Specifies the type of information that should be retrieved.</param>
-	/// <param name="FileInfoBuffer">A pointer to a buffer where the retrieved data will be stored.</param>
-	/// <param name="FileInfoBufferSize">Specifies the size of the FileInfoBuffer buffer.</param>
-	/// <returns>If the function fails, the return value is <c>FALSE</c>, otherwise <c>TRUE</c>. To get extended error information, call GetLastError.</returns>
-	/// <remarks>
-	/// <para>This routine returns the requested information about the file specified by FileName. It does so without opening and returning a handle to the file. The information returned is determined by the FileInformationClass that is specified and is placed into the caller's buffer.</para>
-	/// <para>The FileInformationClass argument must be one of the following values from the FILE_INFO_BY_NAME_CLASS enumeration. The following list describes the type which must be used for the FileInfoBuffer parameter:</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>FileInformationClass type</description>
-	/// <description>FileInfoBuffer type</description>
-	/// </listheader>
-	/// <item>
-	/// <description><c>FileStatByNameInfo</c></description>
-	/// <description>The file info buffer should be an instance of FILE_STAT_INFORMATION.</description>
-	/// </item>
-	/// <item>
-	/// <description><c>FileStatLxByNameInfo</c></description>
-	/// <description>The file info buffer should be an instance of FILE_STAT_LX_INFORMATION.</description>
-	/// </item>
-	/// <item>
-	/// <description><c>FileCaseSensitiveByNameInfo</c></description>
-	/// <description>The file info buffer should be an instance of FILE_CASE_SENSITIVE_INFORMATION.</description>
-	/// </item>
-	/// <item>
-	/// <description><c>FileStatBasicByNameInfo</c></description>
-	/// <description>The file info buffer should be an instance of FILE_STAT_BASIC_INFORMATION.</description>
-	/// </item>
-	/// </list>
-	/// <para>Examples</para>
-	/// <para>The following shows an example of querying information of file information class <c>FileStatByNameInfo</c> by filepath using <c>GetFileInformationByName</c>. See FILE_STAT_INFORMATION for additional details on the query results.</para>
-	/// <para>The following shows an example of querying information of file information class <c>FileStatLxByNameInfo</c> by filepath using <c>GetFileInformationByName</c>. See FILE_STAT_LX_INFORMATION for additional details on the query results.</para>
-	/// <para>The following shows an example of querying case-sensitive information for file information class <c>FileCaseSensitiveByNameInfo</c> with a filepath by using <c>GetFileInformationByName</c>. See FILE_CASE_SENSITIVE_INFORMATION for additional details on the query results.</para>
-	/// <para>The following shows an example of querying information of file information class <c>FileStatBasicByNameInfo</c> with a filepath by using <c>GetFileInformationByName</c>. See <c>FILE_STAT_BASIC_INFORMATION</c> for additional details on the query results.</para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getfileinformationbyname
-	// BOOL GetFileInformationByName( PCWSTR FileName, FILE_INFO_BY_NAME_CLASS FileInformationClass, PVOID FileInfoBuffer, ULONG FileInfoBufferSize );
-	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.GetFileInformationByName")]
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetFileInformationByName([MarshalAs(UnmanagedType.LPWStr)] string FileName,
-		FILE_INFO_BY_NAME_CLASS FileInformationClass, IntPtr FileInfoBuffer, uint FileInfoBufferSize);
+	public static extern bool GetFileBandwidthReservation(HFILE hFile, out uint lpPeriodMilliseconds, out uint lpBytesPerPeriod,
+		[MarshalAs(UnmanagedType.Bool)] out bool pDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
 
 	/// <summary>
 	/// <para>Retrieves file information for the specified file.</para>
@@ -1874,8 +1916,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="lpFileInformation">
 	/// <para>
-	/// A pointer to the buffer that receives the requested file information. The structure that is returned corresponds to the class
-	/// that is specified by FileInformationClass. For a table of valid structure types, see the Remarks section.
+	/// A pointer to the buffer that receives the requested file information. The structure that is returned corresponds to the class that is
+	/// specified by FileInformationClass. For a table of valid structure types, see the Remarks section.
 	/// </para>
 	/// </param>
 	/// <param name="dwBufferSize">
@@ -1894,8 +1936,8 @@ public static partial class Kernel32
 	/// GetLastError is <c>ERROR_HANDLE_EOF</c>.
 	/// </para>
 	/// <para>
-	/// Certain file information classes behave slightly differently on different operating system releases. These classes are supported
-	/// by the underlying drivers, and any information they return is subject to change between operating system releases.
+	/// Certain file information classes behave slightly differently on different operating system releases. These classes are supported by
+	/// the underlying drivers, and any information they return is subject to change between operating system releases.
 	/// </para>
 	/// <para>
 	/// The following table shows the valid file information class types and their corresponding data structure types for use with this function.
@@ -2029,7 +2071,8 @@ public static partial class Kernel32
 	{
 		if (!CorrespondingTypeAttribute.CanGet(FileInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch.");
 		SafeHGlobalHandle mem;
-		if (typeof(T) == typeof(FILE_ID_BOTH_DIR_INFO) || typeof(T) == typeof(FILE_FULL_DIR_INFO) || typeof(T) == typeof(FILE_ID_EXTD_DIR_INFO))
+		var anySz = typeof(T).GetCustomAttributes<VanaraMarshalerAttribute>(false, a => a.MarshalType == typeof(AnySizeStringMarshaler<T>)).Any();
+		if (anySz)
 			mem = new SafeHGlobalHandle(Marshal.SizeOf<T>() + MAX_PATH * 2);
 		else if (typeof(T) == typeof(FILE_REMOTE_PROTOCOL_INFO))
 			mem = SafeHGlobalHandle.CreateFromStructure(FILE_REMOTE_PROTOCOL_INFO.Default);
@@ -2038,6 +2081,157 @@ public static partial class Kernel32
 		using (mem)
 		{
 			while (!GetFileInformationByHandleEx(hFile, FileInformationClass, mem, (uint)mem.Size))
+			{
+				var err = Win32Error.GetLastError();
+				if (err == Win32Error.ERROR_MORE_DATA)
+					mem.Size *= 2;
+				else if (err == Win32Error.ERROR_NO_MORE_FILES)
+					break;
+				else
+					throw err.GetException()!;
+			}
+			return mem.ToStructure<T>();
+		}
+	}
+
+	/// <summary>Queries information about a file or directory, given the path to the file.</summary>
+	/// <param name="FileName">The file name/path.</param>
+	/// <param name="FileInformationClass">Specifies the type of information that should be retrieved.</param>
+	/// <param name="FileInfoBuffer">A pointer to a buffer where the retrieved data will be stored.</param>
+	/// <param name="FileInfoBufferSize">Specifies the size of the FileInfoBuffer buffer.</param>
+	/// <returns>
+	/// If the function fails, the return value is <c>FALSE</c>, otherwise <c>TRUE</c>. To get extended error information, call GetLastError.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// This routine returns the requested information about the file specified by FileName. It does so without opening and returning a
+	/// handle to the file. The information returned is determined by the FileInformationClass that is specified and is placed into the
+	/// caller's buffer.
+	/// </para>
+	/// <para>
+	/// The FileInformationClass argument must be one of the following values from the FILE_INFO_BY_NAME_CLASS enumeration. The following
+	/// list describes the type which must be used for the FileInfoBuffer parameter:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>FileInformationClass type</description>
+	/// <description>FileInfoBuffer type</description>
+	/// </listheader>
+	/// <item>
+	/// <description><c>FileStatByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_STAT_INFORMATION.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>FileStatLxByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_STAT_LX_INFORMATION.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>FileCaseSensitiveByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_CASE_SENSITIVE_INFORMATION.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>FileStatBasicByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_STAT_BASIC_INFORMATION.</description>
+	/// </item>
+	/// </list>
+	/// <para>Examples</para>
+	/// <para>
+	/// The following shows an example of querying information of file information class <c>FileStatByNameInfo</c> by filepath using
+	/// <c>GetFileInformationByName</c>. See FILE_STAT_INFORMATION for additional details on the query results.
+	/// </para>
+	/// <para>
+	/// The following shows an example of querying information of file information class <c>FileStatLxByNameInfo</c> by filepath using
+	/// <c>GetFileInformationByName</c>. See FILE_STAT_LX_INFORMATION for additional details on the query results.
+	/// </para>
+	/// <para>
+	/// The following shows an example of querying case-sensitive information for file information class <c>FileCaseSensitiveByNameInfo</c>
+	/// with a filepath by using <c>GetFileInformationByName</c>. See FILE_CASE_SENSITIVE_INFORMATION for additional details on the query results.
+	/// </para>
+	/// <para>
+	/// The following shows an example of querying information of file information class <c>FileStatBasicByNameInfo</c> with a filepath by
+	/// using <c>GetFileInformationByName</c>. See <c>FILE_STAT_BASIC_INFORMATION</c> for additional details on the query results.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getfileinformationbyname BOOL GetFileInformationByName( PCWSTR
+	// FileName, FILE_INFO_BY_NAME_CLASS FileInformationClass, PVOID FileInfoBuffer, ULONG FileInfoBufferSize );
+	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.GetFileInformationByName")]
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool GetFileInformationByName([MarshalAs(UnmanagedType.LPWStr)] string FileName,
+		FILE_INFO_BY_NAME_CLASS FileInformationClass, IntPtr FileInfoBuffer, uint FileInfoBufferSize);
+
+	/// <summary>Queries information about a file or directory, given the path to the file.</summary>
+	/// <param name="FileName">The file name/path.</param>
+	/// <param name="FileInformationClass">Specifies the type of information that should be retrieved.</param>
+	/// <returns>A buffer where the retrieved data will be stored.</returns>
+	/// <remarks>
+	/// <para>
+	/// This routine returns the requested information about the file specified by FileName. It does so without opening and returning a
+	/// handle to the file. The information returned is determined by the FileInformationClass that is specified and is placed into the
+	/// caller's buffer.
+	/// </para>
+	/// <para>
+	/// The FileInformationClass argument must be one of the following values from the FILE_INFO_BY_NAME_CLASS enumeration. The following
+	/// list describes the type which must be used for the FileInfoBuffer parameter:
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>FileInformationClass type</description>
+	/// <description>FileInfoBuffer type</description>
+	/// </listheader>
+	/// <item>
+	/// <description><c>FileStatByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_STAT_INFORMATION.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>FileStatLxByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_STAT_LX_INFORMATION.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>FileCaseSensitiveByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_CASE_SENSITIVE_INFORMATION.</description>
+	/// </item>
+	/// <item>
+	/// <description><c>FileStatBasicByNameInfo</c></description>
+	/// <description>The file info buffer should be an instance of FILE_STAT_BASIC_INFORMATION.</description>
+	/// </item>
+	/// </list>
+	/// <para>Examples</para>
+	/// <para>
+	/// The following shows an example of querying information of file information class <c>FileStatByNameInfo</c> by filepath using
+	/// <c>GetFileInformationByName</c>. See FILE_STAT_INFORMATION for additional details on the query results.
+	/// </para>
+	/// <para>
+	/// The following shows an example of querying information of file information class <c>FileStatLxByNameInfo</c> by filepath using
+	/// <c>GetFileInformationByName</c>. See FILE_STAT_LX_INFORMATION for additional details on the query results.
+	/// </para>
+	/// <para>
+	/// The following shows an example of querying case-sensitive information for file information class <c>FileCaseSensitiveByNameInfo</c>
+	/// with a filepath by using <c>GetFileInformationByName</c>. See FILE_CASE_SENSITIVE_INFORMATION for additional details on the query results.
+	/// </para>
+	/// <para>
+	/// The following shows an example of querying information of file information class <c>FileStatBasicByNameInfo</c> with a filepath by
+	/// using <c>GetFileInformationByName</c>. See <c>FILE_STAT_BASIC_INFORMATION</c> for additional details on the query results.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getfileinformationbyname BOOL GetFileInformationByName( PCWSTR
+	// FileName, FILE_INFO_BY_NAME_CLASS FileInformationClass, PVOID FileInfoBuffer, ULONG FileInfoBufferSize );
+	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.GetFileInformationByName")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static T GetFileInformationByName<T>(string FileName, FILE_INFO_BY_NAME_CLASS FileInformationClass) where T : struct
+	{
+		if (!CorrespondingTypeAttribute.CanGet(FileInformationClass, typeof(T))) throw new InvalidOperationException("Type mismatch.");
+		SafeHGlobalHandle mem;
+		var anySz = typeof(T).GetCustomAttributes<VanaraMarshalerAttribute>(false, a => a.MarshalType == typeof(AnySizeStringMarshaler<T>)).Any();
+		if (anySz)
+			mem = new SafeHGlobalHandle(Marshal.SizeOf<T>() + MAX_PATH * 2);
+		else if (typeof(T) == typeof(FILE_REMOTE_PROTOCOL_INFO))
+			mem = SafeHGlobalHandle.CreateFromStructure(FILE_REMOTE_PROTOCOL_INFO.Default);
+		else
+			mem = SafeHGlobalHandle.CreateFromStructure<T>();
+		using (mem)
+		{
+			while (!GetFileInformationByName(FileName, FileInformationClass, mem, (uint)mem.Size))
 			{
 				var err = Win32Error.GetLastError();
 				if (err == Win32Error.ERROR_MORE_DATA)
@@ -2065,8 +2259,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="lpNewFileName">
 	/// <para>
-	/// The new name for the file or directory. The new name must not already exist. A new file may be on a different file system or
-	/// drive. A new directory must be on the same drive.
+	/// The new name for the file or directory. The new name must not already exist. A new file may be on a different file system or drive. A
+	/// new directory must be on the same drive.
 	/// </para>
 	/// <para>
 	/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
@@ -2105,14 +2299,14 @@ public static partial class Kernel32
 	/// <param name="lpNewFileName">
 	/// <para>The new name of the file or directory on the local computer.</para>
 	/// <para>
-	/// When moving a file, the destination can be on a different file system or volume. If the destination is on another drive, you must
-	/// set the <c>MOVEFILE_COPY_ALLOWED</c> flag in dwFlags.
+	/// When moving a file, the destination can be on a different file system or volume. If the destination is on another drive, you must set
+	/// the <c>MOVEFILE_COPY_ALLOWED</c> flag in dwFlags.
 	/// </para>
 	/// <para>When moving a directory, the destination must be on the same drive.</para>
 	/// <para>
 	/// If dwFlags specifies <c>MOVEFILE_DELAY_UNTIL_REBOOT</c> and lpNewFileName is <c>NULL</c>, <c>MoveFileEx</c> registers the
-	/// lpExistingFileName file to be deleted when the system restarts. If lpExistingFileName refers to a directory, the system removes
-	/// the directory at restart only if the directory is empty.
+	/// lpExistingFileName file to be deleted when the system restarts. If lpExistingFileName refers to a directory, the system removes the
+	/// directory at restart only if the directory is empty.
 	/// </para>
 	/// <para>
 	/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
@@ -2130,9 +2324,9 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>MOVEFILE_COPY_ALLOWED2 (0x2)</term>
 	/// <term>
-	/// If the file is to be moved to a different volume, the function simulates the move by using the CopyFile and DeleteFile
-	/// functions.If the file is successfully copied to a different volume and the original file is unable to be deleted, the function
-	/// succeeds leaving the source file intact.This value cannot be used with MOVEFILE_DELAY_UNTIL_REBOOT.
+	/// If the file is to be moved to a different volume, the function simulates the move by using the CopyFile and DeleteFile functions.If
+	/// the file is successfully copied to a different volume and the original file is unable to be deleted, the function succeeds leaving
+	/// the source file intact.This value cannot be used with MOVEFILE_DELAY_UNTIL_REBOOT.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2144,34 +2338,34 @@ public static partial class Kernel32
 	/// <term>
 	/// The system does not move the file until the operating system is restarted. The system moves the file immediately after AUTOCHK is
 	/// executed, but before creating any paging files. Consequently, this parameter enables the function to delete paging files from
-	/// previous startups.This value can be used only if the process is in the context of a user who belongs to the administrators group
-	/// or the LocalSystem account. This value cannot be used with MOVEFILE_COPY_ALLOWED.Windows Server 2003 and Windows XP: For
-	/// information about special situations where this functionality can fail, and a suggested workaround solution, see Files are not
-	/// exchanged when Windows Server 2003 restarts if you use the MoveFileEx function to schedule a replacement for some files in the
-	/// Help and Support Knowledge Base.
+	/// previous startups.This value can be used only if the process is in the context of a user who belongs to the administrators group or
+	/// the LocalSystem account. This value cannot be used with MOVEFILE_COPY_ALLOWED.Windows Server 2003 and Windows XP: For information
+	/// about special situations where this functionality can fail, and a suggested workaround solution, see Files are not exchanged when
+	/// Windows Server 2003 restarts if you use the MoveFileEx function to schedule a replacement for some files in the Help and Support
+	/// Knowledge Base.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>MOVEFILE_FAIL_IF_NOT_TRACKABLE32 (0x20)</term>
 	/// <term>
-	/// The function fails if the source file is a link source, but the file cannot be tracked after the move. This situation can occur
-	/// if the destination is a volume formatted with the FAT file system.
+	/// The function fails if the source file is a link source, but the file cannot be tracked after the move. This situation can occur if
+	/// the destination is a volume formatted with the FAT file system.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>MOVEFILE_REPLACE_EXISTING1 (0x1)</term>
 	/// <term>
-	/// If a file named lpNewFileName exists, the function replaces its contents with the contents of the lpExistingFileName file,
-	/// provided that security requirements regarding access control lists (ACLs) are met. For more information, see the Remarks section
-	/// of this topic.This value cannot be used if lpNewFileName or lpExistingFileName names a directory.
+	/// If a file named lpNewFileName exists, the function replaces its contents with the contents of the lpExistingFileName file, provided
+	/// that security requirements regarding access control lists (ACLs) are met. For more information, see the Remarks section of this
+	/// topic.This value cannot be used if lpNewFileName or lpExistingFileName names a directory.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>MOVEFILE_WRITE_THROUGH8 (0x8)</term>
 	/// <term>
-	/// The function does not return until the file is actually moved on the disk.Setting this value guarantees that a move performed as
-	/// a copy and delete operation is flushed to disk before the function returns. The flush occurs at the end of the copy
-	/// operation.This value has no effect if MOVEFILE_DELAY_UNTIL_REBOOT is set.
+	/// The function does not return until the file is actually moved on the disk.Setting this value guarantees that a move performed as a
+	/// copy and delete operation is flushed to disk before the function returns. The flush occurs at the end of the copy operation.This
+	/// value has no effect if MOVEFILE_DELAY_UNTIL_REBOOT is set.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -2205,15 +2399,15 @@ public static partial class Kernel32
 	/// <param name="lpNewFileName">
 	/// <para>The new name of the file or directory on the local computer.</para>
 	/// <para>
-	/// When moving a file, lpNewFileName can be on a different file system or volume. If lpNewFileName is on another drive, you must set
-	/// the <c>MOVEFILE_COPY_ALLOWED</c> flag in dwFlags.
+	/// When moving a file, lpNewFileName can be on a different file system or volume. If lpNewFileName is on another drive, you must set the
+	/// <c>MOVEFILE_COPY_ALLOWED</c> flag in dwFlags.
 	/// </para>
 	/// <para>When moving a directory, lpExistingFileName and lpNewFileName must be on the same drive.</para>
 	/// <para>
 	/// If dwFlags specifies <c>MOVEFILE_DELAY_UNTIL_REBOOT</c> and lpNewFileName is <c>NULL</c>, <c>MoveFileWithProgress</c> registers
 	/// lpExistingFileName to be deleted when the system restarts. The function fails if it cannot access the registry to store the
-	/// information about the delete operation. If lpExistingFileName refers to a directory, the system removes the directory at restart
-	/// only if the directory is empty.
+	/// information about the delete operation. If lpExistingFileName refers to a directory, the system removes the directory at restart only
+	/// if the directory is empty.
 	/// </para>
 	/// <para>
 	/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
@@ -2221,9 +2415,8 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="lpProgressRoutine">
-	/// A pointer to a <c>CopyProgressRoutine</c> callback function that is called each time another portion of the file has been moved.
-	/// The callback function can be useful if you provide a user interface that displays the progress of the operation. This parameter
-	/// can be <c>NULL</c>.
+	/// A pointer to a <c>CopyProgressRoutine</c> callback function that is called each time another portion of the file has been moved. The
+	/// callback function can be useful if you provide a user interface that displays the progress of the operation. This parameter can be <c>NULL</c>.
 	/// </param>
 	/// <param name="lpData">An argument to be passed to the <c>CopyProgressRoutine</c> callback function. This parameter can be <c>NULL</c>.</param>
 	/// <param name="dwFlags">
@@ -2237,9 +2430,9 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>MOVEFILE_COPY_ALLOWED2 (0x2)</term>
 	/// <term>
-	/// If the file is to be moved to a different volume, the function simulates the move by using the CopyFile and DeleteFile
-	/// functions.If the file is successfully copied to a different volume and the original file is unable to be deleted, the function
-	/// succeeds leaving the source file intact.This value cannot be used with MOVEFILE_DELAY_UNTIL_REBOOT.
+	/// If the file is to be moved to a different volume, the function simulates the move by using the CopyFile and DeleteFile functions.If
+	/// the file is successfully copied to a different volume and the original file is unable to be deleted, the function succeeds leaving
+	/// the source file intact.This value cannot be used with MOVEFILE_DELAY_UNTIL_REBOOT.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2251,30 +2444,30 @@ public static partial class Kernel32
 	/// <term>
 	/// The system does not move the file until the operating system is restarted. The system moves the file immediately after AUTOCHK is
 	/// executed, but before creating any paging files. Consequently, this parameter enables the function to delete paging files from
-	/// previous startups.This value can only be used if the process is in the context of a user who belongs to the administrators group
-	/// or the LocalSystem account.This value cannot be used with MOVEFILE_COPY_ALLOWED.
+	/// previous startups.This value can only be used if the process is in the context of a user who belongs to the administrators group or
+	/// the LocalSystem account.This value cannot be used with MOVEFILE_COPY_ALLOWED.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>MOVEFILE_FAIL_IF_NOT_TRACKABLE32 (0x20)</term>
 	/// <term>
-	/// The function fails if the source file is a link source, but the file cannot be tracked after the move. This situation can occur
-	/// if the destination is a volume formatted with the FAT file system.
+	/// The function fails if the source file is a link source, but the file cannot be tracked after the move. This situation can occur if
+	/// the destination is a volume formatted with the FAT file system.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>MOVEFILE_REPLACE_EXISTING1 (0x1)</term>
 	/// <term>
-	/// If a file named lpNewFileName exists, the function replaces its contents with the contents of the lpExistingFileName file.This
-	/// value cannot be used if lpNewFileName or lpExistingFileName names a directory.
+	/// If a file named lpNewFileName exists, the function replaces its contents with the contents of the lpExistingFileName file.This value
+	/// cannot be used if lpNewFileName or lpExistingFileName names a directory.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>MOVEFILE_WRITE_THROUGH8 (0x8)</term>
 	/// <term>
-	/// The function does not return until the file has actually been moved on the disk.Setting this value guarantees that a move
-	/// performed as a copy and delete operation is flushed to disk before the function returns. The flush occurs at the end of the copy
-	/// operation.This value has no effect if MOVEFILE_DELAY_UNTIL_REBOOT is set.
+	/// The function does not return until the file has actually been moved on the disk.Setting this value guarantees that a move performed
+	/// as a copy and delete operation is flushed to disk before the function returns. The flush occurs at the end of the copy operation.This
+	/// value has no effect if MOVEFILE_DELAY_UNTIL_REBOOT is set.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -2285,13 +2478,13 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// <para>
 	/// When moving a file across volumes, if lpProgressRoutine returns <c>PROGRESS_CANCEL</c> due to the user canceling the operation,
-	/// <c>MoveFileWithProgress</c> will return zero and <c>GetLastError</c> will return <c>ERROR_REQUEST_ABORTED</c>. The existing file
-	/// is left intact.
+	/// <c>MoveFileWithProgress</c> will return zero and <c>GetLastError</c> will return <c>ERROR_REQUEST_ABORTED</c>. The existing file is
+	/// left intact.
 	/// </para>
 	/// <para>
 	/// When moving a file across volumes, if lpProgressRoutine returns <c>PROGRESS_STOP</c> due to the user stopping the operation,
-	/// <c>MoveFileWithProgress</c> will return zero and <c>GetLastError</c> will return <c>ERROR_REQUEST_ABORTED</c>. The existing file
-	/// is left intact.
+	/// <c>MoveFileWithProgress</c> will return zero and <c>GetLastError</c> will return <c>ERROR_REQUEST_ABORTED</c>. The existing file is
+	/// left intact.
 	/// </para>
 	/// </returns>
 	// BOOL WINAPI MoveFileWithProgress( _In_ LPCTSTR lpExistingFileName, _In_opt_ LPCTSTR lpNewFileName, _In_opt_ LPPROGRESS_ROUTINE
@@ -2313,9 +2506,9 @@ public static partial class Kernel32
 	/// <para>A pointer to the <c>OFSTRUCT</c> structure that receives information about a file when it is first opened.</para>
 	/// <para>The structure can be used in subsequent calls to the <c>OpenFile</c> function to see an open file.</para>
 	/// <para>
-	/// The <c>OFSTRUCT</c> structure contains a path string member with a length that is limited to <c>OFS_MAXPATHNAME</c> characters,
-	/// which is 128 characters. Because of this, you cannot use the <c>OpenFile</c> function to open a file with a path length that
-	/// exceeds 128 characters. The <c>CreateFile</c> function does not have this path length limitation.
+	/// The <c>OFSTRUCT</c> structure contains a path string member with a length that is limited to <c>OFS_MAXPATHNAME</c> characters, which
+	/// is 128 characters. Because of this, you cannot use the <c>OpenFile</c> function to open a file with a path length that exceeds 128
+	/// characters. The <c>CreateFile</c> function does not have this path length limitation.
 	/// </para>
 	/// </param>
 	/// <param name="uStyle">
@@ -2369,8 +2562,8 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>OF_SHARE_COMPAT0x00000000</term>
 	/// <term>
-	/// For MS-DOS–based file systems, opens a file with compatibility mode, allows any process on a specified computer to open the file
-	/// any number of times.Other efforts to open a file with other sharing modes fail. This flag is mapped to the
+	/// For MS-DOS–based file systems, opens a file with compatibility mode, allows any process on a specified computer to open the file any
+	/// number of times.Other efforts to open a file with other sharing modes fail. This flag is mapped to the
 	/// FILE_SHARE_READ|FILE_SHARE_WRITE flags of the CreateFile function.
 	/// </term>
 	/// </item>
@@ -2378,31 +2571,29 @@ public static partial class Kernel32
 	/// <term>OF_SHARE_DENY_NONE0x00000040</term>
 	/// <term>
 	/// Opens a file without denying read or write access to other processes.On MS-DOS-based file systems, if the file has been opened in
-	/// compatibility mode by any other process, the function fails.This flag is mapped to the FILE_SHARE_READ|FILE_SHARE_WRITE flags of
-	/// the CreateFile function.
+	/// compatibility mode by any other process, the function fails.This flag is mapped to the FILE_SHARE_READ|FILE_SHARE_WRITE flags of the
+	/// CreateFile function.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>OF_SHARE_DENY_READ0x00000030</term>
 	/// <term>
 	/// Opens a file and denies read access to other processes.On MS-DOS-based file systems, if the file has been opened in compatibility
-	/// mode, or for read access by any other process, the function fails.This flag is mapped to the FILE_SHARE_WRITE flag of the
-	/// CreateFile function.
+	/// mode, or for read access by any other process, the function fails.This flag is mapped to the FILE_SHARE_WRITE flag of the CreateFile function.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>OF_SHARE_DENY_WRITE0x00000020</term>
 	/// <term>
 	/// Opens a file and denies write access to other processes.On MS-DOS-based file systems, if a file has been opened in compatibility
-	/// mode, or for write access by any other process, the function fails.This flag is mapped to the FILE_SHARE_READ flag of the
-	/// CreateFile function.
+	/// mode, or for write access by any other process, the function fails.This flag is mapped to the FILE_SHARE_READ flag of the CreateFile function.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>OF_SHARE_EXCLUSIVE0x00000010</term>
 	/// <term>
-	/// Opens a file with exclusive mode, and denies both read/write access to other processes. If a file has been opened in any other
-	/// mode for read/write access, even by the current process, the function fails.
+	/// Opens a file with exclusive mode, and denies both read/write access to other processes. If a file has been opened in any other mode
+	/// for read/write access, even by the current process, the function fails.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2429,7 +2620,8 @@ public static partial class Kernel32
 	// HFILE WINAPI OpenFile( _In_ LPCSTR lpFileName, _Out_ LPOFSTRUCT lpReOpenBuff, _In_ UINT uStyle); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365430(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365430")]
-	public static extern SafeHFILE OpenFile([In][MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, OpenFileAction uStyle);
+	[return: AddAsCtor]
+	public static extern SafeHFILE OpenFile([In, MarshalAs(UnmanagedType.LPStr)] string lpFileName, out OFSTRUCT lpReOpenBuff, OpenFileAction uStyle);
 
 	/// <summary>
 	/// <para>
@@ -2443,20 +2635,19 @@ public static partial class Kernel32
 	/// access right such as <c>GENERIC_READ</c> that includes the <c>FILE_LIST_DIRECTORY</c> access right.
 	/// </param>
 	/// <param name="lpBuffer">
-	/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which the read results are to be returned. The structure of this buffer
-	/// is defined by the <c>FILE_NOTIFY_INFORMATION</c> structure. This buffer is filled either synchronously or asynchronously,
-	/// depending on how the directory is opened and what value is given to the lpOverlapped parameter. For more information, see the
-	/// Remarks section.
+	/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which the read results are to be returned. The structure of this buffer is
+	/// defined by the <c>FILE_NOTIFY_INFORMATION</c> structure. This buffer is filled either synchronously or asynchronously, depending on
+	/// how the directory is opened and what value is given to the lpOverlapped parameter. For more information, see the Remarks section.
 	/// </param>
 	/// <param name="nBufferLength">The size of the buffer that is pointed to by the lpBuffer parameter, in bytes.</param>
 	/// <param name="bWatchSubtree">
-	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter
-	/// is <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
+	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter is
+	/// <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
 	/// </param>
 	/// <param name="dwNotifyFilter">
 	/// <para>
-	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more
-	/// of the following values.
+	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more of
+	/// the following values.
 	/// </para>
 	/// <para>
 	/// <list type="table">
@@ -2474,8 +2665,8 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>FILE_NOTIFY_CHANGE_DIR_NAME0x00000002</term>
 	/// <term>
-	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes
-	/// include creating or deleting a directory.
+	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
+	/// creating or deleting a directory.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2485,17 +2676,17 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>FILE_NOTIFY_CHANGE_SIZE0x00000008</term>
 	/// <term>
-	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating
-	/// system detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching,
-	/// detection occurs only when the cache is sufficiently flushed.
+	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating system
+	/// detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching, detection
+	/// occurs only when the cache is sufficiently flushed.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_NOTIFY_CHANGE_LAST_WRITE0x00000010</term>
 	/// <term>
-	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to
-	/// return. The operating system detects a change to the last write-time only when the file is written to the disk. For operating
-	/// systems that use extensive caching, detection occurs only when the cache is sufficiently flushed.
+	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// The operating system detects a change to the last write-time only when the file is written to the disk. For operating systems that
+	/// use extensive caching, detection occurs only when the cache is sufficiently flushed.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2518,8 +2709,8 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="lpBytesReturned">
-	/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous
-	/// calls, this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
+	/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous calls,
+	/// this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
 	/// </param>
 	/// <param name="lpOverlapped">
 	/// A pointer to an <c>OVERLAPPED</c> structure that supplies data to be used during asynchronous operation. Otherwise, this value is
@@ -2537,14 +2728,15 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// <para>If the network redirector or the target file system does not support this operation, the function fails with <c>ERROR_INVALID_FUNCTION</c>.</para>
 	/// </returns>
-	// BOOL WINAPI ReadDirectoryChangesW( _In_ HANDLE hDirectory, _Out_ LPVOID lpBuffer, _In_ DWORD nBufferLength, _In_ BOOL
-	// bWatchSubtree, _In_ DWORD dwNotifyFilter, _Out_opt_ LPDWORD lpBytesReturned, _Inout_opt_ LPOVERLAPPED lpOverlapped, _In_opt_
+	// BOOL WINAPI ReadDirectoryChangesW( _In_ HANDLE hDirectory, _Out_ LPVOID lpBuffer, _In_ DWORD nBufferLength, _In_ BOOL bWatchSubtree,
+	// _In_ DWORD dwNotifyFilter, _Out_opt_ LPDWORD lpBytesReturned, _Inout_opt_ LPOVERLAPPED lpOverlapped, _In_opt_
 	// LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365465(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ReadDirectoryChangesW", CharSet = CharSet.Unicode)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365465")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool ReadDirectoryChanges([In] HFILE hDirectory, IntPtr lpBuffer, uint nBufferLength, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter,
-		[Out, Optional] uint* lpBytesReturned, [Optional] NativeOverlapped* lpOverlapped, [Optional] FileIOCompletionRoutineUnsafe? lpCompletionRoutine);
+	public static extern unsafe bool ReadDirectoryChanges([In] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] byte* lpBuffer, uint nBufferLength,
+		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, [Out, Optional] uint* lpBytesReturned, [In, Optional] NativeOverlapped* lpOverlapped,
+		[Optional] FileIOCompletionRoutineUnsafe? lpCompletionRoutine);
 
 	/// <summary>
 	/// <para>
@@ -2558,20 +2750,19 @@ public static partial class Kernel32
 	/// access right such as <c>GENERIC_READ</c> that includes the <c>FILE_LIST_DIRECTORY</c> access right.
 	/// </param>
 	/// <param name="lpBuffer">
-	/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which the read results are to be returned. The structure of this buffer
-	/// is defined by the <c>FILE_NOTIFY_INFORMATION</c> structure. This buffer is filled either synchronously or asynchronously,
-	/// depending on how the directory is opened and what value is given to the lpOverlapped parameter. For more information, see the
-	/// Remarks section.
+	/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which the read results are to be returned. The structure of this buffer is
+	/// defined by the <c>FILE_NOTIFY_INFORMATION</c> structure. This buffer is filled either synchronously or asynchronously, depending on
+	/// how the directory is opened and what value is given to the lpOverlapped parameter. For more information, see the Remarks section.
 	/// </param>
 	/// <param name="nBufferLength">The size of the buffer that is pointed to by the lpBuffer parameter, in bytes.</param>
 	/// <param name="bWatchSubtree">
-	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter
-	/// is <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
+	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter is
+	/// <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
 	/// </param>
 	/// <param name="dwNotifyFilter">
 	/// <para>
-	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more
-	/// of the following values.
+	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more of
+	/// the following values.
 	/// </para>
 	/// <para>
 	/// <list type="table">
@@ -2589,8 +2780,8 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>FILE_NOTIFY_CHANGE_DIR_NAME0x00000002</term>
 	/// <term>
-	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes
-	/// include creating or deleting a directory.
+	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
+	/// creating or deleting a directory.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2600,17 +2791,17 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>FILE_NOTIFY_CHANGE_SIZE0x00000008</term>
 	/// <term>
-	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating
-	/// system detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching,
-	/// detection occurs only when the cache is sufficiently flushed.
+	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating system
+	/// detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching, detection
+	/// occurs only when the cache is sufficiently flushed.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_NOTIFY_CHANGE_LAST_WRITE0x00000010</term>
 	/// <term>
-	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to
-	/// return. The operating system detects a change to the last write-time only when the file is written to the disk. For operating
-	/// systems that use extensive caching, detection occurs only when the cache is sufficiently flushed.
+	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// The operating system detects a change to the last write-time only when the file is written to the disk. For operating systems that
+	/// use extensive caching, detection occurs only when the cache is sufficiently flushed.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2633,8 +2824,8 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="lpBytesReturned">
-	/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous
-	/// calls, this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
+	/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous calls,
+	/// this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
 	/// </param>
 	/// <param name="lpOverlapped">
 	/// A pointer to an <c>OVERLAPPED</c> structure that supplies data to be used during asynchronous operation. Otherwise, this value is
@@ -2652,14 +2843,130 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// <para>If the network redirector or the target file system does not support this operation, the function fails with <c>ERROR_INVALID_FUNCTION</c>.</para>
 	/// </returns>
-	// BOOL WINAPI ReadDirectoryChangesW( _In_ HANDLE hDirectory, _Out_ LPVOID lpBuffer, _In_ DWORD nBufferLength, _In_ BOOL
-	// bWatchSubtree, _In_ DWORD dwNotifyFilter, _Out_opt_ LPDWORD lpBytesReturned, _Inout_opt_ LPOVERLAPPED lpOverlapped, _In_opt_
+	// BOOL WINAPI ReadDirectoryChangesW( _In_ HANDLE hDirectory, _Out_ LPVOID lpBuffer, _In_ DWORD nBufferLength, _In_ BOOL bWatchSubtree,
+	// _In_ DWORD dwNotifyFilter, _Out_opt_ LPDWORD lpBytesReturned, _Inout_opt_ LPOVERLAPPED lpOverlapped, _In_opt_
 	// LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365465(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ReadDirectoryChangesW", CharSet = CharSet.Unicode)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365465")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadDirectoryChanges([In] HFILE hDirectory, IntPtr lpBuffer, uint nBufferLength, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter,
-		out uint lpBytesReturned, [Optional] IntPtr lpOverlapped, [Optional] FileIOCompletionRoutine? lpCompletionRoutine);
+	public static extern bool ReadDirectoryChanges([In] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] IntPtr lpBuffer, uint nBufferLength,
+		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned, in NativeOverlapped lpOverlapped,
+		[Optional] FileIOCompletionRoutine? lpCompletionRoutine);
+
+	/// <summary>
+	/// <para>
+	/// Retrieves information that describes the changes within the specified directory. The function does not report changes to the
+	/// specified directory itself.
+	/// </para>
+	/// <para>To track changes on a volume, see change journals.</para>
+	/// </summary>
+	/// <param name="hDirectory">
+	/// A handle to the directory to be monitored. This directory must be opened with the <c>FILE_LIST_DIRECTORY</c> access right, or an
+	/// access right such as <c>GENERIC_READ</c> that includes the <c>FILE_LIST_DIRECTORY</c> access right.
+	/// </param>
+	/// <param name="lpBuffer">
+	/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which the read results are to be returned. The structure of this buffer is
+	/// defined by the <c>FILE_NOTIFY_INFORMATION</c> structure. This buffer is filled either synchronously or asynchronously, depending on
+	/// how the directory is opened and what value is given to the lpOverlapped parameter. For more information, see the Remarks section.
+	/// </param>
+	/// <param name="nBufferLength">The size of the buffer that is pointed to by the lpBuffer parameter, in bytes.</param>
+	/// <param name="bWatchSubtree">
+	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter is
+	/// <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
+	/// </param>
+	/// <param name="dwNotifyFilter">
+	/// <para>
+	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more of
+	/// the following values.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_FILE_NAME0x00000001</term>
+	/// <term>
+	/// Any file name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
+	/// renaming, creating, or deleting a file.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_DIR_NAME0x00000002</term>
+	/// <term>
+	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
+	/// creating or deleting a directory.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_ATTRIBUTES0x00000004</term>
+	/// <term>Any attribute change in the watched directory or subtree causes a change notification wait operation to return.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_SIZE0x00000008</term>
+	/// <term>
+	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating system
+	/// detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching, detection
+	/// occurs only when the cache is sufficiently flushed.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_LAST_WRITE0x00000010</term>
+	/// <term>
+	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// The operating system detects a change to the last write-time only when the file is written to the disk. For operating systems that
+	/// use extensive caching, detection occurs only when the cache is sufficiently flushed.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_LAST_ACCESS0x00000020</term>
+	/// <term>
+	/// Any change to the last access time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_CREATION0x00000040</term>
+	/// <term>
+	/// Any change to the creation time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_SECURITY0x00000100</term>
+	/// <term>Any security-descriptor change in the watched directory or subtree causes a change notification wait operation to return.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="lpBytesReturned">
+	/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous calls,
+	/// this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
+	/// </param>
+	/// <param name="lpOverlapped">
+	/// A pointer to an <c>OVERLAPPED</c> structure that supplies data to be used during asynchronous operation. Otherwise, this value is
+	/// <c>NULL</c>. The <c>Offset</c> and <c>OffsetHigh</c> members of this structure are not used.
+	/// </param>
+	/// <param name="lpCompletionRoutine">
+	/// A pointer to a completion routine to be called when the operation has been completed or canceled and the calling thread is in an
+	/// alertable wait state. For more information about this completion routine, see <c>FileIOCompletionRoutine</c>.
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If the function succeeds, the return value is nonzero. For synchronous calls, this means that the operation succeeded. For
+	/// asynchronous calls, this indicates that the operation was successfully queued.
+	/// </para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+	/// <para>If the network redirector or the target file system does not support this operation, the function fails with <c>ERROR_INVALID_FUNCTION</c>.</para>
+	/// </returns>
+	// BOOL WINAPI ReadDirectoryChangesW( _In_ HANDLE hDirectory, _Out_ LPVOID lpBuffer, _In_ DWORD nBufferLength, _In_ BOOL bWatchSubtree,
+	// _In_ DWORD dwNotifyFilter, _Out_opt_ LPDWORD lpBytesReturned, _Inout_opt_ LPOVERLAPPED lpOverlapped, _In_opt_
+	// LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365465(v=vs.85).aspx
+	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ReadDirectoryChangesW", CharSet = CharSet.Unicode)]
+	[PInvokeData("WinBase.h", MSDNShortId = "aa365465")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool ReadDirectoryChanges([In] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] IntPtr lpBuffer, uint nBufferLength,
+		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned, [In, Optional] StructPointer<NativeOverlapped> lpOverlapped,
+		[Optional] FileIOCompletionRoutine? lpCompletionRoutine);
 
 	/// <summary>
 	/// <para>
@@ -2676,14 +2983,14 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="lpBuffer">
 	/// <para>
-	/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which <c>ReadDirectoryChangesExW</c> should return the read results.
-	/// The structure of this buffer is defined by the FILE_NOTIFY_EXTENDED_INFORMATION structure if the value of the
+	/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which <c>ReadDirectoryChangesExW</c> should return the read results. The
+	/// structure of this buffer is defined by the FILE_NOTIFY_EXTENDED_INFORMATION structure if the value of the
 	/// ReadDirectoryNotifyInformationClass parameter is <c>ReadDirectoryNotifyExtendedInformation</c>, or by the FILE_NOTIFY_INFORMATION
 	/// structure if ReadDirectoryNotifyInformationClass is <c>ReadDirectoryNotifyInformation</c>.
 	/// </para>
 	/// <para>
-	/// This buffer is filled either synchronously or asynchronously, depending on how the directory is opened and what value is given to
-	/// the lpOverlapped parameter. For more information, see the Remarks section.
+	/// This buffer is filled either synchronously or asynchronously, depending on how the directory is opened and what value is given to the
+	/// lpOverlapped parameter. For more information, see the Remarks section.
 	/// </para>
 	/// </param>
 	/// <param name="nBufferLength">
@@ -2691,14 +2998,14 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="bWatchSubtree">
 	/// <para>
-	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter
-	/// is <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
+	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter is
+	/// <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
 	/// </para>
 	/// </param>
 	/// <param name="dwNotifyFilter">
 	/// <para>
-	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more
-	/// of the following values.
+	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more of
+	/// the following values.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -2715,8 +3022,8 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>FILE_NOTIFY_CHANGE_DIR_NAME 0x00000002</term>
 	/// <term>
-	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes
-	/// include creating or deleting a directory.
+	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
+	/// creating or deleting a directory.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2726,17 +3033,17 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>FILE_NOTIFY_CHANGE_SIZE 0x00000008</term>
 	/// <term>
-	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating
-	/// system detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching,
-	/// detection occurs only when the cache is sufficiently flushed.
+	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating system
+	/// detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching, detection
+	/// occurs only when the cache is sufficiently flushed.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_NOTIFY_CHANGE_LAST_WRITE 0x00000010</term>
 	/// <term>
-	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to
-	/// return. The operating system detects a change to the last write-time only when the file is written to the disk. For operating
-	/// systems that use extensive caching, detection occurs only when the cache is sufficiently flushed.
+	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// The operating system detects a change to the last write-time only when the file is written to the disk. For operating systems that
+	/// use extensive caching, detection occurs only when the cache is sufficiently flushed.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -2759,8 +3066,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="lpBytesReturned">
 	/// <para>
-	/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous
-	/// calls, this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
+	/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous calls,
+	/// this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
 	/// </para>
 	/// </param>
 	/// <param name="lpOverlapped">
@@ -2778,9 +3085,8 @@ public static partial class Kernel32
 	/// <param name="ReadDirectoryNotifyInformationClass">
 	/// <para>
 	/// The type of information that <c>ReadDirectoryChangesExW</c> should write to the buffer to which the lpBuffer parameter points.
-	/// Specify <c>ReadDirectoryNotifyInformation</c> to indicate that the information should consist of FILE_NOTIFY_INFORMATION
-	/// structures, or <c>ReadDirectoryNotifyExtendedInformation</c> to indicate that the information should consist of
-	/// FILE_NOTIFY_EXTENDED_INFORMATION structures.
+	/// Specify <c>ReadDirectoryNotifyInformation</c> to indicate that the information should consist of FILE_NOTIFY_INFORMATION structures,
+	/// or <c>ReadDirectoryNotifyExtendedInformation</c> to indicate that the information should consist of FILE_NOTIFY_EXTENDED_INFORMATION structures.
 	/// </para>
 	/// </param>
 	/// <returns>
@@ -2794,8 +3100,8 @@ public static partial class Kernel32
 	/// <remarks>
 	/// <para>To obtain a handle to a directory, use the CreateFile function with the <c>FILE_FLAG_BACKUP_SEMANTICS</c> flag.</para>
 	/// <para>
-	/// A call to <c>ReadDirectoryChangesExW</c> can be completed synchronously or asynchronously. To specify asynchronous completion,
-	/// open the directory with CreateFile as shown above, but additionally specify the <c>FILE_FLAG_OVERLAPPED</c> attribute in the
+	/// A call to <c>ReadDirectoryChangesExW</c> can be completed synchronously or asynchronously. To specify asynchronous completion, open
+	/// the directory with CreateFile as shown above, but additionally specify the <c>FILE_FLAG_OVERLAPPED</c> attribute in the
 	/// dwFlagsAndAttributes parameter. Then specify an OVERLAPPED structure when you call <c>ReadDirectoryChangesExW</c>.
 	/// </para>
 	/// <para>
@@ -2806,10 +3112,10 @@ public static partial class Kernel32
 	/// function fails with the error code <c>ERROR_NOTIFY_ENUM_DIR</c>.
 	/// </para>
 	/// <para>
-	/// Upon successful synchronous completion, the lpBuffer parameter is a formatted buffer and the number of bytes written to the
-	/// buffer is available in lpBytesReturned. If the number of bytes transferred is zero, the buffer was either too large for the
-	/// system to allocate or too small to provide detailed information on all the changes that occurred in the directory or subtree. In
-	/// this case, you should compute the changes by enumerating the directory or subtree.
+	/// Upon successful synchronous completion, the lpBuffer parameter is a formatted buffer and the number of bytes written to the buffer is
+	/// available in lpBytesReturned. If the number of bytes transferred is zero, the buffer was either too large for the system to allocate
+	/// or too small to provide detailed information on all the changes that occurred in the directory or subtree. In this case, you should
+	/// compute the changes by enumerating the directory or subtree.
 	/// </para>
 	/// <para>For asynchronous completion, you can receive notification in one of three ways:</para>
 	/// <list type="bullet">
@@ -2828,10 +3134,10 @@ public static partial class Kernel32
 	/// </item>
 	/// <item>
 	/// <term>
-	/// Using a completion routine. To receive notification through a completion routine, do not associate the directory with a
-	/// completion port. Specify a completion routine in lpCompletionRoutine. This routine is called whenever the operation has been
-	/// completed or canceled while the thread is in an alertable wait state. The <c>hEvent</c> member of the OVERLAPPED structure is not
-	/// used by the system, so you can use it yourself.
+	/// Using a completion routine. To receive notification through a completion routine, do not associate the directory with a completion
+	/// port. Specify a completion routine in lpCompletionRoutine. This routine is called whenever the operation has been completed or
+	/// canceled while the thread is in an alertable wait state. The <c>hEvent</c> member of the OVERLAPPED structure is not used by the
+	/// system, so you can use it yourself.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -2848,15 +3154,411 @@ public static partial class Kernel32
 	/// If there is a transaction bound to the directory handle, then the notifications follow the appropriate transaction isolation rules.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readdirectorychangesexw BOOL ReadDirectoryChangesExW(
-	// HANDLE hDirectory, LPVOID lpBuffer, DWORD nBufferLength, BOOL bWatchSubtree, DWORD dwNotifyFilter, LPDWORD lpBytesReturned,
-	// LPOVERLAPPED lpOverlapped, LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readdirectorychangesexw BOOL ReadDirectoryChangesExW( HANDLE
+	// hDirectory, LPVOID lpBuffer, DWORD nBufferLength, BOOL bWatchSubtree, DWORD dwNotifyFilter, LPDWORD lpBytesReturned, LPOVERLAPPED
+	// lpOverlapped, LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS
 	// ReadDirectoryNotifyInformationClass );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "90C2F258-094C-4A0E-80E7-3FA241D288EA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static unsafe extern bool ReadDirectoryChangesExW(HFILE hDirectory, IntPtr lpBuffer, uint nBufferLength, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned,
-		[Optional] NativeOverlapped* lpOverlapped, [Optional] FileIOCompletionRoutineUnsafe? lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
+	public static unsafe extern bool ReadDirectoryChangesExW([In] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] byte* lpBuffer, uint nBufferLength,
+		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, [Out, Optional] uint* lpBytesReturned,
+		[In, Optional] NativeOverlapped* lpOverlapped, [In, Optional] FileIOCompletionRoutineUnsafe? lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
+
+	/// <summary>
+	/// <para>
+	/// Retrieves information that describes the changes within the specified directory, which can include extended information if that
+	/// information type is specified. The function does not report changes to the specified directory itself.
+	/// </para>
+	/// <para>To track changes on a volume, see change journals.</para>
+	/// </summary>
+	/// <param name="hDirectory">
+	/// <para>
+	/// A handle to the directory to be monitored. This directory must be opened with the <c>FILE_LIST_DIRECTORY</c> access right, or an
+	/// access right such as <c>GENERIC_READ</c> that includes the <c>FILE_LIST_DIRECTORY</c> access right.
+	/// </para>
+	/// </param>
+	/// <param name="lpBuffer">
+	/// <para>
+	/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which <c>ReadDirectoryChangesExW</c> should return the read results. The
+	/// structure of this buffer is defined by the FILE_NOTIFY_EXTENDED_INFORMATION structure if the value of the
+	/// ReadDirectoryNotifyInformationClass parameter is <c>ReadDirectoryNotifyExtendedInformation</c>, or by the FILE_NOTIFY_INFORMATION
+	/// structure if ReadDirectoryNotifyInformationClass is <c>ReadDirectoryNotifyInformation</c>.
+	/// </para>
+	/// <para>
+	/// This buffer is filled either synchronously or asynchronously, depending on how the directory is opened and what value is given to the
+	/// lpOverlapped parameter. For more information, see the Remarks section.
+	/// </para>
+	/// </param>
+	/// <param name="nBufferLength">
+	/// <para>The size of the buffer to which the lpBuffer parameter points, in bytes.</para>
+	/// </param>
+	/// <param name="bWatchSubtree">
+	/// <para>
+	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter is
+	/// <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
+	/// </para>
+	/// </param>
+	/// <param name="dwNotifyFilter">
+	/// <para>
+	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more of
+	/// the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_FILE_NAME 0x00000001</term>
+	/// <term>
+	/// Any file name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
+	/// renaming, creating, or deleting a file.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_DIR_NAME 0x00000002</term>
+	/// <term>
+	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
+	/// creating or deleting a directory.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_ATTRIBUTES 0x00000004</term>
+	/// <term>Any attribute change in the watched directory or subtree causes a change notification wait operation to return.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_SIZE 0x00000008</term>
+	/// <term>
+	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating system
+	/// detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching, detection
+	/// occurs only when the cache is sufficiently flushed.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_LAST_WRITE 0x00000010</term>
+	/// <term>
+	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// The operating system detects a change to the last write-time only when the file is written to the disk. For operating systems that
+	/// use extensive caching, detection occurs only when the cache is sufficiently flushed.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_LAST_ACCESS 0x00000020</term>
+	/// <term>
+	/// Any change to the last access time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_CREATION 0x00000040</term>
+	/// <term>
+	/// Any change to the creation time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_SECURITY 0x00000100</term>
+	/// <term>Any security-descriptor change in the watched directory or subtree causes a change notification wait operation to return.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="lpBytesReturned">
+	/// <para>
+	/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous calls,
+	/// this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
+	/// </para>
+	/// </param>
+	/// <param name="lpOverlapped">
+	/// <para>
+	/// A pointer to an OVERLAPPED structure that supplies data to be used during asynchronous operation. Otherwise, this value is
+	/// <c>NULL</c>. The <c>Offset</c> and <c>OffsetHigh</c> members of this structure are not used.
+	/// </para>
+	/// </param>
+	/// <param name="lpCompletionRoutine">
+	/// <para>
+	/// A pointer to a completion routine to be called when the operation has been completed or canceled and the calling thread is in an
+	/// alertable wait state. For more information about this completion routine, see FileIOCompletionRoutine.
+	/// </para>
+	/// </param>
+	/// <param name="ReadDirectoryNotifyInformationClass">
+	/// <para>
+	/// The type of information that <c>ReadDirectoryChangesExW</c> should write to the buffer to which the lpBuffer parameter points.
+	/// Specify <c>ReadDirectoryNotifyInformation</c> to indicate that the information should consist of FILE_NOTIFY_INFORMATION structures,
+	/// or <c>ReadDirectoryNotifyExtendedInformation</c> to indicate that the information should consist of FILE_NOTIFY_EXTENDED_INFORMATION structures.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If the function succeeds, the return value is nonzero. For synchronous calls, this means that the operation succeeded. For
+	/// asynchronous calls, this indicates that the operation was successfully queued.
+	/// </para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+	/// <para>If the network redirector or the target file system does not support this operation, the function fails with <c>ERROR_INVALID_FUNCTION</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>To obtain a handle to a directory, use the CreateFile function with the <c>FILE_FLAG_BACKUP_SEMANTICS</c> flag.</para>
+	/// <para>
+	/// A call to <c>ReadDirectoryChangesExW</c> can be completed synchronously or asynchronously. To specify asynchronous completion, open
+	/// the directory with CreateFile as shown above, but additionally specify the <c>FILE_FLAG_OVERLAPPED</c> attribute in the
+	/// dwFlagsAndAttributes parameter. Then specify an OVERLAPPED structure when you call <c>ReadDirectoryChangesExW</c>.
+	/// </para>
+	/// <para>
+	/// When you first call <c>ReadDirectoryChangesExW</c>, the system allocates a buffer to store change information. This buffer is
+	/// associated with the directory handle until it is closed and its size does not change during its lifetime. Directory changes that
+	/// occur between calls to this function are added to the buffer and then returned with the next call. If the buffer overflows, the
+	/// entire contents of the buffer are discarded, the lpBytesReturned parameter contains zero, and the <c>ReadDirectoryChangesExW</c>
+	/// function fails with the error code <c>ERROR_NOTIFY_ENUM_DIR</c>.
+	/// </para>
+	/// <para>
+	/// Upon successful synchronous completion, the lpBuffer parameter is a formatted buffer and the number of bytes written to the buffer is
+	/// available in lpBytesReturned. If the number of bytes transferred is zero, the buffer was either too large for the system to allocate
+	/// or too small to provide detailed information on all the changes that occurred in the directory or subtree. In this case, you should
+	/// compute the changes by enumerating the directory or subtree.
+	/// </para>
+	/// <para>For asynchronous completion, you can receive notification in one of three ways:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// Using the GetOverlappedResult function. To receive notification through <c>GetOverlappedResult</c>, do not specify a completion
+	/// routine in the lpCompletionRoutine parameter. Be sure to set the <c>hEvent</c> member of the OVERLAPPED structure to a unique event.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// Using the GetQueuedCompletionStatus function. To receive notification through <c>GetQueuedCompletionStatus</c>, do not specify a
+	/// completion routine in lpCompletionRoutine. Associate the directory handle hDirectory with a completion port by calling the
+	/// CreateIoCompletionPort function.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// Using a completion routine. To receive notification through a completion routine, do not associate the directory with a completion
+	/// port. Specify a completion routine in lpCompletionRoutine. This routine is called whenever the operation has been completed or
+	/// canceled while the thread is in an alertable wait state. The <c>hEvent</c> member of the OVERLAPPED structure is not used by the
+	/// system, so you can use it yourself.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>For more information, see Synchronous and Asynchronous I/O.</para>
+	/// <para>
+	/// <c>ReadDirectoryChangesExW</c> fails with <c>ERROR_INVALID_PARAMETER</c> when the buffer length is greater than 64 KB and the
+	/// application is monitoring a directory over the network. This is due to a packet size limitation with the underlying file sharing protocols.
+	/// </para>
+	/// <para><c>ReadDirectoryChangesExW</c> fails with <c>ERROR_NOACCESS</c> when the buffer is not aligned on a <c>DWORD</c> boundary.</para>
+	/// <para>If you opened the file using the short name, you can receive change notifications for the short name.</para>
+	/// <para><c>ReadDirectoryChangesExW</c> is currently supported only for the NTFS file system.</para>
+	/// <para>Transacted Operations</para>
+	/// <para>
+	/// If there is a transaction bound to the directory handle, then the notifications follow the appropriate transaction isolation rules.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readdirectorychangesexw BOOL ReadDirectoryChangesExW( HANDLE
+	// hDirectory, LPVOID lpBuffer, DWORD nBufferLength, BOOL bWatchSubtree, DWORD dwNotifyFilter, LPDWORD lpBytesReturned, LPOVERLAPPED
+	// lpOverlapped, LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS
+	// ReadDirectoryNotifyInformationClass );
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("winbase.h", MSDNShortId = "90C2F258-094C-4A0E-80E7-3FA241D288EA")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool ReadDirectoryChangesExW([In, AddAsMember] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] IntPtr lpBuffer, uint nBufferLength,
+		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned,
+		in NativeOverlapped lpOverlapped, [In, Optional] FileIOCompletionRoutineUnsafe? lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
+
+	/// <summary>
+	/// <para>
+	/// Retrieves information that describes the changes within the specified directory, which can include extended information if that
+	/// information type is specified. The function does not report changes to the specified directory itself.
+	/// </para>
+	/// <para>To track changes on a volume, see change journals.</para>
+	/// </summary>
+	/// <param name="hDirectory">
+	/// <para>
+	/// A handle to the directory to be monitored. This directory must be opened with the <c>FILE_LIST_DIRECTORY</c> access right, or an
+	/// access right such as <c>GENERIC_READ</c> that includes the <c>FILE_LIST_DIRECTORY</c> access right.
+	/// </para>
+	/// </param>
+	/// <param name="lpBuffer">
+	/// <para>
+	/// A pointer to the <c>DWORD</c>-aligned formatted buffer in which <c>ReadDirectoryChangesExW</c> should return the read results. The
+	/// structure of this buffer is defined by the FILE_NOTIFY_EXTENDED_INFORMATION structure if the value of the
+	/// ReadDirectoryNotifyInformationClass parameter is <c>ReadDirectoryNotifyExtendedInformation</c>, or by the FILE_NOTIFY_INFORMATION
+	/// structure if ReadDirectoryNotifyInformationClass is <c>ReadDirectoryNotifyInformation</c>.
+	/// </para>
+	/// <para>
+	/// This buffer is filled either synchronously or asynchronously, depending on how the directory is opened and what value is given to the
+	/// lpOverlapped parameter. For more information, see the Remarks section.
+	/// </para>
+	/// </param>
+	/// <param name="nBufferLength">
+	/// <para>The size of the buffer to which the lpBuffer parameter points, in bytes.</para>
+	/// </param>
+	/// <param name="bWatchSubtree">
+	/// <para>
+	/// If this parameter is <c>TRUE</c>, the function monitors the directory tree rooted at the specified directory. If this parameter is
+	/// <c>FALSE</c>, the function monitors only the directory specified by the hDirectory parameter.
+	/// </para>
+	/// </param>
+	/// <param name="dwNotifyFilter">
+	/// <para>
+	/// The filter criteria that the function checks to determine if the wait operation has completed. This parameter can be one or more of
+	/// the following values.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_FILE_NAME 0x00000001</term>
+	/// <term>
+	/// Any file name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
+	/// renaming, creating, or deleting a file.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_DIR_NAME 0x00000002</term>
+	/// <term>
+	/// Any directory-name change in the watched directory or subtree causes a change notification wait operation to return. Changes include
+	/// creating or deleting a directory.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_ATTRIBUTES 0x00000004</term>
+	/// <term>Any attribute change in the watched directory or subtree causes a change notification wait operation to return.</term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_SIZE 0x00000008</term>
+	/// <term>
+	/// Any file-size change in the watched directory or subtree causes a change notification wait operation to return. The operating system
+	/// detects a change in file size only when the file is written to the disk. For operating systems that use extensive caching, detection
+	/// occurs only when the cache is sufficiently flushed.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_LAST_WRITE 0x00000010</term>
+	/// <term>
+	/// Any change to the last write-time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// The operating system detects a change to the last write-time only when the file is written to the disk. For operating systems that
+	/// use extensive caching, detection occurs only when the cache is sufficiently flushed.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_LAST_ACCESS 0x00000020</term>
+	/// <term>
+	/// Any change to the last access time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_CREATION 0x00000040</term>
+	/// <term>
+	/// Any change to the creation time of files in the watched directory or subtree causes a change notification wait operation to return.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>FILE_NOTIFY_CHANGE_SECURITY 0x00000100</term>
+	/// <term>Any security-descriptor change in the watched directory or subtree causes a change notification wait operation to return.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="lpBytesReturned">
+	/// <para>
+	/// For synchronous calls, this parameter receives the number of bytes transferred into the lpBuffer parameter. For asynchronous calls,
+	/// this parameter is undefined. You must use an asynchronous notification technique to retrieve the number of bytes transferred.
+	/// </para>
+	/// </param>
+	/// <param name="lpOverlapped">
+	/// <para>
+	/// A pointer to an OVERLAPPED structure that supplies data to be used during asynchronous operation. Otherwise, this value is
+	/// <c>NULL</c>. The <c>Offset</c> and <c>OffsetHigh</c> members of this structure are not used.
+	/// </para>
+	/// </param>
+	/// <param name="lpCompletionRoutine">
+	/// <para>
+	/// A pointer to a completion routine to be called when the operation has been completed or canceled and the calling thread is in an
+	/// alertable wait state. For more information about this completion routine, see FileIOCompletionRoutine.
+	/// </para>
+	/// </param>
+	/// <param name="ReadDirectoryNotifyInformationClass">
+	/// <para>
+	/// The type of information that <c>ReadDirectoryChangesExW</c> should write to the buffer to which the lpBuffer parameter points.
+	/// Specify <c>ReadDirectoryNotifyInformation</c> to indicate that the information should consist of FILE_NOTIFY_INFORMATION structures,
+	/// or <c>ReadDirectoryNotifyExtendedInformation</c> to indicate that the information should consist of FILE_NOTIFY_EXTENDED_INFORMATION structures.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// If the function succeeds, the return value is nonzero. For synchronous calls, this means that the operation succeeded. For
+	/// asynchronous calls, this indicates that the operation was successfully queued.
+	/// </para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+	/// <para>If the network redirector or the target file system does not support this operation, the function fails with <c>ERROR_INVALID_FUNCTION</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>To obtain a handle to a directory, use the CreateFile function with the <c>FILE_FLAG_BACKUP_SEMANTICS</c> flag.</para>
+	/// <para>
+	/// A call to <c>ReadDirectoryChangesExW</c> can be completed synchronously or asynchronously. To specify asynchronous completion, open
+	/// the directory with CreateFile as shown above, but additionally specify the <c>FILE_FLAG_OVERLAPPED</c> attribute in the
+	/// dwFlagsAndAttributes parameter. Then specify an OVERLAPPED structure when you call <c>ReadDirectoryChangesExW</c>.
+	/// </para>
+	/// <para>
+	/// When you first call <c>ReadDirectoryChangesExW</c>, the system allocates a buffer to store change information. This buffer is
+	/// associated with the directory handle until it is closed and its size does not change during its lifetime. Directory changes that
+	/// occur between calls to this function are added to the buffer and then returned with the next call. If the buffer overflows, the
+	/// entire contents of the buffer are discarded, the lpBytesReturned parameter contains zero, and the <c>ReadDirectoryChangesExW</c>
+	/// function fails with the error code <c>ERROR_NOTIFY_ENUM_DIR</c>.
+	/// </para>
+	/// <para>
+	/// Upon successful synchronous completion, the lpBuffer parameter is a formatted buffer and the number of bytes written to the buffer is
+	/// available in lpBytesReturned. If the number of bytes transferred is zero, the buffer was either too large for the system to allocate
+	/// or too small to provide detailed information on all the changes that occurred in the directory or subtree. In this case, you should
+	/// compute the changes by enumerating the directory or subtree.
+	/// </para>
+	/// <para>For asynchronous completion, you can receive notification in one of three ways:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// Using the GetOverlappedResult function. To receive notification through <c>GetOverlappedResult</c>, do not specify a completion
+	/// routine in the lpCompletionRoutine parameter. Be sure to set the <c>hEvent</c> member of the OVERLAPPED structure to a unique event.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// Using the GetQueuedCompletionStatus function. To receive notification through <c>GetQueuedCompletionStatus</c>, do not specify a
+	/// completion routine in lpCompletionRoutine. Associate the directory handle hDirectory with a completion port by calling the
+	/// CreateIoCompletionPort function.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// Using a completion routine. To receive notification through a completion routine, do not associate the directory with a completion
+	/// port. Specify a completion routine in lpCompletionRoutine. This routine is called whenever the operation has been completed or
+	/// canceled while the thread is in an alertable wait state. The <c>hEvent</c> member of the OVERLAPPED structure is not used by the
+	/// system, so you can use it yourself.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>For more information, see Synchronous and Asynchronous I/O.</para>
+	/// <para>
+	/// <c>ReadDirectoryChangesExW</c> fails with <c>ERROR_INVALID_PARAMETER</c> when the buffer length is greater than 64 KB and the
+	/// application is monitoring a directory over the network. This is due to a packet size limitation with the underlying file sharing protocols.
+	/// </para>
+	/// <para><c>ReadDirectoryChangesExW</c> fails with <c>ERROR_NOACCESS</c> when the buffer is not aligned on a <c>DWORD</c> boundary.</para>
+	/// <para>If you opened the file using the short name, you can receive change notifications for the short name.</para>
+	/// <para><c>ReadDirectoryChangesExW</c> is currently supported only for the NTFS file system.</para>
+	/// <para>Transacted Operations</para>
+	/// <para>
+	/// If there is a transaction bound to the directory handle, then the notifications follow the appropriate transaction isolation rules.
+	/// </para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-readdirectorychangesexw BOOL ReadDirectoryChangesExW( HANDLE
+	// hDirectory, LPVOID lpBuffer, DWORD nBufferLength, BOOL bWatchSubtree, DWORD dwNotifyFilter, LPDWORD lpBytesReturned, LPOVERLAPPED
+	// lpOverlapped, LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS
+	// ReadDirectoryNotifyInformationClass );
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("winbase.h", MSDNShortId = "90C2F258-094C-4A0E-80E7-3FA241D288EA")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool ReadDirectoryChangesExW([In, AddAsMember] HFILE hDirectory, [Out, SizeDef(nameof(nBufferLength))] IntPtr lpBuffer, uint nBufferLength,
+		[MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter, out uint lpBytesReturned,
+		[In, Optional] StructPointer<NativeOverlapped> lpOverlapped, [In, Optional] FileIOCompletionRoutineUnsafe? lpCompletionRoutine,
+		READ_DIRECTORY_NOTIFY_INFORMATION_CLASS ReadDirectoryNotifyInformationClass);
 
 	/// <summary>
 	/// <para>Reopens the specified file system object with different access rights, sharing mode, and flags.</para>
@@ -2866,8 +3568,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="dwDesiredAccess">
 	/// <para>
-	/// The required access to the object. For a list of values, see File Security and Access Rights. You cannot request an access mode
-	/// that conflicts with the sharing mode specified in a previous open request whose handle is still open.
+	/// The required access to the object. For a list of values, see File Security and Access Rights. You cannot request an access mode that
+	/// conflicts with the sharing mode specified in a previous open request whose handle is still open.
 	/// </para>
 	/// <para>
 	/// If this parameter is zero (0), the application can query device attributes without accessing the device. This is useful if an
@@ -2876,8 +3578,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="dwShareMode">
 	/// <para>
-	/// The sharing mode of the object. You cannot request a sharing mode that conflicts with the access mode specified in a previous
-	/// open request whose handle is still open.
+	/// The sharing mode of the object. You cannot request a sharing mode that conflicts with the access mode specified in a previous open
+	/// request whose handle is still open.
 	/// </para>
 	/// <para>
 	/// If this parameter is zero (0) and CreateFile succeeds, the object cannot be shared and cannot be opened again until the handle is closed.
@@ -2895,22 +3597,22 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>FILE_SHARE_DELETE 0x00000004</term>
 	/// <term>
-	/// Enables subsequent open operations on the object to request delete access. Otherwise, other processes cannot open the object if
-	/// they request delete access. If the object has already been opened with delete access, the sharing mode must include this flag.
+	/// Enables subsequent open operations on the object to request delete access. Otherwise, other processes cannot open the object if they
+	/// request delete access. If the object has already been opened with delete access, the sharing mode must include this flag.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_SHARE_READ 0x00000001</term>
 	/// <term>
-	/// Enables subsequent open operations on the object to request read access. Otherwise, other processes cannot open the object if
-	/// they request read access. If the object has already been opened with read access, the sharing mode must include this flag.
+	/// Enables subsequent open operations on the object to request read access. Otherwise, other processes cannot open the object if they
+	/// request read access. If the object has already been opened with read access, the sharing mode must include this flag.
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_SHARE_WRITE 0x00000002</term>
 	/// <term>
-	/// Enables subsequent open operations on the object to request write access. Otherwise, other processes cannot open the object if
-	/// they request write access. If the object has already been opened with write access, the sharing mode must include this flag.
+	/// Enables subsequent open operations on the object to request write access. Otherwise, other processes cannot open the object if they
+	/// request write access. If the object has already been opened with write access, the sharing mode must include this flag.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -2924,8 +3626,8 @@ public static partial class Kernel32
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// The dwFlags parameter cannot contain any of the file attribute flags ( <c>FILE_ATTRIBUTE_*</c>). These can only be specified when
-	/// the file is created.
+	/// The dwFlags parameter cannot contain any of the file attribute flags ( <c>FILE_ATTRIBUTE_*</c>). These can only be specified when the
+	/// file is created.
 	/// </para>
 	/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
 	/// <list type="table">
@@ -2959,11 +3661,11 @@ public static partial class Kernel32
 	// dwDesiredAccess, DWORD dwShareMode, DWORD dwFlagsAndAttributes );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "56d8a4b1-e3b5-4134-8d21-bf40761e9dcc")]
-	public static extern SafeHFILE ReOpenFile(HFILE hOriginalFile, FileAccess dwDesiredAccess, FileShare dwShareMode, FileFlagsAndAttributes dwFlagsAndAttributes);
+	public static extern SafeHFILE ReOpenFile([In, AddAsMember] HFILE hOriginalFile, FileAccess dwDesiredAccess, FileShare dwShareMode, FileFlagsAndAttributes dwFlagsAndAttributes);
 
 	/// <summary>
-	/// Replaces one file with another file, with the option of creating a backup copy of the original file. The replacement file assumes
-	/// the name of the replaced file and its identity.
+	/// Replaces one file with another file, with the option of creating a backup copy of the original file. The replacement file assumes the
+	/// name of the replaced file and its identity.
 	/// </summary>
 	/// <param name="lpReplacedFileName">
 	/// <para>The name of the file to be replaced.</para>
@@ -2984,9 +3686,9 @@ public static partial class Kernel32
 	/// characters, call the Unicode version of the function and prepend "\\?\" to the path. For more information, see Naming a File.
 	/// </para>
 	/// <para>
-	/// The function attempts to open this file with the <c>SYNCHRONIZE</c>, <c>GENERIC_READ</c>, <c>GENERIC_WRITE</c>, <c>DELETE</c>,
-	/// and <c>WRITE_DAC</c> access rights so that it can preserve all attributes and ACLs. If this fails, the function attempts to open
-	/// the file with the <c>SYNCHRONIZE</c>, <c>GENERIC_READ</c>, <c>DELETE</c>, and <c>WRITE_DAC</c> access rights. No sharing mode is specified.
+	/// The function attempts to open this file with the <c>SYNCHRONIZE</c>, <c>GENERIC_READ</c>, <c>GENERIC_WRITE</c>, <c>DELETE</c>, and
+	/// <c>WRITE_DAC</c> access rights so that it can preserve all attributes and ACLs. If this fails, the function attempts to open the file
+	/// with the <c>SYNCHRONIZE</c>, <c>GENERIC_READ</c>, <c>DELETE</c>, and <c>WRITE_DAC</c> access rights. No sharing mode is specified.
 	/// </para>
 	/// </param>
 	/// <param name="lpBackupFileName">
@@ -3022,8 +3724,8 @@ public static partial class Kernel32
 	/// <term>REPLACEFILE_IGNORE_ACL_ERRORS0x00000004</term>
 	/// <term>
 	/// Ignores errors that occur while merging ACL information from the replaced file to the replacement file. Therefore, if you specify
-	/// this flag and do not have WRITE_DAC access, the function succeeds but the ACLs are not preserved. To compile an application that
-	/// uses this value, define the _WIN32_WINNT macro as 0x0600 or later.Windows Server 2003 and Windows XP: This value is not supported.
+	/// this flag and do not have WRITE_DAC access, the function succeeds but the ACLs are not preserved. To compile an application that uses
+	/// this value, define the _WIN32_WINNT macro as 0x0600 or later.Windows Server 2003 and Windows XP: This value is not supported.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -3065,17 +3767,18 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// <para>
-	/// If any other error is returned, such as <c>ERROR_INVALID_PARAMETER</c>, the replaced and replacement files will retain their
-	/// original file names. In this scenario, a backup file does not exist and it is not guaranteed that the replacement file will have
-	/// inherited all of the attributes and streams of the replaced file.
+	/// If any other error is returned, such as <c>ERROR_INVALID_PARAMETER</c>, the replaced and replacement files will retain their original
+	/// file names. In this scenario, a backup file does not exist and it is not guaranteed that the replacement file will have inherited all
+	/// of the attributes and streams of the replaced file.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI ReplaceFile( _In_ LPCTSTR lpReplacedFileName, _In_ LPCTSTR lpReplacementFileName, _In_opt_ LPCTSTR lpBackupFileName,
-	// _In_ DWORD dwReplaceFlags, _Reserved_ LPVOID lpExclude, _Reserved_ LPVOID lpReserved); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365512(v=vs.85).aspx
+	// BOOL WINAPI ReplaceFile( _In_ LPCTSTR lpReplacedFileName, _In_ LPCTSTR lpReplacementFileName, _In_opt_ LPCTSTR lpBackupFileName, _In_
+	// DWORD dwReplaceFlags, _Reserved_ LPVOID lpExclude, _Reserved_ LPVOID lpReserved); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365512(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365512")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReplaceFile(string lpReplacedFileName, string lpReplacementFileName, [Optional] string? lpBackupFileName, [Optional] REPLACEFILE dwReplaceFlags, [Optional] IntPtr lpExclude, [Optional] IntPtr lpReserved);
+	public static extern bool ReplaceFile(string lpReplacedFileName, string lpReplacementFileName, [Optional] string? lpBackupFileName,
+		[Optional] REPLACEFILE dwReplaceFlags, [Optional, Ignore] IntPtr lpExclude, [Optional, Ignore] IntPtr lpReserved);
 
 	/// <summary>
 	/// <para>
@@ -3093,8 +3796,8 @@ public static partial class Kernel32
 
 	/// <summary>
 	/// <para>
-	/// Causes the file I/O functions for the process to use the OEM character set code page. This function is useful for 8-bit console
-	/// input and output operations.
+	/// Causes the file I/O functions for the process to use the OEM character set code page. This function is useful for 8-bit console input
+	/// and output operations.
 	/// </para>
 	/// </summary>
 	/// <returns>
@@ -3107,8 +3810,8 @@ public static partial class Kernel32
 
 	/// <summary>
 	/// <para>
-	/// Requests that bandwidth for the specified file stream be reserved. The reservation is specified as a number of bytes in a period
-	/// of milliseconds for I/O requests on the specified file handle.
+	/// Requests that bandwidth for the specified file stream be reserved. The reservation is specified as a number of bytes in a period of
+	/// milliseconds for I/O requests on the specified file handle.
 	/// </para>
 	/// </summary>
 	/// <param name="hFile">
@@ -3116,31 +3819,30 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="nPeriodMilliseconds">
 	/// <para>
-	/// The period of the reservation, in milliseconds. The period is the time from which the I/O is issued to the kernel until the time
-	/// the I/O should be completed. The minimum supported value for the file stream can be determined by looking at the value returned
-	/// through the lpPeriodMilliseconds parameter to the GetFileBandwidthReservation function, on a handle that has not had a bandwidth
-	/// reservation set.
+	/// The period of the reservation, in milliseconds. The period is the time from which the I/O is issued to the kernel until the time the
+	/// I/O should be completed. The minimum supported value for the file stream can be determined by looking at the value returned through
+	/// the lpPeriodMilliseconds parameter to the GetFileBandwidthReservation function, on a handle that has not had a bandwidth reservation set.
 	/// </para>
 	/// </param>
 	/// <param name="nBytesPerPeriod">
 	/// <para>
-	/// The bandwidth to reserve, in bytes per period. The maximum supported value for the file stream can be determined by looking at
-	/// the value returned through the lpBytesPerPeriod parameter to the GetFileBandwidthReservation function, on a handle that has not
-	/// had a bandwidth reservation set.
+	/// The bandwidth to reserve, in bytes per period. The maximum supported value for the file stream can be determined by looking at the
+	/// value returned through the lpBytesPerPeriod parameter to the GetFileBandwidthReservation function, on a handle that has not had a
+	/// bandwidth reservation set.
 	/// </para>
 	/// </param>
 	/// <param name="bDiscardable">
 	/// <para>
-	/// Indicates whether I/O should be completed with an error if a driver is unable to satisfy an I/O operation before the period
-	/// expires. If one of the drivers for the specified file stream does not support this functionality, this function may return
-	/// success and ignore the flag. To verify whether the setting will be honored, call the GetFileBandwidthReservation function using
-	/// the same hFile handle and examine the *pDiscardable return value.
+	/// Indicates whether I/O should be completed with an error if a driver is unable to satisfy an I/O operation before the period expires.
+	/// If one of the drivers for the specified file stream does not support this functionality, this function may return success and ignore
+	/// the flag. To verify whether the setting will be honored, call the GetFileBandwidthReservation function using the same hFile handle
+	/// and examine the *pDiscardable return value.
 	/// </para>
 	/// </param>
 	/// <param name="lpTransferSize">
 	/// <para>
-	/// A pointer to a variable that receives the minimum size of any individual I/O request that may be issued by the application. All
-	/// I/O requests should be multiples of TransferSize.
+	/// A pointer to a variable that receives the minimum size of any individual I/O request that may be issued by the application. All I/O
+	/// requests should be multiples of TransferSize.
 	/// </para>
 	/// </param>
 	/// <param name="lpNumOutstandingRequests">
@@ -3160,9 +3862,9 @@ public static partial class Kernel32
 	/// <remarks>
 	/// <para>
 	/// The requested bandwidth reservation must be greater than or equal to one packet per period. The minimum period, in milliseconds,
-	/// maximum bytes per period, and minimum transfer size, in bytes, for a specific volume are returned through the
-	/// lpPeriodMilliseconds, lpBytesPerPeriod, and lpTransferSize parameters to GetFileBandwidthReservation on a handle that has not
-	/// been used in a call to <c>SetFileBandwidthReservation</c>. In other words:
+	/// maximum bytes per period, and minimum transfer size, in bytes, for a specific volume are returned through the lpPeriodMilliseconds,
+	/// lpBytesPerPeriod, and lpTransferSize parameters to GetFileBandwidthReservation on a handle that has not been used in a call to
+	/// <c>SetFileBandwidthReservation</c>. In other words:
 	/// </para>
 	/// <para>1 ≤ (nBytesPerPeriod)×(lpPeriodMilliseconds)/(lpTransferSize)/(nPeriodMilliseconds)</para>
 	/// <para>IIn Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
@@ -3193,13 +3895,14 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setfilebandwidthreservation BOOL
-	// SetFileBandwidthReservation( HANDLE hFile, DWORD nPeriodMilliseconds, DWORD nBytesPerPeriod, BOOL bDiscardable, LPDWORD
-	// lpTransferSize, LPDWORD lpNumOutstandingRequests );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setfilebandwidthreservation BOOL SetFileBandwidthReservation(
+	// HANDLE hFile, DWORD nPeriodMilliseconds, DWORD nBytesPerPeriod, BOOL bDiscardable, LPDWORD lpTransferSize, LPDWORD
+	// lpNumOutstandingRequests );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "a22bd8f3-4fbf-4f77-b8b6-7e786942615a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFileBandwidthReservation(HFILE hFile, uint nPeriodMilliseconds, uint nBytesPerPeriod, [MarshalAs(UnmanagedType.Bool)] bool bDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
+	public static extern bool SetFileBandwidthReservation([In, AddAsMember] HFILE hFile, uint nPeriodMilliseconds, uint nBytesPerPeriod,
+		[MarshalAs(UnmanagedType.Bool)] bool bDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
 
 	/// <summary>
 	/// <para>
@@ -3211,8 +3914,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="Flags">
 	/// <para>
-	/// The modes to be set. One or more modes can be set at the same time; however, after a mode has been set for a file handle, it
-	/// cannot be removed.
+	/// The modes to be set. One or more modes can be set at the same time; however, after a mode has been set for a file handle, it cannot
+	/// be removed.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -3222,20 +3925,20 @@ public static partial class Kernel32
 	/// <item>
 	/// <term>FILE_SKIP_COMPLETION_PORT_ON_SUCCESS 0x1</term>
 	/// <term>
-	/// If the following three conditions are true, the I/O Manager does not queue a completion entry to the port, when it would
-	/// ordinarily do so. The conditions are: When the FileHandle parameter is a socket, this mode is only compatible with Layered
-	/// Service Providers (LSP) that return Installable File Systems (IFS) handles. To detect whether a non-IFS LSP is installed, use the
-	/// WSAEnumProtocols function and examine the dwServiceFlag1 member in each returned WSAPROTOCOL_INFO structure. If the
-	/// XP1_IFS_HANDLES (0x20000) bit is cleared then the specified LSP is not an IFS LSP. Vendors that have non-IFS LSPs are encouraged
-	/// to migrate to the Windows Filtering Platform (WFP).
+	/// If the following three conditions are true, the I/O Manager does not queue a completion entry to the port, when it would ordinarily
+	/// do so. The conditions are: When the FileHandle parameter is a socket, this mode is only compatible with Layered Service Providers
+	/// (LSP) that return Installable File Systems (IFS) handles. To detect whether a non-IFS LSP is installed, use the WSAEnumProtocols
+	/// function and examine the dwServiceFlag1 member in each returned WSAPROTOCOL_INFO structure. If the XP1_IFS_HANDLES (0x20000) bit is
+	/// cleared then the specified LSP is not an IFS LSP. Vendors that have non-IFS LSPs are encouraged to migrate to the Windows Filtering
+	/// Platform (WFP).
 	/// </term>
 	/// </item>
 	/// <item>
 	/// <term>FILE_SKIP_SET_EVENT_ON_HANDLE 0x2</term>
 	/// <term>
 	/// The I/O Manager does not set the event for the file object if a request returns with a success code, or the error returned is
-	/// ERROR_PENDING and the function that is called is not a synchronous function. If an explicit event is provided for the request, it
-	/// is still signaled.
+	/// ERROR_PENDING and the function that is called is not a synchronous function. If an explicit event is provided for the request, it is
+	/// still signaled.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -3246,8 +3949,8 @@ public static partial class Kernel32
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// To compile an application that uses this function, define the <c>_WIN32_WINNT</c> macro as 0x0600 or later. For more information,
-	/// see Using the Windows Headers.
+	/// To compile an application that uses this function, define the <c>_WIN32_WINNT</c> macro as 0x0600 or later. For more information, see
+	/// Using the Windows Headers.
 	/// </para>
 	/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
 	/// <list type="table">
@@ -3282,13 +3985,13 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "23796484-ee47-4f80-856d-5a5d5635547c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFileCompletionNotificationModes(HFILE FileHandle, FILE_NOTIFICATION_MODE Flags);
+	public static extern bool SetFileCompletionNotificationModes([In, AddAsMember] HFILE FileHandle, FILE_NOTIFICATION_MODE Flags);
 
 	/// <summary>
 	/// <para>
 	/// Associates a virtual address range with the specified file handle. This indicates that the kernel should optimize any further
-	/// asynchronous I/O requests with overlapped structures inside this range. The overlapped range is locked in memory, and then
-	/// unlocked when the file is closed. After a range is associated with a file handle, it cannot be disassociated.
+	/// asynchronous I/O requests with overlapped structures inside this range. The overlapped range is locked in memory, and then unlocked
+	/// when the file is closed. After a range is associated with a file handle, it cannot be disassociated.
 	/// </para>
 	/// </summary>
 	/// <param name="FileHandle">
@@ -3309,18 +4012,18 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365540")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFileIoOverlappedRange([In] HFILE FileHandle, IntPtr OverlappedRangeStart, uint Length);
+	public static extern bool SetFileIoOverlappedRange([In, AddAsMember] HFILE FileHandle, IntPtr OverlappedRangeStart, uint Length);
 
 	/// <summary>Sets the short name for the specified file. The file must be on an NTFS file system volume.</summary>
 	/// <param name="hFile">
-	/// A handle to the file. The file must be opened with either the <c>GENERIC_ALL</c> access right or <c>GENERIC_WRITE</c>|
-	/// <c>DELETE</c>, and with the <c>FILE_FLAG_BACKUP_SEMANTICS</c> file attribute.
+	/// A handle to the file. The file must be opened with either the <c>GENERIC_ALL</c> access right or <c>GENERIC_WRITE</c>| <c>DELETE</c>,
+	/// and with the <c>FILE_FLAG_BACKUP_SEMANTICS</c> file attribute.
 	/// </param>
 	/// <param name="lpShortName">
 	/// <para>A pointer to a string that specifies the short name for the file.</para>
 	/// <para>
-	/// Specifying an empty (zero-length) string will remove the short file name, if it exists for the file specified by the hFile
-	/// parameter. If a short file name does not exist, the function will do nothing and return success.
+	/// Specifying an empty (zero-length) string will remove the short file name, if it exists for the file specified by the hFile parameter.
+	/// If a short file name does not exist, the function will do nothing and return success.
 	/// </para>
 	/// <para>
 	/// <c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This behavior is not supported. The parameter must
@@ -3330,8 +4033,8 @@ public static partial class Kernel32
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. <c>GetLastError</c>
-	/// may return one of the following error codes that are specific to this function.
+	/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. <c>GetLastError</c> may
+	/// return one of the following error codes that are specific to this function.
 	/// </para>
 	/// <para>
 	/// <list type="table">
@@ -3354,17 +4057,17 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365543")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFileShortName([In] HFILE hFile, string lpShortName);
+	public static extern bool SetFileShortName([In, AddAsMember] HFILE hFile, string lpShortName);
 
 	/// <summary>Sets the label of a file system volume.</summary>
 	/// <param name="lpRootPathName">
-	/// A pointer to a string that contains the volume's drive letter (for example, X:\) or the path of a mounted folder that is
-	/// associated with the volume (for example, Y:\MountX\). The string must end with a trailing backslash ('\'). If this parameter is
-	/// <c>NULL</c>, the root of the current directory is used.
+	/// A pointer to a string that contains the volume's drive letter (for example, X:\) or the path of a mounted folder that is associated
+	/// with the volume (for example, Y:\MountX\). The string must end with a trailing backslash ('\'). If this parameter is <c>NULL</c>, the
+	/// root of the current directory is used.
 	/// </param>
 	/// <param name="lpVolumeName">
-	/// A pointer to a string that contains the new label for the volume. If this parameter is <c>NULL</c>, the function deletes any
-	/// existing label from the specified volume and does not assign a new label.
+	/// A pointer to a string that contains the new label for the volume. If this parameter is <c>NULL</c>, the function deletes any existing
+	/// label from the specified volume and does not assign a new label.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -3378,8 +4081,8 @@ public static partial class Kernel32
 
 	/// <summary>Associates a volume with a drive letter or a directory on another volume.</summary>
 	/// <param name="lpszVolumeMountPoint">
-	/// The user-mode path to be associated with the volume. This may be a drive letter (for example, "X:\") or a directory on another
-	/// volume (for example, "Y:\MountX\"). The string must end with a trailing backslash ('\').
+	/// The user-mode path to be associated with the volume. This may be a drive letter (for example, "X:\") or a directory on another volume
+	/// (for example, "Y:\MountX\"). The string must end with a trailing backslash ('\').
 	/// </param>
 	/// <param name="lpszVolumeName">
 	/// A volume <c>GUID</c> path for the volume. This string must be of the form "\\?\Volume{GUID}\" where GUID is a <c>GUID</c> that
@@ -3389,8 +4092,8 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// <para>
-	/// If the lpszVolumeMountPoint parameter contains a path to a mounted folder, <c>GetLastError</c> returns
-	/// <c>ERROR_DIR_NOT_EMPTY</c>, even if the directory is empty.
+	/// If the lpszVolumeMountPoint parameter contains a path to a mounted folder, <c>GetLastError</c> returns <c>ERROR_DIR_NOT_EMPTY</c>,
+	/// even if the directory is empty.
 	/// </para>
 	/// </returns>
 	// BOOL WINAPI SetVolumeMountPoint( _In_ LPCTSTR lpszVolumeMountPoint, _In_ LPCTSTR lpszVolumeName); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365561(v=vs.85).aspx
@@ -3447,21 +4150,21 @@ public static partial class Kernel32
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// To compile an application that uses this structure, define the <c>_WIN32_WINNT</c> macro as <c>_WIN32_WINNT_WIN8</c> or later.
-	/// For more information, see Using the Windows Headers.
+	/// To compile an application that uses this structure, define the <c>_WIN32_WINNT</c> macro as <c>_WIN32_WINNT_WIN8</c> or later. For
+	/// more information, see Using the Windows Headers.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-copyfile2_extended_parameters typedef struct
-	// COPYFILE2_EXTENDED_PARAMETERS { DWORD dwSize; DWORD dwCopyFlags; BOOL *pfCancel; PCOPYFILE2_PROGRESS_ROUTINE pProgressRoutine;
-	// PVOID pvCallbackContext; };
+	// COPYFILE2_EXTENDED_PARAMETERS { DWORD dwSize; DWORD dwCopyFlags; BOOL *pfCancel; PCOPYFILE2_PROGRESS_ROUTINE pProgressRoutine; PVOID
+	// pvCallbackContext; };
 	[PInvokeData("winbase.h", MSDNShortId = "a8da62e5-bc49-4aff-afaa-e774393b7120")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct COPYFILE2_EXTENDED_PARAMETERS
+	public struct COPYFILE2_EXTENDED_PARAMETERS(COPY_FILE flags = 0)
 	{
 		/// <summary>
 		/// <para>Contains the size of this structure, .</para>
 		/// </summary>
-		public uint dwSize;
+		public uint dwSize = (uint)Marshal.SizeOf<COPYFILE2_EXTENDED_PARAMETERS>();
 
 		/// <summary>
 		/// <para>Contains a combination of zero or more of these flag values.</para>
@@ -3484,16 +4187,16 @@ public static partial class Kernel32
 		/// <item>
 		/// <term>COPY_FILE_FAIL_IF_EXISTS 0x00000001</term>
 		/// <term>
-		/// If the destination file exists the copy operation fails immediately. If a file or directory exists with the destination name
-		/// then the CopyFile2 function call will fail with either or . If COPY_FILE_RESUME_FROM_PAUSE is also specified then a failure
-		/// is only triggered if the destination file does not have a valid restart header.
+		/// If the destination file exists the copy operation fails immediately. If a file or directory exists with the destination name then
+		/// the CopyFile2 function call will fail with either or . If COPY_FILE_RESUME_FROM_PAUSE is also specified then a failure is only
+		/// triggered if the destination file does not have a valid restart header.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>COPY_FILE_NO_BUFFERING 0x00001000</term>
 		/// <term>
-		/// The copy is performed using unbuffered I/O, bypassing the system cache resources. This flag is recommended for very large
-		/// file copies. It is not recommended to pause copies that are using this flag.
+		/// The copy is performed using unbuffered I/O, bypassing the system cache resources. This flag is recommended for very large file
+		/// copies. It is not recommended to pause copies that are using this flag.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -3514,34 +4217,34 @@ public static partial class Kernel32
 		/// <term>COPY_FILE_REQUEST_SECURITY_PRIVILEGES 0x00002000</term>
 		/// <term>
 		/// The copy is attempted, specifying for the source file and for the destination file. If these requests are denied the access
-		/// request will be reduced to the highest privilege level for which access is granted. For more information see SACL Access
-		/// Right. This can be used to allow the CopyFile2ProgressRoutine callback to perform operations requiring higher privileges,
-		/// such as copying the security attributes for the file.
+		/// request will be reduced to the highest privilege level for which access is granted. For more information see SACL Access Right.
+		/// This can be used to allow the CopyFile2ProgressRoutine callback to perform operations requiring higher privileges, such as
+		/// copying the security attributes for the file.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>COPY_FILE_RESUME_FROM_PAUSE 0x00004000</term>
 		/// <term>
-		/// The destination file is examined to see if it was copied using COPY_FILE_RESTARTABLE. If so the copy is resumed. If not the
-		/// file will be fully copied.
+		/// The destination file is examined to see if it was copied using COPY_FILE_RESTARTABLE. If so the copy is resumed. If not the file
+		/// will be fully copied.
 		/// </term>
 		/// </item>
 		/// </list>
 		/// </summary>
-		public COPY_FILE dwCopyFlags;
+		public COPY_FILE dwCopyFlags = flags;
 
 		/// <summary>
 		/// <para>If this flag is set to <c>TRUE</c> during the copy operation then the copy operation is canceled.</para>
 		/// </summary>
-		public IntPtr pfCancel;
+		public StructPointer<BOOL> pfCancel;
 
 		/// <summary>
-		/// The optional address of a callback function of type <c>PCOPYFILE2_PROGRESS_ROUTINE</c> that is called each time another
-		/// portion of the file has been copied. This parameter can be <c>NULL</c>. For more information on the progress callback
-		/// function, see the CopyFile2ProgressRoutine callback function.
+		/// The optional address of a callback function of type <c>PCOPYFILE2_PROGRESS_ROUTINE</c> that is called each time another portion
+		/// of the file has been copied. This parameter can be <c>NULL</c>. For more information on the progress callback function, see the
+		/// CopyFile2ProgressRoutine callback function.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public CopyFile2ProgressRoutine pProgressRoutine;
+		public CopyFile2ProgressRoutine? pProgressRoutine;
 
 		/// <summary>
 		/// <para>A pointer to application-specific context information to be passed to the CopyFile2ProgressRoutine.</para>
@@ -3549,15 +4252,15 @@ public static partial class Kernel32
 		public IntPtr pvCallbackContext;
 
 		/// <summary>Provides a default instance with size field set.</summary>
-		public static readonly COPYFILE2_EXTENDED_PARAMETERS Default = new() { dwSize = (uint)Marshal.SizeOf<COPYFILE2_EXTENDED_PARAMETERS>() };
+		public static readonly COPYFILE2_EXTENDED_PARAMETERS Default = new(0);
 	}
 
 	/// <summary>
 	/// <para>Passed to the CopyFile2ProgressRoutine callback function with information about a pending copy operation.</para>
 	/// </summary>
 	/// <remarks>
-	/// To compile an application that uses the <c>COPYFILE2_MESSAGE</c> structure, define the <c>_WIN32_WINNT</c> macro as 0x0601 or
-	/// later. For more information, see Using the Windows Headers.
+	/// To compile an application that uses the <c>COPYFILE2_MESSAGE</c> structure, define the <c>_WIN32_WINNT</c> macro as 0x0601 or later.
+	/// For more information, see Using the Windows Headers.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-copyfile2_message
 	[PInvokeData("winbase.h", MSDNShortId = "ab841bee-90a0-4beb-99d3-764e608c3872")]
@@ -3586,16 +4289,15 @@ public static partial class Kernel32
 		/// <item>
 		/// <term>COPYFILE2_CALLBACK_STREAM_STARTED 3</term>
 		/// <term>
-		/// Indicates both source and destination handles for a stream have been opened and the copy of the stream is about to be
-		/// started. Information is in the StreamStarted structure within the Info union. This does not indicate that the copy has
-		/// started for that stream.
+		/// Indicates both source and destination handles for a stream have been opened and the copy of the stream is about to be started.
+		/// Information is in the StreamStarted structure within the Info union. This does not indicate that the copy has started for that stream.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>COPYFILE2_CALLBACK_STREAM_FINISHED 4</term>
 		/// <term>
-		/// Indicates the copy operation for a stream have started to be completed, either successfully or due to a
-		/// COPYFILE2_PROGRESS_STOP return from CopyFile2ProgressRoutine. Information is in the StreamFinished structure within the Info union.
+		/// Indicates the copy operation for a stream have started to be completed, either successfully or due to a COPYFILE2_PROGRESS_STOP
+		/// return from CopyFile2ProgressRoutine. Information is in the StreamFinished structure within the Info union.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -3673,8 +4375,8 @@ public static partial class Kernel32
 
 			/// <summary>
 			/// <para>
-			/// Indicates which chunk within the current stream is about to be copied. The value used for a chunk will start at zero (0)
-			/// and will always be higher than that of any previous chunk for the current stream.
+			/// Indicates which chunk within the current stream is about to be copied. The value used for a chunk will start at zero (0) and
+			/// will always be higher than that of any previous chunk for the current stream.
 			/// </para>
 			/// </summary>
 			public ulong uliChunkNumber;
@@ -3878,8 +4580,8 @@ public static partial class Kernel32
 
 			/// <summary>
 			/// <para>
-			/// Indicates which chunk within the current stream was being processed at the time of the error. The value used for a chunk
-			/// will start at zero (0) and will always be higher than that of any previous chunk for the current stream.
+			/// Indicates which chunk within the current stream was being processed at the time of the error. The value used for a chunk will
+			/// start at zero (0) and will always be higher than that of any previous chunk for the current stream.
 			/// </para>
 			/// </summary>
 			public ulong uliChunkNumber;
@@ -3932,12 +4634,12 @@ public static partial class Kernel32
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// The end-of-file (EOF) position for a file must always be less than or equal to the file allocation size. If the allocation size
-	/// is set to a value that is less than EOF, the EOF position is automatically adjusted to match the file allocation size.
+	/// The end-of-file (EOF) position for a file must always be less than or equal to the file allocation size. If the allocation size is
+	/// set to a value that is less than EOF, the EOF position is automatically adjusted to match the file allocation size.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_allocation_info typedef struct _FILE_ALLOCATION_INFO
-	// { LARGE_INTEGER AllocationSize; } FILE_ALLOCATION_INFO, *PFILE_ALLOCATION_INFO;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_allocation_info typedef struct _FILE_ALLOCATION_INFO {
+	// LARGE_INTEGER AllocationSize; } FILE_ALLOCATION_INFO, *PFILE_ALLOCATION_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "909f1747-0099-407e-89a7-bec6331887da")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct FILE_ALLOCATION_INFO
@@ -3995,80 +4697,112 @@ public static partial class Kernel32
 		public FileFlagsAndAttributes FileAttributes;
 	}
 
-	/// <summary>
-	/// <para>Receives file compression information. Used for any handles. Use only when calling GetFileInformationByHandleEx.</para>
-	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_compression_info typedef struct
-	// _FILE_COMPRESSION_INFO { LARGE_INTEGER CompressedFileSize; WORD CompressionFormat; UCHAR CompressionUnitShift; UCHAR ChunkShift;
-	// UCHAR ClusterShift; UCHAR Reserved[3]; } FILE_COMPRESSION_INFO, *PFILE_COMPRESSION_INFO;
+	/// <summary>The <c>FILE_CASE_SENSITIVE_INFORMATION</c> structure is used to query or set per-directory case-sensitive information.</summary>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_case_sensitive_information typedef struct
+	// _FILE_CASE_SENSITIVE_INFORMATION { ULONG Flags; } FILE_CASE_SENSITIVE_INFORMATION, *PFILE_CASE_SENSITIVE_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_CASE_SENSITIVE_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_CASE_SENSITIVE_INFORMATION
+	{
+		/// <summary>
+		/// <para>Contains one the following values:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Flag</description>
+		/// <description>Value</description>
+		/// <description>Description</description>
+		/// </listheader>
+		/// <item>
+		/// <description>FILE_CS_FLAG_CASE_SENSITIVE_DIR</description>
+		/// <description>0x00000001</description>
+		/// <description>Specifies the directory is case-sensitive.</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FILE_CS_FLAG Flags;
+	}
+
+	/// <summary>Receives file compression information. Used for any handles. Use only when calling GetFileInformationByHandleEx.</summary>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_compression_info typedef struct _FILE_COMPRESSION_INFO {
+	// LARGE_INTEGER CompressedFileSize; WORD CompressionFormat; UCHAR CompressionUnitShift; UCHAR ChunkShift; UCHAR ClusterShift; UCHAR
+	// Reserved[3]; } FILE_COMPRESSION_INFO, *PFILE_COMPRESSION_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "2f64e7cc-e23c-4e3d-8e17-0e8e38f1ea24")]
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	public struct FILE_COMPRESSION_INFO
 	{
-		/// <summary>
-		/// <para>The file size of the compressed file.</para>
-		/// </summary>
+		/// <summary>The file size of the compressed file.</summary>
 		public long CompressedFileSize;
 
-		/// <summary>
-		/// <para>The compression format that is used to compress the file.</para>
-		/// </summary>
+		/// <summary>The compression format that is used to compress the file.</summary>
 		public ushort CompressionFormat;
 
-		/// <summary>
-		/// <para>The factor that the compression uses.</para>
-		/// </summary>
+		/// <summary>The factor that the compression uses.</summary>
 		public byte CompressionUnitShift;
 
-		/// <summary>
-		/// <para>The number of chunks that are shifted by compression.</para>
-		/// </summary>
+		/// <summary>The number of chunks that are shifted by compression.</summary>
 		public byte ChunkShift;
 
-		/// <summary>
-		/// <para>The number of clusters that are shifted by compression.</para>
-		/// </summary>
+		/// <summary>The number of clusters that are shifted by compression.</summary>
 		public byte ClusterShift;
 
-		/// <summary>
-		/// <para>Reserved.</para>
-		/// </summary>
+		/// <summary>Reserved.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
 		public byte[] Reserved;
 	}
 
-	/// <summary>
-	/// <para>Indicates whether a file should be deleted. Used for any handles. Use only when calling SetFileInformationByHandle.</para>
-	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_disposition_info typedef struct
-	// _FILE_DISPOSITION_INFO { BOOLEAN DeleteFile; } FILE_DISPOSITION_INFO, *PFILE_DISPOSITION_INFO;
+	/// <summary>Indicates whether a file should be deleted. Used for any handles. Use only when calling SetFileInformationByHandle.</summary>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_disposition_info typedef struct _FILE_DISPOSITION_INFO {
+	// BOOLEAN DeleteFile; } FILE_DISPOSITION_INFO, *PFILE_DISPOSITION_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "07095f62-323a-463a-a33e-7e4ca9adcb69")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct FILE_DISPOSITION_INFO
 	{
 		/// <summary>
-		/// <para>
-		/// Indicates whether the file should be deleted. Set to <c>TRUE</c> to delete the file. This member has no effect if the handle
-		/// was opened with <c>FILE_FLAG_DELETE_ON_CLOSE</c>.
-		/// </para>
+		/// Indicates whether the file should be deleted. Set to <c>TRUE</c> to delete the file. This member has no effect if the handle was
+		/// opened with <c>FILE_FLAG_DELETE_ON_CLOSE</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.U1)] public bool DeleteFile;
 	}
 
 	/// <summary>
-	/// <para>
-	/// Contains the specified value to which the end of the file should be set. Used for file handles. Use only when calling SetFileInformationByHandle.
-	/// </para>
+	/// The FILE_DISPOSITION_INFORMATION_EX structure is used as an argument to the ZwSetInformationFile routine and indicates how the
+	/// operating system should delete a file.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_end_of_file_info typedef struct
-	// _FILE_END_OF_FILE_INFO { LARGE_INTEGER EndOfFile; } FILE_END_OF_FILE_INFO, *PFILE_END_OF_FILE_INFO;
+	/// <remarks>
+	/// <para>The caller must have DELETE access to a given file to call ZwSetInformationFile with FILE_DISPOSITION_DELETE.</para>
+	/// <para>
+	/// When FILE_DISPOSITION_POSIX_SEMANTICS is not set, a file marked for deletion is not actually deleted until all open handles for the
+	/// file have been closed and the link count for the file is zero. When FILE_DISPOSITION_POSIX_SEMANTICS is set, the link is removed from
+	/// the visible namespace as soon as the POSIX delete handle has been closed, but the file's data streams remain accessible by other
+	/// existing handles until the last handle has been closed. That is, applications that already had the file open can still use their
+	/// handle to read/write even though the name they used to open it is gone and the file's link count may have reached zero.
+	/// </para>
+	/// <para>
+	/// If the file is being deleted at user request, using POSIX semantics allows the system to delete the file as requested, but also
+	/// allows any process with an open handle to continue to access the file's data as long as the handle is open.
+	/// </para>
+	/// <para>
+	/// A return value of STATUS_CANNOT_DELETE indicates that either the file is read-only, or there is an existing mapped view to the file.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("WinBase.h")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct FILE_DISPOSITION_INFO_EX
+	{
+		/// <summary>Specifies what actions the system should take with a specific file while deleting.</summary>
+		public FILE_DISPOSITION Flags;
+	}
+
+	/// <summary>
+	/// Contains the specified value to which the end of the file should be set. Used for file handles. Use only when calling SetFileInformationByHandle.
+	/// </summary>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_end_of_file_info typedef struct _FILE_END_OF_FILE_INFO {
+	// LARGE_INTEGER EndOfFile; } FILE_END_OF_FILE_INFO, *PFILE_END_OF_FILE_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "77500ae7-654a-4b34-aaee-5c3844303271")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct FILE_END_OF_FILE_INFO
 	{
-		/// <summary>
-		/// <para>The specified value for the new end of the file.</para>
-		/// </summary>
+		/// <summary>The specified value for the new end of the file.</summary>
 		public long EndOfFile;
 	}
 
@@ -4090,72 +4824,56 @@ public static partial class Kernel32
 	/// start of the year 1601.
 	/// </para>
 	/// <para>
-	/// This <c>FILE_FULL_DIR_INFO</c> structure must be aligned on a <c>LONGLONG</c> (8-byte) boundary. If a buffer contains two or more
-	/// of these structures, the <c>NextEntryOffset</c> value in each entry, except the last, falls on an 8-byte boundary.
+	/// This <c>FILE_FULL_DIR_INFO</c> structure must be aligned on a <c>LONGLONG</c> (8-byte) boundary. If a buffer contains two or more of
+	/// these structures, the <c>NextEntryOffset</c> value in each entry, except the last, falls on an 8-byte boundary.
 	/// </para>
 	/// <para>
-	/// To compile an application that uses this structure, define the <c>_WIN32_WINNT</c> macro as 0x0600 or later. For more
-	/// information, see Using the Windows Headers.
+	/// To compile an application that uses this structure, define the <c>_WIN32_WINNT</c> macro as 0x0600 or later. For more information,
+	/// see Using the Windows Headers.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_full_dir_info typedef struct _FILE_FULL_DIR_INFO {
-	// ULONG NextEntryOffset; ULONG FileIndex; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER LastWriteTime;
-	// LARGE_INTEGER ChangeTime; LARGE_INTEGER EndOfFile; LARGE_INTEGER AllocationSize; ULONG FileAttributes; ULONG FileNameLength; ULONG
-	// EaSize; WCHAR FileName[1]; } FILE_FULL_DIR_INFO, *PFILE_FULL_DIR_INFO;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_full_dir_info typedef struct _FILE_FULL_DIR_INFO { ULONG
+	// NextEntryOffset; ULONG FileIndex; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER LastWriteTime; LARGE_INTEGER
+	// ChangeTime; LARGE_INTEGER EndOfFile; LARGE_INTEGER AllocationSize; ULONG FileAttributes; ULONG FileNameLength; ULONG EaSize; WCHAR
+	// FileName[1]; } FILE_FULL_DIR_INFO, *PFILE_FULL_DIR_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "606726e7-fd6b-4419-bd37-7282283007f8")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_FULL_DIR_INFO>), nameof(FileNameLength))]
 	public struct FILE_FULL_DIR_INFO
 	{
 		/// <summary>
-		/// <para>
-		/// The offset for the next <c>FILE_FULL_DIR_INFO</c> structure that is returned. Contains zero (0) if no other entries follow
-		/// this one.
-		/// </para>
+		/// The offset for the next <c>FILE_FULL_DIR_INFO</c> structure that is returned. Contains zero (0) if no other entries follow this one.
 		/// </summary>
 		public uint NextEntryOffset;
 
 		/// <summary>
-		/// <para>
-		/// The byte offset of the file within the parent directory. This member is undefined for file systems, such as NTFS, in which
-		/// the position of a file within the parent directory is not fixed and can be changed at any time to maintain sort order.
-		/// </para>
+		/// The byte offset of the file within the parent directory. This member is undefined for file systems, such as NTFS, in which the
+		/// position of a file within the parent directory is not fixed and can be changed at any time to maintain sort order.
 		/// </summary>
 		public uint FileIndex;
 
-		/// <summary>
-		/// <para>The time that the file was created.</para>
-		/// </summary>
+		/// <summary>The time that the file was created.</summary>
 		public FILETIME CreationTime;
 
-		/// <summary>
-		/// <para>The time that the file was last accessed.</para>
-		/// </summary>
+		/// <summary>The time that the file was last accessed.</summary>
 		public FILETIME LastAccessTime;
 
-		/// <summary>
-		/// <para>The time that the file was last written to.</para>
-		/// </summary>
+		/// <summary>The time that the file was last written to.</summary>
 		public FILETIME LastWriteTime;
 
-		/// <summary>
-		/// <para>The time that the file was last changed.</para>
-		/// </summary>
+		/// <summary>The time that the file was last changed.</summary>
 		public FILETIME ChangeTime;
 
 		/// <summary>
-		/// <para>
-		/// The absolute new end-of-file position as a byte offset from the start of the file to the end of the default data stream of
-		/// the file. Because this value is zero-based, it actually refers to the first free byte in the file. In other words,
-		/// <c>EndOfFile</c> is the offset to the byte that immediately follows the last valid byte in the file.
-		/// </para>
+		/// The absolute new end-of-file position as a byte offset from the start of the file to the end of the default data stream of the
+		/// file. Because this value is zero-based, it actually refers to the first free byte in the file. In other words, <c>EndOfFile</c>
+		/// is the offset to the byte that immediately follows the last valid byte in the file.
 		/// </summary>
 		public long EndOfFile;
 
 		/// <summary>
-		/// <para>
 		/// The number of bytes that are allocated for the file. This value is usually a multiple of the sector or cluster size of the
 		/// underlying physical device.
-		/// </para>
 		/// </summary>
 		public long AllocationSize;
 
@@ -4172,26 +4890,20 @@ public static partial class Kernel32
 		/// </summary>
 		public FileFlagsAndAttributes FileAttributes;
 
-		/// <summary>
-		/// <para>The length of the file name.</para>
-		/// </summary>
+		/// <summary>The length of the file name.</summary>
 		public uint FileNameLength;
 
-		/// <summary>
-		/// <para>The size of the extended attributes for the file.</para>
-		/// </summary>
+		/// <summary>The size of the extended attributes for the file.</summary>
 		public uint EaSize;
 
-		/// <summary>
-		/// <para>The first character of the file name string. This is followed in memory by the remainder of the string.</para>
-		/// </summary>
+		/// <summary>The first character of the file name string. This is followed in memory by the remainder of the string.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 		public string FileName;
 	}
 
 	/// <summary>Defines a 128-bit file identifier.</summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_file_id_128 typedef struct _FILE_ID_128 { BYTE
-	// Identifier[16]; } FILE_ID_128, *PFILE_ID_128;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_file_id_128 typedef struct _FILE_ID_128 { BYTE Identifier[16]; }
+	// FILE_ID_128, *PFILE_ID_128;
 	[PInvokeData("winnt.h", MSDNShortId = "254ea6a9-e1dd-4b97-91f7-2693065c4bb8")]
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct FILE_ID_128
@@ -4199,9 +4911,9 @@ public static partial class Kernel32
 		private ulong id0;
 		private ulong id1;
 
-		/// <summary>
-		/// <para>A byte array containing the 128 bit identifier.</para>
-		/// </summary>
+		/// <summary>A byte array containing the 128 bit identifier.</summary>
+		/// <value>The identifier.</value>
+		/// <exception cref="ArgumentOutOfRangeException">Array must be 16 bytes long., nameof(value)</exception>
 		public byte[] Identifier
 		{
 			get
@@ -4223,87 +4935,71 @@ public static partial class Kernel32
 	/// <summary>
 	/// <para>
 	/// Contains information about files in the specified directory. Used for directory handles. Use only when calling
-	/// GetFileInformationByHandleEx. The number of files that are returned for each call to <c>GetFileInformationByHandleEx</c> depends
-	/// on the size of the buffer that is passed to the function. Any subsequent calls to <c>GetFileInformationByHandleEx</c> on the same
-	/// handle will resume the enumeration operation after the last file is returned.
+	/// GetFileInformationByHandleEx. The number of files that are returned for each call to <c>GetFileInformationByHandleEx</c> depends on
+	/// the size of the buffer that is passed to the function. Any subsequent calls to <c>GetFileInformationByHandleEx</c> on the same handle
+	/// will resume the enumeration operation after the last file is returned.
 	/// </para>
 	/// </summary>
 	/// <remarks>
 	/// <para>No specific access rights are required to query this information.</para>
 	/// <para>
-	/// File reference numbers, also called file IDs, are guaranteed to be unique only within a static file system. They are not
-	/// guaranteed to be unique over time, because file systems are free to reuse them. Nor are they guaranteed to remain constant. For
-	/// example, the FAT file system generates the file reference number for a file from the byte offset of the file's directory entry
-	/// record (DIRENT) on the disk. Defragmentation can change this byte offset. Thus a FAT file reference number can change over time.
+	/// File reference numbers, also called file IDs, are guaranteed to be unique only within a static file system. They are not guaranteed
+	/// to be unique over time, because file systems are free to reuse them. Nor are they guaranteed to remain constant. For example, the FAT
+	/// file system generates the file reference number for a file from the byte offset of the file's directory entry record (DIRENT) on the
+	/// disk. Defragmentation can change this byte offset. Thus a FAT file reference number can change over time.
 	/// </para>
 	/// <para>
 	/// All dates and times are in absolute system-time format. Absolute system time is the number of 100-nanosecond intervals since the
 	/// start of the year 1601.
 	/// </para>
 	/// <para>
-	/// This <c>FILE_ID_BOTH_DIR_INFO</c> structure must be aligned on a <c>DWORDLONG</c> (8-byte) boundary. If a buffer contains two or
-	/// more of these structures, the <c>NextEntryOffset</c> value in each entry, except the last, falls on an 8-byte boundary.
+	/// This <c>FILE_ID_BOTH_DIR_INFO</c> structure must be aligned on a <c>DWORDLONG</c> (8-byte) boundary. If a buffer contains two or more
+	/// of these structures, the <c>NextEntryOffset</c> value in each entry, except the last, falls on an 8-byte boundary.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_id_both_dir_info typedef struct
-	// _FILE_ID_BOTH_DIR_INFO { DWORD NextEntryOffset; DWORD FileIndex; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime;
-	// LARGE_INTEGER LastWriteTime; LARGE_INTEGER ChangeTime; LARGE_INTEGER EndOfFile; LARGE_INTEGER AllocationSize; DWORD
-	// FileAttributes; DWORD FileNameLength; DWORD EaSize; CCHAR ShortNameLength; WCHAR ShortName[12]; LARGE_INTEGER FileId; WCHAR
-	// FileName[1]; } FILE_ID_BOTH_DIR_INFO, *PFILE_ID_BOTH_DIR_INFO;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_id_both_dir_info typedef struct _FILE_ID_BOTH_DIR_INFO {
+	// DWORD NextEntryOffset; DWORD FileIndex; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER LastWriteTime;
+	// LARGE_INTEGER ChangeTime; LARGE_INTEGER EndOfFile; LARGE_INTEGER AllocationSize; DWORD FileAttributes; DWORD FileNameLength; DWORD
+	// EaSize; CCHAR ShortNameLength; WCHAR ShortName[12]; LARGE_INTEGER FileId; WCHAR FileName[1]; } FILE_ID_BOTH_DIR_INFO, *PFILE_ID_BOTH_DIR_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "d7011ea4-e70a-4c03-a715-6144ce0c7029")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_ID_BOTH_DIR_INFO>), nameof(FileNameLength))]
 	public struct FILE_ID_BOTH_DIR_INFO
 	{
 		/// <summary>
-		/// <para>
 		/// The offset for the next <c>FILE_ID_BOTH_DIR_INFO</c> structure that is returned. Contains zero (0) if no other entries follow
 		/// this one.
-		/// </para>
 		/// </summary>
 		public uint NextEntryOffset;
 
 		/// <summary>
-		/// <para>
-		/// The byte offset of the file within the parent directory. This member is undefined for file systems, such as NTFS, in which
-		/// the position of a file within the parent directory is not fixed and can be changed at any time to maintain sort order.
-		/// </para>
+		/// The byte offset of the file within the parent directory. This member is undefined for file systems, such as NTFS, in which the
+		/// position of a file within the parent directory is not fixed and can be changed at any time to maintain sort order.
 		/// </summary>
 		public uint FileIndex;
 
-		/// <summary>
-		/// <para>The time that the file was created.</para>
-		/// </summary>
+		/// <summary>The time that the file was created.</summary>
 		public FILETIME CreationTime;
 
-		/// <summary>
-		/// <para>The time that the file was last accessed.</para>
-		/// </summary>
+		/// <summary>The time that the file was last accessed.</summary>
 		public FILETIME LastAccessTime;
 
-		/// <summary>
-		/// <para>The time that the file was last written to.</para>
-		/// </summary>
+		/// <summary>The time that the file was last written to.</summary>
 		public FILETIME LastWriteTime;
 
-		/// <summary>
-		/// <para>The time that the file was last changed.</para>
-		/// </summary>
+		/// <summary>The time that the file was last changed.</summary>
 		public FILETIME ChangeTime;
 
 		/// <summary>
-		/// <para>
-		/// The absolute new end-of-file position as a byte offset from the start of the file to the end of the file. Because this value
-		/// is zero-based, it actually refers to the first free byte in the file. In other words, <c>EndOfFile</c> is the offset to the
-		/// byte that immediately follows the last valid byte in the file.
-		/// </para>
+		/// The absolute new end-of-file position as a byte offset from the start of the file to the end of the file. Because this value is
+		/// zero-based, it actually refers to the first free byte in the file. In other words, <c>EndOfFile</c> is the offset to the byte
+		/// that immediately follows the last valid byte in the file.
 		/// </summary>
 		public long EndOfFile;
 
 		/// <summary>
-		/// <para>
 		/// The number of bytes that are allocated for the file. This value is usually a multiple of the sector or cluster size of the
 		/// underlying physical device.
-		/// </para>
 		/// </summary>
 		public long AllocationSize;
 
@@ -4320,35 +5016,23 @@ public static partial class Kernel32
 		/// </summary>
 		public FileFlagsAndAttributes FileAttributes;
 
-		/// <summary>
-		/// <para>The length of the file name.</para>
-		/// </summary>
+		/// <summary>The length of the file name.</summary>
 		public uint FileNameLength;
 
-		/// <summary>
-		/// <para>The size of the extended attributes for the file.</para>
-		/// </summary>
+		/// <summary>The size of the extended attributes for the file.</summary>
 		public uint EaSize;
 
-		/// <summary>
-		/// <para>The length of <c>ShortName</c>.</para>
-		/// </summary>
+		/// <summary>The length of <c>ShortName</c>.</summary>
 		public byte ShortNameLength;
 
-		/// <summary>
-		/// <para>The short 8.3 file naming convention (for example, "FILENAME.TXT") name of the file.</para>
-		/// </summary>
+		/// <summary>The short 8.3 file naming convention (for example, "FILENAME.TXT") name of the file.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 12)]
 		public string ShortName;
 
-		/// <summary>
-		/// <para>The file ID.</para>
-		/// </summary>
+		/// <summary>The file ID.</summary>
 		public long FileId;
 
-		/// <summary>
-		/// <para>The first character of the file name string. This is followed in memory by the remainder of the string.</para>
-		/// </summary>
+		/// <summary>The first character of the file name string. This is followed in memory by the remainder of the string.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 		public string FileName;
 	}
@@ -4356,16 +5040,14 @@ public static partial class Kernel32
 	/// <summary>
 	/// <para>Specifies the type of ID that is being used.</para>
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-file_id_descriptor typedef struct FILE_ID_DESCRIPTOR {
-	// DWORD dwSize; FILE_ID_TYPE Type; union { LARGE_INTEGER FileId; GUID ObjectId; FILE_ID_128 ExtendedFileId; } DUMMYUNIONNAME; } *LPFILE_ID_DESCRIPTOR;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-file_id_descriptor typedef struct FILE_ID_DESCRIPTOR { DWORD
+	// dwSize; FILE_ID_TYPE Type; union { LARGE_INTEGER FileId; GUID ObjectId; FILE_ID_128 ExtendedFileId; } DUMMYUNIONNAME; } *LPFILE_ID_DESCRIPTOR;
 	[PInvokeData("winbase.h", MSDNShortId = "9092a701-3b47-4c4c-8221-54fa3220d322")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct FILE_ID_DESCRIPTOR
+	public struct FILE_ID_DESCRIPTOR()
 	{
-		/// <summary>
-		/// <para>The size of this <c>FILE_ID_DESCRIPTOR</c> structure.</para>
-		/// </summary>
-		public uint dwSize;
+		/// <summary>The size of this <c>FILE_ID_DESCRIPTOR</c> structure.</summary>
+		public uint dwSize = (uint)Marshal.SizeOf<FILE_ID_DESCRIPTOR>();
 
 		/// <summary>
 		/// <para>The discriminator for the union indicating the type of identifier that is being passed.</para>
@@ -4385,8 +5067,8 @@ public static partial class Kernel32
 		/// <item>
 		/// <term>ExtendedFileIdType 2</term>
 		/// <term>
-		/// Use the ExtendedFileId member of the union. Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7
-		/// and Windows Server 2008 R2: This value is not supported before Windows 8 and Windows Server 2012.
+		/// Use the ExtendedFileId member of the union. Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7 and
+		/// Windows Server 2008 R2: This value is not supported before Windows 8 and Windows Server 2012.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -4400,23 +5082,19 @@ public static partial class Kernel32
 		[StructLayout(LayoutKind.Explicit)]
 		public struct DUMMYUNIONNAME
 		{
-			/// <summary>
-			/// <para>The ID of the file to open.</para>
-			/// </summary>
+			/// <summary>The ID of the file to open.</summary>
 			[FieldOffset(0)]
 			public long FileId;
 
-			/// <summary>
-			/// <para>The ID of the object to open.</para>
-			/// </summary>
+			/// <summary>The ID of the object to open.</summary>
 			[FieldOffset(0)]
 			public Guid ObjectId;
 
 			/// <summary>
 			/// <para>A FILE_ID_128 structure containing the 128-bit file ID of the file. This is used on ReFS file systems.</para>
 			/// <para>
-			/// <c>Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7 and Windows Server 2008 R2:</c> This
-			/// member is not supported before Windows 8 and Windows Server 2012.
+			/// <c>Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7 and Windows Server 2008 R2:</c> This member
+			/// is not supported before Windows 8 and Windows Server 2012.
 			/// </para>
 			/// </summary>
 			[FieldOffset(0)]
@@ -4424,7 +5102,7 @@ public static partial class Kernel32
 		}
 
 		/// <summary>Provides a default instance with size field set.</summary>
-		public static readonly FILE_ID_DESCRIPTOR Default = new() { dwSize = (uint)Marshal.SizeOf<FILE_ID_DESCRIPTOR>() };
+		public static readonly FILE_ID_DESCRIPTOR Default = new();
 	}
 
 	/// <summary>
@@ -4433,65 +5111,49 @@ public static partial class Kernel32
 	/// <c>FileIdExtdDirectoryInfo</c> (0x13) or <c>FileIdExtdDirectoryRestartInfo</c> (0x14) is passed in the FileInformationClass parameter.
 	/// </para>
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_id_extd_dir_info typedef struct
-	// _FILE_ID_EXTD_DIR_INFO { ULONG NextEntryOffset; ULONG FileIndex; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime;
-	// LARGE_INTEGER LastWriteTime; LARGE_INTEGER ChangeTime; LARGE_INTEGER EndOfFile; LARGE_INTEGER AllocationSize; ULONG
-	// FileAttributes; ULONG FileNameLength; ULONG EaSize; ULONG ReparsePointTag; FILE_ID_128 FileId; WCHAR FileName[1]; }
-	// FILE_ID_EXTD_DIR_INFO, *PFILE_ID_EXTD_DIR_INFO;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_id_extd_dir_info typedef struct _FILE_ID_EXTD_DIR_INFO {
+	// ULONG NextEntryOffset; ULONG FileIndex; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER LastWriteTime;
+	// LARGE_INTEGER ChangeTime; LARGE_INTEGER EndOfFile; LARGE_INTEGER AllocationSize; ULONG FileAttributes; ULONG FileNameLength; ULONG
+	// EaSize; ULONG ReparsePointTag; FILE_ID_128 FileId; WCHAR FileName[1]; } FILE_ID_EXTD_DIR_INFO, *PFILE_ID_EXTD_DIR_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "68f222c4-beb6-4be1-a31a-c5fbebbf76f7")]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_ID_EXTD_DIR_INFO>), nameof(FileNameLength))]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct FILE_ID_EXTD_DIR_INFO
 	{
 		/// <summary>
-		/// <para>
 		/// The offset for the next <c>FILE_ID_EXTD_DIR_INFO</c> structure that is returned. Contains zero (0) if no other entries follow
 		/// this one.
-		/// </para>
 		/// </summary>
 		public uint NextEntryOffset;
 
 		/// <summary>
-		/// <para>
-		/// The byte offset of the file within the parent directory. This member is undefined for file systems, such as NTFS, in which
-		/// the position of a file within the parent directory is not fixed and can be changed at any time to maintain sort order.
-		/// </para>
+		/// The byte offset of the file within the parent directory. This member is undefined for file systems, such as NTFS, in which the
+		/// position of a file within the parent directory is not fixed and can be changed at any time to maintain sort order.
 		/// </summary>
 		public uint FileIndex;
 
-		/// <summary>
-		/// <para>The time that the file was created.</para>
-		/// </summary>
+		/// <summary>The time that the file was created.</summary>
 		public FILETIME CreationTime;
 
-		/// <summary>
-		/// <para>The time that the file was last accessed.</para>
-		/// </summary>
+		/// <summary>The time that the file was last accessed.</summary>
 		public FILETIME LastAccessTime;
 
-		/// <summary>
-		/// <para>The time that the file was last written to.</para>
-		/// </summary>
+		/// <summary>The time that the file was last written to.</summary>
 		public FILETIME LastWriteTime;
 
-		/// <summary>
-		/// <para>The time that the file was last changed.</para>
-		/// </summary>
+		/// <summary>The time that the file was last changed.</summary>
 		public FILETIME ChangeTime;
 
 		/// <summary>
-		/// <para>
-		/// The absolute new end-of-file position as a byte offset from the start of the file to the end of the file. Because this value
-		/// is zero-based, it actually refers to the first free byte in the file. In other words, <c>EndOfFile</c> is the offset to the
-		/// byte that immediately follows the last valid byte in the file.
-		/// </para>
+		/// The absolute new end-of-file position as a byte offset from the start of the file to the end of the file. Because this value is
+		/// zero-based, it actually refers to the first free byte in the file. In other words, <c>EndOfFile</c> is the offset to the byte
+		/// that immediately follows the last valid byte in the file.
 		/// </summary>
 		public long EndOfFile;
 
 		/// <summary>
-		/// <para>
 		/// The number of bytes that are allocated for the file. This value is usually a multiple of the sector or cluster size of the
 		/// underlying physical device.
-		/// </para>
 		/// </summary>
 		public long AllocationSize;
 
@@ -4505,15 +5167,15 @@ public static partial class Kernel32
 		/// <item>
 		/// <term>FILE_ATTRIBUTE_ARCHIVE 32 (0x20)</term>
 		/// <term>
-		/// A file or directory that is an archive file or directory. Applications typically use this attribute to mark files for backup
-		/// or removal .
+		/// A file or directory that is an archive file or directory. Applications typically use this attribute to mark files for backup or
+		/// removal .
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>FILE_ATTRIBUTE_COMPRESSED 2048 (0x800)</term>
 		/// <term>
-		/// A file or directory that is compressed. For a file, all of the data in the file is compressed. For a directory, compression
-		/// is the default for newly created files and subdirectories.
+		/// A file or directory that is compressed. For a file, all of the data in the file is compressed. For a directory, compression is
+		/// the default for newly created files and subdirectories.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -4527,8 +5189,8 @@ public static partial class Kernel32
 		/// <item>
 		/// <term>FILE_ATTRIBUTE_ENCRYPTED 16384 (0x4000)</term>
 		/// <term>
-		/// A file or directory that is encrypted. For a file, all data streams in the file are encrypted. For a directory, encryption is
-		/// the default for newly created files and subdirectories.
+		/// A file or directory that is encrypted. For a file, all data streams in the file are encrypted. For a directory, encryption is the
+		/// default for newly created files and subdirectories.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -4547,16 +5209,16 @@ public static partial class Kernel32
 		/// <term>FILE_ATTRIBUTE_OFFLINE 4096 (0x1000)</term>
 		/// <term>
 		/// The data of a file is not available immediately. This attribute indicates that the file data is physically moved to offline
-		/// storage. This attribute is used by Remote Storage, which is the hierarchical storage management software. Applications should
-		/// not arbitrarily change this attribute.
+		/// storage. This attribute is used by Remote Storage, which is the hierarchical storage management software. Applications should not
+		/// arbitrarily change this attribute.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>FILE_ATTRIBUTE_READONLY 1 (0x1)</term>
 		/// <term>
-		/// A file that is read-only. Applications can read the file, but cannot write to it or delete it. This attribute is not honored
-		/// on directories. For more information, see You cannot view or change the Read-only or the System attributes of folders in
-		/// Windows Server 2003, in Windows XP, in Windows Vista or in Windows 7.
+		/// A file that is read-only. Applications can read the file, but cannot write to it or delete it. This attribute is not honored on
+		/// directories. For more information, see You cannot view or change the Read-only or the System attributes of folders in Windows
+		/// Server 2003, in Windows XP, in Windows Vista or in Windows 7.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -4574,9 +5236,9 @@ public static partial class Kernel32
 		/// <item>
 		/// <term>FILE_ATTRIBUTE_TEMPORARY 256 (0x100)</term>
 		/// <term>
-		/// A file that is being used for temporary storage. File systems avoid writing data back to mass storage if sufficient cache
-		/// memory is available, because typically, an application deletes a temporary file after the handle is closed. In that scenario,
-		/// the system can entirely avoid writing the data. Otherwise, the data is written after the handle is closed.
+		/// A file that is being used for temporary storage. File systems avoid writing data back to mass storage if sufficient cache memory
+		/// is available, because typically, an application deletes a temporary file after the handle is closed. In that scenario, the system
+		/// can entirely avoid writing the data. Otherwise, the data is written after the handle is closed.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -4587,20 +5249,16 @@ public static partial class Kernel32
 		/// </summary>
 		public FileFlagsAndAttributes FileAttributes;
 
-		/// <summary>
-		/// <para>The length of the file name.</para>
-		/// </summary>
+		/// <summary>The length of the file name.</summary>
 		public uint FileNameLength;
 
-		/// <summary>
-		/// <para>The size of the extended attributes for the file.</para>
-		/// </summary>
+		/// <summary>The size of the extended attributes for the file.</summary>
 		public uint EaSize;
 
 		/// <summary>
 		/// <para>
-		/// If the <c>FileAttributes</c> member includes the <c>FILE_ATTRIBUTE_REPARSE_POINT</c> attribute, this member specifies the
-		/// reparse point tag.
+		/// If the <c>FileAttributes</c> member includes the <c>FILE_ATTRIBUTE_REPARSE_POINT</c> attribute, this member specifies the reparse
+		/// point tag.
 		/// </para>
 		/// <para>Otherwise, this value is undefined and should not be used.</para>
 		/// <para>For more information see Reparse Point Tags.</para>
@@ -4618,14 +5276,10 @@ public static partial class Kernel32
 		/// </summary>
 		public uint ReparsePointTag;
 
-		/// <summary>
-		/// <para>The file ID.</para>
-		/// </summary>
+		/// <summary>The file ID.</summary>
 		public FILE_ID_128 FileId;
 
-		/// <summary>
-		/// <para>The first character of the file name string. This is followed in memory by the remainder of the string.</para>
-		/// </summary>
+		/// <summary>The first character of the file name string. This is followed in memory by the remainder of the string.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 		public string FileName;
 	}
@@ -4649,24 +5303,21 @@ public static partial class Kernel32
 
 		/// <summary>
 		/// <para>
-		/// The 128-bit file identifier for the file. The file identifier and the volume serial number uniquely identify a file on a
-		/// single computer. To determine whether two open handles represent the same file, combine the identifier and the volume serial
-		/// number for each file and compare them.
+		/// The 128-bit file identifier for the file. The file identifier and the volume serial number uniquely identify a file on a single
+		/// computer. To determine whether two open handles represent the same file, combine the identifier and the volume serial number for
+		/// each file and compare them.
 		/// </para>
 		/// </summary>
 		public FILE_ID_128 FileId;
 	}
 
-	/// <summary>
-	/// <para>Specifies the priority hint for a file I/O operation.</para>
-	/// </summary>
+	/// <summary>Specifies the priority hint for a file I/O operation.</summary>
 	/// <remarks>
 	/// <para>
 	/// The SetFileInformationByHandle function can be used with this structure to associate a priority hint with I/O operations on a
-	/// file-handle basis. In addition to the idle priority (very low), this function allows normal priority and low priority. Whether
-	/// these priorities are supported and honored by the underlying drivers depends on their implementation (which is why they are
-	/// called hints). For more information, see the I/O Prioritization in Windows Vista white paper on the Windows Hardware Developer
-	/// Central (WHDC) website.
+	/// file-handle basis. In addition to the idle priority (very low), this function allows normal priority and low priority. Whether these
+	/// priorities are supported and honored by the underlying drivers depends on their implementation (which is why they are called hints).
+	/// For more information, see the I/O Prioritization in Windows Vista white paper on the Windows Hardware Developer Central (WHDC) website.
 	/// </para>
 	/// <para>This structure must be aligned on a <c>LONGLONG</c> (8-byte) boundary.</para>
 	/// </remarks>
@@ -4676,30 +5327,23 @@ public static partial class Kernel32
 	[StructLayout(LayoutKind.Sequential)]
 	public struct FILE_IO_PRIORITY_HINT_INFO
 	{
-		/// <summary>
-		/// <para>The priority hint. This member is a value from the PRIORITY_HINT enumeration.</para>
-		/// </summary>
+		/// <summary>The priority hint. This member is a value from the PRIORITY_HINT enumeration.</summary>
 		public PRIORITY_HINT PriorityHint;
 	}
 
-	/// <summary>
-	/// <para>Receives the file name. Used for any handles. Use only when calling GetFileInformationByHandleEx.</para>
-	/// </summary>
+	/// <summary>Receives the file name. Used for any handles. Use only when calling GetFileInformationByHandleEx.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_name_info typedef struct _FILE_NAME_INFO { DWORD
 	// FileNameLength; WCHAR FileName[1]; } FILE_NAME_INFO, *PFILE_NAME_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "7ab98f41-b99e-4731-b803-921064a961c4")]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_NAME_INFO>), nameof(FileNameLength))]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct FILE_NAME_INFO
 	{
-		/// <summary>
-		/// <para>The size of the <c>FileName</c> string, in bytes.</para>
-		/// </summary>
+		/// <summary>The size of the <c>FileName</c> string, in bytes.</summary>
 		public uint FileNameLength;
 
-		/// <summary>
-		/// <para>The file name that is returned.</para>
-		/// </summary>
-		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH + 1)]
+		/// <summary>The file name that is returned.</summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 		public string FileName;
 	}
 
@@ -4707,9 +5351,10 @@ public static partial class Kernel32
 	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_file_notify_extended_information typedef struct
 	// _FILE_NOTIFY_EXTENDED_INFORMATION { DWORD NextEntryOffset; DWORD Action; LARGE_INTEGER CreationTime; LARGE_INTEGER
 	// LastModificationTime; LARGE_INTEGER LastChangeTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER AllocatedLength; LARGE_INTEGER
-	// FileSize; DWORD FileAttributes; DWORD ReparsePointTag; LARGE_INTEGER FileId; LARGE_INTEGER ParentFileId; DWORD FileNameLength;
-	// WCHAR FileName[1]; } FILE_NOTIFY_EXTENDED_INFORMATION, *PFILE_NOTIFY_EXTENDED_INFORMATION;
+	// FileSize; DWORD FileAttributes; DWORD ReparsePointTag; LARGE_INTEGER FileId; LARGE_INTEGER ParentFileId; DWORD FileNameLength; WCHAR
+	// FileName[1]; } FILE_NOTIFY_EXTENDED_INFORMATION, *PFILE_NOTIFY_EXTENDED_INFORMATION;
 	[PInvokeData("winnt.h", MSDNShortId = "4558F2E8-F515-4202-9CAA-FDAF20160F61")]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_NOTIFY_EXTENDED_INFORMATION>), nameof(FileNameLength))]
 	[StructLayout(LayoutKind.Sequential, Pack = 4)]
 	public struct FILE_NOTIFY_EXTENDED_INFORMATION
 	{
@@ -4784,8 +5429,8 @@ public static partial class Kernel32
 
 		/// <summary>
 		/// <para>
-		/// A variable-length field that contains the file name relative to the directory handle. The file name is in the Unicode
-		/// character format and is not null-terminated.
+		/// A variable-length field that contains the file name relative to the directory handle. The file name is in the Unicode character
+		/// format and is not null-terminated.
 		/// </para>
 		/// <para>
 		/// If there is both a short and long name for the file, the function will return one of these names, but it is unspecified which one.
@@ -4796,9 +5441,10 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Describes the changes found by the ReadDirectoryChangesW function.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_file_notify_information typedef struct _FILE_NOTIFY_INFORMATION
-	// { DWORD NextEntryOffset; DWORD Action; DWORD FileNameLength; WCHAR FileName[1]; } FILE_NOTIFY_INFORMATION, *PFILE_NOTIFY_INFORMATION;
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_file_notify_information typedef struct _FILE_NOTIFY_INFORMATION {
+	// DWORD NextEntryOffset; DWORD Action; DWORD FileNameLength; WCHAR FileName[1]; } FILE_NOTIFY_INFORMATION, *PFILE_NOTIFY_INFORMATION;
 	[PInvokeData("winnt.h", MSDNShortId = "cb95352f-8a15-48d8-9150-e4bc395e0122")]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_NOTIFY_INFORMATION>), nameof(FileNameLength))]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct FILE_NOTIFY_INFORMATION
 	{
@@ -4845,8 +5491,8 @@ public static partial class Kernel32
 
 		/// <summary>
 		/// <para>
-		/// A variable-length field that contains the file name relative to the directory handle. The file name is in the Unicode
-		/// character format and is not null-terminated.
+		/// A variable-length field that contains the file name relative to the directory handle. The file name is in the Unicode character
+		/// format and is not null-terminated.
 		/// </para>
 		/// <para>
 		/// If there is both a short and long name for the file, the function will return one of these names, but it is unspecified which one.
@@ -4857,35 +5503,27 @@ public static partial class Kernel32
 	}
 
 	/// <summary>
-	/// <para>
 	/// Contains file remote protocol information. This structure is returned from the GetFileInformationByHandleEx function when
 	/// <c>FileRemoteProtocolInfo</c> is passed in the FileInformationClass parameter.
-	/// </para>
 	/// </summary>
-	/// <remarks>
-	/// <para>The <c>FILE_REMOTE_PROTOCOL_INFO</c> structure is valid only for use with the GetFileInformationByHandleEx function.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_remote_protocol_info typedef struct
+	/// <remarks>The <c>FILE_REMOTE_PROTOCOL_INFO</c> structure is valid only for use with the GetFileInformationByHandleEx function.</remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_remote_protocol_info typedef struct
 	// _FILE_REMOTE_PROTOCOL_INFO { USHORT StructureVersion; USHORT StructureSize; ULONG Protocol; USHORT ProtocolMajorVersion; USHORT
-	// ProtocolMinorVersion; USHORT ProtocolRevision; USHORT Reserved; ULONG Flags; struct { ULONG Reserved[8]; } GenericReserved; struct
-	// { ULONG Reserved[16]; } ProtocolSpecificReserved; union { struct { struct { ULONG Capabilities; } Server; struct { ULONG
-	// Capabilities; ULONG CachingFlags; } Share; } Smb2; ULONG Reserved[16]; } ProtocolSpecific; } FILE_REMOTE_PROTOCOL_INFO, *PFILE_REMOTE_PROTOCOL_INFO;
+	// ProtocolMinorVersion; USHORT ProtocolRevision; USHORT Reserved; ULONG Flags; struct { ULONG Reserved[8]; } GenericReserved; struct {
+	// ULONG Reserved[16]; } ProtocolSpecificReserved; union { struct { struct { ULONG Capabilities; } Server; struct { ULONG Capabilities;
+	// ULONG CachingFlags; } Share; } Smb2; ULONG Reserved[16]; } ProtocolSpecific; } FILE_REMOTE_PROTOCOL_INFO, *PFILE_REMOTE_PROTOCOL_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "ddb555ad-0acb-4538-88ce-a871adfc21fc")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct FILE_REMOTE_PROTOCOL_INFO
+	public struct FILE_REMOTE_PROTOCOL_INFO()
 	{
 		/// <summary>
-		/// <para>
-		/// Version of this structure. This member should be set to 2 if the communication is between computers running Windows 8,
-		/// Windows Server 2012, or later and 1 otherwise.
-		/// </para>
+		/// Version of this structure. This member should be set to 2 if the communication is between computers running Windows 8, Windows
+		/// Server 2012, or later and 1 otherwise.
 		/// </summary>
-		public ushort StructureVersion;
+		public ushort StructureVersion = 2;
 
-		/// <summary>
-		/// <para>Size of this structure. This member should be set to .</para>
-		/// </summary>
-		public ushort StructureSize;
+		/// <summary>Size of this structure. This member should be set to .</summary>
+		public ushort StructureSize = (ushort)Marshal.SizeOf<FILE_REMOTE_PROTOCOL_INFO>();
 
 		/// <summary>
 		/// <para>Remote protocol ( <c>WNNC_NET_*</c>) defined in Wnnc.h or Ntifs.h.</para>
@@ -4958,26 +5596,18 @@ public static partial class Kernel32
 		/// <para>WNNC_NET_GOOGLE (0x00430000)</para>
 		/// <para>WNNC_NET_NDFS (0x00440000)</para>
 		/// </summary>
-		public uint Protocol;
+		public WNNC_NET Protocol;
 
-		/// <summary>
-		/// <para>Major version of the remote protocol.</para>
-		/// </summary>
+		/// <summary>Major version of the remote protocol.</summary>
 		public ushort ProtocolMajorVersion;
 
-		/// <summary>
-		/// <para>Minor version of the remote protocol.</para>
-		/// </summary>
+		/// <summary>Minor version of the remote protocol.</summary>
 		public ushort ProtocolMinorVersion;
 
-		/// <summary>
-		/// <para>Revision of the remote protocol.</para>
-		/// </summary>
+		/// <summary>Revision of the remote protocol.</summary>
 		public ushort ProtocolRevision;
 
-		/// <summary>
-		/// <para>Should be set to zero. Do not use this member.</para>
-		/// </summary>
+		/// <summary>Should be set to zero. Do not use this member.</summary>
 		public ushort Reserved;
 
 		/// <summary>
@@ -4998,15 +5628,15 @@ public static partial class Kernel32
 		/// <item>
 		/// <term>REMOTE_PROTOCOL_INFO_FLAG_PERSISTENT_HANDLE 0x4</term>
 		/// <term>
-		/// The remote protocol is using a persistent handle. Windows 7 and Windows Server 2008 R2: This flag is not supported before
-		/// Windows 8 and Windows Server 2012.
+		/// The remote protocol is using a persistent handle. Windows 7 and Windows Server 2008 R2: This flag is not supported before Windows
+		/// 8 and Windows Server 2012.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>REMOTE_PROTOCOL_INFO_FLAG_PRIVACY 0x8</term>
 		/// <term>
-		/// The remote protocol is using privacy. This is only supported if the StructureVersion member is 2 or higher. Windows 7 and
-		/// Windows Server 2008 R2: This flag is not supported before Windows 8 and Windows Server 2012.
+		/// The remote protocol is using privacy. This is only supported if the StructureVersion member is 2 or higher. Windows 7 and Windows
+		/// Server 2008 R2: This flag is not supported before Windows 8 and Windows Server 2012.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -5019,105 +5649,113 @@ public static partial class Kernel32
 		/// <item>
 		/// <term>REMOTE_PROTOCOL_INFO_FLAG_MUTUAL_AUTH 0x20</term>
 		/// <term>
-		/// The remote protocol is using mutual authentication using Kerberos. This is only supported if the StructureVersion member is 2
-		/// or higher. Windows 7 and Windows Server 2008 R2: This flag is not supported before Windows 8 and Windows Server 2012.
+		/// The remote protocol is using mutual authentication using Kerberos. This is only supported if the StructureVersion member is 2 or
+		/// higher. Windows 7 and Windows Server 2008 R2: This flag is not supported before Windows 8 and Windows Server 2012.
 		/// </term>
 		/// </item>
 		/// </list>
 		/// </summary>
 		public RemoteProtocol Flags;
 
-		/// <summary>
-		/// <para>Protocol-generic information structure.</para>
-		/// </summary>
+		/// <summary>Protocol-generic information structure.</summary>
 		public GenericReserved_ GenericReserved;
 
-		/// <summary/>
+		/// <summary>The protocol specific</summary>
 		public ProtocolSpecific_ ProtocolSpecific;
 
-		/// <summary>
-		/// <para>Protocol-generic information structure.</para>
-		/// </summary>
+		/// <summary>Protocol-generic information structure.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct GenericReserved_
 		{
-			/// <summary>
-			/// <para>Should be set to zero. Do not use this member.</para>
-			/// </summary>
+			/// <summary>Should be set to zero. Do not use this member.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
 			public uint[] Reserved;
 		}
 
-		/// <summary/>
+		/// <summary></summary>
 		[StructLayout(LayoutKind.Sequential, Size = 64)]
 		public struct ProtocolSpecific_
 		{
-			/// <summary/>
+			/// <summary>The SMB2</summary>
 			public Smb2 Smb2;
 		}
 
-		/// <summary/>
+		/// <summary></summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct Smb2
 		{
-			/// <summary/>
+			/// <summary>The server</summary>
 			public Server Server;
-			/// <summary/>
+			/// <summary>The share</summary>
 			public Share Share;
 		}
 
-		/// <summary/>
+		/// <summary></summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct Server
 		{
-			/// <summary/>
+			/// <summary>The capabilities</summary>
 			public uint Capabilities;
 		}
 
-		/// <summary/>
+		/// <summary></summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct Share
 		{
-			/// <summary/>
+			/// <summary>The capabilities</summary>
 			public uint Capabilities;
-			/// <summary/>
+			/// <summary>The caching flags</summary>
 			public uint CachingFlags;
 		}
 
 		/// <summary>The default instance with size and version set.</summary>
-		public static readonly FILE_REMOTE_PROTOCOL_INFO Default = new() { StructureSize = (ushort)Marshal.SizeOf<FILE_REMOTE_PROTOCOL_INFO>(), StructureVersion = 2 };
+		public static readonly FILE_REMOTE_PROTOCOL_INFO Default = new();
 	}
 
-	/// <summary>
-	/// <para>Contains the name to which the file should be renamed. Use only when calling SetFileInformationByHandle.</para>
-	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_rename_info typedef struct _FILE_RENAME_INFO { union
-	// { BOOLEAN ReplaceIfExists; DWORD Flags; } DUMMYUNIONNAME; BOOLEAN ReplaceIfExists; HANDLE RootDirectory; DWORD FileNameLength;
-	// WCHAR FileName[1]; } FILE_RENAME_INFO, *PFILE_RENAME_INFO;
+	/// <summary>Contains the name to which the file should be renamed. Use only when calling SetFileInformationByHandle.</summary>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_rename_info typedef struct _FILE_RENAME_INFO { union {
+	// BOOLEAN ReplaceIfExists; DWORD Flags; } DUMMYUNIONNAME; BOOLEAN ReplaceIfExists; HANDLE RootDirectory; DWORD FileNameLength; WCHAR
+	// FileName[1]; } FILE_RENAME_INFO, *PFILE_RENAME_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "f4de0130-66fd-4847-bb6f-3f16fe17ca6e")]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_RENAME_INFO>), nameof(FileNameLength))]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 4)]
 	public struct FILE_RENAME_INFO
 	{
-		/// <summary>
-		/// <para><c>TRUE</c> to replace the file; otherwise, <c>FALSE</c>.</para>
-		/// </summary>
+		/// <summary><c>TRUE</c> to replace the file; otherwise, <c>FALSE</c>.</summary>
 		[MarshalAs(UnmanagedType.U1)]
 		public bool ReplaceIfExists;
 
-		/// <summary>
-		/// <para>A handle to the root directory in which the file to be renamed is located.</para>
-		/// </summary>
+		/// <summary>A handle to the root directory in which the file to be renamed is located.</summary>
 		public HFILE RootDirectory;
 
-		/// <summary>
-		/// <para>The size of <c>FileName</c> in bytes.</para>
-		/// </summary>
+		/// <summary>The size of <c>FileName</c> in bytes.</summary>
 		public uint FileNameLength;
 
-		/// <summary>
-		/// <para>The new file name.</para>
-		/// </summary>
-		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_PATH)]
+		/// <summary>The new file name.</summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+		public string FileName;
+	}
+
+	/// <summary>Contains the name to which the file should be renamed. Use only when calling SetFileInformationByHandle.</summary>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_rename_info typedef struct _FILE_RENAME_INFO { union {
+	// BOOLEAN ReplaceIfExists; DWORD Flags; } DUMMYUNIONNAME; BOOLEAN ReplaceIfExists; HANDLE RootDirectory; DWORD FileNameLength; WCHAR
+	// FileName[1]; } FILE_RENAME_INFO, *PFILE_RENAME_INFO;
+	[PInvokeData("winbase.h", MSDNShortId = "f4de0130-66fd-4847-bb6f-3f16fe17ca6e")]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_RENAME_INFO>), nameof(FileNameLength))]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 4)]
+	public struct FILE_RENAME_INFO_EX
+	{
+		/// <summary>This field is used when SetFileInformationByHandle's FileInformationClass parameter is set to FileRenameInfoEx.</summary>
+		public uint Flags;
+
+		/// <summary>A handle to the root directory in which the file to be renamed is located.</summary>
+		public HFILE RootDirectory;
+
+		/// <summary>The size of <c>FileName</c> in bytes.</summary>
+		public uint FileNameLength;
+
+		/// <summary>The new file name.</summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 		public string FileName;
 	}
 
@@ -5159,12 +5797,140 @@ public static partial class Kernel32
 		public bool Directory;
 	}
 
-	/// <summary>
-	/// <c>FILE_STAT_INFORMATION</c> contains metadata about a file.
-	/// </summary>
+	/// <summary><c>FILE_STAT_BASIC_INFORMATION</c> contains basic metadata about a file.</summary>
 	/// <remarks>
-	/// <c>NtQueryInformationByName</c> and <c>NtQueryInformationFile</c> return information in a <c>FILE_STAT_INFORMATION</c> structure
-	/// when their <c>FileInformationClass</c> parameter is FileStatInformation.
+	/// <para>This information can be queried in either of the following ways:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <description>
+	/// <para>
+	/// Call <c>ZwQueryDirectoryFile</c>, passing <c>FileStatBasicInformation</c> as the value of <c>FileInformationClass</c> and passing a
+	/// caller-allocated, <c>FILE_ID_EXTD_DIR_INFORMATION</c>-structured buffer as the value of <c>FileInformation</c>.
+	/// </para>
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <para>Create an IRP with major function code IRP_MJ_DIRECTORY_CONTROL and minor function code IRP_MN_QUERY_DIRECTORY.</para>
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <para>No specific access rights are required to query this information.</para>
+	/// <para>
+	/// File reference numbers, also called file IDs, are guaranteed to be unique only within a static file system. They are not guaranteed
+	/// to be unique over time, because file systems are free to reuse them. Nor are they guaranteed to remain constant. For example, the FAT
+	/// file system generates the file reference number for a file from the byte offset of the file's directory entry record (DIRENT) on the
+	/// disk. Defragmentation can change this byte offset. Thus a FAT file reference number can change over time.
+	/// </para>
+	/// <para>
+	/// All dates and times are in absolute system-time format. Absolute system time is the number of 100-nanosecond intervals since the
+	/// start of the year 1601.
+	/// </para>
+	/// <para>
+	/// This structure must be aligned on a LONGLONG (8-byte) boundary. If a buffer contains two or more of these structures, the
+	/// <c>NextEntryOffset</c> value in each entry, except the last, falls on an 8-byte boundary.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-file_stat_basic_information typedef struct
+	// _FILE_STAT_BASIC_INFORMATION { LARGE_INTEGER FileId; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER
+	// LastWriteTime; LARGE_INTEGER ChangeTime; LARGE_INTEGER AllocationSize; LARGE_INTEGER EndOfFile; ULONG FileAttributes; ULONG
+	// ReparseTag; ULONG NumberOfLinks; ULONG DeviceType; ULONG DeviceCharacteristics; ULONG Reserved; LARGE_INTEGER VolumeSerialNumber;
+	// FILE_ID_128 FileId128; } FILE_STAT_BASIC_INFORMATION, *PFILE_STAT_BASIC_INFORMATION;
+	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_STAT_BASIC_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	public struct FILE_STAT_BASIC_INFORMATION
+	{
+		/// <summary>Specifies the identifier of a file.</summary>
+		public long FileId;
+
+		/// <summary>Specifies the creation time of a file.</summary>
+		public FILETIME CreationTime;
+
+		/// <summary>Specifies the last time a file was accessed.</summary>
+		public FILETIME LastAccessTime;
+
+		/// <summary>Specifies the last time a file was written to.</summary>
+		public FILETIME LastWriteTime;
+
+		/// <summary>Specifies the last time a file was changed.</summary>
+		public FILETIME ChangeTime;
+
+		/// <summary>
+		/// File allocation size, in bytes. Usually this value is a multiple of the sector or cluster size of the underlying physical device.
+		/// </summary>
+		public long AllocationSize;
+
+		/// <summary>
+		/// The absolute new end-of-file position as a byte offset from the start of the file. <c>EndOfFile</c> specifies the byte offset to
+		/// the end of the file. Because this value is zero-based, it actually refers to the first free byte in the file. In other words,
+		/// <c>EndOfFile</c> is the offset to the byte immediately following the last valid byte in the file.
+		/// </summary>
+		public long EndOfFile;
+
+		/// <summary>
+		/// <para>File attributes, which can be any valid combination of the following:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <description>Attribute</description>
+		/// <description>Value</description>
+		/// </listheader>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_READONLY</description>
+		/// <description>0x00000001</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_HIDDEN</description>
+		/// <description>0x00000002</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_SYSTEM</description>
+		/// <description>0x00000004</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_DIRECTORY</description>
+		/// <description>0x00000010</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_ARCHIVE</description>
+		/// <description>0x00000020</description>
+		/// </item>
+		/// <item>
+		/// <description>FILE_ATTRIBUTE_NORMAL</description>
+		/// <description>0x00000080</description>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public FileAttributes FileAttributes;
+
+		/// <summary>Specifies the tag for a reparse point. See About reparse points for more information.</summary>
+		public uint ReparseTag;
+
+		/// <summary>Specifies the number of links to the file.</summary>
+		public uint NumberOfLinks;
+
+		/// <summary>
+		/// Set when a driver calls <c>IoCreateDevice</c> as appropriate for the type of underlying device. For more information, see
+		/// Specifying Device Types.
+		/// </summary>
+		public FILE_DEVICE DeviceType;
+
+		/// <summary>The device characteristics. For a description of relevant values, see <c>DEVICE_OBJECT</c>.</summary>
+		public CM_FILE DeviceCharacteristics;
+
+		/// <summary>Reserved for system use.</summary>
+		public uint Reserved;
+
+		/// <summary>Serial number of the volume where the file is located.</summary>
+		public long VolumeSerialNumber;
+
+		/// <summary>The 128-byte file reference number for the file. This number is generated and assigned to the file by the file system.</summary>
+		public FILE_ID_128 FileId128;
+	}
+
+	/// <summary><c>FILE_STAT_INFORMATION</c> contains metadata about a file.</summary>
+	/// <remarks>
+	/// <c>NtQueryInformationByName</c> and <c>NtQueryInformationFile</c> return information in a <c>FILE_STAT_INFORMATION</c> structure when
+	/// their <c>FileInformationClass</c> parameter is FileStatInformation.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_stat_information typedef struct
 	// _FILE_STAT_INFORMATION { LARGE_INTEGER FileId; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER LastWriteTime;
@@ -5174,29 +5940,19 @@ public static partial class Kernel32
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct FILE_STAT_INFORMATION
 	{
-		/// <summary>
-		/// Specifies the id of a file.
-		/// </summary>
+		/// <summary>Specifies the id of a file.</summary>
 		public long FileId;
 
-		/// <summary>
-		/// Specifies the creation time of a file.
-		/// </summary>
+		/// <summary>Specifies the creation time of a file.</summary>
 		public FILETIME CreationTime;
 
-		/// <summary>
-		/// Specifies the last time a file was accessed.
-		/// </summary>
+		/// <summary>Specifies the last time a file was accessed.</summary>
 		public FILETIME LastAccessTime;
 
-		/// <summary>
-		/// Specifies the last time a file was written to.
-		/// </summary>
+		/// <summary>Specifies the last time a file was written to.</summary>
 		public FILETIME LastWriteTime;
 
-		/// <summary>
-		/// Specifies the last time a file was changed.
-		/// </summary>
+		/// <summary>Specifies the last time a file was changed.</summary>
 		public FILETIME ChangeTime;
 
 		/// <summary>
@@ -5246,19 +6002,13 @@ public static partial class Kernel32
 		/// </summary>
 		public FileAttributes FileAttributes;
 
-		/// <summary>
-		/// Reparse point tag. See About reparse points for more information.
-		/// </summary>
+		/// <summary>Reparse point tag. See About reparse points for more information.</summary>
 		public uint ReparseTag;
 
-		/// <summary>
-		/// Specifies the number of links to the file.
-		/// </summary>
+		/// <summary>Specifies the number of links to the file.</summary>
 		public uint NumberOfLinks;
 
-		/// <summary>
-		/// Specifies the access rights of the file.
-		/// </summary>
+		/// <summary>Specifies the access rights of the file.</summary>
 		public ACCESS_MASK EffectiveAccess;
 	}
 
@@ -5271,9 +6021,7 @@ public static partial class Kernel32
 	/// <c>NtQueryInformationByName</c> and <c>NtQueryInformationFile</c> return information in a <c>FILE_STAT_LX_INFORMATION</c> structure
 	/// when their <c>FileInformationClass</c> parameter is FileStatLxInformation.
 	/// </para>
-	/// <para>
-	/// For more information about absolute and relative symbolic links, see Creating Symbolic Links in the Microsoft Windows SDK documentation.
-	/// </para>
+	/// <para>For more information about absolute and relative symbolic links, see Creating Symbolic Links in the Microsoft Windows SDK documentation.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_stat_lx_information typedef struct
 	// _FILE_STAT_LX_INFORMATION { LARGE_INTEGER FileId; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER
@@ -5284,29 +6032,19 @@ public static partial class Kernel32
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct FILE_STAT_LX_INFORMATION
 	{
-		/// <summary>
-		/// Specifies the id of a file.
-		/// </summary>
+		/// <summary>Specifies the id of a file.</summary>
 		public long FileId;
 
-		/// <summary>
-		/// Specifies the creation time of a file.
-		/// </summary>
+		/// <summary>Specifies the creation time of a file.</summary>
 		public FILETIME CreationTime;
 
-		/// <summary>
-		/// Specifies the last time a file was accessed.
-		/// </summary>
+		/// <summary>Specifies the last time a file was accessed.</summary>
 		public FILETIME LastAccessTime;
 
-		/// <summary>
-		/// Specifies the last time a file was written to.
-		/// </summary>
+		/// <summary>Specifies the last time a file was written to.</summary>
 		public FILETIME LastWriteTime;
 
-		/// <summary>
-		/// Specifies the last time a file was changed.
-		/// </summary>
+		/// <summary>Specifies the last time a file was changed.</summary>
 		public FILETIME ChangeTime;
 
 		/// <summary>
@@ -5356,19 +6094,13 @@ public static partial class Kernel32
 		/// </summary>
 		public FileAttributes FileAttributes;
 
-		/// <summary>
-		/// Reparse point tag. See About reparse points for more information.
-		/// </summary>
+		/// <summary>Reparse point tag. See About reparse points for more information.</summary>
 		public uint ReparseTag;
 
-		/// <summary>
-		/// Specifies the number of links to the file.
-		/// </summary>
+		/// <summary>Specifies the number of links to the file.</summary>
 		public uint NumberOfLinks;
 
-		/// <summary>
-		/// Specifies the access rights of the file.
-		/// </summary>
+		/// <summary>Specifies the access rights of the file.</summary>
 		public ACCESS_MASK EffectiveAccess;
 
 		/// <summary>
@@ -5402,14 +6134,10 @@ public static partial class Kernel32
 		/// </summary>
 		public LX_FILE_METADATA LxFlags;
 
-		/// <summary>
-		/// Specifies the User id of the file.
-		/// </summary>
+		/// <summary>Specifies the User id of the file.</summary>
 		public uint LxUid;
 
-		/// <summary>
-		/// Specifies the Group id of the file.
-		/// </summary>
+		/// <summary>Specifies the Group id of the file.</summary>
 		public uint LxGid;
 
 		/// <summary>
@@ -5477,280 +6205,72 @@ public static partial class Kernel32
 		public uint LxDeviceIdMinor;
 	}
 
-	/// <summary>Per-directory case-sensitive information.</summary>
-	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_CASE_SENSITIVE_INFORMATION")]
-	[Flags]
-	public enum FILE_CS_FLAG : uint
-	{
-		/// <summary>Specifies the directory is case-sensitive.</summary>
-		FILE_CS_FLAG_CASE_SENSITIVE_DIR = 0x00000001,
-	}
-
 	/// <summary>
-	/// The <c>FILE_CASE_SENSITIVE_INFORMATION</c> structure is used to query or set per-directory case-sensitive information.
-	/// </summary>
-	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_case_sensitive_information typedef struct
-	// _FILE_CASE_SENSITIVE_INFORMATION { ULONG Flags; } FILE_CASE_SENSITIVE_INFORMATION, *PFILE_CASE_SENSITIVE_INFORMATION;
-	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_CASE_SENSITIVE_INFORMATION")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct FILE_CASE_SENSITIVE_INFORMATION
-	{
-		/// <summary>
-		/// <para>Contains one the following values:</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <description>Flag</description>
-		/// <description>Value</description>
-		/// <description>Description</description>
-		/// </listheader>
-		/// <item>
-		/// <description>FILE_CS_FLAG_CASE_SENSITIVE_DIR</description>
-		/// <description>0x00000001</description>
-		/// <description>Specifies the directory is case-sensitive.</description>
-		/// </item>
-		/// </list>
-		/// </summary>
-		public FILE_CS_FLAG Flags;
-	}
-
-	/// <summary>
-	/// <c>FILE_STAT_BASIC_INFORMATION</c> contains basic metadata about a file.
-	/// </summary>
-	/// <remarks>
-	/// <para>This information can be queried in either of the following ways:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <description>
-	/// <para>
-	/// Call <c>ZwQueryDirectoryFile</c>, passing <c>FileStatBasicInformation</c> as the value of <c>FileInformationClass</c> and passing a
-	/// caller-allocated, <c>FILE_ID_EXTD_DIR_INFORMATION</c>-structured buffer as the value of <c>FileInformation</c>.
-	/// </para>
-	/// </description>
-	/// </item>
-	/// <item>
-	/// <description>
-	/// <para>Create an IRP with major function code IRP_MJ_DIRECTORY_CONTROL and minor function code IRP_MN_QUERY_DIRECTORY.</para>
-	/// </description>
-	/// </item>
-	/// </list>
-	/// <para>No specific access rights are required to query this information.</para>
-	/// <para>
-	/// File reference numbers, also called file IDs, are guaranteed to be unique only within a static file system. They are not guaranteed
-	/// to be unique over time, because file systems are free to reuse them. Nor are they guaranteed to remain constant. For example, the
-	/// FAT file system generates the file reference number for a file from the byte offset of the file's directory entry record (DIRENT) on
-	/// the disk. Defragmentation can change this byte offset. Thus a FAT file reference number can change over time.
-	/// </para>
-	/// <para>
-	/// All dates and times are in absolute system-time format. Absolute system time is the number of 100-nanosecond intervals since the
-	/// start of the year 1601.
-	/// </para>
-	/// <para>
-	/// This structure must be aligned on a LONGLONG (8-byte) boundary. If a buffer contains two or more of these structures, the
-	/// <c>NextEntryOffset</c> value in each entry, except the last, falls on an 8-byte boundary.
-	/// </para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-file_stat_basic_information typedef struct
-	// _FILE_STAT_BASIC_INFORMATION { LARGE_INTEGER FileId; LARGE_INTEGER CreationTime; LARGE_INTEGER LastAccessTime; LARGE_INTEGER
-	// LastWriteTime; LARGE_INTEGER ChangeTime; LARGE_INTEGER AllocationSize; LARGE_INTEGER EndOfFile; ULONG FileAttributes; ULONG
-	// ReparseTag; ULONG NumberOfLinks; ULONG DeviceType; ULONG DeviceCharacteristics; ULONG Reserved; LARGE_INTEGER VolumeSerialNumber;
-	// FILE_ID_128 FileId128; } FILE_STAT_BASIC_INFORMATION, *PFILE_STAT_BASIC_INFORMATION;
-	[PInvokeData("ntifs.h", MSDNShortId = "NS:ntifs._FILE_STAT_BASIC_INFORMATION")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct FILE_STAT_BASIC_INFORMATION
-	{
-		/// <summary>
-		/// Specifies the identifier of a file.
-		/// </summary>
-		public long FileId;
-
-		/// <summary>
-		/// Specifies the creation time of a file.
-		/// </summary>
-		public FILETIME CreationTime;
-
-		/// <summary>
-		/// Specifies the last time a file was accessed.
-		/// </summary>
-		public FILETIME LastAccessTime;
-
-		/// <summary>
-		/// Specifies the last time a file was written to.
-		/// </summary>
-		public FILETIME LastWriteTime;
-
-		/// <summary>
-		/// Specifies the last time a file was changed.
-		/// </summary>
-		public FILETIME ChangeTime;
-
-		/// <summary>
-		/// File allocation size, in bytes. Usually this value is a multiple of the sector or cluster size of the underlying physical device.
-		/// </summary>
-		public long AllocationSize;
-
-		/// <summary>
-		/// The absolute new end-of-file position as a byte offset from the start of the file. <c>EndOfFile</c> specifies the byte offset to
-		/// the end of the file. Because this value is zero-based, it actually refers to the first free byte in the file. In other words,
-		/// <c>EndOfFile</c> is the offset to the byte immediately following the last valid byte in the file.
-		/// </summary>
-		public long EndOfFile;
-
-		/// <summary>
-		/// <para>File attributes, which can be any valid combination of the following:</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <description>Attribute</description>
-		/// <description>Value</description>
-		/// </listheader>
-		/// <item>
-		/// <description>FILE_ATTRIBUTE_READONLY</description>
-		/// <description>0x00000001</description>
-		/// </item>
-		/// <item>
-		/// <description>FILE_ATTRIBUTE_HIDDEN</description>
-		/// <description>0x00000002</description>
-		/// </item>
-		/// <item>
-		/// <description>FILE_ATTRIBUTE_SYSTEM</description>
-		/// <description>0x00000004</description>
-		/// </item>
-		/// <item>
-		/// <description>FILE_ATTRIBUTE_DIRECTORY</description>
-		/// <description>0x00000010</description>
-		/// </item>
-		/// <item>
-		/// <description>FILE_ATTRIBUTE_ARCHIVE</description>
-		/// <description>0x00000020</description>
-		/// </item>
-		/// <item>
-		/// <description>FILE_ATTRIBUTE_NORMAL</description>
-		/// <description>0x00000080</description>
-		/// </item>
-		/// </list>
-		/// </summary>
-		public FileAttributes FileAttributes;
-
-		/// <summary>
-		/// Specifies the tag for a reparse point. See About reparse points for more information.
-		/// </summary>
-		public uint ReparseTag;
-
-		/// <summary>
-		/// Specifies the number of links to the file.
-		/// </summary>
-		public uint NumberOfLinks;
-
-		/// <summary>
-		/// Set when a driver calls <c>IoCreateDevice</c> as appropriate for the type of underlying device. For more information, see
-		/// Specifying Device Types.
-		/// </summary>
-		public FILE_DEVICE DeviceType;
-
-		/// <summary>
-		/// The device characteristics. For a description of relevant values, see <c>DEVICE_OBJECT</c>.
-		/// </summary>
-		public CM_FILE DeviceCharacteristics;
-
-		/// <summary>
-		/// Reserved for system use.
-		/// </summary>
-		public uint Reserved;
-
-		/// <summary>
-		/// Serial number of the volume where the file is located.
-		/// </summary>
-		public long VolumeSerialNumber;
-
-		/// <summary>
-		/// The 128-byte file reference number for the file. This number is generated and assigned to the file by the file system.
-		/// </summary>
-		public FILE_ID_128 FileId128;
-	}
-
-	/// <summary>
-	/// <para>
 	/// Contains directory information for a file. This structure is returned from the GetFileInformationByHandleEx function when
 	/// <c>FileStorageInfo</c> is passed in the FileInformationClass parameter.
-	/// </para>
 	/// </summary>
 	/// <remarks>
-	/// <para>
 	/// If a volume is built on top of storage devices with different properties (for example a mirrored, spanned, striped, or RAID
 	/// configuration) the sizes returned are those of the largest size of any of the underlying storage devices.
-	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_storage_info typedef struct _FILE_STORAGE_INFO {
-	// ULONG LogicalBytesPerSector; ULONG PhysicalBytesPerSectorForAtomicity; ULONG PhysicalBytesPerSectorForPerformance; ULONG
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_file_storage_info typedef struct _FILE_STORAGE_INFO { ULONG
+	// LogicalBytesPerSector; ULONG PhysicalBytesPerSectorForAtomicity; ULONG PhysicalBytesPerSectorForPerformance; ULONG
 	// FileSystemEffectivePhysicalBytesPerSectorForAtomicity; ULONG Flags; ULONG ByteOffsetForSectorAlignment; ULONG
 	// ByteOffsetForPartitionAlignment; } FILE_STORAGE_INFO, *PFILE_STORAGE_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "1aa9585d-9001-4d94-babe-a39c8dde2332")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct FILE_STORAGE_INFO
 	{
-		/// <summary>
-		/// <para>Logical bytes per sector reported by physical storage. This is the smallest size for which uncached I/O is supported.</para>
-		/// </summary>
+		/// <summary>Logical bytes per sector reported by physical storage. This is the smallest size for which uncached I/O is supported.</summary>
 		public uint LogicalBytesPerSector;
 
 		/// <summary>
-		/// <para>
 		/// Bytes per sector for atomic writes. Writes smaller than this may require a read before the entire block can be written atomically.
-		/// </para>
 		/// </summary>
 		public uint PhysicalBytesPerSectorForAtomicity;
 
-		/// <summary>
-		/// <para>Bytes per sector for optimal performance for writes.</para>
-		/// </summary>
+		/// <summary>Bytes per sector for optimal performance for writes.</summary>
 		public uint PhysicalBytesPerSectorForPerformance;
 
 		/// <summary>
-		/// <para>
 		/// This is the size of the block used for atomicity by the file system. This may be a trade-off between the optimal size of the
 		/// physical media and one that is easier to adapt existing code and structures.
-		/// </para>
 		/// </summary>
 		public uint FileSystemEffectivePhysicalBytesPerSectorForAtomicity;
 
 		/// <summary>
 		/// <para>This member can contain combinations of flags specifying information about the alignment of the storage.</para>
 		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>STORAGE_INFO_FLAGS_ALIGNED_DEVICE 0x00000001</term>
-		/// <term>When set, this flag indicates that the logical sectors of the storage device are aligned to physical sector boundaries.</term>
-		/// </item>
-		/// <item>
-		/// <term>STORAGE_INFO_FLAGS_PARTITION_ALIGNED_ON_DEVICE 0x00000002</term>
-		/// <term>When set, this flag indicates that the partition is aligned to physical sector boundaries on the storage device.</term>
-		/// </item>
+		///   <listheader>
+		///     <term>Value</term>
+		///     <term>Meaning</term>
+		///   </listheader>
+		///   <item>
+		///     <term>STORAGE_INFO_FLAGS_ALIGNED_DEVICE 0x00000001</term>
+		///     <term>When set, this flag indicates that the logical sectors of the storage device are aligned to physical sector boundaries.</term>
+		///   </item>
+		///   <item>
+		///     <term>STORAGE_INFO_FLAGS_PARTITION_ALIGNED_ON_DEVICE 0x00000002</term>
+		///     <term>When set, this flag indicates that the partition is aligned to physical sector boundaries on the storage device.</term>
+		///   </item>
 		/// </list>
 		/// </summary>
 		public StorageInfoFlags Flags;
 
 		/// <summary>
-		/// <para>
-		/// Logical sector offset within the first physical sector where the first logical sector is placed, in bytes. If this value is
-		/// set to <c>STORAGE_INFO_OFFSET_UNKNOWN</c> (0xffffffff), there was insufficient information to compute this field.
-		/// </para>
+		/// Logical sector offset within the first physical sector where the first logical sector is placed, in bytes. If this value is set
+		/// to <c>STORAGE_INFO_OFFSET_UNKNOWN</c> (0xffffffff), there was insufficient information to compute this field.
 		/// </summary>
 		public uint ByteOffsetForSectorAlignment;
 
 		/// <summary>
-		/// <para>
 		/// Offset used to align the partition to a physical sector boundary on the storage device, in bytes. If this value is set to
 		/// <c>STORAGE_INFO_OFFSET_UNKNOWN</c> (0xffffffff), there was insufficient information to compute this field.
-		/// </para>
 		/// </summary>
 		public uint ByteOffsetForPartitionAlignment;
 	}
 
-	/// <summary>
-	/// <para>Receives file stream information for the specified file. Used for any handles. Use only when calling GetFileInformationByHandleEx.</para>
-	/// </summary>
+	/// <summary>Receives file stream information for the specified file. Used for any handles. Use only when calling GetFileInformationByHandleEx.</summary>
 	/// <remarks>
 	/// <para>The <c>FILE_STREAM_INFO</c> structure is used to enumerate the streams for a file.</para>
 	/// <para>Support for named data streams is file-system-specific.</para>
@@ -5763,38 +6283,29 @@ public static partial class Kernel32
 	// NextEntryOffset; DWORD StreamNameLength; LARGE_INTEGER StreamSize; LARGE_INTEGER StreamAllocationSize; WCHAR StreamName[1]; }
 	// FILE_STREAM_INFO, *PFILE_STREAM_INFO;
 	[PInvokeData("winbase.h", MSDNShortId = "36d1b0b3-bd6b-41e7-937a-4e8deef6f9da")]
+	[VanaraMarshaler(typeof(AnySizeStringMarshaler<FILE_STREAM_INFO>), nameof(StreamNameLength))]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]
 	public struct FILE_STREAM_INFO
 	{
 		/// <summary>
-		/// <para>
 		/// The offset for the next <c>FILE_STREAM_INFO</c> entry that is returned. This member is zero if no other entries follow this one.
-		/// </para>
 		/// </summary>
 		public uint NextEntryOffset;
 
-		/// <summary>
-		/// <para>The length, in bytes, of <c>StreamName</c>.</para>
-		/// </summary>
+		/// <summary>The length, in bytes, of <c>StreamName</c>.</summary>
 		public uint StreamNameLength;
 
-		/// <summary>
-		/// <para>The size, in bytes, of the data stream.</para>
-		/// </summary>
+		/// <summary>The size, in bytes, of the data stream.</summary>
 		public long StreamSize;
 
 		/// <summary>
-		/// <para>
-		/// The amount of space that is allocated for the stream, in bytes. This value is usually a multiple of the sector or cluster
-		/// size of the underlying physical device.
-		/// </para>
+		/// The amount of space that is allocated for the stream, in bytes. This value is usually a multiple of the sector or cluster size of
+		/// the underlying physical device.
 		/// </summary>
 		public long StreamAllocationSize;
 
-		/// <summary>
-		/// <para>The stream name.</para>
-		/// </summary>
-		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1024)]
+		/// <summary>The stream name.</summary>
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
 		public string StreamName;
 	}
 
@@ -5811,8 +6322,8 @@ public static partial class Kernel32
 
 		/// <summary>
 		/// A FILETIME structure. For a file, the structure specifies when the file is last read from or written to. For a directory, the
-		/// structure specifies when the directory is created. For both files and directories, the specified date is correct, but the
-		/// time of day is always set to midnight. If the underlying file system does not support last access time, this member is zero.
+		/// structure specifies when the directory is created. For both files and directories, the specified date is correct, but the time of
+		/// day is always set to midnight. If the underlying file system does not support last access time, this member is zero.
 		/// </summary>
 		public FILETIME ftLastAccessTime;
 

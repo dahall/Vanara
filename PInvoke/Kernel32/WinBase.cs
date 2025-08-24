@@ -102,7 +102,7 @@ public static partial class Kernel32
 	// pvCallbackContext ) {...}
 	[PInvokeData("winbase.h", MSDNShortId = "d14b5f5b-c353-49e8-82bb-a695a3ec76fd")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate COPYFILE2_MESSAGE_ACTION CopyFile2ProgressRoutine(ref COPYFILE2_MESSAGE pMessage, IntPtr pvCallbackContext);
+	public delegate COPYFILE2_MESSAGE_ACTION CopyFile2ProgressRoutine(in COPYFILE2_MESSAGE pMessage, [In, Optional] IntPtr pvCallbackContext);
 
 	/// <summary>Flags for SetSearchPathMode.</summary>
 	[PInvokeData("winbase.h", MSDNShortId = "1874933d-92c3-4945-a3e4-e6dede232d5e")]
@@ -626,7 +626,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "6c89d6f3-182e-4b10-931c-8d55d603c9dc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddSecureMemoryCacheCallback(SecureMemoryCacheCallback pfnCallBack);
+	public static extern bool AddSecureMemoryCacheCallback([In] SecureMemoryCacheCallback pfnCallBack);
 
 	/// <summary>
 	/// <para>Flushes the application compatibility cache.</para>
@@ -694,7 +694,7 @@ public static partial class Kernel32
 	// DWORD APIENTRY DisableThreadProfiling( _In_ HANDLE PerformanceDataHandle); https://msdn.microsoft.com/en-us/library/windows/desktop/dd796392(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "dd796392")]
-	public static extern Win32Error DisableThreadProfiling(PerformanceDataHandle PerformanceDataHandle);
+	public static extern Win32Error DisableThreadProfiling([In] PerformanceDataHandle PerformanceDataHandle);
 
 	/// <summary>Enables thread profiling on the specified thread.</summary>
 	/// <param name="ThreadHandle">The handle to the thread on which you want to enable profiling. This must be the current thread.</param>
@@ -716,7 +716,8 @@ public static partial class Kernel32
 	// PerformanceDataHandle); https://msdn.microsoft.com/en-us/library/windows/desktop/dd796393(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "dd796393")]
-	public static extern Win32Error EnableThreadProfiling(HTHREAD ThreadHandle, [Optional] THREAD_PROFILING_FLAG Flags, [Optional] ulong HardwareCounters, out PerformanceDataHandle PerformanceDataHandle);
+	public static extern Win32Error EnableThreadProfiling([In, AddAsMember] HTHREAD ThreadHandle, [Optional] THREAD_PROFILING_FLAG Flags, [Optional] ulong HardwareCounters,
+		[AddAsCtor] out PerformanceDataHandle PerformanceDataHandle);
 
 	/// <summary>
 	/// <para>Returns the number of active processors in a processor group or in the system.</para>
@@ -910,8 +911,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="lpGuid">
 	/// <para>
-	/// The GUID that represents the namespace of the firmware environment variable. The GUID must be a string in the format
-	/// "{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}" where 'x' represents a hexadecimal value. The pointer must not be <c>NULL</c>.
+	/// The GUID that represents the namespace of the firmware environment variable. The GUID must be a Guid or a string in the format
+	/// "{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}" where 'x' represents a hexadecimal value. The value must not be <c>NULL</c>.
 	/// </para>
 	/// </param>
 	/// <param name="pBuffer">
@@ -926,38 +927,37 @@ public static partial class Kernel32
 	/// <returns>
 	/// <para>If the function succeeds, the return value is the number of bytes stored in the pValue buffer.</para>
 	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. Possible error codes
-	/// include ERROR_INVALID_FUNCTION.
+	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. Possible error codes include ERROR_INVALID_FUNCTION.
 	/// </para>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// Starting with Windows 10, version 1803, Universal Windows apps can read and write UEFI firmware variables. See Access UEFI
-	/// firmware variables from a Universal Windows App for details.
+	/// Starting with Windows 10, version 1803, Universal Windows apps can read and write UEFI firmware variables. See Access UEFI firmware
+	/// variables from a Universal Windows App for details.
 	/// </para>
 	/// <para>
-	/// To read a UEFI firmware environment variable, the user account that the app is running under must have the
-	/// SE_SYSTEM_ENVIRONMENT_NAME privilege. A Universal Windows app must be run from an administrator account and follow the
-	/// requirements outlined in Access UEFI firmware variables from a Universal Windows App .
+	/// To read a UEFI firmware environment variable, the user account that the app is running under must have the SE_SYSTEM_ENVIRONMENT_NAME
+	/// privilege. A Universal Windows app must be run from an administrator account and follow the requirements outlined in Access UEFI
+	/// firmware variables from a Universal Windows App .
 	/// </para>
 	/// <para>
 	/// Starting with Windows 10, version 1803, reading Unified Extensible Firmware Interface (UEFI) variables is also supported from
 	/// User-Mode Driver Framework (UMDF) drivers. Writing UEFI variables from UMDF drivers is not supported.
 	/// </para>
 	/// <para>
-	/// The exact set of firmware environment variables is determined by the boot firmware. The location of these environment variables
-	/// is also specified by the firmware. For example, on a UEFI-based system, NVRAM contains firmware environment variables that
-	/// specify system boot settings. For information about specific variables used, see the UEFI specification. For more information
-	/// about UEFI and Windows, see UEFI and Windows.
+	/// The exact set of firmware environment variables is determined by the boot firmware. The location of these environment variables is
+	/// also specified by the firmware. For example, on a UEFI-based system, NVRAM contains firmware environment variables that specify
+	/// system boot settings. For information about specific variables used, see the UEFI specification. For more information about UEFI and
+	/// Windows, see UEFI and Windows.
 	/// </para>
 	/// <para>
-	/// Firmware variables are not supported on a legacy BIOS-based system. The <c>GetFirmwareEnvironmentVariableEx</c> function will
-	/// always fail on a legacy BIOS-based system, or if Windows was installed using legacy BIOS on a system that supports both legacy
-	/// BIOS and UEFI. To identify these conditions, call the function with a dummy firmware environment name such as an empty string
-	/// ("") for the lpName parameter and a dummy GUID such as "{00000000-0000-0000-0000-000000000000}" for the lpGuid parameter. On a
-	/// legacy BIOS-based system, or on a system that supports both legacy BIOS and UEFI where Windows was installed using legacy BIOS,
-	/// the function will fail with ERROR_INVALID_FUNCTION. On a UEFI-based system, the function will fail with an error specific to the
-	/// firmware, such as ERROR_NOACCESS, to indicate that the dummy GUID namespace does not exist.
+	/// Firmware variables are not supported on a legacy BIOS-based system. The <c>GetFirmwareEnvironmentVariableEx</c> function will always
+	/// fail on a legacy BIOS-based system, or if Windows was installed using legacy BIOS on a system that supports both legacy BIOS and
+	/// UEFI. To identify these conditions, call the function with a dummy firmware environment name such as an empty string ("") for the
+	/// lpName parameter and a dummy GUID such as "{00000000-0000-0000-0000-000000000000}" for the lpGuid parameter. On a legacy BIOS-based
+	/// system, or on a system that supports both legacy BIOS and UEFI where Windows was installed using legacy BIOS, the function will fail
+	/// with ERROR_INVALID_FUNCTION. On a UEFI-based system, the function will fail with an error specific to the firmware, such as
+	/// ERROR_NOACCESS, to indicate that the dummy GUID namespace does not exist.
 	/// </para>
 	/// <para>
 	/// If you are creating a backup application, you can use this function to save all the boot settings for the system so they can be
@@ -968,7 +968,9 @@ public static partial class Kernel32
 	// GetFirmwareEnvironmentVariableExA( LPCSTR lpName, LPCSTR lpGuid, PVOID pBuffer, DWORD nSize, PDWORD pdwAttribubutes );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "B093BA68-C68B-4ED6-9902-058650A191FD")]
-	public static extern Win32Error GetFirmwareEnvironmentVariableEx(string lpName, string lpGuid, IntPtr pBuffer, uint nSize, out VARIABLE_ATTRIBUTE pdwAttribubutes);
+	public static extern Win32Error GetFirmwareEnvironmentVariableEx(string lpName,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(GuidToStringMarshaler), MarshalCookie = "B")] object lpGuid,
+		[Out, SizeDef(nameof(nSize))] IntPtr pBuffer, uint nSize, out VARIABLE_ATTRIBUTE pdwAttribubutes);
 
 	/// <summary>
 	/// <para>Returns the maximum number of logical processors that a processor group or the system can have.</para>
@@ -1067,7 +1069,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "adf15b9c-24f4-49ea-9283-0db5f3f13e65")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessDEPPolicy(HPROCESS hProcess, out PROCESS_DEP lpFlags, [MarshalAs(UnmanagedType.Bool)] out bool lpPermanent);
+	public static extern bool GetProcessDEPPolicy([In, AddAsMember] HPROCESS hProcess, out PROCESS_DEP lpFlags, [MarshalAs(UnmanagedType.Bool)] out bool lpPermanent);
 
 	/// <summary>
 	/// <para>Gets the data execution prevention (DEP) policy setting for the system.</para>
@@ -1176,14 +1178,15 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "D9A8D0B6-21E3-46B7-AB88-CE2FF4025A17")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetXStateFeaturesMask(SafeCONTEXT Context, out ulong FeatureMask);
+	public static extern bool GetXStateFeaturesMask([In] SafeCONTEXT Context, out ulong FeatureMask);
 
 	/// <summary>
 	/// <para>Initializes a CONTEXT structure inside a buffer with the necessary size and alignment.</para>
 	/// </summary>
 	/// <param name="ContextFlags">
 	/// <para>
-	/// A value indicating which portions of the structure should be initialized. This parameter influences the size of the initialized structure.
+	/// A value indicating which portions of the structure should be initialized from values in the <see cref="CONTEXT_FLAG"/> class. This
+	/// parameter influences the size of the initialized structure.
 	/// </para>
 	/// <para>
 	/// <c>Note</c><c>CONTEXT_XSTATE</c> is not part of <c>CONTEXT_FULL</c> or <c>CONTEXT_ALL</c>. It must be specified separately if an
@@ -1198,22 +1201,22 @@ public static partial class Kernel32
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// can be used to initialize a CONTEXT structure within a buffer with the required size and alignment characteristics. This routine
-	/// is required if the <c>CONTEXT_XSTATE</c> is specified since the required context size and alignment may change depending on which
+	/// can be used to initialize a CONTEXT structure within a buffer with the required size and alignment characteristics. This routine is
+	/// required if the <c>CONTEXT_XSTATE</c> is specified since the required context size and alignment may change depending on which
 	/// processor features are enabled on the system.
 	/// </para>
 	/// <para>
 	/// First, call this function with the parameter set to the maximum number of features you will be using and the parameter to
-	/// <c>NULL</c>. The function returns the required buffer size in bytes in the parameter. Allocate enough space for the data in the
-	/// and call the function again to initialize the . Upon successful completion of this routine, the member of the structure is
-	/// initialized, but the remaining contents of the structure are undefined. Some bits specified in the parameter may not be set in
+	/// <c>NULL</c>. The function returns the required buffer size in bytes in the parameter. Allocate enough space for the data in the and
+	/// call the function again to initialize the . Upon successful completion of this routine, the member of the structure is initialized,
+	/// but the remaining contents of the structure are undefined. Some bits specified in the parameter may not be set in
 	/// -&gt; if they are not supported by the system. Applications may subsequently remove, but must never add, bits from the member of CONTEXT.
 	/// </para>
 	/// <para>
 	/// <c>Windows 7 with SP1 and Windows Server 2008 R2 with SP1:</c> The AVX API is first implemented on Windows 7 with SP1 and Windows
-	/// Server 2008 R2 with SP1 . Since there is no SDK for SP1, that means there are no available headers and library files to work
-	/// with. In this situation, a caller must declare the needed functions from this documentation and get pointers to them using
-	/// GetModuleHandle on "Kernel32.dll", followed by calls to GetProcAddress. See Working with XState Context for details.
+	/// Server 2008 R2 with SP1 . Since there is no SDK for SP1, that means there are no available headers and library files to work with. In
+	/// this situation, a caller must declare the needed functions from this documentation and get pointers to them using GetModuleHandle on
+	/// "Kernel32.dll", followed by calls to GetProcAddress. See Working with XState Context for details.
 	/// </para>
 	/// </remarks>
 	[PInvokeData("winbase.h", MSDNShortId = "909BF5F7-0622-4B22-A2EC-27722389700A")]
@@ -1308,6 +1311,7 @@ public static partial class Kernel32
 	// lpwLibFileName, DWORD Reserved );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "4a103753-a2c9-487f-b797-01d5f5d489f3")]
+	[return: AddAsCtor]
 	public static extern SafeHINSTANCE LoadPackagedLibrary([MarshalAs(UnmanagedType.LPWStr)] string lpwLibFileName, uint Reserved = 0);
 
 	/// <summary>
@@ -1414,7 +1418,7 @@ public static partial class Kernel32
 	/// <para>See Security Considerations: International Features for security considerations regarding</para>
 	/// <para>choice of comparison functions.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcmpa int lstrcmpA( LPCSTR lpString1, LPCSTR lpString2 );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcmpa int lstrcmpA( LPCSTR lpDest, LPCSTR lpSrc );
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "windows/desktop/api/winbase/nf-winbase-lstrcmpa")]
 	public static extern int lstrcmp(string? lpString1, string? lpString2);
@@ -1467,8 +1471,8 @@ public static partial class Kernel32
 	/// <para>See Security Considerations: International Features for security considerations regarding</para>
 	/// <para>choice of comparison functions.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcmpia int lstrcmpiA( LPCSTR lpString1, LPCSTR
-	// lpString2 );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcmpia int lstrcmpiA( LPCSTR lpDest, LPCSTR
+	// lpSrc );
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "windows/desktop/api/winbase/nf-winbase-lstrcmpia")]
 	public static extern int lstrcmpi(string? lpString1, string? lpString2);
@@ -1477,14 +1481,14 @@ public static partial class Kernel32
 	/// <para>Copies a specified number of characters from a source string into a buffer.</para>
 	/// <para><c>Warning</c> Do not use. Consider using StringCchCopy instead. See Remarks.</para>
 	/// </summary>
-	/// <param name="lpString1">
+	/// <param name="lpDest">
 	/// <para>Type: <c>LPTSTR</c></para>
 	/// <para>
 	/// The destination buffer, which receives the copied characters. The buffer must be large enough to contain the number of
 	/// <c>TCHAR</c> values specified by iMaxLength, including room for a terminating null character.
 	/// </para>
 	/// </param>
-	/// <param name="lpString2">
+	/// <param name="lpSrc">
 	/// <para>Type: <c>LPCTSTR</c></para>
 	/// <para>The source string from which the function is to copy characters.</para>
 	/// </param>
@@ -1534,11 +1538,11 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>Review Security Considerations: Windows User Interface before continuing.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-lstrcpyna LPSTR lstrcpynA( LPSTR lpString1, LPCSTR
-	// lpString2, int iMaxLength );
+	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-lstrcpyna LPSTR lstrcpynA( LPSTR lpDest, LPCSTR
+	// lpSrc, int iMaxLength );
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h")]
-	public static extern StrPtrAuto lstrcpyn(StringBuilder lpString1, string? lpString2, int iMaxLength);
+	public static extern StrPtrAuto lstrcpyn(StringBuilder lpDest, string? lpSrc, int iMaxLength);
 
 	/// <summary>Determines the length of the specified string (not including the terminating null character).</summary>
 	/// <param name="lpString">
@@ -1772,8 +1776,10 @@ public static partial class Kernel32
 	// dwFlagsAndAttributes );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "caa757a2-fc3f-4883-8d3e-b98d28f92517")]
-	public static extern SafeHFILE OpenFileById(HFILE hVolumeHint, in FILE_ID_DESCRIPTOR lpFileId, FileAccess dwDesiredAccess, FileShare dwShareMode,
-		[Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes);
+	[return: AddAsCtor]
+	public static extern SafeHFILE OpenFileById([In] HFILE hVolumeHint,
+		[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<FILE_ID_DESCRIPTOR>))] in FILE_ID_DESCRIPTOR lpFileId,
+		FileAccess dwDesiredAccess, FileShare dwShareMode, [In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes);
 
 	/// <summary>
 	/// <para>Decrements the count of power requests of the specified type for a power request object.</para>
@@ -1824,7 +1830,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "794248b1-5aa8-495e-aca6-1a1f35dc9c7f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PowerClearRequest(SafePowerRequestObject PowerRequest, POWER_REQUEST_TYPE RequestType);
+	public static extern bool PowerClearRequest([AddAsMember] SafePowerRequestObject PowerRequest, POWER_REQUEST_TYPE RequestType);
 
 	/// <summary>
 	/// <para>Creates a new power request object.</para>
@@ -1843,6 +1849,7 @@ public static partial class Kernel32
 	// PREASON_CONTEXT Context );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "2122bf00-9e6b-48ab-89b0-f53dd6804902")]
+	[return: AddAsCtor]
 	public static extern SafePowerRequestObject PowerCreateRequest([In] REASON_CONTEXT Context);
 
 	/// <summary>
@@ -1900,7 +1907,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "85249de8-5832-4f25-bbd9-3576cfd1caa0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PowerSetRequest(SafePowerRequestObject PowerRequest, POWER_REQUEST_TYPE RequestType);
+	public static extern bool PowerSetRequest([In, AddAsMember] SafePowerRequestObject PowerRequest, POWER_REQUEST_TYPE RequestType);
 
 	/// <summary>
 	/// <para>Retrieves the full name of the executable image for the specified process.</para>
@@ -1949,7 +1956,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "49a9d1aa-30f3-45ea-a4ec-9f55df692b8b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryFullProcessImageName(HPROCESS hProcess, PROCESS_NAME dwFlags, StringBuilder lpExeName, ref uint lpdwSize);
+	public static extern bool QueryFullProcessImageName([In, AddAsMember] HPROCESS hProcess, PROCESS_NAME dwFlags,
+		[SizeDef(nameof(lpdwSize), SizingMethod.Query)] StringBuilder lpExeName, ref uint lpdwSize);
 
 	/// <summary>Determines whether thread profiling is enabled for the specified thread.</summary>
 	/// <param name="ThreadHandle">The handle to the thread of interest.</param>
@@ -1990,7 +1998,7 @@ public static partial class Kernel32
 	// PerformanceData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd796403(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "dd796403")]
-	public static extern Win32Error ReadThreadProfilingData(PerformanceDataHandle PerformanceDataHandle, READ_THREAD_PROFILING_FLAG Flags, ref PERFORMANCE_DATA PerformanceData);
+	public static extern Win32Error ReadThreadProfilingData([In, AddAsMember] PerformanceDataHandle PerformanceDataHandle, READ_THREAD_PROFILING_FLAG Flags, ref PERFORMANCE_DATA PerformanceData);
 
 	/// <summary>
 	/// <para>Unregisters a callback function that was previously registered with the AddSecureMemoryCacheCallback function.</para>
@@ -2013,7 +2021,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "8be6ff04-34c7-4942-a38c-507584c8bbeb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RemoveSecureMemoryCacheCallback(SecureMemoryCacheCallback pfnCallBack);
+	public static extern bool RemoveSecureMemoryCacheCallback([In] SecureMemoryCacheCallback pfnCallBack);
 
 	/// <summary>
 	/// <para>
@@ -2130,7 +2138,9 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "D3C2F03F-66F6-40A4-830E-058BBA925ACD")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetFirmwareEnvironmentVariableEx(string lpName, string lpGuid, [Optional] IntPtr pValue, uint nSize, VARIABLE_ATTRIBUTE dwAttributes);
+	public static extern bool SetFirmwareEnvironmentVariableEx(string lpName,
+		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(GuidToStringMarshaler), MarshalCookie = "B")] object lpGuid,
+		[Optional, SizeDef(nameof(nSize))] IntPtr pValue, uint nSize, VARIABLE_ATTRIBUTE dwAttributes);
 
 	/// <summary>
 	/// <para>Changes data execution prevention (DEP) and DEP-ATL thunk emulation settings for a 32-bit process.</para>
@@ -2381,7 +2391,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "64ADEA8A-DE78-437E-AE68-A68E7214C5FD")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetXStateFeaturesMask(SafeCONTEXT Context, ulong FeatureMask);
+	public static extern bool SetXStateFeaturesMask([In, AddAsMember] SafeCONTEXT Context, ulong FeatureMask);
 
 	/// <summary>
 	/// <para>[This function is not supported and should not be used. It may change or disappear completely without advance notice.]</para>
@@ -2513,7 +2523,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "1bac28e1-3558-43c4-97e4-d8bb9514c38e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Wow64GetThreadContext(HTHREAD hThread, ref WOW64_CONTEXT lpContext);
+	public static extern bool Wow64GetThreadContext([In, AddAsMember] HTHREAD hThread, ref WOW64_CONTEXT lpContext);
 
 	/// <summary>
 	/// <para>Retrieves a descriptor table entry for the specified selector and WOW64 thread.</para>
@@ -2557,7 +2567,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "68393913-6725-4cc6-90b9-57da2a96c91e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Wow64GetThreadSelectorEntry(HTHREAD hThread, uint dwSelector, out WOW64_LDT_ENTRY lpSelectorEntry);
+	public static extern bool Wow64GetThreadSelectorEntry([In, AddAsMember] HTHREAD hThread, uint dwSelector, out WOW64_LDT_ENTRY lpSelectorEntry);
 
 	/// <summary>
 	/// <para>Sets the context of the specified WOW64 thread.</para>
@@ -2593,7 +2603,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "4119c945-b654-4634-a88b-e41bc762018a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Wow64SetThreadContext(HTHREAD hThread, in WOW64_CONTEXT lpContext);
+	public static extern bool Wow64SetThreadContext([In, AddAsMember] HTHREAD hThread, in WOW64_CONTEXT lpContext);
 
 	/// <summary>
 	/// <para>Suspends the specified WOW64 thread.</para>
@@ -2637,7 +2647,7 @@ public static partial class Kernel32
 	// hThread );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "d976675a-5400-41ac-a11d-c39a1b2dd50d")]
-	public static extern uint Wow64SuspendThread(HTHREAD hThread);
+	public static extern uint Wow64SuspendThread([In, AddAsMember] HTHREAD hThread);
 
 	/// <summary>
 	/// <para>Initializes a CONTEXT structure inside a buffer with the necessary size and alignment.</para>

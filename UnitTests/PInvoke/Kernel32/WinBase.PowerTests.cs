@@ -22,16 +22,10 @@ public partial class WinBaseTests_Power
 	}
 
 	[Test]
-	public void IsSystemResumeAutomaticTest()
-	{
-		Assert.That(IsSystemResumeAutomatic(), Is.False);
-	}
+	public void IsSystemResumeAutomaticTest() => Assert.That(IsSystemResumeAutomatic(), Is.False);
 
 	[Test]
-	public void RequestWakeupLatencyTest()
-	{
-		Assert.That(RequestWakeupLatency(LATENCY_TIME.LT_DONT_CARE), Is.False);
-	}
+	public void RequestWakeupLatencyTest() => Assert.That(RequestWakeupLatency(LATENCY_TIME.LT_DONT_CARE), Is.False);
 
 	// [Test] This works but suspends the PC
 	public void SetSystemPowerStateTest()

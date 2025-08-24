@@ -469,7 +469,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362509")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool BackupRead([In] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [MarshalAs(UnmanagedType.Bool)] bool bAbort,
+	public static extern bool BackupRead([In] HFILE hFile, [SizeDef(nameof(nNumberOfBytesToRead), SizingMethod.Query, OutVarName = nameof(lpNumberOfBytesRead))] IntPtr lpBuffer,
+		uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [MarshalAs(UnmanagedType.Bool)] bool bAbort,
 		[MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, ref IntPtr lpContext);
 
 	/// <summary>
@@ -988,7 +989,7 @@ public static partial class Kernel32
 	// DWORD GetTapeParameters( _In_ HANDLE hDevice, _In_ DWORD dwOperation, _Out_ LPDWORD lpdwSize, _Out_ LPVOID lpTapeInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362526(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa362526")]
-	public static extern Win32Error GetTapeParameters([In] HFILE hDevice, TAPE_PARAM_OP dwOperation, ref uint lpdwSize, IntPtr lpTapeInformation);
+	public static extern Win32Error GetTapeParameters([In] HFILE hDevice, TAPE_PARAM_OP dwOperation, ref uint lpdwSize, [Optional, SizeDef(nameof(lpdwSize), SizingMethod.Query | SizingMethod.CheckLastError)] IntPtr lpTapeInformation);
 
 	/// <summary>The <c>GetTapeParameters</c> function retrieves information that describes the tape or the tape drive.</summary>
 	/// <typeparam name="T">Either <see cref="TAPE_GET_MEDIA_PARAMETERS"/> or <see cref="TAPE_GET_DRIVE_PARAMETERS"/>.</typeparam>
@@ -1008,9 +1009,10 @@ public static partial class Kernel32
 	public static T GetTapeParameters<T>([In] HFILE hDevice) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanGet<T, TAPE_PARAM_OP>(out var dwOperation))
-			throw new ArgumentOutOfRangeException(nameof(dwOperation), "Type parameter does not match valid operation.");
-		using SafeCoTaskMemStruct<T> mem = new();
-		uint sz = mem.Size;
+			throw new ArgumentOutOfRangeException(nameof(T), "Type parameter does not match valid operation.");
+		var sz = 0u;
+		GetTapeParameters(hDevice, dwOperation, ref sz).ThrowUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
+		using SafeCoTaskMemStruct<T> mem = new(sz);
 		GetTapeParameters(hDevice, dwOperation, ref sz, mem).ThrowIfFailed();
 		return mem.Value;
 	}
@@ -1527,8 +1529,8 @@ public static partial class Kernel32
 	public static void SetTapeParameters<T>([In] HFILE hDevice, in T lpTapeInformation) where T : struct
 	{
 		if (!CorrespondingTypeAttribute.CanSet<T, TAPE_PARAM_OP>(out var dwOperation))
-			throw new ArgumentOutOfRangeException(nameof(dwOperation), "Type parameter does not match valid operation.");
-		using SafeCoTaskMemStruct<T> mem = new(lpTapeInformation);
+			throw new ArgumentOutOfRangeException(nameof(T), "Type parameter does not match valid operation.");
+		using SafeCoTaskMemStruct<T> mem = lpTapeInformation;
 		SetTapeParameters(hDevice, dwOperation, mem).ThrowIfFailed();
 	}
 

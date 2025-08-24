@@ -16,7 +16,6 @@ public class StringApiSetTests
 	[Test]
 	public void CompareStringExTest()
 	{
-		StringBuilder sb = new(256);
 		Assert.That(CompareStringEx(LOCALE_NAME_INVARIANT, COMPARE_STRING.SORT_DIGITSASNUMBERS, "2", 1, "10", 2), Is.EqualTo(CSTR_LESS_THAN));
 		Assert.That(CompareStringEx(LOCALE_NAME_INVARIANT, 0, "2", 1, "10", 2), Is.EqualTo(CSTR_GREATER_THAN));
 	}
@@ -47,7 +46,9 @@ public class StringApiSetTests
 	{
 		const string input = "T\u00e8st string \uFF54\uFF4F n\u00f8rm\u00e4lize";
 		ushort[] result = new ushort[input.Length + 1];
+#pragma warning disable CS0618 // Type or member is obsolete
 		Assert.That(GetStringTypeA(GetUserDefaultLCID(), CHAR_TYPE_INFO.CT_CTYPE3, input, -1, result), ResultIs.Successful);
+#pragma warning restore CS0618 // Type or member is obsolete
 		result.WriteValues();
 	}
 
@@ -85,17 +86,33 @@ public class StringApiSetTests
 	[Test]
 	public void MultiByteToWideCharAndBackTest()
 	{
-		const string input = "HÃ´tel";
-		const string output = "Hôtel";
+		byte[] utf8String = StringHelper.GetBytes("Hôtel", Encoding.UTF8); // "HÃ´tel"
+		byte[] uniString = StringHelper.GetBytes("Hôtel", Encoding.Unicode);
 
-		StringBuilder sb = new(256);
-		Assert.That(MultiByteToWideChar(CP_UTF8, 0, input, -1, sb, sb.Capacity), Is.GreaterThan(0));
-		TestContext.WriteLine(sb);
-		Assert.That(sb.ToString(), Is.EqualTo(output));
+		//byte[] buf = new byte[uniString.Length + 4];
+		int len;
+		Assert.That(len = MultiByteToWideChar(CP_UTF8, 0, utf8String), Is.GreaterThan(0));
+		byte[] buf = new byte[len * 2];
+		Assert.That(MultiByteToWideChar(CP_UTF8, 0, utf8String, -1, buf, buf.Length / 2), Is.GreaterThan(0));
+		TestContext.WriteLine(Encoding.Unicode.GetString(buf));
+		Assert.That(buf, Is.EqualTo(uniString));
 
-		sb.Clear();
-		Assert.That(WideCharToMultiByte(CP_UTF8, 0, output, -1, sb, sb.Capacity), Is.GreaterThan(0));
-		TestContext.WriteLine(sb);
-		Assert.That(sb.ToString(), Is.EqualTo(input));
+		Assert.That(len = WideCharToMultiByte(CP_UTF8, 0, uniString), Is.GreaterThan(0));
+		buf = new byte[len];
+		Assert.That(WideCharToMultiByte(CP_UTF8, 0, uniString, -1, buf, buf.Length), Is.GreaterThan(0));
+		TestContext.WriteLine(Encoding.UTF8.GetString(buf));
+		Assert.That(buf, Is.EqualTo(utf8String));
+	}
+
+	[Test]
+	public void MultiByteToWideCharAndBackTest2()
+	{
+		byte[] utf8String = StringHelper.GetBytes("Hôtel", Encoding.UTF8); // "HÃ´tel"
+		byte[] uniString = StringHelper.GetBytes("Hôtel", Encoding.Unicode);
+
+		Assert.That(MultiByteToWideChar(CP_UTF8, utf8String), Is.EqualTo(uniString));
+
+		Assert.That(WideCharToMultiByte(CP_UTF8, uniString, lpUsedDefaultChar: out var uc), Is.EqualTo(utf8String));
+		Assert.That(uc, Is.Null, "Used default char should not be set when converting a UTF8 string.");
 	}
 }

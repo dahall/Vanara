@@ -127,7 +127,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa363484")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool BindIoCompletionCallback([In] HFILE FileHandle, FileIOCompletionRoutine Function, [Optional] uint Flags);
+	public static extern bool BindIoCompletionCallback([In, AddAsMember] HFILE FileHandle, FileIOCompletionRoutine Function, [Optional] uint Flags);
 
 	/// <summary>Updates a timer-queue timer that was created by the <c>CreateTimerQueueTimer</c> function.</summary>
 	/// <param name="TimerQueue">
@@ -149,7 +149,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682004")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ChangeTimerQueueTimer([In] TimerQueueHandle TimerQueue, TimerQueueTimerHandle Timer, uint DueTime, uint Period);
+	public static extern bool ChangeTimerQueueTimer([In, AddAsMember] TimerQueueHandle TimerQueue, TimerQueueTimerHandle Timer, uint DueTime, uint Period);
 
 	/// <summary>
 	/// Creates a queue for timers. Timer-queue timers are lightweight objects that enable you to specify a callback function to be
@@ -165,6 +165,7 @@ public static partial class Kernel32
 	// HANDLE WINAPI CreateTimerQueue(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682483(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682483")]
+	[return: AddAsCtor]
 	public static extern SafeTimerQueueHandle CreateTimerQueue();
 
 	/// <summary>
@@ -255,7 +256,8 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682485")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateTimerQueueTimer(out TimerQueueTimerHandle phNewTimer, [In] TimerQueueHandle TimerQueue, WaitOrTimerCallback Callback, [In, Optional] IntPtr Parameter, uint DueTime, [Optional] uint Period, [Optional] WT Flags);
+	public static extern bool CreateTimerQueueTimer([AddAsCtor] out TimerQueueTimerHandle phNewTimer, [In] TimerQueueHandle TimerQueue, WaitOrTimerCallback Callback,
+		[In, Optional] IntPtr Parameter, uint DueTime, [Optional] uint Period, [Optional] WT Flags);
 
 	/// <summary>Deletes a timer queue. Any pending timers in the queue are canceled and deleted.</summary>
 	/// <param name="TimerQueue">A handle to the timer queue. This handle is returned by the <c>CreateTimerQueue</c> function.</param>
@@ -278,7 +280,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682568")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DeleteTimerQueueEx([In] TimerQueueHandle TimerQueue, [In] SafeEventHandle CompletionEvent);
+	public static extern bool DeleteTimerQueueEx([In] TimerQueueHandle TimerQueue, [In] HEVENT CompletionEvent);
 
 	/// <summary>
 	/// Removes a timer from the timer queue and optionally waits for currently running timer callback functions to complete before
@@ -315,7 +317,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682569")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DeleteTimerQueueTimer([In] TimerQueueHandle TimerQueue, [In] TimerQueueTimerHandle Timer, [In] SafeEventHandle CompletionEvent);
+	public static extern bool DeleteTimerQueueTimer([In] TimerQueueHandle TimerQueue, [In] TimerQueueTimerHandle Timer, [In] HEVENT CompletionEvent);
 
 	/// <summary>Queues a work item to a worker thread in the thread pool.</summary>
 	/// <param name="Function">
@@ -526,7 +528,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("LibLoaderAPI.h", MSDNShortId = "ms686876")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnregisterWaitEx([In] IntPtr WaitHandle, [In] SafeEventHandle CompletionEvent);
+	public static extern bool UnregisterWaitEx([In] IntPtr WaitHandle, [In, Optional] HEVENT CompletionEvent);
 
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -538,16 +540,20 @@ public static partial class Kernel32
 		/// <value>
 		/// <para>
 		/// A handle to the event object to be signaled when the function is successful and all callback functions have completed. This
-		/// parameter can be <see langword="null"/>.
+		/// parameter can be NULL.
 		/// </para>
 		/// <para>
-		/// If this parameter is <see cref="SafeEventHandle.InvalidHandle"/>, the function waits for all callback functions to complete before returning.
+		/// If this parameter is INVALID_HANDLE, the function waits for all callback functions to complete before returning.
 		/// </para>
 		/// <para>
-		/// If this parameter is <see langword="null"/>, the function marks the timer for deletion and returns immediately. However, most
+		/// If this parameter is NULL, the function marks the timer for deletion and returns immediately. However, most
 		/// callers should wait for the callback function to complete so they can perform any needed cleanup.
 		/// </para>
 		/// </value>
-		public SafeEventHandle? CompletionEvent { get; set; }
+		public HEVENT CompletionEvent { get; set; } = HEVENT.INVALID_HANDLE_VALUE;
+
+		///// <inheritdoc/>
+		//protected override bool InternalReleaseHandle() =>
+		//	UnregisterWaitEx(handle, CompletionEvent) || Win32Error.GetLastError() == Win32Error.ERROR_IO_PENDING && !CompletionEvent.IsInvalid && WaitForSingleObject(CompletionEvent, INFINITE) == WAIT_STATUS.WAIT_OBJECT_0;
 	}
 }

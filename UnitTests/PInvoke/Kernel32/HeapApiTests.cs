@@ -7,16 +7,10 @@ namespace Vanara.PInvoke.Tests;
 public class HeapApiTests
 {
 	[Test]
-	public void GetProcessHeapTest()
-	{
-		Assert.That(GetProcessHeap().DangerousGetHandle(), Is.Not.EqualTo(IntPtr.Zero));
-	}
+	public void GetProcessHeapTest() => Assert.That(GetProcessHeap().DangerousGetHandle(), Is.Not.EqualTo(IntPtr.Zero));
 
 	[Test]
-	public void GetProcessHeapsTest()
-	{
-		Assert.That(GetProcessHeaps(), Is.Not.Empty);
-	}
+	public void GetProcessHeapsTest() => Assert.That(GetProcessHeaps(), Is.Not.Empty);
 
 	[Test]
 	public void HeapCreateAllocReallocFreeDestroyValidateTest()
@@ -66,8 +60,5 @@ public class HeapApiTests
 	}
 
 	[Test]
-	public void HeapWalkTest()
-	{
-		Assert.That(HeapWalk(HHEAP.FromProcess()), Is.Not.Empty);
-	}
+	public void HeapWalkTest() => Assert.That(HeapWalk(HHEAP.FromProcess()), Is.Not.Empty);
 }

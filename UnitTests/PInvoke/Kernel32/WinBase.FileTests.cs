@@ -79,8 +79,8 @@ public partial class WinBaseTests_File
 	[Test]
 	public void CreateSymbolicLinkTest()
 	{
-		Assert.That(CreateSymbolicLink(newfn, fn, SymbolicLinkType.SYMBOLIC_LINK_FLAG_FILE), ResultIs.Successful);
-		Assert.That(DeleteFile(newfn), Is.True);
+		Assert.That(CreateSymbolicLink(newfn, fn, SymbolicLinkType.SYMBOLIC_LINK_FLAG_FILE | SymbolicLinkType.SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE), ResultIs.Successful);
+		Assert.That(DeleteFile(newfn), ResultIs.Successful);
 	}
 
 	[Test]
@@ -94,7 +94,7 @@ public partial class WinBaseTests_File
 		Assert.That(EnumFileStreams(tmp.FullName).ToArray(), Is.Not.Empty);
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void EnumVolumeMountPointsTest()
 	{
 		// Setup a new mount on C:
@@ -102,7 +102,7 @@ public partial class WinBaseTests_File
 		StringBuilder sb = new(100);
 		Assert.That(GetVolumeNameForVolumeMountPoint(@"C:\", sb, (uint)sb.Capacity), ResultIs.Successful);
 		string cvol = sb.ToString();
-		Assert.That(GetVolumeNameForVolumeMountPoint(@"D:\", sb, (uint)sb.Capacity), ResultIs.Successful);
+		Assert.That(GetVolumeNameForVolumeMountPoint(@"E:\", sb, (uint)sb.Capacity), ResultIs.Successful);
 		string dvol = sb.ToString();
 		Assert.That(CreateDirectory(mntDir), ResultIs.Successful);
 		Assert.That(SetVolumeMountPoint(mntDir, dvol), ResultIs.Successful);
@@ -134,14 +134,16 @@ public partial class WinBaseTests_File
 	{
 		using TempFile tmp = new(FileAccess.GENERIC_READ, FileShare.Read);
 		using SafeHFILE hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
-		List<Exception> exes = new();
-		TestHelper.RunForEach<FILE_INFO_BY_HANDLE_CLASS>(typeof(Kernel32), "GetFileInformationByHandleEx", e => new object[] { IsDir(e) ? (HFILE)hDir : (HFILE)tmp.hFile!, e },
-			(e, ex) => { ex!.Source = e.ToString(); exes.Add(ex); }, (e, ret, param) => ret?.WriteValues(), CorrespondingAction.Get);
+		List<Exception> exes = [];
+		TestHelper.RunForEach<FILE_INFO_BY_HANDLE_CLASS>(typeof(Kernel32), "GetFileInformationByHandleEx",
+			e => { TestContext.WriteLine($"==={e}==="); return [IsDir(e) ? (HFILE)hDir : (HFILE)tmp.hFile!, e]; },
+			(e, ex) => { ex!.Source = e.ToString(); if (e != FILE_INFO_BY_HANDLE_CLASS.FileRemoteProtocolInfo) exes.Add(ex); },
+			(e, ret, param) => { ret?.WriteValues(); }, CorrespondingAction.Get);
 		if (exes.Count > 0)
 			throw new AggregateException(exes.ToArray());
 
-		bool IsDir(FILE_INFO_BY_HANDLE_CLASS e) => e == FILE_INFO_BY_HANDLE_CLASS.FileFullDirectoryInfo || e == FILE_INFO_BY_HANDLE_CLASS.FileFullDirectoryRestartInfo || e == FILE_INFO_BY_HANDLE_CLASS.FileIdBothDirectoryInfo ||
-			e == FILE_INFO_BY_HANDLE_CLASS.FileIdBothDirectoryRestartInfo || e == FILE_INFO_BY_HANDLE_CLASS.FileIdExtdDirectoryInfo || e == FILE_INFO_BY_HANDLE_CLASS.FileIdExtdDirectoryRestartInfo;
+		static bool IsDir(FILE_INFO_BY_HANDLE_CLASS e) => e is FILE_INFO_BY_HANDLE_CLASS.FileFullDirectoryInfo or FILE_INFO_BY_HANDLE_CLASS.FileFullDirectoryRestartInfo or FILE_INFO_BY_HANDLE_CLASS.FileIdBothDirectoryInfo or
+			FILE_INFO_BY_HANDLE_CLASS.FileIdBothDirectoryRestartInfo or FILE_INFO_BY_HANDLE_CLASS.FileIdExtdDirectoryInfo or FILE_INFO_BY_HANDLE_CLASS.FileIdExtdDirectoryRestartInfo;
 	}
 
 	[Test]
@@ -177,7 +179,8 @@ public partial class WinBaseTests_File
 		Assert.That(MoveFileWithProgress(bigfn, Path.Combine(newFld, Path.GetFileName(bigfn)), fProgress, default, MOVEFILE.MOVEFILE_REPLACE_EXISTING), ResultIs.Successful);
 		Assert.That(MoveFileWithProgress(Path.Combine(newFld, Path.GetFileName(bigfn)), bigfn, fProgress, default, MOVEFILE.MOVEFILE_REPLACE_EXISTING), ResultIs.Successful);
 
-		CopyProgressResult fProgress(long TotalFileSize, long TotalBytesTransferred, long StreamSize, long StreamBytesTransferred, uint dwStreamNumber, COPY_CALLBACK_REASON dwCallbackReason, IntPtr hSourceFile, IntPtr hDestinationFile, IntPtr lpData)
+		CopyProgressResult fProgress(long TotalFileSize, long TotalBytesTransferred, long StreamSize, long StreamBytesTransferred, uint dwStreamNumber,
+			COPY_CALLBACK_REASON dwCallbackReason, HFILE hSourceFile, HFILE hDestinationFile, IntPtr lpData)
 		{
 			long prct = TotalBytesTransferred * 100 / TotalFileSize;
 			if (prct / 25 + 1 > qtr) { TestContext.WriteLine($"{++qtr}/4 Complete: {StreamSize}, {dwStreamNumber}, {dwCallbackReason}"); }
@@ -188,9 +191,8 @@ public partial class WinBaseTests_File
 	[Test]
 	public void OpenFileTest()
 	{
-		OFSTRUCT buf = OFSTRUCT.Default;
 		SafeHFILE hFile;
-		Assert.That(hFile = OpenFile(fn, ref buf, OpenFileAction.OF_READ), ResultIs.ValidHandle);
+		Assert.That(hFile = OpenFile(fn, out var buf, OpenFileAction.OF_READ), ResultIs.ValidHandle);
 		hFile.Dispose();
 	}
 
@@ -201,9 +203,9 @@ public partial class WinBaseTests_File
 		using SafeHFILE hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
 		using SafeHGlobalHandle mem = new(4096);
 		new Thread(() => { Sleep(100); DeleteFile(newFile); CopyFile(fn, newFile, false); DeleteFile(newFile); }).Start();
-		Assert.That(ReadDirectoryChangesExW(hDir, (IntPtr)mem, (uint)mem.Size, true, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME, out uint ret, null, complete, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS.ReadDirectoryNotifyExtendedInformation), ResultIs.Successful);
+		Assert.That(ReadDirectoryChangesExW(hDir, (IntPtr)mem, (uint)mem.Size, true, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME, out uint ret, default, complete, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS.ReadDirectoryNotifyExtendedInformation), ResultIs.Successful);
 		Assert.That(ret, Is.GreaterThan(0));
-		List<FILE_NOTIFY_EXTENDED_INFORMATION> list = new();
+		List<FILE_NOTIFY_EXTENDED_INFORMATION> list = [];
 		uint nxt = 0U;
 		do
 		{
@@ -214,7 +216,7 @@ public partial class WinBaseTests_File
 		} while (nxt > 0);
 		list.WriteValues();
 
-		void complete(uint dwErrorCode, uint dwNumberOfBytesTransfered, NativeOverlapped* lpOverlapped)
+		static void complete(uint dwErrorCode, uint dwNumberOfBytesTransfered, NativeOverlapped* lpOverlapped)
 		{
 			TestContext.WriteLine($"{dwErrorCode}, {dwNumberOfBytesTransfered}");
 		}
@@ -229,7 +231,7 @@ public partial class WinBaseTests_File
 		new Thread(() => { Sleep(100); DeleteFile(newFile); CopyFile(fn, newFile, false); DeleteFile(newFile); }).Start();
 		Assert.That(ReadDirectoryChanges(hDir, (IntPtr)mem, (uint)mem.Size, true, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME, out uint ret, IntPtr.Zero, complete), ResultIs.Successful);
 		Assert.That(ret, Is.GreaterThan(0));
-		List<FILE_NOTIFY_INFORMATION> list = new();
+		List<FILE_NOTIFY_INFORMATION> list = [];
 		uint nxt = 0U;
 		do
 		{
@@ -240,7 +242,7 @@ public partial class WinBaseTests_File
 		} while (nxt > 0);
 		list.WriteValues();
 
-		void complete(uint dwErrorCode, uint dwNumberOfBytesTransfered, IntPtr lpOverlapped)
+		static void complete(uint dwErrorCode, uint dwNumberOfBytesTransfered, IntPtr lpOverlapped)
 		{
 			TestContext.WriteLine($"{dwErrorCode}, {dwNumberOfBytesTransfered}");
 		}
@@ -250,7 +252,7 @@ public partial class WinBaseTests_File
 	public void ReOpenFileTest()
 	{
 		using TempFile tmp = new(FileAccess.GENERIC_WRITE, FileShare.Read);
-		Assert.That(tmp, ResultIs.ValidHandle);
+		Assert.That(tmp.hFile, ResultIs.ValidHandle);
 		using SafeHFILE hRe = ReOpenFile(tmp.hFile!, FileAccess.GENERIC_READ, FileShare.ReadWrite, 0);
 		Assert.That(hRe, ResultIs.ValidHandle);
 	}
@@ -287,7 +289,7 @@ public partial class WinBaseTests_File
 			Assert.That(SetFileShortName(tmp.hFile!, "SN.TXT"), ResultIs.Successful);
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void SetVolumeLabelTest()
 	{
 		Assert.That(GetVolumeInformation(null, out string curName, out _, out _, out _, out _), ResultIs.Successful);

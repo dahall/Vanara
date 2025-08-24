@@ -120,16 +120,10 @@ public class FileApiTests
 	}
 
 	[Test]
-	public void EnumFilesExTest()
-	{
-		Assert.That(EnumFilesEx(@"C:\Temp\*.txt").ToArray(), Is.Not.Empty);
-	}
+	public void EnumFilesExTest() => Assert.That(EnumFilesEx(@"C:\Temp\*.txt").ToArray(), Is.Not.Empty);
 
 	[Test]
-	public void EnumVolumesTest()
-	{
-		Assert.That(EnumVolumes().ToArray(), Is.Not.Empty);
-	}
+	public void EnumVolumesTest() => Assert.That(EnumVolumes().ToArray(), Is.Not.Empty);
 
 	[Test]
 	public void FileTimeToLocalFileTimeTest()
@@ -202,10 +196,7 @@ public class FileApiTests
 	}
 
 	[Test]
-	public void GetDriveTypeTest()
-	{
-		Assert.That(GetDriveType(null), Is.EqualTo(DRIVE_TYPE.DRIVE_FIXED));
-	}
+	public void GetDriveTypeTest() => Assert.That(GetDriveType(null), Is.EqualTo(DRIVE_TYPE.DRIVE_FIXED));
 
 	[Test]
 	public void GetFileInformationByHandleTest()
@@ -251,10 +242,7 @@ public class FileApiTests
 	}
 
 	[Test]
-	public void GetLogicalDrivesTest()
-	{
-		Assert.That(GetLogicalDrives(), Is.Not.Zero);
-	}
+	public void GetLogicalDrivesTest() => Assert.That(GetLogicalDrives(), Is.Not.Zero);
 
 	[Test]
 	public void GetLogicalDriveStringsTest()

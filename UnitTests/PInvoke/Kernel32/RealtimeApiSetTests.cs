@@ -23,16 +23,10 @@ public class RealtimeApiSetTests
 	}
 
 	[Test]
-	public void QueryIdleProcessorCycleTimeTest()
-	{
-		Assert.That(() => { Assert.That(QueryIdleProcessorCycleTime(), Is.Not.Empty); }, Throws.Nothing);
-	}
+	public void QueryIdleProcessorCycleTimeTest() => Assert.That(() => { Assert.That(QueryIdleProcessorCycleTime(), Is.Not.Empty); }, Throws.Nothing);
 
 	[Test]
-	public void QueryIdleProcessorCycleTimeExTest()
-	{
-		Assert.That(() => { Assert.That(QueryIdleProcessorCycleTimeEx(0), Is.Not.Empty); }, Throws.Nothing);
-	}
+	public void QueryIdleProcessorCycleTimeExTest() => Assert.That(() => { Assert.That(QueryIdleProcessorCycleTimeEx(0), Is.Not.Empty); }, Throws.Nothing);
 
 	[Test]
 	public void QueryInterruptTimeTest()

@@ -59,6 +59,7 @@ public static partial class Kernel32
 	// LPSECURITY_ATTRIBUTES lpSecurityAttributes); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365147(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa365147")]
+	[return: AddAsCtor]
 	public static extern SafeMailslotHandle CreateMailslot(string lpName, uint nMaxMessageSize, uint lReadTimeout, [In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes);
 
 	/// <summary>Retrieves information about the specified mailslot.</summary>
@@ -99,7 +100,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa365435")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMailslotInfo([In] SafeMailslotHandle hMailslot, out uint lpMaxMessageSize, out uint lpNextSize, out uint lpMessageCount, out uint lpReadTimeout);
+	public static extern bool GetMailslotInfo([In, AddAsMember] SafeMailslotHandle hMailslot, out uint lpMaxMessageSize, out uint lpNextSize, out uint lpMessageCount, out uint lpReadTimeout);
 
 	/// <summary>Sets the time-out value used by the specified mailslot for a read operation.</summary>
 	/// <param name="hMailslot">A handle to a mailslot. The <c>CreateMailslot</c> function must create this handle.</param>
@@ -134,7 +135,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa365786")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetMailslotInfo([In] SafeMailslotHandle hMailslot, uint lReadTimeout);
+	public static extern bool SetMailslotInfo([In, AddAsMember] SafeMailslotHandle hMailslot, uint lReadTimeout);
 
 	/// <summary>
 	/// Provides a <see cref="SafeHandle"/> to a mailslot that releases a created MailslotHandle instance at disposal using CloseHandle.

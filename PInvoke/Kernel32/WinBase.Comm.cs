@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 
 namespace Vanara.PInvoke;
 
@@ -591,11 +592,16 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI CommConfigDialog( _In_ LPCTSTR lpszName, _In_ HWND hWnd, _Inout_ LPCOMMCONFIG lpCC); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363187(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363187")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CommConfigDialog(string lpszName, [In, Optional] HWND hWnd, ref COMMCONFIG lpCC);
+	public static bool CommConfigDialog(string lpszName, [In, Optional] HWND hWnd, COMMCONFIG lpCC)
+	{
+		using var cc = SafeCoTaskMemHandle.CreateFromStructure(lpCC);
+		cc.Size = 4096;
+		if (!CommConfigDialog(lpszName, hWnd, cc))
+			return false;
+		lpCC = cc.ToStructure<COMMCONFIG>()!;
+		return true;
+	}
 
 	/// <summary>Directs the specified communications device to perform an extended function.</summary>
 	/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -665,19 +671,32 @@ public static partial class Kernel32
 	/// </summary>
 	/// <param name="hCommDev">A handle to the open communications device. The <c>CreateFile</c> function returns this handle.</param>
 	/// <param name="lpCC">A pointer to a buffer that receives a <c>COMMCONFIG</c> structure.</param>
-	/// <param name="lpdwSize">
-	/// The size, in bytes, of the buffer pointed to by lpCC. When the function returns, the variable contains the number of bytes copied
-	/// if the function succeeds, or the number of bytes required if the buffer was too small.
-	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, use the <c>GetLastError</c> function.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// BOOL WINAPI GetCommConfig( _In_ HANDLE hCommDev, _Out_ LPCOMMCONFIG lpCC, _Inout_ LPDWORD lpdwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363256(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363256")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCommConfig([In] HFILE hCommDev, IntPtr lpCC, ref uint lpdwSize);
+	public static bool GetCommConfig([In] HFILE hCommDev, [NotNullWhen(true)] out COMMCONFIG? lpCC)
+	{
+		using var mem = SafeCoTaskMemHandle.CreateFromStructure<COMMCONFIG.COMMCONFIG_UNMGD>();
+		uint sz = mem.Size;
+		do
+		{
+			if (GetCommConfig(hCommDev, mem, ref sz))
+			{
+				lpCC = mem.ToStructure<COMMCONFIG>()!;
+				return true;
+			}
+			if (sz == mem.Size)
+			{
+				lpCC = null;
+				return false;
+			}
+			mem.Size = sz;
+		} while (true);
+	}
 
 	/// <summary>Retrieves the value of the event mask for a specified communications device.</summary>
 	/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -911,19 +930,29 @@ public static partial class Kernel32
 	/// The name of the device. For example, COM1 through COM9 are serial ports and LPT1 through LPT9 are parallel ports.
 	/// </param>
 	/// <param name="lpCC">A pointer to a buffer that receives a <c>COMMCONFIG</c> structure.</param>
-	/// <param name="lpdwSize">
-	/// A pointer to a variable that specifies the size of the buffer pointed to by lpCC, in bytes. Upon return, the variable contains
-	/// the number of bytes copied if the function succeeds, or the number of bytes required if the buffer was too small.
-	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, use the <c>GetLastError</c> function.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI GetDefaultCommConfig( _In_ LPCTSTR lpszName, _Out_ LPCOMMCONFIG lpCC, _Inout_ LPDWORD lpdwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363262(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-	[PInvokeData("Winbase.h", MSDNShortId = "aa363262")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetDefaultCommConfig(string lpszName, IntPtr lpCC, ref uint lpdwSize);
+	public static bool GetDefaultCommConfig(string lpszName, [NotNullWhen(true)] out COMMCONFIG? lpCC)
+	{
+		using var mem = SafeCoTaskMemHandle.CreateFromStructure<COMMCONFIG.COMMCONFIG_UNMGD>();
+		uint sz = mem.Size;
+		do
+		{
+			if (GetDefaultCommConfig(lpszName, mem, ref sz))
+			{
+				lpCC = mem.ToStructure<COMMCONFIG>()!;
+				return true;
+			}
+			if (sz == mem.Size)
+			{
+				lpCC = null;
+				return false;
+			}
+			mem.Size = sz;
+		} while (true);
+	}
 
 	/// <summary>
 	/// <para>Attempts to open a communication device.</para>
@@ -1029,16 +1058,17 @@ public static partial class Kernel32
 	/// <summary>Sets the current configuration of a communications device.</summary>
 	/// <param name="hCommDev">A handle to the open communications device. The <c>CreateFile</c> function returns this handle.</param>
 	/// <param name="lpCC">A pointer to a <c>COMMCONFIG</c> structure.</param>
-	/// <param name="dwSize">The size of the structure pointed to by lpCC, in bytes.</param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// BOOL WINAPI SetCommConfig( _In_ HANDLE hCommDev, _In_ LPCOMMCONFIG lpCC, _In_ DWORD dwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363434(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363434")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetCommConfig([In] HFILE hCommDev, [In] IntPtr lpCC, uint dwSize);
+	public static bool SetCommConfig([In] HFILE hCommDev, [In] COMMCONFIG lpCC)
+	{
+		using var mem = SafeCoTaskMemHandle.CreateFromStructure(lpCC);
+		return SetCommConfig(hCommDev, mem, (uint)mem.Size);
+	}
 
 	/// <summary>Specifies a set of events to be monitored for a communications device.</summary>
 	/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -1138,16 +1168,17 @@ public static partial class Kernel32
 	/// The name of the device. For example, COM1 through COM9 are serial ports and LPT1 through LPT9 are parallel ports.
 	/// </param>
 	/// <param name="lpCC">A pointer to a <see cref="COMMCONFIG"/> structure.</param>
-	/// <param name="dwSize">The size of the structure pointed to by lpCC, in bytes.</param>
 	/// <returns>
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// BOOL WINAPI SetDefaultCommConfig( _In_ LPCTSTR lpszName, _In_ LPCOMMCONFIG lpCC, _In_ DWORD dwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363438(v=vs.85).aspx
-	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363438")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetDefaultCommConfig(string lpszName, [In] IntPtr lpCC, uint dwSize);
+	public static bool SetDefaultCommConfig(string lpszName, [In] COMMCONFIG lpCC)
+	{
+		using var mem = SafeCoTaskMemHandle.CreateFromStructure(lpCC);
+		return SetDefaultCommConfig(lpszName, mem, (uint)mem.Size);
+	}
 
 	/// <summary>Initializes the communications parameters for a specified communications device.</summary>
 	/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -1259,75 +1290,112 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363479")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static unsafe extern bool WaitCommEvent([In] HFILE hFile, out COMM_EVT_MASK lpEvtMask, NativeOverlapped* lpOverlapped);
+	public static extern bool WaitCommEvent([In] HFILE hFile, out COMM_EVT_MASK lpEvtMask, [In, Optional] StructPointer<NativeOverlapped> lpOverlapped);
 
 	/// <summary>
-	/// <para>Contains information about the configuration state of a communications device.</para>
+	/// Waits for an event to occur for a specified communications device. The set of events that are monitored by this function is
+	/// contained in the event mask associated with the device handle.
 	/// </summary>
-	// typedef struct _COMM_CONFIG { DWORD dwSize; WORD wVersion; WORD wReserved; DCB dcb; DWORD dwProviderSubType; DWORD
-	// dwProviderOffset; DWORD dwProviderSize; WCHAR wcProviderData[1];} COMMCONFIG, *LPCOMMCONFIG;
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
-	[PInvokeData("Winbase.h", MSDNShortId = "aa363188")]
-	public struct COMMCONFIG
-	{
-		/// <summary>
-		/// <para>The size of the structure, in bytes. The caller must set this member to .</para>
-		/// </summary>
-		public uint dwSize;
+	/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
+	/// <param name="lpEvtMask">
+	/// <para>
+	/// A pointer to a variable that receives a mask indicating the type of event that occurred. If an error occurs, the value is zero;
+	/// otherwise, it is one of the following values.
+	/// </para>
+	/// <para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>EV_BREAK0x0040</term>
+	/// <term>A break was detected on input.</term>
+	/// </item>
+	/// <item>
+	/// <term>EV_CTS0x0008</term>
+	/// <term>The CTS (clear-to-send) signal changed state.</term>
+	/// </item>
+	/// <item>
+	/// <term>EV_DSR0x0010</term>
+	/// <term>The DSR (data-set-ready) signal changed state.</term>
+	/// </item>
+	/// <item>
+	/// <term>EV_ERR0x0080</term>
+	/// <term>A line-status error occurred. Line-status errors are CE_FRAME, CE_OVERRUN, and CE_RXPARITY.</term>
+	/// </item>
+	/// <item>
+	/// <term>EV_RING0x0100</term>
+	/// <term>A ring indicator was detected.</term>
+	/// </item>
+	/// <item>
+	/// <term>EV_RLSD0x0020</term>
+	/// <term>The RLSD (receive-line-signal-detect) signal changed state.</term>
+	/// </item>
+	/// <item>
+	/// <term>EV_RXCHAR0x0001</term>
+	/// <term>A character was received and placed in the input buffer.</term>
+	/// </item>
+	/// <item>
+	/// <term>EV_RXFLAG0x0002</term>
+	/// <term>
+	/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure,
+	/// which is applied to a serial port by using the SetCommState function.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>EV_TXEMPTY0x0004</term>
+	/// <term>The last character in the output buffer was sent.</term>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// </param>
+	/// <param name="lpOverlapped">
+	/// <para>A pointer to an <c>OVERLAPPED</c> structure. This structure is required if hFile was opened with <c>FILE_FLAG_OVERLAPPED</c>.</para>
+	/// <para>
+	/// If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c>, the lpOverlapped parameter must not be <c>NULL</c>. It must point to a
+	/// valid <c>OVERLAPPED</c> structure. If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c> and lpOverlapped is <c>NULL</c>, the
+	/// function can incorrectly report that the operation is complete.
+	/// </para>
+	/// <para>
+	/// If hFile was opened with <c>FILE_FLAG_OVERLAPPED</c> and lpOverlapped is not <c>NULL</c>, <c>WaitCommEvent</c> is performed as an
+	/// overlapped operation. In this case, the <c>OVERLAPPED</c> structure must contain a handle to a manual-reset event object (created
+	/// by using the <c>CreateEvent</c> function).
+	/// </para>
+	/// <para>
+	/// If hFile was not opened with <c>FILE_FLAG_OVERLAPPED</c>, <c>WaitCommEvent</c> does not return until one of the specified events
+	/// or an error occurs.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+	/// </returns>
+	// BOOL WINAPI WaitCommEvent( _In_ HANDLE hFile, _Out_ LPDWORD lpEvtMask, _In_ LPOVERLAPPED lpOverlapped); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363479(v=vs.85).aspx
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("Winbase.h", MSDNShortId = "aa363479")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool WaitCommEvent([In] HFILE hFile, out COMM_EVT_MASK lpEvtMask, in NativeOverlapped lpOverlapped);
 
-		/// <summary>
-		/// <para>
-		/// The version number of the structure. This parameter can be 1. The version of the provider-specific structure should be
-		/// included in the <c>wcProviderData</c> member.
-		/// </para>
-		/// </summary>
-		public ushort wVersion;
+	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	private static extern bool CommConfigDialog(string lpszName, [In, Optional] HWND hWnd, [In, Out] IntPtr lpCC);
 
-		/// <summary>
-		/// <para>Reserved; do not use.</para>
-		/// </summary>
-		public ushort wReserved;
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	private static extern bool GetCommConfig([In] HFILE hCommDev, IntPtr lpCC, ref uint lpdwSize);
 
-		/// <summary>
-		/// <para>
-		/// The device-control block ( <c>DCB</c>) structure for RS-232 serial devices. A <c>DCB</c> structure is always present
-		/// regardless of the port driver subtype specified in the device's <c>COMMPROP</c> structure.
-		/// </para>
-		/// </summary>
-		public DCB dcb;
+	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	private static extern bool GetDefaultCommConfig(string lpszName, IntPtr lpCC, ref uint lpdwSize);
 
-		/// <summary>
-		/// <para>
-		/// The type of communications provider, and thus the format of the provider-specific data. For a list of communications provider
-		/// types, see the description of the <c>COMMPROP</c> structure.
-		/// </para>
-		/// </summary>
-		public PROV_SUB_TYPE dwProviderSubType;
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	private static extern bool SetCommConfig([In] HFILE hCommDev, [In] IntPtr lpCC, uint dwSize);
 
-		/// <summary>
-		/// <para>
-		/// The offset of the provider-specific data relative to the beginning of the structure, in bytes. This member is zero if there
-		/// is no provider-specific data.
-		/// </para>
-		/// </summary>
-		public uint dwProviderOffset;
-
-		/// <summary>
-		/// <para>The size of the provider-specific data, in bytes.</para>
-		/// </summary>
-		public uint dwProviderSize;
-
-		/// <summary>
-		/// <para>
-		/// Optional provider-specific data. This member can be of any size or can be omitted. Because the <c>COMMCONFIG</c> structure
-		/// may be expanded in the future, applications should use the <c>dwProviderOffset</c> member to determine the location of this member.
-		/// </para>
-		/// </summary>
-		public IntPtr wcProviderData;
-
-		/// <summary>Gets a default instance with the size field set.</summary>
-		public static readonly COMMCONFIG Default = new() { dwSize = (uint)Marshal.SizeOf<COMMCONFIG>(), wVersion = 1, dcb = DCB.Default };
-	}
+	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	private static extern bool SetDefaultCommConfig(string lpszName, [In] IntPtr lpCC, uint dwSize);
 
 	/// <summary>Contains information about a communications driver.</summary>
 	// typedef struct _COMMPROP { WORD wPacketLength; WORD wPacketVersion; DWORD dwServiceMask; DWORD dwReserved1; DWORD dwMaxTxQueue;
@@ -1735,7 +1803,7 @@ public static partial class Kernel32
 		/// Any provider-specific data. Applications should ignore this member unless they have detailed information about the format of
 		/// the data required by the provider.
 		/// </summary>
-		public IntPtr wcProvChar;
+		public ushort wcProvChar;
 	}
 
 	/// <summary>
@@ -1847,7 +1915,7 @@ public static partial class Kernel32
 		/// </summary>
 		public bool fTxim { get => GetFlag(0x0040); set => SetFlag(0x0040, value); }
 
-		private bool GetFlag(uint mask) => (bitvector1 & mask) != 0;
+		private readonly bool GetFlag(uint mask) => (bitvector1 & mask) != 0;
 
 		private void SetFlag(uint mask, bool value)
 		{
@@ -1862,11 +1930,11 @@ public static partial class Kernel32
 	// XoffLim; BYTE ByteSize; BYTE Parity; BYTE StopBits; char XonChar; char XoffChar; char ErrorChar; char EofChar; char EvtChar; WORD
 	// wReserved1;} DCB, *LPDCB; https://msdn.microsoft.com/en-us/library/windows/desktop/aa363214(v=vs.85).aspx
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363214")]
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	public struct DCB
+	[StructLayout(LayoutKind.Sequential, Pack = 4)]
+	public struct DCB()
 	{
 		/// <summary>The length of the structure, in bytes. The caller must set this member to .</summary>
-		public uint DCBlength;
+		public uint DCBlength = (uint)Marshal.SizeOf<DCB>();
 
 		/// <summary>
 		/// <para>
@@ -2168,7 +2236,7 @@ public static partial class Kernel32
 		/// </summary>
 		public bool fAbortOnError { get => GetFlag(0x4000); set => SetFlag(0x4000, value); }
 
-		private bool GetFlag(uint mask) => (flags & mask) != 0;
+		private readonly bool GetFlag(uint mask) => (flags & mask) != 0;
 
 		private void SetFlag(uint mask, bool value)
 		{
@@ -2176,6 +2244,85 @@ public static partial class Kernel32
 		}
 
 		/// <summary>Gets a default instance with the size field set.</summary>
-		public static readonly DCB Default = new() { DCBlength = (uint)Marshal.SizeOf<DCB>() };
+		public static readonly DCB Default = new();
+	}
+
+	/// <summary>
+	/// <para>Contains information about the configuration state of a communications device.</para>
+	/// </summary>
+	// typedef struct _COMM_CONFIG { DWORD dwSize; WORD wVersion; WORD wReserved; DCB dcb; DWORD dwProviderSubType; DWORD
+	// dwProviderOffset; DWORD dwProviderSize; WCHAR wcProviderData[1];} COMMCONFIG, *LPCOMMCONFIG;
+	[PInvokeData("Winbase.h", MSDNShortId = "aa363188")]
+	public class COMMCONFIG : IVanaraMarshaler
+	{
+		/// <summary>
+		/// The device-control block ( <c>DCB</c>) structure for RS-232 serial devices. A <c>DCB</c> structure is always present
+		/// regardless of the port driver subtype specified in the device's <c>COMMPROP</c> structure.
+		/// </summary>
+		public DCB dcb = DCB.Default;
+
+		/// <summary>
+		/// The type of communications provider, and thus the format of the provider-specific data. For a list of communications provider
+		/// types, see the description of the <c>COMMPROP</c> structure.
+		/// </summary>
+		public PROV_SUB_TYPE dwProviderSubType;
+
+		/// <summary>
+		/// Optional provider-specific data. This member can be of any size or can be omitted. Because the <c>COMMCONFIG</c> structure
+		/// may be expanded in the future, applications should use the <c>dwProviderOffset</c> member to determine the location of this member.
+		/// </summary>
+		public byte[] wcProviderData = [];
+
+		/// <summary>
+		/// The version number of the structure. This parameter can be 1. The version of the provider-specific structure should be
+		/// included in the <c>wcProviderData</c> member.
+		/// </summary>
+		public ushort wVersion = 1;
+
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<COMMCONFIG_UNMGD>();
+
+		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
+		{
+			if (managedObject is not COMMCONFIG cc) throw new ArgumentException($"Invalid type {managedObject?.GetType().FullName ?? "null"}", nameof(managedObject));
+			var off = (uint)Marshal.OffsetOf<COMMCONFIG_UNMGD>(nameof(wcProviderData)).ToInt32();
+			COMMCONFIG_UNMGD ccu = new()
+			{
+				wVersion = cc.wVersion,
+				dcb = cc.dcb,
+				dwProviderSubType = cc.dwProviderSubType,
+				dwProviderOffset = (cc.wcProviderData?.Length ?? 0) == 0 ? 0 : off,
+				dwProviderSize = (uint)(cc.wcProviderData?.Length ?? 0),
+			};
+			SafeCoTaskMemStruct<COMMCONFIG_UNMGD> mem = new(ccu, ccu.dwSize + ccu.dwProviderSize - sizeof(ushort));
+			if (cc.wcProviderData != null && cc.wcProviderData.Length > 0)
+				mem.DangerousGetHandle().Write(cc.wcProviderData, ccu.dwProviderOffset, mem.Size);
+			return mem;
+		}
+
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		{
+			if (pNativeData == default || allocatedBytes == default) return null;
+			ref COMMCONFIG_UNMGD cc = ref pNativeData.AsRef<COMMCONFIG_UNMGD>();
+			return new COMMCONFIG()
+			{
+				wVersion = cc.wVersion,
+				dcb = cc.dcb,
+				dwProviderSubType = cc.dwProviderSubType,
+				wcProviderData = cc.dwProviderOffset == 0 || cc.dwProviderSize == 0 ? [] : pNativeData.Offset(cc.dwProviderOffset).AsSpan<byte>(cc.dwProviderSize).ToArray()
+			};
+		}
+
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
+		internal struct COMMCONFIG_UNMGD()
+		{
+			public uint dwSize = (uint)Marshal.SizeOf<COMMCONFIG_UNMGD>();
+			public ushort wVersion = 1;
+			public ushort wReserved;
+			public DCB dcb = DCB.Default;
+			public PROV_SUB_TYPE dwProviderSubType;
+			public uint dwProviderOffset;
+			public uint dwProviderSize;
+			public ushort wcProviderData;
+		}
 	}
 }

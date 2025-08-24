@@ -92,6 +92,7 @@ public static partial class Kernel32
 	// HANDLE WINAPI CreateBoundaryDescriptor( _In_ LPCTSTR Name, _In_ ULONG Flags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682121(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682121")]
+	[return: AddAsCtor]
 	public static extern SafeBoundaryDescriptorHandle CreateBoundaryDescriptor(string Name, [Optional] uint Flags);
 
 	/// <summary>Creates a private namespace.</summary>
@@ -114,6 +115,7 @@ public static partial class Kernel32
 	// lpBoundaryDescriptor, _In_ LPCTSTR lpAliasPrefix); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682419(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682419")]
+	[return: AddAsCtor]
 	public static extern SafeNamespaceHandle CreatePrivateNamespace([In, Optional] SECURITY_ATTRIBUTES? lpPrivateNamespaceAttributes, [In] BoundaryDescriptorHandle lpBoundaryDescriptor, string lpAliasPrefix);
 
 	/// <summary>Deletes the specified boundary descriptor.</summary>

@@ -10,21 +10,21 @@ public class SafeLocalHandleTests
 	[Test(Description = "Allocate an enumeration")]
 	public void CreateFromListTest()
 	{
-		int[] r = new[] { 5, 5, 5, 5 };
+		int[] r = [5, 5, 5, 5];
 		SafeLocalHandle h = SafeLocalHandle.CreateFromList(r, r.Length);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
 		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(int)) * r.Length));
 		Assert.That(h.ToStructure<int>(), Is.EqualTo(5));
 		Assert.That(h.ToEnumerable<int>(4), Has.Exactly(4).EqualTo(5).And.Exactly(4).Items);
 
-		RECT[] d = new[] { new RECT(1, 1, 1, 1), new RECT(2, 2, 2, 2) };
+		RECT[] d = [new RECT(1, 1, 1, 1), new RECT(2, 2, 2, 2)];
 		h = SafeLocalHandle.CreateFromList(d, d.Length);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
 		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(RECT)) * d.Length));
 		Assert.That(h.ToStructure<RECT>().X, Is.EqualTo(1));
 		Assert.That(h.ToArray<RECT>(4), Has.Exactly(4).Items);
 
-		PRECT[] p = new[] { new PRECT(1, 1, 1, 1), new PRECT(2, 2, 2, 2) };
+		PRECT[] p = [new PRECT(1, 1, 1, 1), new PRECT(2, 2, 2, 2)];
 		h = SafeLocalHandle.CreateFromList(p);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
 		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(PRECT)) * p.Length));
@@ -36,7 +36,7 @@ public class SafeLocalHandleTests
 	[Test(Description = "Allocate an enumeration of strings.")]
 	public void CreateFromStringListTest()
 	{
-		string[] r = new[] { "5", "5", "5", "5" };
+		string[] r = ["5", "5", "5", "5"];
 
 		SafeLocalHandle h = SafeLocalHandle.CreateFromStringList(r, StringListPackMethod.Concatenated, CharSet.Ansi, 7);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
@@ -118,7 +118,7 @@ public class SafeLocalHandleTests
 	[Test()]
 	public void SafeLocalHandleTest2()
 	{
-		SafeLocalHandle h = new(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+		SafeLocalHandle h = new([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
 		Assert.That((int)h.Size, Is.EqualTo(10));
 		h.Dispose();
@@ -128,7 +128,7 @@ public class SafeLocalHandleTests
 	[Test()]
 	public void SafeLocalHandleTest3()
 	{
-		SafeLocalHandle h = new(new[] { (IntPtr)1, (IntPtr)2, (IntPtr)3, (IntPtr)4, (IntPtr)5 });
+		SafeLocalHandle h = new([(IntPtr)1, (IntPtr)2, (IntPtr)3, (IntPtr)4, (IntPtr)5]);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
 		Assert.That((int)h.Size, Is.EqualTo(5 * IntPtr.Size));
 		h.Dispose();

@@ -5475,7 +5475,7 @@ public static partial class Kernel32
 	[PInvokeData("winioctl.h", MSDNShortId = "NS:winioctl._STORAGE_PROPERTY_QUERY")]
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<STORAGE_PROPERTY_QUERY>), "*")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct STORAGE_PROPERTY_QUERY(Kernel32.STORAGE_PROPERTY_ID propertyId, Kernel32.STORAGE_QUERY_TYPE queryType = Kernel32.STORAGE_QUERY_TYPE.PropertyStandardQuery)
+	public struct STORAGE_PROPERTY_QUERY(STORAGE_PROPERTY_ID propertyId, STORAGE_QUERY_TYPE queryType = Kernel32.STORAGE_QUERY_TYPE.PropertyStandardQuery)
 	{
 		/// <summary>
 		/// Indicates whether the caller is requesting a device descriptor, an adapter descriptor, a write cache property, a device

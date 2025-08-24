@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -55,7 +56,7 @@ public static partial class Kernel32
 	// DWORD WINAPI ExpandEnvironmentStrings( _In_ LPCTSTR lpSrc, _Out_opt_ LPTSTR lpDst, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724265(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724265")]
-	public static extern uint ExpandEnvironmentStrings(string lpSrc, StringBuilder lpDst, uint nSize);
+	public static extern uint ExpandEnvironmentStrings(string lpSrc, [Out, SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpDst, uint nSize);
 
 	/// <summary>Frees a block of environment strings.</summary>
 	/// <param name="lpszEnvironmentBlock">
@@ -70,7 +71,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683151")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FreeEnvironmentStrings(IntPtr lpszEnvironmentBlock);
+	private static extern bool FreeEnvironmentStrings(IntPtr lpszEnvironmentBlock);
 
 	/// <summary>Retrieves the command-line string for the current process.</summary>
 	/// <returns>The return value is a pointer to the command-line string for the current process.</returns>
@@ -104,7 +105,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetCurrentDirectory( _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364934(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa364934")]
-	public static extern uint GetCurrentDirectory(uint nBufferLength, StringBuilder lpBuffer);
+	public static extern uint GetCurrentDirectory(uint nBufferLength, [Out, SizeDef(nameof(nBufferLength), SizingMethod.Query | SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpBuffer);
 
 	/// <summary>Retrieves the environment variables for the current process.</summary>
 	/// <returns>
@@ -146,7 +147,8 @@ public static partial class Kernel32
 	// DWORD WINAPI GetEnvironmentVariable( _In_opt_ LPCTSTR lpName, _Out_opt_ LPTSTR lpBuffer, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683188(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683188")]
-	public static extern uint GetEnvironmentVariable(string lpName, StringBuilder lpBuffer, uint nSize);
+	public static extern uint GetEnvironmentVariable([Range(0, 32767)] string lpName,
+		[Out, SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpBuffer, uint nSize);
 
 	/// <summary>Retrieves a handle to the specified standard device (standard input, standard output, or standard error).</summary>
 	/// <param name="nStdHandle">
@@ -238,7 +240,44 @@ public static partial class Kernel32
 	// _Out_ LPTSTR lpBuffer, _Out_opt_ LPTSTR *lpFilePart); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365527(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365527")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-	public static extern uint SearchPath([In, Optional] string? lpPath, string lpFileName, [In, Optional] string? lpExtension, uint nBufferLength, StringBuilder lpBuffer, out StrPtrAuto lpFilePart);
+	public static extern uint SearchPath([In, Optional] string? lpPath, string lpFileName, [In, Optional] string? lpExtension, uint nBufferLength,
+		[Out] StringBuilder? lpBuffer, out StrPtrAuto lpFilePart);
+
+	/// <summary>Searches for a specified file in a specified path.</summary>
+	/// <param name="lpPath">
+	/// <para>The path to be searched for the file.</para>
+	/// <para>
+	/// If this parameter is <c>NULL</c>, the function searches for a matching file using a registry-dependent system search path. For more
+	/// information, see the Remarks section.
+	/// </para>
+	/// </param>
+	/// <param name="lpFileName">The name of the file for which to search.</param>
+	/// <param name="lpExtension">
+	/// <para>
+	/// The extension to be added to the file name when searching for the file. The first character of the file name extension must be a
+	/// period (.). The extension is added only if the specified file name does not end with an extension.
+	/// </para>
+	/// <para>If a file name extension is not required or if the file name contains an extension, this parameter can be <c>NULL</c>.</para>
+	/// </param>
+	/// <param name="fileIndex">
+	/// The index (within the return value) of the last component of the valid path and file name, which is the index of the character
+	/// immediately following the final backslash (\) in the path.
+	/// </param>
+	/// <returns>The path and file name of the file found.</returns>
+	[PInvokeData("WinBase.h", MSDNShortId = "aa365527")]
+	public static string? SearchPath([In, Optional] string? lpPath, string lpFileName, [In, Optional] string? lpExtension, out int fileIndex)
+	{
+		var sz = SearchPath(lpPath, lpFileName, lpExtension, 0, default, out _);
+		using SafeCoTaskMemString buf = new((int)sz + 1, CharSet.Auto);
+		if (SearchPath(lpPath, lpFileName, lpExtension, sz + 1, buf, out var filePart) == 0)
+			Win32Error.ThrowLastError();
+		fileIndex = filePart == default ? -1 : filePart.ToInt32() - ((IntPtr)buf).ToInt32();
+		return buf.ToString();
+
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		static extern uint SearchPath([In, Optional] string? lpPath, string lpFileName, [In, Optional] string? lpExtension, uint nBufferLength,
+			[Out] IntPtr lpBuffer, out IntPtr lpFilePart);
+	}
 
 	/// <summary>Changes the current directory for the current process.</summary>
 	/// <param name="lpPathName">

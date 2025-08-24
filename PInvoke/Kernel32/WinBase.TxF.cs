@@ -6,12 +6,11 @@ public static partial class Kernel32
 {
 	/// <summary>
 	/// <para>
-	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
-	/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
-	/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see
+	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF was
+	/// developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in future
+	/// versions of Microsoft Windows. For more information, and alternatives to TxF, please see <a
+	/// href="https://learn.microsoft.com/en-us/windows/win32/fileio/deprecation-of-txf">Alternatives to using Transactional NTFS</a>.]
 	/// </para>
-	/// <para>Alternatives to using Transactional NTFS</para>
-	/// <para>.]</para>
 	/// <para>
 	/// Copies an existing file to a new file as a transacted operation, notifying the application of its progress through a callback function.
 	/// </para>
@@ -34,9 +33,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="lpProgressRoutine">
 	/// <para>
-	/// The address of a callback function of type <c>LPPROGRESS_ROUTINE</c> that is called each time another portion of the file has
-	/// been copied. This parameter can be <c>NULL</c>. For more information on the progress callback function, see the
-	/// CopyProgressRoutine function.
+	/// The address of a callback function of type <c>LPPROGRESS_ROUTINE</c> that is called each time another portion of the file has been
+	/// copied. This parameter can be <c>NULL</c>. For more information on the progress callback function, see the CopyProgressRoutine function.
 	/// </para>
 	/// </param>
 	/// <param name="lpData">
@@ -44,8 +42,8 @@ public static partial class Kernel32
 	/// </param>
 	/// <param name="pbCancel">
 	/// <para>
-	/// If this flag is set to <c>TRUE</c> during the copy operation, the operation is canceled. Otherwise, the copy operation will
-	/// continue to completion.
+	/// If this flag is set to <c>TRUE</c> during the copy operation, the operation is canceled. Otherwise, the copy operation will continue
+	/// to completion.
 	/// </para>
 	/// </param>
 	/// <param name="dwCopyFlags">
@@ -74,8 +72,8 @@ public static partial class Kernel32
 	/// <term>COPY_FILE_RESTARTABLE 0x00000002</term>
 	/// <term>
 	/// Progress of the copy is tracked in the target file in case the copy fails. The failed copy can be restarted at a later time by
-	/// specifying the same values for and as those used in the call that failed. This can significantly slow down the copy operation as
-	/// the new file may be flushed multiple times during the copy operation.
+	/// specifying the same values for and as those used in the call that failed. This can significantly slow down the copy operation as the
+	/// new file may be flushed multiple times during the copy operation.
 	/// </term>
 	/// </item>
 	/// </list>
@@ -91,26 +89,26 @@ public static partial class Kernel32
 	/// GetLastError will return <c>ERROR_REQUEST_ABORTED</c>. In this case, the partially copied destination file is deleted.
 	/// </para>
 	/// <para>
-	/// If returns <c>PROGRESS_STOP</c> due to the user stopping the operation, <c>CopyFileTransacted</c> will return zero and
-	/// GetLastError will return <c>ERROR_REQUEST_ABORTED</c>. In this case, the partially copied destination file is left intact.
+	/// If returns <c>PROGRESS_STOP</c> due to the user stopping the operation, <c>CopyFileTransacted</c> will return zero and GetLastError
+	/// will return <c>ERROR_REQUEST_ABORTED</c>. In this case, the partially copied destination file is left intact.
 	/// </para>
 	/// <para>
-	/// If you attempt to call this function with a handle to a transaction that has already been rolled back, <c>CopyFileTransacted</c>
-	/// will return either <c>ERROR_TRANSACTION_NOT_ACTIVE</c> or <c>ERROR_INVALID_TRANSACTION</c>.
+	/// If you attempt to call this function with a handle to a transaction that has already been rolled back, <c>CopyFileTransacted</c> will
+	/// return either <c>ERROR_TRANSACTION_NOT_ACTIVE</c> or <c>ERROR_INVALID_TRANSACTION</c>.
 	/// </para>
 	/// </returns>
 	/// <remarks>
 	/// <para>
-	/// This function preserves extended attributes, OLE structured storage, NTFS file system alternate data streams, security
-	/// attributes, and file attributes.
+	/// This function preserves extended attributes, OLE structured storage, NTFS file system alternate data streams, security attributes,
+	/// and file attributes.
 	/// </para>
 	/// <para>
 	/// <c>Windows 7, Windows Server 2008 R2, Windows Server 2008 and Windows Vista:</c> Security resource attributes (
 	/// <c>ATTRIBUTE_SECURITY_INFORMATION</c>) for the existing file are not copied to the new file until Windows 8 and Windows Server 2012.
 	/// </para>
 	/// <para>
-	/// This function fails with <c>ERROR_ACCESS_DENIED</c> if the destination file already exists and has the
-	/// <c>FILE_ATTRIBUTE_HIDDEN</c> or <c>FILE_ATTRIBUTE_READONLY</c> attribute set.
+	/// This function fails with <c>ERROR_ACCESS_DENIED</c> if the destination file already exists and has the <c>FILE_ATTRIBUTE_HIDDEN</c>
+	/// or <c>FILE_ATTRIBUTE_READONLY</c> attribute set.
 	/// </para>
 	/// <para>Encrypted files are not supported by TxF.</para>
 	/// <para>If <c>COPY_FILE_COPY_SYMLINK</c> is specified, the following rules apply:</para>
@@ -119,8 +117,8 @@ public static partial class Kernel32
 	/// <item>If the source file is not a symbolic link, there is no change in behavior.</item>
 	/// <item>If the destination file is an existing symbolic link, the symbolic link is overwritten, not the target file.</item>
 	/// <item>
-	/// If <c>COPY_FILE_FAIL_IF_EXISTS</c> is also specified, and the destination file is an existing symbolic link, the operation fails
-	/// in all cases.
+	/// If <c>COPY_FILE_FAIL_IF_EXISTS</c> is also specified, and the destination file is an existing symbolic link, the operation fails in
+	/// all cases.
 	/// </item>
 	/// </list>
 	/// <para>If</para>
@@ -128,8 +126,8 @@ public static partial class Kernel32
 	/// <para>is not specified, the following rules apply:</para>
 	/// <list type="bullet">
 	/// <item>
-	/// If <c>COPY_FILE_FAIL_IF_EXISTS</c> is also specified, and the destination file is an existing symbolic link, the operation fails
-	/// only if the target of the symbolic link exists.
+	/// If <c>COPY_FILE_FAIL_IF_EXISTS</c> is also specified, and the destination file is an existing symbolic link, the operation fails only
+	/// if the target of the symbolic link exists.
 	/// </item>
 	/// <item>If <c>COPY_FILE_FAIL_IF_EXISTS</c> is not specified, there is no change in behavior.</item>
 	/// </list>
@@ -169,16 +167,16 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "118392de-166b-413e-99c9-b3deb756de0e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CopyFileTransacted(string lpExistingFileName, string lpNewFileName, [Optional] CopyProgressRoutine? lpProgressRoutine, [Optional] IntPtr lpData, [MarshalAs(UnmanagedType.Bool)] ref bool pbCancel, COPY_FILE dwCopyFlags, HTRXN hTransaction);
+	public static extern bool CopyFileTransacted(string lpExistingFileName, string lpNewFileName, [Optional] CopyProgressRoutine? lpProgressRoutine,
+		[In, Optional] IntPtr lpData, [MarshalAs(UnmanagedType.Bool)] ref bool pbCancel, COPY_FILE dwCopyFlags, HTRXN hTransaction);
 
 	/// <summary>
 	/// <para>
-	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
-	/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
-	/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see
+	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF was
+	/// developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in future
+	/// versions of Microsoft Windows. For more information, and alternatives to TxF, please see <a
+	/// href="https://learn.microsoft.com/en-us/windows/win32/fileio/deprecation-of-txf">Alternatives to using Transactional NTFS</a>.]
 	/// </para>
-	/// <para>Alternatives to using Transactional NTFS</para>
-	/// <para>.]</para>
 	/// <para>
 	/// Creates a new directory as a transacted operation, with the attributes of a specified template directory. If the underlying file
 	/// system supports security on files and directories, the function applies a specified security descriptor to the new directory. The
@@ -299,12 +297,11 @@ public static partial class Kernel32
 
 	/// <summary>
 	/// <para>
-	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
-	/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
-	/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see
+	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF was
+	/// developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in future
+	/// versions of Microsoft Windows. For more information, and alternatives to TxF, please see <a
+	/// href="https://learn.microsoft.com/en-us/windows/win32/fileio/deprecation-of-txf">Alternatives to using Transactional NTFS</a>.]
 	/// </para>
-	/// <para>Alternatives to using Transactional NTFS</para>
-	/// <para>.]</para>
 	/// <para>
 	/// Creates or opens a file, file stream, or directory as a transacted operation. The function returns a handle that can be used to
 	/// access the object.
@@ -907,17 +904,17 @@ public static partial class Kernel32
 	// DWORD dwFlagsAndAttributes, HANDLE hTemplateFile, HANDLE hTransaction, PUSHORT pusMiniVersion, PVOID lpExtendedParameter );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "0cbc081d-8787-409b-84bc-a6a28d8f83a0")]
-	public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, [Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
-		[Optional] HFILE hTemplateFile, HTRXN hTransaction, in ushort pusMiniVersion, [Optional] IntPtr lpExtendedParameter);
+	public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
+		[In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
+		[In, Optional] HFILE hTemplateFile, HTRXN hTransaction, in ushort pusMiniVersion, [Optional, Ignore] IntPtr lpExtendedParameter);
 
 	/// <summary>
 	/// <para>
-	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
-	/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
-	/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see
+	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF was
+	/// developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in future
+	/// versions of Microsoft Windows. For more information, and alternatives to TxF, please see <a
+	/// href="https://learn.microsoft.com/en-us/windows/win32/fileio/deprecation-of-txf">Alternatives to using Transactional NTFS</a>.]
 	/// </para>
-	/// <para>Alternatives to using Transactional NTFS</para>
-	/// <para>.]</para>
 	/// <para>
 	/// Creates or opens a file, file stream, or directory as a transacted operation. The function returns a handle that can be used to
 	/// access the object.
@@ -1520,17 +1517,17 @@ public static partial class Kernel32
 	// DWORD dwFlagsAndAttributes, HANDLE hTemplateFile, HANDLE hTransaction, PUSHORT pusMiniVersion, PVOID lpExtendedParameter );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "0cbc081d-8787-409b-84bc-a6a28d8f83a0")]
-	public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, [Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
-		[Optional] HFILE hTemplateFile, HTRXN hTransaction, [Optional] IntPtr pusMiniVersion, [Optional] IntPtr lpExtendedParameter);
+	public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
+		[In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
+		[In, Optional] HFILE hTemplateFile, HTRXN hTransaction, [In, Optional] IntPtr pusMiniVersion, [Optional, Ignore] IntPtr lpExtendedParameter);
 
 	/// <summary>
 	/// <para>
-	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
-	/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
-	/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see
+	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF was
+	/// developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in future
+	/// versions of Microsoft Windows. For more information, and alternatives to TxF, please see <a
+	/// href="https://learn.microsoft.com/en-us/windows/win32/fileio/deprecation-of-txf">Alternatives to using Transactional NTFS</a>.]
 	/// </para>
-	/// <para>Alternatives to using Transactional NTFS</para>
-	/// <para>.]</para>
 	/// <para>
 	/// Establishes a hard link between an existing file and a new file as a transacted operation. This function is only supported on the
 	/// NTFS file system, and only for files, not directories.
@@ -1627,14 +1624,14 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "27dd5b0a-08ef-4757-8f51-03d9918028c8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CreateHardLinkTransacted(string lpFileName, string lpExistingFileName, [Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, HTRXN hTransaction);
+	public static extern bool CreateHardLinkTransacted(string lpFileName, string lpExistingFileName, [In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, HTRXN hTransaction);
 
 	/// <summary>
 	/// <para>
-	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
-	/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
-	/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see Alternatives to using
-	/// Transactional NTFS.]
+	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF was
+	/// developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in future
+	/// versions of Microsoft Windows. For more information, and alternatives to TxF, please see <a
+	/// href="https://learn.microsoft.com/en-us/windows/win32/fileio/deprecation-of-txf">Alternatives to using Transactional NTFS</a>.]
 	/// </para>
 	/// <para>Deletes an existing file as a transacted operation.</para>
 	/// </summary>
@@ -1738,10 +1735,10 @@ public static partial class Kernel32
 
 	/// <summary>
 	/// <para>
-	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
-	/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
-	/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see Alternatives to using
-	/// Transactional NTFS.]
+	/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF was
+	/// developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in future
+	/// versions of Microsoft Windows. For more information, and alternatives to TxF, please see <a
+	/// href="https://learn.microsoft.com/en-us/windows/win32/fileio/deprecation-of-txf">Alternatives to using Transactional NTFS</a>.]
 	/// </para>
 	/// <para>
 	/// Creates an enumeration of all the hard links to the specified file as a transacted operation. The function returns a handle to
@@ -1815,7 +1812,7 @@ public static partial class Kernel32
 	// FindFirstFileNameTransactedW( LPCWSTR lpFileName, DWORD dwFlags, LPDWORD StringLength, PWSTR LinkName, HANDLE hTransaction );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winbase.h", MSDNShortId = "79c7d32d-3cb7-4e27-9db1-f24282bf606a")]
-	public static extern SafeSearchHandle FindFirstFileNameTransactedW(string lpFileName, [Optional] uint dwFlags, ref uint StringLength, StringBuilder LinkName, HTRXN hTransaction);
+	public static extern SafeSearchHandle FindFirstFileNameTransactedW(string lpFileName, [Optional, Ignore] uint dwFlags, ref uint StringLength, StringBuilder LinkName, HTRXN hTransaction);
 
 	/// <summary>
 	/// <para>
@@ -2000,7 +1997,8 @@ public static partial class Kernel32
 	// DWORD dwAdditionalFlags, HANDLE hTransaction );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "d94bf32b-f14b-44b4-824b-ed453d0424ef")]
-	public static extern SafeSearchHandle FindFirstFileTransacted(string lpFileName, FINDEX_INFO_LEVELS fInfoLevelId, out WIN32_FIND_DATA lpFindFileData, FINDEX_SEARCH_OPS fSearchOp, [Optional] IntPtr lpSearchFilter, FIND_FIRST dwAdditionalFlags, HTRXN hTransaction);
+	public static extern SafeSearchHandle FindFirstFileTransacted(string lpFileName, FINDEX_INFO_LEVELS fInfoLevelId, out WIN32_FIND_DATA lpFindFileData,
+		FINDEX_SEARCH_OPS fSearchOp, [In, Optional, Ignore] IntPtr lpSearchFilter, FIND_FIRST dwAdditionalFlags, HTRXN hTransaction);
 
 	/// <summary>
 	/// <para>
@@ -2093,7 +2091,8 @@ public static partial class Kernel32
 	// hTransaction );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winbase.h", MSDNShortId = "76c64aa9-0501-457d-b774-c209fbac4ccc")]
-	public static extern SafeSearchHandle FindFirstStreamTransactedW(string lpFileName, STREAM_INFO_LEVELS InfoLevel, out WIN32_FIND_STREAM_DATA lpFindStreamData, [Optional] uint dwFlags, HTRXN hTransaction);
+	public static extern SafeSearchHandle FindFirstStreamTransactedW(string lpFileName, STREAM_INFO_LEVELS InfoLevel, out WIN32_FIND_STREAM_DATA lpFindStreamData,
+		[Optional, Ignore] uint dwFlags, HTRXN hTransaction);
 
 	/// <summary>
 	/// <para>
@@ -2193,7 +2192,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "dd1435da-93e5-440a-913a-9e40e39b4a01")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetFileAttributesTransacted(string lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, ref WIN32_FILE_ATTRIBUTE_DATA lpFileInformation, HTRXN hTransaction);
+	public static extern bool GetFileAttributesTransacted(string lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, out WIN32_FILE_ATTRIBUTE_DATA lpFileInformation, HTRXN hTransaction);
 
 	/// <summary>
 	/// <para>
@@ -2570,7 +2569,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "466d733b-30d2-4297-a0e6-77038f1a21d5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MoveFileTransacted(string lpExistingFileName, string lpNewFileName, [Optional] CopyProgressRoutine? lpProgressRoutine, [Optional] IntPtr lpData, MOVEFILE dwFlags, HTRXN hTransaction);
+	public static extern bool MoveFileTransacted(string lpExistingFileName, string lpNewFileName, [Optional] CopyProgressRoutine? lpProgressRoutine,
+		[Optional] IntPtr lpData, MOVEFILE dwFlags, HTRXN hTransaction);
 
 	/// <summary>
 	/// <para>

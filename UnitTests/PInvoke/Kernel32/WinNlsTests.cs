@@ -8,10 +8,7 @@ namespace Vanara.PInvoke.Tests;
 public class WinNlsTests
 {
 	[Test]
-	public void ConvertDefaultLocaleTest()
-	{
-		Assert.That(ConvertDefaultLocale(LOCALE_USER_DEFAULT), ResultIs.Not.Value(LOCALE_USER_DEFAULT));
-	}
+	public void ConvertDefaultLocaleTest() => Assert.That(ConvertDefaultLocale(LOCALE_USER_DEFAULT), ResultIs.Not.Value(LOCALE_USER_DEFAULT));
 
 	[Test]
 	public void ConvertTest()
@@ -152,22 +149,13 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void FindNLSStringExTest()
-	{
-		Assert.That(FindNLSStringEx(LOCALE_NAME_USER_DEFAULT, COMPARE_STRING.LINGUISTIC_IGNORECASE, "Fred", 4, "fred", 4, out int found), ResultIs.Not.Value(-1));
-	}
+	public void FindNLSStringExTest() => Assert.That(FindNLSStringEx(LOCALE_NAME_USER_DEFAULT, COMPARE_STRING.LINGUISTIC_IGNORECASE, "Fred", 4, "fred", 4, out int found), ResultIs.Not.Value(-1));
 
 	[Test]
-	public void FindNLSStringTest()
-	{
-		Assert.That(FindNLSString(LOCALE_USER_DEFAULT, COMPARE_STRING.LINGUISTIC_IGNORECASE, "Fred", 4, "fred", 4, out int found), ResultIs.Not.Value(-1));
-	}
+	public void FindNLSStringTest() => Assert.That(FindNLSString(LOCALE_USER_DEFAULT, COMPARE_STRING.LINGUISTIC_IGNORECASE, "Fred", 4, "fred", 4, out int found), ResultIs.Not.Value(-1));
 
 	[Test]
-	public void GetACPTest()
-	{
-		Assert.That(GetACP(), ResultIs.Not.Value(0));
-	}
+	public void GetACPTest() => Assert.That(GetACP(), ResultIs.Not.Value(0));
 
 	[Test]
 	public void GetCalendarDateFormatExTest()
@@ -356,10 +344,7 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void GetOEMCPTest()
-	{
-		Assert.That(GetOEMCP(), ResultIs.Not.Value(0));
-	}
+	public void GetOEMCPTest() => Assert.That(GetOEMCP(), ResultIs.Not.Value(0));
 
 	[Test]
 	public void GetSetCalendarInfoTest()
@@ -388,16 +373,13 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void GetSetProcessPreferredUILanguagesTest()
-	{
-		Assert.That(() =>
-		{
-			System.Collections.Generic.List<string> langs = GetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID).ToList();
-			langs.WriteValues();
-			langs.Add("en-UK");
-			Assert.That(SetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID, langs.ToArray(), out uint num), ResultIs.Successful);
-		}, Throws.Nothing);
-	}
+	public void GetSetProcessPreferredUILanguagesTest() => Assert.That(() =>
+																{
+																	System.Collections.Generic.List<string> langs = GetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID).ToList();
+																	langs.WriteValues();
+																	langs.Add("en-UK");
+																	Assert.That(SetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID, langs.ToArray(), out uint num), ResultIs.Successful);
+																}, Throws.Nothing);
 
 	[Test]
 	public void GetSetThreadLocaleTest()
@@ -407,16 +389,13 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void GetSetThreadPreferredUILanguagesTest()
-	{
-		Assert.That(() =>
-		{
-			System.Collections.Generic.List<string> langs = GetThreadPreferredUILanguages(MUI_LANGUAGE_FILTER.MUI_LANGUAGE_NAME).ToList();
-			langs.WriteValues();
-			Assert.That(SetThreadPreferredUILanguages(0, null, out _), ResultIs.Successful);
-			Assert.That(SetThreadPreferredUILanguages(MUI_LANGUAGE_FLAGS.MUI_LANGUAGE_NAME, langs.ToArray(), out uint num), ResultIs.Successful);
-		}, Throws.Nothing);
-	}
+	public void GetSetThreadPreferredUILanguagesTest() => Assert.That(() =>
+															   {
+																   System.Collections.Generic.List<string> langs = GetThreadPreferredUILanguages(MUI_LANGUAGE_FILTER.MUI_LANGUAGE_NAME).ToList();
+																   langs.WriteValues();
+																   Assert.That(SetThreadPreferredUILanguages(0, null, out _), ResultIs.Successful);
+																   Assert.That(SetThreadPreferredUILanguages(MUI_LANGUAGE_FLAGS.MUI_LANGUAGE_NAME, langs.ToArray(), out uint num), ResultIs.Successful);
+															   }, Throws.Nothing);
 
 	[Test]
 	public void GetSetThreadUILanguageTest()
@@ -454,16 +433,10 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void GetSystemDefaultLangIDTest()
-	{
-		Assert.That(GetSystemDefaultLangID(), ResultIs.Not.Value(0));
-	}
+	public void GetSystemDefaultLangIDTest() => Assert.That(GetSystemDefaultLangID(), ResultIs.Not.Value(0));
 
 	[Test]
-	public void GetSystemDefaultLCIDTest()
-	{
-		Assert.That((uint)GetSystemDefaultLCID(), ResultIs.Not.Value(0U));
-	}
+	public void GetSystemDefaultLCIDTest() => Assert.That((uint)GetSystemDefaultLCID(), ResultIs.Not.Value(0U));
 
 	[Test]
 	public void GetSystemDefaultLocaleNameTest()
@@ -474,25 +447,19 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void GetSystemDefaultUILanguageTest()
-	{
-		Assert.That(GetSystemDefaultUILanguage(), ResultIs.Not.Value(0));
-	}
+	public void GetSystemDefaultUILanguageTest() => Assert.That(GetSystemDefaultUILanguage(), ResultIs.Not.Value(0));
 
 	[Test]
-	public void GetSystemPreferredUILanguagesTest()
-	{
-		Assert.That(() =>
-		{
-			GetSystemPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME).WriteValues();
-		}, Throws.Nothing);
-	}
+	public void GetSystemPreferredUILanguagesTest() => Assert.That(() =>
+															{
+																GetSystemPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME).WriteValues();
+															}, Throws.Nothing);
 
 	[Test]
 	public void GetUILanguageInfoTest()
 	{
 		uint sz = 0U;
-		string[] langs = new[] { "en-US" };
+		string[] langs = ["en-US"];
 		Assert.That(GetUILanguageInfo(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME, langs, default, ref sz, out MUI_LANGUAGE attr), ResultIs.FailureCode(Win32Error.ERROR_INSUFFICIENT_BUFFER));
 		using SafeHGlobalHandle mem = new(sz);
 		Assert.That(GetUILanguageInfo(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_NAME, langs, mem, ref sz, out attr), ResultIs.Successful);
@@ -501,16 +468,10 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void GetUserDefaultLangIDTest()
-	{
-		Assert.That(GetUserDefaultLangID(), ResultIs.Not.Value(0));
-	}
+	public void GetUserDefaultLangIDTest() => Assert.That(GetUserDefaultLangID(), ResultIs.Not.Value(0));
 
 	[Test]
-	public void GetUserDefaultLCIDTest()
-	{
-		Assert.That((uint)GetUserDefaultLCID(), ResultIs.Not.Value(0));
-	}
+	public void GetUserDefaultLCIDTest() => Assert.That((uint)GetUserDefaultLCID(), ResultIs.Not.Value(0));
 
 	[Test]
 	public void GetUserDefaultLocaleNameTest()
@@ -521,19 +482,13 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void GetUserDefaultUILanguageTest()
-	{
-		Assert.That(GetUserDefaultUILanguage(), ResultIs.Not.Value(0));
-	}
+	public void GetUserDefaultUILanguageTest() => Assert.That(GetUserDefaultUILanguage(), ResultIs.Not.Value(0));
 
 	[Test]
-	public void GetUserPreferredUILanguagesTest()
-	{
-		Assert.That(() =>
-		{
-			GetUserPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID).WriteValues();
-		}, Throws.Nothing);
-	}
+	public void GetUserPreferredUILanguagesTest() => Assert.That(() =>
+														  {
+															  GetUserPreferredUILanguages(MUI_LANGUAGE_ENUM.MUI_LANGUAGE_ID).WriteValues();
+														  }, Throws.Nothing);
 
 	[Test]
 	public void IdnTest()
@@ -598,16 +553,10 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void IsValidCodePageTest()
-	{
-		Assert.That(IsValidCodePage(GetACP()), Is.True);
-	}
+	public void IsValidCodePageTest() => Assert.That(IsValidCodePage(GetACP()), Is.True);
 
 	[Test]
-	public void IsValidLanguageGroupTest()
-	{
-		Assert.That(IsValidLanguageGroup(EnumSystemLanguageGroups().First().LanguageGroup), Is.True);
-	}
+	public void IsValidLanguageGroupTest() => Assert.That(IsValidLanguageGroup(EnumSystemLanguageGroups().First().LanguageGroup), Is.True);
 
 	[Test]
 	public void IsValidLocaleNameTest()
@@ -618,10 +567,7 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void IsValidLocaleTest()
-	{
-		Assert.That(IsValidLocale(GetThreadLocale(), LCID_FLAGS.LCID_INSTALLED), Is.True);
-	}
+	public void IsValidLocaleTest() => Assert.That(IsValidLocale(GetThreadLocale(), LCID_FLAGS.LCID_INSTALLED), Is.True);
 
 	[Test]
 	public void IsValidNLSVersionTest()
@@ -662,10 +608,7 @@ public class WinNlsTests
 	}
 
 	[Test]
-	public void LocaleNameToLCIDTest()
-	{
-		Assert.That((uint)LocaleNameToLCID(LOCALE_NAME_USER_DEFAULT, 0), ResultIs.Not.Value(0));
-	}
+	public void LocaleNameToLCIDTest() => Assert.That((uint)LocaleNameToLCID(LOCALE_NAME_USER_DEFAULT, 0), ResultIs.Not.Value(0));
 
 	[Test]
 	public void ResolveLocaleNameTest()

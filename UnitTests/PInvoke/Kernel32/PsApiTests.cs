@@ -7,40 +7,22 @@ namespace Vanara.PInvoke.Tests;
 public class PsApiTests
 {
 	[Test]
-	public void EmptyWorkingSetTest()
-	{
-		Assert.That(EmptyWorkingSet(GetCurrentProcess()), Is.True);
-	}
+	public void EmptyWorkingSetTest() => Assert.That(EmptyWorkingSet(GetCurrentProcess()), Is.True);
 
 	[Test]
-	public void EnumDeviceDriversTest()
-	{
-		Assert.That(EnumDeviceDrivers(), Is.Not.Empty);
-	}
+	public void EnumDeviceDriversTest() => Assert.That(EnumDeviceDrivers(), Is.Not.Empty);
 
 	[Test]
-	public void EnumPageFilesTest()
-	{
-		Assert.That(EnumPageFiles(), Is.Not.Empty);
-	}
+	public void EnumPageFilesTest() => Assert.That(EnumPageFiles(), Is.Not.Empty);
 
 	[Test]
-	public void EnumProcessesTest()
-	{
-		Assert.That(EnumProcesses(), Is.Not.Empty);
-	}
+	public void EnumProcessesTest() => Assert.That(EnumProcesses(), Is.Not.Empty);
 
 	[Test]
-	public void EnumProcessModulesExTest()
-	{
-		Assert.That(EnumProcessModulesEx(GetCurrentProcess()), Is.Not.Empty);
-	}
+	public void EnumProcessModulesExTest() => Assert.That(EnumProcessModulesEx(GetCurrentProcess()), Is.Not.Empty);
 
 	[Test]
-	public void EnumProcessModulesTest()
-	{
-		Assert.That(EnumProcessModules(GetCurrentProcess()), Is.Not.Empty);
-	}
+	public void EnumProcessModulesTest() => Assert.That(EnumProcessModules(GetCurrentProcess()), Is.Not.Empty);
 
 	[Test]
 	public void GetDeviceDriverBaseFileNameTest()
@@ -91,23 +73,17 @@ public class PsApiTests
 	}
 
 	[Test]
-	public void QueryWorkingSetTest()
-	{
-		Assert.That(QueryWorkingSet(GetCurrentProcess()), Is.Not.Empty);
-	}
+	public void QueryWorkingSetTest() => Assert.That(QueryWorkingSet(GetCurrentProcess()), Is.Not.Empty);
 
 	[Test]
-	public void QueryWorkingSetExTest()
-	{
-		Assert.That(() =>
-		{
-			PSAPI_WORKING_SET_EX_INFORMATION[] info = QueryWorkingSetEx(GetCurrentProcess());
-			Assert.That(info, Is.Not.Empty);
-			PSAPI_WORKING_SET_EX_INFORMATION i1 = QueryWorkingSetEx(GetCurrentProcess(), info[0].VirtualAddress)[0];
-			Assert.That(i1.VirtualAddress, Is.EqualTo(info[0].VirtualAddress));
-			Assert.That(i1.VirtualAttributes.Valid, Is.True);
-		}, Throws.Nothing);
-	}
+	public void QueryWorkingSetExTest() => Assert.That(() =>
+												{
+													PSAPI_WORKING_SET_EX_INFORMATION[] info = QueryWorkingSetEx(GetCurrentProcess());
+													Assert.That(info, Is.Not.Empty);
+													PSAPI_WORKING_SET_EX_INFORMATION i1 = QueryWorkingSetEx(GetCurrentProcess(), info[0].VirtualAddress)[0];
+													Assert.That(i1.VirtualAddress, Is.EqualTo(info[0].VirtualAddress));
+													Assert.That(i1.VirtualAttributes.Valid, Is.True);
+												}, Throws.Nothing);
 
 	[Test]
 	public void WsWatchExTest()

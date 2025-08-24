@@ -1,7 +1,12 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Vanara.PInvoke;
 
 public static partial class Kernel32
 {
+	/// <summary>The maximum length of the command line.</summary>
+	public const int RESTART_MAX_CMD_LINE = 1024;
+
 	/// <summary>
 	/// Application-defined callback function used to save data and application state information in the event the application encounters
 	/// an unhandled exception or becomes unresponsive.
@@ -12,7 +17,7 @@ public static partial class Kernel32
 	/// <returns>The return value is not used and should be 0.</returns>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa373202")]
-	public delegate uint ApplicationRecoveryCallback(IntPtr pvParameter);
+	public delegate uint ApplicationRecoveryCallback([In, Optional] IntPtr pvParameter);
 
 	/// <summary>
 	/// The <c>ACTCTX_COMPATIBILITY_ELEMENT_TYPE</c> enumeration describes the compatibility element in the application manifest.
@@ -297,7 +302,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa374151")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ActivateActCtx(HACTCTX hActCtx, out IntPtr lpCookie);
+	public static extern bool ActivateActCtx([In, AddAsMember] HACTCTX hActCtx, out IntPtr lpCookie);
 
 	/// <summary>The <c>AddRefActCtx</c> function increments the reference count of the specified activation context.</summary>
 	/// <param name="hActCtx">
@@ -307,7 +312,7 @@ public static partial class Kernel32
 	// void AddRefActCtx( _In_ HANDLE hActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa374171(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa374171")]
-	public static extern void AddRefActCtx(HACTCTX hActCtx);
+	public static extern void AddRefActCtx([In, AddAsMember] HACTCTX hActCtx);
 
 	/// <summary>Indicates that the calling application has completed its data recovery.</summary>
 	/// <param name="bSuccess">Specify <c>TRUE</c> to indicate that the data was successfully recovered; otherwise, <c>FALSE</c>.</param>
@@ -357,6 +362,7 @@ public static partial class Kernel32
 	// HANDLE CreateActCtx( _Inout_ PACTCTX pActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375125(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa375125")]
+	[return: AddAsCtor]
 	public static extern SafeHACTCTX CreateActCtx(in ACTCTX pActCtx);
 
 	/// <summary>The <c>DeactivateActCtx</c> function deactivates the activation context corresponding to the specified cookie.</summary>
@@ -405,7 +411,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa375140")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DeactivateActCtx(DeactivateActCtxFlag dwFlags, IntPtr ulCookie);
+	public static extern bool DeactivateActCtx(DeactivateActCtxFlag dwFlags, [In] IntPtr ulCookie);
 
 	/// <summary>
 	/// The <c>FindActCtxSectionGuid</c> function retrieves information on a specific GUID in the current activation context and returns
@@ -451,7 +457,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa375148")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindActCtxSectionGuid(FIND_ACTCTX_SECTION dwFlags, [Optional] IntPtr lpExtensionGuid, ACTCTX_SECTION ulSectionId, in Guid lpGuidToFind, out ACTCTX_SECTION_KEYED_DATA ReturnedData);
+	public static extern bool FindActCtxSectionGuid(FIND_ACTCTX_SECTION dwFlags, [In, Optional] GuidPtr lpExtensionGuid, ACTCTX_SECTION ulSectionId, in Guid lpGuidToFind, out ACTCTX_SECTION_KEYED_DATA ReturnedData);
 
 	/// <summary>
 	/// The <c>FindActCtxSectionString</c> function retrieves information on a specific string in the current activation context and
@@ -496,7 +502,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa375149")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindActCtxSectionString(FIND_ACTCTX_SECTION dwFlags, [Optional] IntPtr lpExtensionGuid, ACTCTX_SECTION ulSectionId, string lpStringToFind, out ACTCTX_SECTION_KEYED_DATA ReturnedData);
+	public static extern bool FindActCtxSectionString(FIND_ACTCTX_SECTION dwFlags, [In, Optional] GuidPtr lpExtensionGuid, ACTCTX_SECTION ulSectionId, string lpStringToFind, out ACTCTX_SECTION_KEYED_DATA ReturnedData);
 
 	/// <summary>
 	/// Retrieves a pointer to the callback routine registered for the specified process. The address returned is in the virtual address
@@ -530,7 +536,7 @@ public static partial class Kernel32
 	// *ppvParameter, _Out_ PDWORD pdwPingInterval, _Out_ PDWORD pdwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373343(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa373343")]
-	public static extern HRESULT GetApplicationRecoveryCallback(HPROCESS hProcess, out ApplicationRecoveryCallback pRecoveryCallback, out IntPtr ppvParameter, out uint pdwPingInterval, out int pdwFlags);
+	public static extern HRESULT GetApplicationRecoveryCallback([In] HPROCESS hProcess, out ApplicationRecoveryCallback pRecoveryCallback, out IntPtr ppvParameter, out uint pdwPingInterval, out int pdwFlags);
 
 	/// <summary>Retrieves the restart information registered for the specified process.</summary>
 	/// <param name="hProcess">A handle to the process. This handle must have the PROCESS_VM_READ access right.</param>
@@ -585,7 +591,8 @@ public static partial class Kernel32
 	// _Out_opt_ PDWORD pdwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373344(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa373344")]
-	public static extern HRESULT GetApplicationRestartSettings(HPROCESS hProcess, StringBuilder? pwzCommandline, ref uint pcchSize, out ApplicationRestartFlags pdwFlags);
+	public static extern HRESULT GetApplicationRestartSettings([In] HPROCESS hProcess, [Out, SizeDef(nameof(pcchSize), SizingMethod.Query | SizingMethod.CheckLastError)] StringBuilder? pwzCommandline,
+		[Range(0, RESTART_MAX_CMD_LINE)] ref uint pcchSize, out ApplicationRestartFlags pdwFlags);
 
 	/// <summary>The <c>GetCurrentActCtx</c> function returns the handle to the active activation context of the calling thread.</summary>
 	/// <param name="lphActCtx">
@@ -640,7 +647,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa375700")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryActCtxSettingsW([Optional] uint dwFlags, [In] HACTCTX hActCtx, [Optional] string? settingsNameSpace, string settingName, StringBuilder pvBuffer, SizeT dwBuffer, out SizeT pdwWrittenOrRequired);
+	public static extern bool QueryActCtxSettingsW([Optional, Ignore] uint dwFlags, [In, AddAsMember] HACTCTX hActCtx, [Optional, Ignore] string? settingsNameSpace,
+		string settingName, [Out, SizeDef(nameof(dwBuffer), SizingMethod.Query, OutVarName = nameof(pdwWrittenOrRequired))] StringBuilder? pvBuffer, SizeT dwBuffer, out SizeT pdwWrittenOrRequired);
 
 	/// <summary>The <c>QueryActCtxW</c> function queries the activation context.</summary>
 	/// <param name="dwFlags">
@@ -795,7 +803,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winbase.h", MSDNShortId = "7d45f63f-0baf-4236-b245-d36f9eb32e8c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryActCtxW(QueryActCtxFlag dwFlags, [In] HACTCTX hActCtx, [In, Optional] IntPtr pvSubInstance, ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, IntPtr pvBuffer, SizeT cbBuffer, out SizeT pcbWrittenOrRequired);
+	public static extern bool QueryActCtxW(QueryActCtxFlag dwFlags, [In] HACTCTX hActCtx, [In, Optional] IntPtr pvSubInstance,
+		ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, IntPtr pvBuffer, SizeT cbBuffer, out SizeT pcbWrittenOrRequired);
 
 	/// <summary>The <c>QueryActCtxW</c> function queries the activation context.</summary>
 	/// <typeparam name="T">The type of the requested return value.</typeparam>
@@ -920,9 +929,9 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>The returned information.</returns>
 	/// <exception cref="ArgumentException"></exception>
-	public static T QueryActCtxW<T>(QueryActCtxFlag dwFlags, [In] HACTCTX hActCtx, ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, [In] object? pvSubInstance = null) where T : struct
+	public static T QueryActCtxW<T>(QueryActCtxFlag dwFlags, [In, AddAsMember] HACTCTX hActCtx, ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, [In] object? pvSubInstance = null) where T : struct
 	{
-		if (!CorrespondingTypeAttribute.CanGet(ulInfoClass, typeof(T))) throw new ArgumentException();
+		if (!CorrespondingTypeAttribute.CanGet(ulInfoClass, typeof(T))) throw new ArgumentException(null, nameof(ulInfoClass));
 		if (!QueryActCtxW(dwFlags, hActCtx, pvSubInstance is null ? IntPtr.Zero : new PinnedObject(pvSubInstance), ulInfoClass, default, 0, out var req) && req == 0)
 			Win32Error.ThrowLastError();
 		using var mem = new SafeCoTaskMemHandle(req);
@@ -1049,7 +1058,7 @@ public static partial class Kernel32
 	// void ReleaseActCtx( _In_ HANDLE hActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375713(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa375713")]
-	public static extern void ReleaseActCtx(HACTCTX hActCtx);
+	public static extern void ReleaseActCtx([In, AddAsMember] HACTCTX hActCtx);
 
 	/// <summary>Removes the active instance of an application from the recovery list.</summary>
 	/// <returns>
@@ -1104,10 +1113,10 @@ public static partial class Kernel32
 	/// <summary>The ACTCTX structure is used by the CreateActCtx function to create the activation context.</summary>
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa374149")]
-	public struct ACTCTX
+	public struct ACTCTX(string? source = null)
 	{
 		/// <summary>The size, in bytes, of this structure. This is used to determine the version of this structure.</summary>
-		public int cbSize;
+		public int cbSize = Marshal.SizeOf<ACTCTX>();
 
 		/// <summary>
 		/// Flags that indicate how the values included in this structure are to be used. Set any undefined bits in dwFlags to 0. If any
@@ -1121,7 +1130,7 @@ public static partial class Kernel32
 		/// this path refers to an EXE or DLL file, the lpResourceName member is required.
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpSource;
+		public string? lpSource = source;
 
 		/// <summary>Identifies the type of processor used. Specifies the system's processor architecture.</summary>
 		public ProcessorArchitecture wProcessorArchitecture;
@@ -1176,16 +1185,8 @@ public static partial class Kernel32
 		/// </summary>
 		public HINSTANCE hModule;
 
-		/// <summary>Initializes a new instance of the <see cref="ACTCTX"/> struct.</summary>
-		/// <param name="source">The source.</param>
-		public ACTCTX(string source) : this()
-		{
-			cbSize = Marshal.SizeOf<ACTCTX>();
-			lpSource = source;
-		}
-
 		/// <summary>Gets an empty instance with only the cbSize parameter initialized.</summary>
-		public static ACTCTX Empty => new() { cbSize = Marshal.SizeOf<ACTCTX>() };
+		public static ACTCTX Empty => new();
 	}
 
 	/// <summary>
@@ -1199,38 +1200,28 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "aa374148")]
 	public struct ACTCTX_SECTION_KEYED_DATA
 	{
-		/// <summary>
-		/// <para>The size, in bytes, of the activation context keyed data structure.</para>
-		/// </summary>
+		/// <summary>The size, in bytes, of the activation context keyed data structure.</summary>
 		public uint cbSize;
 
 		/// <summary>
-		/// <para>
 		/// Number that indicates the format of the data in the section where the key was found. Clients should verify that the data
 		/// format version is as expected rather than trying to interpret the values of unfamiliar data formats. This number is only
 		/// changed when major non-backward-compatible changes to the section data formats need to be made. The current format version is 1.
-		/// </para>
 		/// </summary>
 		public uint ulDataFormatVersion;
 
-		/// <summary>
-		/// <para>Pointer to the redirection data found associated with the section identifier and key.</para>
-		/// </summary>
+		/// <summary>Pointer to the redirection data found associated with the section identifier and key.</summary>
 		public IntPtr lpData;
 
 		/// <summary>
-		/// <para>
 		/// Number of bytes in the structure referred to by <c>lpData</c>. Note that the data structures grow over time; do not access
 		/// members in the instance data that extend beyond <c>ulLength</c>.
-		/// </para>
 		/// </summary>
 		public uint ulLength;
 
 		/// <summary>
-		/// <para>
 		/// Returned pointer to a section-specific data structure which is global to the activation context section where the key was
 		/// found. Its interpretation depends on the section identifier requested.
-		/// </para>
 		/// </summary>
 		public IntPtr lpSectionGlobalData;
 
@@ -1244,18 +1235,14 @@ public static partial class Kernel32
 		public uint ulSectionGlobalDataLength;
 
 		/// <summary>
-		/// <para>
 		/// Pointer to the base of the section where the key was found. Some instance data contains offsets relative to the section base
 		/// address, in which case this pointer value is used.
-		/// </para>
 		/// </summary>
 		public IntPtr lpSectionBase;
 
 		/// <summary>
-		/// <para>
 		/// Number of bytes for the entire section starting at <c>lpSectionBase</c>. May be used to verify that offset/length pairs,
 		/// which are specified as relative to the section base are wholly contained in the section.
-		/// </para>
 		/// </summary>
 		public uint ulSectionTotalLength;
 
@@ -1274,10 +1261,8 @@ public static partial class Kernel32
 		public HACTCTX hActCtx;
 
 		/// <summary>
-		/// <para>
 		/// Cardinal number of the assembly in the activation context that provided the redirection information found. This value can be
 		/// presented to <c>QueryActCtxW</c> for more information about the contributing assembly.
-		/// </para>
 		/// </summary>
 		public uint ulAssemblyRosterIndex;
 	}
@@ -1389,7 +1374,8 @@ public static partial class Kernel32
 		/// This is an array of COMPATIBILITY_CONTEXT_ELEMENT structures. Each structure describes one compatibility element in the
 		/// application manifest.
 		/// </summary>
-		public IntPtr Elements;
+		[SizeFieldName(nameof(ElementCount))]
+		public ArrayPointer<COMPATIBILITY_CONTEXT_ELEMENT> Elements;
 	}
 
 	/// <summary>
@@ -1408,8 +1394,8 @@ public static partial class Kernel32
 		/// <param name="mem">The unmanaged pointer to this info.</param>
 		internal ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION(IntPtr mem)
 		{
-			var c = Marshal.ReadInt32(mem, 0);
-			Elements = mem.Offset(4).ToArray<COMPATIBILITY_CONTEXT_ELEMENT>(c) ?? [];
+			ref ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION_UNMGD u = ref mem.AsRef<ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION_UNMGD>();
+			Elements = u.Elements.ToArray(u.ElementCount);
 		}
 	}
 

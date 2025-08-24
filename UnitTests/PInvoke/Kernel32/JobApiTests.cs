@@ -99,9 +99,6 @@ public class JobApiTests
 		public HPROCESS Process => hProc;
 		public HJOB Job => hJob;
 
-		public void Dispose()
-		{
-			Assert.That(TerminateJobObject(hJob, 0), Is.True);
-		}
+		public void Dispose() => Assert.That(TerminateJobObject(hJob, 0), Is.True);
 	}
 }

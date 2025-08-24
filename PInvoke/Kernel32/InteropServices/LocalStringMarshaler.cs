@@ -14,7 +14,7 @@ public class LocalStringMarshaler : GenericStringMarshalerBase<LocalMemoryMethod
 
 /// <summary>Marshals strings that are allocated by native code and must be freed using LocalFree after use.</summary>
 /// <seealso cref="ICustomMarshaler"/>
-public class HeapStringMarshaler : GenericStringMarshalerBase<Vanara.PInvoke.Kernel32.HeapMemoryMethods>
+public class HeapStringMarshaler : GenericStringMarshalerBase<PInvoke.Kernel32.HeapMemoryMethods>
 {
 	private HeapStringMarshaler(CharSet charSet) : base(charSet) { }
 

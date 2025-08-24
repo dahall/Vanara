@@ -22,8 +22,5 @@ public class SystemTopologyTests
 	}
 
 	[Test]
-	public void GetNumaProximityNodeExTest()
-	{
-		Assert.That(GetNumaProximityNodeEx(0, out ushort n), ResultIs.Successful);
-	}
+	public void GetNumaProximityNodeExTest() => Assert.That(GetNumaProximityNodeEx(0, out ushort n), ResultIs.Successful);
 }

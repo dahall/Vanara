@@ -10,7 +10,7 @@ public class RtlSupportApiTests
 	public void RtlAddDeleteFunctionTableTest()
 	{
 		using SafeHGlobalHandle mem = new(4096);
-		IMAGE_RUNTIME_FUNCTION_ENTRY[] funcs = new[] { new IMAGE_RUNTIME_FUNCTION_ENTRY { BeginAddress = 0, EndAddress = 4096, UnwindInfoAddress = 2048 } };
+		IMAGE_RUNTIME_FUNCTION_ENTRY[] funcs = [new IMAGE_RUNTIME_FUNCTION_ENTRY { BeginAddress = 0, EndAddress = 4096, UnwindInfoAddress = 2048 }];
 		ulong baseAddr = (ulong)((IntPtr)mem).ToInt64();
 		Assert.That(RtlAddFunctionTable(funcs, 1, baseAddr), ResultIs.Successful);
 
@@ -47,11 +47,7 @@ public class RtlSupportApiTests
 	}
 
 	[Test]
-	public void RtlPcToFileHeaderTest()
-	{
-		Assert.That(() => RtlPcToFileHeader(IntPtr.Zero, out IntPtr p), Throws.Nothing);
-		// TODO - Too undocumented to implement.
-	}
+	public void RtlPcToFileHeaderTest() => Assert.That(() => RtlPcToFileHeader(IntPtr.Zero, out IntPtr p), Throws.Nothing);// TODO - Too undocumented to implement.
 
 	[Test]
 	public void RtlRestoreContextTest()

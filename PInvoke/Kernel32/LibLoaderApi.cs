@@ -576,7 +576,7 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648036")]
 	public static IReadOnlyList<LANGID> EnumResourceLanguagesEx([In, AddAsMember] HINSTANCE hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
 	{
-		List<LANGID> list = new();
+		List<LANGID> list = [];
 		if (!EnumResourceLanguagesEx(hModule, type, name, (p, i, n, luid, l) => { list.Add(luid); return true; }, IntPtr.Zero, flags, langFilter) && throwOnError)
 			Win32Error.ThrowLastError();
 		return list;
@@ -652,7 +652,7 @@ public static partial class Kernel32
 	/// <returns>A list of blocks, identifiers, an associated text for each of the entries in the message table.</returns>
 	public static IReadOnlyList<(uint block, uint id, string? text)> EnumResourceMessages(this HRSRC hRsrc, HINSTANCE hMod)
 	{
-		List<(uint block, uint id, string? text)> ret = new();
+		List<(uint block, uint id, string? text)> ret = [];
 		unsafe
 		{
 			var hRes = LoadResource(hMod, hRsrc);

@@ -28,7 +28,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("rtlsupportapi.h", MSDNShortId = "4717f29e-c5f8-4b02-a7c8-edd065f1c793")]
 	[return: MarshalAs(UnmanagedType.U1)]
-	public static extern bool RtlAddFunctionTable([In] IMAGE_RUNTIME_FUNCTION_ENTRY[] FunctionTable, uint EntryCount, ulong BaseAddress);
+	public static extern bool RtlAddFunctionTable([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IMAGE_RUNTIME_FUNCTION_ENTRY[] FunctionTable, uint EntryCount, ulong BaseAddress);
 
 	/// <summary>Retrieves a context record in the context of the caller.</summary>
 	/// <param name="ContextRecord">A pointer to a CONTEXT structure.</param>
@@ -45,6 +45,7 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>The captured <c>CONTEXT</c> structure.</returns>
 	[PInvokeData("rtlsupportapi.h", MSDNShortId = "e2ce0cde-43ab-4681-be66-bd7509fd6ca2")]
+	[return: AddAsCtor]
 	public static CONTEXT RtlCaptureContext(uint contextFlags = uint.MaxValue)
 	{
 		if (contextFlags == uint.MaxValue) contextFlags = CONTEXT_FLAG.CONTEXT_ALL;
@@ -69,7 +70,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("rtlsupportapi.h", MSDNShortId = "42bc3d83-8053-40e9-b153-f68733d0cb2b")]
 	[return: MarshalAs(UnmanagedType.U1)]
-	public static extern bool RtlDeleteFunctionTable([In] IMAGE_RUNTIME_FUNCTION_ENTRY[] FunctionTable);
+	public static extern bool RtlDeleteFunctionTable([In, MarshalAs(UnmanagedType.LPArray)] IMAGE_RUNTIME_FUNCTION_ENTRY[] FunctionTable);
 
 	/// <summary>Removes a dynamic function table from the dynamic function table list.</summary>
 	/// <param name="FunctionTable">

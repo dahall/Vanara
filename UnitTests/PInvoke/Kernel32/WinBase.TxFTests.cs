@@ -7,8 +7,7 @@ namespace Vanara.PInvoke.Tests;
 public partial class WinBaseTests_TxF
 {
 	[Test]
-	public void TxFTest()
-	{
+	public void TxFTest() =>
 		// Unable to test actual functions, so just make sure signatures work
 		Assert.That(() =>
 		{
@@ -24,7 +23,7 @@ public partial class WinBaseTests_TxF
 			FindFirstFileTransacted(default, default, out _, default, default, default, default);
 			FindFirstStreamTransactedW(default, default, out _, default, default);
 			WIN32_FILE_ATTRIBUTE_DATA fd = default;
-			GetFileAttributesTransacted(default, default, ref fd, default);
+			GetFileAttributesTransacted(default, default, out fd, default);
 			GetFullPathNameTransacted(default, default, default, out _, default);
 			GetLongPathNameTransacted(default, default, default, default);
 			MoveFileTransacted(default, default, default, default, default, default);
@@ -32,5 +31,4 @@ public partial class WinBaseTests_TxF
 			SetFileAttributesTransacted(default, default, default);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 		}, Throws.Nothing);
-	}
 }

@@ -12,7 +12,7 @@ public class NamedPipeApiTests
 		using SafeHPIPE hPipe = CreateNamedPipe(PipeClientWriter.pipeName, PIPE_ACCESS.PIPE_ACCESS_DUPLEX, PIPE_TYPE.PIPE_TYPE_BYTE | PIPE_TYPE.PIPE_READMODE_BYTE | PIPE_TYPE.PIPE_WAIT, 10, 1024 * 16, 1024 * 16, 60000);
 		Assert.That(hPipe, ResultIs.ValidHandle);
 
-		System.Diagnostics.Process p = CSharpRunner.RunProcess(typeof(PipeClientWriter), null, "MyMain");
+		var p = CSharpRunner.RunProcess(typeof(PipeClientWriter), null, "MyMain");
 		Assert.That(ConnectNamedPipe(hPipe), ResultIs.Successful);
 
 		byte[] buffer = new byte[1024];
@@ -77,7 +77,7 @@ public class NamedPipeApiTests
 
 public static class PipeClientWriter
 {
-	public static readonly byte[] bytesToWrite = new byte[] { 1, 2, 4, 8, 16, 32 };
+	public static readonly byte[] bytesToWrite = [1, 2, 4, 8, 16, 32];
 	public const string pipeName = @"\\.\pipe\PipeName";
 
 	public static int MyMain()

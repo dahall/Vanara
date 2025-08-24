@@ -252,7 +252,7 @@ public static partial class Kernel32
 	// pdwFlags );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("werapi.h", MSDNShortId = "8c5f08c0-e2d1-448c-9a57-ef19897f64c6")]
-	public static extern HRESULT WerGetFlags(HPROCESS hProcess, out WER_FAULT_REPORTING pdwFlags);
+	public static extern HRESULT WerGetFlags([In] HPROCESS hProcess, out WER_FAULT_REPORTING pdwFlags);
 
 	/// <summary>
 	/// Registers a process to be included in the error report along with the main application process. Optionally specifies a thread
