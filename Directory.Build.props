@@ -5,8 +5,8 @@
     <TargetFrameworksNotStd>net48;net6.0;net7.0;net8.0-windows;net9.0-windows;netcoreapp3.1</TargetFrameworksNotStd>
     <Configurations>Debug;Release</Configurations>
     <Platforms>AnyCPU</Platforms>
-    <Version>4.1.7</Version>
-    <PackageVersion>4.1.7</PackageVersion>
+    <Version>4.2.0</Version>
+    <PackageVersion>4.2.0</PackageVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
