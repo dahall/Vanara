@@ -42,7 +42,7 @@ public partial class WinBaseTests_File
 	{
 		COPYFILE2_EXTENDED_PARAMETERS par = COPYFILE2_EXTENDED_PARAMETERS.Default;
 		par.dwCopyFlags = COPY_FILE.COPY_FILE_RESTARTABLE;
-		Assert.That(CopyFile2(fn, newfn, ref par), ResultIs.Successful);
+		Assert.That(CopyFile2(fn, newfn, par), ResultIs.Successful);
 		Assert.That(DeleteFile(newfn), Is.True);
 	}
 
