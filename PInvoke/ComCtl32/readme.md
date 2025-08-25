@@ -3,17 +3,13 @@ PInvoke API (methods, structures and constants) imported from Windows ComCtl32.d
 
 - Includes methods from comctl32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.ComCtl32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.ComCtl32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.ComCtl32)  
-### Methods - 96% API coverage (115 of 119 functions)  
+### Methods - 100% API coverage (115 of 115 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_TrackMouseEvent](https://www.google.com/search?num=5&q=_TrackMouseEvent+site%3Alearn.microsoft.com) | CommCtrl.h | [Vanara.PInvoke.ComCtl32._TrackMouseEvent](https://github.com/dahall/Vanara/search?l=C%23&q=_TrackMouseEvent)  
-[AddMRUStringW](https://www.google.com/search?num=5&q=AddMRUStringW+site%3Alearn.microsoft.com) |  |   
-[AddMRUStringWA](https://www.google.com/search?num=5&q=AddMRUStringWA+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ComCtl32.AddMRUStringW](https://github.com/dahall/Vanara/search?l=C%23&q=AddMRUStringW)  
-[AddMRUStringWW](https://www.google.com/search?num=5&q=AddMRUStringWW+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ComCtl32.AddMRUStringW](https://github.com/dahall/Vanara/search?l=C%23&q=AddMRUStringW)  
+[AddMRUStringW](https://www.google.com/search?num=5&q=AddMRUStringW+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ComCtl32.AddMRUStringW](https://github.com/dahall/Vanara/search?l=C%23&q=AddMRUStringW)  
 [CreateMappedBitmap](https://www.google.com/search?num=5&q=CreateMappedBitmap+site%3Alearn.microsoft.com) | Commctrl.h | [Vanara.PInvoke.ComCtl32.CreateMappedBitmap](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMappedBitmap)  
-[CreateMRUListW](https://www.google.com/search?num=5&q=CreateMRUListW+site%3Alearn.microsoft.com) |  |   
-[CreateMRUListWA](https://www.google.com/search?num=5&q=CreateMRUListWA+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ComCtl32.CreateMRUListW](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMRUListW)  
-[CreateMRUListWW](https://www.google.com/search?num=5&q=CreateMRUListWW+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ComCtl32.CreateMRUListW](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMRUListW)  
+[CreateMRUListW](https://www.google.com/search?num=5&q=CreateMRUListW+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ComCtl32.CreateMRUListW](https://github.com/dahall/Vanara/search?l=C%23&q=CreateMRUListW)  
 [CreatePropertySheetPage](https://www.google.com/search?num=5&q=CreatePropertySheetPage+site%3Alearn.microsoft.com) | Prsht.h | [Vanara.PInvoke.ComCtl32.CreatePropertySheetPage](https://github.com/dahall/Vanara/search?l=C%23&q=CreatePropertySheetPage)  
 [CreateUpDownControl](https://www.google.com/search?num=5&q=CreateUpDownControl+site%3Alearn.microsoft.com) | Commctrl.h | [Vanara.PInvoke.ComCtl32.CreateUpDownControl](https://github.com/dahall/Vanara/search?l=C%23&q=CreateUpDownControl)  
 [DefSubclassProc](https://www.google.com/search?num=5&q=DefSubclassProc+site%3Alearn.microsoft.com) | Commctrl.h | [Vanara.PInvoke.ComCtl32.DefSubclassProc](https://github.com/dahall/Vanara/search?l=C%23&q=DefSubclassProc)  
@@ -53,9 +49,7 @@ Native Method | Header | Managed Method
 [DSA_InsertItem](https://www.google.com/search?num=5&q=DSA_InsertItem+site%3Alearn.microsoft.com) | Dpa_dsa.h | [Vanara.PInvoke.ComCtl32.DSA_InsertItem](https://github.com/dahall/Vanara/search?l=C%23&q=DSA_InsertItem)  
 [DSA_SetItem](https://www.google.com/search?num=5&q=DSA_SetItem+site%3Alearn.microsoft.com) | Dpa_dsa.h | [Vanara.PInvoke.ComCtl32.DSA_SetItem](https://github.com/dahall/Vanara/search?l=C%23&q=DSA_SetItem)  
 [DSA_Sort](https://www.google.com/search?num=5&q=DSA_Sort+site%3Alearn.microsoft.com) | Dpa_dsa.h | [Vanara.PInvoke.ComCtl32.DSA_Sort](https://github.com/dahall/Vanara/search?l=C%23&q=DSA_Sort)  
-[EnumMRUListW](https://www.google.com/search?num=5&q=EnumMRUListW+site%3Alearn.microsoft.com) |  |   
-[EnumMRUListWA](https://www.google.com/search?num=5&q=EnumMRUListWA+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ComCtl32.EnumMRUListW](https://github.com/dahall/Vanara/search?l=C%23&q=EnumMRUListW)  
-[EnumMRUListWW](https://www.google.com/search?num=5&q=EnumMRUListWW+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ComCtl32.EnumMRUListW](https://github.com/dahall/Vanara/search?l=C%23&q=EnumMRUListW)  
+[EnumMRUListW](https://www.google.com/search?num=5&q=EnumMRUListW+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.ComCtl32.EnumMRUListW](https://github.com/dahall/Vanara/search?l=C%23&q=EnumMRUListW)  
 [FlatSB_EnableScrollBar](https://www.google.com/search?num=5&q=FlatSB_EnableScrollBar+site%3Alearn.microsoft.com) | commctrl.h | [Vanara.PInvoke.ComCtl32.FlatSB_EnableScrollBar](https://github.com/dahall/Vanara/search?l=C%23&q=FlatSB_EnableScrollBar)  
 [FlatSB_GetScrollInfo](https://www.google.com/search?num=5&q=FlatSB_GetScrollInfo+site%3Alearn.microsoft.com) | commctrl.h | [Vanara.PInvoke.ComCtl32.FlatSB_GetScrollInfo](https://github.com/dahall/Vanara/search?l=C%23&q=FlatSB_GetScrollInfo)  
 [FlatSB_GetScrollPos](https://www.google.com/search?num=5&q=FlatSB_GetScrollPos+site%3Alearn.microsoft.com) | commctrl.h | [Vanara.PInvoke.ComCtl32.FlatSB_GetScrollPos](https://github.com/dahall/Vanara/search?l=C%23&q=FlatSB_GetScrollPos)  
@@ -73,7 +67,7 @@ Native Method | Header | Managed Method
 [GetWindowSubclass](https://www.google.com/search?num=5&q=GetWindowSubclass+site%3Alearn.microsoft.com) | Commctrl.h | [Vanara.PInvoke.ComCtl32.GetWindowSubclass](https://github.com/dahall/Vanara/search?l=C%23&q=GetWindowSubclass)  
 [HIMAGELIST_QueryInterface](https://www.google.com/search?num=5&q=HIMAGELIST_QueryInterface+site%3Alearn.microsoft.com) | Commctrl.h | [Vanara.PInvoke.ComCtl32.HIMAGELIST_QueryInterface](https://github.com/dahall/Vanara/search?l=C%23&q=HIMAGELIST_QueryInterface)  
 [ImageList_Add](https://www.google.com/search?num=5&q=ImageList_Add+site%3Alearn.microsoft.com) | commctrl.h | [Vanara.PInvoke.ComCtl32.ImageList_Add](https://github.com/dahall/Vanara/search?l=C%23&q=ImageList_Add)  
-[ImageList_AddIcon](https://www.google.com/search?num=5&q=ImageList_AddIcon+site%3Alearn.microsoft.com) |  |   
+[ImageList_AddIcon](https://www.google.com/search?num=5&q=ImageList_AddIcon+site%3Alearn.microsoft.com) | commctrl.h | [Vanara.PInvoke.ComCtl32.ImageList_AddIcon](https://github.com/dahall/Vanara/search?l=C%23&q=ImageList_AddIcon)  
 [ImageList_AddMasked](https://www.google.com/search?num=5&q=ImageList_AddMasked+site%3Alearn.microsoft.com) | commctrl.h | [Vanara.PInvoke.ComCtl32.ImageList_AddMasked](https://github.com/dahall/Vanara/search?l=C%23&q=ImageList_AddMasked)  
 [ImageList_BeginDrag](https://www.google.com/search?num=5&q=ImageList_BeginDrag+site%3Alearn.microsoft.com) | commctrl.h | [Vanara.PInvoke.ComCtl32.ImageList_BeginDrag](https://github.com/dahall/Vanara/search?l=C%23&q=ImageList_BeginDrag)  
 [ImageList_CoCreateInstance](https://www.google.com/search?num=5&q=ImageList_CoCreateInstance+site%3Alearn.microsoft.com) | CommonControls.h | [Vanara.PInvoke.ComCtl32.ImageList_CoCreateInstance](https://github.com/dahall/Vanara/search?l=C%23&q=ImageList_CoCreateInstance)  

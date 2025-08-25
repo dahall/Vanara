@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows WinBio.dll
 
 - Includes methods from winbio.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WinBio?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WinBio?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WinBio)  
-### Methods - 98% API coverage (52 of 53 functions)  
+### Methods - 100% API coverage (52 of 52 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [WinBioAcquireFocus](https://www.google.com/search?num=5&q=WinBioAcquireFocus+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioAcquireFocus](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioAcquireFocus)  
@@ -21,7 +21,6 @@ Native Method | Header | Managed Method
 [WinBioControlUnit](https://www.google.com/search?num=5&q=WinBioControlUnit+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioControlUnit](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioControlUnit)  
 [WinBioControlUnitPrivileged](https://www.google.com/search?num=5&q=WinBioControlUnitPrivileged+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioControlUnitPrivileged](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioControlUnitPrivileged)  
 [WinBioDeleteTemplate](https://www.google.com/search?num=5&q=WinBioDeleteTemplate+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioDeleteTemplate](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioDeleteTemplate)  
-[WinBioDeleteVtl0Containers](https://www.google.com/search?num=5&q=WinBioDeleteVtl0Containers+site%3Alearn.microsoft.com) |  |   
 [WinBioEnrollBegin](https://www.google.com/search?num=5&q=WinBioEnrollBegin+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnrollBegin](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnrollBegin)  
 [WinBioEnrollCapture](https://www.google.com/search?num=5&q=WinBioEnrollCapture+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnrollCapture](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnrollCapture)  
 [WinBioEnrollCaptureWithCallback](https://www.google.com/search?num=5&q=WinBioEnrollCaptureWithCallback+site%3Alearn.microsoft.com) | winbio.h | [Vanara.PInvoke.WinBio.WinBioEnrollCaptureWithCallback](https://github.com/dahall/Vanara/search?l=C%23&q=WinBioEnrollCaptureWithCallback)  
