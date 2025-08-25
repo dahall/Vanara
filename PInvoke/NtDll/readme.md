@@ -3,11 +3,13 @@ PInvoke API (methods, structures and constants) imported from Windows NtDll.dll.
 
 - Includes methods from ntdll.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.NtDll?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.NtDll?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NtDll)  
-### Methods - 5% API coverage (39 of 661 functions)  
+### Methods - 5% API coverage (39 of 663 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [_vscprintf](https://www.google.com/search?num=5&q=_vscprintf+site%3Alearn.microsoft.com) |  |   
+[ApiSetGetImplementationHost](https://www.google.com/search?num=5&q=ApiSetGetImplementationHost+site%3Alearn.microsoft.com) |  |   
 [ApiSetQueryApiSetPresenceEx](https://www.google.com/search?num=5&q=ApiSetQueryApiSetPresenceEx+site%3Alearn.microsoft.com) |  |   
+[ApiSetQuerySchema](https://www.google.com/search?num=5&q=ApiSetQuerySchema+site%3Alearn.microsoft.com) |  |   
 [DbgBreakPoint](https://www.google.com/search?num=5&q=DbgBreakPoint+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgBreakPoint](https://github.com/dahall/Vanara/search?l=C%23&q=DbgBreakPoint)  
 [DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgPrint](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrint)  
 [DbgPrintEx](https://www.google.com/search?num=5&q=DbgPrintEx+site%3Alearn.microsoft.com) | wdm.h | [Vanara.PInvoke.NtDll.DbgPrintEx](https://github.com/dahall/Vanara/search?l=C%23&q=DbgPrintEx)  

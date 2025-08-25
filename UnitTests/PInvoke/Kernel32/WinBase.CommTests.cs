@@ -86,7 +86,7 @@ public partial class WinBaseTests
 		using SafeHFILE hCom = ComPort;
 		Assert.That(GetCommConfig(hCom, out var cc), ResultIs.Successful);
 		cc!.WriteValues();
-		Assert.That(SetCommConfig(hCom, cc), ResultIs.Successful);
+		Assert.That(SetCommConfig(hCom, cc!), ResultIs.Successful);
 	}
 
 	[Test]
@@ -145,7 +145,7 @@ public partial class WinBaseTests
 	{
 		Assert.That(GetDefaultCommConfig(pcCommPort, out var cc), ResultIs.Successful);
 		cc!.WriteValues();
-		Assert.That(SetDefaultCommConfig(pcCommPort, cc), ResultIs.Successful);
+		Assert.That(SetDefaultCommConfig(pcCommPort, cc!), ResultIs.Successful);
 	}
 
 	[Test]

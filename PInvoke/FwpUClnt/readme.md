@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Filtering 
 
 - Includes methods from fwpuclnt.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.FwpUClnt?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.FwpUClnt?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.FwpUClnt)  
-### Methods - 100% API coverage (185 of 185 functions)  
+### Methods - 99% API coverage (185 of 186 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [FwpmCalloutAdd0](https://www.google.com/search?num=5&q=FwpmCalloutAdd0+site%3Alearn.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmCalloutAdd0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmCalloutAdd0)  
@@ -36,6 +36,7 @@ Native Method | Header | Managed Method
 [FwpmEngineGetSecurityInfo0](https://www.google.com/search?num=5&q=FwpmEngineGetSecurityInfo0+site%3Alearn.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmEngineGetSecurityInfo0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmEngineGetSecurityInfo0)  
 [FwpmEngineOpen0](https://www.google.com/search?num=5&q=FwpmEngineOpen0+site%3Alearn.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmEngineOpen0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmEngineOpen0)  
 [FwpmEngineSetOption0](https://www.google.com/search?num=5&q=FwpmEngineSetOption0+site%3Alearn.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmEngineSetOption0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmEngineSetOption0)  
+[FwpmEngineSetOption1](https://www.google.com/search?num=5&q=FwpmEngineSetOption1+site%3Alearn.microsoft.com) |  |   
 [FwpmEngineSetSecurityInfo0](https://www.google.com/search?num=5&q=FwpmEngineSetSecurityInfo0+site%3Alearn.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmEngineSetSecurityInfo0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmEngineSetSecurityInfo0)  
 [FwpmFilterAdd0](https://www.google.com/search?num=5&q=FwpmFilterAdd0+site%3Alearn.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmFilterAdd0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmFilterAdd0)  
 [FwpmFilterCreateEnumHandle0](https://www.google.com/search?num=5&q=FwpmFilterCreateEnumHandle0+site%3Alearn.microsoft.com) | fwpmu.h | [Vanara.PInvoke.FwpUClnt.FwpmFilterCreateEnumHandle0](https://github.com/dahall/Vanara/search?l=C%23&q=FwpmFilterCreateEnumHandle0)  
