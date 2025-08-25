@@ -88,10 +88,10 @@ public static partial class Shell32
 	/// <summary>Converts an ANSI string to Unicode.</summary>
 	/// <param name="value">The ANSI string value.</param>
 	/// <returns>The Unicode string value.</returns>
-	public static string AnsiToUnicode(string value)
+	public static string? AnsiToUnicode(byte[]? value)
 	{
-		if (string.IsNullOrEmpty(value)) return value;
-		var sz = MultiByteToWideChar(0, 0, value, value.Length);
+		if (value is null) return null;
+		var sz = MultiByteToWideChar(0, 0, value, value.Length, default(byte[]), 0);
 		var ret = new byte[sz];
 		MultiByteToWideChar(0, 0, value, value.Length, ret, sz);
 		return Encoding.Unicode.GetString(ret);
