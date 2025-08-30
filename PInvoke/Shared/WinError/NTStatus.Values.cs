@@ -3592,4 +3592,64 @@ public partial struct NTStatus
 	public const int STATUS_VHD_DIFFERENCING_CHAIN_CYCLE_DETECTED = unchecked((int)0xC03A0018);
 	/// <summary>The chain of virtual hard disks is inaccessible. There was an error opening a virtual hard disk further up the chain.</summary>
 	public const int STATUS_VHD_DIFFERENCING_CHAIN_ERROR_IN_PARENT = unchecked((int)0xC03A0019);
+
+	/// <summary>The routine successfully set the usage value.</summary>
+	public const int HIDP_STATUS_SUCCESS                  = (0x0 << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 0;
+
+	/// <summary>The specified physical value is out-of-range, the usage has a null value, and the routine set the null value.</summary>
+	public const int HIDP_STATUS_NULL                     = (0x8 << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 1;
+
+	/// <summary>The preparsed data is not valid.</summary>
+	public const int HIDP_STATUS_INVALID_PREPARSED_DATA   = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 1;
+
+	/// <summary>The specified report type is not valid.</summary>
+	public const int HIDP_STATUS_INVALID_REPORT_TYPE      = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 2;
+
+	/// <summary>The report length is not valid.</summary>
+	public const int HIDP_STATUS_INVALID_REPORT_LENGTH    = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 3;
+
+	/// <summary>The usage does not exist in any report of the specified report type.</summary>
+	public const int HIDP_STATUS_USAGE_NOT_FOUND          = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 4;
+
+	/// <summary>The specified physical value is out-of-range and the usage does not have null value.</summary>
+	public const int HIDP_STATUS_VALUE_OUT_OF_RANGE       = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 5;
+
+	/// <summary>The usage has an illegal logical or physical range that prevents scaling.</summary>
+	public const int HIDP_STATUS_BAD_LOG_PHY_VALUES       = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 6;
+
+	/// <summary>The buffer was not large enough to hold all the extended attribute information.</summary>
+	public const int HIDP_STATUS_BUFFER_TOO_SMALL         = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 7;
+
+	/// <summary></summary>
+	public const int HIDP_STATUS_INTERNAL_ERROR           = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 8;
+
+	/// <summary>A usage in the changed usage list mapped to an invalid keyboard scan code.</summary>
+	public const int HIDP_STATUS_I8042_TRANS_UNKNOWN      = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 9;
+
+	/// <summary>The usage does not exist in the specified report, but it does exist in a different report of the specified type.</summary>
+	public const int HIDP_STATUS_INCOMPATIBLE_REPORT_ID   = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 0xA;
+
+	/// <summary>The specified usage is not a usage value array.</summary>
+	public const int HIDP_STATUS_NOT_VALUE_ARRAY          = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 0xB;
+
+	/// <summary>A data index specifies a usage value array.</summary>
+	public const int HIDP_STATUS_IS_VALUE_ARRAY           = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 0xC;
+
+	/// <summary>The specified data index is not valid.</summary>
+	public const int HIDP_STATUS_DATA_INDEX_NOT_FOUND     = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 0xD;
+
+	/// <summary>The index for one of the supplied HIDP_BUTTON_ARRAY_DATA structures is outside the valid range for this button array</summary>
+	public const int HIDP_STATUS_DATA_INDEX_OUT_OF_RANGE  = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 0xE;
+
+	/// <summary>A DataList member specifies to set a button OFF (zero), but the button is already set to OFF.</summary>
+	public const int HIDP_STATUS_BUTTON_NOT_PRESSED       = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 0xF;
+
+	/// <summary>There are no reports on this device for the given ReportType</summary>
+	public const int HIDP_STATUS_REPORT_DOES_NOT_EXIST    = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 0x10;
+
+	/// <summary></summary>
+	public const int HIDP_STATUS_NOT_IMPLEMENTED          = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 0x20;
+
+	/// <summary>The control specified is not a button array</summary>
+	public const int HIDP_STATUS_NOT_BUTTON_ARRAY         = (0xC << 28) | ((int)FacilityCode.FACILITY_HID_ERROR_CODE << 16) | 0x21;
 }

@@ -474,7 +474,7 @@ public static partial class Hid
 
 	/// <summary>A pointer to opaque parser information for the collection automatically released by calling <see cref="HidD_FreePreparsedData"/>.</summary>
 	/// <seealso cref="Vanara.PInvoke.SafeHANDLE"/>
-	[AutoSafeHandle("HidD_FreePreparsedData(handle)")]
+	[AutoSafeHandle("HidD_FreePreparsedData(handle)", typeof(PHIDP_PREPARSED_DATA))]
 	public partial class SafePHIDP_PREPARSED_DATA { }
 
 	/// <summary>

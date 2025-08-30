@@ -295,7 +295,7 @@ public static partial class Hid
 	// PHIDP_PREPARSED_DATA PreparsedData, [out] PHIDP_CAPS Capabilities );
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetCaps")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
-	public static extern NTStatus HidP_GetCaps([In] PHIDP_PREPARSED_DATA PreparsedData, [Out, MarshalAs(UnmanagedType.LPArray)] HIDP_CAPS[] Capabilities);
+	public static extern NTStatus HidP_GetCaps([In] PHIDP_PREPARSED_DATA PreparsedData, out HIDP_CAPS Capabilities);
 
 	/// <summary>
 	/// The <b>HidP_GetData</b> routine returns, for a specified report, an array of <c>HIDP_DATA</c> structures that identify the <c>data
@@ -2102,47 +2102,55 @@ public static partial class Hid
 	// DesignatorMax; USHORT DataIndexMin; USHORT DataIndexMax; } Range; struct { USAGE Usage; USAGE Reserved1; USHORT StringIndex; USHORT
 	// Reserved2; USHORT DesignatorIndex; USHORT Reserved3; USHORT DataIndex; USHORT Reserved4; } NotRange; }; } HIDP_BUTTON_CAPS, *PHIDP_BUTTON_CAPS;
 	[PInvokeData("hidpi.h", MSDNShortId = "NS:hidpi._HIDP_BUTTON_CAPS")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 	public struct HIDP_BUTTON_CAPS
 	{
 		/// <summary>Specifies the <c>usage page</c> for a usage or usage range.</summary>
+		[FieldOffset(0)]
 		public USAGE UsagePage;
 
 		/// <summary>Specifies the report ID of the HID report that contains the usage or usage range.</summary>
+		[FieldOffset(2)]
 		public byte ReportID;
 
 		/// <summary>
 		/// Indicates, if <b>TRUE</b>, that a button has a set of <c>aliased usages</c>. Otherwise, if <b>IsAlias</b> is <b>FALSE</b>, the
 		/// button has only one usage.
 		/// </summary>
+		[FieldOffset(3)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool IsAlias;
 
 		/// <summary>Contains the data fields (one or two bytes) associated with an input, output, or feature main item.</summary>
+		[FieldOffset(4)]
 		public ushort BitField;
 
 		/// <summary>
 		/// Specifies the index of the <c>link collection</c> in a <c>top-level collection's</c>  <c>link collection array</c> that contains
 		/// the usage or usage range. If <b>LinkCollection</b> is zero, the usage or usage range is contained in the top-level collection.
 		/// </summary>
+		[FieldOffset(6)]
 		public HIDP_LINK_COLLECTION LinkCollection;
 
 		/// <summary>
 		/// Specifies the usage of the link collection that contains the usage or usage range. If <b>LinkCollection</b> is zero,
 		/// <b>LinkUsage</b> specifies the usage of the top-level collection.
 		/// </summary>
+		[FieldOffset(8)]
 		public USAGE LinkUsage;
 
 		/// <summary>
 		/// Specifies the usage page of the link collection that contains the usage or usage range. If <b>LinkCollection</b> is zero,
 		/// <b>LinkUsagePage</b> specifies the usage page of the top-level collection.
 		/// </summary>
+		[FieldOffset(10)]
 		public USAGE LinkUsagePage;
 
 		/// <summary>
 		/// Specifies, if <b>TRUE</b>, that the structure describes a usage range. Otherwise, if <b>IsRange</b> is <b>FALSE</b>, the
 		/// structure describes a single usage.
 		/// </summary>
+		[FieldOffset(12)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool IsRange;
 
@@ -2150,6 +2158,7 @@ public static partial class Hid
 		/// Specifies, if <b>TRUE</b>, that the usage or usage range has a set of string descriptors. Otherwise, if <b>IsStringRange</b> is
 		/// <b>FALSE</b>, the usage or usage range has zero or one string descriptor.
 		/// </summary>
+		[FieldOffset(13)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool IsStringRange;
 
@@ -2157,6 +2166,7 @@ public static partial class Hid
 		/// Specifies, if <b>TRUE</b>, that the usage or usage range has a set of designators. Otherwise, if <b>IsDesignatorRange</b> is
 		/// <b>FALSE</b>, the usage or usage range has zero or one designator.
 		/// </summary>
+		[FieldOffset(14)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool IsDesignatorRange;
 
@@ -2164,122 +2174,118 @@ public static partial class Hid
 		/// Specifies, if <b>TRUE</b>, that the button usage or usage range provides absolute data. Otherwise, if <b>IsAbsolute</b> is
 		/// <b>FALSE</b>, the button data is the change in state from the previous value.
 		/// </summary>
+		[FieldOffset(15)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool IsAbsolute;
 
 		/// <summary>
 		/// HID defined report count. Available starting with API version 2.0. Call the <c>HIDP_GetVersion</c> function to get the API version.
 		/// </summary>
+		[FieldOffset(16)]
 		public ushort ReportCount;
 
 		/// <summary>Reserved for internal system use.</summary>
+		[FieldOffset(18)]
 		public ushort Reserved2;
 
 		/// <summary>Reserved for internal system use.</summary>
+		[FieldOffset(20)]
 		public unsafe fixed uint Reserved[9];
 
-		/// <summary>Represents the union of multiple data types or values.</summary>
-		public UNION Union;
+		/// <summary>
+		/// Specifies, if <b>IsRange</b> is <b>TRUE</b>, information about a usage range. Otherwise, if <b>IsRange</b> is <b>FALSE</b>,
+		/// <b>NotRange</b> contains information about a single usage.
+		/// </summary>
+		[FieldOffset(56)]
+		public RangeUnion Range;
 
-		/// <summary>Represents the union of multiple data types or values.</summary>
-		[StructLayout(LayoutKind.Explicit)]
-		public struct UNION
+		/// <summary>
+		/// Specifies, if <b>IsRange</b> is <b>FALSE</b>, information about a single usage. Otherwise, if <b>IsRange</b> is <b>TRUE</b>,
+		/// <b>Range</b> contains information about a usage range.
+		/// </summary>
+		[FieldOffset(56)]
+		public NotRangeUnion NotRange;
+
+		/// <summary>
+		/// Specifies, if <b>IsRange</b> is <b>TRUE</b>, information about a usage range. Otherwise, if <b>IsRange</b> is <b>FALSE</b>,
+		/// <b>NotRange</b> contains information about a single usage.
+		/// </summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RangeUnion
 		{
-			/// <summary>
-			/// Specifies, if <b>IsRange</b> is <b>TRUE</b>, information about a usage range. Otherwise, if <b>IsRange</b> is <b>FALSE</b>,
-			/// <b>NotRange</b> contains information about a single usage.
-			/// </summary>
-			[FieldOffset(0)]
-			public RangeUnion Range;
+			/// <summary>Indicates the inclusive lower bound of usage range whose inclusive upper bound is specified by <b>Range.UsageMax</b>.</summary>
+			public USAGE UsageMin;
+
+			/// <summary>Indicates the inclusive upper bound of a usage range whose inclusive lower bound is indicated by <b>Range.UsageMin</b>.</summary>
+			public USAGE UsageMax;
 
 			/// <summary>
-			/// Specifies, if <b>IsRange</b> is <b>FALSE</b>, information about a single usage. Otherwise, if <b>IsRange</b> is <b>TRUE</b>,
-			/// <b>Range</b> contains information about a usage range.
+			/// Indicates the inclusive lower bound of a range of string descriptors (specified by string minimum and string maximum
+			/// items) whose inclusive upper bound is indicated by <b>Range.StringMax</b>.
 			/// </summary>
-			[FieldOffset(0)]
-			public NotRangeUnion NotRange;
+			public ushort StringMin;
 
 			/// <summary>
-			/// Specifies, if <b>IsRange</b> is <b>TRUE</b>, information about a usage range. Otherwise, if <b>IsRange</b> is <b>FALSE</b>,
-			/// <b>NotRange</b> contains information about a single usage.
+			/// Indicates the inclusive upper bound of a range of string descriptors (specified by string minimum and string maximum
+			/// items) whose inclusive lower bound is indicated by <b>Range.StringMin</b>.
 			/// </summary>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct RangeUnion
-			{
-				/// <summary>Indicates the inclusive lower bound of usage range whose inclusive upper bound is specified by <b>Range.UsageMax</b>.</summary>
-				public USAGE UsageMin;
-
-				/// <summary>Indicates the inclusive upper bound of a usage range whose inclusive lower bound is indicated by <b>Range.UsageMin</b>.</summary>
-				public USAGE UsageMax;
-
-				/// <summary>
-				/// Indicates the inclusive lower bound of a range of string descriptors (specified by string minimum and string maximum
-				/// items) whose inclusive upper bound is indicated by <b>Range.StringMax</b>.
-				/// </summary>
-				public ushort StringMin;
-
-				/// <summary>
-				/// Indicates the inclusive upper bound of a range of string descriptors (specified by string minimum and string maximum
-				/// items) whose inclusive lower bound is indicated by <b>Range.StringMin</b>.
-				/// </summary>
-				public ushort StringMax;
-
-				/// <summary>
-				/// Indicates the inclusive lower bound of a range of designators (specified by designator minimum and designator maximum
-				/// items) whose inclusive lower bound is indicated by <b>Range.DesignatorMax</b>.
-				/// </summary>
-				public ushort DesignatorMin;
-
-				/// <summary>
-				/// Indicates the inclusive upper bound of a range of designators (specified by designator minimum and designator maximum
-				/// items) whose inclusive lower bound is indicated by <b>Range.DesignatorMin</b>.
-				/// </summary>
-				public ushort DesignatorMax;
-
-				/// <summary>
-				/// Indicates the inclusive lower bound of a sequential range of <c>data indices</c> that correspond, one-to-one and in the
-				/// same order, to the usages specified by the usage range <b>Range.UsageMin</b> to <b>Range.UsageMax</b>.
-				/// </summary>
-				public ushort DataIndexMin;
-
-				/// <summary>
-				/// Indicates the inclusive upper bound of a sequential range of data indices that correspond, one-to-one and in the same
-				/// order, to the usages specified by the usage range <b>Range.UsageMin</b> to <b>Range.UsageMax</b>.
-				/// </summary>
-				public ushort DataIndexMax;
-			}
+			public ushort StringMax;
 
 			/// <summary>
-			/// Specifies, if <b>IsRange</b> is <b>FALSE</b>, information about a single usage. Otherwise, if <b>IsRange</b> is <b>TRUE</b>,
-			/// <b>Range</b> contains information about a usage range.
+			/// Indicates the inclusive lower bound of a range of designators (specified by designator minimum and designator maximum
+			/// items) whose inclusive lower bound is indicated by <b>Range.DesignatorMax</b>.
 			/// </summary>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct NotRangeUnion
-			{
-				/// <summary>Indicates a <c>usage ID</c>.</summary>
-				public USAGE Usage;
+			public ushort DesignatorMin;
 
-				/// <summary>Reserved for internal system use.</summary>
-				public USAGE Reserved1;
+			/// <summary>
+			/// Indicates the inclusive upper bound of a range of designators (specified by designator minimum and designator maximum
+			/// items) whose inclusive lower bound is indicated by <b>Range.DesignatorMin</b>.
+			/// </summary>
+			public ushort DesignatorMax;
 
-				/// <summary>Indicates a string descriptor ID for the usage specified by <b>NotRange.Usage</b>.</summary>
-				public ushort StringIndex;
+			/// <summary>
+			/// Indicates the inclusive lower bound of a sequential range of <c>data indices</c> that correspond, one-to-one and in the
+			/// same order, to the usages specified by the usage range <b>Range.UsageMin</b> to <b>Range.UsageMax</b>.
+			/// </summary>
+			public ushort DataIndexMin;
 
-				/// <summary>Reserved for internal system use.</summary>
-				public ushort Reserved2;
+			/// <summary>
+			/// Indicates the inclusive upper bound of a sequential range of data indices that correspond, one-to-one and in the same
+			/// order, to the usages specified by the usage range <b>Range.UsageMin</b> to <b>Range.UsageMax</b>.
+			/// </summary>
+			public ushort DataIndexMax;
+		}
 
-				/// <summary>Indicates a designator ID for the usage specified by <b>NotRange.Usage</b>.</summary>
-				public ushort DesignatorIndex;
+		/// <summary>
+		/// Specifies, if <b>IsRange</b> is <b>FALSE</b>, information about a single usage. Otherwise, if <b>IsRange</b> is <b>TRUE</b>,
+		/// <b>Range</b> contains information about a usage range.
+		/// </summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NotRangeUnion
+		{
+			/// <summary>Indicates a <c>usage ID</c>.</summary>
+			public USAGE Usage;
 
-				/// <summary>Reserved for internal system use.</summary>
-				public ushort Reserved3;
+			/// <summary>Reserved for internal system use.</summary>
+			public USAGE Reserved1;
 
-				/// <summary>Indicates the data index of the usage specified by <b>NotRange.Usage</b>.</summary>
-				public ushort DataIndex;
+			/// <summary>Indicates a string descriptor ID for the usage specified by <b>NotRange.Usage</b>.</summary>
+			public ushort StringIndex;
 
-				/// <summary>Reserved for internal system use.</summary>
-				public ushort Reserved4;
-			}
+			/// <summary>Reserved for internal system use.</summary>
+			public ushort Reserved2;
+
+			/// <summary>Indicates a designator ID for the usage specified by <b>NotRange.Usage</b>.</summary>
+			public ushort DesignatorIndex;
+
+			/// <summary>Reserved for internal system use.</summary>
+			public ushort Reserved3;
+
+			/// <summary>Indicates the data index of the usage specified by <b>NotRange.Usage</b>.</summary>
+			public ushort DataIndex;
+
+			/// <summary>Reserved for internal system use.</summary>
+			public ushort Reserved4;
 		}
 	}
 
@@ -2526,47 +2532,55 @@ public static partial class Hid
 	// USHORT DataIndexMin; USHORT DataIndexMax; } Range; struct { USAGE Usage; USAGE Reserved1; USHORT StringIndex; USHORT Reserved2; USHORT
 	// DesignatorIndex; USHORT Reserved3; USHORT DataIndex; USHORT Reserved4; } NotRange; }; } HIDP_VALUE_CAPS, *PHIDP_VALUE_CAPS;
 	[PInvokeData("hidpi.h", MSDNShortId = "NS:hidpi._HIDP_VALUE_CAPS")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 	public struct HIDP_VALUE_CAPS
 	{
 		/// <summary>Specifies the usage page of the usage or usage range.</summary>
+		[FieldOffset(0)]
 		public USAGE UsagePage;
 
 		/// <summary>Specifies the report ID of the HID report that contains the usage or usage range.</summary>
+		[FieldOffset(2)]
 		public byte ReportID;
 
 		/// <summary>
 		/// Indicates, if <b>TRUE</b>, that the usage is member of a set of aliased usages. Otherwise, if <b>IsAlias</b> is <b>FALSE</b>, the
 		/// value has only one usage.
 		/// </summary>
+		[FieldOffset(3)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool IsAlias;
 
 		/// <summary>Contains the data fields (one or two bytes) associated with an input, output, or feature main item.</summary>
+		[FieldOffset(4)]
 		public ushort BitField;
 
 		/// <summary>
 		/// Specifies the index of the <c>link collection</c> in a <c>top-level collection's</c> link collection array that contains the
 		/// usage or usage range. If <b>LinkCollection</b> is zero, the usage or usage range is contained in the top-level collection.
 		/// </summary>
+		[FieldOffset(6)]
 		public HIDP_LINK_COLLECTION LinkCollection;
 
 		/// <summary>
 		/// Specifies the usage of the link collection that contains the usage or usage range. If <b>LinkCollection</b> is zero,
 		/// <b>LinkUsage</b> specifies the usage of the top-level collection.
 		/// </summary>
+		[FieldOffset(8)]
 		public USAGE LinkUsage;
 
 		/// <summary>
 		/// Specifies the usage page of the link collection that contains the usage or usage range. If <b>LinkCollection</b> is zero,
 		/// <b>LinkUsagePage</b> specifies the usage page of the top-level collection.
 		/// </summary>
+		[FieldOffset(10)]
 		public USAGE LinkUsagePage;
 
 		/// <summary>
 		/// Specifies, if <b>TRUE</b>, that the structure describes a usage range. Otherwise, if <b>IsRange</b> is <b>FALSE</b>, the
 		/// structure describes a single usage.
 		/// </summary>
+		[FieldOffset(12)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool IsRange;
 
@@ -2574,6 +2588,7 @@ public static partial class Hid
 		/// Specifies, if <b>TRUE</b>, that the usage or usage range has a set of string descriptors. Otherwise, if <b>IsStringRange</b> is
 		/// <b>FALSE</b>, the usage or usage range has zero or one string descriptor.
 		/// </summary>
+		[FieldOffset(13)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool IsStringRange;
 
@@ -2581,6 +2596,7 @@ public static partial class Hid
 		/// Specifies, if <b>TRUE</b>, that the usage or usage range has a set of designators. Otherwise, if <b>IsDesignatorRange</b> is
 		/// <b>FALSE</b>, the usage or usage range has zero or one designator.
 		/// </summary>
+		[FieldOffset(14)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool IsDesignatorRange;
 
@@ -2588,6 +2604,7 @@ public static partial class Hid
 		/// Specifies, if <b>TRUE</b>, that the usage or usage range provides absolute data. Otherwise, if <b>IsAbsolute</b> is <b>FALSE</b>,
 		/// the value is the change in state from the previous value.
 		/// </summary>
+		[FieldOffset(15)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool IsAbsolute;
 
@@ -2595,144 +2612,147 @@ public static partial class Hid
 		/// Specifies, if <b>TRUE</b>, that the usage supports a <b>NULL</b> value, which indicates that the data is not valid and should be
 		/// ignored. Otherwise, if <b>HasNull</b> is <b>FALSE</b>, the usage does not have a <b>NULL</b> value.
 		/// </summary>
+		[FieldOffset(16)]
 		[MarshalAs(UnmanagedType.U1)]
 		public bool HasNull;
 
 		/// <summary>Reserved for internal system use.</summary>
+		[FieldOffset(17)]
 		public byte Reserved;
 
 		/// <summary>
 		/// Specifies the size, in bits, of a usage's data field in a report. If <b>ReportCount</b> is greater than one, each usage has a
 		/// separate data field of this size.
 		/// </summary>
+		[FieldOffset(18)]
 		public ushort BitSize;
 
 		/// <summary>Specifies the number of usages that this structure describes.</summary>
+		[FieldOffset(20)]
 		public ushort ReportCount;
 
 		/// <summary>Reserved for internal system use.</summary>
+		[FieldOffset(22)]
 		public unsafe fixed ushort Reserved2[5];
 
 		/// <summary>Specifies the usage's exponent, as described by the USB HID standard.</summary>
+		[FieldOffset(32)]
 		public uint UnitsExp;
 
 		/// <summary>Specifies the usage's units, as described by the USB HID Standard.</summary>
+		[FieldOffset(36)]
 		public uint Units;
 
 		/// <summary>Specifies a usage's signed lower bound.</summary>
+		[FieldOffset(40)]
 		public int LogicalMin;
 
 		/// <summary>Specifies a usage's signed upper bound.</summary>
+		[FieldOffset(44)]
 		public int LogicalMax;
 
 		/// <summary>Specifies a usage's signed lower bound after scaling is applied to the logical minimum value.</summary>
+		[FieldOffset(48)]
 		public int PhysicalMin;
 
 		/// <summary>Specifies a usage's signed upper bound after scaling is applied to the logical maximum value.</summary>
+		[FieldOffset(52)]
 		public int PhysicalMax;
 
-		/// <summary>Represents the union of multiple data types or values.</summary>
-		public UNION Union;
+		/// <summary>
+		/// Specifies, if <b>IsRange</b> is <b>TRUE</b>, information about a usage range. Otherwise, if <b>IsRange</b> is <b>FALSE</b>,
+		/// <b>NotRange</b> contains information about a single usage.
+		/// </summary>
+		[FieldOffset(56)]
+		public RangeUnion Range;
 
-		/// <summary>Represents the union of multiple data types or values.</summary>
-		[StructLayout(LayoutKind.Explicit)]
-		public struct UNION
+		/// <summary>
+		/// Specifies, if <b>IsRange</b> is <b>FALSE</b>, information about a single usage. Otherwise, if <b>IsRange</b> is <b>TRUE</b>,
+		/// <b>Range</b> contains information about a usage range.
+		/// </summary>
+		[FieldOffset(56)]
+		public NotRangeUnion NotRange;
+
+		/// <summary>
+		/// Specifies, if <b>IsRange</b> is <b>TRUE</b>, information about a usage range. Otherwise, if <b>IsRange</b> is <b>FALSE</b>,
+		/// <b>NotRange</b> contains information about a single usage.
+		/// </summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RangeUnion
 		{
-			/// <summary>
-			/// Specifies, if <b>IsRange</b> is <b>TRUE</b>, information about a usage range. Otherwise, if <b>IsRange</b> is <b>FALSE</b>,
-			/// <b>NotRange</b> contains information about a single usage.
-			/// </summary>
-			[FieldOffset(0)]
-			public RangeUnion Range;
+			/// <summary>Indicates the inclusive lower bound of usage range whose inclusive upper bound is specified by <b>Range.UsageMax</b>.</summary>
+			public USAGE UsageMin;
+
+			/// <summary>Indicates the inclusive upper bound of a usage range whose inclusive lower bound is indicated by <b>Range.UsageMin</b>.</summary>
+			public USAGE UsageMax;
 
 			/// <summary>
-			/// Specifies, if <b>IsRange</b> is <b>FALSE</b>, information about a single usage. Otherwise, if <b>IsRange</b> is <b>TRUE</b>,
-			/// <b>Range</b> contains information about a usage range.
+			/// Indicates the inclusive lower bound of a range of string descriptors (specified by string minimum and string maximum
+			/// items) whose inclusive upper bound is indicated by <b>Range.StringMax</b>.
 			/// </summary>
-			[FieldOffset(0)]
-			public NotRangeUnion NotRange;
+			public ushort StringMin;
 
 			/// <summary>
-			/// Specifies, if <b>IsRange</b> is <b>TRUE</b>, information about a usage range. Otherwise, if <b>IsRange</b> is <b>FALSE</b>,
-			/// <b>NotRange</b> contains information about a single usage.
+			/// Indicates the inclusive upper bound of a range of string descriptors (specified by string minimum and string maximum
+			/// items) whose inclusive lower bound is indicated by <b>Range.StringMin</b>.
 			/// </summary>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct RangeUnion
-			{
-				/// <summary>Indicates the inclusive lower bound of usage range whose inclusive upper bound is specified by <b>Range.UsageMax</b>.</summary>
-				public USAGE UsageMin;
-
-				/// <summary>Indicates the inclusive upper bound of a usage range whose inclusive lower bound is indicated by <b>Range.UsageMin</b>.</summary>
-				public USAGE UsageMax;
-
-				/// <summary>
-				/// Indicates the inclusive lower bound of a range of string descriptors (specified by string minimum and string maximum
-				/// items) whose inclusive upper bound is indicated by <b>Range.StringMax</b>.
-				/// </summary>
-				public ushort StringMin;
-
-				/// <summary>
-				/// Indicates the inclusive upper bound of a range of string descriptors (specified by string minimum and string maximum
-				/// items) whose inclusive lower bound is indicated by <b>Range.StringMin</b>.
-				/// </summary>
-				public ushort StringMax;
-
-				/// <summary>
-				/// Indicates the inclusive lower bound of a range of designators (specified by designator minimum and designator maximum
-				/// items) whose inclusive lower bound is indicated by <b>Range.DesignatorMax</b>.
-				/// </summary>
-				public ushort DesignatorMin;
-
-				/// <summary>
-				/// Indicates the inclusive upper bound of a range of designators (specified by designator minimum and designator maximum
-				/// items) whose inclusive lower bound is indicated by <b>Range.DesignatorMin</b>.
-				/// </summary>
-				public ushort DesignatorMax;
-
-				/// <summary>
-				/// Indicates the inclusive lower bound of a sequential range of <c>data indices</c> that correspond, one-to-one and in the
-				/// same order, to the usages specified by the usage range <b>Range.UsageMin</b> to <b>Range.UsageMax</b>.
-				/// </summary>
-				public ushort DataIndexMin;
-
-				/// <summary>
-				/// Indicates the inclusive upper bound of a sequential range of data indices that correspond, one-to-one and in the same
-				/// order, to the usages specified by the usage range <b>Range.UsageMin</b> to <b>Range.UsageMax</b>.
-				/// </summary>
-				public ushort DataIndexMax;
-			}
+			public ushort StringMax;
 
 			/// <summary>
-			/// Specifies, if <b>IsRange</b> is <b>FALSE</b>, information about a single usage. Otherwise, if <b>IsRange</b> is <b>TRUE</b>,
-			/// <b>Range</b> contains information about a usage range.
+			/// Indicates the inclusive lower bound of a range of designators (specified by designator minimum and designator maximum
+			/// items) whose inclusive lower bound is indicated by <b>Range.DesignatorMax</b>.
 			/// </summary>
-			[StructLayout(LayoutKind.Sequential)]
-			public struct NotRangeUnion
-			{
-				/// <summary>Indicates a <c>usage ID</c>.</summary>
-				public USAGE Usage;
+			public ushort DesignatorMin;
 
-				/// <summary>Reserved for internal system use.</summary>
-				public USAGE Reserved1;
+			/// <summary>
+			/// Indicates the inclusive upper bound of a range of designators (specified by designator minimum and designator maximum
+			/// items) whose inclusive lower bound is indicated by <b>Range.DesignatorMin</b>.
+			/// </summary>
+			public ushort DesignatorMax;
 
-				/// <summary>Indicates a string descriptor ID for the usage specified by <b>NotRange.Usage</b>.</summary>
-				public ushort StringIndex;
+			/// <summary>
+			/// Indicates the inclusive lower bound of a sequential range of <c>data indices</c> that correspond, one-to-one and in the
+			/// same order, to the usages specified by the usage range <b>Range.UsageMin</b> to <b>Range.UsageMax</b>.
+			/// </summary>
+			public ushort DataIndexMin;
 
-				/// <summary>Reserved for internal system use.</summary>
-				public ushort Reserved2;
+			/// <summary>
+			/// Indicates the inclusive upper bound of a sequential range of data indices that correspond, one-to-one and in the same
+			/// order, to the usages specified by the usage range <b>Range.UsageMin</b> to <b>Range.UsageMax</b>.
+			/// </summary>
+			public ushort DataIndexMax;
+		}
 
-				/// <summary>Indicates a designator ID for the usage specified by <b>NotRange.Usage</b>.</summary>
-				public ushort DesignatorIndex;
+		/// <summary>
+		/// Specifies, if <b>IsRange</b> is <b>FALSE</b>, information about a single usage. Otherwise, if <b>IsRange</b> is <b>TRUE</b>,
+		/// <b>Range</b> contains information about a usage range.
+		/// </summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NotRangeUnion
+		{
+			/// <summary>Indicates a <c>usage ID</c>.</summary>
+			public USAGE Usage;
 
-				/// <summary>Reserved for internal system use.</summary>
-				public ushort Reserved3;
+			/// <summary>Reserved for internal system use.</summary>
+			public USAGE Reserved1;
 
-				/// <summary>Indicates the data index of the usage specified by <b>NotRange.Usage</b>.</summary>
-				public ushort DataIndex;
+			/// <summary>Indicates a string descriptor ID for the usage specified by <b>NotRange.Usage</b>.</summary>
+			public ushort StringIndex;
 
-				/// <summary>Reserved for internal system use.</summary>
-				public ushort Reserved4;
-			}
+			/// <summary>Reserved for internal system use.</summary>
+			public ushort Reserved2;
+
+			/// <summary>Indicates a designator ID for the usage specified by <b>NotRange.Usage</b>.</summary>
+			public ushort DesignatorIndex;
+
+			/// <summary>Reserved for internal system use.</summary>
+			public ushort Reserved3;
+
+			/// <summary>Indicates the data index of the usage specified by <b>NotRange.Usage</b>.</summary>
+			public ushort DataIndex;
+
+			/// <summary>Reserved for internal system use.</summary>
+			public ushort Reserved4;
 		}
 	}
 
