@@ -667,9 +667,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "D52E98BD-726F-4AC0-A034-02896B1D1687")]
 	public static extern Win32Error FindPackagesByPackageFamily(string packageFamilyName, PACKAGE_FLAGS packageFilters, ref uint count,
-		[Optional, SizeDef(nameof(count)), MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] StrPtrUni[]? packageFullNames, ref uint bufferLength,
-		[Optional, SizeDef(nameof(bufferLength))] IntPtr buffer,
-		[Optional, SizeDef(nameof(count)), MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? packageProperties);
+		[Out, Optional] IntPtr packageFullNames, ref uint bufferLength, [Out, Optional] IntPtr buffer, [Out, Optional] IntPtr packageProperties);
 
 	/// <summary>Finds the packages with the specified family name for the current user.</summary>
 	/// <param name="packageFamilyName"><para>Type: <c>PCWSTR</c></para>
@@ -698,16 +696,17 @@ public static partial class Kernel32
 		uint count = 0, bufferLength = 0;
 		packageFullNames = [];
 		packageProperties = [];
-		Win32Error err = FindPackagesByPackageFamily(packageFamilyName, packageFilters, ref count, null, ref bufferLength, default, null);
+		Win32Error err = FindPackagesByPackageFamily(packageFamilyName, packageFilters, ref count, default, ref bufferLength, default, default);
 		if (count == 0 || err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			return err;
 
-		using SafeCoTaskMemString buffer = new((int)bufferLength);
-		var fn = new StrPtrUni[(int)count];
-		packageProperties = new uint[(int)count];
-		err = FindPackagesByPackageFamily(packageFamilyName, packageFilters, ref count, fn, ref bufferLength, buffer, packageProperties);
+		using SafeCoTaskMemString buf = new((int)bufferLength, CharSet.Unicode);
+		using SafeNativeArray<uint> props = new((int)count);
+		using SafeNativeArray<StrPtrUni> fns = new((int)count);
+		err = FindPackagesByPackageFamily(packageFamilyName!, packageFilters, ref count, fns, ref bufferLength, props);
 		if (err.Succeeded)
-			packageFullNames = Array.ConvertAll(fn, p => (string?)p);
+			packageFullNames = [.. fns.Select(s => (string?)s)];
+
 		return err;
 	}
 
