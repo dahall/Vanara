@@ -2502,6 +2502,8 @@ public static partial class Rpc
 
 	internal class RpcStringMarshaler : ICustomMarshaler
 	{
+		public static ICustomMarshaler GetInstance(string pstrCookie) => new RpcStringMarshaler();
+
 		public void CleanUpManagedData(object ManagedObj) => throw new NotImplementedException();
 
 		public void CleanUpNativeData(IntPtr pNativeData) => RpcStringFree(ref pNativeData);
