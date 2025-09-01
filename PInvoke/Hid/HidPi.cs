@@ -430,7 +430,8 @@ public static partial class Hid
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetExtendedAttributes")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
 	public static extern NTStatus HidP_GetExtendedAttributes([In] HIDP_REPORT_TYPE ReportType, ushort DataIndex,
-		[In] PHIDP_PREPARSED_DATA PreparsedData, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] HIDP_EXTENDED_ATTRIBUTES[] Attributes, ref uint LengthAttributes);
+		[In] PHIDP_PREPARSED_DATA PreparsedData, [Out, SizeDef(nameof(LengthAttributes), SizingMethod.Bytes | SizingMethod.Query)] ManagedStructPointer<HIDP_EXTENDED_ATTRIBUTES> Attributes,
+		ref uint LengthAttributes);
 
 	/// <summary>The <b>HidP_GetLinkCollectionNodes</b> routine returns a <c>top-level collection's</c>  <c>link collection array</c>.</summary>
 	/// <param name="LinkCollectionNodes">

@@ -11,14 +11,23 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class HidTests
 {
+	string? devicePath = null;
+	SafeHFILE hDeviceObject = SafeHFILE.Null;
+
 	[OneTimeSetUp]
 	public void _Setup()
 	{
+		HidD_GetHidGuid(out var hidGuid);
+		using SafeHDEVINFO hardwareDeviceInfo = SetupDiGetClassDevs(hidGuid, default, default, DIGCF.DIGCF_PRESENT | DIGCF.DIGCF_DEVICEINTERFACE);
+		var idid = SetupDiEnumDeviceInterfaces(hardwareDeviceInfo, hidGuid).First();
+		if (SetupDiGetDeviceInterfaceDetail(hardwareDeviceInfo, idid, out devicePath, out _))
+			hDeviceObject = CreateFile(devicePath!, FileAccess.GENERIC_READ | FileAccess.GENERIC_WRITE, FILE_SHARE.FILE_SHARE_READ | FILE_SHARE.FILE_SHARE_WRITE, null, CreationOption.OPEN_EXISTING, 0);
 	}
 
 	[OneTimeTearDown]
 	public void _TearDown()
 	{
+		hDeviceObject.Dispose();
 	}
 
 	[Test]
@@ -40,6 +49,49 @@ public class HidTests
 			}
 			throw Win32Error.GetExceptionForLastError()!;
 		}
+	}
+
+	[Test]
+	public void GetHidDStringsTest()
+	{
+		StringBuilder sb = new(2048);
+		uint sz = (uint)sb.Capacity;
+		Assert.That(HidD_GetManufacturerString(hDeviceObject, sb, sz), ResultIs.Successful);
+		TestContext.WriteLine("Manufacturer: " + sb.ToString());
+		sb.Clear();
+		Assert.That(HidD_GetProductString(hDeviceObject, sb, sz), ResultIs.Successful);
+		TestContext.WriteLine("Product: " + sb.ToString());
+		sb.Clear();
+		Assert.That(HidD_GetSerialNumberString(hDeviceObject, sb, sz), ResultIs.Successful);
+		TestContext.WriteLine("Serial Number: " + sb.ToString());
+	}
+
+	[Test]
+	public void HidP_GetExtendedAttributesTest()
+	{
+		Assert.That(HidD_GetPreparsedData(hDeviceObject, out var ppd), ResultIs.Successful);
+		using SafeCoTaskMemStruct<HIDP_EXTENDED_ATTRIBUTES> attrs = new();
+		uint l = attrs.Size;
+		var err = HidP_GetExtendedAttributes(HIDP_REPORT_TYPE.HidP_Input, 0, ppd, attrs, ref l);
+		if (err == NTStatus.HIDP_STATUS_BUFFER_TOO_SMALL)
+		{
+			attrs.Size = l;
+			err = HidP_GetExtendedAttributes(HIDP_REPORT_TYPE.HidP_Input, 0, ppd, attrs, ref l);
+		}
+		Assert.That(err, ResultIs.Successful);
+		attrs.Value.WriteValues();
+	}
+
+	[Test]
+	public void HidP_GetLinkCollectionNodesTest()
+	{
+		Assert.That(HidD_GetPreparsedData(hDeviceObject, out var ppd), ResultIs.Successful);
+		uint l = 0;
+		Assert.That(HidP_GetLinkCollectionNodes([], ref l, ppd), ResultIs.Failure);
+		Assert.That(l, Is.GreaterThan(0));
+		var nodes = new HIDP_LINK_COLLECTION_NODE[l];
+		Assert.That(HidP_GetLinkCollectionNodes(nodes, ref l, ppd), ResultIs.Successful);
+		nodes.WriteValues();
 	}
 
 	/*++
@@ -159,7 +211,7 @@ public class HidTests
 		Done:
 		if (!bRet)
 		{
-			CloseHidDevice(HidDevice);
+			HidDevice.Dispose();
 		}
 
 		return bRet;
@@ -604,18 +656,6 @@ public class HidTests
 			c = a + b;
 			return HRESULT.S_OK;
 		}
-	}
-
-	static void CloseHidDevices([In] IEnumerable<HID_DEVICE> HidDevices)
-	{
-		foreach (var d in HidDevices)
-			CloseHidDevice(d);
-		return;
-	}
-
-	static void CloseHidDevice([In] HID_DEVICE HidDevice)
-	{
-		HidDevice.Dispose();
 	}
 
 	class HID_DEVICE : IDisposable
