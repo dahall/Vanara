@@ -71,6 +71,7 @@ public class AppModelTests
 		for (int i = 0; i < fullNames.Length; i++)
 			TestContext.WriteLine($"{pkgFamilyName} = {fullNames[i]} : {props[i]}");
 		Assert.That(fullNames, Is.Not.Empty);
+		Assert.That(fullNames, Does.Not.Contain(null));
 	}
 
 	[Test]
