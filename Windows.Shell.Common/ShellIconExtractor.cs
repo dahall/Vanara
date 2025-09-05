@@ -19,6 +19,8 @@ namespace Vanara.Windows.Shell
 		public int ImageListIndex { get; } = idx;
 
 		/// <summary>Gets the item ID list.</summary>
+		/// <remarks>This is the ID list relative to the parent folder when passed into the constructor of
+		/// <see cref="ShellIconExtractor">ShellIconExtractor(ShellFolder folder)</see> as <see cref="ShellFolder"/>.</remarks>
 		/// <value>The item ID list.</value>
 		public PIDL ItemID { get; } = pidl;
 	}
