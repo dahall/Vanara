@@ -995,7 +995,7 @@ public static partial class Kernel32
 
 	/// <summary/>
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct PTP_CALLBACK_INSTANCE
+	public readonly partial struct PTP_CALLBACK_INSTANCE
 	{
 		/// <summary/>
 		private readonly IntPtr handle;

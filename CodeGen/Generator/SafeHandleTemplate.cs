@@ -3,7 +3,8 @@
 #1#public static partial class ParentClassName
 {
 #1#	SummaryText
-	public partial class ClassName : BaseClassName
+#2#	[global::Vanara.PInvoke.DeferAutoMethodFrom(typeof(HandleName))]
+#2#	public partial class ClassName : BaseClassName
 	{
 		/// <summary>Initializes a new instance of the <see cref="ClassName"/> class and assigns an existing handle.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -40,7 +41,5 @@
 
 #3##4#		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() CloseCode
-#4#	}#6#
-
-	//[global::Vanara.PInvoke.DeferAutoMethodTo(typeof(ClassName))] public partial struct HandleName { }#6##1#
+#4#	}#1#
 }#1#

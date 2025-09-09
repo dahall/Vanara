@@ -239,16 +239,9 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 				}
 
 				// Process the xml docs for the method
-				var docComment = methodDecl.GetLeadingTrivia().Where(t => t.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)).FirstOrDefault().ToString();
-				if (!string.IsNullOrEmpty(docComment))
+				var xmlDoc = methodDecl.GetDocs();
+				if (xmlDoc is not null)
 				{
-					// Remove the leading /// from the doc comment
-					docComment = $"<xmlDoc>\r\n{Regex.Replace(docComment, @"^\s*(///\s*)?", @"", RegexOptions.Multiline)}\r\n</xmlDoc>";
-
-					// Load the xml docs into an XmlDocument
-					XmlDocument xmlDoc = new();
-					xmlDoc.LoadXml(docComment);
-
 					// Get the xml node for the IID parameter docs
 					XmlNode? iidNode = xmlDoc.SelectSingleNode($"//param[@name='{iidParam.Identifier}']");
 					if (iidNode is not null)
@@ -276,17 +269,9 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 							iParamNode.InnerXml = $"The <see cref=\"{interfaceName}\"/> interface instance value used for the extension method.";
 							typeParamNode.ParentNode.InsertAfter(iParamNode, typeParamNode);
 						}
-
-						// Preface each line of the non-document xml elements with '/// '
-						XDocument xdoc = XDocument.Parse(xmlDoc.DocumentElement.OuterXml);
-						List<string> docLines = [.. xdoc.ToString().Split(["\r\n"], StringSplitOptions.RemoveEmptyEntries)];
-						docLines.RemoveAt(0); docLines.RemoveAt(docLines.Count - 1);
-						StringBuilder outXml = new();
-						for (int i = 0; i < docLines.Count; i++)
-							outXml.AppendLine("/// " + docLines[i].TrimStart(' ', '\t'));
-						methodSig = methodSig.WithLeadingTrivia(ParseLeadingTrivia(outXml.ToString()));
 					}
 				}
+				methodSig = methodSig.WithDocs(xmlDoc);
 
 				// Create the output string
 				using var outputString = new StringWriter();

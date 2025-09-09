@@ -59,15 +59,15 @@ public sealed class AdjustAutoMethodNamePatternAttribute(params (string pattern,
 
 /// <summary>
 /// <note type="implement">This attribute does not yet have an implemented generator.</note>
-/// <para>Applying this attribute to a class or structure will defer the auto-generated methods to the specified type.</para>
+/// <para>Applying this attribute to a class or structure will defer the auto-generated methods from that type to this type.</para>
 /// </summary>
-/// <param name="deferredType">
-/// The type of the partial class or structure that will host the auto methods. This type must provide an implicit conversion operator to the
-/// type associated with this attribute.
+/// <param name="deferringType">
+/// The type of the partial class or structure that is referenced by auto method attributes. The attributed type must provide an implicit conversion operator to the
+/// type referenced by this attribute.
 /// </param>
 [AttributeUsage(AttributeTargets.Struct | AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-public sealed class DeferAutoMethodToAttribute(Type deferredType) : Attribute
+public sealed class DeferAutoMethodFromAttribute(Type deferringType) : Attribute
 {
-	/// <summary>The type of the partial class or structure that will host the auto methods.</summary>
-	public Type DeferredType { get; } = deferredType ?? throw new ArgumentNullException(nameof(deferredType), "Deferred type cannot be null.");
+	/// <summary>The type of the partial class or structure that is referenced by auto method attributes.</summary>
+	public Type DeferringType { get; } = deferringType ?? throw new ArgumentNullException(nameof(deferringType), "Deferring type cannot be null.");
 }
