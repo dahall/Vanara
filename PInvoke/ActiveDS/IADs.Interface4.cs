@@ -2791,31 +2791,6 @@ public static partial class ActiveDS
 		protected override bool InternalReleaseHandle() { try { ids?.CloseSearchHandle(handle); return true; } catch { return false; } }
 	}
 
-	/*internal class VariantMarshaler<T> : ICustomMarshaler
-	{
-		public static ICustomMarshaler GetInstance(string pstrCookie) => new VariantMarshaler<T>();
-		void ICustomMarshaler.CleanUpManagedData(object ManagedObj) { }
-		void ICustomMarshaler.CleanUpNativeData(IntPtr pNativeData) => Marshal.FreeCoTaskMem(pNativeData);
-		int ICustomMarshaler.GetNativeDataSize() => IntPtr.Size;
-		IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj)
-		{
-			if (ManagedObj is null) return IntPtr.Zero;
-			if (ManagedObj.GetType() != typeof(T)) throw new ArgumentException("Only specified type parameter type can be marshaled.");
-			SafeCoTaskMemStruct<VARIANT> pv = new(new VARIANT(ManagedObj));
-			return pv.TakeOwnership();
-		}
-		object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData)
-		{
-			if (pNativeData == IntPtr.Zero) return new string?[0];
-			unsafe
-			{
-				VARIANT* v = (VARIANT*)&pNativeData;
-				if (v->vt.GetCorrespondingType() != typeof(T)) throw new ArgumentException("Only specified type parameter type can be marshaled.");
-				return v->ToObject();
-			}
-		}
-	}*/
-
 	/// <summary>CLSID_AccessControlEntry</summary>
 	[ComImport, Guid("B75AC000-9BDD-11D0-852C-00C04FD8D503"), ClassInterface(ClassInterfaceType.None)]
 	public class AccessControlEntry

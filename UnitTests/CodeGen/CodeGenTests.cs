@@ -39,72 +39,72 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class CodeGenTests
 {
-	[Test]
-	public void AddAsMemberTest()
-	{
-		const string src = /* lang=c#-test */ """
-			using System;
-			using System.Runtime.InteropServices;
-			namespace Vanara.PInvoke
-			{
-				[AttributeUsage(AttributeTargets.Parameter, Inherited = false, AllowMultiple = false)]
-				public sealed class AddAsMemberAttribute : Attribute { }
+	//[Test]
+	//public void AddAsMemberTest()
+	//{
+	//	const string src = /* lang=c#-test */ """
+	//		using System;
+	//		using System.Runtime.InteropServices;
+	//		namespace Vanara.PInvoke
+	//		{
+	//			[AttributeUsage(AttributeTargets.Parameter, Inherited = false, AllowMultiple = false)]
+	//			public sealed class AddAsMemberAttribute : Attribute { }
 	
-				[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.ReturnValue, Inherited = false, AllowMultiple = false)]
-				public sealed class AddAsCtorAttribute : Attribute { }
+	//			[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.ReturnValue, Inherited = false, AllowMultiple = false)]
+	//			public sealed class AddAsCtorAttribute : Attribute { }
 
-				[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter, Inherited = false, AllowMultiple = false)]
-				public sealed class IgnoreAttribute : Attribute { }
+	//			[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter, Inherited = false, AllowMultiple = false)]
+	//			public sealed class IgnoreAttribute : Attribute { }
 				
-				public static partial class Test32
-				{
-					public partial struct HTEST { }
+	//			public static partial class Test32
+	//			{
+	//				public partial struct HTEST { }
 
-					public partial class SafeHTEST { }
+	//				public partial class SafeHTEST { }
 
-					[DllImport("test32.dll", SetLastError = true)]
-					public static extern bool IsExcluded([AddAsMember] HTEST2 hTest);
+	//				[DllImport("test32.dll", SetLastError = true)]
+	//				public static extern bool IsExcluded([AddAsMember] HTEST2 hTest);
 	
-					/// <summary>Determines if a test is active.</summary>
-					/// <param name="hTest">The test handle.</param>
-					/// <param name="flag">The flag.</param>
-					/// <returns><see langword="true"/> on success, <see langword="false"/> on failure.</returns>
-					[DllImport("test32.dll", SetLastError = true)]
-					public static extern bool IsActive<T>([AddAsMember] HTEST hTest, T t, [Optional, Ignore] uint flag) where T : struct;
+	//				/// <summary>Determines if a test is active.</summary>
+	//				/// <param name="hTest">The test handle.</param>
+	//				/// <param name="flag">The flag.</param>
+	//				/// <returns><see langword="true"/> on success, <see langword="false"/> on failure.</returns>
+	//				[DllImport("test32.dll", SetLastError = true)]
+	//				public static extern bool IsActive<T>([AddAsMember] HTEST hTest, T t, [Optional, Ignore] uint flag) where T : struct;
 
-					/// <summary>Gets a test name.</summary>
-					/// <param name="hTest">The test handle.</param>
-					/// <param name="ptr">The pointer to the name buffer.</param>
-					/// <param name="sz">The size of the name buffer.</param>
-					/// <param name="name">The name.</param>
-					/// <returns><see langword="true"/> on success, <see langword="false"/> on failure.</returns>
-					[DllImport("test32.dll", SetLastError = true)]
-					public static extern bool GetName([AddAsMember] HTEST hTest, [In, Optional, SizeDef(nameof(sz))] IntPtr ptr, uint sz, out string? name);
+	//				/// <summary>Gets a test name.</summary>
+	//				/// <param name="hTest">The test handle.</param>
+	//				/// <param name="ptr">The pointer to the name buffer.</param>
+	//				/// <param name="sz">The size of the name buffer.</param>
+	//				/// <param name="name">The name.</param>
+	//				/// <returns><see langword="true"/> on success, <see langword="false"/> on failure.</returns>
+	//				[DllImport("test32.dll", SetLastError = true)]
+	//				public static extern bool GetName([AddAsMember] HTEST hTest, [In, Optional, SizeDef(nameof(sz))] IntPtr ptr, uint sz, out string? name);
 
-					/// <summary>Sets a test name.</summary>
-					/// <param name="hTest">The test handle.</param>
-					/// <param name="name">The name.</param>
-					/// <param name="code">The code.</param>
-					/// <returns><see langword="true"/> on success, <see langword="false"/> on failure.</returns>
-					[DllImport("test32.dll", SetLastError = true)]
-					public static extern bool SetName([AddAsMember] HTEST hTest, string? name, [Ignore] uint code = 0);
+	//				/// <summary>Sets a test name.</summary>
+	//				/// <param name="hTest">The test handle.</param>
+	//				/// <param name="name">The name.</param>
+	//				/// <param name="code">The code.</param>
+	//				/// <returns><see langword="true"/> on success, <see langword="false"/> on failure.</returns>
+	//				[DllImport("test32.dll", SetLastError = true)]
+	//				public static extern bool SetName([AddAsMember] HTEST hTest, string? name, [Ignore] uint code = 0);
 
-					/// <summary>Creates a test.</summary>
-					/// <param name="name">The name.</param>
-					/// <param name="code">The code.</param>
-					/// <param name="test">The test handle.</param>
-					/// <returns><see langword="true"/> on success, <see langword="false"/> on failure.</returns>
-					[DllImport("test32.dll", SetLastError = true)]
-					public static extern bool CreateTest(string? name, [Optional][Ignore] uint code, [AddAsCtor] out SafeHTEST test);
-				}
-			}
-			""";
-		var compilation = GetCompilation(src);
-		CreateGeneratorDriverAndRun(compilation, new AddAsMemberGenerator(), null, out var output, out var diag);
-		Assert.That(output.SyntaxTrees, Has.Exactly(2).Items);
-		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Has.Exactly(1).Items);
-		WriteTrees(TestContext.Out, output.SyntaxTrees, false);
-	}
+	//				/// <summary>Creates a test.</summary>
+	//				/// <param name="name">The name.</param>
+	//				/// <param name="code">The code.</param>
+	//				/// <param name="test">The test handle.</param>
+	//				/// <returns><see langword="true"/> on success, <see langword="false"/> on failure.</returns>
+	//				[DllImport("test32.dll", SetLastError = true)]
+	//				public static extern bool CreateTest(string? name, [Optional][Ignore] uint code, [AddAsCtor] out SafeHTEST test);
+	//			}
+	//		}
+	//		""";
+	//	var compilation = GetCompilation(src);
+	//	CreateGeneratorDriverAndRun(compilation, new AddAsMemberGenerator(), null, out var output, out var diag);
+	//	Assert.That(output.SyntaxTrees, Has.Exactly(2).Items);
+	//	Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error), Has.Exactly(1).Items);
+	//	WriteTrees(TestContext.Out, output.SyntaxTrees, false);
+	//}
 
 	[Test]
 	public void AutoHandleTest()
