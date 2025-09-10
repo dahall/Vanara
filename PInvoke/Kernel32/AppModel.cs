@@ -703,11 +703,30 @@ public static partial class Kernel32
 		using SafeCoTaskMemString buf = new((int)bufferLength, CharSet.Unicode);
 		using SafeNativeArray<uint> props = new((int)count);
 		using SafeNativeArray<StrPtrUni> fns = new((int)count);
-		err = FindPackagesByPackageFamily(packageFamilyName!, packageFilters, ref count, fns, ref bufferLength, props);
+		err = FindPackagesByPackageFamily(packageFamilyName!, packageFilters, ref count, fns, ref bufferLength, buf, props);
 		if (err.Succeeded)
+		{
 			packageFullNames = [.. fns.Select(s => (string?)s)];
-
+			packageProperties = props.ToArray();
+		}
 		return err;
+	}
+
+	/// <summary>Finds the packages with the specified family name for the current user.</summary>
+	/// <param name="packageFamilyName">The package family name.</param>
+	/// <param name="packageFilters">The package constants that specify how package information is retrieved. All package constants except
+	/// <c>PACKAGE_FILTER_ALL_LOADED</c> are supported.</param>
+	/// <param name="results">Receives an array containing the strings of package full names that were found and their associated properties.</param>
+	/// <returns>If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code.</returns>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-findpackagesbypackagefamily LONG
+	// FindPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 packageFilters, UINT32 *count, PWSTR *packageFullNames, UINT32
+	// *bufferLength, WCHAR *buffer, UINT32 *packageProperties );
+	[PInvokeData("appmodel.h", MSDNShortId = "D52E98BD-726F-4AC0-A034-02896B1D1687")]
+	public static Win32Error FindPackagesByPackageFamily(string packageFamilyName, PACKAGE_FLAGS packageFilters, out (string? fullName, uint properties)[] results)
+	{
+		var ret = FindPackagesByPackageFamily(packageFamilyName, packageFilters, out string?[] fns, out uint[] props);
+		results = ret.Failed ? [] : fns.Zip(props, (fn, p) => (fn, p)).ToArray();
+		return ret;
 	}
 
 	/// <summary>

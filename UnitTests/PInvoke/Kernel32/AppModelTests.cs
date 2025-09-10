@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.IO;
+using System.Linq;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 
@@ -33,7 +34,7 @@ public class AppModelTests
 	{
 		Assert.That(FunctionHelper.CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetPackagePathByFullName2(pkgFullName!, PackagePathType.PackagePathType_Effective, ref sz, sb), out var pkgPath), ResultIs.Successful);
 
-		// Luanch the package by its path and get its process handle
+		// Launch the package by its path and get its process handle
 		using var hProc = CreateProcess(Path.Combine(pkgPath!, pkgAppExe!));
 		Assert.That(hProc, ResultIs.ValidHandle);
 		Sleep(500);
@@ -67,11 +68,13 @@ public class AppModelTests
 	[Test]
 	public void FindPackagesByPackageFamilyTest()
 	{
-		Assert.That(FindPackagesByPackageFamily(pkgFamilyName!, PACKAGE_FLAGS.PACKAGE_FILTER_HEAD | PACKAGE_FLAGS.PACKAGE_FILTER_DIRECT, out string?[] fullNames, out uint[] props), ResultIs.Successful);
-		for (int i = 0; i < fullNames.Length; i++)
-			TestContext.WriteLine($"{pkgFamilyName} = {fullNames[i]} : {props[i]}");
-		Assert.That(fullNames, Is.Not.Empty);
-		Assert.That(fullNames, Does.Not.Contain(null));
+		for (int x = 0; x < 5; x++)
+		{
+			Assert.That(FindPackagesByPackageFamily(pkgFamilyName!, PACKAGE_FLAGS.PACKAGE_FILTER_HEAD | PACKAGE_FLAGS.PACKAGE_FILTER_DIRECT, out var results), ResultIs.Successful);
+			Assert.That(results, Is.Not.Empty);
+			Assert.That(results.Select(r => r.fullName), Does.Not.Contain(null));
+			TestContext.WriteLine(string.Join(", ", results.Select(r => $"{r.fullName} : {r.properties}")));
+		}
 	}
 
 	[Test]
