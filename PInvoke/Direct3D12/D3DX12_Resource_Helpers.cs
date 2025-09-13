@@ -730,12 +730,12 @@ public static partial class D3D12
 		[In] D3D12_SUBRESOURCE_DATA[] pSrcData)
 	{
 		pDestinationResource.GetDesc(out var Desc);
-		IidGetObj(pDestinationResource.GetDevice, out ID3D12Device pDevice).ThrowIfFailed();
+		pDestinationResource.GetDevice(out ID3D12Device? pDevice).ThrowIfFailed();
 
 		var pLayouts = new D3D12_PLACED_SUBRESOURCE_FOOTPRINT[NumSubresources];
 		var pRowSizesInBytes = new ulong[NumSubresources];
 		var pNumRows = new uint[NumSubresources];
-		pDevice.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, pLayouts,
+		pDevice!.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, pLayouts,
 			pNumRows, pRowSizesInBytes, out var RequiredSize);
 		Marshal.ReleaseComObject(pDevice);
 
@@ -793,10 +793,9 @@ public static partial class D3D12
 		uint[] pNumRows = new uint[NumSubresources];
 
 		pDestinationResource.GetDesc(out var Desc);
+		pDestinationResource.GetDevice(out ID3D12Device? pDevice).ThrowIfFailed();
 
-		IidGetObj(pDestinationResource.GetDevice, out ID3D12Device pDevice).ThrowIfFailed();
-
-		pDevice.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, pLayouts, pNumRows,
+		pDevice!.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, pLayouts, pNumRows,
 			pRowSizesInBytes, out var RequiredSize);
 		Marshal.ReleaseComObject(pDevice);
 
@@ -855,8 +854,8 @@ public static partial class D3D12
 		ulong[] RowSizesInBytes = new ulong[MaxSubresources];
 
 		pDestinationResource.GetDesc(out var Desc);
-		IidGetObj(pDestinationResource.GetDevice, out ID3D12Device pDevice).ThrowIfFailed();
-		pDevice.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, Layouts, NumRows,
+		pDestinationResource.GetDevice(out ID3D12Device? pDevice).ThrowIfFailed();
+		pDevice!.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, Layouts, NumRows,
 			RowSizesInBytes, out var RequiredSize);
 		Marshal.ReleaseComObject(pDevice);
 
@@ -915,9 +914,8 @@ public static partial class D3D12
 		uint[] pNumRows = new uint[MaxSubresources];
 
 		pDestinationResource.GetDesc(out var Desc);
-
-		IidGetObj(pDestinationResource.GetDevice, out ID3D12Device pDevice).ThrowIfFailed();
-		pDevice.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, pLayouts, pNumRows, pRowSizesInBytes,
+		pDestinationResource.GetDevice(out ID3D12Device? pDevice).ThrowIfFailed();
+		pDevice!.GetCopyableFootprints(Desc, FirstSubresource, NumSubresources, IntermediateOffset, pLayouts, pNumRows, pRowSizesInBytes,
 			out var RequiredSize);
 		Marshal.ReleaseComObject(pDevice);
 

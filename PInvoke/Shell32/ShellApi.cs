@@ -1451,7 +1451,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
 	public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses,
-		uint cClasses, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		uint cClasses, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>Retrieves an object that implements an IQueryAssociations interface.</summary>
 	/// <typeparam name="TIntf">Reference to the desired IID type, normally IQueryAssociations.</typeparam>
@@ -1465,7 +1465,7 @@ public static partial class Shell32
 	// const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv );
 	[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
 #pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
-	public static TIntf? AssocCreateForClasses<TIntf>(ASSOCIATIONELEMENT[] rgClasses) where TIntf : class =>
+	public static TIntf? AssocCreateForClasses<TIntf>(params ASSOCIATIONELEMENT[] rgClasses) where TIntf : class =>
 		IidGetObj<TIntf>((in Guid g, out object? o) => AssocCreateForClasses(rgClasses, (uint)rgClasses.Length, g, out o));
 #pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
@@ -3286,7 +3286,7 @@ public static partial class Shell32
 	// SHGetPropertyStoreForWindow( HWND hwnd, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shellapi.h", MSDNShortId = "772aa2c8-6dd1-480c-a008-58f30902cb80")]
-	public static extern HRESULT SHGetPropertyStoreForWindow(HWND hwnd, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT SHGetPropertyStoreForWindow(HWND hwnd, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// Retrieves an object that represents a specific window's collection of properties, which allows those properties to be queried or set.
@@ -3330,8 +3330,7 @@ public static partial class Shell32
 	// SHGetPropertyStoreForWindow( HWND hwnd, REFIID riid, void **ppv );
 	[PInvokeData("shellapi.h", MSDNShortId = "772aa2c8-6dd1-480c-a008-58f30902cb80")]
 #pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
-	public static TIntf? SHGetPropertyStoreForWindow<TIntf>(HWND hwnd) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetPropertyStoreForWindow(hwnd, g, out o));
+	public static TIntf? SHGetPropertyStoreForWindow<TIntf>(HWND hwnd) where TIntf : class { SHGetPropertyStoreForWindow(hwnd, out TIntf? o).ThrowIfFailed(); return o; }
 #pragma warning restore IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 
 	/// <summary>

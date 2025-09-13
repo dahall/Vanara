@@ -1,5 +1,6 @@
 ﻿#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -4272,7 +4273,7 @@ public static partial class Shell32
 	// SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
-	public static extern HRESULT SHBindToFolderIDListParent(IShellFolder? psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv, out IntPtr ppidlLast);
+	public static extern HRESULT SHBindToFolderIDListParent(IShellFolder? psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv, [Ignore] out IntPtr ppidlLast);
 
 	/// <summary>
 	/// Given a Shell namespace item specified in the form of a folder, and an item identifier list relative to that folder, this
@@ -4352,7 +4353,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
 	public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder? psfRoot, PIDL pidl, [Optional] IBindCtx? ppbc, in Guid riid,
-		[MarshalAs(UnmanagedType.IUnknown)] out object? ppv, out IntPtr ppidlLast);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv, out IntPtr ppidlLast);
 
 	/// <summary>Extends the SHBindToFolderIDListParent function by allowing the caller to specify a bind context.</summary>
 	/// <typeparam name="TIntf">
@@ -4427,7 +4428,7 @@ public static partial class Shell32
 	// IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
-	public static extern HRESULT SHBindToObject(IShellFolder? psf, PIDL pidl, IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+	public static extern HRESULT SHBindToObject(IShellFolder? psf, PIDL pidl, IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</summary>
 	/// <typeparam name="TIntf">Type of the interface to return.</typeparam>
@@ -4499,7 +4500,7 @@ public static partial class Shell32
 	// PCIDLIST_ABSOLUTE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "1cb283a6-3ebf-4986-9f32-5f6ab8d977ad")]
-	public static extern HRESULT SHBindToParent(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv, out IntPtr ppidlLast);
+	public static extern HRESULT SHBindToParent(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv, out IntPtr ppidlLast);
 
 	/// <summary>
 	/// Takes a pointer to a fully qualified item identifier list (PIDL), and returns a specified interface pointer on the parent object.
@@ -4821,7 +4822,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT SHCreateDataObject([In, Optional] PIDL pidlFolder, uint cidl,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? apidl, [In, Optional] IDataObject? pdtInner,
-		in Guid riid, out IDataObject ppv);
+		in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out IDataObject? ppv);
 
 	/// <summary>Creates a data object in a parent folder.</summary>
 	/// <param name="pidlFolder">
@@ -4876,7 +4877,7 @@ public static partial class Shell32
 	// [in, optional] PCIDLIST_ABSOLUTE pidlFolder, [in] UINT cidl, [in, optional] PCUITEMID_CHILD_ARRAY apidl, [in, optional]
 	// IDataObject *pdtInner, [in] REFIID riid, [out] void **ppv );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHCreateDataObject")]
-	public static HRESULT SHCreateDataObject([In, Optional] PIDL? pidlFolder, [In, Optional] IEnumerable<PIDL>? apidl, [In, Optional] IDataObject? pdtInner, out IDataObject ppv) =>
+	public static HRESULT SHCreateDataObject([In, Optional] PIDL? pidlFolder, [In, Optional] IEnumerable<PIDL>? apidl, [In, Optional] IDataObject? pdtInner, out IDataObject? ppv) =>
 		SHCreateDataObject(pidlFolder ?? PIDL.Null, (uint)(apidl?.Count() ?? 0), apidl is null ? null : apidl.Select(p => p.DangerousGetHandle()).ToArray(),
 			pdtInner, typeof(IDataObject).GUID, out ppv);
 
@@ -4913,7 +4914,7 @@ public static partial class Shell32
 	// SHCreateDefaultContextMenu( const DEFCONTEXTMENU *pdcm, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "055ff0a0-9ba7-463d-9684-3fd072b190da")]
-	public static extern HRESULT SHCreateDefaultContextMenu(in DEFCONTEXTMENU pdcm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT SHCreateDefaultContextMenu(in DEFCONTEXTMENU pdcm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// <para>
@@ -5104,7 +5105,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "af3beb0a-892b-43e5-b5b8-8005f497b6e5")]
 	public static extern HRESULT SHCreateFileExtractIconW([MarshalAs(UnmanagedType.LPWStr)] string pszFile, FileFlagsAndAttributes dwFileAttributes,
-		in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>
 	/// <para>
@@ -6173,7 +6174,7 @@ public static partial class Shell32
 	/// <param name="ppv">When this method returns, contains the interface pointer requested in riid. This is typically IImageList.</param>
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shlobj.h", MSDNShortId = "bb762185")]
-	public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>Retrieves an image list.</summary>
 	/// <param name="iImageList">The image type contained in the list.</param>
@@ -6287,7 +6288,7 @@ public static partial class Shell32
 	/// <param name="ppv">When this method returns, contains the interface pointer requested in riid.</param>
 	[DllImport(Lib.Shell32, ExactSpelling = true)]
 	[PInvokeData("Shlobj.h", MSDNShortId = "dd378429")]
-	public static extern HRESULT SHGetKnownFolderItem(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object? ppv);
+	public static extern HRESULT SHGetKnownFolderItem(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>Retrieves an IShellItem object that represents a known folder.</summary>
 	/// <typeparam name="TIntf">The Type of the interface that represents the item, usually IShellItem or IShellItem2.</typeparam>
@@ -7011,7 +7012,7 @@ public static partial class Shell32
 	// IPropertyStorage **ppstg, UINT *puCodePage );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "fd99e04e-ef96-4357-9226-da6604fb0e84")]
-	public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, in Guid fmtid, in Guid pclsid, PROPSETFLAG grfFlags, STGM grfMode, uint dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
+	public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, in Guid fmtid, in Guid pclsid, PROPSETFLAG grfFlags, STGM grfMode, CreationOption dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
 
 	/// <summary>Ensures proper handling of code page retrieval or assignment for the requested property set operation.</summary>
 	/// <param name="psstg">
@@ -7072,7 +7073,7 @@ public static partial class Shell32
 	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHPropStgCreate")]
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, in Guid fmtid, [Optional] GuidPtr pclsid, PROPSETFLAG grfFlags,
-		STGM grfMode, uint dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
+		STGM grfMode, CreationOption dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
 
 	/// <summary>
 	/// <para>
@@ -7559,7 +7560,8 @@ public static partial class Shell32
 	// IStorage *pstgParent, PCWSTR pszFileSpec, DWORD grfMode, REFIID riid, void **ppv );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "d45ec25c-359b-46f8-b0f6-5888525c7349")]
-	public static extern HRESULT StgMakeUniqueName(IStorage pstgParent, [MarshalAs(UnmanagedType.LPWStr)] string pszFileSpec, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object? ppv);
+	public static extern HRESULT StgMakeUniqueName(IStorage pstgParent, [MarshalAs(UnmanagedType.LPWStr)] string pszFileSpec, STGM grfMode,
+		in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>Creates a unique name for a stream or storage object from a template.</summary>
 	/// <typeparam name="TIntf">The type of the interface to retrieve through, typically IStorage or IStream.</typeparam>
