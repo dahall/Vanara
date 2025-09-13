@@ -23,7 +23,7 @@ public class StructHelpersTest
 	{
 		public int l;
 
-		[SizeFieldName("l")]
+		[SizeDef("l")]
 		public ArrayPointer<POINT> p;
 	}
 

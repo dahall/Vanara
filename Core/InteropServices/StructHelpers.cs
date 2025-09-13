@@ -416,22 +416,7 @@ public struct ManagedArrayPointer<T> where T : struct
 	}
 }
 
-/// <summary>
-/// Should be used with <see cref="ManagedArrayPointer{T}"/> or <see cref="ArrayPointer{T}"/> to indicate which field within the same
-/// structure contains the size of the array.
-/// </summary>
-/// <seealso cref="System.Attribute"/>
-/// <remarks>Initializes a new instance of the <see cref="SizeFieldNameAttribute"/> class.</remarks>
-/// <param name="FieldName">Name of the field that contains the size of the array.</param>
-[System.AttributeUsage(AttributeTargets.Field, Inherited = false)]
-public sealed class SizeFieldNameAttribute(string FieldName) : Attribute
-{
-	/// <summary>Gets the name of the field that contains the size of the array.</summary>
-	/// <value>The name of the field that contains the size of the array.</value>
-	public string FieldName { get; private set; } = FieldName;
-}
-
-/// <summary>Extension methods for <see cref="SizeFieldNameAttribute"/> to get the size of an array pointer within a structure via attribute.</summary>
+/// <summary>Extension methods for <see cref="SizeDefAttribute"/> to get the size of an array pointer within a structure via attribute.</summary>
 public static class SizeFieldNameAttributeExt
 {
 	/// <summary>Gets the field size of an array pointer within a structure via attribute.</summary>
@@ -443,10 +428,10 @@ public static class SizeFieldNameAttributeExt
 	/// </returns>
 	public static SizeT? GetFieldSizeViaAttribute<T>(this T structInstance, FieldInfo fi) where T : struct
 	{
-		var attr = fi.GetCustomAttribute<SizeFieldNameAttribute>();
+		var attr = fi.GetCustomAttribute<SizeDefAttribute>();
 		if (attr is null)
 			return null;
-		var fld = fi.DeclaringType!.GetField(attr.FieldName);
+		var fld = fi.DeclaringType!.GetField(attr.RefVarName);
 		var fval = fld?.GetValue(structInstance);
 		return fval is IConvertible cnv ? cnv.ToUInt64(null) : null;
 	}
