@@ -4424,7 +4424,7 @@ public static partial class D3D12
 	public struct D3D12_INPUT_LAYOUT_DESC
 	{
 		/// <summary>An array of <c>D3D12_INPUT_ELEMENT_DESC</c> structures that describe the data types of the input-assembler stage.</summary>
-		[SizeFieldName(nameof(NumElements))]
+		[SizeDef(nameof(NumElements))]
 		public ManagedArrayPointer<D3D12_INPUT_ELEMENT_DESC> pInputElementDescs;
 
 		/// <summary>The number of input-data types in the array of input elements that the <b>pInputElementDescs</b> member points to.</summary>

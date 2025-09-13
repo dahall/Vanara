@@ -1374,7 +1374,7 @@ public static partial class Kernel32
 		/// This is an array of COMPATIBILITY_CONTEXT_ELEMENT structures. Each structure describes one compatibility element in the
 		/// application manifest.
 		/// </summary>
-		[SizeFieldName(nameof(ElementCount))]
+		[SizeDef(nameof(ElementCount))]
 		public ArrayPointer<COMPATIBILITY_CONTEXT_ELEMENT> Elements;
 	}
 
