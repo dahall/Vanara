@@ -2171,13 +2171,13 @@ public static partial class AdvApi32
 		public uint dwNumCounters;
 
 		/// <summary>The timestamp from a high-resolution clock.</summary>
-		public int PerfTimeStamp;
+		public long PerfTimeStamp;
 
 		/// <summary>The number of 100 nanosecond intervals since January 1, 1601, in Coordinated Universal Time (UTC).</summary>
-		public int PerfTime100NSec;
+		public long PerfTime100NSec;
 
 		/// <summary>The frequency of a high-resolution clock.</summary>
-		public int PerfFreq;
+		public long PerfFreq;
 
 		/// <summary>The time at which data is collected by the provider.</summary>
 		public SYSTEMTIME SystemTime;
