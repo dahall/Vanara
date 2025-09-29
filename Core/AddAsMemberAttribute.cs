@@ -1,4 +1,8 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+
+namespace Vanara.PInvoke;
 
 /// <summary>
 /// <note type="implement">This attribute does not yet have an implemented generator.</note>
@@ -54,7 +58,7 @@ public sealed class AdjustAutoMethodNamePatternAttribute(params (string pattern,
 	/// <summary>
 	/// A sequence of tuples containing the regex pattern to match and the replacement string to use for auto-generated method names.
 	/// </summary>
-	public (string pattern, string replacement)[] RegexMatchPatterns { get; } = regexMatchPatterns;
+	public IReadOnlyDictionary<string, string> RegexMatchPatterns { get; } = regexMatchPatterns.ToDictionary(p => p.pattern, p => p.replacement);
 }
 
 /// <summary>

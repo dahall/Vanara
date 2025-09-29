@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
-using System.ComponentModel.Design;
+using System.Xml;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Vanara.Generators;
@@ -8,42 +8,22 @@ namespace Vanara.Generators;
 /// <summary>
 /// A source generator that creates extension methods for types based on the presence of the <c>AddAsMemberAttribute</c> on method parameters.
 /// </summary>
-//[Generator]
-internal sealed class AddAsMemberGenerator : IIncrementalGenerator
+//[Generator(LanguageNames.CSharp)]
+public partial class AddAsMemberGenerator : IIncrementalGenerator
 {
-	/// <inheritdoc/>
-	public void Initialize(IncrementalGeneratorInitializationContext context)
-	{
-		var decl = context.SyntaxProvider.ForAttributeWithMetadataName("Vanara.PInvoke.AddAsMemberAttribute", IsValidSyntax,
-			(ctx, _) => (ParameterSyntax)ctx.TargetNode);
-
-		var defferals = context.SyntaxProvider.ForAttributeWithMetadataName("Vanara.PInvoke.DeferAutoMethodFromAttribute",
-			(syntaxNode, cancellationToken) => syntaxNode is StructDeclarationSyntax or ClassDeclarationSyntax && ((TypeDeclarationSyntax)syntaxNode).IsPartial(),
-			(ctx, _) => (TypeDeclarationSyntax)ctx.TargetNode);
-
-		var handlesFiles = HandlesFromFileGenerator.GetHandleFileContentProvider(context);
-
-		// Combine compilation, parameters, and handles.csv files
-		var source = context.CompilationProvider
-			.Combine(decl.Collect())
-			.Combine(defferals.Collect())
-			.Combine(handlesFiles)
-			.WithTrackingName("Syntax");
-
-		context.RegisterSourceOutput(source, (spc, value) =>
-			GenerateCode(spc, value.Left.Left.Left, value.Left.Left.Right, value.Left.Right, value.Right));
-	}
-
-	private static bool IsValidSyntax(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
-		syntaxNode is ParameterSyntax ps && ps.Parent?.Parent is MethodDeclarationSyntax ms && !ms.Modifiers.Any(SyntaxKind.NewKeyword) && ms.Modifiers.Any(SyntaxKind.StaticKeyword);
-
-	private static void GenerateCode(SourceProductionContext context, Compilation compilation, ImmutableArray<ParameterSyntax> paramNodes, ImmutableArray<TypeDeclarationSyntax> defferalNodes, ImmutableArray<AdditionalText> addtlFiles)
+	private static void GenerateCode(SourceProductionContext context, Compilation compilation, ImmutableArray<AdditionalText> addtlFiles, ImmutableArray<(ParameterSyntax, ImmutableArray<AttributeData>)> methodNodes,
+		ImmutableArray<(TypeDeclarationSyntax, ImmutableArray<AttributeData>)> typeNodes)
 	{
 		INamedTypeSymbol? addAsMemberAttr = compilation.GetTypeByMetadataName("Vanara.PInvoke.AddAsMemberAttribute");
 		if (addAsMemberAttr is null) return;
 
 		// Process handlesCsv to get list of new types
 		var handles = HandlesFromFileGenerator.EnumHandleModels(context, addtlFiles).Select(h => (ns: h.Namespace, parent: h.ParentClassName, handle: h.HandleName, safehandle: h.ClassName)).ToList();
+
+		// Get a dictionary of all the methods to be processed keyed by the method's MethodSyntax value and holding the reference to each of the methodAttributes
+		Dictionary<MethodDeclarationSyntax, List<ParameterSyntax>> methods = paramNodes
+			.GroupBy(p => (MethodDeclarationSyntax)p.Parent!.Parent!)
+			.ToDictionary(g => g.Key, g => g.ToList());
 
 		// Find all methods with parameters decorated with [AddAsMember] and their associated parameter types
 		var typeMethods = paramNodes.Select(p => (ts: (INamedTypeSymbol)compilation.GetSemanticModel(p.SyntaxTree).GetDeclaredSymbol(p)!.Type, p)).ToList();
@@ -72,7 +52,7 @@ internal sealed class AddAsMemberGenerator : IIncrementalGenerator
 			int typeIdx = handles.FindIndex(t => t.handle == paramType?.Name || t.safehandle == paramType?.Name);
 
 			// Validate that the parameter type is a class or struct and is declared as partial
-			if (typeIdx == -1 && (paramType is null || (paramType.TypeKind != TypeKind.Class && paramType.TypeKind != TypeKind.Struct))) // || !paramType.IsPartial())
+			if (typeIdx == -1 && (paramType is null || paramType.TypeKind != TypeKind.Class && paramType.TypeKind != TypeKind.Struct)) // || !paramType.IsPartial())
 			{
 				context.ReportError(group.First(), "VANGEN041", $"The AddAsMember parameter refers to '{paramType?.Name ?? "null"}' which is not defined as a class or struct. (Type={paramType?.TypeKind})");
 				continue;
@@ -86,7 +66,7 @@ internal sealed class AddAsMemberGenerator : IIncrementalGenerator
 			}
 
 			List<UsingDirectiveSyntax> usings = [];
-			// Generate method declarations for all methods tied to a specific type
+			// GenerateCode method declarations for all methods tied to a specific type
 			var methodDecls = group.Select(param =>
 			{
 				var method = (MethodDeclarationSyntax)param.Parent!.Parent!;
@@ -131,7 +111,7 @@ internal sealed class AddAsMemberGenerator : IIncrementalGenerator
 				{
 					foreach (var p in toIgnore.Concat([param]))
 					{
-						var paramNode = xmlDoc.SelectSingleNode($"/xmlDoc/param[@name='{p.Identifier.Text}']");
+						var paramNode = xmlDoc.SelectSingleNode($"/xmlDoc/param[@AttrName='{p.Identifier.Text}']");
 						paramNode?.ParentNode?.RemoveChild(paramNode);
 					}
 				}

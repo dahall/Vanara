@@ -14,12 +14,16 @@
     <IsRoslynComponent>true</IsRoslynComponent>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="AddAsMemberGenerator.cs" />
     <Compile Remove="HandleTemplate.cs" />
     <Compile Remove="SafeHandleTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="HandleTemplate.cs" />
     <EmbeddedResource Include="SafeHandleTemplate.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AddAsMemberGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />

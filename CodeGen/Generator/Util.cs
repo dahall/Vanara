@@ -1,9 +1,26 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Xml;
 using System.Xml.Linq;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Vanara.Generators;
+
+internal class SyntaxComparer : IEqualityComparer<SyntaxNode>
+{
+	public static readonly SyntaxComparer Default = new();
+	public bool Equals(SyntaxNode? x, SyntaxNode? y) => x?.IsEquivalentTo(y) ?? y is null;
+	public int GetHashCode(SyntaxNode obj) => obj.GetHashCode();
+}
+
+internal class TypeComparer : IEqualityComparer<TypeDeclarationSyntax>
+{
+	public static readonly SyntaxComparer Default = new();
+	public bool Equals(TypeDeclarationSyntax? x, TypeDeclarationSyntax? y) => x is not null && string.Equals(GetTypeName(x), GetTypeName(y));
+	public int GetHashCode(TypeDeclarationSyntax obj) => GetTypeName(obj)!.GetHashCode();
+	private string? GetTypeName(TypeDeclarationSyntax? tds) => tds?.Identifier.Text;
+}
 
 internal static class Util
 {
@@ -21,6 +38,55 @@ internal static class Util
 		xmlDoc.LoadXml(docComment);
 
 		return xmlDoc;
+	}
+
+	// Determine the CharSet of the decl by looking for a MarshalAs attribute with constructor first argument of UnmanagedType.LPStr, LPWStr, or LPTStr OR
+	// by looking for a DllImport attribute on the method with a CharSet named argument
+	public static CharSet GetCharSet(this ParameterSyntax decl)
+	{
+		CharSet charSet = CharSet.Auto;
+
+		// First, check the parameter's MarshalAs attribute
+		if (decl.AttributeLists.SelectMany(al => al.Attributes).FirstOrDefault(a => a.Name.ToString() == "MarshalAs")?.ArgumentList?.Arguments
+			.FirstOrDefault()?.Expression is MemberAccessExpressionSyntax maes && maes.Expression.ToString() == "UnmanagedType")
+		{
+			charSet = maes.Name.ToString() switch
+			{
+				"LPStr" => CharSet.Ansi,
+				"LPWStr" => CharSet.Unicode,
+				"LPTStr" => CharSet.Auto,
+				_ => charSet
+			};
+		}
+		else
+		{
+			// Check the method's DllImport attribute for CharSet named argument
+			var dllImportAttr = (decl.Parent?.Parent as MethodDeclarationSyntax)?.AttributeLists.SelectMany(al => al.Attributes).FirstOrDefault(a => a.Name.ToString() == "DllImport");
+			if (dllImportAttr?.ArgumentList?.Arguments != null)
+			{
+				if (dllImportAttr.ArgumentList.Arguments.FirstOrDefault(arg => arg.NameEquals?.Name.ToString() == "CharSet")?
+					.Expression is MemberAccessExpressionSyntax charSetMaes && charSetMaes.Expression.ToString() == "CharSet")
+				{
+					charSet = charSetMaes.Name.ToString() switch
+					{
+						"Ansi" => CharSet.Ansi,
+						"Unicode" => CharSet.Unicode,
+						"Auto" => CharSet.Auto,
+						_ => charSet
+					};
+				}
+			}
+		}
+
+		return charSet;
+	}
+
+	public static T GetParentKind<T>(this SyntaxNode node) where T : SyntaxNode
+	{
+		for (var n = node.Parent; n is not null; n = n.Parent)
+			if (n is T mds)
+				return mds;
+		throw new ArgumentException("Unable to identify parent node of specified type.", nameof(node));
 	}
 
 	public static ISymbol? GetSymbol(this SyntaxNode node, Compilation compilation) => compilation.GetSemanticModel(node.SyntaxTree).GetSymbolInfo(node).Symbol;
@@ -50,8 +116,10 @@ internal static class Util
 		sr.GetSyntax() is BaseTypeDeclarationSyntax syn && syn.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword)));
 
 	public static bool IsDefinedInternally(this ITypeSymbol typeSymbol, Compilation compilation) =>
-		//SymbolEqualityComparer.Default.Equals(typeSymbol?.ContainingAssembly, compilation?.Assembly);
+		//SymbolEqualityComparer.Default.NameEquals(typeSymbol?.ContainingAssembly, compilation?.Assembly);
 		typeSymbol.Locations.Any(loc => loc.Kind == LocationKind.SourceFile);
+
+	public static bool NameEquals(this AttributeSyntax attr, string name) => Regex.IsMatch(attr.Name.ToString(), $"(?:(?:\\w+\\.)*|\\b){name}(Attribute)?");
 
 	public static ArgumentSyntax ParamToArg(this ParameterSyntax param)
 	{
@@ -94,6 +162,12 @@ internal static class Util
 		return regex.Replace(text, m => wordMap[m.Value]);
 	}
 
+	public static ParameterSyntax WithoutAttribute(this ParameterSyntax p, string attrName)
+	{
+		var al = p.AttributeLists.SelectMany(al => al.Attributes).Where(a => (a.Name as IdentifierNameSyntax)?.Identifier.Text != attrName).ToList();
+		return p.WithAttributeLists(al.Count > 0 ? SingletonList(AttributeList(SeparatedList(al))) : new SyntaxList<AttributeListSyntax>());
+	}
+
 	public static IEnumerable<SyntaxToken> ToTokens(this Accessibility accessibility)
 	{
 		switch (accessibility)
@@ -130,8 +204,25 @@ internal static class Util
 	/// <typeparam name="T">The nullable type.</typeparam>
 	/// <param name="o">The sequence.</param>
 	/// <returns>The sequence without any <see langword="null"/> values.</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> o) where T : class
 		=> o.Where(x => x is not null)!;
+
+	/// <summary>Returns a sequence of distinct elements from the input sequence, comparing elements based on a specified key.</summary>
+	/// <remarks>
+	/// This method uses deferred execution and only enumerates the source sequence as needed. The order of the elements in the returned
+	/// sequence corresponds to the first occurrence of each distinct key in the source sequence.
+	/// </remarks>
+	/// <typeparam name="TSource">The type of the elements in the source sequence.</typeparam>
+	/// <typeparam name="TKey">The type of the key used to determine distinctness.</typeparam>
+	/// <param name="source">The sequence to remove duplicate elements from.</param>
+	/// <param name="keySelector">A function to extract the key for each element.</param>
+	/// <returns>
+	/// An <see cref="IEnumerable{T}"/> that contains distinct elements from the input sequence, determined by the specified key.
+	/// </returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+		=> source.GroupBy(v => keySelector(v)).Select(v => v.First());
 
 	public static T WithDocs<T>(this T node, XmlDocument? xmlDoc) where T : SyntaxNode
 	{
@@ -145,5 +236,57 @@ internal static class Util
 		for (int i = 0; i < docLines.Count; i++)
 			outXml.AppendLine("/// " + docLines[i].TrimStart(' ', '\t'));
 		return node.WithLeadingTrivia(ParseLeadingTrivia(outXml.ToString()));
+	}
+
+	public static void RemoveParamDoc(this XmlDocument docs, string paramName)
+	{
+		var paramNode = docs.SelectSingleNode($"//param[@name='{paramName}']");
+		paramNode?.ParentNode?.RemoveChild(paramNode);
+		foreach (var n in docs.SelectNodes($"//paramref[@name='{paramName}']").Cast<XmlNode>())
+			n.ParentNode?.RemoveChild(n);
+	}
+
+	public static XmlNode InsertTypeParamDocAfter(this XmlDocument docs, string typeParamName, string text, string? existingTypeParamName = null)
+	{
+		var prevNode = existingTypeParamName is null ? GetSummaryDoc(docs) : docs.SelectSingleNode($"//typeParam[@name='{existingTypeParamName}']") ?? GetSummaryDoc(docs);
+
+		var cr = docs.CreateTextNode("\r\n");
+		var typeParamElem = docs.CreateElement("typeParam");
+		typeParamElem.SetAttribute("name", typeParamName);
+		typeParamElem.InnerXml = text;
+
+		return prevNode.ParentNode.InsertAfter(typeParamElem, prevNode.ParentNode.InsertAfter(cr, prevNode));
+	}
+
+	public static XmlNode InsertParamDocAfter(this XmlDocument docs, string paramName, string text, string? existingParamName = null)
+	{
+		// If and existing param name was given, try to get that node. If no name or not found, get the last typeParam node or the summary node if no typeParam nodes exist
+		XmlNode? prevNode = null;
+		if (existingParamName is not null)
+			prevNode = docs.SelectSingleNode($"//param[@name='{existingParamName}']");
+		prevNode ??= docs.SelectSingleNode("(//typeParam)[last()]") ?? GetSummaryDoc(docs);
+
+		var cr = docs.CreateTextNode("\r\n");
+		var paramElem = docs.CreateElement("param");
+		paramElem.SetAttribute("name", paramName);
+		paramElem.InnerXml = text;
+
+		return prevNode.ParentNode.InsertAfter(paramElem, prevNode.ParentNode.InsertAfter(cr, prevNode));
+	}
+
+	/// <summary>
+	/// Retrieves the <c>summary</c> XML node from the specified XML document.  If the <c>summary</c> node does not exist,
+	/// a new one is created and inserted  as the first child of the document's root element.
+	/// </summary>
+	internal static XmlNode GetSummaryDoc(XmlDocument docs)
+	{
+		var summaryNode = docs.SelectSingleNode("//summary");
+		if (summaryNode is null)
+		{
+			summaryNode = docs.CreateElement("summary");
+			summaryNode = docs.DocumentElement.InsertBefore(summaryNode, docs.DocumentElement.FirstChild);
+			docs.DocumentElement.InsertBefore(docs.CreateTextNode("\r\n"), summaryNode);
+		}
+		return summaryNode;
 	}
 }

@@ -33,10 +33,13 @@ public enum SizingMethod
 	Query = 0x4,
 
 	/// <summary>Size is returned as the result of the method.</summary>
-	QueryResultInReturn = 0x8,
+	QueryResultInReturn = 0xC,
 
 	/// <summary>Size is determined by checking the last error after a query for ERROR_INSUFFICIENT_BUFFER.</summary>
-	CheckLastError = 0x10,
+	CheckLastError = 0x14,
+
+	/// <summary>Size should be guessed by gradually increasing the value</summary>
+	Guess = 0x20,
 }
 
 /// <summary>

@@ -15,7 +15,7 @@ namespace Vanara.Generators;
 /// cref="object"/>&gt; parameter where <see cref="UnmanagedType.IUnknown"/> is set with an <c>IidParameterIndex</c> property set, and then
 /// creates an extension method that calls that method infering the IID from the specified type.
 /// </summary>
-[Generator(LanguageNames.CSharp)]
+//[Generator(LanguageNames.CSharp)]
 public class IUnkMethodGenerator : IIncrementalGenerator
 {
 	private const string attributeFullName = "System.Runtime.InteropServices.MarshalAsAttribute";
@@ -329,10 +329,11 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 				context.ReportError(decl, "VANGEN016", $"Error generating method: {ex.Message} {ex.StackTrace}");
 			}
 		}
+	}
 
-		static bool ValidateAttr(ParameterSyntax decl, AttributeData attr, out int iidindex)
-		{
-			iidindex = -1;
+	internal static bool ValidateAttr(ParameterSyntax decl, AttributeData attr, out int iidindex)
+	{
+		iidindex = -1;
 #if TEST
 			// This is for testing only
 			if (decl.Identifier.ValueText == "p3")
@@ -342,18 +343,17 @@ public class IUnkMethodGenerator : IIncrementalGenerator
 				return m.Success && int.TryParse(m.Groups[1].Value, out iidindex);
 			}
 #endif
-			if (attr.ConstructorArguments.FirstOrDefault().Value is int unmanagedTypeValue &&
-				(unmanagedTypeValue == (int)UnmanagedType.IUnknown || unmanagedTypeValue == (int)UnmanagedType.Interface))
+		if (attr.ConstructorArguments.FirstOrDefault().Value is int unmanagedTypeValue &&
+			(unmanagedTypeValue == (int)UnmanagedType.IUnknown || unmanagedTypeValue == (int)UnmanagedType.Interface))
+		{
+			var iidParameterIndex = attr.NamedArguments.FirstOrDefault(na => na.Key == "IidParameterIndex");
+			if (iidParameterIndex.Key != null)
 			{
-				var iidParameterIndex = attr.NamedArguments.FirstOrDefault(na => na.Key == "IidParameterIndex");
-				if (iidParameterIndex.Key != null)
-				{
-					iidindex = (int)iidParameterIndex.Value.Value!;
-					return true;
-				}
+				iidindex = (int)iidParameterIndex.Value.Value!;
+				return true;
 			}
-			return false;
 		}
+		return false;
 	}
 }
 
