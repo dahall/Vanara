@@ -293,7 +293,7 @@ public static partial class InteropExtensions
 		}
 
 		// Write to memory stream
-		using var ms = new NativeMemoryStream(1024, 1024) { CharSet = charSet };
+		using var ms = new NativeMemoryStream(1024L, 1024L, access: FileAccess.ReadWrite) { CharSet = charSet };
 		ms.SetLength(ms.Position = prefixBytes);
 		foreach (var o in values)
 		{
