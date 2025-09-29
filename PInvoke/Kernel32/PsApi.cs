@@ -1160,22 +1160,24 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	[PInvokeData("psapi.h", MSDNShortId = "8572db5c-2ffc-424f-8cec-b6a6902fed62")]
-	public static PSAPI_WS_WATCH_INFORMATION_EX[] GetWsChangesEx(HPROCESS hProcess)
+	public static IEnumerable<PSAPI_WS_WATCH_INFORMATION_EX> GetWsChangesEx(HPROCESS hProcess)
 	{
 		var sz = 0U;
 		if (!GetWsChangesEx(hProcess, IntPtr.Zero, ref sz))
-		{
 			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		}
+
 		using var mem = new SafeHGlobalHandle((int)sz);
 		if (!GetWsChangesEx(hProcess, mem, ref sz))
-		{
 			Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		}
+
 		var cb = Marshal.SizeOf<PSAPI_WS_WATCH_INFORMATION_EX>();
-		var c = 0;
-		for (var i = 0; i < mem.Size && Marshal.ReadIntPtr(mem, i) != IntPtr.Zero; c++, i += cb) ;
-		return mem.ToArray<PSAPI_WS_WATCH_INFORMATION_EX>(c);
+		for (var i = 0; i < sz; i += cb)
+		{
+			ref PSAPI_WS_WATCH_INFORMATION_EX p = ref ((IntPtr)mem).AsRef<PSAPI_WS_WATCH_INFORMATION_EX>(i, sz);
+			if (p.BasicInfo.FaultingPc == IntPtr.Zero)
+				break;
+			yield return p;
+		}
 	}
 
 	/// <summary>

@@ -4342,7 +4342,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318059")]
 	public static extern int FindNLSStringEx(string? lpLocaleName, COMPARE_STRING dwFindNLSStringFlags, string lpStringSource, int cchSource, string lpStringValue,
-		int cchValue, out int pcchFound, [Optional] StructPointer<NLSVERSIONINFO> lpVersionInformation, [Optional, Ignore] IntPtr lpReserved, [Optional, Ignore] IntPtr sortHandle);
+		int cchValue, out int pcchFound, [Optional] StructPointer<NLSVERSIONINFO> lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr sortHandle);
 
 	/// <summary>Retrieves the current Windows ANSI code page identifier for the operating system.</summary>
 	/// <returns>
@@ -4750,7 +4750,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318083")]
 	public static extern int GetCurrencyFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, [Optional] string? lpValue, in CURRENCYFMT lpFormat,
-		[SizeDef(nameof(cchCurrency), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder lpCurrencyStr, int cchCurrency);
+		[SizeDef(nameof(cchCurrency), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpCurrencyStr, int cchCurrency);
 
 	/// <summary>Formats a number string as a currency string for a locale specified by identifier.</summary>
 	/// <param name="Locale">
@@ -4791,7 +4791,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318083")]
 	public static extern int GetCurrencyFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, [Optional] string? lpValue, [Optional] IntPtr lpFormat,
-		[SizeDef(nameof(cchCurrency), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder lpCurrencyStr, int cchCurrency);
+		[SizeDef(nameof(cchCurrency), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpCurrencyStr, int cchCurrency);
 
 	/// <summary>Formats a number string as a currency string for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name or one of the following predefined values.</param>
@@ -4983,7 +4983,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318091")]
 	public static extern int GetDurationFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, [Optional] IntPtr lpDuration, [Optional] ulong ullDuration,
-		[Optional] string? lpFormat, [SizeDef(nameof(cchDuration), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder lpDurationStr, int cchDuration);
+		[Optional] string? lpFormat, [SizeDef(nameof(cchDuration), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpDurationStr, int cchDuration);
 
 	/// <summary>Formats a duration of time as a time string for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -5307,16 +5307,15 @@ public static partial class Kernel32
 	/// <returns>Class containing file information corresponding to a <c>FILEMUIINFO</c> structure.</returns>
 	public static SafeFILEMUIINFO GetFileMUIInfo(MUI_QUERY dwFlags, string pcwszFilePath)
 	{
-		var ret = new SafeFILEMUIINFO();
+		SafeFILEMUIINFO ret = new();
 		bool success;
-		var sz = 180U; // Magic number that appears to be the initial size for many MUI files.
+		var sz = ret.dwSize;
 		do
 		{
 			ret.dwSize = sz;
 			success = GetFileMUIInfo(dwFlags, pcwszFilePath, ret, ref sz);
 		} while (!success && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		if (!success)
-			Win32Error.ThrowLastError();
+		Win32Error.ThrowLastErrorIfFalse(success);
 		return ret;
 	}
 
@@ -5548,7 +5547,7 @@ public static partial class Kernel32
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318097")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetFileMUIPath(MUI_LANGUAGE_PATH dwFlags, string pcwszFilePath, StringBuilder? pwszLanguage, ref uint pcchLanguage,
-		[SizeDef(nameof(pwszFileMUIPath), SizingMethod.Query)] StringBuilder? pwszFileMUIPath, [Range(0, MAX_PATH)] ref uint pcchFileMUIPath, ref ulong pululEnumerator);
+		[SizeDef(nameof(pcchFileMUIPath), SizingMethod.Query)] StringBuilder? pwszFileMUIPath, [Range(0, MAX_PATH)] ref uint pcchFileMUIPath, ref ulong pululEnumerator);
 
 	/// <summary>
 	/// <para>
@@ -5592,7 +5591,7 @@ public static partial class Kernel32
 	// int GetGeoInfo( _In_ GEOID Location, _In_ GEOTYPE GeoType, _Out_opt_ LPTSTR lpGeoData, _In_ int cchData, _In_ LANGID LangId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318099(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318099")]
-	public static extern int GetGeoInfo(int Location, SYSGEOTYPE GeoType, [SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpGeoData, int cchData, LANGID LangId);
+	public static extern int GetGeoInfo(int Location, SYSGEOTYPE GeoType, [SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn)] StringBuilder? lpGeoData, int cchData, LANGID LangId);
 
 	/// <summary>
 	/// Retrieves information about a geographic location that you specify by using a two-letter International Organization for
@@ -5617,7 +5616,7 @@ public static partial class Kernel32
 	// int WINAPI GetGeoInfoEx( _In_ PWSTR location, _In_ GEOTYPE geoType, _Out_opt_ PWSTR geoData, _In_ int geoDataCount ); https://msdn.microsoft.com/en-us/library/windows/desktop/mt826489(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "mt826489")]
-	public static extern int GetGeoInfoEx(string location, SYSGEOTYPE geoType, [SizeDef(nameof(geoDataCount), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? geoData, int geoDataCount);
+	public static extern int GetGeoInfoEx(string location, SYSGEOTYPE geoType, [SizeDef(nameof(geoDataCount), SizingMethod.QueryResultInReturn)] StringBuilder? geoData, int geoDataCount);
 
 	/// <summary>Retrieves information about a locale specified by identifier.</summary>
 	/// <param name="Locale">
@@ -5649,7 +5648,7 @@ public static partial class Kernel32
 	// int GetLocaleInfo( _In_ LCID Locale, _In_ LCTYPE LCType, _Out_opt_ LPTSTR lpLCData, _In_ int cchData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318101(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318101")]
-	public static extern int GetLocaleInfo(LCID Locale, LCTYPE LCType, [SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn | SizingMethod.Query)] IntPtr lpLCData, int cchData);
+	public static extern int GetLocaleInfo(LCID Locale, LCTYPE LCType, [SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn)] IntPtr lpLCData, int cchData);
 
 	/// <summary>Retrieves information about a locale specified by identifier.</summary>
 	/// <param name="Locale">
@@ -5681,7 +5680,7 @@ public static partial class Kernel32
 	// int GetLocaleInfo( _In_ LCID Locale, _In_ LCTYPE LCType, _Out_opt_ LPTSTR lpLCData, _In_ int cchData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318101(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318101")]
-	public static extern int GetLocaleInfo(LCID Locale, LCTYPE LCType, [SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpLCData, int cchData);
+	public static extern int GetLocaleInfo(LCID Locale, LCTYPE LCType, [SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn)] StringBuilder? lpLCData, int cchData);
 
 	/// <summary>Retrieves information about a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -5725,7 +5724,7 @@ public static partial class Kernel32
 	// int GetLocaleInfoEx( _In_opt_ LPCWSTR lpLocaleName, _In_ LCTYPE LCType, _Out_opt_ LPWSTR lpLCData, _In_ int cchData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318103(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318103")]
-	public static extern int GetLocaleInfoEx(string? lpLocaleName, LCTYPE LCType, [SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn | SizingMethod.Query)] IntPtr lpLCData, int cchData);
+	public static extern int GetLocaleInfoEx(string? lpLocaleName, LCTYPE LCType, [SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn)] IntPtr lpLCData, int cchData);
 
 	/// <summary>Retrieves information about a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -5769,7 +5768,7 @@ public static partial class Kernel32
 	// int GetLocaleInfoEx( _In_opt_ LPCWSTR lpLocaleName, _In_ LCTYPE LCType, _Out_opt_ LPWSTR lpLCData, _In_ int cchData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318103(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318103")]
-	public static extern int GetLocaleInfoEx(string? lpLocaleName, LCTYPE LCType, [SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpLCData, int cchData);
+	public static extern int GetLocaleInfoEx(string? lpLocaleName, LCTYPE LCType, [SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn)] StringBuilder? lpLCData, int cchData);
 
 	/// <summary>Retrieves information about the current version of a specified NLS capability for a locale specified by identifier.</summary>
 	/// <param name="Function">The NLS capability to query. This value must be COMPARE_STRING. See the <c>SYSNLS_FUNCTION</c> enumeration.</param>
@@ -5852,7 +5851,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318110")]
 	public static extern int GetNumberFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, string? lpValue, in NUMBERFMT lpFormat,
-		[SizeDef(nameof(cchNumber), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpNumberStr, int cchNumber);
+		[SizeDef(nameof(cchNumber), SizingMethod.QueryResultInReturn)] StringBuilder? lpNumberStr, int cchNumber);
 
 	/// <summary>Formats a number string as a number string customized for a locale specified by identifier.</summary>
 	/// <param name="Locale">
@@ -5897,7 +5896,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318110")]
 	public static extern int GetNumberFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, string? lpValue, [Optional] IntPtr lpFormat,
-		[SizeDef(nameof(cchNumber), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpNumberStr, int cchNumber);
+		[SizeDef(nameof(cchNumber), SizingMethod.QueryResultInReturn)] StringBuilder? lpNumberStr, int cchNumber);
 
 	/// <summary>Formats a number string as a number string customized for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -5941,7 +5940,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318113")]
 	public static extern int GetNumberFormatEx(string? lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, string? lpValue, in NUMBERFMT lpFormat,
-		[SizeDef(nameof(cchNumber), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpNumberStr, int cchNumber);
+		[SizeDef(nameof(cchNumber), SizingMethod.QueryResultInReturn)] StringBuilder? lpNumberStr, int cchNumber);
 
 	/// <summary>Formats a number string as a number string customized for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -5985,7 +5984,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318113")]
 	public static extern int GetNumberFormatEx(string? lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, string? lpValue, [Optional] IntPtr lpFormat,
-		[SizeDef(nameof(cchNumber), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpNumberStr, int cchNumber);
+		[SizeDef(nameof(cchNumber), SizingMethod.QueryResultInReturn)] StringBuilder? lpNumberStr, int cchNumber);
 
 	/// <summary>Returns the current original equipment manufacturer (OEM) code page identifier for the operating system.</summary>
 	/// <returns>Returns the current OEM code page identifier for the operating system.</returns>
@@ -6151,7 +6150,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318116")]
 	public static extern int GetStringScripts(GetStringScriptsFlag dwFlags, string lpString, int cchString,
-		[SizeDef(nameof(cchScripts), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpScripts, int cchScripts);
+		[SizeDef(nameof(cchScripts), SizingMethod.QueryResultInReturn)] StringBuilder? lpScripts, int cchScripts);
 
 	/// <summary>Returns the language identifier for the system locale.</summary>
 	/// <returns>
@@ -6192,7 +6191,7 @@ public static partial class Kernel32
 	// int GetSystemDefaultLocaleName( _Out_ LPWSTR lpLocaleName, _In_ int cchLocaleName); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318122(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318122")]
-	public static extern int GetSystemDefaultLocaleName([SizeDef(nameof(cchLocaleName), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpLocaleName, int cchLocaleName);
+	public static extern int GetSystemDefaultLocaleName([SizeDef(nameof(cchLocaleName))] StringBuilder? lpLocaleName, [Range(0, LOCALE_NAME_MAX_LENGTH)] int cchLocaleName);
 
 	/// <summary>
 	/// Retrieves the language identifier for the system default UI language of the operating system, also known as the "install
@@ -6779,7 +6778,7 @@ public static partial class Kernel32
 	// int WINAPI GetUserDefaultGeoName( _Out_ LPWSTR geoName, _In_ geoNameCount int); https://msdn.microsoft.com/en-us/library/windows/desktop/mt826490(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "mt826490")]
-	public static extern int GetUserDefaultGeoName(StringBuilder geoName, int geoNameCount);
+	public static extern int GetUserDefaultGeoName([SizeDef(nameof(geoNameCount), SizingMethod.QueryResultInReturn)] StringBuilder? geoName, int geoNameCount);
 
 	/// <summary>Returns the language identifier of the Region Format setting for the current user.</summary>
 	/// <returns>
@@ -6821,7 +6820,7 @@ public static partial class Kernel32
 	// int GetUserDefaultLocaleName( _Out_ LPWSTR lpLocaleName, _In_ int cchLocaleName); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318136(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318136")]
-	public static extern int GetUserDefaultLocaleName([SizeDef(nameof(cchLocaleName), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder lpLocaleName, int cchLocaleName);
+	public static extern int GetUserDefaultLocaleName([SizeDef(nameof(cchLocaleName))] StringBuilder? lpLocaleName, [Range(0, LOCALE_NAME_MAX_LENGTH)] int cchLocaleName);
 
 	/// <summary>
 	/// Returns the language identifier for the user UI language for the current user. If the current user has not set a language,
@@ -7055,7 +7054,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318150")]
 	public static extern int IdnToNameprepUnicode(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar,
-		[Out, SizeDef(nameof(cchNameprepChar), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder lpNameprepCharStr, int cchNameprepChar);
+		[Out, SizeDef(nameof(cchNameprepChar), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpNameprepCharStr, int cchNameprepChar);
 
 	/// <summary>
 	/// Converts the Punycode form of an internationalized domain name (IDN) or another internationalized label to the normal Unicode
@@ -7095,7 +7094,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318151")]
 	public static extern int IdnToUnicode(IDN_FLAGS dwFlags, string lpASCIICharStr, int cchASCIIChar,
-		[Out, SizeDef(nameof(cchUnicodeChar), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder lpUnicodeCharStr, int cchUnicodeChar);
+		[Out, SizeDef(nameof(cchUnicodeChar), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpUnicodeCharStr, int cchUnicodeChar);
 
 	/// <summary>
 	/// Determines if a specified character is a lead byte for the system default Windows ANSI code page ( <c>CP_ACP</c>). A lead byte is
@@ -7391,7 +7390,7 @@ public static partial class Kernel32
 	// int LCIDToLocaleName( _In_ LCID Locale, _Out_opt_ LPWSTR lpName, _In_ int cchName, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318698(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318698")]
-	public static extern int LCIDToLocaleName(LCID Locale, [SizeDef(nameof(cchName), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpName, int cchName, LCTYPE dwFlags);
+	public static extern int LCIDToLocaleName(LCID Locale, [SizeDef(nameof(cchName), SizingMethod.QueryResultInReturn)] StringBuilder? lpName, int cchName, LCTYPE dwFlags);
 
 	/// <summary>
 	/// For a locale specified by identifier, maps one input character string to another using a specified transformation, or generates a
@@ -7460,7 +7459,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318700")]
 	public static extern int LCMapString(LCID Locale, uint dwMapFlags, string lpSrcStr, int cchSrc,
-		[SizeDef(nameof(cchDest), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpDestStr, int cchDest);
+		[SizeDef(nameof(cchDest), SizingMethod.QueryResultInReturn)] StringBuilder? lpDestStr, int cchDest);
 
 	/// <summary>
 	/// For a locale specified by name, maps an input character string to another using a specified transformation, or generates a sort
@@ -7670,7 +7669,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318702")]
 	public static extern int LCMapStringEx(string? lpLocaleName, uint dwMapFlags, string lpSrcStr, int cchSrc,
-		[SizeDef(nameof(cchDest), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpDestStr, int cchDest, ref NLSVERSIONINFO lpVersionInformation,
+		[SizeDef(nameof(cchDest), SizingMethod.QueryResultInReturn)] StringBuilder? lpDestStr, int cchDest, ref NLSVERSIONINFO lpVersionInformation,
 		[Optional] IntPtr lpReserved, [Optional] IntPtr sortHandle);
 
 	/// <summary>
@@ -7881,7 +7880,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318702")]
 	public static extern int LCMapStringEx(string? lpLocaleName, uint dwMapFlags, string lpSrcStr, int cchSrc,
-		[SizeDef(nameof(cchDest), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpDestStr, int cchDest,
+		[SizeDef(nameof(cchDest), SizingMethod.QueryResultInReturn)] StringBuilder? lpDestStr, int cchDest,
 		[Optional] IntPtr lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr sortHandle);
 
 	/// <summary>
@@ -8024,7 +8023,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd319093")]
 	public static extern int NormalizeString(NORM_FORM NormForm, string lpSrcString, int cwSrcLength,
-		[SizeDef(nameof(cwDstLength), SizingMethod.QueryResultInReturn | SizingMethod.Query)] StringBuilder? lpDstString, int cwDstLength);
+		[SizeDef(nameof(cwDstLength), SizingMethod.QueryResultInReturn)] StringBuilder? lpDstString, int cwDstLength);
 
 	/// <summary>Extracts a primary language identifier from a language identifier.</summary>
 	/// <param name="lgid">
@@ -8061,7 +8060,7 @@ public static partial class Kernel32
 	[PInvokeData("Winnls.h", MSDNShortId = "dd319112")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ResolveLocaleName(string? lpNameToResolve,
-		[SizeDef(nameof(cchLocaleName), SizingMethod.Query)] StringBuilder? lpLocaleName, [Range(0, LOCALE_NAME_MAX_LENGTH)] int cchLocaleName);
+		[SizeDef(nameof(cchLocaleName))] StringBuilder? lpLocaleName, [Range(0, LOCALE_NAME_MAX_LENGTH)] int cchLocaleName);
 
 	/// <summary>Sets an item of locale information for a calendar. For more information, see Date and Calendar.</summary>
 	/// <param name="Locale">
@@ -8525,10 +8524,10 @@ public static partial class Kernel32
 		var sz = 0U;
 		if (!func(dwFlags, out _, default, ref sz) && sz == 0)
 			Win32Error.ThrowLastError();
-		using var mem = new SafeHGlobalHandle(sz);
+		using var mem = new SafeHGlobalHandle(sz * 2);
 		if (!func(dwFlags, out var c, mem, ref sz))
 			Win32Error.ThrowLastError();
-		return c == 0 ? new string[0] : [.. mem.ToStringEnum(CharSet.Unicode)];
+		return c == 0 ? [] : [.. mem.ToStringEnum(CharSet.Unicode)];
 	}
 
 	/// <summary>
@@ -8912,18 +8911,13 @@ public static partial class Kernel32
 	/// <summary>
 	/// A safe instance of <c>FILEMUIINFO</c> that holds its own memory and handles the funky pointer magic required to get the values.
 	/// </summary>
-	public class SafeFILEMUIINFO : IDisposable
+	public sealed class SafeFILEMUIINFO() : IDisposable
 	{
-		internal SafeHeapBlock mem = new(minSz);
-		private const uint minSz = 72;
-
-		/// <summary>Initializes a new instance of the <see cref="SafeFILEMUIINFO"/> class.</summary>
-		public SafeFILEMUIINFO()
-		{
-		}
+		internal SafeHGlobalStruct<FILEMUIINFO> mem = new(FILEMUIINFO.Default, 256); // Start with 256 bytes
+		private readonly static uint minSz = (uint)Marshal.SizeOf<FILEMUIINFO>();
 
 		/// <summary>The file type. Possible values are:</summary>
-		public MUI_FILETYPE dwFileType => (MUI_FILETYPE)Marshal.ReadInt32(mem, 8);
+		public MUI_FILETYPE dwFileType => mem.Value.dwFileType;
 
 		/// <summary>
 		/// Size of the structure, including the buffer, which can be extended past the 8 bytes declared. The minimum value allowed is .
@@ -8931,12 +8925,7 @@ public static partial class Kernel32
 		public uint dwSize
 		{
 			get => mem.Size;
-			set
-			{
-				if (value == dwSize) return;
-				mem.Size = value;
-				Marshal.WriteInt32(mem, mem.Size); // dwSize
-			}
+			set { mem.Size = value; Marshal.WriteInt32(mem, mem.Size); }
 		}
 
 		/// <summary>Version of the structure. The current version is 0x001.</summary>
@@ -9016,9 +9005,13 @@ public static partial class Kernel32
 		/// <summary>Performs an implicit conversion from <see cref="SafeFILEMUIINFO"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="fmi">The <see cref="SafeFILEMUIINFO"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator IntPtr(SafeFILEMUIINFO fmi) => fmi?.mem?.DangerousGetHandle() ?? IntPtr.Zero;
+		public static implicit operator IntPtr(SafeFILEMUIINFO fmi) => fmi.mem.DangerousGetHandle();
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-		public void Dispose() => mem.Dispose();
+		public void Dispose()
+		{
+			GC.SuppressFinalize(this);
+			mem.Dispose();
+		}
 	}
 }

@@ -292,7 +292,7 @@ public partial class WinBaseTests_File
 	[TestWhenElevated]
 	public void SetVolumeLabelTest()
 	{
-		Assert.That(GetVolumeInformation(null, out string curName, out _, out _, out _, out _), ResultIs.Successful);
+		Assert.That(GetVolumeInformation(null, out string? curName, out _, out _, out _, out _), ResultIs.Successful);
 		Assert.That(SetVolumeLabel(null, "TempTestVol"), ResultIs.Successful);
 		Assert.That(SetVolumeLabel(null, curName), ResultIs.Successful);
 	}

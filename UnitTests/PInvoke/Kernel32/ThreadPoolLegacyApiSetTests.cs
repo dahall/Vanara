@@ -24,8 +24,8 @@ public class ThreadPoolLegacyApiSetTests
 		}
 		finally
 		{
-			while (cnt < 6)
-				Sleep(500);
+			//while (cnt < 6)
+			//	Sleep(500);
 			DeleteCriticalSection(ref g_cs);
 		}
 

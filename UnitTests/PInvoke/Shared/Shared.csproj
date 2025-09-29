@@ -3,6 +3,12 @@
     <AssemblyName>UnitTest.PInvoke.Shared</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="SampleAttributeTestCode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SampleAttributeTestCode.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>

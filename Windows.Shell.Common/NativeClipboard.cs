@@ -112,7 +112,7 @@ public static class NativeClipboard
 		if (parent is null) throw new ArgumentNullException(nameof(parent));
 		if (relativeShellItems.Length == 0) return CreateEmptyDataObject();
 		SHCreateDataObject(parent.PIDL, relativeShellItems.Select(i => i.PIDL), default, out var dataObj).ThrowIfFailed();
-		return dataObj;
+		return dataObj!;
 	}
 
 	/// <summary>Creates an empty, writable data object.</summary>
@@ -120,7 +120,7 @@ public static class NativeClipboard
 	public static IComDataObject CreateEmptyDataObject()
 	{
 		SHCreateDataObject(ppv: out var writableDataObj).ThrowIfFailed();
-		return writableDataObj;
+		return writableDataObj!;
 	}
 
 	/// <summary>Carries out the clipboard shutdown sequence. It also releases any IDataObject instances that were placed on the clipboard.</summary>

@@ -1768,7 +1768,7 @@ public static partial class Ole32
 	// ULONG_PTR *pToken );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "1218d928-ca3f-4bdc-9a00-ea4c214175a9")]
-	public static extern HRESULT CoGetContextToken([MarshalAs(UnmanagedType.IUnknown)] out IObjContext pToken);
+	public static extern HRESULT CoGetContextToken([MarshalAs(UnmanagedType.Interface)] out IObjContext pToken);
 
 	/// <summary>Returns the logical thread identifier of the current physical thread.</summary>
 	/// <param name="pguid">A pointer to a GUID that contains the logical thread ID on return.</param>

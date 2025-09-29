@@ -547,7 +547,7 @@ public static partial class PropSys
 		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-icreateobject-createobject HRESULT CreateObject(
 		// REFCLSID clsid, IUnknown *pUnkOuter, REFIID riid, void **ppv );
 		[PInvokeData("propsys.h", MSDNShortId = "72c56de7-4c04-4bcf-b6bb-6e41d12b68a3")]
-		void CreateObject(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		void CreateObject(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown)] object? pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 	}
 
 	/// <summary>
@@ -2140,10 +2140,10 @@ public static partial class PropSys
 	/// <remarks>This method can be used with GetPropertyStoreWithCreateObject.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-icreateobject-createobject HRESULT CreateObject( REFCLSID
 	// clsid, IUnknown *pUnkOuter, REFIID riid, void **ppv );
-	public static T CreateObject<T>(this ICreateObject co, in Guid clsid, [In, MarshalAs(UnmanagedType.IUnknown), Optional] object? pUnkOuter) where T : class
+	public static T CreateObject<T>(this ICreateObject co, in Guid clsid, [In, Optional] object? pUnkOuter) where T : class
 	{
 		co.CreateObject(clsid, pUnkOuter, typeof(T).GUID, out var ppv);
-		return (T)ppv;
+		return (T)ppv!;
 	}
 }
 

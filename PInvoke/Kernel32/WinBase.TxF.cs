@@ -906,7 +906,7 @@ public static partial class Kernel32
 	[PInvokeData("winbase.h", MSDNShortId = "0cbc081d-8787-409b-84bc-a6a28d8f83a0")]
 	public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		[In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
-		[In, Optional] HFILE hTemplateFile, HTRXN hTransaction, in ushort pusMiniVersion, [Optional, Ignore] IntPtr lpExtendedParameter);
+		[In, Optional] HFILE hTemplateFile, HTRXN hTransaction, in ushort pusMiniVersion, [Optional] IntPtr lpExtendedParameter);
 
 	/// <summary>
 	/// <para>
@@ -1519,7 +1519,7 @@ public static partial class Kernel32
 	[PInvokeData("winbase.h", MSDNShortId = "0cbc081d-8787-409b-84bc-a6a28d8f83a0")]
 	public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		[In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
-		[In, Optional] HFILE hTemplateFile, HTRXN hTransaction, [In, Optional] IntPtr pusMiniVersion, [Optional, Ignore] IntPtr lpExtendedParameter);
+		[In, Optional] HFILE hTemplateFile, HTRXN hTransaction, [In, Optional] IntPtr pusMiniVersion, [Optional] IntPtr lpExtendedParameter);
 
 	/// <summary>
 	/// <para>

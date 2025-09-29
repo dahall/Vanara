@@ -1,5 +1,5 @@
 ﻿Namespace,ParentClassName,HandleName,InterfaceName,SummaryText,ClassName,BaseClassName,CloseCode,InheritedHandleName
-Vanara.PInvoke,Kernel32,BoundaryDescriptorHandle,,Provides a handle to a boundary descriptor.,SafeBoundaryDescriptorHandle,,{ DeleteBoundaryDescriptor(handle); return true; },
+Vanara.PInvoke,Kernel32,BoundaryDescriptorHandle,,Provides a handle to a boundary descriptor.,,,,
 Vanara.PInvoke,Kernel32,HACTCTX,,Provides a handle to an account context.,SafeHACTCTX,,{ ReleaseActCtx(this); return true; },
 Vanara.PInvoke,Kernel32,HGLOBAL,,Provides a handle to heap allocated memory.,,,,
 Vanara.PInvoke,Kernel32,HHEAP,,Provides a handle to a heap.,SafeHHEAP,,HeapDestroy(this),

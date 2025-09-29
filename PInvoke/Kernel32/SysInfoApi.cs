@@ -629,40 +629,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "d5646fe6-9112-42cd-ace9-00dd1b590ecb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DnsHostnameToComputerName(string Hostname, [SizeDef(nameof(nSize), SizingMethod.Query)] StringBuilder? ComputerName,
-		[Range(0, MAX_COMPUTERNAME_LENGTH)] ref uint nSize);
-
-	/// <summary>Converts a DNS-style host name to a NetBIOS-style computer name.</summary>
-	/// <param name="Hostname">
-	/// The DNS name. If the DNS name is not a valid, translatable name, the function fails. For more information, see Computer Names.
-	/// </param>
-	/// <param name="ComputerName">Receives the computer name.</param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is a nonzero value.</para>
-	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call GetLastError. Possible values include
-	/// the following.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ERROR_MORE_DATA</term>
-	/// <term>The ComputerName buffer is too small. The nSize parameter contains the number of bytes required to receive the name.</term>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// This function performs a textual mapping of the name. This convention limits the names of computers to be the common subset of
-	/// the names. (Specifically, the leftmost label of the DNS name is truncated to 15-bytes of OEM characters.) Therefore, do not use
-	/// this function to convert a DNS domain name to a NetBIOS domain name. There is no textual mapping for domain names.
-	/// </para>
-	/// </remarks>
-	public static bool DnsHostnameToComputerName(string Hostname, out string? ComputerName) =>
-		CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => DnsHostnameToComputerName(Hostname, sb, ref sz), out ComputerName);
+	public static extern bool DnsHostnameToComputerName(string Hostname, [SizeDef(nameof(nSize))] StringBuilder? ComputerName,
+		[Range(0, MAX_COMPUTERNAME_LENGTH + 1)] ref uint nSize);
 
 	/// <summary>Enumerates all system firmware tables of the specified type.</summary>
 	/// <param name="FirmwareTableProviderSignature">
@@ -800,28 +768,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724295")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetComputerName([SizeDef(nameof(lpnSize), SizingMethod.Query)] StringBuilder? lpBuffer, [Range(0, MAX_COMPUTERNAME_LENGTH)] ref uint lpnSize);
-
-	/// <summary>
-	/// <para>
-	/// Retrieves the NetBIOS name of the local computer. This name is established at system startup, when the system reads it from the registry.
-	/// </para>
-	/// <para>
-	/// <c>GetComputerName</c> retrieves only the NetBIOS name of the local computer. To retrieve the DNS host name, DNS domain name, or
-	/// the fully qualified DNS name, call the <c>GetComputerNameEx</c> function. Additional information is provided by the
-	/// <c>IADsADSystemInfo</c> interface.
-	/// </para>
-	/// <para>
-	/// The behavior of this function can be affected if the local computer is a node in a cluster. For more information, see
-	/// <c>ResUtilGetEnvironmentWithNetName</c> and <c>UseNetworkName</c>.
-	/// </para>
-	/// </summary>
-	/// <param name="name">The computer name or the cluster virtual server name.</param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is a nonzero value.</para>
-	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// </returns>
-	public static bool GetComputerName(out string? name) => CallMethodWithStrBuf<uint, bool>(GetComputerName, out name);
+	public static extern bool GetComputerName([SizeDef(nameof(lpnSize))] StringBuilder? lpBuffer, [Range(0, MAX_COMPUTERNAME_LENGTH + 1)] ref uint lpnSize);
 
 	/// <summary>
 	/// Retrieves a NetBIOS or DNS name associated with the local computer. The names are established at system startup, when the system
@@ -940,105 +887,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724301")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetComputerNameEx(COMPUTER_NAME_FORMAT NameType, [SizeDef(nameof(lpnSize), SizingMethod.Query)] StringBuilder? lpBuffer, [Range(0, MAX_COMPUTERNAME_LENGTH)] ref uint lpnSize);
-
-	/// <summary>
-	/// Retrieves a NetBIOS or DNS name associated with the local computer. The names are established at system startup, when the system
-	/// reads them from the registry.
-	/// </summary>
-	/// <param name="NameType">
-	/// <para>
-	/// The type of name to be retrieved. This parameter is a value from the <c>COMPUTER_NAME_FORMAT</c> enumeration type. The following
-	/// table provides additional information.
-	/// </para>
-	/// <para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ComputerNameDnsDomain</term>
-	/// <term>
-	/// The name of the DNS domain assigned to the local computer. If the local computer is a node in a cluster, lpBuffer receives the
-	/// DNS domain name of the cluster virtual server.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>ComputerNameDnsFullyQualified</term>
-	/// <term>
-	/// The fully qualified DNS name that uniquely identifies the local computer. This name is a combination of the DNS host name and the
-	/// DNS domain name, using the form HostName.DomainName. If the local computer is a node in a cluster, lpBuffer receives the fully
-	/// qualified DNS name of the cluster virtual server.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>ComputerNameDnsHostname</term>
-	/// <term>
-	/// The DNS host name of the local computer. If the local computer is a node in a cluster, lpBuffer receives the DNS host name of the
-	/// cluster virtual server.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>ComputerNameNetBIOS</term>
-	/// <term>
-	/// The NetBIOS name of the local computer. If the local computer is a node in a cluster, lpBuffer receives the NetBIOS name of the
-	/// cluster virtual server.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>ComputerNamePhysicalDnsDomain</term>
-	/// <term>
-	/// The name of the DNS domain assigned to the local computer. If the local computer is a node in a cluster, lpBuffer receives the
-	/// DNS domain name of the local computer, not the name of the cluster virtual server.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>ComputerNamePhysicalDnsFullyQualified</term>
-	/// <term>
-	/// The fully qualified DNS name that uniquely identifies the computer. If the local computer is a node in a cluster, lpBuffer
-	/// receives the fully qualified DNS name of the local computer, not the name of the cluster virtual server. The fully qualified DNS
-	/// name is a combination of the DNS host name and the DNS domain name, using the form HostName.DomainName.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>ComputerNamePhysicalDnsHostname</term>
-	/// <term>
-	/// The DNS host name of the local computer. If the local computer is a node in a cluster, lpBuffer receives the DNS host name of the
-	/// local computer, not the name of the cluster virtual server.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>ComputerNamePhysicalNetBIOS</term>
-	/// <term>
-	/// The NetBIOS name of the local computer. If the local computer is a node in a cluster, lpBuffer receives the NetBIOS name of the
-	/// local computer, not the name of the cluster virtual server.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// </para>
-	/// </param>
-	/// <param name="name">The computer name or the cluster virtual server name.</param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is a nonzero value.</para>
-	/// <para>
-	/// If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>. Possible values
-	/// include the following.
-	/// </para>
-	/// <para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ERROR_MORE_DATA</term>
-	/// <term>The lpBuffer buffer is too small. The lpnSize parameter contains the number of bytes required to receive the name.</term>
-	/// </item>
-	/// </list>
-	/// </para>
-	/// </returns>
-	public static bool GetComputerNameEx(COMPUTER_NAME_FORMAT NameType, out string? name) => CallMethodWithStrBuf((StringBuilder? sb, ref uint sz) => GetComputerNameEx(NameType, sb, ref sz), out name);
+	public static extern bool GetComputerNameEx(COMPUTER_NAME_FORMAT NameType, [SizeDef(nameof(lpnSize))] StringBuilder? lpBuffer, [Range(0, MAX_COMPUTERNAME_LENGTH + 1)] ref uint lpnSize);
 
 	/// <summary>Gets a value indicating whether the developer drive is enabled.</summary>
 	/// <returns>Returns a DEVELOPER_DRIVE_ENABLEMENT_STATE value indicating the developer drive enablement state.</returns>
@@ -1868,7 +1717,7 @@ public static partial class Kernel32
 	/// Receives the path. This path does not end with a backslash unless the system directory is the root directory. For example, if the
 	/// system directory is named Windows\System32 on drive C, the path of the system directory retrieved by this function is C:\Windows\System32.
 	/// </returns>
-	public static string GetSystemDirectory() => CallMethodWithStrBuf(GetSystemDirectory, (uint)MAX_PATH, out var sysDir) != 0 ? sysDir : throw Win32Error.GetLastError().GetException()!;
+	public static string GetSystemDirectory() => Win32Error.ThrowLastErrorIfFalse(GetSystemDirectory(out var buf) != 0) ? buf! : "";
 
 	/// <summary>Retrieves the specified firmware table from the firmware table provider.</summary>
 	/// <param name="FirmwareTableProviderSignature">
@@ -3286,7 +3135,7 @@ public static partial class Kernel32
 		public byte wReserved;
 
 		/// <summary>Gets a default instance with the size pre-set.</summary>
-		public static readonly OSVERSIONINFOEX Default = new();
+		public static readonly OSVERSIONINFOEX Default = new(0, 0, 0);
 	}
 
 	/// <summary>Represents the number and affinity of processors in a processor group.</summary>

@@ -204,7 +204,7 @@ public class SysInfoTests
 	[Test]
 	public void GetVersionExTest()
 	{
-		OSVERSIONINFOEX ver = new();
+		OSVERSIONINFOEX ver = OSVERSIONINFOEX.Default;
 		Assert.That(GetVersionEx(ref ver), ResultIs.Successful);
 		Assert.That(ver.wProductType, Is.Not.Zero);
 		ver.WriteValues();

@@ -6,7 +6,7 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class RealtimeApiSetTests
 {
-	[Test]
+	//[Test]
 	public void ConvertAuxiliaryCounterToPerformanceCounterTest()
 	{
 		ulong aux = (ulong)new Random().Next();

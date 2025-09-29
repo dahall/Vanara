@@ -642,7 +642,7 @@ public static partial class Kernel32
 	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.GetNamedPipeClientComputerNameA")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNamedPipeClientComputerName(HPIPE Pipe, [Out, SizeDef(nameof(ClientComputerName))] StringBuilder ClientComputerName, [Range(0, 256)] uint ClientComputerNameLength);
+	public static extern bool GetNamedPipeClientComputerName(HPIPE Pipe, [Out, SizeDef(nameof(ClientComputerNameLength))] StringBuilder ClientComputerName, [Range(0, 256)] uint ClientComputerNameLength);
 
 	/// <summary>
 	/// <para>Retrieves the client process identifier for the specified named pipe.</para>

@@ -82,8 +82,8 @@ public static class ShellImageList
 	/// <returns>An <see cref="SafeHICON"/> instance if found; otherwise <see langword="null"/>.</returns>
 	public static SafeHICON GetSystemIconHandle(int index, ShellImageSize iconSize = ShellImageSize.Large)
 	{
-		SHGetImageList((SHIL)iconSize, typeof(IImageList).GUID, out var il).ThrowIfFailed();
-		return ((IImageList)il).GetIcon(index, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
+		SHGetImageList((SHIL)iconSize, out IImageList? il).ThrowIfFailed();
+		return il!.GetIcon(index, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
 	}
 
 	/// <summary>Given a pixel size, return the ShellImageSize value with the closest size.</summary>

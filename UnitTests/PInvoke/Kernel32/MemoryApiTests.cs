@@ -8,7 +8,7 @@ namespace Vanara.PInvoke.Tests;
 public class MemoryApiTests
 {
 	// From https://docs.microsoft.com/en-us/windows/desktop/Memory/awe-example
-	[Test]
+	[TestWhenElevated]
 	public void AWETest()
 	{
 		const uint MEMORY_REQUESTED = 1024 * 1024;

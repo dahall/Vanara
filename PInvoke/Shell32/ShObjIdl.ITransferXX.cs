@@ -500,7 +500,7 @@ public static partial class Shell32
 		// **ppvItem, REFIID riidResources, void **ppvResources );
 		[PreserveSig, SuppressAutoGen]
 		HRESULT CreateItem([MarshalAs(UnmanagedType.LPWStr)] string pszName, FileFlagsAndAttributes dwAttributes, ulong ullSize, TRANSFER_SOURCE_FLAGS flags, in Guid riidItem,
-			[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object? ppvItem, in Guid riidResources, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 6)] out object? ppvResources);
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppvItem, in Guid riidResources, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object? ppvResources);
 	}
 
 	/// <summary>
@@ -667,7 +667,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-itransfersource-openitem HRESULT OpenItem(
 		// IShellItem *psi, TRANSFER_SOURCE_FLAGS flags, REFIID riid, void **ppv );
 		[PreserveSig]
-		HRESULT OpenItem([In] IShellItem psi, [In] TRANSFER_SOURCE_FLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+		HRESULT OpenItem([In] IShellItem psi, [In] TRANSFER_SOURCE_FLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Moves the item within the volume/namespace, returning the IShellItem in its new location.</summary>
 		/// <param name="psi">

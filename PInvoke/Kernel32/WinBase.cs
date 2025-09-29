@@ -1957,7 +1957,7 @@ public static partial class Kernel32
 	[PInvokeData("winbase.h", MSDNShortId = "49a9d1aa-30f3-45ea-a4ec-9f55df692b8b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool QueryFullProcessImageName([In, AddAsMember] HPROCESS hProcess, PROCESS_NAME dwFlags,
-		[SizeDef(nameof(lpdwSize), SizingMethod.Query)] StringBuilder lpExeName, ref uint lpdwSize);
+		[SizeDef(nameof(lpdwSize), SizingMethod.Query)] StringBuilder? lpExeName, ref uint lpdwSize);
 
 	/// <summary>Determines whether thread profiling is enabled for the specified thread.</summary>
 	/// <param name="ThreadHandle">The handle to the thread of interest.</param>

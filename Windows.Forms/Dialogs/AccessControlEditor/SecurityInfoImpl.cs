@@ -288,7 +288,7 @@ internal class SecurityInfoImpl(SI_OBJECT_INFO_Flags flags, string objectName, s
 
 		HRESULT hr = Shell32.SHCreateDataObject(ppv: out ppdo);
 		if (hr.Failed) return hr;
-		ppdo.SetData("CFSTR_ACLUI_SID_INFO_LIST", sidList);
+		ppdo!.SetData("CFSTR_ACLUI_SID_INFO_LIST", sidList);
 		return HRESULT.S_OK;
 	}
 }

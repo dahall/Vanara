@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
-using System.Windows;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke;
@@ -788,7 +787,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtoobject
 		[PreserveSig]
-		HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+		HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Requests a pointer to an object's storage interface.</summary>
 		/// <param name="pidl">
@@ -831,7 +830,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtostorage
 		[PreserveSig]
-		HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+		HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Determines the relative order of two file objects or folders, given their item identifier lists.</summary>
 		/// <param name="lParam">
@@ -954,7 +953,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-createviewobject
 		[PreserveSig]
-		HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
+		HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Gets the attributes of one or more file or folder objects contained in the object represented by IShellFolder.</summary>
 		/// <param name="cidl">
@@ -1094,7 +1093,7 @@ public static partial class Shell32
 		// GetUIObjectOf( HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT *rgfReserved, void **ppv );
 		[PreserveSig]
 		HRESULT GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid,
-			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
+			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 		/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 		/// <param name="pidl">
@@ -1439,7 +1438,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtoobject
 		[PreserveSig]
-		new HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+		new HRESULT BindToObject([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Requests a pointer to an object's storage interface.</summary>
 		/// <param name="pidl">
@@ -1482,7 +1481,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-bindtostorage
 		[PreserveSig]
-		new HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+		new HRESULT BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx? pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Determines the relative order of two file objects or folders, given their item identifier lists.</summary>
 		/// <param name="lParam">
@@ -1605,7 +1604,7 @@ public static partial class Shell32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellfolder-createviewobject
 		[PreserveSig]
-		new HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
+		new HRESULT CreateViewObject(HWND hwndOwner, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 		/// <summary>Gets the attributes of one or more file or folder objects contained in the object represented by IShellFolder.</summary>
 		/// <param name="cidl">
@@ -1745,7 +1744,7 @@ public static partial class Shell32
 		// GetUIObjectOf( HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT *rgfReserved, void **ppv );
 		[PreserveSig]
 		new HRESULT GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid,
-			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
+			[In, Out, Optional] IntPtr rgfReserved, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 		/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 		/// <param name="pidl">

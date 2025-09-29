@@ -312,7 +312,7 @@ public static partial class PropSys
 	// PSCreateAdapterFromPropertyStore( IPropertyStore *pps, REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "a3489f95-e790-481a-af6e-f30527dc476c")]
-	public static extern HRESULT PSCreateAdapterFromPropertyStore(IPropertyStore pps, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
+	public static extern HRESULT PSCreateAdapterFromPropertyStore(IPropertyStore pps, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// <para>Creates a read-only, delayed-binding property store that contains multiple property stores.</para>
@@ -433,7 +433,7 @@ public static partial class PropSys
 	// PSCreateMemoryPropertyStore( REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "6e7a2ac0-2a4a-41ec-a2a8-ddbe8aa45bc9")]
-	public static extern HRESULT PSCreateMemoryPropertyStore(in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)] out object? ppv);
+	public static extern HRESULT PSCreateMemoryPropertyStore(in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)] out object? ppv);
 
 	/// <summary>Creates an in-memory property store.</summary>
 	/// <typeparam name="TIntf">The type of the interface.</typeparam>
@@ -611,7 +611,7 @@ public static partial class PropSys
 	// PSCreatePropertyStoreFromPropertySetStorage( IPropertySetStorage *ppss, DWORD grfMode, REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "efba5a2a-df26-4f7e-9ddf-ec471e3d547c")]
-	public static extern HRESULT PSCreatePropertyStoreFromPropertySetStorage(IPropertySetStorage ppss, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+	public static extern HRESULT PSCreatePropertyStoreFromPropertySetStorage(IPropertySetStorage ppss, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>
 	/// <para>
@@ -1385,7 +1385,7 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "7b7fd260-c863-41f7-8594-4ee435090228")]
 	public static extern HRESULT PSGetItemPropertyHandler([MarshalAs(UnmanagedType.IUnknown)] object punkItem, [MarshalAs(UnmanagedType.Bool)] bool fReadWrite,
-		in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppv);
+		in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>
 	/// <para>Retrieves a property handler for a Shell item.</para>
@@ -1449,7 +1449,7 @@ public static partial class PropSys
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "82e0aa15-b67c-4c0a-bafb-f1dc5f822aec")]
 	public static extern HRESULT PSGetItemPropertyHandlerWithCreateObject([MarshalAs(UnmanagedType.IUnknown)] object punkItem, [MarshalAs(UnmanagedType.Bool)] bool fReadWrite,
-		[MarshalAs(UnmanagedType.IUnknown)] object punkCreateObject, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object? ppv);
+		[MarshalAs(UnmanagedType.IUnknown)] object punkCreateObject, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppv);
 
 	/// <summary>
 	/// <para>Gets a value from serialized property storage by property name.</para>
@@ -1526,7 +1526,7 @@ public static partial class PropSys
 	/// <returns>The result of the operation. S_OK indicates success.</returns>
 	[DllImport(Lib.PropSys, ExactSpelling = true)]
 	[PInvokeData("Propsys.h", MSDNShortId = "bb776503")]
-	public static extern HRESULT PSGetPropertyDescription(in PROPERTYKEY propkey, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
+	public static extern HRESULT PSGetPropertyDescription(in PROPERTYKEY propkey, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// <para>Gets an instance of a property description interface for a specified property name.</para>
@@ -2080,7 +2080,7 @@ public static partial class PropSys
 	// PSGetPropertyDescriptionByName( LPCWSTR pszCanonicalName, REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "181ebbfb-66ed-4763-ad2d-acf3c800f9d2")]
-	public static extern HRESULT PSGetPropertyDescriptionByName([MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppv);
+	public static extern HRESULT PSGetPropertyDescriptionByName([MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>
 	/// <para>Gets an instance of a property description list interface for a specified property list.</para>

@@ -1,8 +1,6 @@
 ﻿#pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using static Vanara.Extensions.BitHelper;
@@ -4273,7 +4271,7 @@ public static partial class Shell32
 	// SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
-	public static extern HRESULT SHBindToFolderIDListParent(IShellFolder? psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv, [Ignore] out IntPtr ppidlLast);
+	public static extern HRESULT SHBindToFolderIDListParent(IShellFolder? psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv, out IntPtr ppidlLast);
 
 	/// <summary>
 	/// Given a Shell namespace item specified in the form of a folder, and an item identifier list relative to that folder, this

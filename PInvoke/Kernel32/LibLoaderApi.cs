@@ -1322,7 +1322,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetModuleFileName( _In_opt_ HMODULE hModule, _Out_ LPTSTR lpFilename, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683197(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms683197")]
-	public static extern uint GetModuleFileName(HINSTANCE hModule, [SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.CheckLastError)] StringBuilder? lpFilename, uint nSize);
+	public static extern uint GetModuleFileName(HINSTANCE hModule, [SizeDef(nameof(nSize), SizingMethod.Guess)] StringBuilder? lpFilename, uint nSize);
 
 	/// <summary>
 	/// Retrieves the fully qualified path for the file that contains the specified module. The module must have been loaded by the
@@ -1974,7 +1974,7 @@ Label_000B:
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("libloaderapi2.h", MSDNShortId = "43690689-4372-48ae-ac6d-230250f05f7c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryOptionalDelayLoadedAPI([In, AddAsMember] HINSTANCE hParentModule, [MarshalAs(UnmanagedType.LPStr)] string? lpDllName, [MarshalAs(UnmanagedType.LPStr)] string lpProcName, [Ignore] uint Reserved = 0);
+	public static extern bool QueryOptionalDelayLoadedAPI([In, AddAsMember] HINSTANCE hParentModule, [MarshalAs(UnmanagedType.LPStr)] string? lpDllName, [MarshalAs(UnmanagedType.LPStr)] string lpProcName, [Optional] uint Reserved);
 
 	/// <summary>Removes a directory that was added to the process DLL search path by using <c>AddDllDirectory</c>.</summary>
 	/// <param name="Cookie">The cookie returned by <c>AddDllDirectory</c> when the directory was added to the search path.</param>

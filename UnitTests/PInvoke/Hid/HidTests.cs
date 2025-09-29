@@ -658,6 +658,7 @@ public class HidTests
 		}
 	}
 
+#pragma warning disable 0649
 	class HID_DEVICE : IDisposable
 	{
 		public string? DevicePath;

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -757,7 +758,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetConsoleAlias(string lpSource, [SizeDef(nameof(TargetBufferLength), SizingMethod.Query | SizingMethod.CheckLastError)] StringBuilder lpTargetBuffer, uint TargetBufferLength, string lpExeName);
+	public static extern bool GetConsoleAlias(string lpSource, [SizeDef(nameof(TargetBufferLength))] StringBuilder lpTargetBuffer, [Range(0, 8191)] uint TargetBufferLength, string lpExeName);
 
 	/// <summary>Retrieves the text for the specified console alias and executable.</summary>
 	/// <param name="lpSource">The console alias whose text is to be retrieved.</param>
@@ -1385,7 +1386,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetConsoleOriginalTitle( _Out_ LPTSTR lpConsoleTitle, _In_ DWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
-	public static extern uint GetConsoleOriginalTitle([SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.CheckLastError)] StringBuilder lpConsoleTitle, uint nSize);
+	public static extern uint GetConsoleOriginalTitle([SizeDef(nameof(nSize), SizingMethod.Guess)] StringBuilder lpConsoleTitle, uint nSize);
 
 	/// <summary>Retrieves the original title for the current console window.</summary>
 	/// <param name="lpConsoleTitle">
@@ -1529,7 +1530,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetConsoleTitle( _Out_ LPTSTR lpConsoleTitle, _In_ DWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
-	public static extern uint GetConsoleTitle([SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.CheckLastError | SizingMethod.InclNullTerm)] StringBuilder lpConsoleTitle, uint nSize);
+	public static extern uint GetConsoleTitle([SizeDef(nameof(nSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpConsoleTitle, uint nSize);
 
 	/// <summary>Retrieves the title for the current console window.</summary>
 	/// <param name="lpConsoleTitle">

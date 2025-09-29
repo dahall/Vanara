@@ -1186,7 +1186,7 @@ public static partial class Kernel32
 		public HINSTANCE hModule;
 
 		/// <summary>Gets an empty instance with only the cbSize parameter initialized.</summary>
-		public static ACTCTX Empty => new();
+		public static ACTCTX Empty => new(null);
 	}
 
 	/// <summary>

@@ -1828,7 +1828,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "9C25708C-1464-4C59-9740-E9F105116385")]
 	public static extern Win32Error GetPackagePathByFullName(string packageFullName, ref uint pathLength,
-		[Optional, SizeDef(nameof(packageFullName), SizingMethod.Query)] StringBuilder? path);
+		[Optional, SizeDef(nameof(pathLength), SizingMethod.Query)] StringBuilder? path);
 
 	/// <summary>Gets the path of the specified package, with the option to specify the type of folder path to retrieve for the package.</summary>
 	/// <param name="packageFullName">

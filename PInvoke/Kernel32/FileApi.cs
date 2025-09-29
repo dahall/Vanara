@@ -5762,7 +5762,7 @@ public static partial class Kernel32
 		static void ThrowIfNotNoMore() => Win32Error.ThrowLastErrorUnless(Win32Error.ERROR_NO_MORE_FILES);
 	}
 
-	/// <summary>Retrieves the names of the volumes on a computer using <see cref="FindFirstVolume"/> and <see cref="FindNextVolume"/>.</summary>
+	/// <summary>Retrieves the names of the volumes on a computer using <see cref="FindFirstVolume(StringBuilder, uint)"/> and <see cref="FindNextVolume(SafeVolumeSearchHandle, StringBuilder, uint)"/>.</summary>
 	/// <returns>An enumeration of the volume names.</returns>
 	public static IEnumerable<string> EnumVolumes()
 	{
@@ -7152,82 +7152,7 @@ public static partial class Kernel32
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364993")]
 	public static extern bool GetVolumeInformation([Optional] string? lpRootPathName, [SizeDef(nameof(nVolumeNameSize))] StringBuilder? lpVolumeNameBuffer,
 		[Range(0, MAX_PATH + 1)] int nVolumeNameSize, out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags,
-		[SizeDef(nameof(nVolumeNameSize))] StringBuilder? lpFileSystemNameBuffer, [Range(0, MAX_PATH + 1)] int nFileSystemNameSize);
-
-	/// <summary>Retrieves information about the file system and volume associated with the specified root directory.</summary>
-	/// <param name="rootPathName">
-	/// A string that contains the root directory of the volume to be described.
-	/// <para>
-	/// If this parameter is NULL, the root of the current directory is used. A trailing backslash is required. For example, you specify
-	/// \\MyServer\MyShare as "\\MyServer\MyShare\", or the C drive as "C:\".
-	/// </para>
-	/// </param>
-	/// <param name="volumeName">Receives the name of a specified volume.</param>
-	/// <param name="volumeSerialNumber">
-	/// Receives the volume serial number.
-	/// <para>
-	/// This function returns the volume serial number that the operating system assigns when a hard disk is formatted. To
-	/// programmatically obtain the hard disk's serial number that the manufacturer assigns, use the Windows Management Instrumentation
-	/// (WMI) Win32_PhysicalMedia property SerialNumber.
-	/// </para>
-	/// </param>
-	/// <param name="maximumComponentLength">
-	/// Receives the maximum length, in characters, of a file name component that a specified file system supports.
-	/// <para>A file name component is the portion of a file name between backslashes.</para>
-	/// <para>
-	/// The value that is stored in the variable that <paramref name="maximumComponentLength"/> returns is used to indicate that a
-	/// specified file system supports long names. For example, for a FAT file system that supports long names, the function stores the
-	/// value 255, rather than the previous 8.3 indicator. Long names can also be supported on systems that use the NTFS file system.
-	/// </para>
-	/// </param>
-	/// <param name="fileSystemFlags">
-	/// Receives the flags associated with the specified file system.
-	/// <para>
-	/// This parameter can be one or more of the <c>FileSystemFlags</c> values. However, FILE_FILE_COMPRESSION and FILE_VOL_IS_COMPRESSED
-	/// are mutually exclusive.
-	/// </para>
-	/// </param>
-	/// <param name="fileSystemName">Receives the name of the file system, for example, the FAT file system or the NTFS file system.</param>
-	/// <returns>
-	/// If all the requested information is retrieved, the return value is nonzero.
-	/// <para>If not all the requested information is retrieved, the return value is zero. To get extended error information, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// When a user attempts to get information about a floppy drive that does not have a floppy disk, or a CD-ROM drive that does not
-	/// have a compact disc, the system displays a message box for the user to insert a floppy disk or a compact disc, respectively. To
-	/// prevent the system from displaying this message box, call the SetErrorMode function with SEM_FAILCRITICALERRORS.
-	/// <para>
-	/// The FILE_VOL_IS_COMPRESSED flag is the only indicator of volume-based compression. The file system name is not altered to
-	/// indicate compression, for example, this flag is returned set on a DoubleSpace volume. When compression is volume-based, an entire
-	/// volume is compressed or not compressed.
-	/// </para>
-	/// <para>
-	/// The FILE_FILE_COMPRESSION flag indicates whether a file system supports file-based compression. When compression is file-based,
-	/// individual files can be compressed or not compressed.
-	/// </para>
-	/// <para>The FILE_FILE_COMPRESSION and FILE_VOL_IS_COMPRESSED flags are mutually exclusive. Both bits cannot be returned set.</para>
-	/// <para>
-	/// The maximum component length value that is stored in lpMaximumComponentLength is the only indicator that a volume supports
-	/// longer-than-normal FAT file system (or other file system) file names. The file system name is not altered to indicate support for
-	/// long file names.
-	/// </para>
-	/// <para>
-	/// The GetCompressedFileSize function obtains the compressed size of a file. The GetFileAttributes function can determine whether an
-	/// individual file is compressed.
-	/// </para>
-	/// <para>Symbolic link behavior—</para>
-	/// <para>If the path points to a symbolic link, the function returns volume information for the target.</para>
-	/// </remarks>
-	[PInvokeData("FileAPI.h", MSDNShortId = "aa364993")]
-	public static bool GetVolumeInformation([Optional] string? rootPathName, out string volumeName, out uint volumeSerialNumber,
-		out uint maximumComponentLength, out FileSystemFlags fileSystemFlags, out string fileSystemName)
-	{
-		StringBuilder sb1 = new(MAX_PATH + 1), sb2 = new(MAX_PATH + 1);
-		var ret = GetVolumeInformation(rootPathName, sb1, sb1.Capacity, out volumeSerialNumber, out maximumComponentLength, out fileSystemFlags, sb2, sb2.Capacity);
-		volumeName = sb1.ToString();
-		fileSystemName = sb2.ToString();
-		return ret;
-	}
+		[SizeDef(nameof(nFileSystemNameSize))] StringBuilder? lpFileSystemNameBuffer, [Range(0, MAX_PATH + 1)] int nFileSystemNameSize);
 
 	/// <summary>
 	/// <para>Retrieves information about the file system and volume associated with the specified file.</para>
@@ -7392,164 +7317,7 @@ public static partial class Kernel32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetVolumeInformationByHandleW([In, AddAsMember] HFILE hFile, [SizeDef(nameof(nVolumeNameSize))] StringBuilder? lpVolumeNameBuffer,
 		[Range(0, MAX_PATH + 1)] uint nVolumeNameSize, out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags,
-		[SizeDef(nameof(nVolumeNameSize))] StringBuilder? lpFileSystemNameBuffer, [Range(0, MAX_PATH + 1)] uint nFileSystemNameSize);
-
-	/// <summary>
-	/// <para>Retrieves information about the file system and volume associated with the specified file.</para>
-	/// <para>To retrieve the current compression state of a file or directory, use <c>FSCTL_GET_COMPRESSION</c>.</para>
-	/// </summary>
-	/// <param name="hFile">A handle to the file.</param>
-	/// <param name="lpVolumeNameBuffer">
-	/// A pointer to a buffer that receives the name of a specified volume. The maximum buffer size is .
-	/// </param>
-	/// <param name="lpVolumeSerialNumber">
-	/// <para>A pointer to a variable that receives the volume serial number.</para>
-	/// <para>
-	/// This function returns the volume serial number that the operating system assigns when a hard disk is formatted. To programmatically
-	/// obtain the hard disk's serial number that the manufacturer assigns, use the Windows Management Instrumentation (WMI)
-	/// <c>Win32_PhysicalMedia</c> property <c>SerialNumber</c>.
-	/// </para>
-	/// </param>
-	/// <param name="lpMaximumComponentLength">
-	/// <para>
-	/// A pointer to a variable that receives the maximum length, in <c>WCHAR</c> s, of a file name component that a specified file system supports.
-	/// </para>
-	/// <para>A file name component is the portion of a file name between backslashes.</para>
-	/// <para>
-	/// The value that is stored in the variable that *lpMaximumComponentLength points to is used to indicate that a specified file system
-	/// supports long names. For example, for a FAT file system that supports long names, the function stores the value 255, rather than the
-	/// previous 8.3 indicator. Long names can also be supported on systems that use the NTFS file system.
-	/// </para>
-	/// </param>
-	/// <param name="lpFileSystemFlags">
-	/// <para>A pointer to a variable that receives flags associated with the specified file system.</para>
-	/// <para>
-	/// This parameter can be one or more of the following flags. However, <c>FILE_FILE_COMPRESSION</c> and <c>FILE_VOL_IS_COMPRESSED</c> are
-	/// mutually exclusive.
-	/// </para>
-	/// <para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>FILE_CASE_PRESERVED_NAMES0x00000002</term>
-	/// <term>The specified volume supports preserved case of file names when it places a name on disk.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_CASE_SENSITIVE_SEARCH0x00000001</term>
-	/// <term>The specified volume supports case-sensitive file names.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_FILE_COMPRESSION0x00000010</term>
-	/// <term>The specified volume supports file-based compression.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_NAMED_STREAMS0x00040000</term>
-	/// <term>The specified volume supports named streams.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_PERSISTENT_ACLS0x00000008</term>
-	/// <term>
-	/// The specified volume preserves and enforces access control lists (ACL). For example, the NTFS file system preserves and enforces
-	/// ACLs, and the FAT file system does not.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_READ_ONLY_VOLUME0x00080000</term>
-	/// <term>The specified volume is read-only.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_SEQUENTIAL_WRITE_ONCE0x00100000</term>
-	/// <term>The specified volume supports a single sequential write.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_SUPPORTS_ENCRYPTION0x00020000</term>
-	/// <term>The specified volume supports the Encrypted File System (EFS). For more information, see File Encryption.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_SUPPORTS_EXTENDED_ATTRIBUTES0x00800000</term>
-	/// <term>
-	/// The specified volume supports extended attributes. An extended attribute is a piece of application-specific metadata that an
-	/// application can associate with a file and is not part of the file's data.Windows Vista and Windows Server 2008: This value is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_SUPPORTS_HARD_LINKS0x00400000</term>
-	/// <term>
-	/// The specified volume supports hard links. For more information, see Hard Links and Junctions.Windows Vista and Windows Server
-	/// 2008: This value is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_SUPPORTS_OBJECT_IDS0x00010000</term>
-	/// <term>The specified volume supports object identifiers.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_SUPPORTS_OPEN_BY_FILE_ID0x01000000</term>
-	/// <term>
-	/// The file system supports open by FileID. For more information, see FILE_ID_BOTH_DIR_INFO.Windows Vista and Windows Server 2008: This
-	/// value is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_SUPPORTS_REPARSE_POINTS0x00000080</term>
-	/// <term>The specified volume supports re-parse points.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_SUPPORTS_SPARSE_FILES0x00000040</term>
-	/// <term>The specified volume supports sparse files.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_SUPPORTS_TRANSACTIONS0x00200000</term>
-	/// <term>The specified volume supports transactions. For more information, see About KTM.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_SUPPORTS_USN_JOURNAL0x02000000</term>
-	/// <term>
-	/// The specified volume supports update sequence number (USN) journals. For more information, see Change Journal Records.Windows Vista
-	/// and Windows Server 2008: This value is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_UNICODE_ON_DISK0x00000004</term>
-	/// <term>The specified volume supports Unicode in file names as they appear on disk.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_VOLUME_IS_COMPRESSED0x00008000</term>
-	/// <term>The specified volume is a compressed volume.</term>
-	/// </item>
-	/// <item>
-	/// <term>FILE_VOLUME_QUOTAS0x00000020</term>
-	/// <term>The specified volume supports disk quotas.</term>
-	/// </item>
-	/// </list>
-	/// </para>
-	/// </param>
-	/// <param name="lpFileSystemNameBuffer">
-	/// A pointer to a buffer that receives the name of the file system, for example, the FAT file system or the NTFS file system. The buffer
-	/// size is specified by the nFileSystemNameSize parameter.
-	/// </param>
-	/// <returns>
-	/// <para>If all the requested information is retrieved, the return value is nonzero.</para>
-	/// <para>If not all the requested information is retrieved, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-	/// </returns>
-	// BOOL WINAPI GetVolumeInformationByHandleW( _In_ HANDLE hFile, _Out_opt_ LPWSTR lpVolumeNameBuffer, _In_ DWORD nVolumeNameSize,
-	// _Out_opt_ LPDWORD lpVolumeSerialNumber, _Out_opt_ LPDWORD lpMaximumComponentLength, _Out_opt_ LPDWORD lpFileSystemFlags, _Out_opt_
-	// LPWSTR lpFileSystemNameBuffer, _In_ DWORD nFileSystemNameSize);
-	[PInvokeData("FileAPI.h", MSDNShortId = "aa964920")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static bool GetVolumeInformationByHandleW([In, AddAsMember] HFILE hFile, out string lpVolumeNameBuffer, out uint lpVolumeSerialNumber,
-		out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags, out string lpFileSystemNameBuffer)
-	{
-		StringBuilder volName = new(MAX_PATH + 1), fsName = new(MAX_PATH + 1);
-		var ret = GetVolumeInformationByHandleW(hFile, volName, (uint)volName.Capacity, out lpVolumeSerialNumber, out lpMaximumComponentLength,
-			out lpFileSystemFlags, fsName, (uint)fsName.Capacity);
-		lpVolumeNameBuffer = volName.ToString();
-		lpFileSystemNameBuffer = fsName.ToString();
-		return ret;
-	}
+		[SizeDef(nameof(nFileSystemNameSize))] StringBuilder? lpFileSystemNameBuffer, [Range(0, MAX_PATH + 1)] uint nFileSystemNameSize);
 
 	/// <summary>
 	/// <para>
@@ -7924,7 +7692,9 @@ public static partial class Kernel32
 			mem.Size = bytes *= 4;
 			retLen = QueryDosDevice(deviceName, mem, mem.Size / Marshal.SystemDefaultCharSize);
 		} while (retLen == 0 && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER);
-		if (retLen == 0) throw new Win32Exception();
+		if (deviceName is not null && retLen == 0 && Win32Error.GetLastError() == Win32Error.ERROR_FILE_NOT_FOUND)
+			return [];
+		Win32Error.ThrowLastErrorIfFalse(retLen != 0);
 		return [.. mem.ToStringEnum()];
 
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]

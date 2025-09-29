@@ -49,7 +49,7 @@ public partial class WinBaseTests_ProcessThread
 	}
 
 	[Test]
-	public void GetCurrentProcessTest() => Assert.That(GetCurrentProcess(), ResultIs.ValidHandle);
+	public void GetCurrentProcessTest() => Assert.That(GetCurrentProcess(), Is.Not.EqualTo(HPROCESS.NULL));
 
 	[Test]
 	public void GetNumaAvailableMemoryNodeExTest()

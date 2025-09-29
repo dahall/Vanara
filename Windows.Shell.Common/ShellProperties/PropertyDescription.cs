@@ -33,8 +33,7 @@ public class PropertyDescription : IDisposable
 	/// <param name="propkey">The property key.</param>
 	public PropertyDescription(PROPERTYKEY propkey)
 	{
-		PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).ThrowIfFailed();
-		iDesc = (IPropertyDescription)ppv;
+		PSGetPropertyDescription(propkey, out iDesc!).ThrowIfFailed();
 		key = propkey;
 	}
 
@@ -42,20 +41,19 @@ public class PropertyDescription : IDisposable
 	/// <param name="name">A string that identifies the property.</param>
 	public PropertyDescription(string name)
 	{
-		PSGetPropertyDescriptionByName(name, typeof(IPropertyDescription).GUID, out var ppv).ThrowIfFailed();
-		iDesc = (IPropertyDescription)ppv;
+		PSGetPropertyDescriptionByName(name, out iDesc!).ThrowIfFailed();
 		key = iDesc.GetPropertyKey();
 	}
 
 	/// <summary>Creates a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
 	/// <param name="propkey">The property key.</param>
 	/// <returns>An associated instance of <see cref="PropertyDescription"/> or <see langword="null"/> if the PROPERTYKEY does not exist in the schema subsystem cache.</returns>
-	public static PropertyDescription? Create(PROPERTYKEY propkey) => PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded ? new PropertyDescription((IPropertyDescription)ppv, propkey) : null;
+	public static PropertyDescription? Create(PROPERTYKEY propkey) => PSGetPropertyDescription(propkey, out IPropertyDescription? ppv).Succeeded ? new PropertyDescription(ppv!, propkey) : null;
 
 	/// <summary>Creates a <see cref="PropertyDescription"/> instance from a property key name.</summary>
 	/// <param name="name">A string that identifies the property.</param>
 	/// <returns>An associated instance of <see cref="PropertyDescription"/> or <see langword="null"/> if the PROPERTYKEY does not exist in the schema subsystem cache.</returns>
-	public static PropertyDescription? Create(string name) => PSGetPropertyDescriptionByName(name, typeof(IPropertyDescription).GUID, out var ppv).Succeeded ? new PropertyDescription((IPropertyDescription)ppv) : null;
+	public static PropertyDescription? Create(string name) => PSGetPropertyDescriptionByName(name, out IPropertyDescription? ppv).Succeeded ? new PropertyDescription(ppv!) : null;
 
 	/// <summary>Tries to create a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
 	/// <param name="propkey">The property key.</param>
@@ -66,9 +64,9 @@ public class PropertyDescription : IDisposable
 	/// <returns><see langword="true"/> if the supplied property key exists; otherwise <see langword="false"/>.</returns>
 	public static bool TryCreate(PROPERTYKEY propkey, [NotNullWhen(true)] out PropertyDescription? desc)
 	{
-		if (PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded)
+		if (PSGetPropertyDescription(propkey, out IPropertyDescription? ppv).Succeeded)
 		{
-			desc = new PropertyDescription((IPropertyDescription)ppv, propkey);
+			desc = new PropertyDescription(ppv!, propkey);
 			return true;
 		}
 

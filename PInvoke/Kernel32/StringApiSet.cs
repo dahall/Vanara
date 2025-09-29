@@ -317,7 +317,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd317761")]
 	public static extern int CompareStringEx(string lpLocaleName, COMPARE_STRING dwCmpFlags, string lpString1, int cchCount1, string lpString2,
-		int cchCount2, [Optional] IntPtr lpVersionInformation, [Optional, Ignore] IntPtr lpReserved, [Optional, Ignore] IntPtr lParam);
+		int cchCount2, [Optional] IntPtr lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr lParam);
 
 	/// <summary>Compares two Unicode (wide character) strings, for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -418,7 +418,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd317761")]
 	public static extern int CompareStringEx(string lpLocaleName, COMPARE_STRING dwCmpFlags, string lpString1, int cchCount1, string lpString2,
-		int cchCount2, in NLSVERSIONINFO lpVersionInformation, [Optional, Ignore] IntPtr lpReserved, [Optional, Ignore] IntPtr lParam);
+		int cchCount2, in NLSVERSIONINFO lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr lParam);
 
 	/// <summary>Compares two Unicode strings to test binary equivalence.</summary>
 	/// <param name="lpString1">Pointer to the first string to compare.</param>
@@ -764,9 +764,10 @@ public static partial class Kernel32
 	// dwInfoType, LPCSTR lpSrcStr, int cchSrc, LPWORD lpCharType );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winnls.h", MSDNShortId = "e0cd051f-6627-457a-9a83-d71de607f67f")]
+	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetStringTypeEx(LCID Locale, CHAR_TYPE_INFO dwInfoType, [SizeDef(nameof(cchSrc))] string lpSrcStr, int cchSrc,
-		[In, Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(cchSrc))] ushort[] lpCharType);
+		[In, Out, MarshalAs(UnmanagedType.LPArray)] ushort[] lpCharType);
 
 	/// <summary>
 	/// <para>
@@ -888,9 +889,10 @@ public static partial class Kernel32
 	// BOOL GetStringTypeW( _In_ DWORD dwInfoType, _In_ LPCWSTR lpSrcStr, _In_ int cchSrc, _Out_ LPWORD lpCharType); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318119(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd318119")]
+	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetStringTypeW(CHAR_TYPE_INFO dwInfoType, [SizeDef(nameof(cchSrc))] string lpSrcStr, int cchSrc,
-		[In, Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(cchSrc))] ushort[] lpCharType);
+		[In, Out, MarshalAs(UnmanagedType.LPArray)] ushort[] lpCharType);
 
 	/// <summary>
 	/// Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.

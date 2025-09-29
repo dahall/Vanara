@@ -533,6 +533,7 @@ public static partial class Kernel32
 	public enum WIN32_MEMORY_INFORMATION_CLASS
 	{
 		/// <summary>This parameter must point to a <c>WIN32_MEMORY_REGION_INFORMATION</c> structure.</summary>
+		[CorrespondingType(typeof(WIN32_MEMORY_REGION_INFORMATION))]
 		MemoryRegionInfo
 	}
 
@@ -593,7 +594,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366528")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AllocateUserPhysicalPages([In] HPROCESS hProcess, ref SizeT NumberOfPages, [Out, SizeDef(nameof(NumberOfPages))] IntPtr[] UserPfnArray);
+	public static extern bool AllocateUserPhysicalPages([In] HPROCESS hProcess, ref SizeT NumberOfPages, [Out, SizeDef(nameof(NumberOfPages), SizingMethod.Query)] IntPtr[] UserPfnArray);
 
 	/// <summary>
 	/// Allocates physical memory pages to be mapped and unmapped within any Address Windowing Extensions (AWE) region of a specified
@@ -636,7 +637,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366529")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AllocateUserPhysicalPagesNuma([In] HPROCESS hProcess, ref SizeT NumberOfPages, [Out, SizeDef(nameof(NumberOfPages))] IntPtr[] PageArray, uint nndPreferred);
+	public static extern bool AllocateUserPhysicalPagesNuma([In] HPROCESS hProcess, ref SizeT NumberOfPages, [Out, SizeDef(nameof(NumberOfPages), SizingMethod.Query)] IntPtr[] PageArray, uint nndPreferred);
 
 	/// <summary>
 	/// <para>Creates or opens a named or unnamed file mapping object for a specified file.</para>
@@ -2267,7 +2268,7 @@ public static partial class Kernel32
 	[PInvokeData("MemoryApi.h", MSDNShortId = "mt845761")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool QueryVirtualMemoryInformation([In] HPROCESS Process, IntPtr VirtualAddress, WIN32_MEMORY_INFORMATION_CLASS MemoryInformationClass,
-		[SizeDef(nameof(MemoryInformationSize))] IntPtr MemoryInformation, SizeT MemoryInformationSize, out SizeT ReturnSize);
+		[SizeDef(nameof(MemoryInformationSize), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError, OutVarName = nameof(ReturnSize))] IntPtr MemoryInformation, SizeT MemoryInformationSize, out SizeT ReturnSize);
 
 	/// <summary>
 	/// Reads data from an area of memory in a specified process. The entire area to be read must be accessible or the operation fails.
@@ -2297,7 +2298,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "ms680553")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReadProcessMemory([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpBaseAddress,
-		[SizeDef(nameof(nSize))] IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesRead);
+		[SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError, OutVarName = nameof(lpNumberOfBytesRead))] IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesRead);
 
 	/// <summary>
 	/// <para>Reclaims a range of memory pages that were offered to the system with <c>OfferVirtualMemory</c>.</para>
@@ -3996,7 +3997,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "ms681674")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool WriteProcessMemory([In, AddAsMember] HPROCESS hProcess, [In] IntPtr lpBaseAddress,
-		[In, SizeDef(nameof(nSize))] IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesWritten);
+		[In, SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.Bytes | SizingMethod.CheckLastError, OutVarName = nameof(lpNumberOfBytesWritten))] IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesWritten);
 
 	/// <summary>
 	/// Writes data to an area of memory in a specified process. The entire area to be written to must be accessible or the operation fails.
@@ -4135,6 +4136,68 @@ public static partial class Kernel32
 
 		/// <summary></summary>
 		public SizeT NumberOfBytes;
+	}
+
+	/// <summary>Contains information about a memory region. A memory region is a single allocation that is created using a memory allocation function, such as <c>VirtualAlloc</c> or <c>MapViewOfFile</c>.</summary>
+	/// <remarks>
+	/// <para>The <b>WIN32_MEMORY_REGION_INFORMATION</b> structure contains information about a single memory allocation. In contrast, the <c>MEMORY_BASIC_INFORMATION</c> structure that is returned by the <c>VirtualQuery</c> function describes a contiguous run of pages within a single allocation that all have the same type, state, and protection. The mapping between <b>WIN32_MEMORY_REGION_INFORMATION</b> fields and memory type values returned by <b>VirtualQuery</b> is as follows:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>WIN32_MEMORY_REGION_INFORMATION</description>
+	/// <description>MEMORY_BASIC_INFORMATION::Type</description>
+	/// </listheader>
+	/// <item>
+	/// <description>Private</description>
+	/// <description>MEM_PRIVATE</description>
+	/// </item>
+	/// <item>
+	/// <description>MappedDataFile</description>
+	/// <description>MEM_MAPPED</description>
+	/// </item>
+	/// <item>
+	/// <description>MappedImage</description>
+	/// <description>MEM_IMAGE</description>
+	/// </item>
+	/// <item>
+	/// <description>MappedPageFile</description>
+	/// <description>MEM_MAPPED</description>
+	/// </item>
+	/// <item>
+	/// <description>MappedPhysical</description>
+	/// <description>MEM_MAPPED</description>
+	/// </item>
+	/// </list>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/ns-memoryapi-win32_memory_region_information
+	// typedef struct WIN32_MEMORY_REGION_INFORMATION { PVOID AllocationBase; ULONG AllocationProtect; union { ULONG Flags; struct { ULONG Private : 1; ULONG MappedDataFile : 1; ULONG MappedImage : 1; ULONG MappedPageFile : 1; ULONG MappedPhysical : 1; ULONG DirectMapped : 1; ULONG Reserved : 26; } DUMMYSTRUCTNAME; } DUMMYUNIONNAME; SIZE_T RegionSize; SIZE_T CommitSize; } WIN32_MEMORY_REGION_INFORMATION;
+	[PInvokeData("memoryapi.h", MSDNShortId = "NS:memoryapi.WIN32_MEMORY_REGION_INFORMATION")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct WIN32_MEMORY_REGION_INFORMATION
+	{
+		/// <summary>The base address of the allocation.</summary>
+		public IntPtr AllocationBase;
+		/// <summary>The page protection value that was specified when the allocation was created. Protections of individual pages within the allocation can be different from this value. To query protection values of individual pages, use the <c>VirtualQuery</c> function.</summary>
+		public uint AllocationProtect;
+		/// <summary>Represents all memory region flags as a single ULONG value. Applications should not use this field. Instead, test the individual bit field flags defined below.</summary>
+		public BitField<uint> Flags;
+		/// <summary>A value of 1 indicates that the allocation is private to the process.</summary>
+		public bool Private { get => Flags[0]; set => Flags[0] = value; }
+		/// <summary>A value of 1 indicates that the allocation is a mapped view of a data file.</summary>
+		public bool MappedDataFile { get => Flags[1]; set => Flags[1] = value; }
+		/// <summary>A value of 1 indicates that the allocation is a mapped view of an executable image.</summary>
+		public bool MappedImage { get => Flags[2]; set => Flags[2] = value; }
+		/// <summary>A value of 1 indicates that the allocation is a mapped view of a pagefile-backed section.</summary>
+		public bool MappedPageFile { get => Flags[3]; set => Flags[3] = value; }
+		/// <summary>A value of 1 indicates that the allocation is a view of the <b>\Device\PhysicalMemory</b> section.</summary>
+		public bool MappedPhysical { get => Flags[4]; set => Flags[4] = value; }
+		/// <summary>A value of 1 indicates that the allocation is a mapped view of a direct-mapped file.</summary>
+		public bool DirectMapped { get => Flags[5]; set => Flags[5] = value; }
+		/// <summary>Reserved.</summary>
+		public bool Reserved { get => Flags[6]; set => Flags[6] = value; }
+		/// <summary>The size of the allocation.</summary>
+		public SizeT RegionSize;
+		/// <summary>The commit charge associated with the allocation. For private allocations, this is the combined size of pages in the region that are committed, as opposed to reserved. For mapped views, this is the combined size of pages that have copy-on-write protection, or have been made private as a result of copy-on-write.</summary>
+		public SizeT CommitSize;
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HSECTION"/> that is disposed using <see cref="CloseHandle"/>.</summary>

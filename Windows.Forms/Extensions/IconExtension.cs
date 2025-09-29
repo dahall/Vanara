@@ -129,8 +129,8 @@ public static class IconExtension
 		if (hSystemImageList.IsNull) return null;
 		if (iconSize <= IconSize.Small)
 			return ImageList_GetIcon(hSystemImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToIcon();
-		SHGetImageList((SHIL)iconSize, typeof(IImageList).GUID, out var il).ThrowIfFailed();
-		return ((IImageList)il).GetIcon(shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToIcon();
+		SHGetImageList((SHIL)iconSize, out IImageList? il).ThrowIfFailed();
+		return il!.GetIcon(shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToIcon();
 	}
 
 	/// <summary>Gets the Shell icon for the given file name or extension.</summary>

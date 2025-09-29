@@ -382,7 +382,7 @@ public static partial class ActiveDS
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsGetObject")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT ADsGetObject([MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, in Guid riid,
-		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object? ppObject);
+		[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppObject);
 
 	/// <summary>
 	/// The <c>ADsOpenObject</c> function binds to an ADSI object using explicit user name and password credentials. <c>ADsOpenObject</c> is
@@ -485,7 +485,7 @@ public static partial class ActiveDS
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsOpenObject")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT ADsOpenObject([MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, [MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszUserName,
-		[MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszPassword, [Optional] ADS_AUTHENTICATION dwReserved, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out object? ppObject);
+		[MarshalAs(UnmanagedType.LPWStr), Optional] string? lpszPassword, [Optional] ADS_AUTHENTICATION dwReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppObject);
 
 	/// <summary>
 	/// The <c>ADsSetLastError</c> sets the last-error code value for the calling thread. Directory service providers can use this function

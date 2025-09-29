@@ -14,7 +14,7 @@ public class NameSpaceApiTests
 	[Test]
 	public void CreatePrivateNamespaceTest()
 	{
-		using SafeBoundaryDescriptorHandle bdh = CreateBoundaryDescriptor(bndName);
+		BoundaryDescriptorHandle bdh = CreateBoundaryDescriptor(bndName);
 		using SafeNamespaceHandle pns = CreatePrivateNamespace(null, bdh, nsName);
 		if (pns.IsNull) TestContext.WriteLine($"ERR: CreateNS={Win32Error.GetLastError()}");
 		Assert.That(pns.IsInvalid, Is.False);
@@ -27,50 +27,31 @@ public class NameSpaceApiTests
 	[Test]
 	public void AddToBoundaryTest()
 	{
-		SafeBoundaryDescriptorHandle bdh = CreateBoundaryDescriptor(Path.GetRandomFileName());
-		Assert.That(bdh.IsInvalid, Is.False);
-		BoundaryDescriptorHandle h = bdh;
+		BoundaryDescriptorHandle h = CreateBoundaryDescriptor(Path.GetRandomFileName());
+		Assert.That(h.IsInvalid, Is.False);
 		try
 		{
 			bool b = AddSIDToBoundaryDescriptor(ref h, SafePSID.Current);
 			if (!b) TestContext.WriteLine($"ERR: AddSid={Win32Error.GetLastError()}");
 			Assert.That(b, Is.True);
 
-			//var plsid = SafePSID.Init(KnownSIDAuthority.SECURITY_MANDATORY_LABEL_AUTHORITY, MandatoryIntegrityLevelSIDRelativeID.SECURITY_MANDATORY_MEDIUM_RID);
-			//b = AddIntegrityLabelToBoundaryDescriptor(ref h, plsid);
-			//if (!b) TestContext.WriteLine($"ERR: AddSid={Win32Error.GetLastError()}");
-			//Assert.That(b, Is.True);
+			var plsid = SafePSID.Init(KnownSIDAuthority.SECURITY_MANDATORY_LABEL_AUTHORITY, KnownSIDRelativeID.SECURITY_MANDATORY_MEDIUM_RID);
+			b = AddIntegrityLabelToBoundaryDescriptor(ref h, plsid);
+			if (!b) TestContext.WriteLine($"ERR: AddSid={Win32Error.GetLastError()}");
+			Assert.That(b, Is.True);
 		}
 		finally
 		{
-			//DeleteBoundaryDescriptor(h);
-			bdh.Close();
+			DeleteBoundaryDescriptor(h);
 		}
 	 }
 
 	[Test]
 	public void AddToBoundaryTest2()
 	{
-		using SafeBoundaryDescriptorHandle bdh = CreateBoundaryDescriptor(Path.GetRandomFileName());
+		BoundaryDescriptorHandle bdh = CreateBoundaryDescriptor(Path.GetRandomFileName());
 		using SafePSID pCurSid = SafePSID.Current;
 		Assert.That(bdh.IsInvalid, Is.False);
-		Assert.That(bdh.AddSid(pCurSid), Is.True);
-		//var plsid = SafePSID.Init(KnownSIDAuthority.SECURITY_MANDATORY_LABEL_AUTHORITY, MandatoryIntegrityLevelSIDRelativeID.SECURITY_MANDATORY_MEDIUM_RID);
-		//Assert.That(bdh.AddSid(plsid), Is.True);
+		Assert.That(BoundaryDescriptorHandle.AddSid(ref bdh, pCurSid), Is.True);
 	}
 }
-
-//public static class NSRunner
-//{
-//	public static int MyMain()
-//	{
-//		using (var bdh = CreateBoundaryDescriptor("BND1"))
-//		using (var pns = OpenPrivateNamespace(bdh, "NS1"))
-//		{
-//			Console.WriteLine($"BndDec: {!bdh.IsNull}");
-//			Console.WriteLine($"PNS: {!pns.IsNull}");
-//			Console.ReadKey();
-//			return pns.IsNull ? (int)Win32Error.GetLastError() : 0;
-//		}
-//	}
-//}

@@ -253,12 +253,11 @@ public static partial class Shell32
 		public static HRESULT LoadIconFromSystemImageList(int iIdx, ref uint imgSz, out SafeHICON hico)
 		{
 			HRESULT hr;
-			if ((hr = SHGetImageList(PixelsToSHIL((int)imgSz), typeof(IImageList).GUID, out object obj)).Succeeded)
+			if ((hr = SHGetImageList(PixelsToSHIL((int)imgSz), out IImageList? il)).Succeeded)
 			{
 				try
 				{
-					IImageList il = (IImageList)obj;
-					hico = il.GetIcon(iIdx, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
+					hico = il!.GetIcon(iIdx, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
 					using ICONINFO icoInfo = new();
 					if (GetIconInfo(hico, icoInfo))
 					{
@@ -272,7 +271,7 @@ public static partial class Shell32
 				}
 				finally
 				{
-					Marshal.ReleaseComObject(obj);
+					Marshal.ReleaseComObject(il!);
 				}
 			}
 			else

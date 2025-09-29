@@ -196,7 +196,32 @@ public static partial class Kernel32
 	// ContextRecord, _EXCEPTION_RECORD *ExceptionRecord );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("rtlsupportapi.h", MSDNShortId = "f5304d17-bc67-4e0f-a535-efca4e65c74c")]
-	public static extern void RtlRestoreContext(ref CONTEXT ContextRecord, ref EXCEPTION_RECORD ExceptionRecord);
+	public static extern void RtlRestoreContext(in CONTEXT ContextRecord, in EXCEPTION_RECORD ExceptionRecord);
+
+	/// <summary>Restores the context of the caller to the specified context record.</summary>
+	/// <param name="ContextRecord">A pointer to a CONTEXT structure.</param>
+	/// <param name="ExceptionRecord">
+	/// <para>A pointer to an EXCEPTION_RECORD structure. This parameter is optional and should typically be <c>NULL</c>.</para>
+	/// <para>
+	/// An exception record is used primarily with long jump and C++ catch-throw support. If the <c>ExceptionCode</c> member is
+	/// STATUS_LONGJUMP, the <c>ExceptionInformation</c> member contains a pointer to a jump buffer. <c>RtlRestoreContext</c> will copy
+	/// the non-volatile state from the jump buffer in to the context record before the context record is restored.
+	/// </para>
+	/// <para>
+	/// If the <c>ExceptionCode</c> member is STATUS_UNWIND_CONSOLIDATE, the <c>ExceptionInformation</c> member contains a pointer to a
+	/// callback function, such as a catch handler. <c>RtlRestoreContext</c> consolidates the call frames between its frame and the frame
+	/// specified in the context record before calling the callback function. This hides frames from any exception handling that might
+	/// occur in the callback function. The difference between this and a typical unwind is that the data on the stack is still present,
+	/// so frame data such as a throw object is still available. The callback function returns a new program counter to update in the
+	/// context record, which is then used in a normal restore context.
+	/// </para>
+	/// </param>
+	/// <returns>This function does not return a value.</returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/nf-winnt-rtlrestorecontext NTSYSAPI VOID RtlRestoreContext( PCONTEXT
+	// ContextRecord, _EXCEPTION_RECORD *ExceptionRecord );
+	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+	[PInvokeData("rtlsupportapi.h", MSDNShortId = "f5304d17-bc67-4e0f-a535-efca4e65c74c")]
+	public static extern void RtlRestoreContext(in CONTEXT ContextRecord, [In, Optional] IntPtr ExceptionRecord);
 
 	/// <summary>Initiates an unwind of procedure call frames.</summary>
 	/// <param name="TargetFrame">

@@ -308,23 +308,21 @@ public class FileApiTests
 	[Test]
 	public void GetVolumeInformationByHandleWTest()
 	{
-		StringBuilder vn = new(1024);
-		StringBuilder fsn = new(1024);
 		using TempFile tmp = new(Kernel32.FileAccess.FILE_GENERIC_READ, FileShare.Read);
-		bool b = GetVolumeInformationByHandleW(tmp.hFile!, vn, (uint)vn.Capacity, out uint vsn, out uint mcl, out FileSystemFlags fsf, fsn, (uint)fsn.Capacity);
+		bool b = GetVolumeInformationByHandleW(tmp.hFile!, out var vn, out uint vsn, out uint mcl, out FileSystemFlags fsf, out var fsn);
 		Assert.That(b, Is.True);
-		Assert.That(vn.ToString(), Is.Not.Null.And.Not.Empty);
+		Assert.That(vn, Is.Not.Null.And.Not.Empty);
 		Assert.That(vsn, Is.Not.EqualTo(0));
 		Assert.That(mcl, Is.Not.EqualTo(0));
 		Assert.That(fsf, Is.Not.EqualTo(0));
-		Assert.That(fsn.ToString(), Is.Not.Null.And.Not.Empty);
+		Assert.That(fsn, Is.Not.Null.And.Not.Empty);
 		TestContext.WriteLine($"{vn}:{vsn}:{mcl}:{fsf}:{fsn}");
 	}
 
 	[Test]
 	public void GetVolumeInformationTest()
 	{
-		bool b = GetVolumeInformation(null, out string vn, out uint vsn, out uint mcl, out FileSystemFlags fsf, out string fsn);
+		bool b = GetVolumeInformation(null, out string? vn, out uint vsn, out uint mcl, out FileSystemFlags fsf, out string? fsn);
 		Assert.That(b, Is.True);
 		Assert.That(vn, Is.Not.Null.And.Not.Empty);
 		Assert.That(vsn, Is.Not.EqualTo(0));

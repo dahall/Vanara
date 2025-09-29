@@ -3778,7 +3778,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365512")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReplaceFile(string lpReplacedFileName, string lpReplacementFileName, [Optional] string? lpBackupFileName,
-		[Optional] REPLACEFILE dwReplaceFlags, [Optional, Ignore] IntPtr lpExclude, [Optional, Ignore] IntPtr lpReserved);
+		[Optional] REPLACEFILE dwReplaceFlags, [Optional] IntPtr lpExclude, [Optional] IntPtr lpReserved);
 
 	/// <summary>
 	/// <para>

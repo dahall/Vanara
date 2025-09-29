@@ -126,7 +126,7 @@ public partial class WinBaseTests_Profile
 		void DumpFile() => TestContext.WriteLine("=============\r\n" + File.ReadAllText(tmp.FullName));
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void ProfileTest()
 	{
 		const string sec = "ImpossibleSection029340985634987";

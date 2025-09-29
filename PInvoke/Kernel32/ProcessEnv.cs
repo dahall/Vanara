@@ -271,7 +271,7 @@ public static partial class Kernel32
 		using SafeCoTaskMemString buf = new((int)sz + 1, CharSet.Auto);
 		if (SearchPath(lpPath, lpFileName, lpExtension, sz + 1, buf, out var filePart) == 0)
 			Win32Error.ThrowLastError();
-		fileIndex = filePart == default ? -1 : filePart.ToInt32() - ((IntPtr)buf).ToInt32();
+		fileIndex = filePart == default ? -1 : (int)((filePart.ToInt64() - ((IntPtr)buf).ToInt64()) / StringHelper.GetCharSize());
 		return buf.ToString();
 
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]

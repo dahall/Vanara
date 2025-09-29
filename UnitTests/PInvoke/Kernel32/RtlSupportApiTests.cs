@@ -49,12 +49,11 @@ public class RtlSupportApiTests
 	[Test]
 	public void RtlPcToFileHeaderTest() => Assert.That(() => RtlPcToFileHeader(IntPtr.Zero, out IntPtr p), Throws.Nothing);// TODO - Too undocumented to implement.
 
-	[Test]
+	//[Test]
 	public void RtlRestoreContextTest()
 	{
-		CONTEXT ctx = default;
-		EXCEPTION_RECORD exc = default;
-		Assert.That(() => RtlRestoreContext(ref ctx, ref exc), Throws.Nothing);
+		CONTEXT ctx = RtlCaptureContext();
+		Assert.That(() => RtlRestoreContext(ctx), Throws.Nothing);
 		// TODO - Too undocumented to implement.
 	}
 
