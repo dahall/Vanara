@@ -1367,45 +1367,45 @@ public static partial class CldApi
 		public byte[] Content;
 
 		/// <summary/>
-		public CANCEL Cancel => GetParam<CANCEL>();
+		public readonly CANCEL Cancel => GetParam<CANCEL>();
 
 		/// <summary/>
-		public FETCHDATA FetchData => GetParam<FETCHDATA>();
+		public readonly FETCHDATA FetchData => GetParam<FETCHDATA>();
 
 		/// <summary/>
-		public VALIDATEDATA ValidateData => GetParam<VALIDATEDATA>();
+		public readonly VALIDATEDATA ValidateData => GetParam<VALIDATEDATA>();
 
 		/// <summary/>
-		public FETCHPLACEHOLDERS FetchPlaceholders => GetParam<FETCHPLACEHOLDERS>();
+		public readonly FETCHPLACEHOLDERS FetchPlaceholders => GetParam<FETCHPLACEHOLDERS>();
 
 		/// <summary/>
-		public OPENCOMPLETION OpenCompletion => GetParam<OPENCOMPLETION>();
+		public readonly OPENCOMPLETION OpenCompletion => GetParam<OPENCOMPLETION>();
 
 		/// <summary/>
-		public CLOSECOMPLETION CloseCompletion => GetParam<CLOSECOMPLETION>();
+		public readonly CLOSECOMPLETION CloseCompletion => GetParam<CLOSECOMPLETION>();
 
 		/// <summary/>
-		public DEHYDRATE Dehydrate => GetParam<DEHYDRATE>();
+		public readonly DEHYDRATE Dehydrate => GetParam<DEHYDRATE>();
 
 		/// <summary/>
-		public DEHYDRATECOMPLETION DehydrateCompletion => GetParam<DEHYDRATECOMPLETION>();
+		public readonly DEHYDRATECOMPLETION DehydrateCompletion => GetParam<DEHYDRATECOMPLETION>();
 
 		/// <summary/>
-		public DELETE Delete => GetParam<DELETE>();
+		public readonly DELETE Delete => GetParam<DELETE>();
 
 		/// <summary/>
-		public DELETECOMPLETION DeleteCompletion => GetParam<DELETECOMPLETION>();
+		public readonly DELETECOMPLETION DeleteCompletion => GetParam<DELETECOMPLETION>();
 
 		/// <summary/>
-		public RENAME Rename => GetParam<RENAME>();
+		public readonly RENAME Rename => GetParam<RENAME>();
 
 		/// <summary/>
-		public RENAMECOMPLETION RenameCompletion => GetParam<RENAMECOMPLETION>();
+		public readonly RENAMECOMPLETION RenameCompletion => GetParam<RENAMECOMPLETION>();
 
 		/// <summary>Gets the parameter value for this structure.</summary>
 		/// <typeparam name="T">The type of the structure to retrieve.</typeparam>
 		/// <returns>The requested structure.</returns>
-		public T GetParam<T>() where T : struct
+		public readonly T GetParam<T>() where T : struct
 		{
 			using var ptr = new PinnedObject(Content);
 			return ((IntPtr)ptr).ToStructure<T>();
@@ -1617,7 +1617,7 @@ public static partial class CldApi
 	/// <summary>Opaque handle to a connection key.</summary>
 	[PInvokeData("cfapi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CF_CONNECTION_KEY
+	public readonly struct CF_CONNECTION_KEY
 	{
 		private readonly long Internal;
 	}
@@ -1750,48 +1750,48 @@ public static partial class CldApi
 		private readonly IntPtr padp2;
 
 		/// <summary/>
-		public TRANSFERDATA TransferData { get => GetParam<TRANSFERDATA>(); set => SetParam(value); }
+		public readonly TRANSFERDATA TransferData { get => GetParam<TRANSFERDATA>(); set => SetParam(value); }
 
 		/// <summary/>
-		public RETRIEVEDATA RetrieveData { get => GetParam<RETRIEVEDATA>(); set => SetParam(value); }
+		public readonly RETRIEVEDATA RetrieveData { get => GetParam<RETRIEVEDATA>(); set => SetParam(value); }
 
 		/// <summary/>
-		public ACKDATA AckData { get => GetParam<ACKDATA>(); set => SetParam(value); }
+		public readonly ACKDATA AckData { get => GetParam<ACKDATA>(); set => SetParam(value); }
 
 		/// <summary/>
-		public RESTARTHYDRATION RestartHydration { get => GetParam<RESTARTHYDRATION>(); set => SetParam(value); }
+		public readonly RESTARTHYDRATION RestartHydration { get => GetParam<RESTARTHYDRATION>(); set => SetParam(value); }
 
 		/// <summary/>
-		public TRANSFERPLACEHOLDERS TransferPlaceholders { get => GetParam<TRANSFERPLACEHOLDERS>(); set => SetParam(value); }
+		public readonly TRANSFERPLACEHOLDERS TransferPlaceholders { get => GetParam<TRANSFERPLACEHOLDERS>(); set => SetParam(value); }
 
 		/// <summary/>
-		public ACKDEHYDRATE AckDehydrate { get => GetParam<ACKDEHYDRATE>(); set => SetParam(value); }
+		public readonly ACKDEHYDRATE AckDehydrate { get => GetParam<ACKDEHYDRATE>(); set => SetParam(value); }
 
 		/// <summary/>
-		public ACKRENAME AckRename { get => GetParam<ACKRENAME>(); set => SetParam(value); }
+		public readonly ACKRENAME AckRename { get => GetParam<ACKRENAME>(); set => SetParam(value); }
 
 		/// <summary/>
-		public ACKDELETE AckDelete { get => GetParam<ACKDELETE>(); set => SetParam(value); }
+		public readonly ACKDELETE AckDelete { get => GetParam<ACKDELETE>(); set => SetParam(value); }
 
 		/// <summary>Gets the parameter value for this structure.</summary>
 		/// <typeparam name="T">The type of the structure to retrieve.</typeparam>
 		/// <returns>The requested structure.</returns>
-		public unsafe T GetParam<T>() where T : struct
+		public readonly unsafe T GetParam<T>() where T : struct
 		{
 			using var ptr = new PinnedObject(this);
-			return ((IntPtr)ptr).ToStructure<T>(Marshal.SizeOf(typeof(CF_OPERATION_PARAMETERS)), 8);
+			return ((IntPtr)ptr).ToStructure<T>(Marshal.SizeOf<CF_OPERATION_PARAMETERS>(), 8);
 		}
 
 		/// <summary>Sets the parameter value for this structure.</summary>
 		/// <typeparam name="T">The type of the structure to set.</typeparam>
 		/// <param name="value">The value to set.</param>
-		public void SetParam<T>(T value) where T : struct
+		public readonly void SetParam<T>(T value) where T : struct
 		{
 			unsafe
 			{
 				fixed (ulong* p = &pad8_16)
 				{
-					((IntPtr)(void*)p).Write(value, 0, Marshal.SizeOf(typeof(CF_OPERATION_PARAMETERS)) - 8);
+					((IntPtr)(void*)p).Write(value, 0, Marshal.SizeOf<CF_OPERATION_PARAMETERS>() - 8);
 				}
 			}
 		}
@@ -1810,7 +1810,7 @@ public static partial class CldApi
 		/// <summary>Gets the size value used in ParamSize given a specific parameter type.</summary>
 		/// <typeparam name="T">The parameter type.</typeparam>
 		/// <returns>The size of the structure.</returns>
-		public static uint CF_SIZE_OF_OP_PARAM<T>() where T : struct => (uint)(Marshal.OffsetOf(typeof(CF_OPERATION_PARAMETERS), nameof(pad8_16)).ToInt32() + Marshal.SizeOf(typeof(T)));
+		public static uint CF_SIZE_OF_OP_PARAM<T>() where T : struct => (uint)(Marshal.OffsetOf<CF_OPERATION_PARAMETERS>(nameof(pad8_16)).ToInt32() + Marshal.SizeOf<T>());
 
 		/// <summary/>
 		[StructLayout(LayoutKind.Sequential)]
@@ -2161,7 +2161,7 @@ public static partial class CldApi
 	/// <summary>Opaque handle to a request key.</summary>
 	[PInvokeData("cfapi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CF_REQUEST_KEY
+	public readonly struct CF_REQUEST_KEY
 	{
 		private readonly long Internal;
 	}
@@ -2354,8 +2354,22 @@ public static partial class CldApi
 	/// <summary>Opaque handle to a transfer key.</summary>
 	[PInvokeData("cfapi.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CF_TRANSFER_KEY
+	public readonly struct CF_TRANSFER_KEY
 	{
 		private readonly long Internal;
+	}
+
+	public partial struct HCFFILE
+	{
+		/// <summary>Performs an implicit conversion from <see cref="HCFFILE"/> to <see cref="HFILE"/>.</summary>
+		/// <param name="h">The <see cref="HCFFILE"/> instance to convert.</param>
+		public static implicit operator HFILE(HCFFILE h) => h.handle;
+	}
+
+	public partial class SafeHCFFILE
+	{
+		/// <summary>Performs an implicit conversion from <see cref="SafeHCFFILE"/> to <see cref="HFILE"/>.</summary>
+		/// <param name="h">The <see cref="SafeHCFFILE"/> instance to convert.</param>
+		public static implicit operator HFILE(SafeHCFFILE h) => h.handle;
 	}
 }
