@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Vanara.Generators;
 
@@ -6,6 +7,11 @@ internal static class TypeDeclarationSyntaxExtensions
 {
 	public static AttributeSyntax? GetAttr(this ParameterSyntax param, string name) =>
 		param.AttributeLists.SelectMany(al => al.Attributes).FirstOrDefault(a => a.NameEquals(name));
+
+	public static VariableDeclarationSyntax CreateArrayVariableDeclaration(this ArrayTypeSyntax arrayType, string varName, string countVarName) =>
+		VariableDeclaration(arrayType.WithRankSpecifiers(SingletonList(ArrayRankSpecifier())),
+			SingletonSeparatedList(VariableDeclarator(Identifier(varName)).WithInitializer(EqualsValueClause(ParseExpression($"new {arrayType.ElementType}[{countVarName}]"))))
+		);
 
 	public static bool NameEquals(this ArgumentSyntax arg, string name) =>
 		(arg.NameColon?.Name.Identifier.Text == name) || (arg.Expression is IdentifierNameSyntax ins && ins.Identifier.Text == name);

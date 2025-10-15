@@ -113,9 +113,9 @@ namespace Vanara.PInvoke
 		[DllImport("test32.dll")]
 		public static extern int GoodSizeDef09([SizeDef(50)] StringBuilder? sb);
 
-		//public static void GoodSizeDef7([SizeDef("sz", SizingMethod.Count /* default */)] int[]? arr, [Range(0, 50)] int sz);
+		public static void GoodSizeDef11([SizeDef("sz")] int[]? arr, [Range(0, 50)] int sz);
 		//public static void GoodSizeDef8([SizeDef("sz", SizingMethod.Count | SizingMethod.Bytes)] int[]? arr, [Range(0, 50)] int sz);
-		//public static void GoodSizeDef11([SizeDef("sz", SizingMethod.Query)] int[]? arr, [Range(0, 50)] ref int sz);
+		public static void GoodSizeDef11([SizeDef("sz", SizingMethod.Query)] int[]? arr, [Range(0, 50)] ref int sz);
 		//public static void GoodSizeDef12([SizeDef("sz", SizingMethod.Query | SizingMethod.Bytes)] int[]? arr, [Range(0, 50)] ref int sz);
 		//public static void GoodSizeDef13([SizeDef("sz", SizingMethod.Query, OutVarName = "lenReq")] int[]? arr, [Range(0, 50)] int sz, out int lenReq);
 
@@ -327,26 +327,26 @@ namespace Vanara.PInvoke
 			// Initialize out params
 			p1 = default;
 			// Setup parameter values
-			int sz = default; // Type from param type
+			szVarType p2 = default; // Type from param type
 			// Call method for query
-			var ret = GoodSizeDef07(default, ref sz);
+			var __qret = GoodSizeDef07(default, ref p2);
 			// Return on query failure
-			if (FAILED(ret, __checkLastErr))
-				return ret;
+			if (FAILED(__qret, __checkLastErr))
+				return __qret;
 			// Assign variables after query
-			sz = ret;
-			if (__isNullTerm) sz -= 1; // Adjust for null terminator
-			if (__conv2Bytes) sz /= StringHelper.GetCharSize(__charSet); // Adjust for char size
-			StringBuilder sb = new(Convert.ToInt32(sz));
+			int __cElem = Convert.ToInt32(__qret);
+			if (__conv2Bytes) __cElem /= SizeOfElem(__charSet); // Adjust for char size
+			if (__isNullTerm) __cElem -= 1; // Adjust for null terminator
+			StringBuilder __out = new(__cElem); // OR outType[]? __out = new outType[__cElem];
 			// Call method for real
-			ret = GoodSizeDef07(sb, ref sz);
+			var __ret = GoodSizeDef07(sb, ref p2);
 			// Return on failure
-			if (FAILED(ret))
-				return ret;
+			if (FAILED(__ret))
+				return __ret;
 			// Get out params
-			p1 = sb.ToString();
+			p1 = __out.ToString(); // OR = __out;
 			// Return
-			return ret;
+			return __ret;
 		}
 
 		public static int GoodSizeDef09(out string? sb)
@@ -361,6 +361,55 @@ namespace Vanara.PInvoke
 			if (Vanara.PInvoke.FailedHelper.FAILED(ret)) return ret;
 			// Get out params
 			sb = __sb.ToString();
+			// Return
+			return ret;
+		}
+		public static bool GoodSizeDef11(out int[]? p1) // Count array
+		{
+			// Get param types and attribute values for parameter and return values
+			var __conv2Bytes = true; // Determine if byte conversion is needed from SizingMethod
+			var __checkLastErr = false; // Determine if checking last error is needed from SizingMethod
+			var __isNullable = false; // Determine if array type is nullable
+			// Initialize out params
+			p1 = __isNullable ? default : [];
+			// Setup parameter values
+			int sz = hint; // Type from param type, value from from Range attribute max or type max value
+			// Assign variables after query
+			elemType[] __p1 = new[Convert.ToInt32(__conv2Bytes ? sz / (szType)Marshal.SizeOf<elemType>() : sz)];
+			// Call method for real
+			var ret = GoodSizeDef11(sb, sz);
+			// Return on failure
+			if (FAILED(ret))
+				return ret;
+			// Get out params
+			p1 = __p1;
+			// Return
+			return ret;
+		}
+		public static bool GoodSizeDef13(out int[]? p1) // Query
+		{
+			// Get param types and attribute values for parameter and return values
+			var __conv2Bytes = true; // Determine if byte conversion is needed from SizingMethod
+			var __checkLastErr = false; // Determine if checking last error is needed from SizingMethod
+			var __isNullable = false; // Determine if array type is nullable
+			// Initialize out params
+			p1 = __isNullable ? default : [];
+			// Setup parameter values
+			int sz = default; // Type from param type, value from from Range attribute max or type max value
+			// Call method for query
+			var qret = GoodSizeDef13(p1, ref sz);
+			// Return on query failure
+			if (FAILED(qret, __checkLastErr))
+				return qret;
+			// Assign variables after query
+			elemType[] __p1 = new[Convert.ToInt32(__conv2Bytes ? sz / (szType)Marshal.SizeOf<elemType>() : sz)];
+			// Call method for real
+			var ret = GoodSizeDef13(sb, ref sz);
+			// Return on failure
+			if (FAILED(ret))
+				return ret;
+			// Get out params
+			p1 = __p1;
 			// Return
 			return ret;
 		}
