@@ -34,7 +34,7 @@ namespace Vanara.PInvoke;
 [StructLayout(LayoutKind.Sequential)]
 [TypeConverter(typeof(NTStatusTypeConverter))]
 [PInvokeData("winerr.h")]
-public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<NTStatus>, IEquatable<int>, IEquatable<uint>, IConvertible, IErrorProvider
+public partial struct NTStatus : IEquatable<int>, IEquatable<uint>, IErrorProvider2<NTStatus>
 {
 	internal readonly int _value;
 

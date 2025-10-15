@@ -27,3 +27,8 @@ public interface IErrorProvider
 	/// <returns>An equivalent <see cref="HRESULT"/>.</returns>
 	HRESULT ToHRESULT();
 }
+
+/// <summary>Common properties and methods for errors with comparitors.</summary>
+public interface IErrorProvider2<TSelf> : IErrorProvider, IComparable, IComparable<TSelf>, IConvertible, IEquatable<TSelf> where TSelf : IErrorProvider2<TSelf>
+{
+}

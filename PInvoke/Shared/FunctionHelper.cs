@@ -5,7 +5,7 @@ namespace Vanara.PInvoke;
 /// <summary>Generic functions to help with standard function patterns like getting a string from a method.</summary>
 public static class FunctionHelper
 {
-	internal static readonly List<Win32Error> buffErrs = [Win32Error.ERROR_MORE_DATA, Win32Error.ERROR_INSUFFICIENT_BUFFER, Win32Error.ERROR_BUFFER_OVERFLOW];
+	internal static readonly List<HRESULT> buffErrs = [Win32Error.ERROR_MORE_DATA, Win32Error.ERROR_INSUFFICIENT_BUFFER, Win32Error.ERROR_BUFFER_OVERFLOW, HRESULT.TYPE_E_BUFFERTOOSMALL];
 
 #nullable disable
 	/// <summary>Delegate for functions that use an IID to retrieve an object.</summary>
@@ -64,6 +64,14 @@ public static class FunctionHelper
 	/// <returns>Resulting error or <see cref="Win32Error.ERROR_SUCCESS"/> on success.</returns>
 	public delegate Win32Error PtrFunc<TSize>(IntPtr ptr, ref TSize sz) where TSize : struct, IConvertible;
 
+	/// <summary>Delegate to get the size of memory allocated to a pointer.</summary>
+	/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
+	/// <param name="ptr">The pointer to the memory in question.</param>
+	/// <param name="sz">The resulting size.</param>
+	/// <returns>Resulting error or <see cref="Win32Error.ERROR_SUCCESS"/> on success.</returns>
+	public delegate TErr PtrFunc<TSize, out TErr>(IntPtr ptr, ref TSize sz) where TSize : struct, IConvertible where TErr : struct, IErrorProvider;
+
 	/// <summary>Delegate that takes and StringBuilder and initial size and returns a result.</summary>
 	/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
 	/// <typeparam name="TRet">The return type.</typeparam>
@@ -93,6 +101,13 @@ public static class FunctionHelper
 	/// <param name="sz">On input, the size of the <paramref name="sb"/> capacity. On output, the number of characters written.</param>
 	/// <returns>The return value. Often this is an error.</returns>
 	public delegate TRet SBFunc<in T1, in T2, TSize, TRet>(T1 arg1, T2 arg2, StringBuilder? sb, ref TSize sz) where TSize : struct, IConvertible;
+
+	/// <summary>Gets a size and returns an error.</summary>
+	/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
+	/// <param name="sz">On input, the size of the capacity. On output, the number of characters written.</param>
+	/// <returns>Resulting error or <see cref="Win32Error.ERROR_SUCCESS"/> on success.</returns>
+	public delegate TErr SizeFunc<TSize, out TErr>(ref TSize sz) where TSize : struct, IConvertible where TErr : struct, IErrorProvider;
 
 	/// <summary>Gets a size and returns an error.</summary>
 	/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
@@ -201,7 +216,7 @@ public static class FunctionHelper
 		return ret;
 	}
 
-	/// <summary>Calls a method with buffer for a type and gets the result or error.</summary>
+	/*/// <summary>Calls a method with buffer for a type and gets the result or error.</summary>
 	/// <typeparam name="TOut">The return type.</typeparam>
 	/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
 	/// <param name="getSize">Method to get the size of the buffer.</param>
@@ -217,24 +232,44 @@ public static class FunctionHelper
 	/// </param>
 	/// <returns>Resulting error or <see cref="Win32Error.ERROR_SUCCESS"/> on success.</returns>
 	public static Win32Error CallMethodWithTypedBuf<TOut, TSize>(SizeFunc<TSize>? getSize, PtrFunc<TSize> method, out TOut? result,
-		Func<IntPtr, TSize, TOut?>? outConverter = null, Win32Error? bufErr = null) where TSize : struct, IConvertible
+		Func<IntPtr, TSize, TOut?>? outConverter = null, Win32Error? bufErr = null) where TSize : struct, IConvertible =>
+		CallMethodWithTypedBuf<TOut, TSize, Win32Error>(getSize is null ? null : (ref TSize sz) => getSize(ref sz), (IntPtr p, ref TSize s) => method(p, ref s), out result, outConverter, bufErr);*/
+
+	/// <summary>Calls a method with buffer for a type and gets the result or error.</summary>
+	/// <typeparam name="TOut">The return type.</typeparam>
+	/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
+	/// <param name="getSize">Method to get the size of the buffer.</param>
+	/// <param name="method">The lambda or method to call into.</param>
+	/// <param name="result">The resulting value of <typeparamref name="TOut"/>.</param>
+	/// <param name="outConverter">
+	/// An optional method to convert the pointer to the type specified by <typeparamref name="TOut"/>. By default, this will marshal the
+	/// pointer to the structure.
+	/// </param>
+	/// <param name="bufErr">
+	/// The optional error <paramref name="method"/> returns when the buffer size is insufficient. If left <see langword="null"/>, then a
+	/// list of well known errors will be used.
+	/// </param>
+	/// <returns>Resulting error or <see cref="Win32Error.ERROR_SUCCESS"/> on success.</returns>
+	public static TErr CallMethodWithTypedBuf<TOut, TSize, TErr>(SizeFunc<TSize, TErr>? getSize, PtrFunc<TSize, TErr> method, out TOut? result,
+		Func<IntPtr, TSize, TOut?>? outConverter = null, TErr? bufErr = null) where TSize : struct, IConvertible where TErr : struct, IErrorProvider
 	{
 		TSize sz = default;
 		result = default;
 		var err = (getSize ?? GetSize)(ref sz);
-		if (err.Failed && (bufErr == null || bufErr.Value != err) && !buffErrs.Contains(err)) return err;
-		using var buf = new SafeHGlobalHandle(sz.ToInt32(null));
+		if (err.Failed && (bufErr == null || !EqualityComparer<TErr>.Default.Equals(bufErr.Value, err)) && !buffErrs.Contains(err.ToHRESULT())) return err;
+		using SafeHGlobalHandle buf = new(sz.ToInt32(null));
 		err = method(buf.DangerousGetHandle(), ref sz);
 		if (err.Succeeded)
 			result = (outConverter ?? Conv)(buf.DangerousGetHandle(), sz);
 		return err;
 
-		Win32Error GetSize(ref TSize sz1) => method(IntPtr.Zero, ref sz1);
+		TErr GetSize(ref TSize sz1) => method(IntPtr.Zero, ref sz1);
 
 		static TOut? Conv(IntPtr p, TSize s) => p == IntPtr.Zero ? default : p.Convert<TOut>(Convert.ToUInt32(s));
 	}
 
-	/// <summary>Calls a method with buffer for a type and gets the result or error.</summary>
+	/*/// <summary>Calls a method with buffer for a type and gets the result or error.</summary>
 	/// <typeparam name="TOut">The return type.</typeparam>
 	/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
 	/// <param name="method">The lambda or method to call into.</param>
@@ -250,6 +285,28 @@ public static class FunctionHelper
 	/// <returns>The resulting value of <typeparamref name="TOut"/>.</returns>
 	public static TOut? CallMethodWithTypedBuf<TOut, TSize>(PtrFunc<TSize> method, SizeFunc<TSize>? getSize = null,
 		Func<IntPtr, TSize, TOut>? outConverter = null, Win32Error? bufErr = null) where TSize : struct, IConvertible
+	{
+		CallMethodWithTypedBuf(getSize, method, out var res, outConverter, bufErr).ThrowIfFailed();
+		return res;
+	}*/
+
+	/// <summary>Calls a method with buffer for a type and gets the result or error.</summary>
+	/// <typeparam name="TOut">The return type.</typeparam>
+	/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
+	/// <typeparam name="TErr">The type of the error.</typeparam>
+	/// <param name="method">The lambda or method to call into.</param>
+	/// <param name="getSize">Method to get the size of the buffer.</param>
+	/// <param name="outConverter">
+	/// An optional method to convert the pointer to the type specified by <typeparamref name="TOut"/>. By default, this will marshal the
+	/// pointer to the structure.
+	/// </param>
+	/// <param name="bufErr">
+	/// The optional error <paramref name="method"/> returns when the buffer size is insufficient. If left <see langword="null"/>, then a
+	/// list of well known errors will be used.
+	/// </param>
+	/// <returns>The resulting value of <typeparamref name="TOut"/>.</returns>
+	public static TOut? CallMethodWithTypedBuf<TOut, TSize, TErr>(PtrFunc<TSize, TErr> method, SizeFunc<TSize, TErr>? getSize = null,
+		Func<IntPtr, TSize, TOut>? outConverter = null, TErr? bufErr = null) where TSize : struct, IConvertible where TErr : struct, IErrorProvider
 	{
 		CallMethodWithTypedBuf(getSize, method, out var res, outConverter, bufErr).ThrowIfFailed();
 		return res;

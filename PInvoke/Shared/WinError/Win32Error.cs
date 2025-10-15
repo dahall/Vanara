@@ -10,7 +10,7 @@ namespace Vanara.PInvoke;
 [StructLayout(LayoutKind.Sequential, Pack = 4)]
 [TypeConverter(typeof(Win32ErrorTypeConverter))]
 [PInvokeData("winerr.h")]
-public partial struct Win32Error(uint i) : IEquatable<Win32Error>, IEquatable<uint>, IConvertible, IComparable<Win32Error>, IComparable, IErrorProvider
+public partial struct Win32Error(uint i) : IEquatable<uint>, IErrorProvider2<Win32Error>
 {
 	internal readonly uint value = i;
 

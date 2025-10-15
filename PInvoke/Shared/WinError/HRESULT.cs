@@ -33,13 +33,11 @@ namespace Vanara.PInvoke;
 /// </item>
 /// </list>
 /// </summary>
-/// <seealso cref="IComparable"/>
-/// <seealso cref="IComparable{HRESULT}"/>
-/// <seealso cref="IEquatable{HRESULT}"/>
+/// <seealso cref="IErrorProvider2{HRESULT}"/>
 [StructLayout(LayoutKind.Sequential)]
 [TypeConverter(typeof(HRESULTTypeConverter))]
 [PInvokeData("winerr.h")]
-public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IEquatable<int>, IEquatable<uint>, IEquatable<IErrorProvider>, IConvertible, IErrorProvider
+public partial struct HRESULT : IEquatable<int>, IEquatable<uint>, IEquatable<IErrorProvider>, IErrorProvider2<HRESULT>
 {
 	internal readonly int _value;
 
