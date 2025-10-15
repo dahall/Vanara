@@ -405,7 +405,7 @@ public static partial class Dcomp
 	// *actualTargetIdCount );
 	[PInvokeData("dcomp.h", MSDNShortId = "NF:dcomp.DCompositionGetStatistics")]
 	[DllImport(Lib_Dcomp, SetLastError = false, ExactSpelling = true), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-	public static extern HRESULT DCompositionGetStatistics(COMPOSITION_FRAME_ID frameId, out COMPOSITION_FRAME_STATS frameStats, uint targetIdCount, [Out, MarshalAs(UnmanagedType.LPArray), Optional] COMPOSITION_TARGET_ID[]? targetIds, out uint actualTargetIdCount);
+	public static extern HRESULT DCompositionGetStatistics(COMPOSITION_FRAME_ID frameId, out COMPOSITION_FRAME_STATS frameStats, uint targetIdCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), Optional] COMPOSITION_TARGET_ID[]? targetIds, out uint actualTargetIdCount);
 
 	/// <summary>Gets per-target information for the specified composition frame and render target.</summary>
 	/// <param name="frameId">

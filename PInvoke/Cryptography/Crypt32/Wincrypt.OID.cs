@@ -1065,7 +1065,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "934e8278-0e0b-4402-a2b6-ff1e913d54c9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptInstallOIDFunctionAddress([Optional] HINSTANCE hModule, CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
-		uint cFuncEntry, [In, MarshalAs(UnmanagedType.LPArray)] CRYPT_OID_FUNC_ENTRY[] rgFuncEntry, [Optional] CryptInstallOIDFuncFlags dwFlags);
+		uint cFuncEntry, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CRYPT_OID_FUNC_ENTRY[] rgFuncEntry, [Optional] CryptInstallOIDFuncFlags dwFlags);
 
 	/// <summary>
 	/// The <c>CryptRegisterDefaultOIDFunction</c> registers a DLL containing the default function to be called for the specified

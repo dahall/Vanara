@@ -2134,7 +2134,7 @@ public static partial class D2d1
 		// UINT32 dimensions, [in] const BYTE *data, UINT32 dataCount );
 		void Update([In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[]? minimumExtents,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[]? maximimumExtents,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? strides, int dimensions,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[]? strides, int dimensions,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] byte[] data, int dataCount);
 	}
 

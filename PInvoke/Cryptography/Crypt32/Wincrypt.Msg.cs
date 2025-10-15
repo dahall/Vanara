@@ -1004,7 +1004,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "927f2e9a-96cf-4744-bd57-420b5034d28d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptEncryptMessage(in CRYPT_ENCRYPT_MESSAGE_PARA pEncryptPara, uint cRecipientCert, [In, MarshalAs(UnmanagedType.LPArray)] PCCERT_CONTEXT[] rgpRecipientCert,
+	public static extern bool CryptEncryptMessage(in CRYPT_ENCRYPT_MESSAGE_PARA pEncryptPara, uint cRecipientCert, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PCCERT_CONTEXT[] rgpRecipientCert,
 		[In] IntPtr pbToBeEncrypted, uint cbToBeEncrypted, [Out] IntPtr pbEncryptedBlob, ref uint pcbEncryptedBlob);
 
 	/// <summary>
@@ -1759,7 +1759,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ebf76664-bca6-462d-b519-2b60f435d8ef")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgCountersign(HCRYPTMSG hCryptMsg, uint dwIndex, uint cCountersigners, [In, MarshalAs(UnmanagedType.LPArray)] CMSG_SIGNER_ENCODE_INFO[] rgCountersigners);
+	public static extern bool CryptMsgCountersign(HCRYPTMSG hCryptMsg, uint dwIndex, uint cCountersigners, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CMSG_SIGNER_ENCODE_INFO[] rgCountersigners);
 
 	/// <summary>
 	/// The <c>CryptMsgCountersignEncoded</c> function countersigns an existing PKCS #7 message signature. The pbCountersignature
@@ -1846,7 +1846,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "d9fd734b-e14d-4392-ac88-5565aefbedb4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptMsgCountersignEncoded(CertEncodingType dwEncodingType, [In] IntPtr pbSignerInfo, uint cbSignerInfo, uint cCountersigners,
-		[In, MarshalAs(UnmanagedType.LPArray)] CMSG_SIGNER_ENCODE_INFO[] rgCountersigners, [Out] IntPtr pbCountersignature, ref uint pcbCountersignature);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CMSG_SIGNER_ENCODE_INFO[] rgCountersigners, [Out] IntPtr pbCountersignature, ref uint pcbCountersignature);
 
 	/// <summary>The <c>CryptMsgDuplicate</c> function duplicates a cryptographic message handle by incrementing its reference count.</summary>
 	/// <param name="hCryptMsg">
@@ -3500,7 +3500,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "0ab234f2-a681-463f-8ba8-b23b05cf2626")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignAndEncryptMessage(in CRYPT_SIGN_MESSAGE_PARA pSignPara, in CRYPT_ENCRYPT_MESSAGE_PARA pEncryptPara, uint cRecipientCert,
-		[In, MarshalAs(UnmanagedType.LPArray)] PCCERT_CONTEXT[] rgpRecipientCert, [In] IntPtr pbToBeSignedAndEncrypted, uint cbToBeSignedAndEncrypted,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PCCERT_CONTEXT[] rgpRecipientCert, [In] IntPtr pbToBeSignedAndEncrypted, uint cbToBeSignedAndEncrypted,
 		[Out] IntPtr pbSignedAndEncryptedBlob, ref uint pcbSignedAndEncryptedBlob);
 
 	/// <summary>
@@ -3583,7 +3583,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "f14f7c7b-14ac-40a7-9a49-d1a899ecc52a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignMessage(in CRYPT_SIGN_MESSAGE_PARA pSignPara, [MarshalAs(UnmanagedType.Bool)] bool fDetachedSignature, uint cToBeSigned,
-		[In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] rgpbToBeSigned, [In] uint[] rgcbToBeSigned, [Out] IntPtr pbSignedBlob, ref uint pcbSignedBlob);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] rgpbToBeSigned, [In] uint[] rgcbToBeSigned, [Out] IntPtr pbSignedBlob, ref uint pcbSignedBlob);
 
 	/// <summary>
 	/// The <c>CryptSignMessageWithKey</c> function signs a message by using a CSP's private key specified in the parameters. A
@@ -3716,7 +3716,8 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "b529b9e2-9798-4548-a44f-c330524a3e6b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptVerifyDetachedMessageHash(in CRYPT_HASH_MESSAGE_PARA pHashPara, [In] IntPtr pbDetachedHashBlob, uint cbDetachedHashBlob,
-		uint cToBeHashed, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] rgpbToBeHashed, [In] uint[] rgcbToBeHashed, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
+		uint cToBeHashed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] IntPtr[] rgpbToBeHashed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] rgcbToBeHashed,
+		[Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// The <c>CryptVerifyDetachedMessageSignature</c> function verifies a signed message containing a detached signature or signatures.
@@ -3785,7 +3786,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "d437f6bf-eb56-4d29-bb91-eb8487e50219")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptVerifyDetachedMessageSignature(in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara, uint dwSignerIndex, [In] IntPtr pbDetachedSignBlob, uint cbDetachedSignBlob,
-		uint cToBeSigned, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] rgpbToBeSigned, [In] uint[] rgcbToBeSigned, out SafePCCERT_CONTEXT ppSignerCert);
+		uint cToBeSigned, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] rgpbToBeSigned, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[] rgcbToBeSigned, out SafePCCERT_CONTEXT ppSignerCert);
 
 	/// <summary>The <c>CryptVerifyMessageHash</c> function verifies the hash of specified content.</summary>
 	/// <param name="pHashPara">A pointer to a CRYPT_HASH_MESSAGE_PARA structure containing hash parameters.</param>

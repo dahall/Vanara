@@ -2746,7 +2746,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "b740772b-d25b-4b3d-9acb-03f7018750d6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertSelectCertificateChains(in Guid pSelectionContext, CertSelection dwFlags, in CERT_SELECT_CHAIN_PARA pChainParameters, uint cCriteria,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] CERT_SELECT_CRITERIA[]? rgpCriteria, HCERTSTORE hStore, out uint pcSelection, out IntPtr pprgpSelection);
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CERT_SELECT_CRITERIA[]? rgpCriteria, HCERTSTORE hStore, out uint pcSelection, out IntPtr pprgpSelection);
 
 	/// <summary>The <c>CertSelectCertificateChains</c> function retrieves certificate chains based on specified selection criteria.</summary>
 	/// <param name="pSelectionContext">A pointer to the GUID of the certificate selection scenario to use for this call.</param>
@@ -2920,7 +2920,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "b740772b-d25b-4b3d-9acb-03f7018750d6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertSelectCertificateChains([Optional] IntPtr pSelectionContext, CertSelection dwFlags, [Optional] IntPtr pChainParameters,
-		uint cCriteria, [In, Optional, MarshalAs(UnmanagedType.LPArray)] CERT_SELECT_CRITERIA[]? rgpCriteria, HCERTSTORE hStore, out uint pcSelection, out IntPtr pprgpSelection);
+		uint cCriteria, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CERT_SELECT_CRITERIA[]? rgpCriteria, HCERTSTORE hStore, out uint pcSelection, out IntPtr pprgpSelection);
 
 	/// <summary>The <c>CertSelectCertificateChains</c> function retrieves certificate chains based on specified selection criteria.</summary>
 	/// <param name="pSelectionContext">A pointer to the GUID of the certificate selection scenario to use for this call.</param>

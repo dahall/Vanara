@@ -8367,11 +8367,11 @@ public static partial class D2d1
 		// *sourceRectangles, [in, optional] const D2D1_COLOR_F *colors, [in, optional] const D2D1_MATRIX_3X2_F *transforms, UINT32
 		// destinationRectanglesStride, UINT32 sourceRectanglesStride, UINT32 colorsStride, UINT32 transformsStride );
 		void SetSprites(uint startIndex, uint spriteCount,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray)] D2D_RECT_F[]? destinationRectangles,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray)] D2D_RECT_U[]? sourceRectangles,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray)] D2D1_COLOR_F[]? colors,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray)] D2D1_MATRIX_3X2_F[]? transforms,
-			uint destinationRectanglesStride, uint sourceRectanglesStride, uint colorsStride, uint transformsStride);
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D_RECT_F[]? destinationRectangles,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D_RECT_U[]? sourceRectangles,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_COLOR_F[]? colors,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_MATRIX_3X2_F[]? transforms,
+			[Optional] uint destinationRectanglesStride, [Optional] uint sourceRectanglesStride, [Optional] uint colorsStride, [Optional] uint transformsStride);
 
 		/// <summary>
 		/// Retrieves the specified subset of sprites from this sprite batch. For the best performance, use nullptr for properties that you

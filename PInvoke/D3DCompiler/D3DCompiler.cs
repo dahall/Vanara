@@ -1366,7 +1366,7 @@ public static partial class D3DCompiler
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DDecompressShaders")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT D3DDecompressShaders([In] IntPtr pSrcData, [In] SizeT SrcDataSize, uint uNumShaders, uint uStartIndex,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? pIndices, [Optional] uint uFlags, out ID3DBlob ppShaders, out uint pTotalShaders);
+		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? pIndices, [Optional, Ignore] uint uFlags, out ID3DBlob ppShaders, out uint pTotalShaders);
 
 	/// <summary>Disassembles compiled HLSL code.</summary>
 	/// <param name="pSrcData">

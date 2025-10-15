@@ -424,7 +424,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "90ac512f-3cbe-4543-9b34-8e384f730cfe")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertCreateCTLEntryFromCertificateContextProperties([In] PCCERT_CONTEXT pCertContext, uint cOptAttr, [In, MarshalAs(UnmanagedType.LPArray)] CRYPT_ATTRIBUTE[] rgOptAttr,
+	public static extern bool CertCreateCTLEntryFromCertificateContextProperties([In] PCCERT_CONTEXT pCertContext, uint cOptAttr, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] CRYPT_ATTRIBUTE[] rgOptAttr,
 		CertCreateCTLEntryFlags dwFlags, [Optional] IntPtr pvReserved, [Out, Optional] IntPtr pCtlEntry, ref uint pcbCtlEntry);
 
 	/// <summary>
@@ -1757,7 +1757,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "380c9cf3-27a2-4354-b1c8-97cec33f4e44")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgGetAndVerifySigner(HCRYPTMSG hCryptMsg, uint cSignerStore, [In, MarshalAs(UnmanagedType.LPArray)] HCERTSTORE[] rghSignerStore,
+	public static extern bool CryptMsgGetAndVerifySigner(HCRYPTMSG hCryptMsg, uint cSignerStore, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] HCERTSTORE[] rghSignerStore,
 		CryptMsgSignerFlags dwFlags, out SafePCCERT_CONTEXT ppSigner, ref uint pdwSignerIndex);
 
 	/// <summary>The <c>CryptMsgSignCTL</c> function creates a signed message containing an encoded CTL.</summary>
