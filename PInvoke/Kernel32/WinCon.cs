@@ -1953,7 +1953,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReadConsoleOutputAttribute([In] HFILE hConsoleOutput, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute,
+	public static extern bool ReadConsoleOutputAttribute([In] HFILE hConsoleOutput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute,
 		uint nLength, COORD dwReadCoord, out uint lpNumberOfAttrsRead);
 
 	/// <summary>Copies a number of characters from consecutive cells of a console screen buffer, beginning at a specified location.</summary>
@@ -2921,7 +2921,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WriteConsoleOutputAttribute([In] HFILE hConsoleOutput, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute,
+	public static extern bool WriteConsoleOutputAttribute([In] HFILE hConsoleOutput, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CHARACTER_ATTRIBUTE[] lpAttribute,
 		uint nLength, COORD dwWriteCoord, out uint lpNumberOfAttrsWritten);
 
 	/// <summary>Copies a number of characters to consecutive cells of a console screen buffer, beginning at a specified location.</summary>

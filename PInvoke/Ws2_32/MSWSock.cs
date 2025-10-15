@@ -865,7 +865,7 @@ public static partial class Ws2_32
 	// LpfnRiodequeuecompletion; ULONG LpfnRiodequeuecompletion( RIO_CQ CQ, PRIORESULT Array, ULONG ArraySize ) {...}
 	[PInvokeData("mswsock.h", MSDNShortId = "NC:mswsock.LPFN_RIODEQUEUECOMPLETION")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
-	public delegate uint LPFN_RIODEQUEUECOMPLETION(RIO_CQ CQ, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RIORESULT[] Array, uint ArraySize);
+	public delegate uint LPFN_RIODEQUEUECOMPLETION(RIO_CQ CQ, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RIORESULT[] Array, uint ArraySize);
 
 	/// <summary>The <c>RIODeregisterBuffer</c> function deregisters a registered buffer used with the Winsock registered I/O extensions.</summary>
 	/// <param name="BufferId">A descriptor identifying a registered buffer.</param>

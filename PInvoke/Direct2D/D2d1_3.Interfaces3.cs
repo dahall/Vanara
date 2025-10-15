@@ -2686,7 +2686,7 @@ public static partial class D2d1
 		// const UINT32 *strides, [out] ID2D1LookupTable3D **lookupTable );
 		new void CreateLookupTable3D(D2D1_BUFFER_PRECISION precision, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 3)] uint[] extents,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] data, uint dataCount,
-			[MarshalAs(UnmanagedType.LPArray, SizeConst = 2)] uint[] strides, out ID2D1LookupTable3D lookupTable);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeConst = 2)] uint[] strides, out ID2D1LookupTable3D lookupTable);
 
 		/// <summary>
 		/// Creates an image source from a set of DXGI surface(s). The YCbCr surface(s) are converted to RGBA automatically during
@@ -3905,7 +3905,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -4543,7 +4543,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -5194,7 +5194,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -5862,7 +5862,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -6550,7 +6550,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>
@@ -7258,7 +7258,7 @@ public static partial class D2d1
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1factory1-registereffectfromstream HRESULT
 		// RegisterEffectFromStream( [in] REFCLSID classId, [in] IStream *propertyXml, [in, optional] const D2D1_PROPERTY_BINDING *bindings,
 		// UINT32 bindingsCount, const PD2D1_EFFECT_FACTORY effectFactory );
-		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
+		new void RegisterEffectFromStream(in Guid classId, [In] IStream propertyXml, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D2D1_PROPERTY_BINDING[] bindings, uint bindingsCount,
 			[In, MarshalAs(UnmanagedType.FunctionPtr)] PD2D1_EFFECT_FACTORY effectFactory);
 
 		/// <summary>Registers an effect within the factory instance with the property XML specified as a string.</summary>

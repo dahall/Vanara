@@ -5568,7 +5568,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-iurlaccessor3-getimpersonationsidblobs HRESULT
 		// GetImpersonationSidBlobs( LPCWSTR pcwszURL, DWORD *pcSidCount, BLOB **ppSidBlobs );
 		[PInvokeData("searchapi.h")]
-		void GetImpersonationSidBlobs([In, MarshalAs(UnmanagedType.LPWStr)] string pcwszURL, out uint pcSidCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out BLOB[] ppSidBlobs);
+		void GetImpersonationSidBlobs([In, MarshalAs(UnmanagedType.LPWStr)] string pcwszURL, out uint pcSidCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out BLOB[] ppSidBlobs);
 	}
 
 	/// <summary>
@@ -5941,7 +5941,7 @@ public static partial class SearchApi
 		// https://docs.microsoft.com/en-us/windows/desktop/api/searchapi/nf-searchapi-iurlaccessor3-getimpersonationsidblobs HRESULT
 		// GetImpersonationSidBlobs( LPCWSTR pcwszURL, DWORD *pcSidCount, BLOB **ppSidBlobs );
 		[PInvokeData("searchapi.h")]
-		new void GetImpersonationSidBlobs([In, MarshalAs(UnmanagedType.LPWStr)] string pcwszURL, out uint pcSidCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out BLOB[] ppSidBlobs);
+		new void GetImpersonationSidBlobs([In, MarshalAs(UnmanagedType.LPWStr)] string pcwszURL, out uint pcSidCount, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out BLOB[] ppSidBlobs);
 
 		/// <summary>Identifies whether the item's content should be indexed.</summary>
 		/// <param name="pfIndexContent">

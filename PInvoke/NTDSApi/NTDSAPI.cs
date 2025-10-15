@@ -1518,7 +1518,7 @@ public static partial class NTDSApi
 	[DllImport(Lib.NTDSApi, CharSet = CharSet.Auto, SetLastError = true)]
 	[PInvokeData("NTDSApi.h", MSDNShortId = "ms675970")]
 	public static extern Win32Error DsCrackNames(SafeDsHandle hSafeDs, DS_NAME_FLAGS flags, DS_NAME_FORMAT formatOffered, DS_NAME_FORMAT formatDesired, uint cNames,
-		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 4)] string[] rpNames, out SafeDsNameResult ppResult);
+		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 4)] string[] rpNames, out SafeDsNameResult ppResult);
 
 	/// <summary>A wrapper function for the DsCrackNames OS call</summary>
 	/// <param name="hSafeDs">Contains a directory service handle obtained from either the DSBind or DSBindWithCred function. If flags contains

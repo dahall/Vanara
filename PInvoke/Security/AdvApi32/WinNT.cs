@@ -4297,37 +4297,26 @@ public static partial class AdvApi32
 	}
 
 	/// <summary>The TOKEN_GROUPS structure contains information about the group security identifiers (SIDs) in an access token.</summary>
+	/// <param name="groups">An array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</param>
 	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<TOKEN_GROUPS>), nameof(GroupCount))]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct TOKEN_GROUPS
+	public struct TOKEN_GROUPS(SID_AND_ATTRIBUTES[] groups)
 	{
 		/// <summary>Specifies the number of groups in the access token.</summary>
-		public uint GroupCount;
+		public uint GroupCount = (uint)(groups?.Length ?? 0);
 
 		/// <summary>Specifies an array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-		public SID_AND_ATTRIBUTES[] Groups;
+		public SID_AND_ATTRIBUTES[] Groups = groups ?? [];
 
 		/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct.</summary>
 		/// <param name="count">The number of groups.</param>
-		public TOKEN_GROUPS(uint count = 0)
-		{
-			GroupCount = count;
-			Groups = new SID_AND_ATTRIBUTES[count];
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct with and array of SIDs and attributes.</summary>
-		/// <param name="groups">An array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</param>
-		public TOKEN_GROUPS(SID_AND_ATTRIBUTES[] groups)
-		{
-			Groups = groups;
-			GroupCount = (uint)(groups?.Length ?? 0);
-		}
+		public TOKEN_GROUPS(uint count = 0) : this(new SID_AND_ATTRIBUTES[count]) { }
 
 		/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct with a single SID and attribute.</summary>
 		/// <param name="sid">The SID.</param>
 		/// <param name="attributes">The attributes of the SID.</param>
-		public TOKEN_GROUPS(PSID sid, uint attributes = 0) : this(1U) => Groups[0] = new SID_AND_ATTRIBUTES(sid, attributes);
+		public TOKEN_GROUPS(PSID sid, uint attributes = 0) : this([new SID_AND_ATTRIBUTES(sid, attributes)]) { }
 	}
 
 	/// <summary>

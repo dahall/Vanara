@@ -183,7 +183,7 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainerSet")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AddLogContainerSet([In] HLOG hLog, [In] ushort cContainer, [In, Optional] IntPtr pcbContainer,
-		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] rgwszContainerPath, [In, Out, Optional] IntPtr pReserved);
+		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] rgwszContainerPath, [In, Out, Optional, Ignore] IntPtr pReserved);
 
 	/// <summary>
 	/// Adds multiple log containers to the physical log that is associated with the log handle—if the calling process has access to the log
@@ -247,7 +247,7 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainerSet")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AddLogContainerSet([In] HLOG hLog, [In] ushort cContainer, in ulong pcbContainer,
-		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] rgwszContainerPath, [In, Out, Optional] IntPtr pReserved);
+		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] rgwszContainerPath, [In, Out, Optional, Ignore] IntPtr pReserved);
 
 	/// <summary>Advances the base log sequence number (LSN) of a log stream to the specified LSN.</summary>
 	/// <param name="pvMarshal">A pointer to the marshaling context that a successful call to CreateLogMarshallingArea returns.</param>
@@ -1317,8 +1317,8 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.GetLogContainerName")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetLogContainerName([In] HLOG hLog, [In] CLFS_CONTAINER_ID cidLogicalContainer,
-		[In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwstrContainerName, [In] int cLenContainerName,
-		out uint pcActualLenContainerName);
+		[In, Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLenContainerName), SizingMethod.Query, OutVarName = nameof(pcActualLenContainerName))] StringBuilder pwstrContainerName,
+		[In] int cLenContainerName, out uint pcActualLenContainerName);
 
 	/// <summary>
 	/// <para>
@@ -1604,7 +1604,8 @@ public static partial class ClfsW32
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.PrepareLogArchive")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PrepareLogArchive([In] HLOG hLog, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszBaseLogFileName,
+	public static extern bool PrepareLogArchive([In] HLOG hLog,
+		[MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLen), SizingMethod.CheckLastError, OutVarName = nameof(pcActualLength))] StringBuilder pszBaseLogFileName,
 		[In] int cLen, in CLS_LSN plsnLow, in CLS_LSN plsnHigh, out uint pcActualLength, out ulong poffBaseLogFileData,
 		out ulong pcbBaseLogFileLength, out CLS_LSN plsnBase, out CLS_LSN plsnLast, out CLS_LSN plsnCurrentArchiveTail,
 		out SafeArchiveContext ppvArchiveContext);
@@ -1694,7 +1695,8 @@ public static partial class ClfsW32
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.PrepareLogArchive")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PrepareLogArchive([In] HLOG hLog, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszBaseLogFileName,
+	public static extern bool PrepareLogArchive([In] HLOG hLog,
+		[MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLen), SizingMethod.CheckLastError, OutVarName = nameof(pcActualLength))] StringBuilder pszBaseLogFileName,
 		[In] int cLen, [In, Optional] IntPtr plsnLow, [In, Optional] IntPtr plsnHigh, out uint pcActualLength, out ulong poffBaseLogFileData,
 		out ulong pcbBaseLogFileLength, out CLS_LSN plsnBase, out CLS_LSN plsnLast, out CLS_LSN plsnCurrentArchiveTail,
 		out SafeArchiveContext ppvArchiveContext);

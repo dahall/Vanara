@@ -2240,7 +2240,7 @@ public static partial class ActiveDS
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-getobjectattributes HRESULT GetObjectAttributes(
 		// [in] LPWSTR *pAttributeNames, [in] DWORD dwNumberAttributes, [out] PADS_ATTR_INFO *ppAttributeEntries, [out] DWORD
 		// *pdwNumAttributesReturned );
-		void GetObjectAttributes([In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? pAttributeNames,
+		void GetObjectAttributes([In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[]? pAttributeNames,
 			[In] uint dwNumberAttributes, out ManagedArrayPointer<ADS_ATTR_INFO> ppAttributeEntries, out uint pdwNumAttributesReturned);
 
 		/// <summary>
@@ -2509,7 +2509,7 @@ public static partial class ActiveDS
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-executesearch HRESULT ExecuteSearch( [in] LPWSTR
 		// pszSearchFilter, [in] LPWSTR *pAttributeNames, [in] DWORD dwNumberAttributes, [out] PADS_SEARCH_HANDLE phSearchResult );
 		void ExecuteSearch([In, MarshalAs(UnmanagedType.LPWStr)] string pszSearchFilter,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? pAttributeNames,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[]? pAttributeNames,
 			[In, Optional] uint dwNumberAttributes, out ADS_SEARCH_HANDLE phSearchResult);
 
 		/// <summary>

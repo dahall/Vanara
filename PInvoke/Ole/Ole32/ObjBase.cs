@@ -1416,9 +1416,9 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
 	public static extern HRESULT CoInitializeSecurity(PSECURITY_DESCRIPTOR pSecDesc, int cAuthSvc,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional] IntPtr pReserved1,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional, Ignore] IntPtr pReserved1,
 		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
-		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities, IntPtr pReserved3 = default);
+		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities, [Optional, Ignore] IntPtr pReserved3);
 
 	/// <summary>Registers security and sets the default security values for the process.</summary>
 	/// <param name="pSecDesc">
@@ -1504,7 +1504,7 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
 	public static extern HRESULT CoInitializeSecurity([Optional] IAccessControl? pSecDesc, int cAuthSvc,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional] IntPtr pReserved1,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional, Ignore] IntPtr pReserved1,
 		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
 		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities = EOLE_AUTHENTICATION_CAPABILITIES.EOAC_ACCESS_CONTROL, IntPtr pReserved3 = default);
 
@@ -1592,7 +1592,7 @@ public static partial class Ole32
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
 	public static extern HRESULT CoInitializeSecurity(in Guid pSecDesc, int cAuthSvc,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional] IntPtr pReserved1,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[]? asAuthSvc, [Optional, Ignore] IntPtr pReserved1,
 		RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, [In, Optional] SOLE_AUTHENTICATION_LIST? pAuthList,
 		EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities = EOLE_AUTHENTICATION_CAPABILITIES.EOAC_APPID, IntPtr pReserved3 = default);
 

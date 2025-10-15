@@ -642,7 +642,7 @@ public static partial class Authz
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzAccessCheck(AuthzAccessCheckFlags Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in AUTHZ_ACCESS_REQUEST pRequest,
 		[Optional] AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, PSECURITY_DESCRIPTOR pSecurityDescriptor,
-		[Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SECURITY_DESCRIPTOR[]? OptionalSecurityDescriptorArray,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SECURITY_DESCRIPTOR[]? OptionalSecurityDescriptorArray,
 		uint OptionalSecurityDescriptorCount, [In, Out] AUTHZ_ACCESS_REPLY pReply, out SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE phAccessCheckResults);
 
 	/// <summary>
@@ -766,7 +766,7 @@ public static partial class Authz
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzAccessCheck(AuthzAccessCheckFlags Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in AUTHZ_ACCESS_REQUEST pRequest,
 		[Optional] AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, PSECURITY_DESCRIPTOR pSecurityDescriptor,
-		[Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SECURITY_DESCRIPTOR[]? OptionalSecurityDescriptorArray,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SECURITY_DESCRIPTOR[]? OptionalSecurityDescriptorArray,
 		uint OptionalSecurityDescriptorCount, [In, Out] AUTHZ_ACCESS_REPLY pReply, [Optional] IntPtr phAccessCheckResults);
 
 	/// <summary>
@@ -1707,8 +1707,8 @@ public static partial class Authz
 	[DllImport(Lib.Authz, ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzModifyClaims(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS ClaimClass,
-		[MarshalAs(UnmanagedType.LPArray)] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pClaimOperations,
-		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler))] AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pClaims);
+		[In, MarshalAs(UnmanagedType.LPArray)] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pClaimOperations,
+		[In, Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler))] AUTHZ_SECURITY_ATTRIBUTES_INFORMATION? pClaims);
 
 	/// <summary>
 	/// <para>
@@ -1741,7 +1741,7 @@ public static partial class Authz
 	[PInvokeData("authz.h", MSDNShortId = "d84873e2-ecfe-45cf-9048-7ed173117efa")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzModifySecurityAttributes(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext,
-		[MarshalAs(UnmanagedType.LPArray)] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pOperations,
+		[In, MarshalAs(UnmanagedType.LPArray)] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pOperations,
 		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler))] AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAttributes);
 
 	/// <summary>
@@ -1782,7 +1782,7 @@ public static partial class Authz
 	[PInvokeData("authz.h", MSDNShortId = "740569A5-6159-409B-B8CB-B3A8BAE4F398")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool AuthzModifySids(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS SidClass,
-		[MarshalAs(UnmanagedType.LPArray)] AUTHZ_SID_OPERATION[] pSidOperations, in TOKEN_GROUPS pSids);
+		[In, MarshalAs(UnmanagedType.LPArray)] AUTHZ_SID_OPERATION[] pSidOperations, in TOKEN_GROUPS pSids);
 
 	/// <summary>
 	/// The <c>AuthzOpenObjectAudit</c> function reads the system access control list (SACL) of the specified security descriptor and
@@ -2555,33 +2555,25 @@ public static partial class Authz
 	/// <summary>
 	/// <para>The <c>AUTHZ_SECURITY_ATTRIBUTES_INFORMATION</c> structure specifies one or more security attributes.</para>
 	/// </summary>
+	/// <remarks>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTES_INFORMATION"/> class.</remarks>
+	/// <param name="attributes">The attributes.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_security_attributes_information typedef struct
 	// _AUTHZ_SECURITY_ATTRIBUTES_INFORMATION { USHORT Version; USHORT Reserved; ULONG AttributeCount; union {
 	// PAUTHZ_SECURITY_ATTRIBUTE_V1 pAttributeV1; } Attribute; } AUTHZ_SECURITY_ATTRIBUTES_INFORMATION, *PAUTHZ_SECURITY_ATTRIBUTES_INFORMATION;
 	[PInvokeData("authz.h", MSDNShortId = "1db95ab0-951f-488c-b522-b3f38fc74c7c")]
-	public class AUTHZ_SECURITY_ATTRIBUTES_INFORMATION
+	public class AUTHZ_SECURITY_ATTRIBUTES_INFORMATION(AUTHZ_SECURITY_ATTRIBUTE_V1[]? attributes)
 	{
-		/// <summary>The number of attributes specified by the Attribute member.</summary>
-		public uint AttributeCount;
-
-		/// <summary>An array of AUTHZ_SECURITY_ATTRIBUTE_V1 structures of the length of the AttributeCount member.</summary>
-		public AUTHZ_SECURITY_ATTRIBUTE_V1[] pAttributeV1;
+		/// <summary>The version of this structure. Currently the only value supported is 1.</summary>
+		public ushort Version = 1;
 
 		/// <summary>Reserved. Do not use.</summary>
-		public ushort Reserved;
+		public ushort Reserved = 0;
 
-		/// <summary>The version of this structure. Currently the only value supported is 1.</summary>
-		public ushort Version;
+		/// <summary>The number of attributes specified by the Attribute member.</summary>
+		public uint AttributeCount = (uint)(attributes?.Length ?? 0);
 
-		/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTES_INFORMATION"/> class.</summary>
-		/// <param name="attributes">The attributes.</param>
-		public AUTHZ_SECURITY_ATTRIBUTES_INFORMATION(AUTHZ_SECURITY_ATTRIBUTE_V1[]? attributes)
-		{
-			Version = 1;
-			Reserved = 0;
-			AttributeCount = (uint)(attributes?.Length ?? 0);
-			pAttributeV1 = attributes ?? new AUTHZ_SECURITY_ATTRIBUTE_V1[0];
-		}
+		/// <summary>An array of AUTHZ_SECURITY_ATTRIBUTE_V1 structures of the length of the AttributeCount member.</summary>
+		public AUTHZ_SECURITY_ATTRIBUTE_V1[] pAttributeV1 = attributes ?? [];
 
 		/// <summary>Create a AUTHZ_SECURITY_ATTRIBUTES_INFORMATION from a pointer.</summary>
 		/// <param name="ptr">The pointer to a block of memory.</param>

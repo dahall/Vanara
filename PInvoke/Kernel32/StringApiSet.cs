@@ -2060,8 +2060,7 @@ public static partial class Kernel32
 	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
-	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In, SizeDef(nameof(cchWideChar))] byte[] lpWideCharStr,
-		[Optional, DefaultParameterValue(-1)] int cchWideChar,
+	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In] byte[] lpWideCharStr, [Optional, DefaultParameterValue(-1)] int cchWideChar,
 		[Out, Optional, SizeDef(nameof(cbMultiByte), SizingMethod.QueryResultInReturn | SizingMethod.Query | SizingMethod.InclNullTerm | SizingMethod.Bytes)] byte[]? lpMultiByteStr,
 		[Optional] int cbMultiByte, [In, Optional, MarshalAs(UnmanagedType.LPArray)] byte[]? lpDefaultChar, [Out, Optional] StructPointer<BOOL> lpUsedDefaultChar);
 

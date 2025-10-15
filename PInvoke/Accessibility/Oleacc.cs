@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 using Accessibility;
+using System.ComponentModel.DataAnnotations;
 
 namespace Vanara.PInvoke;
 
@@ -352,7 +353,7 @@ public static partial class Oleacc
 	// *paccContainer, LONG iChildStart, LONG cChildren, VARIANT *rgvarChildren, LONG *pcObtained );
 	[DllImport(Lib.Oleacc, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleacc.h", MSDNShortId = "dc9262d8-f57f-41f8-8945-d95f38d197e9")]
-	public static extern HRESULT AccessibleChildren(IAccessible paccContainer, int iChildStart, int cChildren, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] object[] rgvarChildren, out int pcObtained);
+	public static extern HRESULT AccessibleChildren(IAccessible paccContainer, int iChildStart, int cChildren, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Struct, SizeParamIndex = 2)] object[] rgvarChildren, out int pcObtained);
 
 	/// <summary>
 	/// Retrieves the address of the IAccessible interface for the object that generated the event that is currently being processed by the
@@ -891,7 +892,8 @@ public static partial class Oleacc
 	// UINT cchRoleMax );
 	[DllImport(Lib.Oleacc, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("oleacc.h", MSDNShortId = "58436001-92d7-4afa-af07-169c8bbda9ba")]
-	public static extern uint GetRoleText(AccessibilityRole lRole, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszRole, uint cchRoleMax);
+	public static extern uint GetRoleText(AccessibilityRole lRole, [MarshalAs(UnmanagedType.LPTStr),
+		SizeDef(nameof(cchRoleMax), SizingMethod.QueryResultInReturn)] StringBuilder? lpszRole, [Range(0, 1024)] uint cchRoleMax);
 
 	/// <summary>
 	/// Retrieves a localized string that describes an object's state for a single predefined state bit flag. Because state values are a
@@ -932,7 +934,7 @@ public static partial class Oleacc
 	// lpszState, UINT cchState );
 	[DllImport(Lib.Oleacc, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("oleacc.h", MSDNShortId = "2a136883-870e-48c3-b182-1cdc64768894")]
-	public static extern uint GetStateText(AccessibilityState lStateBit, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszState, uint cchState);
+	public static extern uint GetStateText(AccessibilityState lStateBit, [MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cchState), SizingMethod.QueryResultInReturn)] StringBuilder? lpszState, [Range(0, 1024)] uint cchState);
 
 	/// <summary>Returns a reference, similar to a handle, to the specified object. Servers return this reference when handling WM_GETOBJECT.</summary>
 	/// <param name="riid">

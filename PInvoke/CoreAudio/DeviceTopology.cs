@@ -545,7 +545,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iperchanneldblevel-setlevelallchannels
 		// HRESULT SetLevelAllChannels( float [] aLevelsDB, ULONG cChannels, LPCGUID pguidEventContext );
-		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
+		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
 	}
 
 	/// <summary>
@@ -887,7 +887,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iperchanneldblevel-setlevelallchannels
 		// HRESULT SetLevelAllChannels( float [] aLevelsDB, ULONG cChannels, LPCGUID pguidEventContext );
-		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
+		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
 	}
 
 	/// <summary>
@@ -1192,7 +1192,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iperchanneldblevel-setlevelallchannels
 		// HRESULT SetLevelAllChannels( float [] aLevelsDB, ULONG cChannels, LPCGUID pguidEventContext );
-		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
+		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
 	}
 
 	/// <summary>
@@ -1348,7 +1348,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iperchanneldblevel-setlevelallchannels
 		// HRESULT SetLevelAllChannels( float [] aLevelsDB, ULONG cChannels, LPCGUID pguidEventContext );
-		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
+		new void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
 	}
 
 	/// <summary>
@@ -2651,7 +2651,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-ipart-activate HRESULT Activate( DWORD
 		// dwClsContext, REFIID refiid, void **ppvObject );
-		[return: MarshalAs(UnmanagedType.IUnknown)]
+		[return: MarshalAs(UnmanagedType.IUnknown, SizeParamIndex = 1)]
 		object? Activate([In] CLSCTX dwClsContext, in Guid refiid);
 
 		/// <summary>
@@ -3025,7 +3025,7 @@ public static partial class CoreAudio
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/devicetopology/nf-devicetopology-iperchanneldblevel-setlevelallchannels
 		// HRESULT SetLevelAllChannels( float [] aLevelsDB, ULONG cChannels, LPCGUID pguidEventContext );
-		void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
+		void SetLevelAllChannels([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] float[] aLevelsDB, [In] uint cChannels, [Optional, In] GuidPtr pguidEventContext);
 	}
 
 	/// <summary>

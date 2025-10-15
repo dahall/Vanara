@@ -35,7 +35,7 @@ public static partial class Kernel32
 	[PInvokeData("processtopologyapi.h", MSDNShortId = "e22a4910-45dd-4eb6-9ed5-a8e0bcdfad7b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetProcessGroupAffinity([In, AddAsMember] HPROCESS hProcess, ref ushort GroupCount,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1), SizeDef(nameof(GroupCount), SizingMethod.Query)] ushort[]? GroupArray);
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1), SizeDef(nameof(GroupCount), SizingMethod.Query)] ushort[]? GroupArray);
 
 	/// <summary>Retrieves the processor group affinity of the specified thread.</summary>
 	/// <param name="hThread">

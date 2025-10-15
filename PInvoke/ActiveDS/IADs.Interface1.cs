@@ -4077,7 +4077,7 @@ public static partial class ActiveDS
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-iadsextension-privategetidsofnames HRESULT PrivateGetIDsOfNames(
 		// REFIID riid, OLECHAR **rgszNames, unsigned int cNames, LCID lcid, DISPID *rgDispid );
-		void PrivateGetIDsOfNames(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[] rgszNames,
+		void PrivateGetIDsOfNames(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[]? rgszNames,
 			[In] uint cNames, [In] LCID lcid, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] rgDispid);
 
 		/// <summary>

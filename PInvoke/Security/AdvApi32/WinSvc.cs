@@ -482,7 +482,7 @@ public static partial class AdvApi32
 	// LpserviceMainFunctiona; void LpserviceMainFunctiona( DWORD dwNumServicesArgs, LPSTR *lpServiceArgVectors ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("winsvc.h", MSDNShortId = "d7f3235e-91bd-4107-a30c-4a8f9a6c731e")]
-	public delegate void ServiceMain(uint dwNumServicesArgs, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 0)] string[] lpServiceArgVectors);
+	public delegate void ServiceMain(uint dwNumServicesArgs, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 0)] string[] lpServiceArgVectors);
 
 	/// <summary>Defines the action to be performed in a <see cref="SC_ACTION"/>.</summary>
 	[PInvokeData("winsvc.h", MSDNShortId = "e2c355a6-affe-46bf-a3e6-f8c420422d46")]

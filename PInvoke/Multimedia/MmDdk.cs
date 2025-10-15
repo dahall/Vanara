@@ -129,6 +129,7 @@ public static partial class WinMm
 	// https://docs.microsoft.com/en-us/windows/win32/api/mmddk/ns-mmddk-midiopendesc typedef struct midiopendesc_tag { HMIDI hMidi;
 	// DWORD_PTR dwCallback; DWORD_PTR dwInstance; DWORD_PTR dnDevNode; DWORD cIds; MIDIOPENSTRMID rgIds[1]; } MIDIOPENDESC;
 	[PInvokeData("mmddk.h", MSDNShortId = "NS:mmddk.midiopendesc_tag")]
+	[VanaraMarshaler(typeof(SafeAnysizeStructMarshaler<MIDIOPENDESC>), nameof(cIds))]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct MIDIOPENDESC
 	{

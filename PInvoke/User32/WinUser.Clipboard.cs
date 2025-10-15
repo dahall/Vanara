@@ -907,7 +907,7 @@ public static partial class User32
 	// UINT *paFormatPriorityList, int cFormats );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getpriorityclipboardformat")]
-	public static extern int GetPriorityClipboardFormat([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] paFormatPriorityList, int cFormats);
+	public static extern int GetPriorityClipboardFormat([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] paFormatPriorityList, int cFormats);
 
 	/// <summary>
 	/// <para>Retrieves the currently supported clipboard formats.</para>
@@ -933,7 +933,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getupdatedclipboardformats")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetUpdatedClipboardFormats([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[]? lpuiFormats, uint cFormats, out uint pcFormatsOut);
+	public static extern bool GetUpdatedClipboardFormats([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[]? lpuiFormats, uint cFormats, out uint pcFormatsOut);
 
 	/// <summary>
 	/// <para>Determines whether the clipboard contains data in the specified format.</para>

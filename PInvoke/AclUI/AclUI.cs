@@ -482,7 +482,7 @@ public static partial class AclUI
 			[In, Optional] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[]? pAuthzUserClaimsOperations,
 			in AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzDeviceClaims,
 			[In, Optional] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[]? pAuthzDeviceClaimsOperations,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EFFPERM_RESULT_LIST[] pEffpermResultLists);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EFFPERM_RESULT_LIST[] pEffpermResultLists);
 	}
 
 	/// <summary>
@@ -1044,13 +1044,13 @@ public static partial class AclUI
 		/// <summary>
 		/// A pointer to an array of OBJECT_TYPE_LIST structures that specifies the properties and property sets for which access was evaluated.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPArray)]
+		[MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(cObjectTypeListLength))]
 		public OBJECT_TYPE_LIST[] pObjectTypeList;
 
 		/// <summary>
 		/// A pointer to an array of ACCESS_MASK values that specifies the access rights granted for each corresponding object type.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPArray)]
+		[MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(cObjectTypeListLength))]
 		public uint[] pGrantedAccessList;
 	}
 

@@ -122,7 +122,7 @@ public static partial class CredUI
 	/// <returns></returns>
 	[DllImport(Lib.CredUI, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sspi.h")]
-	public static extern Win32Error SspiUnmarshalCredUIContext([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] MarshaledCredUIContext, uint MarshaledCredUIContextLength, out PSEC_WINNT_CREDUI_CONTEXT CredUIContext);
+	public static extern Win32Error SspiUnmarshalCredUIContext([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] MarshaledCredUIContext, uint MarshaledCredUIContextLength, out PSEC_WINNT_CREDUI_CONTEXT CredUIContext);
 
 	/// <summary>Updates the credentials associated with the specified context.</summary>
 	/// <param name="ContextHandle">
@@ -134,7 +134,7 @@ public static partial class CredUI
 	/// <returns>If the function succeeds, it returns SEC_E_OK. If the function fails, it returns a nonzero error code.</returns>
 	[DllImport(Lib.CredUI, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Sspi.h")]
-	public static extern Win32Error SspiUpdateCredentials(IntPtr ContextHandle, in Guid CredType, uint FlatCredUIContextLength, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] FlatCredUIContext);
+	public static extern Win32Error SspiUpdateCredentials(IntPtr ContextHandle, in Guid CredType, uint FlatCredUIContextLength, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] FlatCredUIContext);
 
 	/// <summary>
 	/// Specifies unserialized credential information. The credential information can be serialized by passing it as the rgbSerialization

@@ -594,7 +594,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366528")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AllocateUserPhysicalPages([In] HPROCESS hProcess, ref SizeT NumberOfPages, [Out, SizeDef(nameof(NumberOfPages), SizingMethod.Query)] IntPtr[] UserPfnArray);
+	public static extern bool AllocateUserPhysicalPages([In] HPROCESS hProcess, ref SizeT NumberOfPages, [Out] IntPtr[] UserPfnArray);
 
 	/// <summary>
 	/// Allocates physical memory pages to be mapped and unmapped within any Address Windowing Extensions (AWE) region of a specified
@@ -637,7 +637,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366529")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AllocateUserPhysicalPagesNuma([In] HPROCESS hProcess, ref SizeT NumberOfPages, [Out, SizeDef(nameof(NumberOfPages), SizingMethod.Query)] IntPtr[] PageArray, uint nndPreferred);
+	public static extern bool AllocateUserPhysicalPagesNuma([In] HPROCESS hProcess, ref SizeT NumberOfPages, [Out] IntPtr[] PageArray, uint nndPreferred);
 
 	/// <summary>
 	/// <para>Creates or opens a named or unnamed file mapping object for a specified file.</para>
@@ -2217,7 +2217,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "hh780543")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool PrefetchVirtualMemory(HPROCESS hProcess, SizeT NumberOfEntries,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] WIN32_MEMORY_RANGE_ENTRY[] VirtualAddresses, uint Flags = 0);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] WIN32_MEMORY_RANGE_ENTRY[] VirtualAddresses, [Optional, Ignore] uint Flags);
 
 	/// <summary>Retrieves the state of the specified memory resource object.</summary>
 	/// <param name="ResourceNotificationHandle">
@@ -2967,7 +2967,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("memoryapi.h", MSDNShortId = "5021062F-E414-49A1-8B70-BE2A57A90E54")]
 	public static extern IntPtr VirtualAlloc2([In] HPROCESS Process, [In] IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType,
-		MEM_PROTECTION PageProtection, [MarshalAs(UnmanagedType.LPArray), Optional] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
+		MEM_PROTECTION PageProtection, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6), Optional] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
 
 	/// <summary>
 	/// <para>
@@ -3209,7 +3209,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("memoryapi.h", MSDNShortId = "84896A75-A917-4CA1-A417-650428E1FBFD")]
 	public static extern IntPtr VirtualAlloc2FromApp([In, AddAsMember] HPROCESS Process, [In] IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType,
-		MEM_PROTECTION PageProtection, [MarshalAs(UnmanagedType.LPArray), Optional] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
+		MEM_PROTECTION PageProtection, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6), Optional] MEM_EXTENDED_PARAMETER[]? ExtendedParameters, [Optional] uint ParameterCount);
 
 	/// <summary>
 	/// <para>

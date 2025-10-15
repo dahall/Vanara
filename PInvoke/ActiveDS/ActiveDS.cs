@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices.ComTypes;
 using static Vanara.PInvoke.OleAut32;
 
@@ -339,8 +340,8 @@ public static partial class ActiveDS
 	// [out] LPWSTR lpErrorBuf, [in] DWORD dwErrorBufLen, [out] LPWSTR lpNameBuf, [in] DWORD dwNameBufLen );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsGetLastError")]
 	[DllImport(Lib_Activeds, SetLastError = true, ExactSpelling = true)]
-	public static extern HRESULT ADsGetLastError(out Win32Error lpError, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpErrorBuf, int dwErrorBufLen,
-		[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpNameBuf, int dwNameBufLen);
+	public static extern HRESULT ADsGetLastError(out Win32Error lpError, [Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(dwErrorBufLen))] StringBuilder? lpErrorBuf, [Range(0, Kernel32.MAX_PATH)] int dwErrorBufLen,
+		[Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(dwNameBufLen))] StringBuilder? lpNameBuf, [Range(0, Kernel32.MAX_PATH)] int dwNameBufLen);
 
 	/// <summary>The <c>ADsGetObject</c> function binds to an object given its path and a specified interface identifier.</summary>
 	/// <param name="lpszPathName">

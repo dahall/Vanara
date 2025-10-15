@@ -81,7 +81,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib_WslApi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		public static extern HRESULT WslGetDistributionConfiguration(string distributionName, out uint distributionVersion, out uint defaultUID,
 			out WSL_DISTRIBUTION_FLAGS wslDistributionFlags,
-			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 5)] out string[] defaultEnvironmentVariables,
+			[Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 5)] out string[] defaultEnvironmentVariables,
 			out uint defaultEnvironmentVariableCount);
 
 		/// <summary>Determines if a distribution is registered with the Windows Subsystem for Linux (WSL).</summary>

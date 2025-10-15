@@ -3770,7 +3770,7 @@ public static partial class Ole32
 	// CoWaitForMultipleHandles( DWORD dwFlags, DWORD dwTimeout, ULONG cHandles, LPHANDLE pHandles, LPDWORD lpdwindex );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "3eeecd34-aa94-4a48-8b41-167a71b52860")]
-	public static extern HRESULT CoWaitForMultipleHandles(COWAIT_FLAGS dwFlags, uint dwTimeout, uint cHandles, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] pHandles, out uint lpdwindex);
+	public static extern HRESULT CoWaitForMultipleHandles(COWAIT_FLAGS dwFlags, uint dwTimeout, uint cHandles, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] pHandles, out uint lpdwindex);
 
 	/// <summary>
 	/// A replacement for CoWaitForMultipleHandles. This replacement API hides the options for <c>CoWaitForMultipleHandles</c> that are
@@ -3792,7 +3792,7 @@ public static partial class Ole32
 	// CoWaitForMultipleObjects( DWORD dwFlags, DWORD dwTimeout, ULONG cHandles, const HANDLE *pHandles, LPDWORD lpdwindex );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "7A14E4F4-20F0-43FF-8D64-9AAC34B8D56F")]
-	public static extern HRESULT CoWaitForMultipleObjects(CWMO_FLAGS dwFlags, uint dwTimeout, uint cHandles, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] pHandles, out uint lpdwindex);
+	public static extern HRESULT CoWaitForMultipleObjects(CWMO_FLAGS dwFlags, uint dwTimeout, uint cHandles, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] pHandles, out uint lpdwindex);
 
 	/// <summary>
 	/// <para>
@@ -4013,7 +4013,7 @@ public static partial class Ole32
 	// FreePropVariantArray( ULONG cVariants, PROPVARIANT *rgvars );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "2eefb57e-9311-46e1-9eed-e25aa3b5afaa")]
-	public static extern HRESULT FreePropVariantArray(uint cVariants, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[]? rgvars);
+	public static extern HRESULT FreePropVariantArray(uint cVariants, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PROPVARIANT[]? rgvars);
 
 	/// <summary>
 	/// The <c>GetHGlobalFromStream</c> function retrieves the global memory handle to a stream that was created through a call to the

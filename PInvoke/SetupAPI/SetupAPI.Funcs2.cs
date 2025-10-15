@@ -4002,7 +4002,7 @@ public static partial class SetupAPI
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupSetSourceListA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetupSetSourceList(SRCLIST Flags, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 2)] string[] SourceList, uint SourceCount);
+	public static extern bool SetupSetSourceList(SRCLIST Flags, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 2)] string[] SourceList, uint SourceCount);
 
 	/// <summary>
 	/// The <c>SetupSetThreadLogToken</c> function sets the log context, as represented by a log token for the thread from which this

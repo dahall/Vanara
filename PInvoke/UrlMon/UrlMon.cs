@@ -3341,7 +3341,8 @@ public static partial class UrlMon
 	// RegisterMediaTypeClass( _In_ LPBC pbc, _In_ UINT ctypes, _In_ LPCSTR *rgszTypes, _In_ CLSID *rgclsID, _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
-	public static extern HRESULT RegisterMediaTypeClass(IBindCtx pbc, uint ctypes, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[] rgszTypes, [MarshalAs(UnmanagedType.LPArray)] Guid[] rgclsID, uint dwReserved = 0);
+	public static extern HRESULT RegisterMediaTypeClass(IBindCtx pbc, uint ctypes, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 1)] string[] rgszTypes,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Guid[] rgclsID, uint dwReserved = 0);
 
 	/// <summary>Registers media type strings.</summary>
 	/// <param name="ctypes">[in]The number of media type strings in the rgszTypes array. This parameter cannot be zero.</param>

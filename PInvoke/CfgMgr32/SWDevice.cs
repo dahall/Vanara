@@ -199,8 +199,8 @@ public static partial class CfgMgr32
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("swdevice.h", MSDNShortId = "NF:swdevice.SwDeviceCreate")]
 	public static extern HRESULT SwDeviceCreate([MarshalAs(UnmanagedType.LPWStr)] string pszEnumeratorName, [MarshalAs(UnmanagedType.LPWStr)] string pszParentDeviceInstance,
-		in SW_DEVICE_CREATE_INFO pCreateInfo, uint cPropertyCount, [In, Optional, MarshalAs(UnmanagedType.LPArray)] DEVPROPERTY[]? pProperties, SW_DEVICE_CREATE_CALLBACK pCallback,
-		[In, Optional] IntPtr pContext, out SafeHSWDEVICE phSwDevice);
+		in SW_DEVICE_CREATE_INFO pCreateInfo, uint cPropertyCount, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] DEVPROPERTY[]? pProperties,
+		SW_DEVICE_CREATE_CALLBACK pCallback, [In, Optional] IntPtr pContext, [AddAsCtor] out SafeHSWDEVICE phSwDevice);
 
 	/// <summary>Gets the lifetime of a software device.</summary>
 	/// <param name="hSwDevice">The <c>HSWDEVICE</c> handle to the software device to retrieve.</param>

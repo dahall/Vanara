@@ -246,7 +246,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist-resourcebarrier void
 		// ResourceBarrier( UINT NumBarriers, const D3D12_RESOURCE_BARRIER *pBarriers );
 		[PreserveSig]
-		void ResourceBarrier(int NumBarriers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
+		void ResourceBarrier(int NumBarriers, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
 
 		/// <summary>
 		/// Indicate that the current contents of a resource can be discarded. The current contents of the resource are no longer valid
@@ -378,7 +378,7 @@ public static partial class D3D12
 		// void WriteBufferImmediate( UINT Count, const D3D12_WRITEBUFFERIMMEDIATE_PARAMETER *pParams, const D3D12_WRITEBUFFERIMMEDIATE_MODE
 		// *pModes );
 		[PreserveSig]
-		void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
+		void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
 	}
 
 	/// <summary>
@@ -628,7 +628,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist-resourcebarrier void
 		// ResourceBarrier( UINT NumBarriers, const D3D12_RESOURCE_BARRIER *pBarriers );
 		[PreserveSig]
-		new void ResourceBarrier(int NumBarriers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
+		new void ResourceBarrier(int NumBarriers, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
 
 		/// <summary>
 		/// Indicate that the current contents of a resource can be discarded. The current contents of the resource are no longer valid
@@ -760,7 +760,7 @@ public static partial class D3D12
 		// void WriteBufferImmediate( UINT Count, const D3D12_WRITEBUFFERIMMEDIATE_PARAMETER *pParams, const D3D12_WRITEBUFFERIMMEDIATE_MODE
 		// *pModes );
 		[PreserveSig]
-		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
+		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
 
 		/// <summary>
 		/// Records a decode frame operation to the command list. Inputs, outputs, and parameters for the decode are specified as arguments
@@ -1028,7 +1028,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist-resourcebarrier void
 		// ResourceBarrier( UINT NumBarriers, const D3D12_RESOURCE_BARRIER *pBarriers );
 		[PreserveSig]
-		new void ResourceBarrier(int NumBarriers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
+		new void ResourceBarrier(int NumBarriers, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
 
 		/// <summary>
 		/// Indicate that the current contents of a resource can be discarded. The current contents of the resource are no longer valid
@@ -1160,7 +1160,7 @@ public static partial class D3D12
 		// void WriteBufferImmediate( UINT Count, const D3D12_WRITEBUFFERIMMEDIATE_PARAMETER *pParams, const D3D12_WRITEBUFFERIMMEDIATE_MODE
 		// *pModes );
 		[PreserveSig]
-		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
+		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
 
 		/// <summary>
 		/// Records a decode frame operation to the command list. Inputs, outputs, and parameters for the decode are specified as arguments
@@ -1489,7 +1489,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist-resourcebarrier void
 		// ResourceBarrier( UINT NumBarriers, const D3D12_RESOURCE_BARRIER *pBarriers );
 		[PreserveSig]
-		new void ResourceBarrier(int NumBarriers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
+		new void ResourceBarrier(int NumBarriers, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_RESOURCE_BARRIER[] pBarriers);
 
 		/// <summary>
 		/// Indicate that the current contents of a resource can be discarded. The current contents of the resource are no longer valid
@@ -1621,7 +1621,7 @@ public static partial class D3D12
 		// void WriteBufferImmediate( UINT Count, const D3D12_WRITEBUFFERIMMEDIATE_PARAMETER *pParams, const D3D12_WRITEBUFFERIMMEDIATE_MODE
 		// *pModes );
 		[PreserveSig]
-		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
+		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
 
 		/// <summary>
 		/// Records a decode frame operation to the command list. Inputs, outputs, and parameters for the decode are specified as arguments
@@ -6506,7 +6506,7 @@ public static partial class D3D12
 		// void WriteBufferImmediate( UINT Count, const D3D12_WRITEBUFFERIMMEDIATE_PARAMETER *pParams, const D3D12_WRITEBUFFERIMMEDIATE_MODE
 		// *pModes );
 		[PreserveSig]
-		void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
+		void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
 	}
 
 	/// <summary>
@@ -6911,7 +6911,7 @@ public static partial class D3D12
 		// void WriteBufferImmediate( UINT Count, const D3D12_WRITEBUFFERIMMEDIATE_PARAMETER *pParams, const D3D12_WRITEBUFFERIMMEDIATE_MODE
 		// *pModes );
 		[PreserveSig]
-		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
+		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
 
 		/// <summary>
 		/// Records a video processing operation to the command list, operating on one or more input samples and writing the result to an
@@ -7336,7 +7336,7 @@ public static partial class D3D12
 		// void WriteBufferImmediate( UINT Count, const D3D12_WRITEBUFFERIMMEDIATE_PARAMETER *pParams, const D3D12_WRITEBUFFERIMMEDIATE_MODE
 		// *pModes );
 		[PreserveSig]
-		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
+		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
 
 		/// <summary>
 		/// Records a video processing operation to the command list, operating on one or more input samples and writing the result to an
@@ -7822,7 +7822,7 @@ public static partial class D3D12
 		// void WriteBufferImmediate( UINT Count, const D3D12_WRITEBUFFERIMMEDIATE_PARAMETER *pParams, const D3D12_WRITEBUFFERIMMEDIATE_MODE
 		// *pModes );
 		[PreserveSig]
-		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
+		new void WriteBufferImmediate(int Count, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_PARAMETER[] pParams, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] D3D12_WRITEBUFFERIMMEDIATE_MODE[]? pModes);
 
 		/// <summary>
 		/// Records a video processing operation to the command list, operating on one or more input samples and writing the result to an

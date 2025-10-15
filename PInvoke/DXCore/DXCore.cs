@@ -2284,7 +2284,7 @@ public static partial class DXCore
 		// https://learn.microsoft.com/en-us/windows/win32/dxcore/dxcore_interface/nf-dxcore_interface-idxcoreadapterlist-sort HRESULT Sort(
 		// uint32_t numPreferences, _In_reads_(numPreferences) const DXCoreAdapterPreference* preferences );
 		[PreserveSig]
-		HRESULT Sort(int numPreferences, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DXCoreAdapterPreference[] preferences);
+		HRESULT Sort(int numPreferences, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DXCoreAdapterPreference[] preferences);
 
 		/// <summary>
 		/// Determines whether a specified <c>DXCoreAdapterPreference</c> value is understood by the current operating system (OS). You can

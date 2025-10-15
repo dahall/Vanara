@@ -356,7 +356,7 @@ public static partial class OleAut32
 	// *ptinfo, LPOLESTR *rgszNames, UINT cNames, DISPID *rgdispid );
 	[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("oleauto.h", MSDNShortId = "720a0237-9c68-4252-9f66-43610d4be106")]
-	public static extern HRESULT DispGetIDsOfNames(ITypeInfo ptinfo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.LPWStr)] string[] rgszNames,
+	public static extern HRESULT DispGetIDsOfNames(ITypeInfo ptinfo, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[] rgszNames,
 		uint cNames, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] rgdispid);
 
 	/// <summary>

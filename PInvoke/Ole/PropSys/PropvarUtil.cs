@@ -3402,7 +3402,7 @@ public static partial class PropSys
 	// VariantToBooleanArray( REFVARIANT var, BOOL *prgf, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "80a1e7d4-ec11-4b16-ba05-b97f3bbf02d0")]
-	public static extern HRESULT VariantToBooleanArray(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.Bool)] bool[] prgf, uint crgn, out uint pcElem);
+	public static extern HRESULT VariantToBooleanArray(in VARIANT var, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.Bool)] bool[] prgf, uint crgn, out uint pcElem);
 
 	/// <summary>Allocates an array of <c>BOOL</c> values then extracts data from a VARIANT structure into that array.</summary>
 	/// <param name="var">
@@ -3674,7 +3674,7 @@ public static partial class PropSys
 	// REFVARIANT var, DOUBLE *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "6830c2e2-d19a-45d5-af15-debfb08548bc")]
-	public static extern HRESULT VariantToDoubleArray(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT VariantToDoubleArray(in VARIANT var, [Out,	MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Allocates an array of <c>DOUBLE</c> values then extracts data from a VARIANT structure into that array.</summary>
 	/// <param name="var">
@@ -3844,7 +3844,7 @@ public static partial class PropSys
 	// REFVARIANT var, SHORT *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "dd00d986-acfa-445e-a0f6-0f52860b762b")]
-	public static extern HRESULT VariantToInt16Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] short[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT VariantToInt16Array(in VARIANT var, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] short[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a vector structure into a newly-allocated <c>Int16</c> array.</summary>
 	/// <param name="var">
@@ -3936,7 +3936,7 @@ public static partial class PropSys
 	// REFVARIANT var, LONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "9407e400-1621-4d96-b541-579aa3ac7a67")]
-	public static extern HRESULT VariantToInt32Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT VariantToInt32Array(in VARIANT var, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a vector structure into a newly-allocated <c>Int32</c> array.</summary>
 	/// <param name="var">
@@ -4028,7 +4028,7 @@ public static partial class PropSys
 	// REFVARIANT var, LONGLONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "936e87e8-8102-4da2-b388-147fab6ec16f")]
-	public static extern HRESULT VariantToInt64Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] long[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT VariantToInt64Array(in VARIANT var, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] long[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a vector structure into a newly-allocated <c>Int64</c> array.</summary>
 	/// <param name="var">
@@ -4157,7 +4157,7 @@ public static partial class PropSys
 	// REFVARIANT var, PWSTR *prgsz, ULONG crgsz, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "d19b12ad-408c-4502-ad59-49386784bd69")]
-	public static extern HRESULT VariantToStringArray(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.LPWStr)] string[] prgsz, uint crgsz, out uint pcElem);
+	public static extern HRESULT VariantToStringArray(in VARIANT var, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2, ArraySubType = UnmanagedType.LPWStr)] string[] prgsz, uint crgsz, out uint pcElem);
 
 	/// <summary>Extracts data from a vector structure into a newly-allocated String array.</summary>
 	/// <param name="var">
@@ -4270,7 +4270,7 @@ public static partial class PropSys
 	// REFVARIANT var, USHORT *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "8da12aa7-f54e-4a38-b9bb-0dd019f8823b")]
-	public static extern HRESULT VariantToUInt16Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ushort[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT VariantToUInt16Array(in VARIANT var, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ushort[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a vector structure into a newly-allocated unsigned <c>Int16</c> array.</summary>
 	/// <param name="var">
@@ -4362,7 +4362,7 @@ public static partial class PropSys
 	// REFVARIANT var, ULONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "506a02f8-6390-44a0-9f14-bfc8fb7ad180")]
-	public static extern HRESULT VariantToUInt32Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT VariantToUInt32Array(in VARIANT var, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a vector structure into a newly-allocated unsigned <c>Int32</c> array.</summary>
 	/// <param name="var">
@@ -4455,7 +4455,7 @@ public static partial class PropSys
 	// REFVARIANT var, ULONGLONG *prgn, ULONG crgn, ULONG *pcElem );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "90b39ed2-a8a9-424c-bfd2-90517b9224fd")]
-	public static extern HRESULT VariantToUInt64Array(in VARIANT var, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] prgn, uint crgn, out uint pcElem);
+	public static extern HRESULT VariantToUInt64Array(in VARIANT var, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ulong[] prgn, uint crgn, out uint pcElem);
 
 	/// <summary>Extracts data from a vector structure into a newly-allocated unsigned <c>Int64</c> array.</summary>
 	/// <param name="var">

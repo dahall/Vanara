@@ -933,7 +933,7 @@ public static partial class ComCtl32
 	/// </returns>
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Commctrl.h")]
-	public static extern HRESULT HIMAGELIST_QueryInterface([In] HIMAGELIST himl, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT HIMAGELIST_QueryInterface([In] HIMAGELIST himl, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
 	/// <summary>Get an image list interface from an image list handle.</summary>
 	/// <param name="himl">
@@ -1114,7 +1114,7 @@ public static partial class ComCtl32
 	// HRESULT ImageList_CoCreateInstance( _In_ REFCLSID rclsid, _In_opt_ const IUnknown *punkOuter, _In_ REFIID riid, _Out_ void **ppv); https://msdn.microsoft.com/en-us/library/windows/desktop/bb761518(v=vs.85).aspx
 	[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("CommonControls.h", MSDNShortId = "bb761518")]
-	public static extern HRESULT ImageList_CoCreateInstance(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown)] object? punkOuter, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+	public static extern HRESULT ImageList_CoCreateInstance(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown)] object? punkOuter, in Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 	/// <summary>Copies images within a given image list.</summary>
 	/// <param name="himlDst">

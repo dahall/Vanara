@@ -4589,7 +4589,7 @@ public static partial class IpHlpApi
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromTcp6Entry(in MIB_TCP6ROW_OWNER_MODULE pTcpEntry)
 	{
 		MIB_TCP6ROW_OWNER_MODULE s = pTcpEntry;
-		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
+		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint, Win32Error>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromTcp6Entry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 	}
@@ -4790,7 +4790,7 @@ public static partial class IpHlpApi
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromTcpEntry(in MIB_TCPROW_OWNER_MODULE pTcpEntry)
 	{
 		MIB_TCPROW_OWNER_MODULE s = pTcpEntry;
-		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
+		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint, Win32Error>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromTcpEntry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 	}
@@ -4887,7 +4887,7 @@ public static partial class IpHlpApi
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromUdp6Entry(in MIB_UDP6ROW_OWNER_MODULE pUdpEntry)
 	{
 		MIB_UDP6ROW_OWNER_MODULE s = pUdpEntry;
-		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
+		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint, Win32Error>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromUdp6Entry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 	}
@@ -4982,7 +4982,7 @@ public static partial class IpHlpApi
 	public static TCPIP_OWNER_MODULE_BASIC_INFO GetOwnerModuleFromUdpEntry(in MIB_UDPROW_OWNER_MODULE pUdpEntry)
 	{
 		MIB_UDPROW_OWNER_MODULE s = pUdpEntry;
-		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint>(
+		return FunctionHelper.CallMethodWithTypedBuf<TCPIP_OWNER_MODULE_BASIC_INFO, uint, Win32Error>(
 			(IntPtr p, ref uint l) => GetOwnerModuleFromUdpEntry(s, TCPIP_OWNER_MODULE_INFO_CLASS.TCPIP_OWNER_MODULE_INFO_BASIC, p, ref l),
 			null, (p, l) => p.ToStructure<TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD>(), Win32Error.ERROR_INSUFFICIENT_BUFFER);
 	}

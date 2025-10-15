@@ -224,7 +224,7 @@ public static partial class D3D12
 		HRESULT GetConfigurationInterface(in Guid clsid, in Guid iid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		[PreserveSig]
-		HRESULT EnableExperimentalFeatures(int NumFeatures, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] pIIDs, IntPtr pConfigurationStructs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] pConfigurationStructSizes);
+		HRESULT EnableExperimentalFeatures(int NumFeatures, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Guid[] pIIDs, IntPtr pConfigurationStructs, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] uint[] pConfigurationStructSizes);
 
 		[PreserveSig]
 		HRESULT CreateDevice([MarshalAs(UnmanagedType.Interface)] object adapter, D3D_FEATURE_LEVEL FeatureLevel, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvDevice);

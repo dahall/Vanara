@@ -353,7 +353,8 @@ public static partial class NetApi32
 	// NetEnumerateServiceAccounts( LPWSTR ServerName, DWORD Flags, DWORD *AccountsCount, PZPWSTR *Accounts );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmaccess.h", MSDNShortId = "048116b6-1bae-4dcc-9bd0-a466c395e5d8")]
-	public static extern NTStatus NetEnumerateServiceAccounts([Optional] string? ServerName, [Optional] uint Flags, ref uint AccountsCount, [MarshalAs(UnmanagedType.LPArray)] string[] Accounts);
+	public static extern NTStatus NetEnumerateServiceAccounts([Optional, Ignore] string? ServerName, [Optional, Ignore] uint Flags, ref uint AccountsCount,
+		out SafeNetApiBuffer Accounts);
 
 	/// <summary>
 	/// <para>

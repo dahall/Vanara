@@ -202,7 +202,7 @@ public static partial class CryptDlg
 	// PCCERT_CONTEXT pccertSigner );
 	[DllImport(Lib.CryptDlg, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cryptdlg.h", MSDNShortId = "a23d968e-113f-470e-a629-18c22882c77f")]
-	public static extern HRESULT CertModifyCertificatesToTrust(int cCerts, [MarshalAs(UnmanagedType.LPArray)] CTL_MODIFY_REQUEST[] rgCerts, SafeOID szPurpose,
+	public static extern HRESULT CertModifyCertificatesToTrust(int cCerts, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] CTL_MODIFY_REQUEST[] rgCerts, SafeOID szPurpose,
 		[Optional] HWND hwnd, HCERTSTORE hcertstoreTrust, PCCERT_CONTEXT pccertSigner);
 
 	/// <summary>

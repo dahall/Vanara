@@ -695,7 +695,7 @@ public static partial class MSCTF
 	[DllImport(Lib_Msctf, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("inputscope.h", MSDNShortId = "NF:inputscope.SetInputScopes")]
 	public static extern HRESULT SetInputScopes(HWND hwnd, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] InputScope[]? pInputScopes, uint cInputScopes,
-		[Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 4)] string[]? ppszPhraseList,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 4)] string[]? ppszPhraseList,
 		uint cPhrases, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszRegExp, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszSRGS);
 
 	/// <summary>

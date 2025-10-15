@@ -1906,7 +1906,7 @@ public static partial class User32
 	// wHow, CONST RECT *lpRect, UINT cKids, const HWND *lpKids );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "cascadewindows")]
-	public static extern ushort CascadeWindows([Optional] HWND hwndParent, uint wHow, [In, Optional] PRECT? lpRect, uint cKids, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[]? lpKids);
+	public static extern ushort CascadeWindows([Optional] HWND hwndParent, uint wHow, [In, Optional] PRECT? lpRect, uint cKids, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[]? lpKids);
 
 	/// <summary>
 	/// <para>

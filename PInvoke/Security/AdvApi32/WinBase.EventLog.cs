@@ -606,7 +606,7 @@ public static partial class AdvApi32
 	[PInvokeData("winbase.h", MSDNShortId = "e39273c3-9e42-41a1-9ec1-1cdff2ab7b55")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool ReportEvent(HEVENTLOG hEventLog, EVENTLOG_TYPE wType, ushort wCategory, uint dwEventID, PSID lpUserSid, ushort wNumStrings, uint dwDataSize,
-		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 5)] string[] lpStrings, IntPtr lpRawData);
+		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr, SizeParamIndex = 5)] string[] lpStrings, IntPtr lpRawData);
 
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]

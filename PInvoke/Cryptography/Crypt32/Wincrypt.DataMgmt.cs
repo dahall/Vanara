@@ -788,6 +788,7 @@ public static partial class Crypt32
 	// LPCSTR pszObjId, DWORD cAttr, CRYPT_ATTRIBUTE [] rgAttr );
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "99d690fb-ea85-4cb1-9fb0-bdb02e4ac50a")]
+	[SuppressAutoGen]
 	public static extern IntPtr CertFindAttribute(SafeOID pszObjId, uint cAttr, [MarshalAs(UnmanagedType.LPArray)] CRYPT_ATTRIBUTE[]? rgAttr);
 
 	/// <summary>
@@ -816,6 +817,7 @@ public static partial class Crypt32
 	// LPCSTR pszObjId, DWORD cExtensions, CERT_EXTENSION [] rgExtensions );
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "489c58b6-a704-4f54-bc64-34eacafc347c")]
+	[SuppressAutoGen]
 	public static extern IntPtr CertFindExtension(SafeOID pszObjId, uint cExtensions, [MarshalAs(UnmanagedType.LPArray)] CERT_EXTENSION[]? rgExtensions);
 
 	/// <summary>
@@ -1133,7 +1135,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "a46ac5b5-bc44-4857-a7fb-4f35d438e3f7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertVerifyCRLRevocation(CertEncodingType dwCertEncodingType, in CERT_INFO pCertId, uint cCrlInfo, [MarshalAs(UnmanagedType.LPArray)] IntPtr[] rgpCrlInfo);
+	public static extern bool CertVerifyCRLRevocation(CertEncodingType dwCertEncodingType, in CERT_INFO pCertId, uint cCrlInfo, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] StructPointer<CRL_INFO>[] rgpCrlInfo);
 
 	/// <summary>
 	/// The <c>CertVerifyCRLRevocation</c> function check a certificate revocation list (CRL) to determine whether a subject's

@@ -1062,7 +1062,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-ienumstring-next HRESULT Next( ULONG celt, LPOLESTR
 		// *rgelt, ULONG *pceltFetched );
 		[PreserveSig]
-		HRESULT Next(uint celt, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rgelt, out uint pceltFetched);
+		HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rgelt, out uint pceltFetched);
 
 		/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
 		/// <param name="celt">The number of items to be skipped.</param>

@@ -62,7 +62,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationinterpolator2-setinitialvalueandvelocity
 		// HRESULT SetInitialValueAndVelocity( [in] DOUBLE *initialValue, [in] DOUBLE *initialVelocity, [in] UINT cDimension );
 		[PreserveSig]
-		HRESULT SetInitialValueAndVelocity([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] initialValue, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] initialVelocity, uint cDimension);
+		HRESULT SetInitialValueAndVelocity([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] initialValue, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] initialVelocity, uint cDimension);
 
 		/// <summary>Sets the duration of the transition in the given dimension.</summary>
 		/// <param name="duration">The duration of the transition.</param>
@@ -1462,7 +1462,7 @@ public static partial class UIAnimation
 		/// <remarks>The animation manager should not call this method after the transition has been added to a storyboard.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransition2-setinitialvectorvalue
 		// HRESULT SetInitialVectorValue( [in] const DOUBLE *value, [in] UINT cDimension );
-		void SetInitialVectorValue([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] value, uint cDimension);
+		void SetInitialVectorValue([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] value, uint cDimension);
 
 		/// <summary>Sets the initial velocity of the transition.</summary>
 		/// <param name="velocity">The initial velocity for the transition.</param>
@@ -1477,7 +1477,7 @@ public static partial class UIAnimation
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransition2-setinitialvectorvelocity
 		// HRESULT SetInitialVectorVelocity( [in] const DOUBLE *velocity, [in] UINT cDimension );
-		void SetInitialVectorVelocity([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] velocity, uint cDimension);
+		void SetInitialVectorVelocity([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] velocity, uint cDimension);
 
 		/// <summary>Determines whether the duration of a transition is known.</summary>
 		/// <returns>
@@ -1586,7 +1586,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-createinstantaneousvectortransition
 		// HRESULT CreateInstantaneousVectorTransition( [in] const DOUBLE *finalValue, [in] UINT cDimension, [out, retval]
 		// IUIAnimationTransition2 **transition );
-		IUIAnimationTransition2 CreateInstantaneousVectorTransition([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] finalValue, uint cDimension);
+		IUIAnimationTransition2 CreateInstantaneousVectorTransition([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] finalValue, uint cDimension);
 
 		/// <summary>Creates a constant scalar transition.</summary>
 		/// <param name="duration">The duration of the transition.</param>
@@ -1638,7 +1638,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-creatediscretevectortransition
 		// HRESULT CreateDiscreteVectorTransition( [in] UI_ANIMATION_SECONDS delay, [in] const DOUBLE *finalValue, [in] UINT cDimension,
 		// [in] UI_ANIMATION_SECONDS hold, [out] IUIAnimationTransition2 **transition );
-		IUIAnimationTransition2 CreateDiscreteVectorTransition(double delay, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension, double hold);
+		IUIAnimationTransition2 CreateDiscreteVectorTransition(double delay, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension, double hold);
 
 		/// <summary>Creates a linear scalar transition.</summary>
 		/// <param name="duration">The duration of the transition.</param>
@@ -1673,7 +1673,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-createlinearvectortransition
 		// HRESULT CreateLinearVectorTransition( [in] UI_ANIMATION_SECONDS duration, [in] const DOUBLE *finalValue, [in] UINT cDimension,
 		// [out] IUIAnimationTransition2 **transition );
-		IUIAnimationTransition2 CreateLinearVectorTransition(double duration, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension);
+		IUIAnimationTransition2 CreateLinearVectorTransition(double duration, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension);
 
 		/// <summary>Creates a linear-speed scalar transition.</summary>
 		/// <param name="speed">The absolute value of the velocity in units/second.</param>
@@ -1709,7 +1709,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-createlinearvectortransitionfromspeed
 		// HRESULT CreateLinearVectorTransitionFromSpeed( [in] DOUBLE speed, [in] const DOUBLE *finalValue, [in] UINT cDimension, [out]
 		// IUIAnimationTransition2 **transition );
-		IUIAnimationTransition2 CreateLinearVectorTransitionFromSpeed(double speed, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension);
+		IUIAnimationTransition2 CreateLinearVectorTransitionFromSpeed(double speed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension);
 
 		/// <summary>Creates a sinusoidal scalar transition where amplitude is determined by initial velocity.</summary>
 		/// <param name="duration">The duration of the transition.</param>
@@ -1832,7 +1832,8 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-createcubicvectortransition
 		// HRESULT CreateCubicVectorTransition( [in] UI_ANIMATION_SECONDS duration, [in] const DOUBLE *finalValue, [in] const DOUBLE
 		// *finalVelocity, [in] UINT cDimension, [out] IUIAnimationTransition2 **transition );
-		IUIAnimationTransition2 CreateCubicVectorTransition(double duration, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] double[] finalValue, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] double[] finalVelocity, uint cDimension);
+		IUIAnimationTransition2 CreateCubicVectorTransition(double duration, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] double[] finalValue,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] double[] finalVelocity, uint cDimension);
 
 		/// <summary>Creates a smooth-stop scalar transition.</summary>
 		/// <param name="maximumDuration">The maximum duration of the transition.</param>
@@ -1914,7 +1915,7 @@ public static partial class UIAnimation
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationtransitionlibrary2-createcubicbezierlinearvectortransition
 		// HRESULT CreateCubicBezierLinearVectorTransition( [in] UI_ANIMATION_SECONDS duration, [in] const DOUBLE *finalValue, [in] UINT
 		// cDimension, [in] DOUBLE x1, [in] DOUBLE y1, [in] DOUBLE x2, [in] DOUBLE y2, [out] IUIAnimationTransition2 **ppTransition );
-		IUIAnimationTransition2 CreateCubicBezierLinearVectorTransition(double duration, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension, double x1, double y1, double x2, double y2);
+		IUIAnimationTransition2 CreateCubicBezierLinearVectorTransition(double duration, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] finalValue, uint cDimension, double x1, double y1, double x2, double y2);
 	}
 
 	/// <summary>Defines an animation variable, which represents a visual element that can be animated in multiple dimensions.</summary>
@@ -1958,7 +1959,7 @@ public static partial class UIAnimation
 		/// <remarks>The application implements the IDCompositionAnimation object that is referenced by the <c>animation</c> parameter.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationvariable2-getvectorcurve HRESULT
 		// GetVectorCurve( [in] IDCompositionAnimation **animation, [in] UINT cDimension );
-		void GetVectorCurve([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IDCompositionAnimation[] animation, uint cDimension);
+		void GetVectorCurve([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IDCompositionAnimation[] animation, uint cDimension);
 
 		/// <summary>
 		/// Gets the final value of the animation variable. This is the value after all currently scheduled animations have completed.
@@ -2091,7 +2092,7 @@ public static partial class UIAnimation
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationvariable2-setlowerboundvector HRESULT
 		// SetLowerBoundVector( [in] const DOUBLE *bound, [in] UINT cDimension );
-		void SetLowerBoundVector([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] bound, uint cDimension);
+		void SetLowerBoundVector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] bound, uint cDimension);
 
 		/// <summary>
 		/// Sets the upper bound (ceiling) for the value of the animation variable. The value of the animation variable should not rise
@@ -2112,7 +2113,7 @@ public static partial class UIAnimation
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/uianimation/nf-uianimation-iuianimationvariable2-setupperboundvector HRESULT
 		// SetUpperBoundVector( [in] const DOUBLE *bound, [in] UINT cDimension );
-		void SetUpperBoundVector([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] bound, uint cDimension);
+		void SetUpperBoundVector([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] double[] bound, uint cDimension);
 
 		/// <summary>Sets the rounding mode of the animation variable.</summary>
 		/// <param name="mode">The rounding mode.</param>
@@ -2315,7 +2316,7 @@ public static partial class UIAnimation
 		// HRESULT OnValueChanged( [in] IUIAnimationStoryboard2 *storyboard, [in] IUIAnimationVariable2 *variable, [in] DOUBLE *newValue,
 		// [in] DOUBLE *previousValue, [in] UINT cDimension );
 		[PreserveSig]
-		HRESULT OnValueChanged(IUIAnimationStoryboard2 storyboard, IUIAnimationVariable2 variable, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] double[] newValue, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] double[] previousValue, uint cDimension);
+		HRESULT OnValueChanged(IUIAnimationStoryboard2 storyboard, IUIAnimationVariable2 variable, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] double[] newValue, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] double[] previousValue, uint cDimension);
 	}
 
 	/// <summary>Defines a method for handling animation curve update events.</summary>
@@ -2422,7 +2423,7 @@ public static partial class UIAnimation
 		// HRESULT OnIntegerValueChanged( [in] IUIAnimationStoryboard2 *storyboard, [in] IUIAnimationVariable2 *variable, [in] INT32
 		// *newValue, [in] INT32 *previousValue, [in] UINT cDimension );
 		[PreserveSig]
-		HRESULT OnIntegerValueChanged(IUIAnimationStoryboard2 storyboard, IUIAnimationVariable2 variable, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] int[] newValue, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] int[] previousValue, uint cDimension);
+		HRESULT OnIntegerValueChanged(IUIAnimationStoryboard2 storyboard, IUIAnimationVariable2 variable, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] int[] newValue, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] int[] previousValue, uint cDimension);
 	}
 
 	/// <summary>Gets the tag for a storyboard.</summary>

@@ -158,7 +158,7 @@ public static partial class WcnApi
 		// https://docs.microsoft.com/en-us/windows/win32/api/wcndevice/nf-wcndevice-iwcndevice-setpassword HRESULT SetPassword(
 		// WCN_PASSWORD_TYPE Type, DWORD dwPasswordLength, const BYTE [] pbPassword );
 		[PreserveSig]
-		HRESULT SetPassword(WCN_PASSWORD_TYPE Type, uint dwPasswordLength, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbPassword);
+		HRESULT SetPassword(WCN_PASSWORD_TYPE Type, uint dwPasswordLength, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbPassword);
 
 		/// <summary>The <c>IWCNDevice::Connect</c> method initiates the session.</summary>
 		/// <param name="pNotify">

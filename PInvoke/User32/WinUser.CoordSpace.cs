@@ -161,7 +161,7 @@ public static partial class User32
 	/// </returns>
 	[PInvokeData("WinUser.h", MSDNShortId = "")]
 	[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-	public static extern int MapWindowPoints([Optional] HWND hWndFrom, [Optional] HWND hWndTo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
+	public static extern int MapWindowPoints([Optional] HWND hWndFrom, [Optional] HWND hWndTo, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
 
 	/// <summary>The ScreenToClient function converts the screen coordinates of a specified point on the screen to client-area coordinates.</summary>
 	/// <param name="hWnd">A handle to the window whose client area will be used for the conversion.</param>

@@ -473,7 +473,7 @@ public static partial class Shell32
 		/// Buttons cannot be added or deleted later, so this must be the full defined set. Buttons also cannot be reordered, so their
 		/// order in the array, which is the order in which they are displayed left to right, will be their permanent order.
 		/// </param>
-		void ThumbBarAddButtons(HWND hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
+		void ThumbBarAddButtons(HWND hwnd, uint cButtons, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
 
 		/// <summary>
 		/// Shows, enables, disables, or hides buttons in a thumbnail toolbar as required by the window's current state. A thumbnail
@@ -488,7 +488,7 @@ public static partial class Shell32
 		/// A pointer to an array of THUMBBUTTON structures. Each THUMBBUTTON defines an individual button. If the button already exists
 		/// (the iId value is already defined), then that existing button is updated with the information provided in the structure.
 		/// </param>
-		void ThumbBarUpdateButtons(HWND hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
+		void ThumbBarUpdateButtons(HWND hwnd, uint cButtons, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
 
 		/// <summary>
 		/// Specifies an image list that contains button images for a toolbar embedded in a thumbnail image of a window in a taskbar
@@ -699,7 +699,7 @@ public static partial class Shell32
 		/// Buttons cannot be added or deleted later, so this must be the full defined set. Buttons also cannot be reordered, so their
 		/// order in the array, which is the order in which they are displayed left to right, will be their permanent order.
 		/// </param>
-		new void ThumbBarAddButtons(HWND hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
+		new void ThumbBarAddButtons(HWND hwnd, uint cButtons, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
 
 		/// <summary>
 		/// Shows, enables, disables, or hides buttons in a thumbnail toolbar as required by the window's current state. A thumbnail
@@ -714,7 +714,7 @@ public static partial class Shell32
 		/// A pointer to an array of THUMBBUTTON structures. Each THUMBBUTTON defines an individual button. If the button already exists
 		/// (the iId value is already defined), then that existing button is updated with the information provided in the structure.
 		/// </param>
-		new void ThumbBarUpdateButtons(HWND hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
+		new void ThumbBarUpdateButtons(HWND hwnd, uint cButtons, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
 
 		/// <summary>
 		/// Specifies an image list that contains button images for a toolbar embedded in a thumbnail image of a window in a taskbar

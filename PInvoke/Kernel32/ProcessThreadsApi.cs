@@ -5321,7 +5321,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Processthreadapi.h", MSDNShortId = "mt186428")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadSelectedCpuSets([In, Optional] HTHREAD Thread, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? CpuSetIds, [Optional] uint CpuSetIdCount);
+	public static extern bool SetThreadSelectedCpuSets([In, Optional] HTHREAD Thread, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[]? CpuSetIds, [Optional] uint CpuSetIdCount);
 
 	/// <summary>
 	/// Sets the minimum size of the stack associated with the calling thread or fiber that will be available during any stack overflow

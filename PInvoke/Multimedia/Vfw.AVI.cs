@@ -816,7 +816,7 @@ public static partial class AviFil32
 	[DllImport(Lib_Avifil32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVIMakeFileFromStreams")]
 	public static extern HRESULT AVIMakeFileFromStreams(out IAVIFile ppfile, int nStreams,
-		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 1)] IAVIStream[] papStreams);
+		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 1)] IAVIStream[] papStreams);
 
 	/// <summary>The <c>AVIMakeStreamFromClipboard</c> function creates an editable stream from stream data on the clipboard.</summary>
 	/// <param name="cfFormat">Clipboard flag.</param>

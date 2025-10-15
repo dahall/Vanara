@@ -51,7 +51,8 @@ public static partial class CldApi
 	// CF_CONNECTION_KEY *ConnectionKey );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "287DA978-9797-48DF-9C90-BA53BB82475C")]
-	public static extern HRESULT CfConnectSyncRoot([MarshalAs(UnmanagedType.LPWStr)] string SyncRootPath, [In, MarshalAs(UnmanagedType.LPArray)] CF_CALLBACK_REGISTRATION[] CallbackTable,
+	public static extern HRESULT CfConnectSyncRoot([MarshalAs(UnmanagedType.LPWStr)] string SyncRootPath,
+		[In, MarshalAs(UnmanagedType.LPArray)] CF_CALLBACK_REGISTRATION[] CallbackTable,
 		[In, Optional] IntPtr CallbackContext, CF_CONNECT_FLAGS ConnectFlags, out CF_CONNECTION_KEY ConnectionKey);
 
 	/// <summary>Converts a normal file/directory to a placeholder file/directory.</summary>
@@ -203,7 +204,8 @@ public static partial class CldApi
 	// EntriesProcessed );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "96A6F62E-7F14-40B5-AB57-260DC9B1DF89")]
-	public static extern HRESULT CfCreatePlaceholders([MarshalAs(UnmanagedType.LPWStr)] string BaseDirectoryPath, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CF_PLACEHOLDER_CREATE_INFO[] PlaceholderArray,
+	public static extern HRESULT CfCreatePlaceholders([MarshalAs(UnmanagedType.LPWStr)] string BaseDirectoryPath,
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CF_PLACEHOLDER_CREATE_INFO[] PlaceholderArray,
 		uint PlaceholderCount, CF_CREATE_FLAGS CreateFlags, out uint EntriesProcessed);
 
 	/// <summary>

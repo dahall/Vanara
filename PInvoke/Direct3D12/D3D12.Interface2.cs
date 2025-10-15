@@ -4564,7 +4564,7 @@ public static partial class D3D12
 		// FenceValueToSignal );
 		[PreserveSig]
 		HRESULT EnqueueMakeResident(D3D12_RESIDENCY_FLAGS Flags, int NumObjects,
-			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] ID3D12Pageable[] ppObjects,
+			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] ID3D12Pageable[] ppObjects,
 			[In] ID3D12Fence pFenceToSignal, ulong FenceValueToSignal);
 	}
 
@@ -6914,7 +6914,7 @@ public static partial class D3D12
 		// FenceValueToSignal );
 		[PreserveSig]
 		new HRESULT EnqueueMakeResident(D3D12_RESIDENCY_FLAGS Flags, int NumObjects,
-			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] ID3D12Pageable[] ppObjects,
+			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] ID3D12Pageable[] ppObjects,
 			[In] ID3D12Fence pFenceToSignal, ulong FenceValueToSignal);
 
 		/// <summary>Creates a command list in the closed state. Also see <c>ID3D12Device::CreateCommandList</c>.</summary>
@@ -9668,7 +9668,7 @@ public static partial class D3D12
 		// FenceValueToSignal );
 		[PreserveSig]
 		new HRESULT EnqueueMakeResident(D3D12_RESIDENCY_FLAGS Flags, int NumObjects,
-			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] ID3D12Pageable[] ppObjects,
+			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] ID3D12Pageable[] ppObjects,
 			[In] ID3D12Fence pFenceToSignal, ulong FenceValueToSignal);
 
 		/// <summary>Creates a command list in the closed state. Also see <c>ID3D12Device::CreateCommandList</c>.</summary>

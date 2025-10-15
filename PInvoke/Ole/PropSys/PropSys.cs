@@ -523,7 +523,7 @@ public static partial class PropSys
 	// PSCreateMultiplexPropertyStore( IUnknown **prgpunkStores, DWORD cStores, REFIID riid, void **ppv );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "4a6b5a10-5ef2-42c7-bf3b-dfa743be252f")]
-	public static extern HRESULT PSCreateMultiplexPropertyStore([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] object[] prgpunkStores,
+	public static extern HRESULT PSCreateMultiplexPropertyStore([In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] object[] prgpunkStores,
 		uint cStores, in Guid riid, out IPropertyStore ppv);
 
 	/// <summary>

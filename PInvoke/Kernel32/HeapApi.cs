@@ -220,7 +220,8 @@ public static partial class Kernel32
 	// DWORD WINAPI GetProcessHeaps( _In_ DWORD NumberOfHeaps, _Out_ PHANDLE ProcessHeaps); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366571(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("HeapApi.h", MSDNShortId = "aa366571")]
-	public static extern uint GetProcessHeaps([Optional] uint NumberOfHeaps, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HHEAP[]? ProcessHeaps);
+	[SuppressAutoGen]
+	public static extern uint GetProcessHeaps([Optional] uint NumberOfHeaps, [Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0), SizeDef(nameof(NumberOfHeaps), SizingMethod.QueryResultInReturn)] HHEAP[]? ProcessHeaps);
 
 	/// <summary>Returns handles to all of the active heaps for the calling process.</summary>
 	/// <returns>An array of heap handles.</returns>

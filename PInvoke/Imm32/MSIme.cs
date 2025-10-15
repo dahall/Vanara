@@ -1252,7 +1252,7 @@ public static partial class Imm32
 		// **ppResult );
 		[PreserveSig]
 		HRESULT GetJMorphResult(FELANG_REQ dwRequest, FELANG_CMODE dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr)] string? pwchInput,
-			[MarshalAs(UnmanagedType.LPArray)] FELANG_CLMN[] pfCInfo, out SafeCoTaskMemStruct<MORRSLT> ppResult);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] FELANG_CLMN[] pfCInfo, out SafeCoTaskMemStruct<MORRSLT> ppResult);
 
 		/// <summary>Gets the conversion mode capability of the IFELanguage object.</summary>
 		/// <param name="pdwCaps">

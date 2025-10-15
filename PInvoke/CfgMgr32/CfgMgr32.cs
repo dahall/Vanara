@@ -1,5 +1,6 @@
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using static Vanara.PInvoke.SetupAPI;
 
@@ -1482,7 +1483,8 @@ public static partial class CfgMgr32
 	// CM_Enumerate_EnumeratorsW( ULONG ulEnumIndex, PWSTR Buffer, PULONG pulLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Enumerate_EnumeratorsW")]
-	public static extern CONFIGRET CM_Enumerate_Enumerators(uint ulEnumIndex, StringBuilder Buffer, ref int pulLength, uint ulFlags = 0);
+	[SuppressAutoGen]
+	public static extern CONFIGRET CM_Enumerate_Enumerators(uint ulEnumIndex, [SizeDef(nameof(pulLength), SizingMethod.Query)] StringBuilder? Buffer, ref int pulLength, uint ulFlags = 0);
 
 	/// <summary>
 	/// The <c>CM_Enumerate_Enumerators</c> function enumerates the local machine's device enumerators by supplying each enumerator's name.
@@ -1551,7 +1553,8 @@ public static partial class CfgMgr32
 	// CM_Enumerate_Enumerators_ExW( ULONG ulEnumIndex, PWSTR Buffer, PULONG pulLength, ULONG ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Enumerate_Enumerators_ExW")]
-	public static extern CONFIGRET CM_Enumerate_Enumerators_Ex(uint ulEnumIndex, StringBuilder Buffer, ref int pulLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+	[SuppressAutoGen]
+	public static extern CONFIGRET CM_Enumerate_Enumerators_Ex(uint ulEnumIndex, [SizeDef(nameof(pulLength), SizingMethod.Query)] StringBuilder? Buffer, ref int pulLength, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// The <c>CM_Free_Log_Conf</c> function removes a logical configuration and all associated resource descriptors from the local machine.
@@ -2492,7 +2495,8 @@ public static partial class CfgMgr32
 	// CM_Get_Device_ID_ExW( DEVINST dnDevInst, PWSTR Buffer, ULONG BufferLen, ULONG ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_ID_ExW")]
-	public static extern CONFIGRET CM_Get_Device_ID_Ex(uint dnDevInst, StringBuilder Buffer, uint BufferLen, [In, Optional] uint ulFlags, [In, Optional] HMACHINE hMachine);
+	public static extern CONFIGRET CM_Get_Device_ID_Ex(uint dnDevInst, [SizeDef(nameof(BufferLen), SizingMethod.InclNullTerm)] StringBuilder Buffer, [Range(0, MAX_DEVICE_ID_LEN + 1)] uint BufferLen,
+		[In, Optional, Ignore] uint ulFlags, [In, Optional] HMACHINE hMachine);
 
 	/// <summary>
 	/// The <c>CM_Get_Device_ID_List</c> function retrieves a list of device instance IDs for the local computer's device instances.

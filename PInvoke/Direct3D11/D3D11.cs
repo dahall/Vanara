@@ -11304,7 +11304,7 @@ public static partial class D3D11
 		// VideoProcessorSetStreamPalette( [in] ID3D11VideoProcessor *pVideoProcessor, [in] UINT StreamIndex, [in] UINT Count, [in] const
 		// UINT *pEntries );
 		[PreserveSig]
-		void VideoProcessorSetStreamPalette([In] ID3D11VideoProcessor pVideoProcessor, uint StreamIndex, int Count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] pEntries);
+		void VideoProcessorSetStreamPalette([In] ID3D11VideoProcessor pVideoProcessor, uint StreamIndex, int Count, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] pEntries);
 
 		/// <summary>Sets the pixel aspect ratio for an input stream on the video processor.</summary>
 		/// <param name="pVideoProcessor">A pointer to the ID3D11VideoProcessor interface. To get this pointer, call ID3D11VideoDevice::CreateVideoProcessor.</param>
@@ -11852,7 +11852,7 @@ public static partial class D3D11
 		// [in] UINT StreamCount, [in] const D3D11_VIDEO_PROCESSOR_STREAM *pStreams );
 		[PreserveSig]
 		HRESULT VideoProcessorBlt([In] ID3D11VideoProcessor pVideoProcessor, [In] ID3D11VideoProcessorOutputView pView, uint OutputFrame,
-			int StreamCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D3D11_VIDEO_PROCESSOR_STREAM[] pStreams);
+			int StreamCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] D3D11_VIDEO_PROCESSOR_STREAM[] pStreams);
 
 		/// <summary>Establishes the session key for a cryptographic session.</summary>
 		/// <param name="pCryptoSession">A pointer to the ID3D11CryptoSession interface of the cryptographic session.</param>

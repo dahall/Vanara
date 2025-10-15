@@ -24,9 +24,6 @@ Structures
     <AdditionalFiles Include="handles.csv" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" Condition=" $(NET40_OR_GREATER) Or $(NETSTANDARD2_0) Or $(NETSTANDARD2_1) " />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>

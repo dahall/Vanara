@@ -483,7 +483,6 @@ public static partial class ElsCore
 		/// <c>Note</c>  In Windows 7, the ELS services support only the content type "text/plain". A content type specification can be found
 		/// at Text Media Types.
 		/// </para>
-		/// <para></para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string? pszContentType;
@@ -491,39 +490,32 @@ public static partial class ElsCore
 		/// <summary>
 		/// <para>Available action Ids for this subrange. They are usable for calling MappingDoAction.</para>
 		/// <para><c>Note</c>  In Windows 7, the ELS services do not expose any actions.</para>
-		/// <para></para>
 		/// </summary>
-		//[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)]
-		//public string[]? prgActionIds;
-		public IntPtr prgActionIds;
+		public ArrayPointer<StrPtrUni> prgActionIds;
 
 		/// <summary>
 		/// <para>Available action Ids for this subrange. They are usable for calling MappingDoAction.</para>
 		/// <para><c>Note</c>  In Windows 7, the ELS services do not expose any actions.</para>
 		/// </summary>
-		public readonly string?[]? rgActionIds => dwActionsCount == 0 ? null : prgActionIds.ToStringEnum((int)dwActionsCount, CharSet.Unicode)?.ToArray();
+		public readonly string?[]? rgActionIds => dwActionsCount == 0 ? null : Array.ConvertAll(prgActionIds.ToArray((int)dwActionsCount), p => (string?)p);
 
 		/// <summary>
 		/// <para>The number of available actions for this subrange.</para>
 		/// <para><c>Note</c>  In Windows 7, the ELS services do not expose any actions.</para>
-		/// <para></para>
 		/// </summary>
 		public uint dwActionsCount;
 
 		/// <summary>
 		/// <para>Action display names for this subrange. These strings can be localized.</para>
 		/// <para><c>Note</c>  In Windows 7, the ELS services do not expose any actions.</para>
-		/// <para></para>
 		/// </summary>
-		//[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)]
-		//public string[]? prgActionDisplayNames;
-		public IntPtr prgActionDisplayNames;
+		public ArrayPointer<StrPtrUni> prgActionDisplayNames;
 
 		/// <summary>
 		/// <para>Action display names for this subrange. These strings can be localized.</para>
 		/// <para><c>Note</c>  In Windows 7, the ELS services do not expose any actions.</para>
 		/// </summary>
-		public readonly string?[]? rgActionDisplayNames => dwActionsCount == 0 ? null : prgActionDisplayNames.ToStringEnum((int)dwActionsCount, CharSet.Unicode)?.ToArray();
+		public readonly string?[]? rgActionDisplayNames => dwActionsCount == 0 ? null : Array.ConvertAll(prgActionDisplayNames.ToArray((int)dwActionsCount), p => (string?)p);
 	}
 
 	/// <summary>Contains options used by the MappingGetServices function to enumerate ELS services.</summary>
@@ -868,11 +860,8 @@ public static partial class ElsCore
 		/// <c>Note</c>  In Windows 7, the ELS services support only the content type "text/plain". A content types specification can be
 		/// found at Text Media Types.
 		/// </para>
-		/// <para></para>
 		/// </summary>
-		//[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)]
-		//public string[] prgInputContentTypes;
-		public IntPtr prgInputContentTypes;
+		public ArrayPointer<StrPtrUni> prgInputContentTypes;
 
 		/// <summary>
 		/// <para>
@@ -883,9 +872,8 @@ public static partial class ElsCore
 		/// <c>Note</c>  In Windows 7, the ELS services support only the content type "text/plain". A content types specification can be
 		/// found at Text Media Types.
 		/// </para>
-		/// <para></para>
 		/// </summary>
-		public readonly string?[]? rgInputContentTypes => dwInputContentTypesCount == 0 ? null : prgInputContentTypes.ToStringEnum((int)dwInputContentTypesCount, CharSet.Unicode)?.ToArray();
+		public readonly string?[]? rgInputContentTypes => dwInputContentTypesCount == 0 ? null : Array.ConvertAll(prgInputContentTypes.ToArray((int)dwInputContentTypesCount), p => (string?)p);
 
 		/// <summary>Number of content types in which the service can format results.</summary>
 		public uint dwOutputContentTypesCount;
@@ -894,15 +882,13 @@ public static partial class ElsCore
 		/// Optional. Pointer to an array of output content types, following the format of the MIME content types, that identify the format
 		/// in which the service retrieves data.
 		/// </summary>
-		//[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)]
-		//public string[]? prgOutputContentTypes;
-		public IntPtr prgOutputContentTypes;
+		public ArrayPointer<StrPtrUni> prgOutputContentTypes;
 
 		/// <summary>
 		/// Optional. The array of output content types, following the format of the MIME content types, that identify the format in which
 		/// the service retrieves data.
 		/// </summary>
-		public readonly string?[]? rgOutputContentTypes => dwOutputContentTypesCount == 0 ? null : prgOutputContentTypes.ToStringEnum((int)dwOutputContentTypesCount, CharSet.Unicode)?.ToArray();
+		public readonly string?[]? rgOutputContentTypes => dwOutputContentTypesCount == 0 ? null : Array.ConvertAll(prgOutputContentTypes.ToArray((int)dwOutputContentTypesCount), p => (string?)p);
 
 		/// <summary>
 		/// Number of input languages supported by the service. This member is set to 0 if the service can accept data in any language.
@@ -913,15 +899,13 @@ public static partial class ElsCore
 		/// Pointer to an array of the input languages, following the IETF naming convention, that the service accepts. This member is set to
 		/// <c>NULL</c> if the service can work with any input language.
 		/// </summary>
-		//[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)]
-		//public string[]? prgInputLanguages;
-		public IntPtr prgInputLanguages;
+		public ArrayPointer<StrPtrUni> prgInputLanguages;
 
 		/// <summary>
 		/// The array of the input languages, following the IETF naming convention, that the service accepts. This member is set to
 		/// <c>NULL</c> if the service can work with any input language.
 		/// </summary>
-		public readonly string?[]? rgInputLanguages => dwInputLanguagesCount == 0 ? null : prgInputLanguages.ToStringEnum((int)dwInputLanguagesCount, CharSet.Unicode)?.ToArray();
+		public readonly string?[]? rgInputLanguages => dwInputLanguagesCount == 0 ? null : Array.ConvertAll(prgInputLanguages.ToArray((int)dwInputLanguagesCount), p => (string?)p);
 
 		/// <summary>
 		/// Number of output languages supported by the service. This member is set to 0 if the service can retrieve data in any language, or
@@ -933,15 +917,13 @@ public static partial class ElsCore
 		/// Pointer to an array of output languages, following the IETF naming convention, in which the service can retrieve results. This
 		/// member is set to <c>NULL</c> if the service can retrieve results in any language, or if the service ignores the output language.
 		/// </summary>
-		//[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)]
-		//public string[]? prgOutputLanguages;
-		public IntPtr prgOutputLanguages;
+		public ArrayPointer<StrPtrUni> prgOutputLanguages;
 
 		/// <summary>
 		/// The array of output languages, following the IETF naming convention, in which the service can retrieve results. This member is
 		/// set to <c>NULL</c> if the service can retrieve results in any language, or if the service ignores the output language.
 		/// </summary>
-		public readonly string?[]? rgOutputLanguages => dwOutputLanguagesCount == 0 ? null : prgOutputLanguages.ToStringEnum((int)dwOutputLanguagesCount, CharSet.Unicode)?.ToArray();
+		public readonly string?[]? rgOutputLanguages => dwOutputLanguagesCount == 0 ? null : Array.ConvertAll(prgOutputLanguages.ToArray((int)dwOutputLanguagesCount), p => (string?)p);
 
 		/// <summary>Number of input scripts supported by the service. This member is set to 0 if the service can accept data in any script.</summary>
 		public uint dwInputScriptsCount;
@@ -950,15 +932,13 @@ public static partial class ElsCore
 		/// Pointer to an array of input scripts, with Unicode standard script names, that are supported by the service. This member is set
 		/// to <c>NULL</c> if the service can work with any scripts, or if the service ignores the input scripts.
 		/// </summary>
-		//[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)]
-		//public string[]? prgInputScripts;
-		public IntPtr prgInputScripts;
+		public ArrayPointer<StrPtrUni> prgInputScripts;
 
 		/// <summary>
 		/// The array of input scripts, with Unicode standard script names, that are supported by the service. This member is set to
 		/// <c>NULL</c> if the service can work with any scripts, or if the service ignores the input scripts.
 		/// </summary>
-		public readonly string?[]? rgInputScripts => dwInputScriptsCount == 0 ? null : prgInputScripts.ToStringEnum((int)dwInputScriptsCount, CharSet.Unicode)?.ToArray();
+		public readonly string?[]? rgInputScripts => dwInputScriptsCount == 0 ? null : Array.ConvertAll(prgInputScripts.ToArray((int)dwInputScriptsCount), p => (string?)p);
 
 		/// <summary>
 		/// Number of output scripts supported by the service. This member is set to 0 if the service can retrieve data in any script, or if
@@ -970,15 +950,13 @@ public static partial class ElsCore
 		/// Pointer to an array of output scripts supported by the service. This member is set to <c>NULL</c> if the service can work with
 		/// any scripts, or the service ignores the output scripts.
 		/// </summary>
-		//[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)]
-		//public string[]? prgOutputScripts;
-		public IntPtr prgOutputScripts;
+		public ArrayPointer<StrPtrUni> prgOutputScripts;
 
 		/// <summary>
 		/// The array of output scripts supported by the service. This member is set to <c>NULL</c> if the service can work with any scripts,
 		/// or the service ignores the output scripts.
 		/// </summary>
-		public readonly string?[]? rgOutputScripts => dwOutputScriptsCount == 0 ? null : prgOutputScripts.ToStringEnum((int)dwOutputScriptsCount, CharSet.Unicode)?.ToArray();
+		public readonly string?[]? rgOutputScripts => dwOutputScriptsCount == 0 ? null : Array.ConvertAll(prgOutputScripts.ToArray((int)dwOutputScriptsCount), p => (string?)p);
 
 		/// <summary>Globally unique identifier (GUID) for the service.</summary>
 		public Guid guid;
@@ -988,6 +966,7 @@ public static partial class ElsCore
 		public string pszCategory;
 
 		/// <summary>Pointer to the service description. This text can be localized.</summary>
+		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszDescription;
 
 		/// <summary>Size, in bytes, of the private data for the service. This member is set to 0 if there is no private data.</summary>

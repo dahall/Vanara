@@ -1943,7 +1943,7 @@ public static partial class Ws2_32
 	// LPWSAPROTOCOL_INFOW lpProtocolBuffer, LPDWORD lpdwBufferLength, LPINT lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "c2e5332f-3327-4624-96b4-8e321795961d")]
-	public static extern WSRESULT WSCEnumProtocols([Optional, MarshalAs(UnmanagedType.LPArray)] int[]? lpiProtocols, IntPtr lpProtocolBuffer, ref uint lpdwBufferLength, out int lpErrno);
+	public static extern WSRESULT WSCEnumProtocols([In, Optional, MarshalAs(UnmanagedType.LPArray)] int[]? lpiProtocols, IntPtr lpProtocolBuffer, ref uint lpdwBufferLength, out int lpErrno);
 
 	/// <summary>The <c>WSCEnumProtocols32</c> function retrieves information about available transport protocols.</summary>
 	/// <param name="lpiProtocols">
@@ -2030,7 +2030,7 @@ public static partial class Ws2_32
 	// lpiProtocols, LPWSAPROTOCOL_INFOW lpProtocolBuffer, LPDWORD lpdwBufferLength, LPINT lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "f46042f6-0b14-4a14-abc1-4e40c34b1599")]
-	public static extern WSRESULT WSCEnumProtocols32([Optional, MarshalAs(UnmanagedType.LPArray)] int[]? lpiProtocols, IntPtr lpProtocolBuffer, ref uint lpdwBufferLength, out int lpErrno);
+	public static extern WSRESULT WSCEnumProtocols32([In, Optional, MarshalAs(UnmanagedType.LPArray)] int[]? lpiProtocols, IntPtr lpProtocolBuffer, ref uint lpdwBufferLength, out int lpErrno);
 
 	/// <summary>
 	/// <para>
@@ -3122,7 +3122,7 @@ public static partial class Ws2_32
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "c0736018-2bcf-4281-aa73-3e1ff9eac92e")]
 	public static extern WSRESULT WSCInstallProvider(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath,
-		[MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
 
 	/// <summary>
 	/// <para>[**WSCInstallProvider64_32** is no longer available for use as of Windows Vista. Instead, use WSCInstallProvider or WSCInstallProviderAndChains.]</para>
@@ -3262,7 +3262,7 @@ public static partial class Ws2_32
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "50d3a5d1-18f2-439e-a16c-6f31becb1e65")]
 	public static extern WSRESULT WSCInstallProvider64_32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath,
-		[MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
 
 	/// <summary>
 	/// The WSCInstallProviderAndChains64_32 function installs the specified transport provider and its specific protocol chains into both
@@ -3418,7 +3418,7 @@ public static partial class Ws2_32
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "592f48b4-5826-449f-b5cc-b0990679fe9f")]
 	public static extern WSRESULT WSCInstallProviderAndChains64_32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath,
-		[MarshalAs(UnmanagedType.LPWStr)] string lpszLspName, XP1 dwServiceFlags, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[]? lpProtocolInfoList,
+		[MarshalAs(UnmanagedType.LPWStr)] string lpszLspName, XP1 dwServiceFlags, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] WSAPROTOCOL_INFOW[]? lpProtocolInfoList,
 		uint dwNumberOfEntries, out uint lpdwCatalogEntryId, out int lpErrno);
 
 	/// <summary>The **WSCSetApplicationCategory** function sets the permitted layered service provider (LSP) categories associated with an application.</summary>
@@ -4159,7 +4159,8 @@ public static partial class Ws2_32
 	// const WCHAR *lpszProviderDllPath, const LPWSAPROTOCOL_INFOW lpProtocolInfoList, DWORD dwNumberOfEntries, LPINT lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "7777a2ff-2ece-4f28-88af-87fc96fdda9f")]
-	public static extern WSRESULT WSCUpdateProvider(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
+	public static extern WSRESULT WSCUpdateProvider(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
 
 	/// <summary>
 	/// The <c>WSCUpdateProvider32</c> function modifies the specified 32-bit transport provider in the system configuration database.
@@ -4259,7 +4260,8 @@ public static partial class Ws2_32
 	// lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "803ef58a-853b-491c-bed1-e02275fef258")]
-	public static extern WSRESULT WSCUpdateProvider32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath, [MarshalAs(UnmanagedType.LPArray)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
+	public static extern WSRESULT WSCUpdateProvider32(in Guid lpProviderId, [MarshalAs(UnmanagedType.LPWStr)] string lpszProviderDllPath,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] WSAPROTOCOL_INFOW[] lpProtocolInfoList, uint dwNumberOfEntries, out int lpErrno);
 
 	/// <summary>
 	/// The <c>AFPROTOCOLS</c> structure supplies a list of protocols to which application programmers can constrain queries. The

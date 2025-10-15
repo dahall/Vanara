@@ -1137,7 +1137,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontface3-areglyphslocal HRESULT AreGlyphsLocal(
 		// [in] UINT16 const *glyphIndices, UINT32 glyphCount, BOOL enqueueIfNotLocal, [out] BOOL *isLocal );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool AreGlyphsLocal([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount, bool enqueueIfNotLocal);
+		new bool AreGlyphsLocal([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount, bool enqueueIfNotLocal);
 
 		/// <summary>Gets all the glyph image formats supported for the specified glyph.</summary>
 		/// <param name="glyphId">The identifier of the glyph to be queried.</param>
@@ -2345,7 +2345,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontface3-areglyphslocal HRESULT AreGlyphsLocal(
 		// [in] UINT16 const *glyphIndices, UINT32 glyphCount, BOOL enqueueIfNotLocal, [out] BOOL *isLocal );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool AreGlyphsLocal([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount, bool enqueueIfNotLocal);
+		new bool AreGlyphsLocal([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount, bool enqueueIfNotLocal);
 
 		/// <summary>Gets all the glyph image formats supported for the specified glyph.</summary>
 		/// <param name="glyphId">The identifier of the glyph to be queried.</param>
@@ -3637,7 +3637,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontface3-areglyphslocal HRESULT AreGlyphsLocal(
 		// [in] UINT16 const *glyphIndices, UINT32 glyphCount, BOOL enqueueIfNotLocal, [out] BOOL *isLocal );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool AreGlyphsLocal([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount, bool enqueueIfNotLocal);
+		new bool AreGlyphsLocal([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount, bool enqueueIfNotLocal);
 
 		/// <summary>Gets all the glyph image formats supported for the specified glyph.</summary>
 		/// <param name="glyphId">The identifier of the glyph to be queried.</param>
@@ -4943,7 +4943,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontface3-areglyphslocal HRESULT AreGlyphsLocal(
 		// [in] UINT16 const *glyphIndices, UINT32 glyphCount, BOOL enqueueIfNotLocal, [out] BOOL *isLocal );
 		[return: MarshalAs(UnmanagedType.Bool)]
-		new bool AreGlyphsLocal([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount, bool enqueueIfNotLocal);
+		new bool AreGlyphsLocal([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount, bool enqueueIfNotLocal);
 
 		/// <summary>Gets all the glyph image formats supported for the specified glyph.</summary>
 		/// <param name="glyphId">The identifier of the glyph to be queried.</param>
@@ -5298,7 +5298,7 @@ public static partial class Dwrite
 		/// <remarks>Downloading a glyph involves downloading any other glyphs it depends on from the font tables (GSUB, COLR, glyf).</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontfacereference-enqueueglyphdownloadrequest
 		// HRESULT EnqueueGlyphDownloadRequest( [in] UINT16 const *glyphIndices, UINT32 glyphCount );
-		void EnqueueGlyphDownloadRequest([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount);
+		void EnqueueGlyphDownloadRequest([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount);
 
 		/// <summary>Adds a request to the font download queue ( <c>IDWriteFontDownloadQueue</c>).</summary>
 		/// <param name="fileOffset">
@@ -5473,7 +5473,7 @@ public static partial class Dwrite
 		/// <remarks>Downloading a glyph involves downloading any other glyphs it depends on from the font tables (GSUB, COLR, glyf).</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontfacereference-enqueueglyphdownloadrequest
 		// HRESULT EnqueueGlyphDownloadRequest( [in] UINT16 const *glyphIndices, UINT32 glyphCount );
-		new void EnqueueGlyphDownloadRequest([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount);
+		new void EnqueueGlyphDownloadRequest([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ushort[] glyphIndices, uint glyphCount);
 
 		/// <summary>Adds a request to the font download queue ( <c>IDWriteFontDownloadQueue</c>).</summary>
 		/// <param name="fileOffset">
@@ -6521,7 +6521,7 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontset-getmatchingfonts(dwrite_font_propertyconst_uint32_idwritefontset)
 		// HRESULT GetMatchingFonts( DWRITE_FONT_PROPERTY const *properties, UINT32 propertyCount, IDWriteFontSet **filteredSet );
-		IDWriteFontSet GetMatchingFonts([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DWRITE_FONT_PROPERTY[] properties, uint propertyCount);
+		IDWriteFontSet GetMatchingFonts([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DWRITE_FONT_PROPERTY[] properties, uint propertyCount);
 	}
 
 	/// <summary>
@@ -6907,7 +6907,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontset1-getfontaxisranges(uint32_dwrite_font_axis_range_uint32_uint32)
 		// HRESULT GetFontAxisRanges( UINT32 listIndex, [out] DWRITE_FONT_AXIS_RANGE *fontAxisRanges, UINT32 maxFontAxisRangeCount, [out]
 		// UINT32 *actualFontAxisRangeCount );
-		void GetFontAxisRanges(uint listIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FONT_AXIS_RANGE[] fontAxisRanges,
+		void GetFontAxisRanges(uint listIndex, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FONT_AXIS_RANGE[] fontAxisRanges,
 			uint maxFontAxisRangeCount, out uint actualFontAxisRangeCount);
 
 		/// <summary>Gets all axis ranges in the font set, the union of all contained items.</summary>
@@ -7399,7 +7399,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontset1-getfontaxisranges(uint32_dwrite_font_axis_range_uint32_uint32)
 		// HRESULT GetFontAxisRanges( UINT32 listIndex, [out] DWRITE_FONT_AXIS_RANGE *fontAxisRanges, UINT32 maxFontAxisRangeCount, [out]
 		// UINT32 *actualFontAxisRangeCount );
-		new void GetFontAxisRanges(uint listIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FONT_AXIS_RANGE[] fontAxisRanges,
+		new void GetFontAxisRanges(uint listIndex, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FONT_AXIS_RANGE[] fontAxisRanges,
 			uint maxFontAxisRangeCount, out uint actualFontAxisRangeCount);
 
 		/// <summary>Gets all axis ranges in the font set, the union of all contained items.</summary>
@@ -7908,7 +7908,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontset1-getfontaxisranges(uint32_dwrite_font_axis_range_uint32_uint32)
 		// HRESULT GetFontAxisRanges( UINT32 listIndex, [out] DWRITE_FONT_AXIS_RANGE *fontAxisRanges, UINT32 maxFontAxisRangeCount, [out]
 		// UINT32 *actualFontAxisRangeCount );
-		new void GetFontAxisRanges(uint listIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FONT_AXIS_RANGE[] fontAxisRanges,
+		new void GetFontAxisRanges(uint listIndex, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FONT_AXIS_RANGE[] fontAxisRanges,
 			uint maxFontAxisRangeCount, out uint actualFontAxisRangeCount);
 
 		/// <summary>Gets all axis ranges in the font set, the union of all contained items.</summary>
@@ -8466,7 +8466,7 @@ public static partial class Dwrite
 		// https://learn.microsoft.com/en-us/windows/win32/api/dwrite_3/nf-dwrite_3-idwritefontset1-getfontaxisranges(uint32_dwrite_font_axis_range_uint32_uint32)
 		// HRESULT GetFontAxisRanges( UINT32 listIndex, [out] DWRITE_FONT_AXIS_RANGE *fontAxisRanges, UINT32 maxFontAxisRangeCount, [out]
 		// UINT32 *actualFontAxisRangeCount );
-		new void GetFontAxisRanges(uint listIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FONT_AXIS_RANGE[] fontAxisRanges,
+		new void GetFontAxisRanges(uint listIndex, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FONT_AXIS_RANGE[] fontAxisRanges,
 			uint maxFontAxisRangeCount, out uint actualFontAxisRangeCount);
 
 		/// <summary>Gets all axis ranges in the font set, the union of all contained items.</summary>
@@ -8731,7 +8731,7 @@ public static partial class Dwrite
 		// GetMatchingFonts( WCHAR const *familyName, DWRITE_FONT_AXIS_VALUE const *fontAxisValues, UINT32 fontAxisValueCount,
 		// DWRITE_FONT_SIMULATIONS allowedSimulations, IDWriteFontSet4 **matchingFonts );
 		IDWriteFontSet4 GetMatchingFonts([MarshalAs(UnmanagedType.LPWStr)] string familyName,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FONT_AXIS_VALUE[] fontAxisValues, uint fontAxisValueCount,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FONT_AXIS_VALUE[] fontAxisValues, uint fontAxisValueCount,
 			DWRITE_FONT_SIMULATIONS allowedSimulations);
 	}
 
@@ -9739,7 +9739,7 @@ public static partial class Dwrite
 		// BeginDownload( [in] UUID const *downloadOperationID, [in] DWRITE_FILE_FRAGMENT const *fileFragments, UINT32 fragmentCount,
 		// IDWriteAsyncResult **asyncResult );
 		[PreserveSig]
-		HRESULT BeginDownload(in Guid downloadOperationID, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FILE_FRAGMENT[] fileFragments,
+		HRESULT BeginDownload(in Guid downloadOperationID, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DWRITE_FILE_FRAGMENT[] fileFragments,
 			uint fragmentCount, out IDWriteAsyncResult? asyncResult);
 	}
 

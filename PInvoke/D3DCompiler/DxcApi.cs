@@ -716,7 +716,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxccompilerargs-adddefines HRESULT AddDefines( const
 		// DxcDefine *pDefines, UINT32 defineCount );
 		[PreserveSig]
-		HRESULT AddDefines([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DxcDefine[] pDefines, int defineCount);
+		HRESULT AddDefines([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] DxcDefine[] pDefines, int defineCount);
 	}
 
 	/// <summary>
@@ -932,7 +932,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobwithencodingfrompinned HRESULT
 		// CreateBlobWithEncodingFromPinned( LPCVOID pText, UINT32 size, UINT32 codePage, IDxcBlobEncoding **pBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlobWithEncodingFromPinned([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pText, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
+		HRESULT CreateBlobWithEncodingFromPinned([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pText, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
 
 		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
 		/// <param name="pText"/>
@@ -942,7 +942,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobwithencodingonheapcopy HRESULT
 		// CreateBlobWithEncodingOnHeapCopy( LPCVOID pText, UINT32 size, UINT32 codePage, IDxcBlobEncoding **pBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlobWithEncodingOnHeapCopy([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pText, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
+		HRESULT CreateBlobWithEncodingOnHeapCopy([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pText, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
 
 		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
 		/// <param name="pText"/>
@@ -953,7 +953,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxclibrary-createblobwithencodingonmalloc HRESULT
 		// CreateBlobWithEncodingOnMalloc( LPCVOID pText, IMalloc *pIMalloc, UINT32 size, UINT32 codePage, IDxcBlobEncoding **pBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlobWithEncodingOnMalloc([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pText, IMalloc pIMalloc, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
+		HRESULT CreateBlobWithEncodingOnMalloc([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pText, IMalloc pIMalloc, uint size, DXC_CP codePage, out IDxcBlobEncoding pBlobEncoding);
 
 		/// <summary><b>IDxcUtils</b> replaces <b>IDxcLibrary</b>; use <b>IDxcUtils</b> insted.</summary>
 		/// <param name="ppResult"/>
@@ -1597,7 +1597,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcutils-createblobfrompinned HRESULT CreateBlobFromPinned(
 		// LPCVOID pData, UINT32 size, UINT32 codePage, IDxcBlobEncoding **ppBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlobFromPinned([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pData, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
+		HRESULT CreateBlobFromPinned([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pData, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
 
 		/// <summary>Moves data to a blob.</summary>
 		/// <param name="pData">Pointer to a buffer containing the contents of the new blob.</param>
@@ -1606,7 +1606,7 @@ public static partial class DXC
 		/// <param name="codePage">The code page to use if the blob contains text. For binary or ANSI code page, use <b>DXC_CP_ACP</b>.</param>
 		/// <param name="ppBlobEncoding"/>
 		[PreserveSig]
-		HRESULT MoveToBlob([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pData, IMalloc pIMalloc, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
+		HRESULT MoveToBlob([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pData, IMalloc pIMalloc, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
 
 		/// <summary>
 		/// <para>Create a blob containing a copy of the existing data. The new blob and its contents are allocated with the current allocator.</para>
@@ -1619,7 +1619,7 @@ public static partial class DXC
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcutils-createblob HRESULT CreateBlob( LPCVOID pData,
 		// UINT32 size, UINT32 codePage, IDxcBlobEncoding **ppBlobEncoding );
 		[PreserveSig]
-		HRESULT CreateBlob([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pData, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
+		HRESULT CreateBlob([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pData, int size, DXC_CP codePage, out IDxcBlobEncoding ppBlobEncoding);
 
 		/// <summary>
 		/// <para>Create a blob with data loaded from a file. The new blob and its contents are allocated with the current allocator.</para>

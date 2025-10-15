@@ -900,7 +900,7 @@ public static partial class Msi
 	[PInvokeData("msi.h", MSDNShortId = "NF:msi.MsiGetPatchFileListA")]
 	public static extern Win32Error MsiGetPatchFileList([MarshalAs(UnmanagedType.LPTStr)] string szProductCode,
 		[MarshalAs(UnmanagedType.LPTStr)] string szPatchPackages, out uint pcFiles,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out MSIHANDLE[] pphFileRecords);
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out MSIHANDLE[] pphFileRecords);
 
 	/// <summary>The <c>MsiGetPatchInfo</c> function returns information about a patch.</summary>
 	/// <param name="szPatch">Specifies the patch code for the patch package.</param>

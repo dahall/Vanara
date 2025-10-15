@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Linq;
+
+namespace Vanara.PInvoke;
 
 /// <summary>Methods and data types found in Crypt32.dll.</summary>
 public static partial class Crypt32
@@ -2313,9 +2315,46 @@ public static partial class Crypt32
 	// PCCERT_CONTEXT *rghCerts, int *cNumOIDs, LPSTR *rghOIDs, DWORD *pcbOIDs );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "1504f166-2fa9-4041-9d72-b150cd8baa8a")]
+	[SuppressAutoGen]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetValidUsages(uint cCerts, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PCCERT_CONTEXT[] rghCerts,
-		out int cNumOIDs, [In, Optional, MarshalAs(UnmanagedType.LPArray)] IntPtr[]? rghOIDs, ref uint pcbOIDs);
+	public static extern bool CertGetValidUsages(uint cCerts, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PCCERT_CONTEXT[] rghCerts,
+		out int cNumOIDs, [Out, Optional, MarshalAs(UnmanagedType.LPArray)] IntPtr[]? rghOIDs, ref uint pcbOIDs);
+
+	/// <summary>
+	/// The <c>CertGetValidUsages</c> function returns an array of usages that consist of the intersection of the valid usages for all
+	/// certificates in an array of certificates.
+	/// </summary>
+	/// <param name="rghCerts">An array of certificates to be checked for valid usage.</param>
+	/// <param name="rghOIDs">
+	/// An array of the object identifiers (OIDs) of the valid usages that are shared by all of the certificates in the rghCerts array.
+	/// </param>
+	/// <returns>
+	/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. For extended error
+	/// information, call GetLastError.
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetvalidusages BOOL CertGetValidUsages( DWORD cCerts,
+	// PCCERT_CONTEXT *rghCerts, int *cNumOIDs, LPSTR *rghOIDs, DWORD *pcbOIDs );
+	[PInvokeData("wincrypt.h", MSDNShortId = "1504f166-2fa9-4041-9d72-b150cd8baa8a")]
+	public static bool CertGetValidUsages(PCCERT_CONTEXT[] rghCerts, out string[] rghOIDs)
+	{
+		rghOIDs = [];
+		uint pcbOIDs = 0;
+		if (!CertGetValidUsages((uint)rghCerts.Length, rghCerts, out _, IntPtr.Zero, ref pcbOIDs))
+			return false;
+		if (pcbOIDs == 0)
+			return true;
+		using SafeCoTaskMemHandle rghOIDPtrs = new(pcbOIDs);
+		if (!CertGetValidUsages((uint)rghCerts.Length, rghCerts, out var cNumOIDs, rghOIDPtrs, ref pcbOIDs))
+			return false;
+		if (cNumOIDs != -1)
+			rghOIDs = rghOIDPtrs.ToStringEnum(cNumOIDs, CharSet.Ansi).WhereNotNull().ToArray();
+		return true;
+
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool CertGetValidUsages(uint cCerts, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PCCERT_CONTEXT[] rghCerts,
+			out int cNumOIDs, [Out, Optional] IntPtr rghOIDs, ref uint pcbOIDs);
+	}
 
 	/// <summary>
 	/// The <c>CertOpenServerOcspResponse</c> function opens a handle to an online certificate status protocol (OCSP) response

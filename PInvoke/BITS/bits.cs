@@ -4281,8 +4281,8 @@ public static class BITS
 		// certData, DWORD certEncodingType, DWORD certStoreLength, const BYTE [] certStoreData );
 		[PreserveSig]
 		HRESULT ValidateServerCertificate(IBackgroundCopyJob job, IBackgroundCopyFile file, uint certLength,
-			[In, MarshalAs(UnmanagedType.LPArray)] byte[] certData, uint certEncodingType, uint certStoreLength,
-			[In, MarshalAs(UnmanagedType.LPArray)] byte[] certStoreData);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] certData, uint certEncodingType, uint certStoreLength,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] byte[] certStoreData);
 	}
 
 	/// <summary>An enumeration of BITS interfaces.</summary>
@@ -4546,7 +4546,7 @@ public static class BITS
 		/// pceltFetched to 0 before calling this method.
 		/// </param>
 		[PreserveSig]
-		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBackgroundCopyFile[] rgelt, [In, Out] ref uint pceltFetched);
+		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBackgroundCopyFile[] rgelt, ref uint pceltFetched);
 
 		/// <summary>
 		/// Skips the next specified number of elements in the enumeration sequence. If there are fewer elements left in the sequence
@@ -4685,7 +4685,7 @@ public static class BITS
 		/// pceltFetched to 0 before calling this method.
 		/// </param>
 		[PreserveSig]
-		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBitsPeerCacheRecord[] rgelt, [In, Out] ref uint pceltFetched);
+		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBitsPeerCacheRecord[] rgelt, ref uint pceltFetched);
 
 		/// <summary>
 		/// Skips the next specified number of elements in the enumeration sequence. If there are fewer elements left in the sequence
@@ -4736,7 +4736,7 @@ public static class BITS
 		/// pceltFetched to 0 before calling this method.
 		/// </param>
 		[PreserveSig]
-		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBitsPeer[] rgelt, [In, Out] ref uint pceltFetched);
+		HRESULT Next([In] uint celt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0, ArraySubType = UnmanagedType.Interface)] IBitsPeer[] rgelt, ref uint pceltFetched);
 
 		/// <summary>
 		/// Skips the next specified number of elements in the enumeration sequence. If there are fewer elements left in the sequence

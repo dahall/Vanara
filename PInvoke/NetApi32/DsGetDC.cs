@@ -336,7 +336,7 @@ public static partial class NetApi32
 	// DsAddressToSiteNamesA( IN LPCSTR ComputerName, IN DWORD EntryCount, IN PSOCKET_ADDRESS SocketAddresses, OUT LPSTR **SiteNames );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "4d70dbee-be33-4d2a-a200-3696443fa853")]
-	public static extern Win32Error DsAddressToSiteNames(string ComputerName, uint EntryCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCKET_ADDRESS[] SocketAddresses, out SafeNetApiBuffer SiteNames);
+	public static extern Win32Error DsAddressToSiteNames(string ComputerName, uint EntryCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCKET_ADDRESS[] SocketAddresses, out SafeNetApiBuffer SiteNames);
 
 	/// <summary>The <c>DsAddressToSiteNamesEx</c> function obtains the site and subnet names corresponding to the addresses specified.</summary>
 	/// <param name="ComputerName">
@@ -366,7 +366,7 @@ public static partial class NetApi32
 	// DSGETDCAPI DWORD DsAddressToSiteNamesExW( IN LPCWSTR ComputerName, IN DWORD EntryCount, IN PSOCKET_ADDRESS SocketAddresses, OUT LPWSTR **SiteNames, OUT LPWSTR **SubnetNames );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "60ac6195-6e43-46da-a1e6-74ec989cd0c4")]
-	public static extern Win32Error DsAddressToSiteNamesEx(string ComputerName, uint EntryCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCKET_ADDRESS[] SocketAddresses, out SafeNetApiBuffer SiteNames, out SafeNetApiBuffer SubnetNames);
+	public static extern Win32Error DsAddressToSiteNamesEx(string ComputerName, uint EntryCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCKET_ADDRESS[] SocketAddresses, out SafeNetApiBuffer SiteNames, out SafeNetApiBuffer SubnetNames);
 
 	/// <summary>
 	/// <para>

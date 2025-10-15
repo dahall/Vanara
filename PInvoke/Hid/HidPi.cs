@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Data;
+using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
@@ -157,8 +158,8 @@ public static partial class Hid
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetButtonArray")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
 	public static extern NTStatus HidP_GetButtonArray(HIDP_REPORT_TYPE ReportType, USAGE UsagePage, [Optional] HIDP_LINK_COLLECTION LinkCollection,
-		USAGE Usage, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] HIDP_BUTTON_ARRAY_DATA[] ButtonData, ref ushort ButtonDataLength,
-		PHIDP_PREPARSED_DATA PreparsedData, [In, SizeDef(nameof(ReportLength))] IntPtr Report, uint ReportLength);
+		USAGE Usage, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5), SizeDef(nameof(ButtonDataLength), SizingMethod.Query)] HIDP_BUTTON_ARRAY_DATA[] ButtonData,
+		ref ushort ButtonDataLength, PHIDP_PREPARSED_DATA PreparsedData, [In, SizeDef(nameof(ReportLength))] IntPtr Report, uint ReportLength);
 
 	/// <summary>
 	/// The <b>HidP_GetButtonCaps</b> routine returns a <c>button capability array</c> that describes all the HID control buttons in a
@@ -205,7 +206,8 @@ public static partial class Hid
 	// PreparsedData );
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetButtonCaps")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
-	public static extern NTStatus HidP_GetButtonCaps([In] HIDP_REPORT_TYPE ReportType, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] HIDP_BUTTON_CAPS[] ButtonCaps,
+	public static extern NTStatus HidP_GetButtonCaps([In] HIDP_REPORT_TYPE ReportType,
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), SizeDef(nameof(ButtonCapsLength), SizingMethod.Query)] HIDP_BUTTON_CAPS[] ButtonCaps,
 		ref ushort ButtonCapsLength, [In] PHIDP_PREPARSED_DATA PreparsedData);
 
 	/// <summary>The <b>HidP_GetButtons</b> macro is a mnemonic alias for the <c><b>HidP_GetUsages</b></c> function.</summary>
@@ -236,7 +238,7 @@ public static partial class Hid
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetButtons")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static NTStatus HidP_GetButtons([In] HIDP_REPORT_TYPE Rty, [In] USAGE UPa,
-		HIDP_LINK_COLLECTION LCo, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] USAGE[] ULi, ref uint ULe,
+		HIDP_LINK_COLLECTION LCo, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4), SizeDef(nameof(ULe), SizingMethod.Query)] USAGE[] ULi, ref uint ULe,
 		[In] PHIDP_PREPARSED_DATA Ppd, [Out, SizeDef(nameof(RLe))] IntPtr Rep, uint RLe) => HidP_GetUsages(Rty, UPa, LCo, ULi, ref ULe, Ppd, Rep, RLe);
 
 	/// <summary>The <b>HidP_GetButtonsEx</b> macro is a mnemonic alias for the <c><b>HidP_GetUsagesEx</b></c> function.</summary>
@@ -264,7 +266,7 @@ public static partial class Hid
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetButtonsEx")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static NTStatus HidP_GetButtonsEx([In] HIDP_REPORT_TYPE Rty, HIDP_LINK_COLLECTION LCo,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] USAGE_AND_PAGE[] BLi, ref uint ULe, [In] PHIDP_PREPARSED_DATA Ppd,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3), SizeDef(nameof(ULe), SizingMethod.Query)] USAGE_AND_PAGE[] BLi, ref uint ULe, [In] PHIDP_PREPARSED_DATA Ppd,
 			[Out, SizeDef(nameof(RLe))] IntPtr Rep, uint RLe) => HidP_GetUsagesEx(Rty, LCo, BLi, ref ULe, Ppd, Rep, RLe);
 
 	/// <summary>The <b>HidP_GetCaps</b> routine returns a <c>top-level collection's</c>  <c>HIDP_CAPS</c> structure.</summary>
@@ -370,8 +372,9 @@ public static partial class Hid
 	// PCHAR Report, [in] ULONG ReportLength );
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetData")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
-	public static extern NTStatus HidP_GetData([In] HIDP_REPORT_TYPE ReportType, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] HIDP_DATA[] DataList, ref uint DataLength,
-		[In] PHIDP_PREPARSED_DATA PreparsedData, [In, SizeDef(nameof(ReportLength))] IntPtr Report, uint ReportLength);
+	public static extern NTStatus HidP_GetData([In] HIDP_REPORT_TYPE ReportType,
+		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2), SizeDef(nameof(DataLength), SizingMethod.Query)] HIDP_DATA[] DataList,
+		ref uint DataLength, [In] PHIDP_PREPARSED_DATA PreparsedData, [In, SizeDef(nameof(ReportLength))] IntPtr Report, uint ReportLength);
 
 	/// <summary>The <b>HidP_GetExtendedAttributes</b> routine returns the extended attributes of a HID control.</summary>
 	/// <param name="ReportType">
@@ -482,7 +485,8 @@ public static partial class Hid
 	// PHIDP_PREPARSED_DATA PreparsedData );
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetLinkCollectionNodes")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
-	public static extern NTStatus HidP_GetLinkCollectionNodes([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] HIDP_LINK_COLLECTION_NODE[] LinkCollectionNodes,
+	public static extern NTStatus HidP_GetLinkCollectionNodes([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1),
+		SizeDef(nameof(LinkCollectionNodesLength), SizingMethod.Query)] HIDP_LINK_COLLECTION_NODE[] LinkCollectionNodes,
 		ref uint LinkCollectionNodesLength, [In] PHIDP_PREPARSED_DATA PreparsedData);
 
 	/// <summary>

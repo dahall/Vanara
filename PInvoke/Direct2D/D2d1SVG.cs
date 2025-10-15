@@ -1562,7 +1562,7 @@ public static partial class D2d1
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d2d1svg/nf-d2d1svg-id2d1svgpathdata-updatecommands HRESULT UpdateCommands(
 		// [in] const D2D1_SVG_PATH_COMMAND *commands, UINT32 commandsCount, UINT32 startIndex );
-		void UpdateCommands([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_SVG_PATH_COMMAND[] commands, int commandsCount, uint startIndex = 0);
+		void UpdateCommands([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D2D1_SVG_PATH_COMMAND[] commands, int commandsCount, uint startIndex = 0);
 
 		/// <summary>Gets commands from the commands array.</summary>
 		/// <param name="commands">

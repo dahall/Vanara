@@ -43,15 +43,17 @@ public static partial class Crypt32
 	/// <param name="rgcbValueData[]"/>
 	/// <param name="pvArg">A pointer to arguments passed through to the callback function.</param>
 	/// <returns>Returns <c>TRUE</c> if the function succeeds, <c>FALSE</c> if it fails.</returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nc-wincrypt-pfn_crypt_enum_oid_func
-	// PFN_CRYPT_ENUM_OID_FUNC PfnCryptEnumOidFunc; BOOL PfnCryptEnumOidFunc( [in] DWORD dwEncodingType, LPCSTR pszFuncName, [in] LPCSTR pszOID, [in] DWORD cValue, const DWORD rgdwValueType[], LPCWSTR const rgpwszValueName[], const BYTE * const rgpbValueData[], const DWORD rgcbValueData[], [in] void *pvArg ) {...}
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nc-wincrypt-pfn_crypt_enum_oid_func PFN_CRYPT_ENUM_OID_FUNC
+	// PfnCryptEnumOidFunc; BOOL PfnCryptEnumOidFunc( [in] DWORD dwEncodingType, LPCSTR pszFuncName, [in] LPCSTR pszOID, [in] DWORD cValue,
+	// const DWORD rgdwValueType[], LPCWSTR const rgpwszValueName[], const BYTE * const rgpbValueData[], const DWORD rgcbValueData[], [in]
+	// void *pvArg ) {...}
 	[PInvokeData("wincrypt.h", MSDNShortId = "NC:wincrypt.PFN_CRYPT_ENUM_OID_FUNC")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public delegate bool PFN_CRYPT_ENUM_OID_FUNC(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, [In] IntPtr pszOID,
-		uint cValue, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] REG_VALUE_TYPE[] rgdwValueType,
-		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 3)] string[] rgpwszValueName,
-		[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] IntPtr[] rgpbValueData, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] rgcbValueData, IntPtr pvArg);
+		uint cValue, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] REG_VALUE_TYPE[] rgdwValueType,
+		[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 3)] string[] rgpwszValueName,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] IntPtr[] rgpbValueData, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] rgcbValueData, IntPtr pvArg);
 
 	/// <summary>The <c>CRYPT_ENUM_OID_INFO</c> callback function is used with the CryptEnumOIDInfo function.</summary>
 	/// <param name="pInfo">A pointer to the OID information.</param>

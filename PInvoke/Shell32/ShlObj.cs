@@ -3693,7 +3693,7 @@ public static partial class Shell32
 	[DllImport(Lib.Shell32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "84bf0b56-513f-4ac6-b2cf-11f0c471da1e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PathResolve(StringBuilder pszPath, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? dirs, PRF fFlags);
+	public static extern bool PathResolve(StringBuilder pszPath, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr)] string[]? dirs, PRF fFlags);
 
 	/// <summary>
 	/// <para>Creates a unique filename based on an existing filename.</para>
