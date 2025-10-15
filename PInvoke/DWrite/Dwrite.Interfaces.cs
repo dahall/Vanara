@@ -3107,10 +3107,10 @@ public static partial class Dwrite
 			in DWRITE_SCRIPT_ANALYSIS scriptAnalysis, [MarshalAs(UnmanagedType.LPWStr)] string localeName,
 			[In, Optional] IDWriteNumberSubstitution? numberSubstitution, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 10)] DWRITE_TYPOGRAPHIC_FEATURES[]? features,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 10)] uint[]? featureRangeLengths, uint featureRanges, uint maxGlyphCount,
-			[Out, MarshalAs(UnmanagedType.LPArray, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11))] ushort[] clusterMap,
-			[Out, MarshalAs(UnmanagedType.LPArray, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11))] DWRITE_SHAPING_TEXT_PROPERTIES[] textProps,
-			[Out, MarshalAs(UnmanagedType.LPArray, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11))] ushort[] glyphIndices,
-			[Out, MarshalAs(UnmanagedType.LPArray, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11))] DWRITE_SHAPING_GLYPH_PROPERTIES[] glyphProps, out uint actualGlyphCount);
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] ushort[] clusterMap,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] DWRITE_SHAPING_TEXT_PROPERTIES[] textProps,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] ushort[] glyphIndices,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 11)] DWRITE_SHAPING_GLYPH_PROPERTIES[] glyphProps, out uint actualGlyphCount);
 
 		/// <summary>Places glyphs output from the GetGlyphs method according to the font and the writing system's rendering rules.</summary>
 		/// <param name="textString">

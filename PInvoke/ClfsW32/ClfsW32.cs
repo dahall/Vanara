@@ -1605,7 +1605,7 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.PrepareLogArchive")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool PrepareLogArchive([In] HLOG hLog,
-		[MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLen), SizingMethod.CheckLastError, OutVarName = nameof(pcActualLength))] StringBuilder pszBaseLogFileName,
+		[MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLen), SizingMethod.CheckLastError, OutVarName = nameof(pcActualLength))] StringBuilder? pszBaseLogFileName,
 		[In] int cLen, in CLS_LSN plsnLow, in CLS_LSN plsnHigh, out uint pcActualLength, out ulong poffBaseLogFileData,
 		out ulong pcbBaseLogFileLength, out CLS_LSN plsnBase, out CLS_LSN plsnLast, out CLS_LSN plsnCurrentArchiveTail,
 		out SafeArchiveContext ppvArchiveContext);
@@ -1696,7 +1696,7 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.PrepareLogArchive")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool PrepareLogArchive([In] HLOG hLog,
-		[MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLen), SizingMethod.CheckLastError, OutVarName = nameof(pcActualLength))] StringBuilder pszBaseLogFileName,
+		[MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLen), SizingMethod.CheckLastError, OutVarName = nameof(pcActualLength))] StringBuilder? pszBaseLogFileName,
 		[In] int cLen, [In, Optional] IntPtr plsnLow, [In, Optional] IntPtr plsnHigh, out uint pcActualLength, out ulong poffBaseLogFileData,
 		out ulong pcbBaseLogFileLength, out CLS_LSN plsnBase, out CLS_LSN plsnLast, out CLS_LSN plsnCurrentArchiveTail,
 		out SafeArchiveContext ppvArchiveContext);
