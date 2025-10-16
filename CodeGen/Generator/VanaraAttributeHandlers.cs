@@ -6,7 +6,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Vanara.Generators;
 
-internal delegate void BuildMethodFunc(SourceProductionContext context, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? existing);
+internal delegate void BuildMethodFunc(SourceProductionContext context, Compilation compilation, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? existing);
 
 internal delegate TypeDeclarationSyntax GetContainerTypeFunc(SourceProductionContext context, ParameterSyntax decl);
 

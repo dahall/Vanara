@@ -110,6 +110,8 @@ internal static class Util
 			_ => StructDeclaration(sym.Name),
 		};
 
+	public static Microsoft.CodeAnalysis.TypeInfo GetTypeInfo(this BaseParameterSyntax node, Compilation compilation) => compilation.GetSemanticModel(node.SyntaxTree).GetTypeInfo(node.Type!);
+
 	public static TypeDeclarationSyntax? GetTypeSyntax(this INamedTypeSymbol symbol) => (TypeDeclarationSyntax?)GetSyntax(symbol, n => n is ClassDeclarationSyntax or StructDeclarationSyntax);
 
 	public static bool IsPartial(this INamedTypeSymbol symbol) => symbol.DeclaringSyntaxReferences.Any(sr =>

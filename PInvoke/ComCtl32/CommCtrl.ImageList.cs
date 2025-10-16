@@ -948,12 +948,7 @@ public static partial class ComCtl32
 #if !NETSTANDARD2_0
 	public static TIntf HIMAGELIST_QueryInterface<TIntf>([In] HIMAGELIST himl) => !himl.IsNull ? (TIntf)Marshal.GetTypedObjectForIUnknown((IntPtr)himl, typeof(TIntf)) : throw new ArgumentNullException(nameof(himl));
 #else
-	public static TIntf HIMAGELIST_QueryInterface<TIntf>([In] HIMAGELIST himl)
-	{
-		if (himl.IsNull) throw new ArgumentNullException(nameof(himl));
-		HIMAGELIST_QueryInterface(himl, typeof(TIntf).GUID, out var ppv).ThrowIfFailed();
-		return (TIntf)ppv;
-	}
+	public static TIntf? HIMAGELIST_QueryInterface<TIntf>([In] HIMAGELIST himl) where TIntf : class => HIMAGELIST_QueryInterface(himl, out TIntf? ppv).Succeeded ? ppv : throw new InvalidCastException();
 #endif
 
 	/// <summary>Get an image list handle from an image list interface.</summary>

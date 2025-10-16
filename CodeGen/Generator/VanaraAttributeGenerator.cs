@@ -78,7 +78,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 	static string UniqueName(string n) => $"{n}{uid++}";
 
 	static readonly MethAttrHandler[] methodAttributes = [
-		new("System.Runtime.InteropServices.MarshalAsAttribute", IsParamWithArgs, BuildIUnkMethod, ParentForExtMethod, GetParamMeth), // IUnknown, Interface, LPArray
+		new("System.Runtime.InteropServices.MarshalAsAttribute", IsParamWithArgs, BuildMarshalAsMethod, ParentForExtMethod, GetParamMeth), // IUnknown, Interface, LPArray
 		new("Vanara.PInvoke.IgnoreAttribute", IsParamInNotNewMethod, BuildIgnoreMethod, ParentForExtMethod, GetParamMeth),
 		new("Vanara.PInvoke.SizeDefAttribute", IsParamInNotNewMethod, BuildSizeDefMethod, ParentForExtMethod, GetParamMeth),
 		new("Vanara.PInvoke.AddAsCtorAttribute", IsParamInNotNewStaticMethod, DummyBuilder, GetParamType, GetParamMeth),
@@ -170,7 +170,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				var handler = GetHandler(pa);
 				var methDecl = handler.meth(pa.paramNode);
 				methLookup.TryGetValue(methDecl, out MethodBodyBuilder? methBuilder);
-				try { handler.bodyBuilder(context, pa.paramNode, methDecl, pa.attrDatas, ref methBuilder); }
+				try { handler.bodyBuilder(context, compilation, pa.paramNode, methDecl, pa.attrDatas, ref methBuilder); }
 				catch (Exception ex)
 				{
 					context.ReportError(methDecl, "VANGEN999", "Unknown error: " + Regex.Replace(ex.ToString(), "[\r\n]+", " "));
@@ -237,11 +237,11 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		static MethAttrHandler GetHandler((ParameterSyntax paramNode, ImmutableArray<AttributeData> attrDatas) p) => methodAttributes.First(a => a.AttrName == p.attrDatas.First().AttributeClass?.ToDisplayString());
 	}
 
-	private static void DummyBuilder(SourceProductionContext context, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
+	private static void DummyBuilder(SourceProductionContext context, Compilation compilation, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
 	{
 	}
 
-	private static void BuildSizeDefMethod(SourceProductionContext context, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
+	private static void BuildSizeDefMethod(SourceProductionContext context, Compilation compilation, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
 	{
 		MethodBodyBuilder tmpbuilder = builder ?? new(methodDecl);
 
@@ -500,7 +500,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		}
 	}
 
-	private static void BuildIgnoreMethod(SourceProductionContext context, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
+	private static void BuildIgnoreMethod(SourceProductionContext context, Compilation compilation, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
 	{
 		MethodBodyBuilder tmpbuilder = builder ?? new(methodDecl);
 
@@ -540,16 +540,30 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		builder = tmpbuilder;
 	}
 
-	private static void BuildIUnkMethod(SourceProductionContext context, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
+	[Flags]
+	private enum ModType
 	{
+		In = 1,
+		Out = 2,
+		Ref = 3
+	}
+
+	private static void BuildMarshalAsMethod(SourceProductionContext context, Compilation compilation, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
+	{
+		// Determine if the decl is an in or out or ref param
+		bool isOutParam = decl.Modifiers.Any(SyntaxKind.OutKeyword);
+		ModType modAttr = (decl.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "Out") ? ModType.Out : 0)
+			| (decl.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "In") ? ModType.In : 0);
+		if (modAttr == 0) modAttr = isOutParam ? ModType.Out : ModType.In;
+
 		// Determine if the decl has the MarshalAs attribute with contructor first argument of UnmanagedType.IUnknown or UnmanagedType.IInterface and a named argument of IidParameterIndex
-		if (!ValidateAttr(out string iidParamName))
+		if (!ValidateAttr(out string refParamName, out var unmanagedType))
 			return;
 
 		MethodBodyBuilder tmpbuilder = builder ?? new(methodDecl);
 		var argList = tmpbuilder.parameters;
+		bool paramTypeIsNullable = decl.Type is NullableTypeSyntax || decl.Type?.ToString().EndsWith("?") == true;
 		bool returnIsVoid = tmpbuilder.returnType.ToString() == "void";
-		bool isOutParam = decl.Modifiers.Any(SyntaxKind.OutKeyword);
 
 		const string genericTypeBase = "__TIUnk";
 		const string altArgBase = "__ppv";
@@ -557,42 +571,66 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		string altArg = isOutParam ? UniqueName(altArgBase) : string.Empty;
 
 		// Create the extension method signature, removing this attribute
-		tmpbuilder.typeParameters.Add(TypeParameter(genericType));
-		tmpbuilder.typeConstraints.Add(TypeParameterConstraintClause(IdentifierName(genericType), SingletonSeparatedList<TypeParameterConstraintSyntax>(ClassOrStructConstraint(SyntaxKind.ClassConstraint))));
-		ParameterSyntax newParam = decl.WithType(ParseTypeName(genericType + (decl.Type is not null && decl.Type.ToString().EndsWith("?") ? "?" : "")))
-			.WithoutAttribute("MarshalAs");
+		if (unmanagedType == UnmanagedType.IUnknown)
+		{
+			tmpbuilder.typeParameters.Add(TypeParameter(genericType));
+			tmpbuilder.typeConstraints.Add(TypeParameterConstraintClause(IdentifierName(genericType), SingletonSeparatedList<TypeParameterConstraintSyntax>(ClassOrStructConstraint(SyntaxKind.ClassConstraint))));
+		}
+		ParameterSyntax newParam = unmanagedType switch
+		{
+			UnmanagedType.IUnknown => decl.WithType(ParseTypeName(genericType + (decl.Type is not null && decl.Type.ToString().EndsWith("?") ? "?" : "")))
+				.WithoutAttribute("MarshalAs"),
+			UnmanagedType.Interface => decl.WithoutAttribute("MarshalAs"),
+			_ => decl.WithoutTrivia()
+		};
 		tmpbuilder.parameters.Replace(decl, newParam);
-		tmpbuilder.parameters.Remove(iidParamName);
+		tmpbuilder.parameters.Remove(refParamName);
 
 		// Initialize out param
 		if (isOutParam)
-			tmpbuilder.statements.initOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), MethodBodyBuilder.defaultExpr)));
+		{
+			var expr = ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), MethodBodyBuilder.defaultExpr));
+			if (!paramTypeIsNullable)
+				expr = expr.WithLeadingTrivia(Trivia(NullableDirectiveTrivia(Token(SyntaxKind.DisableKeyword), true))).WithTrailingTrivia(Trivia(NullableDirectiveTrivia(Token(SyntaxKind.RestoreKeyword), true)));
+			tmpbuilder.statements.initOutParams.Add(expr);
+		}
 
 		// Create the invocation expression capturing the return value if the return type is not `void`
-		tmpbuilder.statements.invokeArgs = [.. tmpbuilder.statements.invokeArgs.Select(a => { return a switch
+		tmpbuilder.statements.invokeArgs = [.. tmpbuilder.statements.invokeArgs.Select(a => a switch
 			{
-				var a1 when a1.NameEquals(iidParamName) => Argument(ParseExpression($"typeof({genericType}).GUID")),
+				var a1 when a1.NameEquals(refParamName) => Argument(ParseExpression($"typeof({(unmanagedType == UnmanagedType.IUnknown ? genericType : decl.Type!.ToString().TrimEnd('?'))}).GUID")),
 				var a1 when a1.Expression is IdentifierNameSyntax ins && ins.Identifier.Text == decl.Identifier.Text => isOutParam
 					? Argument(null, MethodBodyBuilder.outToken, DeclarationExpression(IdentifierName("var"), SingleVariableDesignation(Identifier(altArg))))
 					: Argument(IdentifierName(ins.Identifier.Text)),
 				_ => a
-			}; })];
+			})];
 
 		// Create the assignment expression
 		if (isOutParam)
-			tmpbuilder.statements.assignOutParams.Add(ExpressionStatement(AssignmentExpression(
-				SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier),
-				BinaryExpression(SyntaxKind.AsExpression, IdentifierName(altArg), ParseTypeName(genericType)))));
+		{
+			if (unmanagedType == UnmanagedType.IUnknown)
+			{
+				tmpbuilder.statements.assignOutParams.Add(ExpressionStatement(AssignmentExpression(
+					SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier),
+					BinaryExpression(SyntaxKind.AsExpression, IdentifierName(altArg), ParseTypeName(genericType)))));
+			}
+			else
+			{
+				tmpbuilder.statements.assignOutParams.Add(ExpressionStatement(AssignmentExpression(
+					SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), IdentifierName(altArg))));
+			}
+		}
 
 		// Process the xml docs for the method
 		if (tmpbuilder.docs is not null)
 		{
 			// Get the xml node for the IID parameter docs
-			XmlNode? iidNode = tmpbuilder.docs.SelectSingleNode($"//param[@name='{iidParamName}']");
+			XmlNode? iidNode = tmpbuilder.docs.SelectSingleNode($"//param[@name='{refParamName}']");
 			if (iidNode is not null)
 			{
 				// Add the IID parameter docs to the method docs as the value of the typeParam tag
-				tmpbuilder.docs.InsertTypeParamDocAfter(genericType, iidNode.InnerXml);
+				if (unmanagedType == UnmanagedType.IUnknown)
+					tmpbuilder.docs.InsertTypeParamDocAfter(genericType, iidNode.InnerXml);
 
 				// Remove the IID parameter docs
 				iidNode.ParentNode?.RemoveChild(iidNode);
@@ -601,33 +639,56 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 
 		builder = tmpbuilder;
 
-		bool ValidateAttr(out string iidParamName)
+		bool ValidateAttr(out string refParamName, out UnmanagedType unmanagedType)
 		{
-			iidParamName = "";
+			refParamName = "";
+			unmanagedType = 0;
 
-			// Get the iidindex from the attribute
-			var iidindex = -1;
+			// Get the refindex from the attribute
+			var refindex = -1;
 			var attr = decl.GetAttr("MarshalAs");
 			if (attr?.ArgumentList?.Arguments.FirstOrDefault()?.Expression is MemberAccessExpressionSyntax maes &&
-				maes.Expression.ToFullString() == "UnmanagedType" && (maes.Name.ToFullString() == "IUnknown" || maes.Name.ToFullString() == "Interface"))
+				maes.Expression.ToFullString() == "UnmanagedType" && Enum.TryParse(maes.Name.ToFullString(), out unmanagedType))
 			{
-				// Confirm param type is Nullable<object>
-				if (decl.Type?.ToString() is not "object" and not "object?")
+				switch (unmanagedType)
 				{
-					//context.ReportError(decl, "VANGEN021", "The parameter type is not System.Object.");
-					return false;
-				}
+					case UnmanagedType.Interface:
+						if (decl.Type?.ToString() is "object" or "object?")
+						{
+							unmanagedType = UnmanagedType.IUnknown;
+							refindex = GetIndex("IidParameterIndex");
+							break;
+						}
+						else if (decl.Type?.ToString()?.StartsWith("I") ?? false)
+						{
+							refindex = GetIndex("IidParameterIndex");
+							break;
+						}
+						context.ReportError(decl, "VANGEN021", "The parameter type is not System.Object or a named interface.");
+						return false;
 
-				var namedArg = attr.ArgumentList?.Arguments.FirstOrDefault(a => a.NameEquals?.Name.ToString() == "IidParameterIndex");
-				if (namedArg?.Expression is LiteralExpressionSyntax les && les.IsKind(SyntaxKind.NumericLiteralExpression) &&
-					les.Token.Value is int i)
-					iidindex = i;
+					case UnmanagedType.IUnknown:
+						// Confirm param type is Nullable<object>
+						if (decl.Type?.ToString() is not "object" and not "object?")
+							return false;
+
+						refindex = GetIndex("IidParameterIndex");
+						break;
+
+					case UnmanagedType.LPArray:
+					//refindex = GetIndex("SizeParamIndex");
+					//if (refindex == -1 || modAttr != ModType.In)
+					//	return false;
+					//break;
+					default:
+						return false;
+				}
 			}
 
-			// If there's an iidindex, then make sure it points to a valid Guid parameter
-			if (iidindex >= 0)
+			// If there's an refindex, then make sure it points to a valid Guid parameter
+			if (refindex >= 0)
 			{
-				var iidParam = methodDecl.ParameterList.Parameters[iidindex];
+				var iidParam = methodDecl.ParameterList.Parameters[refindex];
 				var paramType = iidParam.Type?.ToString();
 				var hasInModifier = iidParam.Modifiers.Any(SyntaxKind.InKeyword);
 				var hasStructAttribute = !hasInModifier && iidParam.AttributeLists
@@ -635,11 +696,18 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 					.Any(attr => attr.Name.ToFullString() == "MarshalAs" && attr.ArgumentList?.Arguments.FirstOrDefault()?.ToString() == "UnmanagedType.Struct");
 				if ((paramType == "System.Guid" || paramType == "Guid") && (hasInModifier || hasStructAttribute))
 				{
-					iidParamName = iidParam.Identifier.Text;
+					refParamName = iidParam.Identifier.Text;
 					return true;
 				}
 			}
 			return false;
+
+			int GetIndex(string attrNamedArg)
+			{
+				var namedArg = attr.ArgumentList?.Arguments.FirstOrDefault(a => a.NameEquals?.Name.ToString() == attrNamedArg);
+				return namedArg?.Expression is LiteralExpressionSyntax les && les.IsKind(SyntaxKind.NumericLiteralExpression)
+					&& les.Token.Value is int i ? i : -1;
+			}
 		}
 	}
 

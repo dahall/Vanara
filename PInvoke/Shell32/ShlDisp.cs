@@ -6041,6 +6041,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/shell/shellfolderview-popupitemmenu
 		[return: MarshalAs(UnmanagedType.BStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020006)]
+		[SuppressAutoGen]
 		string PopupItemMenu([In, MarshalAs(UnmanagedType.Interface)] FolderItem vItem, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vx, [In, Optional, MarshalAs(UnmanagedType.Struct)] object? vy);
 
 		/// <summary>

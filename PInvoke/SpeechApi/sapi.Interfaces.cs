@@ -77,7 +77,7 @@ public static partial class SpeechApi
 		[DispId(2)]
 		void EndStream([In] int StreamNumber, [In, MarshalAs(UnmanagedType.Struct)] object StreamPosition);
 
-		[DispId(3)]
+		[DispId(3), SuppressAutoGen]
 		void VoiceChange([In] int StreamNumber, [In, MarshalAs(UnmanagedType.Struct)] object StreamPosition, [In, MarshalAs(UnmanagedType.Interface)] SpObjectToken VoiceObjectToken);
 
 		[DispId(4)]

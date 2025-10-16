@@ -885,6 +885,7 @@ public static partial class D2d1
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-d2d1createfactory HRESULT D2D1CreateFactory( D2D1_FACTORY_TYPE
 	// factoryType, REFIID riid, const D2D1_FACTORY_OPTIONS *pFactoryOptions, void **ppIFactory );
 	[PInvokeData("d2d1.h", MSDNShortId = "8c0a685a-8f33-4072-a715-bb423cb44f03")]
+	[SuppressAutoGen]
 	public static HRESULT D2D1CreateFactory<T>(D2D1_FACTORY_TYPE factoryType, [In, Optional] D2D1_FACTORY_OPTIONS? pFactoryOptions, [MarshalAs(UnmanagedType.Interface)] out T? ppIFactory) where T : class
 	{
 		using SafeCoTaskMemStruct<D2D1_FACTORY_OPTIONS> opts = pFactoryOptions;
@@ -916,6 +917,7 @@ public static partial class D2d1
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1/nf-d2d1-d2d1createfactory HRESULT D2D1CreateFactory( D2D1_FACTORY_TYPE
 	// factoryType, REFIID riid, const D2D1_FACTORY_OPTIONS *pFactoryOptions, void **ppIFactory );
 	[PInvokeData("d2d1.h", MSDNShortId = "8c0a685a-8f33-4072-a715-bb423cb44f03")]
+	[SuppressAutoGen]
 	public static HRESULT D2D1CreateFactory<T>(D2D1_FACTORY_TYPE factoryType, [MarshalAs(UnmanagedType.Interface)] out T? ppIFactory) where T : class
 	{
 #pragma warning disable IL2050 // Correctness of COM interop cannot be guaranteed after trimming. Interfaces and interface members might be removed.
