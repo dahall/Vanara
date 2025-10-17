@@ -24,6 +24,7 @@ public static partial class NetApi32
 	// DsAddressToSiteNamesExA( IN LPCSTR ComputerName, IN DWORD EntryCount, IN PSOCKET_ADDRESS SocketAddresses, OUT LPSTR **SiteNames,
 	// OUT LPSTR **SubnetNames );
 	[PInvokeData("dsgetdc.h", MSDNShortId = "60ac6195-6e43-46da-a1e6-74ec989cd0c4")]
+	[SuppressAutoGen]
 	public static IEnumerable<(SOCKET_ADDRESS address, string site, string subnet)> DsAddressToSiteNamesEx(string ComputerName, SOCKET_ADDRESS[] SocketAddresses)
 	{
 		DsAddressToSiteNamesEx(ComputerName, (uint)SocketAddresses.Length, SocketAddresses, out var sites, out var subnets).ThrowIfFailed();

@@ -146,6 +146,11 @@ public static partial class NdfApi
 	public interface INetDiagExtensibleHelper
 	{
 		/// <summary/>
+		/// <param name="celt"></param>
+		/// <param name="rgKeyAttributes"></param>
+		/// <param name="pcelt"></param>
+		/// <param name="prgMatchValues"></param>
+		/// <returns></returns>
 		[PreserveSig]
 		HRESULT ResolveAttributes([In] uint celt, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HELPER_ATTRIBUTE[] rgKeyAttributes,
 			out uint pcelt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out HELPER_ATTRIBUTE[]? prgMatchValues);

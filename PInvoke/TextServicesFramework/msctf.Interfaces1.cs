@@ -1,7 +1,6 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
 using Vanara.Collections;
 using static Vanara.PInvoke.Ole32;
-
 using LPARAM = System.IntPtr;
 using TfClientId = System.UInt32;
 using TfEditCookie = System.UInt32;

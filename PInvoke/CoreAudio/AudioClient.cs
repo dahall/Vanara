@@ -158,6 +158,9 @@ public static partial class CoreAudio
 	public interface IAudioAmbisonicsControl
 	{
 		/// <summary>Undocumented</summary>
+		/// <param name="pAmbisonicsParams"></param>
+		/// <param name="cbAmbisonicsParams"></param>
+		/// <returns></returns>
 		[PreserveSig]
 		HRESULT SetData([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] AMBISONICS_PARAMS[] pAmbisonicsParams,
 			uint cbAmbisonicsParams);

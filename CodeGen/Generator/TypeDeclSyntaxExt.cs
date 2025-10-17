@@ -19,14 +19,15 @@ internal static class TypeDeclarationSyntaxExtensions
 	public static void Remove(this List<ParameterSyntax> values, string name)
 	{
 		var idx = values.FindIndex(t => t.Identifier.Text == name);
-		if (idx < 0) throw new AmbiguousMatchException("The specified item was not found in the list.");
-		values.RemoveAt(idx);
+		if (idx >= 0)
+			values.RemoveAt(idx);
 	}
 
 	public static void Replace<T>(this List<T> values, T match, T replacement) where T : SyntaxNode
 	{
 		var idx = values.FindIndex(t => t.IsEquivalentTo(match));
-		values[idx] = idx >= 0 ? replacement : throw new AmbiguousMatchException("The specified item was not found in the list.");
+		if (idx >= 0)
+			values[idx] = replacement;
 	}
 
 	public static bool IsPartial(this TypeDeclarationSyntax tds) =>

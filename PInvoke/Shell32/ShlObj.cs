@@ -4818,6 +4818,7 @@ public static partial class Shell32
 	// IDataObject *pdtInner, [in] REFIID riid, [out] void **ppv );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHCreateDataObject")]
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+	[SuppressAutoGen]
 	public static extern HRESULT SHCreateDataObject([In, Optional] PIDL pidlFolder, uint cidl,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[]? apidl, [In, Optional] IDataObject? pdtInner,
 		in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 4)] out IDataObject? ppv);
@@ -4875,6 +4876,7 @@ public static partial class Shell32
 	// [in, optional] PCIDLIST_ABSOLUTE pidlFolder, [in] UINT cidl, [in, optional] PCUITEMID_CHILD_ARRAY apidl, [in, optional]
 	// IDataObject *pdtInner, [in] REFIID riid, [out] void **ppv );
 	[PInvokeData("shlobj_core.h", MSDNShortId = "NF:shlobj_core.SHCreateDataObject")]
+	[SuppressAutoGen]
 	public static HRESULT SHCreateDataObject([In, Optional] PIDL? pidlFolder, [In, Optional] IEnumerable<PIDL>? apidl, [In, Optional] IDataObject? pdtInner, out IDataObject? ppv) =>
 		SHCreateDataObject(pidlFolder ?? PIDL.Null, (uint)(apidl?.Count() ?? 0), apidl is null ? null : apidl.Select(p => p.DangerousGetHandle()).ToArray(),
 			pdtInner, typeof(IDataObject).GUID, out ppv);

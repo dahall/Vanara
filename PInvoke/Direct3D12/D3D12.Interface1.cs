@@ -2394,7 +2394,7 @@ public static partial class D3D12
 		// D3D12_RESOURCE_DESC *pResourceDescs );
 		[PreserveSig]
 		D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo(uint visibleMask, int numResourceDescs,
-			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_RESOURCE_DESC[] pResourceDescs);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC[] pResourceDescs);
 
 		/// <summary>
 		/// Divulges the equivalent custom heap properties that are used for non-custom heap types, based on the adapter's architectural properties.
@@ -4433,7 +4433,7 @@ public static partial class D3D12
 		// D3D12_RESOURCE_DESC *pResourceDescs );
 		[PreserveSig]
 		new D3D12_RESOURCE_ALLOCATION_INFO GetResourceAllocationInfo(uint visibleMask, int numResourceDescs,
-			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] D3D12_RESOURCE_DESC[] pResourceDescs);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_DESC[] pResourceDescs);
 
 		/// <summary>
 		/// Divulges the equivalent custom heap properties that are used for non-custom heap types, based on the adapter's architectural properties.

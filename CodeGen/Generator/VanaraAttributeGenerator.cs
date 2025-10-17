@@ -41,6 +41,8 @@
 
 using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -78,11 +80,11 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 	static string UniqueName(string n) => $"{n}{uid++}";
 
 	static readonly MethAttrHandler[] methodAttributes = [
-		new("System.Runtime.InteropServices.MarshalAsAttribute", IsParamWithArgs, BuildMarshalAsMethod, ParentForExtMethod, GetParamMeth), // IUnknown, Interface, LPArray
-		new("Vanara.PInvoke.IgnoreAttribute", IsParamInNotNewMethod, BuildIgnoreMethod, ParentForExtMethod, GetParamMeth),
-		new("Vanara.PInvoke.SizeDefAttribute", IsParamInNotNewMethod, BuildSizeDefMethod, ParentForExtMethod, GetParamMeth),
-		new("Vanara.PInvoke.AddAsCtorAttribute", IsParamInNotNewStaticMethod, DummyBuilder, GetParamType, GetParamMeth),
-		new("Vanara.PInvoke.AddAsMemberAttribute", IsParamInNotNewStaticMethod, DummyBuilder, GetParamType, GetParamMeth),
+		new("System.Runtime.InteropServices.MarshalAsAttribute", IsParamInNestedType, BuildMarshalAsMethod, ParentForExtMethod, GetParamMeth), // IUnknown, Interface, LPArray
+		new("Vanara.PInvoke.IgnoreAttribute", IsParamInMethod, BuildIgnoreMethod, ParentForExtMethod, GetParamMeth),
+		new("Vanara.PInvoke.SizeDefAttribute", IsParamInMethod, BuildSizeDefMethod, ParentForExtMethod, GetParamMeth),
+		new("Vanara.PInvoke.AddAsCtorAttribute", IsParamInStaticMethod, DummyBuilder, GetParamType, GetParamMeth),
+		new("Vanara.PInvoke.AddAsMemberAttribute", IsParamInStaticMethod, DummyBuilder, GetParamType, GetParamMeth),
 		//("Vanara.PInvoke.SuppressAutoGenAttribute", static (n, t) => n is MethodDeclarationSyntax),
 	];
 
@@ -98,7 +100,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 	{
 		// Process each attribute in the methodAttributes array
 		var attributeProviders = methodAttributes
-			.Select(attr => context.SyntaxProvider.ForAttributeWithMetadataName(attr.AttrName, (n, t) => attr.Validator(n, t) && NoSuppress(attr.meth((ParameterSyntax)n)), (ctx, _) => ((ParameterSyntax)ctx.TargetNode, ctx.Attributes)).Collect())
+			.Select(attr => context.SyntaxProvider.ForAttributeWithMetadataName(attr.AttrName, (n, t) => attr.Validator(n, t), (ctx, _) => ((ParameterSyntax)ctx.TargetNode, ctx.Attributes)).Collect())
 			.ToArray();
 
 		// Process type-level methodAttributes (those without method transforms)
@@ -128,8 +130,6 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			GenerateCode(spc, value.Left.Left.Left.Left.Left.Left.Left.Left, value.Left.Left.Left.Left.Left.Left.Left.Right,
 			value.Right.AddRange(value.Left.Right).AddRange(value.Left.Left.Right).AddRange(value.Left.Left.Left.Right).AddRange(value.Left.Left.Left.Left.Right),
 			value.Left.Left.Left.Left.Left.Right.AddRange(value.Left.Left.Left.Left.Left.Left.Right)));
-
-		static bool NoSuppress(MethodDeclarationSyntax ms) => !ms.Modifiers.Any(SyntaxKind.NewKeyword) && !ms.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString().Contains("SuppressAutoGen"));
 	}
 
 	private static void GenerateCode(SourceProductionContext context, Compilation compilation, ImmutableArray<AdditionalText> addtlFiles, ImmutableArray<(ParameterSyntax paramNode, ImmutableArray<AttributeData> attrDatas)> paramNodes,
@@ -187,7 +187,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				continue;
 
 			// Add distinct using directives from 'usings' to the compilation unit
-			usings = [.. usings.DistinctBy(u => u.Name?.ToString())];
+			usings = [.. usings.DistinctBy(u => u.Alias?.ToString() ?? u.Name?.ToString())];
 
 			// Build new syntax tree, starting with nsDecl, adding any containing types with their modifiers, and finally the typeDecl with the new values from methLookup.Values
 			SyntaxNode topDecl = typeDecl.WithMembers(List<MemberDeclarationSyntax>(methLookup.Values.Select(bb => bb.ToMethod())));
@@ -581,6 +581,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			UnmanagedType.IUnknown => decl.WithType(ParseTypeName(genericType + (decl.Type is not null && decl.Type.ToString().EndsWith("?") ? "?" : "")))
 				.WithoutAttribute("MarshalAs"),
 			UnmanagedType.Interface => decl.WithoutAttribute("MarshalAs"),
+			UnmanagedType.LPArray when modAttr is ModType.In => decl.WithoutAttribute("MarshalAs"),
 			_ => decl.WithoutTrivia()
 		};
 		tmpbuilder.parameters.Replace(decl, newParam);
@@ -598,7 +599,16 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		// Create the invocation expression capturing the return value if the return type is not `void`
 		tmpbuilder.statements.invokeArgs = [.. tmpbuilder.statements.invokeArgs.Select(a => a switch
 			{
-				var a1 when a1.NameEquals(refParamName) => Argument(ParseExpression($"typeof({(unmanagedType == UnmanagedType.IUnknown ? genericType : decl.Type!.ToString().TrimEnd('?'))}).GUID")),
+				var a1 when a1.NameEquals(refParamName) => unmanagedType switch
+				{
+					UnmanagedType.IUnknown => Argument(ParseExpression($"typeof({genericType}).GUID")),
+					UnmanagedType.Interface => Argument(ParseExpression($"typeof({decl.Type!.ToString().TrimEnd('?')}).GUID")),
+					UnmanagedType.LPArray when modAttr is ModType.In && methodDecl.ParameterList.Parameters.FirstOrDefault(p => p.Identifier.Text == refParamName) is ParameterSyntax refParam =>
+						paramTypeIsNullable
+						? Argument(ParseExpression($"({refParam.Type})Convert.ChangeType({decl.Identifier.Text}?.Length ?? 0, typeof({refParam.Type}))"))
+						: Argument(ParseExpression($"({refParam.Type})Convert.ChangeType({decl.Identifier.Text}.Length, typeof({refParam.Type}))")),
+					_ => a1,
+				},
 				var a1 when a1.Expression is IdentifierNameSyntax ins && ins.Identifier.Text == decl.Identifier.Text => isOutParam
 					? Argument(null, MethodBodyBuilder.outToken, DeclarationExpression(IdentifierName("var"), SingleVariableDesignation(Identifier(altArg))))
 					: Argument(IdentifierName(ins.Identifier.Text)),
@@ -624,16 +634,22 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		// Process the xml docs for the method
 		if (tmpbuilder.docs is not null)
 		{
-			// Get the xml node for the IID parameter docs
-			XmlNode? iidNode = tmpbuilder.docs.SelectSingleNode($"//param[@name='{refParamName}']");
-			if (iidNode is not null)
+			// Get the xml node for the ref parameter docs
+			XmlNode? refNode = tmpbuilder.docs.SelectSingleNode($"//param[@name='{refParamName}']");
+			if (refNode is not null)
 			{
-				// Add the IID parameter docs to the method docs as the value of the typeParam tag
+				// Add the ref parameter docs to the method docs as the value of the typeParam tag
 				if (unmanagedType == UnmanagedType.IUnknown)
-					tmpbuilder.docs.InsertTypeParamDocAfter(genericType, iidNode.InnerXml);
+					tmpbuilder.docs.InsertTypeParamDocAfter(genericType, refNode.InnerXml);
 
-				// Remove the IID parameter docs
-				iidNode.ParentNode?.RemoveChild(iidNode);
+				// Remove the ref parameter docs
+				refNode.ParentNode?.RemoveChild(refNode);
+
+				// Remove the "<paramref name="refParamName"/>" tags from the entire document
+				XmlElement replElem = tmpbuilder.docs.CreateElement("c");
+				replElem.InnerText = refParamName;
+				foreach (var n in tmpbuilder.docs.SelectNodes($"//paramref[@name='{refParamName}']").Cast<XmlElement>().Where(n => n.ParentNode is not null))
+					n.ParentNode?.ReplaceChild(replElem, n);
 			}
 		}
 
@@ -676,25 +692,36 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 						break;
 
 					case UnmanagedType.LPArray:
-					//refindex = GetIndex("SizeParamIndex");
-					//if (refindex == -1 || modAttr != ModType.In)
-					//	return false;
-					//break;
+						refindex = GetIndex("SizeParamIndex");
+						if (refindex == -1 || modAttr != ModType.In)
+							return false;
+						break;
+
 					default:
 						return false;
 				}
 			}
 
-			// If there's an refindex, then make sure it points to a valid Guid parameter
+			// If there's an refindex, then make sure it points to a valid parameter
 			if (refindex >= 0)
 			{
 				var iidParam = methodDecl.ParameterList.Parameters[refindex];
 				var paramType = iidParam.Type?.ToString();
-				var hasInModifier = iidParam.Modifiers.Any(SyntaxKind.InKeyword);
-				var hasStructAttribute = !hasInModifier && iidParam.AttributeLists
-					.SelectMany(al => al.Attributes)
-					.Any(attr => attr.Name.ToFullString() == "MarshalAs" && attr.ArgumentList?.Arguments.FirstOrDefault()?.ToString() == "UnmanagedType.Struct");
-				if ((paramType == "System.Guid" || paramType == "Guid") && (hasInModifier || hasStructAttribute))
+				// For interfaces, confirm param type is Guid
+				if (unmanagedType is UnmanagedType.IUnknown or UnmanagedType.Interface)
+				{
+					var hasInModifier = iidParam.Modifiers.Any(SyntaxKind.InKeyword);
+					var hasStructAttribute = !hasInModifier && iidParam.AttributeLists
+						.SelectMany(al => al.Attributes)
+						.Any(attr => attr.Name.ToFullString() == "MarshalAs" && attr.ArgumentList?.Arguments.FirstOrDefault()?.ToString() == "UnmanagedType.Struct");
+					if ((paramType == "System.Guid" || paramType == "Guid") && (hasInModifier || hasStructAttribute))
+					{
+						refParamName = iidParam.Identifier.Text;
+						return true;
+					}
+				}
+				// For LPArray, type is integral so pass along
+				else if (unmanagedType == UnmanagedType.LPArray)
 				{
 					refParamName = iidParam.Identifier.Text;
 					return true;
@@ -715,18 +742,27 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 
 	private static TypeDeclarationSyntax GetParamType(SourceProductionContext context, ParameterSyntax decl) => GetFirstTypeParent(context, decl);
 
-	private static bool IsParamInNotNewStaticMethod(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
-		syntaxNode is ParameterSyntax ps && ps.Parent?.Parent is MethodDeclarationSyntax ms && !ms.Modifiers.Any(SyntaxKind.NewKeyword) && ms.Modifiers.Any(SyntaxKind.StaticKeyword);
+	// Confirm param is in a method is not new or unsafe and does not have SuppressAutoGen attribute
+	private static bool IsParamInMethod(SyntaxNode syntaxNode, CancellationToken cancellationToken, out MethodDeclarationSyntax? ms)
+	{
+		ms = syntaxNode is ParameterSyntax ps && ps.Parent?.Parent is MethodDeclarationSyntax mds
+			&& !mds.Modifiers.Any(SyntaxKind.UnsafeKeyword) && !mds.Modifiers.Any(SyntaxKind.NewKeyword)
+			&& !mds.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString().Contains("SuppressAutoGen")) ? mds : null;
+		return ms is not null;
+	}
 
-	private static bool IsParamInNotNewMethod(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
-		syntaxNode is ParameterSyntax ps && ps.Parent?.Parent is MethodDeclarationSyntax ms && !ms.Modifiers.Any(SyntaxKind.NewKeyword);
+	private static bool IsParamInMethod(SyntaxNode syntaxNode, CancellationToken cancellationToken) => IsParamInMethod(syntaxNode, cancellationToken, out _);
 
-	private static bool IsParamWithArgs(SyntaxNode syntaxNode, CancellationToken cancellationToken) => syntaxNode is ParameterSyntax ps &&
-		ps.Parent?.Parent is MethodDeclarationSyntax ms && !ms.Modifiers.Any(SyntaxKind.NewKeyword) &&
-		(ms?.Parent is ClassDeclarationSyntax cs && cs.IsPartial() || ms?.Parent is InterfaceDeclarationSyntax && ms?.Parent?.Parent is ClassDeclarationSyntax ccs && ccs.IsPartial());
+	private static bool IsParamInStaticMethod(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
+		IsParamInMethod(syntaxNode, cancellationToken, out var ms) && ms!.Modifiers.Any(SyntaxKind.StaticKeyword);
+
+	private static bool IsParamInNestedType(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
+		IsParamInMethod(syntaxNode, cancellationToken, out var ms) &&
+		((ms?.Parent is ClassDeclarationSyntax cs && cs.IsPartial() && ms.Modifiers.Any(SyntaxKind.StaticKeyword) && ms.Modifiers.Any(SyntaxKind.ExternKeyword)) ||
+		(ms?.Parent is InterfaceDeclarationSyntax && ms?.Parent?.Parent is ClassDeclarationSyntax ccs && ccs.IsPartial()));
 
 	private static bool IsPartialType(SyntaxNode syntaxNode, CancellationToken cancellationToken) => syntaxNode is TypeDeclarationSyntax tds && tds.IsPartial();
-	
+
 	private static TypeDeclarationSyntax ParentForExtMethod(SourceProductionContext context, ParameterSyntax decl)
 	{
 		var parentClass = decl.Parent?.Parent?.Parent is ClassDeclarationSyntax cs ? cs : (decl.Parent?.Parent?.Parent is InterfaceDeclarationSyntax && decl.Parent?.Parent?.Parent?.Parent is ClassDeclarationSyntax ccs ? ccs : null);

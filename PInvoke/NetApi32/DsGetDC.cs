@@ -366,6 +366,7 @@ public static partial class NetApi32
 	// DSGETDCAPI DWORD DsAddressToSiteNamesExW( IN LPCWSTR ComputerName, IN DWORD EntryCount, IN PSOCKET_ADDRESS SocketAddresses, OUT LPWSTR **SiteNames, OUT LPWSTR **SubnetNames );
 	[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsgetdc.h", MSDNShortId = "60ac6195-6e43-46da-a1e6-74ec989cd0c4")]
+	[SuppressAutoGen]
 	public static extern Win32Error DsAddressToSiteNamesEx(string ComputerName, uint EntryCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOCKET_ADDRESS[] SocketAddresses, out SafeNetApiBuffer SiteNames, out SafeNetApiBuffer SubnetNames);
 
 	/// <summary>

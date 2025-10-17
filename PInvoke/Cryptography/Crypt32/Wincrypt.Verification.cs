@@ -250,7 +250,7 @@ public static partial class Crypt32
 		CERT_CHAIN_STRONG_SIGN_DISABLE_END_CHECK_FLAG = 0x00000001,
 	}
 
-	/// <summary>Flags used by <see cref="CertCreateCTLEntryFromCertificateContextProperties"/>.</summary>
+	/// <summary>Flags used by <see cref="CertCreateCTLEntryFromCertificateContextProperties(PCCERT_CONTEXT, uint, CRYPT_ATTRIBUTE[], CertCreateCTLEntryFlags, IntPtr, IntPtr, ref uint)"/>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "90ac512f-3cbe-4543-9b34-8e384f730cfe")]
 	[Flags]
 	public enum CertCreateCTLEntryFlags
@@ -305,7 +305,7 @@ public static partial class Crypt32
 		CMSG_ENCODE_HASHED_SUBJECT_IDENTIFIER_FLAG = 0x2,
 	}
 
-	/// <summary>Flags for <see cref="CryptMsgGetAndVerifySigner"/>.</summary>
+	/// <summary>Flags for <see cref="CryptMsgGetAndVerifySigner(HCRYPTMSG, uint, HCERTSTORE[], CryptMsgSignerFlags, out SafePCCERT_CONTEXT, ref uint)"/>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "380c9cf3-27a2-4354-b1c8-97cec33f4e44")]
 	[Flags]
 	public enum CryptMsgSignerFlags

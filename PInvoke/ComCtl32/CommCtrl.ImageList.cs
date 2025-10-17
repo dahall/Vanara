@@ -2550,7 +2550,7 @@ public static partial class ComCtl32
 	{
 		/// <summary>Gets the IImageList interface for this handle.</summary>
 		/// <value>The interface.</value>
-		public IImageList Interface => HIMAGELIST_QueryInterface<IImageList>(handle);
+		public IImageList Interface => HIMAGELIST_QueryInterface<IImageList>(handle)!;
 
 		/// <summary>Gets a safe HIMAGELIST handle from an <see cref="IImageList"/> instance.</summary>
 		/// <param name="iil">An IImageList object.</param>

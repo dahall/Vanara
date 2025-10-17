@@ -120,7 +120,7 @@ public static partial class NetApi32
 		/// <inheritdoc/>
 		public override string? ToString() => StringHelper.GetString(handle);
 
-		/// <summary>Extracts a list of strings. Used by <see cref="DsAddressToSiteNames"/>.</summary>
+		/// <summary>Extracts a list of strings. Used by <see cref="DsAddressToSiteNamesEx(string, uint, Ws2_32.SOCKET_ADDRESS[], out SafeNetApiBuffer, out SafeNetApiBuffer)"/>.</summary>
 		/// <param name="count">The number of elements in the list.</param>
 		/// <returns>The list of strings.</returns>
 		public IEnumerable<string?> ToStringEnum(int count) => handle.ToStringEnum(count);

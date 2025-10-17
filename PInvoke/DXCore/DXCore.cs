@@ -2302,65 +2302,6 @@ public static partial class DXCore
 	}
 
 	/// <summary>
-	/// Generates a list of adapter objects representing the current adapter state of the system, and meeting the criteria specified. For
-	/// programming guidance, and code examples, see <c>Using DXCore to enumerate adapters</c>.
-	/// </summary>
-	/// <typeparam name="T">The type of the interface that you wish to be returned in ppvAdapterList. This is expected to be IDXCoreAdapterList.</typeparam>
-	/// <param name="factory">The <see cref="IDXCoreAdapterFactory"/> instance.</param>
-	/// <param name="filterAttributes">
-	/// An array of adapter attribute GUIDs. For a list of attribute GUIDs, see DXCore adapter attribute GUIDs. At least one GUID must be
-	/// provided. In the case that more than one GUID is provided in the array, only adapters that meet all of the requested attributes will
-	/// be included in the returned list.
-	/// </param>
-	/// <param name="ppvAdapterList">
-	/// The address of a pointer to an interface with the IID specified in the riid parameter. Upon successful return, *ppvAdapterList (the
-	/// dereferenced address) contains a pointer to the adapter list created.
-	/// </param>
-	/// <returns>
-	/// <para>Type: <b><c>HRESULT</c></b></para>
-	/// <para>If the function succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <c><b>HRESULT</b></c><c>error code</c>.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <description>Return value</description>
-	/// <description>Description</description>
-	/// </listheader>
-	/// <item>
-	/// <description>E_INVALIDARG</description>
-	/// <description>
-	/// <code>nullptr</code>
-	/// was provided for <c>filterAttributes</c>, or 0 was provided for <c>numAttributes</c>.
-	/// </description>
-	/// </item>
-	/// <item>
-	/// <description>E_NOINTERFACE</description>
-	/// <description>An invalid value was provided for <c>riid</c>.</description>
-	/// </item>
-	/// <item>
-	/// <description>E_POINTER</description>
-	/// <description>
-	/// <code>nullptr</code>
-	/// was provided for <c>ppvAdapterList</c>.
-	/// </description>
-	/// </item>
-	/// </list>
-	/// </returns>
-	/// <remarks>
-	/// Even if no adapters are found, as long as the arguments are valid, <b>CreateAdapterList</b> creates a valid
-	/// <c>IDXCoreAdapterList</c> object, and returns <b>S_OK</b>. Once generated, the adapters in this specific list won't change. But the
-	/// list will be considered stale if one of the adapters later becomes invalid, or if a new adapter arrives that meets the provided
-	/// filter criteria. The list returned by <b>CreateAdapterList</b> is not ordered in any particular way, but the ordering of a list is
-	/// consistent across multiple calls, and even across operating system restarts. The ordering may change upon system configuration
-	/// changes, including the addition or removal of an adapter, or a driver update on an existing adapter. You can register for these
-	/// changes with <c>IDXCoreAdapterFactory::RegisterEventNotification</c> using the notification type <b>DXCoreNotificationType.AdapterListStale</b>.
-	/// </remarks>
-	public static HRESULT CreateAdapterList<T>(this IDXCoreAdapterFactory factory, Guid[] filterAttributes, out T? ppvAdapterList) where T : class
-	{
-		var hr = factory.CreateAdapterList(filterAttributes.Length, filterAttributes, typeof(T).GUID, out var ppv);
-		ppvAdapterList = (T?)ppv;
-		return hr;
-	}
-
-	/// <summary>
 	/// Creates a DXCore adapter factory, which you can use to generate further DXCore objects. For programming guidance, and code examples,
 	/// see Using DXCore to enumerate adapters.
 	/// </summary>

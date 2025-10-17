@@ -68,7 +68,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public delegate bool PFN_CRYPT_ENUM_OID_INFO(PCCRYPT_OID_INFO pInfo, [In, Out, Optional] IntPtr pvArg);
 
-	/// <summary>Flags for <see cref="CryptInstallOIDFunctionAddress"/>.</summary>
+	/// <summary>Flags for <see cref="CryptInstallOIDFunctionAddress(HINSTANCE, CertEncodingType, string, uint, CRYPT_OID_FUNC_ENTRY[], CryptInstallOIDFuncFlags)"/>.</summary>
 	[PInvokeData("wincrypt.h", MSDNShortId = "934e8278-0e0b-4402-a2b6-ff1e913d54c9")]
 	[Flags]
 	public enum CryptInstallOIDFuncFlags

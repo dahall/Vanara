@@ -119,6 +119,13 @@ namespace Vanara.PInvoke
 		//public static void GoodSizeDef12([SizeDef("sz", SizingMethod.Query | SizingMethod.Bytes)] int[]? arr, [Range(0, 50)] ref int sz);
 		//public static void GoodSizeDef13([SizeDef("sz", SizingMethod.Query, OutVarName = "lenReq")] int[]? arr, [Range(0, 50)] int sz, out int lenReq);
 
+		/// <summary>Gets the object.</summary>
+		/// <param name="p1">The p1.</param>
+		/// <param name="p2">The p2.</param>
+		/// <param name="p3">The p3.</param>
+		/// <returns>The ret.</returns>
+		[DllImport("test32.dll")]
+		public static extern bool GoodLPArray(object? p1, uint p2, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] long[] p3);
 	}
 }
 
@@ -411,6 +418,11 @@ namespace Vanara.PInvoke
 			// Get out params
 			p1 = __p1;
 			// Return
+			return ret;
+		}
+		public static bool GoodLPArray(object? p1, long[] p3)
+		{
+			var ret = GoodLPArray(p1, Convert.ChangeType(p3?.Length ?? 0, typeof(uint)), p3);
 			return ret;
 		}
 
