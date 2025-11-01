@@ -716,7 +716,7 @@ public static partial class Kernel32
 	// VOID WINAPI SetThreadpoolWait( _Inout_ PTP_WAIT pwa, _In_opt_ HANDLE h, _In_opt_ PFILETIME pftTimeout); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686273(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686273")]
-	public static extern void SetThreadpoolWait([In, Out, AddAsMember] PTP_WAIT pwa, SafeSyncHandle h, [In, Optional] PFILETIME? pftTimeout);
+	public static extern void SetThreadpoolWait([In, Out] PTP_WAIT pwa, SafeSyncHandle h, [In, Optional] PFILETIME? pftTimeout);
 
 	/// <summary>
 	/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
@@ -749,7 +749,7 @@ public static partial class Kernel32
 	// VOID WINAPI SetThreadpoolWait( _Inout_ PTP_WAIT pwa, _In_opt_ HANDLE h, _In_opt_ PFILETIME pftTimeout); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686273(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686273")]
-	public static extern void SetThreadpoolWait([In, Out, AddAsMember] PTP_WAIT pwa, [Optional] IntPtr h, [Optional] IntPtr pftTimeout);
+	public static extern void SetThreadpoolWait([In, Out] PTP_WAIT pwa, [Optional] IntPtr h, [Optional] IntPtr pftTimeout);
 
 	/// <summary>
 	/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
@@ -788,7 +788,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Threadpoolapiset.h", MSDNShortId = "mt186618")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadpoolWaitEx([In, Out, AddAsMember] PTP_WAIT pwa, SafeSyncHandle h, [In, Optional] PFILETIME? pftTimeout, IntPtr Reserved = default);
+	public static extern bool SetThreadpoolWaitEx([In, Out, AddAsMember] PTP_WAIT pwa, SafeSyncHandle h, [In, Optional] PFILETIME? pftTimeout, [Ignore] IntPtr Reserved = default);
 
 	/// <summary>
 	/// Sets the wait object—replacing the previous wait object, if any. A worker thread calls the wait object's callback function after
@@ -827,7 +827,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Threadpoolapiset.h", MSDNShortId = "mt186618")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetThreadpoolWaitEx([In, Out, AddAsMember] PTP_WAIT pwa, [Optional] IntPtr h, [In, Optional] PFILETIME? pftTimeout, IntPtr Reserved = default);
+	public static extern bool SetThreadpoolWaitEx([In, Out, AddAsMember] PTP_WAIT pwa, [Optional] IntPtr h, [In, Optional] PFILETIME? pftTimeout, [Ignore] IntPtr Reserved = default);
 
 	/// <summary>
 	/// Notifies the thread pool that I/O operations may possibly begin for the specified I/O completion object. A worker thread calls

@@ -422,7 +422,7 @@ public static partial class Kernel32
 	// https://docs.microsoft.com/en-us/windows/win32/api/ioringapi/nf-ioringapi-closeioring HRESULT CloseIoRing( HIORING ioRing );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ioringapi.h", MSDNShortId = "NF:ioringapi.CloseIoRing", MinClient = PInvokeClient.Windows11)]
-	public static extern HRESULT CloseIoRing([In, AddAsMember] HIORING ioRing);
+	public static extern HRESULT CloseIoRing([In] HIORING ioRing);
 
 	/// <summary>Creates a new instance of an I/O ring submission/completion queue pair and returns a handle for referencing the IORING.</summary>
 	/// <param name="ioringVersion">

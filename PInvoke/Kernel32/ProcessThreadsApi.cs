@@ -2685,7 +2685,6 @@ public static partial class Kernel32
 	/// </remarks>
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683182")]
-	[return: AddAsCtor]
 	public static extern HTHREAD GetCurrentThread();
 
 	/// <summary>
@@ -7854,6 +7853,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a process that releases a created HPROCESS instance at disposal using CloseHandle.</summary>
 	[AutoSafeHandle(null, typeof(HPROCESS), typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"Process|Ex\b", "")]
 	public partial class SafeHPROCESS
 	{
 		/// <summary>Gets a handle to the current process that can be used across processes.</summary>
@@ -7863,6 +7863,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a thread that releases a created HTHREAD instance at disposal using CloseHandle.</summary>
 	[AutoSafeHandle(null, typeof(HTHREAD), typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"Thread|Ex\b", "")]
 	public partial class SafeHTHREAD
 	{
 		/// <summary>Gets a handle to the current thread that can be used across processes.</summary>

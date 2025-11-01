@@ -1717,7 +1717,7 @@ public static partial class Kernel32
 	/// Receives the path. This path does not end with a backslash unless the system directory is the root directory. For example, if the
 	/// system directory is named Windows\System32 on drive C, the path of the system directory retrieved by this function is C:\Windows\System32.
 	/// </returns>
-	public static string GetSystemDirectory() => Win32Error.ThrowLastErrorIfFalse(GetSystemDirectory(out var buf) != 0) ? buf! : "";
+	public static string GetSystemDirectory() => CallMethodWithStrBuf(GetSystemDirectory, (uint)MAX_PATH, out var sysDir) != 0 ? sysDir : throw Win32Error.GetLastError().GetException()!;
 
 	/// <summary>Retrieves the specified firmware table from the firmware table provider.</summary>
 	/// <param name="FirmwareTableProviderSignature">

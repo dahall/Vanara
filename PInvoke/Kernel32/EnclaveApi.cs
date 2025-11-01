@@ -185,6 +185,7 @@ public static partial class Kernel32
 	// _In_ DWORD flEnclaveType, _In_ LPCVOID lpEnclaveInformation, _In_ DWORD dwInfoLength, _Out_opt_ LPDWORD lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592866(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592866")]
+	[return: AddAsCtor]
 	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SizeT dwSize, [Optional] SizeT dwInitialCommittment,
 		EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_SGX lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
 
@@ -268,6 +269,7 @@ public static partial class Kernel32
 	// _In_ DWORD flEnclaveType, _In_ LPCVOID lpEnclaveInformation, _In_ DWORD dwInfoLength, _Out_opt_ LPDWORD lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592866(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592866")]
+	[return: AddAsCtor]
 	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SizeT dwSize, [Optional] SizeT dwInitialCommittment,
 		EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_VBS lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
 
@@ -1052,5 +1054,6 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for an enclave handle that is disposed using <see cref="DeleteEnclave(IntPtr)"/>.</summary>
 	[AutoSafeHandle("DeleteEnclave(handle)", null, typeof(SafeHANDLE))]
+	[AdjustAutoMethodNamePattern("Enclave", "")]
 	public partial class SafeEnclaveHandle { }
 }

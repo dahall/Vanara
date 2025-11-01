@@ -497,7 +497,7 @@ public static partial class Kernel32
 	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-registerwaitforsingleobject
 	// BOOL RegisterWaitForSingleObject( PHANDLE phNewWaitObject, HANDLE hObject, WAITORTIMERCALLBACK Callback, PVOID Context, ULONG dwMilliseconds, ULONG dwFlags );
 	[PInvokeData("winbase.h", MSDNShortId = "d0cd8b28-6e20-449a-94dd-cca2be46b812")]
-	public static bool RegisterWaitForSingleObject(out SafeRegisteredWaitHandle phNewWaitObject, ISyncHandle hObject, WaitOrTimerCallback Callback, IntPtr Context = default, uint dwMilliseconds = INFINITE, WT dwFlags = 0) =>
+	public static bool RegisterWaitForSingleObject([AddAsCtor] out SafeRegisteredWaitHandle phNewWaitObject, ISyncHandle hObject, WaitOrTimerCallback Callback, IntPtr Context = default, uint dwMilliseconds = INFINITE, WT dwFlags = 0) =>
 		RegisterWaitForSingleObject(out phNewWaitObject, hObject?.DangerousGetHandle() ?? IntPtr.Zero, Callback, Context, dwMilliseconds, dwFlags);
 
 	/// <summary>Gets a value that combines <see cref="WT"/> flags values with a new maximum threadpool thread count limit.</summary>

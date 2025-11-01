@@ -863,6 +863,7 @@ public static partial class Kernel32
 	// LPSECURITY_ATTRIBUTES lpJobAttributes, LPCSTR lpName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "ca6a044f-67ed-4a9c-9aeb-69dd77652854")]
+	[return: AddAsCtor]
 	public static extern SafeHJOB CreateJobObject([In, Optional] SECURITY_ATTRIBUTES? lpJobAttributes, [In, Optional] string? lpName);
 
 	/// <summary>
@@ -925,6 +926,7 @@ public static partial class Kernel32
 	// HANDLE WINAPI OpenJobObject( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandles, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684312(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684312")]
+	[return: AddAsCtor]
 	public static extern SafeHJOB OpenJobObject(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, string lpName);
 
 	/// <summary>Retrieves limit and job state information from the job object.</summary>

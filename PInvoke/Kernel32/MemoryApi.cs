@@ -3882,7 +3882,7 @@ public static partial class Kernel32
 	// BOOL WINAPI VirtualProtectFromApp( _In_ PVOID Address, _In_ SIZE_T Size, _In_ ULONG NewProtection, _Out_ PULONG OldProtection);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("MemoryApi.h", MSDNShortId = "mt169846")]
-	public static extern bool VirtualProtectFromApp([In, AddAsMember] IntPtr Address, SizeT Size, MEM_PROTECTION NewProtection, [Out] out MEM_PROTECTION OldProtection);
+	public static extern bool VirtualProtectFromApp([In] IntPtr Address, SizeT Size, MEM_PROTECTION NewProtection, [Out] out MEM_PROTECTION OldProtection);
 
 	/// <summary>
 	/// <para>Retrieves information about a range of pages in the virtual address space of the calling process.</para>
@@ -4201,7 +4201,7 @@ public static partial class Kernel32
 	}
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HSECTION"/> that is disposed using <see cref="CloseHandle"/>.</summary>
-	[AutoSafeHandle(null, typeof(HSECTION), typeof(SafeKernelHandle))]
+	[AutoSafeHandle(null, typeof(HSECTION), typeof(SafeKernelHandle)), AdjustAutoMethodNamePattern("2|3|Ex", "")]
 	public partial class SafeHSECTION { }
 
 	/// <summary>

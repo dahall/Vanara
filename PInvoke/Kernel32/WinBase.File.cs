@@ -1732,9 +1732,8 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	/// <remarks>
-	/// An application can determine whether a volume is compressed by calling <see cref="GetVolumeInformation(string, out string, out uint,
-	/// out uint, out FileSystemFlags, out string)"/>, then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed
-	/// to by that function's lpFileSystemFlags parameter.
+	/// An application can determine whether a volume is compressed by calling <c>GetVolumeInformationByHandle</c>, then checking the status of the
+	/// FS_VOL_IS_COMPRESSED flag in the DWORD value pointed to by that function's lpFileSystemFlags parameter.
 	/// <para>
 	/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse file,
 	/// the value obtained is the actual file size, the same as the value returned by a call to GetFileSize.
@@ -1769,8 +1768,7 @@ public static partial class Kernel32
 	/// <param name="fileSize">The compressed file size.</param>
 	/// <returns>If the function succeeds, the return value is ERROR_SUCCESS, otherwise it is the failure code.</returns>
 	/// <remarks>
-	/// An application can determine whether a volume is compressed by calling <see cref="GetVolumeInformation(string, out string, out uint,
-	/// out uint, out FileSystemFlags, out string)"/>, then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed
+	/// An application can determine whether a volume is compressed by calling <c>GetVolumeInformation</c>, then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed
 	/// to by that function's lpFileSystemFlags parameter.
 	/// <para>
 	/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse file,
@@ -1813,8 +1811,7 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>The compressed file size.</returns>
 	/// <remarks>
-	/// An application can determine whether a volume is compressed by calling <see cref="GetVolumeInformation(string, out string, out uint,
-	/// out uint, out FileSystemFlags, out string)"/>, then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed
+	/// An application can determine whether a volume is compressed by calling <c>GetVolumeInformation</c>, then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed
 	/// to by that function's lpFileSystemFlags parameter.
 	/// <para>
 	/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse file,

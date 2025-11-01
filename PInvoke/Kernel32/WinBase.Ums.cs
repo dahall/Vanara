@@ -272,7 +272,7 @@ public static partial class Kernel32
 	/// subsequent callers, the <c>DequeueUmsCompletionListItems</c> function returns success but the UmsThreadList parameter is set to NULL.
 	/// </para>
 	/// </remarks>
-	public static IEnumerable<PUMS_CONTEXT> EnumUmsCompletionListItems([AddAsMember] SafePUMS_COMPLETION_LIST UmsCompletionList, uint WaitTimeOut = 0)
+	public static IEnumerable<PUMS_CONTEXT> EnumUmsCompletionListItems([In, AddAsMember] PUMS_COMPLETION_LIST UmsCompletionList, uint WaitTimeOut = 0)
 	{
 		if (DequeueUmsCompletionListItems(UmsCompletionList, WaitTimeOut, out var pctx) && !pctx.IsNull)
 		{

@@ -717,7 +717,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "dd796393")]
 	public static extern Win32Error EnableThreadProfiling([In, AddAsMember] HTHREAD ThreadHandle, [Optional] THREAD_PROFILING_FLAG Flags, [Optional] ulong HardwareCounters,
-		[AddAsCtor] out PerformanceDataHandle PerformanceDataHandle);
+		[AddAsCtor] out SafePerformanceDataHandle PerformanceDataHandle);
 
 	/// <summary>
 	/// <para>Returns the number of active processors in a processor group or in the system.</para>

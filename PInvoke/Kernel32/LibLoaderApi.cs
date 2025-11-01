@@ -396,7 +396,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms682579")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DisableThreadLibraryCalls([In, AddAsMember] HINSTANCE hModule);
+	public static extern bool DisableThreadLibraryCalls([In, AddAsMember] this HINSTANCE hModule);
 
 	/// <summary>Enumerates language-specific resources, of the specified type and name, associated with a binary module.</summary>
 	/// <param name="hModule">
@@ -574,7 +574,7 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>A list of the language identifiers (see Language Identifiers) for which a resource was found.</returns>
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648036")]
-	public static IReadOnlyList<LANGID> EnumResourceLanguagesEx([In, AddAsMember] HINSTANCE hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
+	public static IReadOnlyList<LANGID> EnumResourceLanguagesEx([In, AddAsMember] this HINSTANCE hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
 	{
 		List<LANGID> list = [];
 		if (!EnumResourceLanguagesEx(hModule, type, name, (p, i, n, luid, l) => { list.Add(luid); return true; }, IntPtr.Zero, flags, langFilter) && throwOnError)
@@ -768,7 +768,7 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns>A list of strings for each of the resources matching <paramref name="type"/>.</returns>
 	[PInvokeData("WinBase.h", MSDNShortId = "ms648037")]
-	public static IReadOnlyList<ResourceId> EnumResourceNamesEx([In, AddAsMember] HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false) =>
+	public static IReadOnlyList<ResourceId> EnumResourceNamesEx([In, AddAsMember] this HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false) =>
 		EnumResWrapper(p => EnumResourceNamesEx(hModule, type, p, default, flags, langFilter), throwOnError);
 
 	/// <summary>
@@ -1053,7 +1053,7 @@ public static partial class Kernel32
 	/// If set to <see langword="true"/>, any Win32 error is thrown as an exception. When <see langword="false"/>, the sequence is just interrupted.
 	/// </param>
 	/// <returns>List of resource identifiers.</returns>
-	public static IReadOnlyList<ResourceId> EnumResourceTypesEx([In, AddAsMember] HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
+	public static IReadOnlyList<ResourceId> EnumResourceTypesEx([In, AddAsMember] this HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, LANGID langFilter = default, bool throwOnError = false)
 	{
 		var list = new List<ResourceId>();
 		if (!EnumResourceTypesEx(hModule, (p, t, l) => { list.Add(t); return true; }, IntPtr.Zero, flags, langFilter) && throwOnError)
@@ -1142,7 +1142,7 @@ public static partial class Kernel32
 	// HRSRC WINAPI FindResourceEx( _In_opt_ HMODULE hModule, _In_ LPCTSTR lpType, _In_ LPCTSTR lpName, _In_ WORD wLanguage); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648043(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "FindResourceExW")]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648043")]
-	public static extern HRSRC FindResourceEx([In, AddAsMember] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, LANGID wLanguage = default);
+	public static extern HRSRC FindResourceEx([In, AddAsMember] this HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, LANGID wLanguage = default);
 
 	/// <summary>Locates a Unicode string (wide characters) in another Unicode string for a non-linguistic comparison.</summary>
 	/// <param name="dwFindStringOrdinalFlags">
@@ -1343,7 +1343,7 @@ public static partial class Kernel32
 	/// </returns>
 	[SecurityCritical]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683197")]
-	public static string GetModuleFileName([In, AddAsMember] HINSTANCE hModule)
+	public static string GetModuleFileName([In, AddAsMember] this HINSTANCE hModule)
 	{
 		var buffer = new StringBuilder(MAX_PATH);
 Label_000B:
@@ -1479,7 +1479,7 @@ Label_000B:
 	// FARPROC WINAPI GetProcAddress( _In_ HMODULE hModule, _In_ LPCSTR lpProcName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms683212")]
-	public static extern IntPtr GetProcAddress([In, AddAsMember] HINSTANCE hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
+	public static extern IntPtr GetProcAddress([In, AddAsMember] this HINSTANCE hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
 
 	/// <summary>Retrieves the address of an exported function or variable from the specified dynamic-link library (DLL).</summary>
 	/// <param name="hModule">
@@ -1503,7 +1503,7 @@ Label_000B:
 	// FARPROC WINAPI GetProcAddress( _In_ HMODULE hModule, _In_ LPCSTR lpProcName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms683212")]
-	public static extern IntPtr GetProcAddress(HINSTANCE hModule, nint lpProcName);
+	public static extern IntPtr GetProcAddress(this HINSTANCE hModule, nint lpProcName);
 
 	/// <summary>
 	/// <para>
@@ -1539,7 +1539,6 @@ Label_000B:
 	// HMODULE WINAPI LoadLibrary( _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175(v=vs.85).aspx
 	[PInvokeData("Winbase.h", MSDNShortId = "ms684175")]
 	[DllImport(Lib.Kernel32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
-	[return: AddAsCtor]
 	public static extern SafeHINSTANCE LoadLibrary([In, MarshalAs(UnmanagedType.LPTStr)] string lpFileName);
 
 	/// <summary>
@@ -1709,175 +1708,8 @@ Label_000B:
 	[DllImport(Lib.Kernel32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 	[PInvokeData("LibLoaderAPI.h", MSDNShortId = "ms684179")]
 	[SuppressUnmanagedCodeSecurity]
-	public static extern SafeHINSTANCE LoadLibraryEx(string lpFileName, IntPtr hFile, [Optional] LoadLibraryExFlags dwFlags);
-
-	/// <summary>
-	/// Loads the specified module into the address space of the calling process. The specified module may cause other modules to be loaded.
-	/// </summary>
-	/// <param name="lpFileName">
-	/// <para>
-	/// A string that specifies the file name of the module to load. This name is not related to the name stored in a library module
-	/// itself, as specified by the <c>LIBRARY</c> keyword in the module-definition (.def) file.
-	/// </para>
-	/// <para>
-	/// The module can be a library module (a .dll file) or an executable module (an .exe file). If the specified module is an executable
-	/// module, static imports are not loaded; instead, the module is loaded as if <c>DONT_RESOLVE_DLL_REFERENCES</c> was specified. See
-	/// the dwFlags parameter for more information.
-	/// </para>
-	/// <para>
-	/// If the string specifies a module name without a path and the file name extension is omitted, the function appends the default
-	/// library extension .dll to the module name. To prevent the function from appending .dll to the module name, include a trailing
-	/// point character (.) in the module name string.
-	/// </para>
-	/// <para>
-	/// If the string specifies a fully qualified path, the function searches only that path for the module. When specifying a path, be
-	/// sure to use backslashes (\), not forward slashes (/). For more information about paths, see Naming Files, Paths, and Namespaces.
-	/// </para>
-	/// <para>
-	/// If the string specifies a module name without a path and more than one loaded module has the same base name and extension, the
-	/// function returns a handle to the module that was loaded first.
-	/// </para>
-	/// <para>
-	/// If the string specifies a module name without a path and a module of the same name is not already loaded, or if the string
-	/// specifies a module name with a relative path, the function searches for the specified module. The function also searches for
-	/// modules if loading the specified module causes the system to load other associated modules (that is, if the module has
-	/// dependencies). The directories that are searched and the order in which they are searched depend on the specified path and the
-	/// dwFlags parameter. For more information, see Remarks.
-	/// </para>
-	/// <para>If the function cannot find the module or one of its dependencies, the function fails.</para>
-	/// </param>
-	/// <param name="dwFlags">
-	/// <para>
-	/// The action to be taken when loading the module. If no flags are specified, the behavior of this function is identical to that of
-	/// the <c>LoadLibrary</c> function. This parameter can be one of the following values.
-	/// </para>
-	/// <para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>DONT_RESOLVE_DLL_REFERENCES0x00000001</term>
-	/// <term>
-	/// If this value is used, and the executable module is a DLL, the system does not call DllMain for process and thread initialization
-	/// and termination. Also, the system does not load additional executable modules that are referenced by the specified module.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>LOAD_IGNORE_CODE_AUTHZ_LEVEL0x00000010</term>
-	/// <term>
-	/// If this value is used, the system does not check AppLocker rules or apply Software Restriction Policies for the DLL. This action
-	/// applies only to the DLL being loaded and not to its dependencies. This value is recommended for use in setup programs that must
-	/// run extracted DLLs during installation.Windows Server 2008 R2 and Windows 7: On systems with KB2532445 installed, the caller must
-	/// be running as &amp;quot;LocalSystem&amp;quot; or &amp;quot;TrustedInstaller&amp;quot;; otherwise the system ignores this flag.
-	/// For more information, see &amp;quot;You can circumvent AppLocker rules by using an Office macro on a computer that is running
-	/// Windows 7 or Windows Server 2008 R2&amp;quot; in the Help and Support Knowledge Base at
-	/// http://support.microsoft.com/kb/2532445.Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: AppLocker was
-	/// introduced in Windows 7 and Windows Server 2008 R2.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>LOAD_LIBRARY_AS_DATAFILE0x00000002</term>
-	/// <term>
-	/// If this value is used, the system maps the file into the calling process's virtual address space as if it were a data file.
-	/// Nothing is done to execute or prepare to execute the mapped file. Therefore, you cannot call functions like GetModuleFileName,
-	/// GetModuleHandle or GetProcAddress with this DLL. Using this value causes writes to read-only memory to raise an access violation.
-	/// Use this flag when you want to load a DLL only to extract messages or resources from it.This value can be used with
-	/// LOAD_LIBRARY_AS_IMAGE_RESOURCE. For more information, see Remarks.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE0x00000040</term>
-	/// <term>
-	/// Similar to LOAD_LIBRARY_AS_DATAFILE, except that the DLL file is opened with exclusive write access for the calling process.
-	/// Other processes cannot open the DLL file for write access while it is in use. However, the DLL can still be opened by other
-	/// processes.This value can be used with LOAD_LIBRARY_AS_IMAGE_RESOURCE. For more information, see Remarks.Windows Server 2003 and
-	/// Windows XP: This value is not supported until Windows Vista.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>LOAD_LIBRARY_AS_IMAGE_RESOURCE0x00000020</term>
-	/// <term>
-	/// If this value is used, the system maps the file into the process's virtual address space as an image file. However, the loader
-	/// does not load the static imports or perform the other usual initialization steps. Use this flag when you want to load a DLL only
-	/// to extract messages or resources from it.Unless the application depends on the file having the in-memory layout of an image, this
-	/// value should be used with either LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE or LOAD_LIBRARY_AS_DATAFILE. For more information, see the
-	/// Remarks section.Windows Server 2003 and Windows XP: This value is not supported until Windows Vista.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>LOAD_LIBRARY_SEARCH_APPLICATION_DIR0x00000200</term>
-	/// <term>
-	/// If this value is used, the application's installation directory is searched for the DLL and its dependencies. Directories in the
-	/// standard search path are not searched. This value cannot be combined with LOAD_WITH_ALTERED_SEARCH_PATH.Windows 7, Windows Server
-	/// 2008 R2, Windows Vista and Windows Server 2008: This value requires KB2533623 to be installed.Windows Server 2003 and Windows XP:
-	/// This value is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>LOAD_LIBRARY_SEARCH_DEFAULT_DIRS0x00001000</term>
-	/// <term>
-	/// This value is a combination of LOAD_LIBRARY_SEARCH_APPLICATION_DIR, LOAD_LIBRARY_SEARCH_SYSTEM32, and
-	/// LOAD_LIBRARY_SEARCH_USER_DIRS. Directories in the standard search path are not searched. This value cannot be combined with
-	/// LOAD_WITH_ALTERED_SEARCH_PATH.This value represents the recommended maximum number of directories an application should include
-	/// in its DLL search path.Windows 7, Windows Server 2008 R2, Windows Vista and Windows Server 2008: This value requires KB2533623 to
-	/// be installed.Windows Server 2003 and Windows XP: This value is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR0x00000100</term>
-	/// <term>
-	/// If this value is used, the directory that contains the DLL is temporarily added to the beginning of the list of directories that
-	/// are searched for the DLL's dependencies. Directories in the standard search path are not searched.The lpFileName parameter must
-	/// specify a fully qualified path. This value cannot be combined with LOAD_WITH_ALTERED_SEARCH_PATH.For example, if Lib2.dll is a
-	/// dependency of C:\Dir1\Lib1.dll, loading Lib1.dll with this value causes the system to search for Lib2.dll only in C:\Dir1. To
-	/// search for Lib2.dll in C:\Dir1 and all of the directories in the DLL search path, combine this value with
-	/// LOAD_LIBRARY_DEFAULT_DIRS.Windows 7, Windows Server 2008 R2, Windows Vista and Windows Server 2008: This value requires KB2533623
-	/// to be installed.Windows Server 2003 and Windows XP: This value is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>LOAD_LIBRARY_SEARCH_SYSTEM320x00000800</term>
-	/// <term>
-	/// If this value is used, %windows%\system32 is searched for the DLL and its dependencies. Directories in the standard search path
-	/// are not searched. This value cannot be combined with LOAD_WITH_ALTERED_SEARCH_PATH.Windows 7, Windows Server 2008 R2, Windows
-	/// Vista and Windows Server 2008: This value requires KB2533623 to be installed.Windows Server 2003 and Windows XP: This value is
-	/// not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>LOAD_LIBRARY_SEARCH_USER_DIRS0x00000400</term>
-	/// <term>
-	/// If this value is used, directories added using the AddDllDirectory or the SetDllDirectory function are searched for the DLL and
-	/// its dependencies. If more than one directory has been added, the order in which the directories are searched is unspecified.
-	/// Directories in the standard search path are not searched. This value cannot be combined with
-	/// LOAD_WITH_ALTERED_SEARCH_PATH.Windows 7, Windows Server 2008 R2, Windows Vista and Windows Server
-	/// 2008: This value requires KB2533623 to be installed.Windows Server 2003 and Windows XP: This value is not supported.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>LOAD_WITH_ALTERED_SEARCH_PATH0x00000008</term>
-	/// <term>
-	/// If this value is used and lpFileName specifies an absolute path, the system uses the alternate file search strategy discussed in
-	/// the Remarks section to find associated executable modules that the specified module causes to be loaded. If this value is used
-	/// and lpFileName specifies a relative path, the behavior is undefined.If this value is not used, or if lpFileName does not specify
-	/// a path, the system uses the standard search strategy discussed in the Remarks section to find associated executable modules that
-	/// the specified module causes to be loaded.This value cannot be combined with any LOAD_LIBRARY_SEARCH flag.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is a handle to the loaded module.</para>
-	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
-	/// </returns>
-	// HMODULE WINAPI LoadLibraryEx( _In_ LPCTSTR lpFileName, _Reserved_ HANDLE hFile, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684179(v=vs.85).aspx
-	[PInvokeData("LibLoaderAPI.h", MSDNShortId = "ms684179")]
-	[SuppressUnmanagedCodeSecurity]
 	[return: AddAsCtor]
-	public static SafeHINSTANCE LoadLibraryEx(string lpFileName, LoadLibraryExFlags dwFlags = 0) => LoadLibraryEx(lpFileName, IntPtr.Zero, dwFlags);
+	public static extern SafeHINSTANCE LoadLibraryEx(string lpFileName, [Optional, Ignore] IntPtr hFile, [Optional] LoadLibraryExFlags dwFlags);
 
 	/// <summary>Retrieves a handle that can be used to obtain a pointer to the first byte of the specified resource in memory.</summary>
 	/// <param name="hModule">
@@ -1900,7 +1732,7 @@ Label_000B:
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648046")]
 	[SuppressUnmanagedCodeSecurity]
-	public static extern HRSRCDATA LoadResource([In, AddAsMember] HINSTANCE hModule, HRSRC hResInfo);
+	public static extern HRSRCDATA LoadResource([In, AddAsMember] this HINSTANCE hModule, HRSRC hResInfo);
 
 	/// <summary>Retrieves a pointer to the specified resource in memory.</summary>
 	/// <param name="hResData">
@@ -1974,7 +1806,7 @@ Label_000B:
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("libloaderapi2.h", MSDNShortId = "43690689-4372-48ae-ac6d-230250f05f7c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryOptionalDelayLoadedAPI([In, AddAsMember] HINSTANCE hParentModule, [MarshalAs(UnmanagedType.LPStr)] string? lpDllName, [MarshalAs(UnmanagedType.LPStr)] string lpProcName, [Optional] uint Reserved);
+	public static extern bool QueryOptionalDelayLoadedAPI([In, AddAsMember] this HINSTANCE hParentModule, [MarshalAs(UnmanagedType.LPStr)] string? lpDllName, [MarshalAs(UnmanagedType.LPStr)] string lpProcName, [Optional] uint Reserved);
 
 	/// <summary>Removes a directory that was added to the process DLL search path by using <c>AddDllDirectory</c>.</summary>
 	/// <param name="Cookie">The cookie returned by <c>AddDllDirectory</c> when the directory was added to the search path.</param>
@@ -2053,7 +1885,7 @@ Label_000B:
 	// DWORD WINAPI SizeofResource( _In_opt_ HMODULE hModule, _In_ HRSRC hResInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648048(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648048")]
-	public static extern uint SizeofResource([In, AddAsMember] HINSTANCE hModule, HRSRC hResInfo);
+	public static extern uint SizeofResource([In, AddAsMember] this HINSTANCE hModule, HRSRC hResInfo);
 
 	private static IReadOnlyList<ResourceId> EnumResWrapper(Func<EnumResNameProc, bool> f, bool throwOnError)
 	{
@@ -2066,6 +1898,7 @@ Label_000B:
 	/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HINSTANCE instance at disposal using FreeLibrary.</summary>
 	[PInvokeData("LibLoaderAPI.h")]
 	[AutoSafeHandle("FreeLibrary(handle)", typeof(HINSTANCE), typeof(SafeHANDLE))]
+	[AdjustAutoMethodNamePattern(@"Library|Module|Ex\b", "")]
 	public partial class SafeHINSTANCE
 	{
 		/// <summary>

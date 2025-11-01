@@ -1058,7 +1058,7 @@ public static partial class Kernel32
 	// void ReleaseActCtx( _In_ HANDLE hActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375713(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa375713")]
-	public static extern void ReleaseActCtx([In, AddAsMember] HACTCTX hActCtx);
+	public static extern void ReleaseActCtx([In] HACTCTX hActCtx);
 
 	/// <summary>Removes the active instance of an application from the recovery list.</summary>
 	/// <returns>

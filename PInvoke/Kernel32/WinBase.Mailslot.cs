@@ -141,5 +141,6 @@ public static partial class Kernel32
 	/// Provides a <see cref="SafeHandle"/> to a mailslot that releases a created MailslotHandle instance at disposal using CloseHandle.
 	/// </summary>
 	[AutoSafeHandle(null, null, typeof(SafeKernelHandle))]
+	[AdjustAutoMethodNamePattern("Mailslot", "")]
 	public partial class SafeMailslotHandle { }
 }

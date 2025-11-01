@@ -4,7 +4,7 @@ public static partial class Kernel32
 {
 	/// <summary>
 	/// Flags that may be passed to the
-	/// <see cref="GetVolumeInformation(string, out string, out uint, out uint, out FileSystemFlags, out string)"/> function.
+	/// <see cref="GetVolumeInformationByHandleW(HFILE, StringBuilder?, uint, out uint, out uint, out FileSystemFlags, StringBuilder?, uint)"/> function.
 	/// </summary>
 	[Flags]
 	[PInvokeData("winnt.h")]

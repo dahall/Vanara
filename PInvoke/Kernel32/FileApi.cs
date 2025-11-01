@@ -359,7 +359,7 @@ public static partial class Kernel32
 	/// operation is complete.
 	/// </param>
 	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
-	public static IAsyncResult BeginLockFileEx(HFILE hFile, LOCKFILE dwFlags, ulong nNumberOfBytesToLock, AsyncCallback requestCallback, object? stateObject)
+	public static IAsyncResult BeginLockFileEx([In, AddAsMember] HFILE hFile, LOCKFILE dwFlags, ulong nNumberOfBytesToLock, AsyncCallback requestCallback, object? stateObject)
 	{
 		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 		unsafe
@@ -385,7 +385,7 @@ public static partial class Kernel32
 	/// the operation is complete.
 	/// </param>
 	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
-	public static IAsyncResult BeginReadFile(HFILE hFile, byte[] buffer, uint numberOfBytesToRead, AsyncCallback requestCallback, object? stateObject)
+	public static IAsyncResult BeginReadFile([In, AddAsMember] HFILE hFile, byte[] buffer, uint numberOfBytesToRead, AsyncCallback requestCallback, object? stateObject)
 	{
 		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 		unsafe
@@ -444,7 +444,7 @@ public static partial class Kernel32
 	/// If the function returns before the read operation is complete, the function returns zero (0), and <c>GetLastError</c> returns <c>ERROR_IO_PENDING</c>.
 	/// </para>
 	/// </returns>
-	public static IAsyncResult BeginReadFileScatter(HFILE hFile, [In, Out] FILE_SEGMENT_ELEMENT[] aSegmentArray, AsyncCallback requestCallback, object? stateObject)
+	public static IAsyncResult BeginReadFileScatter([In, AddAsMember] HFILE hFile, [In, Out] FILE_SEGMENT_ELEMENT[] aSegmentArray, AsyncCallback requestCallback, object? stateObject)
 	{
 		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 		var fsi = GetFileInformationByHandleEx<FILE_STORAGE_INFO>(hFile, FILE_INFO_BY_HANDLE_CLASS.FileStorageInfo);
@@ -501,7 +501,7 @@ public static partial class Kernel32
 	/// the operation is complete.
 	/// </param>
 	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
-	public static IAsyncResult BeginWriteFile(HFILE hFile, byte[] buffer, uint numberOfBytesToWrite, AsyncCallback requestCallback, object? stateObject)
+	public static IAsyncResult BeginWriteFile([In, AddAsMember] HFILE hFile, byte[] buffer, uint numberOfBytesToWrite, AsyncCallback requestCallback, object? stateObject)
 	{
 		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 		unsafe
@@ -557,7 +557,7 @@ public static partial class Kernel32
 	/// function returns <c>ERROR_IO_PENDING</c>.
 	/// </para>
 	/// </returns>
-	public static IAsyncResult BeginWriteFileGather(HFILE hFile, [In, Out] FILE_SEGMENT_ELEMENT[] aSegmentArray, AsyncCallback requestCallback, object? stateObject)
+	public static IAsyncResult BeginWriteFileGather([In, AddAsMember] HFILE hFile, [In, Out] FILE_SEGMENT_ELEMENT[] aSegmentArray, AsyncCallback requestCallback, object? stateObject)
 	{
 		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 		var fsi = GetFileInformationByHandleEx<FILE_STORAGE_INFO>(hFile, FILE_INFO_BY_HANDLE_CLASS.FileStorageInfo);
@@ -582,7 +582,7 @@ public static partial class Kernel32
 	/// operation is complete.
 	/// </param>
 	/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
-	public static IAsyncResult BeginUnlockFileEx(HFILE hFile, ulong nNumberOfBytesToUnlock, AsyncCallback requestCallback, object? stateObject)
+	public static IAsyncResult BeginUnlockFileEx([In, AddAsMember] HFILE hFile, ulong nNumberOfBytesToUnlock, AsyncCallback requestCallback, object? stateObject)
 	{
 		OverlappedAsync.OverlappedAsyncResult ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 		unsafe
@@ -860,6 +860,7 @@ public static partial class Kernel32
 	// HANDLE CreateDirectory2A( LPCSTR lpPathName, DWORD dwDesiredAccess, DWORD dwShareMode, DIRECTORY_FLAGS DirectoryFlags, LPSECURITY_ATTRIBUTES lpSecurityAttributes );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateDirectory2A")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateDirectory2(string lpPathName, FileAccess dwDesiredAccess, FileShare dwShareMode, DIRECTORY_FLAGS DirectoryFlags,
 		[In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes);
 
@@ -1077,6 +1078,7 @@ public static partial class Kernel32
 	// HANDLE CreateDirectory2A( LPCSTR lpPathName, DWORD dwDesiredAccess, DWORD dwShareMode, DIRECTORY_FLAGS DirectoryFlags, LPSECURITY_ATTRIBUTES lpSecurityAttributes );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateDirectory2A")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateDirectory2(string lpPathName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode, DIRECTORY_FLAGS DirectoryFlags,
 		[In, Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes);	
 
@@ -1195,6 +1197,7 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa363858")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		[Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
 		[Optional] HFILE hTemplateFile);
@@ -1314,6 +1317,7 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa363858")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile(string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
 		[Optional] SECURITY_ATTRIBUTES? lpSecurityAttributes, CreationOption dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
 		[Optional] HFILE hTemplateFile);
@@ -1837,6 +1841,7 @@ public static partial class Kernel32
 	// dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "cd7a81f3-60ee-443a-99f3-a4c8afd365e7")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile2([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		FileMode dwCreationDisposition, in CREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
 
@@ -2359,6 +2364,7 @@ public static partial class Kernel32
 	// dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "cd7a81f3-60ee-443a-99f3-a4c8afd365e7")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile2([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
 		CreationOption dwCreationDisposition, in CREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
 
@@ -2881,6 +2887,7 @@ public static partial class Kernel32
 	// dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "cd7a81f3-60ee-443a-99f3-a4c8afd365e7")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile2([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		FileMode dwCreationDisposition, [In, Optional] StructPointer<CREATEFILE2_EXTENDED_PARAMETERS> pCreateExParams);
 
@@ -3403,6 +3410,7 @@ public static partial class Kernel32
 	// dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("fileapi.h", MSDNShortId = "cd7a81f3-60ee-443a-99f3-a4c8afd365e7")]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile2([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
 		CreationOption dwCreationDisposition, [In, Optional] StructPointer<CREATEFILE2_EXTENDED_PARAMETERS> pCreateExParams);
 
@@ -3914,6 +3922,7 @@ public static partial class Kernel32
 	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		FileMode dwCreationDisposition, in CREATEFILE3_EXTENDED_PARAMETERS pCreateExParams);
 
@@ -4425,6 +4434,7 @@ public static partial class Kernel32
 	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
 		CreationOption dwCreationDisposition, in CREATEFILE3_EXTENDED_PARAMETERS pCreateExParams);
 
@@ -4936,6 +4946,7 @@ public static partial class Kernel32
 	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 		FileMode dwCreationDisposition, [In, Optional] StructPointer<CREATEFILE3_EXTENDED_PARAMETERS> pCreateExParams);
 
@@ -5447,6 +5458,7 @@ public static partial class Kernel32
 	// HANDLE CreateFile3( LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE3_EXTENDED_PARAMETERS pCreateExParams );
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.CreateFile3")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	[return: AddAsCtor]
 	public static extern SafeHFILE CreateFile3([MarshalAs(UnmanagedType.LPWStr)] string lpFileName, FileAccess dwDesiredAccess, FILE_SHARE dwShareMode,
 		CreationOption dwCreationDisposition, [In, Optional] StructPointer<CREATEFILE3_EXTENDED_PARAMETERS> pCreateExParams);
 
@@ -5875,6 +5887,7 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364417")]
+	[return: AddAsCtor]
 	public static extern SafeFindChangeNotificationHandle FindFirstChangeNotification(
 		string lpPathName, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter);
 
@@ -5906,6 +5919,7 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364418")]
+	[return: AddAsCtor]
 	public static extern SafeSearchHandle FindFirstFile(string lpFileName, out WIN32_FIND_DATA lpFindFileData);
 
 	/// <summary>
@@ -6107,8 +6121,9 @@ public static partial class Kernel32
 	// dwAdditionalFlags );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "9f40e98f-153f-4b65-afd9-06742684c100")]
+	[return: AddAsCtor]
 	public static extern SafeSearchHandle FindFirstFileEx(string lpFileName, FINDEX_INFO_LEVELS fInfoLevelId, out WIN32_FIND_DATA lpFindFileData, FINDEX_SEARCH_OPS fSearchOp,
-		[Optional] IntPtr lpSearchFilter, FIND_FIRST dwAdditionalFlags);
+		[Optional, Ignore] IntPtr lpSearchFilter, FIND_FIRST dwAdditionalFlags);
 
 	/// <summary>Retrieves the name of a volume on a computer. FindFirstVolume is used to begin scanning the volumes of a computer.</summary>
 	/// <param name="lpszVolumeName">
@@ -6124,6 +6139,7 @@ public static partial class Kernel32
 	/// </returns>
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364419")]
+	[return: AddAsCtor]
 	public static extern SafeVolumeSearchHandle FindFirstVolume([In, Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
 
 	/// <summary>Requests that the operating system signal a change notification handle the next time it detects an appropriate change.</summary>
@@ -6136,7 +6152,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364427")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindNextChangeNotification([In] SafeFindChangeNotificationHandle hChangeHandle);
+	public static extern bool FindNextChangeNotification([In, AddAsMember] SafeFindChangeNotificationHandle hChangeHandle);
 
 	/// <summary>Continues a file search from a previous call to the FindFirstFile, FindFirstFileEx, or FindFirstFileTransacted functions.</summary>
 	/// <param name="hFindFile">The search handle returned by a previous call to the FindFirstFile or FindFirstFileEx function.</param>
@@ -6153,7 +6169,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364428")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindNextFile([In] SafeSearchHandle hFindFile, out WIN32_FIND_DATA lpFindFileData);
+	public static extern bool FindNextFile([In, AddAsMember] SafeSearchHandle hFindFile, out WIN32_FIND_DATA lpFindFileData);
 
 	/// <summary>
 	/// Continues a volume search started by a call to the FindFirstVolume function. FindNextVolume finds one volume per call.
@@ -6169,7 +6185,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364431")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindNextVolume(SafeVolumeSearchHandle hFindVolume, [In, Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
+	public static extern bool FindNextVolume([In, AddAsMember] SafeVolumeSearchHandle hFindVolume, [In, Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
 
 	/// <summary>
 	/// Closes the specified volume search handle. The FindFirstVolume and FindNextVolume functions use this search handle to locate volumes.
@@ -6207,7 +6223,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364433")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FlushFileBuffers([In] HFILE hFile);
+	public static extern bool FlushFileBuffers([In, AddAsMember] HFILE hFile);
 
 	/// <summary>Retrieves information about the specified disk, including the amount of free space on the disk.</summary>
 	/// <param name="lpRootPathName">
@@ -9611,7 +9627,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa365716")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool UnlockFileEx([In] HFILE hFile, uint dwReserved, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh, NativeOverlapped* lpOverlapped);
+	public static extern unsafe bool UnlockFileEx([In] HFILE hFile, [Optional, Ignore] uint dwReserved, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh, NativeOverlapped* lpOverlapped);
 
 	/// <summary>
 	/// Writes data to the specified file or input/output (I/O) device.
@@ -11023,10 +11039,12 @@ public static partial class Kernel32
 
 	/// <summary>Represents a self-closing change notification handle created by the FindFirstChangeNotification function.</summary>
 	[AutoSafeHandle("FindCloseChangeNotification(handle)", null, typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"ChangeNotification", "")]
 	public partial class SafeFindChangeNotificationHandle { }
 
 	/// <summary>Provides a <see cref="SafeHandle"/> that releases a created HFILE instance at disposal using CloseHandle.</summary>
 	[AutoSafeHandle(null, typeof(HFILE), typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"File|ExW\b|Ex\b|W?\b", "")]
 	public partial class SafeHFILE
 	{
 		/// <summary>Performs an implicit conversion from <see cref="Microsoft.Win32.SafeHandles.SafeFileHandle"/> to <see cref="SafeHFILE"/>.</summary>
@@ -11040,10 +11058,12 @@ public static partial class Kernel32
 	/// FindFirstFileNameTransactedW, FindFirstFileTransacted, FindFirstStreamTransactedW, or FindFirstStreamW functions.
 	/// </summary>
 	[AutoSafeHandle("FindClose(handle)", null, typeof(SafeHANDLE))]
+	[AdjustAutoMethodNamePattern(@"ChangeNotification|Ex\b", "")]
 	public partial class SafeSearchHandle { }
 
 	/// <summary>Represents a self-closing volume search handle opened by the FindFirstVolume.</summary>
 	/// <seealso cref="GenericSafeHandle"/>
 	[AutoSafeHandle("FindVolumeClose(handle)", null, typeof(SafeHANDLE))]
+	[AdjustAutoMethodNamePattern(@"Volume", "")]
 	public partial class SafeVolumeSearchHandle { }
 }

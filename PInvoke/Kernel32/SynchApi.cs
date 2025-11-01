@@ -2480,32 +2480,9 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to an event that is automatically disposed using CloseHandle.</summary>
 	[AutoSafeHandle(null, typeof(HEVENT), typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"Event|Ex\b", "")]
 	public partial class SafeEventHandle
 	{
-		/// <summary>
-		/// Sets the event to the signaled state and then resets it to the nonsignaled state after releasing the appropriate number of
-		/// waiting threads.
-		/// </summary>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is <see langword="true"/>.</para>
-		/// <para>If the function fails, the return value is <see langword="false"/>. To get extended error information, call <c>GetLastError</c>.</para>
-		/// </returns>
-		public bool Pulse() => PulseEvent(this);
-
-		/// <summary>Sets this event object to the nonsignaled state.</summary>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-		/// </returns>
-		public bool Reset() => ResetEvent(this);
-
-		/// <summary>Sets this event object to the signaled state.</summary>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-		/// </returns>
-		public bool Set() => SetEvent(this);
-
 		/// <summary>Performs an implicit conversion from <see cref="EventWaitHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
 		/// <param name="h">The SafeSyncHandle instance.</param>
 		/// <returns>The result of the conversion.</returns>
@@ -2601,6 +2578,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a mutex that is automatically disposed using CloseHandle.</summary>
 	[AutoSafeHandle(null, null, typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"Mutex|Ex\b", "")]
 	public partial class SafeMutexHandle
 	{
 		/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
@@ -2613,6 +2591,7 @@ public static partial class Kernel32
 	/// Provides a <see cref="SafeHandle"/> to a wait handle created by RegisterWaitForSingleObject and closed on disposal by UnregisterWaitEx.
 	/// </summary>
 	[AutoSafeHandle]
+	[AdjustAutoMethodNamePattern(@"WaitFor|Wait", "")]
 	public partial class SafeRegisteredWaitHandle
 	{
 		/// <summary>
@@ -2625,11 +2604,6 @@ public static partial class Kernel32
 		/// <value><c>true</c> if disposal wait for all functions to complete; otherwise, <c>false</c>.</value>
 		public bool WaitForAllFunctions { get; set; } = false;
 
-		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SafeRegisteredWaitHandle"/>.</summary>
-		/// <param name="p">The handle pointer.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static implicit operator SafeRegisteredWaitHandle(IntPtr p) => new(p, false);
-
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() =>
 			UnregisterWaitEx(handle, CompletionEvent ?? (WaitForAllFunctions ? HEVENT.INVALID_HANDLE_VALUE : HEVENT.NULL)) ||
@@ -2638,6 +2612,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a semaphore that is automatically disposed using CloseHandle.</summary>
 	[AutoSafeHandle(null, null, typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"Semaphore|Ex\b", "")]
 	public partial class SafeSemaphoreHandle
 	{
 		/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
@@ -2648,6 +2623,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a waitable timer that is automatically disposed using CloseHandle.</summary>
 	[AutoSafeHandle(null, null, typeof(SafeSyncHandle))]
+	[AdjustAutoMethodNamePattern(@"WaitableTimer|Ex\b", "")]
 	public partial class SafeWaitableTimerHandle
 	{
 		/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
