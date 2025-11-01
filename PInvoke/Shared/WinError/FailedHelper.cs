@@ -32,4 +32,31 @@ public static class FailedHelper
 		};
 		bool IErrFail(IErrorProvider hr) => hr.Failed && (!ignoreBufErr || !errors.Contains(hr.ToHRESULT()));
 	}
+
+	/// <summary>Throws an exception if the operation represented by the result parameter failed.</summary>
+	/// <remarks>
+	/// This method evaluates the result of an operation and throws an exception if the operation failed. It supports various types of
+	/// results, including boolean values, error providers, and handles.
+	/// </remarks>
+	/// <typeparam name="T">
+	/// The type of the result to evaluate, which must implement <see cref="IErrorProvider"/> or be convertible to a boolean.
+	/// </typeparam>
+	/// <param name="r">The result of an operation to check for failure. If the result indicates failure, an exception is thrown.</param>
+	/// <param name="ignoreBufErr">
+	/// A boolean value indicating whether to ignore specific buffer-related errors. If <see langword="true"/>, certain buffer errors will
+	/// not trigger an exception.
+	/// </param>
+	public static void THROW_IF_FAILED<T>(T r, bool ignoreBufErr = false)
+	{
+		IErrorProvider hr = r switch
+		{
+			bool b when b is false => Win32Error.GetLastError(),
+			IErrorProvider hri => hri,
+			IHandle h when h.IsInvalid => Win32Error.GetLastError(),
+			IConvertible c when !c.ToBoolean(null) => Win32Error.GetLastError(),
+			_ => new HRESULT(0),
+		};
+		if (hr.Failed && (!ignoreBufErr || !errors.Contains(hr.ToHRESULT())))
+			throw hr.GetException()!;
+	}
 }

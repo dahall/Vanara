@@ -44,21 +44,21 @@ public sealed class AddAsMemberAttribute : Attribute
 /// </summary>
 /// <param name="regexMatchPatterns">A sequence of tuples containing the regex pattern to match and the replacement string to use for auto-generated method names.</param>
 [AttributeUsage(AttributeTargets.Struct | AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
-public sealed class AdjustAutoMethodNamePatternAttribute(params (string pattern, string replacement)[] regexMatchPatterns) : Attribute
+public sealed class AdjustAutoMethodNamePatternAttribute(params string[] regexMatchPatterns) : Attribute
 {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="AdjustAutoMethodNamePatternAttribute"/> class with a regex pattern that will remove all
 	/// matches from auto methods.
 	/// </summary>
 	/// <param name="removePattern">The pattern that removes matching values.</param>
-	public AdjustAutoMethodNamePatternAttribute(string removePattern) : this((removePattern, string.Empty))
+	public AdjustAutoMethodNamePatternAttribute(string removePattern) : this(removePattern, string.Empty)
 	{
 	}
 
 	/// <summary>
 	/// A sequence of tuples containing the regex pattern to match and the replacement string to use for auto-generated method names.
 	/// </summary>
-	public IReadOnlyDictionary<string, string> RegexMatchPatterns { get; } = regexMatchPatterns.ToDictionary(p => p.pattern, p => p.replacement);
+	public IReadOnlyList<string> RegexMatchPatterns { get; } = regexMatchPatterns;
 }
 
 /// <summary>

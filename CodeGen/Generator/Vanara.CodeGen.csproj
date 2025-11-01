@@ -30,14 +30,5 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="LumenWorksCsvReader" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
-  <PropertyGroup>
-    <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
-  </PropertyGroup>
-  <Target Name="GetDependencyTargetPaths">
-    <ItemGroup>
-      <TargetPathWithTargetPlatformMoniker Include="$(PkgLumenWorksCsvReader)\lib\netstandard2.0\LumenWorks.Framework.IO.dll" IncludeRuntimeDependency="false" />
-    </ItemGroup>
-  </Target>
 </Project>

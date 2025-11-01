@@ -1,5 +1,4 @@
-﻿using LumenWorks.Framework.IO.Csv;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 
 namespace Vanara.Generators;
 
@@ -27,35 +26,9 @@ public class HandlesFromFileGenerator : IIncrementalGenerator
 	{
 		foreach (string content in files.Select(t => t.GetText()?.ToString()).Where(t => !string.IsNullOrWhiteSpace(t))!)
 		{
-			bool hasHeader = content[0] == '#' || content.StartsWith("Namespace,");
 			using StringReader ms = new(content);
-			using CachedCsvReader parser = new(ms, hasHeader);
-			if (parser.FieldCount != 9)
-			{
-				context.ReportError("VANGEN001", "Invalid number of fields in file.");
-				continue;
-			}
-			while (parser.ReadNextRecord())
-			{
-				HandleModel model;
-				try
-				{
-					model = new(parser[0], parser[1], parser[2], parser[3], parser[4], parser[5], parser[6], parser[7], parser[8]);
-				}
-				catch (Exception ex)
-				{
-					context.ReportError("VANGEN000", "Unknown error: " + Regex.Replace(ex.ToString(), "[\r\n]+", " "));
-					continue;
-				}
-
-				if (model.Namespace != string.Empty)
-					yield return model;
-				else
-				{
-					context.ReportError("VANGEN002", "Invalid record. Namespace is required.", parser.Records[(int)parser.CurrentRecordIndex]);
-					continue;
-				}
-			}
+			foreach (var r in HandleModel.FromStream(ms))
+				yield return r;
 		}
 	}
 
@@ -69,13 +42,13 @@ public class HandlesFromFileGenerator : IIncrementalGenerator
 		foreach (var model in EnumHandleModels(context, files))
 		{
 			bool found = false;
-			if (model.HandleName != string.Empty && model.InterfaceName != string.Empty && model.SummaryText != string.Empty)
+			if (model.HasHandle)
 			{
 				var src = model.GetHandleCode();
 				context.AddSource($"{model.HandleName}.g.cs", SourceText.From(src, Encoding.UTF8));
 				found = true;
 			}
-			if (!string.IsNullOrEmpty(model.ClassName) && !string.IsNullOrEmpty(model.BaseClassName))
+			if (model.HasSafeHandle)
 			{
 				var classSrc = model.GetSafeHandleCode($"/// <summary>Provides a <see cref=\"SafeHandle\"/>{(string.IsNullOrEmpty(model.HandleName) ? "" : $" for <see cref=\"{model.HandleName}\"/>")} that is disposed using <c>{model.CloseCode}</c>.</summary>");
 				context.AddSource($"{model.ClassName}.g.cs", SourceText.From(classSrc, Encoding.UTF8));

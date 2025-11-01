@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿using System;
+using Microsoft.Win32.SafeHandles;
 using System.ComponentModel;
 using System.Diagnostics;
 
@@ -7,7 +8,8 @@ namespace Namespace;
 #1#public static partial class ParentClassName
 {
 #1#	SummaryText	[StructLayout(LayoutKind.Sequential), DebuggerDisplay("{handle}"), TypeConverter(typeof(HANDLEConverter))]
-	public readonly partial struct HandleName : InterfaceName
+#4#	[global::Vanara.PInvoke.AdjustAutoMethodNamePattern(AdjNameRegex)]
+#4#	public readonly partial struct HandleName : InterfaceName
 	{
 		private readonly IntPtr handle;
 

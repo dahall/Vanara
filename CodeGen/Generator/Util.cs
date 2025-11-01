@@ -16,10 +16,10 @@ internal class SyntaxComparer : IEqualityComparer<SyntaxNode>
 
 internal class TypeComparer : IEqualityComparer<TypeDeclarationSyntax>
 {
-	public static readonly SyntaxComparer Default = new();
+	public static readonly TypeComparer Default = new();
 	public bool Equals(TypeDeclarationSyntax? x, TypeDeclarationSyntax? y) => x is not null && string.Equals(GetTypeName(x), GetTypeName(y));
 	public int GetHashCode(TypeDeclarationSyntax obj) => GetTypeName(obj)!.GetHashCode();
-	private string? GetTypeName(TypeDeclarationSyntax? tds) => tds?.Identifier.Text;
+	private static string? GetTypeName(TypeDeclarationSyntax? tds) => tds?.Identifier.Text;
 }
 
 internal static class Util
@@ -32,6 +32,9 @@ internal static class Util
 
 		// Remove the leading /// from the doc comment
 		docComment = $"<xmlDoc>\r\n{Regex.Replace(docComment, @"^\s*(///\s*)?", @"", RegexOptions.Multiline)}\r\n</xmlDoc>";
+
+		// Unwrap any lines that are not the start of a new XML element
+		docComment = Regex.Replace(docComment, @"\r\n(?!\s*<)", " ", RegexOptions.Multiline);
 
 		// Load the xml docs into an XmlDocument
 		XmlDocument xmlDoc = new() { PreserveWhitespace = true };
@@ -81,6 +84,10 @@ internal static class Util
 		return charSet;
 	}
 
+	public static string[] GetValues(this TypedConstant tc) => tc.Type?.ToDisplayString() == "string[]" ?
+		[.. tc.Values.Select(v => v.Value?.ToString() ?? "")] :
+		[tc.Value?.ToString() ?? ""];
+
 	public static T GetParentKind<T>(this SyntaxNode node) where T : SyntaxNode
 	{
 		for (var n = node.Parent; n is not null; n = n.Parent)
@@ -103,12 +110,18 @@ internal static class Util
 
 	public static NamespaceDeclarationSyntax? GetSyntax(this INamespaceSymbol symbol) => GetSyntax<NamespaceDeclarationSyntax>(symbol);
 
-	public static TypeDeclarationSyntax GetTypeDeclaration(INamedTypeSymbol sym) =>
+	public static TypeDeclarationSyntax MakeTypeDeclaration(this INamedTypeSymbol sym) =>
 		sym.TypeKind switch
 		{
 			TypeKind.Class => ClassDeclaration(sym.Name),
 			_ => StructDeclaration(sym.Name),
 		};
+
+	public static TypeDeclarationSyntax? GetTypeDeclaration(this TypeSyntax tsyn, Compilation compilation) =>
+		tsyn.GetSymbol(compilation) is ITypeSymbol ts
+			? ts.DeclaringSyntaxReferences.Select(r => r.GetSyntax())
+				.FirstOrDefault(s => s is TypeDeclarationSyntax) as TypeDeclarationSyntax
+			: null;
 
 	public static Microsoft.CodeAnalysis.TypeInfo GetTypeInfo(this BaseParameterSyntax node, Compilation compilation) => compilation.GetSemanticModel(node.SyntaxTree).GetTypeInfo(node.Type!);
 
@@ -167,7 +180,7 @@ internal static class Util
 	public static ParameterSyntax WithoutAttribute(this ParameterSyntax p, string attrName)
 	{
 		var al = p.AttributeLists.SelectMany(al => al.Attributes).Where(a => (a.Name as IdentifierNameSyntax)?.Identifier.Text != attrName).ToList();
-		return p.WithAttributeLists(al.Count > 0 ? SingletonList(AttributeList(SeparatedList(al))) : new SyntaxList<AttributeListSyntax>());
+		return p.WithAttributeLists(al.Count > 0 ? SingletonList(AttributeList(SeparatedList(al))) : []);
 	}
 
 	public static IEnumerable<SyntaxToken> ToTokens(this Accessibility accessibility)
@@ -238,6 +251,13 @@ internal static class Util
 		for (int i = 0; i < docLines.Count; i++)
 			outXml.AppendLine("/// " + docLines[i].TrimStart(' ', '\t'));
 		return node.WithLeadingTrivia(ParseLeadingTrivia(outXml.ToString()));
+	}
+
+	public static void AddDistinctBy<TSource, TKey>(this ICollection<TSource> source, IEnumerable<TSource> items, Func<TSource, TKey> keySelector)
+	{
+		foreach (var item in items)
+			if (!source.Any(k => EqualityComparer<TKey>.Default.Equals(keySelector(k), keySelector(item))))
+				source.Add(item);
 	}
 
 	public static void RemoveParamDoc(this XmlDocument docs, string paramName)

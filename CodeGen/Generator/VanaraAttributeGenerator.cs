@@ -26,6 +26,8 @@
  * ----							----	----	----
  * HandleFile					X		
  * MarshalAs(IUnknown)					X
+ * MarshalAs(Interface)					X
+ * MarshalAs(LPArray)					X
  * SuppressAutoGen						X
  * Ignore								X
  * AdjustAutoMethodNamePattern			X
@@ -41,8 +43,6 @@
 
 using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
-using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -80,27 +80,25 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 	static string UniqueName(string n) => $"{n}{uid++}";
 
 	static readonly MethAttrHandler[] methodAttributes = [
-		new("System.Runtime.InteropServices.MarshalAsAttribute", IsParamInNestedType, BuildMarshalAsMethod, ParentForExtMethod, GetParamMeth), // IUnknown, Interface, LPArray
-		new("Vanara.PInvoke.IgnoreAttribute", IsParamInMethod, BuildIgnoreMethod, ParentForExtMethod, GetParamMeth),
-		new("Vanara.PInvoke.SizeDefAttribute", IsParamInMethod, BuildSizeDefMethod, ParentForExtMethod, GetParamMeth),
-		new("Vanara.PInvoke.AddAsCtorAttribute", IsParamInStaticMethod, DummyBuilder, GetParamType, GetParamMeth),
-		new("Vanara.PInvoke.AddAsMemberAttribute", IsParamInStaticMethod, DummyBuilder, GetParamType, GetParamMeth),
-		//("Vanara.PInvoke.SuppressAutoGenAttribute", static (n, t) => n is MethodDeclarationSyntax),
+		new("System.Runtime.InteropServices.MarshalAsAttribute", IsParamInNestedType, ParentForExtMethod, GetMethodFromNode, BuildMarshalAsMethod), // IUnknown, Interface, LPArray
+		new("Vanara.PInvoke.IgnoreAttribute", IsParamInNestedType, ParentForExtMethod, GetMethodFromNode, BuildIgnoreMethod),
+		new("Vanara.PInvoke.SizeDefAttribute", IsParamInNestedType, ParentForExtMethod, GetMethodFromNode, BuildSizeDefMethod),
+		new("Vanara.PInvoke.AddAsMemberAttribute", IsParamInNestedType, ParentForExtMethod, GetMethodFromNode, BuildAddAsMethod),
+		new("Vanara.PInvoke.AddAsCtorAttribute", IsNestedMethWithParamOrReturnAttr, ParentForExtMethod, GetMethodFromNode, BuildAddAsMethod),
 	];
 
 	static readonly TypeAttrHandler[] typeAttributes = [
 		new("Vanara.PInvoke.AdjustAutoMethodNamePatternAttribute", IsPartialType, null),
+		new("Vanara.PInvoke.AutoSafeHandleAttribute", IsPartialType, null),
 		new("Vanara.PInvoke.DeferAutoMethodFromAttribute", IsPartialType, static (ctx) => (TypeDeclarationSyntax)ctx.TargetNode),
 	];
-
-	static MethodDeclarationSyntax GetParamMeth(ParameterSyntax decl) => (MethodDeclarationSyntax)decl.Parent!.Parent!;
 
 	/// <inheritdoc/>
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		// Process each attribute in the methodAttributes array
 		var attributeProviders = methodAttributes
-			.Select(attr => context.SyntaxProvider.ForAttributeWithMetadataName(attr.AttrName, (n, t) => attr.Validator(n, t), (ctx, _) => ((ParameterSyntax)ctx.TargetNode, ctx.Attributes)).Collect())
+			.Select(attr => context.SyntaxProvider.ForAttributeWithMetadataName(attr.AttrName, (n, t) => attr.Validator(n, t), (ctx, _) => (ctx.TargetNode, ctx.Attributes)).Collect())
 			.ToArray();
 
 		// Process type-level methodAttributes (those without method transforms)
@@ -117,133 +115,299 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		// Combine everything together
 		var source = context.CompilationProvider
 			.Combine(handlesFiles)
-			.Combine(typeProviders[0])
-			.Combine(typeProviders[1])
 			.Combine(attributeProviders[0])
 			.Combine(attributeProviders[1])
 			.Combine(attributeProviders[2])
 			.Combine(attributeProviders[3])
 			.Combine(attributeProviders[4])
+			.Combine(typeProviders[0])
+			.Combine(typeProviders[1])
+			.Combine(typeProviders[2])
 			.WithTrackingName("Syntax");
 
 		context.RegisterSourceOutput(source, (spc, value) =>
-			GenerateCode(spc, value.Left.Left.Left.Left.Left.Left.Left.Left, value.Left.Left.Left.Left.Left.Left.Left.Right,
-			value.Right.AddRange(value.Left.Right).AddRange(value.Left.Left.Right).AddRange(value.Left.Left.Left.Right).AddRange(value.Left.Left.Left.Left.Right),
-			value.Left.Left.Left.Left.Left.Right.AddRange(value.Left.Left.Left.Left.Left.Left.Right)));
+			GenerateCode(spc, value.Left.Left.Left.Left.Left.Left.Left.Left.Left, value.Left.Left.Left.Left.Left.Left.Left.Left.Right,
+			value.Left.Left.Left.Right.AddRange(value.Left.Left.Left.Left.Right).AddRange(value.Left.Left.Left.Left.Left.Right).AddRange(value.Left.Left.Left.Left.Left.Left.Right).AddRange(value.Left.Left.Left.Left.Left.Left.Left.Right),
+			value.Right.AddRange(value.Left.Right).AddRange(value.Left.Left.Right)));
 	}
 
-	private static void GenerateCode(SourceProductionContext context, Compilation compilation, ImmutableArray<AdditionalText> addtlFiles, ImmutableArray<(ParameterSyntax paramNode, ImmutableArray<AttributeData> attrDatas)> paramNodes,
+	private static void GenerateCode(SourceProductionContext context, Compilation compilation, ImmutableArray<AdditionalText> addtlFiles, ImmutableArray<(SyntaxNode syntaxNode, ImmutableArray<AttributeData> attrDatas)> paramNodes,
 		ImmutableArray<(TypeDeclarationSyntax type, ImmutableArray<AttributeData> attrDatas)> typeNodes)
 	{
 		uid = 1;
-
-		// Process handlesCsv to get list of new types
-		var handles = HandlesFromFileGenerator.EnumHandleModels(context, addtlFiles).Select(h => (ns: h.Namespace, parent: h.ParentClassName, handle: h.HandleName, safehandle: h.ClassName)).ToList();
-
-		// Get list of all types that will hold methods
-		//var types = paramNodes.Select(TypeFromParam).GroupBy(t => t.Identifier.altArgBase).Select(t => t.First()).ToDictionary(t => t, t => new Dictionary<MethodDeclarationSyntax, MethodBodyBuilder>(SyntaxComparer.Default), SyntaxComparer.Default);
-		var types = paramNodes.Select(TypeFromParam).DistinctBy(t => t.Identifier.Text).ToDictionary(t => t, t => new Dictionary<MethodDeclarationSyntax, MethodBodyBuilder>(SyntaxComparer.Default), SyntaxComparer.Default);
-
-		// Process all DeferAutoMethodFromAttribute and replace the typeSyms entry if found with the type from the attribute
-		foreach (var (type, attrs) in typeNodes.Where(p => p.attrDatas.First().AttributeClass?.ToDisplayString() == "Vanara.PInvoke.DeferAutoMethodFromAttribute"))
+		try
 		{
-			var attr = attrs.FirstOrDefault();
-			if (attr is not null && attr.ConstructorArguments.Length > 0 && attr.ConstructorArguments[0].Value is INamedTypeSymbol tsym)
+			// Get list of all types of entries from handles that have a safe handle and have a handle
+			var handles = HandlesFromFileGenerator.EnumHandleModels(context, addtlFiles).ToList();
+
+			FungibleTypeDecl MakeOrBuild(INamedTypeSymbol tsym)
 			{
-				// TODO: Find tsym in types and find a way to identify it as having been deferred
+				var ftd = new FungibleTypeDecl(tsym);
+				if (!ftd.IsInvalid)
+					return ftd;
+				// See if it's a handle type
+				var handle = handles.FirstOrDefault(h => h.HasHandle && h.HandleName == tsym.Name);
+				return handle is not null ? new FungibleTypeDecl(handle, compilation, false) : ftd;
 			}
+
+			// Process all DeferAutoMethodFromAttribute
+			var deferralMappings = typeNodes
+				.Where(p => p.attrDatas.First().AttributeClass?.ToDisplayString() == "Vanara.PInvoke.DeferAutoMethodFromAttribute")
+				.SelectMany(tn => tn.attrDatas.Select(a => a.ConstructorArguments.FirstOrDefault().Value).OfType<INamedTypeSymbol>()
+					.Select(tsym => (src: MakeOrBuild(tsym), dest: new FungibleTypeDecl(tn.type))))
+				.Concat(typeNodes.Where(p => p.attrDatas.First().AttributeClass?.ToDisplayString() == "Vanara.PInvoke.AutoSafeHandleAttribute")
+					.SelectMany(tn => tn.attrDatas.Select(a => a.ConstructorArguments.Skip(1).FirstOrDefault().Value).OfType<INamedTypeSymbol>()
+					.Select(tsym => (src: MakeOrBuild(tsym), dest: new FungibleTypeDecl(tn.type)))))
+				.Concat(handles.Where(h => !string.IsNullOrEmpty(h.HandleName) && h.HasSafeHandle)
+					.Select(h => (src: new FungibleTypeDecl(h, compilation, false), dest: new FungibleTypeDecl(h, compilation, true))))
+				.Distinct().ToList();
+
+			// Get list of all types that will hold methods
+			var types = paramNodes.Select(n => new FungibleTypeDecl(TypeFromNode(n)))
+				.Concat(deferralMappings.Select(dm => dm.src))
+				.Concat(deferralMappings.Select(dm => dm.dest))
+				.Concat(typeNodes.Where(p => p.attrDatas.First().AttributeClass?.ToDisplayString() == "Vanara.PInvoke.AutoSafeHandleAttribute")
+					.Select(tsym => (FungibleTypeDecl)tsym.type))
+				.Distinct()
+				.ToDictionary(t => t, t => (methods: new Dictionary<MemberDeclarationSyntax, MethodBodyBuilder>(SyntaxComparer.Default), usings: new List<UsingDirectiveSyntax>()));
+
+			// Process each type group's methods
+			List<(FungibleTypeDecl td, MethodDeclarationSyntax md, MethodBodyBuilder mb, SyntaxNode n, AttributeData ad)> postProcessMethods = [];
+			foreach (var typeGroup in types)
+			{
+				FungibleTypeDecl typeDecl = typeGroup.Key;
+				var methLookup = typeGroup.Value.methods;
+				var usings = typeGroup.Value.usings;
+
+				// Process each paramNode that maps to this type
+				foreach (var pa in paramNodes.Where(pa => TypeComparer.Default.Equals(TypeFromNode(pa), typeDecl.decl)))
+				{
+					var handler = GetHandler(pa);
+					var methDecl = handler.meth(pa.syntaxNode);
+					if (methDecl is null)
+					{
+						context.ReportError(pa.syntaxNode, "VANGEN999", "Internal error: Cannot find method declaration for attribute application.");
+						continue;
+					}
+					try
+					{
+						methLookup.TryGetValue(methDecl, out MethodBodyBuilder? methBuilder);
+						handler.bodyBuilder(context, compilation, types.Keys, pa.syntaxNode, methDecl, pa.attrDatas, ref methBuilder);
+
+						if (methBuilder is not null)
+						{
+							methLookup[methDecl] = methBuilder;
+							// Add distinct using directives
+							usings.AddDistinctBy(pa.syntaxNode.SyntaxTree.GetRoot().DescendantNodes().OfType<UsingDirectiveSyntax>()
+								.Where(u => u.GlobalKeyword.IsKind(SyntaxKind.None)).Select(u => u.WithoutTrivia()), UsingComp);
+						}
+
+						if (handler.AttrName is "Vanara.PInvoke.AddAsMemberAttribute" or "Vanara.PInvoke.AddAsCtorAttribute")
+						{
+							postProcessMethods.Add((typeDecl, methDecl, methBuilder!, pa.syntaxNode, pa.attrDatas.First()));
+						}
+					}
+					catch (Exception ex)
+					{
+						context.ReportError(methDecl, "VANGEN999", "Unknown error: " + Regex.Replace(ex.ToString(), "[\r\n]+", " "));
+						continue;
+					}
+				}
+			}
+
+			// Enumerate each AddAsMember and AddAsCtor attribute reference and move methods from parent type to target type
+			// where target type is replaced by value in deferralMappings if found there or in handles, in any references there.
+			foreach (var ppg in postProcessMethods.GroupBy(pp => pp.td))
+			{
+				var srcType = ppg.Key;
+				var (methods, usings) = types[srcType];
+				foreach (var (td, md, mb, n, ad) in ppg)
+				{
+					// Get the destination type from the parameter or return type and ensure it exists in types, creating it if necessary from handles
+					var destNodeType = GetTypeFromNode(n);
+					var destType = types.Keys.FirstOrDefault(td => td.Name == destNodeType?.ToString());
+
+					// Try to get the altnernate type from deferralMappings
+					var altDestType = deferralMappings.FirstOrDefault(at => at.src.Name == destNodeType!.ToString()).dest;
+
+					// Process the methods, copying them to the destType or altDestType as needed
+					switch (ad.AttributeClass?.ToDisplayString())
+					{
+						case "Vanara.PInvoke.AddAsMemberAttribute":
+						case "Vanara.PInvoke.AddAsCtorAttribute":
+							// Copy methods to destType if available in compilation
+							if (destType is not null && altDestType is null)
+							{
+								var destMethods = types[destType];
+								if (!destMethods.methods.ContainsKey(md))
+									destMethods.methods[md] = mb;
+								// Merge usings
+								destMethods.usings.AddDistinctBy(usings, UsingComp);
+							}
+							// Copy methods to altDestType if available in compilation
+							if (altDestType is not null)
+							{
+								var destMethods = types[altDestType];
+								if (!destMethods.methods.ContainsKey(md))
+									destMethods.methods[md] = mb;
+								// Merge usings
+								destMethods.usings.AddDistinctBy(usings, UsingComp);
+							}
+							// Remove method from source type
+							types[srcType].methods.Remove(md);
+							break;
+						default:
+							context.ReportError(n, "VANGEN031", "Error: Unrecognized post-process handler.");
+							break;
+					}
+				}
+			}
+
+			// Get a dictionary of all string munges
+			var munges = typeNodes.Where(n => n.attrDatas.First().AttributeClass?.ToDisplayString() == "Vanara.PInvoke.AdjustAutoMethodNamePatternAttribute")!
+				.SelectMany(tas => tas.attrDatas.Select(a => ((FungibleTypeDecl)tas.type, a.ConstructorArguments.First().GetValues())))
+				.Concat(handles.Where(h => h.HasHandle).Select(h => (new FungibleTypeDecl(h, compilation, false), h.AdjNameRegex is not null ? h.AdjNameRegex.ToArray() : [])))
+				.Concat(handles.Where(h => h.HasSafeHandle).Select(h => (new FungibleTypeDecl(h, compilation, true), h.AdjNameRegex is not null ? h.AdjNameRegex.ToArray() : [])))
+				.ToDictionary(s => s.Item1, s => s.Item2);
+
+			// Generate source for each type, replacing type with handle type if applicable
+			foreach (var kv in types)
+			{
+				GenerateTypeSource(kv.Key, kv.Value.usings, kv.Value.methods.Values);
+			}
+
+			void GenerateTypeSource(FungibleTypeDecl localTypeDecl, IEnumerable<UsingDirectiveSyntax> usings, IReadOnlyCollection<MethodBodyBuilder> methLookup)
+			{
+				if (methLookup.Count == 0 || localTypeDecl.decl is null)
+					return;
+
+				// If localTypeDecl is in munges, apply the string replacements to each method name in methLookup
+				var ptrnRepl = munges.TryGetValue(localTypeDecl, out var mr) ? mr : null;
+				// Build new syntax tree, starting with nsDecl, adding any containing types with their modifiers, and finally the localTypeDecl with the new values from methLookup.Values
+				SyntaxNode topDecl = localTypeDecl.decl
+					.WithoutTrivia()
+					.WithAttributeLists([])
+					.WithMembers(List(methLookup
+						.Select(bb => (bb, ptrnRepl is null ? null : RegexRepl(bb.methodName, ptrnRepl)))
+						.Select(bban => bban.bb.ToMethod(bban.Item2))));
+				foreach (var parent in localTypeDecl.Ancestors)
+				{
+					topDecl = parent switch
+					{
+						ClassDeclarationSyntax cds => ClassDeclaration(cds.Identifier.Text)
+							.WithModifiers(cds.Modifiers)
+							.WithTypeParameterList(cds.TypeParameterList)
+							.WithConstraintClauses(cds.ConstraintClauses)
+							.WithLeadingTrivia(cds.GetLeadingTrivia())
+							.WithTrailingTrivia(cds.GetTrailingTrivia())
+							.WithMembers(SingletonList((MemberDeclarationSyntax)topDecl)),
+						StructDeclarationSyntax sds => StructDeclaration(sds.Identifier.Text)
+							.WithModifiers(sds.Modifiers)
+							.WithTypeParameterList(sds.TypeParameterList)
+							.WithConstraintClauses(sds.ConstraintClauses)
+							.WithLeadingTrivia(sds.GetLeadingTrivia())
+							.WithTrailingTrivia(sds.GetTrailingTrivia())
+							.WithMembers(SingletonList((MemberDeclarationSyntax)topDecl)),
+						BaseNamespaceDeclarationSyntax nds => NamespaceDeclaration(nds.Name)
+							.WithMembers(SingletonList((MemberDeclarationSyntax)topDecl))
+							.WithLeadingTrivia(nds.GetLeadingTrivia())
+							.WithTrailingTrivia(nds.GetTrailingTrivia()),
+						_ => topDecl
+					};
+				}
+
+				// Create compilation unit with using directives outside the namespace
+				var compilationUnit = CompilationUnit()
+					.WithUsings(List(usings))
+					.WithMembers(SingletonList((MemberDeclarationSyntax)topDecl))
+					.WithLeadingTrivia(
+						TriviaList(
+							Trivia(NullableDirectiveTrivia(Token(SyntaxKind.EnableKeyword), true)),
+							Trivia(PragmaWarningDirectiveTrivia(Token(SyntaxKind.DisableKeyword), true)
+								.WithErrorCodes(SingletonSeparatedList<ExpressionSyntax>(LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(1591)))))
+						)
+					);
+
+				// Output
+				context.AddSource($"{localTypeDecl!.Name}_AttrGen.g.cs", compilationUnit.NormalizeWhitespace().ToFullString());
+			}
+			TypeDeclarationSyntax TypeFromNode((SyntaxNode paramNode, ImmutableArray<AttributeData> attrDatas) p) => GetHandler(p).parent(context, p.paramNode, compilation);
+		}
+		catch (Exception ex)
+		{
+			context.ReportError("VANGEN999", "Unknown error: " + Regex.Replace(ex.ToString(), "[\r\n]+", " "));
 		}
 
-		// Get a dictionary of all string munges
-		var munges = typeNodes.Where(n => n.attrDatas.First().AttributeClass?.ToDisplayString() == "Vanara.PInvoke.AdjustAutoMethodNamePatternAttribute")!
-			.SelectMany(tas => tas.attrDatas.Select(a => (tas.type, a)))
-			.SelectMany(ta => ta.a.ConstructorArguments.First().Values.Select(tc => (ta.type, ((string p, string r))tc.Value!)))
-			.ToDictionary(s => s.type, s => s.Item2);
-
-		foreach (var typeGroup in types)
+		static MethAttrHandler GetHandler((SyntaxNode paramNode, ImmutableArray<AttributeData> attrDatas) p) => methodAttributes.First(a => a.AttrName == p.attrDatas.First().AttributeClass?.ToDisplayString());
+		static string RegexRepl(string input, string[] replPatterns)
 		{
-			var typeDecl = (TypeDeclarationSyntax)typeGroup.Key;
-			var methLookup = typeGroup.Value;
-			List<UsingDirectiveSyntax> usings = [];
-			foreach (var pa in paramNodes.Where(pa => TypeFromParam(pa).Identifier.Text == typeDecl.Identifier.Text))
-			{
-				var handler = GetHandler(pa);
-				var methDecl = handler.meth(pa.paramNode);
-				methLookup.TryGetValue(methDecl, out MethodBodyBuilder? methBuilder);
-				try { handler.bodyBuilder(context, compilation, pa.paramNode, methDecl, pa.attrDatas, ref methBuilder); }
-				catch (Exception ex)
-				{
-					context.ReportError(methDecl, "VANGEN999", "Unknown error: " + Regex.Replace(ex.ToString(), "[\r\n]+", " "));
-					continue;
-				}
-				if (methBuilder is not null)
-				{
-					methLookup[methDecl] = methBuilder;
-					usings.AddRange(pa.paramNode.SyntaxTree.GetRoot().DescendantNodes().OfType<UsingDirectiveSyntax>().Where(u => u.GlobalKeyword.IsKind(SyntaxKind.None)).Select(u => u.WithoutTrivia()));
-				}
-			}
-
-			if (methLookup.Count == 0)
-				continue;
-
-			// Add distinct using directives from 'usings' to the compilation unit
-			usings = [.. usings.DistinctBy(u => u.Alias?.ToString() ?? u.Name?.ToString())];
-
-			// Build new syntax tree, starting with nsDecl, adding any containing types with their modifiers, and finally the typeDecl with the new values from methLookup.Values
-			SyntaxNode topDecl = typeDecl.WithMembers(List<MemberDeclarationSyntax>(methLookup.Values.Select(bb => bb.ToMethod())));
-			foreach (var parent in typeDecl.Ancestors())
-			{
-				topDecl = parent switch
-				{
-					ClassDeclarationSyntax cds => ClassDeclaration(cds.Identifier.Text)
-						.WithModifiers(cds.Modifiers)
-						.WithTypeParameterList(cds.TypeParameterList)
-						.WithConstraintClauses(cds.ConstraintClauses)
-						.WithLeadingTrivia(cds.GetLeadingTrivia())
-						.WithTrailingTrivia(cds.GetTrailingTrivia())
-						.WithMembers(SingletonList((MemberDeclarationSyntax)topDecl)),
-					StructDeclarationSyntax sds => StructDeclaration(sds.Identifier.Text)
-						.WithModifiers(sds.Modifiers)
-						.WithTypeParameterList(sds.TypeParameterList)
-						.WithConstraintClauses(sds.ConstraintClauses)
-						.WithLeadingTrivia(sds.GetLeadingTrivia())
-						.WithTrailingTrivia(sds.GetTrailingTrivia())
-						.WithMembers(SingletonList((MemberDeclarationSyntax)topDecl)),
-					BaseNamespaceDeclarationSyntax nds => NamespaceDeclaration(nds.Name)
-						.WithMembers(SingletonList((MemberDeclarationSyntax)topDecl))
-						.WithLeadingTrivia(nds.GetLeadingTrivia())
-						.WithTrailingTrivia(nds.GetTrailingTrivia()),
-					_ => topDecl
-				};
-			}
-
-			// Create compilation unit with using directives outside the namespace
-			var compilationUnit = CompilationUnit()
-				.WithUsings(List(usings))
-				.WithMembers(SingletonList((MemberDeclarationSyntax)topDecl))
-				.WithLeadingTrivia(
-					TriviaList(
-						Trivia(NullableDirectiveTrivia(Token(SyntaxKind.EnableKeyword), true)),
-						Trivia(PragmaWarningDirectiveTrivia(Token(SyntaxKind.DisableKeyword), true)
-							.WithErrorCodes(SingletonSeparatedList<ExpressionSyntax>(LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(1591)))))
-					)
-				);
-
-			// Output
-			context.AddSource($"{typeDecl!.Identifier.Text}_AttrGen.g.cs", compilationUnit.NormalizeWhitespace().ToFullString());
+			string output = input;
+			for (int i = 0; i < replPatterns.Length - 1; i += 2)
+				output = Regex.Replace(output, replPatterns[i], replPatterns[i + 1]);
+			return output;
 		}
-
-		TypeDeclarationSyntax TypeFromParam((ParameterSyntax paramNode, ImmutableArray<AttributeData> attrDatas) p) => GetHandler(p).parent(context, p.paramNode);
-		static MethAttrHandler GetHandler((ParameterSyntax paramNode, ImmutableArray<AttributeData> attrDatas) p) => methodAttributes.First(a => a.AttrName == p.attrDatas.First().AttributeClass?.ToDisplayString());
+		static string? UsingComp(UsingDirectiveSyntax u) => u.Alias?.ToString() ?? u.Name?.ToString();
 	}
 
-	private static void DummyBuilder(SourceProductionContext context, Compilation compilation, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
+	private static void BuildAddAsMethod(SourceProductionContext context, Compilation compilation, IEnumerable<FungibleTypeDecl> types, SyntaxNode decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
 	{
+		var ts = GetTypeFromNode(decl);
+		if (!types.Any(td => td.Name == ts?.ToString()))
+			return;
+
+		MethodBodyBuilder tmpbuilder = builder ?? new(methodDecl);
+
+		if (attrDatas.First().AttributeClass?.Name == "AddAsCtorAttribute")
+		{
+			tmpbuilder.isCtor = true;
+
+			// See if the attribute is marked with the return attribute target specifier
+			if (decl is ParameterSyntax ps)
+			{
+				// Remove the n from the method signature
+				tmpbuilder.parameters.Remove(ps.Identifier.Text);
+
+				// Set the return statement to the parameter type
+				tmpbuilder.returnType = ps.Type!;
+				tmpbuilder.statements.ret = ReturnStatement(IdentifierName(ps.Identifier.Text));
+
+				// Set the invoke argument an out argument of the parameter type
+				var sdArg = tmpbuilder.statements.invokeArgs.FirstOrDefault(a => a.NameEquals(ps.Identifier.Text));
+				if (sdArg != null)
+					tmpbuilder.statements.invokeArgs.Replace(sdArg, Argument(null, MethodBodyBuilder.outToken, ParseExpression($"{ps.Type!.GetText()} {ps.Identifier.Text}")));
+
+				// Process the xml docs for the method, replacing the returns node with the param node innerxml
+				var paramNode = tmpbuilder.docs?.SelectSingleNode($"//param[@name='{ps.Identifier.Text}']");
+				var returnsNode = tmpbuilder.docs?.SelectSingleNode("//returns") ??
+					tmpbuilder.docs?.DocumentElement?.AppendChild(tmpbuilder.docs?.CreateElement("returns")!);
+				if (returnsNode is not null)
+					returnsNode.InnerXml = paramNode?.InnerXml;
+				paramNode?.ParentNode?.RemoveChild(paramNode);
+			}
+		}
+		else if (decl is ParameterSyntax ps)
+		{
+			// Remove static modifier from the method
+			tmpbuilder.modifiers.RemoveWhere(t => t.IsKind(SyntaxKind.StaticKeyword));
+
+			// Remove the n from the method signature
+			tmpbuilder.parameters.Remove(ps.Identifier.Text);
+
+			// Call method for real replacing the reference to the parameter in the method body invokeArgs statement with DangerousGetHandle()
+			var sdArg = tmpbuilder.statements.invokeArgs.FirstOrDefault(a => a.NameEquals(ps.Identifier.Text));
+			if (sdArg != null)
+				tmpbuilder.statements.invokeArgs.Replace(sdArg, Argument(ParseExpression(@"DangerousGetHandle()")));
+
+			// Process the xml docs for the method, removing the ignored param
+			tmpbuilder.docs?.RemoveParamDoc(ps.Identifier.Text);
+		}
+		builder = tmpbuilder;
 	}
 
-	private static void BuildSizeDefMethod(SourceProductionContext context, Compilation compilation, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
+	private static void BuildSizeDefMethod(SourceProductionContext context, Compilation compilation, IEnumerable<FungibleTypeDecl> types, SyntaxNode node, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
 	{
 		MethodBodyBuilder tmpbuilder = builder ?? new(methodDecl);
+		var decl = (ParameterSyntax)node;
 
 		if (!ValidateAttr(out var szParam, out var sz, out var szMeth, out var charSet, out var outSzParam, out var bufSzParam))
 			return;
@@ -265,7 +429,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 
 		bool isNullable = decl.Type is NullableTypeSyntax || decl.Type?.ToString().EndsWith("?") == true;
 
-		// Replace the decl and remove the szParam parameters from the method signature
+		// Replace the n and remove the szParam parameters from the method signature
 		tmpbuilder.parameters.Replace(decl, decl.WithoutAttribute("SizeDef").WithoutAttribute("In").WithModifiers(TokenList(Token(SyntaxKind.OutKeyword))).WithType(outType));
 		if (szParam is not null) tmpbuilder.parameters.Remove(szParam);
 
@@ -339,7 +503,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		}
 
 		// Assign variables before final method call
-		// 1. Create a statement that creates a variable for the output of decl and initializes it to the value of 'sz'
+		// 1. Create a statement that creates a variable for the output of n and initializes it to the value of 'sz'
 		var outVarName = UniqueName("__out");
 		// 2. Create a variable that holds the number of elements initialized to the value of szVarName
 		var cElemName = UniqueName("__cElem");
@@ -413,7 +577,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			if ((szMeth & (SizingMethod.Bytes | SizingMethod.InclNullTerm | SizingMethod.QueryResultInReturn | SizingMethod.CheckLastError)) != szMeth)
 				return false;
 
-			// From 'decl', get the ParameterSyntax for the parameter referenced by the first string argument in the SizeDef attribute
+			// From 'n', get the ParameterSyntax for the parameter referenced by the first string argument in the SizeDef attribute
 			var arg = attrDatas.FirstOrDefault()?.ConstructorArguments.FirstOrDefault().Value;
 			if (arg is string s)
 			{
@@ -484,12 +648,12 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			if (szMeth.HasFlag(SizingMethod.Query))
 			{
 				bool qret = szMeth.HasFlag(SizingMethod.QueryResultInReturn), qle = szMeth.HasFlag(SizingMethod.CheckLastError);
-				if (!qret && !qle && (szParam is null || (!szParam.Modifiers.Any(SyntaxKind.RefKeyword) && outSzParam is null && bufSzParam is null)))
+				if (!qret && !qle && (szParam is null || !szParam.Modifiers.Any(SyntaxKind.RefKeyword) && outSzParam is null && bufSzParam is null))
 				{
 					context.ReportError(decl, "VANGEN027", "SizeDef attribute with Query sizing method requires the referenced parameter to be passed by ref.");
 					return false;
 				}
-				if (qret && ((szParam is null || szParam.Modifiers.Any(SyntaxKind.RefKeyword)) || outSzParam is not null))
+				if (qret && (szParam is null || szParam.Modifiers.Any(SyntaxKind.RefKeyword) || outSzParam is not null))
 				{
 					context.ReportError(decl, "VANGEN028", "SizeDef attribute with QueryResultInReturn sizing method requires the referenced parameter to be passed by value and no OutVarName specified.");
 					return false;
@@ -500,16 +664,17 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		}
 	}
 
-	private static void BuildIgnoreMethod(SourceProductionContext context, Compilation compilation, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
+	private static void BuildIgnoreMethod(SourceProductionContext context, Compilation compilation, IEnumerable<FungibleTypeDecl> types, SyntaxNode node, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
 	{
 		MethodBodyBuilder tmpbuilder = builder ?? new(methodDecl);
+		var decl = (ParameterSyntax)node;
 
 		// Remove the parameter from the method signature
 		var idx = tmpbuilder.parameters.FindIndex(t => t.IsEquivalentTo(decl));
 		if (idx >= 0)
 		{
 			// If the parameter is not optional, report an error
-			if (!decl.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "Optional"))
+			if (!decl.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "Optional") && decl.Default is null)
 			{
 				context.ReportError(decl, "VANGEN022", "Ignore parameters must be optional.");
 				return;
@@ -548,15 +713,16 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		Ref = 3
 	}
 
-	private static void BuildMarshalAsMethod(SourceProductionContext context, Compilation compilation, ParameterSyntax decl, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
+	private static void BuildMarshalAsMethod(SourceProductionContext context, Compilation compilation, IEnumerable<FungibleTypeDecl> types, SyntaxNode node, MethodDeclarationSyntax methodDecl, ImmutableArray<AttributeData> attrDatas, ref MethodBodyBuilder? builder)
 	{
-		// Determine if the decl is an in or out or ref param
+		var decl = (ParameterSyntax)node;
+		// Determine if the n is an in or out or ref param
 		bool isOutParam = decl.Modifiers.Any(SyntaxKind.OutKeyword);
 		ModType modAttr = (decl.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "Out") ? ModType.Out : 0)
 			| (decl.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "In") ? ModType.In : 0);
 		if (modAttr == 0) modAttr = isOutParam ? ModType.Out : ModType.In;
 
-		// Determine if the decl has the MarshalAs attribute with contructor first argument of UnmanagedType.IUnknown or UnmanagedType.IInterface and a named argument of IidParameterIndex
+		// Determine if the n has the MarshalAs attribute with contructor first argument of UnmanagedType.IUnknown or UnmanagedType.IInterface and a named argument of IidParameterIndex
 		if (!ValidateAttr(out string refParamName, out var unmanagedType))
 			return;
 
@@ -738,10 +904,6 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		}
 	}
 
-	private static TypeDeclarationSyntax GetFirstTypeParent(SourceProductionContext context, ParameterSyntax decl) => decl.GetParentKind<TypeDeclarationSyntax>();
-
-	private static TypeDeclarationSyntax GetParamType(SourceProductionContext context, ParameterSyntax decl) => GetFirstTypeParent(context, decl);
-
 	// Confirm param is in a method is not new or unsafe and does not have SuppressAutoGen attribute
 	private static bool IsParamInMethod(SyntaxNode syntaxNode, CancellationToken cancellationToken, out MethodDeclarationSyntax? ms)
 	{
@@ -758,14 +920,41 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 
 	private static bool IsParamInNestedType(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
 		IsParamInMethod(syntaxNode, cancellationToken, out var ms) &&
-		((ms?.Parent is ClassDeclarationSyntax cs && cs.IsPartial() && ms.Modifiers.Any(SyntaxKind.StaticKeyword) && ms.Modifiers.Any(SyntaxKind.ExternKeyword)) ||
-		(ms?.Parent is InterfaceDeclarationSyntax && ms?.Parent?.Parent is ClassDeclarationSyntax ccs && ccs.IsPartial()));
+		(ms?.Parent is ClassDeclarationSyntax cs && cs.IsPartial() && ms.Modifiers.Any(SyntaxKind.StaticKeyword) ||
+		ms?.Parent is InterfaceDeclarationSyntax && ms?.Parent?.Parent is ClassDeclarationSyntax ccs && ccs.IsPartial());
+
+	private static bool IsNestedMethWithParamOrReturnAttr(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
+		GetMethodFromNode(syntaxNode) is MethodDeclarationSyntax ms
+			&& !ms.Modifiers.Any(SyntaxKind.UnsafeKeyword) && !ms.Modifiers.Any(SyntaxKind.NewKeyword)
+			&& !ms.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString().Contains("SuppressAutoGen"))
+			&& (ms?.Parent is ClassDeclarationSyntax cs && cs.IsPartial() && ms.Modifiers.Any(SyntaxKind.StaticKeyword) ||
+				ms?.Parent is InterfaceDeclarationSyntax && ms?.Parent?.Parent is ClassDeclarationSyntax ccs && ccs.IsPartial());
+
+	private static MethodDeclarationSyntax? GetMethodFromNode(SyntaxNode n) => n switch
+	{
+		ParameterSyntax ps when ps.Parent?.Parent is MethodDeclarationSyntax mds => mds,
+		MethodDeclarationSyntax mds2 => mds2,
+		_ => n.AncestorsAndSelf().OfType<MethodDeclarationSyntax>().FirstOrDefault()
+	};
 
 	private static bool IsPartialType(SyntaxNode syntaxNode, CancellationToken cancellationToken) => syntaxNode is TypeDeclarationSyntax tds && tds.IsPartial();
 
-	private static TypeDeclarationSyntax ParentForExtMethod(SourceProductionContext context, ParameterSyntax decl)
+	private static TypeSyntax? GetTypeFromNode(SyntaxNode n) => n switch
 	{
-		var parentClass = decl.Parent?.Parent?.Parent is ClassDeclarationSyntax cs ? cs : (decl.Parent?.Parent?.Parent is InterfaceDeclarationSyntax && decl.Parent?.Parent?.Parent?.Parent is ClassDeclarationSyntax ccs ? ccs : null);
+		ParameterSyntax ps => ps.Type!,
+		MethodDeclarationSyntax mds => mds.ReturnType,
+		TypeSyntax ts => ts,
+		_ => null
+	};
+
+	private static TypeDeclarationSyntax GetParamType(SourceProductionContext context, SyntaxNode decl, Compilation compilation) =>
+		((ParameterSyntax)decl).Type?.GetTypeDeclaration(compilation) ??
+			StructDeclaration(((ParameterSyntax)decl).Type is IdentifierNameSyntax ins ? ins.Identifier.Text : ((ParameterSyntax)decl).Type!.ToString());
+
+	private static TypeDeclarationSyntax ParentForExtMethod(SourceProductionContext context, SyntaxNode decl, Compilation compilation)
+	{
+		var meth = GetMethodFromNode(decl);
+		var parentClass = meth?.Parent is ClassDeclarationSyntax cs ? cs : (meth?.Parent is InterfaceDeclarationSyntax && meth?.Parent?.Parent is ClassDeclarationSyntax ccs ? ccs : null);
 		if (parentClass == null)
 			context.ReportError(decl, "VANGEN020", "Unable to find the parent class into which to insert the methods.");
 		return parentClass!;
