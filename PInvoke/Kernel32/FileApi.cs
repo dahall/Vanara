@@ -11044,7 +11044,7 @@ public static partial class Kernel32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> that releases a created HFILE instance at disposal using CloseHandle.</summary>
 	[AutoSafeHandle(null, typeof(HFILE), typeof(SafeSyncHandle))]
-	[AdjustAutoMethodNamePattern(@"File|ExW\b|Ex\b|W?\b", "")]
+	[AdjustAutoMethodNamePattern(@"File(?!Type)|ExW\b|Ex\b|W?\b", "")]
 	public partial class SafeHFILE
 	{
 		/// <summary>Performs an implicit conversion from <see cref="Microsoft.Win32.SafeHandles.SafeFileHandle"/> to <see cref="SafeHFILE"/>.</summary>

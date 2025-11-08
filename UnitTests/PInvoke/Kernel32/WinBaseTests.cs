@@ -43,7 +43,7 @@ public partial class WinBaseTests
 	[Test]
 	public void EnableThreadProfilingTest()
 	{
-		Assert.That(EnableThreadProfiling(GetCurrentThread(), 0, 1, out PerformanceDataHandle hPD), ResultIs.Successful);
+		Assert.That(EnableThreadProfiling(GetCurrentThread(), 0, 1, out SafePerformanceDataHandle hPD), ResultIs.Successful);
 		Assert.That(QueryThreadProfiling(GetCurrentThread(), out bool enabled), ResultIs.Successful);
 		Assert.That(enabled);
 		PERFORMANCE_DATA pd = PERFORMANCE_DATA.Default;

@@ -195,7 +195,7 @@ public static partial class Kernel32
 	/// <see langword="true"/> if the process is running under WOW64. If the process is running under 32-bit Windows, the value is set
 	/// to <see langword="false"/>. If the process is a 64-bit application running under 64-bit Windows, the value is also set to <see langword="false"/>.
 	/// </returns>
-	public static bool IsWow64(this HPROCESS hProc) => Environment.OSVersion.Version >= new Version(5, 1) && IsWow64Process(hProc, out var b) && b;
+	public static bool IsWow64([In] this HPROCESS hProc) => Environment.OSVersion.Version >= new Version(5, 1) && IsWow64Process(hProc, out var b) && b;
 
 	/// <summary>
 	/// Determines whether the specified process is running under WOW64; also returns additional machine process and architecture information.

@@ -355,7 +355,6 @@ public static partial class Kernel32
 	// LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682396(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682396")]
-	[return: AddAsCtor]
 	public static extern SafeEventHandle CreateEvent([In, Optional] SECURITY_ATTRIBUTES? lpEventAttributes, [Optional, MarshalAs(UnmanagedType.Bool)] bool bManualReset,
 		[Optional, MarshalAs(UnmanagedType.Bool)] bool bInitialState, [In, Optional] string? lpName);
 
@@ -1245,7 +1244,6 @@ public static partial class Kernel32
 	// HANDLE WINAPI OpenEvent( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684305(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684305")]
-	[return: AddAsCtor]
 	public static extern SafeEventHandle OpenEvent(ACCESS_MASK dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
 
 	/// <summary>Opens an existing named mutex object.</summary>

@@ -26,7 +26,7 @@ public abstract class ModalDialog(SafeHINSTANCE hInst, ResourceId dlgId) : IWind
 	/// dialog box template or an integer value that specifies the resource identifier of the dialog box template.
 	/// </param>
 	public ModalDialog(string libraryPath, ResourceId dlgId)
-		: this(Win32Error.ThrowLastErrorIfInvalid(LoadLibraryEx(libraryPath, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE)), dlgId) { }
+		: this(Win32Error.ThrowLastErrorIfInvalid(LoadLibraryEx(libraryPath, default, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE)), dlgId) { }
 
 	/// <inheritdoc/>
 	public HWND Handle { get; protected set; }

@@ -647,7 +647,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa375700")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryActCtxSettingsW([Optional, Ignore] uint dwFlags, [In, AddAsMember] HACTCTX hActCtx, [Optional, Ignore] string? settingsNameSpace,
+	public static extern bool QueryActCtxSettingsW([Optional, Ignore] uint dwFlags, [In, AddAsMember] HACTCTX hActCtx, [Optional] string? settingsNameSpace,
 		string settingName, [Out, SizeDef(nameof(dwBuffer), SizingMethod.Query, OutVarName = nameof(pdwWrittenOrRequired))] StringBuilder? pvBuffer, SizeT dwBuffer, out SizeT pdwWrittenOrRequired);
 
 	/// <summary>The <c>QueryActCtxW</c> function queries the activation context.</summary>

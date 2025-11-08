@@ -7866,6 +7866,88 @@ public static partial class Kernel32
 	[AdjustAutoMethodNamePattern(@"Thread|Ex\b", "")]
 	public partial class SafeHTHREAD
 	{
+		/// <summary>
+		/// <para>Creates a thread to execute within the virtual address space of the calling process.</para>
+		/// <para>To create a thread that runs in the virtual address space of another process, use the <c>CreateRemoteThread</c> function.</para>
+		/// </summary>
+		/// <param name="lpStartAddress">
+		/// A pointer to the application-defined function to be executed by the thread. This pointer represents the starting address of the
+		/// thread. For more information on the thread function, see <c>ThreadProc</c>.
+		/// </param>
+		/// <param name="lpParameter">A pointer to a variable to be passed to the thread.</param>
+		/// <param name="lpThreadId">
+		/// A pointer to a variable that receives the thread identifier. If this parameter is <c>NULL</c>, the thread identifier is not returned.
+		/// </param>
+		/// <param name="dwCreationFlags">
+		/// <para>The flags that control the creation of the thread.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The thread runs immediately after creation.</term>
+		/// </item>
+		/// <item>
+		/// <term>CREATE_SUSPENDED 0x00000004</term>
+		/// <term>The thread is created in a suspended state, and does not run until the ResumeThread function is called.</term>
+		/// </item>
+		/// <item>
+		/// <term>STACK_SIZE_PARAM_IS_A_RESERVATION 0x00010000</term>
+		/// <term>
+		/// The dwStackSize parameter specifies the initial reserve size of the stack. If this flag is not specified, dwStackSize specifies
+		/// the commit size.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwStackSize">
+		/// The initial size of the stack, in bytes. The system rounds this value to the nearest page. If this parameter is zero, the new
+		/// thread uses the default size for the executable. For more information, see Thread Stack Size.
+		/// </param>
+		/// <param name="lpThreadAttributes">
+		/// <para>
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that determines whether the returned handle can be inherited by child
+		/// processes. If lpThreadAttributes is NULL, the handle cannot be inherited.
+		/// </para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new thread. If lpThreadAttributes
+		/// is NULL, the thread gets a default security descriptor. The ACLs in the default security descriptor for a thread come from the
+		/// primary token of the creator.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// Note that <c>CreateThread</c> may succeed even if lpStartAddress points to data, code, or is not accessible. If the start address
+		/// is invalid when the thread runs, an exception occurs, and the thread terminates. Thread termination due to a invalid start
+		/// address is handled as an error exit for the thread's process. This behavior is similar to the asynchronous nature of
+		/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLLs).
+		/// </para>
+		/// </returns>
+		public static SafeHTHREAD Create(ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, out uint lpThreadId, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, [Optional] SizeT dwStackSize, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes) =>
+			Kernel32.CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, out lpThreadId);
+
+		/// <summary>
+		/// <para>Creates a thread to execute within the virtual address space of the calling process.</para>
+		/// <para>To create a thread that runs in the virtual address space of another process, use the <c>CreateRemoteThread</c> function.</para>
+		/// </summary>
+		/// <param name="lpStartAddress">A pointer to the application-defined function to be executed by the thread. This pointer represents the starting address of the
+		/// thread. For more information on the thread function, see <c>ThreadProc</c>.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// Note that <c>CreateThread</c> may succeed even if lpStartAddress points to data, code, or is not accessible. If the start address
+		/// is invalid when the thread runs, an exception occurs, and the thread terminates. Thread termination due to a invalid start
+		/// address is handled as an error exit for the thread's process. This behavior is similar to the asynchronous nature of
+		/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLLs).
+		/// </para>
+		/// </returns>
+		public static SafeHTHREAD Create(ThreadProc lpStartAddress) => Create(lpStartAddress, IntPtr.Zero, out _);
+
 		/// <summary>Gets a handle to the current thread that can be used across processes.</summary>
 		/// <value>The current thread handle.</value>
 		public static SafeHTHREAD Current => new(GetCurrentThread().Duplicate());

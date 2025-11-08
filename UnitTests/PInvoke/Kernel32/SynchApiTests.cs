@@ -239,7 +239,7 @@ public class SynchApiTests
 		SetCriticalSectionSpinCount(ref critSect, 400);
 		try
 		{
-			using SafeHTHREAD hThread = CreateThread(null, 0, ThreadProc, default, 0, out _);
+			using var hThread = SafeHTHREAD.Create(ThreadProc);
 			WaitForSingleObject(hThread, INFINITE);
 			Assert.That(GetExitCodeThread(hThread, out uint c), ResultIs.Successful);
 			Assert.That(c, Is.Zero);
@@ -355,7 +355,7 @@ public class SynchApiTests
 			TestContext.Write("MyMain thread writing to the shared buffer...\n");
 
 			// Set ghWriteEvent to signaled
-			Assert.That(SetEvent(ghWriteEvent), ResultIs.Successful);
+			Assert.That(ghWriteEvent.Set(), ResultIs.Successful);
 
 			TestContext.Write("MyMain thread waiting for threads to exit...\n");
 
@@ -377,8 +377,8 @@ public class SynchApiTests
 			foreach (SafeHTHREAD t in ghThreads)
 				t.Dispose();
 
-			Assert.That(ResetEvent(ghWriteEvent), ResultIs.Successful);
-			Assert.That(PulseEvent(ghWriteEvent), ResultIs.Successful);
+			Assert.That(ghWriteEvent.Reset(), ResultIs.Successful);
+			Assert.That(ghWriteEvent.Pulse(), ResultIs.Successful);
 		}
 
 		uint ThreadProc(IntPtr _)
