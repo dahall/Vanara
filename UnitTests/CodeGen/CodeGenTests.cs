@@ -25,14 +25,14 @@ public class CodeGenTests
 			{
 				public static partial class Test32
 				{
-					[AutoSafeHandleAttribute("CloseHandle(handle)", typeof(HACCEL))]
+					[AutoSafeHandleAttribute("CloseHandle(handle)", typeof(HANDLE))]
 					public partial class SafeHACCEL { }
 			
 					[AutoSafeHandleAttribute("CloseHandle(handle)")]
 					public partial class SafeHTEST3 { }
 			
 					[DllImport("test32.dll", SetLastError = true)]
-					public static extern bool CheckInst([AddAsMember] HACCEL hInst);
+					public static extern bool CheckInst([AddAsMember] HANDLE hInst);
 			
 					[DllImport("test32.dll", SetLastError = true)]
 					public static extern bool IsTestExcluded(int code, [AddAsMember] HTEST hTest);
@@ -156,9 +156,9 @@ public class CodeGenTests
 		var compilation = GetCompilation(src);
 		CreateGeneratorDriverAndRun(compilation, new VanaraAttributeGenerator(), "handles.csv", out var output, out var diag);
 		WriteTrees(TestContext.Out, output.SyntaxTrees);
-		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(4));
 		WriteDiags(diag);
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(0));
+		Assert.That(output.SyntaxTrees.Count(), Is.EqualTo(4));
 	}
 
 	private static void WriteDiags(ImmutableArray<Diagnostic> diag, DiagnosticSeverity sev = DiagnosticSeverity.Error)

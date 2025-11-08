@@ -9,7 +9,14 @@ internal class FungibleTypeDecl(TypeDeclarationSyntax? td) : IEquatable<Fungible
 
 	public FungibleTypeDecl(TypeSyntax type, Compilation compilation) : this(type.GetTypeDeclaration(compilation)!) { }
 
-	public FungibleTypeDecl(INamedTypeSymbol type) : this(type.GetTypeSyntax()) { }
+	public FungibleTypeDecl(INamedTypeSymbol tsym) : this(tsym.GetTypeSyntax())
+	{
+		if (decl is null && tsym.DeclaringSyntaxReferences.Length == 0)
+		{
+			Hierarchy = MakeTypeDecl(tsym.IsValueType, tsym.Name, [SyntaxKind.PublicKeyword], tsym.ContainingType?.Name, tsym.ContainingNamespace.Name);
+			decl = (TypeDeclarationSyntax)Hierarchy[0];
+		}
+	}
 
 	public FungibleTypeDecl(string fullyQualifiedName, Compilation compilation) :
 		this(compilation.GetTypeByMetadataName(fullyQualifiedName)?.GetTypeSyntax()) { }
@@ -59,14 +66,14 @@ internal class FungibleTypeDecl(TypeDeclarationSyntax? td) : IEquatable<Fungible
 		: compilation.GetTypeByMetadataName($"{mod.Namespace}.{mod.ParentClassName}.{(safe ? mod.ClassName : mod.HandleName)}");
 
 	private static List<SyntaxNode> MakeTypeDecl(bool isStruct, string name, IEnumerable<SyntaxKind> modifiers,
-		string parentClassName, string namespaceName)
+		string? parentClassName, string namespaceName)
 	{
 		TypeDeclarationSyntax td = isStruct ? StructDeclaration(name) : ClassDeclaration(name);
 		td = td.WithModifiers(TokenList(modifiers.Select(Token)));
-		ClassDeclarationSyntax parent = ClassDeclaration(parentClassName)
+		ClassDeclarationSyntax? parent = parentClassName is null ? null : ClassDeclaration(parentClassName)
 			.WithModifiers(TokenList([MethodBodyBuilder.publicToken, MethodBodyBuilder.staticToken, Token(SyntaxKind.PartialKeyword)]));
 		NamespaceDeclarationSyntax ns = NamespaceDeclaration(IdentifierName(namespaceName));
-		return [td, parent, ns];
+		return parent is null ? [td, ns] : [td, parent, ns];
 	}
 
 	private static List<SyntaxNode>? MakeTypeFromModel(HandleModel? mod, bool safe) => mod is null

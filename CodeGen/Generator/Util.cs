@@ -183,6 +183,12 @@ internal static class Util
 		return p.WithAttributeLists(al.Count > 0 ? SingletonList(AttributeList(SeparatedList(al))) : []);
 	}
 
+	public static HashSet<TSource> ToHashSet<TSource>(this IEnumerable<TSource> source, IEqualityComparer<TSource>? comparer = null)
+	{
+		if (source is null) throw new ArgumentException("Source cannot be null", nameof(source));
+		return new HashSet<TSource>(source, comparer);
+	}
+
 	public static IEnumerable<SyntaxToken> ToTokens(this Accessibility accessibility)
 	{
 		switch (accessibility)

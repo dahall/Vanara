@@ -3,9 +3,7 @@
 #1#public static partial class ParentClassName
 {
 #1#	SummaryText
-#2#	[global::Vanara.PInvoke.DeferAutoMethodFrom(typeof(HandleName))]
-#2##7#	[global::Vanara.PInvoke.AdjustAutoMethodNamePattern(AdjNameRegex)]
-#7#	public partial class ClassName : BaseClassName
+	public partial class ClassName : BaseClassName
 	{
 		/// <summary>Initializes a new instance of the <see cref="ClassName"/> class and assigns an existing handle.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

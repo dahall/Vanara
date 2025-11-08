@@ -23,11 +23,11 @@ internal class MethAttrHandler(string attr, Func<SyntaxNode, CancellationToken, 
 	public Func<SyntaxNode, MethodDeclarationSyntax?> meth => getmeth;
 }
 
-internal class TypeAttrHandler(string attr, Func<SyntaxNode, CancellationToken, bool> validator, Func<GeneratorAttributeSyntaxContext, TypeDeclarationSyntax>? getTypeDecl) :
+internal class TypeAttrHandler(string attr, Func<SyntaxNode, CancellationToken, bool> validator, Func<GeneratorAttributeSyntaxContext, TypeDeclarationSyntax>? getType, Func<(TypeDeclarationSyntax type, ImmutableArray<AttributeData> attrDatas), INamedTypeSymbol?> getRefType) :
 	AttrHandler(attr, validator)
 {
-	public Func<GeneratorAttributeSyntaxContext, TypeDeclarationSyntax> type => getTypeDecl ?? TypeFromCtx;
-	internal static TypeDeclarationSyntax TypeFromCtx(GeneratorAttributeSyntaxContext c) => (TypeDeclarationSyntax)c.TargetNode;
+	public Func<GeneratorAttributeSyntaxContext, TypeDeclarationSyntax> type => getType ?? new(c => (TypeDeclarationSyntax)c.TargetNode);
+	public Func<(TypeDeclarationSyntax type, ImmutableArray<AttributeData> attrDatas), INamedTypeSymbol?> reftype => getRefType;
 }
 
 internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
@@ -46,19 +46,23 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 	public XmlDocument? docs = methodDecl.GetDocs();
 	public string? interfaceName = (methodDecl.Parent as InterfaceDeclarationSyntax)?.Identifier.Text;
 	public string methodName = methodDecl.Identifier.Text;
+	public string topMethodName = methodDecl.Identifier.Text;
 	public HashSet<SyntaxToken> modifiers = [publicToken, staticToken];
 	public List<ParameterSyntax> parameters = [.. methodDecl.ParameterList.Parameters];
 	public TypeSyntax returnType = ParseTypeName(methodDecl.ReturnType.ToString());
 	public StatementBuilder statements = new(methodDecl);
 	public List<TypeParameterConstraintClauseSyntax> typeConstraints = [.. methodDecl.ConstraintClauses];
 	public List<TypeParameterSyntax> typeParameters = [.. methodDecl.TypeParameterList?.Parameters ?? []];
+	public bool ignoreErrHandler = false;
 	public bool isCtor = false;
 	public string? ctorResultParamName = null;
+	public List<AttributeListSyntax> attributes = [];
 
-	public MemberDeclarationSyntax ToMethod(string? altName = null)
+	public MemberDeclarationSyntax ToMethod()
 	{
 		// Create method declaration
-		var ret = MethodDeclaration(returnType, altName ?? methodName)
+		var ret = MethodDeclaration(returnType, topMethodName)
+			.WithAttributeLists(List(attributes))
 			.WithModifiers(TokenList([.. modifiers]));
 		if (typeParameters.Count > 0)
 			ret = ret.WithTypeParameterList(TypeParameterList([.. typeParameters]));
@@ -83,26 +87,35 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 		InvocationExpressionSyntax? queryExpr = statements.invokeForQueryArgs is null || (!string.IsNullOrEmpty(asMemberOf) && !statements.invokeForQueryArgs.Any()) ? null
 			: InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName(mbrName), nameSyntax),
 				ArgumentList(SeparatedList(statements.invokeForQueryArgs)));
-		var returnIsVoid = methodDecl.ReturnType is PredefinedTypeSyntax pts && pts.Keyword.IsKind(SyntaxKind.VoidKeyword);
-		StatementSyntax invokeStmt = returnIsVoid ? ExpressionStatement(invokeExpr) : LocalDeclarationStatement(VariableDeclaration(methodDecl.ReturnType.WithoutTrivia(),
-			SeparatedList([VariableDeclarator(Identifier(retVarName), null, EqualsValueClause(invokeExpr))])));
-		StatementSyntax? queryStmt = queryExpr is null ? null : (returnIsVoid ? ExpressionStatement(queryExpr) : LocalDeclarationStatement(VariableDeclaration(methodDecl.ReturnType.WithoutTrivia(),
-			SeparatedList([VariableDeclarator(Identifier(qretVarName), null, EqualsValueClause(queryExpr))]))));
 
-		string errHandler = isCtor
-			? $"global::Vanara.PInvoke.FailedHelper.THROW_IF_FAILED({retVarName}, false);"
-			: $"if (global::Vanara.PInvoke.FailedHelper.FAILED({retVarName}, false)) return {retVarName};";
-		ret = ret.WithBody(Block(statements.setupVariables
-			.Concat(statements.initOutParams)
-			.Concat(statements.setupParams)
-			.Concat([queryStmt]).WhereNotNull()
-			.Concat(statements.queryFailureHandler)
-			.Concat(statements.assignAfterQuery)
-			.Concat([invokeStmt])
-			.Concat(returnIsVoid ? [] : [ParseStatement(errHandler)])
-			.Concat(statements.assignOutParams)
-			.Concat([statements.ret]).WhereNotNull()
-			.ToArray()));
+		if (queryExpr is null && ignoreErrHandler && statements.IsSimpleInvoke)
+		{
+			ret = ret.WithExpressionBody(ArrowExpressionClause(invokeExpr))
+				.WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+		}
+		else
+		{
+			var returnIsVoid = methodDecl.ReturnType is PredefinedTypeSyntax pts && pts.Keyword.IsKind(SyntaxKind.VoidKeyword);
+			StatementSyntax invokeStmt = returnIsVoid ? ExpressionStatement(invokeExpr) : LocalDeclarationStatement(VariableDeclaration(methodDecl.ReturnType.WithoutTrivia(),
+				SeparatedList([VariableDeclarator(Identifier(retVarName), null, EqualsValueClause(invokeExpr))])));
+			StatementSyntax? queryStmt = queryExpr is null ? null : (returnIsVoid ? ExpressionStatement(queryExpr) : LocalDeclarationStatement(VariableDeclaration(methodDecl.ReturnType.WithoutTrivia(),
+				SeparatedList([VariableDeclarator(Identifier(qretVarName), null, EqualsValueClause(queryExpr))]))));
+
+			string errHandler = isCtor
+				? $"global::Vanara.PInvoke.FailedHelper.THROW_IF_FAILED({retVarName}, false);"
+				: $"if (global::Vanara.PInvoke.FailedHelper.FAILED({retVarName}, false)) return {retVarName};";
+			ret = ret.WithBody(Block(statements.setupVariables
+				.Concat(statements.initOutParams)
+				.Concat(statements.setupParams)
+				.Concat([queryStmt]).WhereNotNull()
+				.Concat(statements.queryFailureHandler)
+				.Concat(statements.assignAfterQuery)
+				.Concat([invokeStmt])
+				.Concat(returnIsVoid || ignoreErrHandler ? [] : [ParseStatement(errHandler)])
+				.Concat(statements.assignOutParams)
+				.Concat([statements.ret]).WhereNotNull()
+				.ToArray()));
+		}
 
 		XmlDocument? tmpDocs = docs;
 		if (interfaceName is not null)
@@ -113,9 +126,23 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 		return tmpDocs is not null ? ret.WithDocs(tmpDocs) : ret;
 	}
 
-	public class StatementBuilder
+	internal MethodBodyBuilder MakeInvokableClone()
 	{
-		public StatementBuilder(MethodDeclarationSyntax methodDecl)
+		// Create method declaration for currently modified method
+		var md = MethodDeclaration(returnType, methodName)
+			.WithParameterList(ParameterList([.. parameters]));
+		if (typeParameters.Count > 0)
+			md = md.WithTypeParameterList(TypeParameterList([.. typeParameters]));
+		if (typeConstraints.Count > 0)
+			md = md.WithConstraintClauses(List(typeConstraints));
+		if (docs is not null)
+			md = md.WithDocs((XmlDocument)docs.Clone());
+		return new MethodBodyBuilder(md) { parentClass = parentClass, };
+	}
+
+	public class StatementBuilder()
+	{
+		public StatementBuilder(MethodDeclarationSyntax methodDecl) : this()
 		{
 			returnIsVoid = methodDecl.ReturnType is PredefinedTypeSyntax pts && pts.Keyword.IsKind(SyntaxKind.VoidKeyword);
 			var returnType = ParseTypeName(methodDecl.ReturnType.ToString());
@@ -150,6 +177,10 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 		// Return
 		public StatementSyntax? ret = null;
 
-		public readonly bool returnIsVoid;
+		public bool returnIsVoid;
+
+		internal bool IsSimpleInvoke => setupVariables.Count == 0 && initOutParams.Count == 0 && setupParams.Count == 0 &&
+			(invokeForQueryArgs is null || invokeForQueryArgs.Count == 0) && queryFailureHandler.Count == 0 &&
+			assignAfterQuery.Count == 0 && assignOutParams.Count == 0;
 	}
 }
