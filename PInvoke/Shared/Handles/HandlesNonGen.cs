@@ -3,22 +3,6 @@ using System.Diagnostics;
 
 namespace Vanara.PInvoke;
 
-public partial struct HANDLE
-{
-	/// <summary>Represents an invalid handle.</summary>
-	public static readonly IntPtr INVALID_HANDLE_VALUE = new(-1);
-
-	/// <summary>Performs an implicit conversion from <see cref="HANDLE"/> to <see cref="SafeHandle"/>.</summary>
-	/// <param name="h">The pointer to a handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HANDLE(SafeHandle h) => new(h.DangerousGetHandle());
-
-	/// <summary>Performs an implicit conversion from <see cref="HANDLE"/> to <see cref="SafeHANDLE"/>.</summary>
-	/// <param name="h">The pointer to a handle.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator HANDLE(SafeHANDLE h) => new(h.DangerousGetHandle());
-}
-
 public partial struct HEVENT
 {
 	/// <summary>Represents an invalid handle.</summary>
