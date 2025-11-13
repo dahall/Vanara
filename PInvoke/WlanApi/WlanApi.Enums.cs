@@ -108,6 +108,21 @@ public static partial class WlanApi
 		/// </summary>
 		DOT11_AUTH_ALGO_RSNA_PSK,
 
+		/// <summary>Deprecated (and synonymous with WPA3ENT192). Use WPA3ENT192 instead.</summary>
+		DOT11_AUTH_ALGO_WPA3,
+
+		/// <summary>Specifies a WPA3-Enterprise 192-bit mode algorithm.</summary>
+		DOT11_AUTH_ALGO_WPA3_ENT_192 = DOT11_AUTH_ALGO_WPA3,
+
+		/// <summary>Specifies a WPA3-Simultaneous Authentication of Equals (WPA3-SAE) algorithm.</summary>
+		DOT11_AUTH_ALGO_WPA3_SAE = 9,
+
+		/// <summary>Specifies an opportunistic wireless encryption (OWE) algorithm.</summary>
+		DOT11_AUTH_ALGO_OWE,
+
+		/// <summary>Specifies a WPA3-Enterprise algorithm.</summary>
+		DOT11_AUTH_ALGO_WPA3_ENT,
+
 		/// <summary>
 		/// <para>Indicates the start of the range that specifies proprietary authentication algorithms that are developed by an IHV.</para>
 		/// <para>
@@ -283,6 +298,15 @@ public static partial class WlanApi
 		/// <para>This value is supported on Windows 8.1, Windows Server 2012 R2, and later.</para>
 		/// </summary>
 		dot11_phy_type_vht,
+
+		/// <summary>Specifies a Directional Multi-Gigabit PHY type (DMG). 802.11ad devices can use HT.</summary>
+		dot11_phy_type_dmg,
+
+		/// <summary>Specifies a High Efficiency PHY type (HE). 802.11ax (Wi-Fi 6) devices can use HT.</summary>
+		dot11_phy_type_he,
+
+		/// <summary>Specifies an Extremely High Throughput PHY type (EHT). 802.11be (Wi-Fi 7) devices can use HT.</summary>
+		dot11_phy_type_eht,
 
 		/// <summary>
 		/// Specifies the start of the range that is used to define PHY types that are developed by an independent hardware vendor (IHV).
