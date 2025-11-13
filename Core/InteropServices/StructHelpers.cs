@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Vanara.PInvoke;
 
@@ -19,7 +20,7 @@ public struct ArrayPointer<T> where T : unmanaged
 	/// <param name="index">The index of the element.</param>
 	/// <value>The <typeparamref name="T"/> value to assign to the <paramref name="index"/> location in the array.</value>
 	/// <returns>The <typeparamref name="T"/> value at the location.</returns>
-	public T this[int index]
+	public readonly T this[int index]
 	{
 		get => ptr.AsReadOnlySpan<T>(index + 1)[index];
 		set => ptr.AsSpan<T>(index + 1)[index] = value;
@@ -27,7 +28,7 @@ public struct ArrayPointer<T> where T : unmanaged
 
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>Gets a <see cref="ReadOnlySpan{T}"/> over the pointer.</summary>
 	/// <param name="length">The number of elements allocated to this pointer.</param>
@@ -109,7 +110,7 @@ public struct IUnknownPointer<T> where T : class
 	/// <note type="warning">This must only be used with COM interfaces.</note>
 	/// </summary>
 	/// <value>The value.</value>
-	public T? Value => ptr == IntPtr.Zero ? null :
+	public readonly T? Value => ptr == IntPtr.Zero ? null :
 #if NETSTANDARD
 		(T)Marshal.GetObjectForIUnknown(ptr);
 #else
@@ -135,7 +136,7 @@ public struct LPCSTRArrayPointer
 
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>
 	/// <para>Gets a copy of the <see cref="string"/> value at the specified index.</para>
@@ -171,7 +172,7 @@ public struct LPCTSTRArrayPointer
 
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>
 	/// <para>Gets a copy of the <see cref="string"/> value at the specified index.</para>
@@ -207,7 +208,7 @@ public struct LPCWSTRArrayPointer
 
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>
 	/// <para>Gets a copy of the <see cref="string"/> value at the specified index.</para>
@@ -244,15 +245,15 @@ public struct ManagedStructPointer<T> where T : struct
 
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
 	/// <returns>A referenced structure.</returns>
-	public ref T AsRef() { if (ptr != IntPtr.Zero) return ref ptr.AsRef<T>(); throw new InvalidCastException("Cannot get reference to null pointer."); }
+	public readonly ref T AsRef() { if (ptr != IntPtr.Zero) return ref ptr.AsRef<T>(); throw new InvalidCastException("Cannot get reference to null pointer."); }
 
 	/// <summary>Converts this pointer to a copied structure. If pointer has no value, <c>null</c> is returned.</summary>
 	/// <returns>The converted structure or <c>null</c>.</returns>
-	public T? Value => ptr.ToNullableStructure<T>();
+	public readonly T? Value => ptr.ToNullableStructure<T>();
 
 	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="StructPointer{T}"/>.</summary>
 	/// <param name="p">The <see cref="IntPtr"/> to assign to this pointer.</param>
@@ -296,6 +297,23 @@ public struct StructPointer<T> where T : unmanaged
 	/// <param name="mem">The memory.</param>
 	public StructPointer(in T? value, out SafeAllocatedMemoryHandle mem) => mem = DestructiveAssign(value);
 
+#if NET7_0_OR_GREATER
+	/// <summary>Initializes a new instance of the <see cref="StructPointer{T}"/> struct.</summary>
+	/// <param name="value">The value's reference.</param>
+	public StructPointer(scoped in T? value)
+	{
+		unsafe
+		{
+			ptr = value.HasValue ? (IntPtr)Unsafe.AsPointer(ref Unsafe.AsRef(in Nullable.GetValueRefOrDefaultRef(in value))) : default;
+		}
+	}
+
+	/// <summary>Performs an implicit conversion from <typeparamref name="T"/>? to <see cref="StructPointer{T}"/>.</summary>
+	/// <param name="ap">The nullable <typeparamref name="T"/> value.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator StructPointer<T>(scoped in T? ap) => new(ap);
+#endif
+
 #if !NET45
 	/// <summary>Initializes a new instance of the <see cref="StructPointer{T}"/> struct.</summary>
 	/// <param name="value">The value's reference.</param>
@@ -303,7 +321,7 @@ public struct StructPointer<T> where T : unmanaged
 	{
 		unsafe
 		{
-			ptr = (IntPtr)System.Runtime.CompilerServices.Unsafe.AsPointer(ref value);
+			ptr = (IntPtr)Unsafe.AsPointer(ref value);
 		}
 	}
 #endif
@@ -315,10 +333,10 @@ public struct StructPointer<T> where T : unmanaged
 	/// <summary>Gets a reference to a structure based on this allocated memory.</summary>
 	/// <summary>Converts this pointer to a copied structure. If pointer has no value, <c>null</c> is returned.</summary>
 	/// <returns>The converted structure or <c>null</c>.</returns>
-	public T? Value => ptr.ToNullableStructure<T>();
+	public readonly T? Value => ptr.ToNullableStructure<T>();
 
 	/// <returns>A referenced structure.</returns>
-	public ref T AsRef() { if (ptr != IntPtr.Zero) return ref ptr.AsRef<T>(); throw new InvalidCastException("Cannot get reference to null pointer."); }
+	public readonly ref T AsRef() { if (ptr != IntPtr.Zero) return ref ptr.AsRef<T>(); throw new InvalidCastException("Cannot get reference to null pointer."); }
 
 	/// <summary>
 	/// <para>Destructively assigns a created pointer to allocated memory containing <paramref name="item"/>.</para>
@@ -360,6 +378,25 @@ public struct StructPointer<T> where T : unmanaged
 	public static explicit operator IntPtr(StructPointer<T> p) => p.ptr;
 }
 
+/// <summary>Helper methods for <see cref="StructPointer{T}"/>.</summary>
+public static class StructPointer
+{
+	/// <summary>Makes a <see cref="StructPointer{T}"/> value befitting of .NET version.</summary>
+	/// <typeparam name="T">The structure type.</typeparam>
+	/// <param name="t">The structure value.</param>
+	/// <param name="mem">If required, a safe memory pointer.</param>
+	/// <returns>A constructed <see cref="StructPointer{T}"/> value with a pointer to <typeparamref name="T"/>.</returns>
+	public static StructPointer<T> Make<T>(in T? t, out SafeAllocatedMemoryHandle? mem) where T : unmanaged
+	{
+		mem = null;
+#if NET7_0_OR_GREATER
+		return t;
+#else
+		return t.HasValue ? new StructPointer<T>(t, out mem) : default;
+#endif
+	}
+}
+
 /// <summary>A pointer to an array of entries in a structure.</summary>
 /// <typeparam name="T">The managed structure that is the element of the array.</typeparam>
 [StructLayout(LayoutKind.Sequential)]
@@ -379,7 +416,7 @@ public struct ManagedArrayPointer<T> where T : struct
 
 	/// <summary>Gets a value indicating whether this instance is null.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>Converts this pointer to a copied array of <typeparamref name="T"/> elements.</summary>
 	/// <param name="length">The number of elements allocated to this pointer.</param>
