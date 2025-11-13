@@ -1070,6 +1070,27 @@ public static partial class InteropExtensions
 		unsafe { return new UIntPtr(p.ToPointer()); }
 	}
 
+	/// <summary>Retrieves the memory address of the element at the specified index within a pinned <see cref="Span{T}"/>.</summary>
+	/// <remarks>
+	/// This method is intended for advanced scenarios where direct memory manipulation is required. The caller is responsible for ensuring
+	/// that the span is pinned and that the index is within the valid range of the span. Accessing an out-of-range index may result in
+	/// undefined behavior.
+	/// </remarks>
+	/// <typeparam name="T">The type of elements in the span. Must be an unmanaged type.</typeparam>
+	/// <param name="span">The span containing the elements. The span must be pinned in memory.</param>
+	/// <param name="index">The zero-based index of the element whose address is to be retrieved.</param>
+	/// <returns>An <see cref="IntPtr"/> representing the memory address of the specified element within the span.</returns>
+	public static IntPtr UnsafeAddrOfPinnedSpanElement<T>(this Span<T> span, int index = 0) where T : unmanaged
+	{
+		unsafe
+		{
+			fixed (T* p = &span[index])
+			{
+				return new IntPtr(p);
+			}
+		}
+	}
+
 	/// <summary>Converts an unsafe structure pointer into a managed array.</summary>
 	/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
 	/// <param name="ptr">The pointer to the first structure in the native array.</param>
