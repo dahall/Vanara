@@ -150,8 +150,10 @@ public class WlanApiTests
 	public void WlanGetNetworkBssListTest()
 	{
 		Assert.That(WlanGetNetworkBssList(hWlan, PrimaryInterface, IntPtr.Zero, DOT11_BSS_TYPE.dot11_BSS_type_any, true, default, out var mem), ResultIs.Successful);
-		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>()!;
-		TestContext.WriteLine($"Size: {list.dwTotalSize}");
+		var totalSize = mem.DangerousGetHandle().ToStructure<uint>();
+		Assert.That(totalSize, Is.GreaterThanOrEqualTo((uint)Marshal.SizeOf<WLAN_BSS_LIST>()));
+		TestContext.WriteLine($"Size: {totalSize}");
+		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>(totalSize)!;
 		Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
 		Assert.That(list.wlanBssEntries.Length, Is.EqualTo(list.dwNumberOfItems));
 		TestContext.Write(string.Join("\n", list.wlanBssEntries.Select(e => $"{e.uPhyId}\t{e.dot11Bssid}\t{e.dot11BssType}\t{e.dot11BssPhyType}\tstr={e.lRssi}\tper={e.usBeaconPeriod}\tfrq={e.ulChCenterFrequency}\t{e.ulIeOffset}:{e.ulIeSize}")));
@@ -164,8 +166,10 @@ public class WlanApiTests
 		var connectionAttributes = data.DangerousGetHandle().ToStructure<WLAN_CONNECTION_ATTRIBUTES>();
 		Assert.That(WlanGetNetworkBssList(hWlan, PrimaryInterface, connectionAttributes.wlanAssociationAttributes.dot11Ssid, connectionAttributes.wlanAssociationAttributes.dot11BssType,
 			connectionAttributes.wlanSecurityAttributes.bSecurityEnabled, default, out var mem), ResultIs.Successful);
-		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>()!;
-		TestContext.WriteLine($"Size: {list.dwTotalSize}");
+		var totalSize = mem.DangerousGetHandle().ToStructure<uint>();
+		TestContext.WriteLine($"Size: {totalSize}");
+		Assert.That(totalSize, Is.GreaterThanOrEqualTo((uint)Marshal.SizeOf<WLAN_BSS_LIST>()));
+		var list = mem.DangerousGetHandle().ToStructure<WLAN_BSS_LIST>(totalSize)!;
 		Assert.That(list.dwNumberOfItems, Is.GreaterThan(0U));
 		Assert.That(list.wlanBssEntries.Length, Is.EqualTo(list.dwNumberOfItems));
 		TestContext.Write(string.Join("\n", list.wlanBssEntries.Select(e => $"{e.uPhyId}\t{e.dot11Bssid}\t{e.dot11BssType}\t{e.dot11BssPhyType}\tstr={e.lRssi}\tper={e.usBeaconPeriod}\tfrq={e.ulChCenterFrequency}\t{e.ulIeOffset}:{e.ulIeSize}")));
