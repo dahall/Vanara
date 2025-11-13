@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -715,17 +716,47 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
 	protected SafeMemoryHandle(IntPtr handle, SizeT size, bool ownsHandle) : base(handle, ownsHandle) => sz = size;
 
-	/// <summary>
-	/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
-	/// array equivalent.
-	/// </summary>
-	/// <param name="bytes">Array of unmanaged pointers</param>
-	/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class using the specified byte array.</summary>
+	/// <remarks>
+	/// This constructor allocates memory based on the size of the provided byte array and copies its contents into the allocated memory. If
+	/// the <paramref name="bytes"/> parameter is null or empty, no memory is allocated.
+	/// </remarks>
+	/// <param name="bytes">The byte array used to initialize the memory handle. The array must not be null or empty.</param>
 	protected SafeMemoryHandle(byte[] bytes) : base(IntPtr.Zero, true)
 	{
 		if (bytes is null || bytes.Length == 0) return;
 		InitFromSize(bytes.Length);
 		CallLocked(p => Marshal.Copy(bytes, 0, p, bytes.Length));
+	}
+
+	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class using the specified memory buffer.</summary>
+	/// <remarks>
+	/// This constructor initializes the handle with the provided memory buffer. If the handle is lockable, the memory is locked during the
+	/// copy operation to ensure thread safety. The memory buffer is copied to the unmanaged memory location represented by the handle.
+	/// </remarks>
+	/// <param name="bytes">
+	/// A <see cref="Span{T}"/> of bytes representing the memory buffer to initialize the handle with. The span must not be empty.
+	/// </param>
+	protected SafeMemoryHandle(Span<byte> bytes) : base(IntPtr.Zero, true)
+	{
+		if (bytes.Length == 0) return;
+		InitFromSize(bytes.Length);
+		if (!Lockable)
+			CopySpanToPtr(bytes, handle);
+		else
+		{
+			try { Lock(); CopySpanToPtr(bytes, handle); }
+			finally { Unlock(); }
+		}
+
+		static void CopySpanToPtr(Span<byte> source, IntPtr dest)
+		{
+			unsafe
+			{
+				var pSource = Unsafe.AsPointer(ref MemoryMarshal.GetReference(source));
+				Buffer.MemoryCopy(pSource, (void*)dest, source.Length, source.Length);
+			}
+		}
 	}
 
 	/// <summary>
@@ -809,6 +840,13 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	}
 
 	/// <summary>
+	/// Performs an implicit conversion from <see cref="Vanara.InteropServices.SafeMemoryHandle{TMem}"/> to <see cref="Span{T}"/> of bytes.
+	/// </summary>
+	/// <param name="h">The safe memory handle.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator Span<byte>(SafeMemoryHandle<TMem> h) { unsafe { return new Span<byte>((void*)h.handle, h.Size); }; }
+
+	/// <summary>
 	/// Clones the memory tied to this instance using <see cref="ISimpleMemoryMethods.AllocMem(int)"/> and returns a pointer to the
 	/// copied memory.
 	/// </summary>
@@ -860,13 +898,23 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
 	protected SafeMemoryHandleExt(IntPtr handle, SizeT size, bool ownsHandle) : base(handle, size, ownsHandle) { }
 
-	/// <summary>
-	/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
-	/// array equivalent.
-	/// </summary>
-	/// <param name="bytes">Array of unmanaged pointers</param>
-	/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class using the specified byte array.</summary>
+	/// <remarks>
+	/// This constructor allocates memory based on the size of the provided byte array and copies its contents into the allocated memory. If
+	/// the <paramref name="bytes"/> parameter is null or empty, no memory is allocated.
+	/// </remarks>
+	/// <param name="bytes">The byte array used to initialize the memory handle. The array must not be null or empty.</param>
 	protected SafeMemoryHandleExt(byte[] bytes) : base(bytes) { }
+
+	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class using the specified memory buffer.</summary>
+	/// <remarks>
+	/// This constructor initializes the handle with the provided memory buffer. If the handle is lockable, the memory is locked during the
+	/// copy operation to ensure thread safety. The memory buffer is copied to the unmanaged memory location represented by the handle.
+	/// </remarks>
+	/// <param name="bytes">
+	/// A <see cref="Span{T}"/> of bytes representing the memory buffer to initialize the handle with. The span must not be empty.
+	/// </param>
+	protected SafeMemoryHandleExt(Span<byte> bytes) : base(bytes) { }
 
 	/// <summary>
 	/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native

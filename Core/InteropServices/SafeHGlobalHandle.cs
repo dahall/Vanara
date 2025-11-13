@@ -94,10 +94,23 @@ public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethod
 	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
 	public SafeHGlobalHandle(SizeT size) : base(size) { }
 
-	/// <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
-	/// <param name="bytes">Array of unmanaged pointers</param>
-	/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class using the specified byte array.</summary>
+	/// <remarks>
+	/// This constructor allocates memory based on the size of the provided byte array and copies its contents into the allocated memory. If
+	/// the <paramref name="bytes"/> parameter is null or empty, no memory is allocated.
+	/// </remarks>
+	/// <param name="bytes">The byte array used to initialize the memory handle. The array must not be null or empty.</param>
 	public SafeHGlobalHandle(byte[] bytes) : base(bytes) { }
+
+	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class using the specified memory buffer.</summary>
+	/// <remarks>
+	/// This constructor initializes the handle with the provided memory buffer. If the handle is lockable, the memory is locked during the
+	/// copy operation to ensure thread safety. The memory buffer is copied to the unmanaged memory location represented by the handle.
+	/// </remarks>
+	/// <param name="bytes">
+	/// A <see cref="Span{T}"/> of bytes representing the memory buffer to initialize the handle with. The span must not be empty.
+	/// </param>
+	public SafeHGlobalHandle(Span<byte> bytes) : base(bytes) { }
 
 	/// <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
 	/// <param name="values">Array of unmanaged pointers</param>
