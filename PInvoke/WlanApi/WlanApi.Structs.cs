@@ -727,7 +727,7 @@ public static partial class WlanApi
 		/// The name of the profile used for the connection. WLAN_MAX_NAME_LENGTH is 256. Profile names are case-sensitive. This string
 		/// must be NULL-terminated.
 		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = WLAN_MAX_NAME_LENGTH)]
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = WLAN_MAX_NAME_LENGTH)]
 		public string strProfileName;
 
 		/// <summary>A DOT11_SSID structure that contains the SSID of the association.</summary>
