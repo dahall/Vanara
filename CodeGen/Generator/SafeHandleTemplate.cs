@@ -10,8 +10,8 @@
 		/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 		public ClassName(IntPtr preexistingHandle = default, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-		// /// <summary>Initializes a new instance of the <see cref="ClassName"/> class.</summary>
-		// private ClassName() : this(default, true) { }
+		/// <summary>Initializes a new instance of the <see cref="ClassName"/> class.</summary>
+		private ClassName() : this(default, true) { }
 
 		/// <summary>Gets a <see cref="ClassName"/> object that represents a null handle.</summary>
 #pragma warning disable CS0109 // Member does not hide an inherited member

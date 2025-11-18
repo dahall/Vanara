@@ -42,6 +42,7 @@
 */
 
 using Microsoft.CodeAnalysis.CSharp;
+using System;
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 using System.Xml;
@@ -288,7 +289,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				SyntaxNode topDecl = localTypeDecl.decl!
 					.WithoutTrivia()
 					.WithAttributeLists([])
-					.WithMembers(List(methLookup.Select(bb => bb.ToMethod())));
+					.WithMembers(List(methLookup.OrderBy(bb => bb.topMethodName).Select(bb => bb.ToMethod())));
 				foreach (var parent in localTypeDecl.Ancestors)
 				{
 					topDecl = parent switch
@@ -459,8 +460,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				var paramNode = tmpbuilder.docs?.SelectSingleNode($"//param[@name='{ps.Identifier.Text}']");
 				var returnsNode = tmpbuilder.docs?.SelectSingleNode("//returns") ??
 					tmpbuilder.docs?.DocumentElement?.AppendChild(tmpbuilder.docs?.CreateElement("returns")!);
-				if (returnsNode is not null)
-					returnsNode.InnerXml = paramNode?.InnerXml;
+				returnsNode?.InnerXml = paramNode?.InnerXml;
 				paramNode?.ParentNode?.RemoveChild(paramNode);
 			}
 		}
@@ -494,52 +494,112 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		if (!ValidateAttr(out var szParam, out var sz, out var szMeth, out var charSet, out var outSzParam, out var bufSzParam))
 			return;
 
+		bool isOptional = IsOptional(decl);
+
 		// Determine the output type from the parameter type: if it's a StringBuilder, then string, else the element type of the array or IntPtr
-		(TypeSyntax? outType, SizeParamType szType) = decl.Type?.ToString() switch
+		(TypeSyntax? outType, SizeParamType szType, string getLenExpr) = decl.Type?.ToString() switch
 		{
-			"string" or "StringBuilder" => (PredefinedType(Token(SyntaxKind.StringKeyword)), SizeParamType.String),
-			"string?" or "StringBuilder?" => (NullableType(PredefinedType(Token(SyntaxKind.StringKeyword))), SizeParamType.String | SizeParamType.Nullable),
-			var s when (s ?? "").EndsWith("[]") == true => (decl.Type!.WithoutTrivia(), SizeParamType.Array),
-			var s when (s ?? "").EndsWith("[]?") == true => (decl.Type!.WithoutTrivia(), SizeParamType.Array | SizeParamType.Nullable),
-			//"IntPtr" or "System.IntPtr" => ParseTypeName("System.IntPtr"),
-			_ => (null, 0),
+			"string" => (PredefinedType(Token(SyntaxKind.StringKeyword)), SizeParamType.String, "{0}.Length"),
+			"StringBuilder" => (PredefinedType(Token(SyntaxKind.StringKeyword)), SizeParamType.String, "{0}.Capacity"),
+			"string?" => (NullableType(PredefinedType(Token(SyntaxKind.StringKeyword))), SizeParamType.String | SizeParamType.Nullable, "{0}?.Length ?? 0"),
+			"StringBuilder?" => (NullableType(PredefinedType(Token(SyntaxKind.StringKeyword))), SizeParamType.String | SizeParamType.Nullable, "{0}?.Capacity ?? 0"),
+			var s when (s ?? "").EndsWith("[]") == true => (decl.Type!.WithoutTrivia(), SizeParamType.Array, "{0}.Length"),
+			var s when (s ?? "").EndsWith("[]?") == true => (decl.Type!.WithoutTrivia(), SizeParamType.Array | SizeParamType.Nullable, "{0}?.Length ?? 0"),
+			"IntPtr" or "System.IntPtr" when isOptional => (ParseTypeName("byte[]?"), SizeParamType.Ptr | SizeParamType.Nullable, "{0}?.Length ?? 0"),
+			"IntPtr" or "System.IntPtr" => (ParseTypeName("byte[]"), SizeParamType.Ptr, "{0}.Length"),
+			_ => default,
 		};
 
 		// TODO: Remove once arrays and pointers implemented
 		if (outType is null)
 			return;
 
-		bool isNullable = decl.Type is NullableTypeSyntax || decl.Type?.ToString().EndsWith("?") == true;
+		bool isNullable = szType.HasFlag(SizeParamType.Nullable);
+		ModType paramModType = GetModType(decl);
+		bool isInParam = paramModType == ModType.In && !szMeth.HasFlag(SizingMethod.Query);
 
-		// Replace the syntaxNode and remove the szParam parameters from the method signature
-		tmpbuilder.parameters.Replace(decl, decl.WithoutAttribute("SizeDef").WithoutAttribute("In").WithModifiers(TokenList(Token(SyntaxKind.OutKeyword))).WithType(outType));
-		if (szParam is not null) tmpbuilder.parameters.Remove(szParam);
-
-		// Initialize out param
-		(ExpressionSyntax? outNullVal, ExpressionSyntax? outDefVal) = szType switch
+		// If szMeth is Count, outSizeParam must be null and paramModType must be In
+		if (!szMeth.HasFlag(SizingMethod.Query))
 		{
-			var t when t.HasFlag(SizeParamType.String) => (MethodBodyBuilder.defaultExpr, ParseExpression("string.Empty")),
-			var t when t.HasFlag(SizeParamType.Array) => (MethodBodyBuilder.defaultExpr, ParseExpression("[]")),
-			//"IntPtr" => ,
-			_ => (null, null),
+			if (outSzParam is not null)
+			{
+				context.ReportError(decl, "VANGEN028", "When SizingMethod is Count, out size parameter cannot be specified.");
+				return;
+			}
+			//if (paramModType != ModType.In)
+			//{
+			//	context.ReportError(decl, "VANGEN027", "When SizingMethod is Count, size parameter must be an [In] parameter.");
+			//	return;
+			//}
+		}
+
+		// **********************************
+		// Parameters
+		// **********************************
+		// Replace the syntaxNode and remove the szParam parameters from the method signature
+		SyntaxToken[] paramMods = isInParam ? [] : [Token(SyntaxKind.OutKeyword)];
+		var newDecl = decl.WithoutAttribute("SizeDef").WithModifiers(TokenList(paramMods)).WithType(outType);
+		if (!isNullable) newDecl = newDecl.WithoutAttribute("Optional");
+		if (!isInParam) newDecl = newDecl.WithoutAttribute("In");
+		tmpbuilder.parameters.Replace(decl, newDecl);
+		if (szParam is not null) tmpbuilder.parameters.Remove(szParam);
+		if (outSzParam is not null) tmpbuilder.parameters.Remove(outSzParam);
+
+		// **********************************
+		// Initialize out parameter values
+		// **********************************
+		(ExpressionSyntax? outNullVal, ExpressionSyntax? outDefVal) = (szType & ~SizeParamType.Nullable) switch
+		{
+			SizeParamType.String => (MethodBodyBuilder.defaultExpr, ParseExpression("string.Empty")),
+			SizeParamType.Array => (MethodBodyBuilder.defaultExpr, ParseExpression("[]")),
+			SizeParamType.Ptr => (MethodBodyBuilder.defaultExpr, ParseExpression("[]")),
+			_ => default,
 		};
 		if (outNullVal is null || outDefVal is null)
 		{
-			context.ReportError(decl, "VANGEN029", "SizeDef attribute currently only supports parameters of type string, StringBuilder, or arrays.");
+			context.ReportError(decl, "VANGEN029", "SizeDef attribute currently only supports parameters of type string, StringBuilder, IntPtr or arrays.");
 			return;
 		}
-		tmpbuilder.statements.initOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier),
-			isNullable ? outNullVal : outDefVal)));
+		if (!isInParam)
+			tmpbuilder.statements.initOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier),
+				isNullable ? outNullVal : outDefVal)));
 
-		// Setup parameter values
+		// **********************************
+		// Declare default argument values
+		// **********************************
 		// 1. Create statement that creates a variable for the size of the type of szParam and assigns it the value of default (query) or sz
 		var szVarName = szParam is null ? UniqueName("__sz") : szParam.Identifier.Text;
 		TypeSyntax szVarTypeDecl = szParam is null ? PredefinedType(Token(SyntaxKind.IntKeyword)) : szParam.Type!;
-		tmpbuilder.statements.setupParams.Add(LocalDeclarationStatement(VariableDeclaration(szVarTypeDecl)
+		// Get size based on count
+		if (isInParam)
+			sz = szVarTypeDecl.ToString() == "int" ? string.Format(getLenExpr, decl.Identifier.Text) : $"({szVarTypeDecl})Convert.ChangeType({string.Format(getLenExpr, decl.Identifier.Text)}, typeof({szVarTypeDecl}))";
+		// Initialize size variable
+		tmpbuilder.statements.setupArgs.Add(LocalDeclarationStatement(VariableDeclaration(szVarTypeDecl)
 			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(szVarName))
-				.WithInitializer(EqualsValueClause(szMeth.HasFlag(SizingMethod.Query) ? MethodBodyBuilder.defaultExpr : ParseExpression(sz)))))));
+				.WithInitializer(EqualsValueClause(szMeth.HasFlag(SizingMethod.Query) ? MethodBodyBuilder.defaultExpr : ParseExpression(sz ?? "0")))))));
+		// If outSzParam is specified, create statement that assigns outSzParam to default value
+		if (outSzParam is not null)
+			tmpbuilder.statements.setupArgs.Add(LocalDeclarationStatement(VariableDeclaration(outSzParam.Type!)
+			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(outSzParam.Identifier.Text))
+				.WithInitializer(EqualsValueClause(MethodBodyBuilder.defaultExpr))))));
+		// If isInParam is true, create an assignment statement that assigns decl parameter to the appropriate value 
+		string? inArgName = isInParam ? UniqueName($"__{decl.Identifier.Text}") : null;
+		if (isInParam)
+		{
+			tmpbuilder.statements.setupArgs.Add(LocalDeclarationStatement(VariableDeclaration(decl.Type!)
+				.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(inArgName!))
+					.WithInitializer(EqualsValueClause((szType & ~SizeParamType.Nullable) switch
+					{
+						SizeParamType.Ptr when isNullable => ParseExpression($"{decl.Identifier.Text} is null ? default : global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
+						SizeParamType.Ptr => ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({decl.Identifier.Text}, 0)"),
+						SizeParamType.String => IdentifierName($"{decl.Identifier.Text}.ToString() ?? string.Empty"),
+						_ => IdentifierName(decl.Identifier.Text),
+					}))))));
+		}
 
-		// When query
+		// **********************************
+		// Setup arguments for query
+		// **********************************
 		if (szMeth.HasFlag(SizingMethod.Query))
 		{
 			// Call method for query, if sizing method is Query
@@ -553,15 +613,14 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 					ArgumentSyntax arg when szParam is not null && arg.NameEquals(szParam.Identifier.Text) => Argument(IdentifierName(szVarName)),
 					_ => a
 				})];
-				tmpbuilder.statements.assignAfterQuery.Insert(0,
-					ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(szVarName), IdentifierName(MethodBodyBuilder.qretVarName))));
 			}
 			else if (szMeth.HasFlag(SizingMethod.CheckLastError))
 			{
 				tmpbuilder.statements.invokeForQueryArgs = [.. tmpbuilder.statements.invokeForQueryArgs.Select(a => a switch
 				{
 					ArgumentSyntax arg when arg.NameEquals(decl.Identifier.Text) => Argument(DefaultExpression(decl.Type!)),
-					ArgumentSyntax arg when szParam is not null && arg.NameEquals(szParam.Identifier.Text) && outSzParam is null => Argument(null, MethodBodyBuilder.refToken, IdentifierName(szVarName)),
+					ArgumentSyntax arg when szParam is not null && arg.NameEquals(szParam.Identifier.Text) && outSzParam is null && szParam.Modifiers.Any(SyntaxKind.RefKeyword) => Argument(null, MethodBodyBuilder.refToken, IdentifierName(szVarName)),
+					ArgumentSyntax arg when szParam is not null && arg.NameEquals(szParam.Identifier.Text) && outSzParam is null => Argument(IdentifierName(szVarName)),
 					ArgumentSyntax arg when szParam is not null && arg.NameEquals(szParam.Identifier.Text) && outSzParam is not null => Argument(IdentifierName(szVarName)),
 					_ => a
 				})];
@@ -573,85 +632,125 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 					ArgumentSyntax arg when arg.NameEquals(decl.Identifier.Text) && isNullable => Argument(DefaultExpression(decl.Type!)),
 					ArgumentSyntax arg when arg.NameEquals(decl.Identifier.Text) && szType.HasFlag(SizeParamType.String) => Argument(ParseExpression("new StringBuilder(0)")),
 					ArgumentSyntax arg when arg.NameEquals(decl.Identifier.Text) && szType.HasFlag(SizeParamType.Array) => Argument(ParseExpression("[]")),
+					ArgumentSyntax arg when arg.NameEquals(decl.Identifier.Text) && szType.HasFlag(SizeParamType.Ptr) => Argument(ParseExpression("IntPtr.Zero")),
 					ArgumentSyntax arg when szParam is not null && arg.NameEquals(szParam.Identifier.Text) && outSzParam is null => Argument(null, MethodBodyBuilder.refToken, IdentifierName(szVarName)),
 					ArgumentSyntax arg when szParam is not null && arg.NameEquals(szParam.Identifier.Text) && outSzParam is not null => Argument(IdentifierName(szVarName)),
 					_ => a
 				})];
 			}
 
-			// Return on query failure
+			// **********************************
+			// Setup query result handler
+			// **********************************
 			tmpbuilder.statements.queryFailureHandler.Add(
 				ParseStatement($"if (global::Vanara.PInvoke.FailedHelper.FAILED({MethodBodyBuilder.qretVarName}, {(szMeth.HasFlag(SizingMethod.CheckLastError) ? "true" : "false")})) return {MethodBodyBuilder.qretVarName};"));
 		}
 
-		// Assign variables before final method call
-		// 1. Create a statement that creates a variable for the output of syntaxNode and initializes it to the value of 'sz'
-		var outVarName = UniqueName("__out");
-		// 2. Create a variable that holds the number of elements initialized to the value of szVarName
+		// **********************************
+		// Assign/declare post query variables
+		// **********************************
+		// 1. Assign correct size to szVarName
+		if (szMeth.HasFlag(SizingMethod.QueryResultInReturn))
+			tmpbuilder.statements.assignAfterQuery.Insert(0,
+				ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(szVarName), IdentifierName(MethodBodyBuilder.qretVarName))));
+		else if (outSzParam is not null)
+			tmpbuilder.statements.assignAfterQuery.Insert(0,
+				ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(szVarName), IdentifierName(outSzParam.Identifier.Text))));
+		// 2. Create a statement that creates a variable for the output of syntaxNode and initializes it to the value of 'sz'
 		var cElemName = UniqueName("__cElem");
-		tmpbuilder.statements.assignAfterQuery.Add(LocalDeclarationStatement(VariableDeclaration(PredefinedType(Token(SyntaxKind.IntKeyword)))
-			.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(cElemName))
-				.WithInitializer(EqualsValueClause(ParseExpression($"Convert.ToInt32({szVarName})")))))));
-		// 3. Create statement that adjusts to bytes if indicated
+		if (!isInParam)
+		{
+			// 3. Create a variable that holds the number of elements initialized to the value of szVarName
+			tmpbuilder.statements.assignAfterQuery.Add(LocalDeclarationStatement(VariableDeclaration(PredefinedType(Token(SyntaxKind.IntKeyword)))
+				.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(cElemName))
+					.WithInitializer(EqualsValueClause(ParseExpression(szVarTypeDecl.ToString() == "int" ? szVarName : $"Convert.ToInt32({szVarName})")))))));
+		}
+		// 4. Create statement that adjusts to bytes if indicated
 		if (szMeth.HasFlag(SizingMethod.Bytes))
 		{
 			var getElemSize = szType switch
 			{
 				var t when t.HasFlag(SizeParamType.String) => $"global::Vanara.Extensions.StringHelper.GetCharSize(CharSet.{charSet})",
-				var t when t.HasFlag(SizeParamType.Array) && isNullable => $"global::Vanara.Extensions.InteropExtensions.SizeOf(typeof({((ArrayTypeSyntax)((NullableTypeSyntax)outType!).ElementType).ElementType}), CharSet.{charSet})",
-				var t when t.HasFlag(SizeParamType.Array) && !isNullable => $"global::Vanara.Extensions.InteropExtensions.SizeOf(typeof({((ArrayTypeSyntax)outType!).ElementType}), CharSet.{charSet})",
+				SizeParamType.Array | SizeParamType.Nullable => $"global::Vanara.Extensions.InteropExtensions.SizeOf(typeof({((ArrayTypeSyntax)((NullableTypeSyntax)outType!).ElementType).ElementType}), CharSet.{charSet})",
+				SizeParamType.Array => $"global::Vanara.Extensions.InteropExtensions.SizeOf(typeof({((ArrayTypeSyntax)outType!).ElementType}), CharSet.{charSet})",
 				_ => "1",
 			};
 			var expr = ExpressionStatement(AssignmentExpression(SyntaxKind.DivideAssignmentExpression, IdentifierName(cElemName), ParseExpression(getElemSize)));
 			tmpbuilder.statements.assignAfterQuery.Add(expr);
 		}
-		// 4. Create statement that adjusts for null term if indicated
+		// 5. Create statement that adjusts for null term if indicated
 		if (szMeth.HasFlag(SizingMethod.InclNullTerm))
 		{
 			var expr = ExpressionStatement(AssignmentExpression(SyntaxKind.SubtractAssignmentExpression, IdentifierName(cElemName), ParseExpression("1")));
 			tmpbuilder.statements.assignAfterQuery.Add(expr);
 		}
-		// 5. If the outType is string, initialize to new StringBuilder(sz)
-		var outVarDecl = VariableDeclaration(decl.Type!);
-		outVarDecl = szType switch
+		var outVarName = UniqueName($"__{decl.Identifier.Text}");
+		if (!isInParam)
 		{
-			var t when t.HasFlag(SizeParamType.String) => outVarDecl
-				.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(outVarName))
-					.WithInitializer(EqualsValueClause(ImplicitObjectCreationExpression()
-						.WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(ParseExpression(cElemName))))))))),
-			var t when t.HasFlag(SizeParamType.Array) => (decl.Type is ArrayTypeSyntax ats ? ats : (decl.Type is NullableTypeSyntax nts && nts.ElementType is ArrayTypeSyntax nats ? nats : null))?
-				.CreateArrayVariableDeclaration(outVarName, cElemName) ?? outVarDecl,
-			//"IntPtr" => ,
-			_ => outVarDecl,
-		};
-		tmpbuilder.statements.assignAfterQuery.Add(LocalDeclarationStatement(outVarDecl));
+			// 6. If the outType is string, initialize to new StringBuilder(sz)
+			var outVarDecl = VariableDeclaration(decl.Type!);
+			outVarDecl = (szType & ~SizeParamType.Nullable) switch
+			{
+				SizeParamType.String => outVarDecl
+					.WithVariables(SingletonSeparatedList(VariableDeclarator(Identifier(outVarName))
+						.WithInitializer(EqualsValueClause(ImplicitObjectCreationExpression()
+							.WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(ParseExpression(cElemName))))))))),
+				SizeParamType.Array => (decl.Type is ArrayTypeSyntax ats ? ats : (decl.Type is NullableTypeSyntax nts && nts.ElementType is ArrayTypeSyntax nats ? nats : null))?
+					.CreateArrayVariableDeclaration(outVarName, cElemName) ?? outVarDecl,
+				SizeParamType.Ptr => ArrayType(ParseTypeName("byte")).CreateArrayVariableDeclaration(outVarName, cElemName),
+				_ => outVarDecl,
+			};
+			tmpbuilder.statements.assignAfterQuery.Add(LocalDeclarationStatement(outVarDecl));
+		}
 
-		// Call method for real
+		// **********************************
+		// Setup arguments for invoke
+		// **********************************
 		// 1. Replace the reference to the parameter in the method body invokeArgs statement with outVarName
 		var sdArg = tmpbuilder.statements.invokeArgs.FirstOrDefault(a => a.NameEquals(decl.Identifier.Text));
 		if (sdArg != null)
-			tmpbuilder.statements.invokeArgs.Replace(sdArg, Argument(IdentifierName(outVarName)));
-
-		// Get out params
-		// 1. Set the output parameter to the value of outVarName, converting as needed
-		ExpressionSyntax? assignExpr = szType switch
 		{
-			var t when t.HasFlag(SizeParamType.String) => ParseExpression($"{outVarName}.ToString()"),
-			_ => ParseExpression(outVarName),
-		};
-		if (assignExpr is not null)
-			tmpbuilder.statements.assignOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), assignExpr)));
+			tmpbuilder.statements.invokeArgs.Replace(sdArg, (szType & ~SizeParamType.Nullable) switch
+			{
+				SizeParamType t when isInParam => Argument(IdentifierName(inArgName!)),
+				SizeParamType.Ptr when isNullable => Argument(ParseExpression($"{outVarName} is null ? default : global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({outVarName}, 0)")),
+				SizeParamType.Ptr => Argument(ParseExpression($"global::System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement({outVarName}, 0)")),
+				SizeParamType.Array => Argument(IdentifierName(outVarName)),
+				_ => Argument(IdentifierName(outVarName)),
+			});
+			if (isInParam)
+				tmpbuilder.statements.invokeForQueryArgs?.Replace(sdArg, Argument(IdentifierName(inArgName!)));
+		}
 
+		// **********************************
+		// Assign output parameter values
+		// **********************************
+		// 1. Set the output parameter to the value of outVarName, converting as needed, if query
+		if (!isInParam)
+		{
+			ExpressionSyntax? assignExpr = (szType & ~SizeParamType.Nullable) switch
+			{
+				SizeParamType.String => ParseExpression($"{outVarName}.ToString()"),
+				_ => ParseExpression(outVarName),
+			};
+			if (assignExpr is not null)
+				tmpbuilder.statements.assignOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), assignExpr)));
+		}
+
+		// **********************************
 		// Process the xml docs for the method, removing the ignored param
+		// **********************************
 		if (szParam is not null)
 			tmpbuilder.docs?.RemoveParamDoc(szParam.Identifier.Text);
+		if (outSzParam is not null)
+			tmpbuilder.docs?.RemoveParamDoc(outSzParam.Identifier.Text);
 
 		builder = tmpbuilder;
 
-		bool ValidateAttr(out ParameterSyntax? szParam, out string sz, out SizingMethod szMeth, out CharSet charSet, out ParameterSyntax? outSzParam, out ParameterSyntax? bufSzParam)
+		bool ValidateAttr(out ParameterSyntax? szParam, out string? sz, out SizingMethod szMeth, out CharSet charSet, out ParameterSyntax? outSzParam, out ParameterSyntax? bufSzParam)
 		{
 			szParam = outSzParam = bufSzParam = null;
-			sz = "0";
+			sz = null;
 			szMeth = attrDatas.FirstOrDefault()?.ConstructorArguments.ElementAtOrDefault(1).Value is int ism ? (SizingMethod)ism : SizingMethod.Count;
 			charSet = decl.GetCharSet();
 
@@ -701,7 +800,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				// If rngAttr is found, get its second constructor argument value as an int and use that as sz
 				if (rngAttr is not null && rngAttr.ArgumentList is not null && rngAttr.ArgumentList.Arguments.Count > 1)
 				{
-					sz = rngAttr.ArgumentList.Arguments[1].Expression.ToString() ?? "0";
+					sz = rngAttr.ArgumentList.Arguments[1].Expression.ToString();
 				}
 				// If rngAttr is not found, use the max value of the parameter type if it's an integral type
 				else
@@ -756,7 +855,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		if (idx >= 0)
 		{
 			// If the parameter is not optional, report an error
-			if (!decl.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "Optional") && decl.Default is null)
+			if (!IsOptional(decl))
 			{
 				context.ReportError(decl, "VANGEN022", "Ignore parameters must be optional.");
 				return;
@@ -792,9 +891,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		var decl = (ParameterSyntax)node;
 		// Determine if the syntaxNode is an in or out or ref param
 		bool isOutParam = decl.Modifiers.Any(SyntaxKind.OutKeyword);
-		ModType modAttr = (decl.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "Out") ? ModType.Out : 0)
-			| (decl.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "In") ? ModType.In : 0);
-		if (modAttr == 0) modAttr = isOutParam ? ModType.Out : ModType.In;
+		ModType modAttr = GetModType(decl);
 
 		// Determine if the syntaxNode has the MarshalAs attribute with contructor first argument of UnmanagedType.IUnknown or UnmanagedType.IInterface and a named argument of IidParameterIndex
 		if (!ValidateAttr(out string refParamName, out var unmanagedType))
@@ -1012,7 +1109,15 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		_ => n.AncestorsAndSelf().OfType<MethodDeclarationSyntax>().FirstOrDefault()
 	};
 
-	private static bool IsPartialType(SyntaxNode syntaxNode, CancellationToken _) => syntaxNode is TypeDeclarationSyntax tds && tds.IsPartial();
+	private static ModType GetModType(ParameterSyntax p)
+	{
+		if (p.Modifiers.Any(SyntaxKind.OutKeyword)) return ModType.Out;
+		if (p.Modifiers.Any(SyntaxKind.RefKeyword)) return ModType.Ref;
+		if (p.Type!.ToString().StartsWith("string")) return ModType.In;
+		var ret = (p.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "In") ? ModType.In : 0)
+			| (p.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "Out") ? ModType.Out : 0);
+		return ret == 0 ? ModType.Ref : ret;
+	}
 
 	private static TypeSyntax? GetTypeFromNode(SyntaxNode n) => n switch
 	{
@@ -1021,6 +1126,11 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		TypeSyntax ts => ts,
 		_ => null
 	};
+
+	private static bool IsOptional(ParameterSyntax p) => p.AttributeLists.SelectMany(al => al.Attributes).Any(a => a.Name.ToString() == "Optional") ||
+		p.Default is not null;
+
+	private static bool IsPartialType(SyntaxNode syntaxNode, CancellationToken _) => syntaxNode is TypeDeclarationSyntax tds && tds.IsPartial();
 
 	private static TypeDeclarationSyntax ParentForExtMethod(SourceProductionContext context, SyntaxNode decl, Compilation compilation)
 	{

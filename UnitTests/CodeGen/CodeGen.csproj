@@ -5,6 +5,12 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>-->
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="PointerGenTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PointerGenTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\CodeGen\Analyzer\Vanara.CodeGen.Analyzer.csproj" />
     <ProjectReference Include="..\..\CodeGen\CodeFixes\Vanara.CodeGen.CodeFixes.csproj" />
     <ProjectReference Include="..\..\CodeGen\Generator\Vanara.CodeGen.csproj" OutputItemType="Analyzer" />

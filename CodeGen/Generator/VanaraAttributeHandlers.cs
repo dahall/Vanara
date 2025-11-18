@@ -106,7 +106,7 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 				: $"if (global::Vanara.PInvoke.FailedHelper.FAILED({retVarName}, false)) return {retVarName};";
 			ret = ret.WithBody(Block(statements.setupVariables
 				.Concat(statements.initOutParams)
-				.Concat(statements.setupParams)
+				.Concat(statements.setupArgs)
 				.Concat([queryStmt]).WhereNotNull()
 				.Concat(statements.queryFailureHandler)
 				.Concat(statements.assignAfterQuery)
@@ -156,8 +156,8 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 		// Initialize out params
 		public List<StatementSyntax> initOutParams = [];
 
-		// Setup parameter values
-		public List<StatementSyntax> setupParams = [];
+		// Declare default argument values
+		public List<StatementSyntax> setupArgs = [];
 
 		// Call method for query
 		public List<ArgumentSyntax>? invokeForQueryArgs = null;
@@ -179,7 +179,7 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 
 		public bool returnIsVoid;
 
-		internal bool IsSimpleInvoke => setupVariables.Count == 0 && initOutParams.Count == 0 && setupParams.Count == 0 &&
+		internal bool IsSimpleInvoke => setupVariables.Count == 0 && initOutParams.Count == 0 && setupArgs.Count == 0 &&
 			(invokeForQueryArgs is null || invokeForQueryArgs.Count == 0) && queryFailureHandler.Count == 0 &&
 			assignAfterQuery.Count == 0 && assignOutParams.Count == 0;
 	}

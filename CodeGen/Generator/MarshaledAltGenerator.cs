@@ -29,7 +29,7 @@ public class MarshaledAlternativeGenerator : IIncrementalGenerator
 
 	private static void Execute(SourceProductionContext context, (Compilation compilation, ImmutableArray<(StructDeclarationSyntax, AttributeData)> classes) unit)
 	{
-		foreach ((StructDeclarationSyntax decl, AttributeData attr) in unit.classes)
+		foreach (var (decl, attr) in unit.classes)
 		{
 			var declModel = unit.compilation?.GetSemanticModel(decl.SyntaxTree);
 			if (declModel?.GetDeclaredSymbol(decl) is not { } symbol) continue;
@@ -57,8 +57,8 @@ public class MarshaledAlternativeGenerator : IIncrementalGenerator
 				}
 
 				// Create the output string ==============
-				using var outputString = new StringWriter();
-				using var output = new IndentedTextWriter(outputString);
+				using StringWriter outputString = new();
+				using IndentedTextWriter output = new(outputString);
 
 				// Output the nullable directive and the warning disable directive
 				output.WriteLine("#nullable enable");
