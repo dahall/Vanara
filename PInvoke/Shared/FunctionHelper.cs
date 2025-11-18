@@ -5,7 +5,7 @@ namespace Vanara.PInvoke;
 /// <summary>Generic functions to help with standard function patterns like getting a string from a method.</summary>
 public static class FunctionHelper
 {
-	internal static readonly List<HRESULT> buffErrs = [(HRESULT)(Win32Error)Win32Error.ERROR_MORE_DATA, (HRESULT)(Win32Error)Win32Error.ERROR_INSUFFICIENT_BUFFER, (HRESULT)(Win32Error)Win32Error.ERROR_BUFFER_OVERFLOW, HRESULT.TYPE_E_BUFFERTOOSMALL];
+	internal static readonly List<HRESULT> buffErrs = [(HRESULT)(Win32Error)Win32Error.ERROR_MORE_DATA, (HRESULT)(Win32Error)Win32Error.ERROR_INSUFFICIENT_BUFFER, (HRESULT)(Win32Error)Win32Error.ERROR_BUFFER_OVERFLOW, HRESULT.TYPE_E_BUFFERTOOSMALL, (HRESULT)(NTStatus)NTStatus.HIDP_STATUS_BUFFER_TOO_SMALL];
 
 #nullable disable
 	/// <summary>Delegate for functions that use an IID to retrieve an object.</summary>
