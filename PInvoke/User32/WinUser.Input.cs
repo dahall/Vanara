@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Runtime.CompilerServices;
+
+namespace Vanara.PInvoke;
 
 public static partial class User32
 {
@@ -1166,6 +1168,8 @@ public static partial class User32
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct RAWHID
 	{
+		internal static readonly int DataOffset = Marshal.OffsetOf<RAWINPUT>("data").ToInt32() + sizeof(uint) * 2;
+
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
 		/// <para>The size, in bytes, of each HID input in <c>bRawData</c>.</para>
@@ -1182,7 +1186,21 @@ public static partial class User32
 		/// <para>Type: <c>BYTE[1]</c></para>
 		/// <para>The raw input data, as an array of bytes.</para>
 		/// </summary>
-		public IntPtr bRawData;
+		public byte bRawData;
+
+		/// <summary>Gets a span for the specified HID input.</summary>
+		/// <param name="index">The index of the HID input data to retrieve.</param>
+		/// <param name="rawInput">The bytes of the parent RAWINPUT.</param>
+		/// <returns>A span of bytes representing the raw data for the requested HID input.</returns>
+		/// <exception cref="IndexOutOfRangeException"><paramref name="index"/> must be between 0 and <c>dwCount</c>.</exception>
+		public readonly ReadOnlySpan<byte> GetHidInput(int index, byte[] rawInput) => index < dwCount ? new(rawInput, DataOffset + (int)(dwSizeHid * index), (int)dwSizeHid) : throw new IndexOutOfRangeException();
+
+		/// <summary>Gets a span for the specified HID input.</summary>
+		/// <param name="index">The index of the HID input data to retrieve.</param>
+		/// <param name="rawInput">A pointer to the bytes of the parent RAWINPUT.</param>
+		/// <returns>A span of bytes representing the raw data for the requested HID input.</returns>
+		/// <exception cref="IndexOutOfRangeException"><paramref name="index"/> must be between 0 and <c>dwCount</c>.</exception>
+		public readonly ReadOnlySpan<byte> GetHidInput(int index, IntPtr rawInput) { unsafe { return index < dwCount ? new((byte*)rawInput + DataOffset + (int)(dwSizeHid * index), (int)dwSizeHid) : throw new IndexOutOfRangeException(); } }
 	}
 
 	/// <summary>Contains the raw input from a device.</summary>
