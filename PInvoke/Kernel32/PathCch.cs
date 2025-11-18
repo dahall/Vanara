@@ -327,7 +327,7 @@ public static partial class Kernel32
 	// pszPath, SizeT cchPath, PWSTR *ppszEnd, SizeT *pcchRemaining );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("pathcch.h", MSDNShortId = "89adf45f-f16d-49d1-9e76-b57b73b4d4c3")]
-	public static extern HRESULT PathCchAddBackslashEx([In, Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, [Range(1, PATHCCH_MAX_CCH)] SizeT cchPath, out IntPtr ppszEnd, out SizeT pcchRemaining);
+	public static extern HRESULT PathCchAddBackslashEx([Out, SizeDef(nameof(cchPath))] StringBuilder pszPath, [Range(1, PATHCCH_MAX_CCH)] SizeT cchPath, out IntPtr ppszEnd, out SizeT pcchRemaining);
 
 	/// <summary>
 	/// <para>

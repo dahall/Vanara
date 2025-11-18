@@ -56,7 +56,7 @@ public static partial class Kernel32
 	// DWORD WINAPI ExpandEnvironmentStrings( _In_ LPCTSTR lpSrc, _Out_opt_ LPTSTR lpDst, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724265(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724265")]
-	public static extern uint ExpandEnvironmentStrings(string lpSrc, [Out, SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpDst, uint nSize);
+	public static extern uint ExpandEnvironmentStrings(string lpSrc, [Out, SizeDef(nameof(nSize), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpDst, uint nSize);
 
 	/// <summary>Frees a block of environment strings.</summary>
 	/// <param name="lpszEnvironmentBlock">
@@ -105,7 +105,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetCurrentDirectory( _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364934(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa364934")]
-	public static extern uint GetCurrentDirectory(uint nBufferLength, [Out, SizeDef(nameof(nBufferLength), SizingMethod.Query | SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpBuffer);
+	public static extern uint GetCurrentDirectory(uint nBufferLength, [Out, SizeDef(nameof(nBufferLength), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpBuffer);
 
 	/// <summary>Retrieves the environment variables for the current process.</summary>
 	/// <returns>
@@ -148,7 +148,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683188")]
 	public static extern uint GetEnvironmentVariable([Range(0, 32767)] string lpName,
-		[Out, SizeDef(nameof(nSize), SizingMethod.Query | SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpBuffer, uint nSize);
+		[Out, SizeDef(nameof(nSize), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpBuffer, uint nSize);
 
 	/// <summary>Retrieves a handle to the specified standard device (standard input, standard output, or standard error).</summary>
 	/// <param name="nStdHandle">

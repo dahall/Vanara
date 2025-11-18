@@ -236,10 +236,35 @@ public static partial class Hid
 	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/hidpi/nf-hidpi-hidp_getbuttons #define HidP_GetButtons(Rty, UPa, LCo,
 	// ULi, ULe, Ppd, Rep, RLe) \ HidP_GetUsages(Rty, UPa, LCo, ULi, ULe, Ppd, Rep, RLe)
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetButtons")]
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[MethodImpl(MethodImplOptions.AggressiveInlining), SuppressAutoGen]
 	public static NTStatus HidP_GetButtons([In] HIDP_REPORT_TYPE Rty, [In] USAGE UPa,
-		HIDP_LINK_COLLECTION LCo, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4), SizeDef(nameof(ULe), SizingMethod.Query)] USAGE[] ULi, ref uint ULe,
+		HIDP_LINK_COLLECTION LCo, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4), SizeDef(nameof(ULe), SizingMethod.CheckLastError)] USAGE[] ULi, ref uint ULe,
 		[In] PHIDP_PREPARSED_DATA Ppd, [Out, SizeDef(nameof(RLe))] IntPtr Rep, uint RLe) => HidP_GetUsages(Rty, UPa, LCo, ULi, ref ULe, Ppd, Rep, RLe);
+
+	/// <summary>The <b>HidP_GetButtons</b> macro is a mnemonic alias for the <c><b>HidP_GetUsages</b></c> function.</summary>
+	/// <param name="Rty">Specifies a <c><b>HIDP_REPORT_TYPE</b></c> enumerator value that identifies the report type.</param>
+	/// <param name="UPa">
+	/// Specifies the <c>usage page</c> of the button usages. The routine only returns information about buttons on this usage page.
+	/// </param>
+	/// <param name="LCo">
+	/// Specifies the <c>link collection</c> of the button usages. If LCo is nonzero, the routine only returns information about the buttons
+	/// that this link collection contains; otherwise, if LCo is zero, the routine returns information about all the buttons in the
+	/// <c>top-level collection</c> associated with Ppd.
+	/// </param>
+	/// <param name="ULi">
+	/// Pointer to a caller-allocated buffer that the routine uses to return the usages of all buttons that are set to ON and belong to the
+	/// usage page specified by UPa.
+	/// </param>
+	/// <param name="Ppd">Pointer to a top-level collection's <c>pre-parsed data</c>.</param>
+	/// <param name="Rep">Pointer to a report.</param>
+	/// <returns>None</returns>
+	/// <remarks>See <c><b>HidP_GetUsages</b></c> for return value details.</remarks>
+	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/hidpi/nf-hidpi-hidp_getbuttons #define HidP_GetButtons(Rty, UPa, LCo,
+	// ULi, ULe, Ppd, Rep, RLe) \ HidP_GetUsages(Rty, UPa, LCo, ULi, ULe, Ppd, Rep, RLe)
+	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetButtons")]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static NTStatus HidP_GetButtons([In] HIDP_REPORT_TYPE Rty, [In] USAGE UPa, HIDP_LINK_COLLECTION LCo, out USAGE[] ULi,
+		[In] PHIDP_PREPARSED_DATA Ppd, out byte[] Rep) => HidP_GetUsages(Rty, UPa, LCo, out ULi, Ppd, out Rep);
 
 	/// <summary>The <b>HidP_GetButtonsEx</b> macro is a mnemonic alias for the <c><b>HidP_GetUsagesEx</b></c> function.</summary>
 	/// <param name="Rty">Specifies a <c><b>HIDP_REPORT_TYPE</b></c> enumerator value that identifies the report type.</param>
@@ -264,7 +289,7 @@ public static partial class Hid
 	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/hidpi/nf-hidpi-hidp_getbuttonsex #define HidP_GetButtonsEx(Rty, LCo,
 	// BLi, ULe, Ppd, Rep, RLe) \ HidP_GetUsagesEx(Rty, LCo, BLi, ULe, Ppd, Rep, RLe)
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetButtonsEx")]
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[MethodImpl(MethodImplOptions.AggressiveInlining), SuppressAutoGen]
 	public static NTStatus HidP_GetButtonsEx([In] HIDP_REPORT_TYPE Rty, HIDP_LINK_COLLECTION LCo,
 			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3), SizeDef(nameof(ULe), SizingMethod.Query)] USAGE_AND_PAGE[] BLi, ref uint ULe, [In] PHIDP_PREPARSED_DATA Ppd,
 			[Out, SizeDef(nameof(RLe))] IntPtr Rep, uint RLe) => HidP_GetUsagesEx(Rty, LCo, BLi, ref ULe, Ppd, Rep, RLe);
@@ -801,9 +826,100 @@ public static partial class Hid
 	// [in] PHIDP_PREPARSED_DATA PreparsedData, [out] PCHAR Report, [in] ULONG ReportLength );
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetUsages")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
+	[SuppressAutoGen]
 	public static extern NTStatus HidP_GetUsages([In] HIDP_REPORT_TYPE ReportType, [In] USAGE UsagePage,
 		HIDP_LINK_COLLECTION LinkCollection, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] USAGE[] UsageList, ref uint UsageLength,
 		[In] PHIDP_PREPARSED_DATA PreparsedData, [Out, SizeDef(nameof(ReportLength))] IntPtr Report, uint ReportLength);
+
+	/// <summary>
+	/// The <b>HidP_GetUsages</b> routine returns a list of all the HID control button <c>usages</c> that are on a specified <c>usage
+	/// page</c> and are set to ON in a HID report.
+	/// </summary>
+	/// <param name="ReportType">Specifies a <c>HIDP_REPORT_TYPE</c> enumerator value that identifies the report type.</param>
+	/// <param name="UsagePage">
+	/// Specifies the <c>usage page</c> of the button usages. The routine only returns information about buttons on this usage page.
+	/// </param>
+	/// <param name="LinkCollection">
+	/// Specifies the <c>link collection</c> of the button usages. If LinkCollection is nonzero, the routine only returns information about
+	/// the buttons that this link collection contains; otherwise, if LinkCollection is zero, the routine returns information about all the
+	/// buttons in the <c>top-level collection</c> associated with PreparsedData.
+	/// </param>
+	/// <param name="UsageList">
+	/// The usages of all buttons that are set to ON and belong to the
+	/// usage page specified by UsagePage.
+	/// </param>
+	/// <param name="PreparsedData">Pointer to a top-level collection's <c>preparsed data</c>.</param>
+	/// <param name="Report">A report.</param>
+	/// <returns>
+	/// <para><b>HidP_GetUsages</b> returns one of the following status values:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <description>Return code</description>
+	/// <description>Description</description>
+	/// </listheader>
+	/// <item>
+	/// <description><b>HIDP_STATUS_SUCCESS</b></description>
+	/// <description>The routine successfully returned all button usages set to ON.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>HIDP_STATUS_INVALID_REPORT_LENGTH</b></description>
+	/// <description>The report length is not valid.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>HIDP_STATUS_INVALID_REPORT_TYPE</b></description>
+	/// <description>The specified report type is not valid.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>HIDP_STATUS_BUFFER_TOO_SMALL</b></description>
+	/// <description>
+	/// The <c>UsageList</c> buffer is too small to hold all the usages that are currently set to ON on the specified usage page.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>HIDP_STATUS_INCOMPATIBLE_REPORT_ID</b></description>
+	/// <description>
+	/// The collection contains buttons on the specified usage page in a report of the specified type, but there are no such usages in the
+	/// specified report.
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description><b>HIDP_STATUS_INVALID_PREPARSED_DATA</b></description>
+	/// <description>The preparsed data is not valid.</description>
+	/// </item>
+	/// <item>
+	/// <description><b>HIDP_STATUS_USAGE_NOT_FOUND</b></description>
+	/// <description>
+	/// The collection does not contain any buttons on the specified usage page in any report of the specified report type.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// User-mode applications and kernel-mode drivers call <c>HidP_MaxUsageListLength</c> to determine the maximum number of buttons that
+	/// can be returned for specified report type. Alternatively, applications or drivers can call <b>HidP_GetUsages</b> and set
+	/// (*UsageLength) to zero to return the required length in UsageLength. In other words, UsageLength should be a valid pointer that
+	/// points to a ULONG value <b>0</b> to get the required length.
+	/// </para>
+	/// <para>
+	/// Applications or drivers determine the required report length from the Xxx <b>ReportByteLength</b> members in a top-level collection's
+	/// <c>HIDP_CAPS</c> structure.
+	/// </para>
+	/// <para>For more information, see <c>HID Collections</c>.</para>
+	/// </remarks>
+	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetUsages")]
+	public static NTStatus HidP_GetUsages([In] HIDP_REPORT_TYPE ReportType, [In] USAGE UsagePage,
+		HIDP_LINK_COLLECTION LinkCollection, out USAGE[] UsageList, [In] PHIDP_PREPARSED_DATA PreparsedData, out byte[] Report)
+	{
+		var ul = HidP_MaxUsageListLength(ReportType, UsagePage, PreparsedData);
+		UsageList = new USAGE[ul];
+		HidP_GetCaps(PreparsedData, out var caps);
+		Report = new byte[caps.OutputReportByteLength];
+		var ret = HidP_GetUsages(ReportType, UsagePage, LinkCollection, UsageList, ref ul, PreparsedData, Marshal.UnsafeAddrOfPinnedArrayElement(Report, 0), caps.OutputReportByteLength);
+		if (Report.Length != ul)
+			Array.Resize(ref Report, (int)ul);
+		return ret;
+	}
 
 	/// <summary>
 	/// The <b>HidP_GetUsagesEx</b> routine returns a list of the all the HID control button <c>usages</c> that are set to ON in a HID report.
@@ -878,6 +994,7 @@ public static partial class Hid
 	// PHIDP_PREPARSED_DATA PreparsedData, [in] PCHAR Report, [in] ULONG ReportLength );
 	[PInvokeData("hidpi.h", MSDNShortId = "NF:hidpi.HidP_GetUsagesEx")]
 	[DllImport(Lib_Hid, SetLastError = false, ExactSpelling = true)]
+	[SuppressAutoGen]
 	public static extern NTStatus HidP_GetUsagesEx([In] HIDP_REPORT_TYPE ReportType, HIDP_LINK_COLLECTION LinkCollection,
 		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] USAGE_AND_PAGE[] ButtonList, ref uint UsageLength, [In] PHIDP_PREPARSED_DATA PreparsedData,
 		[Out, SizeDef(nameof(ReportLength))] IntPtr Report, uint ReportLength);

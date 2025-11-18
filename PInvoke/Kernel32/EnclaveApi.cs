@@ -355,7 +355,7 @@ public static partial class Kernel32
 	// *OutputSize );
 	[DllImport(Lib.VertDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winenclaveapi.h", MSDNShortId = "FEE8F05B-540F-4C10-A90C-55607A4E9293")]
-	public static extern HRESULT EnclaveGetAttestationReport([In, Optional] byte[]? EnclaveData, [In, Optional] IntPtr Report, [Optional] uint BufferSize, out uint OutputSize);
+	public static extern HRESULT EnclaveGetAttestationReport([In, Optional] byte[]? EnclaveData, [Optional, SizeDef(nameof(BufferSize), SizingMethod.Query, OutVarName = nameof(OutputSize))] IntPtr Report, [Optional] uint BufferSize, out uint OutputSize);
 
 	/// <summary>Gets information about the currently executing enclave.</summary>
 	/// <param name="InformationSize">
@@ -430,8 +430,8 @@ public static partial class Kernel32
 	// ProtectedBlob, UINT32 BufferSize, UINT32 *ProtectedBlobSize );
 	[DllImport(Lib.VertDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winenclaveapi.h", MSDNShortId = "C5711D43-F0B4-43C6-B0DB-D65622851384")]
-	public static extern HRESULT EnclaveSealData(IntPtr DataToEncrypt, uint DataToEncryptSize, ENCLAVE_SEALING_IDENTITY_POLICY IdentityPolicy,
-		uint RuntimePolicy, [Optional] IntPtr ProtectedBlob, [Optional] uint BufferSize, out uint ProtectedBlobSize);
+	public static extern HRESULT EnclaveSealData([In, SizeDef(nameof(DataToEncryptSize))] IntPtr DataToEncrypt, uint DataToEncryptSize, ENCLAVE_SEALING_IDENTITY_POLICY IdentityPolicy,
+		uint RuntimePolicy, [Optional, SizeDef(nameof(BufferSize), SizingMethod.Query, OutVarName = nameof(ProtectedBlobSize))] IntPtr ProtectedBlob, [Optional] uint BufferSize, out uint ProtectedBlobSize);
 
 	/// <summary>Decrypts an encrypted binary large object (blob).</summary>
 	/// <param name="ProtectedBlob">

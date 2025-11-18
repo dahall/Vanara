@@ -1934,6 +1934,7 @@ public static partial class Kernel32
 	// GetPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 *count, PWSTR *packageFullNames, UINT32 *bufferLength, WCHAR *buffer );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "C2163203-D654-4491-9090-0CC43F42EC35")]
+	[SuppressAutoGen]
 	public static extern Win32Error GetPackagesByPackageFamily(string packageFamilyName, ref uint count,
 		[Optional, Out, SizeDef(nameof(count), SizingMethod.Query)] StrPtrUni[]? packageFullNames,
 		ref uint bufferLength, [Optional, Out, SizeDef(nameof(bufferLength), SizingMethod.Query)] IntPtr buffer);

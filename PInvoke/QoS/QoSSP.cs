@@ -489,19 +489,19 @@ public static partial class Qwave
 		/// <summary/>
 		public byte UnUsed
 		{
-			get => BitConverter.GetBytes(field)[0];
+			get => BitConverter.GetBytes(@field)[0];
 			set
 			{
-				byte[] bytes = BitConverter.GetBytes(field);
+				byte[] bytes = BitConverter.GetBytes(@field);
 				bytes[0] = value;
-				field = BitConverter.ToUInt32(bytes, 0);
+				@field = BitConverter.ToUInt32(bytes, 0);
 			}
 		}
 
 		/// <summary>Label for the flow.</summary>
 		public byte[] FlowLabel
 		{
-			get => BitConverter.GetBytes(field).AsSpan().Slice(1, 3).ToArray();
+			get => BitConverter.GetBytes(@field).AsSpan().Slice(1, 3).ToArray();
 			set
 			{
 				if (value is null || value.Length != 3)
@@ -509,9 +509,9 @@ public static partial class Qwave
 					throw new ArgumentException("FlowLabel must be a three byte array.", nameof(value));
 				}
 
-				byte[] bytes = BitConverter.GetBytes(field);
+				byte[] bytes = BitConverter.GetBytes(@field);
 				Array.Copy(value, 0, bytes, 1, 3);
-				field = BitConverter.ToUInt32(bytes, 0);
+				@field = BitConverter.ToUInt32(bytes, 0);
 			}
 		}
 	}
@@ -552,7 +552,7 @@ public static partial class Qwave
 		/// <summary>Policy data, expressed in UCHARs.</summary>
 		public byte[] Info
 		{
-			get => BitConverter.GetBytes(field);
+			get => BitConverter.GetBytes(@field);
 			set
 			{
 				if (value is null || value.Length != 4)
@@ -560,9 +560,9 @@ public static partial class Qwave
 					throw new ArgumentException("Info must be a four byte array.", nameof(value));
 				}
 
-				byte[] bytes = BitConverter.GetBytes(field);
+				byte[] bytes = BitConverter.GetBytes(@field);
 				Array.Copy(value, 0, bytes, 0, 4);
-				field = BitConverter.ToUInt32(bytes, 0);
+				@field = BitConverter.ToUInt32(bytes, 0);
 			}
 		}
 	}

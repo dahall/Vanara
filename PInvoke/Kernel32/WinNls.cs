@@ -4480,7 +4480,7 @@ public static partial class Kernel32
 	// _Out_opt_ LPDWORD lpValue); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318072(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318072")]
-	public static extern int GetCalendarInfo(LCID Locale, CALID Calendar, CALTYPE CalType, [Optional] IntPtr lpCalData, [Optional] int cchData, out uint lpValue);
+	public static extern int GetCalendarInfo(LCID Locale, CALID Calendar, CALTYPE CalType, [Optional, Ignore] IntPtr lpCalData, [Optional, Ignore] int cchData, out uint lpValue);
 
 	/// <summary>
 	/// Retrieves information about a calendar for a locale specified by identifier. <note type="note">For interoperability reasons, the
@@ -4531,7 +4531,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318072")]
 	public static extern int GetCalendarInfo(LCID Locale, CALID Calendar, CALTYPE CalType,
-		[SizeDef(nameof(cchData), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpCalData, int cchData, [Optional] IntPtr lpValue);
+		[SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn)] StringBuilder? lpCalData, int cchData, [Optional, Ignore] IntPtr lpValue);
 
 	/// <summary>Retrieves information about a calendar for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -4574,7 +4574,7 @@ public static partial class Kernel32
 	// _Out_opt_ LPWSTR lpCalData, _In_ int cchData, _Out_opt_ LPDWORD lpValue); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318075(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318075")]
-	public static extern int GetCalendarInfoEx(string? lpLocaleName, CALID Calendar, [Optional] string? lpReserved, CALTYPE CalType, [Optional] IntPtr lpCalData, [Optional] int cchData, out uint lpValue);
+	public static extern int GetCalendarInfoEx(string? lpLocaleName, CALID Calendar, [Optional, Ignore] string? lpReserved, CALTYPE CalType, [Optional, Ignore] IntPtr lpCalData, [Optional, Ignore] int cchData, out uint lpValue);
 
 	/// <summary>Retrieves information about a calendar for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -4617,8 +4617,8 @@ public static partial class Kernel32
 	// _Out_opt_ LPWSTR lpCalData, _In_ int cchData, _Out_opt_ LPDWORD lpValue); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318075(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318075")]
-	public static extern int GetCalendarInfoEx(string? lpLocaleName, CALID Calendar, [Optional] string? lpReserved, CALTYPE CalType,
-		[SizeDef(nameof(cchData), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpCalData, int cchData, [Optional] IntPtr lpValue);
+	public static extern int GetCalendarInfoEx(string? lpLocaleName, CALID Calendar, [Optional, Ignore] string? lpReserved, CALTYPE CalType,
+		[SizeDef(nameof(cchData), SizingMethod.QueryResultInReturn)] StringBuilder? lpCalData, int cchData, [Optional, Ignore] IntPtr lpValue);
 
 	/// <summary>Deprecated. Gets the supported date range for a specified calendar.</summary>
 	/// <param name="Calendar">The calendar.</param>
@@ -4750,7 +4750,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318083")]
 	public static extern int GetCurrencyFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, [Optional] string? lpValue, in CURRENCYFMT lpFormat,
-		[SizeDef(nameof(cchCurrency), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpCurrencyStr, int cchCurrency);
+		[SizeDef(nameof(cchCurrency), SizingMethod.QueryResultInReturn)] StringBuilder? lpCurrencyStr, int cchCurrency);
 
 	/// <summary>Formats a number string as a currency string for a locale specified by identifier.</summary>
 	/// <param name="Locale">
@@ -4790,8 +4790,8 @@ public static partial class Kernel32
 	// LPTSTR lpCurrencyStr, _In_ int cchCurrency); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318083(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318083")]
-	public static extern int GetCurrencyFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, [Optional] string? lpValue, [Optional] IntPtr lpFormat,
-		[SizeDef(nameof(cchCurrency), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpCurrencyStr, int cchCurrency);
+	public static extern int GetCurrencyFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, [Optional] string? lpValue, [Optional, Ignore] IntPtr lpFormat,
+		[SizeDef(nameof(cchCurrency), SizingMethod.QueryResultInReturn)] StringBuilder? lpCurrencyStr, int cchCurrency);
 
 	/// <summary>Formats a number string as a currency string for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name or one of the following predefined values.</param>
@@ -4831,7 +4831,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318084")]
 	public static extern int GetCurrencyFormatEx(string? lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [Optional] string? lpValue, in CURRENCYFMT lpFormat,
-		[SizeDef(nameof(cchCurrency), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpCurrencyStr, int cchCurrency);
+		[SizeDef(nameof(cchCurrency), SizingMethod.QueryResultInReturn)] StringBuilder? lpCurrencyStr, int cchCurrency);
 
 	/// <summary>Formats a number string as a currency string for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name or one of the following predefined values.</param>
@@ -4870,8 +4870,8 @@ public static partial class Kernel32
 	// *lpFormat, _Out_opt_ LPWSTR lpCurrencyStr, _In_ int cchCurrency); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318084(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318084")]
-	public static extern int GetCurrencyFormatEx(string? lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [Optional] string? lpValue, [Optional] IntPtr lpFormat,
-		[SizeDef(nameof(cchCurrency), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpCurrencyStr, int cchCurrency);
+	public static extern int GetCurrencyFormatEx(string? lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [Optional] string? lpValue, [Optional, Ignore] IntPtr lpFormat,
+		[SizeDef(nameof(cchCurrency), SizingMethod.QueryResultInReturn)] StringBuilder? lpCurrencyStr, int cchCurrency);
 
 	/// <summary>Formats a duration of time as a time string for a locale specified by identifier.</summary>
 	/// <param name="Locale">
@@ -4927,7 +4927,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318091")]
 	public static extern int GetDurationFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, in SYSTEMTIME lpDuration, [Optional] ulong ullDuration,
-		[Optional] string? lpFormat, [SizeDef(nameof(cchDuration), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpDurationStr, int cchDuration);
+		[Optional] string? lpFormat, [SizeDef(nameof(cchDuration), SizingMethod.QueryResultInReturn)] StringBuilder? lpDurationStr, int cchDuration);
 
 	/// <summary>Formats a duration of time as a time string for a locale specified by identifier.</summary>
 	/// <param name="Locale">
@@ -4983,7 +4983,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318091")]
 	public static extern int GetDurationFormat(LCID Locale, LOCALE_FORMAT_FLAG dwFlags, [Optional] IntPtr lpDuration, [Optional] ulong ullDuration,
-		[Optional] string? lpFormat, [SizeDef(nameof(cchDuration), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpDurationStr, int cchDuration);
+		[Optional] string? lpFormat, [SizeDef(nameof(cchDuration), SizingMethod.QueryResultInReturn)] StringBuilder? lpDurationStr, int cchDuration);
 
 	/// <summary>Formats a duration of time as a time string for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -5079,7 +5079,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318092")]
 	public static extern int GetDurationFormatEx(string? lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, in SYSTEMTIME lpDuration, [Optional] ulong ullDuration,
-		[Optional] string? lpFormat, [SizeDef(nameof(cchDuration), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpDurationStr, int cchDuration);
+		[Optional] string? lpFormat, [SizeDef(nameof(cchDuration), SizingMethod.QueryResultInReturn)] StringBuilder? lpDurationStr, int cchDuration);
 
 	/// <summary>Formats a duration of time as a time string for a locale specified by name.</summary>
 	/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -5175,7 +5175,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318092")]
 	public static extern int GetDurationFormatEx(string? lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [Optional] IntPtr lpDuration, [Optional] ulong ullDuration,
-		[Optional] string? lpFormat, [SizeDef(nameof(cchDuration), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpDurationStr, int cchDuration);
+		[Optional] string? lpFormat, [SizeDef(nameof(cchDuration), SizingMethod.QueryResultInReturn)] StringBuilder? lpDurationStr, int cchDuration);
 
 	/// <summary>Retrieves resource-related information about a file.</summary>
 	/// <param name="dwFlags">
@@ -7016,7 +7016,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318149")]
 	public static extern int IdnToAscii(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar,
-		[Out, SizeDef(nameof(cchASCIIChar), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpASCIICharStr, int cchASCIIChar);
+		[Out, SizeDef(nameof(cchASCIIChar), SizingMethod.QueryResultInReturn)] StringBuilder? lpASCIICharStr, int cchASCIIChar);
 
 	/// <summary>
 	/// Converts an internationalized domain name (IDN) or another internationalized label to the NamePrep form specified by Network
@@ -7054,7 +7054,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318150")]
 	public static extern int IdnToNameprepUnicode(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar,
-		[Out, SizeDef(nameof(cchNameprepChar), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpNameprepCharStr, int cchNameprepChar);
+		[Out, SizeDef(nameof(cchNameprepChar), SizingMethod.QueryResultInReturn)] StringBuilder? lpNameprepCharStr, int cchNameprepChar);
 
 	/// <summary>
 	/// Converts the Punycode form of an internationalized domain name (IDN) or another internationalized label to the normal Unicode
@@ -7094,7 +7094,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318151")]
 	public static extern int IdnToUnicode(IDN_FLAGS dwFlags, string lpASCIICharStr, int cchASCIIChar,
-		[Out, SizeDef(nameof(cchUnicodeChar), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpUnicodeCharStr, int cchUnicodeChar);
+		[Out, SizeDef(nameof(cchUnicodeChar), SizingMethod.QueryResultInReturn)] StringBuilder? lpUnicodeCharStr, int cchUnicodeChar);
 
 	/// <summary>
 	/// Determines if a specified character is a lead byte for the system default Windows ANSI code page ( <c>CP_ACP</c>). A lead byte is

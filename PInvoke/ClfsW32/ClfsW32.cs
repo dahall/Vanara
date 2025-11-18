@@ -1317,8 +1317,8 @@ public static partial class ClfsW32
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.GetLogContainerName")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetLogContainerName([In] HLOG hLog, [In] CLFS_CONTAINER_ID cidLogicalContainer,
-		[In, Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLenContainerName), SizingMethod.Query, OutVarName = nameof(pcActualLenContainerName))] StringBuilder pwstrContainerName,
-		[In] int cLenContainerName, out uint pcActualLenContainerName);
+		[In, Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLenContainerName), SizingMethod.CheckLastError, OutVarName = nameof(pcActualLenContainerName))] StringBuilder? pwstrContainerName,
+		[In] uint cLenContainerName, out uint pcActualLenContainerName);
 
 	/// <summary>
 	/// <para>
@@ -1606,7 +1606,7 @@ public static partial class ClfsW32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool PrepareLogArchive([In] HLOG hLog,
 		[MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLen), SizingMethod.CheckLastError, OutVarName = nameof(pcActualLength))] StringBuilder? pszBaseLogFileName,
-		[In] int cLen, in CLS_LSN plsnLow, in CLS_LSN plsnHigh, out uint pcActualLength, out ulong poffBaseLogFileData,
+		[In] int cLen, in CLS_LSN plsnLow, in CLS_LSN plsnHigh, out int pcActualLength, out ulong poffBaseLogFileData,
 		out ulong pcbBaseLogFileLength, out CLS_LSN plsnBase, out CLS_LSN plsnLast, out CLS_LSN plsnCurrentArchiveTail,
 		out SafeArchiveContext ppvArchiveContext);
 
@@ -1697,7 +1697,7 @@ public static partial class ClfsW32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool PrepareLogArchive([In] HLOG hLog,
 		[MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cLen), SizingMethod.CheckLastError, OutVarName = nameof(pcActualLength))] StringBuilder? pszBaseLogFileName,
-		[In] int cLen, [In, Optional] IntPtr plsnLow, [In, Optional] IntPtr plsnHigh, out uint pcActualLength, out ulong poffBaseLogFileData,
+		[In] int cLen, [In, Optional] IntPtr plsnLow, [In, Optional] IntPtr plsnHigh, out int pcActualLength, out ulong poffBaseLogFileData,
 		out ulong pcbBaseLogFileLength, out CLS_LSN plsnBase, out CLS_LSN plsnLast, out CLS_LSN plsnCurrentArchiveTail,
 		out SafeArchiveContext ppvArchiveContext);
 

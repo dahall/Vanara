@@ -122,7 +122,7 @@ public static partial class Kernel32
 	// UINT WINAPI GetSystemWow64Directory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724405(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724405")]
-	public static extern uint GetSystemWow64Directory([Optional, SizeDef(nameof(uSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, [Optional] uint uSize);
+	public static extern uint GetSystemWow64Directory([Optional, SizeDef(nameof(uSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, [Optional] uint uSize);
 
 	/// <summary>
 	/// Retrieves the path of the system directory used by WOW64, using the specified image file machine type. This directory is not
@@ -142,7 +142,7 @@ public static partial class Kernel32
 	// UINT WINAPI GetSystemWow64Directory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize, _In_ WORD ImageFileMachineType); https://msdn.microsoft.com/en-us/library/windows/desktop/mt804319(v=vs.85).aspx
 	[DllImport(Lib.KernelBase, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wow64apiset.h", MSDNShortId = "mt804319")]
-	public static extern uint GetSystemWow64Directory2([Optional, SizeDef(nameof(uSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, [Optional] uint uSize, IMAGE_FILE_MACHINE ImageFileMachineType);
+	public static extern uint GetSystemWow64Directory2([Optional, SizeDef(nameof(uSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, [Optional] uint uSize, IMAGE_FILE_MACHINE ImageFileMachineType);
 
 	/// <summary>
 	/// <para>

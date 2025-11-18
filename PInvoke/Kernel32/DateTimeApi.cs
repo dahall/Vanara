@@ -128,7 +128,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "546cede1-1702-403a-bba3-b5cd3b35a1bf")]
 	public static extern int GetDateFormat(LCID Locale, DATE_FORMAT dwFlags, [In, Optional] PSYSTEMTIME? lpDate, [Optional] string? lpFormat,
-		[Optional, SizeDef(nameof(cchDate), SizingMethod.Query | SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpDateStr, [Optional] int cchDate);
+		[Optional, SizeDef(nameof(cchDate), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpDateStr, [Optional] int cchDate);
 
 	/// <summary>
 	/// <para>
@@ -346,7 +346,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	public static extern int GetDateFormatEx([Optional] string? lpLocaleName, DATE_FORMAT dwFlags, [In, Optional] PSYSTEMTIME? lpDate,
 		[Optional] string? lpFormat,
-		[Out, Optional, SizeDef(nameof(cchDate), SizingMethod.Query | SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpDateStr,
+		[Out, Optional, SizeDef(nameof(cchDate), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpDateStr,
 		[Optional] int cchDate, [Optional] string? lpCalendar);
 
 	/// <summary>
@@ -442,7 +442,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "3db91d29-df97-4660-b3cd-0db5b42cfd01")]
 	public static extern int GetTimeFormat(LCID Locale, TIME_FORMAT dwFlags, [In, Optional] PSYSTEMTIME? lpTime, [Optional] string? lpFormat,
-		[Optional, SizeDef(nameof(cchTime), SizingMethod.Query | SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpTimeStr, [Optional] int cchTime);
+		[Optional, SizeDef(nameof(cchTime), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpTimeStr, [Optional] int cchTime);
 
 	/// <summary>
 	/// <para>
@@ -637,5 +637,5 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "4d63888e-4496-4315-ac87-bf60c54daa37")]
 	public static extern int GetTimeFormatEx([Optional] string? lpLocaleName, TIME_FORMAT dwFlags, [In, Optional] PSYSTEMTIME? lpTime, [Optional] string? lpFormat,
-		[Optional, SizeDef(nameof(cchTime), SizingMethod.Query | SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpTimeStr, [Optional] int cchTime);
+		[Optional, SizeDef(nameof(cchTime), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpTimeStr, [Optional] int cchTime);
 }

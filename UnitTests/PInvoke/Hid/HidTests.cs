@@ -18,6 +18,7 @@ public class HidTests
 	public void _Setup()
 	{
 		HidD_GetHidGuid(out var hidGuid);
+		//var hidGuid = GUID_DEVINTERFACE_MOUSE;
 		using SafeHDEVINFO hardwareDeviceInfo = SetupDiGetClassDevs(hidGuid, default, default, DIGCF.DIGCF_PRESENT | DIGCF.DIGCF_DEVICEINTERFACE);
 		var idid = SetupDiEnumDeviceInterfaces(hardwareDeviceInfo, hidGuid).First();
 		if (SetupDiGetDeviceInterfaceDetail(hardwareDeviceInfo, idid, out devicePath, out _))
@@ -34,10 +35,12 @@ public class HidTests
 	public void Test()
 	{
 		HidD_GetHidGuid(out var hidGuid);
+		//var hidGuid = GUID_DEVINTERFACE_MOUSE;
 		using var hardwareDeviceInfo = SetupDiGetClassDevs(hidGuid, default, default, DIGCF.DIGCF_PRESENT | DIGCF.DIGCF_DEVICEINTERFACE);
 		Assert.That(hardwareDeviceInfo, ResultIs.ValidHandle);
 		var HidDevices = SetupDiEnumDeviceInterfaces(hardwareDeviceInfo, hidGuid).
 			Select(GetDev).ToList();
+		HidDevices.WriteValues();
 
 		HID_DEVICE GetDev(SP_DEVICE_INTERFACE_DATA did)
 		{
@@ -54,6 +57,8 @@ public class HidTests
 	[Test]
 	public void GetHidDStringsTest()
 	{
+		Assert.That(hDeviceObject, ResultIs.ValidHandle);
+
 		StringBuilder sb = new(2048);
 		uint sz = (uint)sb.Capacity;
 		Assert.That(HidD_GetManufacturerString(hDeviceObject, sb, sz), ResultIs.Successful);
@@ -69,6 +74,8 @@ public class HidTests
 	[Test]
 	public void HidP_GetExtendedAttributesTest()
 	{
+		Assert.That(hDeviceObject, ResultIs.ValidHandle);
+
 		Assert.That(HidD_GetPreparsedData(hDeviceObject, out var ppd), ResultIs.Successful);
 		using SafeCoTaskMemStruct<HIDP_EXTENDED_ATTRIBUTES> attrs = new();
 		uint l = attrs.Size;
@@ -85,6 +92,8 @@ public class HidTests
 	[Test]
 	public void HidP_GetLinkCollectionNodesTest()
 	{
+		Assert.That(hDeviceObject, ResultIs.ValidHandle);
+
 		Assert.That(HidD_GetPreparsedData(hDeviceObject, out var ppd), ResultIs.Successful);
 		uint l = 0;
 		Assert.That(HidP_GetLinkCollectionNodes([], ref l, ppd), ResultIs.Failure);

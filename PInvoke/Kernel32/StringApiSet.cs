@@ -538,7 +538,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318063")]
 	public static extern int FoldString(STRING_MAPPING dwMapFlags, string lpSrcStr, int cchSrc,
-		[SizeDef(nameof(cchDest), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpDestStr, int cchDest);
+		[SizeDef(nameof(cchDest), SizingMethod.QueryResultInReturn)] StringBuilder? lpDestStr, int cchDest);
 
 	/// <summary>
 	/// Maps one Unicode string to another, performing the specified transformation. For an overview of the use of the string functions, see Strings.
@@ -1156,7 +1156,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
 	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [In] byte[] lpMultiByteStr, int cbMultiByte,
-		[Out, Optional, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cchWideChar), SizingMethod.Query | SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpWideCharStr, [Optional] int cchWideChar);
+		[Out, Optional, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cchWideChar), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpWideCharStr, [Optional] int cchWideChar);
 
 	/// <summary>
 	/// Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
@@ -1288,7 +1288,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
 	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [In] byte[] lpMultiByteStr, [Optional, DefaultParameterValue(-1)] int cbMultiByte,
-		[Out, Optional, SizeDef(nameof(cchWideChar), SizingMethod.Query | SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] byte[]? lpWideCharStr, [Optional] int cchWideChar);
+		[Out, Optional, SizeDef(nameof(cchWideChar), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] byte[]? lpWideCharStr, [Optional] int cchWideChar);
 
 	/// <summary>
 	/// Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.

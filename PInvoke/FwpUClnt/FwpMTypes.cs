@@ -1713,7 +1713,7 @@ public static partial class FwpUClnt
 		/// <para>Schema information for the layer's fields.</para>
 		/// <para>See <see cref="FWPM_FIELD0"/> for more information.</para>
 		/// </summary>
-		public IEnumerable<FWPM_FIELD0> Fields => field.ToIEnum<FWPM_FIELD0>((int)numFields);
+		public IEnumerable<FWPM_FIELD0> Fields => @field.ToIEnum<FWPM_FIELD0>((int)numFields);
 
 		/// <summary>Sublayer used when a filter is added with a null sublayer.</summary>
 		public Guid defaultSubLayerKey;

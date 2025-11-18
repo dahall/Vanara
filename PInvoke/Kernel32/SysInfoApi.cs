@@ -681,8 +681,9 @@ public static partial class Kernel32
 	// BufferSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724259(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724259")]
+	[SuppressAutoGen]
 	public static extern uint EnumSystemFirmwareTables(FirmwareTableProviderId FirmwareTableProviderSignature,
-		[Optional, SizeDef(nameof(BufferSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] IntPtr pFirmwareTableBuffer, uint BufferSize);
+		[Optional, SizeDef(nameof(BufferSize), SizingMethod.QueryResultInReturn)] IntPtr pFirmwareTableBuffer, uint BufferSize);
 
 	/// <summary>Enumerates all system firmware tables of the specified type.</summary>
 	/// <param name="FirmwareTableProviderSignature">
@@ -1702,7 +1703,7 @@ public static partial class Kernel32
 	// UINT WINAPI GetSystemDirectory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724373(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724373")]
-	public static extern uint GetSystemDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
+	public static extern uint GetSystemDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
 
 	/// <summary>
 	/// <para>
@@ -1777,7 +1778,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724379")]
 	public static extern uint GetSystemFirmwareTable(FirmwareTableProviderId FirmwareTableProviderSignature, uint FirmwareTableID,
-		[Optional, SizeDef(nameof(BufferSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] IntPtr pFirmwareTableBuffer, [Optional] uint BufferSize);
+		[Optional, SizeDef(nameof(BufferSize), SizingMethod.QueryResultInReturn)] IntPtr pFirmwareTableBuffer, [Optional] uint BufferSize);
 
 	/// <summary>
 	/// <para>Retrieves information about the current system.</para>
@@ -1957,7 +1958,7 @@ public static partial class Kernel32
 	// UINT WINAPI GetSystemWindowsDirectory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724403(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724403")]
-	public static extern uint GetSystemWindowsDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
+	public static extern uint GetSystemWindowsDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
 
 	/// <summary>
 	/// <para>Retrieves the path of the shared Windows directory on a multi-user system.</para>
@@ -2077,7 +2078,7 @@ public static partial class Kernel32
 	// UINT WINAPI GetWindowsDirectory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724454(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724454")]
-	public static extern uint GetWindowsDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
+	public static extern uint GetWindowsDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
 
 	/// <summary>
 	/// <para>Retrieves the path of the Windows directory.</para>

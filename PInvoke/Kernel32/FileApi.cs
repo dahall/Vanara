@@ -6140,7 +6140,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364419")]
 	[return: AddAsCtor]
-	public static extern SafeVolumeSearchHandle FindFirstVolume([In, Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
+	public static extern SafeVolumeSearchHandle FindFirstVolume([Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
 
 	/// <summary>Requests that the operating system signal a change notification handle the next time it detects an appropriate change.</summary>
 	/// <param name="hChangeHandle">A handle to a change notification handle created by the <c>FindFirstChangeNotification</c> function.</param>
@@ -6185,7 +6185,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364431")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FindNextVolume([In, AddAsMember] SafeVolumeSearchHandle hFindVolume, [In, Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
+	public static extern bool FindNextVolume([In, AddAsMember] SafeVolumeSearchHandle hFindVolume, [Out, SizeDef(nameof(cchBufferLength))] StringBuilder lpszVolumeName, [Range(0, MAX_PATH)] uint cchBufferLength);
 
 	/// <summary>
 	/// Closes the specified volume search handle. The FindFirstVolume and FindNextVolume functions use this search handle to locate volumes.
@@ -6599,7 +6599,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetFinalPathNameByHandle( _In_ HANDLE hFile, _Out_ LPTSTR lpszFilePath, _In_ DWORD cchFilePath, _In_ DWORD dwFlags);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364962")]
-	public static extern uint GetFinalPathNameByHandle([In, AddAsMember] HFILE hFile, [SizeDef(nameof(cchFilePath), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpszFilePath,
+	public static extern uint GetFinalPathNameByHandle([In, AddAsMember] HFILE hFile, [SizeDef(nameof(cchFilePath), SizingMethod.QueryResultInReturn)] StringBuilder? lpszFilePath,
 		uint cchFilePath, FinalPathNameOptions dwFlags);
 
 	/// <summary>
@@ -6802,7 +6802,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetLongPathName( _In_ LPCTSTR lpszShortPath, _Out_ LPTSTR lpszLongPath, _In_ DWORD cchBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetLongPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364980")]
-	public static extern uint GetLongPathName(string lpszShortPath, [Optional, SizeDef(nameof(cchBuffer), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpszLongPath,
+	public static extern uint GetLongPathName(string lpszShortPath, [Optional, SizeDef(nameof(cchBuffer), SizingMethod.QueryResultInReturn)] StringBuilder? lpszLongPath,
 		[Optional] uint cchBuffer);
 
 	/// <summary>
@@ -6841,7 +6841,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetShortPathName( _In_ LPCTSTR lpszLongPath, _Out_ LPTSTR lpszShortPath, _In_ DWORD cchBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetShortPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364989")]
-	public static extern uint GetShortPathName([MaxLength(MAX_PATH - 14)] string lpszLongPath, [Optional, SizeDef(nameof(cchBuffer), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpszShortPath,
+	public static extern uint GetShortPathName([MaxLength(MAX_PATH - 14)] string lpszLongPath, [Optional, SizeDef(nameof(cchBuffer), SizingMethod.QueryResultInReturn)] StringBuilder? lpszShortPath,
 		[Optional] uint cchBuffer);
 
 	/// <summary>
@@ -6991,7 +6991,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364992")]
 	public static extern uint GetTempPath([Optional, Range(0, MAX_PATH + 1)] uint nBufferLength,
-		[Optional, SizeDef(nameof(nBufferLength), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer);
+		[Optional, SizeDef(nameof(nBufferLength), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer);
 
 	/// <summary>Retrieves the path of the directory designated for temporary files, based on the privileges of the calling process.</summary>
 	/// <param name="BufferLength">The size of the string buffer identified by lpBuffer, in <c>TCHARs</c>.</param>
@@ -7082,7 +7082,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetTempPath2W")]
 	public static extern uint GetTempPath2([Optional, Range(0, MAX_PATH + 1)] uint BufferLength,
-		[Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(BufferLength), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? Buffer);
+		[Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(BufferLength), SizingMethod.QueryResultInReturn)] StringBuilder? Buffer);
 
 	/// <summary>Retrieves information about the file system and volume associated with the specified root directory.</summary>
 	/// <param name="lpRootPathName">

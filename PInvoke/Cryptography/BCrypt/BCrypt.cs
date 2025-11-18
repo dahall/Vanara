@@ -1244,8 +1244,8 @@ public static partial class BCrypt
 	// cbSecret, ULONG dwFlags );
 	[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("bcrypt.h", MSDNShortId = "deb02f67-f3d3-4542-8245-fd4982c3190b", MinClient = PInvokeClient.Windows7)]
-	public static extern NTStatus BCryptCreateHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, [Optional] IntPtr pbHashObject,
-		[Optional] uint cbHashObject, [Optional] IntPtr pbSecret, [Optional] uint cbSecret, AlgProviderFlags dwFlags = 0);
+	public static extern NTStatus BCryptCreateHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, [Optional, SizeDef(nameof(cbHashObject), SizingMethod.Bytes)] IntPtr pbHashObject,
+		[Optional] uint cbHashObject, [Optional, SizeDef(nameof(cbSecret), SizingMethod.Bytes)] IntPtr pbSecret, [Optional] uint cbSecret, AlgProviderFlags dwFlags = 0);
 
 	/// <summary>
 	/// <para>

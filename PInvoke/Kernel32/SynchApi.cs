@@ -1362,7 +1362,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms684914")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PulseEvent([In, AddAsMember] HEVENT hEvent);
+	public static extern bool PulseEvent([In] HEVENT hEvent);
 
 	/// <summary>Releases ownership of the specified mutex object.</summary>
 	/// <param name="hMutex">A handle to the mutex object. The <c>CreateMutex</c> or <c>OpenMutex</c> function returns this handle.</param>
@@ -1434,7 +1434,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms685081")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ResetEvent([In, AddAsMember] HEVENT hEvent);
+	public static extern bool ResetEvent([In] HEVENT hEvent);
 
 	/// <summary>
 	/// Sets the spin count for the specified critical section. Spinning means that when a thread tries to acquire a critical section that is
@@ -1468,7 +1468,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686211")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetEvent([In, AddAsMember] HEVENT hEvent);
+	public static extern bool SetEvent([In] HEVENT hEvent);
 
 	/// <summary>
 	/// Activates the specified waitable timer. When the due time arrives, the timer is signaled and the thread that set the timer calls the
@@ -2450,6 +2450,7 @@ public static partial class Kernel32
 
 		void IDisposable.Dispose()
 		{
+			GC.SuppressFinalize(this);
 			if (Flags == DIAGNOSTIC_REASON.DIAGNOSTIC_REASON_SIMPLE_STRING)
 				Marshal.FreeHGlobal(_reason.LocalizedReasonModule);
 			else if (Flags == DIAGNOSTIC_REASON.DIAGNOSTIC_REASON_DETAILED_STRING)
@@ -2481,6 +2482,30 @@ public static partial class Kernel32
 	[AdjustAutoMethodNamePattern(@"Event|Ex\b", "")]
 	public partial class SafeEventHandle
 	{
+		/// <summary>
+		/// Sets the event to the signaled state and then resets it to the nonsignaled state after releasing the appropriate number of
+		/// waiting threads.
+		/// </summary>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is <see langword="true"/>.</para>
+		/// <para>If the function fails, the return value is <see langword="false"/>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		public bool Pulse() => PulseEvent(handle);
+
+		/// <summary>Sets this event object to the nonsignaled state.</summary>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		public bool Reset() => ResetEvent(handle);
+
+		/// <summary>Sets this event object to the signaled state.</summary>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		public bool Set() => SetEvent(handle);
+
 		/// <summary>Performs an implicit conversion from <see cref="EventWaitHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
 		/// <param name="h">The SafeSyncHandle instance.</param>
 		/// <returns>The result of the conversion.</returns>

@@ -18,7 +18,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetDllDirectory( _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683186(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683186")]
-	public static extern uint GetDllDirectory(uint nBufferLength, [Optional, SizeDef(nameof(nBufferLength), SizingMethod.Query | SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer);
+	public static extern uint GetDllDirectory(uint nBufferLength, [Optional, SizeDef(nameof(nBufferLength), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer);
 
 	/// <summary>Retrieves the application-specific portion of the search path used to locate DLLs for the application.</summary>
 	/// <returns>The application-specific portion of the search path.</returns>

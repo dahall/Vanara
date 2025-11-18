@@ -187,7 +187,7 @@ public static partial class Kernel32
 	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365144")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CallNamedPipe([MaxLength(256)] string lpNamedPipeName, [In, SizeDef(nameof(nInBufferSize))] IntPtr lpInBuffer, uint nInBufferSize,
-		[Out, SizeDef(nameof(nOutBufferSize))] IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesRead, uint nTimeOut);
+		[Out, SizeDef(nameof(nOutBufferSize), SizingMethod.CheckLastError)] IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesRead, uint nTimeOut);
 
 	/// <summary>
 	/// Enables a named pipe server process to wait for a client process to connect to an instance of a named pipe. A client process

@@ -55,7 +55,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("systemtopologyapi.h", MSDNShortId = "NF:systemtopologyapi.GetNumaNodeProcessorMask2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetNumaNodeProcessorMask2(ushort NodeNumber, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2),
+	public static extern bool GetNumaNodeProcessorMask2(ushort NodeNumber, [In, Optional, MarshalAs(UnmanagedType.LPArray),
 		SizeDef(nameof(ProcessorMaskCount), SizingMethod.Query | SizingMethod.CheckLastError, OutVarName = nameof(RequiredMaskCount))] GROUP_AFFINITY[]? ProcessorMasks,
 		ushort ProcessorMaskCount, out ushort RequiredMaskCount);
 

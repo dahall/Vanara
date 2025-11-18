@@ -529,7 +529,7 @@ public static partial class Kernel32
 		SEC_WRITECOMBINE = 0x40000000,
 	}
 
-	/// <summary>Used by <see cref="QueryVirtualMemoryInformation"/>.</summary>
+	/// <summary>Used by <see cref="QueryVirtualMemoryInformation(HPROCESS, IntPtr, WIN32_MEMORY_INFORMATION_CLASS, IntPtr, SizeT, out SizeT)"/>.</summary>
 	public enum WIN32_MEMORY_INFORMATION_CLASS
 	{
 		/// <summary>This parameter must point to a <c>WIN32_MEMORY_REGION_INFORMATION</c> structure.</summary>

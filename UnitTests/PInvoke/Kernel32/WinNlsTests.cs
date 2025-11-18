@@ -170,7 +170,7 @@ public class WinNlsTests
 	public void GetCalendarInfoExTest()
 	{
 		Assert.That(GetCalendarInfoEx(LOCALE_NAME_USER_DEFAULT, CALID.CAL_GREGORIAN_US, null, CALTYPE.CAL_ITWODIGITYEARMAX | CALTYPE.CAL_RETURN_NUMBER, default, 0, out uint val), ResultIs.Not.Value(0));
-		Assert.That(GetCalendarInfoEx(LOCALE_NAME_USER_DEFAULT, CALID.CAL_GREGORIAN_US, null, CALTYPE.CAL_SCALNAME, out var sb), ResultIs.Not.Value(0));
+		Assert.That(GetCalendarInfoEx(LOCALE_NAME_USER_DEFAULT, CALID.CAL_GREGORIAN_US, CALTYPE.CAL_SCALNAME, out string? sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
 	}
 
@@ -202,14 +202,14 @@ public class WinNlsTests
 	[Test]
 	public void GetCurrencyFormatExTest()
 	{
-		Assert.That(GetCurrencyFormatEx(LOCALE_NAME_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, IntPtr.Zero, out var sb), ResultIs.Successful);
+		Assert.That(GetCurrencyFormatEx(LOCALE_NAME_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, out var sb), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
 	public void GetCurrencyFormatTest()
 	{
-		Assert.That(GetCurrencyFormat(LOCALE_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, IntPtr.Zero, out var sb), ResultIs.Successful);
+		Assert.That(GetCurrencyFormat(LOCALE_USER_DEFAULT, LOCALE_FORMAT_FLAG.LOCALE_NOUSEROVERRIDE, null, out var sb), ResultIs.Successful);
 		TestContext.WriteLine(sb);
 	}
 
@@ -290,7 +290,7 @@ public class WinNlsTests
 	[Test]
 	public void GetLocaleInfoExTest()
 	{
-		Assert.That(GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LCTYPE.LOCALE_SDAYNAME3, out var sb), ResultIs.Not.Value(0));
+		Assert.That(GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LCTYPE.LOCALE_SDAYNAME3, out string? sb), ResultIs.Not.Value(0));
 		Assert.That(sb, Is.EqualTo("Wednesday"));
 
 		using SafeHGlobalHandle pVal = SafeHGlobalHandle.CreateFromStructure(16U);
@@ -337,14 +337,14 @@ public class WinNlsTests
 		Assert.That(GetCalendarInfo(LOCALE_USER_DEFAULT, CALID.CAL_GREGORIAN_US, CALTYPE.CAL_ITWODIGITYEARMAX | CALTYPE.CAL_RETURN_NUMBER, default, 0, out uint val), ResultIs.Not.Value(0));
 		Assert.That(SetCalendarInfo(LOCALE_USER_DEFAULT, CALID.CAL_GREGORIAN_US, CALTYPE.CAL_ITWODIGITYEARMAX, $"{val}"), ResultIs.Successful);
 
-		Assert.That(GetCalendarInfo(LOCALE_USER_DEFAULT, CALID.CAL_GREGORIAN_US, CALTYPE.CAL_SCALNAME, out var sb), ResultIs.Not.Value(0));
+		Assert.That(GetCalendarInfo(LOCALE_USER_DEFAULT, CALID.CAL_GREGORIAN_US, CALTYPE.CAL_SCALNAME, out string? sb), ResultIs.Not.Value(0));
 		TestContext.WriteLine(sb);
 	}
 
 	[Test]
 	public void GetSetLocaleInfoTest()
 	{
-		Assert.That(GetLocaleInfo(LOCALE_USER_DEFAULT, LCTYPE.LOCALE_SDAYNAME3, out var sb), ResultIs.Not.Value(0));
+		Assert.That(GetLocaleInfo(LOCALE_USER_DEFAULT, LCTYPE.LOCALE_SDAYNAME3, out string? sb), ResultIs.Not.Value(0));
 		Assert.That(sb, Is.EqualTo("Wednesday"));
 
 		Assert.That(GetLocaleInfo(LOCALE_USER_DEFAULT, LCTYPE.LOCALE_STIMEFORMAT, out sb), ResultIs.Not.Value(0));
@@ -602,7 +602,7 @@ public class WinNlsTests
 	public void VerifyScriptsTest()
 	{
 		// Get the expected scripts
-		Assert.That(GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LCTYPE.LOCALE_SSCRIPTS, out var localeScripts), ResultIs.Not.Value(0));
+		Assert.That(GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LCTYPE.LOCALE_SSCRIPTS, out string? localeScripts), ResultIs.Not.Value(0));
 
 		// Get the actual scripts. We're expecting inherited and common characters (like ,:, etc.)
 		const string strTest = "This string has &#1057;&#1091;&#1075;&#1110;&#1472;&#1472;&#1110;&#1089;, Hebrew, and GR&#917;&#917;&#922; &#21313; Chinese &#24037;&#21475; and PUA &#63705; characters.  Depending on font it may look like Latin";
