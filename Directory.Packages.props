@@ -25,7 +25,7 @@
     <NET8ORLATER Condition="!$(PRENET6) And !$(NET6OR7)">true</NET8ORLATER>
     <CODEANALYSISVER>4.14.0</CODEANALYSISVER>
     <CODEANALYSISTESTVER>1.1.2</CODEANALYSISTESTVER>
-    <SYSVER>10.0.0</SYSVER>
+    <SYSVER>9.0.7</SYSVER>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="7.1.2" Condition=" '$(TargetFramework)' == 'net5.0' " />
