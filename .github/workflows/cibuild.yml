@@ -32,18 +32,18 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6.0.0
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.3.3
+
+    - name: Restore VssApi NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
     - name: Restore Solution NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: msbuild /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
-
-    - name: Restore VssApi NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj -verbosity quiet
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
