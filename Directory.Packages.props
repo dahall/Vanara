@@ -23,7 +23,7 @@
     <NET6OR7 Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0'">true</NET6OR7>
     <NET8ORLATER>false</NET8ORLATER>
     <NET8ORLATER Condition="!$(PRENET6) And !$(NET6OR7)">true</NET8ORLATER>
-    <CODEANALYSISVER>5.0.0</CODEANALYSISVER>
+    <CODEANALYSISVER>4.14.0</CODEANALYSISVER>
     <CODEANALYSISTESTVER>1.1.2</CODEANALYSISTESTVER>
     <SYSVER>10.0.0</SYSVER>
   </PropertyGroup>
