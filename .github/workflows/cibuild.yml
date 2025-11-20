@@ -35,15 +35,18 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.3.3
 
-    - name: Restore Solution NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+    - name: Clear NuGet cache
+      run: nuget locals all -clear
 
     - name: Restore VssApi NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj -verbosity quiet
+      run: msbuild ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}}
+
+    - name: Restore Solution NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild ${{env.SOLUTION_FILE_PATH}} /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}}
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
