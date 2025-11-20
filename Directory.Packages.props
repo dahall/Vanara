@@ -68,7 +68,7 @@
     <PackageVersion Include="System.Management" Version="6.0.2" Condition=" $(PRENET6) " />
     <PackageVersion Include="System.Management" Version="8.0.0" Condition=" $(NET6OR7) " />
     <PackageVersion Include="System.Management" Version="$(SYSVER)" Condition=" $(NET8ORLATER) " />
-    <PackageVersion Include="System.Memory" Version="4.6.3" />
+    <PackageVersion Include="System.Memory" Version="4.5.5" />
     <PackageVersion Include="System.Reflection.Metadata" Version="$(SYSVER)" />
     <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" Condition=" $(NETSTANDARD2_1) " />
     <PackageVersion Include="System.Runtime.WindowsRuntime" Version="4.7.0" />
