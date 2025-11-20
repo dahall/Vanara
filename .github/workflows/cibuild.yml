@@ -32,10 +32,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v6.0.0
+    - uses: actions/checkout@v4
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.3.3
+
+    - name: Clear NuGet cache
+      run: nuget locals all -clear
 
     - name: Restore VssApi NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
