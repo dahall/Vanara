@@ -460,7 +460,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				var paramNode = tmpbuilder.docs?.SelectSingleNode($"//param[@name='{ps.Identifier.Text}']");
 				var returnsNode = tmpbuilder.docs?.SelectSingleNode("//returns") ??
 					tmpbuilder.docs?.DocumentElement?.AppendChild(tmpbuilder.docs?.CreateElement("returns")!);
-				returnsNode?.InnerXml = paramNode?.InnerXml;
+				if (returnsNode is not null)
+					returnsNode.InnerXml = paramNode?.InnerXml;
 				paramNode?.ParentNode?.RemoveChild(paramNode);
 			}
 		}
