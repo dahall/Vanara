@@ -85,8 +85,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		Ptr = 0x8,
 	}
 
-	static int uid = 1;
-	static string UniqueName(string n) => $"{n}{uid++}";
+	static uint uid = 0;
+	static string UniqueName(string n) { if (uid == uint.MaxValue) uid = 0; else uid++; return $"{n}{uid}"; }
 
 	static readonly MethAttrHandler[] methodAttributes = [
 		new("System.Runtime.InteropServices.MarshalAsAttribute", IsParamInNestedType, ParentForExtMethod, GetMethodFromNode, BuildMarshalAsMethod), // IUnknown, Interface, LPArray
@@ -110,6 +110,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 	/// <inheritdoc/>
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
+		//uid = 0;
 		// Process each attribute in the methodAttributes array
 		var attributeProviders = methodAttributes
 			.Select(attr => context.SyntaxProvider.ForAttributeWithMetadataName(attr.AttrName, attr.Validator, (ctx, _) => (ctx.TargetNode, ctx.Attributes)).Collect())
@@ -151,7 +152,6 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 	private static void GenerateCode(SourceProductionContext context, Compilation compilation, ImmutableArray<AdditionalText> addtlFiles, ImmutableArray<(SyntaxNode syntaxNode, ImmutableArray<AttributeData> attrDatas)> paramNodes,
 		ImmutableArray<(TypeDeclarationSyntax type, ImmutableArray<AttributeData> attrDatas)> typeNodes, ImmutableArray<(SyntaxNode syntaxNode, ImmutableArray<AttributeData> attrDatas)> moveNodes)
 	{
-		uid = 1;
 		try
 		{
 			// Get list of all types of entries from handles that have a safe handle and have a handle
