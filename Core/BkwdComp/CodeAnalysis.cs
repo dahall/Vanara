@@ -26,7 +26,7 @@ public sealed class DisallowNullAttribute : Attribute
 }
 
 /// <summary>Specifies that an output may be <see langword="null"/> even if the corresponding type disallows it.</summary>
-/// <remarks>For more information, see Nullable static analysis in the C# guide.</remarks>
+ /// <remarks>For more information, see Nullable static analysis in the C# guide.</remarks>
 public sealed class MaybeNullAttribute : Attribute
 {
 	/// <summary>Initializes a new instance of the <see cref="MaybeNullAttribute" /> class.</summary>
@@ -254,6 +254,21 @@ public sealed class DynamicDependencyAttribute : Attribute
 	/// the type of the consumer is assumed.
 	/// </remarks>
 	public string? TypeName { get; }
+}
+
+/// <summary>Indicates that certain members on a specified System.Type are accessed dynamically, for example, through System.Reflection.</summary>
+/// <remarks>Initializes a new instance of the <see cref="DynamicallyAccessedMembersAttribute"/> class with the specified member types.</remarks>
+/// <param name="memberTypes">
+/// The types of members that are dynamically accessed. This value specifies the kinds of members that the annotated code is expected to
+/// access dynamically at runtime.
+/// </param>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Interface | AttributeTargets.Parameter | AttributeTargets.ReturnValue | AttributeTargets.GenericParameter, Inherited = false)]
+public sealed class DynamicallyAccessedMembersAttribute(DynamicallyAccessedMemberTypes memberTypes) : Attribute
+{
+	/// <summary>
+	/// Gets the System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes that specifies the type of dynamically accessed members.
+	/// </summary>
+	public DynamicallyAccessedMemberTypes MemberTypes { get; } = memberTypes;
 }
 
 /// <summary>
