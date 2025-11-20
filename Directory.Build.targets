@@ -40,10 +40,14 @@
     <None Include="**\pkgreadme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <ReplaceWildcardsInProjectItems>true</ReplaceWildcardsInProjectItems>
+  </PropertyGroup>
+
   <!-- Define Net5OrAbove variable -->
   <PropertyGroup>
     <Net5OrAbove>false</Net5OrAbove>
-    <Net5OrAbove Condition=" $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) Or $(TargetFramework.StartsWith('net7')) ">true</Net5OrAbove>
+    <Net5OrAbove Condition=" $(TargetFramework.StartsWith('net5')) Or $(TargetFramework.StartsWith('net6')) Or $(TargetFramework.StartsWith('net7')) Or $(TargetFramework.StartsWith('net8')) Or $(TargetFramework.StartsWith('net9')) Or $(TargetFramework.StartsWith('net10')) ">true</Net5OrAbove>
   </PropertyGroup>
 
   <!-- Explicit target settings for .NET 5 or above -->
