@@ -1,24 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
     <AssemblyName>UnitTest.PInvoke.VssApi</AssemblyName>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
+	<NoWarn>$(NoWarn);MSB3277;</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <!--<Reference Include="Microsoft.VisualBasic">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.24\ref\net6.0\Microsoft.VisualBasic.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Drawing">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.24\ref\net6.0\System.Drawing.dll</HintPath>
-    </Reference>
-    <Reference Include="WindowsBase">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\6.0.24\ref\net6.0\WindowsBase.dll</HintPath>
-    </Reference>-->
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
-    <ProjectReference Include="..\..\..\PInvoke\VssApiMgd\Vanara.PInvoke.VssApiMgd.csproj" />
     <ProjectReference Include="..\..\..\PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj" />
   </ItemGroup>
 </Project>

@@ -25,9 +25,6 @@ ArrayLayout, Bitness, CorrespondingAction, FileAttributeConstant, FileOpConstant
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup Condition=" $(NETSTANDARD2_0) ">
-    <PackageReference Include="System.ValueTuple" />
-  </ItemGroup>
   <ItemGroup Condition=" $(NET40_OR_GREATER) Or $(NETSTANDARD2_0) ">
     <PackageReference Include="System.Memory" />
   </ItemGroup>

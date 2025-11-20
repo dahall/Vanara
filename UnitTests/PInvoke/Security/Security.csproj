@@ -4,7 +4,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" />
     <PackageReference Include="System.Diagnostics.PerformanceCounter" />
   </ItemGroup>
   <ItemGroup>

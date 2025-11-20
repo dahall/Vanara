@@ -15,7 +15,6 @@ DynamicMgmtObject, ManagementExtensions
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Condition=" $(NETSTANDARD2_0) " />
     <PackageReference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>

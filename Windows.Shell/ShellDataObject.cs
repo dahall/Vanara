@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#pragma warning disable WFDEV005 // DataObject inheritance
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
@@ -139,6 +140,7 @@ public class ShellDataObject : DataObject
 	/// </returns>
 	public bool ContainsShellIdList() => GetDataPresent(ShellClipboardFormat.CFSTR_SHELLIDLIST);
 
+#if !NET10_0_OR_GREATER
 	/// <inheritdoc/>
 	public override object GetData(string format, bool autoConvert)
 	{
@@ -189,6 +191,84 @@ public class ShellDataObject : DataObject
 		}
 		return base.GetData(format, autoConvert)!;
 	}
+#else
+	/// <inheritdoc/>
+	protected override bool TryGetDataCore<[DynamicallyAccessedMembers((DynamicallyAccessedMemberTypes)(-1))] T>(string format, Func<System.Reflection.Metadata.TypeName, Type?>? resolver, bool autoConvert, [MaybeNullWhen(false), NotNullWhen(true)] out T data)
+	{
+		data = default;
+		switch (format)
+		{
+			case ShellClipboardFormat.CFSTR_FILEDESCRIPTORA:
+			case ShellClipboardFormat.CFSTR_FILEDESCRIPTORW:
+				if (typeof(T) != typeof(ShellFileDescriptor[]))
+					return false;
+
+				// override the default handling of FileGroupDescriptor which returns a MemoryStream and instead return an array of ShellFileDescriptor
+				var fileGroupDescriptor = ((IComDataObject)this).GetData<FILEGROUPDESCRIPTOR>(GetFormatId(format));
+
+				// Extract a ShellFileDescriptor from each FILEDESCRIPTOR
+				data = (T)(object)fileGroupDescriptor.Select(fd => new ShellFileDescriptor(fd)).ToArray();
+				return true;
+
+			case ShellClipboardFormat.CFSTR_FILECONTENTS:
+				if (typeof(T) != typeof(Stream[]))
+					return false;
+
+				// override the default handling of FileContents which returns the contents of the first file as a memory stream and
+				// instead return a array of Streams containing the data to each file dropped
+
+				// get the array of filenames which lets us know how many file contents exist
+				var cnt = ((IComDataObject)this).TryGetData<FILEGROUPDESCRIPTOR>(GetFormatId(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW), out var fgd) ? (int)fgd.cItems :
+					((IComDataObject)this).TryGetData<FILEGROUPDESCRIPTOR>(GetFormatId(ShellClipboardFormat.CFSTR_FILEDESCRIPTORA), out var fgda) ? (int)fgda.cItems : 0;
+
+				// create a Stream array to store the file contents
+				var fileContents = new Stream[cnt];
+
+				// loop for the number of files acording to the file names
+				for (var fileIndex = 0; fileIndex < cnt; fileIndex++)
+				{
+					// get the data at the file index and store in array
+					fileContents[fileIndex] = (Stream)(GetData(format, fileIndex) ?? throw new InvalidOperationException("Invalid stream or index"));
+				}
+
+				// return array of MemoryStreams containing file contents
+				data = (T)(object)fileContents;
+				return true;
+
+			case ShellClipboardFormat.CFSTR_FILENAMEMAPA:
+			case ShellClipboardFormat.CFSTR_FILENAMEMAPW:
+				if (typeof(T) != typeof(string[]))
+					return false;
+
+				data = (T)(object)GetFileNameMap();
+				return true;
+
+			case ShellClipboardFormat.CFSTR_INETURLW:
+				if (typeof(T) != typeof(string))
+					return false;
+
+				data = (T)(object)base.GetText(TextDataFormat.UnicodeText);
+				return true;
+
+			case ShellClipboardFormat.CFSTR_INETURLA:
+				if (typeof(T) != typeof(string))
+					return false;
+
+				data = (T)(object)base.GetText(TextDataFormat.Text);
+				return true;
+
+			case ShellClipboardFormat.CFSTR_SHELLIDLIST:
+				if (typeof(T) != typeof(ShellItemArray))
+					return false;
+
+				data = (T)(object)(GetShellIdList() ?? new ShellItemArray());
+				return true;
+
+			default:
+				return base.TryGetDataCore(format, resolver, autoConvert, out data);
+		}
+	}
+#endif
 
 	/// <summary>Retrieves the data associated with the specified data format at the specified index.</summary>
 	/// <param name="format">
@@ -254,7 +334,7 @@ public class ShellDataObject : DataObject
 			ret = ((IComDataObject)this).GetData(GetFormatId(ShellClipboardFormat.CFSTR_FILENAMEMAPW)) as string[];
 		else if (GetDataPresent(ShellClipboardFormat.CFSTR_FILENAMEMAPA))
 			ret = ((IComDataObject)this).GetData(GetFormatId(ShellClipboardFormat.CFSTR_FILENAMEMAPA)) as string[];
-		return ret ?? new string[0];
+		return ret ?? [];
 	}
 
 	/// <summary>Gets a <see cref="ShellItemArray"/> from the data object. Returns <see langword="null"/> if data is not present.</summary>

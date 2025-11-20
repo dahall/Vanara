@@ -1,20 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AssemblyTitle>Windows.Forms.App</AssemblyTitle>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <TargetFramework>$(TargetFramework)-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <StartupObject>Windows.Forms.App.Program</StartupObject>
   </PropertyGroup>
-  <!--<ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>-->
   <ItemGroup>
     <Compile Update="Form1.cs" />
     <Compile Update="Form1.Designer.cs">

@@ -1,23 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-  </ItemGroup>
   <ProjectExtensions>
     <SupportedDlls>vssapi.dll</SupportedDlls>
     <IncludeAssembly>Vanara.PInvoke.VssApiMgd.dll</IncludeAssembly>
@@ -40,52 +22,70 @@
       </File>
     </UpdateFiles>
   </ProjectExtensions>
-  <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <TargetFrameworks>$(TargetFramework)</TargetFrameworks>
-    <CoreBuild Condition="!$(TargetFramework.StartsWith('net4'))">true</CoreBuild>
-    <IncludeSymbols>true</IncludeSymbols>
-    <EmbedAllSources>true</EmbedAllSources>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <AssetTargetFallback>$(AssetTargetFallback);native</AssetTargetFallback>
-  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <EnableManagedPackageReferenceSupport Condition="'$(CoreBuild)'=='true'">true</EnableManagedPackageReferenceSupport>
+    <EnableManagedPackageReferenceSupport>true</EnableManagedPackageReferenceSupport>
     <ProjectGuid>{11EF8FFF-25DE-4ADB-A951-FA10A421FFE4}</ProjectGuid>
-    <Keyword Condition="'$(CoreBuild)'!='true'">ManagedCProj</Keyword>
-    <Keyword Condition="'$(CoreBuild)'=='true'">NetCoreCProj</Keyword>
+    <Keyword>NetCoreCProj</Keyword>
     <RootNamespace>VssApi</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
-    <TargetFrameworkVersion Condition="$(TargetFramework.StartsWith('net4'))">$([System.Text.RegularExpressions.Regex]::Replace($(TargetFramework), `net([2-4])([0-9])`, `v$1.$2`))</TargetFrameworkVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <TargetFramework>net8.0</TargetFramework>
+    <WindowsTargetPlatformMinVersion>7.0</WindowsTargetPlatformMinVersion>
+  </PropertyGroup>
+  <PropertyGroup>
     <ProjectName>Vanara.PInvoke.VssApi</ProjectName>
     <Description>PInvoke API (methods, structures and constants) imported from Windows Volume Shadow Copy Service (VssApi.dll).</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyName>Vanara.PInvoke.VssApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageTags>pinvoke;vanara;net-extensions;interop;VSS;VssApi;volume shadow copy service</PackageTags>
-    <WindowsTargetPlatformMinVersion>7.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CLRSupport Condition="'$(CoreBuild)'=='true'">NetCore</CLRSupport>
-    <CLRSupport Condition="'$(CoreBuild)'!='true'">true</CLRSupport>
+    <CLRSupport>NetCore</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <UseDebugLibraries>true</UseDebugLibraries>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CLRSupport>NetCore</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CLRSupport>NetCore</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CLRSupport>NetCore</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -107,8 +107,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <TargetName>$(ProjectName)</TargetName>
-    <OutDir>bin\$(Configuration)\$(TargetFramework)\$(Platform)\</OutDir>
-    <IntDir>obj\$(Configuration)\$(TargetFramework)\$(Platform)\</IntDir>
+    <OutDir>bin\$(Configuration)\$(TargetFramework)\</OutDir>
+    <IntDir>obj\$(Configuration)\$(TargetFramework)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -118,7 +118,7 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -129,7 +129,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -142,7 +142,7 @@
       <DisableSpecificWarnings>4945</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,7 +155,7 @@
       <DisableSpecificWarnings>4945</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>vssapi.lib</AdditionalDependencies>
+      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -187,7 +187,6 @@
   <ItemGroup>
     <ProjectReference Include="..\VssApiMgd\Vanara.PInvoke.VssApiMgd.csproj">
       <Project>{39aedd51-c627-41b9-96d3-44f481ed4e7c}</Project>
-      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -197,9 +196,12 @@
     <None Include="readme.md" />
     <None Include="Vanara.PInvoke.VssApi.nuspec" />
   </ItemGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <DisableSpecificWarnings>4945;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <Target Name="WipeObj" BeforeTargets="Clean;CoreClean">
-    <!-- obj -->
-    <!--<RemoveDir Directories="$(ProjectDir)$(BaseIntermediateOutputPath)" />-->
-  </Target>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>

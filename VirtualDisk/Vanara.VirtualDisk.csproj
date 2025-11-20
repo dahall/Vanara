@@ -18,7 +18,7 @@ CompactionMode, DeviceType, Subtype
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.IO.FileSystem.AccessControl" Condition=" $(ACCESSCTRL_COND) " />
+    <PackageReference Include="System.IO.FileSystem.AccessControl" Condition="$(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore'))" />
     <PackageReference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>

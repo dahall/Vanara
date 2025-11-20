@@ -22,7 +22,7 @@
     <releaseNotes></releaseNotes>
   </metadata>
   <files>
-    <file src="bin\Release\net8.0-windows\x64\Vanara.PInvoke.VssApi*.???" target="lib\net8.0-windows7.0" />
+    <file src="bin\Release\net8.0\Vanara.PInvoke.VssApi*.???" target="lib\net8.0-windows7.0" />
     <file src="..\..\docs\icons\Vanara64x64.png" target="Vanara64x64.png" />
     <file src="pkgreadme.md" target="pkgreadme.md" />
   </files>

@@ -36,7 +36,7 @@ CharacterSet, CM_DEVCAP, CM_FILE, CM_INSTALL_STATE, CM_REMOVAL_POLICY, CM_RESOUR
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
   </ItemGroup>
-  <ItemGroup Condition=" $(ACCESSCTRL_COND) Or $(NET6OR7) ">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore'))">
     <PackageReference Include="Microsoft.Win32.Registry" />
   </ItemGroup>
   <ItemGroup>

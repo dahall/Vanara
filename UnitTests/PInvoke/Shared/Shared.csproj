@@ -9,9 +9,6 @@
     <None Include="SampleAttributeTestCode.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Update="Microsoft.NET.Test.Sdk" />
   </ItemGroup>
 </Project>

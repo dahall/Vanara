@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -90,7 +91,7 @@ namespace Vanara.Extensions.Reflection
 		}
 
 		/// <summary>Gets the alignment of the type.</summary>
-		public static int GetAlignment(this Type type) =>
+		public static int GetAlignment([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] this Type type) =>
 			(int)typeof(ReflectionExtensions).GetMethod(nameof(AlignOf), Type.EmptyTypes)!.MakeGenericMethod(type).Invoke(null, null)!;
 
 		/// <summary>Gets the number of bits in the type's blitted value.</summary>
@@ -191,6 +192,7 @@ namespace Vanara.Extensions.Reflection
 		/// <param name="args">An argument list for the invoked method or constructor. This is an array of objects with the same number, order, and type as the parameters of the method or constructor to be invoked. If there are no parameters, this should be null.</param>
 		/// <returns>An Object containing the return value of the invoked method, or null in the case of a constructor, or null if the method's return type is void. Before calling the method or constructor, Invoke checks to see if the user has access permission and verifies that the parameters are valid.</returns>
 		/// <exception cref="ArgumentException">Method not found - methodName</exception>
+		[RequiresUnreferencedCode("Generic method invocation may require unreferenced code.")]
 		public static object? InvokeGenericMethod(this object? obj, string methodName, Type[] typeArguments, Type[] argTypes, object?[]? args)
 		{
 			var mi = (obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null)) ?? throw new ArgumentException(@"Method not found", nameof(methodName));

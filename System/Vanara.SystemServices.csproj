@@ -22,7 +22,7 @@ BatteryStatus, EdgeTraversalType, EnergySaverStatus, FirewallAction, FirewallAut
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Condition=" $(DRAWING_COMMON_COND) " />
-    <PackageReference Include="System.IO.FileSystem.AccessControl" Condition=" $(ACCESSCTRL_COND) " />
+    <PackageReference Include="System.IO.FileSystem.AccessControl" Condition="$(TargetFramework.StartsWith('netstandard')) Or $(TargetFramework.StartsWith('netcore'))" />
     <PackageReference Include="System.Management" />
     <PackageReference Include="System.ServiceProcess.ServiceController" />
   </ItemGroup>
