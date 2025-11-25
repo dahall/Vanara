@@ -2376,7 +2376,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365240")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, MOVEFILE dwFlags);
+	public static extern bool MoveFileEx(string lpExistingFileName, string? lpNewFileName, MOVEFILE dwFlags);
 
 	/// <summary>
 	/// <para>Moves a file or directory, including its children. You can provide a callback function that receives progress notifications.</para>
@@ -2489,7 +2489,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365242")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MoveFileWithProgress(string lpExistingFileName, string lpNewFileName, [Optional] CopyProgressRoutine? lpProgressRoutine, [In, Optional] IntPtr lpData, MOVEFILE dwFlags);
+	public static extern bool MoveFileWithProgress(string lpExistingFileName, string? lpNewFileName, [Optional] CopyProgressRoutine? lpProgressRoutine, [In, Optional] IntPtr lpData, MOVEFILE dwFlags);
 
 	/// <summary>Creates, opens, reopens, or deletes a file.</summary>
 	/// <param name="lpFileName">
