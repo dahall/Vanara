@@ -185,7 +185,12 @@ public partial class User32Tests
 	public void LoadImageTest() => throw new NotImplementedException();
 
 	[Test]
-	public void LoadStringTest() => throw new NotImplementedException();
+	public void LoadStringTest()
+	{
+		using var lib = Kernel32.LoadLibraryEx(TestCaseSources.ResourceFile, Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
+		Assert.That(lib, ResultIs.ValidHandle);
+		Assert.That(LoadString(lib, 103), Is.EqualTo("DummyResourceExe"));
+	}
 
 	[Test]
 	public void LoadStringTest1() => throw new NotImplementedException();

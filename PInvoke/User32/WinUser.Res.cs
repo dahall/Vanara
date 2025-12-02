@@ -379,7 +379,7 @@ public static partial class User32
 	/// </returns>
 	[PInvokeData("WinUser.h", MSDNShortId = "ms647486")]
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-	[System.Security.SecurityCritical]
+	[System.Security.SecurityCritical, SuppressAutoGen]
 	public static extern int LoadString(HINSTANCE hInstance, int uID, StringBuilder lpBuffer, int nBufferMax);
 
 	/// <summary>Loads a string resource from the executable file associated with a specified module.</summary>
@@ -390,17 +390,16 @@ public static partial class User32
 	/// <param name="uID">The identifier of the string to be loaded.</param>
 	/// <returns>If the function succeeds, the return value is the full resource string.</returns>
 	[PInvokeData("WinUser.h", MSDNShortId = "ms647486")]
-	public static string LoadString(HINSTANCE hInstance, int uID)
+	public static string? LoadString(HINSTANCE hInstance, int uID)
 	{
-		IntPtr p = default;
-		var l = LoadString(hInstance, uID, p, 0);
+		var l = LoadString(hInstance, uID, out var p);
 		if (l == 0) Win32Error.ThrowLastError();
-		return StringHelper.GetString(p, CharSet.Auto, l * Marshal.SystemDefaultCharSize)!;
+		return p;
 	}
 
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 	[System.Security.SecurityCritical]
-	private static extern int LoadString(HINSTANCE hInstance, int uID, IntPtr lpBuffer, int nBufferMax);
+	private static extern int LoadString(HINSTANCE hInstance, int uID, out StrPtrAuto lpBuffer, int nBufferMax = 0);
 
 	/// <summary/>
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
