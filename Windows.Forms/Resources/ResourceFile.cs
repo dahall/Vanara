@@ -82,7 +82,7 @@ public class ResourceFile : IDisposable
 	/// <summary>Gets the resource string.</summary>
 	/// <param name="resourceReference">The resource reference.</param>
 	/// <returns></returns>
-	public static string GetResourceString(string resourceReference)
+	public static string? GetResourceString(string resourceReference)
 	{
 		var parts = GetResourceRefParts(resourceReference);
 		using var nr = new ResourceFile(parts.Item1);
@@ -192,7 +192,7 @@ public class ResourceFile : IDisposable
 	/// <summary>Gets the string.</summary>
 	/// <param name="id">The identifier.</param>
 	/// <returns></returns>
-	protected virtual string GetString(int id) => LoadString(hLib, id);
+	protected virtual string? GetString(int id) => LoadString(hLib, id);
 
 	private static Tuple<string, int> GetResourceRefParts(string resourceReference)
 	{
@@ -279,12 +279,12 @@ public class ResourceFile : IDisposable
 
 		internal StringResIndexer(IndexerGetter getFn) => getter = getFn;
 
-		internal delegate string IndexerGetter(int name);
+		internal delegate string? IndexerGetter(int name);
 
 		/// <summary>Gets the <see cref="string"/> at the specified index.</summary>
 		/// <value>The <see cref="string"/>.</value>
 		/// <param name="index">The index.</param>
 		/// <returns></returns>
-		public string this[int index] => getter(index);
+		public string? this[int index] => getter(index);
 	}
 }

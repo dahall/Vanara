@@ -177,7 +177,7 @@ public static partial class Crypt32
 			CRYPTOAPI_BLOB oe = new(pOptionalEntropy);
 			using SafeCoTaskMemStruct<CRYPTPROTECT_PROMPTSTRUCT> ps = pPromptStruct;
 			CRYPTOAPI_BLOB dout = new();
-			if (!CryptProtectData((CRYPTOAPI_BLOB)pDataIn, szDataDescr, pOptionalEntropy is null ? default : &oe, default, ps, dwFlags, &dout))
+			if (!CryptProtectData(new CRYPTOAPI_BLOB(pDataIn), szDataDescr, pOptionalEntropy is null ? default : &oe, default, ps, dwFlags, &dout))
 			{
 				pDataOut = [];
 				return false;
