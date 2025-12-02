@@ -62,7 +62,7 @@ public static partial class Crypt32
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("mssip.h", MSDNShortId = "bb4ecc95-972f-415c-9722-59b00a27cddc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public delegate bool pCryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, [Out] IntPtr pIndirectData);
+	public delegate bool pCryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, [Out] StructPointer<SIP_INDIRECT_DATA> pIndirectData);
 
 	/// <summary>The <c>pCryptSIPGetCaps</c> function is implemented by an subject interface package (SIP) to report capabilities.</summary>
 	/// <param name="pSubjInfo">Pointer to a SIP_SUBJECTINFO structure that specifies subject information data to the SIP APIs.</param>
@@ -73,7 +73,7 @@ public static partial class Crypt32
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("mssip.h", MSDNShortId = "8EA46B67-F542-4B15-81F4-3DD83DD45764")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public delegate bool pCryptSIPGetCaps(in SIP_SUBJECTINFO pSubjInfo, IntPtr pCaps);
+	public delegate bool pCryptSIPGetCaps(in SIP_SUBJECTINFO pSubjInfo, [In, Out] IntPtr pCaps);
 
 	/// <summary>The <c>CryptSIPGetSignedDataMsg</c> function retrieves an Authenticode signature from the file.</summary>
 	/// <param name="pSubjectInfo">A pointer to a SIP_SUBJECTINFO structure that contains information about the message subject.</param>
@@ -262,6 +262,69 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public delegate bool pCryptSIPVerifyIndirectData(in SIP_SUBJECTINFO pSubjectInfo, in SIP_INDIRECT_DATA pIndirectData);
 
+	/// <summary>
+	/// The <b>pfnIsFileSupported</b> callback function queries the <c>subject interface packages</c> (SIPs) listed in the registry to
+	/// determine which SIP handles the file type.
+	/// </summary>
+	/// <param name="hFile">A handle to the file.</param>
+	/// <param name="pgSubject">The GUID that identifies the SIP that handles the file type.</param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns <b>TRUE</b>.</para>
+	/// <para>If the function fails, it returns <b>FALSE</b>. For extended error information, call <c>GetLastError</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If the SIP supports the file type passed by <i>hfile</i>, the function returns <b>TRUE</b>, and sets <i>pgSubject</i> to the GUID
+	/// that identifies the SIP for handling the file type.
+	/// </para>
+	/// <para>
+	/// Each SIP implements its own version of the function that determines whether the file type is supported. The specific name of the
+	/// function may vary depending on the implementation of the SIP, but the signature of the function will match that of the
+	/// <c>SIP_ADD_NEWPROVIDER</c> structure.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/mssip/nc-mssip-pfnisfilesupported
+	// pfnIsFileSupported Pfnisfilesupported; BOOL Pfnisfilesupported( [in] HANDLE hFile, [out] GUID *pgSubject ) {...}
+	[PInvokeData("mssip.h", MSDNShortId = "NC:mssip.pfnIsFileSupported")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public delegate bool pfnIsFileSupported([In] HFILE hFile, out Guid pgSubject);
+
+	/// <summary>
+	/// The <b>pfnIsFileSupportedName</b> callback function queries the <c>subject interface packages</c> (SIPs) listed in the registry to
+	/// determine which SIP handles the file type.
+	/// </summary>
+	/// <param name="pwszFileName">
+	/// A pointer to a <b>null</b>-terminated string that contains the absolute path to the file to be processed by the SIP.
+	/// </param>
+	/// <param name="pgSubject">The GUID identifying the SIP that handles the file type.</param>
+	/// <returns>
+	/// The return value is <b>TRUE</b> if the function succeeds; <b>FALSE</b> if the function fails. If the function fails, call the
+	/// <c>GetLastError</c> function to determine the reason for failure.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// If the SIP supports the file type passed by <i>hfile</i>, the function returns <b>TRUE</b>, and sets <i>pgSubject</i> to the GUID
+	/// that identifies the SIP for handling the file type.
+	/// </para>
+	/// <para>
+	/// Each SIP implements its own version of the function that determines if the file type is supported. The specific name of the function
+	/// may vary depending on the implementation of the SIP, but the signature of the function will match that of the
+	/// <c>SIP_ADD_NEWPROVIDER</c> structure.
+	/// </para>
+	/// <para>
+	/// SIPs must support a limited set of file types and file extensions. The fileSupportedName function must check that the provided file
+	/// matches one of the file extensions supported by the SIP. For instance, the WSH SIP supports only the following list of file
+	/// extensions and checks that the file under validation is a member of the following list: .js, .jse, .vbe, .vbs, or .wsf.
+	/// </para>
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/mssip/nc-mssip-pfnisfilesupportedname
+	// pfnIsFileSupportedName Pfnisfilesupportedname; BOOL Pfnisfilesupportedname( [in] WCHAR *pwszFileName, [out] GUID *pgSubject ) {...}
+	[PInvokeData("mssip.h", MSDNShortId = "NC:mssip.pfnIsFileSupportedName")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public delegate bool pfnIsFileSupportedName([MarshalAs(UnmanagedType.LPWStr)] string pwszFileName, out Guid pgSubject);
+
 	/// <summary>Type of additional information provided.</summary>
 	[PInvokeData("mssip.h")]
 	public enum MSSIP
@@ -390,7 +453,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mssip.h", MSDNShortId = "bb4ecc95-972f-415c-9722-59b00a27cddc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, [Out] IntPtr pIndirectData);
+	public static extern bool CryptSIPCreateIndirectData(in SIP_SUBJECTINFO pSubjectInfo, ref uint pcbIndirectData, [Out] StructPointer<SIP_INDIRECT_DATA> pIndirectData);
 
 	/// <summary>The <c>CryptSIPGetCaps</c> function retrieves the capabilities of a subject interface package (SIP).</summary>
 	/// <param name="pSubjInfo">Pointer to a SIP_SUBJECTINFOa&gt; structure that specifies subject information data to the SIP APIs.</param>
@@ -500,8 +563,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("mssip.h", MSDNShortId = "e3fabaa7-2dda-4c6c-8d1a-3ee5363e10b5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptSIPGetSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, out CertEncodingType pdwEncodingType, [Optional] uint dwIndex,
-		ref uint pcbSignedDataMsg, [Out] IntPtr pbSignedDataMsg);
+	public static extern bool CryptSIPGetSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, out CertEncodingType pdwEncodingType, [Optional, Ignore] uint dwIndex,
+		ref uint pcbSignedDataMsg, [Out, SizeDef(nameof(pcbSignedDataMsg), SizingMethod.Query)] IntPtr pbSignedDataMsg);
 
 	/// <summary>
 	/// The SIP_DISPATCH_INFOa&gt; structure. The exported functions must have been previously registered by calling the
@@ -581,7 +644,7 @@ public static partial class Crypt32
 	[PInvokeData("mssip.h", MSDNShortId = "731f64bf-49f0-4799-b84a-9ca04292aa91")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSIPPutSignedDataMsg(in SIP_SUBJECTINFO pSubjectInfo, CertEncodingType dwEncodingType, out uint pdwIndex,
-		uint cbSignedDataMsg, [In] IntPtr pbSignedDataMsg);
+		uint cbSignedDataMsg, [In, SizeDef(nameof(cbSignedDataMsg))] IntPtr pbSignedDataMsg);
 
 	/// <summary>
 	/// The <c>CryptSIPRemoveProvider</c> function removes registry details of a Subject Interface Package (SIP) DLL file added by a
@@ -993,18 +1056,18 @@ public static partial class Crypt32
 	// DWORD dwVersion; BOOL isMultiSign; DWORD dwReserved; } SIP_CAP_SET_V2, *PSIP_CAP_SET_V2;
 	[PInvokeData("mssip.h", MSDNShortId = "0B6D173B-0183-4A7C-BB92-2D451F746164")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SIP_CAP_SET_V2
+	public struct SIP_CAP_SET_V2(bool isMultiSign, uint version = 2)
 	{
 		/// <summary>Size, in bytes, of this structure.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<SIP_CAP_SET_V2>();
 
 		/// <summary>The SIP version. By default, this value is two (2).</summary>
-		public uint dwVersion;
+		public uint dwVersion = version;
 
 		/// <summary>
 		/// A value of one (1) indicates that the SIP supports multiple embedded signatures. Otherwise, set this value to zero (0).
 		/// </summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool isMultiSign;
+		[MarshalAs(UnmanagedType.Bool)] public bool isMultiSign = isMultiSign;
 
 		/// <summary>Reserved for future use. Set this value to zero (0).</summary>
 		public uint dwReserved;
@@ -1015,18 +1078,18 @@ public static partial class Crypt32
 	// DWORD dwVersion; BOOL isMultiSign; union { DWORD dwFlags; DWORD dwReserved; }; } SIP_CAP_SET_V3, *PSIP_CAP_SET_V3;
 	[PInvokeData("mssip.h", MSDNShortId = "0B6D173B-0183-4A7C-BB92-2D451F746164")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SIP_CAP_SET_V3
+	public struct SIP_CAP_SET_V3(bool isMultiSign, uint version = 2)
 	{
 		/// <summary>Size, in bytes, of this structure.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<SIP_CAP_SET_V3>();
 
 		/// <summary>The SIP version. By default, this value is two (2).</summary>
-		public uint dwVersion;
+		public uint dwVersion = version;
 
 		/// <summary>
 		/// A value of one (1) indicates that the SIP supports multiple embedded signatures. Otherwise, set this value to zero (0).
 		/// </summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool isMultiSign;
+		[MarshalAs(UnmanagedType.Bool)] public bool isMultiSign = isMultiSign;
 
 		/// <summary/>
 		public uint dwFlags;
@@ -1049,10 +1112,10 @@ public static partial class Crypt32
 	// pCryptSIPVerifyIndirectData pfVerify; pCryptSIPRemoveSignedDataMsg pfRemove; } SIP_DISPATCH_INFO, *LPSIP_DISPATCH_INFO;
 	[PInvokeData("mssip.h", MSDNShortId = "d34b5081-0af8-4dcc-8133-a91d0603d419")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SIP_DISPATCH_INFO
+	public struct SIP_DISPATCH_INFO(pCryptSIPGetSignedDataMsg getter, pCryptSIPPutSignedDataMsg putter, pCryptSIPCreateIndirectData create, pCryptSIPVerifyIndirectData verify, pCryptSIPRemoveSignedDataMsg remove)
 	{
 		/// <summary>The size, in bytes, of this structure.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<SIP_DISPATCH_INFO>();
 
 		/// <summary>This member is reserved and must be set to <c>NULL</c>.</summary>
 		public HANDLE hSIP;
@@ -1062,35 +1125,35 @@ public static partial class Crypt32
 		/// described in CryptSIPGetSignedDataMsg.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public pCryptSIPGetSignedDataMsg pfGet;
+		public pCryptSIPGetSignedDataMsg pfGet = getter;
 
 		/// <summary>
 		/// A pointer to the function that stores the signed data for the subject. The signature for this function pointer is described
 		/// in CryptSIPPutSignedDataMsg.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public pCryptSIPPutSignedDataMsg pfPut;
+		public pCryptSIPPutSignedDataMsg pfPut = putter;
 
 		/// <summary>
 		/// A pointer to the function that returns a SIP_INDIRECT_DATA structure that contains the subject data. This structure contains
 		/// the hash of the target. The signature for this function pointer is described in CryptSIPCreateIndirectData.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public pCryptSIPCreateIndirectData pfCreate;
+		public pCryptSIPCreateIndirectData pfCreate = create;
 
 		/// <summary>
 		/// A pointer to the function that verifies the SIP_INDIRECT_DATA structure that contains the subject data. This structure
 		/// contains the hash of the target. The signature for this function pointer is described in CryptSIPVerifyIndirectData.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public pCryptSIPVerifyIndirectData pfVerify;
+		public pCryptSIPVerifyIndirectData pfVerify = verify;
 
 		/// <summary>
 		/// A pointer to the function that removes the signed data for the subject. The signature for this function pointer is described
 		/// in CryptSIPRemoveSignedDataMsg.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public pCryptSIPRemoveSignedDataMsg pfRemove;
+		public pCryptSIPRemoveSignedDataMsg pfRemove = remove;
 	}
 
 	/// <summary>The <c>SIP_INDIRECT_DATA</c> structure contains the digest of the hashed subject information.</summary>

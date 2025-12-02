@@ -151,7 +151,8 @@ public static partial class TokenBinding
 	[DllImport(Lib.Tokenbinding, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("tokenbinding.h", MSDNShortId = "4289E3F0-17AC-485B-A326-2C8BECD5CABB")]
 	public static extern HRESULT TokenBindingGenerateBinding(TOKENBINDING_KEY_PARAMETERS_TYPE keyType, [MarshalAs(UnmanagedType.LPWStr)] string targetURL, TOKENBINDING_TYPE bindingType, [In] IntPtr tlsEKM,
-		uint tlsEKMSize, TOKENBINDING_EXTENSION_FORMAT extensionFormat, [In] IntPtr extensionData, out IntPtr tokenBinding, out uint tokenBindingSize, out IntPtr resultData);
+		uint tlsEKMSize, TOKENBINDING_EXTENSION_FORMAT extensionFormat, [In] IntPtr extensionData, out IntPtr tokenBinding, out uint tokenBindingSize,
+		out StructPointer<TOKENBINDING_RESULT_DATA> resultData);
 
 	/// <summary>
 	/// <para>
@@ -188,7 +189,8 @@ public static partial class TokenBinding
 	// TOKENBINDING_RESULT_DATA **resultData );
 	[DllImport(Lib.Tokenbinding, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("tokenbinding.h", MSDNShortId = "F3E30DF8-2A1D-445E-914B-62999428BB6F")]
-	public static extern HRESULT TokenBindingGenerateID(TOKENBINDING_KEY_PARAMETERS_TYPE keyType, [In] IntPtr publicKey, uint publicKeySize, out IntPtr resultData);
+	public static extern HRESULT TokenBindingGenerateID(TOKENBINDING_KEY_PARAMETERS_TYPE keyType, [In, SizeDef(nameof(publicKeySize))] IntPtr publicKey,
+		uint publicKeySize, out StructPointer<TOKENBINDING_RESULT_DATA> resultData);
 
 	/// <summary>
 	/// <para>Assembles the list of token bindings and generates the final message for the client device to the server.</para>
@@ -226,7 +228,8 @@ public static partial class TokenBinding
 	[DllImport(Lib.Tokenbinding, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("tokenbinding.h", MSDNShortId = "7A268C6D-952B-482A-835D-89D6452D986D")]
 	public static extern HRESULT TokenBindingGenerateMessage([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] tokenBindings,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] tokenBindingsSize, uint tokenBindingsCount, out IntPtr tokenBindingMessage, out uint tokenBindingMessageSize);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] tokenBindingsSize, uint tokenBindingsCount,
+		out IntPtr tokenBindingMessage, out uint tokenBindingMessageSize);
 
 	/// <summary>
 	/// <para>Retrieves a list of the key types that the client device supports.</para>
@@ -248,7 +251,7 @@ public static partial class TokenBinding
 	// TokenBindingGetKeyTypesClient( TOKENBINDING_KEY_TYPES **keyTypes );
 	[DllImport(Lib.Tokenbinding, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("tokenbinding.h", MSDNShortId = "583687B6-5A87-4616-A5EE-4FECFF06749E")]
-	public static extern HRESULT TokenBindingGetKeyTypesClient(out IntPtr keyTypes);
+	public static extern HRESULT TokenBindingGetKeyTypesClient(out ArrayPointer<TOKENBINDING_KEY_TYPES> keyTypes);
 
 	/// <summary>
 	/// <para>Retrieves a list of the key types that the server supports.</para>
@@ -276,7 +279,7 @@ public static partial class TokenBinding
 	// TokenBindingGetKeyTypesServer( TOKENBINDING_KEY_TYPES **keyTypes );
 	[DllImport(Lib.Tokenbinding, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("tokenbinding.h", MSDNShortId = "8ABAC0AF-AF68-4742-9C36-3FB17D303409")]
-	public static extern HRESULT TokenBindingGetKeyTypesServer(out IntPtr keyTypes);
+	public static extern HRESULT TokenBindingGetKeyTypesServer(out ArrayPointer<TOKENBINDING_KEY_TYPES> keyTypes);
 
 	/// <summary>
 	/// <para>Validates the token binding message and verifies the token bindings that the message contains.</para>
@@ -323,8 +326,9 @@ public static partial class TokenBinding
 	// keyType, const void *tlsEKM, DWORD tlsEKMSize, TOKENBINDING_RESULT_LIST **resultList );
 	[DllImport(Lib.Tokenbinding, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("tokenbinding.h", MSDNShortId = "D6827DA3-75DC-4F31-B57A-4ED5B5F03112")]
-	public static extern HRESULT TokenBindingVerifyMessage([In] IntPtr tokenBindingMessage, uint tokenBindingMessageSize, TOKENBINDING_KEY_PARAMETERS_TYPE keyType, [In] IntPtr tlsEKM,
-		uint tlsEKMSize, out IntPtr resultList);
+	public static extern HRESULT TokenBindingVerifyMessage([In, SizeDef(nameof(tokenBindingMessageSize))] IntPtr tokenBindingMessage,
+		uint tokenBindingMessageSize, TOKENBINDING_KEY_PARAMETERS_TYPE keyType, [In, SizeDef(nameof(tlsEKMSize))] IntPtr tlsEKM,
+		uint tlsEKMSize, out StructPointer<TOKENBINDING_RESULT_DATA> resultList);
 
 	/// <summary>
 	/// <para>Contains the information for representing a token binding identifier that results from a token binding message exchange.</para>
@@ -354,7 +358,7 @@ public static partial class TokenBinding
 		public uint keyCount;
 
 		/// <summary/>
-		public IntPtr keyType;
+		public StructPointer<TOKENBINDING_KEY_PARAMETERS_TYPE> keyType;
 	}
 
 	/// <summary>
@@ -380,7 +384,7 @@ public static partial class TokenBinding
 		/// <summary>
 		/// <para>Pointer to the token binding identifier for the token binding that was generated or verified.</para>
 		/// </summary>
-		public IntPtr identifierData;
+		public StructPointer<TOKENBINDING_IDENTIFIER> identifierData;
 
 		/// <summary>
 		/// <para>The format to use to interpret the data in the extensionData parameter. This value must be <c>TOKENBINDING_EXTENSION_FORMAT_UNDEFINED</c>.</para>
@@ -418,6 +422,6 @@ public static partial class TokenBinding
 		/// <summary>
 		/// <para>An array of results, one for each of the token bindings that TokenBindingVerifyMessage verified.</para>
 		/// </summary>
-		public IntPtr resultData;
+		public ArrayPointer<TOKENBINDING_RESULT_DATA> resultData;
 	}
 }

@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Xml.Linq;
+
+namespace Vanara.PInvoke;
 
 /// <summary>Methods and data types found in ncrypt.dll.</summary>
 public static partial class NCrypt
@@ -342,7 +344,8 @@ public static partial class NCrypt
 	// *phDescriptor );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "BA6B15AC-2CD8-4D9A-817F-65CF9C09D22C")]
-	public static extern HRESULT NCryptCreateProtectionDescriptor([MarshalAs(UnmanagedType.LPWStr)] string pwszDescriptorString, CreateProtectionDescriptorFlags dwFlags, out SafeNCRYPT_DESCRIPTOR_HANDLE phDescriptor);
+	public static extern HRESULT NCryptCreateProtectionDescriptor([MarshalAs(UnmanagedType.LPWStr)] string pwszDescriptorString,
+		[Optional] CreateProtectionDescriptorFlags dwFlags, [AddAsCtor] out SafeNCRYPT_DESCRIPTOR_HANDLE phDescriptor);
 
 	/// <summary>
 	/// <para>The <c>NCryptGetProtectionDescriptorInfo</c> function retrieves a protection descriptor rule string.</para>
@@ -406,7 +409,8 @@ public static partial class NCrypt
 	// dwInfoType, void **ppvInfo );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "EF4777D5-E218-4868-8D25-58E0EF8C9D30")]
-	public static extern HRESULT NCryptGetProtectionDescriptorInfo(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, in NCRYPT_ALLOC_PARA pMemPara, ProtectionDescriptorInfoType dwInfoType, out IntPtr ppvInfo);
+	public static extern HRESULT NCryptGetProtectionDescriptorInfo(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, in NCRYPT_ALLOC_PARA pMemPara,
+		ProtectionDescriptorInfoType dwInfoType, out IntPtr ppvInfo);
 
 	/// <summary>
 	/// <para>The <c>NCryptGetProtectionDescriptorInfo</c> function retrieves a protection descriptor rule string.</para>
@@ -470,7 +474,70 @@ public static partial class NCrypt
 	// dwInfoType, void **ppvInfo );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "EF4777D5-E218-4868-8D25-58E0EF8C9D30")]
-	public static extern HRESULT NCryptGetProtectionDescriptorInfo(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, [Optional] IntPtr pMemPara, ProtectionDescriptorInfoType dwInfoType, out IntPtr ppvInfo);
+	public static extern HRESULT NCryptGetProtectionDescriptorInfo(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, [Optional] IntPtr pMemPara,
+		ProtectionDescriptorInfoType dwInfoType, out IntPtr ppvInfo);
+
+	/// <summary>
+	/// <para>The <c>NCryptGetProtectionDescriptorInfo</c> function retrieves a protection descriptor rule string.</para>
+	/// </summary>
+	/// <param name="hDescriptor">
+	/// <para>Protection descriptor handle created by calling NCryptCreateProtectionDescriptor.</para>
+	/// </param>
+	/// <param name="dwInfoType">
+	/// <para>Specifies how to return descriptor information to the ppvInfo parameter. This can be the following value:</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>NCRYPT_PROTECTION_INFO_TYPE_DESCRIPTOR_STRING</term>
+	/// <term>The ppvInfo argument returns the descriptor rule string.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="ppvInfo">
+	/// <para>Pointer to the descriptor information.</para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// Returns a status code that indicates the success or failure of the function. Possible return codes include, but are not limited
+	/// to, the following.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>The function was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_INVALID_PARAMETER</term>
+	/// <term>The ppvInfo parameter cannot be NULL.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_NOT_SUPPORTED</term>
+	/// <term>An unsupported value was specified in the dwInfoType parameter.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_INVALID_HANDLE</term>
+	/// <term>The handle specified by the hDescriptor parameter is not valid.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/ncryptprotect/nf-ncryptprotect-ncryptgetprotectiondescriptorinfo
+	// SECURITY_STATUS NCryptGetProtectionDescriptorInfo( NCRYPT_DESCRIPTOR_HANDLE hDescriptor, const NCRYPT_ALLOC_PARA *pMemPara, DWORD
+	// dwInfoType, void **ppvInfo );
+	[PInvokeData("ncryptprotect.h", MSDNShortId = "EF4777D5-E218-4868-8D25-58E0EF8C9D30")]
+	public static HRESULT NCryptGetProtectionDescriptorInfo(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, ProtectionDescriptorInfoType dwInfoType, out string? ppvInfo)
+	{
+		var hr = NCryptGetProtectionDescriptorInfo(hDescriptor, IntPtr.Zero, dwInfoType, out var ppvInfoPtr);
+		ppvInfo = hr.Succeeded ? Marshal.PtrToStringUni(ppvInfoPtr) : null;
+		if (ppvInfoPtr != IntPtr.Zero) Crypt32.LocalFree(ppvInfoPtr);
+		return hr;
+	}
 
 	/// <summary>
 	/// <para>
@@ -559,7 +626,8 @@ public static partial class NCrypt
 	// NCRYPT_ALLOC_PARA *pMemPara, HWND hWnd, BYTE **ppbProtectedBlob, ULONG *pcbProtectedBlob );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "8726F92B-34D5-4696-8803-3D7F50F1006D")]
-	public static extern HRESULT NCryptProtectSecret(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, [Optional] ProtectFlags dwFlags, [In] IntPtr pbData, uint cbData, in NCRYPT_ALLOC_PARA pMemPara, [Optional] HWND hWnd,
+	public static extern HRESULT NCryptProtectSecret(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, [Optional] ProtectFlags dwFlags,
+		[In, SizeDef(nameof(cbData))] IntPtr pbData, uint cbData, in NCRYPT_ALLOC_PARA pMemPara, [Optional] HWND hWnd,
 		out IntPtr ppbProtectedBlob, out uint pcbProtectedBlob);
 
 	/// <summary>
@@ -649,8 +717,93 @@ public static partial class NCrypt
 	// NCRYPT_ALLOC_PARA *pMemPara, HWND hWnd, BYTE **ppbProtectedBlob, ULONG *pcbProtectedBlob );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "8726F92B-34D5-4696-8803-3D7F50F1006D")]
-	public static extern HRESULT NCryptProtectSecret(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, ProtectFlags dwFlags, [In] IntPtr pbData, uint cbData, [Optional] IntPtr pMemPara, [Optional] HWND hWnd,
+	public static extern HRESULT NCryptProtectSecret(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, [Optional] ProtectFlags dwFlags,
+		[In] IntPtr pbData, uint cbData, [In, Optional] IntPtr pMemPara, [In, Optional] HWND hWnd,
 		out IntPtr ppbProtectedBlob, out uint pcbProtectedBlob);
+
+	/// <summary>
+	/// <para>
+	/// The <c>NCryptProtectSecret</c> function encrypts data to a specified protection descriptor. Call NCryptUnprotectSecret to decrypt
+	/// the data.
+	/// </para>
+	/// </summary>
+	/// <param name="hDescriptor">
+	/// <para>Handle of the protection descriptor object. Create the handle by calling NCryptCreateProtectionDescriptor.</para>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>The flag can be zero or the following value.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>NCRYPT_SILENT_FLAG</term>
+	/// <term>Requests that the key service provider not display a user interface.</term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pbData">
+	/// <para>Pointer to the byte array to be protected.</para>
+	/// </param>
+	/// <param name="hWnd">
+	/// <para>Handle to the parent window of the user interface, if any, to be displayed.</para>
+	/// </param>
+	/// <param name="ppbProtectedBlob">
+	/// <para>Address of a variable that receives a pointer to the encrypted data.</para>
+	/// </param>
+	/// <returns>
+	/// <para>
+	/// Returns a status code that indicates the success or failure of the function. Possible return codes include, but are not limited
+	/// to, the following.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>The function was successful.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_INVALID_PARAMETER</term>
+	/// <term>
+	/// The pbData, ppbProtectedBlob, and pcbProtectedBlob parameters cannot be NULL. The cbData parameter cannot be less than one.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_NO_MEMORY</term>
+	/// <term>Insufficient memory exists to allocate the content encryption key.</term>
+	/// </item>
+	/// <item>
+	/// <term>NTE_INVALID_HANDLE</term>
+	/// <term>The handle specified by the hDescriptor parameter is not valid.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// Use the <c>NCryptProtectSecret</c> function to protect keys, key material, and passwords. Use the NCryptStreamOpenToProtect and
+	/// the NCryptStreamUpdate functions to encrypt larger messages.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("ncryptprotect.h", MSDNShortId = "8726F92B-34D5-4696-8803-3D7F50F1006D")]
+	public static HRESULT NCryptProtectSecret(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, [Optional] ProtectFlags dwFlags,
+		[In] byte[] pbData, [In, Optional] HWND hWnd, out byte[] ppbProtectedBlob)
+	{
+		var hr = NCryptProtectSecret(hDescriptor, dwFlags, Marshal.UnsafeAddrOfPinnedArrayElement(pbData, 0), (uint)pbData.Length,
+			IntPtr.Zero, hWnd, out var ppbProtectedBlobPtr, out var pcbProtectedBlob);
+		if (hr.Failed)
+		{
+			ppbProtectedBlob = [];
+			return hr;
+		}
+		ppbProtectedBlob = new byte[pcbProtectedBlob];
+		Marshal.Copy(ppbProtectedBlobPtr, ppbProtectedBlob, 0, (int)pcbProtectedBlob);
+		if (ppbProtectedBlobPtr != IntPtr.Zero) Crypt32.LocalFree(ppbProtectedBlobPtr);
+		return hr;
+	}
 
 	/// <summary>
 	/// <para>
@@ -719,7 +872,9 @@ public static partial class NCrypt
 	// DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "32953AEC-01EE-4ED1-80F3-29963F43004F")]
-	public static extern HRESULT NCryptQueryProtectionDescriptorName(string pwszName, [Optional] StringBuilder? pwszDescriptorString, out SizeT pcDescriptorString, [Optional] ProtectionDescriptorNameFlags dwFlags);
+	public static extern HRESULT NCryptQueryProtectionDescriptorName(string pwszName,
+		[Optional, SizeDef(nameof(pcDescriptorString), SizingMethod.Query)] StringBuilder? pwszDescriptorString,
+		ref SizeT pcDescriptorString, [Optional] ProtectionDescriptorNameFlags dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -776,7 +931,8 @@ public static partial class NCrypt
 	// SECURITY_STATUS NCryptRegisterProtectionDescriptorName( LPCWSTR pwszName, LPCWSTR pwszDescriptorString, DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "DAB03CB2-630F-4BB3-93BD-06BE9126B1C4")]
-	public static extern HRESULT NCryptRegisterProtectionDescriptorName(string pwszName, [Optional] string? pwszDescriptorString, [Optional] ProtectionDescriptorNameFlags dwFlags);
+	public static extern HRESULT NCryptRegisterProtectionDescriptorName(string pwszName, [Optional] string? pwszDescriptorString,
+		[Optional] ProtectionDescriptorNameFlags dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -904,7 +1060,8 @@ public static partial class NCrypt
 	// *pStreamInfo, NCRYPT_STREAM_HANDLE *phStream );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "7DE74BB1-1B84-4721-BE4A-4D2661E93E00")]
-	public static extern HRESULT NCryptStreamOpenToProtect(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, [Optional] ProtectFlags dwFlags, [Optional] HWND hWnd, in NCRYPT_PROTECT_STREAM_INFO pStreamInfo, out SafeNCRYPT_STREAM_HANDLE phStream);
+	public static extern HRESULT NCryptStreamOpenToProtect(NCRYPT_DESCRIPTOR_HANDLE hDescriptor, [Optional] ProtectFlags dwFlags, [Optional] HWND hWnd,
+		in NCRYPT_PROTECT_STREAM_INFO pStreamInfo, [AddAsCtor] out SafeNCRYPT_STREAM_HANDLE phStream);
 
 	/// <summary>
 	/// <para>
@@ -988,7 +1145,8 @@ public static partial class NCrypt
 	// NCryptStreamOpenToUnprotect( NCRYPT_PROTECT_STREAM_INFO *pStreamInfo, DWORD dwFlags, HWND hWnd, NCRYPT_STREAM_HANDLE *phStream );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "9848082E-EDDA-4DA1-9896-42EAF2ADFAB4")]
-	public static extern HRESULT NCryptStreamOpenToUnprotect(in NCRYPT_PROTECT_STREAM_INFO pStreamInfo, [Optional] ProtectFlags dwFlags, [Optional] HWND hWnd, out SafeNCRYPT_STREAM_HANDLE phStream);
+	public static extern HRESULT NCryptStreamOpenToUnprotect(in NCRYPT_PROTECT_STREAM_INFO pStreamInfo, [Optional] ProtectFlags dwFlags,
+		[Optional] HWND hWnd, [AddAsCtor] out SafeNCRYPT_STREAM_HANDLE phStream);
 
 	/// <summary>
 	/// <para>
@@ -1060,7 +1218,8 @@ public static partial class NCrypt
 	// *phStream );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "8E607F4F-4A0F-4796-8F40-D232687815AF")]
-	public static extern HRESULT NCryptStreamOpenToUnprotectEx(in NCRYPT_PROTECT_STREAM_INFO_EX pStreamInfo, ProtectFlags dwFlags, [Optional] HWND hWnd, out SafeNCRYPT_STREAM_HANDLE phStream);
+	public static extern HRESULT NCryptStreamOpenToUnprotectEx(in NCRYPT_PROTECT_STREAM_INFO_EX pStreamInfo, [Optional] ProtectFlags dwFlags,
+		[Optional] HWND hWnd, [AddAsCtor] out SafeNCRYPT_STREAM_HANDLE phStream);
 
 	/// <summary>
 	/// <para>The <c>NCryptStreamUpdate</c> function encrypts and decrypts blocks of data.</para>
@@ -1126,7 +1285,8 @@ public static partial class NCrypt
 	// NCryptStreamUpdate( NCRYPT_STREAM_HANDLE hStream, const BYTE *pbData, SIZE_T cbData, BOOL fFinal );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "417F9267-6055-489C-AF26-BEF5E17CB8B4")]
-	public static extern HRESULT NCryptStreamUpdate(NCRYPT_STREAM_HANDLE hStream, IntPtr pbData, SizeT cbData, [MarshalAs(UnmanagedType.Bool)] bool fFinal);
+	public static extern HRESULT NCryptStreamUpdate([In, AddAsMember] NCRYPT_STREAM_HANDLE hStream,
+		[In, SizeDef(nameof(cbData))] IntPtr pbData, SizeT cbData, [MarshalAs(UnmanagedType.Bool)] bool fFinal);
 
 	/// <summary>
 	/// <para>
@@ -1211,8 +1371,8 @@ public static partial class NCrypt
 	// const NCRYPT_ALLOC_PARA *pMemPara, HWND hWnd, BYTE **ppbData, ULONG *pcbData );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "F532F0ED-36F4-47E3-B478-089CC083E5D1")]
-	public static extern HRESULT NCryptUnprotectSecret(out SafeNCRYPT_DESCRIPTOR_HANDLE phDescriptor, UnprotectSecretFlags dwFlags, [In] IntPtr pbProtectedBlob, uint cbProtectedBlob, in NCRYPT_ALLOC_PARA pMemPara,
-		[Optional] HWND hWnd, out IntPtr ppbData, out uint pcbData);
+	public static extern HRESULT NCryptUnprotectSecret(out SafeNCRYPT_DESCRIPTOR_HANDLE phDescriptor, UnprotectSecretFlags dwFlags,
+		[In] IntPtr pbProtectedBlob, uint cbProtectedBlob, in NCRYPT_ALLOC_PARA pMemPara, [Optional] HWND hWnd, out IntPtr ppbData, out uint pcbData);
 
 	/// <summary>
 	/// <para>
@@ -1297,8 +1457,8 @@ public static partial class NCrypt
 	// const NCRYPT_ALLOC_PARA *pMemPara, HWND hWnd, BYTE **ppbData, ULONG *pcbData );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "F532F0ED-36F4-47E3-B478-089CC083E5D1")]
-	public static extern HRESULT NCryptUnprotectSecret(out SafeNCRYPT_DESCRIPTOR_HANDLE phDescriptor, UnprotectSecretFlags dwFlags, [In] IntPtr pbProtectedBlob, uint cbProtectedBlob, [Optional] IntPtr pMemPara,
-		[Optional] HWND hWnd, out IntPtr ppbData, out uint pcbData);
+	public static extern HRESULT NCryptUnprotectSecret(out SafeNCRYPT_DESCRIPTOR_HANDLE phDescriptor, UnprotectSecretFlags dwFlags,
+		[In] IntPtr pbProtectedBlob, uint cbProtectedBlob, [Optional] IntPtr pMemPara, [Optional] HWND hWnd, out IntPtr ppbData, out uint pcbData);
 
 	/// <summary>
 	/// The <c>NCRYPT_PROTECT_STREAM_INFO</c> structure is used by the NCryptStreamOpenToProtect and NCryptStreamOpenToUnprotect

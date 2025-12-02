@@ -273,8 +273,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "7d5ed4f4-9d76-4a16-9059-27b0edd83459")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDecodeObject(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType, [In] IntPtr pbEncoded, uint cbEncoded,
-		CryptDecodeFlags dwFlags, [Out] IntPtr pvStructInfo, ref uint pcbStructInfo);
+	public static extern bool CryptDecodeObject(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType,
+		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded, CryptDecodeFlags dwFlags,
+		[Out, SizeDef(nameof(pcbStructInfo), SizingMethod.Query)] IntPtr pvStructInfo, ref uint pcbStructInfo);
 
 	/// <summary>
 	/// The <c>CryptDecodeObjectEx</c> function decodes a structure of the type indicated by the lpszStructType parameter.
@@ -586,8 +587,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "bf1935f0-1ab0-4068-9ed5-8fbb2c286b8a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDecodeObjectEx(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType, [In] IntPtr pbEncoded, uint cbEncoded,
-		CryptDecodeFlags dwFlags, in CRYPT_DECODE_PARA pDecodePara, [Out] IntPtr pvStructInfo, ref uint pcbStructInfo);
+	public static extern bool CryptDecodeObjectEx(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType,
+		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded, CryptDecodeFlags dwFlags, in CRYPT_DECODE_PARA pDecodePara,
+		[Out, SizeDef(nameof(pcbStructInfo), SizingMethod.Query)] IntPtr pvStructInfo, ref uint pcbStructInfo);
 
 	/// <summary>
 	/// The <c>CryptDecodeObjectEx</c> function decodes a structure of the type indicated by the lpszStructType parameter.
@@ -899,8 +901,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "bf1935f0-1ab0-4068-9ed5-8fbb2c286b8a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDecodeObjectEx(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType, [In] IntPtr pbEncoded, uint cbEncoded,
-		CryptDecodeFlags dwFlags, [In, Optional] IntPtr pDecodePara, [Out] IntPtr pvStructInfo, ref uint pcbStructInfo);
+	public static extern bool CryptDecodeObjectEx(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType,
+		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded, CryptDecodeFlags dwFlags, [In, Optional] IntPtr pDecodePara,
+		[Out, SizeDef(nameof(pcbStructInfo), SizingMethod.Query)] IntPtr pvStructInfo, ref uint pcbStructInfo);
 
 	/// <summary>
 	/// The <c>CryptEncodeObject</c> function encodes a structure of the type indicated by the value of the lpszStructType parameter.
@@ -1009,7 +1012,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "9576a2a7-4379-4c1b-8ad5-284720cf7ccc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptEncodeObject(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType, [In] IntPtr pvStructInfo, [Out] IntPtr pbEncoded, ref uint pcbEncoded);
+	public static extern bool CryptEncodeObject(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType,
+		[In] IntPtr pvStructInfo, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded);
 
 	/// <summary>
 	/// The <c>CryptEncodeObjectEx</c> function encodes a structure of the type indicated by the value of the lpszStructType parameter.
@@ -1329,7 +1333,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "45134db8-059b-43d3-90c2-9b6cc970fca0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptEncodeObjectEx(CertEncodingType dwCertEncodingType, [In] SafeOID lpszStructType, [In] IntPtr pvStructInfo,
-		CryptEncodeFlags dwFlags, in CRYPT_ENCODE_PARA pEncodePara, [Out] IntPtr pvEncoded, ref uint pcbEncoded);
+		CryptEncodeFlags dwFlags, in CRYPT_ENCODE_PARA pEncodePara, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pvEncoded, ref uint pcbEncoded);
 
 	/// <summary>
 	/// The <c>CRYPT_DECODE_PARA</c> structure is used by the CryptDecodeObjectEx function to provide access to memory allocation and
@@ -1339,23 +1343,23 @@ public static partial class Crypt32
 	// DWORD cbSize; PFN_CRYPT_ALLOC pfnAlloc; PFN_CRYPT_FREE pfnFree; } CRYPT_DECODE_PARA, *PCRYPT_DECODE_PARA;
 	[PInvokeData("wincrypt.h", MSDNShortId = "08ed4627-8cbf-415f-b0d0-2c4b9ed9aed1")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CRYPT_DECODE_PARA
+	public struct CRYPT_DECODE_PARA(Func<int, IntPtr> alloc, Action<IntPtr> free)
 	{
 		/// <summary>The size, in bytes, of this structure.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CRYPT_DECODE_PARA>();
 
 		/// <summary>This member is an optional pointer to a callback function used to allocate memory.</summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public PFN_CRYPT_ALLOC pfnAlloc;
+		public PFN_CRYPT_ALLOC pfnAlloc = s => alloc(s);
 
 		/// <summary>
 		/// This member is an optional pointer to a callback function used to free memory allocated by the allocate callback function.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public PFN_CRYPT_FREE pfnFree;
+		public PFN_CRYPT_FREE pfnFree = s => free(s);
 
 		/// <summary>Gets an instance which uses the CoTaskMem... methods for allocating and freeing memory.</summary>
-		public static readonly CRYPT_DECODE_PARA CoTaskMemInstance = new() { cbSize = (uint)Marshal.SizeOf(typeof(CRYPT_DECODE_PARA)), pfnAlloc = s => Marshal.AllocCoTaskMem(s), pfnFree = Marshal.FreeCoTaskMem };
+		public static readonly CRYPT_DECODE_PARA CoTaskMemInstance = new(Marshal.AllocCoTaskMem, Marshal.FreeCoTaskMem);
 	}
 
 	/// <summary>
@@ -1366,22 +1370,22 @@ public static partial class Crypt32
 	// DWORD cbSize; PFN_CRYPT_ALLOC pfnAlloc; PFN_CRYPT_FREE pfnFree; } CRYPT_ENCODE_PARA, *PCRYPT_ENCODE_PARA;
 	[PInvokeData("wincrypt.h", MSDNShortId = "330af6ac-f1db-4cee-81fd-d3c2c341d493")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CRYPT_ENCODE_PARA
+	public struct CRYPT_ENCODE_PARA(Func<int, IntPtr> alloc, Action<IntPtr> free)
 	{
 		/// <summary>The size, in bytes, of this structure.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CRYPT_ENCODE_PARA>();
 
 		/// <summary>This member is an optional pointer to a callback function used to allocate memory.</summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public PFN_CRYPT_ALLOC pfnAlloc;
+		public PFN_CRYPT_ALLOC pfnAlloc = s => alloc(s);
 
 		/// <summary>
 		/// This member is an optional pointer to a callback function used to free memory allocated by the allocate callback function.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public PFN_CRYPT_FREE pfnFree;
+		public PFN_CRYPT_FREE pfnFree = s => free(s);
 
 		/// <summary>Gets an instance which uses the CoTaskMem... methods for allocating and freeing memory.</summary>
-		public static readonly CRYPT_ENCODE_PARA CoTaskMemInstance = new() { cbSize = (uint)Marshal.SizeOf(typeof(CRYPT_ENCODE_PARA)), pfnAlloc = s => Marshal.AllocCoTaskMem(s), pfnFree = Marshal.FreeCoTaskMem };
+		public static readonly CRYPT_ENCODE_PARA CoTaskMemInstance = new(Marshal.AllocCoTaskMem, Marshal.FreeCoTaskMem);
 	}
 }

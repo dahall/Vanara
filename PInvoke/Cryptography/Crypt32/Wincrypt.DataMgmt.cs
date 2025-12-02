@@ -1,4 +1,7 @@
-﻿namespace Vanara.PInvoke;
+﻿using static Vanara.PInvoke.Crypt32;
+using static Vanara.PInvoke.CryptNet;
+
+namespace Vanara.PInvoke;
 
 /// <summary>Methods and data types found in Crypt32.dll.</summary>
 public static partial class Crypt32
@@ -789,7 +792,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "99d690fb-ea85-4cb1-9fb0-bdb02e4ac50a")]
 	[SuppressAutoGen]
-	public static extern IntPtr CertFindAttribute(SafeOID pszObjId, uint cAttr, [MarshalAs(UnmanagedType.LPArray)] CRYPT_ATTRIBUTE[]? rgAttr);
+	public static extern IntPtr CertFindAttribute([In] SafeOID pszObjId, uint cAttr, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] CRYPT_ATTRIBUTE[]? rgAttr);
 
 	/// <summary>
 	/// The <c>CertFindAttribute</c> function finds the first attribute in the CRYPT_ATTRIBUTE array, as identified by its object
@@ -1100,7 +1103,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "B498C1F0-1EFF-49AF-9CD4-A447F79256F1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertIsStrongHashToSign(in CERT_STRONG_SIGN_PARA pStrongSignPara, [MarshalAs(UnmanagedType.LPWStr)] string pwszCNGHashAlgid, [Optional] PCCERT_CONTEXT pSigningCert);
+	public static extern bool CertIsStrongHashToSign(in CERT_STRONG_SIGN_PARA pStrongSignPara, [MarshalAs(UnmanagedType.LPWStr)] string pwszCNGHashAlgid,
+		[Optional] PCCERT_CONTEXT pSigningCert);
 
 	/// <summary>
 	/// The <c>CertVerifyCRLRevocation</c> function check a certificate revocation list (CRL) to determine whether a subject's
@@ -1135,7 +1139,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "a46ac5b5-bc44-4857-a7fb-4f35d438e3f7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertVerifyCRLRevocation(CertEncodingType dwCertEncodingType, in CERT_INFO pCertId, uint cCrlInfo, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] StructPointer<CRL_INFO>[] rgpCrlInfo);
+	public static extern bool CertVerifyCRLRevocation(CertEncodingType dwCertEncodingType, in CERT_INFO pCertId, uint cCrlInfo,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] StructPointer<CRL_INFO>[] rgpCrlInfo);
 
 	/// <summary>
 	/// The <c>CertVerifyCRLRevocation</c> function check a certificate revocation list (CRL) to determine whether a subject's
@@ -1170,7 +1175,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "a46ac5b5-bc44-4857-a7fb-4f35d438e3f7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static unsafe extern bool CertVerifyCRLRevocation(CertEncodingType dwCertEncodingType, [In] CERT_INFO* pCertId, uint cCrlInfo, [MarshalAs(UnmanagedType.LPArray)] CRL_INFO*[] rgpCrlInfo);
+	public static unsafe extern bool CertVerifyCRLRevocation(CertEncodingType dwCertEncodingType, [In] CERT_INFO* pCertId, uint cCrlInfo,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CRL_INFO*[] rgpCrlInfo);
 
 	/// <summary>The <c>CertVerifyCRLTimeValidity</c> function verifies the time validity of a CRL.</summary>
 	/// <param name="pTimeToVerify">
@@ -1324,7 +1330,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "2d6fb244-5273-4530-bec4-e5451fe26f2e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertVerifyRevocation(CertEncodingType dwEncodingType, CertRevocationType dwRevType, uint cContext, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] rgpvContext,
+	public static extern bool CertVerifyRevocation(CertEncodingType dwEncodingType, CertRevocationType dwRevType, uint cContext,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] rgpvContext,
 		CertVerifyFlags dwFlags, in CERT_REVOCATION_PARA pRevPara, ref CERT_REVOCATION_STATUS pRevStatus);
 
 	/// <summary>
@@ -1464,7 +1471,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "2d6fb244-5273-4530-bec4-e5451fe26f2e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static unsafe extern bool CertVerifyRevocation(CertEncodingType dwEncodingType, CertRevocationType dwRevType, uint cContext, [In, MarshalAs(UnmanagedType.LPArray)] CERT_CONTEXT*[] rgpvContext,
+	public static unsafe extern bool CertVerifyRevocation(CertEncodingType dwEncodingType, CertRevocationType dwRevType, uint cContext,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CERT_CONTEXT*[] rgpvContext,
 		CertVerifyFlags dwFlags, in CERT_REVOCATION_PARA pRevPara, ref CERT_REVOCATION_STATUS pRevStatus);
 
 	/// <summary>The <c>CertVerifyTimeValidity</c> function verifies the time validity of a certificate.</summary>
@@ -1783,7 +1791,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ad43a991-aaf5-4272-abab-0a981112e5e4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptExportPublicKeyInfo(HCRYPTPROV hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, [Optional] IntPtr pInfo, ref uint pcbInfo);
+	public static extern bool CryptExportPublicKeyInfo(HCRYPTPROV hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
+		[Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.Query)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfo</c> function exports the public key information associated with the corresponding private key of
@@ -1867,7 +1876,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ad43a991-aaf5-4272-abab-0a981112e5e4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptExportPublicKeyInfo(NCrypt.NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, [Optional] IntPtr pInfo, ref uint pcbInfo);
+	public static extern bool CryptExportPublicKeyInfo(NCrypt.NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
+		[Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.Query)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfoEx</c> function exports the public key information associated with the provider's corresponding
@@ -1989,7 +1999,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "38274222-90b3-4038-86d3-6b2813100ce2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPublicKeyInfoEx(HCRYPTPROV hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, SafeOID pszPublicKeyObjId,
-		CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional] IntPtr pInfo, ref uint pcbInfo);
+		CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.Query)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfoEx</c> function exports the public key information associated with the provider's corresponding
@@ -2111,7 +2121,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "38274222-90b3-4038-86d3-6b2813100ce2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPublicKeyInfoEx(NCrypt.NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType, SafeOID pszPublicKeyObjId,
-		CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional] IntPtr pInfo, ref uint pcbInfo);
+		CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.Query)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptExportPublicKeyInfoFromBCryptKeyHandle</c> function exports the public key information associated with a provider's
@@ -2183,7 +2193,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "f96bff4a-d354-4231-907a-383aff5cfacc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptExportPublicKeyInfoFromBCryptKeyHandle(BCrypt.BCRYPT_KEY_HANDLE hBCryptKey, CertEncodingType dwCertEncodingType, SafeOID pszPublicKeyObjId,
-		CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional] IntPtr pInfo, ref uint pcbInfo);
+		CryptOIDInfoFlags dwFlags, [In, Optional] IntPtr pvAuxInfo, [Out, Optional, SizeDef(nameof(pcbInfo), SizingMethod.Query)] IntPtr pInfo, ref uint pcbInfo);
 
 	/// <summary>
 	/// The <c>CryptFindCertificateKeyProvInfo</c> function enumerates the cryptographic providers and their containers to find the
@@ -2388,8 +2398,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "a5beba30-f32b-4d57-8a54-7d9096459c50")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashCertificate([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional] uint dwFlags, [In] IntPtr pbEncoded,
-		uint cbEncoded, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
+	public static extern bool CryptHashCertificate([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional, Ignore] uint dwFlags,
+		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded,
+		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>The <c>CryptHashCertificate2</c> function hashes a block of data by using a CNG hash provider.</summary>
 	/// <param name="pwszCNGHashAlgid">
@@ -2422,8 +2433,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "9f315374-0002-499a-81ea-efcb3c19e68f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashCertificate2([MarshalAs(UnmanagedType.LPWStr)] string pwszCNGHashAlgid, [Optional] uint dwFlags,
-		[Optional] IntPtr pvReserved, [In] IntPtr pbEncoded, uint cbEncoded, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
+	public static extern bool CryptHashCertificate2([MarshalAs(UnmanagedType.LPWStr)] string pwszCNGHashAlgid, [Optional, Ignore] uint dwFlags,
+		[Optional, Ignore] IntPtr pvReserved, [In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded,
+		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// <note>Important: This API is deprecated. New and existing software should start using Cryptography Next Generation APIs.
@@ -2522,8 +2534,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b0c419b7-ebb3-42c6-9f6a-59b55a2db1b2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashPublicKeyInfo([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional] uint dwFlags, CertEncodingType dwCertEncodingType,
-		in CERT_PUBLIC_KEY_INFO pInfo, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
+	public static extern bool CryptHashPublicKeyInfo([Optional] HCRYPTPROV hCryptProv, ALG_ID Algid, [Optional, Ignore] uint dwFlags,
+		CertEncodingType dwCertEncodingType, in CERT_PUBLIC_KEY_INFO pInfo,
+		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// <note>Important: This API is deprecated. New and existing software should start using Cryptography Next Generation APIs.
@@ -2621,8 +2634,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "84477054-dd76-4dde-b465-9edeaf192714")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptHashToBeSigned([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType, [In] IntPtr pbEncoded,
-		uint cbEncoded, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
+	public static extern bool CryptHashToBeSigned([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType,
+		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded,
+		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// <para>
@@ -2704,6 +2718,7 @@ public static partial class Crypt32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptimportpkcs8 BOOL CryptImportPKCS8(
 	// CRYPT_PKCS8_IMPORT_PARAMS sPrivateKeyAndParams, DWORD dwFlags, HCRYPTPROV *phCryptProv, void *pvAuxInfo );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+	[Obsolete("The CryptImportPKCS8 function is no longer available for use as of Windows Server 2008 and Windows Vista. Instead, use the PFXImportCertStore function.")]
 	[PInvokeData("wincrypt.h", MSDNShortId = "fa3deff9-b4c1-4b63-a59f-738f87e1a409")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptImportPKCS8(CRYPT_PKCS8_IMPORT_PARAMS sPrivateKeyAndParams, uint dwFlags, out IntPtr phCryptProv, IntPtr pvAuxInfo = default);
@@ -2792,7 +2807,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "f5f8ebb6-c838-404b-9b61-3ec36fdaef01")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptImportPublicKeyInfo(HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType, in CERT_PUBLIC_KEY_INFO pInfo, out SafeHCRYPTKEY phKey);
+	public static extern bool CryptImportPublicKeyInfo([In, AddAsMember] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType, in CERT_PUBLIC_KEY_INFO pInfo,
+		[AddAsCtor] out SafeHCRYPTKEY phKey);
 
 	/// <summary>
 	/// <para>The handle of the CSP to receive the imported public key. This handle must have already been created using CryptAcquireContext.</para>
@@ -2892,8 +2908,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d3a59f83-c761-46bb-ac4f-f42f689ea5f1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptImportPublicKeyInfoEx(HCRYPTPROV hCryptProv, uint dwCertEncodingType, in CERT_PUBLIC_KEY_INFO pInfo, ALG_ID aiKeyAlg,
-		[Optional] uint dwFlags, [Optional] IntPtr pvAuxInfo, out SafeHCRYPTKEY phKey);
+	public static extern bool CryptImportPublicKeyInfoEx([In, AddAsMember] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType, in CERT_PUBLIC_KEY_INFO pInfo,
+		ALG_ID aiKeyAlg, [Optional, Ignore] uint dwFlags, [Optional, Ignore] IntPtr pvAuxInfo, [AddAsCtor] out SafeHCRYPTKEY phKey);
 
 	/// <summary>
 	/// The <c>CryptImportPublicKeyInfoEx2</c> function imports a public key into the CNG asymmetric provider that corresponds to the
@@ -2983,7 +2999,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "c73f2499-75e9-4146-ae4c-0e949206ea37")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptImportPublicKeyInfoEx2(CertEncodingType dwCertEncodingType, in CERT_PUBLIC_KEY_INFO pInfo, CryptOIDInfoFlags dwFlags,
-		[Optional] IntPtr pvAuxInfo, out BCrypt.SafeBCRYPT_KEY_HANDLE phKey);
+		[Optional, Ignore] IntPtr pvAuxInfo, [AddAsCtor] out BCrypt.SafeBCRYPT_KEY_HANDLE phKey);
 
 	/// <summary>
 	/// The <c>CryptMemAlloc</c> function allocates memory for a buffer. It is used by all Crypt32.lib functions that return allocated buffers.
@@ -3718,8 +3734,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d882f2b0-0f0a-41c7-afca-a232dc00797b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptQueryObject(CertQueryObjectType dwObjectType, [In] IntPtr pvObject, CertQueryContentFlags dwExpectedContentTypeFlags, CertQueryFormatFlags dwExpectedFormatTypeFlags,
-		[Optional] uint dwFlags, out CertEncodingType pdwMsgAndCertEncodingType, out CertQueryContentType pdwContentType, out CertQueryFormatType pdwFormatType, out SafeHCERTSTORE phCertStore,
+	public static extern bool CryptQueryObject(CertQueryObjectType dwObjectType, [In] IntPtr pvObject, CertQueryContentFlags dwExpectedContentTypeFlags,
+		CertQueryFormatFlags dwExpectedFormatTypeFlags, [Optional] uint dwFlags, out CertEncodingType pdwMsgAndCertEncodingType,
+		out CertQueryContentType pdwContentType, out CertQueryFormatType pdwFormatType, out SafeHCERTSTORE phCertStore,
 		out SafeHCRYPTMSG phMsg, out SafePCCERT_CONTEXT ppvContext);
 
 	/// <summary>
@@ -4419,8 +4436,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d882f2b0-0f0a-41c7-afca-a232dc00797b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptQueryObject(CertQueryObjectType dwObjectType, [In] IntPtr pvObject, CertQueryContentFlags dwExpectedContentTypeFlags, CertQueryFormatFlags dwExpectedFormatTypeFlags,
-		[Optional] uint dwFlags, out CertEncodingType pdwMsgAndCertEncodingType, out CertQueryContentType pdwContentType, out CertQueryFormatType pdwFormatType, out SafeHCERTSTORE phCertStore,
+	public static extern bool CryptQueryObject(CertQueryObjectType dwObjectType, [In] IntPtr pvObject, CertQueryContentFlags dwExpectedContentTypeFlags,
+		CertQueryFormatFlags dwExpectedFormatTypeFlags, [Optional] uint dwFlags, out CertEncodingType pdwMsgAndCertEncodingType,
+		out CertQueryContentType pdwContentType, out CertQueryFormatType pdwFormatType, out SafeHCERTSTORE phCertStore,
 		out SafeHCRYPTMSG phMsg, out SafePCCRL_CONTEXT ppvContext);
 
 	/// <summary>
@@ -5120,8 +5138,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d882f2b0-0f0a-41c7-afca-a232dc00797b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptQueryObject(CertQueryObjectType dwObjectType, [In] IntPtr pvObject, CertQueryContentFlags dwExpectedContentTypeFlags, CertQueryFormatFlags dwExpectedFormatTypeFlags,
-		[Optional] uint dwFlags, out CertEncodingType pdwMsgAndCertEncodingType, out CertQueryContentType pdwContentType, out CertQueryFormatType pdwFormatType, out SafeHCERTSTORE phCertStore,
+	public static extern bool CryptQueryObject(CertQueryObjectType dwObjectType, [In] IntPtr pvObject, CertQueryContentFlags dwExpectedContentTypeFlags,
+		CertQueryFormatFlags dwExpectedFormatTypeFlags, [Optional] uint dwFlags, out CertEncodingType pdwMsgAndCertEncodingType,
+		out CertQueryContentType pdwContentType, out CertQueryFormatType pdwFormatType, out SafeHCERTSTORE phCertStore,
 		out SafeHCRYPTMSG phMsg, out SafePCCTL_CONTEXT ppvContext);
 
 	/// <summary>
@@ -5307,7 +5326,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignAndEncodeCertificate(NCrypt.NCRYPT_KEY_HANDLE hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
 		[In] SafeOID lpszStructType, [In] IntPtr pvStructInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
-		[In, Optional] IntPtr pvHashAuxInfo, [Out] IntPtr pbEncoded, ref uint pcbEncoded);
+		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded);
 
 	/// <summary>
 	/// <para>
@@ -5492,7 +5511,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignAndEncodeCertificate(HCRYPTPROV hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
 		[In] SafeOID lpszStructType, [In] IntPtr pvStructInfo, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
-		[In, Optional] IntPtr pvHashAuxInfo, [Out] IntPtr pbEncoded, ref uint pcbEncoded);
+		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded);
 
 	/// <summary>The <c>CryptSignCertificate</c> function signs the "to be signed" information in the encoded signed content.</summary>
 	/// <param name="hBCryptKey">
@@ -5605,8 +5624,8 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "27578149-e5c0-47e5-8309-0d0ed7075d13")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignCertificate(NCrypt.NCRYPT_KEY_HANDLE hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
-		[In] IntPtr pbEncodedToBeSigned, uint cbEncodedToBeSigned, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm, [In, Optional] IntPtr pvHashAuxInfo,
-		[Out] IntPtr pbSignature, ref uint pcbSignature);
+		[In, SizeDef(nameof(cbEncodedToBeSigned))] IntPtr pbEncodedToBeSigned, uint cbEncodedToBeSigned, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
+		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbSignature), SizingMethod.Query)] IntPtr pbSignature, ref uint pcbSignature);
 
 	/// <summary>The <c>CryptSignCertificate</c> function signs the "to be signed" information in the encoded signed content.</summary>
 	/// <param name="hBCryptKey">
@@ -5719,8 +5738,8 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "27578149-e5c0-47e5-8309-0d0ed7075d13")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignCertificate(HCRYPTPROV hBCryptKey, CertKeySpec dwKeySpec, CertEncodingType dwCertEncodingType,
-		[In] IntPtr pbEncodedToBeSigned, uint cbEncodedToBeSigned, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm, [In, Optional] IntPtr pvHashAuxInfo,
-		[Out] IntPtr pbSignature, ref uint pcbSignature);
+		[In, SizeDef(nameof(cbEncodedToBeSigned))] IntPtr pbEncodedToBeSigned, uint cbEncodedToBeSigned, in CRYPT_ALGORITHM_IDENTIFIER pSignatureAlgorithm,
+		[In, Optional, Ignore] IntPtr pvHashAuxInfo, [Out, SizeDef(nameof(pcbSignature), SizingMethod.Query)] IntPtr pbSignature, ref uint pcbSignature);
 
 	/// <summary>
 	/// The <c>CryptVerifyCertificateSignature</c> function verifies the signature of a certificate, certificate revocation list (CRL),
@@ -5798,7 +5817,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ac13a1dd-3ca9-470e-8d8f-d79d7d057f45")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptVerifyCertificateSignature([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType, [In] IntPtr pbEncoded, uint cbEncoded, in CERT_PUBLIC_KEY_INFO pPublicKey);
+	public static extern bool CryptVerifyCertificateSignature([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType,
+		[In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded, in CERT_PUBLIC_KEY_INFO pPublicKey);
 
 	/// <summary>
 	/// The <c>CryptVerifyCertificateSignatureEx</c> function verifies the signature of a subject certificate, certificate revocation
@@ -5977,8 +5997,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "8a84af66-b174-4a3e-b1d7-6f218a52d877")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptVerifyCertificateSignatureEx([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType, CryptVerifyCertSignSubject dwSubjectType,
-		IntPtr pvSubject, CryptVerifyCertSignIssuer dwIssuerType, [In, Optional] IntPtr pvIssuer, CryptVerifyCertSignFlags dwFlags, [In, Out, Optional] IntPtr pvExtra);
+	public static extern bool CryptVerifyCertificateSignatureEx([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwCertEncodingType,
+		CryptVerifyCertSignSubject dwSubjectType, [In] IntPtr pvSubject, CryptVerifyCertSignIssuer dwIssuerType,
+		[In, Optional] IntPtr pvIssuer, CryptVerifyCertSignFlags dwFlags, [In, Out, Optional] StructPointer<CRYPT_VERIFY_CERT_SIGN_STRONG_PROPERTIES_INFO> pvExtra);
 
 	/// <summary>
 	/// The <c>CERT_NAME_INFO</c> structure contains subject or issuer names. The information is represented as an array of CERT_RDN structures.
@@ -5993,7 +6014,7 @@ public static partial class Crypt32
 		public uint cRDN;
 
 		/// <summary>Array of pointers to CERT_RDN structures.</summary>
-		public IntPtr rgRDN;
+		public ArrayPointer<CERT_RDN> rgRDN;
 	}
 
 	/// <summary>
@@ -6039,7 +6060,7 @@ public static partial class Crypt32
 		/// An array of certificate store handles. Specifies a set of stores that are searched for issuer certificates. If rgCertStore
 		/// is not set, the default stores are searched.
 		/// </summary>
-		public IntPtr rgCertStore;
+		public ArrayPointer<HCERTSTORE> rgCertStore;
 
 		/// <summary>
 		/// Optional store handle. When specified, a handler that uses certificate revocation lists (CRLs) can search this store for CRLs.
@@ -6051,7 +6072,7 @@ public static partial class Crypt32
 		/// status relative to the time given. If <c>NULL</c> or the handler cannot determine the status relative to the
 		/// <c>pftTimeToUse</c> value, revocation status can be determined independent of time or relative to current time.
 		/// </summary>
-		public IntPtr pftTimeToUse;
+		public StructPointer<FILETIME> pftTimeToUse;
 
 		/// <summary>
 		/// This member is defined only if <c>CERT_REVOCATION_PARA_HAS_EXTRA_FIELDS</c> is defined. The time-out, in milliseconds, that
@@ -6081,7 +6102,7 @@ public static partial class Crypt32
 		/// structure that is used in the freshness time check. If the value of this pointer is null, the revocation handler uses the
 		/// current time. If <c>CERT_REVOCATION_PARA_HAS_EXTRA_FIELDS</c> is defined, this member must be set to null if it is unused.
 		/// </summary>
-		public IntPtr pftCurrentTime;
+		public StructPointer<FILETIME> pftCurrentTime;
 
 		/// <summary>
 		/// This member is defined only if <c>CERT_REVOCATION_PARA_HAS_EXTRA_FIELDS</c> is defined. This member contains a pointer to a
@@ -6089,7 +6110,7 @@ public static partial class Crypt32
 		/// last context checked. To access the information in this CRL, call the CertVerifyRevocation function with cContext set to 1.
 		/// If <c>CERT_REVOCATION_PARA_HAS_EXTRA_FIELDS</c> is defined, the member must be set to null if it is unused.
 		/// </summary>
-		public IntPtr pCrlInfo;
+		public StructPointer<CERT_REVOCATION_CRL_INFO> pCrlInfo;
 
 		/// <summary>
 		/// <para>
@@ -6100,7 +6121,7 @@ public static partial class Crypt32
 		/// </para>
 		/// <para><c>Windows Server 2003 and Windows XP:</c> This member is not used.</para>
 		/// </summary>
-		public IntPtr pftCacheResync;
+		public StructPointer<FILETIME> pftCacheResync;
 
 		/// <summary>
 		/// <para>
@@ -6113,7 +6134,7 @@ public static partial class Crypt32
 		/// available beginning with Windows Vista with SP1.
 		/// </para>
 		/// </summary>
-		public IntPtr pChainPara;
+		public StructPointer<CERT_REVOCATION_CHAIN_PARA> pChainPara;
 	}
 
 	/// <summary>
@@ -6231,7 +6252,7 @@ public static partial class Crypt32
 		public uint cAttr;
 
 		/// <summary>Array of CRYPT_ATTRIBUTE structures.</summary>
-		public IntPtr rgAttr;
+		public ArrayPointer<CRYPT_ATTRIBUTE> rgAttr;
 	}
 
 	/// <summary>
@@ -6364,7 +6385,27 @@ public static partial class Crypt32
 		public CRYPTOAPI_BLOB PrivateKey;
 
 		/// <summary>A CRYPT_ATTRIBUTES structure that identifies the PKCS #8 attributes.</summary>
-		public IntPtr pAttributes;
+		public StructPointer<CRYPT_ATTRIBUTES> pAttributes;
+	}
+
+	/// <summary>Contains the length, in bits, of the public key and the names of the signing and hashing algorithms used for strong signing.</summary>
+	/// <remarks>
+	/// This structure is returned by the <c>CryptVerifyCertificateSignatureEx</c> function when the <i>dwFlags</i> parameter is set to <b>CRYPT_VERIFY_CERT_SIGN_RETURN_STRONG_PROPERTIES_FLAG</b>.
+	/// </remarks>
+	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_verify_cert_sign_strong_properties_info typedef struct
+	// _CRYPT_VERIFY_CERT_SIGN_STRONG_PROPERTIES_INFO { CRYPT_DATA_BLOB CertSignHashCNGAlgPropData; CRYPT_DATA_BLOB
+	// CertIssuerPubKeyBitLengthPropData; } CRYPT_VERIFY_CERT_SIGN_STRONG_PROPERTIES_INFO, *PCRYPT_VERIFY_CERT_SIGN_STRONG_PROPERTIES_INFO;
+	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CRYPT_VERIFY_CERT_SIGN_STRONG_PROPERTIES_INFO")]
+	[StructLayout(LayoutKind.Sequential)]
+	public struct CRYPT_VERIFY_CERT_SIGN_STRONG_PROPERTIES_INFO
+	{
+		/// <summary>
+		/// The buffer contains a Unicode string that denotes the signing algorithm / hashing algorithm pair used, for example "RSA/SHA256".
+		/// </summary>
+		public CRYPTOAPI_BLOB CertSignHashCNGAlgPropData;
+
+		/// <summary>The buffer contains the length, in bits, of the asymmetric key used for signing.</summary>
+		public CRYPTOAPI_BLOB CertIssuerPubKeyBitLengthPropData;
 	}
 
 	/// <summary>Standard crypto memory allocation methods.</summary>

@@ -680,8 +680,9 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "25ffd058-8f75-4ba5-b075-e3efc09f5d9d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptDecodeMessage(CryptMsgType dwMsgTypeFlags, in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara,
-		uint dwSignerIndex, [In] IntPtr pbEncodedBlob, uint cbEncodedBlob, CryptMsgType dwPrevInnerContentType, out CryptMsgType pdwMsgType,
-		out CryptMsgType pdwInnerContentType, [Out] IntPtr pbDecoded, ref uint pcbDecoded, out SafePCCERT_CONTEXT ppXchgCert, out SafePCCERT_CONTEXT ppSignerCert);
+		uint dwSignerIndex, [In, SizeDef(nameof(cbEncodedBlob))] IntPtr pbEncodedBlob, uint cbEncodedBlob, CryptMsgType dwPrevInnerContentType,
+		out CryptMsgType pdwMsgType, out CryptMsgType pdwInnerContentType, [Out, SizeDef(nameof(pcbDecoded), SizingMethod.Query)] IntPtr pbDecoded,
+		ref uint pcbDecoded, out SafePCCERT_CONTEXT ppXchgCert, out SafePCCERT_CONTEXT ppSignerCert);
 
 	/// <summary>The <c>CryptDecryptAndVerifyMessageSignature</c> function decrypts a message and verifies its signature.</summary>
 	/// <param name="pDecryptPara">A pointer to a CRYPT_DECRYPT_MESSAGE_PARA structure that contains decryption parameters.</param>
@@ -756,8 +757,10 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "0864a187-617f-4a21-9809-d2dbbc54ab9c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDecryptAndVerifyMessageSignature(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara, uint dwSignerIndex,
-		[In] IntPtr pbEncryptedBlob, uint cbEncryptedBlob, [Out] IntPtr pbDecrypted, ref uint pcbDecrypted, out SafePCCERT_CONTEXT ppXchgCert, out SafePCCERT_CONTEXT ppSignerCert);
+	public static extern bool CryptDecryptAndVerifyMessageSignature(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara,
+		uint dwSignerIndex, [In, SizeDef(nameof(cbEncryptedBlob))] IntPtr pbEncryptedBlob, uint cbEncryptedBlob,
+		[Out, SizeDef(nameof(pcbDecrypted), SizingMethod.Query)] IntPtr pbDecrypted, ref uint pcbDecrypted,
+		out SafePCCERT_CONTEXT ppXchgCert, out SafePCCERT_CONTEXT ppSignerCert);
 
 	/// <summary>The <c>CryptDecryptMessage</c> function decodes and decrypts a message.</summary>
 	/// <param name="pDecryptPara">A pointer to a CRYPT_DECRYPT_MESSAGE_PARA structure that contains decryption parameters.</param>
@@ -844,8 +847,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e540b816-64e1-4c78-9020-2b221e813acc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In] IntPtr pbEncryptedBlob, uint cbEncryptedBlob,
-		[Out] IntPtr pbDecrypted, ref uint pcbDecrypted, out SafePCCERT_CONTEXT ppXchgCert);
+	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In, SizeDef(nameof(cbEncryptedBlob))] IntPtr pbEncryptedBlob,
+		uint cbEncryptedBlob, [Out, SizeDef(nameof(pcbDecrypted), SizingMethod.Query)] IntPtr pbDecrypted, ref uint pcbDecrypted,
+		out SafePCCERT_CONTEXT ppXchgCert);
 
 	/// <summary>The <c>CryptDecryptMessage</c> function decodes and decrypts a message.</summary>
 	/// <param name="pDecryptPara">A pointer to a CRYPT_DECRYPT_MESSAGE_PARA structure that contains decryption parameters.</param>
@@ -932,80 +936,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e540b816-64e1-4c78-9020-2b221e813acc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In] IntPtr pbEncryptedBlob, uint cbEncryptedBlob,
-		[Out] IntPtr pbDecrypted, ref uint pcbDecrypted, IntPtr ppXchgCert = default);
-
-	/// <summary>The <c>CryptEncryptMessage</c> function encrypts and encodes a message.</summary>
-	/// <param name="pEncryptPara">
-	/// <para>A pointer to a CRYPT_ENCRYPT_MESSAGE_PARA structure that contains the encryption parameters.</para>
-	/// <para>
-	/// The <c>CryptEncryptMessage</c> function does not support the SHA2 OIDs, <c>szOID_DH_SINGLE_PASS_STDDH_SHA256_KDF</c> and <c>szOID_DH_SINGLE_PASS_STDDH_SHA384_KDF</c>.
-	/// </para>
-	/// </param>
-	/// <param name="cRecipientCert">Number of elements in the rgpRecipientCert array.</param>
-	/// <param name="rgpRecipientCert">
-	/// Array of pointers to CERT_CONTEXT structures that contain the certificates of intended recipients of the message.
-	/// </param>
-	/// <param name="pbToBeEncrypted">A pointer to a buffer that contains the message that is to be encrypted.</param>
-	/// <param name="cbToBeEncrypted">The size, in bytes, of the message that is to be encrypted.</param>
-	/// <param name="pbEncryptedBlob">
-	/// <para>A pointer to BLOB that contains a buffer that receives the encrypted and encoded message.</para>
-	/// <para>
-	/// To set the size of this information for memory allocation purposes, this parameter can be <c>NULL</c>. For more information, see
-	/// Retrieving Data of Unknown Length.
-	/// </para>
-	/// </param>
-	/// <param name="pcbEncryptedBlob">
-	/// <para>
-	/// A pointer to a <c>DWORD</c> that specifies the size, in bytes, of the buffer pointed to by the pbEncryptedBlob parameter. When
-	/// the function returns, this variable contains the size, in bytes, of the encrypted and encoded message copied to pbEncryptedBlob.
-	/// </para>
-	/// <para>
-	/// <c>Note</c> When processing the data returned in the buffer of the pbEncryptedBlob, applications need to use the actual size of
-	/// the data returned. The actual size can be slightly smaller than the size of the buffer specified on input. (On input, buffer
-	/// sizes are usually specified large enough to ensure that the largest possible output data will fit in the buffer.) On output, the
-	/// variable pointed to by this parameter is updated to reflect the actual size of the data copied to the buffer.
-	/// </para>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
-	/// <para>If the function fails, it returns zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
-	/// <para>
-	/// <c>Note</c> Errors from calls to CryptGenKey, CryptEncrypt, CryptImportKey, and CryptExportKey can be propagated to this function.
-	/// </para>
-	/// <para>The GetLastError function returns the following error codes most often.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Return code</term>
-	/// <term>Description</term>
-	/// </listheader>
-	/// <item>
-	/// <term>ERROR_MORE_DATA</term>
-	/// <term>
-	/// If the buffer specified by the pbEncryptedBlob parameter is not large enough to hold the returned data, the function sets the
-	/// ERROR_MORE_DATA code and stores the required buffer size, in bytes, in the variable pointed to by pcbEncryptedBlob.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>E_INVALIDARG</term>
-	/// <term>
-	/// The message encoding type is not valid. Currently only PKCS_7_ASN_ENCODING is supported. The cbSize in *pEncryptPara is not valid.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// If the function fails, GetLastError may return an Abstract Syntax Notation One (ASN.1) encoding/decoding error. For information
-	/// about these errors, see ASN.1 Encoding/Decoding Return Values.
-	/// </para>
-	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptencryptmessage BOOL CryptEncryptMessage(
-	// PCRYPT_ENCRYPT_MESSAGE_PARA pEncryptPara, DWORD cRecipientCert, PCCERT_CONTEXT [] rgpRecipientCert, const BYTE *pbToBeEncrypted,
-	// DWORD cbToBeEncrypted, BYTE *pbEncryptedBlob, DWORD *pcbEncryptedBlob );
-	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
-	[PInvokeData("wincrypt.h", MSDNShortId = "927f2e9a-96cf-4744-bd57-420b5034d28d")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptEncryptMessage(in CRYPT_ENCRYPT_MESSAGE_PARA pEncryptPara, uint cRecipientCert, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PCCERT_CONTEXT[] rgpRecipientCert,
-		[In] IntPtr pbToBeEncrypted, uint cbToBeEncrypted, [Out] IntPtr pbEncryptedBlob, ref uint pcbEncryptedBlob);
+	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In, SizeDef(nameof(cbEncryptedBlob))] IntPtr pbEncryptedBlob,
+		uint cbEncryptedBlob, [Out, SizeDef(nameof(pcbDecrypted), SizingMethod.Query)] IntPtr pbDecrypted, ref uint pcbDecrypted, IntPtr ppXchgCert = default);
 
 	/// <summary>
 	/// The <c>CryptGetMessageCertificates</c> function returns the handle of an open certificate store containing the message's
@@ -1068,7 +1000,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d890f91f-bb45-463b-b7c0-56acc9367571")]
 	public static extern SafeHCERTSTORE CryptGetMessageCertificates(CertEncodingType dwMsgAndCertEncodingType, [Optional] HCRYPTPROV hCryptProv,
-		CertStoreFlags dwFlags, [In] IntPtr pbSignedBlob, uint cbSignedBlob);
+		CertStoreFlags dwFlags, [In, SizeDef(nameof(cbSignedBlob))] IntPtr pbSignedBlob, uint cbSignedBlob);
 
 	/// <summary>The <c>CryptGetMessageSignerCount</c> function returns the number of signers of a signed message.</summary>
 	/// <param name="dwMsgEncodingType">
@@ -1111,7 +1043,7 @@ public static partial class Crypt32
 	// CryptGetMessageSignerCount( DWORD dwMsgEncodingType, const BYTE *pbSignedBlob, DWORD cbSignedBlob );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d18bda8b-b333-4b1e-8ed5-f8eff04b3168")]
-	public static extern int CryptGetMessageSignerCount(CertEncodingType dwMsgEncodingType, [In] IntPtr pbSignedBlob, uint cbSignedBlob);
+	public static extern int CryptGetMessageSignerCount(CertEncodingType dwMsgEncodingType, [In, SizeDef(nameof(cbSignedBlob))] IntPtr pbSignedBlob, uint cbSignedBlob);
 
 	/// <summary>The <c>CryptHashMessage</c> function creates a hash of the message.</summary>
 	/// <param name="pHashPara">A pointer to a CRYPT_HASH_MESSAGE_PARA structure that contains the hash parameters.</param>
@@ -1200,7 +1132,9 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "85a04c01-fd7c-4d87-b6e1-a0f2aea45d16")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptHashMessage(in CRYPT_HASH_MESSAGE_PARA pHashPara, [MarshalAs(UnmanagedType.Bool)] bool fDetachedHash, uint cToBeHashed,
-		[In] IntPtr[] rgpbToBeHashed, [In] uint[] rgcbToBeHashed, [Out] IntPtr pbHashedBlob, ref uint pcbHashedBlob, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] rgpbToBeHashed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] rgcbToBeHashed,
+		[Out, SizeDef(nameof(pcbHashedBlob), SizingMethod.Query)] IntPtr pbHashedBlob, ref uint pcbHashedBlob,
+		[Out, Optional, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// The <c>CryptMsgCalculateEncodedLength</c> function calculates the maximum number of bytes needed for an encoded cryptographic
@@ -1362,8 +1296,8 @@ public static partial class Crypt32
 	// pszInnerContentObjID, DWORD cbData );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "1c12003a-c2f3-4069-8bd6-b8f2875b0c98")]
-	public static extern uint CryptMsgCalculateEncodedLength(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType, [In] IntPtr pvMsgEncodeInfo,
-		[Optional] SafeOID pszInnerContentObjID, uint cbData);
+	public static extern uint CryptMsgCalculateEncodedLength(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType,
+		[In] IntPtr pvMsgEncodeInfo, [Optional] SafeOID pszInnerContentObjID, uint cbData);
 
 	/// <summary>
 	/// The <c>CryptMsgClose</c> function closes a cryptographic message handle. At each call to this function, the reference count on
@@ -1716,7 +1650,346 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "a990d44d-2993-429f-b817-2a834105ecef")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgControl(HCRYPTMSG hCryptMsg, CryptMsgFlags dwFlags, CryptMsgControlType dwCtrlType, [In, Optional] IntPtr pvCtrlPara);
+	public static extern bool CryptMsgControl([In, AddAsMember] HCRYPTMSG hCryptMsg, CryptMsgFlags dwFlags, CryptMsgControlType dwCtrlType, [In, Optional] IntPtr pvCtrlPara);
+
+	/// <summary>
+	/// <para>
+	/// The <c>CryptMsgControl</c> function performs a control operation after a message has been decoded by a final call to the
+	/// CryptMsgUpdate function. The control operations provided by this function are used for decryption, signature and hash
+	/// verification, and the addition and deletion of certificates, certificate revocation lists (CRLs), signers, and unauthenticated attributes.
+	/// </para>
+	/// <para>
+	/// Important changes that affect the handling of enveloped messages have been made to CryptoAPI to support Secure/Multipurpose
+	/// Internet Mail Extensions (S/MIME) email interoperability. For more information, see the Remarks for the CryptMsgOpenToEncode function.
+	/// </para>
+	/// </summary>
+	/// <typeparam name="T">The type of the control parameter.</typeparam>
+	/// <param name="hCryptMsg">A handle of a cryptographic message for which a control is to be applied.</param>
+	/// <param name="dwFlags">
+	/// <para>The following value is defined when the dwCtrlType parameter is one of the following:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>CMSG_CTRL_DECRYPT</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_KEY_TRANS_DECRYPT</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_KEY_AGREE_DECRYPT</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_MAIL_LIST_DECRYPT</term>
+	/// </item>
+	/// </list>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CMSG_CRYPT_RELEASE_CONTEXT_FLAG</term>
+	/// <term>
+	/// The handle to the cryptographic provider is released on the final call to the CryptMsgClose function. This handle is not
+	/// released if the CryptMsgControl function fails.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>If the dwCtrlType parameter does not specify a decrypt operation, set this value to zero.</para>
+	/// </param>
+	/// <param name="dwCtrlType">
+	/// <para>
+	/// The type of operation to be performed. Currently defined message control types and the type of structure that should be passed
+	/// to the pvCtrlPara parameter are shown in the following table.
+	/// </para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CMSG_CTRL_ADD_ATTR_CERT 14 (0xE)</term>
+	/// <term>A BLOB that contains the encoded bytes of attribute certificate.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_ADD_CERT 10 (0xA)</term>
+	/// <term>A CRYPT_INTEGER_BLOB structure that contains the encoded bytes of the certificate to be added to the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_ADD_CMS_SIGNER_INFO 20 (0x14)</term>
+	/// <term>
+	/// A CMSG_CMS_SIGNER_INFO structure that contains signer information. This operation differs from CMSG_CTRL_ADD_SIGNER because the
+	/// signer information contains the signature.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_ADD_CRL 12 (0xC)</term>
+	/// <term>A BLOB that contains the encoded bytes of the CRL to be added to the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_ADD_SIGNER 6 (0x6)</term>
+	/// <term>A CMSG_SIGNER_ENCODE_INFO structure that contains the signer information to be added to the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_ADD_SIGNER_UNAUTH_ATTR 8 (0x8)</term>
+	/// <term>
+	/// A CMSG_CTRL_ADD_SIGNER_UNAUTH_ATTR_PARA structure that contains the index of the signer and a BLOB that contains the
+	/// unauthenticated attribute information to be added to the message.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_DECRYPT 2 (0x2)</term>
+	/// <term>
+	/// A CMSG_CTRL_DECRYPT_PARA structure used to decrypt the message for the specified key transport recipient. This value is
+	/// applicable to RSA recipients. This operation specifies that the CryptMsgControl function search the recipient index to obtain
+	/// the key transport recipient information. If the function fails, GetLastError will return CRYPT_E_INVALID_INDEX if no key
+	/// transport recipient is found.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_DEL_ATTR_CERT 15 (0xF)</term>
+	/// <term>The index of the attribute certificate to be removed.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_DEL_CERT 11 (0xB)</term>
+	/// <term>The index of the certificate to be deleted from the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_DEL_CRL 13 (0xD)</term>
+	/// <term>The index of the CRL to be deleted from the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_DEL_SIGNER 7 (0x7)</term>
+	/// <term>The index of the signer to be deleted.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_DEL_SIGNER_UNAUTH_ATTR 9 (0x9)</term>
+	/// <term>
+	/// A CMSG_CTRL_DEL_SIGNER_UNAUTH_ATTR_PARA structure that contains an index that specifies the signer and the index that specifies
+	/// the signer's unauthenticated attribute to be deleted.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_ENABLE_STRONG_SIGNATURE 21 (0x15)</term>
+	/// <term>
+	/// A CERT_STRONG_SIGN_PARA structure used to perform strong signature checking. To check for a strong signature, specify this
+	/// control type before calling CryptMsgGetAndVerifySigner or before calling CryptMsgControl with the following control types set:
+	/// After the signature is successfully verified, this function checks for a strong signature. If the signature is not strong, the
+	/// operation will fail and the GetLastError value will be set to NTE_BAD_ALGID.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_KEY_AGREE_DECRYPT 17 (0x11)</term>
+	/// <term>
+	/// A CMSG_CTRL_KEY_AGREE_DECRYPT_PARA structure used to decrypt the message for the specified key agreement session key. Key
+	/// agreement is used with Diffie-Hellman encryption/decryption.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_KEY_TRANS_DECRYPT 16 (0x10)</term>
+	/// <term>
+	/// A CMSG_CTRL_KEY_TRANS_DECRYPT_PARA structure used to decrypt the message for the specified key transport recipient. Key
+	/// transport is used with RSA encryption/decryption.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_MAIL_LIST_DECRYPT 18 (0x12)</term>
+	/// <term>
+	/// A CMSG_CTRL_MAIL_LIST_DECRYPT_PARA structure used to decrypt the message for the specified recipient using a previously
+	/// distributed key-encryption key (KEK).
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_VERIFY_HASH 5 (0x5)</term>
+	/// <term>This value is not used.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_VERIFY_SIGNATURE 1 (0x1)</term>
+	/// <term>A CERT_INFO structure that identifies the signer of the message whose signature is to be verified.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_VERIFY_SIGNATURE_EX 19 (0x13)</term>
+	/// <term>
+	/// A CMSG_CTRL_VERIFY_SIGNATURE_EX_PARA structure that specifies the signer index and public key to verify the message signature.
+	/// The signer public key can be a CERT_PUBLIC_KEY_INFO structure, a certificate context, or a certificate chain context.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pvCtrlPara">
+	/// <para>A pointer to a structure determined by the value of dwCtrlType.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>dwCtrlType value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>
+	/// CMSG_CTRL_DECRYPT, CMSG_CTRL_KEY_TRANS_DECRYPT, CMSG_CTRL_KEY_AGREE_DECRYPT, or CMSG_CTRL_MAIL_LIST_DECRYPT, and the streamed
+	/// enveloped message is being decoded
+	/// </term>
+	/// <term>
+	/// Decoding will be done as if the streamed content were being decrypted. If any encrypted streamed content has accumulated prior
+	/// to this call, some or all of the plaintext that results from the decryption of the cipher text is passed back to the application
+	/// through the callback function specified in the call to the CryptMsgOpenToDecode function.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_VERIFY_HASH</term>
+	/// <term>The hash computed from the content of the message is compared against the hash contained in the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_ADD_SIGNER</term>
+	/// <term>pvCtrlPara points to a CMSG_SIGNER_ENCODE_INFO structure that contains the signer information to be added to the message.</term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_DEL_SIGNER</term>
+	/// <term>
+	/// After a deletion is made, any other signer indices in use for this message are no longer valid and must be reacquired by calling
+	/// the CryptMsgGetParam function.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_DEL_SIGNER_UNAUTH_ATTR</term>
+	/// <term>
+	/// After a deletion is made, any other unauthenticated attribute indices in use for this signer are no longer valid and must be
+	/// reacquired by calling the CryptMsgGetParam function.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_DEL_CERT</term>
+	/// <term>
+	/// After a deletion is made, any other certificate indices in use for this message are no longer valid and must be reacquired by
+	/// calling the CryptMsgGetParam function.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CMSG_CTRL_DEL_CRL</term>
+	/// <term>
+	/// After a deletion is made, any other CRL indices in use for this message are no longer valid and will need to be reacquired by
+	/// calling the CryptMsgGetParam function.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>
+	/// If the function fails, the return value is zero and the GetLastError function returns an Abstract Syntax Notation One (ASN.1)
+	/// encoding/decoding error. For information about these errors, see ASN.1 Encoding/Decoding Return Values.
+	/// </para>
+	/// <para>
+	/// When a streamed, enveloped message is being decoded, errors encountered in the application-defined callback function specified
+	/// by the pStreamInfo parameter of the CryptMsgOpenToDecode function might be propagated to the <c>CryptMsgControl</c> function. If
+	/// this happens, the SetLastError function is not called by the <c>CryptMsgControl</c> function after the callback function
+	/// returns. This preserves any errors encountered under the control of the application. It is the responsibility of the callback
+	/// function (or one of the APIs that it calls) to call the <c>SetLastError</c> function if an error occurs while the application is
+	/// processing the streamed data.
+	/// </para>
+	/// <para>Propagated errors might be encountered from the following functions:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>CryptCreateHash</term>
+	/// </item>
+	/// <item>
+	/// <term>CryptDecrypt</term>
+	/// </item>
+	/// <item>
+	/// <term>CryptGetHashParam</term>
+	/// </item>
+	/// <item>
+	/// <term>CryptGetUserKey</term>
+	/// </item>
+	/// <item>
+	/// <term>CryptHashData</term>
+	/// </item>
+	/// <item>
+	/// <term>CryptImportKey</term>
+	/// </item>
+	/// <item>
+	/// <term>CryptSignHash</term>
+	/// </item>
+	/// <item>
+	/// <term>CryptVerifySignature</term>
+	/// </item>
+	/// </list>
+	/// <para>The following error codes are most commonly returned.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CRYPT_E_ALREADY_DECRYPTED</term>
+	/// <term>The message content has already been decrypted. This error can be returned if the dwCtrlType parameter is set to CMSG_CTRL_DECRYPT.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_AUTH_ATTR_MISSING</term>
+	/// <term>
+	/// The message does not contain an expected authenticated attribute. This error can be returned if the dwCtrlType parameter is set
+	/// to CMSG_CTRL_VERIFY_SIGNATURE.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_BAD_ENCODE</term>
+	/// <term>
+	/// An error was encountered while encoding or decoding. This error can be returned if the dwCtrlType parameter is set to CMSG_CTRL_VERIFY_SIGNATURE.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_CONTROL_TYPE</term>
+	/// <term>The control type is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_HASH_VALUE</term>
+	/// <term>The hash value is incorrect.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_INVALID_INDEX</term>
+	/// <term>The index value is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_INVALID_MSG_TYPE</term>
+	/// <term>The message type is not valid.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_OID_FORMAT</term>
+	/// <term>The object identifier is badly formatted. This error can be returned if the dwCtrlType parameter is set to CMSG_CTRL_ADD_SIGNER.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_RECIPIENT_NOT_FOUND</term>
+	/// <term>
+	/// The enveloped data message does not contain the specified recipient. This error can be returned if the dwCtrlType parameter is
+	/// set to CMSG_CTRL_DECRYPT.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_SIGNER_NOT_FOUND</term>
+	/// <term>The specified signer for the message was not found. This error can be returned if the dwCtrlType parameter is set to CMSG_CTRL_VERIFY_SIGNATURE.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_UNKNOWN_ALGO</term>
+	/// <term>The cryptographic algorithm is unknown.</term>
+	/// </item>
+	/// <item>
+	/// <term>CRYPT_E_UNEXPECTED_ENCODING</term>
+	/// <term>The message is not encoded as expected. This error can be returned if the dwCtrlType parameter is set to CMSG_CTRL_VERIFY_SIGNATURE.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>One or more arguments are not valid. This error can be returned if the dwCtrlType parameter is set to CMSG_CTRL_DECRYPT.</term>
+	/// </item>
+	/// <item>
+	/// <term>E_OUTOFMEMORY</term>
+	/// <term>Not enough memory was available to complete the operation.</term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	[PInvokeData("wincrypt.h", MSDNShortId = "a990d44d-2993-429f-b817-2a834105ecef")]
+	public static bool CryptMsgControl<T>([In, AddAsMember] HCRYPTMSG hCryptMsg, CryptMsgFlags dwFlags, CryptMsgControlType dwCtrlType, in T pvCtrlPara) where T : struct
+	{
+		using SafeCoTaskMemStruct<T> cp = pvCtrlPara;
+		return CryptMsgControl(hCryptMsg, dwFlags, dwCtrlType, cp);
+	}
 
 	/// <summary>
 	/// The <c>CryptMsgCountersign</c> function countersigns an existing signature in a message. Countersignatures are used to sign an
@@ -1759,7 +2032,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "ebf76664-bca6-462d-b519-2b60f435d8ef")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgCountersign(HCRYPTMSG hCryptMsg, uint dwIndex, uint cCountersigners, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CMSG_SIGNER_ENCODE_INFO[] rgCountersigners);
+	public static extern bool CryptMsgCountersign([In, AddAsMember] HCRYPTMSG hCryptMsg, uint dwIndex, uint cCountersigners, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] CMSG_SIGNER_ENCODE_INFO[] rgCountersigners);
 
 	/// <summary>
 	/// The <c>CryptMsgCountersignEncoded</c> function countersigns an existing PKCS #7 message signature. The pbCountersignature
@@ -1845,8 +2118,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d9fd734b-e14d-4392-ac88-5565aefbedb4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgCountersignEncoded(CertEncodingType dwEncodingType, [In] IntPtr pbSignerInfo, uint cbSignerInfo, uint cCountersigners,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CMSG_SIGNER_ENCODE_INFO[] rgCountersigners, [Out] IntPtr pbCountersignature, ref uint pcbCountersignature);
+	public static extern bool CryptMsgCountersignEncoded(CertEncodingType dwEncodingType, [In, SizeDef(nameof(cbSignerInfo))] IntPtr pbSignerInfo,
+		uint cbSignerInfo, uint cCountersigners, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CMSG_SIGNER_ENCODE_INFO[] rgCountersigners,
+		[Out, SizeDef(nameof(pcbCountersignature), SizingMethod.Query)] IntPtr pbCountersignature, ref uint pcbCountersignature);
 
 	/// <summary>The <c>CryptMsgDuplicate</c> function duplicates a cryptographic message handle by incrementing its reference count.</summary>
 	/// <param name="hCryptMsg">
@@ -1869,7 +2143,7 @@ public static partial class Crypt32
 	// hCryptMsg );
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "9b1142b9-0caa-4304-bfe6-1c27c6a7b782")]
-	public static extern HCRYPTMSG CryptMsgDuplicate(HCRYPTMSG hCryptMsg);
+	public static extern SafeHCRYPTMSG CryptMsgDuplicate(HCRYPTMSG hCryptMsg);
 
 	/// <summary>
 	/// The <c>CryptMsgGetParam</c> function acquires a message parameter after a cryptographic message has been encoded or decoded.
@@ -2269,7 +2543,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "5a05eb09-208f-4e94-abfa-c2f14c0a3164")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgGetParam(HCRYPTMSG hCryptMsg, CryptMsgParamType dwParamType, uint dwIndex, [Out] IntPtr pvData, ref uint pcbData);
+	public static extern bool CryptMsgGetParam(HCRYPTMSG hCryptMsg, CryptMsgParamType dwParamType, uint dwIndex,
+		[Out, SizeDef(nameof(pcbData), SizingMethod.Query)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>
@@ -2601,7 +2876,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b3df6312-c866-4faa-8b89-bda67c697631")]
 	public static extern SafeHCRYPTMSG CryptMsgOpenToDecode(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType,
-		HCRYPTPROV hCryptProv = default, IntPtr pRecipientInfo = default, IntPtr pStreamInfo = default);
+		HCRYPTPROV hCryptProv = default, IntPtr pRecipientInfo = default, ManagedStructPointer<CMSG_STREAM_INFO> pStreamInfo = default);
 
 	/// <summary>
 	/// The <c>CryptMsgOpenToEncode</c> function opens a cryptographic message for encoding and returns a handle of the opened message.
@@ -2831,8 +3106,8 @@ public static partial class Crypt32
 	// PCMSG_STREAM_INFO pStreamInfo );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b0d2610b-05ba-4fb6-8f38-10f970a52091")]
-	public static extern SafeHCRYPTMSG CryptMsgOpenToEncode(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType, [In] IntPtr pvMsgEncodeInfo,
-		[Optional] SafeOID pszInnerContentObjID, in CMSG_STREAM_INFO pStreamInfo);
+	public static extern SafeHCRYPTMSG CryptMsgOpenToEncode(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType,
+		[In] IntPtr pvMsgEncodeInfo, [Optional] SafeOID pszInnerContentObjID, in CMSG_STREAM_INFO pStreamInfo);
 
 	/// <summary>
 	/// The <c>CryptMsgOpenToEncode</c> function opens a cryptographic message for encoding and returns a handle of the opened message.
@@ -3062,8 +3337,8 @@ public static partial class Crypt32
 	// PCMSG_STREAM_INFO pStreamInfo );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b0d2610b-05ba-4fb6-8f38-10f970a52091")]
-	public static extern SafeHCRYPTMSG CryptMsgOpenToEncode(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType, [In] IntPtr pvMsgEncodeInfo,
-		[Optional] SafeOID pszInnerContentObjID, IntPtr pStreamInfo = default);
+	public static extern SafeHCRYPTMSG CryptMsgOpenToEncode(CertEncodingType dwMsgEncodingType, CryptMsgFlags dwFlags, CryptMsgType dwMsgType,
+		[In] IntPtr pvMsgEncodeInfo, [Optional] SafeOID pszInnerContentObjID, IntPtr pStreamInfo = default);
 
 	/// <summary>
 	/// The <c>CryptMsgUpdate</c> function adds contents to a cryptographic message. The use of this function allows messages to be
@@ -3174,7 +3449,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d27d75f0-1646-4926-b375-59e52b00326c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgUpdate(HCRYPTMSG hCryptMsg, [In] IntPtr pbData, uint cbData, [MarshalAs(UnmanagedType.Bool)] bool fFinal);
+	public static extern bool CryptMsgUpdate(HCRYPTMSG hCryptMsg, [In, SizeDef(nameof(cbData))] IntPtr pbData, uint cbData, [MarshalAs(UnmanagedType.Bool)] bool fFinal);
 
 	/// <summary>
 	/// The <c>CryptMsgVerifyCountersignatureEncoded</c> function verifies a countersignature in terms of the SignerInfo structure (as
@@ -3282,8 +3557,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b0332360-a737-4b48-b592-0c55d493a02d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgVerifyCountersignatureEncoded([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwEncodingType, [In] IntPtr pbSignerInfo, uint cbSignerInfo,
-		[In] IntPtr pbSignerInfoCountersignature, uint cbSignerInfoCountersignature, in CERT_INFO pciCountersigner);
+	public static extern bool CryptMsgVerifyCountersignatureEncoded([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwEncodingType,
+		[In, SizeDef(nameof(cbSignerInfo))] IntPtr pbSignerInfo, uint cbSignerInfo,
+		[In, SizeDef(nameof(cbSignerInfoCountersignature))] IntPtr pbSignerInfoCountersignature, uint cbSignerInfoCountersignature, in CERT_INFO pciCountersigner);
 
 	/// <summary>
 	/// The <c>CryptMsgVerifyCountersignatureEncodedEx</c> function verifies that the pbSignerInfoCounterSignature parameter contains
@@ -3437,8 +3713,10 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "da756cd5-1dec-4d88-9c90-76dd263035eb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptMsgVerifyCountersignatureEncodedEx([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwEncodingType, [In] IntPtr pbSignerInfo, uint cbSignerInfo,
-		[In] IntPtr pbSignerInfoCountersignature, uint cbSignerInfoCountersignature, CryptMsgSignerType dwSignerType, IntPtr pvSigner, CryptMsgVerifyCounterFlags dwFlags, [Optional] IntPtr pvExtra);
+	public static extern bool CryptMsgVerifyCountersignatureEncodedEx([Optional] HCRYPTPROV hCryptProv, CertEncodingType dwEncodingType,
+		[In, SizeDef(nameof(cbSignerInfo))] IntPtr pbSignerInfo, uint cbSignerInfo,
+		[In, SizeDef(nameof(cbSignerInfoCountersignature))] IntPtr pbSignerInfoCountersignature, uint cbSignerInfoCountersignature,
+		CryptMsgSignerType dwSignerType, IntPtr pvSigner, CryptMsgVerifyCounterFlags dwFlags, [Optional] IntPtr pvExtra);
 
 	/// <summary>
 	/// The <c>CryptSignAndEncryptMessage</c> function creates a hash of the specified content, signs the hash, encrypts the content,
@@ -3500,8 +3778,9 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "0ab234f2-a681-463f-8ba8-b23b05cf2626")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignAndEncryptMessage(in CRYPT_SIGN_MESSAGE_PARA pSignPara, in CRYPT_ENCRYPT_MESSAGE_PARA pEncryptPara, uint cRecipientCert,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PCCERT_CONTEXT[] rgpRecipientCert, [In] IntPtr pbToBeSignedAndEncrypted, uint cbToBeSignedAndEncrypted,
-		[Out] IntPtr pbSignedAndEncryptedBlob, ref uint pcbSignedAndEncryptedBlob);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PCCERT_CONTEXT[] rgpRecipientCert,
+		[In, SizeDef(nameof(cbToBeSignedAndEncrypted))] IntPtr pbToBeSignedAndEncrypted, uint cbToBeSignedAndEncrypted,
+		[Out, SizeDef(nameof(pcbSignedAndEncryptedBlob), SizingMethod.Query)] IntPtr pbSignedAndEncryptedBlob, ref uint pcbSignedAndEncryptedBlob);
 
 	/// <summary>
 	/// The <c>CryptSignMessage</c> function creates a hash of the specified content, signs the hash, and then encodes both the original
@@ -3583,7 +3862,9 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "f14f7c7b-14ac-40a7-9a49-d1a899ecc52a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSignMessage(in CRYPT_SIGN_MESSAGE_PARA pSignPara, [MarshalAs(UnmanagedType.Bool)] bool fDetachedSignature, uint cToBeSigned,
-		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] rgpbToBeSigned, [In] uint[] rgcbToBeSigned, [Out] IntPtr pbSignedBlob, ref uint pcbSignedBlob);
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] rgpbToBeSigned,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] uint[] rgcbToBeSigned,
+		[Out, SizeDef(nameof(pcbSignedBlob), SizingMethod.Query)] IntPtr pbSignedBlob, ref uint pcbSignedBlob);
 
 	/// <summary>
 	/// The <c>CryptSignMessageWithKey</c> function signs a message by using a CSP's private key specified in the parameters. A
@@ -3645,7 +3926,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d31024bf-7022-440b-8134-a02578510357")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptSignMessageWithKey(in CRYPT_KEY_SIGN_MESSAGE_PARA pSignPara, [In] IntPtr pbToBeSigned, uint cbToBeSigned, [Out] IntPtr pbSignedBlob, ref uint pcbSignedBlob);
+	public static extern bool CryptSignMessageWithKey(in CRYPT_KEY_SIGN_MESSAGE_PARA pSignPara, [In, SizeDef(nameof(cbToBeSigned))] IntPtr pbToBeSigned,
+		uint cbToBeSigned, [Out, SizeDef(nameof(pcbSignedBlob), SizingMethod.Query)] IntPtr pbSignedBlob, ref uint pcbSignedBlob);
 
 	/// <summary>The <c>CryptVerifyDetachedMessageHash</c> function verifies a detached hash.</summary>
 	/// <param name="pHashPara">A pointer to a CRYPT_HASH_MESSAGE_PARA structure containing the hash parameters.</param>
@@ -3715,9 +3997,11 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b529b9e2-9798-4548-a44f-c330524a3e6b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptVerifyDetachedMessageHash(in CRYPT_HASH_MESSAGE_PARA pHashPara, [In] IntPtr pbDetachedHashBlob, uint cbDetachedHashBlob,
-		uint cToBeHashed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] IntPtr[] rgpbToBeHashed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] rgcbToBeHashed,
-		[Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
+	public static extern bool CryptVerifyDetachedMessageHash(in CRYPT_HASH_MESSAGE_PARA pHashPara,
+		[In, SizeDef(nameof(cbDetachedHashBlob))] IntPtr pbDetachedHashBlob, uint cbDetachedHashBlob,
+		uint cToBeHashed, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] IntPtr[] rgpbToBeHashed,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] rgcbToBeHashed,
+		[Out, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// The <c>CryptVerifyDetachedMessageSignature</c> function verifies a signed message containing a detached signature or signatures.
@@ -3785,8 +4069,10 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "d437f6bf-eb56-4d29-bb91-eb8487e50219")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptVerifyDetachedMessageSignature(in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara, uint dwSignerIndex, [In] IntPtr pbDetachedSignBlob, uint cbDetachedSignBlob,
-		uint cToBeSigned, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] rgpbToBeSigned, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[] rgcbToBeSigned, out SafePCCERT_CONTEXT ppSignerCert);
+	public static extern bool CryptVerifyDetachedMessageSignature(in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara, uint dwSignerIndex,
+		[In, SizeDef(nameof(cbDetachedSignBlob))] IntPtr pbDetachedSignBlob, uint cbDetachedSignBlob,
+		uint cToBeSigned, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] rgpbToBeSigned,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] uint[] rgcbToBeSigned, out SafePCCERT_CONTEXT ppSignerCert);
 
 	/// <summary>The <c>CryptVerifyMessageHash</c> function verifies the hash of specified content.</summary>
 	/// <param name="pHashPara">A pointer to a CRYPT_HASH_MESSAGE_PARA structure containing hash parameters.</param>
@@ -3869,8 +4155,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "3b5185b9-e24b-4302-a60c-74ccbd19077c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptVerifyMessageHash(in CRYPT_HASH_MESSAGE_PARA pHashPara, [In] IntPtr pbHashedBlob, uint cbHashedBlob, [Out] IntPtr pbToBeHashed,
-		ref uint pcbToBeHashed, [Out] IntPtr pbComputedHash, ref uint pcbComputedHash);
+	public static extern bool CryptVerifyMessageHash(in CRYPT_HASH_MESSAGE_PARA pHashPara, [In, SizeDef(nameof(cbHashedBlob))] IntPtr pbHashedBlob,
+		uint cbHashedBlob, [Out, SizeDef(nameof(pcbToBeHashed), SizingMethod.Query)] IntPtr pbToBeHashed,
+		ref uint pcbToBeHashed, [Out, SizeDef(nameof(pcbComputedHash), SizingMethod.Query)] IntPtr pbComputedHash, ref uint pcbComputedHash);
 
 	/// <summary>
 	/// <para>The <c>CryptVerifyMessageSignature</c> function verifies a signed message's signature.</para>
@@ -3978,8 +4265,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "03411e7a-b097-4059-a198-3d412ae40e38")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptVerifyMessageSignature(in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara, uint dwSignerIndex, [In] IntPtr pbSignedBlob, uint cbSignedBlob,
-		[Out] IntPtr pbDecoded, ref uint pcbDecoded, out SafePCCERT_CONTEXT ppSignerCert);
+	public static extern bool CryptVerifyMessageSignature(in CRYPT_VERIFY_MESSAGE_PARA pVerifyPara, uint dwSignerIndex,
+		[In, SizeDef(nameof(cbSignedBlob))] IntPtr pbSignedBlob, uint cbSignedBlob,
+		[Out, SizeDef(nameof(pcbDecoded), SizingMethod.Query)] IntPtr pbDecoded, ref uint pcbDecoded, out SafePCCERT_CONTEXT ppSignerCert);
 
 	/// <summary>
 	/// The <c>CryptVerifyMessageSignatureWithKey</c> function verifies a signed message's signature by using specified public key information.
@@ -4057,8 +4345,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "6fe0f9ee-1838-4eb7-8254-05b878eb8f56")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptVerifyMessageSignatureWithKey(in CRYPT_KEY_VERIFY_MESSAGE_PARA pVerifyPara, in CERT_PUBLIC_KEY_INFO pPublicKeyInfo, [In] IntPtr pbSignedBlob,
-		uint cbSignedBlob, [Out] IntPtr pbDecoded, ref uint pcbDecoded);
+	public static extern bool CryptVerifyMessageSignatureWithKey(in CRYPT_KEY_VERIFY_MESSAGE_PARA pVerifyPara, in CERT_PUBLIC_KEY_INFO pPublicKeyInfo,
+		[In, SizeDef(nameof(cbSignedBlob))] IntPtr pbSignedBlob, uint cbSignedBlob,
+		[Out, SizeDef(nameof(pcbDecoded), SizingMethod.Query)] IntPtr pbDecoded, ref uint pcbDecoded);
 
 	/// <summary>
 	/// The <c>CryptVerifyMessageSignatureWithKey</c> function verifies a signed message's signature by using specified public key information.
@@ -4136,8 +4425,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "6fe0f9ee-1838-4eb7-8254-05b878eb8f56")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptVerifyMessageSignatureWithKey(in CRYPT_KEY_VERIFY_MESSAGE_PARA pVerifyPara, [In, Optional] IntPtr pPublicKeyInfo, [In] IntPtr pbSignedBlob,
-		uint cbSignedBlob, [Out] IntPtr pbDecoded, ref uint pcbDecoded);
+	public static extern bool CryptVerifyMessageSignatureWithKey(in CRYPT_KEY_VERIFY_MESSAGE_PARA pVerifyPara, [In, Optional] IntPtr pPublicKeyInfo,
+		[In, SizeDef(nameof(cbSignedBlob))] IntPtr pbSignedBlob, uint cbSignedBlob,
+		[Out, SizeDef(nameof(pcbDecoded), SizingMethod.Query)] IntPtr pbDecoded, ref uint pcbDecoded);
 
 	/// <summary>
 	/// The <c>CMSG_CMS_SIGNER_INFO</c> structure contains the content of the defined SignerInfo in signed or signed and enveloped
@@ -4217,28 +4507,18 @@ public static partial class Crypt32
 		/// <summary>The size, in bytes, of this structure.</summary>
 		public uint cbSize;
 
-		/// <summary/>
-		public CMSG_CTRL_DECRYPT_PARA_HANDLES Handle;
+		/// <summary>
+		/// Cryptographic service provider (CSP) handle. The CNG function NCryptIsKeyHandle is called to determine the union choice.
+		/// </summary>
+		public HCRYPTPROV hCryptProv;
 
-		/// <summary/>
-		[StructLayout(LayoutKind.Explicit)]
-		public struct CMSG_CTRL_DECRYPT_PARA_HANDLES
-		{
-			/// <summary>
-			/// Cryptographic service provider (CSP) handle. The CNG function NCryptIsKeyHandle is called to determine the union choice.
-			/// </summary>
-			[FieldOffset(0)]
-			public HCRYPTPROV hCryptProv;
-
-			/// <summary>
-			/// A handle to the CNG Cryptographic service provider (CSP). The CNG function, NCryptIsKeyHandle, is called to determine
-			/// the union choice. New encrypt algorithms are only supported in CNG functions. The CNG function, NCryptTranslateHandle,
-			/// will be called to convert the CryptoAPI hCryptProv choice where necessary. We recommend that applications pass, to the
-			/// hNCryptKey member, the CNG CSP handle that is returned from the NCryptOpenKey function.
-			/// </summary>
-			[FieldOffset(0)]
-			public NCrypt.NCRYPT_KEY_HANDLE hNCryptKey;
-		}
+		/// <summary>
+		/// A handle to the CNG Cryptographic service provider (CSP). The CNG function, NCryptIsKeyHandle, is called to determine
+		/// the union choice. New encrypt algorithms are only supported in CNG functions. The CNG function, NCryptTranslateHandle,
+		/// will be called to convert the CryptoAPI hCryptProv choice where necessary. We recommend that applications pass, to the
+		/// hNCryptKey member, the CNG CSP handle that is returned from the NCryptOpenKey function.
+		/// </summary>
+		public NCrypt.NCRYPT_KEY_HANDLE hNCryptKey { readonly get => (NCrypt.NCRYPT_KEY_HANDLE)(IntPtr)hCryptProv; set => hCryptProv = value.DangerousGetHandle(); }
 
 		/// <summary>
 		/// <para>The private key to be used. This member is not used when the hNCryptKey member is used.</para>
@@ -4304,30 +4584,20 @@ public static partial class Crypt32
 		/// <summary>The size, in bytes, of this data structure.</summary>
 		public uint cbSize;
 
-		/// <summary/>
-		public CMSG_CTRL_KEY_AGREE_DECRYPT_PARA_HANDLES Handle;
-
-		/// <summary/>
-		[StructLayout(LayoutKind.Explicit)]
-		public struct CMSG_CTRL_KEY_AGREE_DECRYPT_PARA_HANDLES
-		{
-			/// <summary>
+		/// <summary>
 			/// A handle to the cryptographic service provider (CSP) used to do the recipient key encryption and export. If <c>NULL</c>,
 			/// the provider specified in CMSG_ENVELOPED_ENCODE_INFO is used. The CNG function NCryptIsKeyHandle is called to determine
 			/// the union choice.
 			/// </summary>
-			[FieldOffset(0)]
-			public HCRYPTPROV hCryptProv;
+		public HCRYPTPROV hCryptProv;
 
-			/// <summary>
-			/// A handle to the CNG CSP used to do the recipient key encryption and export. The CNG function NCryptIsKeyHandle is called
-			/// to determine the union choice. New encrypt algorithms are only supported in CNG functions. The CNG function
-			/// NCryptTranslateHandle will be called to convert the CryptoAPI CSP hCryptProv choice where necessary. We recommend that
-			/// applications pass, to the hNCryptKey member, the CNG CSP handle that is returned from the NCryptOpenKey function.
-			/// </summary>
-			[FieldOffset(0)]
-			public NCrypt.NCRYPT_KEY_HANDLE hNCryptKey;
-		}
+		/// <summary>
+		/// A handle to the CNG CSP used to do the recipient key encryption and export. The CNG function NCryptIsKeyHandle is called
+		/// to determine the union choice. New encrypt algorithms are only supported in CNG functions. The CNG function
+		/// NCryptTranslateHandle will be called to convert the CryptoAPI CSP hCryptProv choice where necessary. We recommend that
+		/// applications pass, to the hNCryptKey member, the CNG CSP handle that is returned from the NCryptOpenKey function.
+		/// </summary>
+		public NCrypt.NCRYPT_KEY_HANDLE hNCryptKey { readonly get => (NCrypt.NCRYPT_KEY_HANDLE)(IntPtr)hCryptProv; set => hCryptProv = value.DangerousGetHandle(); }
 
 		/// <summary>
 		/// Specifies the encrypted key. The encrypted key is the result of encrypting the content-encryption key. This member is not
@@ -4336,7 +4606,7 @@ public static partial class Crypt32
 		public CertKeySpec dwKeySpec;
 
 		/// <summary>A pointer to a CMSG_KEY_AGREE_RECIPIENT_INFO structure.</summary>
-		public IntPtr pKeyAgree;
+		public StructPointer<CMSG_KEY_AGREE_RECIPIENT_INFO> pKeyAgree;
 
 		/// <summary>Indicates a specific recipient in an array of recipients.</summary>
 		public uint dwRecipientIndex;
@@ -4359,30 +4629,20 @@ public static partial class Crypt32
 		/// <summary>The size, in bytes, of this data structure.</summary>
 		public uint cbSize;
 
-		/// <summary/>
-		public CMSG_CTRL_KEY_TRANS_DECRYPT_PARA_HANDLES Handle;
+		/// <summary>
+		/// A handle to the cryptographic service provider (CSP) used to do the recipient key encryption and export. If <c>NULL</c>,
+		/// the provider specified in CMSG_ENVELOPED_ENCODE_INFO is used. The CNG function NCryptIsKeyHandle is called to determine
+		/// the union choice.
+		/// </summary>
+		public HCRYPTPROV hCryptProv;
 
-		/// <summary/>
-		[StructLayout(LayoutKind.Explicit)]
-		public struct CMSG_CTRL_KEY_TRANS_DECRYPT_PARA_HANDLES
-		{
-			/// <summary>
-			/// A handle to the cryptographic service provider (CSP) used to do the recipient key encryption and export. If <c>NULL</c>,
-			/// the provider specified in CMSG_ENVELOPED_ENCODE_INFO is used. The CNG function NCryptIsKeyHandle is called to determine
-			/// the union choice.
-			/// </summary>
-			[FieldOffset(0)]
-			public HCRYPTPROV hCryptProv;
-
-			/// <summary>
-			/// A handle to the CNG CSP used to do the recipient key encryption and export. The CNG function NCryptIsKeyHandle is called
-			/// to determine the union choice. New encrypt algorithms are only supported in CNG functions. The CNG function
-			/// NCryptTranslateHandle will be called to convert the CryptoAPI CSP hCryptProv choice where necessary. We recommend that
-			/// applications pass, to the hNCryptKey member, the CNG CSP handle that is returned from the NCryptOpenKey function.
-			/// </summary>
-			[FieldOffset(0)]
-			public NCrypt.NCRYPT_KEY_HANDLE hNCryptKey;
-		}
+		/// <summary>
+		/// A handle to the CNG CSP used to do the recipient key encryption and export. The CNG function NCryptIsKeyHandle is called
+		/// to determine the union choice. New encrypt algorithms are only supported in CNG functions. The CNG function
+		/// NCryptTranslateHandle will be called to convert the CryptoAPI CSP hCryptProv choice where necessary. We recommend that
+		/// applications pass, to the hNCryptKey member, the CNG CSP handle that is returned from the NCryptOpenKey function.
+		/// </summary>
+		public NCrypt.NCRYPT_KEY_HANDLE hNCryptKey { readonly get => (NCrypt.NCRYPT_KEY_HANDLE)(IntPtr)hCryptProv; set => hCryptProv = value.DangerousGetHandle(); }
 
 		/// <summary>
 		/// Specifies the encrypted key. The encrypted key is the result of encrypting the content-encryption key for a specific
@@ -4391,7 +4651,7 @@ public static partial class Crypt32
 		public uint dwKeySpec;
 
 		/// <summary>A pointer to a CMSG_KEY_TRANS_RECIPIENT_INFO structure.</summary>
-		public IntPtr pKeyTrans;
+		public StructPointer<CMSG_KEY_TRANS_RECIPIENT_INFO> pKeyTrans;
 
 		/// <summary>Indicates a specific recipient in any array of recipients.</summary>
 		public uint dwRecipientIndex;
@@ -4416,7 +4676,7 @@ public static partial class Crypt32
 		public HCRYPTPROV hCryptProv;
 
 		/// <summary>A pointer to a CMSG_MAIL_LIST_RECIPIENT_INFO structure.</summary>
-		public IntPtr pMailList;
+		public StructPointer<CMSG_MAIL_LIST_RECIPIENT_INFO> pMailList;
 
 		/// <summary>Indicates a specific recipient in any array of recipients.</summary>
 		public uint dwRecipientIndex;
@@ -4549,7 +4809,7 @@ public static partial class Crypt32
 		/// The address of an array of CMSG_RECIPIENT_ENCRYPTED_KEY_INFO structures that contains information about the key recipients.
 		/// The <c>cRecipientEncryptedKeys</c> member contains the number of elements in this array.
 		/// </summary>
-		public IntPtr rgpRecipientEncryptedKeys;
+		public ArrayPointer<CMSG_RECIPIENT_ENCRYPTED_KEY_INFO> rgpRecipientEncryptedKeys;
 	}
 
 	/// <summary>The <c>CMSG_KEY_TRANS_RECIPIENT_INFO</c> structure contains information used in key transport algorithms.</summary>
@@ -4614,7 +4874,7 @@ public static partial class Crypt32
 		public FILETIME Date;
 
 		/// <summary>Optional pointer to a CRYPT_ATTRIBUTE_TYPE_VALUE structure containing additional information.</summary>
-		public IntPtr pOtherAttr;
+		public StructPointer<CRYPT_ATTRIBUTE_TYPE_VALUE> pOtherAttr;
 	}
 
 	/// <summary>
@@ -4646,7 +4906,7 @@ public static partial class Crypt32
 		/// Optional pointer to a CRYPT_ATTRIBUTE_TYPE_VALUE structure containing additional information. Only applicable to KEYID
 		/// choice in the <c>RecipientId</c> CERT_ID structure.
 		/// </summary>
-		public IntPtr pOtherAttr;
+		public StructPointer<CRYPT_ATTRIBUTE_TYPE_VALUE> pOtherAttr;
 	}
 
 	/// <summary>
@@ -4674,36 +4934,25 @@ public static partial class Crypt32
 		/// The <c>Algorithm</c> member of the <c>SubjectPublicKeyInfo</c> structure specifies the hash encryption algorithm used.
 		/// </para>
 		/// </summary>
-		public IntPtr pCertInfo;
+		public StructPointer<CERT_INFO> pCertInfo;
+
+		/// <summary>
+		/// A handle to the cryptographic service provider (CSP). If <c>HashEncryptionAlgorithm</c> is set to
+		/// szOID_PKIX_NO_SIGNATURE, this handle can be the handle of a CSP acquired by using the dwFlags parameter set to
+		/// <c>CRYPT_VERIFYCONTEXT</c>. The CNG function NCryptIsKeyHandle is called to determine the union choice.
+		/// </summary>
+		public HCRYPTPROV hCryptProv;
+
+		/// <summary>
+		/// A handle to the CNG CSP. The CNG function NCryptIsKeyHandle is called to determine the union choice. New encrypt
+		/// algorithms are only supported in CNG functions. The CNG function NCryptTranslateHandle will be called to convert the
+		/// CryptoAPI hCryptProv choice where necessary. We recommend that applications pass, to the hNCryptKey member, the CNG CSP
+		/// handle that is returned from the NCryptOpenKey function.
+		/// </summary>
+		public NCrypt.NCRYPT_KEY_HANDLE hNCryptKey { readonly get => (NCrypt.NCRYPT_KEY_HANDLE)(IntPtr)hCryptProv; set => hCryptProv = value.DangerousGetHandle(); }
 
 		/// <summary/>
-		public CMSG_SIGNER_ENCODE_INFO_HANDLES Handle;
-
-		/// <summary/>
-		[StructLayout(LayoutKind.Explicit)]
-		public struct CMSG_SIGNER_ENCODE_INFO_HANDLES
-		{
-			/// <summary>
-			/// A handle to the cryptographic service provider (CSP). If <c>HashEncryptionAlgorithm</c> is set to
-			/// szOID_PKIX_NO_SIGNATURE, this handle can be the handle of a CSP acquired by using the dwFlags parameter set to
-			/// <c>CRYPT_VERIFYCONTEXT</c>. The CNG function NCryptIsKeyHandle is called to determine the union choice.
-			/// </summary>
-			[FieldOffset(0)]
-			public HCRYPTPROV hCryptProv;
-
-			/// <summary>
-			/// A handle to the CNG CSP. The CNG function NCryptIsKeyHandle is called to determine the union choice. New encrypt
-			/// algorithms are only supported in CNG functions. The CNG function NCryptTranslateHandle will be called to convert the
-			/// CryptoAPI hCryptProv choice where necessary. We recommend that applications pass, to the hNCryptKey member, the CNG CSP
-			/// handle that is returned from the NCryptOpenKey function.
-			/// </summary>
-			[FieldOffset(0)]
-			public NCrypt.NCRYPT_KEY_HANDLE hNCryptKey;
-
-			/// <summary/>
-			[FieldOffset(0)]
-			public BCrypt.BCRYPT_KEY_HANDLE hBCryptKey;
-		}
+		public BCrypt.BCRYPT_KEY_HANDLE hBCryptKey { readonly get => (BCrypt.BCRYPT_KEY_HANDLE)(IntPtr)hCryptProv; set => hCryptProv = value.DangerousGetHandle(); }
 
 		/// <summary>
 		/// <para>Specifies the private key to be used. This member is not used when the hNCryptKey member is used.</para>
@@ -4745,7 +4994,7 @@ public static partial class Crypt32
 		/// identifier (OID) and the hash of the message. These attributes are automatically added by the system.
 		/// </para>
 		/// </summary>
-		public IntPtr rgAuthAttr;
+		public ArrayPointer<CRYPT_ATTRIBUTE> rgAuthAttr;
 
 		/// <summary>
 		/// The number of elements in the <c>rgUnauthAttr</c> array. If there are no unauthenticated attributes, <c>cUnauthAttr</c> is zero.
@@ -4756,7 +5005,7 @@ public static partial class Crypt32
 		/// An array of pointers to CRYPT_ATTRIBUTE structures, each of which contains unauthenticated attribute information.
 		/// Unauthenticated attributes can contain countersignatures, among other uses.
 		/// </summary>
-		public IntPtr rgUnauthAttr;
+		public ArrayPointer<CRYPT_ATTRIBUTE> rgUnauthAttr;
 
 		/// <summary>
 		/// A CERT_ID structure that contains a unique identifier of the signer's certificate. This member can optionally be used with
@@ -4937,7 +5186,7 @@ public static partial class Crypt32
 		/// CERT_KEY_CONTEXT_PROP_ID can be used. These properties specify the location of a needed private exchange key.
 		/// </para>
 		/// </summary>
-		public IntPtr rghCertStore;
+		public ArrayPointer<HCERTSTORE> rghCertStore;
 
 		/// <summary>
 		/// The CRYPT_MESSAGE_SILENT_KEYSET_FLAG can be set to suppress any UI by the CSP. For more information about the CRYPT_SILENT
@@ -5138,26 +5387,16 @@ public static partial class Crypt32
 		/// </summary>
 		public CertEncodingType dwMsgAndCertEncodingType;
 
-		/// <summary/>
-		public CRYPT_KEY_SIGN_MESSAGE_PARA_HANDLE Handle;
-
-		/// <summary/>
-		[StructLayout(LayoutKind.Explicit)]
-		public struct CRYPT_KEY_SIGN_MESSAGE_PARA_HANDLE
-		{
-			/// <summary>
+		/// <summary>
 			/// The handle of the CSP to use to sign the message. The CryptAcquireContext function is called to obtain this handle.
 			/// </summary>
-			[FieldOffset(0)]
-			public HCRYPTPROV hCryptProv;
+		public HCRYPTPROV hCryptProv;
 
-			/// <summary>
+		/// <summary>
 			/// The handle of the Cryptography API: Next Generation (CNG) CSP to use to sign the message. CNG signature algorithms are
 			/// only supported in CNG functions.
 			/// </summary>
-			[FieldOffset(0)]
-			public NCrypt.NCRYPT_KEY_HANDLE hNCryptKey;
-		}
+		public NCrypt.NCRYPT_KEY_HANDLE hNCryptKey { readonly get => (NCrypt.NCRYPT_KEY_HANDLE)(IntPtr)hCryptProv; set => hCryptProv = value.DangerousGetHandle(); }
 
 		/// <summary>
 		/// <para>
@@ -5303,7 +5542,7 @@ public static partial class Crypt32
 		/// Array of pointers to CERT_CONTEXT structures to be included in the signed message. If the <c>pSigningCert</c> is to be
 		/// included, a pointer to it must be in the <c>rgpMsgCert</c> array.
 		/// </summary>
-		public IntPtr rgpMsgCert;
+		public ArrayPointer<CERT_CONTEXT> rgpMsgCert;
 
 		/// <summary>
 		/// Number of elements in the <c>rgpMsgCrl</c> array of pointers to CRL_CONTEXT structures. If set to zero, no
@@ -5312,7 +5551,7 @@ public static partial class Crypt32
 		public uint cMsgCrl;
 
 		/// <summary>Array of pointers to CRL_CONTEXT structures to be included in the signed message.</summary>
-		public IntPtr rgpMsgCrl;
+		public ArrayPointer<CRL_CONTEXT> rgpMsgCrl;
 
 		/// <summary>
 		/// Number of elements in the <c>rgAuthAttr</c> array. If no authenticated attributes are present in <c>rgAuthAttr</c>, this
@@ -5325,7 +5564,7 @@ public static partial class Crypt32
 		/// authenticated attributes present, the PKCS #9 standard dictates that there must be at least two attributes present, the
 		/// content type object identifier (OID), and the hash of the message itself. These attributes are automatically added by the system.
 		/// </summary>
-		public IntPtr rgAuthAttr;
+		public ArrayPointer<CRYPT_ATTRIBUTE> rgAuthAttr;
 
 		/// <summary>
 		/// Number of elements in the <c>rgUnauthAttr</c> array. If no unauthenticated attributes are present in <c>rgUnauthAttr</c>,
@@ -5337,7 +5576,7 @@ public static partial class Crypt32
 		/// Array of pointers to CRYPT_ATTRIBUTE structures each holding an unauthenticated attribute information. Unauthenticated
 		/// attributes can be used to contain countersignatures, among other uses.
 		/// </summary>
-		public IntPtr rgUnauthAttr;
+		public ArrayPointer<CRYPT_ATTRIBUTE> rgUnauthAttr;
 
 		/// <summary>
 		/// <para>
@@ -5466,6 +5705,6 @@ public static partial class Crypt32
 		/// <para>Windows 8 and Windows Server 2012:</para>
 		/// <para>Support for this member begins.</para>
 		/// </summary>
-		public IntPtr pStrongSignPara;
+		public StructPointer<CERT_STRONG_SIGN_PARA> pStrongSignPara;
 	}
 }

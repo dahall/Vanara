@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Vanara.PInvoke;
 
@@ -788,6 +789,66 @@ public static partial class Crypt32
 		[Optional, MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pwszDllList, ref int pcchDllList);
 
 	/// <summary>
+	/// The <c>CryptGetDefaultOIDDllList</c> function acquires the list of the names of DLL files that contain registered default object
+	/// identifier (OID) functions for a specified function set and encoding type.
+	/// </summary>
+	/// <param name="hFuncSet">Function set handle previously obtained by a call to CryptInitOIDFunctionSet.</param>
+	/// <param name="dwEncodingType">
+	/// <para>
+	/// Specifies the encoding type to be matched. Currently, only X509_ASN_ENCODING and PKCS_7_ASN_ENCODING are being used; however,
+	/// additional encoding types may be added in the future. To match both current encoding types, use:
+	/// </para>
+	/// <para>X509_ASN_ENCODING | PKCS_7_ASN_ENCODING</para>
+	/// <para>
+	/// <c>Note</c> Either a certificate or message encoding type is required. X509_ASN_ENCODING is the default. If that type is
+	/// indicated, it is used; otherwise, if the PKCS7_ASN_ENCODING type is indicated, it is used.
+	/// </para>
+	/// </param>
+	/// <param name="pwszDllList">
+	/// The list of zero or more null-terminated file names.
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
+	/// <para>If the function fails, it returns zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
+	/// <para>This function has the following error codes.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_MORE_DATA</term>
+	/// <term>
+	/// If the buffer specified by the pwszDllList parameter is not large enough to hold the returned data, the function sets the
+	/// ERROR_MORE_DATA code and stores the required buffer size, in wide characters, in the variable pointed to by pcchDllList.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptgetdefaultoiddlllist BOOL CryptGetDefaultOIDDllList(
+	// HCRYPTOIDFUNCSET hFuncSet, DWORD dwEncodingType, WCHAR *pwszDllList, DWORD *pcchDllList );
+	[PInvokeData("wincrypt.h", MSDNShortId = "9d4643c8-a582-4c19-bd77-33b94e953818")]
+	public static bool CryptGetDefaultOIDDllList(HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType, out string[] pwszDllList)
+	{
+		var pcchDllList = 0;
+		if (CryptGetDefaultOIDDllList(hFuncSet, dwEncodingType, IntPtr.Zero, ref pcchDllList) || Win32Error.GetLastError() == Win32Error.ERROR_MORE_DATA)
+		{
+			using SafeCoTaskMemHandle mem = new((int)(pcchDllList * 2));
+			if (CryptGetDefaultOIDDllList(hFuncSet, dwEncodingType, mem, ref pcchDllList))
+			{
+				pwszDllList = [.. mem.ToStringEnum(CharSet.Unicode)];
+				return true;
+			}
+		}
+		pwszDllList = [];
+		return false;
+
+		[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool CryptGetDefaultOIDDllList(HCRYPTOIDFUNCSET hFuncSet, CertEncodingType dwEncodingType, IntPtr pwszDllList, ref int pcchDllList);
+	}
+
+	/// <summary>
 	/// The <c>CryptGetDefaultOIDFunctionAddress</c> function loads the DLL that contains a default function address. It can also return
 	/// the address of the first or next installed default object identifier (OID) function in an initialized function set and load the
 	/// DLL that contains the address of that function.
@@ -1012,7 +1073,7 @@ public static partial class Crypt32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptGetOIDFunctionValue(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
 		[In] SafeOID pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszValueName, out REG_VALUE_TYPE pdwValueType,
-		[Out] IntPtr pbValueData, ref uint pcbValueData);
+		[Out, SizeDef(nameof(pcbValueData), SizingMethod.Query)] IntPtr pbValueData, ref uint pcbValueData);
 
 	/// <summary>
 	/// The <c>CryptInitOIDFunctionSet</c> initializes and returns the handle of the OID function set identified by a supplied function
@@ -1064,8 +1125,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "934e8278-0e0b-4402-a2b6-ff1e913d54c9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptInstallOIDFunctionAddress([Optional] HINSTANCE hModule, CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
-		uint cFuncEntry, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CRYPT_OID_FUNC_ENTRY[] rgFuncEntry, [Optional] CryptInstallOIDFuncFlags dwFlags);
+	public static extern bool CryptInstallOIDFunctionAddress([Optional] HINSTANCE hModule, CertEncodingType dwEncodingType,
+		[MarshalAs(UnmanagedType.LPStr)] string pszFuncName, uint cFuncEntry,
+		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CRYPT_OID_FUNC_ENTRY[] rgFuncEntry, [Optional] CryptInstallOIDFuncFlags dwFlags);
 
 	/// <summary>
 	/// The <c>CryptRegisterDefaultOIDFunction</c> registers a DLL containing the default function to be called for the specified
@@ -1253,7 +1315,8 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "3e167c5d-0000-4359-a7b0-9b3e4e64c50c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptSetOIDFunctionValue(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
-		SafeOID pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszValueName, REG_VALUE_TYPE dwValueType, [In, Optional] IntPtr pbValueData, uint cbValueData);
+		SafeOID pszOID, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszValueName, REG_VALUE_TYPE dwValueType,
+		[In, Optional, SizeDef(nameof(cbValueData))] IntPtr pbValueData, uint cbValueData);
 
 	/// <summary>
 	/// The <c>CryptUnregisterDefaultOIDFunction</c> removes the registration of a DLL containing the default function to be called for
@@ -1277,7 +1340,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "63f5b0c7-f574-4dc6-92c7-091f25febd48")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptUnregisterDefaultOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName, [MarshalAs(UnmanagedType.LPWStr)] string pwszDll);
+	public static extern bool CryptUnregisterDefaultOIDFunction(CertEncodingType dwEncodingType, [MarshalAs(UnmanagedType.LPStr)] string pszFuncName,
+		[MarshalAs(UnmanagedType.LPWStr)] string pwszDll);
 
 	/// <summary>
 	/// The <c>CryptUnregisterOIDFunction</c> function removes the registration of a DLL that contains the function to be called for the

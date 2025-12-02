@@ -508,8 +508,151 @@ public static partial class Crypt32
 	// PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD dwFlags, void *pvTypePara, LPSTR pszNameString, DWORD cchNameString );
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "300e6345-0be0-48c7-a3a3-174879cf0bbb")]
-	public static extern uint CertGetNameString(PCCERT_CONTEXT pCertContext, CertNameType dwType, CertNameFlags dwFlags, IntPtr pvTypePara,
-		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder? pszNameString, uint cchNameString);
+	public static extern uint CertGetNameString(PCCERT_CONTEXT pCertContext, CertNameType dwType, CertNameFlags dwFlags, [In] SafeOID pvTypePara,
+		[Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cchNameString), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? pszNameString, uint cchNameString);
+
+	/// <summary>
+	/// The <c>CertGetNameString</c> function obtains the subject or issuer name from a certificate CERT_CONTEXT structure and converts
+	/// it to a <c>null</c>-terminated character string.
+	/// </summary>
+	/// <param name="pCertContext">A pointer to a CERT_CONTEXT certificate context that includes a subject and issuer name to be converted.</param>
+	/// <param name="dwType">
+	/// <para><c>DWORD</c> indicating how the name is to be found and how the output is to be formatted.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CERT_NAME_EMAIL_TYPE 1</term>
+	/// <term>
+	/// If the certificate has a Subject Alternative Name extension or Issuer Alternative Name, uses the first rfc822Name choice. If no
+	/// rfc822Name choice is found in the extension, uses the Subject Name field for the Email OID. If either rfc822Name or the Email
+	/// OID is found, uses the string. Otherwise, returns an empty string (returned character count is 1). pvTypePara is not used and is
+	/// set to NULL.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_NAME_RDN_TYPE 2</term>
+	/// <term>
+	/// Converts the Subject Name BLOB by calling CertNameToStr. pvTypePara points to a DWORD containing the dwStrType passed to
+	/// CertNameToStr. If the Subject Name field is empty and the certificate has a Subject Alternative Name extension, uses the first
+	/// directory Name choice from CertNameToStr.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_NAME_ATTR_TYPE 3</term>
+	/// <term>
+	/// pvTypePara points to an object identifier (OID) specifying the name attribute to be returned. For example, if pvTypePara is
+	/// szOID_COMMON_NAME, uses the Subject Name member. If the Subject Name member is empty and the certificate has a Subject
+	/// Alternative Name extension, uses the first directoryName choice.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_NAME_SIMPLE_DISPLAY_TYPE 4</term>
+	/// <term>
+	/// Iterates through the following list of name attributes and uses the Subject Name or the Subject Alternative Name extension for
+	/// the first occurrence of: szOID_COMMON_NAME, szOID_ORGANIZATIONAL_UNIT_NAME, szOID_ORGANIZATION_NAME, or szOID_RSA_emailAddr. If
+	/// one of these attributes is not found, uses the Subject Alternative Name extension for a rfc822Name choice. If there is still no
+	/// match, uses the first attribute. pvTypePara is not used and is set to NULL.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_NAME_FRIENDLY_DISPLAY_TYPE 5</term>
+	/// <term>
+	/// Checks the certificate for a CERT_FRIENDLY_NAME_PROP_ID property. If the certificate has this property, it is returned. If the
+	/// certificate does not have the property, the CERT_NAME_SIMPLE_DISPLAY_TYPE is returned.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_NAME_DNS_TYPE 6</term>
+	/// <term>
+	/// If the certificate has a Subject Alternative Name extension for issuer, Issuer Alternative Name, search for first DNSName
+	/// choice. If the DNSName choice is not found in the extension, search the Subject Name field for the CN OID, "2.5.4.3". If the
+	/// DNSName or CN OID is found, return the string. Otherwise, return an empty string.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_NAME_URL_TYPE 7</term>
+	/// <term>
+	/// If the certificate has a Subject Alternative Name extension for issuer, Issuer Alternative Name, search for first URL choice. If
+	/// the URL choice is found, return the string. Otherwise, return an empty string.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_NAME_UPN_TYPE 8</term>
+	/// <term>
+	/// If the certificate has a Subject Alternative Name extension, search the OtherName choices looking for a pszObjId ==
+	/// szOID_NT_PRINCIPAL_NAME, ("1.3.6.1.4.1.311.20.2.3"). If the UPN OID is found, decode the BLOB as a X509_UNICODE_ANY_STRING and
+	/// return the decoded string. Otherwise, return an empty string.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="dwFlags">
+	/// <para>Indicates the type of processing needed.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>CERT_NAME_ISSUER_FLAG 0x1</term>
+	/// <term>Acquires the issuer's name. If not set, acquires the subject's name.</term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_NAME_DISABLE_IE4_UTF8_FLAG 0x00010000</term>
+	/// <term>Skips the default initial attempt to decode the value as UTF8 and decodes as 8-bit characters.</term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_NAME_SEARCH_ALL_NAMES_FLAG 0x2</term>
+	/// <term>
+	/// If the dwType parameter is set to CERT_NAME_DNS_TYPE, all applicable names are returned for the specified DNS value. If there is
+	/// no DNS name but there is a CN component in the subject, the CN is returned instead. If there is a CN and a DNS name, only the
+	/// DNS names are returned. This mimics the SSL chain building policy. If you set this flag for a name type other than
+	/// CERT_NAME_DNS_TYPE, this function returns a null-terminated empty string. Windows 8 and Windows Server 2012: Support for this
+	/// flag begins.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>CERT_NAME_STR_ENABLE_PUNYCODE_FLAG 0x00200000</term>
+	/// <term>
+	/// This flag enables decoding of IA5String strings to Unicode string values based on the dwType parameter value as defined below:
+	/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not supported.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <param name="pvTypePara">
+	/// A pointer to either a <c>DWORD</c> containing the dwStrType or an object identifier (OID) specifying the name attribute. The
+	/// type pointed to is determined by the value of dwType.
+	/// </param>
+	/// <param name="pszNameString">
+	/// <para>
+	/// A pointer to an allocated buffer to receive the returned string. If pszNameString is not <c>NULL</c> and cchNameString is not
+	/// zero, pszNameString is a <c>null</c>-terminated string.
+	/// </para>
+	/// <para>
+	/// If <c>CERT_NAME_SEARCH_ALL_NAMES_FLAG</c> is specified in the dwFlags parameter and <c>CERT_NAME_DNS_TYPE</c> is set in the
+	/// dwType parameter, the returned string will contain all of the DNS names that apply. Each string in the output string is
+	/// null-terminated and the last string will be double null-terminated. If no DNS names are found, a single null-terminated empty
+	/// string is returned.
+	/// </para>
+	/// </param>
+	/// <param name="cchNameString">
+	/// Size, in characters, allocated for the returned string. The size must include the terminating <c>NULL</c> character.
+	/// </param>
+	/// <returns>
+	/// Returns the number of characters converted, including the terminating zero character. If pszNameString is <c>NULL</c> or
+	/// cchNameString is zero, returns the required size of the destination string (including the terminating <c>NULL</c> character). If
+	/// the specified name type is not found, returns a <c>null</c>-terminated empty string with a returned character count of 1.
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetnamestringa DWORD CertGetNameStringA(
+	// PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD dwFlags, void *pvTypePara, LPSTR pszNameString, DWORD cchNameString );
+	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
+	[PInvokeData("wincrypt.h", MSDNShortId = "300e6345-0be0-48c7-a3a3-174879cf0bbb")]
+	public static extern uint CertGetNameString(PCCERT_CONTEXT pCertContext, CertNameType dwType, CertNameFlags dwFlags, in uint pvTypePara,
+		[Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cchNameString), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? pszNameString, uint cchNameString);
 
 	/// <summary>
 	/// <para>
@@ -702,7 +845,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b3d96de8-5cbc-4ccb-b759-6757520bbda3")]
 	public static extern uint CertNameToStr(CertEncodingType dwCertEncodingType, in CRYPTOAPI_BLOB pName, CertNameStringFormat dwStrType,
-		[MarshalAs(UnmanagedType.LPTStr)] StringBuilder? psz, uint csz);
+		[Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(csz), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? psz, uint csz);
 
 	/// <summary>
 	/// <para>
@@ -802,7 +945,8 @@ public static partial class Crypt32
 	// dwValueType, PCERT_RDN_VALUE_BLOB pValue, LPSTR psz, DWORD csz );
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "c1e0af19-320e-411e-85bf-c7f01befcac4")]
-	public static extern uint CertRDNValueToStr(CertRDNType dwValueType, in CRYPTOAPI_BLOB pValue, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder psz, uint csz);
+	public static extern uint CertRDNValueToStr(CertRDNType dwValueType, in CRYPTOAPI_BLOB pValue,
+		[Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(csz), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? psz, uint csz);
 
 	/// <summary>The <c>CertStrToName</c> function converts a null-terminated X.500 string to an encoded certificate name.</summary>
 	/// <param name="dwCertEncodingType">
@@ -1084,7 +1228,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "8bdfafa6-9833-4689-a155-dff09647ec8d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertStrToName(CertEncodingType dwCertEncodingType, [MarshalAs(UnmanagedType.LPTStr)] string pszX500, CertNameStringFormat dwStrType,
-		[Optional] IntPtr pvReserved, [Optional] IntPtr pbEncoded, ref uint pcbEncoded, out StrPtrAuto ppszError);
+		[Optional, Ignore] IntPtr pvReserved, [Out, Optional, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded, out StrPtrAuto ppszError);
 
 	/// <summary>The <c>CryptBinaryToString</c> function converts an array of bytes into a formatted string.</summary>
 	/// <param name="pbBinary">A pointer to the array of bytes to be converted into a string.</param>
@@ -1194,7 +1338,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e6bdf931-fba3-4a33-b22e-5f818f565842")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptBinaryToString([In] IntPtr pbBinary, uint cbBinary, CryptStringFormat dwFlags, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder? pszString, ref uint pcchString);
+	public static extern bool CryptBinaryToString([In, SizeDef(nameof(cbBinary))] IntPtr pbBinary, uint cbBinary, CryptStringFormat dwFlags,
+		[Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(pcchString), SizingMethod.Query | SizingMethod.InclNullTerm)] StringBuilder? pszString, ref uint pcchString);
 
 	/// <summary>
 	/// The <c>CryptFormatObject</c> function formats the encoded data and returns a Unicode string in the allocated buffer according to
@@ -1355,8 +1500,9 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "307e0bd5-b8a6-4d85-9775-65aae99e8dc6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptFormatObject(CertEncodingType dwCertEncodingType, [Optional] uint dwFormatType, CryptFormatStr dwFormatStrType, [Optional] IntPtr pFormatStruct,
-		[In] SafeOID lpszStructType, [In] IntPtr pbEncoded, uint cbEncoded, [In, Optional] IntPtr pbFormat, ref uint pcbFormat);
+	public static extern bool CryptFormatObject(CertEncodingType dwCertEncodingType, [Optional, Ignore] uint dwFormatType, CryptFormatStr dwFormatStrType, [Optional, Ignore] IntPtr pFormatStruct,
+		[In] SafeOID lpszStructType, [In, SizeDef(nameof(cbEncoded))] IntPtr pbEncoded, uint cbEncoded,
+		[Out, Optional, SizeDef(nameof(pcbFormat), SizingMethod.Query)] IntPtr pbFormat, ref uint pcbFormat);
 
 	/// <summary>The <c>CryptStringToBinary</c> function converts a formatted string into an array of bytes.</summary>
 	/// <param name="pszString">A pointer to a string that contains the formatted string to be converted.</param>
@@ -1492,6 +1638,6 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "13b6f5ef-174a-4254-8492-6e7dcc58945f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptStringToBinary([MarshalAs(UnmanagedType.LPTStr)] string pszString, uint cchString, CryptStringFormat dwFlags, [Out, Optional] IntPtr pbBinary,
-		ref uint pcbBinary, out uint pdwSkip, out CryptStringFormat pdwFlags);
+	public static extern bool CryptStringToBinary([In, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cchString))] string pszString, uint cchString,
+		CryptStringFormat dwFlags, [Out, Optional, SizeDef(nameof(pcbBinary), SizingMethod.Query)] IntPtr pbBinary, ref uint pcbBinary, out uint pdwSkip, out CryptStringFormat pdwFlags);
 }

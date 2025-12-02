@@ -109,7 +109,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e8858f75-77a1-4c5f-a3e3-a645c5e0f053")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddCTLContextToStore(HCERTSTORE hCertStore, [In] PCCTL_CONTEXT pCtlContext, CertStoreAdd dwAddDisposition, out SafePCCTL_CONTEXT ppStoreContext);
+	public static extern bool CertAddCTLContextToStore([In, AddAsMember] HCERTSTORE hCertStore, [In] PCCTL_CONTEXT pCtlContext, 
+		CertStoreAdd dwAddDisposition, out SafePCCTL_CONTEXT ppStoreContext);
 
 	/// <summary>
 	/// The <c>CertAddCTLLinkToStore</c> function adds a link in a store to a certificate trust list (CTL) context in a different store.
@@ -225,7 +226,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "c129aeae-69d9-440a-979d-e9e481c64538")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddCTLLinkToStore(HCERTSTORE hCertStore, [In] PCCTL_CONTEXT pCtlContext, CertStoreAdd dwAddDisposition, out SafePCCTL_CONTEXT ppStoreContext);
+	public static extern bool CertAddCTLLinkToStore([In, AddAsMember] HCERTSTORE hCertStore, [In] PCCTL_CONTEXT pCtlContext,
+		CertStoreAdd dwAddDisposition, out SafePCCTL_CONTEXT ppStoreContext);
 
 	/// <summary>
 	/// The <c>CertAddEncodedCTLToStore</c> function creates a certificate trust list (CTL) context from an encoded CTL and adds it to
@@ -351,7 +353,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "4239d43e-187d-4f40-99ae-6f914b7577ac")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertAddEncodedCTLToStore(HCERTSTORE hCertStore, CertEncodingType dwMsgAndCertEncodingType, [In] IntPtr pbCtlEncoded, uint cbCtlEncoded, CertStoreAdd dwAddDisposition, out SafePCCTL_CONTEXT ppCtlContext);
+	public static extern bool CertAddEncodedCTLToStore([In, AddAsMember] HCERTSTORE hCertStore, CertEncodingType dwMsgAndCertEncodingType,
+		[In, SizeDef(nameof(cbCtlEncoded))] IntPtr pbCtlEncoded, uint cbCtlEncoded, CertStoreAdd dwAddDisposition, out SafePCCTL_CONTEXT ppCtlContext);
 
 	/// <summary>
 	/// The <c>CertCreateCTLContext</c> function creates a certificate trust list (CTL) context from an encoded CTL. The created context
@@ -403,7 +406,9 @@ public static partial class Crypt32
 	// DWORD dwMsgAndCertEncodingType, const BYTE *pbCtlEncoded, DWORD cbCtlEncoded );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "172c59ee-9e06-4169-aaa7-2624e3fcf015")]
-	public static extern SafePCCTL_CONTEXT CertCreateCTLContext(CertEncodingType dwMsgAndCertEncodingType, [In] IntPtr pbCtlEncoded, uint cbCtlEncoded);
+	[return: AddAsCtor]
+	public static extern SafePCCTL_CONTEXT CertCreateCTLContext(CertEncodingType dwMsgAndCertEncodingType,
+		[In, SizeDef(nameof(cbCtlEncoded))] IntPtr pbCtlEncoded, uint cbCtlEncoded);
 
 	/// <summary>
 	/// The <c>CertDeleteCTLFromStore</c> function deletes the specified certificate trust list (CTL) context from a certificate store.
@@ -487,7 +492,7 @@ public static partial class Crypt32
 	/// <para>
 	/// The returned pointer is freed when passed as the pPrevCtlContext on a subsequent call. Otherwise, the pointer must be explicitly
 	/// freed by calling CertFreeCTLContext. A pPrevCtlContext that is not <c>NULL</c> is always freed by this function (through a call
-	/// to <c>CertFreeCTLContext</c>), even for an error.
+	/// to <see cref="CertFreeCTLContext"/>), even for an error.
 	/// </para>
 	/// <para>A duplicate can be made by calling CertDuplicateCTLContext.</para>
 	/// </remarks>
@@ -495,7 +500,7 @@ public static partial class Crypt32
 	// HCERTSTORE hCertStore, PCCTL_CONTEXT pPrevCtlContext );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "dac9f91e-8ed4-43ce-8147-485c2ed7edd5")]
-	public static extern SafePCCTL_CONTEXT CertEnumCTLsInStore(HCERTSTORE hCertStore, [In] PCCTL_CONTEXT pPrevCtlContext);
+	public static extern SafePCCTL_CONTEXT CertEnumCTLsInStore([In, AddAsMember] HCERTSTORE hCertStore, [In] PCCTL_CONTEXT pPrevCtlContext);
 
 	/// <summary>
 	/// The <c>CertFindCTLInStore</c> function finds the first or next certificate trust list (CTL) context that matches search criteria
@@ -625,7 +630,7 @@ public static partial class Crypt32
 	// pPrevCtlContext );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e5ed3b22-e96f-4e7d-a20e-eebed0a84d3c")]
-	public static extern SafePCCTL_CONTEXT CertFindCTLInStore(HCERTSTORE hCertStore, CertEncodingType dwMsgAndCertEncodingType, CertInfoFlags dwFindFlags,
+	public static extern SafePCCTL_CONTEXT CertFindCTLInStore([In, AddAsMember] HCERTSTORE hCertStore, CertEncodingType dwMsgAndCertEncodingType, CertInfoFlags dwFindFlags,
 		CertFindType dwFindType, [In] IntPtr pvFindPara, [In] PCCTL_CONTEXT pPrevCtlContext);
 
 	/// <summary>
@@ -682,7 +687,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "63d343c1-fa65-4cd1-a210-3805c7d92208")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertSerializeCTLStoreElement([In] PCCTL_CONTEXT pCtlContext, [Optional] uint dwFlags, [In, Out, Optional] IntPtr pbElement, ref uint pcbElement);
+	public static extern bool CertSerializeCTLStoreElement([In] PCCTL_CONTEXT pCtlContext, [Optional, Ignore] uint dwFlags,
+		[Out, Optional, SizeDef(nameof(pcbElement), SizingMethod.Query)] IntPtr pbElement, ref uint pcbElement);
 
 	public partial class SafePCCTL_CONTEXT
 	{
@@ -690,5 +696,16 @@ public static partial class Crypt32
 		/// <param name="ctx">The handle.</param>
 		/// <returns>The resulting <see cref="CTL_CONTEXT"/> instance from the conversion.</returns>
 		public static unsafe explicit operator CTL_CONTEXT*(SafePCCTL_CONTEXT ctx) => (CTL_CONTEXT*)(void*)ctx.handle;
+
+		/// <summary>Returns a reference to the underlying CTL_CONTEXT structure represented by the specified safe handle.</summary>
+		/// <remarks>
+		/// The returned reference is valid only as long as the underlying handle remains valid. Accessing the reference after the handle is
+		/// closed or disposed may result in undefined behavior.
+		/// </remarks>
+		/// <param name="ctx">
+		/// A SafePCCTL_CONTEXT instance that encapsulates a handle to a CTL_CONTEXT structure. Must be valid and not closed or disposed.
+		/// </param>
+		/// <returns>A reference to the CTL_CONTEXT structure associated with the provided safe handle.</returns>
+		public static ref CTL_CONTEXT AsRef(SafePCCTL_CONTEXT ctx) => ref ctx.handle.AsRef<CTL_CONTEXT>();
 	}
 }

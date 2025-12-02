@@ -933,28 +933,31 @@ public static partial class CryptUI
 	/// contained in a store or an array of certificate chains. The returned serialized BLOB can be passed to the
 	/// CredUIPromptForWindowsCredentials function.
 	/// </summary>
+	/// <remarks>Initializes a new instance of the CERT_SELECTUI_INPUT structure using the specified certificate chain list.</remarks>
+	/// <param name="chain">The list of certificate chains to be used for selection. Cannot be null and must contain at least one chain.</param>
+	/// <param name="hStore">The optional handle of a certificate store created by the caller.</param>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cryptuiapi/ns-cryptuiapi-cert_selectui_input typedef struct { HCERTSTORE
 	// hStore; PCCERT_CHAIN_CONTEXT *prgpChain; DWORD cChain; } CERT_SELECTUI_INPUT, *PCERT_SELECTUI_INPUT;
 	[PInvokeData("cryptuiapi.h", MSDNShortId = "8953cddd-86b6-4781-8dca-b5fd3d298bc8")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CERT_SELECTUI_INPUT
+	public struct CERT_SELECTUI_INPUT(SafeCertificateChainList chain, HCERTSTORE hStore = default)
 	{
 		/// <summary>
 		/// The handle of a certificate store created by the caller. The store contains the set of application preselected certificates.
 		/// </summary>
-		public HCERTSTORE hStore;
+		public HCERTSTORE hStore = hStore;
 
 		/// <summary>
 		/// An array of pointers to CERT_CHAIN_CONTEXT structures. Applications provision this array by preselecting certificate chains
 		/// using the CertSelectCertificateChains function.
 		/// </summary>
-		public IntPtr prgpChain;
+		public IntPtr prgpChain = chain;
 
 		/// <summary>The number of CERT_CHAIN_CONTEXT structures that are in the array pointed to by the <c>prgpChain</c> member.</summary>
-		public uint cChain;
+		public uint cChain = (uint)chain.Count;
 
 		/// <summary>Gets the array of pointers to CERT_CHAIN_CONTEXT structures.</summary>
-		public PCCERT_CHAIN_CONTEXT[]? GetChain() => prgpChain.ToArray<PCCERT_CHAIN_CONTEXT>((int)cChain);
+		public readonly PCCERT_CHAIN_CONTEXT[]? GetChain() => prgpChain.ToArray<PCCERT_CHAIN_CONTEXT>((int)cChain);
 	}
 
 	/// <summary>The <c>CRYPTUI_CERT_MGR_STRUCT</c> structure contains information about a certificate manager dialog box.</summary>
@@ -1146,7 +1149,7 @@ public static partial class CryptUI
 		/// <summary>
 		/// An array of pointers to null-terminated strings that contain the purposes for which this certificate will be validated.
 		/// </summary>
-		public IntPtr rgszPurposes;
+		public ArrayPointer<StrPtrAuto> rgszPurposes;
 
 		/// <summary>The number of purposes in the <c>rgszPurposes</c> array.</summary>
 		public uint cPurposes;
@@ -1191,7 +1194,7 @@ public static partial class CryptUI
 		/// <summary>
 		/// An array of <c>HCERTSTORE</c> handles to other certificate stores to search when building and validating the certificate chain.
 		/// </summary>
-		public IntPtr rghStores;
+		public ArrayPointer<HCERTSTORE> rghStores;
 
 		/// <summary>The number of property pages to add to the dialog box.</summary>
 		public uint cPropSheetPages;
@@ -1236,7 +1239,7 @@ public static partial class CryptUI
 		/// <summary>
 		/// A pointer to a <c>GUID</c> that contains the GUID that identifies the Session Initiation Protocol (SIP) functions to load.
 		/// </summary>
-		public IntPtr pGuidSubject;
+		public GuidPtr pGuidSubject;
 
 		/// <summary>The size, in bytes, of the BLOB pointed to by the <c>pbBlob</c> member.</summary>
 		public uint cbBlob;
@@ -1302,7 +1305,7 @@ public static partial class CryptUI
 		/// certificates. This member is used if <c>CRYPTUI_WIZ_DIGITAL_SIGN_PVK_PROV</c> is specified for the <c>dwPvkChoice</c> member.
 		/// </para>
 		/// </summary>
-		public IntPtr pPvkInfo;
+		public ManagedStructPointer<CRYPTUI_WIZ_DIGITAL_SIGN_PVK_FILE_INFO> pPvkInfo;
 	}
 
 	/// <summary>
@@ -1396,10 +1399,10 @@ public static partial class CryptUI
 		public HCERTSTORE hAdditionalCertStore;
 
 		/// <summary>A pointer to a CRYPT_ATTRIBUTES structure that contains authenticated attributes supplied by the user.</summary>
-		public IntPtr psAuthenticated;
+		public StructPointer<CRYPT_ATTRIBUTES> psAuthenticated;
 
 		/// <summary>A pointer to a CRYPT_ATTRIBUTES structure that contains unauthenticated attributes supplied by the user.</summary>
-		public IntPtr psUnauthenticated;
+		public StructPointer<CRYPT_ATTRIBUTES> psUnauthenticated;
 	}
 
 	/// <summary>
@@ -1527,7 +1530,7 @@ public static partial class CryptUI
 		/// This member is used if <c>CRYPTUI_WIZ_DIGITAL_SIGN_PVK</c> is specified for the <c>dwSigningCertChoice</c> member.
 		/// </para>
 		/// </summary>
-		public IntPtr pSigningCertObject;
+		public PCCERT_CONTEXT pSigningCertObject;
 
 		/// <summary>A pointer to a null-terminated Unicode string that contains the URL for the time stamp.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)] public string pwszTimestampURL;
@@ -1561,7 +1564,7 @@ public static partial class CryptUI
 		/// <summary>
 		/// A pointer to a CRYPTUI_WIZ_DIGITAL_SIGN_EXTENDED_INFO structure that contains extended information about the signature.
 		/// </summary>
-		public IntPtr pSignExtInfo;
+		public ManagedStructPointer<CRYPTUI_WIZ_DIGITAL_SIGN_EXTENDED_INFO> pSignExtInfo;
 	}
 
 	/// <summary>
@@ -1620,7 +1623,7 @@ public static partial class CryptUI
 		public uint cCertStore;
 
 		/// <summary>A pointer to a handle to the certificate store that will be used by the digital signature wizard.</summary>
-		public IntPtr rghCertStore;
+		public StructPointer<HCERTSTORE> rghCertStore;
 
 		/// <summary>Filter callback function used to display the certificate.</summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
@@ -1820,7 +1823,7 @@ public static partial class CryptUI
 		/// certificate. This member is ignored if <c>dwSubjectChoice</c> is anything other than the
 		/// <c>CRYPTUI_WIZ_EXPORT_CERT_CONTEXT</c> value. The <c>cStores</c> member contains the number of elements in this array.
 		/// </summary>
-		public IntPtr rghStores;
+		public ArrayPointer<HCERTSTORE> rghStores;
 	}
 
 	/// <summary>
@@ -1973,5 +1976,8 @@ public static partial class CryptUI
 		/// <param name="h">The handle.</param>
 		/// <returns>The resulting <see cref="CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> instance from the conversion.</returns>
 		public static explicit operator CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT(PCCRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT h) => h.handle.ToStructure<CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT>();
+
+		/// <summary>Gets a reference to the <see cref="CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT"/> structure.</summary>
+		public ref CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT AsRef() => ref handle.AsRef<CRYPTUI_WIZ_DIGITAL_SIGN_CONTEXT>();
 	}
 }

@@ -92,7 +92,7 @@ public static partial class Crypt32
 	/// same logon credential as the user who encrypted the data can decrypt the data. In addition, the encryption and decryption
 	/// usually must be done on the same computer. For information about exceptions, see Remarks.
 	/// </summary>
-	/// <param name="pDataIn">A pointer to a DATA_BLOB structure that contains the plaintext to be encrypted.</param>
+	/// <param name="pDataIn">The plaintext to be encrypted.</param>
 	/// <param name="szDataDescr">
 	/// A string with a readable description of the data to be encrypted. This description string is included with the encrypted data.
 	/// This parameter is optional and can be set to <c>NULL</c>.
@@ -102,7 +102,6 @@ public static partial class Crypt32
 	/// <c>DATA_BLOB</c> structure used in the encryption phase must also be used in the decryption phase. This parameter can be set to
 	/// <c>NULL</c> for no additional entropy. For information about protecting passwords, see Handling Passwords.
 	/// </param>
-	/// <param name="pvReserved">Reserved for future use and must be set to <c>NULL</c>.</param>
 	/// <param name="pPromptStruct">
 	/// A pointer to a CRYPTPROTECT_PROMPTSTRUCT structure that provides information about where and when prompts are to be displayed
 	/// and what the content of those prompts should be. This parameter can be set to <c>NULL</c> in both the encryption and decryption phases.
@@ -136,8 +135,7 @@ public static partial class Crypt32
 	/// </list>
 	/// </param>
 	/// <param name="pDataOut">
-	/// A pointer to a DATA_BLOB structure that receives the encrypted data. When you have finished using the <c>DATA_BLOB</c>
-	/// structure, free its <c>pbData</c> member by calling the LocalFree function.
+	/// A byte array that receives the encrypted data.
 	/// </param>
 	/// <returns>
 	/// <para>If the function succeeds, the function returns <c>TRUE</c>.</para>
@@ -170,11 +168,25 @@ public static partial class Crypt32
 	// https://docs.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptprotectdata DPAPI_IMP BOOL CryptProtectData( DATA_BLOB
 	// *pDataIn, LPCWSTR szDataDescr, DATA_BLOB *pOptionalEntropy, PVOID pvReserved, CRYPTPROTECT_PROMPTSTRUCT *pPromptStruct, DWORD
 	// dwFlags, DATA_BLOB *pDataOut );
-	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "765a68fd-f105-49fc-a738-4a8129eb0770")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptProtectData(in CRYPTOAPI_BLOB pDataIn, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? szDataDescr, in CRYPTOAPI_BLOB pOptionalEntropy,
-		[Optional] IntPtr pvReserved, in CRYPTPROTECT_PROMPTSTRUCT pPromptStruct, CryptProtectFlags dwFlags, IntPtr pDataOut);
+	public static bool CryptProtectData([In] byte[] pDataIn, [Optional] string? szDataDescr, [In, Optional] byte[]? pOptionalEntropy,
+		[Optional] in CRYPTPROTECT_PROMPTSTRUCT? pPromptStruct, CryptProtectFlags dwFlags, out byte[] pDataOut)
+	{
+		unsafe
+		{
+			CRYPTOAPI_BLOB oe = new(pOptionalEntropy);
+			using SafeCoTaskMemStruct<CRYPTPROTECT_PROMPTSTRUCT> ps = pPromptStruct;
+			CRYPTOAPI_BLOB dout = new();
+			if (!CryptProtectData(pDataIn, szDataDescr, pOptionalEntropy is null ? default : &oe, default, ps, dwFlags, &dout))
+			{
+				pDataOut = [];
+				return false;
+			}
+			pDataOut = dout;
+			LocalFree(dout.pbData);
+			return true;
+		}
+	}
 
 	/// <summary>
 	/// The <c>CryptProtectData</c> function performs encryption on the data in a DATA_BLOB structure. Typically, only a user with the
@@ -257,13 +269,14 @@ public static partial class Crypt32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptprotectdata DPAPI_IMP BOOL CryptProtectData( DATA_BLOB
-	// *pDataIn, LPCWSTR szDataDescr, DATA_BLOB *pOptionalEntropy, PVOID pvReserved, CRYPTPROTECT_PROMPTSTRUCT *pPromptStruct, DWORD
-	// dwFlags, DATA_BLOB *pDataOut );
+	// *pDataIn, LPCWSTR szDataDescr, DATA_BLOB *pOptionalEntropy, PVOID pvReserved, CRYPTPROTECT_PROMPTSTRUCT *pPromptStruct, DWORD dwFlags,
+	// DATA_BLOB *pDataOut );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "765a68fd-f105-49fc-a738-4a8129eb0770")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptProtectData(in CRYPTOAPI_BLOB pDataIn, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? szDataDescr, [Optional] IntPtr pOptionalEntropy,
-		[Optional] IntPtr pvReserved, [Optional] IntPtr pPromptStruct, CryptProtectFlags dwFlags, IntPtr pDataOut);
+	public static extern bool CryptProtectData(in CRYPTOAPI_BLOB pDataIn, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? szDataDescr,
+		[In, Optional] StructPointer<CRYPTOAPI_BLOB> pOptionalEntropy, [Optional] IntPtr pvReserved,
+		[In, Optional] ManagedStructPointer<CRYPTPROTECT_PROMPTSTRUCT> pPromptStruct, CryptProtectFlags dwFlags, [Out] StructPointer<CRYPTOAPI_BLOB> pDataOut);
 
 	/// <summary>
 	/// The <c>CryptProtectMemory</c> function encrypts memory to prevent others from viewing sensitive information in your process. For
@@ -342,7 +355,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "6b372552-87d4-4047-afa5-0d1113348289")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptProtectMemory(IntPtr pDataIn, uint cbDataIn, CryptProtectMemoryFlags dwFlags);
+	public static extern bool CryptProtectMemory([In, SizeDef(nameof(cbDataIn))] IntPtr pDataIn, uint cbDataIn, CryptProtectMemoryFlags dwFlags);
 
 	/// <summary>
 	/// The <c>CryptUnprotectData</c> function decrypts and does an integrity check of the data in a DATA_BLOB structure. Usually, the
@@ -431,7 +444,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "54eab3b0-d341-47c6-9c32-79328d7a7155")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptUnprotectData(in CRYPTOAPI_BLOB pDataIn, out IntPtr ppszDataDescr,
+	public static extern bool CryptUnprotectData(in CRYPTOAPI_BLOB pDataIn, out StrPtrUni ppszDataDescr,
 		in CRYPTOAPI_BLOB pOptionalEntropy, [Optional] IntPtr pvReserved, in CRYPTPROTECT_PROMPTSTRUCT pPromptStruct, CryptProtectFlags dwFlags, [Out] IntPtr pDataOut);
 
 	/// <summary>
@@ -521,8 +534,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "54eab3b0-d341-47c6-9c32-79328d7a7155")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptUnprotectData(in CRYPTOAPI_BLOB pDataIn, [Optional] IntPtr ppszDataDescr,
-		[Optional] IntPtr pOptionalEntropy, [Optional] IntPtr pvReserved, [Optional] IntPtr pPromptStruct, CryptProtectFlags dwFlags, [Out] IntPtr pDataOut);
+	public static extern bool CryptUnprotectData(in CRYPTOAPI_BLOB pDataIn, [Optional] IntPtr ppszDataDescr, [In, Optional] StructPointer<CRYPTOAPI_BLOB> pOptionalEntropy,
+		[Optional] IntPtr pvReserved, [In, Optional] ManagedStructPointer<CRYPTPROTECT_PROMPTSTRUCT> pPromptStruct, CryptProtectFlags dwFlags, [Out] StructPointer<CRYPTOAPI_BLOB> pDataOut);
 
 	/// <summary>The <c>CryptUnprotectMemory</c> function decrypts memory that was encrypted using the CryptProtectMemory function.</summary>
 	/// <param name="pDataIn">
@@ -592,7 +605,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "1c7980ac-4e9e-43fd-b6d7-c0d0a69c8040")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptUnprotectMemory(IntPtr pDataIn, uint cbDataIn, CryptProtectMemoryFlags dwFlags);
+	public static extern bool CryptUnprotectMemory([In, SizeDef(nameof(cbDataIn))] IntPtr pDataIn, uint cbDataIn, CryptProtectMemoryFlags dwFlags);
 
 	/// <summary>
 	/// The <c>CryptUpdateProtectedState</c> function migrates the current user's master keys after the user's security identifier (SID)
@@ -665,8 +678,11 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "f32e8fcd-6b5b-4a43-b3f9-77e17c84deca")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptUpdateProtectedState([Optional] PSID pOldSid, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszOldPassword,
+	public static extern bool CryptUpdateProtectedState([In, Optional] PSID pOldSid, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszOldPassword,
 		[Optional] uint dwFlags, out uint pdwSuccessCount, out uint pdwFailureCount);
+
+	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+	internal static extern IntPtr LocalFree(IntPtr hMem);
 
 	/// <summary>
 	/// The <c>CRYPTPROTECT_PROMPTSTRUCT</c> structure provides the text of a prompt and information about when and where that prompt is

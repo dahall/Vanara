@@ -24,7 +24,7 @@ public class BCryptTests
 			Assert.That(BCryptQueryContextConfiguration(ContextConfigTable.CRYPT_LOCAL, ctx, out var ctxcfg), ResultIs.Successful);
 			Assert.That((int)ctxcfg.GetValueOrDefault().dwFlags, Is.Zero);
 
-			Assert.That(BCryptConfigureContext(ContextConfigTable.CRYPT_LOCAL, ctx, new CRYPT_CONTEXT_CONFIG { dwFlags = ContextConfigFlags.CRYPT_EXCLUSIVE }), ResultIs.Successful);
+			Assert.That(BCryptConfigureContext(ContextConfigTable.CRYPT_LOCAL, ctx, new(ContextConfigFlags.CRYPT_EXCLUSIVE)), ResultIs.Successful);
 
 			Assert.That(BCryptQueryContextConfiguration(ContextConfigTable.CRYPT_LOCAL, ctx, out ctxcfg), ResultIs.Successful);
 			Assert.That(ctxcfg.GetValueOrDefault().dwFlags, Is.EqualTo(ContextConfigFlags.CRYPT_EXCLUSIVE));
@@ -62,10 +62,10 @@ public class BCryptTests
 	{
 		Assert.That(BCryptOpenAlgorithmProvider(out var hAlg, StandardAlgorithmId.BCRYPT_SHA256_ALGORITHM), ResultIs.Successful);
 
-		var cbHashObject = BCryptGetProperty<uint>(hAlg, BCrypt.PropertyName.BCRYPT_OBJECT_LENGTH);
+		var cbHashObject = hAlg.ObjectLength;
 		Assert.That(cbHashObject, Is.GreaterThan(0));
 
-		var cbHash = BCryptGetProperty<uint>(hAlg, BCrypt.PropertyName.BCRYPT_HASH_LENGTH);
+		var cbHash = hAlg.HashLength;
 		Assert.That(cbHash, Is.GreaterThan(0));
 
 		var pbHashObject = new SafeHeapBlock((int)cbHashObject);
@@ -82,49 +82,49 @@ public class BCryptTests
 	}
 
 	[Test]
+	public void CreateHashTest2()
+	{
+		Assert.That(BCryptOpenAlgorithmProvider(out SafeBCRYPT_ALG_HANDLE? hAlg, StandardAlgorithmId.BCRYPT_SHA256_ALGORITHM), ResultIs.Successful);
+
+		var rgbMsg = new byte[] { 0x61, 0x62, 0x63 };
+		Assert.That(BCryptHash(hAlg, rgbMsg, out var pbHash), ResultIs.Successful);
+	}
+
+	[Test]
 	public void EncryptTest()
 	{
-		byte[] rgbPlaintext = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
-		byte[] rgbIV = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
-		byte[] rgbAES128Key = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
+		byte[] rgbPlaintext = "A random string to test."u8.ToArray();
+		byte[] pbKey = GetRandomBytes(32);
 
-		Assert.That(BCryptOpenAlgorithmProvider(out var hAlg, StandardAlgorithmId.BCRYPT_AES_ALGORITHM), ResultIs.Successful);
+		// Open an AES algorithm handle and set it to CBC mode
+		using var hAES = SafeBCRYPT_ALG_HANDLE.OpenProvider(StandardAlgorithmId.BCRYPT_AES_ALGORITHM);
+		Assert.That(hAES, ResultIs.ValidHandle);
 
-		var cbKeyObject = BCryptGetProperty<uint>(hAlg, BCrypt.PropertyName.BCRYPT_OBJECT_LENGTH);
-		Assert.That(cbKeyObject, Is.GreaterThan(0));
+		hAES.GenerateSymmetricKey(out var hKey, pbKey!).ThrowIfFailed();
+		hAES.SetProperty(BCrypt.PropertyName.BCRYPT_CHAINING_MODE, ChainingMode.BCRYPT_CHAIN_MODE_CBC);
+		hKey.Export(default, BlobType.BCRYPT_OPAQUE_KEY_BLOB, out var pbBlob).ThrowIfFailed();
 
-		var cbBlockLen = BCryptGetProperty<uint>(hAlg, BCrypt.PropertyName.BCRYPT_BLOCK_LENGTH);
-		Assert.That(cbBlockLen, Is.GreaterThan(0));
-		Assert.That(cbBlockLen, Is.LessThanOrEqualTo(rgbIV.Length));
+		// Make an IV
+		byte[] rgbIV = GetRandomBytes(hAES.GetProperty<int>(BCrypt.PropertyName.BCRYPT_BLOCK_LENGTH));
 
-		var cm = Encoding.Unicode.GetBytes(ChainingMode.BCRYPT_CHAIN_MODE_CBC);
-		Assert.That(BCryptSetProperty(hAlg, BCrypt.PropertyName.BCRYPT_CHAINING_MODE, cm, (uint)cm.Length), ResultIs.Successful);
+		// Encrypt the plaintext with the derived key and a cloned IV
+		hKey.Encrypt(rgbPlaintext, default, (byte[])rgbIV.Clone(), out var pbCipherText, EncryptFlags.BCRYPT_BLOCK_PADDING).ThrowIfFailed();
 
-		var pbKeyObject = new SafeCoTaskMemHandle((int)cbKeyObject);
-		Assert.That(BCryptGenerateSymmetricKey(hAlg, out var hKey, pbKeyObject, cbKeyObject, rgbAES128Key, (uint)rgbAES128Key.Length, 0), ResultIs.Successful);
+		hAES.ImportKey(default, BlobType.BCRYPT_OPAQUE_KEY_BLOB, out var hKey2, out var pbKeyObject, pbBlob!).ThrowIfFailed();
+		hKey2.Decrypt(pbCipherText!, default, rgbIV, out var pbPlainText, EncryptFlags.BCRYPT_BLOCK_PADDING).ThrowIfFailed();
 
-		Assert.That(BCryptExportKey(hKey, default, BlobType.BCRYPT_OPAQUE_KEY_BLOB, IntPtr.Zero, 0, out var cbBlob), ResultIs.Successful);
+		Assert.That(pbPlainText, Is.EquivalentTo(rgbPlaintext));
+	}
 
-		var pbBlob = new SafeCoTaskMemHandle((int)cbBlob);
-		Assert.That(BCryptExportKey(hKey, default, BlobType.BCRYPT_OPAQUE_KEY_BLOB, pbBlob, (uint)pbBlob.Size, out cbBlob), ResultIs.Successful);
+	[Test]
+	public void GenRandomTest() => Assert.That(GetRandomBytes(16).Length, Is.EqualTo(16));
 
-		var pbIV = new SafeCoTaskMemHandle((int)cbBlockLen);
-		Marshal.Copy(rgbIV, 0, (IntPtr)pbIV, (int)cbBlockLen);
-		Assert.That(BCryptEncrypt(hKey, rgbPlaintext, (uint)rgbPlaintext.Length, IntPtr.Zero, pbIV, cbBlockLen, IntPtr.Zero, 0, out var cbCipherText, EncryptFlags.BCRYPT_BLOCK_PADDING), ResultIs.Successful);
-
-		var pbCipherText = new SafeCoTaskMemHandle((int)cbCipherText);
-		Assert.That(BCryptEncrypt(hKey, rgbPlaintext, (uint)rgbPlaintext.Length, IntPtr.Zero, pbIV, cbBlockLen, pbCipherText, cbCipherText, out cbCipherText, EncryptFlags.BCRYPT_BLOCK_PADDING), ResultIs.Successful);
-
-		Marshal.Copy(rgbIV, 0, (IntPtr)pbIV, (int)cbBlockLen);
-
-		Assert.That(BCryptImportKey(hAlg, default, BlobType.BCRYPT_OPAQUE_KEY_BLOB, out var hKey2, pbKeyObject, cbKeyObject, pbBlob, cbBlob), ResultIs.Successful);
-
-		Assert.That(BCryptDecrypt(hKey2, pbCipherText, cbCipherText, IntPtr.Zero, pbIV, cbBlockLen, IntPtr.Zero, 0, out var cbPlainText, EncryptFlags.BCRYPT_BLOCK_PADDING), ResultIs.Successful);
-
-		var pbPlainText = new SafeCoTaskMemHandle((int)cbPlainText);
-		Assert.That(BCryptDecrypt(hKey2, pbCipherText, cbCipherText, IntPtr.Zero, pbIV, cbBlockLen, pbPlainText, cbPlainText, out cbPlainText, EncryptFlags.BCRYPT_BLOCK_PADDING), ResultIs.Successful);
-
-		Assert.That(pbPlainText.ToArray<byte>(rgbPlaintext.Length), Is.EquivalentTo(rgbPlaintext));
+	public static byte[] GetRandomBytes(int count)
+	{
+		using var hAlg = SafeBCRYPT_ALG_HANDLE.OpenProvider(StandardAlgorithmId.BCRYPT_RNG_ALGORITHM);
+		var ret = new byte[count];
+		hAlg.GenRandom(ret).ThrowIfFailed();
+		return ret;
 	}
 
 	[Test]
@@ -161,8 +161,8 @@ public class BCryptTests
 	public void SecretAgreementWithPersistedKeysTest()
 	{
 		const string keyName = "Sample ECDH Key";
-		byte[] SecretPrependArray = { 0x12, 0x34, 0x56 };
-		byte[] SecretAppendArray = { 0xab, 0xcd, 0xef };
+		byte[] SecretPrependArray = [0x12, 0x34, 0x56];
+		byte[] SecretAppendArray = [0xab, 0xcd, 0xef];
 
 		// Get a handle to MS KSP
 		Assert.That(NCryptOpenStorageProvider(out var ProviderHandleA, KnownStorageProvider.MS_KEY_STORAGE_PROVIDER), ResultIs.Successful);
@@ -211,10 +211,7 @@ public class BCryptTests
 			new(KeyDerivationBufferType.KDF_SECRET_APPEND, SecretAppendArray)
 		);
 
-		Assert.That(NCryptDeriveKey(AgreedSecretHandleA, KDF.BCRYPT_KDF_HMAC, ParameterList, IntPtr.Zero, 0, out var AgreedSecretLengthA, DeriveKeyFlags.KDF_USE_SECRET_AS_HMAC_KEY_FLAG), ResultIs.Successful);
-
-		SafeCoTaskMemHandle AgreedSecretA = new((int)AgreedSecretLengthA);
-		Assert.That(NCryptDeriveKey(AgreedSecretHandleA, KDF.BCRYPT_KDF_HMAC, ParameterList, AgreedSecretA, AgreedSecretLengthA, out AgreedSecretLengthA, DeriveKeyFlags.KDF_USE_SECRET_AS_HMAC_KEY_FLAG), ResultIs.Successful);
+		Assert.That(NCryptDeriveKey(AgreedSecretHandleA, KDF.BCRYPT_KDF_HMAC, ParameterList, out var AgreedSecretA, DeriveKeyFlags.KDF_USE_SECRET_AS_HMAC_KEY_FLAG), ResultIs.Successful);
 
 		// B imports A's public key
 		Assert.That(BCryptImportKeyPair(ExchAlgHandleB, default, BlobType.BCRYPT_ECCPUBLIC_BLOB, out var PubKeyHandleB, PubBlobA, PubBlobA.Size), ResultIs.Successful);
@@ -229,7 +226,7 @@ public class BCryptTests
 
 		// At this point the AgreedSecretA should be the same as AgreedSecretB. In a real scenario, the agreed secrets on both sides will
 		// probably be input to a BCryptGenerateSymmetricKey function. Optional : Compare them
-		Assert.That(AgreedSecretLengthA, Is.EqualTo(AgreedSecretLengthB));
-		Assert.That(AgreedSecretA.ToEnumerable<byte>(AgreedSecretA.Size), Is.EquivalentTo(AgreedSecretB.ToEnumerable<byte>(AgreedSecretB.Size)));
+		Assert.That(AgreedSecretA!.Length, Is.EqualTo(AgreedSecretLengthB));
+		Assert.That(AgreedSecretA, Is.EquivalentTo(AgreedSecretB.ToEnumerable<byte>(AgreedSecretB.Size)));
 	}
 }

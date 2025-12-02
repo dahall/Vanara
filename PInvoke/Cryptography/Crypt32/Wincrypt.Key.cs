@@ -229,7 +229,8 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "eda6d875-df62-4f40-8734-a91666dba289")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertGetEnhancedKeyUsage(PCCERT_CONTEXT pCertContext, CertFindUsageFlags dwFlags, [Out] IntPtr pUsage, ref uint pcbUsage);
+	public static extern bool CertGetEnhancedKeyUsage([In] PCCERT_CONTEXT pCertContext, CertFindUsageFlags dwFlags,
+		[Out, SizeDef(nameof(pcbUsage), SizingMethod.Query)] IntPtr pUsage, ref uint pcbUsage);
 
 	/// <summary>
 	/// The <c>CertRemoveEnhancedKeyUsageIdentifier</c> function removes a usage identifier object identifier (OID) from the enhanced
@@ -246,7 +247,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "4fb27073-674c-4bac-9a62-6e33e1a5785e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CertRemoveEnhancedKeyUsageIdentifier(PCCERT_CONTEXT pCertContext, SafeOID pszUsageIdentifier);
+	public static extern bool CertRemoveEnhancedKeyUsageIdentifier([In] PCCERT_CONTEXT pCertContext, SafeOID pszUsageIdentifier);
 
 	/// <summary>
 	/// The <c>CertSetEnhancedKeyUsage</c> function sets the enhanced key usage (EKU) property for the certificate. Use of this function
@@ -322,7 +323,8 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "628e1995-8207-4daa-a445-cb21a755ffa6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptCreateKeyIdentifierFromCSP(CertEncodingType dwCertEncodingType, [Optional] SafeOID pszPubKeyOID,
-		in PUBLICKEYSTRUC pPubKeyStruc, uint cbPubKeyStruc, uint dwFlags, [Optional] IntPtr pvReserved, [Out] IntPtr pbHash, ref uint pcbHash);
+		in PUBLICKEYSTRUC pPubKeyStruc, uint cbPubKeyStruc, [Optional, Ignore] uint dwFlags, [Optional, Ignore] IntPtr pvReserved,
+		[Out, SizeDef(nameof(pcbHash), SizingMethod.Query)] IntPtr pbHash, ref uint pcbHash);
 
 	/// <summary>
 	/// <para>A pointer to a CRYPT_HASH_BLOB structure that contains the key identifier.</para>
@@ -727,7 +729,8 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "bc0511c1-0699-4959-afd7-a838c91c77d5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CryptGetKeyIdentifierProperty(in CRYPTOAPI_BLOB pKeyIdentifier, uint dwPropId, CryptKeyIdFlags dwFlags,
-		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszComputerName, [Optional] IntPtr pvReserved, [Out, Optional] IntPtr pvData, ref uint pcbData);
+		[Optional, MarshalAs(UnmanagedType.LPWStr)] string? pwszComputerName, [Optional, Ignore] IntPtr pvReserved,
+		[Out, Optional, SizeDef(nameof(pcbData), SizingMethod.Query)] IntPtr pvData, ref uint pcbData);
 
 	/// <summary>
 	/// <para>A pointer to a CRYPT_HASH_BLOB containing the key identifier.</para>
@@ -901,7 +904,7 @@ public static partial class Crypt32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public BlobType bType { get => (BlobType)_bType; set => _bType = (byte)bType; }
+		public BlobType bType { readonly get => (BlobType)_bType; set => _bType = (byte)bType; }
 
 		/// <summary>
 		/// Contains the version number of the key BLOB format. For example, if the BLOB is a Digital Signature Standard (DSS) version 3
