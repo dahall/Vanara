@@ -678,6 +678,28 @@ public static partial class InteropExtensions
 	public static System.Collections.IEnumerable ToIEnum(this IntPtr ptr, Type type, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 		new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
 
+	/// <summary>Converts an <see cref="SafeHandle"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
+	/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
+	/// <param name="ptr">The <see cref="SafeHandle"/> pointing to the native array.</param>
+	/// <param name="count">The number of items in the native array.</param>
+	/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
+	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+	/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static IEnumerable<T?> ToIEnum<T>(this SafeHandle ptr, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
+		new NativeMemoryEnumerator<T>(ptr, count, prefixBytes, allocatedBytes);
+
+	/// <summary>Converts an <see cref="SafeHandle"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
+	/// <param name="ptr">The <see cref="SafeHandle"/> pointing to the native array.</param>
+	/// <param name="type">Type of native structure used by the C-style array.</param>
+	/// <param name="count">The number of items in the native array.</param>
+	/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
+	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+	/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static System.Collections.IEnumerable ToIEnum(this SafeHandle ptr, Type type, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
+		new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
+
 	/// <summary>Converts a <see cref="SecureString"/> to a string.</summary>
 	/// <param name="s">The <see cref="SecureString"/> value.</param>
 	/// <returns>The extracted string.</returns>

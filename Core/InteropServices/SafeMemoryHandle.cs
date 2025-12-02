@@ -977,7 +977,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 		try
 		{
 			Lock();
-			foreach (T? i in handle.ToIEnum<T>(count, prefixBytes, sz))
+			foreach (T? i in this.ToIEnum<T>(count, prefixBytes, sz))
 				yield return i!;
 		}
 		finally

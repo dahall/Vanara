@@ -1917,6 +1917,6 @@ public static partial class AdvApi32
 		/// <exception cref="InsufficientMemoryException"></exception>
 		public T ToStructure<T>() where T : struct => handle.ToStructure<T>();
 
-		internal CREDENTIAL_MGD[] GetCredArray(int count) => handle.ToIEnum<IntPtr>(count).Select(p => new CREDENTIAL_MGD(p.ToStructure<CREDENTIAL>())).ToArray();
+		internal CREDENTIAL_MGD[] GetCredArray(int count) => this.ToIEnum<IntPtr>(count).Select(p => new CREDENTIAL_MGD(p.ToStructure<CREDENTIAL>())).ToArray();
 	}
 }

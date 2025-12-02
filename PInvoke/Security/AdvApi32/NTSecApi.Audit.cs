@@ -1021,7 +1021,7 @@ public static partial class AdvApi32
 		{
 			if (IsInvalid) return Enumerable.Empty<T>();
 			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
-			return handle.ToIEnum<T>(count, prefixBytes);
+			return this.ToIEnum<T>(count, prefixBytes);
 		}
 
 		/// <summary>

@@ -115,7 +115,7 @@ public static partial class NetApi32
 		/// <typeparam name="T">The type of the structure.</typeparam>
 		/// <param name="count">The count of structures in the list.</param>
 		/// <returns>The list of structures.</returns>
-		public IEnumerable<T?> ToIEnum<T>(int count) => handle.ToIEnum<T>(count);
+		public IEnumerable<T?> ToIEnum<T>(int count) => this.ToIEnum<T>(count);
 
 		/// <inheritdoc/>
 		public override string? ToString() => StringHelper.GetString(handle);

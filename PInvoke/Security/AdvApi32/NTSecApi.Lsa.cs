@@ -461,7 +461,7 @@ public static partial class AdvApi32
 		var winErr = LsaNtStatusToWinError(ret);
 		if (winErr == Win32Error.ERROR_FILE_NOT_FOUND) return new string[0];
 		winErr.ThrowIfFailed();
-		return mem.DangerousGetHandle().ToIEnum<LSA_UNICODE_STRING>((int)cnt).Select(u => (string)u.ToString().Clone()).ToArray();
+		return mem.ToIEnum<LSA_UNICODE_STRING>((int)cnt).Select(u => (string)u.ToString().Clone()).ToArray();
 	}
 
 	/// <summary>
@@ -552,7 +552,7 @@ public static partial class AdvApi32
 		var ret = LsaEnumerateAccountsWithUserRight(PolicyHandle, UserRights, out var mem, out var cnt);
 		if (ret == NTStatus.STATUS_NO_MORE_ENTRIES) return new PSID[0];
 		LsaNtStatusToWinError(ret).ThrowIfFailed();
-		return mem.DangerousGetHandle().ToIEnum<LSA_ENUMERATION_INFORMATION>(cnt).Select(u => u.Sid).ToArray();
+		return mem.ToIEnum<LSA_ENUMERATION_INFORMATION>(cnt).Select(u => u.Sid).ToArray();
 	}
 
 	/// <summary>

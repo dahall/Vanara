@@ -306,7 +306,7 @@ public static partial class AdvApi32
 			if (ownsHandle)
 				Count = count;
 			else
-				items = [.. handle.ToIEnum<IntPtr>(count).Select(p => new SafePSID((PSID)p))];
+				items = [.. this.ToIEnum<IntPtr>(count).Select(p => new SafePSID((PSID)p))];
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafePSIDArray"/> class.</summary>

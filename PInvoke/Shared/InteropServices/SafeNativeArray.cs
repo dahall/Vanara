@@ -277,7 +277,7 @@ public class SafeNativeArrayBase<TElem, TMem> : SafeMemoryHandle<TMem>, IList<TE
 
 	/// <summary>Enumerates the elements.</summary>
 	/// <returns>An enumeration of values from the pointer.</returns>
-	protected IEnumerable<TElem> EnumElements() => handle.ToIEnum<TElem>(Count, (int)HeaderSize);
+	protected IEnumerable<TElem> EnumElements() => this.ToIEnum<TElem>(Count, (int)HeaderSize);
 
 	private static int GetElemCountFromBytes(uint byteSize, uint headerSize)
 	{
