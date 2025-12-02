@@ -451,4 +451,13 @@ public class SafeGuidPtr : SafeMemStruct<Guid, CoTaskMemoryMethods>
 	/// <param name="guid">The unique identifier.</param>
 	/// <returns>The resulting <see cref="SafeGuidPtr"/> instance from the conversion.</returns>
 	public static implicit operator SafeGuidPtr(Guid? guid) => guid.HasValue ? new SafeGuidPtr(guid.Value) : Null;
+
+	/// <summary>Converts a SafeGuidPtr instance to a pointer to a Guid structure.</summary>
+	/// <remarks>
+	/// This operator exposes the underlying pointer managed by the SafeGuidPtr. Use with caution, as improper use of the returned pointer
+	/// can lead to memory corruption or access violations. The caller is responsible for ensuring that the SafeGuidPtr remains valid for the
+	/// lifetime of the pointer.
+	/// </remarks>
+	/// <param name="sgp">The SafeGuidPtr instance to convert. Must not be null or disposed.</param>
+	public static unsafe implicit operator Guid*(SafeGuidPtr sgp) => (Guid*)(void*)sgp.DangerousGetHandle();
 }
