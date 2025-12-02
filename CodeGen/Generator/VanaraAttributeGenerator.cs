@@ -460,8 +460,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				var paramNode = tmpbuilder.docs?.SelectSingleNode($"//param[@name='{ps.Identifier.Text}']");
 				var returnsNode = tmpbuilder.docs?.SelectSingleNode("//returns") ??
 					tmpbuilder.docs?.DocumentElement?.AppendChild(tmpbuilder.docs?.CreateElement("returns")!);
-				if (returnsNode is not null)
-					returnsNode.InnerXml = paramNode?.InnerXml;
+				returnsNode?.InnerXml = paramNode?.InnerXml;
 				paramNode?.ParentNode?.RemoveChild(paramNode);
 			}
 		}
@@ -674,10 +673,13 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				var t when t.HasFlag(SizeParamType.String) => $"global::Vanara.Extensions.StringHelper.GetCharSize(CharSet.{charSet})",
 				SizeParamType.Array | SizeParamType.Nullable => $"global::Vanara.Extensions.InteropExtensions.SizeOf(typeof({((ArrayTypeSyntax)((NullableTypeSyntax)outType!).ElementType).ElementType}), CharSet.{charSet})",
 				SizeParamType.Array => $"global::Vanara.Extensions.InteropExtensions.SizeOf(typeof({((ArrayTypeSyntax)outType!).ElementType}), CharSet.{charSet})",
-				_ => "1",
+				_ => null,
 			};
-			var expr = ExpressionStatement(AssignmentExpression(SyntaxKind.DivideAssignmentExpression, IdentifierName(cElemName), ParseExpression(getElemSize)));
-			tmpbuilder.statements.assignAfterQuery.Add(expr);
+			if (getElemSize is not null)
+			{
+				var expr = ExpressionStatement(AssignmentExpression(SyntaxKind.DivideAssignmentExpression, IdentifierName(cElemName), ParseExpression(getElemSize)));
+				tmpbuilder.statements.assignAfterQuery.Add(expr);
+			}
 		}
 		// 5. Create statement that adjusts for null term if indicated
 		if (szMeth.HasFlag(SizingMethod.InclNullTerm))
@@ -729,13 +731,15 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		// 1. Set the output parameter to the value of outVarName, converting as needed, if query
 		if (!isInParam)
 		{
+			if (outSzParam is not null && (szType.HasFlag(SizeParamType.Array) || szType.HasFlag(SizeParamType.Ptr)))
+				tmpbuilder.statements.assignOutParams.Add(ExpressionStatement(ParseExpression($"Array.Resize(ref {outVarName}, (int){outSzParam.Identifier.Text})")));
+
 			ExpressionSyntax? assignExpr = (szType & ~SizeParamType.Nullable) switch
 			{
 				SizeParamType.String => ParseExpression($"{outVarName}.ToString()"),
 				_ => ParseExpression(outVarName),
 			};
-			if (assignExpr is not null)
-				tmpbuilder.statements.assignOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), assignExpr)));
+			tmpbuilder.statements.assignOutParams.Add(ExpressionStatement(AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, IdentifierName(decl.Identifier), assignExpr)));
 		}
 
 		// **********************************
@@ -919,7 +923,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 			UnmanagedType.IUnknown => decl.WithType(ParseTypeName(genericType + (decl.Type is not null && decl.Type.ToString().EndsWith("?") ? "?" : "")))
 				.WithoutAttribute("MarshalAs"),
 			UnmanagedType.Interface => decl.WithoutAttribute("MarshalAs"),
-			UnmanagedType.LPArray when modAttr is ModType.In => decl.WithoutAttribute("MarshalAs"),
+			UnmanagedType.LPArray when modAttr.HasFlag(ModType.In) => decl.WithoutAttribute("MarshalAs"),
 			_ => decl.WithoutTrivia()
 		};
 		tmpbuilder.parameters.Replace(decl, newParam);
@@ -935,23 +939,26 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 		}
 
 		// Create the invocation expression capturing the return value if the return type is not `void`
-		tmpbuilder.statements.invokeArgs = [.. tmpbuilder.statements.invokeArgs.Select(a => a switch
+		ArgumentSyntax ModArgs(ArgumentSyntax a) => a switch
+		{
+			var a1 when a1.NameEquals(refParamName) => unmanagedType switch
 			{
-				var a1 when a1.NameEquals(refParamName) => unmanagedType switch
-				{
-					UnmanagedType.IUnknown => Argument(ParseExpression($"typeof({genericType}).GUID")),
-					UnmanagedType.Interface => Argument(ParseExpression($"typeof({decl.Type!.ToString().TrimEnd('?')}).GUID")),
-					UnmanagedType.LPArray when modAttr is ModType.In && methodDecl.ParameterList.Parameters.FirstOrDefault(p => p.Identifier.Text == refParamName) is ParameterSyntax refParam =>
-						paramTypeIsNullable
-						? Argument(ParseExpression($"({refParam.Type})Convert.ChangeType({decl.Identifier.Text}?.Length ?? 0, typeof({refParam.Type}))"))
-						: Argument(ParseExpression($"({refParam.Type})Convert.ChangeType({decl.Identifier.Text}.Length, typeof({refParam.Type}))")),
-					_ => a1,
-				},
-				var a1 when a1.Expression is IdentifierNameSyntax ins && ins.Identifier.Text == decl.Identifier.Text => isOutParam
-					? Argument(null, MethodBodyBuilder.outToken, DeclarationExpression(IdentifierName("var"), SingleVariableDesignation(Identifier(altArg))))
-					: Argument(IdentifierName(ins.Identifier.Text)),
-				_ => a
-			})];
+				UnmanagedType.IUnknown => Argument(ParseExpression($"typeof({genericType}).GUID")),
+				UnmanagedType.Interface => Argument(ParseExpression($"typeof({decl.Type!.ToString().TrimEnd('?')}).GUID")),
+				UnmanagedType.LPArray when modAttr.HasFlag(ModType.In) && methodDecl.ParameterList.Parameters.FirstOrDefault(p => p.Identifier.Text == refParamName) is ParameterSyntax refParam =>
+					paramTypeIsNullable
+					? Argument(ParseExpression($"({refParam.Type})Convert.ChangeType({decl.Identifier.Text}?.Length ?? 0, typeof({refParam.Type}))"))
+					: Argument(ParseExpression($"({refParam.Type})Convert.ChangeType({decl.Identifier.Text}.Length, typeof({refParam.Type}))")),
+				_ => a1,
+			},
+			var a1 when a1.Expression is IdentifierNameSyntax ins && ins.Identifier.Text == decl.Identifier.Text => isOutParam
+				? Argument(null, MethodBodyBuilder.outToken, DeclarationExpression(IdentifierName("var"), SingleVariableDesignation(Identifier(altArg))))
+				: Argument(IdentifierName(ins.Identifier.Text)),
+			_ => a
+		};
+		tmpbuilder.statements.invokeArgs = [.. tmpbuilder.statements.invokeArgs.Select(ModArgs)];
+		if (tmpbuilder.statements.invokeForQueryArgs is not null)
+			tmpbuilder.statements.invokeForQueryArgs = [.. tmpbuilder.statements.invokeForQueryArgs.Select(ModArgs)];
 
 		// Create the assignment expression
 		if (isOutParam)
@@ -1031,7 +1038,7 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 
 					case UnmanagedType.LPArray:
 						refindex = GetIndex("SizeParamIndex");
-						if (refindex == -1 || modAttr != ModType.In)
+						if (refindex == -1 || !modAttr.HasFlag(ModType.In))
 							return false;
 						break;
 
@@ -1061,6 +1068,8 @@ public partial class VanaraAttributeGenerator : IIncrementalGenerator
 				// For LPArray, type is integral so pass along
 				else if (unmanagedType == UnmanagedType.LPArray)
 				{
+					if (iidParam.Modifiers.Any(SyntaxKind.RefKeyword) || iidParam.Modifiers.Any(SyntaxKind.OutKeyword))
+						return false;
 					refParamName = iidParam.Identifier.Text;
 					return true;
 				}
