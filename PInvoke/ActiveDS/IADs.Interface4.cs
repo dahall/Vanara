@@ -2648,18 +2648,6 @@ public static partial class ActiveDS
 	}
 
 	/// <summary>
-	/// The <c>IDirectorySearch::SetSearchPreference</c> method specifies a search preference for obtaining data in a subsequent search.
-	/// </summary>
-	/// <param name="ids">The <see cref="IDirectorySearch"/> instance.</param>
-	/// <param name="pSearchPrefs">
-	/// Provides a caller-allocated array of ADS_SEARCHPREF_INFO structures that contain the search preferences to be set.
-	/// </param>
-	// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-setsearchpreference HRESULT SetSearchPreference(
-	// [in] PADS_SEARCHPREF_INFO pSearchPrefs, [in] DWORD dwNumPrefs );
-	public static HRESULT SetSearchPreference(this IDirectorySearch ids, ADS_SEARCHPREF_INFO[] pSearchPrefs) =>
-		ids.SetSearchPreference(pSearchPrefs, pSearchPrefs?.Length ?? 0);
-
-	/// <summary>
 	/// The <c>IDirectorySearch::ExecuteSearch</c> method executes a search and passes the results to the caller. Some providers, such as
 	/// LDAP, will defer the actual execution until the caller invokes the IDirectorySearch::GetFirstRow method or the
 	/// IDirectorySearch::GetNextRow method.

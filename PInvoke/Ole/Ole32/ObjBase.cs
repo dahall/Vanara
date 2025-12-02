@@ -983,7 +983,7 @@ public static partial class Ole32
 	[PInvokeData("objbase.h", MSDNShortId = "6a77770c-b7e1-4d29-9c4b-331b5950a635")]
 	public static extern HRESULT CoGetInstanceFromIStorage([Optional] COSERVERINFO? pServerInfo, in Guid pClsid,
 		[MarshalAs(UnmanagedType.IUnknown), Optional] object? punkOuter, CLSCTX dwClsCtx, IStorage pstg, uint dwCount,
-		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] MULTI_QI[] pResults);
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] MULTI_QI[] pResults);
 
 	/// <summary>Creates a new object and initializes it from a storage object through an internal call to IPersistFile::Load.</summary>
 	/// <param name="pServerInfo">
@@ -1060,7 +1060,7 @@ public static partial class Ole32
 	[PInvokeData("objbase.h", MSDNShortId = "6a77770c-b7e1-4d29-9c4b-331b5950a635")]
 	public static extern HRESULT CoGetInstanceFromIStorage([Optional] COSERVERINFO? pServerInfo, [Optional] IntPtr pClsid,
 		[MarshalAs(UnmanagedType.IUnknown), Optional] object? punkOuter, CLSCTX dwClsCtx, IStorage pstg, uint dwCount,
-		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] MULTI_QI[] pResults);
+		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] MULTI_QI[] pResults);
 
 	/// <summary>
 	/// Converts a display name into a moniker that identifies the object named, and then binds to the object identified by the moniker.

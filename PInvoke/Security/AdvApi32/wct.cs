@@ -246,7 +246,7 @@ public static partial class AdvApi32
 	[PInvokeData("wct.h", MSDNShortId = "5b418fa6-1d07-465e-85ea-b7127264eebf")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetThreadWaitChain(HWCT WctHandle, [Optional] IntPtr Context, WaitChainRetrievalOptions Flags, uint ThreadId, ref uint NodeCount,
-		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] WAITCHAIN_NODE_INFO[] NodeInfoArray, [MarshalAs(UnmanagedType.Bool)] out bool IsCycle);
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(NodeCount), SizingMethod.CheckLastError)] WAITCHAIN_NODE_INFO[]? NodeInfoArray, [MarshalAs(UnmanagedType.Bool)] out bool IsCycle);
 
 	/// <summary>Creates a new WCT session.</summary>
 	/// <param name="Flags">The session type. This parameter can be one of the following values.</param>
