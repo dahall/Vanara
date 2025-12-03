@@ -939,6 +939,78 @@ public static partial class Crypt32
 	public static extern bool CryptDecryptMessage(in CRYPT_DECRYPT_MESSAGE_PARA pDecryptPara, [In, SizeDef(nameof(cbEncryptedBlob))] IntPtr pbEncryptedBlob,
 		uint cbEncryptedBlob, [Out, SizeDef(nameof(pcbDecrypted), SizingMethod.Query)] IntPtr pbDecrypted, ref uint pcbDecrypted, IntPtr ppXchgCert = default);
 
+	/// <summary>The <c>CryptEncryptMessage</c> function encrypts and encodes a message.</summary>
+	/// <param name="pEncryptPara">
+	/// <para>A pointer to a CRYPT_ENCRYPT_MESSAGE_PARA structure that contains the encryption parameters.</para>
+	/// <para>
+	/// The <c>CryptEncryptMessage</c> function does not support the SHA2 OIDs, <c>szOID_DH_SINGLE_PASS_STDDH_SHA256_KDF</c> and <c>szOID_DH_SINGLE_PASS_STDDH_SHA384_KDF</c>.
+	/// </para>
+	/// </param>
+	/// <param name="cRecipientCert">Number of elements in the rgpRecipientCert array.</param>
+	/// <param name="rgpRecipientCert">
+	/// Array of pointers to CERT_CONTEXT structures that contain the certificates of intended recipients of the message.
+	/// </param>
+	/// <param name="pbToBeEncrypted">A pointer to a buffer that contains the message that is to be encrypted.</param>
+	/// <param name="cbToBeEncrypted">The size, in bytes, of the message that is to be encrypted.</param>
+	/// <param name="pbEncryptedBlob">
+	/// <para>A pointer to BLOB that contains a buffer that receives the encrypted and encoded message.</para>
+	/// <para>
+	/// To set the size of this information for memory allocation purposes, this parameter can be <c>NULL</c>. For more information, see
+	/// Retrieving Data of Unknown Length.
+	/// </para>
+	/// </param>
+	/// <param name="pcbEncryptedBlob">
+	/// <para>
+	/// A pointer to a <c>DWORD</c> that specifies the size, in bytes, of the buffer pointed to by the pbEncryptedBlob parameter. When
+	/// the function returns, this variable contains the size, in bytes, of the encrypted and encoded message copied to pbEncryptedBlob.
+	/// </para>
+	/// <para>
+	/// <c>Note</c> When processing the data returned in the buffer of the pbEncryptedBlob, applications need to use the actual size of
+	/// the data returned. The actual size can be slightly smaller than the size of the buffer specified on input. (On input, buffer
+	/// sizes are usually specified large enough to ensure that the largest possible output data will fit in the buffer.) On output, the
+	/// variable pointed to by this parameter is updated to reflect the actual size of the data copied to the buffer.
+	/// </para>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the function returns nonzero ( <c>TRUE</c>).</para>
+	/// <para>If the function fails, it returns zero ( <c>FALSE</c>). For extended error information, call GetLastError.</para>
+	/// <para>
+	/// <c>Note</c> Errors from calls to CryptGenKey, CryptEncrypt, CryptImportKey, and CryptExportKey can be propagated to this function.
+	/// </para>
+	/// <para>The GetLastError function returns the following error codes most often.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_MORE_DATA</term>
+	/// <term>
+	/// If the buffer specified by the pbEncryptedBlob parameter is not large enough to hold the returned data, the function sets the
+	/// ERROR_MORE_DATA code and stores the required buffer size, in bytes, in the variable pointed to by pcbEncryptedBlob.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>E_INVALIDARG</term>
+	/// <term>
+	/// The message encoding type is not valid. Currently only PKCS_7_ASN_ENCODING is supported. The cbSize in *pEncryptPara is not valid.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// If the function fails, GetLastError may return an Abstract Syntax Notation One (ASN.1) encoding/decoding error. For information
+	/// about these errors, see ASN.1 Encoding/Decoding Return Values.
+	/// </para>
+	/// </returns>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptencryptmessage BOOL CryptEncryptMessage(
+	// PCRYPT_ENCRYPT_MESSAGE_PARA pEncryptPara, DWORD cRecipientCert, PCCERT_CONTEXT [] rgpRecipientCert, const BYTE *pbToBeEncrypted,
+	// DWORD cbToBeEncrypted, BYTE *pbEncryptedBlob, DWORD *pcbEncryptedBlob );
+	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
+	[PInvokeData("wincrypt.h", MSDNShortId = "927f2e9a-96cf-4744-bd57-420b5034d28d")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool CryptEncryptMessage(in CRYPT_ENCRYPT_MESSAGE_PARA pEncryptPara, uint cRecipientCert, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PCCERT_CONTEXT[] rgpRecipientCert,
+		[In, SizeDef(nameof(cbToBeEncrypted))] IntPtr pbToBeEncrypted, uint cbToBeEncrypted, [Out, SizeDef(nameof(pcbEncryptedBlob), SizingMethod.Query)] IntPtr pbEncryptedBlob, ref uint pcbEncryptedBlob);
+	
 	/// <summary>
 	/// The <c>CryptGetMessageCertificates</c> function returns the handle of an open certificate store containing the message's
 	/// certificates and CRLs. This function calls CertOpenStore using provider type CERT_STORE_PROV_PKCS7 as its lpszStoreProvider parameter.
