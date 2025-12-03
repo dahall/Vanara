@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows User32.dll
 
 - Includes methods from user32.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.User32?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.User32?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.User32)  
-### Methods - 100% API coverage (569 of 569 functions)  
+### Methods - 99% API coverage (569 of 570 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.ActivateKeyboardLayout](https://github.com/dahall/Vanara/search?l=C%23&q=ActivateKeyboardLayout)  
@@ -477,6 +477,7 @@ Native Method | Header | Managed Method
 [SetKeyboardState](https://www.google.com/search?num=5&q=SetKeyboardState+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetKeyboardState](https://github.com/dahall/Vanara/search?l=C%23&q=SetKeyboardState)  
 [SetLastErrorEx](https://www.google.com/search?num=5&q=SetLastErrorEx+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetLastErrorEx](https://github.com/dahall/Vanara/search?l=C%23&q=SetLastErrorEx)  
 [SetLayeredWindowAttributes](https://www.google.com/search?num=5&q=SetLayeredWindowAttributes+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetLayeredWindowAttributes](https://github.com/dahall/Vanara/search?l=C%23&q=SetLayeredWindowAttributes)  
+[SetMaxTouchpadSensitivity](https://www.google.com/search?num=5&q=SetMaxTouchpadSensitivity+site%3Alearn.microsoft.com) |  |   
 [SetMenu](https://www.google.com/search?num=5&q=SetMenu+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetMenu](https://github.com/dahall/Vanara/search?l=C%23&q=SetMenu)  
 [SetMenuContextHelpId](https://www.google.com/search?num=5&q=SetMenuContextHelpId+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetMenuContextHelpId](https://github.com/dahall/Vanara/search?l=C%23&q=SetMenuContextHelpId)  
 [SetMenuDefaultItem](https://www.google.com/search?num=5&q=SetMenuDefaultItem+site%3Alearn.microsoft.com) | winuser.h | [Vanara.PInvoke.User32.SetMenuDefaultItem](https://github.com/dahall/Vanara/search?l=C%23&q=SetMenuDefaultItem)  

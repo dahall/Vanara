@@ -3,11 +3,9 @@ PInvoke API (methods, structures and constants) imported from Windows Driver Fra
 
 - Includes methods from wudfx02000.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.WindowsDriverFramework?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.WindowsDriverFramework?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WindowsDriverFramework)  
-### Methods - 33% API coverage (1 of 3 functions)  
+### Methods - 100% API coverage (1 of 1 functions)  
 Native Method | Header | Managed Method  
 --- | --- | ---  
-[FxFrameworkEntryUm](https://www.google.com/search?num=5&q=FxFrameworkEntryUm+site%3Alearn.microsoft.com) |  |   
-[Microsoft_WDF_UMDF_Version](https://www.google.com/search?num=5&q=Microsoft_WDF_UMDF_Version+site%3Alearn.microsoft.com) |  |   
 [WdfDeviceCreate](https://www.google.com/search?num=5&q=WdfDeviceCreate+site%3Alearn.microsoft.com) | wdfdevice.h | [Vanara.PInvoke.WindowsDriverFramework.WdfDeviceCreate](https://github.com/dahall/Vanara/search?l=C%23&q=WdfDeviceCreate)  
 ### Enumerations  
 Native Enum | Header | Managed Enum  

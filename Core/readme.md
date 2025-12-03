@@ -15,7 +15,7 @@ Enum | Description | Values
 [Vanara.RunTimeLib.FileOpConstant](https://github.com/dahall/Vanara/search?l=C%23&q=FileOpConstant) | The integer expression formed from one or more of these constants determines the type of reading or writing operations permitted. It is formed by combining one or more constants with a translation-mode constant. | _O_RDONLY, _O_WRONLY, _O_RDWR, _O_APPEND, _O_RANDOM, _O_SEQUENTIAL, _O_TEMPORARY, _O_NOINHERIT, _O_CREAT, _O_TRUNC, _O_EXCL, _O_SHORT_LIVED, _O_OBTAIN_DIR, _O_TEXT, _O_BINARY, _O_RAW, _O_WTEXT, _O_U16TEXT, _O_U8TEXT
 [Vanara.RunTimeLib.FilePermissionConstant](https://github.com/dahall/Vanara/search?l=C%23&q=FilePermissionConstant) | These constants are used to indicate file type in the st_mode field of the _stat structure. | _S_IEXEC, _S_IWRITE, _S_IREAD, _S_IFIFO, _S_IFCHR, _S_IFDIR, _S_IFREG, _S_IFMT
 [Vanara.Marshaler.LayoutModel](https://github.com/dahall/Vanara/search?l=C%23&q=LayoutModel) | Determines the layout of the structure or class when marshaled. | Sequential, Union
-[Vanara.PInvoke.SizingMethod](https://github.com/dahall/Vanara/search?l=C%23&q=SizingMethod) | Specifies the method used to determine the size of a field or array. | Count, Bytes, InclNullTerm, Query, QueryResultInReturn, CheckLastError
+[Vanara.PInvoke.SizingMethod](https://github.com/dahall/Vanara/search?l=C%23&q=SizingMethod) | Specifies the method used to determine the size of a field or array. | Count, Bytes, InclNullTerm, Query, QueryResultInReturn, CheckLastError, Guess
 [Vanara.Marshaler.StringEncoding](https://github.com/dahall/Vanara/search?l=C%23&q=StringEncoding) | Identifies the type of encoding used to read and write binary representations of strings. | Default, Unicode, ASCII, UTF8, UTF32
 [Vanara.InteropServices.StringListPackMethod](https://github.com/dahall/Vanara/search?l=C%23&q=StringListPackMethod) | Method used to pack a list of strings into memory. | Concatenated, Packed
 ### Structures
@@ -29,6 +29,7 @@ Struct | Description
 [Vanara.BOOLEAN](https://github.com/dahall/Vanara/search?l=C%23&q=BOOLEAN) | Managed instance of the single-byte BOOLEAN type.
 [Vanara.Extensions.EnumFlagIndexer&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=EnumFlagIndexer%26lt%3BT%26gt%3B) | Structure to use in place of a enumerated type with the `System.FlagsAttribute` set. Allows for indexer access to flags and simplifies boolean logic.
 [Vanara.InteropServices.GuidPtr](https://github.com/dahall/Vanara/search?l=C%23&q=GuidPtr) | The GuidPtr structure represents a LPGUID.
+[Vanara.PInvoke.HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=HANDLE) | Provides a generic Windows handle.
 [Vanara.PInvoke.IUnknownPointer&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IUnknownPointer%26lt%3BT%26gt%3B) | This structure is used to hold a reference to an IUnknown interface pointer.
 [Vanara.PInvoke.LPCSTRArrayPointer](https://github.com/dahall/Vanara/search?l=C%23&q=LPCSTRArrayPointer) | A pointer to an array of ANSI string pointers as a field in a structure.
 [Vanara.PInvoke.LPCTSTRArrayPointer](https://github.com/dahall/Vanara/search?l=C%23&q=LPCTSTRArrayPointer) | A pointer to an array of platform specific string pointers as a field in a structure.
@@ -93,6 +94,7 @@ Class | Description
 [Vanara.InteropServices.GenericSafeHandle](https://github.com/dahall/Vanara/search?l=C%23&q=GenericSafeHandle) | A `System.Runtime.InteropServices.SafeHandle` that takes a delegate in the constructor that closes the supplied handle.
 [Vanara.Collections.GenericVirtualReadOnlyDictionary&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=GenericVirtualReadOnlyDictionary%26lt%3BT%26gt%3B) | A generic class that creates a read-only dictionary from a list and getter function.
 [Vanara.InteropServices.GuidToStringMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=GuidToStringMarshaler) | Provides a custom marshaler for converting `System.Guid` objects to and from native string representations.
+[Vanara.PInvoke.HANDLEConverter](https://github.com/dahall/Vanara/search?l=C%23&q=HANDLEConverter) | Converts a handle to a string or an integer and vice versa. The string representation is the handle value as an integer.
 [Vanara.Extensions.HexDumpHelpers](https://github.com/dahall/Vanara/search?l=C%23&q=HexDumpHelpers) | Extension to dump a byte array.
 [Vanara.InteropServices.HGlobalMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=HGlobalMemoryMethods) | Unmanaged memory methods for HGlobal.
 [Vanara.Collections.History&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=History%26lt%3BT%26gt%3B) | Provides a history of items that lives efficiently in memory and whose size can change easily.
@@ -139,12 +141,12 @@ Class | Description
 [Vanara.InteropServices.SafeMemString&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemString%26lt%3BT%26gt%3B) | Base abstract class for a string handler based on `Vanara.InteropServices.SafeMemoryHandle`.
 [Vanara.InteropServices.SafeMemStruct&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeMemStruct%26lt%3BT%26gt%3B) | Base abstract class for a structure handler based on `Vanara.InteropServices.SafeMemoryHandle`.
 [Vanara.PInvoke.SizeDefAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=SizeDefAttribute) | <note type="implement">This attribute does not yet have an implemented generator.</note>
-[Vanara.PInvoke.SizeFieldNameAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=SizeFieldNameAttribute) | Should be used with `Vanara.PInvoke.ManagedArrayPointer` or `Vanara.PInvoke.ArrayPointer` to indicate which field within the same structure contains the size of the array.
-[Vanara.PInvoke.SizeFieldNameAttributeExt](https://github.com/dahall/Vanara/search?l=C%23&q=SizeFieldNameAttributeExt) | Extension methods for `Vanara.PInvoke.SizeFieldNameAttribute` to get the size of an array pointer within a structure via attribute.
+[Vanara.PInvoke.SizeFieldNameAttributeExt](https://github.com/dahall/Vanara/search?l=C%23&q=SizeFieldNameAttributeExt) | Extension methods for `Vanara.PInvoke.SizeDefAttribute` to get the size of an array pointer within a structure via attribute.
 [Vanara.Marshaler.MarshalFieldAs.SizeOfAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=SizeOfAttribute) | Attribute that can be applied to fields in a structure or class to indicate that the field should be initialized with the native size of the parent structure or class or that indicates the size of the native structure or class on retrieval.
 [Vanara.Matrix.SpanAction](https://github.com/dahall/Vanara/search?l=C%23&q=SpanAction) | A delegate that acts on a `System.Span` to set the values of the matrix.
 [Vanara.Collections.SparseArray&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SparseArray%26lt%3BT%26gt%3B) | A sparse array based on a dictionary.
 [Vanara.Extensions.StringHelper](https://github.com/dahall/Vanara/search?l=C%23&q=StringHelper) | A safe class that represents an object that is pinned in memory.
+[Vanara.PInvoke.StructPointer](https://github.com/dahall/Vanara/search?l=C%23&q=StructPointer) | Helper methods for `Vanara.PInvoke.StructPointer`.
 [Vanara.Marshaler.MarshalFieldAs.StructPtrAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=StructPtrAttribute) | Attribute that can be applied to fields in a structure or class to indicate that the field is a pointer to a structure.
 [Vanara.PInvoke.SuppressAutoGenAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=SuppressAutoGenAttribute) | An attribute that can be applied to a code element to suppress the automatic generation of P/Invoke methods for that element.
 [Vanara.Collections.VirtualReadOnlyList&lt;T&gt;.TryGetDelegate](https://github.com/dahall/Vanara/search?l=C%23&q=TryGetDelegate) | Delegate for a method that tries to get the element at the specified index.

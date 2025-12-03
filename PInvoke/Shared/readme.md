@@ -98,7 +98,6 @@ Struct | Description
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.DmaV3](https://github.com/dahall/Vanara/search?l=C%23&q=DmaV3) | 
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Generic](https://github.com/dahall/Vanara/search?l=C%23&q=Generic) | 
 [Vanara.PInvoke.HACCEL](https://github.com/dahall/Vanara/search?l=C%23&q=HACCEL) | Provides a handle to an accelerator table.
-[Vanara.PInvoke.HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=HANDLE) | Provides a generic Windows handle.
 [Vanara.PInvoke.HBITMAP](https://github.com/dahall/Vanara/search?l=C%23&q=HBITMAP) | Provides a handle to a bitmap.
 [Vanara.PInvoke.HBRUSH](https://github.com/dahall/Vanara/search?l=C%23&q=HBRUSH) | Provides a handle to drawing brush.
 [Vanara.PInvoke.HCOLORSPACE](https://github.com/dahall/Vanara/search?l=C%23&q=HCOLORSPACE) | Provides a handle to a color space.
@@ -179,6 +178,7 @@ Interface | Description
 [Vanara.Collections.ICOMEnum&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=ICOMEnum%26lt%3BT%26gt%3B) | A generic interface to identify matching COM enumerator interfaces
 [Vanara.PInvoke.IDeviceContextHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IDeviceContextHandle) | Signals that a structure or class holds a handle to a device context.
 [Vanara.PInvoke.IErrorProvider](https://github.com/dahall/Vanara/search?l=C%23&q=IErrorProvider) | Common properties and methods for errors.
+[Vanara.PInvoke.IErrorProvider2&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IErrorProvider2%26lt%3BT%26gt%3B) | Common properties and methods for errors with comparitors.
 [Vanara.PInvoke.IGraphicsObjectHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IGraphicsObjectHandle) | Signals that a structure or class holds a handle to a graphics object.
 [Vanara.PInvoke.IKernelHandle](https://github.com/dahall/Vanara/search?l=C%23&q=IKernelHandle) | Signals that a structure or class holds a handle to a kernel object.
 [Vanara.PInvoke.ISecurityObject](https://github.com/dahall/Vanara/search?l=C%23&q=ISecurityObject) | Signals that a structure or class holds a pointer to a security object.
@@ -196,10 +196,10 @@ Class | Description
 [Vanara.InteropServices.CoTaskMemStringMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=CoTaskMemStringMarshaler) | Marshals strings that are allocated by native code and must be freed using CoTaskMemFree after use.
 [System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=EnumeratorToEnumVariantMarshaler) | Marshals the COM <c>IEnumVARIANT</c> interface to the .NET Framework `System.Collections.IEnumerator` interface, and vice versa.
 [Vanara.PInvoke.ErrorHelper](https://github.com/dahall/Vanara/search?l=C%23&q=ErrorHelper) | Functions to help get error messages from error codes.
+[Vanara.PInvoke.FailedHelper](https://github.com/dahall/Vanara/search?l=C%23&q=FailedHelper) | Helper methods for dealing with failure results.
 [Vanara.PInvoke.FunctionHelper](https://github.com/dahall/Vanara/search?l=C%23&q=FunctionHelper) | Generic functions to help with standard function patterns like getting a string from a method.
 [Vanara.InteropServices.GenericStringMarshaler&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=GenericStringMarshaler%26lt%3BT%26gt%3B) | Marshals strings that are allocated by native code and must be freed after use.
 [Vanara.InteropServices.GenericStringMarshalerBase&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=GenericStringMarshalerBase%26lt%3BT%26gt%3B) | Base abstract class for marshaling strings that are allocated by native code and must be freed after use.
-[Vanara.PInvoke.HANDLEConverter](https://github.com/dahall/Vanara/search?l=C%23&q=HANDLEConverter) | Converts a handle to a string or an integer and vice versa. The string representation is the handle value as an integer.
 [Vanara.Collections.IEnumeratorFromNext&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumeratorFromNext%26lt%3BT%26gt%3B) | An implementation the `System.Collections.IEnumerator` interface that can iterate through next and reset methods.
 [Vanara.Collections.IEnumFromCom&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumFromCom%26lt%3BT%26gt%3B) | Creates an enumerable class from a get next method in the form of HRESULT Next(uint, TItem[], out uint) and a reset method. Useful if a class doesn't support `System.Collections.IEnumerable` or `System.Collections.Generic.IEnumerable` like some COM objects.
 [Vanara.Collections.IEnumFromIndexer&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IEnumFromIndexer%26lt%3BT%26gt%3B) | Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support `System.Collections.IEnumerable` or `System.Collections.Generic.IEnumerable` like some COM objects.
@@ -224,6 +224,7 @@ Class | Description
 [Vanara.PInvoke.PRECT](https://github.com/dahall/Vanara/search?l=C%23&q=PRECT) | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
 [Vanara.PInvoke.PSYSTEMTIME](https://github.com/dahall/Vanara/search?l=C%23&q=PSYSTEMTIME) | Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The time is either in coordinated universal time (UTC) or local time, depending on the function that is being called.
 [Vanara.PInvoke.FunctionHelper.PtrFunc&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=PtrFunc%26lt%3BT%26gt%3B) | Delegate to get the size of memory allocated to a pointer.
+[Vanara.PInvoke.FunctionHelper.PtrFunc&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=PtrFunc%26lt%3BT%26gt%3B) | Delegate to get the size of memory allocated to a pointer.
 [Vanara.Extensions.RegistryTypeExt](https://github.com/dahall/Vanara/search?l=C%23&q=RegistryTypeExt) | Extension methods for registry types.
 [Vanara.InteropServices.SafeAnysizeStruct&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAnysizeStruct%26lt%3BT%26gt%3B) | For structures with a single array as the last field that are intended to be variable length, this class manages the structure and automatically marshals the correct structure to memory.
 [Vanara.InteropServices.SafeAnysizeStructBase&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SafeAnysizeStructBase%26lt%3BT%26gt%3B) | For structures with a single array as the last field that are intended to be variable length, this class manages the structure and automatically marshals the correct structure to memory.
@@ -238,6 +239,7 @@ Class | Description
 [Vanara.PInvoke.FunctionHelper.SBFunc&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SBFunc%26lt%3BT%26gt%3B) | Delegate that takes and StringBuilder and initial size and returns a result.
 [Vanara.PInvoke.FunctionHelper.SBFunc&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SBFunc%26lt%3BT%26gt%3B) | Delegate that takes and StringBuilder and initial size and returns a result.
 [Vanara.PInvoke.SECURITY_ATTRIBUTES](https://github.com/dahall/Vanara/search?l=C%23&q=SECURITY_ATTRIBUTES) | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
+[Vanara.PInvoke.FunctionHelper.SizeFunc&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SizeFunc%26lt%3BT%26gt%3B) | Gets a size and returns an error.
 [Vanara.PInvoke.FunctionHelper.SizeFunc&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=SizeFunc%26lt%3BT%26gt%3B) | Gets a size and returns an error.
 [Vanara.PInvoke.StaticFieldValueHash](https://github.com/dahall/Vanara/search?l=C%23&q=StaticFieldValueHash) | Gets a static field's name from its value and caches the list for faster lookups.
 [Vanara.InteropServices.StringPtrArrayMarshaler](https://github.com/dahall/Vanara/search?l=C%23&q=StringPtrArrayMarshaler) | Marshals an array of strings to an array of pointers to strings with a NULL pointer at the end of the array.

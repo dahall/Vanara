@@ -3,7 +3,7 @@ PInvoke API (methods, structures and constants) imported from Windows Human Inte
 
 - Includes methods from hid.dll, vhfum.dll  
 - Current NuGet release: [![Nuget](https://img.shields.io/nuget/v/Vanara.PInvoke.Hid?logo=nuget&style=flat-square)![Nuget](https://img.shields.io/nuget/dt/Vanara.PInvoke.Hid?label=%20&style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Hid)  
-### Methods - 96% API coverage (58 of 60 functions)  
+### Methods - 100% API coverage (58 of 58 functions)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [HidD_FlushQueue](https://www.google.com/search?num=5&q=HidD_FlushQueue+site%3Alearn.microsoft.com) | hid.dll | hidsdi.h | [Vanara.PInvoke.Hid.HidD_FlushQueue](https://github.com/dahall/Vanara/search?l=C%23&q=HidD_FlushQueue)  
@@ -19,7 +19,6 @@ Native Method | Native DLL | Header | Managed Method
 [HidD_GetPreparsedData](https://www.google.com/search?num=5&q=HidD_GetPreparsedData+site%3Alearn.microsoft.com) | hid.dll | hidsdi.h | [Vanara.PInvoke.Hid.HidD_GetPreparsedData](https://github.com/dahall/Vanara/search?l=C%23&q=HidD_GetPreparsedData)  
 [HidD_GetProductString](https://www.google.com/search?num=5&q=HidD_GetProductString+site%3Alearn.microsoft.com) | hid.dll | hidsdi.h | [Vanara.PInvoke.Hid.HidD_GetProductString](https://github.com/dahall/Vanara/search?l=C%23&q=HidD_GetProductString)  
 [HidD_GetSerialNumberString](https://www.google.com/search?num=5&q=HidD_GetSerialNumberString+site%3Alearn.microsoft.com) | hid.dll | hidsdi.h | [Vanara.PInvoke.Hid.HidD_GetSerialNumberString](https://github.com/dahall/Vanara/search?l=C%23&q=HidD_GetSerialNumberString)  
-[HidD_Hello](https://www.google.com/search?num=5&q=HidD_Hello+site%3Alearn.microsoft.com) | hid.dll |  |   
 [HidD_SetFeature](https://www.google.com/search?num=5&q=HidD_SetFeature+site%3Alearn.microsoft.com) | hid.dll | hidsdi.h | [Vanara.PInvoke.Hid.HidD_SetFeature](https://github.com/dahall/Vanara/search?l=C%23&q=HidD_SetFeature)  
 [HidD_SetNumInputBuffers](https://www.google.com/search?num=5&q=HidD_SetNumInputBuffers+site%3Alearn.microsoft.com) | hid.dll | hidsdi.h | [Vanara.PInvoke.Hid.HidD_SetNumInputBuffers](https://github.com/dahall/Vanara/search?l=C%23&q=HidD_SetNumInputBuffers)  
 [HidD_SetOutputReport](https://www.google.com/search?num=5&q=HidD_SetOutputReport+site%3Alearn.microsoft.com) | hid.dll | hidsdi.h | [Vanara.PInvoke.Hid.HidD_SetOutputReport](https://github.com/dahall/Vanara/search?l=C%23&q=HidD_SetOutputReport)  
@@ -41,7 +40,6 @@ Native Method | Native DLL | Header | Managed Method
 [HidP_GetUsageValueArray](https://www.google.com/search?num=5&q=HidP_GetUsageValueArray+site%3Alearn.microsoft.com) | hid.dll | hidpi.h | [Vanara.PInvoke.Hid.HidP_GetUsageValueArray](https://github.com/dahall/Vanara/search?l=C%23&q=HidP_GetUsageValueArray)  
 [HidP_GetValueCaps](https://www.google.com/search?num=5&q=HidP_GetValueCaps+site%3Alearn.microsoft.com) | hid.dll | hidpi.h | [Vanara.PInvoke.Hid.HidP_GetValueCaps](https://github.com/dahall/Vanara/search?l=C%23&q=HidP_GetValueCaps)  
 [HidP_GetVersion](https://www.google.com/search?num=5&q=HidP_GetVersion+site%3Alearn.microsoft.com) | Hid.dll | hidpi.h | [Vanara.PInvoke.Hid.HidP_GetVersion](https://github.com/dahall/Vanara/search?l=C%23&q=HidP_GetVersion)  
-[HidP_GetVersionInternal](https://www.google.com/search?num=5&q=HidP_GetVersionInternal+site%3Alearn.microsoft.com) | hid.dll |  |   
 [HidP_InitializeReportForID](https://www.google.com/search?num=5&q=HidP_InitializeReportForID+site%3Alearn.microsoft.com) | hid.dll | hidpi.h | [Vanara.PInvoke.Hid.HidP_InitializeReportForID](https://github.com/dahall/Vanara/search?l=C%23&q=HidP_InitializeReportForID)  
 [HidP_MaxDataListLength](https://www.google.com/search?num=5&q=HidP_MaxDataListLength+site%3Alearn.microsoft.com) | hid.dll | hidpi.h | [Vanara.PInvoke.Hid.HidP_MaxDataListLength](https://github.com/dahall/Vanara/search?l=C%23&q=HidP_MaxDataListLength)  
 [HidP_MaxUsageListLength](https://www.google.com/search?num=5&q=HidP_MaxUsageListLength+site%3Alearn.microsoft.com) | hid.dll | hidpi.h | [Vanara.PInvoke.Hid.HidP_MaxUsageListLength](https://github.com/dahall/Vanara/search?l=C%23&q=HidP_MaxUsageListLength)  
