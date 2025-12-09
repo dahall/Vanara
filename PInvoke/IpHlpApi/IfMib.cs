@@ -21,6 +21,11 @@ public static partial class IpHlpApi
 	/// The Ifmib.h and Iprtrmib.h header files should never be used directly.
 	/// </para>
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="MIB_IFROW"/> struct.</remarks>
+	/// <param name="ifIndex">
+	/// The index that identifies the interface. This index value may change when a network adapter is disabled and then enabled, and
+	/// should not be considered persistent.
+	/// </param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ifmib/ns-ifmib-_mib_ifrow typedef struct _MIB_IFROW { WCHAR
 	// wszName[MAX_INTERFACE_NAME_LEN]; IF_INDEX dwIndex; IFTYPE dwType; DWORD dwMtu; DWORD dwSpeed; DWORD dwPhysAddrLen; UCHAR
 	// bPhysAddr[MAXLEN_PHYSADDR]; DWORD dwAdminStatus; INTERNAL_IF_OPER_STATUS dwOperStatus; DWORD dwLastChange; DWORD dwInOctets; DWORD
@@ -29,14 +34,14 @@ public static partial class IpHlpApi
 	// bDescr[MAXLEN_IFDESCR]; } MIB_IFROW, *PMIB_IFROW;
 	[PInvokeData("ifmib.h", MSDNShortId = "b08631e9-6036-4377-b2f2-4ea899acb787")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct MIB_IFROW
+	public struct MIB_IFROW(uint ifIndex)
 	{
 		/// <summary>
 		/// <para>Type: <c>WCHAR[MAX_INTERFACE_NAME_LEN]</c></para>
 		/// <para>A pointer to a Unicode string that contains the name of the interface.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_INTERFACE_NAME_LEN)]
-		public string wszName;
+		public string wszName = string.Empty;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -45,7 +50,7 @@ public static partial class IpHlpApi
 		/// should not be considered persistent.
 		/// </para>
 		/// </summary>
-		public uint dwIndex;
+		public uint dwIndex = ifIndex;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -138,7 +143,7 @@ public static partial class IpHlpApi
 		/// <para>The physical address of the adapter for this interface.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAXLEN_PHYSADDR)]
-		public byte[] bPhysAddr;
+		public byte[] bPhysAddr = new byte[MAXLEN_PHYSADDR];
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -282,19 +287,7 @@ public static partial class IpHlpApi
 		/// <para>A description of the interface.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAXLEN_IFDESCR)]
-		public byte[] bDescr;
-
-		/// <summary>Initializes a new instance of the <see cref="MIB_IFROW"/> struct.</summary>
-		/// <param name="ifIndex">
-		/// The index that identifies the interface. This index value may change when a network adapter is disabled and then enabled, and
-		/// should not be considered persistent.
-		/// </param>
-		public MIB_IFROW(uint ifIndex)
-		{
-			wszName = string.Empty;
-			dwIndex = ifIndex;
-			bPhysAddr = bDescr = new byte[0];
-		}
+		public byte[] bDescr = new byte[MAXLEN_IFDESCR];
 	}
 
 	/// <summary>
