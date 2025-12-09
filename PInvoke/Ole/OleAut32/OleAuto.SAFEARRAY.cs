@@ -1933,7 +1933,7 @@ public static partial class OleAut32
 		/// If FADF_HAVEVARTYPE is set, <c>SafeArrayGetVartype</c> returns the VARTYPE stored in the array descriptor. If FADF_RECORD is
 		/// set, it returns VT_RECORD; if FADF_DISPATCH is set, it returns VT_DISPATCH; and if FADF_UNKNOWN is set, it returns VT_UNKNOWN.
 		/// </remarks>
-		public VARTYPE VarType { get { SafeArrayGetVartype(this, out VARTYPE vt).ThrowIfFailed(); return vt; } }
+		public VARTYPE VarType { get { SafeArrayGetVartype(handle, out VARTYPE vt).ThrowIfFailed(); return vt; } }
 
 		/// <summary>Gets or sets the <see cref="object"/> at the specified index.</summary>
 		/// <value>The <see cref="object"/>.</value>
@@ -2369,6 +2369,9 @@ public static partial class OleAut32
 
 		/// <inheritdoc/>
 		IEnumerator IEnumerable.GetEnumerator() => ToArray().GetEnumerator();
+
+		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
+		private static extern HRESULT SafeArrayGetVartype(IntPtr psa, out VARTYPE pvt);
 	}
 
 	/// <summary>Custom marshaler for SAFEARRAY types. This marshaler is used to marshal SAFEARRAY types to and from managed code.</summary>
