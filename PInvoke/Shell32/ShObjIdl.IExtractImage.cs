@@ -96,7 +96,7 @@ public static partial class Shell32
 		/// </list>
 		/// </returns>
 		[PreserveSig]
-		HRESULT GetLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPathBuffer, uint cchMax, [Optional] IntPtr pdwPriority, ref SIZE prgSize, uint dwRecClrDepth, ref IEIFLAG pdwFlags);
+		HRESULT GetLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPathBuffer, uint cchMax, out uint pdwPriority, in SIZE prgSize, uint dwRecClrDepth, ref IEIFLAG pdwFlags);
 
 		/// <summary>Requests an image from an object, such as an item in a Shell folder.</summary>
 		/// <param name="phBmpThumbnail">
@@ -158,7 +158,7 @@ public static partial class Shell32
 		/// </list>
 		/// </returns>
 		[PreserveSig]
-		new HRESULT GetLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPathBuffer, uint cchMax, [Optional] IntPtr pdwPriority, ref SIZE prgSize, uint dwRecClrDepth, ref IEIFLAG pdwFlags);
+		new HRESULT GetLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPathBuffer, uint cchMax, out uint pdwPriority, in SIZE prgSize, uint dwRecClrDepth, ref IEIFLAG pdwFlags);
 
 		/// <summary>Requests an image from an object, such as an item in a Shell folder.</summary>
 		/// <param name="phBmpThumbnail">
