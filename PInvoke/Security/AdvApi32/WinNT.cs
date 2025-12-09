@@ -5583,14 +5583,9 @@ public static partial class AdvApi32
 		private void AddAceInOrder(PACE ace)
 		{
 			// Find ACE insert position.
-			for (int i = 0; i < AceCount; i++)
-			{
-				var cmp = ace.CompareTo(this[i]);
-				if (cmp < 0) continue;
-				if (cmp > 0)
-					Insert(i, ace);
-				return;
-			}
+			int i = 0;
+			for (; i < AceCount && ace.CompareTo(this[i]) <= 0; i++) ;
+			Insert(i, ace);
 		}
 
 		private bool EnsureCapacity(uint addCap)
