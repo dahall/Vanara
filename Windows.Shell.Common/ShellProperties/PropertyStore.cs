@@ -45,6 +45,9 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
 	protected PropertyStore() { }
 
+	/// <summary>Finalizes an instance of the <see cref="PropertyStore"/> class.</summary>
+	~PropertyStore() => Dispose(false);
+
 	/// <summary>Occurs when a property value changes.</summary>
 	public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -226,12 +229,16 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 			array[i++] = kv;
 	}
 
-	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public virtual void Dispose()
+	/// <inheritdoc/>
+	public void Dispose()
 	{
-		Commit();
+		Dispose(true);
 		GC.SuppressFinalize(this);
 	}
+
+	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+	/// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+	public virtual void Dispose(bool disposing) => Commit();
 
 	/// <summary>Gets the property.</summary>
 	/// <typeparam name="TVal">The type of the value.</typeparam>
@@ -437,6 +444,7 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 			finally
 			{
 				Marshal.FinalReleaseComObject(iPropertyStore);
+				iPropertyStore = null;
 			}
 		}
 		return default;

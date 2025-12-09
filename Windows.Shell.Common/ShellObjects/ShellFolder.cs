@@ -164,15 +164,6 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
 	public T? BindToStorage<T>(PIDL relativePidl, IBindCtx? bindCtx = null) where T : class => iShellFolder.BindToStorage<T>(relativePidl, bindCtx);
 
-	/// <summary>
-	/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-	/// </summary>
-	public override void Dispose()
-	{
-		GC.SuppressFinalize(this);
-		base.Dispose();
-	}
-
 	/// <summary>Gets the registered categorizers.</summary>
 	/// <value>The categorizers.</value>
 	public ShellFolderCategorizer Categories => categories ??= new(IShellFolder);

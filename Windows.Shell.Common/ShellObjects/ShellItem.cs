@@ -395,7 +395,8 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 	/// <param name="path">The file system path of the item.</param>
-	public ShellItem(string path) => Init(ShellUtil.GetShellItemForPath(path));
+	/// <param name="allowNonExistantPath">If <see langword="true"/>, the item does not have to currently exist in the file system.</param>
+	public ShellItem(string path, bool allowNonExistantPath = false) => Init(ShellUtil.GetShellItemForPath(path, allowNonExistantPath));
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 	/// <param name="idList">The ID list.</param>
@@ -430,6 +431,9 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	protected ShellItem() { }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
+	~ShellItem() => Dispose(false);
 
 	/// <summary>Occurs when a property value changes.</summary>
 	public event PropertyChangedEventHandler? PropertyChanged
@@ -610,16 +614,28 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 		return order;
 	}
 
-	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public virtual void Dispose()
+	/// <inheritdoc/>
+	public void Dispose()
 	{
-		props?.Dispose();
-		props = null;
-		propDescList?.Dispose();
-		propDescList = null;
-		qi = null;
-		iShellItem2 = null;
+		Dispose(true);
 		System.GC.SuppressFinalize(this);
+	}
+
+	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+	public virtual void Dispose(bool disposing)
+	{
+		props?.Dispose(disposing);
+		props = null;
+		propDescList?.Dispose(disposing);
+		propDescList = null;
+		if (qi is not null) Marshal.FinalReleaseComObject(qi);
+		qi = null;
+		if (iShellItem2 is not null) Marshal.FinalReleaseComObject(iShellItem2);
+		iShellItem2 = null;
+		if (disposing)
+		{
+			// Release managed resources here
+		}
 	}
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>

@@ -147,13 +147,6 @@ public class ShellLibrary : ShellFolder
 	/// <summary>Commits library updates.</summary>
 	public void Commit() => lib.Commit();
 
-	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public override void Dispose()
-	{
-		base.Dispose();
-		GC.SuppressFinalize(this);
-	}
-
 	/// <summary>Gets the set of child folders that are contained in the library.</summary>
 	/// <param name="filter">A value that determines the folders to get.</param>
 	/// <returns>A <see cref="ShellItemArray"/> containing the child folders.</returns>

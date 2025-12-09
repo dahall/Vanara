@@ -21,6 +21,9 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 	/// <summary>Initializes a new instance of the <see cref="ShellItemPropertyUpdates"/> class.</summary>
 	public ShellItemPropertyUpdates() => PSCreatePropertyChangeArray(null, null, null, 0, typeof(IPropertyChangeArray).GUID, out changes).ThrowIfFailed();
 
+	/// <summary>Finalizes an instance of the <see cref="ShellItemPropertyUpdates"/> class.</summary>
+	~ShellItemPropertyUpdates() => Dispose(false);
+
 	/// <summary>Gets the number of elements contained in the <see cref="ICollection{T}"/>.</summary>
 	public int Count => (int)changes.GetCount();
 
@@ -146,7 +149,22 @@ public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object?>, IDisp
 			array[i + arrayIndex] = this[i];
 	}
 
-	void IDisposable.Dispose() { }
+	void IDisposable.Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+
+	/// <summary>Releases the unmanaged resources used by the object and optionally releases the managed resources.</summary>
+	/// <remarks>
+	/// This method is called by both the public Dispose() method and the finalizer. When disposing is <see langword="true"/>, managed
+	/// resources can be disposed. Override this method to release resources specific to the derived class.
+	/// </remarks>
+	/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+	protected virtual void Dispose(bool disposing)
+	{
+		if (changes is not null)
+		{
+			Marshal.FinalReleaseComObject(changes);
+			changes = null!;
+		}
+	}
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

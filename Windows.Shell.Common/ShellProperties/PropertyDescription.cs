@@ -222,6 +222,9 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	/// <param name="list">The COM interface pointer.</param>
 	protected internal PropertyDescriptionList(IPropertyDescriptionList? list) => iList = list;
 
+	/// <summary>Finalizes an instance of the <see cref="PropertyDescriptionList"/> class.</summary>
+	~PropertyDescriptionList() => Dispose(false);
+
 	/// <inheritdoc />
 	public virtual int Count => (int)(iList?.GetCount() ?? 0);
 
@@ -236,7 +239,19 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	public virtual PropertyDescription? this[PROPERTYKEY propkey] => PropertyDescription.Create(propkey);
 
 	/// <inheritdoc />
-	public virtual void Dispose() => GC.SuppressFinalize(this);
+	public void Dispose()
+	{
+		Dispose(true);
+		GC.SuppressFinalize(this);
+	}
+
+	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+	/// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+	public virtual void Dispose(bool disposing)
+	{
+		if (iList is not null) Marshal.FinalReleaseComObject(iList);
+		iList = null;
+	}
 
 	/// <inheritdoc />
 	public IEnumerator<PropertyDescription> GetEnumerator() => Enum().GetEnumerator();

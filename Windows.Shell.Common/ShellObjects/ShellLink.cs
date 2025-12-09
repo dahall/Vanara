@@ -323,13 +323,6 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 		return new ShellLink(destShellLink);
 	}
 
-	/// <summary>Dispose the object, releasing the COM ShellLink object</summary>
-	public override void Dispose()
-	{
-		base.Dispose();
-		GC.SuppressFinalize(this);
-	}
-
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
