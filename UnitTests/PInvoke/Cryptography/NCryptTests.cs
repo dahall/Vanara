@@ -19,13 +19,14 @@ public class NCryptTests
 		Assert.That(bd.pBuffers, Is.Empty);
 		Assert.That(bd.ulVersion, Is.Zero);
 
-		bd = new NCryptBufferDesc(new(KeyDerivationBufferType.KDF_HASH_ALGORITHM, StandardAlgorithmId.BCRYPT_SHA256_ALGORITHM),
-			new(KeyDerivationBufferType.KDF_GENERIC_PARAMETER, GenericParameter));
+		bd = new NCryptBufferDesc( // 16
+			new(KeyDerivationBufferType.KDF_HASH_ALGORITHM, StandardAlgorithmId.BCRYPT_SHA256_ALGORITHM), // 16 + 14
+			new(KeyDerivationBufferType.KDF_GENERIC_PARAMETER, GenericParameter)); // 16 + 20
 		Assert.That(bd.pBuffers.Length, Is.EqualTo(2));
 		Assert.That(bd.ulVersion, Is.Zero);
 
 		using var b = SafeCoTaskMemHandle.CreateFromStructure(bd);
-		Assert.That((uint)b.Size, Is.EqualTo(80));
+		Assert.That((uint)b.Size, Is.EqualTo(82));
 
 		var bd2 = b.ToStructure<NCryptBufferDesc>()!;
 		Assert.That(bd2.pBuffers.Length, Is.EqualTo(2));

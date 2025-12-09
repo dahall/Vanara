@@ -13,8 +13,7 @@ public class ShellContextMenuTests
 	{
 		//using var shi = ShellItem.Open(TestCaseSources.TempDir);
 		using var shi = ShellItem.Open(@"C:\Windows");
-		using var menu = new ShellContextMenu(shi);
-		var items = menu.GetItems(CMF.CMF_EXTENDEDVERBS | CMF.CMF_EXPLORE | CMF.CMF_CANRENAME | CMF.CMF_ITEMMENU);
+		var items = shi.ContextMenu.GetItems(CMF.CMF_EXTENDEDVERBS | CMF.CMF_EXPLORE | CMF.CMF_CANRENAME | CMF.CMF_ITEMMENU);
 		for (var i = 0; i < items.Length; i++)
 			ShowMII(items[i], i);
 	}

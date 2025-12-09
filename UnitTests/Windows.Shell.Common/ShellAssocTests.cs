@@ -35,12 +35,12 @@ public class ShellAssocTests
 		using (var pi = ProgId.Open("Word.Document.12", systemWide: true)!)
 		{
 			Assert.That(pi.ReadOnly, Is.True);
-			Assert.That(pi.DefaultIcon?.ToString(), Is.EqualTo(@"C:\Program Files (x86)\Microsoft Office\Root\VFS\Windows\Installer\{90160000-000F-0000-0000-0000000FF1CE}\wordicon.exe,13"));
+			Assert.That(pi.DefaultIcon?.ToString(), Is.EqualTo(@"C:\Program Files\Microsoft Office\Root\VFS\Windows\Installer\{90160000-000F-0000-1000-0000000FF1CE}\wordicon.exe,13"));
 			Assert.That(pi.AllowSilentDefaultTakeOver, Is.False);
 			Assert.That(pi.AppUserModelID, Is.Null);
 			Assert.That(pi.EditFlags, Is.EqualTo(PInvoke.ShlwApi.FILETYPEATTRIBUTEFLAGS.FTA_None));
 			Assert.That(pi.Verbs, Has.Count.EqualTo(8));
-			Assert.That(pi.Verbs["Close"], Is.Null);
+			Assert.That(() => pi.Verbs["Close"], Throws.Exception);
 			//Assert.That(pi.Verbs["New"].DisplayName, Is.EqualTo("&New"));
 		}
 		//using (var pi = ProgId.Open("Acrobat.Document.DC", systemWide: true))

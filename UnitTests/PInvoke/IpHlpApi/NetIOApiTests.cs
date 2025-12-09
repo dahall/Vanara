@@ -610,6 +610,7 @@ public partial class IpHlpApiTests
 	[Test]
 	public void ResolveIpNetEntry2Test()
 	{
+		//Assert.Fail("This method is not working. Some of the functions are corrupting memory.");
 		var e = new MIB_IPNET_ROW2(new SOCKADDR_IN(knwIP), primaryAdapter.IfIndex);
 		Assert.That(ResolveIpNetEntry2(ref e), ResultIs.Successful);
 		Assert.That(e.State, Is.EqualTo(NL_NEIGHBOR_STATE.NlnsReachable));

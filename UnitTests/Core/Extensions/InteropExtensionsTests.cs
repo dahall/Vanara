@@ -438,32 +438,34 @@ public class InteropExtensionsTests
 		var h = mem.DangerousGetHandle();
 
 		// null
-		Assert.That(h.Write((object?)null), Is.EqualTo(0));
+		Assert.That((int)h.Write((object?)null), Is.EqualTo(0));
 
 		// bytes
-		Assert.That(h.Write((object)new byte[] { 1, 2, 4, 5 }), Is.EqualTo(4));
+		Assert.That((int)h.Write((object)new byte[] { 1, 2, 4, 5 }), Is.EqualTo(4));
 
 		// marshaled
 		//Assert.That(h.Write(), ResultIs.Successful);
 
 		// string
-		Assert.That(h.Write((object)"abcde"), Is.EqualTo(12));
+		Assert.That((int)h.Write((object)"abcde"), Is.EqualTo(12));
 
 		// blitted
-		Assert.That(h.Write((object)1234L), Is.EqualTo(8));
-		Assert.That(h.Write((object)Guid.NewGuid()), Is.EqualTo(16));
-		Assert.That(h.Write((object)PlatformID.Win32NT), Is.EqualTo(4));
+		Assert.That((int)h.Write((object)1234L), Is.EqualTo(8));
+		Assert.That((int)h.Write((object)Guid.NewGuid()), Is.EqualTo(16));
+		Assert.That((int)h.Write((object)PlatformID.Win32NT), Is.EqualTo(4));
 
 		// string enum
-		Assert.That(h.Write((object)new[] { "abcde", "abcde" }), Is.EqualTo(26));
+		Assert.That((int)h.Write((object)new[] { "abcde", "abcde" }), Is.EqualTo(26));
 
 		// array
-		Assert.That(h.Write((object)new[] { 1234, 1234 }), Is.EqualTo(8));
+		Assert.That((int)h.Write((object)new[] { 1234, 1234 }), Is.EqualTo(8));
 
 		// ienum
-		Assert.That(h.Write((object)new List<int>() { 1234, 1234 }), Is.EqualTo(8));
+		Assert.That((int)h.Write((object)new List<int>() { 1234, 1234 }), Is.EqualTo(8));
 
+#if !NET8_0_OR_GREATER
 		// iserial
-		Assert.That(h.Write((object)DateTime.Now), Is.EqualTo(78));
+		Assert.That((int)h.Write((object)DateTime.Now), Is.EqualTo(78));
+#endif
 	}
 }

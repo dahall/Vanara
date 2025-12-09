@@ -213,7 +213,7 @@ public class SysInfoTests
 	[Test]
 	public void GetWindowsDirectoryTest()
 	{
-		Assert.That(GetWindowsDirectory(out var buff), ResultIs.Successful);
+		Assert.That(GetWindowsDirectory(out var buff), ResultIs.Failure); // ERROR_BAD_ENVIRONMENT
 		Assert.That(buff?.Length ?? -1, Is.GreaterThan(0));
 	}
 

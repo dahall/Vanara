@@ -63,6 +63,7 @@ public partial class WinBaseTests_File
 	[Test]
 	public void CreateDirectoryExTest()
 	{
+		if (Directory.Exists(TestCaseSources.TempChildDir)) Directory.Delete(TestCaseSources.TempChildDir, true);
 		Assert.That(CreateDirectoryEx(TestCaseSources.TempDir, TestCaseSources.TempChildDir), ResultIs.Successful);
 		Assert.That(RemoveDirectory(TestCaseSources.TempChildDir), ResultIs.Successful);
 	}
@@ -201,8 +202,8 @@ public partial class WinBaseTests_File
 	{
 		string newFile = Path.Combine(Path.GetDirectoryName(fn)!, "X.ico");
 		using SafeHFILE hDir = CreateFile(TestCaseSources.TempDirWhack, FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS);
+		new Thread(() => { Sleep(200); DeleteFile(newFile); CopyFile(fn, newFile, false); DeleteFile(newFile); }).Start();
 		using SafeHGlobalHandle mem = new(4096);
-		new Thread(() => { Sleep(100); DeleteFile(newFile); CopyFile(fn, newFile, false); DeleteFile(newFile); }).Start();
 		Assert.That(ReadDirectoryChangesExW(hDir, (IntPtr)mem, (uint)mem.Size, true, FILE_NOTIFY_CHANGE.FILE_NOTIFY_CHANGE_FILE_NAME, out uint ret, default, complete, READ_DIRECTORY_NOTIFY_INFORMATION_CLASS.ReadDirectoryNotifyExtendedInformation), ResultIs.Successful);
 		Assert.That(ret, Is.GreaterThan(0));
 		List<FILE_NOTIFY_EXTENDED_INFORMATION> list = [];
@@ -216,10 +217,8 @@ public partial class WinBaseTests_File
 		} while (nxt > 0);
 		list.WriteValues();
 
-		static void complete(uint dwErrorCode, uint dwNumberOfBytesTransfered, NativeOverlapped* lpOverlapped)
-		{
+		static void complete(uint dwErrorCode, uint dwNumberOfBytesTransfered, NativeOverlapped* lpOverlapped) =>
 			TestContext.WriteLine($"{dwErrorCode}, {dwNumberOfBytesTransfered}");
-		}
 	}
 
 	[Test]

@@ -78,12 +78,13 @@ public class WinUserTests
 	[TestCase(0x1fffffff, ExpectedResult = 0xffff)]
 	public ushort LOWORDpTest(int value) => LOWORD(new IntPtr(value));
 
+	[TestCase(0, ExpectedResult = "#0")]
 	[TestCase(1, ExpectedResult = "#1")]
 	[TestCase(12, ExpectedResult = "#12")]
 	public string MAKEINTRESOURCETest(int id) => MAKEINTRESOURCE(id).ToString();
 
-	[TestCase(0)]
 	[TestCase(-1)]
+	[TestCase(int.MaxValue)]
 	public void MAKEINTRESOURCE1Test(int id) => Assert.That(() => MAKEINTRESOURCE(id), Throws.Exception);
 
 	[TestCase(ushort.MinValue, ushort.MinValue, ExpectedResult = uint.MinValue)]

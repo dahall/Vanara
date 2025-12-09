@@ -90,46 +90,38 @@ public class Ole32Tests
 	[Test]
 	public void IPropSetStorageTest()
 	{
-		Guid propSetKey = PROPERTYKEY.System.Title.Key;
+		Guid propSetKey = FMTID.FMTID_UserDefinedProperties;
 
 		// creates a new storage object using NTFS implementation
 		StgOpenStorageEx(TestCaseSources.LogFile, STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE,
-			STGFMT.STGFMT_ANY, default, default, default, typeof(IPropertySetStorage).GUID, out object? iptr).ThrowIfFailed();
-		using ComReleaser<IPropertySetStorage> istg = ComReleaserFactory.Create((IPropertySetStorage)iptr!);
-
-		PROPSPEC[] prcs = new[] { PROPERTYKEY.System.Title.Id, PROPERTYKEY.System.Author.Id, PROPERTYKEY.System.Comment.Id }.Select(propid => new PROPSPEC(propid)).ToArray();
-		string[] vals = prcs.Select((prc, idx) => "VALUE" + idx).ToArray();
+			STGFMT.STGFMT_ANY, default, default, default, out IPropertySetStorage? istg).ThrowIfFailed();
 
 		// creates propertystorage
-		istg.Item.Create(propSetKey, default, PROPSETFLAG.PROPSETFLAG_DEFAULT, STGM.STGM_CREATE | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, out IPropertyStorage ipse).ThrowIfFailed();
-		using (ComReleaser<IPropertyStorage> pipse = ComReleaserFactory.Create(ipse))
+		istg!.Create(propSetKey, default, PROPSETFLAG.PROPSETFLAG_DEFAULT, STGM.STGM_CREATE | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, out IPropertyStorage? ipse).ThrowIfFailed();
+
+		// write properties
+		PROPSPEC[] prcs = [.. new[] { PROPERTYKEY.System.Title.Id, PROPERTYKEY.System.Author.Id, PROPERTYKEY.System.Comment.Id }.Select(propid => new PROPSPEC(propid))];
+		string[] vals = [.. prcs.Select((prc, idx) => "VALUE" + idx)];
+		PROPVARIANT[] prvs = [.. vals.Select(val => new PROPVARIANT(val, VarEnum.VT_LPWSTR))];
+		try
 		{
-			// write properties
-			PROPVARIANT[] prvs = vals.Select(val => new PROPVARIANT(val, VarEnum.VT_LPWSTR)).ToArray();
-			try
-			{
-				ipse.WriteMultiple(prcs, prvs, PID_FIRST_USABLE).ThrowIfFailed();
-			}
-			finally
-			{
-				foreach (PROPVARIANT prv in prvs)
-					prv.Dispose();
-			}
+			ipse.WriteMultiple(prcs, prvs, PID_FIRST_USABLE).ThrowIfFailed();
 		}
-
-		//hr = ipse.Commit((uint)STGC.STGC_DEFAULT);
-		// read property
-		istg.Item.Open(propSetKey, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, out ipse).ThrowIfFailed();
-		using (ComReleaser<IPropertyStorage> pipse = ComReleaserFactory.Create(ipse))
+		finally
 		{
-			PROPVARIANT[] prvs = [];
-			ipse.ReadMultiple(prcs, out PROPVARIANT[]? prvRead).ThrowIfFailed();
-
-			CollectionAssert.AreEqual(prvRead?.Select(prv => prv.Value) ?? [], vals);
-
 			foreach (PROPVARIANT prv in prvs)
 				prv.Dispose();
 		}
+		Marshal.FinalReleaseComObject(ipse);
+
+		// read property
+		istg.Open(propSetKey, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, out ipse).ThrowIfFailed();
+		prvs = [];
+		ipse.ReadMultiple(prcs, out PROPVARIANT[]? prvRead).ThrowIfFailed();
+		CollectionAssert.AreEqual(prvRead?.Select(prv => prv.Value) ?? [], vals);
+		foreach (PROPVARIANT prv in prvs)
+			prv.Dispose();
+		Marshal.FinalReleaseComObject(ipse);
 	}
 
 	[Test]

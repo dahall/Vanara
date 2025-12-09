@@ -52,9 +52,10 @@ public class FileApiTests
 	public void CreateDirectoryTest()
 	{
 		string dir = TestCaseSources.TempChildDir;
-		Assert.That(CreateDirectory(dir), Is.True);
+		if (Directory.Exists(dir)) Directory.Delete(dir, true);
+		Assert.That(CreateDirectory(dir), ResultIs.Successful);
 		Assert.That(Directory.Exists(dir), Is.True);
-		Assert.That(RemoveDirectory(dir), Is.True);
+		Assert.That(RemoveDirectory(dir), ResultIs.Successful);
 	}
 
 	[Test]

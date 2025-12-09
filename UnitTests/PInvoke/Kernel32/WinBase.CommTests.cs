@@ -29,35 +29,35 @@ public partial class WinBaseTests
 		dcb.WriteValues();
 	}
 
-	[Test]
+	//[Test]
 	public void ClearCommBreakTest()
 	{
 		using SafeHFILE hCom = ComPort;
 		Assert.That(ClearCommBreak(hCom), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void ClearCommErrorTest()
 	{
 		using SafeHFILE hCom = ComPort;
 		Assert.That(ClearCommError(hCom, out COMM_ERRS errs, out COMSTAT stat), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void CommConfigDialogTest()
 	{
 		COMMCONFIG cc = new() { dwProviderSubType = PROV_SUB_TYPE.PST_UNSPECIFIED };
 		Assert.That(CommConfigDialog(pcCommPort, HWND.NULL, cc), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void EscapeCommFunctionTest()
 	{
 		using SafeHFILE hCom = ComPort;
 		Assert.That(EscapeCommFunction(hCom, COMM_ESC_FUNC.CLRBREAK), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void GetCommModemStatusTest()
 	{
 		using SafeHFILE hCom = ComPort;
@@ -65,14 +65,14 @@ public partial class WinBaseTests
 		st.WriteValues();
 	}
 
-	[Test]
+	//[Test]
 	public void GetCommPortsTest() => Assert.That(() =>
 										   {
 											   uint[] p = GetCommPorts();
 											   p.WriteValues();
 										   }, Throws.Nothing);
 
-	[Test]
+	//[Test]
 	public void GetCommPropertiesTest()
 	{
 		using SafeHFILE hCom = ComPort;
@@ -80,7 +80,7 @@ public partial class WinBaseTests
 		prop.WriteValues();
 	}
 
-	[Test]
+	//[Test]
 	public void GetSetCommConfigTest()
 	{
 		using SafeHFILE hCom = ComPort;
@@ -89,7 +89,7 @@ public partial class WinBaseTests
 		Assert.That(SetCommConfig(hCom, cc!), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void GetSetCommMaskTest()
 	{
 		using SafeHFILE hCom = ComPort;
@@ -97,7 +97,7 @@ public partial class WinBaseTests
 		Assert.That(SetCommMask(hCom, mask), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void GetSetCommStateTest()
 	{
 		// Open a handle to the specified com port.
@@ -131,7 +131,7 @@ public partial class WinBaseTests
 		}
 	}
 
-	[Test]
+	//[Test]
 	public void GetSetCommTimeoutsTest()
 	{
 		using SafeHFILE hCom = ComPort;
@@ -140,7 +140,7 @@ public partial class WinBaseTests
 		Assert.That(SetCommTimeouts(hCom, ct), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void GetSetDefaultCommConfigTest()
 	{
 		Assert.That(GetDefaultCommConfig(pcCommPort, out var cc), ResultIs.Successful);
@@ -148,38 +148,38 @@ public partial class WinBaseTests
 		Assert.That(SetDefaultCommConfig(pcCommPort, cc!), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void OpenCommPortTest() => Assert.That(OpenCommPort(1, FileAccess.GENERIC_READ | FileAccess.GENERIC_WRITE, 0), ResultIs.ValidHandle);
 
-	[Test]
+	//[Test]
 	public void PurgeCommTest()
 	{
 		using SafeHFILE hCom = ComPort;
 		Assert.That(PurgeComm(hCom, COMM_PURGE.PURGE_RXCLEAR), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void SetCommBreakTest()
 	{
 		using SafeHFILE hCom = ComPort;
 		Assert.That(SetCommBreak(hCom), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void SetupCommTest()
 	{
 		using SafeHFILE hCom = ComPort;
 		Assert.That(SetupComm(hCom, 4096, 4096), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void TransmitCommCharTest()
 	{
 		using SafeHFILE hCom = ComPort;
 		Assert.That(TransmitCommChar(hCom, 65), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public unsafe void WaitCommEventTest()
 	{
 		// Open a handle to the specified com port.

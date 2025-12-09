@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System.Collections.Generic;
 using System.Linq;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
@@ -14,11 +13,10 @@ public class TdhTests
 	[Test]
 	public void DisplayAllProviders()
 	{
-		Win32Error.ThrowIfFailed(TdhEnumerateProviders(out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> peInfo));
-		List<(Guid id, uint source, string? name)> list = new(peInfo.Value.TraceProviderInfoArray.Select(i => (i.ProviderGuid, i.SchemaSource, PEI_PROVIDER_NAME(peInfo, i))));
-		list.Sort((x, y) => string.Compare(x.name, y.name));
+		var list = GetProviders().ToList();
+		list.Sort((x, y) => string.Compare(x.ProviderName, y.ProviderName));
 
-		foreach (var (id, source, name) in list)
+		foreach (var (id, source, name) in list.Select(p => (p.ProviderGuid, p.SchemaSource, p.ProviderName)))
 		{
 			TestContext.WriteLine($"{new string('=', 30)}\n{name} ({id})\n");
 
@@ -89,7 +87,7 @@ public class TdhTests
 	[Test]
 	public void TdhEnumerateManifestProviderEventsTest()
 	{
-		Assert.That(TdhEnumerateManifestProviderEvents(GetProviders().First().ProviderGuid, out PROVIDER_EVENT_INFO peInfo), ResultIs.Successful);
+		Assert.That(TdhEnumerateManifestProviderEvents(GetProviders().First(p => p.ProviderName == "Application Error").ProviderGuid, out PROVIDER_EVENT_INFO peInfo), ResultIs.Successful);
 		Assert.That(peInfo, Is.Not.Null);
 		uint cnt = peInfo.NumberOfEvents;
 		Assert.That(cnt, Is.Not.Zero);
@@ -113,7 +111,8 @@ public class TdhTests
 	[Test]
 	public void TdhEnumerateProviderFiltersTest()
 	{
-		Assert.That(TdhEnumerateProviderFilters(GetProviders().First().ProviderGuid, null, out var pfInfo), ResultIs.Successful);
+		Assert.That(TdhEnumerateProviderFilters(GetProviders().First(p => p.ProviderName == "Application Error").ProviderGuid, null, out var pfInfo), ResultIs.Successful);
+		pfInfo.WriteValues();
 	}
 
 	[Test]
@@ -145,5 +144,12 @@ public class TdhTests
 	private static void Write(SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> peInfo, in TRACE_PROVIDER_INFO i) =>
 		TestContext.WriteLine($"{PEI_PROVIDER_NAME(peInfo, i)}, {i.ProviderGuid}, {i.SchemaSource}");
 
-	private TRACE_PROVIDER_INFO[] GetProviders() { Win32Error.ThrowIfFailed(TdhEnumerateProviders(out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> peInfo)); return peInfo.Value.TraceProviderInfoArray; }
+	private static TRACE_PROVIDER_INFO_EX[] GetProviders() { Win32Error.ThrowIfFailed(TdhEnumerateProviders(out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> peInfo)); return Array.ConvertAll(peInfo.Value.TraceProviderInfoArray, i => new TRACE_PROVIDER_INFO_EX(i, PEI_PROVIDER_NAME(peInfo, i))); }
+
+	private struct TRACE_PROVIDER_INFO_EX(TRACE_PROVIDER_INFO i, string? n)
+	{
+		public Guid ProviderGuid = i.ProviderGuid;
+		public uint SchemaSource = i.SchemaSource;
+		public string ProviderName = n ?? i.ProviderGuid.ToString("D");
+	}
 }

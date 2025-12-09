@@ -9,12 +9,9 @@ public class EnclaveApiTests
 	[Test]
 	public void EnclaveTest()
 	{
-		if (IsEnclaveTypeSupported(EnclaveType.ENCLAVE_TYPE_SGX))
-		{
-			ENCLAVE_CREATE_INFO_VBS vbs = new() { Flags = ENCLAVE_VBS_FLAG.ENCLAVE_VBS_FLAG_DEBUG, OwnerID = Encoding.Unicode.GetBytes("0123456789ABCDEF") };
-			using SafeEnclaveHandle h = CreateEnclave(GetCurrentProcess(), IntPtr.Zero, 1024, 1024, EnclaveType.ENCLAVE_TYPE_VBS, vbs, (uint)Marshal.SizeOf(typeof(ENCLAVE_CREATE_INFO_VBS)), out _);
-		}
-		else
-			throw new NotSupportedException();
+		Assert.That(IsEnclaveTypeSupported(EnclaveType.ENCLAVE_TYPE_VBS));
+		ENCLAVE_CREATE_INFO_VBS vbs = new(ENCLAVE_VBS_FLAG.ENCLAVE_VBS_FLAG_DEBUG, [0x10, 0x20, 0x30, 0x40, 0x41, 0x31, 0x21, 0x11]);
+		using var h = CreateEnclave(GetCurrentProcess(), IntPtr.Zero, 0x10000000, 0, EnclaveType.ENCLAVE_TYPE_VBS, vbs, (uint)Marshal.SizeOf(typeof(ENCLAVE_CREATE_INFO_VBS)), out _);
+		Assert.That(h, ResultIs.ValidHandle);
 	}
 }

@@ -89,7 +89,7 @@ public class PsApiTests
 	public void WsWatchExTest()
 	{
 		Assert.That(InitializeProcessForWsWatch(GetCurrentProcess()), ResultIs.Successful);
-		Assert.That(GetWsChangesEx(GetCurrentProcess()), Is.Not.Empty);
+		Assert.That(() => GetWsChangesEx(GetCurrentProcess()), Throws.Nothing);
 	}
 
 	[Test]

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Linq;
 using System.Security;
 using Vanara.PInvoke;
 
@@ -39,25 +40,33 @@ public class StringHelperTests
 	}
 
 	[TestCaseSource(nameof(testStrings))]
-	public void AllocStringTest()
+	public void AllocStringTest(string val, int cbAnsi, int cbUni)
 	{
-		var sptr = StringHelper.AllocString("X", CharSet.Ansi);
-		Assert.That(sptr, Is.Not.EqualTo(IntPtr.Zero));
-		Assert.That(StringHelper.GetString(sptr, CharSet.Ansi), Is.EqualTo("X"));
+		var sptr = StringHelper.AllocString(val, CharSet.Ansi);
+		if (val is not null)
+			Assert.That(sptr, Is.Not.EqualTo(IntPtr.Zero));
+		var astr = StringHelper.GetString(sptr, CharSet.Ansi);
+		Assert.That(astr?.Length ?? 0, Is.EqualTo(val?.Length ?? 0));
+		if (val is null || !val.Any(c => c > 255))
+			Assert.That(astr, Is.EqualTo(val));
 		StringHelper.RefreshString(ref sptr, out var l, "ZZZ", CharSet.Ansi);
 		Assert.That(l, Is.EqualTo(4));
 		Assert.That(StringHelper.GetString(sptr, CharSet.Ansi), Is.EqualTo("ZZZ"));
 		StringHelper.FreeString(sptr, CharSet.Ansi);
 
-		sptr = StringHelper.AllocString("Y", CharSet.Unicode);
-		Assert.That(sptr, Is.Not.EqualTo(IntPtr.Zero));
-		Assert.That(StringHelper.GetString(sptr, CharSet.Unicode), Is.EqualTo("Y"));
+		sptr = StringHelper.AllocString(val, CharSet.Unicode);
+		if (val is not null)
+			Assert.That(sptr, Is.Not.EqualTo(IntPtr.Zero));
+		Assert.That(StringHelper.GetString(sptr, CharSet.Unicode), Is.EqualTo(val));
 		StringHelper.RefreshString(ref sptr, out l, "ZZZZ", CharSet.Unicode);
 		Assert.That(l, Is.EqualTo(5));
 		Assert.That(StringHelper.GetString(sptr, CharSet.Unicode), Is.EqualTo("ZZZZ"));
+
+		// Check null case
 		StringHelper.RefreshString(ref sptr, out l, null, CharSet.Unicode);
 		Assert.That(l, Is.EqualTo(0));
 		Assert.That(StringHelper.GetString(sptr, CharSet.Unicode), Is.Null);
+
 		StringHelper.FreeString(sptr, CharSet.Unicode);
 	}
 

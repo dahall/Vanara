@@ -119,15 +119,15 @@ public class ShellFileOperationsTests
 			op.PostCopyItem += HandleEvent;
 			op.QueueCopyOperation(shi, ShellFolder.Desktop);
 			var dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), Path.GetFileName(TestCaseSources.LargeFile));
-			shi = new ShellItem(dest);
+			shi = new ShellItem(dest, true);
 			op.QueueMoveOperation(shi, new ShellFolder(KNOWNFOLDERID.FOLDERID_Documents));
 			op.PostMoveItem += HandleEvent;
 			dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Path.GetFileName(TestCaseSources.LargeFile));
-			shi = new ShellItem(dest);
+			shi = new ShellItem(dest, true);
 			op.QueueRenameOperation(shi, newLargeFile);
 			op.PostRenameItem += HandleEvent;
 			dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), newLargeFile);
-			shi = new ShellItem(dest);
+			shi = new ShellItem(dest, true);
 			op.QueueDeleteOperation(shi);
 			op.PostDeleteItem += HandleEvent;
 			op.PerformOperations();
@@ -171,16 +171,19 @@ public class ShellFileOperationsTests
 		const string fn = "test.docx";
 		var fp = Path.Combine(ShellFolder.Desktop.FileSystemPath!, fn);
 		var authors = new[] { "David" };
-		using (var p = new ShellItemPropertyUpdates { { PROPERTYKEY.System.Author, authors } })
-		using (var op = new ShellFileOperations())
+		try
 		{
-			op.PostNewItem += HandleEvent;
-			op.QueueNewItemOperation(ShellFolder.Desktop, fn, template: Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Custom Office Templates\blank.dotx"));
-			op.QueueApplyPropertiesOperation(new ShellItem(fp), p);
-			op.PerformOperations();
+			using (ShellItemPropertyUpdates p = new() { { PROPERTYKEY.System.Author, authors } })
+			using (ShellFileOperations op = new())
+			{
+				op.PostNewItem += HandleEvent;
+				op.QueueNewItemOperation(ShellFolder.Desktop, fn, template: Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Custom Office Templates\blank.dotx"));
+				op.QueueApplyPropertiesOperation(new ShellItem(fp, true), p);
+				op.PerformOperations();
+			}
+			Assert.That(new ShellItem(fp).Properties[PROPERTYKEY.System.Author], Is.EquivalentTo(authors));
 		}
-		Assert.That(new ShellItem(fp).Properties[PROPERTYKEY.System.Author], Is.EquivalentTo(authors));
-		File.Delete(fp);
+		finally { File.Delete(fp); }
 
 		static void HandleEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs args)
 		{

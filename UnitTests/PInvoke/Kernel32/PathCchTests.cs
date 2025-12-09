@@ -52,7 +52,7 @@ public class PathCchTests
 	public void PathCchAddBackslashExTest()
 	{
 		StringBuilder sb = new(TestCaseSources.TempDirWhack, 64);
-		Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out IntPtr end, out SizeT rem), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
+		Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out var end, out SizeT rem), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
 		Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 		Assert.That(end, Is.Not.EqualTo(IntPtr.Zero));
 		Assert.That(rem, Is.LessThan(60));

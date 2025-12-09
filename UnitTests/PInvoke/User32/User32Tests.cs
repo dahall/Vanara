@@ -122,13 +122,13 @@ public partial class User32Tests
 		wnd.Dispose();
 	}
 
-	[Test]
+	//[Test]
 	public void DrawTextTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ExitWindowsExTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void GetClientRectTest() => throw new NotImplementedException();
 
 	[Test]
@@ -168,20 +168,20 @@ public partial class User32Tests
 	public void GetSetWindowLongTest()
 	{
 		var s = WindowStyles.WS_TILED | WindowStyles.WS_TILEDWINDOW | WindowStyles.WS_CLIPSIBLINGS;
-		WindowClass wc = new("MyWindowClass");
+		WindowClass wc = new();
 		SafeHWND wnd = CreateWindowEx(0, wc.ClassName, "1234567890", s);
 		Assert.That(GetWindowLong<WindowStyles>(wnd, WindowLongFlags.GWL_STYLE), Is.EqualTo(s));
 		SetWindowLong(wnd, WindowLongFlags.GWL_STYLE, (int)(s | WindowStyles.WS_DISABLED));
 		Assert.That(GetWindowLong<WindowStyles>(wnd, WindowLongFlags.GWL_STYLE), Is.EqualTo(s | WindowStyles.WS_DISABLED));
 	}
 
-	[Test]
+	//[Test]
 	public void GetWindowRectTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void InvalidateRectTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void LoadImageTest() => throw new NotImplementedException();
 
 	[Test]
@@ -192,19 +192,19 @@ public partial class User32Tests
 		Assert.That(LoadString(lib, 103), Is.EqualTo("DummyResourceExe"));
 	}
 
-	[Test]
+	//[Test]
 	public void LoadStringTest1() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void LockWorkStationTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void MapWindowPointsTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void MapWindowPointsTest1() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void MapWindowPointsTest2() => throw new NotImplementedException();
 
 	[Test]
@@ -329,16 +329,16 @@ public partial class User32Tests
 		Assert.That(dlg.controls[1].title.name, Is.EqualTo(dlg2!.controls[1].title.name));
 	}
 
-	[Test]
+	//[Test]
 	public void RealGetWindowClassTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void RegisterHotKeyTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void RegisterWindowMessageTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ScreenToClientTest() => throw new NotImplementedException();
 
 	[Test]
@@ -389,40 +389,40 @@ public partial class User32Tests
 		TestContext.WriteLine(sb);
 	}
 
-	[Test]
+	//[Test]
 	public void SendMessageTest2() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SendMessageTest3() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SendMessageTest4() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SendMessageTest5() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SendMessageTest6() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SetWindowPosTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SetWindowsHookExTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void SetWindowTextTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ShutdownBlockReasonCreateTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ShutdownBlockReasonDestroyTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ShutdownBlockReasonQueryTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void ShutdownBlockReasonQueryTest1() => throw new NotImplementedException();
 
 	[Test]
@@ -564,13 +564,13 @@ public partial class User32Tests
 		Assert.That(SystemParametersInfo(SPI.SPI_SETDESKWALLPAPER, (uint)sb.Length, sb.ToString(), SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
 	}
 
-	[Test]
+	//[Test]
 	public void UnhookWindowsHookExTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void UnregisterHotKeyTest() => throw new NotImplementedException();
 
-	[Test]
+	//[Test]
 	public void WindowFromPointTest() => throw new NotImplementedException();
 
 	[Test]

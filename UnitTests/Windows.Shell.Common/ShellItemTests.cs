@@ -249,8 +249,8 @@ public class ShellItemTests
 	{
 		Assert.That(() =>
 		{
-			using var i = new ShellItem(KNOWNFOLDERID.FOLDERID_Documents.PIDL());
-			Assert.That(i.FileSystemPath, Is.EqualTo(KNOWNFOLDERID.FOLDERID_Documents.FullPath()));
+			using var i = new ShellItem(KNOWNFOLDERID.FOLDERID_AdminTools.PIDL());
+			Assert.That(i.FileSystemPath, Is.EqualTo(KNOWNFOLDERID.FOLDERID_AdminTools.FullPath()));
 		}, Throws.Nothing);
 		Assert.That(() => new ShellItem(PIDL.Null), Throws.Exception);
 	}
@@ -265,7 +265,7 @@ public class ShellItemTests
 		using var f = new ShellFolder(KNOWNFOLDERID.FOLDERID_ControlPanelFolder);
 		Assert.That(f.ToUri().ToString(), Is.EqualTo("shell:::" + KNOWNFOLDERID.FOLDERID_ControlPanelFolder.Guid().ToString("B")));
 
-		var fn = Directory.EnumerateFiles(Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\Documents")).First();
+		var fn = Directory.EnumerateFiles(TestCaseSources.TempDir).First();
 		using var d = new ShellItem(fn);
 		Assert.That(d.ToUri().ToString(), Is.EqualTo(@"file:///" + fn.Replace('\\', '/')));
 

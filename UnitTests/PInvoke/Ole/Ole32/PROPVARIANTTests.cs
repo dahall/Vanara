@@ -55,7 +55,7 @@ public class PROPVARIANTTests
 	public void PROPVARIANTArrayTest()
 	{
 		// Setup SAFEARRAY
-		int[] array = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		int[] array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 		using SafeSAFEARRAY sa = SafeSAFEARRAY.CreateFromArray(array, VARTYPE.VT_I4);
 
 		// Add it to a PV
@@ -201,7 +201,7 @@ public class PROPVARIANTTests
 	[Test]
 	public void PROPVARIANTTest1()
 	{
-		string[] arr = new[] { "A", "B", "C" };
+		string[] arr = ["A", "B", "C"];
 		using PROPVARIANT pv = new(arr);
 		using PROPVARIANT pv2 = new(pv);
 		Assert.That(pv2.Value, Is.EquivalentTo(arr).And.EquivalentTo((IEnumerable)pv.Value!));

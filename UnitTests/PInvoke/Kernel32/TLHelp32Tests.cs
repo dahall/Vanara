@@ -36,6 +36,6 @@ public class TLHelp32Tests
 												Assert.That(hsnap.EnumThread32().ToArray(), Is.Not.Empty);
 											}, Throws.Nothing);
 
-	[Test]
+	//[Test]
 	public void Toolhelp32ReadProcessMemoryTest() => throw new NotImplementedException("No documentation on how.");//Assert.That(Toolhelp32ReadProcessMemory(), Is.True);
 }

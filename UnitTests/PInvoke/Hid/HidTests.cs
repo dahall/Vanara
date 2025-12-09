@@ -11,18 +11,21 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class HidTests
 {
-	string? devicePath = null;
+	string? devicePath = "\\\\?\\hid#elan2513&col0c#5&2181d5f8&1&000b#{4d1e55b2-f16f-11cf-88cb-001111000030}";
 	SafeHFILE hDeviceObject = SafeHFILE.Null;
 
 	[OneTimeSetUp]
 	public void _Setup()
 	{
-		HidD_GetHidGuid(out var hidGuid);
-		//var hidGuid = GUID_DEVINTERFACE_MOUSE;
-		using SafeHDEVINFO hardwareDeviceInfo = SetupDiGetClassDevs(hidGuid, default, default, DIGCF.DIGCF_PRESENT | DIGCF.DIGCF_DEVICEINTERFACE);
-		var idid = SetupDiEnumDeviceInterfaces(hardwareDeviceInfo, hidGuid).First();
-		if (SetupDiGetDeviceInterfaceDetail(hardwareDeviceInfo, idid, out devicePath, out _))
-			hDeviceObject = CreateFile(devicePath!, FileAccess.GENERIC_READ | FileAccess.GENERIC_WRITE, FILE_SHARE.FILE_SHARE_READ | FILE_SHARE.FILE_SHARE_WRITE, null, CreationOption.OPEN_EXISTING, 0);
+		if (devicePath is null)
+		{
+			HidD_GetHidGuid(out var hidGuid);
+			//var hidGuid = GUID_DEVINTERFACE_MOUSE;
+			using SafeHDEVINFO hardwareDeviceInfo = SetupDiGetClassDevs(hidGuid, default, default, DIGCF.DIGCF_PRESENT | DIGCF.DIGCF_DEVICEINTERFACE);
+			var idid = SetupDiEnumDeviceInterfaces(hardwareDeviceInfo, hidGuid).First();
+			SetupDiGetDeviceInterfaceDetail(hardwareDeviceInfo, idid, out devicePath, out _);
+		}
+		hDeviceObject = CreateFile(devicePath!, FileAccess.GENERIC_READ | FileAccess.GENERIC_WRITE, FILE_SHARE.FILE_SHARE_READ | FILE_SHARE.FILE_SHARE_WRITE, null, CreationOption.OPEN_EXISTING, 0);
 	}
 
 	[OneTimeTearDown]

@@ -11,21 +11,21 @@ public class ShellUtilTests
 	[Test]
 	public void GetKnownFolderFromGuidTest()
 	{
-		const KNOWNFOLDERID id = KNOWNFOLDERID.FOLDERID_Desktop;
+		const KNOWNFOLDERID id = KNOWNFOLDERID.FOLDERID_AdminTools;
 		Assert.That(GetKnownFolderFromGuid(id.Guid()), Is.EqualTo(id));
 	}
 
 	[Test]
 	public void GetKnownFolderFromPathTest()
 	{
-		const KNOWNFOLDERID id = KNOWNFOLDERID.FOLDERID_Desktop;
+		const KNOWNFOLDERID id = KNOWNFOLDERID.FOLDERID_AdminTools;
 		Assert.That(GetKnownFolderFromPath(id.FullPath()), Is.EqualTo(id));
 	}
 
 	[Test]
 	public void GetPathForKnownFolderTest()
 	{
-		const KNOWNFOLDERID id = KNOWNFOLDERID.FOLDERID_Desktop;
+		const KNOWNFOLDERID id = KNOWNFOLDERID.FOLDERID_AdminTools;
 		Assert.That(GetPathForKnownFolder(id.Guid()), Is.EqualTo(id.FullPath()));
 	}
 

@@ -22,13 +22,13 @@ public class SafeLocalHandleTests
 		Assert.That(!h.IsClosed && !h.IsInvalid);
 		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(RECT)) * d.Length));
 		Assert.That(h.ToStructure<RECT>().X, Is.EqualTo(1));
-		Assert.That(h.ToArray<RECT>(4), Has.Exactly(4).Items);
+		Assert.That(h.ToArray<RECT>(d.Length), Has.Exactly(d.Length).Items);
 
 		PRECT[] p = [new PRECT(1, 1, 1, 1), new PRECT(2, 2, 2, 2)];
 		h = SafeLocalHandle.CreateFromList(p);
 		Assert.That(!h.IsClosed && !h.IsInvalid);
 		Assert.That((int)h.Size, Is.EqualTo(Marshal.SizeOf(typeof(PRECT)) * p.Length));
-		Assert.That(h.ToArray<RECT>(4), Has.Exactly(4).Items);
+		Assert.That(h.ToArray<RECT>(p.Length), Has.Exactly(p.Length).Items);
 
 		Assert.That(() => SafeLocalHandle.CreateFromList(new[] { "X" }), Throws.ArgumentException);
 	}

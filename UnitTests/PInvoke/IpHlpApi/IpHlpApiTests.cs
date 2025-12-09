@@ -23,8 +23,8 @@ public partial class IpHlpApiTests
 	private static SOCKADDR_IN localv4;
 	private static SOCKADDR_IN6 localv6;
 	private static IP_ADAPTER_ADDRESSES primaryAdapter;
-	private static IN_ADDR unkIP = new(192, 168, 0, 251);
-	private static IN_ADDR knwIP = new(192, 168, 0, 187);
+	private static IN_ADDR unkIP = new(192, 168, 50, 1);
+	private static IN_ADDR knwIP = new(192, 168, 50, 113);
 	private static SOCKADDR_IN LocalAddrV4 => localv4.sin_family == 0 ? (localv4 = primaryAdapter.UnicastAddresses.Select(r => r.Address.GetSOCKADDR()).First(a => a.si_family == ADDRESS_FAMILY.AF_INET).Ipv4) : localv4;
 	private static SOCKADDR_IN6 LocalAddrV6 => localv6.sin6_family == 0 ? (localv6 = primaryAdapter.UnicastAddresses.Select(r => r.Address.GetSOCKADDR()).First(a => a.si_family == ADDRESS_FAMILY.AF_INET6).Ipv6) : localv6;
 
@@ -303,33 +303,37 @@ public partial class IpHlpApiTests
 	}
 
 	[Test]
-	public void GetIfTableTest() => Assert.That(() =>
+	public void GetIfTableTest()
 	{
-		MIB_IFTABLE t = GetIfTable();
-		Assert.That(t.dwNumEntries, Is.GreaterThan(0));
+		MIB_IFTABLE? t = null;
+		Assert.That(() => t = GetIfTable(), Throws.Nothing);
+		Assert.That(t!.dwNumEntries, Is.GreaterThan(0));
 		foreach (MIB_IFROW r in t)
 		{
-			var r2 = new MIB_IFROW(r.dwIndex);
+			MIB_IFROW r2 = new(r.dwIndex);
 			Assert.That(GetIfEntry(ref r2), ResultIs.Successful);
 			Assert.That(r.wszName, Is.EqualTo(r2.wszName));
 			Assert.That(SetIfEntry(r2), ResultIs.Successful);
 		}
-	}, Throws.Nothing);
+	}
 
 	[Test]
-	public void GetInterfaceInfoTest() => Assert.That(() =>
+	public void GetInterfaceInfoTest()
 	{
-		IP_INTERFACE_INFO t = GetInterfaceInfo();
-		Assert.That(t.NumAdapters, Is.GreaterThan(0));
-		foreach (IP_ADAPTER_INDEX_MAP r in t) ;
-	}, Throws.Nothing);
+		IP_INTERFACE_INFO? t = null;
+		Assert.That(() => t = GetInterfaceInfo(), Throws.Nothing);
+		Assert.That(t!.NumAdapters, Is.GreaterThan(0));
+		foreach (IP_ADAPTER_INDEX_MAP r in t)
+			TestContext.WriteLine($"{r.Index}-{r.Name}");
+	}
 
 	[Test]
 	public void GetIpAddrTableTest() => Assert.That(() =>
 	{
 		MIB_IPADDRTABLE t = GetIpAddrTable();
 		Assert.That(t.dwNumEntries, Is.GreaterThan(0));
-		foreach (MIB_IPADDRROW r in t) ;
+		foreach (MIB_IPADDRROW r in t)
+			TestContext.WriteLine($"{r.dwIndex}-{r.wType}-{r.dwAddr}");
 	}, Throws.Nothing);
 
 	[Test]
@@ -559,12 +563,13 @@ public partial class IpHlpApiTests
 	[Test]
 	public void IpReleaseRenewAddressTest()
 	{
-		IP_ADAPTER_INDEX_MAP i = GetInterfaceInfo().First();
-		Assert.That(IpReleaseAddress(ref i), ResultIs.Successful);
-		Assert.That(IpRenewAddress(ref i), ResultIs.Successful);
 		var x = new IP_ADAPTER_INDEX_MAP() { Name = "Bogus" };
 		Assert.That(IpReleaseAddress(ref x), Is.EqualTo(Win32Error.ERROR_INVALID_PARAMETER));
 		Assert.That(IpRenewAddress(ref x), Is.EqualTo(Win32Error.ERROR_INVALID_PARAMETER));
+
+		IP_ADAPTER_INDEX_MAP i = GetInterfaceInfo().Skip(1).First();
+		Assert.That(IpReleaseAddress(ref i), ResultIs.Successful);
+		Assert.That(IpRenewAddress(ref i), ResultIs.Successful);
 	}
 
 	// TODO: [Test]

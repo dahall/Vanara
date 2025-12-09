@@ -13,7 +13,7 @@ public class PropSysTests
 	public void InitPropVariantFromBooleanVectorTest()
 	{
 		var pv = new PROPVARIANT();
-		InitPropVariantFromBooleanVector(new[] {true,false,true,true}, 4, pv);
+		InitPropVariantFromBooleanVector([true,false,true,true], 4, pv);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_BOOL));
 		Assert.That(pv.Value as IEnumerable<bool>, Is.Not.Null.And.Exactly(4).Items);
 		pv.Dispose();
@@ -23,7 +23,7 @@ public class PropSysTests
 	public void InitPropVariantFromBufferTest()
 	{
 		var pv = new PROPVARIANT();
-		InitPropVariantFromBuffer(new byte[] {1,2,3,4}, 4, pv);
+		InitPropVariantFromBuffer([1,2,3,4], 4, pv);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_UI1));
 		Assert.That(pv.Value as IEnumerable<byte>, Is.Not.Null.And.Exactly(4).Items);
 		pv.Dispose();
@@ -44,7 +44,7 @@ public class PropSysTests
 	public void InitPropVariantFromDoubleVectorTest()
 	{
 		var pv = new PROPVARIANT();
-		InitPropVariantFromDoubleVector(new[] {1f,2.0,255.3,0.1}, 4, pv);
+		InitPropVariantFromDoubleVector([1f,2.0,255.3,0.1], 4, pv);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_R8));
 		Assert.That(pv.Value as IEnumerable<double>, Is.Not.Null.And.Exactly(4).Items.And.Contains(0.1));
 		pv.Dispose();
@@ -65,7 +65,7 @@ public class PropSysTests
 	public void InitPropVariantFromFileTimeVectorTest()
 	{
 		var pv = new PROPVARIANT();
-		InitPropVariantFromFileTimeVector(new[] {DateTime.Now.ToFileTimeStruct(), DateTime.Today.ToFileTimeStruct()}, 2, pv);
+		InitPropVariantFromFileTimeVector([DateTime.Now.ToFileTimeStruct(), DateTime.Today.ToFileTimeStruct()], 2, pv);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_FILETIME));
 		Assert.That(pv.Value as IEnumerable<FILETIME>, Is.Not.Null.And.Exactly(2).Items);
 		pv.Dispose();
@@ -75,7 +75,7 @@ public class PropSysTests
 	public void InitPropVariantFromInt16VectorTest()
 	{
 		var pv = new PROPVARIANT();
-		InitPropVariantFromInt16Vector(new short[] {1,2,3,4}, 4, pv);
+		InitPropVariantFromInt16Vector([1,2,3,4], 4, pv);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_I2));
 		Assert.That(pv.Value as IEnumerable<short>, Is.Not.Null.And.Exactly(4).Items);
 		pv.Dispose();
@@ -85,7 +85,7 @@ public class PropSysTests
 	public void InitPropVariantFromInt32VectorTest()
 	{
 		var pv = new PROPVARIANT();
-		InitPropVariantFromInt32Vector(new int[] {1,2,3,4}, 4, pv);
+		InitPropVariantFromInt32Vector([1,2,3,4], 4, pv);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_I4));
 		Assert.That(pv.Value as IEnumerable<int>, Is.Not.Null.And.Exactly(4).Items);
 		pv.Dispose();
@@ -95,7 +95,7 @@ public class PropSysTests
 	public void InitPropVariantFromInt64VectorTest()
 	{
 		var pv = new PROPVARIANT();
-		InitPropVariantFromInt64Vector(new long[] {1,2,3,4}, 4, pv);
+		InitPropVariantFromInt64Vector([1,2,3,4], 4, pv);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_I8));
 		Assert.That(pv.Value as IEnumerable<long>, Is.Not.Null.And.Exactly(4).Items);
 		pv.Dispose();
@@ -142,7 +142,7 @@ public class PropSysTests
 	public void InitPropVariantFromUInt16VectorTest()
 	{
 		var pv = new PROPVARIANT();
-		InitPropVariantFromUInt16Vector(new ushort[] {1,2,3,4}, 4, pv);
+		InitPropVariantFromUInt16Vector([1,2,3,4], 4, pv);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_UI2));
 		Assert.That(pv.Value as IEnumerable<ushort>, Is.Not.Null.And.Exactly(4).Items);
 		pv.Dispose();
@@ -152,7 +152,7 @@ public class PropSysTests
 	public void InitPropVariantFromUInt32VectorTest()
 	{
 		var pv = new PROPVARIANT();
-		InitPropVariantFromUInt32Vector(new uint[] {1,2,3,4}, 4, pv);
+		InitPropVariantFromUInt32Vector([1,2,3,4], 4, pv);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_UI4));
 		Assert.That(pv.Value as IEnumerable<uint>, Is.Not.Null.And.Exactly(4).Items);
 		pv.Dispose();
@@ -162,7 +162,7 @@ public class PropSysTests
 	public void InitPropVariantFromUInt64VectorTest()
 	{
 		var pv = new PROPVARIANT();
-		InitPropVariantFromUInt64Vector(new ulong[] {1,2,3,4}, 4, pv);
+		InitPropVariantFromUInt64Vector([1,2,3,4], 4, pv);
 		Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_VECTOR | VarEnum.VT_UI8));
 		Assert.That(pv.Value as IEnumerable<ulong>, Is.Not.Null.And.Exactly(4).Items);
 		pv.Dispose();
@@ -195,7 +195,7 @@ public class PropSysTests
 	public void PropVariantCompareTest()
 	{
 		var pv1 = new PROPVARIANT();
-		InitPropVariantFromUInt32Vector(new uint[] {1,2,3,4}, 4, pv1);
+		InitPropVariantFromUInt32Vector([1,2,3,4], 4, pv1);
 		var pv2 = new PROPVARIANT(new uint[] {1,2,3,4});
 		var i = PropVariantCompare(pv1, pv2);
 		Assert.That(i, Is.EqualTo(0));
@@ -249,7 +249,7 @@ public class PropSysTests
 		var hr = PropVariantToBooleanVectorAlloc(pv, out var h, out var cnt);
 		Assert.That(hr.Succeeded);
 		bool[]? ba = null;
-		Assert.That(() => ba = h.ToEnumerable<uint>((int)cnt).Select(i => i != 0).ToArray(), Throws.Nothing);
+		Assert.That(() => ba = [.. h.ToEnumerable<uint>((int)cnt).Select(i => i != 0)], Throws.Nothing);
 		Assert.That(ba, Is.Not.Null.And.Exactly(4).Items);
 	}
 
@@ -331,7 +331,7 @@ public class PropSysTests
 	[Test()]
 	public void PropVariantToFileTimeVectorAllocTest()
 	{
-		P2VATest(PropVariantToFileTimeVectorAlloc, new FILETIME[] {DateTime.Today.ToFileTimeStruct(), DateTime.Now.ToFileTimeStruct(), new DateTime(2000, 1, 1).ToFileTimeStruct()});
+		P2VATest(PropVariantToFileTimeVectorAlloc, [DateTime.Today.ToFileTimeStruct(), DateTime.Now.ToFileTimeStruct(), new DateTime(2000, 1, 1).ToFileTimeStruct()]);
 	}
 
 	[Test()]
@@ -385,7 +385,7 @@ public class PropSysTests
 	[Test()]
 	public void PropVariantToInt32VectorAllocTest()
 	{
-		P2VATest(PropVariantToInt32VectorAlloc, new int[] {2, 2, 2, 2});
+		P2VATest(PropVariantToInt32VectorAlloc, [2, 2, 2, 2]);
 	}
 
 	[Test()]

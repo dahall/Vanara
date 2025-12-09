@@ -6,7 +6,7 @@ namespace Vanara.PInvoke.Tests;
 [TestFixture]
 public class RtlSupportApiTests
 {
-	[Test]
+	//[Test]
 	public void RtlAddDeleteFunctionTableTest()
 	{
 		using SafeHGlobalHandle mem = new(4096);
@@ -57,14 +57,14 @@ public class RtlSupportApiTests
 		// TODO - Too undocumented to implement.
 	}
 
-	[Test]
+	//[Test]
 	public void RtlUnwindTest()
 	{
 		Assert.Fail("Too undocumented to implement.");
 		Assert.That(() => RtlUnwind(default, default, IntPtr.Zero, default), Throws.Nothing);
 	}
 
-	[Test]
+	//[Test]
 	public void RtlUnwindExTest()
 	{
 		Assert.Fail("Too undocumented to implement.");
