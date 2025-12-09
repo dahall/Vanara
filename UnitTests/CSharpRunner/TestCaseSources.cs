@@ -16,13 +16,13 @@ public static class TestCaseSources
 	private const string svrfn = @"C:\Temp\ServerConnectionTestCases.txt";
 
 	// Header: Server IP User Domain Pwd ValidSvr ValidCred UserIsAdmin Local Internet Name
-	private static readonly string[] svrhdr = { "Server", "IP", "User", "Domain", "Pwd", "ValidSvr", "ValidCred", "UserIsAdmin", "Local", "Internet", "Name" };
-	private static Dictionary<string, string?> lookup;
+	private static readonly string[] svrhdr = ["Server", "IP", "User", "Domain", "Pwd", "ValidSvr", "ValidCred", "UserIsAdmin", "Local", "Internet", "Name"];
+	private static readonly Dictionary<string, string?> lookup;
 
 	static TestCaseSources()
 	{
 		// Read in test case sources from file
-		lookup = new Dictionary<string, string?>();
+		lookup = [];
 		if (File.Exists(sourceFile))
 		{
 			var lines = File.ReadAllLines(sourceFile);
@@ -39,7 +39,7 @@ public static class TestCaseSources
 			}
 		}
 		else
-			lookup = new Dictionary<string, string?>(0);
+			lookup = [];
 	}
 
 	public static object[] AuthCasesFromFile
@@ -62,7 +62,7 @@ public static class TestCaseSources
 		}
 	}
 
-	public static string BmpFile => GetLookupValue(@"Vanara.bmp");
+	public static string BmpFile => GetLookupValue(@"test.bmp");
 	public static string DummyFile => GetLookupValue(@"test.dmy");
 	public static string EventFile => GetLookupValue(@"TestLogFile.etl");
 	public static string IcoFile => GetLookupValue(@"Vanara.ico");
@@ -124,7 +124,7 @@ public static class TestCaseSources
 	private static IEnumerable<string[]> GetFileItems(string fn, string[]? cols = null, Func<IReadOnlyDictionary<string, string>, bool>? filter = null)
 	{
 		var first = true;
-		string[] hdr = new string[0];
+		string[] hdr = [];
 		int[]? idxs = null;
 		foreach (var ln in File.ReadLines(fn))
 		{
@@ -162,8 +162,8 @@ public static class TestCaseSources
 
 	private class StrArrDict : IReadOnlyDictionary<string, string>
 	{
-		private string[] keys;
-		private string[] values;
+		private readonly string[] keys;
+		private readonly string[] values;
 
 		public StrArrDict(string[] k, string[] v)
 		{
@@ -197,7 +197,7 @@ public static class TestCaseSources
 		private class DEnum : IEnumerator<KeyValuePair<string, string>>
 		{
 			private int c = -1;
-			private StrArrDict p;
+			private readonly StrArrDict p;
 
 			public DEnum(StrArrDict parent) => p = parent;
 

@@ -93,6 +93,11 @@ public class FailureConstraint : DescConstraint
 				description = Expected?.ToString() ?? nameof(NTStatus.STATUS_SUCCESS);
 				break;
 
+			case IErrorProvider iep:
+				success = Expected is null ? iep.Failed : iep.Failed && ((IErrorProvider)Expected).ToHRESULT().Equals(iep.ToHRESULT());
+				description = Expected?.ToString() ?? "SUCCESS";
+				break;
+
 			case uint i:
 				var e = new Win32Error(i);
 				success = Expected is null ? e.Failed : e.Failed && ((IErrorProvider)Expected).ToHRESULT().Equals(e.ToHRESULT());
@@ -137,11 +142,6 @@ public class SuccessfulConstraint : DescConstraint
 				}
 				break;
 
-			case HRESULT hr:
-				success = hr.Succeeded;
-				description = nameof(HRESULT.S_OK);
-				break;
-
 			case Win32Error err:
 				success = err.Succeeded;
 				description = nameof(Win32Error.ERROR_SUCCESS);
@@ -150,6 +150,16 @@ public class SuccessfulConstraint : DescConstraint
 			case NTStatus st:
 				success = st.Succeeded;
 				description = nameof(NTStatus.STATUS_SUCCESS);
+				break;
+
+			case HRESULT hr:
+				success = hr.Succeeded;
+				description = nameof(HRESULT.S_OK);
+				break;
+
+			case IErrorProvider iep:
+				success = iep.Succeeded;
+				description = "SUCCESS";
 				break;
 
 			case uint i:
