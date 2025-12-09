@@ -214,9 +214,7 @@ public static partial class InteropExtensions
 	public static bool IsMarshalable(this Type type)
 	{
 		Type t = type.IsNullable() ? type.GetGenericArguments()[0] : type;
-#pragma warning disable SYSLIB0050 // Type or member is obsolete
-		return t.IsSerializable || VanaraMarshaler.CanMarshal(t, out _) || t.IsBlittable();
-#pragma warning restore SYSLIB0050 // Type or member is obsolete
+		return t.CanSerialize() || VanaraMarshaler.CanMarshal(t, out _) || t.IsBlittable();
 	}
 
 	/// <summary>Determines whether this type is nullable (derived from <see cref="Nullable{T}"/>).</summary>
@@ -969,15 +967,15 @@ public static partial class InteropExtensions
 					{
 						return GetBlittable(Nullable.GetUnderlyingType(destType)!, out bytesRead);
 					}
-#pragma warning disable SYSLIB0050 // Type or member is obsolete
-					if (destType.IsSerializable)
+					if (destType.CanSerialize())
 					{
 						using var mem = new MemoryStream(ptr.ToByteArray((int)allocatedBytes - offset, offset, allocatedBytes)!);
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
 						var ret = new BinaryFormatter().Deserialize(mem);
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
 						bytesRead = (int)mem.Position;
 						return ret;
 					}
-#pragma warning restore SYSLIB0050 // Type or member is obsolete
 				}
 				catch (ArgumentOutOfRangeException)
 				{
@@ -1360,19 +1358,18 @@ public static partial class InteropExtensions
 		}
 
 		// Handle binary serialization
-#pragma warning disable SYSLIB0050 // Type or member is obsolete
-		if (valType.IsSerializable)
+		if (valType.CanSerialize())
 		{
 			using var str = new NativeMemoryStream();
-			var bf = new BinaryFormatter();
-			bf.Serialize(str, value);
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
+			new BinaryFormatter().Serialize(str, value);
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
 			str.Flush();
 			if (allocatedBytes > 0 && offset + str.Length > allocatedBytes)
 				throw new InsufficientMemoryException();
 			str.Pointer.CopyTo(ptr.Offset(offset), str.Length);
 			return (int)str.Length;
 		}
-#pragma warning restore SYSLIB0050 // Type or member is obsolete
 
 		throw new ArgumentException("Unable to convert object to its binary format.");
 
@@ -1401,6 +1398,15 @@ public static partial class InteropExtensions
 		}
 		return alloc;
 	}
+
+	private static bool CanSerialize(this Type type) =>
+#if NET8_0_OR_GREATER
+		false;
+#else
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
+		type.IsSerializable;
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
+#endif
 
 	private static int GetStrListSize(IEnumerable<string?> items, StringListPackMethod packing, CharSet charSet)
 	{
