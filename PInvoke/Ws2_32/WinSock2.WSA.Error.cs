@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System.Globalization;
+using System.Net.Sockets;
 using System.Security;
 
 namespace Vanara.PInvoke;
@@ -218,7 +219,12 @@ public static partial class Ws2_32
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public override string ToString() => StaticFieldValueHash.TryGetFieldName<WSRESULT, int>(_value, out string? err) ? err : ToHRESULT().ToString();
+		public override string ToString()
+		{
+			StaticFieldValueHash.TryGetFieldName<WSRESULT, int>(_value, out var err);
+			var msg = ErrorHelper.GetErrorMessage<WSRESULT, int>(_value);
+			return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value)) + (msg == null ? "" : ": " + msg);
+		}
 
 		readonly TypeCode IConvertible.GetTypeCode() => _value.GetTypeCode();
 

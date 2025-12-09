@@ -78,6 +78,12 @@ public static partial class Kernel32
 		/// <summary>An enclave for the Intel Software Guard Extensions (SGX) architecture extension.</summary>
 		ENCLAVE_TYPE_SGX = 0x00000001,
 
+		/// <summary>
+		/// Supports SGX2 and SGX1 enclaves. The platform and OS support SGX2 instructions with EDMM on this platform (in addition to other
+		/// SGX2 constructs).
+		/// </summary>
+		ENCLAVE_TYPE_SGX2 = 0x00000002,
+
 		/// <summary>A VBS enclave.</summary>
 		ENCLAVE_TYPE_VBS = 0x00000010,
 	}
@@ -295,7 +301,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	// BOOL WINAPI DeleteEnclave( _In_ LPVOID lpAddress); https://msdn.microsoft.com/en-us/library/windows/desktop/mt844232(v=vs.85).aspx
-	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
+	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt844232")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool DeleteEnclave(IntPtr lpAddress);
@@ -867,6 +873,8 @@ public static partial class Kernel32
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ENCLAVE_CREATE_INFO_VBS
 	{
+		const int oidlen = 32;
+
 		/// <summary>
 		/// <para>A flag that indicates whether the enclave permits debugging.</para>
 		/// <para>
@@ -888,9 +896,23 @@ public static partial class Kernel32
 		/// </summary>
 		public ENCLAVE_VBS_FLAG Flags;
 
+		private unsafe fixed byte _OwnerID[oidlen];
+
+		/// <summary>Initializes a new instance of the <see cref="ENCLAVE_CREATE_INFO_VBS"/> struct.</summary>
+		/// <param name="flags">A flag that indicates whether the enclave permits debugging.</param>
+		/// <param name="ownerId">The identifier of the owner of the enclave.</param>
+		public ENCLAVE_CREATE_INFO_VBS(ENCLAVE_VBS_FLAG flags, Span<byte> ownerId) : this()
+		{
+			Flags = flags;
+			OwnerID = ownerId;
+		}
+
 		/// <summary>The identifier of the owner of the enclave.</summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-		public byte[] OwnerID;
+		public Span<byte> OwnerID
+		{
+			get { unsafe { fixed (byte* p = _OwnerID) { return new Span<byte>(p, oidlen); } } }
+			set { if (value.Length > oidlen) throw new ArgumentOutOfRangeException(); unsafe { fixed (byte* p = _OwnerID) { value.CopyTo(new Span<byte>(p, oidlen)); } } }
+		}
 	}
 
 	/// <summary>Describes the identity of the primary module of an enclave.</summary>

@@ -3129,7 +3129,7 @@ public static partial class Mpr
 	[Serializable]
 	public class NetworkProviderException : Exception
 	{
-		private NetworkProviderException() { Description = Provider = string.Empty; }
+		private NetworkProviderException() { }
 
 		/// <summary>Initializes a new instance of the <see cref="NetworkProviderException"/> class.</summary>
 		/// <param name="info">
@@ -3159,17 +3159,17 @@ public static partial class Mpr
 		/// <summary>Gets the provider's description of the error.</summary>
 		/// <value>The description.</value>
 		[DefaultValue("")]
-		public string Description { get; }
+		public string Description { get; } = string.Empty;
 
 		/// <summary>Gets the network provider's name.</summary>
 		/// <value>The provider.</value>
 		[DefaultValue("")]
-		public string Provider { get; }
+		public string Provider { get; } = string.Empty;
 
 		/// <summary>Gets the error code reported by the provider.</summary>
 		/// <value>The provider error code.</value>
 		[DefaultValue(0)]
-		public uint ProviderErrorCode { get; }
+		public uint ProviderErrorCode { get; } = 0;
 
 		/// <summary>
 		/// When overridden in a derived class, sets the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with information about the exception.
@@ -3192,5 +3192,8 @@ public static partial class Mpr
 			info.AddValue("ProviderErrorCode", ProviderErrorCode);
 			base.GetObjectData(info, context);
 		}
+
+		/// <inheritdoc/>
+		public override string ToString() => $"'{Provider}' has returned extended error: {ProviderErrorCode} - {Description}";
 	}
 }

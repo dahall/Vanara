@@ -1752,7 +1752,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "23960533-de71-4bff-a43f-75e5fe38fbec")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetBitmapDimensionEx(HBITMAP hbm, int w, int h, out SIZE lpsz);
+	public static extern bool SetBitmapDimensionEx([In] HBITMAP hbm, int w, int h, out SIZE lpsz);
 
 	/// <summary>
 	/// The <c>SetDIBColorTable</c> function sets RGB (red, green, blue) color values in a range of entries in the color table of the DIB

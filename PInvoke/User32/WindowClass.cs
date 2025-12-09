@@ -25,11 +25,11 @@ public class WindowClass
 	/// <summary>The prior WND proc map</summary>
 	protected static readonly Dictionary<HWND, IntPtr> PriorWndProcMap = [];
 
-	private static readonly uint cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEX));
+	private static readonly uint cbSize = (uint)Marshal.SizeOf<WNDCLASSEX>();
 	private static SafeHICON? appIcon;
 	private static SafeHCURSOR? arrowCursor;
 	private readonly WindowProc instProc;
-	private WindowProc? userProc;
+	private readonly WindowProc? userProc;
 
 	/// <summary>Initializes a new instance of the <see cref="WindowClass"/> class and registers the class name.</summary>
 	/// <param name="className">

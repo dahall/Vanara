@@ -1020,7 +1020,7 @@ public static partial class Tdh
 	/// </returns>
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateManifestProviderEvents", MinClient = PInvokeClient.Windows81)]
 	public static Win32Error TdhEnumerateManifestProviderEvents([In] Guid ProviderGuid, out PROVIDER_EVENT_INFO Buffer) =>
-		Get((IntPtr p, ref uint s) => TdhEnumerateManifestProviderEvents(ProviderGuid, p, ref s), out Buffer);
+		Get((p, ref s) => TdhEnumerateManifestProviderEvents(ProviderGuid, p, ref s), out Buffer);
 
 	/// <summary>Retrieves the specified field metadata for a given provider.</summary>
 	/// <param name="pGuid">GUID that identifies the provider whose information you want to retrieve.</param>
@@ -1120,7 +1120,7 @@ public static partial class Tdh
 	// PPROVIDER_FIELD_INFOARRAY pBuffer, [in, out] ULONG *pBufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateProviderFieldInformation")]
 	public static Win32Error TdhEnumerateProviderFieldInformation([In] Guid pGuid, [In] EVENT_FIELD_TYPE EventFieldType, out SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY> pBuffer) =>
-		GetMem((IntPtr p, ref uint s) => TdhEnumerateProviderFieldInformation(pGuid, EventFieldType, p, ref s), out pBuffer);
+		GetMem((p, ref s) => TdhEnumerateProviderFieldInformation(pGuid, EventFieldType, p, ref s), out pBuffer);
 
 	/// <summary>The <c>TdhEnumerateProviderFilters</c> function enumerates the filters that the specified provider defined in the manifest.</summary>
 	/// <param name="Guid">GUID that identifies the provider whose filters you want to retrieve.</param>
@@ -1369,7 +1369,7 @@ public static partial class Tdh
 	// [out] ULONG *bufferRequired );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhEnumerateProvidersForDecodingSource", MinClient = PInvokeClient.Windows10)]
 	public static Win32Error TdhEnumerateProvidersForDecodingSource(DECODING_SOURCE filter, out SafeCoTaskMemStruct<PROVIDER_ENUMERATION_INFO> buffer) =>
-		GetMem((IntPtr p, ref uint s) => TdhEnumerateProvidersForDecodingSource(filter, p, s, out s), out buffer);
+		GetMem((p, ref s) => TdhEnumerateProvidersForDecodingSource(filter, p, s, out s), out buffer);
 
 	/// <summary>Formats a property value for display.</summary>
 	/// <param name="EventInfo">
@@ -1729,7 +1729,7 @@ public static partial class Tdh
 	// BufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetEventInformation")]
 	public static Win32Error TdhGetEventInformation([In] EVENT_RECORD Event, [In, Optional] TDH_CONTEXT[]? TdhContext, out SafeCoTaskMemStruct<TRACE_EVENT_INFO> Buffer) =>
-		GetMem((IntPtr p, ref uint s) => TdhGetEventInformation(Event, (uint)(TdhContext?.Length ?? 0), TdhContext, p, ref s), out Buffer);
+		GetMem((p, ref s) => TdhGetEventInformation(Event, (uint)(TdhContext?.Length ?? 0), TdhContext, p, ref s), out Buffer);
 
 	/// <summary>Retrieves information about the event map contained in the event.</summary>
 	/// <param name="pEvent">The event record passed to your EventRecordCallback callback. For details, see the EVENT_RECORD structure.</param>
@@ -1846,7 +1846,7 @@ public static partial class Tdh
 	// PEVENT_RECORD pEvent, [in] PWSTR pMapName, [out] PEVENT_MAP_INFO pBuffer, [in, out] ULONG *pBufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetEventMapInformation")]
 	public static Win32Error TdhGetEventMapInformation([In] EVENT_RECORD pEvent, [MarshalAs(UnmanagedType.LPWStr)] string pMapName,
-		out SafeCoTaskMemStruct<EVENT_MAP_INFO> pBuffer) => GetMem((IntPtr p, ref uint sz) => TdhGetEventMapInformation(pEvent, pMapName, p, ref sz), out pBuffer);
+		out SafeCoTaskMemStruct<EVENT_MAP_INFO> pBuffer) => GetMem((p, ref sz) => TdhGetEventMapInformation(pEvent, pMapName, p, ref sz), out pBuffer);
 
 	/// <summary>The <c>TdhGetManifestEventInformation</c> function retrieves metadata about an event in a manifest.</summary>
 	/// <param name="ProviderGuid">A GUID that identifies the manifest provider whose event metadata you want to retrieve.</param>
@@ -1944,7 +1944,7 @@ public static partial class Tdh
 	// out] ULONG *BufferSize );
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhGetManifestEventInformation", MinClient = PInvokeClient.Windows81)]
 	public static Win32Error TdhGetManifestEventInformation([In] Guid ProviderGuid, [In] EVENT_DESCRIPTOR EventDescriptor,
-		out SafeCoTaskMemStruct<TRACE_EVENT_INFO> Buffer) => GetMem((IntPtr p, ref uint sz) => TdhGetManifestEventInformation(ProviderGuid, EventDescriptor, p, ref sz), out Buffer);
+		out SafeCoTaskMemStruct<TRACE_EVENT_INFO> Buffer) => GetMem((p, ref sz) => TdhGetManifestEventInformation(ProviderGuid, EventDescriptor, p, ref sz), out Buffer);
 
 	/// <summary>Retrieves a property value from the event data.</summary>
 	/// <param name="pEvent">The event record passed to your EventRecordCallback callback. For details, see the EVENT_RECORD structure.</param>
@@ -2475,7 +2475,7 @@ public static partial class Tdh
 	[PInvokeData("tdh.h", MSDNShortId = "NF:tdh.TdhQueryProviderFieldInformation")]
 	public static Win32Error TdhQueryProviderFieldInformation([In] Guid pGuid, ulong EventFieldValue,
 		[In] EVENT_FIELD_TYPE EventFieldType, out SafeCoTaskMemStruct<PROVIDER_FIELD_INFOARRAY> pBuffer) =>
-		GetMem((IntPtr p, ref uint s) => TdhQueryProviderFieldInformation(pGuid, EventFieldValue, EventFieldType, p, ref s), out pBuffer);
+		GetMem((p, ref s) => TdhQueryProviderFieldInformation(pGuid, EventFieldValue, EventFieldType, p, ref s), out pBuffer);
 
 	/// <summary>Sets the value of a decoding parameter.</summary>
 	/// <param name="Handle">
@@ -2781,7 +2781,7 @@ public static partial class Tdh
 		/// <para>Offset from the beginning of the EVENT_MAP_INFO structure to the null-terminated Unicode string that contains the map value.</para>
 		/// <para>The offset is used for pattern maps and WMI value maps that map strings to strings.</para>
 		/// </summary>
-		public uint InputOffset { get => Value; set => Value = value; }
+		public uint InputOffset { readonly get => Value; set => Value = value; }
 	}
 
 	/// <summary>Defines the metadata about the event map.</summary>
@@ -2811,7 +2811,7 @@ public static partial class Tdh
 		/// Determines if you use the <c>Value</c> member or <c>InputOffset</c> member of EVENT_MAP_ENTRY to access the map value. For
 		/// possible values, see the MAP_VALUETYPE enumeration.
 		/// </summary>
-		public MAP_VALUETYPE MapEntryValueType { get => (MAP_VALUETYPE)FormatStringOffset; set => FormatStringOffset = (uint)value; }
+		public MAP_VALUETYPE MapEntryValueType { readonly get => (MAP_VALUETYPE)FormatStringOffset; set => FormatStringOffset = (uint)value; }
 
 		/// <summary>
 		/// <para>
@@ -3478,7 +3478,7 @@ public static partial class Tdh
 		/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the event's name. Supported for
 		/// classic ETW events only.
 		/// </summary>
-		public uint EventNameOffset { get => ActivityIDNameOffset; set => ActivityIDNameOffset = value; }
+		public uint EventNameOffset { readonly get => ActivityIDNameOffset; set => ActivityIDNameOffset = value; }
 
 		/// <summary>
 		/// The offset from the beginning of this structure to a null-terminated Unicode string that contains the property name of the
@@ -3490,7 +3490,7 @@ public static partial class Tdh
 		/// The offset from the beginning of this structure to a null-terminated Unicode string that contains a semicolon-separated list of
 		/// name=value attributes associated with the event. Supported for legacy ETW events only.
 		/// </summary>
-		public uint EventAttributesOffset { get => RelatedActivityIDNameOffset; set => RelatedActivityIDNameOffset = value; }
+		public uint EventAttributesOffset { readonly get => RelatedActivityIDNameOffset; set => RelatedActivityIDNameOffset = value; }
 
 		/// <summary>The number of elements in the <c>EventPropertyInfoArray</c> array.</summary>
 		public uint PropertyCount;
