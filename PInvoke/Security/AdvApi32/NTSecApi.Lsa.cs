@@ -2027,8 +2027,8 @@ public static partial class AdvApi32
 
 	/// <summary>Do not use the LSA private data functions. Instead, use the CryptProtectData and CryptUnprotectData functions.</summary>
 	/// <param name="PolicyHandle">
-	/// A handle to a Policy object. The handle must have the POLICY_GET_PRIVATE_INFORMATION access right. For more information, see
-	/// Opening a Policy Object Handle.
+	/// A handle to a Policy object. The handle must have the POLICY_GET_PRIVATE_INFORMATION access right. For more information, see Opening
+	/// a Policy Object Handle.
 	/// </param>
 	/// <param name="KeyName">
 	/// <para>Pointer to an LSA_UNICODE_STRING structure that contains the name of the key under which the private data is stored.</para>
@@ -2056,15 +2056,11 @@ public static partial class AdvApi32
 	/// Private Data Object.
 	/// </para>
 	/// </param>
-	/// <param name="PrivateData">
-	/// <para>Pointer to a variable that receives a pointer to an LSA_UNICODE_STRING structure that contains the private data.</para>
-	/// <para>When you no longer need the information, pass the returned pointer to LsaFreeMemory.</para>
-	/// </param>
+	/// <param name="PrivateData">A variable that receives the private data.</param>
 	/// <returns>
 	/// <para>If the function succeeds, the function returns STATUS_SUCCESS.</para>
 	/// <para>
-	/// If the function fails, it returns an <c>NTSTATUS</c> value, which can be the following value or one of the LSA Policy Function
-	/// Return Values.
+	/// If the function fails, it returns an <c>NTSTATUS</c> value, which can be the following value or one of the LSA Policy Function Return Values.
 	/// </para>
 	/// <list type="table">
 	/// <listheader>
@@ -2081,10 +2077,17 @@ public static partial class AdvApi32
 	/// <remarks>You must run this process "As Administrator" or the call fails with ERROR_ACCESS_DENIED.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/nf-ntsecapi-lsaretrieveprivatedata NTSTATUS LsaRetrievePrivateData(
 	// LSA_HANDLE PolicyHandle, PLSA_UNICODE_STRING KeyName, PLSA_UNICODE_STRING *PrivateData );
-	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntsecapi.h", MSDNShortId = "005460db-0919-46eb-b057-37c5b6042243")]
-	public static extern NTStatus LsaRetrievePrivateData(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string KeyName,
-		out SafeLsaMemoryHandle PrivateData);
+	public static NTStatus LsaRetrievePrivateData(LSA_HANDLE PolicyHandle, string KeyName, out string? PrivateData)
+	{
+		var ret = LsaRetrievePrivateData(PolicyHandle, KeyName, out SafeLsaMemoryHandle h);
+		PrivateData = ret.Succeeded ? h.ToStructure<LSA_UNICODE_STRING>().ToString() : null;
+		return ret;
+
+		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
+		static extern NTStatus LsaRetrievePrivateData(LSA_HANDLE PolicyHandle, [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LsaUnicodeStringMarshaler))] string KeyName,
+			out SafeLsaMemoryHandle PrivateData);
+	}
 
 	/// <summary>The <c>LsaSetDomainInformationPolicy</c> function sets domain information to the Policyobject.</summary>
 	/// <param name="PolicyHandle">A handle to the Policy object for the system.</param>
