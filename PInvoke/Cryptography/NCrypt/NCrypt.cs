@@ -5460,12 +5460,13 @@ public static partial class NCrypt
 			int dsz = Marshal.SizeOf<NCryptBufferDescInt>();
 			int bsz = Marshal.SizeOf<NCryptBufferInt>();
 			SafeCoTaskMemHandle ret = new(dsz + (m.pBuffers.Length * bsz) + m.pBuffers.Sum(s => s.pvBuffer.Length));
+			ret.Write(new NCryptBufferDescInt { ulVersion = m.ulVersion, cBuffers = (uint)m.pBuffers.Length, pBuffers = ret.DangerousGetHandle().Offset(dsz) });
 			for (int i = 0, doff = dsz + (m.pBuffers.Length * bsz); i < m.pBuffers.Length; doff += m.pBuffers[i++].pvBuffer.Length)
 			{
-				ret.Write(new NCryptBufferInt { BufferType = m.pBuffers[i].BufferType, cbBuffer = (uint)m.pBuffers[i].pvBuffer.Length, pvBuffer = ret.DangerousGetHandle().Offset(doff) }, false, dsz + (i * bsz));
+				var b = new NCryptBufferInt { BufferType = m.pBuffers[i].BufferType, cbBuffer = (uint)m.pBuffers[i].pvBuffer.Length, pvBuffer = ret.DangerousGetHandle().Offset(doff) };
+				ret.Write(b, false, dsz + (i * bsz));
 				ret.Write(m.pBuffers[i].pvBuffer, false, doff);
 			}
-			ret.Write(new NCryptBufferDescInt { ulVersion = m.ulVersion, cBuffers = (uint)m.pBuffers.Length, pBuffers = ret.DangerousGetHandle().Offset(dsz) });
 			return ret;
 		}
 
