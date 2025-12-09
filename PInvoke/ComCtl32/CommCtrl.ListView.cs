@@ -28,7 +28,7 @@ public static partial class ComCtl32
 
 	private const uint LVM_FIRST = 0x1000;
 
-	private const int LVN_FIRST = -0x100;
+	private const int LVN_FIRST = -100;
 
 	/// <summary>
 	/// The <c>LVGroupCompare</c> function is an application-defined callback function used with the LVM_INSERTGROUPSORTED and LVM_SORTGROUPS
