@@ -1375,10 +1375,8 @@ public static partial class Gdi32
 		/// <summary>A BITMAPINFOHEADER structure that contains information about the dimensions of color format.</summary>
 		public BITMAPINFOHEADER bmiHeader { get => Value.bmiHeader; set => handle.Write(value, 0, Size); }
 
-#if ALLOWSPAN
 		/// <summary>A reference to the BITMAPINFOHEADER structure.</summary>
-		public ref BITMAPINFOHEADER bmiHeaderAsRef => ref AsRef().bmiHeader;
-#endif
+		public ref BITMAPINFOHEADER bmiHeaderAsRef => ref handle.AsRef<BITMAPINFOHEADER>();
 
 		/// <summary>
 		/// Specifies the number of bytes required by the structure. This value does not include the size of the color table or the size
@@ -1398,6 +1396,11 @@ public static partial class Gdi32
 		/// <typeparam name="T">The type of the header to get.</typeparam>
 		/// <returns>The requested header structure.</returns>
 		public T GetHeader<T>() where T : struct => handle.ToStructure<T>(Size);
+
+		/// <summary>Gets a reference to the header of the specified type <typeparamref name="T"/>.</summary>
+		/// <typeparam name="T">The type of the header to get.</typeparam>
+		/// <returns>The requested header structure reference.</returns>
+		public ref T GetHeaderAsRef<T>() where T : struct => ref handle.AsRef<T>();
 
 		/// <summary>Zero out all allocated memory.</summary>
 		public override void Zero() { base.Zero(); HeaderSize = hdrSize; }
