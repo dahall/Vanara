@@ -201,7 +201,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 17 (PIDSI_THUMBNAIL)</para>
 			/// </summary>
 			public static PROPERTYKEY Thumbnail
-				= new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 17);
+				= new(FMTID.FMTID_SummaryInformation, 17);
 
 			/// <summary>
 			/// <para>Name:     System.AcquisitionID -- PKEY_AcquisitionID</para>
@@ -219,7 +219,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 18 (PIDSI_APPNAME)</para>
 			/// </summary>
 			public static PROPERTYKEY ApplicationName
-				=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 18);
+				=> new(FMTID.FMTID_SummaryInformation, 18);
 
 			/// <summary>
 			/// <para>Name:     System.Author -- PKEY_Author</para>
@@ -230,7 +230,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 4 (PIDSI_AUTHOR)</para>
 			/// </summary>
 			public static PROPERTYKEY Author
-				=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 4);
+				=> new(FMTID.FMTID_SummaryInformation, 4);
 
 			/// <summary>
 			/// <para>Name:     System.Capacity -- PKEY_Capacity</para>
@@ -239,16 +239,16 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Volume) {9B174B35-40FF-11D2-A27E-00C04FC30871}, 3 (PID_VOLUME_CAPACITY) (Filesystem Volume Properties)</para>
 			/// </summary>
 			public static PROPERTYKEY Capacity
-				=> new(new Guid("{9B174B35-40FF-11D2-A27E-00C04FC30871}"), 3);
+				=> new(FMTID.FMTID_Volume, 3);
 
 			/// <summary>
 			/// <para>Name:     System.Category -- PKEY_Category</para>
 			/// <para>Description: Legacy code treats this as VT_LPSTR.</para>
 			/// <para>Type:     Multivalue String -- VT_VECTOR | VT_LPWSTR (For variants: VT_ARRAY | VT_BSTR)</para>
-			/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 2 (PIDDSI_CATEGORY)</para>
+			/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 2 (PIDDSI_CATEGORY)</para>
 			/// </summary>
 			public static PROPERTYKEY Category
-				=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 2);
+				=> new(FMTID.FMTID_DocSummaryInformation, 2);
 
 			/// <summary>
 			/// <para>Name:     System.Comment -- PKEY_Comment</para>
@@ -257,16 +257,16 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 6 (PIDSI_COMMENTS)</para>
 			/// </summary>
 			public static PROPERTYKEY Comment
-				=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 6);
+				=> new(FMTID.FMTID_SummaryInformation, 6);
 
 			/// <summary>
 			/// <para>Name:     System.Company -- PKEY_Company</para>
 			/// <para>Description: The company or publisher.</para>
 			/// <para>Type:     String -- VT_LPWSTR (For variants: VT_BSTR)</para>
-			/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 15 (PIDDSI_COMPANY)</para>
+			/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 15 (PIDDSI_COMPANY)</para>
 			/// </summary>
 			public static PROPERTYKEY Company
-				=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 15);
+				=> new(FMTID.FMTID_DocSummaryInformation, 15);
 
 			/// <summary>
 			/// <para>Name:     System.ComputerName -- PKEY_ComputerName</para>
@@ -275,7 +275,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 5 (PID_COMPUTERNAME)</para>
 			/// </summary>
 			public static PROPERTYKEY ComputerName
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 5);
+				=> new(FMTID.FMTID_ShellDetails, 5);
 
 			/// <summary>
 			/// <para>Name:     System.ContainedItems -- PKEY_ContainedItems</para>
@@ -287,25 +287,25 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 29</para>
 			/// </summary>
 			public static PROPERTYKEY ContainedItems
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 29);
+				=> new(FMTID.FMTID_ShellDetails, 29);
 
 			/// <summary>
 			/// <para>Name:     System.ContentStatus -- PKEY_ContentStatus</para>
 			/// <para>Description:</para>
 			/// <para>Type:     String -- VT_LPWSTR (For variants: VT_BSTR)</para>
-			/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 27</para>
+			/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 27</para>
 			/// </summary>
 			public static PROPERTYKEY ContentStatus
-				=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 27);
+				=> new(FMTID.FMTID_DocSummaryInformation, 27);
 
 			/// <summary>
 			/// <para>Name:     System.ContentType -- PKEY_ContentType</para>
 			/// <para>Description:</para>
 			/// <para>Type:     String -- VT_LPWSTR (For variants: VT_BSTR)</para>
-			/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 26</para>
+			/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 26</para>
 			/// </summary>
 			public static PROPERTYKEY ContentType
-				=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 26);
+				=> new(FMTID.FMTID_DocSummaryInformation, 26);
 
 			/// <summary>
 			/// <para>Name:     System.Copyright -- PKEY_Copyright</para>
@@ -323,7 +323,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 16 (PID_STG_ACCESSTIME)</para>
 			/// </summary>
 			public static PROPERTYKEY DateAccessed
-				=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 16);
+				=> new(FMTID.FMTID_Storage, 16);
 
 			/// <summary>
 			/// <para>Name:     System.DateAcquired -- PKEY_DateAcquired</para>
@@ -362,7 +362,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 15 (PID_STG_CREATETIME)</para>
 			/// </summary>
 			public static PROPERTYKEY DateCreated
-				=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 15);
+				=> new(FMTID.FMTID_Storage, 15);
 
 			/// <summary>
 			/// <para>Name:     System.DateImported -- PKEY_DateImported</para>
@@ -374,7 +374,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 18258</para>
 			/// </summary>
 			public static PROPERTYKEY DateImported
-				=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 18258);
+				=> new(FMTID.FMTID_ImageProperties, 18258);
 
 			/// <summary>
 			/// <para>Name:     System.DateModified -- PKEY_DateModified</para>
@@ -383,7 +383,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 14 (PID_STG_WRITETIME)</para>
 			/// </summary>
 			public static PROPERTYKEY DateModified
-				=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 14);
+				=> new(FMTID.FMTID_Storage, 14);
 
 			/// <summary>
 			/// <para>Name:     System.DescriptionID -- PKEY_DescriptionID</para>
@@ -392,7 +392,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 2 (PID_DESCRIPTIONID)</para>
 			/// </summary>
 			public static PROPERTYKEY DescriptionID
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 2);
+				=> new(FMTID.FMTID_ShellDetails, 2);
 
 			/// <summary>
 			/// <para>Name:     System.DueDate -- PKEY_DueDate</para>
@@ -419,7 +419,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 18 (PID_STG_ALLOCSIZE)</para>
 			/// </summary>
 			public static PROPERTYKEY FileAllocationSize
-				=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 18);
+				=> new(FMTID.FMTID_Storage, 18);
 
 			/// <summary>
 			/// <para>Name:     System.FileAttributes -- PKEY_FileAttributes</para>
@@ -428,7 +428,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 13 (PID_STG_ATTRIBUTES)</para>
 			/// </summary>
 			public static PROPERTYKEY FileAttributes
-				=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 13);
+				=> new(FMTID.FMTID_Storage, 13);
 
 			/// <summary>
 			/// <para>Name:     System.FileCount -- PKEY_FileCount</para>
@@ -437,7 +437,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 12</para>
 			/// </summary>
 			public static PROPERTYKEY FileCount
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 12);
+				=> new(FMTID.FMTID_ShellDetails, 12);
 
 			/// <summary>
 			/// <para>Name:     System.FileDescription -- PKEY_FileDescription</para>
@@ -475,7 +475,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 21 (PID_STG_FRN)</para>
 			/// </summary>
 			public static PROPERTYKEY FileFRN
-				=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 21);
+				=> new(FMTID.FMTID_Storage, 21);
 
 			/// <summary>
 			/// <para>Name:     System.FileName -- PKEY_FileName</para>
@@ -503,7 +503,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Misc) {9B174B34-40FF-11D2-A27E-00C04FC30871}, 4 (PID_MISC_OWNER)</para>
 			/// </summary>
 			public static PROPERTYKEY FileOwner
-				=> new(new Guid("{9B174B34-40FF-11D2-A27E-00C04FC30871}"), 4);
+				=> new(FMTID.FMTID_Misc, 4);
 
 			/// <summary>
 			/// <para>Name:     System.FileVersion -- PKEY_FileVersion</para>
@@ -521,7 +521,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 0 (PID_FINDDATA)</para>
 			/// </summary>
 			public static PROPERTYKEY FindData
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 0);
+				=> new(FMTID.FMTID_ShellDetails, 0);
 
 			/// <summary>
 			/// <para>Name:     System.FlagColor -- PKEY_FlagColor</para>
@@ -566,7 +566,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Volume) {9B174B35-40FF-11D2-A27E-00C04FC30871}, 2 (PID_VOLUME_FREE) (Filesystem Volume Properties)</para>
 			/// </summary>
 			public static PROPERTYKEY FreeSpace
-				=> new(new Guid("{9B174B35-40FF-11D2-A27E-00C04FC30871}"), 2);
+				=> new(FMTID.FMTID_Volume, 2);
 
 			/// <summary>
 			/// <para>Name:     System.FullText -- PKEY_FullText</para>
@@ -749,7 +749,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 33</para>
 			/// </summary>
 			public static PROPERTYKEY IsSendToTarget
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 33);
+				=> new(FMTID.FMTID_ShellDetails, 33);
 
 			/// <summary>
 			/// <para>Name:     System.IsShared -- PKEY_IsShared</para>
@@ -805,7 +805,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 2 (PID_STG_DIRECTORY)</para>
 			/// </summary>
 			public static PROPERTYKEY ItemFolderNameDisplay
-				=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 2);
+				=> new(FMTID.FMTID_Storage, 2);
 
 			/// <summary>
 			/// <para>Name:     System.ItemFolderPathDisplay -- PKEY_ItemFolderPathDisplay</para>
@@ -883,7 +883,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 10 (PID_STG_NAME)</para>
 			/// </summary>
 			public static PROPERTYKEY ItemNameDisplay
-				=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 10);
+				=> new(FMTID.FMTID_Storage, 10);
 
 			/// <summary>
 			/// <para>Name:     System.ItemNamePrefix -- PKEY_ItemNamePrefix</para>
@@ -947,7 +947,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 8</para>
 			/// </summary>
 			public static PROPERTYKEY ItemPathDisplayNarrow
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 8);
+				=> new(FMTID.FMTID_ShellDetails, 8);
 
 			/// <summary>
 			/// <para>Name:     System.ItemType -- PKEY_ItemType</para>
@@ -965,7 +965,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 11</para>
 			/// </summary>
 			public static PROPERTYKEY ItemType
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 11);
+				=> new(FMTID.FMTID_ShellDetails, 11);
 
 			/// <summary>
 			/// <para>Name:     System.ItemTypeText -- PKEY_ItemTypeText</para>
@@ -984,7 +984,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 4 (PID_STG_STORAGETYPE)</para>
 			/// </summary>
 			public static PROPERTYKEY ItemTypeText
-				=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 4);
+				=> new(FMTID.FMTID_Storage, 4);
 
 			/// <summary>
 			/// <para>Name:     System.ItemUrl -- PKEY_ItemUrl</para>
@@ -998,7 +998,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Query) {49691C90-7E17-101A-A91C-08002B2ECDA9}, 9 (DISPID_QUERY_VIRTUALPATH)</para>
 			/// </summary>
 			public static PROPERTYKEY ItemUrl
-				=> new(new Guid("{49691C90-7E17-101A-A91C-08002B2ECDA9}"), 9);
+				=> new(FMTID.FMTID_Query, 9);
 
 			/// <summary>
 			/// <para>Name:     System.Keywords -- PKEY_Keywords</para>
@@ -1009,7 +1009,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 5 (PIDSI_KEYWORDS)</para>
 			/// </summary>
 			public static PROPERTYKEY Keywords
-				=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 5);
+				=> new(FMTID.FMTID_SummaryInformation, 5);
 
 			/// <summary>
 			/// <para>Name:     System.Kind -- PKEY_Kind</para>
@@ -1036,10 +1036,10 @@ public static partial class Ole32
 			/// <para>Name:     System.Language -- PKEY_Language</para>
 			/// <para>Description:</para>
 			/// <para>Type:     String -- VT_LPWSTR (For variants: VT_BSTR)</para>
-			/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 28</para>
+			/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 28</para>
 			/// </summary>
 			public static PROPERTYKEY Language
-				=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 28);
+				=> new(FMTID.FMTID_DocSummaryInformation, 28);
 
 			/// <summary>
 			/// <para>Name:     System.MileageInformation -- PKEY_MileageInformation</para>
@@ -1066,7 +1066,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 6</para>
 			/// </summary>
 			public static PROPERTYKEY NamespaceCLSID
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 6);
+				=> new(FMTID.FMTID_ShellDetails, 6);
 
 			/// <summary>
 			/// <para>Name:     System.Null -- PKEY_Null</para>
@@ -1159,7 +1159,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 24</para>
 			/// </summary>
 			public static PROPERTYKEY ParsingName
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 24);
+				=> new(FMTID.FMTID_ShellDetails, 24);
 
 			/// <summary>
 			/// <para>Name:     System.ParsingPath -- PKEY_ParsingPath</para>
@@ -1172,7 +1172,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 30</para>
 			/// </summary>
 			public static PROPERTYKEY ParsingPath
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 30);
+				=> new(FMTID.FMTID_ShellDetails, 30);
 
 			/// <summary>
 			/// <para>Name:     System.PerceivedType -- PKEY_PerceivedType</para>
@@ -1181,7 +1181,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 9</para>
 			/// </summary>
 			public static PROPERTYKEY PerceivedType
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 9);
+				=> new(FMTID.FMTID_ShellDetails, 9);
 
 			/// <summary>
 			/// <para>Name:     System.PercentFull -- PKEY_PercentFull</para>
@@ -1190,7 +1190,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Volume) {9B174B35-40FF-11D2-A27E-00C04FC30871}, 5 (Filesystem Volume Properties)</para>
 			/// </summary>
 			public static PROPERTYKEY PercentFull
-				=> new(new Guid("{9B174B35-40FF-11D2-A27E-00C04FC30871}"), 5);
+				=> new(FMTID.FMTID_Volume, 5);
 
 			/// <summary>
 			/// <para>Name:     System.Priority -- PKEY_Priority</para>
@@ -1274,7 +1274,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 25</para>
 			/// </summary>
 			public static PROPERTYKEY SFGAOFlags
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 25);
+				=> new(FMTID.FMTID_ShellDetails, 25);
 
 			/// <summary>
 			/// <para>Name:     System.SharedWith -- PKEY_SharedWith</para>
@@ -1322,7 +1322,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 12 (PID_STG_SIZE)</para>
 			/// </summary>
 			public static PROPERTYKEY Size
-				=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 12);
+				=> new(FMTID.FMTID_Storage, 12);
 
 			/// <summary>
 			/// <para>Name:     System.SoftwareUsed -- PKEY_SoftwareUsed</para>
@@ -1331,7 +1331,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 305</para>
 			/// </summary>
 			public static PROPERTYKEY SoftwareUsed
-				=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 305);
+				=> new(FMTID.FMTID_ImageProperties, 305);
 
 			/// <summary>
 			/// <para>Name:     System.SourceItem -- PKEY_SourceItem</para>
@@ -1367,7 +1367,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 3 (PIDSI_SUBJECT)</para>
 			/// </summary>
 			public static PROPERTYKEY Subject
-				=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 3);
+				=> new(FMTID.FMTID_SummaryInformation, 3);
 
 			/// <summary>
 			/// <para>Name:     System.SyncTransferStatus -- PKEY_SyncTransferStatus</para>
@@ -1397,7 +1397,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 27</para>
 			/// </summary>
 			public static PROPERTYKEY ThumbnailStream
-				=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 27);
+				=> new(FMTID.FMTID_SummaryInformation, 27);
 
 			/// <summary>
 			/// <para>Name:     System.Title -- PKEY_Title</para>
@@ -1406,7 +1406,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 2 (PIDSI_TITLE)</para>
 			/// </summary>
 			public static PROPERTYKEY Title
-				=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 2);
+				=> new(FMTID.FMTID_SummaryInformation, 2);
 
 			/// <summary>
 			/// <para>Name:     System.TotalFileSize -- PKEY_TotalFileSize</para>
@@ -1415,7 +1415,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_ShellDetails) {28636AA6-953D-11D2-B5D6-00C04FD918D0}, 14</para>
 			/// </summary>
 			public static PROPERTYKEY TotalFileSize
-				=> new(new Guid("{28636AA6-953D-11D2-B5D6-00C04FD918D0}"), 14);
+				=> new(FMTID.FMTID_ShellDetails, 14);
 
 			/// <summary>
 			/// <para>Name:     System.Trademarks -- PKEY_Trademarks</para>
@@ -1539,7 +1539,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_AudioSummaryInformation) {64440490-4C8B-11D1-8B70-080036B11A03}, 7 (PIDASI_CHANNEL_COUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY ChannelCount
-					=> new(new Guid("{64440490-4C8B-11D1-8B70-080036B11A03}"), 7);
+					=> new(FMTID.FMTID_AudioSummaryInformation, 7);
 
 				/// <summary>
 				/// <para>Name:     System.Audio.Compression -- PKEY_Audio_Compression</para>
@@ -1548,7 +1548,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_AudioSummaryInformation) {64440490-4C8B-11D1-8B70-080036B11A03}, 10 (PIDASI_COMPRESSION)</para>
 				/// </summary>
 				public static PROPERTYKEY Compression
-					=> new(new Guid("{64440490-4C8B-11D1-8B70-080036B11A03}"), 10);
+					=> new(FMTID.FMTID_AudioSummaryInformation, 10);
 
 				/// <summary>
 				/// <para>Name:     System.Audio.EncodingBitrate -- PKEY_Audio_EncodingBitrate</para>
@@ -1557,7 +1557,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_AudioSummaryInformation) {64440490-4C8B-11D1-8B70-080036B11A03}, 4 (PIDASI_AVG_DATA_RATE)</para>
 				/// </summary>
 				public static PROPERTYKEY EncodingBitrate
-					=> new(new Guid("{64440490-4C8B-11D1-8B70-080036B11A03}"), 4);
+					=> new(FMTID.FMTID_AudioSummaryInformation, 4);
 
 				/// <summary>
 				/// <para>Name:     System.Audio.Format -- PKEY_Audio_Format</para>
@@ -1566,7 +1566,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_AudioSummaryInformation) {64440490-4C8B-11D1-8B70-080036B11A03}, 2 (PIDASI_FORMAT)</para>
 				/// </summary>
 				public static PROPERTYKEY Format
-					=> new(new Guid("{64440490-4C8B-11D1-8B70-080036B11A03}"), 2);
+					=> new(FMTID.FMTID_AudioSummaryInformation, 2);
 
 				/// <summary>
 				/// <para>Name:     System.Audio.IsVariableBitRate -- PKEY_Audio_IsVariableBitRate</para>
@@ -1593,7 +1593,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_AudioSummaryInformation) {64440490-4C8B-11D1-8B70-080036B11A03}, 5 (PIDASI_SAMPLE_RATE)</para>
 				/// </summary>
 				public static PROPERTYKEY SampleRate
-					=> new(new Guid("{64440490-4C8B-11D1-8B70-080036B11A03}"), 5);
+					=> new(FMTID.FMTID_AudioSummaryInformation, 5);
 
 				/// <summary>
 				/// <para>Name:     System.Audio.SampleSize -- PKEY_Audio_SampleSize</para>
@@ -1602,7 +1602,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_AudioSummaryInformation) {64440490-4C8B-11D1-8B70-080036B11A03}, 6 (PIDASI_SAMPLE_SIZE)</para>
 				/// </summary>
 				public static PROPERTYKEY SampleSize
-					=> new(new Guid("{64440490-4C8B-11D1-8B70-080036B11A03}"), 6);
+					=> new(FMTID.FMTID_AudioSummaryInformation, 6);
 
 				/// <summary>
 				/// <para>Name:     System.Audio.StreamName -- PKEY_Audio_StreamName</para>
@@ -1611,7 +1611,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_AudioSummaryInformation) {64440490-4C8B-11D1-8B70-080036B11A03}, 9 (PIDASI_STREAM_NAME)</para>
 				/// </summary>
 				public static PROPERTYKEY StreamName
-					=> new(new Guid("{64440490-4C8B-11D1-8B70-080036B11A03}"), 9);
+					=> new(FMTID.FMTID_AudioSummaryInformation, 9);
 
 				/// <summary>
 				/// <para>Name:     System.Audio.StreamNumber -- PKEY_Audio_StreamNumber</para>
@@ -1620,7 +1620,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_AudioSummaryInformation) {64440490-4C8B-11D1-8B70-080036B11A03}, 8 (PIDASI_STREAM_NUMBER)</para>
 				/// </summary>
 				public static PROPERTYKEY StreamNumber
-					=> new(new Guid("{64440490-4C8B-11D1-8B70-080036B11A03}"), 8);
+					=> new(FMTID.FMTID_AudioSummaryInformation, 8);
 			}
 
 			/// <summary>Calendar Properties</summary>
@@ -1857,7 +1857,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_Volume) {9B174B35-40FF-11D2-A27E-00C04FC30871}, 7 (Filesystem Volume Properties)</para>
 				/// </summary>
 				public static PROPERTYKEY DecoratedFreeSpace
-					=> new(new Guid("{9B174B35-40FF-11D2-A27E-00C04FC30871}"), 7);
+					=> new(FMTID.FMTID_Volume, 7);
 			}
 
 			/// <summary>Contact Properties</summary>
@@ -3081,10 +3081,10 @@ public static partial class Ole32
 				/// <para>Name:     System.Document.ByteCount -- PKEY_Document_ByteCount</para>
 				/// <para>Description:</para>
 				/// <para>Type:     Int32 -- VT_I4</para>
-				/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 4 (PIDDSI_BYTECOUNT)</para>
+				/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 4 (PIDDSI_BYTECOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY ByteCount
-					=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 4);
+					=> new(FMTID.FMTID_DocSummaryInformation, 4);
 
 				/// <summary>
 				/// <para>Name:     System.Document.CharacterCount -- PKEY_Document_CharacterCount</para>
@@ -3093,7 +3093,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 16 (PIDSI_CHARCOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY CharacterCount
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 16);
+					=> new(FMTID.FMTID_SummaryInformation, 16);
 
 				/// <summary>
 				/// <para>Name:     System.Document.ClientID -- PKEY_Document_ClientID</para>
@@ -3120,7 +3120,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 12 (PIDSI_CREATE_DTM)</para>
 				/// </summary>
 				public static PROPERTYKEY DateCreated
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 12);
+					=> new(FMTID.FMTID_SummaryInformation, 12);
 
 				/// <summary>
 				/// <para>Name:     System.Document.DatePrinted -- PKEY_Document_DatePrinted</para>
@@ -3129,7 +3129,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 11 (PIDSI_LASTPRINTED)</para>
 				/// </summary>
 				public static PROPERTYKEY DatePrinted
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 11);
+					=> new(FMTID.FMTID_SummaryInformation, 11);
 
 				/// <summary>
 				/// <para>Name:     System.Document.DateSaved -- PKEY_Document_DateSaved</para>
@@ -3138,7 +3138,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 13 (PIDSI_LASTSAVE_DTM)</para>
 				/// </summary>
 				public static PROPERTYKEY DateSaved
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 13);
+					=> new(FMTID.FMTID_SummaryInformation, 13);
 
 				/// <summary>
 				/// <para>Name:     System.Document.Division -- PKEY_Document_Division</para>
@@ -3162,10 +3162,10 @@ public static partial class Ole32
 				/// <para>Name:     System.Document.HiddenSlideCount -- PKEY_Document_HiddenSlideCount</para>
 				/// <para>Description:</para>
 				/// <para>Type:     Int32 -- VT_I4</para>
-				/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 9 (PIDDSI_HIDDENCOUNT)</para>
+				/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 9 (PIDDSI_HIDDENCOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY HiddenSlideCount
-					=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 9);
+					=> new(FMTID.FMTID_DocSummaryInformation, 9);
 
 				/// <summary>
 				/// <para>Name:     System.Document.LastAuthor -- PKEY_Document_LastAuthor</para>
@@ -3174,43 +3174,43 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 8 (PIDSI_LASTAUTHOR)</para>
 				/// </summary>
 				public static PROPERTYKEY LastAuthor
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 8);
+					=> new(FMTID.FMTID_SummaryInformation, 8);
 
 				/// <summary>
 				/// <para>Name:     System.Document.LineCount -- PKEY_Document_LineCount</para>
 				/// <para>Description:</para>
 				/// <para>Type:     Int32 -- VT_I4</para>
-				/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 5 (PIDDSI_LINECOUNT)</para>
+				/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 5 (PIDDSI_LINECOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY LineCount
-					=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 5);
+					=> new(FMTID.FMTID_DocSummaryInformation, 5);
 
 				/// <summary>
 				/// <para>Name:     System.Document.Manager -- PKEY_Document_Manager</para>
 				/// <para>Description:</para>
 				/// <para>Type:     String -- VT_LPWSTR (For variants: VT_BSTR)</para>
-				/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 14 (PIDDSI_MANAGER)</para>
+				/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 14 (PIDDSI_MANAGER)</para>
 				/// </summary>
 				public static PROPERTYKEY Manager
-					=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 14);
+					=> new(FMTID.FMTID_DocSummaryInformation, 14);
 
 				/// <summary>
 				/// <para>Name:     System.Document.MultimediaClipCount -- PKEY_Document_MultimediaClipCount</para>
 				/// <para>Description:</para>
 				/// <para>Type:     Int32 -- VT_I4</para>
-				/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 10 (PIDDSI_MMCLIPCOUNT)</para>
+				/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 10 (PIDDSI_MMCLIPCOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY MultimediaClipCount
-					=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 10);
+					=> new(FMTID.FMTID_DocSummaryInformation, 10);
 
 				/// <summary>
 				/// <para>Name:     System.Document.NoteCount -- PKEY_Document_NoteCount</para>
 				/// <para>Description:</para>
 				/// <para>Type:     Int32 -- VT_I4</para>
-				/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 8 (PIDDSI_NOTECOUNT)</para>
+				/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 8 (PIDDSI_NOTECOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY NoteCount
-					=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 8);
+					=> new(FMTID.FMTID_DocSummaryInformation, 8);
 
 				/// <summary>
 				/// <para>Name:     System.Document.PageCount -- PKEY_Document_PageCount</para>
@@ -3219,25 +3219,25 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 14 (PIDSI_PAGECOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY PageCount
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 14);
+					=> new(FMTID.FMTID_SummaryInformation, 14);
 
 				/// <summary>
 				/// <para>Name:     System.Document.ParagraphCount -- PKEY_Document_ParagraphCount</para>
 				/// <para>Description:</para>
 				/// <para>Type:     Int32 -- VT_I4</para>
-				/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 6 (PIDDSI_PARCOUNT)</para>
+				/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 6 (PIDDSI_PARCOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY ParagraphCount
-					=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 6);
+					=> new(FMTID.FMTID_DocSummaryInformation, 6);
 
 				/// <summary>
 				/// <para>Name:     System.Document.PresentationFormat -- PKEY_Document_PresentationFormat</para>
 				/// <para>Description:</para>
 				/// <para>Type:     String -- VT_LPWSTR (For variants: VT_BSTR)</para>
-				/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 3 (PIDDSI_PRESFORMAT)</para>
+				/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 3 (PIDDSI_PRESFORMAT)</para>
 				/// </summary>
 				public static PROPERTYKEY PresentationFormat
-					=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 3);
+					=> new(FMTID.FMTID_DocSummaryInformation, 3);
 
 				/// <summary>
 				/// <para>Name:     System.Document.RevisionNumber -- PKEY_Document_RevisionNumber</para>
@@ -3246,7 +3246,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 9 (PIDSI_REVNUMBER)</para>
 				/// </summary>
 				public static PROPERTYKEY RevisionNumber
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 9);
+					=> new(FMTID.FMTID_SummaryInformation, 9);
 
 				/// <summary>
 				/// <para>Name:     System.Document.Security -- PKEY_Document_Security</para>
@@ -3255,16 +3255,16 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 19</para>
 				/// </summary>
 				public static PROPERTYKEY Security
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 19);
+					=> new(FMTID.FMTID_SummaryInformation, 19);
 
 				/// <summary>
 				/// <para>Name:     System.Document.SlideCount -- PKEY_Document_SlideCount</para>
 				/// <para>Description:</para>
 				/// <para>Type:     Int32 -- VT_I4</para>
-				/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 7 (PIDDSI_SLIDECOUNT)</para>
+				/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 7 (PIDDSI_SLIDECOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY SlideCount
-					=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 7);
+					=> new(FMTID.FMTID_DocSummaryInformation, 7);
 
 				/// <summary>
 				/// <para>Name:     System.Document.Template -- PKEY_Document_Template</para>
@@ -3273,7 +3273,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 7 (PIDSI_TEMPLATE)</para>
 				/// </summary>
 				public static PROPERTYKEY Template
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 7);
+					=> new(FMTID.FMTID_SummaryInformation, 7);
 
 				/// <summary>
 				/// <para>Name:     System.Document.TotalEditingTime -- PKEY_Document_TotalEditingTime</para>
@@ -3282,16 +3282,16 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 10 (PIDSI_EDITTIME)</para>
 				/// </summary>
 				public static PROPERTYKEY TotalEditingTime
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 10);
+					=> new(FMTID.FMTID_SummaryInformation, 10);
 
 				/// <summary>
 				/// <para>Name:     System.Document.Version -- PKEY_Document_Version</para>
 				/// <para>Description:</para>
 				/// <para>Type:     String -- VT_LPWSTR (For variants: VT_BSTR)</para>
-				/// <para>FormatID: (FMTID_DocumentSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 29</para>
+				/// <para>FormatID: (FMTID_DocSummaryInformation) {D5CDD502-2E9C-101B-9397-08002B2CF9AE}, 29</para>
 				/// </summary>
 				public static PROPERTYKEY Version
-					=> new(new Guid("{D5CDD502-2E9C-101B-9397-08002B2CF9AE}"), 29);
+					=> new(FMTID.FMTID_DocSummaryInformation, 29);
 
 				/// <summary>
 				/// <para>Name:     System.Document.WordCount -- PKEY_Document_WordCount</para>
@@ -3300,7 +3300,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 15 (PIDSI_WORDCOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY WordCount
-					=> new(new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), 15);
+					=> new(FMTID.FMTID_SummaryInformation, 15);
 			}
 
 			/// <summary>DRM Properties</summary>
@@ -3313,7 +3313,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_DRM) {AEAC19E4-89AE-4508-B9B7-BB867ABEE2ED}, 6 (PIDDRSI_PLAYEXPIRES)</para>
 				/// </summary>
 				public static PROPERTYKEY DatePlayExpires
-					=> new(new Guid("{AEAC19E4-89AE-4508-B9B7-BB867ABEE2ED}"), 6);
+					=> new(FMTID.FMTID_DRM, 6);
 
 				/// <summary>
 				/// <para>Name:     System.DRM.DatePlayStarts -- PKEY_DRM_DatePlayStarts</para>
@@ -3322,7 +3322,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_DRM) {AEAC19E4-89AE-4508-B9B7-BB867ABEE2ED}, 5 (PIDDRSI_PLAYSTARTS)</para>
 				/// </summary>
 				public static PROPERTYKEY DatePlayStarts
-					=> new(new Guid("{AEAC19E4-89AE-4508-B9B7-BB867ABEE2ED}"), 5);
+					=> new(FMTID.FMTID_DRM, 5);
 
 				/// <summary>
 				/// <para>Name:     System.DRM.Description -- PKEY_DRM_Description</para>
@@ -3331,7 +3331,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_DRM) {AEAC19E4-89AE-4508-B9B7-BB867ABEE2ED}, 3 (PIDDRSI_DESCRIPTION)</para>
 				/// </summary>
 				public static PROPERTYKEY Description
-					=> new(new Guid("{AEAC19E4-89AE-4508-B9B7-BB867ABEE2ED}"), 3);
+					=> new(FMTID.FMTID_DRM, 3);
 
 				/// <summary>
 				/// <para>Name:     System.DRM.IsProtected -- PKEY_DRM_IsProtected</para>
@@ -3340,7 +3340,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_DRM) {AEAC19E4-89AE-4508-B9B7-BB867ABEE2ED}, 2 (PIDDRSI_PROTECTED)</para>
 				/// </summary>
 				public static PROPERTYKEY IsProtected
-					=> new(new Guid("{AEAC19E4-89AE-4508-B9B7-BB867ABEE2ED}"), 2);
+					=> new(FMTID.FMTID_DRM, 2);
 
 				/// <summary>
 				/// <para>Name:     System.DRM.PlayCount -- PKEY_DRM_PlayCount</para>
@@ -3349,7 +3349,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_DRM) {AEAC19E4-89AE-4508-B9B7-BB867ABEE2ED}, 4 (PIDDRSI_PLAYCOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY PlayCount
-					=> new(new Guid("{AEAC19E4-89AE-4508-B9B7-BB867ABEE2ED}"), 4);
+					=> new(FMTID.FMTID_DRM, 4);
 			}
 
 			/// <summary>GPS Properties</summary>
@@ -3971,7 +3971,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 40961</para>
 				/// </summary>
 				public static PROPERTYKEY ColorSpace
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 40961);
+					=> new(FMTID.FMTID_ImageProperties, 40961);
 
 				/// <summary>
 				/// <para>Name:     System.Image.CompressedBitsPerPixel -- PKEY_Image_CompressedBitsPerPixel</para>
@@ -4007,7 +4007,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 259</para>
 				/// </summary>
 				public static PROPERTYKEY Compression
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 259);
+					=> new(FMTID.FMTID_ImageProperties, 259);
 
 				/// <summary>
 				/// <para>Name:     System.Image.CompressionText -- PKEY_Image_CompressionText</para>
@@ -4353,7 +4353,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_AudioSummaryInformation) {64440490-4C8B-11D1-8B70-080036B11A03}, 3 (PIDASI_TIMELENGTH)</para>
 				/// </summary>
 				public static PROPERTYKEY Duration
-					=> new(new Guid("{64440490-4C8B-11D1-8B70-080036B11A03}"), 3);
+					=> new(FMTID.FMTID_AudioSummaryInformation, 3);
 
 				/// <summary>
 				/// <para>Name:     System.Media.DVDID -- PKEY_Media_DVDID</para>
@@ -4479,7 +4479,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 38 (PIDSI_MUSIC_SUB_TITLE)</para>
 				/// </summary>
 				public static PROPERTYKEY SubTitle
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 38);
+					=> new(FMTID.FMTID_MUSIC, 38);
 
 				/// <summary>
 				/// <para>Name:     System.Media.UniqueFileIdentifier -- PKEY_Media_UniqueFileIdentifier</para>
@@ -4524,7 +4524,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 5 (PIDSI_MUSIC_YEAR)</para>
 				/// </summary>
 				public static PROPERTYKEY Year
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 5);
+					=> new(FMTID.FMTID_MUSIC, 5);
 			}
 
 			/// <summary>Message Properties</summary>
@@ -4760,7 +4760,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 13 (PIDSI_MUSIC_ALBUM_ARTIST)</para>
 				/// </summary>
 				public static PROPERTYKEY AlbumArtist
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 13);
+					=> new(FMTID.FMTID_MUSIC, 13);
 
 				/// <summary>
 				/// <para>Name:     System.Music.AlbumID -- PKEY_Music_AlbumID</para>
@@ -4772,7 +4772,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 100</para>
 				/// </summary>
 				public static PROPERTYKEY AlbumID
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 100);
+					=> new(FMTID.FMTID_MUSIC, 100);
 
 				/// <summary>
 				/// <para>Name:     System.Music.AlbumTitle -- PKEY_Music_AlbumTitle</para>
@@ -4781,7 +4781,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 4 (PIDSI_MUSIC_ALBUM)</para>
 				/// </summary>
 				public static PROPERTYKEY AlbumTitle
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 4);
+					=> new(FMTID.FMTID_MUSIC, 4);
 
 				/// <summary>
 				/// <para>Name:     System.Music.Artist -- PKEY_Music_Artist</para>
@@ -4790,7 +4790,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 2 (PIDSI_MUSIC_ARTIST)</para>
 				/// </summary>
 				public static PROPERTYKEY Artist
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 2);
+					=> new(FMTID.FMTID_MUSIC, 2);
 
 				/// <summary>
 				/// <para>Name:     System.Music.BeatsPerMinute -- PKEY_Music_BeatsPerMinute</para>
@@ -4799,7 +4799,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 35 (PIDSI_MUSIC_BEATS_PER_MINUTE)</para>
 				/// </summary>
 				public static PROPERTYKEY BeatsPerMinute
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 35);
+					=> new(FMTID.FMTID_MUSIC, 35);
 
 				/// <summary>
 				/// <para>Name:     System.Music.Composer -- PKEY_Music_Composer</para>
@@ -4817,7 +4817,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 36 (PIDSI_MUSIC_CONDUCTOR)</para>
 				/// </summary>
 				public static PROPERTYKEY Conductor
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 36);
+					=> new(FMTID.FMTID_MUSIC, 36);
 
 				/// <summary>
 				/// <para>Name:     System.Music.ContentGroupDescription -- PKEY_Music_ContentGroupDescription</para>
@@ -4826,7 +4826,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 33 (PIDSI_MUSIC_CONTENT_GROUP_DESCRIPTION)</para>
 				/// </summary>
 				public static PROPERTYKEY ContentGroupDescription
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 33);
+					=> new(FMTID.FMTID_MUSIC, 33);
 
 				/// <summary>
 				/// <para>Name:     System.Music.DisplayArtist -- PKEY_Music_DisplayArtist</para>
@@ -4847,7 +4847,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 11 (PIDSI_MUSIC_GENRE)</para>
 				/// </summary>
 				public static PROPERTYKEY Genre
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 11);
+					=> new(FMTID.FMTID_MUSIC, 11);
 
 				/// <summary>
 				/// <para>Name:     System.Music.InitialKey -- PKEY_Music_InitialKey</para>
@@ -4856,7 +4856,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 34 (PIDSI_MUSIC_INITIAL_KEY)</para>
 				/// </summary>
 				public static PROPERTYKEY InitialKey
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 34);
+					=> new(FMTID.FMTID_MUSIC, 34);
 
 				/// <summary>
 				/// <para>Name:     System.Music.IsCompilation -- PKEY_Music_IsCompilation</para>
@@ -4874,7 +4874,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 12 (PIDSI_MUSIC_LYRICS)</para>
 				/// </summary>
 				public static PROPERTYKEY Lyrics
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 12);
+					=> new(FMTID.FMTID_MUSIC, 12);
 
 				/// <summary>
 				/// <para>Name:     System.Music.Mood -- PKEY_Music_Mood</para>
@@ -4883,7 +4883,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 39 (PIDSI_MUSIC_MOOD)</para>
 				/// </summary>
 				public static PROPERTYKEY Mood
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 39);
+					=> new(FMTID.FMTID_MUSIC, 39);
 
 				/// <summary>
 				/// <para>Name:     System.Music.PartOfSet -- PKEY_Music_PartOfSet</para>
@@ -4892,7 +4892,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 37 (PIDSI_MUSIC_PART_OF_SET)</para>
 				/// </summary>
 				public static PROPERTYKEY PartOfSet
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 37);
+					=> new(FMTID.FMTID_MUSIC, 37);
 
 				/// <summary>
 				/// <para>Name:     System.Music.Period -- PKEY_Music_Period</para>
@@ -4919,7 +4919,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_MUSIC) {56A3372E-CE9C-11D2-9F0E-006097C686F6}, 7 (PIDSI_MUSIC_TRACK)</para>
 				/// </summary>
 				public static PROPERTYKEY TrackNumber
-					=> new(new Guid("{56A3372E-CE9C-11D2-9F0E-006097C686F6}"), 7);
+					=> new(FMTID.FMTID_MUSIC, 7);
 			}
 
 			/// <summary>Note Properties</summary>
@@ -4954,7 +4954,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 37378</para>
 				/// </summary>
 				public static PROPERTYKEY Aperture
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 37378);
+					=> new(FMTID.FMTID_ImageProperties, 37378);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.ApertureDenominator -- PKEY_Photo_ApertureDenominator</para>
@@ -5012,7 +5012,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 271 (PropertyTagEquipMake)</para>
 				/// </summary>
 				public static PROPERTYKEY CameraManufacturer
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 271);
+					=> new(FMTID.FMTID_ImageProperties, 271);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.CameraModel -- PKEY_Photo_CameraModel</para>
@@ -5021,7 +5021,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 272 (PropertyTagEquipModel)</para>
 				/// </summary>
 				public static PROPERTYKEY CameraModel
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 272);
+					=> new(FMTID.FMTID_ImageProperties, 272);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.CameraSerialNumber -- PKEY_Photo_CameraSerialNumber</para>
@@ -5030,7 +5030,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 273</para>
 				/// </summary>
 				public static PROPERTYKEY CameraSerialNumber
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 273);
+					=> new(FMTID.FMTID_ImageProperties, 273);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.Contrast -- PKEY_Photo_Contrast</para>
@@ -5057,7 +5057,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 36867</para>
 				/// </summary>
 				public static PROPERTYKEY DateTaken
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 36867);
+					=> new(FMTID.FMTID_ImageProperties, 36867);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.DigitalZoom -- PKEY_Photo_DigitalZoom</para>
@@ -5093,7 +5093,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 18248</para>
 				/// </summary>
 				public static PROPERTYKEY Event
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 18248);
+					=> new(FMTID.FMTID_ImageProperties, 18248);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.EXIFVersion -- PKEY_Photo_EXIFVersion</para>
@@ -5111,7 +5111,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 37380</para>
 				/// </summary>
 				public static PROPERTYKEY ExposureBias
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 37380);
+					=> new(FMTID.FMTID_ImageProperties, 37380);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.ExposureBiasDenominator -- PKEY_Photo_ExposureBiasDenominator</para>
@@ -5165,7 +5165,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 34850 (PropertyTagExifExposureProg)</para>
 				/// </summary>
 				public static PROPERTYKEY ExposureProgram
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 34850);
+					=> new(FMTID.FMTID_ImageProperties, 34850);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.ExposureProgramText -- PKEY_Photo_ExposureProgramText</para>
@@ -5183,7 +5183,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 33434</para>
 				/// </summary>
 				public static PROPERTYKEY ExposureTime
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 33434);
+					=> new(FMTID.FMTID_ImageProperties, 33434);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.ExposureTimeDenominator -- PKEY_Photo_ExposureTimeDenominator</para>
@@ -5210,7 +5210,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 37385</para>
 				/// </summary>
 				public static PROPERTYKEY Flash
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 37385);
+					=> new(FMTID.FMTID_ImageProperties, 37385);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.FlashEnergy -- PKEY_Photo_FlashEnergy</para>
@@ -5219,7 +5219,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 41483</para>
 				/// </summary>
 				public static PROPERTYKEY FlashEnergy
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 41483);
+					=> new(FMTID.FMTID_ImageProperties, 41483);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.FlashEnergyDenominator -- PKEY_Photo_FlashEnergyDenominator</para>
@@ -5273,7 +5273,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 33437</para>
 				/// </summary>
 				public static PROPERTYKEY FNumber
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 33437);
+					=> new(FMTID.FMTID_ImageProperties, 33437);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.FNumberDenominator -- PKEY_Photo_FNumberDenominator</para>
@@ -5300,7 +5300,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 37386</para>
 				/// </summary>
 				public static PROPERTYKEY FocalLength
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 37386);
+					=> new(FMTID.FMTID_ImageProperties, 37386);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.FocalLengthDenominator -- PKEY_Photo_FocalLengthDenominator</para>
@@ -5429,7 +5429,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 34855</para>
 				/// </summary>
 				public static PROPERTYKEY ISOSpeed
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 34855);
+					=> new(FMTID.FMTID_ImageProperties, 34855);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.LensManufacturer -- PKEY_Photo_LensManufacturer</para>
@@ -5456,7 +5456,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 37384</para>
 				/// </summary>
 				public static PROPERTYKEY LightSource
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 37384);
+					=> new(FMTID.FMTID_ImageProperties, 37384);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.MakerNote -- PKEY_Photo_MakerNote</para>
@@ -5510,7 +5510,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 37383</para>
 				/// </summary>
 				public static PROPERTYKEY MeteringMode
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 37383);
+					=> new(FMTID.FMTID_ImageProperties, 37383);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.MeteringModeText -- PKEY_Photo_MeteringModeText</para>
@@ -5528,7 +5528,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 274 (PropertyTagOrientation)</para>
 				/// </summary>
 				public static PROPERTYKEY Orientation
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 274);
+					=> new(FMTID.FMTID_ImageProperties, 274);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.OrientationText -- PKEY_Photo_OrientationText</para>
@@ -5640,7 +5640,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 37377</para>
 				/// </summary>
 				public static PROPERTYKEY ShutterSpeed
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 37377);
+					=> new(FMTID.FMTID_ImageProperties, 37377);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.ShutterSpeedDenominator -- PKEY_Photo_ShutterSpeedDenominator</para>
@@ -5667,7 +5667,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_ImageProperties) {14B81DA1-0135-4D31-96D9-6CBFC9671A99}, 37382</para>
 				/// </summary>
 				public static PROPERTYKEY SubjectDistance
-					=> new(new Guid("{14B81DA1-0135-4D31-96D9-6CBFC9671A99}"), 37382);
+					=> new(FMTID.FMTID_ImageProperties, 37382);
 
 				/// <summary>
 				/// <para>Name:     System.Photo.SubjectDistanceDenominator -- PKEY_Photo_SubjectDistanceDenominator</para>
@@ -6049,7 +6049,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_WebView) {F2275480-F782-4291-BD94-F13693513AEC}, 0 (PID_DISPLAY_PROPERTIES)</para>
 				/// </summary>
 				public static PROPERTYKEY XPDetailsPanel
-					=> new(new Guid("{F2275480-F782-4291-BD94-F13693513AEC}"), 0);
+					=> new(FMTID.FMTID_WebView, 0);
 			}
 
 			/// <summary>RecordedTV Properties</summary>
@@ -6253,7 +6253,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_Storage) {B725F130-47EF-101A-A5F1-02608C9EEBAC}, 19 (PID_STG_CONTENTS)</para>
 				/// </summary>
 				public static PROPERTYKEY Contents
-					=> new(new Guid("{B725F130-47EF-101A-A5F1-02608C9EEBAC}"), 19);
+					=> new(FMTID.FMTID_Storage, 19);
 
 				/// <summary>
 				/// <para>Name:     System.Search.EntryID -- PKEY_Search_EntryID</para>
@@ -6265,7 +6265,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_Query) {49691C90-7E17-101A-A91C-08002B2ECDA9}, 5 (PROPID_QUERY_WORKID)</para>
 				/// </summary>
 				public static PROPERTYKEY EntryID
-					=> new(new Guid("{49691C90-7E17-101A-A91C-08002B2ECDA9}"), 5);
+					=> new(FMTID.FMTID_Query, 5);
 
 				/// <summary>
 				/// <para>Name:     System.Search.ExtendedProperties -- PKEY_Search_ExtendedProperties</para>
@@ -6298,7 +6298,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_Query) {49691C90-7E17-101A-A91C-08002B2ECDA9}, 4 (PROPID_QUERY_HITCOUNT)</para>
 				/// </summary>
 				public static PROPERTYKEY HitCount
-					=> new(new Guid("{49691C90-7E17-101A-A91C-08002B2ECDA9}"), 4);
+					=> new(FMTID.FMTID_Query, 4);
 
 				/// <summary>
 				/// <para>Name:     System.Search.IsClosedDirectory -- PKEY_Search_IsClosedDirectory</para>
@@ -6352,7 +6352,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_Query) {49691C90-7E17-101A-A91C-08002B2ECDA9}, 3 (PROPID_QUERY_RANK)</para>
 				/// </summary>
 				public static PROPERTYKEY Rank
-					=> new(new Guid("{49691C90-7E17-101A-A91C-08002B2ECDA9}"), 3);
+					=> new(FMTID.FMTID_Query, 3);
 
 				/// <summary>
 				/// <para>Name:     System.Search.Store -- PKEY_Search_Store</para>
@@ -6605,7 +6605,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 10 (PIDVSI_COMPRESSION)</para>
 				/// </summary>
 				public static PROPERTYKEY Compression
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 10);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 10);
 
 				/// <summary>
 				/// <para>Name:     System.Video.Director -- PKEY_Video_Director</para>
@@ -6623,7 +6623,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 8 (PIDVSI_DATA_RATE)</para>
 				/// </summary>
 				public static PROPERTYKEY EncodingBitrate
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 8);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 8);
 
 				/// <summary>
 				/// <para>Name:     System.Video.FourCC -- PKEY_Video_FourCC</para>
@@ -6632,7 +6632,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 44</para>
 				/// </summary>
 				public static PROPERTYKEY FourCC
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 44);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 44);
 
 				/// <summary>
 				/// <para>Name:     System.Video.FrameHeight -- PKEY_Video_FrameHeight</para>
@@ -6641,7 +6641,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 4</para>
 				/// </summary>
 				public static PROPERTYKEY FrameHeight
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 4);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 4);
 
 				/// <summary>
 				/// <para>Name:     System.Video.FrameRate -- PKEY_Video_FrameRate</para>
@@ -6650,7 +6650,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 6 (PIDVSI_FRAME_RATE)</para>
 				/// </summary>
 				public static PROPERTYKEY FrameRate
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 6);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 6);
 
 				/// <summary>
 				/// <para>Name:     System.Video.FrameWidth -- PKEY_Video_FrameWidth</para>
@@ -6659,7 +6659,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 3</para>
 				/// </summary>
 				public static PROPERTYKEY FrameWidth
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 3);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 3);
 
 				/// <summary>
 				/// <para>Name:     System.Video.HorizontalAspectRatio -- PKEY_Video_HorizontalAspectRatio</para>
@@ -6668,7 +6668,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 42</para>
 				/// </summary>
 				public static PROPERTYKEY HorizontalAspectRatio
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 42);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 42);
 
 				/// <summary>
 				/// <para>Name:     System.Video.SampleSize -- PKEY_Video_SampleSize</para>
@@ -6677,7 +6677,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 9 (PIDVSI_SAMPLE_SIZE)</para>
 				/// </summary>
 				public static PROPERTYKEY SampleSize
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 9);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 9);
 
 				/// <summary>
 				/// <para>Name:     System.Video.StreamName -- PKEY_Video_StreamName</para>
@@ -6686,7 +6686,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 2 (PIDVSI_STREAM_NAME)</para>
 				/// </summary>
 				public static PROPERTYKEY StreamName
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 2);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 2);
 
 				/// <summary>
 				/// <para>Name:     System.Video.StreamNumber -- PKEY_Video_StreamNumber</para>
@@ -6695,7 +6695,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 11 (PIDVSI_STREAM_NUMBER)</para>
 				/// </summary>
 				public static PROPERTYKEY StreamNumber
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 11);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 11);
 
 				/// <summary>
 				/// <para>Name:     System.Video.TotalBitrate -- PKEY_Video_TotalBitrate</para>
@@ -6704,7 +6704,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 43 (PIDVSI_TOTAL_BITRATE)</para>
 				/// </summary>
 				public static PROPERTYKEY TotalBitrate
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 43);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 43);
 
 				/// <summary>
 				/// <para>Name:     System.Video.TranscodedForSync -- PKEY_Video_TranscodedForSync</para>
@@ -6713,7 +6713,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 46</para>
 				/// </summary>
 				public static PROPERTYKEY TranscodedForSync
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 46);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 46);
 
 				/// <summary>
 				/// <para>Name:     System.Video.VerticalAspectRatio -- PKEY_Video_VerticalAspectRatio</para>
@@ -6722,7 +6722,7 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_VideoSummaryInformation) {64440491-4C8B-11D1-8B70-080036B11A03}, 45</para>
 				/// </summary>
 				public static PROPERTYKEY VerticalAspectRatio
-					=> new(new Guid("{64440491-4C8B-11D1-8B70-080036B11A03}"), 45);
+					=> new(FMTID.FMTID_VideoSummaryInformation, 45);
 			}
 
 			/// <summary>Volume Properties</summary>
@@ -6737,7 +6737,7 @@ public static partial class Ole32
 				/// </para>
 				/// </summary>
 				public static PROPERTYKEY FileSystem
-					=> new(new Guid("{9B174B35-40FF-11D2-A27E-00C04FC30871}"), 4);
+					=> new(FMTID.FMTID_Volume, 4);
 
 				/// <summary>
 				/// <para>Name:     System.Volume.IsMappedDrive -- PKEY_Volume_IsMappedDrive</para>
@@ -6755,8 +6755,85 @@ public static partial class Ole32
 				/// <para>FormatID: (FMTID_Volume) {9B174B35-40FF-11D2-A27E-00C04FC30871}, 10 (Filesystem Volume Properties)</para>
 				/// </summary>
 				public static PROPERTYKEY IsRoot
-					=> new(new Guid("{9B174B35-40FF-11D2-A27E-00C04FC30871}"), 10);
+					=> new(FMTID.FMTID_Volume, 10);
 			}
 		}
+	}
+
+	/// <summary>
+	/// A unique Globally Unique Identifier (GUID) that categorizes and identifies specific property sets, allowing systems to understand how
+	/// to interpret associated properties (like Author, Keywords) within files or structured storage, often combined with a Property ID
+	/// (PID) for a unique property handle, with common examples being FMTID_SummaryInformation for file metadata.
+	/// </summary>
+	public static class FMTID
+	{
+		/// <summary></summary>
+		public static readonly Guid FMTID_AudioSummaryInformation = new(0x64440490, 0x4C8B, 0x11D1, 0x8B, 0x70, 0x08, 0x00, 0x36, 0xB1, 0x1A, 0x03);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_Briefcase = new(0x328d8b21, 0x7729, 0x4bfc, 0x95, 0x4c, 0x90, 0x2b, 0x32, 0x9d, 0x56, 0xb0);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_CustomImageProperties = new(0x7ecd8b0e, 0xc136, 0x4a9b, 0x94, 0x11, 0x4e, 0xbd, 0x66, 0x73, 0xcc, 0xc3);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_DiscardableInformation = new(0xDCD7B7DE, 0xDEE7, 0x4EBD, 0xAA, 0x2D, 0xEE, 0xCF, 0x20, 0xCE, 0xAA, 0x0E);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_Displaced = new(0x9b174b33, 0x40ff, 0x11d2, 0xa2, 0x7e, 0x0, 0xc0, 0x4f, 0xc3, 0x8, 0x71);
+
+		/// <summary>The Document Summary Information Property Set</summary>
+		public static readonly Guid FMTID_DocSummaryInformation = new(0xd5cdd502, 0x2e9c, 0x101b, 0x93, 0x97, 0x08, 0x00, 0x2b, 0x2c, 0xf9, 0xae);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_DRM = new(0xaeac19e4, 0x89ae, 0x4508, 0xb9, 0xb7, 0xbb, 0x86, 0x7a, 0xbe, 0xe2, 0xed);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_ImageProperties = new(0x14b81da1, 0x0135, 0x4d31, 0x96, 0xd9, 0x6c, 0xbf, 0xc9, 0x67, 0x1a, 0x99);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_ImageSummaryInformation = new(0x6444048f, 0x4c8b, 0x11d1, 0x8b, 0x70, 0x8, 0x00, 0x36, 0xb1, 0x1a, 0x03);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_InternetSite = new(0x000214A1, 0, 0, 0xC0,0,0,0,0,0,0,0x46);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_Intshcut = new(0x000214A0, 0, 0, 0xC0,0,0,0,0,0,0,0x46);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_LibraryProperties = new(0x5d76b67f, 0x9b3d, 0x44bb, 0xb6, 0xae, 0x25, 0xda, 0x4f, 0x63, 0x8a, 0x67);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_MediaFileSummaryInformation = new(0x64440492, 0x4c8b, 0x11d1, 0x8b, 0x70, 0x08, 0x00, 0x36, 0xb1, 0x1a, 0x03);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_Misc = new(0x9b174b34, 0x40ff, 0x11d2, 0xa2, 0x7e, 0x0, 0xc0, 0x4f, 0xc3, 0x8, 0x71);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_MUSIC = new(0x56a3372e, 0xce9c, 0x11d2, 0x9f, 0xe, 0x0, 0x60, 0x97, 0xc6, 0x86, 0xf6);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_Query = new(0x49691c90,0x7e17,0x101a, 0xa9,0x1c,0x08,0x00,0x2b,0x2e,0xcd,0xa9);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_ShellDetails = new(0x28636aa6, 0x953d, 0x11d2, 0xb5, 0xd6, 0x0, 0xc0, 0x4f, 0xd9, 0x18, 0xd0);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_Storage = new(0xb725f130, 0x47ef, 0x101a, 0xa5, 0xf1, 0x02, 0x60, 0x8c, 0x9e, 0xeb, 0xac);
+
+		/// <summary>The Summary Information Property Set</summary>
+		public static readonly Guid FMTID_SummaryInformation = new(0xf29f85e0, 0x4ff9, 0x1068, 0xab, 0x91, 0x08, 0x00, 0x2b, 0x27, 0xb3, 0xd9);
+		
+		/// <summary>The User-defined Property Set</summary>
+		public static readonly Guid FMTID_UserDefinedProperties = new(0xD5CDD505, 0x2E9C, 0x101B, 0x93, 0x97, 0x08, 0x00, 0x2B, 0x2C, 0xF9, 0xAE);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_VideoSummaryInformation = new(0x64440491, 0x4C8B, 0x11D1, 0x8B, 0x70, 0x08, 0x00, 0x36, 0xB1, 0x1A, 0x03);
+		
+		/// <summary></summary>
+		public static readonly Guid FMTID_Volume = new(0x9b174b35, 0x40ff, 0x11d2, 0xa2, 0x7e, 0x0, 0xc0, 0x4f, 0xc3, 0x8, 0x71);
+
+		/// <summary></summary>
+		public static readonly Guid FMTID_WebView = new(0xf2275480, 0xf782, 0x4291, 0xbd, 0x94, 0xf1, 0x36, 0x93, 0x51, 0x3a, 0xec);
 	}
 }
