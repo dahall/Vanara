@@ -22,7 +22,7 @@ public class ShellDataTable : DataTable
 	private readonly FolderItemFilter itemFilter;
 	private readonly ShellFolder? parent;
 	private DataColumn[]? colsToGet;
-	private List<DataColumn> defCols = new();
+	private readonly List<DataColumn> defCols = [];
 	private IEnumerable<PIDL>? items;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellDataTable"/> class with a list of shell items.</summary>
@@ -30,7 +30,7 @@ public class ShellDataTable : DataTable
 	public ShellDataTable(IEnumerable<ShellItem> items) : base()
 	{
 		BuildColumns(ShellFolder.Desktop);
-		this.items = items.Select(i => i.PIDL).ToArray();
+		this.items = [.. items.Select(i => i.PIDL)];
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellDataTable"/> class with the items from a shell folder.</summary>
@@ -82,7 +82,7 @@ public class ShellDataTable : DataTable
 	/// <param name="cancellationToken">The cancellation token.</param>
 	public async Task PopulateTableAsync(IEnumerable<string> columns, CancellationToken cancellationToken)
 	{
-		DataColumn[] columnsToGet = columns.Where(n => n != colId).Select(n => Columns[n]).WhereNotNull().ToArray();
+		DataColumn[] columnsToGet = [.. columns.Where(n => n != colId).Select(n => Columns[n]).WhereNotNull()];
 		await PopulateTableAsync(columnsToGet, cancellationToken);
 	}
 
@@ -91,7 +91,7 @@ public class ShellDataTable : DataTable
 	/// <param name="cancellationToken">The cancellation token.</param>
 	public async Task PopulateTableAsync(IEnumerable<PROPERTYKEY> columns, CancellationToken cancellationToken)
 	{
-		var columnsToGet = columns.Join(Columns.Cast<DataColumn>(), k => k, c => GetColumnPropertyKey(c), (k, c) => c).ToArray();
+		DataColumn[] columnsToGet = [.. columns.Join(Columns.Cast<DataColumn>(), k => k, GetColumnPropertyKey, (k, c) => c)];
 		await PopulateTableAsync(columnsToGet, cancellationToken);
 	}
 
@@ -101,7 +101,7 @@ public class ShellDataTable : DataTable
 	[MemberNotNull(nameof(colsToGet))]
 	public async Task PopulateTableAsync(IEnumerable<DataColumn> columns, CancellationToken cancellationToken)
 	{
-		var columnsToGet = columns.ToArray();
+		DataColumn[] columnsToGet = [.. columns];
 		if (columnsToGet.Except(Columns.Cast<DataColumn>()).Any())
 			throw new ArgumentException("Columns specified that are not in table.", nameof(columns));
 		colsToGet = columnsToGet;
@@ -119,26 +119,23 @@ public class ShellDataTable : DataTable
 		if (Rows.Count > 0)
 			Rows.Clear();
 
-		var f2 = parent?.IShellFolder as IShellFolder2;
 		if (items is not null)
 		{
-			var slowFetchItems = new List<Task>();
-			var cInfo = columnsToGet.ToLookup(c => IsColumnSlow(c), c => ((PROPERTYKEY)c.ExtendedProperties[extPropKey]!, c));
-			var fastCols = cInfo[false].ToList();
-			var slowCols = cInfo[true].ToList();
-			foreach (var i in items)
+			List<Task> slowFetchItems = [];
+			var cInfo = columnsToGet.ToLookup(IsColumnSlow, c => ((PROPERTYKEY)c.ExtendedProperties[extPropKey]!, c));
+			foreach (PIDL i in items)
 			{
 				if (cancellationToken.IsCancellationRequested) break;
 
 				// Add row with fast properties
-				var row = NewRow();
+				DataRow row = NewRow();
 				row[colId] = i.GetBytes();
-				foreach (var (pk, col) in fastCols)
+				foreach ((PROPERTYKEY pk, DataColumn? col) in cInfo[false])
 					row[col] = GetProp(pk, i) ?? DBNull.Value;
 				Rows.Add(row);
 				// If there are slow props, spawn thread to get them
-				if (slowCols.Count > 0)
-					slowFetchItems.Add(GetSlowProps(i, row, slowCols, cancellationToken));
+				if (cInfo[true].Any())
+					slowFetchItems.Add(GetSlowProps(i, row, cInfo[true], cancellationToken));
 			}
 			AllFastRowsAdded?.Invoke(this, EventArgs.Empty);
 			AcceptChanges();
@@ -152,7 +149,7 @@ public class ShellDataTable : DataTable
 			object? o = null;
 			try
 			{
-				if (f2 is null)
+				if (parent?.IShellFolder is not IShellFolder2 f2)
 				{
 					using var si = new ShellItem(i);
 					o = si.Properties[pk];
@@ -171,19 +168,16 @@ public class ShellDataTable : DataTable
 			};
 		}
 
-		async Task GetSlowProps(PIDL i, DataRow row, IEnumerable<(PROPERTYKEY pk, DataColumn col)> props, CancellationToken cancellationToken)
+		async Task GetSlowProps(PIDL i, DataRow row, IEnumerable<(PROPERTYKEY pk, DataColumn col)> props, CancellationToken cancellationToken) => await TaskAgg.Run(() =>
 		{
-			await TaskAgg.Run(() =>
+			row.BeginEdit();
+			foreach ((PROPERTYKEY pk, DataColumn? col) in props)
 			{
-				row.BeginEdit();
-				foreach (var (pk, col) in props)
-				{
-					if (cancellationToken.IsCancellationRequested) break;
-					row[col] = GetProp(pk, i) ?? DBNull.Value;
-				}
-				row.AcceptChanges();
-			}, cancellationToken);
-		}
+				if (cancellationToken.IsCancellationRequested) break;
+				row[col] = GetProp(pk, i) ?? DBNull.Value;
+			}
+			row.AcceptChanges();
+		}, cancellationToken);
 	}
 
 	/// <summary>Refreshes the data table. If columns have not been previously provided, the default columns are used.</summary>
@@ -198,14 +192,14 @@ public class ShellDataTable : DataTable
 		{
 			for (uint i = 0; true; i++)
 			{
-				var hr = f2.GetDefaultColumnState(i, out var cState);
+				HRESULT hr = f2.GetDefaultColumnState(i, out SHCOLSTATE cState);
 				if (hr == HRESULT.TYPE_E_OUTOFBOUNDS)
 					break;
 				if (hr.Failed || cState.IsFlagSet(SHCOLSTATE.SHCOLSTATE_HIDDEN))
 					continue;
-				f2.MapColumnToSCID(i, out var pk);
-				PropertyDescription.TryCreate(pk, out var pd);
-				f2.GetDetailsOf(PIDL.Null, i, out var cDet);
+				f2.MapColumnToSCID(i, out PROPERTYKEY pk);
+				PropertyDescription.TryCreate(pk, out PropertyDescription? pd);
+				f2.GetDetailsOf(PIDL.Null, i, out SHELLDETAILS cDet);
 				var c = new DataColumn(pd?.ToString() ?? cDet.str.ToString(), GetPropType(pd) ?? TypeFromState(cState)) { Caption = pd?.DisplayName, AllowDBNull = true };
 				SetExtProp(c, pk, cDet.fmt, cState);
 				Columns.Add(c);
@@ -217,7 +211,7 @@ public class ShellDataTable : DataTable
 
 		static Type? GetPropType(PropertyDescription? pd)
 		{
-			var t = pd?.PropertyType;
+			Type? t = pd?.PropertyType;
 			if (Equals(t, typeof(FILETIME)))
 				t = typeof(DateTime);
 			return t;

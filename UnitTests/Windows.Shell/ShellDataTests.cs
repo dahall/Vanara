@@ -52,8 +52,7 @@ public class ShellDataTests
 	{
 		// Create empty table
 		var timer = Stopwatch.StartNew();
-		var items = new[] { ShellItem.Open(TestCaseSources.SmallFile), ShellItem.Open(TestCaseSources.TempDir), ShellItem.Open(TestCaseSources.BmpFile), ShellItem.Open(TestCaseSources.DummyFile), ShellItem.Open(TestCaseSources.LargeFile) };
-		var shData = new ShellDataTable(items);
+		var shData = new ShellDataTable(Array.ConvertAll([TestCaseSources.SmallFile, TestCaseSources.TempDir, TestCaseSources.BmpFile, TestCaseSources.DummyFile, TestCaseSources.LargeFile], ShellItem.Open));
 		TestContext.WriteLine($"{timer.ElapsedMilliseconds}\t** Init complete **");
 
 		// Get list of default and slow columns to fetch
