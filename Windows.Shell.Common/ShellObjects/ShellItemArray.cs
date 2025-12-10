@@ -51,6 +51,9 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 	/// <param name="pidls">The IDList items to add to this array.</param>
 	private ShellItemArray(IntPtr[] pidls) => SHCreateShellItemArrayFromIDLists((uint)pidls.Length, pidls, out array).ThrowIfFailed();
 
+	/// <summary>Finalizes an instance of the <see cref="ShellItemArray"/> class.</summary>
+	~ShellItemArray() => Dispose(false);
+
 	/// <summary>Gets the number of elements contained in the <see cref="ICollection{ShellItem}"/>.</summary>
 	public int Count => (int)(array?.GetCount() ?? 0);
 
@@ -96,8 +99,23 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 		Array.Copy(a, 0, array, arrayIndex, a.Length);
 	}
 
-	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public virtual void Dispose() => GC.SuppressFinalize(this);
+	/// <inheritdoc/>
+	void IDisposable.Dispose()
+	{
+		Dispose(true);
+		GC.SuppressFinalize(this);
+	}
+
+	/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
+	/// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+	public virtual void Dispose(bool disposing)
+	{
+		if (array is not null)
+		{
+			Marshal.FinalReleaseComObject(array);
+			array = null;
+		}
+	}
 
 	/// <summary>Returns an enumerator that iterates through the collection.</summary>
 	/// <returns>A <see cref="IEnumerator{ShellItem}"/> that can be used to iterate through the collection.</returns>

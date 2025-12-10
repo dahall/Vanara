@@ -101,8 +101,8 @@ public class ShellUtilTests
 		}
 	}
 
-	public static readonly int[] sizes = { 16, 32, 48, 96, 256 };
-	public static readonly SIIGBF[] flagOp = { SIIGBF.SIIGBF_INCACHEONLY, 0 };
+	public static readonly int[] sizes = [16, 32, 48, 96, 256];
+	public static readonly SIIGBF[] flagOp = [SIIGBF.SIIGBF_INCACHEONLY, 0];
 
 	[Test]
 	public void LoadImageFromImageFactoryTest()

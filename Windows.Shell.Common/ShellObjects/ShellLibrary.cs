@@ -192,6 +192,9 @@ public class ShellLibrary : ShellFolder
 		/// <param name="shellItemArray">The shell item array.</param>
 		internal ShellLibraryFolders(IShellLibrary lib, IShellItemArray? shellItemArray) : base(shellItemArray) => this.lib = lib;
 
+		/// <summary>Finalizes an instance of the <see cref="ShellLibraryFolders"/> class.</summary>
+		~ShellLibraryFolders() => Dispose(false);
+
 		/// <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</summary>
 		bool ICollection<ShellItem>.IsReadOnly => false;
 
@@ -205,10 +208,14 @@ public class ShellLibrary : ShellFolder
 		}
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-		public override void Dispose()
+		public override void Dispose(bool disposing)
 		{
-			GC.SuppressFinalize(this);
-			base.Dispose();
+			if (lib is not null)
+			{
+				Marshal.FinalReleaseComObject(lib);
+				lib = null!;
+			}
+			base.Dispose(disposing);
 		}
 
 		/// <summary>Removes the specified location.</summary>
