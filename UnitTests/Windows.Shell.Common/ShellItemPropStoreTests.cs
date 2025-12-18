@@ -80,16 +80,22 @@ public class ShellItemPropStoreTests
 	public void WritableTest()
 	{
 		// Try accessing a text file's writable properties and assert a failure.
-		using (var i = new ShellItem(TestCaseSources.LogFile))
+		using (ShellItem i = new(TestCaseSources.LogFile))
 		{
 			i.Properties.ReadOnly = false;
 			Assert.That(() => i.Properties.TryGetValue(PROPERTYKEY.System.Size, out var val), Throws.TypeOf<InvalidOperationException>());
 		}
 
 		// Try accessing a Word file's writable properties and assert successs.
-		using var w = new ShellItem(testDoc);
-		w.Properties.ReadOnly = false;
-		Assert.That(w.Properties.TryGetValue(PROPERTYKEY.System.Author, out _), Is.True);
+		using (ShellItem w = new(testDoc))
+		{
+			w.Properties.ReadOnly = false;
+			Assert.That(w.Properties.TryGetValue(PROPERTYKEY.System.Author, out string[]? value), Is.True);
+			TestContext.WriteLine($"Author={string.Join(";", value ?? [])}");
+			//string[] value = ["TestAuthor"];
+			Assert.That(() => w.Properties[PROPERTYKEY.System.Author] = value, Throws.Nothing);
+			Assert.That(w.Properties.Commit, Throws.Nothing);
+		}
 	}
 
 	[Test]

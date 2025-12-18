@@ -169,25 +169,41 @@ public class ShellFileOperationsTests
 	public void SetPropsTest2()
 	{
 		const string fn = "test.docx";
-		var fp = Path.Combine(ShellFolder.Desktop.FileSystemPath!, fn);
-		var authors = new[] { "David" };
-		try
+		var tci = TestContext.Out;
+		ShellItem? destItem = null;
+		AutoResetEvent evt = new(false);
+		using (ShellFileOperations op = new() { Options = ShellFileOperations.OperationFlags.NoUI })
 		{
-			using (ShellItemPropertyUpdates p = new() { { PROPERTYKEY.System.Author, authors } })
-			using (ShellFileOperations op = new())
-			{
-				op.PostNewItem += HandleEvent;
-				op.QueueNewItemOperation(ShellFolder.Desktop, fn, template: Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Custom Office Templates\blank.dotx"));
-				op.QueueApplyPropertiesOperation(new ShellItem(fp, true), p);
-				op.PerformOperations();
-			}
-			Assert.That(new ShellItem(fp).Properties[PROPERTYKEY.System.Author], Is.EquivalentTo(authors));
+			op.PostNewItem += HandleEvent;
+			op.FinishOperations += FinishEvent;
+			op.QueueNewItemOperation(ShellFolder.Desktop, fn, template: Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Custom Office Templates\blank.dotx"));
+			op.PerformOperations();
 		}
-		finally { File.Delete(fp); }
+		evt.WaitOne();
+		Assert.That(destItem, Is.Not.Null);
+		evt.Reset();
 
-		static void HandleEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs args)
+		var authors = new string[] { "David" };
+		ShellItemPropertyUpdates p = new() { { PROPERTYKEY.System.Author, authors } };
+		using (ShellFileOperations op = new() { Options = ShellFileOperations.OperationFlags.NoUI })
 		{
-			Debug.WriteLine(args);
+			op.PostNewItem += HandleEvent;
+			op.FinishOperations += FinishEvent;
+			op.QueueApplyPropertiesOperation(destItem!, p);
+			op.QueueDeleteOperation(destItem!);
+			op.PerformOperations();
+		}
+
+		void FinishEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs e)
+		{
+			tci.WriteLine("Finished operations.");
+			evt.Set();
+		}
+		void HandleEvent(object? sender, ShellFileOperations.ShellFileOpEventArgs args)
+		{
+			if (args.Flags.IsFlagSet(ShellFileOperations.TransferFlags.CopyLocalizedName))
+				destItem = args.DestItem;
+			tci.WriteLine($"{args.Flags} - {args.SourceItem}=>{args.DestItem} = {args.Result}");
 			Assert.That(args.Result.Succeeded, Is.True);
 		}
 	}

@@ -156,7 +156,7 @@ public class ShellItemTests
 	[Test]
 	public void GetPropTest()
 	{
-		using (var i = new ShellItem(testDoc))
+		using (ShellItem i = new(testDoc))
 		{
 			Assert.That(i.Properties.Count, Is.GreaterThan(0));
 			Assert.That(i.Properties[PROPERTYKEY.System.Author], Has.Member("TestAuthor"));
@@ -175,8 +175,10 @@ public class ShellItemTests
 			Assert.That(() => i.Properties.GetProperty<int>(PROPERTYKEY.System.ApplicationName), Throws.Exception);
 		}
 
+		System.Threading.Thread.Sleep(500);
+
 		// Test to ensure file handle was released
-		Assert.That(() => { using var fs = new FileStream(testDoc, FileMode.Open, FileAccess.Read, FileShare.None); fs.Close(); }, Throws.Nothing);
+		Assert.That(() => { using FileStream fs = new(testDoc, FileMode.Open, FileAccess.Read, FileShare.None); fs.Close(); }, Throws.Nothing);
 	}
 
 	[Test]

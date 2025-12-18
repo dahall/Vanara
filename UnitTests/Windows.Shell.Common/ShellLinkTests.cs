@@ -12,15 +12,18 @@ public class ShellLinkTests
 	[Test]
 	public void UnsavedLinkTest()
 	{
-		using var lnk = new ShellLink(TestCaseSources.WordDoc, "/p", TestCaseSources.TempDir, "Test description");
+		using ShellLink lnk = new(TestCaseSources.WordDoc, "/p", TestCaseSources.TempDir, "Test description");
 		lnk.Properties.ReadOnly = false;
 		lnk.Title = "Test title";
 		lnk.HotKey = MakeHotKey(VK.VK_T, HOTKEYF.HOTKEYF_CONTROL);
 		lnk.RunAsAdministrator = false;
 		lnk.IconLocation = new IconLocation(TestCaseSources.ResourceFile, -107);
 		lnk.ShowState = PInvoke.ShowWindowCommand.SW_SHOWMINIMIZED;
+		lnk.Properties["System.Author"] = new string[] { "TestAuthor" };
+		lnk.Properties["System.Title"] = null;
+		lnk.Properties.Commit();
 
-		using var fn = new TempFile("lnk", null);
+		using TempFile fn = new("lnk", null);
 		lnk.WriteValues(false);
 		lnk.SaveAs(fn.FullName);
 		Assert.That(File.Exists(fn.FullName));
@@ -32,7 +35,7 @@ public class ShellLinkTests
 	{
 		const string lnkPath = @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Word.lnk";
 		const string targetPath = @"C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE";
-		using var lnk = new ShellLink(lnkPath);
+		using ShellLink lnk = new(lnkPath);
 		StringAssert.AreEqualIgnoringCase(targetPath, lnk.TargetPath);
 	}
 
