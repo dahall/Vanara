@@ -2448,8 +2448,11 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shgetpropertystorefromidlist SHSTDAPI
 	// SHGetPropertyStoreFromIDList( PCIDLIST_ABSOLUTE pidl, GETPROPERTYSTOREFLAGS flags, REFIID riid, void **ppv );
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "2a3c3c80-1bfc-4da0-ba6e-ac9e9a5c3e5b")]
-	public static TIntf? SHGetPropertyStoreFromIDList<TIntf>(PIDL pidl, GETPROPERTYSTOREFLAGS flags) where TIntf : class =>
-		IidGetObj<TIntf>((in Guid g, out object? o) => SHGetPropertyStoreFromIDList(pidl, flags, g, out o));
+	public static TIntf SHGetPropertyStoreFromIDList<TIntf>(PIDL pidl, GETPROPERTYSTOREFLAGS flags) where TIntf : class
+	{
+		SHGetPropertyStoreFromIDList(pidl, flags, out TIntf? o).ThrowIfFailed();
+		return o!;
+	}
 
 	/// <summary>Returns a property store for an item, given a path or parsing name.</summary>
 	/// <param name="pszPath">A pointer to a null-terminated Unicode string that specifies the item path.</param>
