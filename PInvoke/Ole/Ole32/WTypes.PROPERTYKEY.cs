@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -58,6 +59,30 @@ public static partial class Ole32
 			var d = new Dictionary<PROPERTYKEY, string>();
 			AddMembersToIndex(d, typeof(System));
 			return d;
+
+			static void AddMembersToIndex(Dictionary<PROPERTYKEY, string> dict, Type type, int level = 0)
+			{
+				foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Public | BindingFlags.Static).Where(p => p.PropertyType == typeof(PROPERTYKEY)))
+				{
+					Type pType = type;
+					StringBuilder name = new(pi.Name);
+					for (int i = 0; i < level; i++)
+					{
+						name.Insert(0, pType.Name + ".");
+						if (pType.DeclaringType is null)
+							break;
+						pType = pType.DeclaringType;
+					}
+					try
+					{
+						if (pi.GetValue(null, null) is PROPERTYKEY pk)
+							dict.Add(pk, name.ToString());
+					}
+					catch { }
+				}
+				foreach (Type ti in type.GetNestedTypes(BindingFlags.Public))
+					AddMembersToIndex(dict, ti, level + 1);
+			}
 		});
 
 		/// <summary>
@@ -94,6 +119,7 @@ public static partial class Ole32
 		}
 
 		/// <summary>A unique GUID for the property.</summary>
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		public readonly Guid Key => fmtid;
 
 		/// <summary>
@@ -103,25 +129,26 @@ public static partial class Ole32
 		/// </para>
 		/// <para><c>Note</c> Values of 0 and 1 are reserved and should not be used.</para>
 		/// </summary>
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		public readonly uint Id => pid;
 
 		/// <inheritdoc/>
-		public override string ToString() => GetCanonicalName() ?? ReverseLookup(this) ?? $"{Key:B} {Id}";
+		public override readonly string ToString() => GetCanonicalName() ?? ReverseLookup(this) ?? $"{Key:B} {Id}";
 
 		/// <summary>Converts the value to the canonical value, according to the property description.</summary>
 		/// <param name="value">
 		/// On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this function returns
 		/// successfully, contains the canonical value.
 		/// </param>
-		public void CoerceToCanonicalValue(PROPVARIANT value) => PropSys.PSCoerceToCanonicalValue(this, value).ThrowIfFailed();
+		public readonly void CoerceToCanonicalValue(PROPVARIANT value) => PropSys.PSCoerceToCanonicalValue(this, value).ThrowIfFailed();
 
 		/// <inheritdoc/>
-		public override bool Equals(object? obj) => obj is PROPERTYKEY other && Equals(other);
+		public override readonly bool Equals(object? obj) => obj is PROPERTYKEY other && Equals(other);
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(PROPERTYKEY other) => Id == other.Id && Equals(Key, other.Key);
+		public readonly bool Equals(PROPERTYKEY other) => Id == other.Id && Equals(Key, other.Key);
 
 		/// <summary>Implements the equality operator.</summary>
 		/// <param name="pk1">The first key.</param>
@@ -136,7 +163,7 @@ public static partial class Ole32
 		public static bool operator !=(PROPERTYKEY pk1, PROPERTYKEY pk2) => !pk1.Equals(pk2);
 
 		/// <inheritdoc/>
-		public override int GetHashCode() => new { Key, Id }.GetHashCode();
+		public override readonly int GetHashCode() => new { Key, Id }.GetHashCode();
 
 		/// <summary>Compares the current object with another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
@@ -145,7 +172,7 @@ public static partial class Ole32
 		/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal
 		/// to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 		/// </returns>
-		int IComparable<PROPERTYKEY>.CompareTo(PROPERTYKEY other)
+		readonly int IComparable<PROPERTYKEY>.CompareTo(PROPERTYKEY other)
 		{
 			int ret = Key.GetHashCode() - other.Key.GetHashCode();
 			if (ret == 0)
@@ -166,30 +193,6 @@ public static partial class Ole32
 		/// <returns>The string value of the name.</returns>
 		public static string? ReverseLookup(PROPERTYKEY key) => revIndex.Value.TryGetValue(key, out string? ret) ? ret : null;
 
-		private static void AddMembersToIndex(Dictionary<PROPERTYKEY, string> dict, Type type, int level = 0)
-		{
-			foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Public | BindingFlags.Static).Where(p => p.PropertyType == typeof(PROPERTYKEY)))
-			{
-				Type pType = type;
-				StringBuilder name = new(pi.Name);
-				for (int i = 0; i < level; i++)
-				{
-					name.Insert(0, pType.Name + ".");
-					if (pType.DeclaringType is null)
-						break;
-					pType = pType.DeclaringType;
-				}
-				try
-				{
-					if (pi.GetValue(null, null) is PROPERTYKEY pk)
-						dict.Add(pk, name.ToString());
-				}
-				catch { }
-			}
-			foreach (Type ti in type.GetNestedTypes(BindingFlags.Public))
-				AddMembersToIndex(dict, ti, level + 1);
-		}
-
 		/// <summary>Listing of System property key hierarchy.</summary>
 		[PInvokeData("Propkey.h", MSDNShortId = "dd561977")]
 		public static class System
@@ -201,7 +204,7 @@ public static partial class Ole32
 			/// <para>FormatID: (FMTID_SummaryInformation) {F29F85E0-4FF9-1068-AB91-08002B27B3D9}, 17 (PIDSI_THUMBNAIL)</para>
 			/// </summary>
 			public static PROPERTYKEY Thumbnail
-				= new(FMTID.FMTID_SummaryInformation, 17);
+				=> new(FMTID.FMTID_SummaryInformation, 17);
 
 			/// <summary>
 			/// <para>Name:     System.AcquisitionID -- PKEY_AcquisitionID</para>
@@ -6768,72 +6771,72 @@ public static partial class Ole32
 	public static class FMTID
 	{
 		/// <summary></summary>
-		public static readonly Guid FMTID_AudioSummaryInformation = new(0x64440490, 0x4C8B, 0x11D1, 0x8B, 0x70, 0x08, 0x00, 0x36, 0xB1, 0x1A, 0x03);
+		public static Guid FMTID_AudioSummaryInformation => new(0x64440490, 0x4C8B, 0x11D1, 0x8B, 0x70, 0x08, 0x00, 0x36, 0xB1, 0x1A, 0x03);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_Briefcase = new(0x328d8b21, 0x7729, 0x4bfc, 0x95, 0x4c, 0x90, 0x2b, 0x32, 0x9d, 0x56, 0xb0);
+		public static Guid FMTID_Briefcase => new(0x328d8b21, 0x7729, 0x4bfc, 0x95, 0x4c, 0x90, 0x2b, 0x32, 0x9d, 0x56, 0xb0);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_CustomImageProperties = new(0x7ecd8b0e, 0xc136, 0x4a9b, 0x94, 0x11, 0x4e, 0xbd, 0x66, 0x73, 0xcc, 0xc3);
+		public static Guid FMTID_CustomImageProperties => new(0x7ecd8b0e, 0xc136, 0x4a9b, 0x94, 0x11, 0x4e, 0xbd, 0x66, 0x73, 0xcc, 0xc3);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_DiscardableInformation = new(0xDCD7B7DE, 0xDEE7, 0x4EBD, 0xAA, 0x2D, 0xEE, 0xCF, 0x20, 0xCE, 0xAA, 0x0E);
+		public static Guid FMTID_DiscardableInformation => new(0xDCD7B7DE, 0xDEE7, 0x4EBD, 0xAA, 0x2D, 0xEE, 0xCF, 0x20, 0xCE, 0xAA, 0x0E);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_Displaced = new(0x9b174b33, 0x40ff, 0x11d2, 0xa2, 0x7e, 0x0, 0xc0, 0x4f, 0xc3, 0x8, 0x71);
+		public static Guid FMTID_Displaced => new(0x9b174b33, 0x40ff, 0x11d2, 0xa2, 0x7e, 0x0, 0xc0, 0x4f, 0xc3, 0x8, 0x71);
 
 		/// <summary>The Document Summary Information Property Set</summary>
-		public static readonly Guid FMTID_DocSummaryInformation = new(0xd5cdd502, 0x2e9c, 0x101b, 0x93, 0x97, 0x08, 0x00, 0x2b, 0x2c, 0xf9, 0xae);
+		public static Guid FMTID_DocSummaryInformation => new(0xd5cdd502, 0x2e9c, 0x101b, 0x93, 0x97, 0x08, 0x00, 0x2b, 0x2c, 0xf9, 0xae);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_DRM = new(0xaeac19e4, 0x89ae, 0x4508, 0xb9, 0xb7, 0xbb, 0x86, 0x7a, 0xbe, 0xe2, 0xed);
+		public static Guid FMTID_DRM => new(0xaeac19e4, 0x89ae, 0x4508, 0xb9, 0xb7, 0xbb, 0x86, 0x7a, 0xbe, 0xe2, 0xed);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_ImageProperties = new(0x14b81da1, 0x0135, 0x4d31, 0x96, 0xd9, 0x6c, 0xbf, 0xc9, 0x67, 0x1a, 0x99);
+		public static Guid FMTID_ImageProperties => new(0x14b81da1, 0x0135, 0x4d31, 0x96, 0xd9, 0x6c, 0xbf, 0xc9, 0x67, 0x1a, 0x99);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_ImageSummaryInformation = new(0x6444048f, 0x4c8b, 0x11d1, 0x8b, 0x70, 0x8, 0x00, 0x36, 0xb1, 0x1a, 0x03);
+		public static Guid FMTID_ImageSummaryInformation => new(0x6444048f, 0x4c8b, 0x11d1, 0x8b, 0x70, 0x8, 0x00, 0x36, 0xb1, 0x1a, 0x03);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_InternetSite = new(0x000214A1, 0, 0, 0xC0,0,0,0,0,0,0,0x46);
+		public static Guid FMTID_InternetSite => new(0x000214A1, 0, 0, 0xC0,0,0,0,0,0,0,0x46);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_Intshcut = new(0x000214A0, 0, 0, 0xC0,0,0,0,0,0,0,0x46);
+		public static Guid FMTID_Intshcut => new(0x000214A0, 0, 0, 0xC0,0,0,0,0,0,0,0x46);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_LibraryProperties = new(0x5d76b67f, 0x9b3d, 0x44bb, 0xb6, 0xae, 0x25, 0xda, 0x4f, 0x63, 0x8a, 0x67);
+		public static Guid FMTID_LibraryProperties => new(0x5d76b67f, 0x9b3d, 0x44bb, 0xb6, 0xae, 0x25, 0xda, 0x4f, 0x63, 0x8a, 0x67);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_MediaFileSummaryInformation = new(0x64440492, 0x4c8b, 0x11d1, 0x8b, 0x70, 0x08, 0x00, 0x36, 0xb1, 0x1a, 0x03);
+		public static Guid FMTID_MediaFileSummaryInformation => new(0x64440492, 0x4c8b, 0x11d1, 0x8b, 0x70, 0x08, 0x00, 0x36, 0xb1, 0x1a, 0x03);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_Misc = new(0x9b174b34, 0x40ff, 0x11d2, 0xa2, 0x7e, 0x0, 0xc0, 0x4f, 0xc3, 0x8, 0x71);
+		public static Guid FMTID_Misc => new(0x9b174b34, 0x40ff, 0x11d2, 0xa2, 0x7e, 0x0, 0xc0, 0x4f, 0xc3, 0x8, 0x71);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_MUSIC = new(0x56a3372e, 0xce9c, 0x11d2, 0x9f, 0xe, 0x0, 0x60, 0x97, 0xc6, 0x86, 0xf6);
+		public static Guid FMTID_MUSIC => new(0x56a3372e, 0xce9c, 0x11d2, 0x9f, 0xe, 0x0, 0x60, 0x97, 0xc6, 0x86, 0xf6);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_Query = new(0x49691c90,0x7e17,0x101a, 0xa9,0x1c,0x08,0x00,0x2b,0x2e,0xcd,0xa9);
+		public static Guid FMTID_Query => new(0x49691c90,0x7e17,0x101a, 0xa9,0x1c,0x08,0x00,0x2b,0x2e,0xcd,0xa9);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_ShellDetails = new(0x28636aa6, 0x953d, 0x11d2, 0xb5, 0xd6, 0x0, 0xc0, 0x4f, 0xd9, 0x18, 0xd0);
+		public static Guid FMTID_ShellDetails => new(0x28636aa6, 0x953d, 0x11d2, 0xb5, 0xd6, 0x0, 0xc0, 0x4f, 0xd9, 0x18, 0xd0);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_Storage = new(0xb725f130, 0x47ef, 0x101a, 0xa5, 0xf1, 0x02, 0x60, 0x8c, 0x9e, 0xeb, 0xac);
+		public static Guid FMTID_Storage => new(0xb725f130, 0x47ef, 0x101a, 0xa5, 0xf1, 0x02, 0x60, 0x8c, 0x9e, 0xeb, 0xac);
 
 		/// <summary>The Summary Information Property Set</summary>
-		public static readonly Guid FMTID_SummaryInformation = new(0xf29f85e0, 0x4ff9, 0x1068, 0xab, 0x91, 0x08, 0x00, 0x2b, 0x27, 0xb3, 0xd9);
+		public static Guid FMTID_SummaryInformation => new(0xf29f85e0, 0x4ff9, 0x1068, 0xab, 0x91, 0x08, 0x00, 0x2b, 0x27, 0xb3, 0xd9);
 		
 		/// <summary>The User-defined Property Set</summary>
-		public static readonly Guid FMTID_UserDefinedProperties = new(0xD5CDD505, 0x2E9C, 0x101B, 0x93, 0x97, 0x08, 0x00, 0x2B, 0x2C, 0xF9, 0xAE);
+		public static Guid FMTID_UserDefinedProperties => new(0xD5CDD505, 0x2E9C, 0x101B, 0x93, 0x97, 0x08, 0x00, 0x2B, 0x2C, 0xF9, 0xAE);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_VideoSummaryInformation = new(0x64440491, 0x4C8B, 0x11D1, 0x8B, 0x70, 0x08, 0x00, 0x36, 0xB1, 0x1A, 0x03);
+		public static Guid FMTID_VideoSummaryInformation => new(0x64440491, 0x4C8B, 0x11D1, 0x8B, 0x70, 0x08, 0x00, 0x36, 0xB1, 0x1A, 0x03);
 		
 		/// <summary></summary>
-		public static readonly Guid FMTID_Volume = new(0x9b174b35, 0x40ff, 0x11d2, 0xa2, 0x7e, 0x0, 0xc0, 0x4f, 0xc3, 0x8, 0x71);
+		public static Guid FMTID_Volume => new(0x9b174b35, 0x40ff, 0x11d2, 0xa2, 0x7e, 0x0, 0xc0, 0x4f, 0xc3, 0x8, 0x71);
 
 		/// <summary></summary>
-		public static readonly Guid FMTID_WebView = new(0xf2275480, 0xf782, 0x4291, 0xbd, 0x94, 0xf1, 0x36, 0x93, 0x51, 0x3a, 0xec);
+		public static Guid FMTID_WebView => new(0xf2275480, 0xf782, 0x4291, 0xbd, 0x94, 0xf1, 0x36, 0x93, 0x51, 0x3a, 0xec);
 	}
 }
