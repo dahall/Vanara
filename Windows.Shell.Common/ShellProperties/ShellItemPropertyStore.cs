@@ -39,6 +39,9 @@ public sealed class ShellItemPropertyStore : PropertyStore
 	[DefaultValue(null)]
 	public PROPERTYKEY[]? PropertyFilter { get; set; }
 
+	/// <inheritdoc/>
+	protected override bool ReleaseAfterUse => shellItem is not ShellLink;
+
 	/// <summary>Gets the CLSID of a supplied property key.</summary>
 	/// <param name="propertyKey">The property key.</param>
 	/// <returns>The CLSID related to the property key.</returns>
@@ -47,15 +50,17 @@ public sealed class ShellItemPropertyStore : PropertyStore
 	/// <summary>The IPropertyStore instance. This can be null.</summary>
 	protected override IPropertyStore? GetIPropertyStore()
 	{
-		if (shellItem is ShellLink lnk)
-			return (IPropertyStore)lnk.link;
 		try
 		{
+			if (shellItem is ShellLink lnk)
+				return (IPropertyStore)lnk.link;
 			if (Creator != null)
 				return shellItem?.iShellItem2?.GetPropertyStoreWithCreateObject(flags, Creator, typeof(IPropertyStore).GUID);
 			if (PropertyFilter != null && PropertyFilter.Length > 0)
 				return shellItem?.iShellItem2?.GetPropertyStoreForKeys(PropertyFilter, (uint)PropertyFilter.Length, flags, typeof(IPropertyStore).GUID);
-			return shellItem?.iShellItem2?.GetPropertyStore(flags, typeof(IPropertyStore).GUID);
+			if (shellItem?.iShellItem2 is not null)
+				return shellItem?.iShellItem2?.GetPropertyStore(flags, typeof(IPropertyStore).GUID);
+			return shellItem?.iShellItem.BindToHandler<IPropertyStore>(null, Shell32.BHID.BHID_PropertyStore);
 		}
 		catch (COMException comex) when (comex.ErrorCode == HRESULT.E_FAIL)
 		{
