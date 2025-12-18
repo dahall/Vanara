@@ -87,6 +87,7 @@ public enum LinkResolution : uint
 public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<ShellLink>
 {
 	internal IShellLinkW link;
+	private string? tempLnkFile;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellLink"/> class, which acts as a wrapper for a .lnk file.</summary>
 	/// <param name="linkFile">The shortcut file (.lnk) to load.</param>
@@ -113,10 +114,11 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 		Description = description ?? "";
 		WorkingDirectory = workingDirectory ?? "";
 		Arguments = arguments ?? "";
-		Init(ShellUtil.GetShellItemForPath(targetFilename, true));
+
+		SaveAs(tempLnkFile = Path.GetTempFileName());
 	}
 
-	internal ShellLink(IShellItem iItem) => LoadAndResolve(iItem.GetDisplayName(SIGDN.SIGDN_FILESYSPATH), SLR_FLAGS.SLR_NO_UI);
+	internal ShellLink(IShellItem iItem) : base(iItem) => LoadAndResolve(iItem.GetDisplayName(SIGDN.SIGDN_FILESYSPATH), SLR_FLAGS.SLR_NO_UI);
 
 	private ShellLink() => link = new IShellLinkW();
 
@@ -261,7 +263,7 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	public string? Title
 	{
 		get => (string?)Properties[PROPERTYKEY.System.Title];
-		set { Properties[PROPERTYKEY.System.Title] = value; Properties.Commit(); Save(); }
+		set { Properties.Add(PROPERTYKEY.System.Title, value, true); Save(); }
 	}
 
 	/// <summary>Gets/sets the Working Directory for the Link</summary>
@@ -323,6 +325,17 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 		return new ShellLink(destShellLink);
 	}
 
+	/// <inheritdoc/>
+	public override void Dispose(bool disposing)
+	{
+		if (link is not null)
+		{
+			Marshal.FinalReleaseComObject(link);
+			link = null!;
+		}
+		base.Dispose(disposing);
+	}
+
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
@@ -332,6 +345,16 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 		IShellLinkW isl => Equals(isl),
 		_ => base.Equals(obj),
 	};
+
+	/// <summary>Determines whether the specified <see cref="IShellLinkW"/>, is equal to this instance.</summary>
+	/// <param name="other">The <see cref="IShellLinkW"/> to compare with this instance.</param>
+	/// <returns><see langword="true"/> if the specified <see cref="IShellLinkW"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
+	public bool Equals(IShellLinkW? other) => Equals(link, other);
+
+	/// <summary>Determines whether the specified <see cref="ShellLink"/>, is equal to this instance.</summary>
+	/// <param name="other">The <see cref="ShellLink"/> to compare with this instance.</param>
+	/// <returns><see langword="true"/> if the specified <see cref="ShellLink"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
+	public bool Equals(ShellLink? other) => Equals(link, other?.link);
 
 	/// <summary>
 	/// Gets a FileSecurity object that encapsulates the specified type of access control list (ACL) entries for the file described by
@@ -361,6 +384,21 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 		return large ? sfi.LargeIcon : sfi.SmallIcon;
 	}
 
+	/// <summary>Saves the shortcut to the specified file.</summary>
+	/// <param name="linkFile">The shortcut file (.lnk).</param>
+	public void SaveAs(string? linkFile)
+	{
+		using (var pIPF = ComReleaserFactory.Create((IPersistFile)link))
+			pIPF.Item.Save(linkFile, true);
+		if (linkFile != null)
+			InitBaseFromPath(linkFile);
+		if (tempLnkFile is not null && linkFile != tempLnkFile)
+		{
+			try { File.Delete(tempLnkFile); } catch { }
+			tempLnkFile = null;
+		}
+	}
+
 	/// <summary>
 	/// Applies access control list (ACL) entries described by a FileSecurity object to the file described by the current FileInfo object.
 	/// </summary>
@@ -374,46 +412,6 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 	// Path and title should be case insensitive. Shell treats arguments as case sensitive because apps can handle those differently.
 	public override string ToString() =>
 		$"{Title?.ToUpperInvariant() ?? ""} {TargetPath.ToUpperInvariant()} {Arguments}";
-
-	private string GetPath(SLGP value) => GetStringValue((sb, l) => link.GetPath(sb, l, out _, value));
-
-	private void InitBaseFromPath(string linkFilename) => Init(SHCreateItemFromParsingName<IShellItem>(Path.GetFullPath(linkFilename)));
-
-	[MemberNotNull(nameof(link))]
-	private void LoadAndResolve(string linkFile, SLR_FLAGS resolveFlags, HWND hWin = default, ushort timeOut = 0)
-	{
-		var fullPath = Path.GetFullPath(linkFile ?? throw new ArgumentNullException(nameof(linkFile)));
-		if (!File.Exists(fullPath)) throw new FileNotFoundException("Link file not found.", linkFile);
-
-		link = new IShellLinkW();
-
-		if (resolveFlags.IsFlagSet(SLR_FLAGS.SLR_NO_UI) && timeOut != 0)
-			resolveFlags = (SLR_FLAGS)MAKELONG((ushort)resolveFlags, timeOut);
-#if !NETSTANDARD
-		new FileIOPermission(FileIOPermissionAccess.Read, fullPath).Demand();
-#endif
-		((IPersistFile)link).Load(fullPath, (int)STGM.STGM_DIRECT);
-		link.Resolve(hWin, resolveFlags);
-
-		InitBaseFromPath(linkFile);
-	}
-
-	/// <summary>Saves the shortcut to ShortCutFile.</summary>
-	private void Save()
-	{
-		if (string.IsNullOrEmpty(FileSystemPath)) return;
-		SaveAs(File.Exists(FileSystemPath) ? null : FileSystemPath);
-	}
-
-	/// <summary>Saves the shortcut to the specified file.</summary>
-	/// <param name="linkFile">The shortcut file (.lnk).</param>
-	public void SaveAs(string? linkFile)
-	{
-		using (var pIPF = ComReleaserFactory.Create((IPersistFile)link))
-			pIPF.Item.Save(linkFile, true);
-		if (linkFile != null)
-			InitBaseFromPath(linkFile);
-	}
 
 	/// <summary>Determines if two shell links are equal by looking at the title, path and arguments.</summary>
 	/// <param name="left">The left shell link to evaluate.</param>
@@ -438,13 +436,35 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 		return exe?.ToUpperInvariant() + title?.ToUpperInvariant() + args;
 	}
 
-	/// <summary>Determines whether the specified <see cref="IShellLinkW"/>, is equal to this instance.</summary>
-	/// <param name="other">The <see cref="IShellLinkW"/> to compare with this instance.</param>
-	/// <returns><see langword="true"/> if the specified <see cref="IShellLinkW"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public bool Equals(IShellLinkW? other) => Equals(link, other);
+	private string GetPath(SLGP value) => GetStringValue((sb, l) => link.GetPath(sb, l, out _, value));
 
-	/// <summary>Determines whether the specified <see cref="ShellLink"/>, is equal to this instance.</summary>
-	/// <param name="other">The <see cref="ShellLink"/> to compare with this instance.</param>
-	/// <returns><see langword="true"/> if the specified <see cref="ShellLink"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public bool Equals(ShellLink? other) => Equals(link, other?.link);
+	private void InitBaseFromPath(string linkFilename) => Init(SHCreateItemFromParsingName<IShellItem>(Path.GetFullPath(linkFilename)));
+
+	[MemberNotNull(nameof(link))]
+	private void LoadAndResolve(string linkFile, SLR_FLAGS resolveFlags, HWND hWin = default, ushort timeOut = 0)
+	{
+		var fullPath = Path.GetFullPath(linkFile ?? throw new ArgumentNullException(nameof(linkFile)));
+		if (!File.Exists(fullPath)) throw new FileNotFoundException("Link file not found.", linkFile);
+
+		link = new IShellLinkW();
+
+		if (resolveFlags.IsFlagSet(SLR_FLAGS.SLR_NO_UI) && timeOut != 0)
+			resolveFlags = (SLR_FLAGS)MAKELONG((ushort)resolveFlags, timeOut);
+#if !NETSTANDARD
+		new FileIOPermission(FileIOPermissionAccess.Read, fullPath).Demand();
+#endif
+		IPersistFile? ipf = link as IPersistFile;
+		ipf?.Load(fullPath, (int)STGM.STGM_DIRECT);
+		ipf = null;
+		link.Resolve(hWin, resolveFlags);
+
+		InitBaseFromPath(fullPath);
+	}
+
+	/// <summary>Saves the shortcut to ShortCutFile.</summary>
+	private void Save()
+	{
+		if (string.IsNullOrEmpty(FileSystemPath)) return;
+		SaveAs(File.Exists(FileSystemPath) ? null : FileSystemPath);
+	}
 }
