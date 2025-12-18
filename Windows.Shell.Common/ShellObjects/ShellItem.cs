@@ -339,11 +339,6 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	internal static readonly PROPERTYKEY pkItemType = PROPERTYKEY.System.ItemType;
 	internal IShellItem iShellItem;
 	internal IShellItem2? iShellItem2;
-	private ShellItemImages? images;
-	private ShellContextMenu? menu;
-	private PropertyDescriptionList? propDescList;
-	private ShellItemPropertyStore? props;
-	private IQueryInfo? qi;
 	private static readonly Lazy<Dictionary<Type, BHID>> bhidLookup = new(() =>
 		new Dictionary<Type, BHID>
 		{
@@ -392,6 +387,12 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 			// TODO: Win8+ { typeof(IRandomAccessStream), BHID.BHID_RandomAccessStream },
 			//{ typeof(??), BHID.BHID_FilePlaceholder },
 		}, false);
+
+	private ShellItemImages? images;
+	private ShellContextMenu? menu;
+	private PropertyDescriptionList? propDescList;
+	private ShellItemPropertyStore? props;
+	private IQueryInfo? qi;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 	/// <param name="path">The file system path of the item.</param>
@@ -615,10 +616,10 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	}
 
 	/// <inheritdoc/>
-	public void Dispose()
+	void IDisposable.Dispose()
 	{
 		Dispose(true);
-		System.GC.SuppressFinalize(this);
+		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -825,6 +826,13 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// </returns>
 	int IComparable<ShellItem>.CompareTo(ShellItem? other) => CompareTo(other);
 
+	internal static bool Equals(IShellItem? left, IShellItem? right)
+	{
+		if (ReferenceEquals(left, right)) return true;
+		if (left is null || right is null) return false;
+		return left.Compare(right, SICHINTF.SICHINT_CANONICAL | SICHINTF.SICHINT_TEST_FILESYSPATH_IF_NOT_EQUAL, out var order).Succeeded && order == 0;
+	}
+
 	/// <summary>Gets the BHID for the supplied <typeparamref name="TInterface"/>.</summary>
 	/// <typeparam name="TInterface">The type of the interface to lookup.</typeparam>
 	/// <returns>The related BHID if found, 0 if not.</returns>
@@ -891,13 +899,6 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	{
 		iShellItem = si ?? throw new ArgumentNullException(nameof(si));
 		iShellItem2 = si as IShellItem2;
-	}
-
-	internal static bool Equals(IShellItem? left, IShellItem? right)
-	{
-		if (ReferenceEquals(left, right)) return true;
-		if (left is null || right is null) return false;
-		return left.Compare(right, SICHINTF.SICHINT_CANONICAL | SICHINTF.SICHINT_TEST_FILESYSPATH_IF_NOT_EQUAL, out var order).Succeeded && order == 0;
 	}
 
 	/// <summary>Local implementation of IShellItem.</summary>
