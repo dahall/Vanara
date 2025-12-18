@@ -160,13 +160,13 @@ public class PropertyDescription : IDisposable
 	/// <param name="obj">A object that contains the type and value of the property.</param>
 	/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
 	/// <returns>The formatted value.</returns>
-	public string FormatForDisplay(object obj, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc.FormatForDisplay(new PROPVARIANT(obj), pdfFlags);
+	public string FormatForDisplay(object obj, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc.FormatForDisplay(new PROPVARIANT(obj), pdfFlags, out var sz).Succeeded ? sz! : "";
 
 	/// <summary>Gets a formatted string representation of a property value.</summary>
 	/// <param name="pv">A object that contains the type and value of the property.</param>
 	/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
 	/// <returns>The formatted value.</returns>
-	internal string FormatForDisplay(PROPVARIANT pv, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc.FormatForDisplay(pv, pdfFlags);
+	internal string FormatForDisplay(PROPVARIANT pv, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc.FormatForDisplay(pv, pdfFlags, out var sz).Succeeded ? sz! : "";
 
 	/// <summary>Gets the image location for a value.</summary>
 	/// <param name="obj">The value.</param>
