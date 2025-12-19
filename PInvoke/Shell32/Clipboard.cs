@@ -562,8 +562,11 @@ public static partial class Shell32
 		public static implicit operator FILEDESCRIPTOR(FileInfo fi)
 		{
 			var fd = (FILEDESCRIPTOR)(fi as FileSystemInfo);
-			fd.dwFlags |= FD_FLAGS.FD_FILESIZE;
-			fd.nFileSize = unchecked((ulong)fi.Length);
+			if (!fd.dwFileAttributes.IsFlagSet(FileFlagsAndAttributes.FILE_ATTRIBUTE_DIRECTORY))
+			{
+				fd.dwFlags |= FD_FLAGS.FD_FILESIZE;
+				fd.nFileSize = unchecked((ulong)fi.Length);
+			}
 			return fd;
 		}
 	}
@@ -911,7 +914,7 @@ public static partial class Shell32
 		/// target then uses the returned interface pointer or global memory handle to extract the data.
 		/// </para>
 		/// </summary>
-		[ClipCorrespondingType(typeof(IStream), TYMED.TYMED_ISTREAM)]
+		[ClipCorrespondingType(typeof(IStream), TYMED.TYMED_ISTREAM | TYMED.TYMED_HGLOBAL | TYMED.TYMED_ISTORAGE)]
 		public const string CFSTR_FILECONTENTS = "FileContents";
 
 		/// <summary>

@@ -157,6 +157,8 @@ public static partial class DataObjectExtensions
 			lindex = index,
 			tymed = tymed
 		};
+		if (!dataObj.EnumFormats().Contains(formatetc, FORMATETCComparer.Default))
+			throw new InvalidOperationException("The specified format is not available from the data object.");
 		dataObj.GetData(ref formatetc, out var medium);
 
 		// Handle TYMED values, passing through HGLOBAL
@@ -488,7 +490,7 @@ public static partial class DataObjectExtensions
 	/// <param name="rtfText">The Rich Text Format value. If <see langword="null"/>, this format will not be set.</param>
 	public static void SetText(this IDataObject dataObj, string text, string? htmlText = null, string? rtfText = null)
 	{
-		if (text is not null) dataObj.SetData(CLIPFORMAT.CF_UNICODETEXT, text);
+		if (text is not null) { dataObj.SetData(CLIPFORMAT.CF_UNICODETEXT, text); dataObj.SetData(CLIPFORMAT.CF_TEXT, StringHelper.GetBytes(text, true, CharSet.Ansi)); }
 		if (htmlText is not null) dataObj.SetData(ShellClipboardFormat.CF_HTML, htmlText);
 		if (rtfText is not null) dataObj.SetData(ShellClipboardFormat.CF_RTF, rtfText);
 	}
@@ -506,6 +508,19 @@ public static partial class DataObjectExtensions
 		dataObj.SetData(ShellClipboardFormat.CFSTR_INETURLA, url);
 		dataObj.SetData(ShellClipboardFormat.CFSTR_INETURLW, url);
 	}
+
+	/// <summary>Obtains data from a source data object.</summary>
+	/// <typeparam name="T">The type of the object being retrieved.</typeparam>
+	/// <param name="dataObj">The data object.</param>
+	/// <param name="format">Specifies the particular clipboard format of interest.</param>
+	/// <param name="obj">The object associated with the request. If no object can be determined, <c>default(T)</c> is returned.</param>
+	/// <param name="index">
+	/// Part of the aspect when the data must be split across page boundaries. The most common value is -1, which identifies all of the
+	/// data. For the aspects DVASPECT_THUMBNAIL and DVASPECT_ICON, lindex is ignored.
+	/// </param>
+	/// <returns><see langword="true"/> if data is available and retrieved; otherwise <see langword="false"/>.</returns>
+	public static bool TryGetData<T>(this IDataObject dataObj, string format, out T? obj, int index = -1) =>
+		TryGetData(dataObj, RegisterClipboardFormat(format), out obj, index);
 
 	/// <summary>Obtains data from a source data object.</summary>
 	/// <typeparam name="T">The type of the object being retrieved.</typeparam>

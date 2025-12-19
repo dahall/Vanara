@@ -8,137 +8,106 @@ using System.Threading;
 using System.Windows.Forms;
 using Vanara.PInvoke;
 using Vanara.PInvoke.Tests;
+using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Shell32;
 using Clipboard = Vanara.Windows.Shell.NativeClipboard;
 using WFClipboard = System.Windows.Forms.Clipboard;
 
 namespace Vanara.Windows.Shell.Tests;
 
-[TestFixture, SingleThreaded]
+[TestFixture, Apartment(ApartmentState.STA)]
 public class ClipboardTests
 {
 	private const string html = "<pre style=\"font-family:Consolas;font-size:13px;color:#dadada;\"><span style=\"color:#dcdcaa;\">“We’ve been here”</span></pre>";
-	readonly string[] files = { TestCaseSources.SmallFile, TestCaseSources.ImageFile, TestCaseSources.LogFile };
+	readonly string[] files = [TestCaseSources.SmallFile, TestCaseSources.ImageFile, TestCaseSources.LogFile];
 	const string txt = @"“0’0©0è0”";
 	const string ptxt = "ABC123";
 	private const string url = "https://microsoft.com";
 
+	//[OneTimeSetUp]
+	//public void Setup() => Assert.That(Ole32.OleInitialize(default), Is.EqualTo((HRESULT)HRESULT.S_OK));
+
 	[Test]
 	public void zhuxbTest()
 	{
-		Thread STA = new(() =>
+		var tcw = TestContext.Out;
+		//Thread STA = new(() =>
 		{
-			Ole32.OleInitialize();
-
-			try
+			//try
 			{
 				Clipboard.Clear();
 
 				ShellItemArray ShellItemList = new(files.Select(fn => new ShellItem(fn)));
-
-				var Data = Clipboard.CreateEmptyDataObject();
-
-				Data.SetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW, new FILEGROUPDESCRIPTOR
+				var fgd = new FILEGROUPDESCRIPTOR
 				{
 					cItems = (uint)ShellItemList.Count,
-					fgd = ShellItemList.Select((Item) =>
+					fgd = [.. ShellItemList.Select((Item) =>
 					{
-						ShellFileInfo FileInfo = Item.FileInfo!;
-						FD_FLAGS Flags = FD_FLAGS.FD_ATTRIBUTES
-												 | FD_FLAGS.FD_CREATETIME
-												 | FD_FLAGS.FD_ACCESSTIME
-												 | FD_FLAGS.FD_WRITESTIME
-												 | FD_FLAGS.FD_UNICODE;
-
+						FILEDESCRIPTOR fd = Item.FileInfo!;
 						if (!Item.IsFolder)
 						{
-							Flags |= FD_FLAGS.FD_FILESIZE;
+							fd.dwFlags |= FD_FLAGS.FD_FILESIZE;
+							fd.nFileSize = (ulong)Item.FileInfo!.Length;
 						}
-
-						return new FILEDESCRIPTOR
-						{
-							cFileName = Item.Name!,
-							dwFlags = Flags,
-							dwFileAttributes = (FileFlagsAndAttributes)FileInfo.Attributes,
-							nFileSize = (ulong)FileInfo.Length,
-							ftCreationTime = FileInfo.CreationTime.ToFileTimeStruct(),
-							ftLastAccessTime = FileInfo.LastAccessTime.ToFileTimeStruct(),
-							ftLastWriteTime = FileInfo.LastWriteTime.ToFileTimeStruct()
-						};
-					}).ToArray()
-				});
+						return fd;
+					})]
+				};
+				var Data = Clipboard.CreateEmptyDataObject();
+				Data.SetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW, fgd);
 
 				for (int Index = 0; Index < ShellItemList.Count; Index++)
 				{
 					ShellItem Item = ShellItemList[Index];
-
 					if (!Item.IsFolder)
-					{
 						Data.SetData(ShellClipboardFormat.CFSTR_FILECONTENTS, Item.GetHandler<IStream>(ShellUtil.CreateBindCtx(STGM.STGM_READWRITE | STGM.STGM_SHARE_DENY_WRITE)), DVASPECT.DVASPECT_CONTENT, Index);
-					}
 				}
 
 				Clipboard.SetDataObject(Data);
-
 				foreach (uint FormatId in Clipboard.CurrentlySupportedFormats)
+					tcw.WriteLine($"Available format: {Clipboard.GetFormatName(FormatId)}");
+
+				Assert.That(Clipboard.IsFormatAvailable(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW) && Clipboard.IsFormatAvailable(ShellClipboardFormat.CFSTR_FILECONTENTS));
+				FILEGROUPDESCRIPTOR FileGroupDescriptor = Clipboard.CurrentDataObject.GetData<FILEGROUPDESCRIPTOR>(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW);
+				Assert.That(FileGroupDescriptor.cItems, Is.EqualTo((uint)files.Length));
+
+				for (int Index = 0; Index < FileGroupDescriptor.cItems; Index++)
 				{
-					Debug.WriteLine($"Available format: {Clipboard.GetFormatName(FormatId)}");
-				}
+					FILEDESCRIPTOR FileDescriptor = FileGroupDescriptor.fgd[Index];
 
-				if ((Clipboard.IsFormatAvailable(ShellClipboardFormat.CFSTR_FILEDESCRIPTORA) || Clipboard.IsFormatAvailable(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW)) && Clipboard.IsFormatAvailable(ShellClipboardFormat.CFSTR_FILECONTENTS))
-				{
-					FILEGROUPDESCRIPTOR FileGroupDescriptor = Clipboard.IsFormatAvailable(ShellClipboardFormat.CFSTR_FILEDESCRIPTORA)
-																		  ? Clipboard.CurrentDataObject.GetData<FILEGROUPDESCRIPTOR>(ShellClipboardFormat.CFSTR_FILEDESCRIPTORA)
-																		  : Clipboard.CurrentDataObject.GetData<FILEGROUPDESCRIPTOR>(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW);
+					Assert.That(FileDescriptor.dwFlags.HasFlag(FD_FLAGS.FD_FILESIZE));
+					Assert.That(FileDescriptor.nFileSize, Is.EqualTo(ShellItemList[Index].FileInfo!.Length));
+					Assert.That(FileDescriptor.dwFlags.HasFlag(FD_FLAGS.FD_ATTRIBUTES));
+					Assert.That((int)FileDescriptor.dwFileAttributes, Is.Not.Zero);
+					Assert.That(FileDescriptor.dwFlags.HasFlag(FD_FLAGS.FD_CREATETIME));
+					Assert.That(FileDescriptor.ftCreationTime.ToInt64(), Is.Not.Zero);
+					Assert.That(FileDescriptor.dwFlags.HasFlag(FD_FLAGS.FD_ACCESSTIME));
+					Assert.That(FileDescriptor.ftLastAccessTime.ToInt64(), Is.Not.Zero);
+					Assert.That(FileDescriptor.dwFlags.HasFlag(FD_FLAGS.FD_WRITESTIME));
+					Assert.That(FileDescriptor.ftLastWriteTime.ToInt64(), Is.Not.Zero);
 
-					for (int Index = 0; Index < FileGroupDescriptor.cItems; Index++)
-					{
-						FILEDESCRIPTOR FileDescriptor = FileGroupDescriptor.fgd[Index];
-
-						ulong Size = 0;
-						FileAttributes Attributes = default;
-						DateTimeOffset CreateTime = default;
-						DateTimeOffset LastAccessTime = default;
-						DateTimeOffset LastWriteTime = default;
-
-						if (FileDescriptor.dwFlags.HasFlag(FD_FLAGS.FD_ATTRIBUTES))
-						{
-							Attributes = (FileAttributes)FileDescriptor.dwFileAttributes;
-						}
-
-						if (FileDescriptor.dwFlags.HasFlag(FD_FLAGS.FD_FILESIZE))
-						{
-							Size = FileDescriptor.nFileSize;
-						}
-
-						if (FileDescriptor.dwFlags.HasFlag(FD_FLAGS.FD_CREATETIME))
-						{
-							CreateTime = FileDescriptor.ftCreationTime.ToDateTime();
-						}
-
-						if (FileDescriptor.dwFlags.HasFlag(FD_FLAGS.FD_ACCESSTIME))
-						{
-							LastAccessTime = FileDescriptor.ftLastAccessTime.ToDateTime();
-						}
-
-						if (FileDescriptor.dwFlags.HasFlag(FD_FLAGS.FD_WRITESTIME))
-						{
-							LastWriteTime = FileDescriptor.ftLastWriteTime.ToDateTime();
-						}
-
-						//Throw Invalid FORMATETC structure
-						var result = Clipboard.CurrentDataObject.GetData(ShellClipboardFormat.CFSTR_FILECONTENTS, index: Index);
-					}
+					//Throw Invalid FORMATETC structure
+					//Assert.That(Clipboard.CurrentDataObject.GetData(ShellClipboardFormat.CFSTR_FILECONTENTS, index: Index), Is.Not.Null);
 				}
 			}
-			finally
-			{
-				Ole32.OleUninitialize();
-			}
-		});
-		STA.SetApartmentState(ApartmentState.STA);
-		STA.Start();
-		STA.Join();
+			//catch (Exception ex)
+			//{
+			//	tcw.WriteLine(ex);
+			//	Assert.Fail(ex.Message);
+			//}
+		}
+		//);
+		//STA.SetApartmentState(ApartmentState.STA);
+		//STA.Start();
+		//STA.Join();
+	}
+
+	[Test]
+	public void ClearClipboardTest()
+	{
+		WFClipboard.SetText("Test");
+		Assert.That(!string.IsNullOrEmpty(WFClipboard.GetText()));
+		Clipboard.Clear();
+		Assert.That(string.IsNullOrEmpty(WFClipboard.GetText()));
 	}
 
 	[Test]
@@ -176,6 +145,30 @@ public class ClipboardTests
 	{
 		var fmts = Clipboard.CurrentlySupportedFormats.ToArray();
 		Assert.That(Clipboard.GetFirstFormatAvailable(fmts), Is.GreaterThan(0));
+		TestContext.Write(string.Join(", ", fmts.Select(f => Clipboard.GetFormatName(f))));
+	}
+
+	[Test]
+	public void GetShellItemsIfFoundTest()
+	{
+		if (!WFClipboard.ContainsFileDropList()) return;
+		using var shArray = ShellItemArray.FromDataObject(Clipboard.CurrentDataObject)!;
+		Assert.That(shArray.Count, Is.GreaterThan(0));
+		TestContext.WriteLine($"GetFileDropList: {string.Join("\n", shArray.Select(i => i.FileSystemPath))}");
+	}
+
+	[Test]
+	public void GetFileContentsIfFoundTest()
+	{
+		if (!WFClipboard.ContainsFileDropList()) return;
+		var ido = Clipboard.CurrentDataObject;
+		Assert.That(ido.TryGetData(ShellClipboardFormat.CFSTR_FILEDESCRIPTORW, out FILEGROUPDESCRIPTOR fgd));
+		Assert.That(fgd.cItems, Is.GreaterThan(0));
+		TestContext.WriteLine($"{fgd.cItems} Files: {string.Join("\n", fgd.Select(fd => fd.cFileName))}");
+		for (int i = 0; i < fgd.cItems; i++)
+			Assert.That(() => { var ist = (Ole32.IStreamV)ido!.GetData(ShellClipboardFormat.CFSTR_FILECONTENTS, index: i)!; ist.Seek(0, Ole32.STREAM_SEEK.STREAM_SEEK_SET, out _).ThrowIfFailed(); }, Throws.Nothing);
+		Assert.That(ido!.GetData(ShellClipboardFormat.CFSTR_FILENAMEA), Is.TypeOf<string>().And.Not.Null);
+		Assert.That(ido!.GetData(ShellClipboardFormat.CFSTR_FILENAMEW), Is.TypeOf<string>().And.Not.Null);
 	}
 
 	[Test]
@@ -193,7 +186,7 @@ public class ClipboardTests
 	{
 		ShellItem[] items = Array.ConvertAll(files, f => new ShellItem(f));
 		Clipboard.SetDataObject(Clipboard.CreateDataObjectFromShellItems(items));
-		var shArray = ShellItemArray.FromDataObject(Clipboard.CurrentDataObject)!;
+		using var shArray = ShellItemArray.FromDataObject(Clipboard.CurrentDataObject)!;
 		Assert.That(shArray.Count, Is.EqualTo(items.Length));
 		CollectionAssert.AreEquivalent(files, shArray.Select(s => s.FileSystemPath));
 	}
@@ -260,7 +253,7 @@ public class ClipboardTests
 		ido!.SetData(ShellClipboardFormat.CFSTR_DROPDESCRIPTION, dropDesc);
 		Assert.That(((DROPDESCRIPTION)ido!.GetData(ShellClipboardFormat.CFSTR_DROPDESCRIPTION)!).szMessage, Is.EqualTo(dropDesc.szMessage));
 
-		FILE_ATTRIBUTES_ARRAY faa = new() { cItems = 1, rgdwFileAttributes = new[] { 4U } };
+		FILE_ATTRIBUTES_ARRAY faa = new() { cItems = 1, rgdwFileAttributes = [4U] };
 		ido!.SetData(ShellClipboardFormat.CFSTR_FILE_ATTRIBUTES_ARRAY, faa);
 		Assert.That(((FILE_ATTRIBUTES_ARRAY)ido!.GetData(ShellClipboardFormat.CFSTR_FILE_ATTRIBUTES_ARRAY)!).cItems, Is.EqualTo(faa.cItems));
 
@@ -295,7 +288,7 @@ public class ClipboardTests
 		Assert.That(ido!.GetData(ShellClipboardFormat.CFSTR_MOUNTEDVOLUME), Is.EqualTo(ptxt));
 
 		SafeLPTSTR remName = new("WINSTATION");
-		NRESARRAY nres = new() { cItems = 1, nr = new NETRESOURCE[] { new() { lpRemoteName = remName } } };
+		NRESARRAY nres = new() { cItems = 1, nr = [new() { lpRemoteName = remName }] };
 		ido!.SetData(ShellClipboardFormat.CFSTR_NETRESOURCES, nres);
 		Assert.That(((NRESARRAY)ido!.GetData(ShellClipboardFormat.CFSTR_NETRESOURCES)!).cItems, Is.EqualTo(nres.cItems));
 

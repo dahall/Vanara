@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
@@ -24,7 +23,7 @@ public static class NativeClipboard
 	private static readonly object objectLock = new();
 	private static ListenerWindow? listener;
 	[ThreadStatic]
-	private static bool oleInit = false;
+	private static bool oleInit;
 
 	/// <summary>Occurs when whenever the contents of the Clipboard have changed.</summary>
 	public static event EventHandler ClipboardUpdate
@@ -80,7 +79,7 @@ public static class NativeClipboard
 			GetUpdatedClipboardFormats(null, 0, out var cnt);
 			var fmts = new uint[cnt];
 			Win32Error.ThrowLastErrorIfFalse(GetUpdatedClipboardFormats(fmts, (uint)fmts.Length, out cnt));
-			return fmts.Take((int)cnt).ToArray();
+			return [.. fmts.Take((int)cnt)];
 		}
 	}
 
@@ -206,7 +205,7 @@ public static class NativeClipboard
 		Flush();
 	}
 
-	private static void Init() { if (!oleInit) { oleInit = CoInitialize().Succeeded; } }
+	private static void Init() { if (!oleInit) { oleInit = OleInitialize().Succeeded; } }
 
 	private static bool TryMultThenThrowIfFailed(Func<HRESULT> func, int n = stdRetryCnt)
 	{
@@ -235,6 +234,7 @@ public static class NativeClipboard
 		}
 		throw hr.GetException()!;
 	}
+
 	private class ListenerWindow : SystemEventHandler
 	{
 		protected override bool MessageFilter(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr lReturn)
