@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
@@ -205,7 +206,14 @@ public static class NativeClipboard
 		Flush();
 	}
 
-	private static void Init() { if (!oleInit) { oleInit = OleInitialize().Succeeded; } }
+	private static void Init()
+	{
+		if (oleInit) return;
+		var hr = OleInitialize();
+		oleInit = hr.Succeeded;
+		if (hr == HRESULT.RPC_E_CHANGED_MODE)
+			throw new ThreadStateException("Thread must be initialized as STA.");
+	}
 
 	private static bool TryMultThenThrowIfFailed(Func<HRESULT> func, int n = stdRetryCnt)
 	{
