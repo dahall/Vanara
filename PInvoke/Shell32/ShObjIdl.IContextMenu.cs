@@ -823,37 +823,41 @@ public static partial class Shell32
 	}
 
 	/// <summary>
-	/// Contains extended information about a shortcut menu command. This structure is an extended version of CMINVOKECOMMANDINFO that
-	/// allows the use of Unicode values.
+	/// Contains extended information about a shortcut menu command. This structure is an extended version of CMINVOKECOMMANDINFO that allows
+	/// the use of Unicode values.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// Although the IContextMenu::InvokeCommand declaration specifies a CMINVOKECOMMANDINFO structure for the parameter, it can also
-	/// accept a <c>CMINVOKECOMMANDINFOEX</c> structure. If you are implementing this method, you must inspect <c>cbSize</c> to determine
-	/// which structure has been passed.
+	/// Although the IContextMenu::InvokeCommand declaration specifies a CMINVOKECOMMANDINFO structure for the parameter, it can also accept
+	/// a <c>CMINVOKECOMMANDINFOEX</c> structure. If you are implementing this method, you must inspect <c>cbSize</c> to determine which
+	/// structure has been passed.
 	/// </para>
 	/// <para>
-	/// By default, all 16-bit Windows-based applications run as threads in a single, shared VDM. The advantage of running separately is
-	/// that a crash only terminates the single VDM; any other programs running in distinct VDMs continue to function normally. Also,
-	/// 16-bit Windows-based applications that are run in separate VDMs have separate input queues. That means that if one application
-	/// stops responding momentarily, applications in separate VDMs continue to receive input. The disadvantage of running separately is
-	/// that it takes significantly more memory to do so.
+	/// By default, all 16-bit Windows-based applications run as threads in a single, shared VDM. The advantage of running separately is that
+	/// a crash only terminates the single VDM; any other programs running in distinct VDMs continue to function normally. Also, 16-bit
+	/// Windows-based applications that are run in separate VDMs have separate input queues. That means that if one application stops
+	/// responding momentarily, applications in separate VDMs continue to receive input. The disadvantage of running separately is that it
+	/// takes significantly more memory to do so.
 	/// </para>
 	/// <para>
 	/// <c>CMINVOKECOMMANDINFOEX</c> itself is defined in Shobjidl.h, but you must also include Shellapi.h to have full access to all flags.
 	/// </para>
 	/// <para><c>Note</c> Prior to Windows Vista, this structure was declared in Shlobj.h.</para>
 	/// </remarks>
+	/// <param name="verb">
+	/// Specifies the language-independent name of the command to carry out. This member is typically a string when a command is being
+	/// activated by an application.
+	/// </param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ns-shobjidl_core-_cminvokecommandinfoex
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "c4c7f053-fdb1-4bba-9eb9-a514ce1d90f6")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CMINVOKECOMMANDINFOEX
+	public struct CMINVOKECOMMANDINFOEX()
 	{
 		/// <summary>
 		/// The size of this structure, in bytes. This member should be filled in by callers of IContextMenu::InvokeCommand and tested by
 		/// the implementations to know that the structure is a CMINVOKECOMMANDINFOEX structure rather than CMINVOKECOMMANDINFO.
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CMINVOKECOMMANDINFOEX>();
 
 		/// <summary>
 		/// Zero, or one or more of the following flags are set to indicate desired behavior and indicate that other fields in the
@@ -918,7 +922,7 @@ public static partial class Shell32
 		public string? lpDirectory;
 
 		/// <summary>A set of SW_ values to pass to the ShowWindow function if the command displays a window or starts an application.</summary>
-		public ShowWindowCommand nShow;
+		public ShowWindowCommand nShow = ShowWindowCommand.SW_NORMAL;
 
 		/// <summary>
 		/// An optional keyboard shortcut to assign to any application activated by the command. If the fMask member does not specify
@@ -963,12 +967,7 @@ public static partial class Shell32
 		/// carry out.
 		/// </summary>
 		/// <param name="commandId">The menu-identifier offset of the command to carry out.</param>
-		public CMINVOKECOMMANDINFOEX(int commandId) : this()
-		{
-			cbSize = (uint)Marshal.SizeOf<CMINVOKECOMMANDINFOEX>();
-			lpVerb = commandId;
-			nShow = ShowWindowCommand.SW_NORMAL;
-		}
+		public CMINVOKECOMMANDINFOEX(int commandId) : this() => lpVerb = commandId;
 
 		/// <summary>Initializes a new instance of the <see cref="CMINVOKECOMMANDINFOEX"/> struct with its fields.</summary>
 		/// <param name="verb">
@@ -1019,9 +1018,8 @@ public static partial class Shell32
 		/// <param name="useUnicode">if set to <see langword="true"/>, set the CMIC_MASK_UNICODE flag.</param>
 		public CMINVOKECOMMANDINFOEX(ResourceId verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default,
 			POINT? location = default, bool allowAsync = false, bool shiftDown = false, bool ctrlDown = false, uint hotkey = 0,
-			bool logUsage = false, bool noZoneChecks = false, string? parameters = null, bool useUnicode = false)
+			bool logUsage = false, bool noZoneChecks = false, string? parameters = null, bool useUnicode = false) : this()
 		{
-			cbSize = (uint)Marshal.SizeOf<CMINVOKECOMMANDINFOEX>();
 			fMask = hotkey != 0 ? CMIC.CMIC_MASK_HOTKEY : 0;
 			if (allowAsync) fMask |= CMIC.CMIC_MASK_ASYNCOK;
 			if (shiftDown) fMask |= CMIC.CMIC_MASK_SHIFT_DOWN;
