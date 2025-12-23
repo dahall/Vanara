@@ -28,6 +28,7 @@ namespace Vanara.Windows.Shell;
 /// </remarks>
 public class ShellContextMenu : IDisposable
 {
+	internal const CMF defaultPopulateFlag = CMF.CMF_EXTENDEDVERBS;
 	internal const int m_CmdFirst = 0x8000;
 	private readonly IContextMenu2? m_ComInterface2;
 	private readonly IContextMenu3? m_ComInterface3;
@@ -35,13 +36,12 @@ public class ShellContextMenu : IDisposable
 	private bool disposedValue;
 	private CMF initVal = CMF.CMF_RESERVED;
 
-	static ShellContextMenu() => Ole32.OleInitialize(default); // Not sure why necessary, but it fails without
-
 	/// <summary>Initializes a new instance of the <see cref="ShellContextMenu"/> class.</summary>
 	/// <param name="contextMenu">The interface for the context menu.</param>
 	/// <exception cref="System.ArgumentNullException">contextMenu</exception>
 	public ShellContextMenu(IContextMenu contextMenu)
 	{
+		Ole32.OleThreadState.EnsureSTA();
 		ComInterface = contextMenu ?? throw new ArgumentNullException(nameof(contextMenu));
 		m_ComInterface2 = contextMenu as IContextMenu2;
 		m_ComInterface3 = contextMenu as IContextMenu3;
@@ -94,7 +94,7 @@ public class ShellContextMenu : IDisposable
 
 	/// <summary>Gets the information of all the menu items supported by the underlying interface.</summary>
 	/// <value>The menu item information.</value>
-	public MenuItemInfo[] GetItems(CMF menuOptions = CMF.CMF_EXTENDEDVERBS)
+	public MenuItemInfo[] GetItems(CMF menuOptions = defaultPopulateFlag)
 	{
 		using SafeHMENU hmenu = PopulateMenu(menuOptions);
 		return MenuItemInfo.GetMenuItems(hmenu, this);
@@ -126,6 +126,19 @@ public class ShellContextMenu : IDisposable
 	}
 
 	/// <summary>Invokes the command.</summary>
+	/// <param name="cmdInfo">
+	/// The <see cref="CMINVOKECOMMANDINFO"/>, <see cref="CMINVOKECOMMANDINFOP"/>, or <see cref="CMINVOKECOMMANDINFOEX"/> with details about
+	/// the invocation.
+	/// </param>
+	public void Invoke<T>(in T cmdInfo) where T : struct
+	{
+		// This is a little hack to get the menu to show up. If we don't call QueryContextMenu first, the menu won't show up. attr: @zhuxb711
+		if (initVal == CMF.CMF_RESERVED)
+			PopulateMenu(defaultPopulateFlag);
+		ComInterface.InvokeCommand(cmdInfo).ThrowIfFailed();
+	}
+
+	/// <summary>Invokes the command.</summary>
 	/// <param name="cmd">
 	/// The menu-identifier offset of the command to carry out. The Shell uses this alternative when the user chooses a menu command.
 	/// </param>
@@ -135,14 +148,8 @@ public class ShellContextMenu : IDisposable
 	/// displayed. Failing to specify an HWND when calling from a UI thread (one with windows already created) will result in reentrancy and
 	/// possible bugs in the implementation of this call.
 	/// </param>
-	public void InvokeCommand(int cmd, HWND parent)
-	{
-		CMINVOKECOMMANDINFOP ci = new(cmd) { hwnd = parent, nShow = ShowWindowCommand.SW_NORMAL };
-		// This is a little hack to get the menu to show up. If we don't call QueryContextMenu first, the menu won't show up. attr: @zhuxb711
-		if (initVal == CMF.CMF_RESERVED)
-			PopulateMenu(CMF.CMF_OPTIMIZEFORINVOKE);
-		ComInterface.InvokeCommand(ci).ThrowIfFailed($"Invoke menu failed for {cmd}.");
-	}
+	public void InvokeCommand(int cmd, HWND parent) =>
+		Invoke(new CMINVOKECOMMANDINFOP(cmd) { hwnd = parent, nShow = ShowWindowCommand.SW_NORMAL });
 
 	/// <summary>Invokes the command.</summary>
 	/// <param name="verb">
@@ -192,14 +199,8 @@ public class ShellContextMenu : IDisposable
 	/// <param name="parameters">Optional parameters.</param>
 	public void InvokeCommand(ResourceId verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default,
 		POINT? location = default, bool allowAsync = false, bool shiftDown = false, bool ctrlDown = false, uint hotkey = 0,
-		bool logUsage = false, bool noZoneChecks = false, string? parameters = null)
-	{
-		CMINVOKECOMMANDINFOEX invoke = new(verb, show, parent, location, allowAsync, shiftDown, ctrlDown, hotkey, logUsage, noZoneChecks, parameters);
-		// This is a little hack to get the menu to show up. If we don't call QueryContextMenu first, the menu won't show up. attr: @zhuxb711
-		if (initVal == CMF.CMF_RESERVED)
-			PopulateMenu(CMF.CMF_OPTIMIZEFORINVOKE);
-		ComInterface.InvokeCommand(invoke).ThrowIfFailed($"Invoke menu failed for {verb}.");
-	}
+		bool logUsage = false, bool noZoneChecks = false, string? parameters = null) =>
+		Invoke(new CMINVOKECOMMANDINFOEX(verb, show, parent, location, allowAsync, shiftDown, ctrlDown, hotkey, logUsage, noZoneChecks, parameters));
 
 	/// <summary>Invokes the Copy command on the shell item(s).</summary>
 	public void InvokeCopy() => InvokeVerb("copy");
@@ -240,21 +241,15 @@ public class ShellContextMenu : IDisposable
 	/// may be displayed. Failing to specify an HWND when calling from a UI thread (one with windows already created) will result in
 	/// reentrancy and possible bugs in the implementation of this call.
 	/// </param>
-	public void InvokeVerb(string verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default)
-	{
-		CMINVOKECOMMANDINFO invoke = new(verb) { hwnd = parent, nShow = show };
-		// This is a little hack to get the menu to show up. If we don't call QueryContextMenu first, the menu won't show up. attr: @zhuxb711
-		if (initVal == CMF.CMF_RESERVED)
-			PopulateMenu(CMF.CMF_OPTIMIZEFORINVOKE);
-		ComInterface.InvokeCommand(invoke).ThrowIfFailed(); // $"Invoke menu failed for {verb}."
-	}
+	public void InvokeVerb(string verb, ShowWindowCommand show = ShowWindowCommand.SW_SHOWNORMAL, HWND parent = default) =>
+		Invoke(new CMINVOKECOMMANDINFOEX(new SafeResourceId(verb), show, parent));
 
 	/// <summary>Shows a context menu for a shell item.</summary>
 	/// <param name="pos">The position on the screen that the menu should be displayed at.</param>
 	/// <param name="menuOptions">The options that determine which items are requested from <see cref="IContextMenu" />.</param>
 	/// <param name="onMenuItemClicked">The delegate to call when a menu item is clicked; If <see langword="null" />, <see cref="InvokeCommand(int, HWND)" /> is called.</param>
 	/// <param name="hWnd">The optional parent window handle.</param>
-	public void ShowContextMenu(POINT pos, CMF menuOptions = CMF.CMF_EXTENDEDVERBS, Action<HMENU, int, HWND>? onMenuItemClicked = null, HWND hWnd = default)
+	public void ShowContextMenu(POINT pos, CMF menuOptions = defaultPopulateFlag, Action<HMENU, int, HWND>? onMenuItemClicked = null, HWND hWnd = default)
 	{
 		using var hmenu = PopulateMenu(menuOptions);
 		var command = TrackPopupMenuEx(hmenu, TrackPopupMenuFlags.TPM_RETURNCMD, pos.X, pos.Y, m_MessageWindow.Handle);
@@ -298,7 +293,7 @@ public class ShellContextMenu : IDisposable
 
 	private SafeHMENU PopulateMenu(CMF menuOptions)
 	{
-		var hmenu = CreatePopupMenu();
+		var hmenu = SafeHMENU.CreatePopup();
 		ComInterface.QueryContextMenu(hmenu, 0, m_CmdFirst, int.MaxValue, initVal = menuOptions).ThrowIfFailed();
 		MenuCreated?.Invoke(this, new(hmenu));
 		return hmenu;
