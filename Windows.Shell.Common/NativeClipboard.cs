@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
@@ -23,8 +24,6 @@ public static class NativeClipboard
 	private const int stdRetryDelay = 100;
 	private static readonly object objectLock = new();
 	private static ListenerWindow? listener;
-	[ThreadStatic]
-	private static bool oleInit;
 
 	/// <summary>Occurs when whenever the contents of the Clipboard have changed.</summary>
 	public static event EventHandler ClipboardUpdate
@@ -206,14 +205,8 @@ public static class NativeClipboard
 		Flush();
 	}
 
-	private static void Init()
-	{
-		if (oleInit) return;
-		var hr = OleInitialize();
-		oleInit = hr.Succeeded;
-		if (hr == HRESULT.RPC_E_CHANGED_MODE)
-			throw new ThreadStateException("Thread must be initialized as STA.");
-	}
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static void Init() => OleThreadState.EnsureSTA();
 
 	private static bool TryMultThenThrowIfFailed(Func<HRESULT> func, int n = stdRetryCnt)
 	{
