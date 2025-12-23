@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 using System.Reflection;
@@ -9,60 +8,42 @@ using System.Reflection;
 namespace Vanara.PInvoke;
 
 /// <summary>The POINT structure defines the x- and y-coordinates of a point.</summary>
+/// <param name="x">The horizontal position of the point.</param>
+/// <param name="y">The vertical position of the point.</param>
 // https://docs.microsoft.com/en-us/windows/win32/api/windef/ns-windef-point
 [PInvokeData("windef.h", MSDNShortId = "NS:windef.tagPOINT")]
 [TypeConverter(typeof(POINTConverter))]
 [StructLayout(LayoutKind.Sequential), Serializable]
 [ComVisible(true)]
-public struct POINT : IEquatable<POINT>
+public struct POINT(int x = 0, int y = 0) : IEquatable<POINT>
 {
 	/// <summary>Represents a POINT that has X and Y values set to zero.</summary>
 	public static readonly POINT Empty = new();
 
 	/// <summary>Specifies the <c>x</c>-coordinate of the point.</summary>
-	public int X;
+	public int X = x;
 
 	/// <summary>Specifies the <c>y</c>-coordinate of the point.</summary>
-	public int Y;
-
-	/// <summary>Initializes a new instance of the <see cref="POINT"/> struct with the specified coordinates.</summary>
-	/// <param name="X">The horizontal position of the point.</param>
-	/// <param name="Y">The vertical position of the point.</param>
-	public POINT(int X, int Y)
-	{
-		this.X = X;
-		this.Y = Y;
-	}
+	public int Y = y;
 
 	/// <summary>Initializes a new instance of the <see cref="POINT"/> struct from a <see cref="SIZE"/>.</summary>
 	/// <param name="sz">A <see cref="SIZE"/> that specifies the coordinates for the new <see cref="POINT"/>.</param>
-	public POINT(SIZE sz)
-	{
-		X = sz.cx;
-		Y = sz.cy;
-	}
+	public POINT(SIZE sz) : this(sz.cx, sz.cy) { }
 
 	/// <summary>Initializes a new instance of the <see cref="POINT"/> struct using coordinates specified by an integer value.</summary>
 	/// <param name="dw">A 32-bit integer that specifies the coordinates for the new <see cref="POINT"/>.</param>
-	public POINT(int dw)
-	{
-		unchecked
-		{
-			X = (short)Macros.LOWORD((uint)dw);
-			Y = (short)Macros.HIWORD((uint)dw);
-		}
-	}
+	public POINT(int dw) : this(unchecked((short)Macros.LOWORD((uint)dw)), unchecked((short)Macros.HIWORD((uint)dw))) { }
 
 	/// <summary>Specifies the <c>x</c>-coordinate of the point.</summary>
-	public int x { get => X; set => X = value; }
+	public int x { readonly get => X; set => X = value; }
 
 	/// <summary>Specifies the <c>y</c>-coordinate of the point.</summary>
-	public int y { get => Y; set => Y = value; }
+	public int y { readonly get => Y; set => Y = value; }
 
 	/// <summary>Gets a value indicating whether this <see cref="POINT"/> is empty.</summary>
 	/// <value><see langword="true"/> if both X and Y are 0; otherwise, <see langword="false"/>.</value>
 	[Browsable(false)]
-	public bool IsEmpty => X == 0 && Y == 0;
+	public readonly bool IsEmpty => X == 0 && Y == 0;
 
 	/// <summary>Adds the specified <see cref="SIZE"/> to the specified <see cref="POINT"/>.</summary>
 	/// <param name="pt">The <see cref="POINT"/> to add.</param>
@@ -126,14 +107,14 @@ public struct POINT : IEquatable<POINT>
 	/// <summary>Specifies whether this point instance contains the same coordinates as another point.</summary>
 	/// <param name="other">The point to test for equality.</param>
 	/// <returns><see langword="true"/> if <paramref name="other"/> has the same coordinates as this point instance.</returns>
-	public bool Equals(POINT other) => other.X == X && other.Y == Y;
+	public readonly bool Equals(POINT other) => other.X == X && other.Y == Y;
 
 	/// <summary>Specifies whether this point instance contains the same coordinates as the specified object.</summary>
 	/// <param name="obj">The <see cref="System.Object"/> to test for equality.</param>
 	/// <returns>
 	/// <see langword="true"/> if <paramref name="obj"/> is a <see cref="POINT"/> and has the same coordinates as this point instance.
 	/// </returns>
-	public override bool Equals(object? obj) => obj switch
+	public override readonly bool Equals(object? obj) => obj switch
 	{
 		POINT p => Equals(p),
 		Point p => Equals((POINT)p),
@@ -142,7 +123,7 @@ public struct POINT : IEquatable<POINT>
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => unchecked(X ^ Y);
+	public override readonly int GetHashCode() => unchecked(X ^ Y);
 
 	/// <summary>Translates the <see cref="POINT"/> by the specified amount.</summary>
 	/// <param name="dx">The amount to offset the x-coordinate.</param>
@@ -159,7 +140,7 @@ public struct POINT : IEquatable<POINT>
 
 	/// <summary>Converts this <see cref="POINT"/> to a human-readable string.</summary>
 	/// <returns>A <see cref="System.String"/> that represents this <see cref="POINT"/>.</returns>
-	public override string ToString() => $"{{X={X},Y={Y}}}";
+	public override readonly string ToString() => $"{{X={X},Y={Y}}}";
 }
 
 internal class POINTConverter : TypeConverter
@@ -230,7 +211,7 @@ internal class POINTConverter : TypeConverter
 	public override bool GetCreateInstanceSupported(ITypeDescriptorContext? context) => true;
 
 #if NET6_0_OR_GREATER
-	[RequiresUnreferencedCode("")]
+	[System.Diagnostics.CodeAnalysis.RequiresUnreferencedCode("")]
 #endif
 	public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext? context, object value, Attribute[]? attributes)
 	{
