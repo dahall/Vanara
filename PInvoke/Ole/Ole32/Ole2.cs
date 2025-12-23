@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
 
 namespace Vanara.PInvoke;
 
@@ -3723,5 +3724,27 @@ public static partial class Ole32
 		/// <param name="cb">The number of bytes to write from the buffer to the stream.</param>
 		/// <returns>The number of bytes successfully written to the stream.</returns>
 		public delegate uint VTblPut(in OLESTREAM pstr, [In] IntPtr pv, uint cb);
+	}
+
+	/// <summary>Holds the thread-specific state of OLE initialization and helper methods.</summary>
+	public static class OleThreadState
+	{
+		private static readonly ThreadLocal<HRESULT> _oleInitialized = new(() => OleInitialize(default));
+		private static readonly ThreadLocal<ApartmentState> _oleRequired = new(() =>
+			_oleInitialized.Value.Succeeded ? ApartmentState.STA : (_oleInitialized.Value == HRESULT.RPC_E_CHANGED_MODE ? ApartmentState.MTA : ApartmentState.Unknown));
+
+		/// <summary>Gets the required OLE thread state for the current apartment.</summary>
+		/// <returns>The apartment thread state.</returns>
+		public static ApartmentState State => _oleRequired.Value;
+
+		/// <summary>Ensures that OLE is initialized for a single threaded apartment and throws an exception if not.</summary>
+		public static void EnsureSTA()
+		{
+			switch (_oleRequired.Value)
+			{
+				case ApartmentState.MTA: throw new ThreadStateException("Thread must be an STA.");
+				case ApartmentState.Unknown: throw _oleInitialized.Value.GetException()!;
+			};
+		}
 	}
 }
