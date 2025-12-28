@@ -10,42 +10,34 @@ namespace Vanara.Windows.Shell;
 public partial class ShellFileOperations : IDisposable
 {
 	private const OperationFlags defaultOptions = OperationFlags.AllowUndo | OperationFlags.NoConfirmMkDir;
-	private readonly IFileOperationProgressSink sink;
+	private IFileOperationProgressSink sink;
 	private readonly uint sinkCookie;
 	private ShellFileOperationDialog? customProgressDialog;
 	private bool disposedValue = false;
 	private IFileOperation op;
 	private OperationFlags opFlags = defaultOptions;
 	private HWND owner;
+	private bool disposeOp = false;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellFileOperations"/> class.</summary>
 	/// <param name="owner">The window that owns the modal dialog. This value can be <see langword="null"/>.</param>
-	public ShellFileOperations(HWND owner = default)
-	{
-		op = new IFileOperation();
-		if (owner != default)
-		{
-			op.SetOwnerWindow(owner);
-		}
-
-		sink = new OpSink(this);
-		sinkCookie = op.Advise(sink);
-	}
+	public ShellFileOperations(HWND owner = default) : this(new IFileOperation(), owner) => disposeOp = true;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellFileOperations"/> class.</summary>
 	/// <param name="operation">An existing <see cref="IFileOperation"/> instance.</param>
-	public ShellFileOperations(IFileOperation operation)
+	/// <param name="owner">The window that owns the modal dialog. This value can be <see langword="null"/>.</param>
+	public ShellFileOperations(IFileOperation operation, HWND owner = default)
 	{
+		Ole32.OleThreadState.EnsureSTA();
 		op = operation;
+		if (owner != default)
+			op.SetOwnerWindow(owner);
 		sink = new OpSink(this);
 		sinkCookie = op.Advise(sink);
 	}
 
 	/// <summary>Finalizes an instance of the <see cref="ShellFileOperations"/> class.</summary>
-	~ShellFileOperations()
-	{
-		Dispose(false);
-	}
+	~ShellFileOperations() => Dispose(false);
 
 	/// <summary>Performs caller-implemented actions after the last operation performed by the call to IFileOperation is complete.</summary>
 	public event EventHandler<ShellFileOpEventArgs>? FinishOperations;
@@ -432,6 +424,13 @@ public partial class ShellFileOperations : IDisposable
 			if (sink != null)
 			{
 				op.Unadvise(sinkCookie);
+				sink = null!;
+			}
+
+			if (disposeOp && op != null)
+			{
+				Marshal.FinalReleaseComObject(op);
+				op = null!;
 			}
 
 			disposedValue = true;
