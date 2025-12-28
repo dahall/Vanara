@@ -39,12 +39,26 @@ public static partial class Shell32
 			SetHandle(p.ReleaseOwnership());
 		}
 
+		/// <summary>Initializes a new instance of the <see cref="PIDL"/> class from a known folder ID.</summary>
+		/// <param name="knownFolder">The known folder.</param>
+		public PIDL(KNOWNFOLDERID knownFolder)
+		{
+			SHGetKnownFolderIDList(knownFolder.Guid(), 0, default, out var pidl).ThrowIfFailed();
+			SetHandle(pidl.ReleaseOwnership());
+		}
+
 		/// <summary>Initializes a new instance of the <see cref="PIDL"/> class.</summary>
 		internal PIDL() { }
+
+		/// <summary>Gets a value representing the Desktop PIDL.</summary>
+		public static PIDL Desktop => new([0, 0]);
 
 		/// <summary>Gets a value representing a NULL PIDL.</summary>
 		/// <value>The null equivalent.</value>
 		public static PIDL Null { get; } = new PIDL();
+
+		/// <summary>Gets a value indicating whether this PIDL is absolute (PIDLIST_ABSOLUTE).</summary>
+		public bool IsAbsolute => this.First().Equals(Desktop);
 
 		/// <summary>Gets a value indicating whether this list is empty.</summary>
 		/// <value><c>true</c> if this list is empty; otherwise, <c>false</c>.</value>
@@ -108,7 +122,7 @@ public static partial class Shell32
 
 		/// <summary>Dumps this instance to a string a list of binary values.</summary>
 		/// <returns>A binary string of the contents.</returns>
-		public string Dump() => string.Join(" ", handle.ToIEnum<byte>((int)Size).Select(b => $"{b:X2}").ToArray());
+		public string Dump() => string.Join(" ", handle.ToIEnum<byte>((int)Size).Select(b => $"{b:X2}"));
 
 		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
@@ -133,7 +147,7 @@ public static partial class Shell32
 
 		/// <summary>Gets the ID list as an array of bytes.</summary>
 		/// <returns>An array of bytes representing the ID list.</returns>
-		public byte[] GetBytes() => handle.ToByteArray((int)Size) ?? new byte[0];
+		public byte[] GetBytes() => handle.ToByteArray((int)Size) ?? [];
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator{PIDL}"/> that can be used to iterate through the collection.</returns>
@@ -152,6 +166,23 @@ public static partial class Shell32
 		/// <param name="immediate">If <c>true</c>, narrows test to immediate children only.</param>
 		/// <returns><c>true</c> if this instance is a parent or ancestor of a supplied PIDL.</returns>
 		public bool IsParentOf(PIDL childPidl, bool immediate = true) => ILIsParent((IntPtr)this, (IntPtr)childPidl, immediate);
+
+		/// <summary>Returns a new PIDL instance representing the relative path from the specified parent PIDL to this PIDL.</summary>
+		/// <param name="parent">The parent PIDL from which to calculate the relative path. Must be an ancestor of this PIDL.</param>
+		/// <returns>A PIDL that represents the relative path from the specified parent to this PIDL.</returns>
+		/// <exception cref="ArgumentException">Thrown if the specified parent PIDL is not a parent of this PIDL.</exception>
+		public PIDL GetRelativeTo(PIDL parent)
+		{
+			if (!parent.IsParentOf(this, false))
+				throw new ArgumentException("The specified parent PIDL is not a parent of this PIDL.", nameof(parent));
+
+			List<IEnumerator<PIDL>> lp = [parent.GetEnumerator(), GetEnumerator()];
+			while (lp[1].MoveNext() && lp[0].MoveNext() && lp[0].Current.Equals(lp[1].Current)) ;
+			var relPidl = new PIDL(lp[1].Current);
+			while (lp[1].MoveNext())
+				relPidl.Append(lp[1].Current);
+			return relPidl;
+		}
 
 		/// <summary>Removes the last identifier from the list.</summary>
 		public bool RemoveLastId() => ILRemoveLastID(handle);
@@ -181,6 +212,45 @@ public static partial class Shell32
 			return string.Empty;
 		}
 
+		/// <summary>Finds the deepest common parent PIDL among a collection of PIDLs.</summary>
+		/// <remarks>
+		/// This method is useful for determining the shared ancestor in a hierarchy represented by PIDLs, such as in shell namespace
+		/// operations. If only one PIDL is provided, that PIDL is returned as the common parent.
+		/// </remarks>
+		/// <param name="pidls">A collection of PIDLs for which to determine the common parent. Cannot be null or empty.</param>
+		/// <returns>
+		/// A PIDL representing the deepest common parent of all provided PIDLs. Returns a null PIDL if the collection is null, empty, or if
+		/// there is no common parent.
+		/// </returns>
+		public static PIDL FindCommonParent(IEnumerable<PIDL> pidls)
+		{
+			if (pidls is null || !pidls.Any())
+				return Null;
+			if (pidls.Count() == 1)
+				return new PIDL(pidls.First());
+
+			// Get iterators for each PIDL
+			var enums = pidls.Select(p => p.GetEnumerator()).ToList();
+			// Skip over "Desktop" level
+			enums.ForEach(e => e.MoveNext());
+			// Loop until divergence
+			var common = new PIDL(enums[0].Current);
+			do
+			{
+				// If any enumerator is at the end, we are done
+				if (enums.Any(e => !e.MoveNext()))
+					break;
+
+				// If all current IDs are the same, append current to common
+				if (enums.Skip(1).All(e => e.Current.Equals(enums[0].Current)))
+					common.Append(enums[0].Current);
+				else
+					break;
+			}
+			while (true);
+			return common;
+		}
+
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
 		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -204,20 +274,13 @@ public static partial class Shell32
 			SetHandle(newHandle);
 		}
 
-		private class InternalEnumerator : IEnumerator<PIDL>
+		private class InternalEnumerator(IntPtr handle) : IEnumerator<PIDL>
 		{
-			private readonly IntPtr pidl;
-			private IntPtr currentPidl;
-			private bool start;
+			private readonly IntPtr pidl = handle;
+			private IntPtr currentPidl = IntPtr.Zero;
+			private bool start = true;
 
-			public InternalEnumerator(IntPtr handle)
-			{
-				start = true;
-				pidl = handle;
-				currentPidl = IntPtr.Zero;
-			}
-
-			public PIDL Current => currentPidl == IntPtr.Zero ? PIDL.Null : ILCloneFirst(currentPidl);
+			public PIDL Current => currentPidl == IntPtr.Zero ? Null : ILCloneFirst(currentPidl);
 
 			object IEnumerator.Current => Current;
 
