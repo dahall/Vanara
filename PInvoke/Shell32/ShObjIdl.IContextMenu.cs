@@ -227,7 +227,7 @@ public static partial class Shell32
 		/// 8 - 5 + 1). Otherwise, it returns a COM error value.
 		/// </returns>
 		[PreserveSig]
-		HRESULT QueryContextMenu(HMENU hmenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, CMF uFlags);
+		HRESULT QueryContextMenu([In] HMENU hmenu, uint indexMenu, uint idCmdFirst, uint idCmdLast, CMF uFlags);
 
 		/// <summary>Carries out the command associated with a shortcut menu item.</summary>
 		/// <param name="pici">
@@ -249,7 +249,7 @@ public static partial class Shell32
 		/// <param name="cchMax">Size of the buffer, in characters, to receive the null-terminated string.</param>
 		/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PreserveSig]
-		HRESULT GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
+		HRESULT GetCommandString([In] nuint idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
 	}
 
 	/// <summary>
@@ -321,7 +321,7 @@ public static partial class Shell32
 		/// <param name="cchMax">Size of the buffer, in characters, to receive the null-terminated string.</param>
 		/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PreserveSig]
-		new HRESULT GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
+		new HRESULT GetCommandString([In] nuint idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
 
 		/// <summary>Enables client objects of the IContextMenu interface to handle messages associated with owner-drawn menu items.</summary>
 		/// <param name="uMsg">
@@ -395,7 +395,7 @@ public static partial class Shell32
 		/// <param name="cchMax">Size of the buffer, in characters, to receive the null-terminated string.</param>
 		/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PreserveSig]
-		new HRESULT GetCommandString([In] IntPtr idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
+		new HRESULT GetCommandString([In] nuint idCmd, GCS uType, [In, Optional] IntPtr pReserved, [Out] IntPtr pszName, uint cchMax);
 
 		/// <summary>Enables client objects of the IContextMenu interface to handle messages associated with owner-drawn menu items.</summary>
 		/// <param name="uMsg">
@@ -463,6 +463,24 @@ public static partial class Shell32
 		HRESULT CallBack([Optional] IShellFolder? psf, [Optional] HWND hwndOwner, [Optional] IDataObject? pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
 	}
 
+	/// <summary>
+	/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name for the command.
+	/// </summary>
+	/// <param name="menu">The <see cref="IContextMenu"/> interface.</param>
+	/// <param name="idCmd">Menu command identifier offset.</param>
+	/// <param name="uType">Flags specifying the information to return.</param>
+	/// <param name="pszName">The reference of the buffer to receive the null-terminated string being retrieved.</param>
+	/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+	public static HRESULT GetCommandString(this IContextMenu menu, uint idCmd, GCS uType, out string? pszName)
+	{
+		if (menu is null) throw new ArgumentNullException(nameof(menu));
+		bool isUnicode = (uType & GCS.GCS_UNICODE) != 0;
+		using SafeCoTaskMemString mem = new(512, isUnicode ? CharSet.Unicode : CharSet.Ansi);
+		var ret = menu.GetCommandString(idCmd, uType, IntPtr.Zero, mem, (uint)mem.Capacity);
+		pszName = ret.Succeeded ? mem.ToString() : null;
+		return ret;
+	}
+
 	/// <summary>Carries out the command associated with a shortcut menu item.</summary>
 	/// <param name="menu">The <see cref="IContextMenu"/> interface.</param>
 	/// <param name="pici">A CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.</param>
@@ -473,26 +491,6 @@ public static partial class Shell32
 		if (menu is null) throw new ArgumentNullException(nameof(menu));
 		using SafeCoTaskMemStruct<T> mem = pici;
 		return menu.InvokeCommand(mem);
-	}
-
-	/// <summary>
-	/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name
-	/// for the command.
-	/// </summary>
-	/// <param name="menu">The <see cref="IContextMenu"/> interface.</param>
-	/// <param name="idCmd">Menu command identifier offset.</param>
-	/// <param name="uType">Flags specifying the information to return.</param>
-	/// <param name="pszName">The reference of the buffer to receive the null-terminated string being retrieved.</param>
-	/// <returns>If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-	public static HRESULT GetCommandString(this IContextMenu menu, ResourceId idCmd, GCS uType, out string? pszName)
-	{
-		if (menu is null) throw new ArgumentNullException(nameof(menu));
-		using SafeCoTaskMemHandle mem = new(Environment.SystemPageSize);
-		bool isUnicode = (uType & GCS.GCS_UNICODE) != 0;
-		var cch = isUnicode ? (uint)(mem.Size / 2) : (uint)mem.Size;
-		var ret = menu.GetCommandString(idCmd, uType, IntPtr.Zero, mem, cch);
-		pszName = ret.Succeeded ? mem.ToString((int)cch, isUnicode ? CharSet.Unicode : CharSet.Ansi) : null;
-		return ret;
 	}
 
 	/// <summary>Contains information needed by IContextMenu::InvokeCommand to invoke a shortcut menu command.</summary>
@@ -844,10 +842,6 @@ public static partial class Shell32
 	/// </para>
 	/// <para><c>Note</c> Prior to Windows Vista, this structure was declared in Shlobj.h.</para>
 	/// </remarks>
-	/// <param name="verb">
-	/// Specifies the language-independent name of the command to carry out. This member is typically a string when a command is being
-	/// activated by an application.
-	/// </param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ns-shobjidl_core-_cminvokecommandinfoex
 	[PInvokeData("shobjidl_core.h", MSDNShortId = "c4c7f053-fdb1-4bba-9eb9-a514ce1d90f6")]
 	[StructLayout(LayoutKind.Sequential)]
