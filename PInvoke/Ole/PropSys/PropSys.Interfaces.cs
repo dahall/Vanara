@@ -1100,12 +1100,39 @@ public static partial class PropSys
 		/// <summary>Gets a formatted, Unicode string representation of a property value.</summary>
 		/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 		/// <param name="pdfFlags">
-		/// One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property
-		/// string format.
+		/// One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.
 		/// </param>
+		/// <param name="ppszDisplay">When this method returns, contains the formatted value.</param>
 		/// <returns>
-		/// When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must
-		/// allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return Code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <description>
+		/// The string was copied and null-terminated without truncation. This string may be returned empty due to an empty input string or
+		/// from a non-empty value that was formatted as an empty string.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <description>The empty string resulted from a VT_EMPTY.</description>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <description>The pszText parameter is NULL.</description>
+		/// </item>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <description>
+		/// The copy operation failed due to insufficient space. The destination buffer is modified to contain a truncated version of the
+		/// ideal result and is null-terminated.
+		/// </description>
+		/// </item>
+		/// </list>
 		/// </returns>
 		[PreserveSig]
 		new HRESULT FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszDisplay);

@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
@@ -73,7 +74,7 @@ public static partial class Ole32
 		public readonly Guid FMTID => ulClipFmt == -3 ? pClipData.ToStructure<Guid>() : Guid.Empty;
 
 		/// <inheritdoc/>
-		public override string ToString() => ulClipFmt switch
+		public override readonly string ToString() => ulClipFmt switch
 		{
 			0 => "[No data]",
 			-1 or -2 => $"CF={ClipboardFormat}",
@@ -462,11 +463,12 @@ public static partial class Ole32
 		/// <summary>Gets the VARTYPE for a provided type.</summary>
 		/// <param name="type">The type to analyze.</param>
 		/// <returns>A best fit <see cref="VARTYPE"/> for the provided type.</returns>
-		public static VARTYPE GetVarType(Type? type)
+		[RequiresUnreferencedCode("Uses reflection when passing COM objects.")]
+		public static VARTYPE GetVarType([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] Type? type)
 		{
 			if (type == null)
 				return VARTYPE.VT_NULL;
-			var elemtype = type.GetElementType() ?? type;
+			Type elemtype = type.GetElementType() ?? type;
 
 			if (type.IsArray && elemtype == typeof(object)) return VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT;
 
@@ -503,7 +505,7 @@ public static partial class Ole32
 				return ret | VARTYPE.VT_HRESULT;
 			if (elemtype.IsCOMObject)
 			{
-				Type[] intf = elemtype!.GetInterfaces();
+				Type[] intf = elemtype.GetInterfaces();
 				if (intf.Contains(typeof(IStream))) return ret | VARTYPE.VT_STREAM;
 				if (intf.Contains(typeof(IStorage))) return ret | VARTYPE.VT_STORAGE;
 				return ret | VARTYPE.VT_UNKNOWN;
