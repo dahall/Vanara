@@ -3655,18 +3655,19 @@ public static partial class User32
 	/// <para>The <c>MENUITEMINFO</c> structure is used with the GetMenuItemInfo, InsertMenuItem, and SetMenuItemInfo functions.</para>
 	/// <para>The menu can display items using text, bitmaps, or both.</para>
 	/// </remarks>
+	/// <remarks>Initializes a new instance of the <see cref="MENUITEMINFO"/> struct.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagmenuiteminfoa typedef struct tagMENUITEMINFOA { UINT
 	// cbSize; UINT fMask; UINT fType; UINT fState; UINT wID; HMENU hSubMenu; HBITMAP hbmpChecked; HBITMAP hbmpUnchecked; ULONG_PTR
 	// dwItemData; LPSTR dwTypeData; UINT cch; HBITMAP hbmpItem; } MENUITEMINFOA, *LPMENUITEMINFOA;
 	[PInvokeData("winuser.h", MSDNShortId = "menuiteminfo.htm")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct MENUITEMINFO
+	public struct MENUITEMINFO(MenuItemInfoMask mask)
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>The size of the structure, in bytes. The caller must set this member to .</para>
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<MENUITEMINFO>();
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
@@ -3714,7 +3715,7 @@ public static partial class User32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public MenuItemInfoMask fMask;
+		public MenuItemInfoMask fMask = mask;
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
@@ -3977,7 +3978,6 @@ public static partial class User32
 		/// </summary>
 		public HBITMAP hbmpItem;
 
-		/// <summary>Initializes a new instance of the <see cref="MENUITEMINFO"/> struct.</summary>
 		/// <param name="id">An application-defined value that identifies the menu item.</param>
 		/// <param name="type">The menu type.</param>
 		/// <param name="state">The menu state.</param>
@@ -3985,17 +3985,13 @@ public static partial class User32
 		/// A handle to the drop-down menu or submenu associated with the menu item. If the menu item is not an item that opens a
 		/// drop-down menu or submenu, this member is <see cref="HMENU.NULL"/>.
 		/// </param>
-		public MENUITEMINFO(uint id, MenuItemType type = MenuItemType.MFT_STRING, MenuItemState state = MenuItemState.MFS_ENABLED, HMENU subMenu = default) : this()
+		public MENUITEMINFO(uint id, MenuItemType type = MenuItemType.MFT_STRING, MenuItemState state = MenuItemState.MFS_ENABLED, HMENU subMenu = default) : this(0)
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(MENUITEMINFO));
-			wID = id;
-			fMask = MenuItemInfoMask.MIIM_ID;
+			fMask = MenuItemInfoMask.MIIM_ID | (type == 0 ? 0 : MenuItemInfoMask.MIIM_TYPE) | (state == 0 ? 0 : MenuItemInfoMask.MIIM_STATE) | (subMenu.IsNull ? 0 : MenuItemInfoMask.MIIM_SUBMENU);
 			fType = type;
-			if (type != 0) fMask |= MenuItemInfoMask.MIIM_TYPE;
 			fState = state;
-			if (state != 0) fMask |= MenuItemInfoMask.MIIM_STATE;
+			wID = id;
 			hSubMenu = subMenu;
-			if (subMenu != default) fMask |= MenuItemInfoMask.MIIM_SUBMENU;
 		}
 	}
 
