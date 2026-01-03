@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.Collections;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
@@ -337,8 +338,10 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	internal static readonly bool IsMin7 = Environment.OSVersion.Version >= new Version(6, 1);
 	internal static readonly bool IsMinVista = Environment.OSVersion.Version.Major >= 6;
 	internal static readonly PROPERTYKEY pkItemType = PROPERTYKEY.System.ItemType;
+
 	internal IShellItem iShellItem;
 	internal IShellItem2? iShellItem2;
+
 	private static readonly Lazy<Dictionary<Type, BHID>> bhidLookup = new(() =>
 		new Dictionary<Type, BHID>
 		{
@@ -388,11 +391,15 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 			//{ typeof(??), BHID.BHID_FilePlaceholder },
 		}, false);
 
+	/// <summary>Indicates whether the object has been disposed.</summary>
+	protected bool disposed = false;
+	/// <summary>Represents the shell context menu associated with the current context, or null if no menu is available.</summary>
+	protected ShellContextMenu? menu;
+	private DisposingList disposables = [];
 	private ShellItemImages? images;
-	private ShellContextMenu? menu;
+	private PIDL? pidl;
 	private PropertyDescriptionList? propDescList;
 	private ShellItemPropertyStore? props;
-	private IQueryInfo? qi;
 
 	/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 	/// <param name="path">The file system path of the item.</param>
@@ -454,7 +461,18 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 	/// <summary>Gets the context menu detail for this shell item.</summary>
 	/// <value>The context menu.</value>
-	public ShellContextMenu ContextMenu => menu ??= new ShellContextMenu(this);
+	public virtual ShellContextMenu ContextMenu
+	{
+		get
+		{
+			if (menu is null)
+			{
+				menu = AddDisposable(ShellContextMenu.CreateFromItems([this], out var d));
+				disposables.Add(d);
+			}
+			return menu;
+		}
+	}
 
 	/// <summary>Returns a <see cref="IDataObject"/> representing the item. This object is used in drag and drop operations.</summary>
 	public IDataObject DataObject => GetHandler<IDataObject>(BHID.BHID_SFUIObject);
@@ -512,8 +530,12 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	{
 		get
 		{
-			SHGetIDListFromObject(iShellItem, out var pidl).ThrowIfFailed();
-			return pidl;
+			if (pidl is null)
+			{
+				SHGetIDListFromObject(iShellItem, out pidl).ThrowIfFailed();
+				disposables.Add(pidl);
+			}
+			return pidl!;
 		}
 	}
 
@@ -527,11 +549,11 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// properties of this value to prevent unexpected failures.</note>
 	/// </summary>
 	/// <value>The dictionary of properties.</value>
-	public ShellItemPropertyStore Properties => props ??= new ShellItemPropertyStore(this);
+	public ShellItemPropertyStore Properties => props ??= AddDisposable(new ShellItemPropertyStore(this));
 
 	/// <summary>Gets a property description list object containing descriptions of all properties suitable to be shown in the UI.</summary>
 	/// <returns>A complete <see cref="PropertyDescriptionList"/> instance.</returns>
-	public PropertyDescriptionList PropertyDescriptions => propDescList ??= GetPropertyDescriptionList(PROPERTYKEY.System.PropList.FullDetails);
+	public PropertyDescriptionList PropertyDescriptions => propDescList ??= AddDisposable(GetPropertyDescriptionList(PROPERTYKEY.System.PropList.FullDetails));
 
 	/// <summary>Gets the normal tool tip text associated with this item.</summary>
 	/// <value>The tool tip text.</value>
@@ -616,27 +638,27 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	}
 
 	/// <inheritdoc/>
-	void IDisposable.Dispose()
+	public void Dispose()
 	{
 		Dispose(true);
 		GC.SuppressFinalize(this);
 	}
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public virtual void Dispose(bool disposing)
+	protected virtual void Dispose(bool disposing)
 	{
-		props?.Dispose(disposing);
-		props = null;
-		propDescList?.Dispose(disposing);
-		propDescList = null;
-		if (qi is not null) Marshal.FinalReleaseComObject(qi);
-		qi = null;
-		if (iShellItem2 is not null) Marshal.FinalReleaseComObject(iShellItem2);
+		if (disposed) return;
+
+		disposables.Dispose();
+		images = null;
 		iShellItem2 = null;
+
 		if (disposing)
 		{
 			// Release managed resources here
 		}
+
+		disposed = true;
 	}
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
@@ -735,15 +757,18 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <returns>The tool tip text formatted as per <paramref name="options"/>.</returns>
 	public string GetToolTip(ShellItemToolTipOptions options = ShellItemToolTipOptions.Default)
 	{
-		if (qi is null)
-			try
+		try
+		{
+			var qi = (Parent ?? ShellFolder.Desktop).GetChildrenUIObjects<IQueryInfo>(default, this);
+			if (qi != null)
 			{
-				qi = (Parent ?? ShellFolder.Desktop).GetChildrenUIObjects<IQueryInfo>(default, this);
+				qi.GetInfoTip((QITIP)options, out var ret);
+				Marshal.ReleaseComObject(qi);
+				return ret ?? string.Empty;
 			}
-			catch { }
-		if (qi is null) return "";
-		qi.GetInfoTip((QITIP)options, out var ret);
-		return ret ?? "";
+		}
+		catch { }
+		return string.Empty;
 	}
 
 	/// <summary>Invokes the item's command verb.</summary>
@@ -895,10 +920,24 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	/// <summary>Initializes this instance with the specified IShellItem.</summary>
 	/// <param name="si">The IShellItem object.</param>
 	[MemberNotNull(nameof(iShellItem))]
-	protected void Init(IShellItem? si)
+	protected virtual void Init(IShellItem? si)
 	{
-		iShellItem = si ?? throw new ArgumentNullException(nameof(si));
+		disposables.Add(iShellItem = si ?? throw new ArgumentNullException(nameof(si)));
 		iShellItem2 = si as IShellItem2;
+	}
+
+	/// <summary>Adds the specified disposable object to the internal collection for later disposal.</summary>
+	/// <remarks>
+	/// This method is useful for tracking disposable resources that should be disposed of together. The caller remains responsible for the
+	/// lifetime of the returned object until the containing object is disposed.
+	/// </remarks>
+	/// <typeparam name="T">The type of the disposable object to add. Must implement <see cref="IDisposable"/>.</typeparam>
+	/// <param name="disposable">The disposable object to add. Cannot be null.</param>
+	/// <returns>The same instance of <typeparamref name="T"/> that was added to the collection.</returns>
+	protected T AddDisposable<T>(T disposable) where T : IDisposable
+	{
+		disposables.Add(disposable);
+		return disposable;
 	}
 
 	/// <summary>Local implementation of IShellItem.</summary>
@@ -913,20 +952,83 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 
 		/// <summary>Binds to a handler for an item as specified by the handler ID value (BHID).</summary>
 		/// <param name="pbc">
-		/// A pointer to an IBindCtx interface on a bind context object. Used to pass optional parameters to the handler. The contents
-		/// of the bind context are handler-specific. For example, when binding to BHID_Stream, the STGM flags in the bind context
-		/// indicate the mode of access desired (read or read/write).
+		/// <para>Type: <b><c>IBindCtx</c>*</b></para>
+		/// <para>
+		/// A pointer to an <c>IBindCtx</c> interface on a bind context object. Used to pass optional parameters to the handler. The contents
+		/// of the bind context are handler-specific. For example, when binding to <b>BHID_Stream</b>, the <c>STGM</c> flags in the bind
+		/// context indicate the mode of access desired (read or read/write).
+		/// </para>
 		/// </param>
-		/// <param name="bhid">Reference to a GUID that specifies which handler will be created.</param>
-		/// <param name="riid">IID of the object type to retrieve.</param>
-		/// <returns>When this method returns, contains a pointer of type riid that is returned by the handler specified by rbhid.</returns>
+		/// <param name="bhid">
+		/// <para>Type: <b>REFGUID</b></para>
+		/// <para>Reference to a GUID that specifies which handler will be created. One of the following values defined in Shlguid.h:</para>
+		/// <para>BHID_SFObject</para>
+		/// <para>Restricts usage to <c>BindToObject</c>.</para>
+		/// <para>BHID_SFUIObject</para>
+		/// <para>Restricts usage to <c>GetUIObjectOf</c>.</para>
+		/// <para>BHID_SFViewObject</para>
+		/// <para>Restricts usage to <c>CreateViewObject</c>.</para>
+		/// <para>BHID_Storage</para>
+		/// <para>Attempts to retrieve the storage RIID, but defaults to Shell implementation on failure.</para>
+		/// <para>BHID_Stream</para>
+		/// <para>Restricts usage to <c>IStream</c>.</para>
+		/// <para>BHID_LinkTargetItem</para>
+		/// <para>
+		/// CLSID_ShellItem is initialized with the target of this item (can only be SFGAO_LINK). See <c>SFGAO</c> for a description of SFGAO_LINK.
+		/// </para>
+		/// <para>BHID_StorageEnum</para>
+		/// <para>If the item is a folder, gets an <c>IEnumShellItems</c> object with which to enumerate the storage contents.</para>
+		/// <para>BHID_Transfer</para>
+		/// <para>
+		/// <b>Introduced in Windows Vista</b>: If the item is a folder, gets an <c>ITransferSource</c> or <c>ITransferDestination</c> object.
+		/// </para>
+		/// <para>BHID_PropertyStore</para>
+		/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IPropertyStore</c> or <c>IPropertyStoreFactory</c>.</para>
+		/// <para>BHID_ThumbnailHandler</para>
+		/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IExtractImage</c> or <c>IThumbnailProvider</c>.</para>
+		/// <para>BHID_EnumItems</para>
+		/// <para>
+		/// <b>Introduced in Windows Vista</b>: If the item is a folder, gets an <c>IEnumShellItems</c> object that enumerates all items in
+		/// the folder. This includes folders, nonfolders, and hidden items.
+		/// </para>
+		/// <para>BHID_DataObject</para>
+		/// <para><b>Introduced in Windows Vista</b>: Gets an <c>IDataObject</c> object for use with an item or an array of items.</para>
+		/// <para>BHID_AssociationArray</para>
+		/// <para><b>Introduced in Windows Vista</b>: Gets an <c>IQueryAssociations</c> object for use with an item or an array of items.</para>
+		/// <para>BHID_Filter</para>
+		/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IFilter</c>.</para>
+		/// <para>BHID_EnumAssocHandlers</para>
+		/// <para>
+		/// <b>Introduced in Windows 7</b>: Gets an <c>IEnumAssocHandlers</c> object used to enumerate the recommended association handlers
+		/// for the given item.
+		/// </para>
+		/// <para>BHID_RandomAccessStream</para>
+		/// <para><b>Introduced in Windows 8</b>: Gets an <c>IRandomAccessStream</c> object for the item.</para>
+		/// <para>BHID_FilePlaceholder</para>
+		/// <para><b>Introduced in Windows 8.1</b>: Gets an object used to provide placeholder file functionality.</para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <b>REFIID</b></para>
+		/// <para>IID of the object type to retrieve.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <b>void**</b></para>
+		/// <para>When this method returns, contains a pointer of type <i>riid</i> that is returned by the handler specified by <i>rbhid</i>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
+		/// </returns>
 		/// <exception cref="InvalidCastException"></exception>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		public object BindToHandler(IBindCtx? pbc, in Guid bhid, in Guid riid)
+		public HRESULT BindToHandler([In, Optional] IBindCtx? pbc, in Guid bhid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv)
 		{
 			if (riid == typeof(IShellFolder).GUID)
-				return Marshal.GetIUnknownForObject(GetIShellFolder());
-			throw new InvalidCastException();
+			{
+				ppv = Marshal.GetIUnknownForObject(GetIShellFolder());
+				return HRESULT.S_OK;
+			}
+			ppv = null;
+			return HRESULT.E_INVALIDARG;
 		}
 
 		/// <summary>Compares two IShellItem objects.</summary>
@@ -994,7 +1096,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 			{
 				var result = new StringBuilder(512);
 				if (!SHGetPathFromIDList(PIDL, result))
-					throw new ArgumentException();
+					throw new ArgumentException("Unable to get file system path.");
 				return result.ToString();
 			}
 
