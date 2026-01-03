@@ -50,39 +50,38 @@ public class ShellLibrary : ShellFolder
 
 	/// <summary>Initializes a new instance of the <see cref="ShellLibrary"/> class.</summary>
 	/// <param name="knownFolderId">The known folder identifier.</param>
-	/// <param name="readOnly">if set to <c>true</c> [read only].</param>
-	public ShellLibrary(KNOWNFOLDERID knownFolderId, bool readOnly = false)
+	/// <param name="readOnly">if set to <c>true</c>, library is writable.</param>
+	public ShellLibrary(KNOWNFOLDERID knownFolderId, bool readOnly = false) : base(knownFolderId)
 	{
 		lib = new IShellLibrary();
 		lib.LoadLibraryFromKnownFolder(knownFolderId.Guid(), readOnly ? STGM.STGM_READ : STGM.STGM_READWRITE).ThrowIfFailed();
-		Init(knownFolderId.GetIShellItem());
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellLibrary"/> class.</summary>
 	/// <param name="libraryName">Name of the library.</param>
 	/// <param name="kf">The known folder identifier.</param>
-	/// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
+	/// <param name="overwrite">if set to <c>true</c>, library can be overwritten.</param>
 	public ShellLibrary(string libraryName, KNOWNFOLDERID kf = KNOWNFOLDERID.FOLDERID_Libraries, bool overwrite = false)
 	{
 		lib = new IShellLibrary();
 		Name = libraryName;
-		lib.SaveInKnownFolder(kf.Guid(), libraryName, overwrite ? LIBRARYSAVEFLAGS.LSF_OVERRIDEEXISTING : LIBRARYSAVEFLAGS.LSF_FAILIFTHERE);
+		Init(lib.SaveInKnownFolder(kf.Guid(), libraryName, overwrite ? LIBRARYSAVEFLAGS.LSF_OVERRIDEEXISTING : LIBRARYSAVEFLAGS.LSF_FAILIFTHERE));
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellLibrary"/> class.</summary>
 	/// <param name="libraryName">Name of the library.</param>
 	/// <param name="parent">The parent.</param>
-	/// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
+	/// <param name="overwrite">if set to <c>true</c>, library can be overwritten.</param>
 	public ShellLibrary(string libraryName, ShellFolder parent, bool overwrite = false)
 	{
 		lib = new IShellLibrary();
 		Name = libraryName;
-		lib.Save(parent.iShellItem, libraryName, overwrite ? LIBRARYSAVEFLAGS.LSF_OVERRIDEEXISTING : LIBRARYSAVEFLAGS.LSF_FAILIFTHERE);
+		Init(lib.Save(parent.iShellItem, libraryName, overwrite ? LIBRARYSAVEFLAGS.LSF_OVERRIDEEXISTING : LIBRARYSAVEFLAGS.LSF_FAILIFTHERE));
 	}
 
 	/// <summary>Initializes a new instance of the <see cref="ShellLibrary"/> class.</summary>
 	/// <param name="iItem">The shell item.</param>
-	/// <param name="readOnly">if set to <c>true</c> [read only].</param>
+	/// <param name="readOnly">if set to <c>true</c>, library is writable.</param>
 	internal ShellLibrary(IShellItem iItem, bool readOnly = false) : base(iItem)
 	{
 		lib = new IShellLibrary();
@@ -179,6 +178,18 @@ public class ShellLibrary : ShellFolder
 	public void ShowLibraryManagementDialog(HWND parentWindow = default, string? title = null, string? instruction = null, bool allowUnindexableLocations = false) => SHShowManageLibraryUI(iShellItem, parentWindow, title, instruction,
 			allowUnindexableLocations ? LIBRARYMANAGEDIALOGOPTIONS.LMD_ALLOWUNINDEXABLENETWORKLOCATIONS : LIBRARYMANAGEDIALOGOPTIONS.LMD_DEFAULT).ThrowIfFailed();
 
+	/// <inheritdoc/>
+	protected override void Dispose(bool disposing)
+	{
+		if (disposed) return;
+		folders = null;
+		if (lib is not null)
+		{
+			Marshal.FinalReleaseComObject(lib);
+			lib = null!;
+		}
+		base.Dispose(disposing);
+	}
 
 	/// <summary>Folders of a <see cref="ShellLibrary"/>.</summary>
 	/// <seealso cref="ShellItemArray"/>
