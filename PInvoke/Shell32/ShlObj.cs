@@ -4916,6 +4916,95 @@ public static partial class Shell32
 	[PInvokeData("shlobj_core.h", MSDNShortId = "055ff0a0-9ba7-463d-9684-3fd072b190da")]
 	public static extern HRESULT SHCreateDefaultContextMenu(in DEFCONTEXTMENU pdcm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object? ppv);
 
+	/// <summary>Creates an object that represents the Shell's default context menu implementation.</summary>
+	/// <remarks>
+	/// The returned <see cref="IContextMenu"/> is valid only as long as the associated resources are not disposed. Always dispose the object
+	/// provided in <paramref name="disposables"/> to release native resources and avoid memory leaks. This method simplifies the process of
+	/// creating a shell context menu by handling common parent folder resolution and resource management.
+	/// </remarks>
+	/// <param name="pContainingFolder">
+	/// A pointer to the IShellFolder interface of the folder object that contains the selected file objects, or the folder that contains the
+	/// context menu if no file objects are selected. Can be <see langword="null"/> to infer the folder from the provided item identifiers.
+	/// </param>
+	/// <param name="disposables">
+	/// When this method returns, contains an <see cref="IDisposable"/> instance that manages the lifetime of resources associated with the
+	/// context menu. The caller is responsible for disposing this object when the context menu is no longer needed.
+	/// </param>
+	/// <param name="items">
+	/// An array of IShellItem instances for which to create the context menu. Each entry in the array describes a child item to which the
+	/// context menu applies, for instance, a selected file the user wants to Open.
+	/// </param>
+	/// <returns>An <see cref="IContextMenu"/> instance that provides access to the default context menu for the specified items.</returns>
+	public static IContextMenu SHCreateDefaultContextMenuEx(IShellFolder? pContainingFolder, out IDisposable disposables, params IShellItem[] items)
+	{
+		var pidls = Array.ConvertAll(items, si => { SHGetIDListFromObject(si, out var pidl).ThrowIfFailed(); return pidl!; });
+		var pcm = SHCreateDefaultContextMenuEx(pContainingFolder, out disposables, pidls);
+		(disposables as Vanara.Collections.DisposingList)?.AddRange(pidls);
+		return pcm;
+	}
+
+	/// <summary>Creates an object that represents the Shell's default context menu implementation.</summary>
+	/// <remarks>
+	/// The returned <see cref="IContextMenu"/> is valid only as long as the associated resources are not disposed. Always dispose the object
+	/// provided in <paramref name="disposables"/> to release native resources and avoid memory leaks. This method simplifies the process of
+	/// creating a shell context menu by handling common parent folder resolution and resource management.
+	/// </remarks>
+	/// <param name="pContainingFolder">
+	/// A pointer to the IShellFolder interface of the folder object that contains the selected file objects, or the folder that contains the
+	/// context menu if no file objects are selected. Can be <see langword="null"/> to infer the folder from the provided item identifiers.
+	/// </param>
+	/// <param name="disposables">
+	/// When this method returns, contains an <see cref="IDisposable"/> instance that manages the lifetime of resources associated with the
+	/// context menu. The caller is responsible for disposing this object when the context menu is no longer needed.
+	/// </param>
+	/// <param name="pidls">
+	/// An array of item identifier lists (PIDLs) representing the shell items for which to create the context menu. Each entry in the array
+	/// describes a child item to which the context menu applies, for instance, a selected file the user wants to Open.
+	/// </param>
+	/// <returns>An <see cref="IContextMenu"/> instance that provides access to the default context menu for the specified items.</returns>
+	public static IContextMenu SHCreateDefaultContextMenuEx(IShellFolder? pContainingFolder, out IDisposable disposables, params PIDL[] pidls)
+	{
+		IShellFolder? psf = pContainingFolder;
+		Vanara.Collections.DisposingList dl = [];
+		disposables = dl;
+		if (pidls is null || pidls.Length == 0)
+		{
+			if (psf is null)
+				SHGetDesktopFolder(out psf).ThrowIfFailed();
+			SHGetIDListFromObject(psf, out var pidl).ThrowIfFailed();
+			dl.AddRange(pidls = [pidl]);
+		}
+		else if (pidls.Length == 1)
+		{
+			if (psf is null)
+			{
+				if (pidls[0].IsFolder)
+				{
+					SHBindToParent(pidls[0], out psf, out _).ThrowIfFailed();
+					dl.Add(psf!);
+					pidls = [];
+				}
+				else
+				{
+					using var pfpidl = pidls[0].Parent ?? PIDL.Desktop;
+					dl.Add(psf = SHBindToObject<IShellFolder>(null, pfpidl, null)!);
+				}
+			}
+		}
+		else
+		{
+			if (psf is null)
+			{
+				using var pfpidl = PIDL.FindCommonParent(pidls);
+				dl.Add(psf = SHBindToObject<IShellFolder>(null, pfpidl, null)!);
+			}
+		}
+		SHCreateDefaultContextMenu(new DEFCONTEXTMENU(psf!, pidls!, null, out var mem), out IContextMenu? pcm).ThrowIfFailed();
+		dl.Add(mem); // maybe remove?
+		return pcm!;
+	}
+
+
 	/// <summary>
 	/// <para>
 	/// [SHCreateDirectory is available for use in the operating systems specified in the Requirements section. It may be altered or
@@ -7812,7 +7901,7 @@ public static partial class Shell32
 	/// <summary>Contains context menu information used by SHCreateDefaultContextMenu.</summary>
 	[StructLayout(LayoutKind.Sequential)]
 	[PInvokeData("shlobj_core.h")]
-	public struct DEFCONTEXTMENU(IShellFolder fld)
+	public struct DEFCONTEXTMENU
 	{
 		/// <summary>A handle to the context menu. Set this member to the handle returned from CreateMenu.</summary>
 		public HWND hwnd;
@@ -7834,7 +7923,7 @@ public static partial class Shell32
 		/// contains the context menu if no file objects are selected.
 		/// </summary>
 		[MarshalAs(UnmanagedType.Interface)]
-		public IShellFolder psf = fld ?? throw new ArgumentNullException(nameof(fld));
+		public IShellFolder psf;
 
 		/// <summary>The count of items in member apidl.</summary>
 		public uint cidl;
@@ -7876,28 +7965,37 @@ public static partial class Shell32
 		/// <param name="childIds">
 		/// An array of PIDL objects that identify the child items within the specified shell folder. The array must not be null or empty.
 		/// </param>
+		/// <param name="extKeys">The registry keys from which to load extensions. This parameter is optional and can be <see langword="null"/>.</param>
 		/// <param name="mem">
 		/// When this method returns, contains a SafeAllocatedMemoryHandle representing the allocated memory for the item identifier list.
 		/// This parameter is passed uninitialized.
 		/// </param>
 		/// <exception cref="ArgumentNullException">Thrown if pShellFolder is null, or if childIds is null or empty.</exception>
-		public DEFCONTEXTMENU(IShellFolder pShellFolder, PIDL[] childIds, out SafeAllocatedMemoryHandle mem) : this(pShellFolder)
+		public DEFCONTEXTMENU(IShellFolder pShellFolder, PIDL[] childIds, HKEY[]? extKeys, out SafeAllocatedMemoryHandle mem)
 		{
-			if (childIds is not null && childIds.Length > 0)
+			psf = pShellFolder ?? throw new ArgumentNullException(nameof(pShellFolder));
+
+			if (childIds is null || childIds.Length == 0)
+				throw new ArgumentNullException(nameof(childIds));
+			cidl = (uint)childIds.Length;
+			SHGetIDListFromObject(pShellFolder, out var fpidl).ThrowIfFailed();
+			pidlFolder = (IntPtr)fpidl;
+			SafeNativeArray<IntPtr> arpidls = new(childIds.Length);
+			for (int i = 0; i < arpidls.Count; i++)
 			{
-				cidl = (uint)childIds.Length;
-				SHGetIDListFromObject(pShellFolder, out var fpidl).ThrowIfFailed();
-				SafeNativeArray<IntPtr> arpidls = new(childIds.Length);
-				for (int i = 0; i < arpidls.Count; i++)
-				{
-					var ap = childIds[i].GetRelativeTo(fpidl);
-					arpidls.AddSubReference([ap]);
-					arpidls[i] = (IntPtr)ap;
-				}
-				apidl = mem = arpidls;
+				var ap = childIds[i].GetRelativeTo(fpidl);
+				arpidls.AddSubReference([ap]);
+				arpidls[i] = (IntPtr)ap;
 			}
-			else
-				mem = SafeCoTaskMemHandle.Null;
+			apidl = mem = arpidls;
+			mem.AddSubReference([fpidl]);
+
+			if (extKeys != null && extKeys.Length > 0)
+			{
+				if (extKeys.Length > 16)
+					throw new ArgumentOutOfRangeException(nameof(extKeys), "The maximum number of keys is 16.");
+				mem.AddSubReference(aKeys.DestructiveAssign(extKeys));
+			}
 		}
 	}
 
