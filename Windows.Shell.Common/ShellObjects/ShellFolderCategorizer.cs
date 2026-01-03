@@ -9,9 +9,14 @@ using static Vanara.PInvoke.Shell32;
 namespace Vanara.Windows.Shell;
 
 /// <summary>Exposes a list of categorizers registered on an IShellFolder.</summary>
-public class ShellFolderCategorizer : IEnumerable<ShellFolderCategory>
+public class ShellFolderCategorizer : IDisposable, IEnumerable<ShellFolderCategory>
 {
+	private bool disposed = false;
+
 	internal ShellFolderCategorizer(IShellFolder folder) => ICategoryProvider = folder.CreateViewObject<ICategoryProvider>(default)!;
+
+	/// <summary>Finalizes an instance of the <see cref="ShellFolderCategorizer"/> class.</summary>
+	~ShellFolderCategorizer() => Dispose(false);
 
 	/// <summary>Gets the default category.</summary>
 	public ShellFolderCategory? DefaultCategory
@@ -42,15 +47,40 @@ public class ShellFolderCategorizer : IEnumerable<ShellFolderCategory>
 	public bool CanCategorizeOnSCID(in PROPERTYKEY scid) => ICategoryProvider.CanCategorizeOnSCID(scid) == HRESULT.S_OK;
 
 	/// <inheritdoc/>
+	public void Dispose()
+	{
+		Dispose(disposing: true);
+		GC.SuppressFinalize(this);
+	}
+
+	/// <inheritdoc/>
 	public IEnumerator<ShellFolderCategory> GetEnumerator()
 	{
 		if (ICategoryProvider.EnumCategories(out IEnumGUID penum) == HRESULT.S_OK)
-			return new IEnumFromCom<Guid>(penum.Next, penum.Reset).Select(g => GetCat(g)).GetEnumerator();
+			return new IEnumFromCom<Guid>(penum.Next, penum.Reset).Select(GetCat).GetEnumerator();
 		return Enumerable.Empty<ShellFolderCategory>().GetEnumerator();
 	}
 
 	/// <inheritdoc/>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+	/// <summary>Releases the unmanaged resources used by the object and optionally releases the managed resources.</summary>
+	/// <remarks>
+	/// This method is called by both the public Dispose() method and the finalizer. When disposing is true, the method should release all
+	/// resources held by managed objects. When disposing is false, the method should release only unmanaged resources. Override this method
+	/// to provide custom cleanup logic for derived classes.
+	/// </remarks>
+	/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+	protected virtual void Dispose(bool disposing)
+	{
+		if (disposed) return;
+		if (ICategoryProvider is not null)
+		{
+			Marshal.ReleaseComObject(ICategoryProvider);
+			ICategoryProvider = null!;
+		}
+		disposed = true;
+	}
 
 	private ShellFolderCategory GetCat(Guid catid)
 	{
