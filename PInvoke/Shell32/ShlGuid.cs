@@ -230,14 +230,27 @@ public static partial class Shell32
 	{
 		/// <summary>Restricts usage to BindToObject.</summary>
 		[Associate("{3981e224-f559-11d3-8e3a-00c04f6837d5}")]
+		[CorrespondingType(typeof(IShellFolder), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IIdentityName), CorrespondingAction.Get)]
 		BHID_SFObject = 1,
 
 		/// <summary>Restricts usage to GetUIObjectOf.</summary>
 		[Associate("{3981e225-f559-11d3-8e3a-00c04f6837d5}")]
+		[CorrespondingType(typeof(IShellLinkW), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IContextMenu), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IContextMenu2), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IContextMenu3), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IExtractIconA), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IExtractIconW), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IQueryInfo), CorrespondingAction.Get)]
 		BHID_SFUIObject,
 
 		/// <summary>Restricts usage to CreateViewObject.</summary>
 		[Associate("{3981e226-f559-11d3-8e3a-00c04f6837d5}")]
+		[CorrespondingType(typeof(IShellItemResources), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IShellFolder2), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(IShellView), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(Ole32.IDropTarget), CorrespondingAction.Get)]
 		BHID_SFViewObject,
 
 		/// <summary>Attempts to retrieve the storage RIID, but defaults to Shell implementation on failure.</summary>
@@ -248,6 +261,7 @@ public static partial class Shell32
 		/// <summary>Restricts usage to IStream.</summary>
 		[Associate("{1CEBB3AB-7C10-499a-A417-92CA16C4CB83}")]
 		[CorrespondingType(typeof(System.Runtime.InteropServices.ComTypes.IStream), CorrespondingAction.Get)]
+		[CorrespondingType(typeof(Ole32.IStreamV), CorrespondingAction.Get)]
 		BHID_Stream,
 
 		/// <summary>Introduced in Windows 8: Gets an IRandomAccessStream object for the item.</summary>
@@ -265,7 +279,6 @@ public static partial class Shell32
 
 		/// <summary>If the item is a folder, gets an IEnumShellItems object with which to enumerate the storage contents.</summary>
 		[Associate("{4621A4E3-F0D6-4773-8A9C-46E77B174840}")]
-		[CorrespondingType(typeof(IEnumShellItems), CorrespondingAction.Get)]
 		BHID_StorageEnum,
 
 		/// <summary>Introduced in Windows Vista: If the item is a folder, gets an ITransferSource or ITransferDestination object.</summary>
