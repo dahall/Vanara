@@ -127,6 +127,10 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 		}
 	}
 
+	/// <inheritdoc/>
+	public override ShellContextMenu ContextMenu =>
+		menu ??= AddDisposable(new ShellContextMenu(IShellFolder.CreateViewObject<IContextMenu>(HWND.NULL)!));
+
 	/// <summary>Gets the underlying <see cref="IShellFolder"/> instance.</summary>
 	/// <value>The underlying <see cref="IShellFolder"/> instance.</value>
 	public IShellFolder IShellFolder => iShellFolder;
@@ -247,9 +251,30 @@ public class ShellFolder : ShellItem, IEnumerable<ShellItem>
 		return this[newPidl];
 	}
 
+	/// <inheritdoc/>
+	protected override void Dispose(bool disposing)
+	{
+		if (disposed) return;
+		if (iShellFolder is not null)
+		{
+			Marshal.FinalReleaseComObject(iShellFolder);
+			iShellFolder = null!;
+		}
+		categories?.Dispose();
+		categories = null;
+		base.Dispose(disposing);
+	}
+
+	/// <inheritdoc/>
+	protected override void Init(IShellItem? si)
+	{
+		base.Init(si);
+		iShellFolder = GetInstance();
+	}
+
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	private IShellFolder GetInstance() => iShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
+	IShellFolder GetInstance() => iShellItem.BindToHandler<IShellFolder>(null, BHID.BHID_SFObject.Guid());
 }
