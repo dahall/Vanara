@@ -20,6 +20,8 @@ public class PropertyDescription : IDisposable
 	/// <summary>Gets the type list.</summary>
 	protected PropertyTypeList? typeList;
 
+	private bool disposed = false;
+
 	/// <summary>Initializes a new instance of the <see cref="PropertyDescription"/> class.</summary>
 	/// <param name="propertyDescription">The property description.</param>
 	/// <param name="pkey">The associated property key.</param>
@@ -148,12 +150,21 @@ public class PropertyDescription : IDisposable
 	/// <param name="propvar">On entry, contains a PROPVARIANT that contains the original value. When this method returns, contains the canonical value.</param>
 	public bool CoerceToCanonicalValue(PROPVARIANT propvar) => iDesc?.CoerceToCanonicalValue(propvar).Succeeded ?? false;
 
-	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-	public virtual void Dispose()
+	/// <inheritdoc/>
+	public void Dispose()
 	{
+		Dispose(true);
+		GC.SuppressFinalize(this);
+	}
+
+	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+	/// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+	protected virtual void Dispose(bool disposing)
+	{
+		if (disposed) return;
 		iDesc2 = null;
 		Marshal.FinalReleaseComObject(iDesc);
-		GC.SuppressFinalize(this);
+		disposed = true;
 	}
 
 	/// <summary>Gets a formatted string representation of a property value.</summary>
@@ -212,6 +223,8 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	/// <summary>The IPropertyDescriptionList instance.</summary>
 	protected IPropertyDescriptionList? iList;
 
+	private bool disposed = false;
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="PropertyDescriptionList"/> class from a string.
 	/// </summary>
@@ -247,10 +260,12 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	/// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
-	public virtual void Dispose(bool disposing)
+	protected virtual void Dispose(bool disposing)
 	{
+		if (disposed) return;
 		if (iList is not null) Marshal.FinalReleaseComObject(iList);
 		iList = null;
+		disposed = true;
 	}
 
 	/// <inheritdoc />
@@ -259,7 +274,7 @@ public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisp
 	/// <summary>Gets the values for each property defined by this list for a specified shell item.</summary>
 	/// <param name="shellItem">The shell item used to retrieve property values.</param>
 	/// <returns>A list of property values.</returns>
-	public object?[] GetValuesForShellItem(ShellItem shellItem) => Enum().Select(pd => shellItem.Properties[pd.PropertyKey]).ToArray();
+	public object?[] GetValuesForShellItem(ShellItem shellItem) => [.. Enum().Select(pd => shellItem.Properties[pd.PropertyKey])];
 
 	/// <inheritdoc />
 	public override string ToString() => "prop:" + string.Join(";", this.Select(d => $"{GetPrefixForViewFlags(d.ViewFlags)}{d.CanonicalName}").ToArray());
