@@ -23,6 +23,8 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	/// <summary>If specified, the path to the file system item.</summary>
 	protected PIDL? item = null;
 
+	private bool disposed = false;
+
 	/// <summary>Returns a property store for an item, given a path or parsing name.</summary>
 	/// <param name="path">A string that specifies the item path.</param>
 	/// <param name="flags">One or more values from the GETPROPERTYSTOREFLAGS constants.</param>
@@ -131,7 +133,7 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 	}
 
 	/// <summary>Gets an <see cref="IEnumerable{T}"/> containing the values in the <see cref="IReadOnlyDictionary{PROPERTYKEY, Object}"/>.</summary>
-	public ICollection<object?> Values => this.Select(kv => kv.Value).ToList();
+	public ICollection<object?> Values => [.. this.Select(kv => kv.Value)];
 
 	bool ICollection<KeyValuePair<PROPERTYKEY, object?>>.IsReadOnly => ReadOnly;
 
@@ -240,10 +242,12 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 
 	/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 	/// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
-	public virtual void Dispose(bool disposing)
+	protected virtual void Dispose(bool disposing)
 	{
+		if (disposed) return;
 		Commit();
 		item = null;
+		disposed = true;
 	}
 
 	/// <summary>Gets the property.</summary>
@@ -427,7 +431,6 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 				if (ReleaseAfterUse)
 				{
 					Marshal.ReleaseComObject(iPropertyStore);
-					GC.Collect();
 				}
 			}
 		}
@@ -448,7 +451,6 @@ public class PropertyStore : IDictionary<PROPERTYKEY, object?>, IDisposable, INo
 				if (ReleaseAfterUse)
 				{
 					Marshal.ReleaseComObject(iPropertyStore);
-					GC.Collect();
 				}
 			}
 		}
