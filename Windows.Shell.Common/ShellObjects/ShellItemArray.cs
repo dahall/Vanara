@@ -80,6 +80,21 @@ public class ShellItemArray : IReadOnlyList<ShellItem>, IDisposable
 		return ppv is null ? null : new ShellItemArray(ppv);
 	}
 
+	/// <summary>Creates a new ShellItemArray from a collection of file system paths.</summary>
+	/// <remarks>
+	/// Each path in the collection is parsed and must refer to an existing file system item. If any path is invalid or cannot be parsed, an
+	/// exception is thrown. The order of items in the resulting ShellItemArray matches the order of the input paths.
+	/// </remarks>
+	/// <param name="paths">
+	/// An enumerable collection of file system paths to include in the ShellItemArray. Each path must be a valid, non-null string.
+	/// </param>
+	/// <returns>A ShellItemArray containing items corresponding to the specified paths, or null if the collection is empty.</returns>
+	public static ShellItemArray? FromPaths(IEnumerable<string> paths)
+	{
+		var pidls = paths.Select(p => { SHParseDisplayName(p, default, out var pidl, 0, out _).ThrowIfFailed(); return pidl; }).ToList();
+		return pidls.Count == 0 ? null : new ShellItemArray(pidls);
+	}
+
 	/// <summary>Determines whether the <see cref="ICollection{ShellItem}"/> contains a specific value.</summary>
 	/// <param name="item">The object to locate in the <see cref="ICollection{ShellItem}"/>.</param>
 	/// <returns>true if <paramref name="item"/> is found in the <see cref="ICollection{ShellItem}"/>; otherwise, false.</returns>
