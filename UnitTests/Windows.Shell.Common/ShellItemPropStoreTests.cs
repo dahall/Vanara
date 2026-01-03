@@ -55,7 +55,7 @@ public class ShellItemPropStoreTests
 			{
 				TestContext.Write($"({c}) {key} = ");
 				var val = i.Properties[key];
-				if (val is not string && val is IEnumerable ie)
+				if (val is not string and IEnumerable ie)
 					TestContext.WriteLine(string.Join(",", ie.Cast<object>().Select(o => o?.ToString())));
 				else
 					TestContext.WriteLine(val);
@@ -87,15 +87,13 @@ public class ShellItemPropStoreTests
 		}
 
 		// Try accessing a Word file's writable properties and assert successs.
-		using (ShellItem w = new(testDoc))
-		{
-			w.Properties.ReadOnly = false;
-			Assert.That(w.Properties.TryGetValue(PROPERTYKEY.System.Author, out string[]? value), Is.True);
-			TestContext.WriteLine($"Author={string.Join(";", value ?? [])}");
-			//string[] value = ["TestAuthor"];
-			Assert.That(() => w.Properties[PROPERTYKEY.System.Author] = value, Throws.Nothing);
-			Assert.That(w.Properties.Commit, Throws.Nothing);
-		}
+		using ShellItem w = new(testDoc);
+		w.Properties.ReadOnly = false;
+		Assert.That(w.Properties.TryGetValue(PROPERTYKEY.System.Author, out string[]? value), Is.True);
+		TestContext.WriteLine($"Author={string.Join(";", value ?? [])}");
+		//string[] value = ["TestAuthor"];
+		Assert.That(() => w.Properties[PROPERTYKEY.System.Author] = value, Throws.Nothing);
+		Assert.That(w.Properties.Commit, Throws.Nothing);
 	}
 
 	[Test]

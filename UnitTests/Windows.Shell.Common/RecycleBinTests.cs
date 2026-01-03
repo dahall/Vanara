@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Vanara.PInvoke;
 
 namespace Vanara.Windows.Shell.Tests;
 
-[TestFixture]
+[TestFixture, Apartment(ApartmentState.STA)]
 public class RecycleBinTests
 {
 	const string tempDir = "C:\\Temp";

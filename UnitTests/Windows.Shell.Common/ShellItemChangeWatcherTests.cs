@@ -21,7 +21,7 @@ public class ShellItemChangeWatcherTests
 	[TearDown]
 	public void Cleanup()
 	{
-		try { Directory.Delete(testDirectory, true); } catch { }
+		try { Directory.Delete(testDirectory!, true); } catch { }
 	}
 
 	[Test]
@@ -112,18 +112,17 @@ public class ShellItemChangeWatcherTests
 		using var item = ShellItem.Open(testDirectory!);
 		using var watcher = new ShellItemChangeWatcher(item);
 		
-		Assert.That(() => watcher.BeginInit(), Throws.Nothing);
-		Assert.That(() => watcher.EndInit(), Throws.Nothing);
+		Assert.That(watcher.BeginInit, Throws.Nothing);
+		Assert.That(watcher.EndInit, Throws.Nothing);
 	}
 
 	[Test]
 	public void DisposeTest()
 	{
 		using var item = ShellItem.Open(testDirectory!);
-		var watcher = new ShellItemChangeWatcher(item);
-		watcher.EnableRaisingEvents = true;
-		
-		Assert.That(() => watcher.Dispose(), Throws.Nothing);
+		ShellItemChangeWatcher watcher = new(item) { EnableRaisingEvents = true };
+
+		Assert.That(watcher.Dispose, Throws.Nothing);
 	}
 
 	[Test]
@@ -155,10 +154,11 @@ public class ShellItemChangeWatcherTests
 	public async Task FileDeletedEventTest()
 	{
 		using var item = ShellItem.Open(testDirectory!);
-		var subDir = Path.Combine(testDirectory!, "SubDir");
+		//using var item = new ShellFolder(PInvoke.Shell32.KNOWNFOLDERID.FOLDERID_LocalDocuments);
+		var subDir = Path.Combine(item.FileSystemPath!, $"SubDir{Guid.NewGuid():N}");
 		Directory.CreateDirectory(subDir);
 
-		using var watcher = new ShellItemChangeWatcher(item) { NotifyFilter = ChangeFilters.AllDiskEvents };
+		using ShellItemChangeWatcher watcher = new(item, true) { NotifyFilter = ChangeFilters.AllDiskEvents };
 		var eventRaised = new TaskCompletionSource<bool>();
 		watcher.Changed += (s, e) =>
 		{

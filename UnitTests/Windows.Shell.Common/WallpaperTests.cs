@@ -10,6 +10,14 @@ namespace Vanara.Windows.Shell.Tests;
 [TestFixture]
 public class WallpaperTests
 {
+	string jsonSettings = "";
+
+	[OneTimeSetUp]
+	public void Init() => WallpaperManager.CaptureSettings(out jsonSettings);
+
+	[OneTimeTearDown]
+	public void Cleanup() => WallpaperManager.ApplySettings(jsonSettings);
+
 	[Test]
 	public void ReadPropTest()
 	{

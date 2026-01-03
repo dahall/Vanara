@@ -59,7 +59,7 @@ public class ClipboardTests
 				{
 					ShellItem Item = ShellItemList[Index];
 					if (!Item.IsFolder)
-						Data.SetData(ShellClipboardFormat.CFSTR_FILECONTENTS, Item.GetHandler<IStream>(ShellUtil.CreateBindCtx(STGM.STGM_READWRITE | STGM.STGM_SHARE_DENY_WRITE)), DVASPECT.DVASPECT_CONTENT, Index);
+						Data.SetData(ShellClipboardFormat.CFSTR_FILECONTENTS, Item.GetStream(STGM.STGM_READWRITE | STGM.STGM_SHARE_DENY_WRITE), DVASPECT.DVASPECT_CONTENT, Index);
 				}
 
 				Clipboard.SetDataObject(Data);

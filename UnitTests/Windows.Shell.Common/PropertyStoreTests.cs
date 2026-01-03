@@ -36,10 +36,7 @@ public class PropertyStoreTests
 	}
 
 	[Test]
-	public void PropertyStore_Constructor_WithInvalidPath_ThrowsException()
-	{
-		Assert.That(() => new PropertyStore("Z:\\NonExistent\\Path\\File.txt"), Throws.Exception);
-	}
+	public void PropertyStore_Constructor_WithInvalidPath_ThrowsException() => Assert.That(() => new PropertyStore("Z:\\NonExistent\\Path\\File.txt"), Throws.Exception);
 
 	[Test]
 	public void PropertyStore_Constructor_WithFlags_Success()
@@ -151,18 +148,12 @@ public class PropertyStoreTests
 	}
 
 	[Test]
-	public void PropertyStore_GetPropertyKeyFromName_InvalidName_ThrowsException()
-	{
-		Assert.That(() => PropertyStore.GetPropertyKeyFromName("Invalid.Property.Name.That.Does.Not.Exist"), 
+	public void PropertyStore_GetPropertyKeyFromName_InvalidName_ThrowsException() => Assert.That(() => PropertyStore.GetPropertyKeyFromName("Invalid.Property.Name.That.Does.Not.Exist"),
 			Throws.TypeOf<ArgumentOutOfRangeException>());
-	}
 
 	[Test]
-	public void PropertyStore_GetPropertyKeyFromName_NullName_ThrowsException()
-	{
-		Assert.That(() => PropertyStore.GetPropertyKeyFromName(null!), 
+	public void PropertyStore_GetPropertyKeyFromName_NullName_ThrowsException() => Assert.That(() => PropertyStore.GetPropertyKeyFromName(null!),
 			Throws.TypeOf<ArgumentNullException>());
-	}
 
 	[Test]
 	public void PropertyStore_GetPropertyDescription_ValidKey_ReturnsDescription()
