@@ -64,6 +64,20 @@ public static partial class Shell32
 		/// <value><c>true</c> if this list is empty; otherwise, <c>false</c>.</value>
 		public bool IsEmpty => ILIsEmpty(handle);
 
+		/// <summary>Gets a value indicating whether this PIDL represents a folder.</summary>
+		public bool IsFolder
+		{
+			get
+			{
+				SHFILEINFO sfi = new();
+				return SHGetFileInfo(this, System.IO.FileAttributes.Directory, ref sfi, SHFILEINFO.Size,
+					SHGFI.SHGFI_PIDL | SHGFI.SHGFI_ATTR_SPECIFIED | SHGFI.SHGFI_ATTRIBUTES) != IntPtr.Zero && sfi.dwAttributes != 0;
+			}
+		}
+
+		/// <summary>Gets a value indicating whether this PIDL represents the root (desktop) folder.</summary>
+		public bool IsRoot => Equals(Desktop);
+
 		/// <summary>Gets the last SHITEMID in this ITEMIDLIST.</summary>
 		/// <value>The last SHITEMID.</value>
 		public PIDL LastId => new(ILFindLastID(handle), true);
