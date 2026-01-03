@@ -444,15 +444,77 @@ public static partial class Shell32
 	{
 		/// <summary>Binds to a handler for an item as specified by the handler ID value (BHID).</summary>
 		/// <param name="pbc">
-		/// A pointer to an IBindCtx interface on a bind context object. Used to pass optional parameters to the handler. The contents of
-		/// the bind context are handler-specific. For example, when binding to BHID_Stream, the STGM flags in the bind context indicate
-		/// the mode of access desired (read or read/write).
+		/// <para>Type: <b><c>IBindCtx</c>*</b></para>
+		/// <para>
+		/// A pointer to an <c>IBindCtx</c> interface on a bind context object. Used to pass optional parameters to the handler. The contents
+		/// of the bind context are handler-specific. For example, when binding to <b>BHID_Stream</b>, the <c>STGM</c> flags in the bind
+		/// context indicate the mode of access desired (read or read/write).
+		/// </para>
 		/// </param>
-		/// <param name="bhid">Reference to a GUID that specifies which handler will be created.</param>
-		/// <param name="riid">IID of the object type to retrieve.</param>
-		/// <returns>When this method returns, contains a pointer of type riid that is returned by the handler specified by rbhid.</returns>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		object BindToHandler(IBindCtx? pbc, in Guid bhid, in Guid riid);
+		/// <param name="bhid">
+		/// <para>Type: <b>REFGUID</b></para>
+		/// <para>Reference to a GUID that specifies which handler will be created. One of the following values defined in Shlguid.h:</para>
+		/// <para>BHID_SFObject</para>
+		/// <para>Restricts usage to <c>BindToObject</c>.</para>
+		/// <para>BHID_SFUIObject</para>
+		/// <para>Restricts usage to <c>GetUIObjectOf</c>.</para>
+		/// <para>BHID_SFViewObject</para>
+		/// <para>Restricts usage to <c>CreateViewObject</c>.</para>
+		/// <para>BHID_Storage</para>
+		/// <para>Attempts to retrieve the storage RIID, but defaults to Shell implementation on failure.</para>
+		/// <para>BHID_Stream</para>
+		/// <para>Restricts usage to <c>IStream</c>.</para>
+		/// <para>BHID_LinkTargetItem</para>
+		/// <para>
+		/// CLSID_ShellItem is initialized with the target of this item (can only be SFGAO_LINK). See <c>SFGAO</c> for a description of SFGAO_LINK.
+		/// </para>
+		/// <para>BHID_StorageEnum</para>
+		/// <para>If the item is a folder, gets an <c>IEnumShellItems</c> object with which to enumerate the storage contents.</para>
+		/// <para>BHID_Transfer</para>
+		/// <para>
+		/// <b>Introduced in Windows Vista</b>: If the item is a folder, gets an <c>ITransferSource</c> or <c>ITransferDestination</c> object.
+		/// </para>
+		/// <para>BHID_PropertyStore</para>
+		/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IPropertyStore</c> or <c>IPropertyStoreFactory</c>.</para>
+		/// <para>BHID_ThumbnailHandler</para>
+		/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IExtractImage</c> or <c>IThumbnailProvider</c>.</para>
+		/// <para>BHID_EnumItems</para>
+		/// <para>
+		/// <b>Introduced in Windows Vista</b>: If the item is a folder, gets an <c>IEnumShellItems</c> object that enumerates all items in
+		/// the folder. This includes folders, nonfolders, and hidden items.
+		/// </para>
+		/// <para>BHID_DataObject</para>
+		/// <para><b>Introduced in Windows Vista</b>: Gets an <c>IDataObject</c> object for use with an item or an array of items.</para>
+		/// <para>BHID_AssociationArray</para>
+		/// <para><b>Introduced in Windows Vista</b>: Gets an <c>IQueryAssociations</c> object for use with an item or an array of items.</para>
+		/// <para>BHID_Filter</para>
+		/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IFilter</c>.</para>
+		/// <para>BHID_EnumAssocHandlers</para>
+		/// <para>
+		/// <b>Introduced in Windows 7</b>: Gets an <c>IEnumAssocHandlers</c> object used to enumerate the recommended association handlers
+		/// for the given item.
+		/// </para>
+		/// <para>BHID_RandomAccessStream</para>
+		/// <para><b>Introduced in Windows 8</b>: Gets an <c>IRandomAccessStream</c> object for the item.</para>
+		/// <para>BHID_FilePlaceholder</para>
+		/// <para><b>Introduced in Windows 8.1</b>: Gets an object used to provide placeholder file functionality.</para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <b>REFIID</b></para>
+		/// <para>IID of the object type to retrieve.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <b>void**</b></para>
+		/// <para>When this method returns, contains a pointer of type <i>riid</i> that is returned by the handler specified by <i>rbhid</i>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellitem-bindtohandler
+		// HRESULT BindToHandler( IBindCtx *pbc, REFGUID bhid, REFIID riid, void **ppv );
+		[PreserveSig]
+		HRESULT BindToHandler([In, Optional] IBindCtx? pbc, in Guid bhid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Gets the parent of an IShellItem object.</summary>
 		/// <returns>The address of a pointer to the parent of an IShellItem interface.</returns>
@@ -518,15 +580,77 @@ public static partial class Shell32
 	{
 		/// <summary>Binds to a handler for an item as specified by the handler ID value (BHID).</summary>
 		/// <param name="pbc">
-		/// A pointer to an IBindCtx interface on a bind context object. Used to pass optional parameters to the handler. The contents of
-		/// the bind context are handler-specific. For example, when binding to BHID_Stream, the STGM flags in the bind context indicate
-		/// the mode of access desired (read or read/write).
+		/// <para>Type: <b><c>IBindCtx</c>*</b></para>
+		/// <para>
+		/// A pointer to an <c>IBindCtx</c> interface on a bind context object. Used to pass optional parameters to the handler. The contents
+		/// of the bind context are handler-specific. For example, when binding to <b>BHID_Stream</b>, the <c>STGM</c> flags in the bind
+		/// context indicate the mode of access desired (read or read/write).
+		/// </para>
 		/// </param>
-		/// <param name="bhid">Reference to a GUID that specifies which handler will be created.</param>
-		/// <param name="riid">IID of the object type to retrieve.</param>
-		/// <returns>When this method returns, contains a pointer of type riid that is returned by the handler specified by rbhid.</returns>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		new object BindToHandler(IBindCtx pbc, in Guid bhid, in Guid riid);
+		/// <param name="bhid">
+		/// <para>Type: <b>REFGUID</b></para>
+		/// <para>Reference to a GUID that specifies which handler will be created. One of the following values defined in Shlguid.h:</para>
+		/// <para>BHID_SFObject</para>
+		/// <para>Restricts usage to <c>BindToObject</c>.</para>
+		/// <para>BHID_SFUIObject</para>
+		/// <para>Restricts usage to <c>GetUIObjectOf</c>.</para>
+		/// <para>BHID_SFViewObject</para>
+		/// <para>Restricts usage to <c>CreateViewObject</c>.</para>
+		/// <para>BHID_Storage</para>
+		/// <para>Attempts to retrieve the storage RIID, but defaults to Shell implementation on failure.</para>
+		/// <para>BHID_Stream</para>
+		/// <para>Restricts usage to <c>IStream</c>.</para>
+		/// <para>BHID_LinkTargetItem</para>
+		/// <para>
+		/// CLSID_ShellItem is initialized with the target of this item (can only be SFGAO_LINK). See <c>SFGAO</c> for a description of SFGAO_LINK.
+		/// </para>
+		/// <para>BHID_StorageEnum</para>
+		/// <para>If the item is a folder, gets an <c>IEnumShellItems</c> object with which to enumerate the storage contents.</para>
+		/// <para>BHID_Transfer</para>
+		/// <para>
+		/// <b>Introduced in Windows Vista</b>: If the item is a folder, gets an <c>ITransferSource</c> or <c>ITransferDestination</c> object.
+		/// </para>
+		/// <para>BHID_PropertyStore</para>
+		/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IPropertyStore</c> or <c>IPropertyStoreFactory</c>.</para>
+		/// <para>BHID_ThumbnailHandler</para>
+		/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IExtractImage</c> or <c>IThumbnailProvider</c>.</para>
+		/// <para>BHID_EnumItems</para>
+		/// <para>
+		/// <b>Introduced in Windows Vista</b>: If the item is a folder, gets an <c>IEnumShellItems</c> object that enumerates all items in
+		/// the folder. This includes folders, nonfolders, and hidden items.
+		/// </para>
+		/// <para>BHID_DataObject</para>
+		/// <para><b>Introduced in Windows Vista</b>: Gets an <c>IDataObject</c> object for use with an item or an array of items.</para>
+		/// <para>BHID_AssociationArray</para>
+		/// <para><b>Introduced in Windows Vista</b>: Gets an <c>IQueryAssociations</c> object for use with an item or an array of items.</para>
+		/// <para>BHID_Filter</para>
+		/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IFilter</c>.</para>
+		/// <para>BHID_EnumAssocHandlers</para>
+		/// <para>
+		/// <b>Introduced in Windows 7</b>: Gets an <c>IEnumAssocHandlers</c> object used to enumerate the recommended association handlers
+		/// for the given item.
+		/// </para>
+		/// <para>BHID_RandomAccessStream</para>
+		/// <para><b>Introduced in Windows 8</b>: Gets an <c>IRandomAccessStream</c> object for the item.</para>
+		/// <para>BHID_FilePlaceholder</para>
+		/// <para><b>Introduced in Windows 8.1</b>: Gets an object used to provide placeholder file functionality.</para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <b>REFIID</b></para>
+		/// <para>IID of the object type to retrieve.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <b>void**</b></para>
+		/// <para>When this method returns, contains a pointer of type <i>riid</i> that is returned by the handler specified by <i>rbhid</i>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <b>HRESULT</b></para>
+		/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
+		/// </returns>
+		// https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellitem-bindtohandler
+		// HRESULT BindToHandler( IBindCtx *pbc, REFGUID bhid, REFIID riid, void **ppv );
+		[PreserveSig]
+		new HRESULT BindToHandler([In, Optional] IBindCtx? pbc, in Guid bhid, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppv);
 
 		/// <summary>Gets the parent of an IShellItem object.</summary>
 		/// <returns>The address of a pointer to the parent of an IShellItem interface.</returns>
@@ -814,6 +938,77 @@ public static partial class Shell32
 		HRESULT GetImage([In, MarshalAs(UnmanagedType.Struct)] SIZE size, [In] SIIGBF flags, out SafeHBITMAP phbm);
 	}
 
+	/// <summary>Binds to a handler for an item as specified by the handler ID value (BHID).</summary>
+	/// <typeParam name = "T">
+	/// <para>Type: <b>REFIID</b></para>
+	/// <para>IID of the object type to retrieve.</para>
+	/// </typeParam>
+	/// <param name = "si">The <see cref = "IShellItem"/> interface instance value used for the extension method.</param>
+	/// <param name = "pbc">
+	/// <para>Type: <b><c>IBindCtx</c>*</b></para>
+	/// <para> A pointer to an <c>IBindCtx</c> interface on a bind context object. Used to pass optional parameters to the handler. The contents of the bind context are handler-specific. For example, when binding to <b>BHID_Stream</b>, the <c>STGM</c> flags in the bind context indicate the mode of access desired (read or read/write).
+	/// </para>
+	/// </param>
+	/// <param name = "bhid">
+	/// <para>Type: <b>REFGUID</b></para>
+	/// <para>Reference to a GUID that specifies which handler will be created. One of the following values defined in Shlguid.h:</para>
+	/// <para>BHID_SFObject</para>
+	/// <para>Restricts usage to <c>BindToObject</c>.</para>
+	/// <para>BHID_SFUIObject</para>
+	/// <para>Restricts usage to <c>GetUIObjectOf</c>.</para>
+	/// <para>BHID_SFViewObject</para>
+	/// <para>Restricts usage to <c>CreateViewObject</c>.</para>
+	/// <para>BHID_Storage</para>
+	/// <para>Attempts to retrieve the storage RIID, but defaults to Shell implementation on failure.</para>
+	/// <para>BHID_Stream</para>
+	/// <para>Restricts usage to <c>IStream</c>.</para>
+	/// <para>BHID_LinkTargetItem</para>
+	/// <para> CLSID_ShellItem is initialized with the target of this item (can only be SFGAO_LINK). See <c>SFGAO</c> for a description of SFGAO_LINK.
+	/// </para>
+	/// <para>BHID_StorageEnum</para>
+	/// <para>If the item is a folder, gets an <c>IEnumShellItems</c> object with which to enumerate the storage contents.</para>
+	/// <para>BHID_Transfer</para>
+	/// <para>
+	/// <b>Introduced in Windows Vista</b>: If the item is a folder, gets an <c>ITransferSource</c> or <c>ITransferDestination</c> object.
+	/// </para>
+	/// <para>BHID_PropertyStore</para>
+	/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IPropertyStore</c> or <c>IPropertyStoreFactory</c>.</para>
+	/// <para>BHID_ThumbnailHandler</para>
+	/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IExtractImage</c> or <c>IThumbnailProvider</c>.</para>
+	/// <para>BHID_EnumItems</para>
+	/// <para>
+	/// <b>Introduced in Windows Vista</b>: If the item is a folder, gets an <c>IEnumShellItems</c> object that enumerates all items in the folder. This includes folders, nonfolders, and hidden items.
+	/// </para>
+	/// <para>BHID_DataObject</para>
+	/// <para><b>Introduced in Windows Vista</b>: Gets an <c>IDataObject</c> object for use with an item or an array of items.</para>
+	/// <para>BHID_AssociationArray</para>
+	/// <para><b>Introduced in Windows Vista</b>: Gets an <c>IQueryAssociations</c> object for use with an item or an array of items.</para>
+	/// <para>BHID_Filter</para>
+	/// <para><b>Introduced in Windows Vista</b>: Restricts usage to <c>IFilter</c>.</para>
+	/// <para>BHID_EnumAssocHandlers</para>
+	/// <para>
+	/// <b>Introduced in Windows 7</b>: Gets an <c>IEnumAssocHandlers</c> object used to enumerate the recommended association handlers for the given item.
+	/// </para>
+	/// <para>BHID_RandomAccessStream</para>
+	/// <para><b>Introduced in Windows 8</b>: Gets an <c>IRandomAccessStream</c> object for the item.</para>
+	/// <para>BHID_FilePlaceholder</para>
+	/// <para><b>Introduced in Windows 8.1</b>: Gets an object used to provide placeholder file functionality.</para>
+	/// </param>
+	/// <param name = "ppv">
+	/// <para>Type: <b>void**</b></para>
+	/// <para>When this method returns, contains a pointer of type <i>riid</i> that is returned by the handler specified by <i>rbhid</i>.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <b>HRESULT</b></para>
+	/// <para>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</para>
+	/// </returns>
+	public static HRESULT BindToHandler<T>(this IShellItem si, [In, Optional] IBindCtx? pbc, BHID bhid, out T? ppv)
+		where T : class
+	{
+		if (bhid == 0 && !CorrespondingTypeAttribute.CanGet<T, BHID>(out bhid)) throw new ArgumentException("The specified type does not have a corresponding BHID.", nameof(T));
+		return si.BindToHandler<T>(pbc, bhid.Guid(), out ppv);
+	}
+
 	/// <summary>Extension method to simplify using the <see cref="IShellItem.BindToHandler"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
 	/// <param name="si">An <see cref="IShellItem"/> instance.</param>
@@ -824,7 +1019,11 @@ public static partial class Shell32
 	/// </param>
 	/// <param name="bhid">Reference to a GUID that specifies which handler will be created.</param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx? pbc, in Guid bhid) where T : class => (T)si.BindToHandler(pbc, bhid, typeof(T).GUID);
+	public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx? pbc, in Guid bhid) where T : class
+	{
+		si.BindToHandler(pbc, bhid, out T? ppv).ThrowIfFailed();
+		return ppv!;
+	}
 
 	/// <summary>Extension method to simplify using the <see cref="IShellItem.BindToHandler"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
@@ -836,7 +1035,7 @@ public static partial class Shell32
 	/// </param>
 	/// <param name="bhid">A BHID enumeration value that specifies which handler will be created.</param>
 	/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-	public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx? pbc, BHID bhid) where T : class => (T)si.BindToHandler(pbc, bhid.Guid(), typeof(T).GUID);
+	public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx? pbc = null, BHID bhid = 0) where T : class => si.BindToHandler<T>(pbc, bhid.Guid());
 
 	/// <summary>Extension method to simplify using the <see cref="IShellItemArray.BindToHandler"/> method.</summary>
 	/// <typeparam name="T">Type of the interface to get.</typeparam>
