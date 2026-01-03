@@ -239,7 +239,7 @@ public class MRUManager : Component
 	private void OnClearListMenuItemClick()
 	{
 		var fileArray = new StringCollection();
-		fileArray.AddRange(Files.ToArray());
+		fileArray.AddRange([.. Files]);
 		try
 		{
 			if (StorageHandler != null)
@@ -280,7 +280,7 @@ public class MRUManager : Component
 			{
 				var col = new StringCollection();
 				if (value != null)
-					col.AddRange(value.ToArray());
+					col.AddRange([.. value]);
 				SettingsValue = col;
 			}
 		}
@@ -302,7 +302,7 @@ public class MRUManager : Component
 		public void AddRecentFile(string fileNameWithFullPath)
 		{
 			var col = new StringCollection { fileNameWithFullPath };
-			col.AddRange(SettingsValue.Cast<string>().ToArray());
+			col.AddRange([.. SettingsValue.Cast<string>()]);
 			SettingsValue = col;
 		}
 

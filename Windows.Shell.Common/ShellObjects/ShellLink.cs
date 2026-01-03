@@ -325,9 +325,17 @@ public sealed class ShellLink : ShellItem, IEquatable<IShellLinkW>, IEquatable<S
 		return new ShellLink(destShellLink);
 	}
 
-	/// <inheritdoc/>
-	public override void Dispose(bool disposing)
+	/// <summary>
+	/// Releases the unmanaged resources used by the object and optionally releases the managed resources.
+	/// </summary>
+	/// <remarks>This method is called by both the public Dispose() method and the finalizer. When disposing is
+	/// true, this method releases all resources held by managed objects. When disposing is false, only unmanaged resources
+	/// are released. Derived classes should override this method to release additional resources and should always call
+	/// the base class implementation.</remarks>
+	/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+	protected override void Dispose(bool disposing)
 	{
+		if (disposed) return;
 		if (link is not null)
 		{
 			Marshal.FinalReleaseComObject(link);

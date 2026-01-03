@@ -337,7 +337,7 @@ public class ShellItemChangeWatcher : Component, ISupportInitialize
 		internal ShellItemChangeEventArgs(SHCNE levent, IntPtr pidl1 = default, IntPtr pidl2 = default)
 		{
 			ChangeType = (ChangeFilters)levent;
-			ChangedItems = new[] { pidl1, pidl2 }.Where(p => p != IntPtr.Zero).Select(p => new ShellItem(new PIDL(p, false, false))).ToArray();
+			ChangedItems = [.. new[] { pidl1, pidl2 }.Where(p => p != IntPtr.Zero).Select(p => new ShellItem(new PIDL(p, false, false)))];
 		}
 
 		/// <summary>Gets the items affected by the change.</summary>
