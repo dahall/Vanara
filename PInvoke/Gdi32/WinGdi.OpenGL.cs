@@ -273,7 +273,7 @@ public static partial class Gdi32
 	// PIXELFORMATDESCRIPTOR *ppfd );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "17bd0a2c-5257-4ae3-80f4-a5ad536169fb")]
-	public static extern int ChoosePixelFormat(HDC hdc, in PIXELFORMATDESCRIPTOR ppfd);
+	public static extern int ChoosePixelFormat([In, AddAsMember] HDC hdc, in PIXELFORMATDESCRIPTOR ppfd);
 
 	/// <summary>
 	/// The <c>DescribePixelFormat</c> function obtains information about the pixel format identified by iPixelFormat of the device
@@ -305,7 +305,7 @@ public static partial class Gdi32
 	// iPixelFormat, UINT nBytes, LPPIXELFORMATDESCRIPTOR ppfd );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9692a30d-c7d4-40c7-a265-72c4ebabd5f2")]
-	public static extern int DescribePixelFormat(HDC hdc, int iPixelFormat, uint nBytes, ref PIXELFORMATDESCRIPTOR ppfd);
+	public static extern int DescribePixelFormat([In, AddAsMember] HDC hdc, int iPixelFormat, uint nBytes, ref PIXELFORMATDESCRIPTOR ppfd);
 
 	/// <summary>
 	/// The <c>DescribePixelFormat</c> function obtains information about the pixel format identified by iPixelFormat of the device
@@ -337,7 +337,7 @@ public static partial class Gdi32
 	// iPixelFormat, UINT nBytes, LPPIXELFORMATDESCRIPTOR ppfd );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9692a30d-c7d4-40c7-a265-72c4ebabd5f2")]
-	public static extern int DescribePixelFormat(HDC hdc, int iPixelFormat, uint nBytes, [In, Optional] IntPtr ppfd);
+	public static extern int DescribePixelFormat([In, AddAsMember] HDC hdc, int iPixelFormat, [Optional] uint nBytes, [In, Optional] IntPtr ppfd);
 
 	/// <summary>The <c>GetEnhMetaFilePixelFormat</c> function retrieves pixel format information for an enhanced metafile.</summary>
 	/// <param name="hemf">Identifies the enhanced metafile.</param>
@@ -363,7 +363,31 @@ public static partial class Gdi32
 	// HENHMETAFILE hemf, UINT cbBuffer, PIXELFORMATDESCRIPTOR *ppfd );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "80209210-5caa-44a9-a791-991b257d8d28")]
-	public static extern uint GetEnhMetaFilePixelFormat(HENHMETAFILE hemf, uint cbBuffer, ref PIXELFORMATDESCRIPTOR ppfd);
+	public static extern uint GetEnhMetaFilePixelFormat([In] HENHMETAFILE hemf, uint cbBuffer, ref PIXELFORMATDESCRIPTOR ppfd);
+
+	/// <summary>The <c>GetEnhMetaFilePixelFormat</c> function retrieves pixel format information for an enhanced metafile.</summary>
+	/// <param name="hemf">Identifies the enhanced metafile.</param>
+	/// <returns>
+	/// A PIXELFORMATDESCRIPTOR structure that contains the logical pixel format specification. The metafile uses this structure to record
+	/// the logical pixel format specification.
+	/// </returns>
+	/// <remarks>
+	/// <para>
+	/// When an enhanced metafile specifies a pixel format in its <c>ENHMETAHEADER</c> structure and the pixel format fits in the buffer, the
+	/// pixel format information is copied into ppfd. When cbBuffer is too small to contain the pixel format of the metafile, the pixel
+	/// format is not copied to the buffer. In either case, the function returns the size of the metafile's pixel format.
+	/// </para>
+	/// <para>For information on metafile recording and other operations, see Enhanced Metafile Operations.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-getenhmetafilepixelformat UINT GetEnhMetaFilePixelFormat(
+	// HENHMETAFILE hemf, UINT cbBuffer, PIXELFORMATDESCRIPTOR *ppfd );
+	[PInvokeData("wingdi.h", MSDNShortId = "80209210-5caa-44a9-a791-991b257d8d28")]
+	public static PIXELFORMATDESCRIPTOR GetEnhMetaFilePixelFormat([In, AddAsMember] HENHMETAFILE hemf)
+	{
+		PIXELFORMATDESCRIPTOR pfd = new();
+		Win32Error.ThrowLastErrorIf(GetEnhMetaFilePixelFormat(hemf,pfd.nSize, ref pfd), i => i == GDI_ERROR);
+		return pfd;
+	}
 
 	/// <summary>
 	/// The <c>GetPixelFormat</c> function obtains the index of the currently selected pixel format of the specified device context.
@@ -380,7 +404,7 @@ public static partial class Gdi32
 	// int GetPixelFormat( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e9a65f3a-6932-462f-b342-a993d222fae8")]
-	public static extern int GetPixelFormat(HDC hdc);
+	public static extern int GetPixelFormat([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>SetPixelFormat</c> function sets the pixel format of the specified device context to the format specified by the
@@ -424,7 +448,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "f8d74078-a7e7-4d95-857a-f51d5d70598e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetPixelFormat(HDC hdc, int format, ref PIXELFORMATDESCRIPTOR ppfd);
+	public static extern bool SetPixelFormat([In, AddAsMember] HDC hdc, int format, in PIXELFORMATDESCRIPTOR ppfd);
 
 	/// <summary>
 	/// The <c>SwapBuffers</c> function exchanges the front and back buffers if the current pixel format for the window referenced by the
@@ -451,7 +475,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2c9728e4-c5be-4b14-a6f7-2899c792ec3d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SwapBuffers(HDC Arg1);
+	public static extern bool SwapBuffers([In, AddAsMember] HDC Arg1);
 
 	/// <summary>The <c>PIXELFORMATDESCRIPTOR</c> structure describes the pixel format of a drawing surface.</summary>
 	/// <remarks>
@@ -467,13 +491,13 @@ public static partial class Gdi32
 	// *PPIXELFORMATDESCRIPTOR, *LPPIXELFORMATDESCRIPTOR;
 	[PInvokeData("wingdi.h", MSDNShortId = "1480dea3-ae74-4e8b-b4de-fca8de5d8395")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct PIXELFORMATDESCRIPTOR
+	public struct PIXELFORMATDESCRIPTOR()
 	{
 		/// <summary>Specifies the size of this data structure. This value should be set to <c>sizeof</c>( <c>PIXELFORMATDESCRIPTOR</c>).</summary>
-		public ushort nSize;
+		public ushort nSize = (ushort)Marshal.SizeOf<PIXELFORMATDESCRIPTOR>();
 
 		/// <summary>Specifies the version of this data structure. This value should be set to 1.</summary>
-		public ushort nVersion;
+		public ushort nVersion = 1;
 
 		/// <summary>
 		/// <para>

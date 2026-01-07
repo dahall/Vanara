@@ -71,7 +71,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "65c38da1-ab7d-4e80-83e3-ba1db66f8fd9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AngleArc(HDC hdc, int x, int y, uint r, float StartAngle, float SweepAngle);
+	public static extern bool AngleArc([In, AddAsMember] HDC hdc, int x, int y, uint r, float StartAngle, float SweepAngle);
 
 	/// <summary>The <c>Arc</c> function draws an elliptical arc.</summary>
 	/// <param name="hdc">A handle to the device context where drawing takes place.</param>
@@ -115,7 +115,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c15a2173-0fad-4a8a-b0f9-cd39fe4e7bac")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Arc(HDC hdc, int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
+	public static extern bool Arc([In, AddAsMember] HDC hdc, int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
 
 	/// <summary>The <c>ArcTo</c> function draws an elliptical arc.</summary>
 	/// <param name="hdc">A handle to the device context where drawing takes place.</param>
@@ -151,7 +151,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5e358a14-9f39-4267-9a44-c8bf05b5dfbb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ArcTo(HDC hdc, int left, int top, int right, int bottom, int xr1, int yr1, int xr2, int yr2);
+	public static extern bool ArcTo([In, AddAsMember] HDC hdc, int left, int top, int right, int bottom, int xr1, int yr1, int xr2, int yr2);
 
 	/// <summary>
 	/// The <c>Chord</c> function draws a chord (a region bounded by the intersection of an ellipse and a line segment, called a secant).
@@ -185,7 +185,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d6752c47-96a5-4fac-a1bb-0611a91f03f9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Chord(HDC hdc, int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
+	public static extern bool Chord([In, AddAsMember] HDC hdc, int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
 
 	/// <summary>
 	/// The <c>Ellipse</c> function draws an ellipse. The center of the ellipse is the center of the specified bounding rectangle. The
@@ -210,7 +210,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9bec59dd-6bcb-498e-9ed2-ac641ecd7fa5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Ellipse(HDC hdc, int left, int top, int right, int bottom);
+	public static extern bool Ellipse([In, AddAsMember] HDC hdc, int left, int top, int right, int bottom);
 
 	/// <summary>
 	/// The <c>GetArcDirection</c> function retrieves the current arc direction for the specified device context. Arc and rectangle
@@ -237,7 +237,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getarcdirection int GetArcDirection( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "6bf426cd-e028-4568-9e9a-aca58dd69732")]
-	public static extern ArcDirection GetArcDirection(HDC hdc);
+	public static extern ArcDirection GetArcDirection([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>LineDDA</c> function determines which pixels should be highlighted for a line defined by the specified starting and ending points.
@@ -290,7 +290,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a31b3a9a-110f-4cdf-89d9-19937a2e40b4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LineTo(HDC hdc, int x, int y);
+	public static extern bool LineTo([In, AddAsMember] HDC hdc, int x, int y);
 
 	/// <summary>
 	/// The <c>MoveToEx</c> function updates the current position to the specified point and optionally returns the previous position.
@@ -315,7 +315,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "af11eeb7-4036-4a90-8685-9b5719f79e01")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MoveToEx(HDC hdc, int x, int y, out POINT lppt);
+	public static extern bool MoveToEx([In, AddAsMember] HDC hdc, int x, int y, out POINT lppt);
 
 	/// <summary>
 	/// The <c>Pie</c> function draws a pie-shaped wedge bounded by the intersection of an ellipse and two radials. The pie is outlined
@@ -346,7 +346,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "86daa936-b483-4432-aa32-0b9328ff76f9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Pie(HDC hdc, int left, int top, int right, int bottom, int xr1, int yr1, int xr2, int yr2);
+	public static extern bool Pie([In, AddAsMember] HDC hdc, int left, int top, int right, int bottom, int xr1, int yr1, int xr2, int yr2);
 
 	/// <summary>The <c>PolyBezier</c> function draws one or more Bézier curves.</summary>
 	/// <param name="hdc">A handle to a device context.</param>
@@ -378,7 +378,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d1622574-c65e-4265-9a17-22bb4d2cae0e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyBezier(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, uint cpt);
+	public static extern bool PolyBezier([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, uint cpt);
 
 	/// <summary>The <c>PolyBezierTo</c> function draws one or more Bézier curves.</summary>
 	/// <param name="hdc">A handle to a device context.</param>
@@ -405,7 +405,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0c8d6d6d-d0a3-4188-91ad-934e6f054862")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyBezierTo(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, uint cpt);
+	public static extern bool PolyBezierTo([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, uint cpt);
 
 	/// <summary>The <c>PolyDraw</c> function draws a set of line segments and Bézier curves.</summary>
 	/// <param name="hdc">A handle to a device context.</param>
@@ -482,7 +482,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5fd3f285-dcf3-4cd0-915a-236ba7902353")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyDraw(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
+	public static extern bool PolyDraw([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] VertexType[] aj, int cpt);
 
 	/// <summary>
@@ -508,7 +508,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2f958b91-039a-4e02-b727-be142bb18b06")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Polygon(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, int cpt);
+	public static extern bool Polygon([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, int cpt);
 
 	/// <summary>The <c>Polyline</c> function draws a series of line segments by connecting the points in the specified array.</summary>
 	/// <param name="hdc">A handle to a device context.</param>
@@ -526,7 +526,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "55481dd0-3db7-4131-b383-4d0036943e60")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Polyline(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, int cpt);
+	public static extern bool Polyline([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, int cpt);
 
 	/// <summary>The <c>PolylineTo</c> function draws one or more straight lines.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -550,7 +550,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "76020742-b651-4244-82c3-13034573c306")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolylineTo(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, uint cpt);
+	public static extern bool PolylineTo([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] apt, uint cpt);
 
 	/// <summary>
 	/// The <c>PolyPolygon</c> function draws a series of closed polygons. Each polygon is outlined by using the current pen and filled
@@ -584,7 +584,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "ac0a2802-c8b0-4cd7-9521-5b179f2c70b9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyPolygon(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
+	public static extern bool PolyPolygon([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] int[] asz, int csz);
 
 	/// <summary>The <c>PolyPolyline</c> function draws multiple series of connected line segments.</summary>
@@ -611,7 +611,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "71a9273f-321b-4efb-ac73-5979f8151d05")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyPolyline(HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
+	public static extern bool PolyPolyline([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] POINT[] apt,
 		[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] asz, uint csz);
 
 	/// <summary>
@@ -639,7 +639,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "ed6b9824-1edc-4510-b9da-a4287845aa83")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Rectangle(HDC hdc, int left, int top, int right, int bottom);
+	public static extern bool Rectangle([In, AddAsMember] HDC hdc, int left, int top, int right, int bottom);
 
 	/// <summary>
 	/// The <c>RoundRect</c> function draws a rectangle with rounded corners. The rectangle is outlined by using the current pen and
@@ -666,7 +666,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "17808a6a-7bd0-4fd6-81ab-00d5db764b93")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RoundRect(HDC hdc, int left, int top, int right, int bottom, int width, int height);
+	public static extern bool RoundRect([In, AddAsMember] HDC hdc, int left, int top, int right, int bottom, int width, int height);
 
 	/// <summary>The <c>SetArcDirection</c> sets the drawing direction to be used for arc and rectangle functions.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -721,5 +721,5 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setarcdirection int SetArcDirection( HDC hdc, int dir );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "cec31eb2-cc9d-4384-b973-dd4339b96ed0")]
-	public static extern ArcDirection SetArcDirection(HDC hdc, ArcDirection dir);
+	public static extern ArcDirection SetArcDirection([In, AddAsMember] HDC hdc, ArcDirection dir);
 }

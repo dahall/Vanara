@@ -12,7 +12,7 @@ public class BitmapTests
 	public void CreateDIBitmapTest()
 	{
 		var bits = new byte[128 * 4];
-		byte[] rlebits = { 2, 0, 0, 0, 2, 1, 0, 1 };
+		byte[] rlebits = [2, 0, 0, 0, 2, 1, 0, 1];
 
 		using SafeReleaseHDC hdc = GetDC();
 

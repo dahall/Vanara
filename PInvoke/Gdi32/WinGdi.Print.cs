@@ -973,7 +973,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-abortdoc int AbortDoc( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "4ecc371c-34fa-4073-96fe-0de03b84d7e3")]
-	public static extern int AbortDoc(HDC hdc);
+	public static extern int AbortDoc([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>EndDoc</c> function ends a print job.</summary>
 	/// <param name="hdc">Handle to the device context for the print job.</param>
@@ -995,7 +995,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-enddoc int EndDoc( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "bf63ea0f-cc73-4943-9c84-52b3b77e141c")]
-	public static extern int EndDoc(HDC hdc);
+	public static extern int EndDoc([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>EndPage</c> function notifies the device that the application has finished writing to a page. This function is typically
@@ -1031,7 +1031,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-endpage int EndPage( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "33e6d005-f00d-4b87-bf7c-fc79c1d05514")]
-	public static extern int EndPage(HDC hdc);
+	public static extern int EndPage([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>Escape</c> function enables an application to access the system-defined device capabilities that are not available
@@ -1084,7 +1084,7 @@ public static partial class Gdi32
 	// pvIn, LPVOID pvOut );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "ba21b680-78a8-45a2-94e1-01b377b74787")]
-	public static extern int Escape(HDC hdc, EscapeFunction iEscape, int cjIn, [In] IntPtr pvIn, [Out, Optional] IntPtr pvOut);
+	public static extern int Escape([In, AddAsMember] HDC hdc, EscapeFunction iEscape, int cjIn, [In, SizeDef(nameof(cjIn))] IntPtr pvIn, [Out, Optional] IntPtr pvOut);
 
 	/// <summary>
 	/// The <c>ExtEscape</c> function enables an application to access device capabilities that are not available through GDI.
@@ -1358,7 +1358,109 @@ public static partial class Gdi32
 	// LPCSTR lpInData, int cjOutput, LPSTR lpOutData );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5ca74f61-75dd-4a8c-9f0f-9c1b4719c75f")]
-	public static extern int ExtEscape(HDC hdc, EscapeFunction iEscape, int cjInput, [In] IntPtr lpInData, int cjOutput, [Out, Optional] IntPtr lpOutData);
+	public static extern int ExtEscape([In, AddAsMember] HDC hdc, EscapeFunction iEscape, [Optional] int cjInput, [In, Optional] IntPtr lpInData, [Optional] int cjOutput, [Out, Optional] IntPtr lpOutData);
+
+	/// <summary>The <c>ExtEscape</c> function enables an application to access device capabilities that are not available through GDI.</summary>
+	/// <typeparam name="TIn">The type of the input structure.</typeparam>
+	/// <param name="hdc">A handle to the device context.</param>
+	/// <param name="iEscape">
+	/// The escape function to be performed. It can be one of the following or it can be an application-defined escape function.
+	/// </param>
+	/// <param name="lpInData">The input structure required for the specified escape.</param>
+	/// <returns>
+	/// The return value specifies the outcome of the function. It is greater than zero if the function is successful, except for the
+	/// QUERYESCSUPPORT printer escape, which checks for implementation only. The return value is zero if the escape is not implemented. A
+	/// return value less than zero indicates an error.
+	/// </returns>
+	/// <remarks>
+	/// <note type="note">
+	/// This is a blocking or synchronous function and might not return immediately. How quickly this function returns depends on
+	/// run-time factors such as network status, print server configuration, and printer driver implementation—factors that are difficult to
+	/// predict when writing an application. Calling this function from a thread that manages interaction with the user interface could make
+	/// the application appear to be unresponsive.
+	/// </note>
+	/// <para>Use this function to pass a driver-defined escape value to a device.</para>
+	/// </remarks>
+	public static int ExtEscape<TIn>([In, AddAsMember] HDC hdc, EscapeFunction iEscape, in TIn lpInData)
+	{
+		using var mem = SafeCoTaskMemHandle.CreateFromStructure(lpInData);
+		return ExtEscape(hdc, iEscape, mem.Size, mem, 0, default);
+	}
+
+	/// <summary>The <c>ExtEscape</c> function enables an application to access device capabilities that are not available through GDI.</summary>
+	/// <typeparam name="TIn">The type of the input structure.</typeparam>
+	/// <typeparam name="TOut">The type of the output structure.</typeparam>
+	/// <param name="hdc">A handle to the device context.</param>
+	/// <param name="iEscape">
+	/// The escape function to be performed. It can be one of the following or it can be an application-defined escape function.
+	/// </param>
+	/// <param name="lpInData">The input structure required for the specified escape.</param>
+	/// <param name="lpOutData">The structure that receives output from this escape.</param>
+	/// <returns>
+	/// The return value specifies the outcome of the function. It is greater than zero if the function is successful, except for the
+	/// QUERYESCSUPPORT printer escape, which checks for implementation only. The return value is zero if the escape is not implemented. A
+	/// return value less than zero indicates an error.
+	/// </returns>
+	/// <remarks>
+	/// <note type="note">
+	/// This is a blocking or synchronous function and might not return immediately. How quickly this function returns depends on
+	/// run-time factors such as network status, print server configuration, and printer driver implementation—factors that are difficult to
+	/// predict when writing an application. Calling this function from a thread that manages interaction with the user interface could make
+	/// the application appear to be unresponsive.
+	/// </note>
+	/// <para>Use this function to pass a driver-defined escape value to a device.</para>
+	/// </remarks>
+	public static int ExtEscape<TIn, TOut>([In, AddAsMember] HDC hdc, EscapeFunction iEscape, in TIn lpInData, out TOut lpOutData) where TOut : struct
+	{
+		using var inMem = SafeCoTaskMemHandle.CreateFromStructure(lpInData);
+		using SafeCoTaskMemStruct<TOut> outMem = new();
+		int ret = ExtEscape(hdc, iEscape, inMem.Size, inMem, outMem.Size, outMem);
+		lpOutData = outMem.Value;
+		return ret;
+	}
+
+	/// <summary>The <c>ExtEscape</c> function enables an application to access device capabilities that are not available through GDI.</summary>
+	/// <typeparam name="TOut">The type of the output structure.</typeparam>
+	/// <param name="hdc">A handle to the device context.</param>
+	/// <param name="iEscape">
+	/// The escape function to be performed. It can be one of the following or it can be an application-defined escape function.
+	/// </param>
+	/// <param name="lpOutData">The structure that receives output from this escape.</param>
+	/// <param name="ignoreIn">This value is ignored and only exists to allow for the method definition to not conflict.</param>
+	/// <returns>
+	/// The return value specifies the outcome of the function. It is greater than zero if the function is successful, except for the
+	/// QUERYESCSUPPORT printer escape, which checks for implementation only. The return value is zero if the escape is not implemented. A
+	/// return value less than zero indicates an error.
+	/// </returns>
+	/// <remarks>
+	/// <note type="note">
+	/// This is a blocking or synchronous function and might not return immediately. How quickly this function returns depends on
+	/// run-time factors such as network status, print server configuration, and printer driver implementation—factors that are difficult to
+	/// predict when writing an application. Calling this function from a thread that manages interaction with the user interface could make
+	/// the application appear to be unresponsive.
+	/// </note>
+	/// <para>Use this function to pass a driver-defined escape value to a device.</para>
+	/// </remarks>
+	public static int ExtEscape<TOut>([In, AddAsMember] HDC hdc, EscapeFunction iEscape, out TOut lpOutData, bool ignoreIn = true) where TOut : struct
+	{
+		using SafeCoTaskMemStruct<TOut> outMem = new();
+		int ret = ExtEscape(hdc, iEscape, 0, default, outMem.Size, outMem);
+		lpOutData = outMem.Value;
+		return ret;
+	}
+
+	/// <summary>
+	/// Helper method that determines whether the specified escape function is supported by the device context using a call to
+	/// <c>ExtEscape</c> with the QUERYESCSUPPORT function.
+	/// </summary>
+	/// <remarks>
+	/// Use this method to verify support for a particular escape function before attempting to use it with the device context. This can help
+	/// prevent errors when working with device-specific features.
+	/// </remarks>
+	/// <param name="hdc">The handle to the device context to query for escape function support.</param>
+	/// <param name="escape">The escape function to check for support in the device context.</param>
+	/// <returns>true if the specified escape function is supported; otherwise, false.</returns>
+	public static bool QueryEscapeSupport([In, AddAsMember] HDC hdc, EscapeFunction escape) => ExtEscape(hdc, EscapeFunction.QUERYESCSUPPORT, escape) != 0;
 
 	/// <summary>
 	/// The <c>SetAbortProc</c> function sets the application-defined abort function that allows a print job to be canceled during spooling.
@@ -1384,7 +1486,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setabortproc int SetAbortProc( HDC hdc, ABORTPROC proc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5b6333fc-f1c3-4c76-906c-0fd13bb73953")]
-	public static extern int SetAbortProc(HDC hdc, AbortProc proc);
+	public static extern int SetAbortProc([In, AddAsMember] HDC hdc, AbortProc proc);
 
 	/// <summary>The <c>StartDoc</c> function starts a print job.</summary>
 	/// <param name="hdc">A handle to the device context for the print job.</param>
@@ -1414,7 +1516,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-startdoca int StartDocA( HDC hdc, const DOCINFOA *lpdi );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "53143463-b9fc-4378-aea9-da6c73a7cd03")]
-	public static extern int StartDoc(HDC hdc, in DOCINFO lpdi);
+	public static extern int StartDoc([In, AddAsMember] HDC hdc, in DOCINFO lpdi);
 
 	/// <summary>The <c>StartPage</c> function prepares the printer driver to accept data.</summary>
 	/// <param name="hdc">A handle to the device context for the print job.</param>
@@ -1445,7 +1547,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-startpage int StartPage( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b2bc0593-5eaf-40af-aa38-fbdfa1ea5f76")]
-	public static extern int StartPage(HDC hdc);
+	public static extern int StartPage([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>DOCINFO</c> structure contains the input and output file names and other information used by the StartDoc function.
@@ -1454,14 +1556,14 @@ public static partial class Gdi32
 	// lpszDocName; LPCSTR lpszOutput; LPCSTR lpszDatatype; DWORD fwType; } DOCINFOA, *LPDOCINFOA;
 	[PInvokeData("wingdi.h", MSDNShortId = "329bf0d9-399b-4f64-a029-361ef7558aeb")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct DOCINFO
+	public struct DOCINFO(string docName)
 	{
 		/// <summary>The size, in bytes, of the structure.</summary>
-		public int cbSize;
+		public int cbSize = Marshal.SizeOf<DOCINFO>();
 
 		/// <summary>Pointer to a null-terminated string that specifies the name of the document.</summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpszDocName;
+		public string lpszDocName = docName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of an output file. If this pointer is <c>NULL</c>, the output
@@ -1586,12 +1688,14 @@ public static partial class Gdi32
 	public struct PSFEATURE_OUTPUT
 	{
 		/// <summary><c>TRUE</c> if PostScript output is page-independent or <c>FALSE</c> if PostScript output is page-dependent.</summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool bPageIndependent;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool bPageIndependent;
 
 		/// <summary>
 		/// <c>TRUE</c> if printer feature code (setpagedevice's) is included or <c>FALSE</c> if all printer feature code is suppressed.
 		/// </summary>
-		[MarshalAs(UnmanagedType.Bool)] public bool bSetPageDevice;
+		[MarshalAs(UnmanagedType.Bool)]
+		public bool bSetPageDevice;
 	}
 
 	/// <summary>

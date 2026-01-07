@@ -347,6 +347,7 @@ public static partial class Gdi32
 	// color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "882facd2-7e06-48f6-82e4-f20e4d5adc92")]
+	[return: AddAsCtor]
 	public static extern SafeHPEN CreatePen(uint iStyle, int cWidth, COLORREF color);
 
 	/// <summary>
@@ -441,6 +442,7 @@ public static partial class Gdi32
 	// color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "882facd2-7e06-48f6-82e4-f20e4d5adc92")]
+	[return: AddAsCtor]
 	public static extern SafeHPEN CreatePen(PenStyle iStyle, int cWidth, COLORREF color);
 
 	/// <summary>
@@ -466,6 +468,7 @@ public static partial class Gdi32
 	// *plpen );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "638c0294-9a8f-44ed-a791-1be152cd92dd")]
+	[return: AddAsCtor]
 	public static extern SafeHPEN CreatePenIndirect(in LOGPEN plpen);
 
 	/// <summary>
@@ -649,6 +652,7 @@ public static partial class Gdi32
 	// cWidth, const LOGBRUSH *plbrush, DWORD cStyle, const DWORD *pstyle );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a1e81314-4fe6-481f-af96-24ebf56332cf")]
+	[return: AddAsCtor]
 	public static extern SafeHPEN ExtCreatePen(uint iPenStyle, uint cWidth, in LOGBRUSH plbrush, [Optional] uint cStyle,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[]? pstyle);
 
@@ -833,6 +837,7 @@ public static partial class Gdi32
 	// cWidth, const LOGBRUSH *plbrush, DWORD cStyle, const DWORD *pstyle );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a1e81314-4fe6-481f-af96-24ebf56332cf")]
+	[return: AddAsCtor]
 	public static extern SafeHPEN ExtCreatePen(ExtPenStyle iPenStyle, uint cWidth, in LOGBRUSH plbrush, [Optional] uint cStyle,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[]? pstyle);
 

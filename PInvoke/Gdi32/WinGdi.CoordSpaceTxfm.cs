@@ -129,7 +129,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0106867c-e8c5-4826-8cba-60c29e1d021a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DPtoLP(HDC hdc, [In, Out] POINT[] lppt, int c);
+	public static extern bool DPtoLP([In, AddAsMember] HDC hdc, [In, Out] POINT[] lppt, int c);
 
 	/// <summary>The <c>GetCurrentPositionEx</c> function retrieves the current position in logical coordinates.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -143,7 +143,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "23a5ac58-2b88-42d3-ab02-8edb8ef187cc")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCurrentPositionEx(HDC hdc, out POINT lppt);
+	public static extern bool GetCurrentPositionEx([In, AddAsMember] HDC hdc, out POINT lppt);
 
 	/// <summary>The <c>GetGraphicsMode</c> function retrieves the current graphics mode for the specified device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -176,7 +176,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getgraphicsmode int GetGraphicsMode( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "62e2960b-d414-4e84-a94f-60b192071402")]
-	public static extern GraphicsMode GetGraphicsMode(HDC hdc);
+	public static extern GraphicsMode GetGraphicsMode([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>GetMapMode</c> function retrieves the current mapping mode.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -239,7 +239,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getmapmode int GetMapMode( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "bc446b86-3dde-4460-bc54-1eaa4ad19941")]
-	public static extern MapMode GetMapMode(HDC hdc);
+	public static extern MapMode GetMapMode([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>GetViewportExtEx</c> function retrieves the x-extent and y-extent of the current viewport for the specified device context.
@@ -254,7 +254,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e3fc188a-3796-497d-9d86-f116e9e48e30")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetViewportExtEx(HDC hdc, out SIZE lpsize);
+	public static extern bool GetViewportExtEx([In, AddAsMember] HDC hdc, out SIZE lpsize);
 
 	/// <summary>
 	/// The <c>GetViewportOrgEx</c> function retrieves the x-coordinates and y-coordinates of the viewport origin for the specified
@@ -271,7 +271,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "6e6c7090-edf4-46a3-8bcd-10a00c0cf847")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetViewportOrgEx(HDC hdc, out POINT lppoint);
+	public static extern bool GetViewportOrgEx([In, AddAsMember] HDC hdc, out POINT lppoint);
 
 	/// <summary>This function retrieves the x-extent and y-extent of the window for the specified device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -286,7 +286,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "17f41fcb-c9a4-4b7e-acde-73450044413e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowExtEx(HDC hdc, out SIZE lpsize);
+	public static extern bool GetWindowExtEx([In, AddAsMember] HDC hdc, out SIZE lpsize);
 
 	/// <summary>
 	/// The <c>GetWindowOrgEx</c> function retrieves the x-coordinates and y-coordinates of the window origin for the specified device context.
@@ -301,7 +301,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9579ed10-6d4c-4724-af8b-22cab5b6ff5e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowOrgEx(HDC hdc, out POINT lppoint);
+	public static extern bool GetWindowOrgEx([In, AddAsMember] HDC hdc, out POINT lppoint);
 
 	/// <summary>The <c>GetWorldTransform</c> function retrieves the current world-space to page-space transformation.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -320,7 +320,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "72945b1e-144e-4724-bf08-6f971f8adb43")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWorldTransform(HDC hdc, out XFORM lpxf);
+	public static extern bool GetWorldTransform([In, AddAsMember] HDC hdc, out XFORM lpxf);
 
 	/// <summary>Converts a height in logical units to pixels.</summary>
 	/// <param name="height">The height in logical units.</param>
@@ -382,7 +382,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "670a16fb-842e-4250-9ad7-dc08e849c2ba")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LPtoDP(HDC hdc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] lppt, int c);
+	public static extern bool LPtoDP([In, AddAsMember] HDC hdc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINT[] lppt, int c);
 
 	/// <summary>
 	/// <para>
@@ -422,7 +422,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "670a16fb-842e-4250-9ad7-dc08e849c2ba")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LPtoDP(HDC hdc, ref POINT lppt, int c = 1);
+	public static extern bool LPtoDP([In, AddAsMember] HDC hdc, ref POINT lppt, int c = 1);
 
 	/// <summary>
 	/// The <c>ModifyWorldTransform</c> function changes the world transformation for a device context using the specified mode.
@@ -476,7 +476,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2ce070e8-dd6d-4f28-8214-37e825b44273")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ModifyWorldTransform(HDC hdc, in XFORM lpxf, MWT mode);
+	public static extern bool ModifyWorldTransform([In, AddAsMember] HDC hdc, in XFORM lpxf, MWT mode);
 
 	/// <summary>
 	/// The <c>OffsetViewportOrgEx</c> function modifies the viewport origin for a device context using the specified horizontal and
@@ -499,7 +499,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "54311cbe-1c54-4193-8991-891dbd0856bf")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OffsetViewportOrgEx(HDC hdc, int x, int y, out POINT lppt);
+	public static extern bool OffsetViewportOrgEx([In, AddAsMember] HDC hdc, int x, int y, out POINT lppt);
 
 	/// <summary>
 	/// The <c>OffsetWindowOrgEx</c> function modifies the window origin for a device context using the specified horizontal and vertical offsets.
@@ -520,7 +520,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "085f40ac-d91f-4853-8ad1-1fc5da08b981")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OffsetWindowOrgEx(HDC hdc, int x, int y, out POINT lppt);
+	public static extern bool OffsetWindowOrgEx([In, AddAsMember] HDC hdc, int x, int y, out POINT lppt);
 
 	/// <summary>
 	/// The <c>ScaleViewportExtEx</c> function modifies the viewport for a device context using the ratios formed by the specified
@@ -545,7 +545,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "8dde1322-82d7-4069-9655-a7bd3a324cb0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ScaleViewportExtEx(HDC hdc, int xn, int dx, int yn, int yd, out SIZE lpsz);
+	public static extern bool ScaleViewportExtEx([In, AddAsMember] HDC hdc, int xn, int dx, int yn, int yd, out SIZE lpsz);
 
 	/// <summary>
 	/// The <c>ScaleWindowExtEx</c> function modifies the window for a device context using the ratios formed by the specified
@@ -570,7 +570,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c34f0978-74dd-4839-99f2-a106f3d2c0f9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ScaleWindowExtEx(HDC hdc, int xn, int xd, int yn, int yd, out SIZE lpsz);
+	public static extern bool ScaleWindowExtEx([In, AddAsMember] HDC hdc, int xn, int xd, int yn, int yd, out SIZE lpsz);
 
 	/// <summary>The <c>SetGraphicsMode</c> function sets the graphics mode for the specified device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -635,7 +635,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setgraphicsmode int SetGraphicsMode( HDC hdc, int iMode );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "73824a14-2951-45a2-98cd-156418c59a2d")]
-	public static extern GraphicsMode SetGraphicsMode(HDC hdc, GraphicsMode iMode);
+	public static extern GraphicsMode SetGraphicsMode([In, AddAsMember] HDC hdc, GraphicsMode iMode);
 
 	/// <summary>
 	/// The <c>SetMapMode</c> function sets the mapping mode of the specified device context. The mapping mode defines the unit of
@@ -712,7 +712,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setmapmode int SetMapMode( HDC hdc, int iMode );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a4d6a63a-6d2d-4bd9-9e71-4cd1b5f145a4")]
-	public static extern MapMode SetMapMode(HDC hdc, MapMode iMode);
+	public static extern MapMode SetMapMode([In, AddAsMember] HDC hdc, MapMode iMode);
 
 	/// <summary>
 	/// The <c>SetViewportExtEx</c> function sets the horizontal and vertical extents of the viewport for a device context by using the
@@ -770,7 +770,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "36bf82e0-f3e7-43cf-943f-eed783ad24a4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetViewportExtEx(HDC hdc, int x, int y, out SIZE lpsz);
+	public static extern bool SetViewportExtEx([In, AddAsMember] HDC hdc, int x, int y, out SIZE lpsz);
 
 	/// <summary>The <c>SetViewportOrgEx</c> function specifies which device point maps to the window origin (0,0).</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -803,7 +803,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d3b6326e-9fec-42a1-8d2e-d1ad4fcc79a4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetViewportOrgEx(HDC hdc, int x, int y, out POINT lppt);
+	public static extern bool SetViewportOrgEx([In, AddAsMember] HDC hdc, int x, int y, out POINT lppt);
 
 	/// <summary>
 	/// The <c>SetWindowExtEx</c> function sets the horizontal and vertical extents of the window for a device context by using the
@@ -861,7 +861,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "8fd13d56-f6fa-4aea-a7e5-535caf22a840")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowExtEx(HDC hdc, int x, int y, out SIZE lpsz);
+	public static extern bool SetWindowExtEx([In, AddAsMember] HDC hdc, int x, int y, out SIZE lpsz);
 
 	/// <summary>The <c>SetWindowOrgEx</c> function specifies which window point maps to the viewport origin (0,0).</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -891,7 +891,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "75409b5a-c003-49f2-aceb-a28330b92b0a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowOrgEx(HDC hdc, int x, int y, out POINT lppt);
+	public static extern bool SetWindowOrgEx([In, AddAsMember] HDC hdc, int x, int y, out POINT lppt);
 
 	/// <summary>
 	/// The <c>SetWorldTransform</c> function sets a two-dimensional linear transformation between world space and page space for the
@@ -925,7 +925,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d103a4dd-949e-4f18-ac90-bb0e51011233")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWorldTransform(HDC hdc, in XFORM lpxf);
+	public static extern bool SetWorldTransform([In, AddAsMember] HDC hdc, in XFORM lpxf);
 
 	/// <summary>The <c>XFORM</c> structure specifies a world-space to page-space transformation.</summary>
 	/// <remarks>

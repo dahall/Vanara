@@ -213,8 +213,9 @@ public static partial class Gdi32
 	// BOOL GetCharWidthA( HDC hdc, UINT iFirst, UINT iLast, LPINT lpBuffer );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "be29c195-cf67-45d5-8a46-ac572afb756d")]
+	[Obsolete("This function is provided only for compatibility with 16-bit versions of Windows. Applications should call the GetCharWidth32 function, which provides more accurate results.")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCharWidth(HDC hdc, uint iFirst, uint iLast, [Out] int[] lpBuffer);
+	public static extern bool GetCharWidth([In, AddAsMember] HDC hdc, uint iFirst, uint iLast, [Out] int[] lpBuffer);
 
 	/// <summary>
 	/// <para>Retrieves a character set identifier for the font that is currently selected into a specified device context.</para>
@@ -233,7 +234,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextcharset int GetTextCharset( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "11040353-a2ea-42fe-aa89-3438ffc1fea6")]
-	public static extern CharacterSetUint GetTextCharset(HDC hdc);
+	public static extern CharacterSetUint GetTextCharset([In, AddAsMember] HDC hdc);
 
 	/// <summary>Retrieves information about the character set of the font that is currently selected into a specified device context.</summary>
 	/// <param name="hdc">
@@ -266,7 +267,7 @@ public static partial class Gdi32
 	// LPFONTSIGNATURE lpSig, DWORD dwFlags );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "1c8c114a-b261-457c-b541-4648a8f38ee8")]
-	public static extern CharacterSetUint GetTextCharsetInfo(HDC hdc, out FONTSIGNATURE lpSig, uint dwFlags = 0);
+	public static extern CharacterSetUint GetTextCharsetInfo([In, AddAsMember] HDC hdc, out FONTSIGNATURE lpSig, uint dwFlags = 0);
 
 	/// <summary>Translates character set information and sets all members of a destination structure to appropriate values.</summary>
 	/// <param name="lpSrc">
@@ -470,6 +471,6 @@ public static partial class Gdi32
 		public string DeviceKey;
 
 		/// <summary>Gets an empty structure with the <see cref="cb"/> set to the size of the structure.</summary>
-		public static readonly DISPLAY_DEVICE Default = new() { cb = (uint)Marshal.SizeOf(typeof(DISPLAY_DEVICE)) };
+		public static readonly DISPLAY_DEVICE Default = new() { cb = (uint)Marshal.SizeOf<DISPLAY_DEVICE>() };
 	}
 }

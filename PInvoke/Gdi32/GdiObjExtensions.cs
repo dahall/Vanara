@@ -50,7 +50,7 @@ public static class GdiObjExtensions
 	/// <returns><see langword="true"/> if the specified bitmap is a bottom-up DIB; otherwise, <see langword="false"/>.</returns>
 	public static bool IsBottomUpDIB(this in HBITMAP hbmp)
 	{
-		var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
+		var dibSz = Marshal.SizeOf<DIBSECTION>();
 		using var mem = GetObject(hbmp, dibSz);
 		return mem.Size == dibSz && mem.ToStructure<DIBSECTION>().dsBmih.biHeight > 0;
 	}
@@ -60,7 +60,7 @@ public static class GdiObjExtensions
 	/// <returns><see langword="true"/> if the specified bitmap is a bottom-up DIB; otherwise, <see langword="false"/>.</returns>
 	public static bool IsDIB(this in HBITMAP hbmp)
 	{
-		var dibSz = Marshal.SizeOf(typeof(DIBSECTION));
+		var dibSz = Marshal.SizeOf<DIBSECTION>();
 		using var mem = GetObject(hbmp, dibSz);
 		return mem.Size == dibSz;
 	}

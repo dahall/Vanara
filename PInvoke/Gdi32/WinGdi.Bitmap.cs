@@ -44,7 +44,7 @@ public static partial class Gdi32
 		FLOODFILLSURFACE
 	}
 
-	/// <summary>Flags for <see cref="GradientFill"/>.</summary>
+	/// <summary>Flags for <c>GradientFill</c>.</summary>
 	[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
 	public enum GradientFillMode : uint
 	{
@@ -245,7 +245,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, EntryPoint = "GdiAlphaBlend")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd183351")]
-	public static extern bool AlphaBlend(HDC hdcDest, int nXOriginDest, int nYOriginDest, int nWidthDest, int nHeightDest, HDC hdcSrc, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, BLENDFUNCTION blendFunction);
+	public static extern bool AlphaBlend([In, AddAsMember] HDC hdcDest, int nXOriginDest, int nYOriginDest, int nWidthDest, int nHeightDest, HDC hdcSrc, int nXOriginSrc, int nYOriginSrc, int nWidthSrc, int nHeightSrc, BLENDFUNCTION blendFunction);
 
 	/// <summary>
 	/// The BitBlt function performs a bit-block transfer of the color data corresponding to a rectangle of pixels from the specified
@@ -295,7 +295,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd183370")]
-	public static extern bool BitBlt(HDC hdc, int nXDest, int nYDest, int nWidth, int nHeight, HDC hdcSrc, int nXSrc, int nYSrc, RasterOperationMode dwRop);
+	public static extern bool BitBlt([In, AddAsMember] HDC hdc, int nXDest, int nYDest, int nWidth, int nHeight, HDC hdcSrc, int nXSrc, int nYSrc, RasterOperationMode dwRop);
 
 	/// <summary>
 	/// The <c>CreateBitmap</c> function creates a bitmap with the specified width, height, and color format (color planes and bits-per-pixel).
@@ -352,7 +352,8 @@ public static partial class Gdi32
 	// UINT nPlanes, UINT nBitCount, const VOID *lpBits );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b52e1baf-6a81-44bc-a061-4d42e6f4ed64")]
-	public static extern SafeHBITMAP CreateBitmap(int nWidth, int nHeight, uint nPlanes, uint nBitCount, [In, Optional] IntPtr lpBits);
+	[return: AddAsCtor]
+	public static extern SafeHBITMAP CreateBitmap(int nWidth, int nHeight, uint nPlanes, uint nBitCount, [In, Optional, SizeDef(nameof(nBitCount))] IntPtr lpBits);
 
 	/// <summary>
 	/// The <c>CreateBitmap</c> function creates a bitmap with the specified width, height, and color format (color planes and bits-per-pixel).
@@ -409,6 +410,7 @@ public static partial class Gdi32
 	// UINT nPlanes, UINT nBitCount, const VOID *lpBits );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b52e1baf-6a81-44bc-a061-4d42e6f4ed64")]
+	[return: AddAsCtor]
 	public static extern SafeHBITMAP CreateBitmap(int nWidth, int nHeight, uint nPlanes, uint nBitCount, [In, Optional] byte[]? lpBits);
 
 	/// <summary>
@@ -461,6 +463,7 @@ public static partial class Gdi32
 	// BITMAP *pbm );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "79f73e28-4ee3-472d-9a20-3ffe7cf2a6b5")]
+	[return: AddAsCtor]
 	public static extern SafeHBITMAP CreateBitmapIndirect(in BITMAP pbm);
 
 	/// <summary>
@@ -506,7 +509,8 @@ public static partial class Gdi32
 	// hdc, int cx, int cy );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d2866beb-ff7a-4390-8651-e7bf458ddf88")]
-	public static extern SafeHBITMAP CreateCompatibleBitmap(HDC hdc, int cx, int cy);
+	[return: AddAsCtor]
+	public static extern SafeHBITMAP CreateCompatibleBitmap([In, AddAsMember] HDC hdc, int cx, int cy);
 
 	/// <summary>
 	/// The <c>CreateDIBitmap</c> function creates a compatible bitmap (DDB) from a DIB and, optionally, sets the bitmap bits.
@@ -592,7 +596,8 @@ public static partial class Gdi32
 	// BITMAPINFOHEADER *pbmih, DWORD flInit, const VOID *pjBits, const BITMAPINFO *pbmi, UINT iUsage );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e9a5b525-a6b6-4309-9e53-69d274b85783")]
-	public static extern SafeHBITMAP CreateDIBitmap(HDC hdc, in BITMAPINFOHEADER pbmih, CBM flInit, [In, Optional] byte[]? pjBits, [In, Optional] SafeBITMAPINFO pbmi, DIBColorMode iUsage);
+	[return: AddAsCtor]
+	public static extern SafeHBITMAP CreateDIBitmap([In, AddAsMember] HDC hdc, in BITMAPINFOHEADER pbmih, CBM flInit, [In, Optional] byte[]? pjBits, [In, Optional] SafeBITMAPINFO pbmi, DIBColorMode iUsage);
 
 	/// <summary>
 	/// The <c>CreateDIBitmap</c> function creates a compatible bitmap (DDB) from a DIB and, optionally, sets the bitmap bits.
@@ -678,7 +683,8 @@ public static partial class Gdi32
 	// BITMAPINFOHEADER *pbmih, DWORD flInit, const VOID *pjBits, const BITMAPINFO *pbmi, UINT iUsage );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e9a5b525-a6b6-4309-9e53-69d274b85783")]
-	public static extern SafeHBITMAP CreateDIBitmap(HDC hdc, [In, Optional] IntPtr pbmih, CBM flInit, [In, Optional] byte[]? pjBits, [In, Optional] SafeBITMAPINFO pbmi, DIBColorMode iUsage);
+	[return: AddAsCtor]
+	public static extern SafeHBITMAP CreateDIBitmap([In, AddAsMember] HDC hdc, [In, Optional] IntPtr pbmih, CBM flInit, [In, Optional] byte[]? pjBits, [In, Optional] SafeBITMAPINFO pbmi, DIBColorMode iUsage);
 
 	/// <summary>The <c>CreateDIBitmap</c> function creates a compatible bitmap (DDB) from a DIB and, optionally, sets the bitmap bits.</summary>
 	/// <param name="hdc">A handle to a device context.</param>
@@ -762,7 +768,8 @@ public static partial class Gdi32
 	// BITMAPINFOHEADER *pbmih, [in] DWORD flInit, [in] const VOID *pjBits, [in] const BITMAPINFO *pbmi, [in] UINT iUsage );
 	[PInvokeData("wingdi.h", MSDNShortId = "NF:wingdi.CreateDIBitmap")]
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
-	public static extern unsafe SafeHBITMAP CreateDIBitmap([In] HDC hdc, [In] BITMAPINFOHEADER* pbmih, CBM flInit, [In] void* pjBits, [In] BITMAPINFO_UNMGD* pbmi, DIBColorMode iUsage);
+	[return: AddAsCtor]
+	public static extern unsafe SafeHBITMAP CreateDIBitmap([In, AddAsMember] HDC hdc, [In] BITMAPINFOHEADER* pbmih, CBM flInit, [In] void* pjBits, [In] BITMAPINFO_UNMGD* pbmi, DIBColorMode iUsage);
 
 	/// <summary>
 	/// The <c>CreateDIBSection</c> function creates a DIB that applications can write to directly. The function gives you a pointer to
@@ -859,7 +866,8 @@ public static partial class Gdi32
 	// BITMAPINFO *pbmi, UINT usage, VOID **ppvBits, HANDLE hSection, DWORD offset );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9276ec84-2860-42be-a9f8-d4efb8d25eec")]
-	public static extern SafeHBITMAP CreateDIBSection([In, Optional] HDC hdc, in BITMAPINFO pbmi, DIBColorMode usage, out IntPtr ppvBits, [In, Optional] HSECTION hSection, [In, Optional] uint offset);
+	[return: AddAsCtor]
+	public static extern SafeHBITMAP CreateDIBSection([In, Optional, AddAsMember] HDC hdc, in BITMAPINFO pbmi, DIBColorMode usage, out IntPtr ppvBits, [In, Optional] HSECTION hSection, [In, Optional] uint offset);
 
 	/// <summary>
 	/// The <c>CreateDIBSection</c> function creates a DIB that applications can write to directly. The function gives you a pointer to
@@ -956,7 +964,8 @@ public static partial class Gdi32
 	// BITMAPINFO *pbmi, UINT usage, VOID **ppvBits, HANDLE hSection, DWORD offset );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9276ec84-2860-42be-a9f8-d4efb8d25eec")]
-	public static extern SafeHBITMAP CreateDIBSection([In, Optional] HDC hdc, [In] SafeBITMAPINFO pbmi, DIBColorMode usage, out IntPtr ppvBits, [In, Optional] HSECTION hSection, [In, Optional] uint offset);
+	[return: AddAsCtor]
+	public static extern SafeHBITMAP CreateDIBSection([In, Optional, AddAsMember] HDC hdc, [In] SafeBITMAPINFO pbmi, DIBColorMode usage, out IntPtr ppvBits, [In, Optional] HSECTION hSection, [In, Optional] uint offset);
 
 	/// <summary>
 	/// <para>
@@ -981,7 +990,8 @@ public static partial class Gdi32
 	// hdc, int cx, int cy );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "79168baf-26ea-4d24-b75c-d0658a56892c")]
-	public static extern SafeHBITMAP CreateDiscardableBitmap(HDC hdc, int cx, int cy);
+	[return: AddAsCtor]
+	public static extern SafeHBITMAP CreateDiscardableBitmap([In, AddAsMember] HDC hdc, int cx, int cy);
 
 	/// <summary>The <c>ExtFloodFill</c> function fills an area of the display surface with the current brush.</summary>
 	/// <param name="hdc">A handle to a device context.</param>
@@ -1056,7 +1066,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b996d47d-5aaf-4b13-8643-209744e5a04b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ExtFloodFill(HDC hdc, int x, int y, COLORREF color, FloodFillType type);
+	public static extern bool ExtFloodFill([In, AddAsMember] HDC hdc, int x, int y, COLORREF color, FloodFillType type);
 
 	/// <summary>
 	/// <para>
@@ -1095,7 +1105,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e53bebb5-4e46-4ea4-8d41-c12f4c6645ef")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FloodFill(HDC hdc, int x, int y, COLORREF color);
+	public static extern bool FloodFill([In, AddAsMember] HDC hdc, int x, int y, COLORREF color);
 
 	/// <summary>
 	/// <para>The <c>GetBitmapBits</c> function copies the bitmap bits of a specified device-dependent bitmap into a buffer.</para>
@@ -1115,7 +1125,7 @@ public static partial class Gdi32
 	// LPVOID lpvBits );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "72e8cc6b-d282-451e-b6ec-0473d2daea7c")]
-	public static extern int GetBitmapBits(HBITMAP hbit, int cb, byte[] lpvBits);
+	public static extern int GetBitmapBits([In, AddAsMember] HBITMAP hbit, int cb, byte[] lpvBits);
 
 	/// <summary>
 	/// The <c>GetBitmapDimensionEx</c> function retrieves the dimensions of a compatible bitmap. The retrieved dimensions must have been
@@ -1136,7 +1146,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3e4f5afc-26d3-4fb2-8d00-183165fdf471")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetBitmapDimensionEx(HBITMAP hbit, out SIZE lpsize);
+	public static extern bool GetBitmapDimensionEx([In, AddAsMember] HBITMAP hbit, out SIZE lpsize);
 
 	/// <summary>
 	/// The <c>GetDIBColorTable</c> function retrieves RGB (red, green, blue) color values from a range of entries in the color table of
@@ -1163,7 +1173,7 @@ public static partial class Gdi32
 	// UINT cEntries, RGBQUAD *prgbq );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3e3319be-8a3d-4ac2-ba36-9dbf18243472")]
-	public static extern uint GetDIBColorTable(HDC hdc, uint iStart, uint cEntries, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RGBQUAD[] prgbq);
+	public static extern uint GetDIBColorTable([In, AddAsMember] HDC hdc, uint iStart, uint cEntries, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RGBQUAD[] prgbq);
 
 	/// <summary>
 	/// The <c>GetDIBits</c> function retrieves the bits of the specified compatible bitmap and copies them into a buffer as a DIB using
@@ -1277,7 +1287,7 @@ public static partial class Gdi32
 	// UINT cLines, LPVOID lpvBits, LPBITMAPINFO lpbmi, UINT usage );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "be3ffa3f-b343-4e38-8b1e-aeccf35d92b8")]
-	public static extern int GetDIBits([In] HDC hdc, [In] HBITMAP hbm, uint start, uint cLines, [Out, Optional] byte[]? lpvBits, ref BITMAPINFO lpbmi, DIBColorMode usage);
+	public static extern int GetDIBits([In, AddAsMember] HDC hdc, [In, AddAsMember] HBITMAP hbm, uint start, uint cLines, [Out, Optional] byte[]? lpvBits, ref BITMAPINFO lpbmi, DIBColorMode usage);
 
 	/// <summary>
 	/// The <c>GetDIBits</c> function retrieves the bits of the specified compatible bitmap and copies them into a buffer as a DIB using
@@ -1391,7 +1401,7 @@ public static partial class Gdi32
 	// UINT cLines, LPVOID lpvBits, LPBITMAPINFO lpbmi, UINT usage );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "be3ffa3f-b343-4e38-8b1e-aeccf35d92b8")]
-	public static extern int GetDIBits([In] HDC hdc, [In] HBITMAP hbm, uint start, uint cLines, [Out, Optional] IntPtr lpvBits, [In, Out] SafeBITMAPINFO lpbmi, DIBColorMode usage);
+	public static extern int GetDIBits([In, AddAsMember] HDC hdc, [In, AddAsMember] HBITMAP hbm, uint start, uint cLines, [Out, Optional] IntPtr lpvBits, [In, Out] SafeBITMAPINFO lpbmi, DIBColorMode usage);
 
 	/// <summary>The <c>GetPixel</c> function retrieves the red, green, blue (RGB) color value of the pixel at the specified coordinates.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -1412,7 +1422,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getpixel COLORREF GetPixel( HDC hdc, int x, int y );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "46d17e95-93ce-4a43-b86c-489d6e3afe12")]
-	public static extern COLORREF GetPixel(HDC hdc, int x, int y);
+	public static extern COLORREF GetPixel([In, AddAsMember] HDC hdc, int x, int y);
 
 	/// <summary>
 	/// The <c>GetStretchBltMode</c> function retrieves the current stretching mode. The stretching mode defines how color data is added
@@ -1473,7 +1483,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getstretchbltmode int GetStretchBltMode( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a4408e28-d7ac-44e9-905d-efa75c60e503")]
-	public static extern StretchMode GetStretchBltMode(HDC hdc);
+	public static extern StretchMode GetStretchBltMode([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>GdiGradientFill</c> function fills rectangle and triangle structures.</summary>
 	/// <param name="hdc">A handle to the destination device context.</param>
@@ -1552,7 +1562,88 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, EntryPoint = "GradientFill")]
 	[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GradientFill(HDC hdc, TRIVERTEX[] pVertex, uint nVertex, GRADIENT_TRIANGLE[] pMesh, uint nCount, GradientFillMode ulMode);
+	public static extern bool GradientFill([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] TRIVERTEX[] pVertex,
+		uint nVertex, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] GRADIENT_TRIANGLE[] pMesh, uint nCount, GradientFillMode ulMode);
+
+	/// <summary>The <c>GdiGradientFill</c> function fills rectangle and triangle structures.</summary>
+	/// <param name="hdc">A handle to the destination device context.</param>
+	/// <param name="pVertex">A pointer to an array of TRIVERTEX structures that each define a triangle vertex.</param>
+	/// <param name="nVertex">The number of vertices in pVertex.</param>
+	/// <param name="pMesh">
+	/// An array of GRADIENT_TRIANGLE structures in triangle mode, or an array of GRADIENT_RECT structures in rectangle mode.
+	/// </param>
+	/// <param name="nCount">The number of elements (triangles or rectangles) in pMesh.</param>
+	/// <param name="ulMode">
+	/// <para>The gradient fill mode. This parameter can be one of the following values.</para>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Value</term>
+	/// <term>Meaning</term>
+	/// </listheader>
+	/// <item>
+	/// <term>GRADIENT_FILL_RECT_H</term>
+	/// <term>
+	/// In this mode, two endpoints describe a rectangle. The rectangle is defined to have a constant color (specified by the TRIVERTEX
+	/// structure) for the left and right edges. GDI interpolates the color from the left to right edge and fills the interior.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>GRADIENT_FILL_RECT_V</term>
+	/// <term>
+	/// In this mode, two endpoints describe a rectangle. The rectangle is defined to have a constant color (specified by the TRIVERTEX
+	/// structure) for the top and bottom edges. GDI interpolates the color from the top to bottom edge and fills the interior.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>GRADIENT_FILL_TRIANGLE</term>
+	/// <term>
+	/// In this mode, an array of TRIVERTEX structures is passed to GDI along with a list of array indexes that describe separate
+	/// triangles. GDI performs linear interpolation between triangle vertices and fills the interior. Drawing is done directly in 24-
+	/// and 32-bpp modes. Dithering is performed in 16-, 8-, 4-, and 1-bpp mode.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// </param>
+	/// <returns>
+	/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
+	/// <para>If the function fails, the return value is <c>FALSE</c>.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para><c>Note</c> This function is the same as GradientFill.</para>
+	/// <para>
+	/// To add smooth shading to a triangle, call the <c>GdiGradientFill</c> function with the three triangle endpoints. GDI will
+	/// linearly interpolate and fill the triangle. Here is the drawing output of a shaded triangle.
+	/// </para>
+	/// <para>
+	/// To add smooth shading to a rectangle, call <c>GdiGradientFill</c> with the upper-left and lower-right coordinates of the
+	/// rectangle. There are two shading modes used when drawing a rectangle. In horizontal mode, the rectangle is shaded from
+	/// left-to-right. In vertical mode, the rectangle is shaded from top-to-bottom. Here is the drawing output of two shaded rectangles
+	/// - one in horizontal mode, the other in vertical mode.
+	/// </para>
+	/// <para>
+	/// The <c>GdiGradientFill</c> function uses a mesh method to specify the endpoints of the object to draw. All vertices are passed to
+	/// <c>GdiGradientFill</c> in the pVertex array. The pMesh parameter specifies how these vertices are connected to form an object.
+	/// When filling a rectangle, pMesh points to an array of GRADIENT_RECT structures. Each <c>GRADIENT_RECT</c> structure specifies the
+	/// index of two vertices in the pVertex array. These two vertices form the upper-left and lower-right boundary of one rectangle.
+	/// </para>
+	/// <para>
+	/// In the case of filling a triangle, pMesh points to an array of GRADIENT_TRIANGLE structures. Each <c>GRADIENT_TRIANGLE</c>
+	/// structure specifies the index of three vertices in the pVertex array. These three vertices form one triangle.
+	/// </para>
+	/// <para>To simplify hardware acceleration, this routine is not required to be pixel-perfect in the triangle interior.</para>
+	/// <para>
+	/// Note that <c>GdiGradientFill</c> does not use the Alpha member of the TRIVERTEX structure. To use <c>GdiGradientFill</c> with
+	/// transparency, call <c>GdiGradientFill</c> and then call GdiAlphaBlend with the desired values for the alpha channel of each vertex.
+	/// </para>
+	/// <para>For more information, see Smooth Shading, Drawing a Shaded Triangle, and Drawing a Shaded Rectangle.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gdigradientfill BOOL GdiGradientFill( HDC hdc, PTRIVERTEX
+	// pVertex, ULONG nVertex, PVOID pMesh, ULONG nCount, ULONG ulMode );
+	[DllImport(Lib.Gdi32, SetLastError = false, EntryPoint = "GradientFill")]
+	[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool GradientFill([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] TRIVERTEX[] pVertex,
+		uint nVertex, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] GRADIENT_RECT[] pMesh, uint nCount, GradientFillMode ulMode);
 
 	/// <summary>
 	/// The <c>MaskBlt</c> function combines the color data for the source and destination bitmaps using the specified mask and raster operation.
@@ -1631,7 +1722,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9fd6f0ce-a802-428d-9be5-a66afe39e9b7")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MaskBlt(HDC hdcDest, int xDest, int yDest, int width, int height, HDC hdcSrc, int xSrc, int ySrc,
+	public static extern bool MaskBlt([In, AddAsMember] HDC hdcDest, int xDest, int yDest, int width, int height, HDC hdcSrc, int xSrc, int ySrc,
 		HBITMAP hbmMask, int xMask, int yMask, RasterOperationMode rop);
 
 	/// <summary>
@@ -1701,7 +1792,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "2a56c71b-2e96-418b-8625-a808d76e0c85")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PlgBlt(HDC hdcDest, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 3)] POINT[] lpPoint,
+	public static extern bool PlgBlt([In, AddAsMember] HDC hdcDest, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 4)] POINT[] lpPoint,
 		HDC hdcSrc, int xSrc, int ySrc, int width, int height, HBITMAP hbmMask, int xMask, int yMask);
 
 	/// <summary>
@@ -1723,7 +1814,7 @@ public static partial class Gdi32
 	// VOID *pvBits );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3cab12a6-c408-4552-bec0-5ecfd8374757")]
-	public static extern int SetBitmapBits(HBITMAP hbm, uint cb, byte[] pvBits);
+	public static extern int SetBitmapBits([In, AddAsMember] HBITMAP hbm, uint cb, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pvBits);
 
 	/// <summary>
 	/// The <c>SetBitmapDimensionEx</c> function assigns preferred dimensions to a bitmap. These dimensions can be used by applications;
@@ -1785,7 +1876,7 @@ public static partial class Gdi32
 	// UINT cEntries, const RGBQUAD *prgbq );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "f301c34d-6e8e-4dc8-b3f3-0fdc658d09e3")]
-	public static extern uint SetDIBColorTable(HDC hdc, uint iStart, uint cEntries, [In] RGBQUAD[] prgbq);
+	public static extern uint SetDIBColorTable([In, AddAsMember] HDC hdc, uint iStart, uint cEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] RGBQUAD[] prgbq);
 
 	/// <summary>
 	/// The <c>SetDIBits</c> function sets the pixels in a compatible bitmap (DDB) using the color data found in the specified DIB.
@@ -1866,7 +1957,7 @@ public static partial class Gdi32
 	// UINT cLines, const VOID *lpBits, const BITMAPINFO *lpbmi, UINT ColorUse );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "706f4532-4073-4d5c-ae2d-e33aea9163e9")]
-	public static extern int SetDIBits([In, Optional] HDC hdc, [In] HBITMAP hbm, uint start, uint cLines, [In] byte[] lpBits, in BITMAPINFO lpbmi, DIBColorMode ColorUse);
+	public static extern int SetDIBits([In, Optional] HDC hdc, [In, AddAsMember] HBITMAP hbm, uint start, uint cLines, [In] byte[] lpBits, in BITMAPINFO lpbmi, DIBColorMode ColorUse);
 
 	/// <summary>
 	/// The <c>SetDIBits</c> function sets the pixels in a compatible bitmap (DDB) using the color data found in the specified DIB.
@@ -1947,7 +2038,7 @@ public static partial class Gdi32
 	// UINT cLines, const VOID *lpBits, const BITMAPINFO *lpbmi, UINT ColorUse );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "706f4532-4073-4d5c-ae2d-e33aea9163e9")]
-	public static extern int SetDIBits([In, Optional] HDC hdc, [In] HBITMAP hbm, uint start, uint cLines, [In] IntPtr lpBits, [In] SafeBITMAPINFO lpbmi, DIBColorMode ColorUse);
+	public static extern int SetDIBits([In, Optional, AddAsMember] HDC hdc, [In, AddAsMember] HBITMAP hbm, uint start, uint cLines, [In] IntPtr lpBits, [In] SafeBITMAPINFO lpbmi, DIBColorMode ColorUse);
 
 	/// <summary>
 	/// The <c>SetDIBitsToDevice</c> function sets the pixels in the specified rectangle on the device that is associated with the
@@ -2042,7 +2133,7 @@ public static partial class Gdi32
 	// ColorUse );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "41225400-12e3-47ba-8b88-ac1d5b0fa90f")]
-	public static extern int SetDIBitsToDevice([In] HDC hdc, int xDest, int yDest, uint w, uint h, int xSrc, int ySrc, uint StartScan,
+	public static extern int SetDIBitsToDevice([In, AddAsMember] HDC hdc, int xDest, int yDest, uint w, uint h, int xSrc, int ySrc, uint StartScan,
 		uint cLines, [In] byte[] lpvBits, in BITMAPINFO lpbmi, DIBColorMode ColorUse);
 
 	/// <summary>
@@ -2138,7 +2229,7 @@ public static partial class Gdi32
 	// ColorUse );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "41225400-12e3-47ba-8b88-ac1d5b0fa90f")]
-	public static extern int SetDIBitsToDevice([In] HDC hdc, int xDest, int yDest, uint w, uint h, int xSrc, int ySrc, uint StartScan,
+	public static extern int SetDIBitsToDevice([In, AddAsMember] HDC hdc, int xDest, int yDest, uint w, uint h, int xSrc, int ySrc, uint StartScan,
 		uint cLines, [In] IntPtr lpvBits, [In] SafeBITMAPINFO lpbmi, DIBColorMode ColorUse);
 
 	/// <summary>The <c>SetPixel</c> function sets the pixel at the specified coordinates to the specified color.</summary>
@@ -2172,7 +2263,7 @@ public static partial class Gdi32
 	// color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "652e2e7a-79ae-4668-b269-153ee08a5de9")]
-	public static extern COLORREF SetPixel(HDC hdc, int x, int y, COLORREF color);
+	public static extern COLORREF SetPixel([In, AddAsMember] HDC hdc, int x, int y, COLORREF color);
 
 	/// <summary>
 	/// The <c>SetPixelV</c> function sets the pixel at the specified coordinates to the closest approximation of the specified color.
@@ -2198,7 +2289,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "638f0ffd-3771-4390-b335-0517be5312fd")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetPixelV(HDC hdc, int x, int y, COLORREF color);
+	public static extern bool SetPixelV([In, AddAsMember] HDC hdc, int x, int y, COLORREF color);
 
 	/// <summary>The <c>SetStretchBltMode</c> function sets the bitmap stretching mode in the specified device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -2287,7 +2378,7 @@ public static partial class Gdi32
 	// int SetStretchBltMode( HDC hdc, int mode );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3e5a48dc-ccd5-41ea-a24b-5c40213abf38")]
-	public static extern StretchMode SetStretchBltMode(HDC hdc, StretchMode mode);
+	public static extern StretchMode SetStretchBltMode([In, AddAsMember] HDC hdc, StretchMode mode);
 
 	/// <summary>
 	/// The <c>StretchBlt</c> function copies a bitmap from a source rectangle into a destination rectangle, stretching or compressing
@@ -2367,7 +2458,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5130c88e-08e8-4faa-a1cb-a8106c86cea0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool StretchBlt(HDC hdcDest, int xDest, int yDest, int wDest, int hDest, HDC hdcSrc, int xSrc, int ySrc,
+	public static extern bool StretchBlt([In, AddAsMember] HDC hdcDest, int xDest, int yDest, int wDest, int hDest, HDC hdcSrc, int xSrc, int ySrc,
 		int wSrc, int hSrc, RasterOperationMode rop);
 
 	/// <summary>
@@ -2470,7 +2561,7 @@ public static partial class Gdi32
 	// *lpbmi, UINT iUsage, DWORD rop );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3d57a79a-338d-48ab-8161-3ce17739bf20")]
-	public static extern int StretchDIBits([In] HDC hdc, int xDest, int yDest, int DestWidth, int DestHeight, int xSrc, int ySrc, int SrcWidth,
+	public static extern int StretchDIBits([In, AddAsMember] HDC hdc, int xDest, int yDest, int DestWidth, int DestHeight, int xSrc, int ySrc, int SrcWidth,
 		int SrcHeight, [In, Optional] byte[]? lpBits, in BITMAPINFO lpbmi, DIBColorMode iUsage, RasterOperationMode rop);
 
 	/// <summary>
@@ -2573,7 +2664,7 @@ public static partial class Gdi32
 	// *lpbmi, UINT iUsage, DWORD rop );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3d57a79a-338d-48ab-8161-3ce17739bf20")]
-	public static extern int StretchDIBits([In] HDC hdc, int xDest, int yDest, int DestWidth, int DestHeight, int xSrc, int ySrc, int SrcWidth,
+	public static extern int StretchDIBits([In, AddAsMember] HDC hdc, int xDest, int yDest, int DestWidth, int DestHeight, int xSrc, int ySrc, int SrcWidth,
 		int SrcHeight, [In, Optional] IntPtr lpBits, [In] SafeBITMAPINFO lpbmi, DIBColorMode iUsage, RasterOperationMode rop);
 
 	/// <summary>
@@ -2628,7 +2719,7 @@ public static partial class Gdi32
 	[PInvokeData("wingdi.h", MSDNShortId = "82f6db79-f364-480a-ad9d-acf2ad94a295")]
 	[DllImport(Lib.Gdi32, SetLastError = true, EntryPoint = "GdiTransparentBlt")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TransparentBlt(HDC hdcDest, int xoriginDest, int yoriginDest, int wDest, int hDest, HDC hdcSrc, int xoriginSrc, int yoriginSrc, int wSrc, int hSrc, uint crTransparent);
+	public static extern bool TransparentBlt([In, AddAsMember] HDC hdcDest, int xoriginDest, int yoriginDest, int wDest, int hDest, HDC hdcSrc, int xoriginSrc, int yoriginSrc, int wSrc, int hSrc, uint crTransparent);
 
 	/// <summary>
 	/// The <c>GRADIENT_RECT</c> structure specifies the index of two vertices in the pVertex array in the <c>GradientFill</c> function.
@@ -2704,24 +2795,45 @@ public static partial class Gdi32
 	// Red; COLOR16 Green; COLOR16 Blue; COLOR16 Alpha; } TRIVERTEX, *PTRIVERTEX, *LPTRIVERTEX;
 	[PInvokeData("wingdi.h", MSDNShortId = "47b700aa-3410-4610-ba06-dab2b2662f5e")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct TRIVERTEX
+	public struct TRIVERTEX(int x, int y, ushort red, ushort green, ushort blue, ushort alpha)
 	{
 		/// <summary>The x-coordinate, in logical units, of the upper-left corner of the rectangle.</summary>
-		public int x;
+		public int x = x;
 
 		/// <summary>The y-coordinate, in logical units, of the upper-left corner of the rectangle.</summary>
-		public int y;
+		public int y = y;
 
 		/// <summary>The color information at the point of x, y.</summary>
-		public ushort Red;
+		public ushort Red = red;
 
 		/// <summary>The color information at the point of x, y.</summary>
-		public ushort Green;
+		public ushort Green = green;
 
 		/// <summary>The color information at the point of x, y.</summary>
-		public ushort Blue;
+		public ushort Blue = blue;
 
 		/// <summary>The color information at the point of x, y.</summary>
-		public ushort Alpha;
+		public ushort Alpha = alpha;
+
+		/// <summary>Initializes a new instance of the TRIVERTEX structure using the specified point coordinates and color values.</summary>
+		/// <remarks>
+		/// The color channels from <paramref name="clr"/> are upscaled to match the expected format for TRIVERTEX. This constructor is
+		/// useful when working with graphics APIs that require vertex and color data in this structure.
+		/// </remarks>
+		/// <param name="pt">The point that defines the X and Y coordinates for the vertex.</param>
+		/// <param name="clr">The color information, including red, green, blue, and alpha channels, to assign to the vertex.</param>
+		public TRIVERTEX(in POINT pt, in COLORREF clr) :
+			this(pt.x, pt.y, UpscaleColorChannel(clr.R), UpscaleColorChannel(clr.G), UpscaleColorChannel(clr.B), UpscaleColorChannel(clr.A)) { }
+
+		/// <summary>
+		/// Converts an 8-bit color channel value to a 16-bit value by upscaling the input for use in higher bit-depth color formats.
+		/// </summary>
+		/// <remarks>
+		/// This method duplicates the 8-bit value into both the high and low bytes of the 16-bit result, preserving the relative intensity
+		/// for formats that expect 16 bits per channel.
+		/// </remarks>
+		/// <param name="value">The 8-bit color channel value to upscale. Must be in the range 0 to 255.</param>
+		/// <returns>A 16-bit unsigned integer representing the upscaled color channel value, suitable for 16-bit color representations.</returns>
+		public static ushort UpscaleColorChannel(byte value) => (ushort)((value << 8) | value);
 	}
 }

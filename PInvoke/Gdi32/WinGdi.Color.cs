@@ -189,7 +189,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "65dd45e2-39a4-4a94-bd14-b0c8e4a609a3")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AnimatePalette(HPALETTE hPal, uint iStartIndex, uint cEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[] ppe);
+	public static extern bool AnimatePalette([In, AddAsMember] HPALETTE hPal, uint iStartIndex, uint cEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[] ppe);
 
 	/// <summary>
 	/// The <c>CheckColorsInGamut</c> function determines whether a specified set of RGB triples lies in the output gamut of a specified
@@ -224,7 +224,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "87bee1a6-e3dd-4d0b-ad8a-9584833d9463")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CheckColorsInGamut(HDC hdc, [In] RGBTRIPLE[] lpRGBTriple, IntPtr dlpBuffer, uint nCount);
+	public static extern bool CheckColorsInGamut([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] RGBTRIPLE[] lpRGBTriple, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] byte[] dlpBuffer, uint nCount);
 
 	/// <summary>
 	/// The <c>ColorCorrectPalette</c> function corrects the entries of a palette using the WCS 1.0 parameters in the specified device context.
@@ -242,7 +242,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "e7680521-fb1e-4292-945f-867964dac1ab")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ColorCorrectPalette(HDC hdc, HPALETTE hPal, uint deFirst, uint num);
+	public static extern bool ColorCorrectPalette([In, AddAsMember] HDC hdc, HPALETTE hPal, uint deFirst, uint num);
 
 	/// <summary>The <c>ColorMatchToTarget</c> function enables you to preview colors as they would appear on the target device.</summary>
 	/// <param name="hdc">Specifies the device context for previewing, generally the screen.</param>
@@ -308,7 +308,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "eb922411-0808-4404-bdaf-bf29d0cad379")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ColorMatchToTarget(HDC hdc, HDC hdcTarget, CS action);
+	public static extern bool ColorMatchToTarget([In, AddAsMember] HDC hdc, HDC hdcTarget, CS action);
 
 	/// <summary>The <c>CreateColorSpace</c> function creates a logical color space.</summary>
 	/// <param name="lplcs">Pointer to the LOGCOLORSPACE data structure.</param>
@@ -327,6 +327,7 @@ public static partial class Gdi32
 	// LPLOGCOLORSPACEA lplcs );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c3fc798c-4bb9-4010-87d4-edc0005b7698")]
+	[return: AddAsCtor]
 	public static extern SafeHCOLORSPACE CreateColorSpace(in LOGCOLORSPACE lplcs);
 
 	/// <summary>The <c>CreateHalftonePalette</c> function creates a halftone palette for the specified device context (DC).</summary>
@@ -347,7 +348,8 @@ public static partial class Gdi32
 	// hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "ba9dfa0c-98df-4922-acba-d00e9b4b0fb0")]
-	public static extern SafeHPALETTE CreateHalftonePalette(HDC hdc);
+	[return: AddAsCtor]
+	public static extern SafeHPALETTE CreateHalftonePalette([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>CreatePalette</c> function creates a logical palette.</summary>
 	/// <param name="plpal">A pointer to a LOGPALETTE structure that contains information about the colors in the logical palette.</param>
@@ -370,6 +372,7 @@ public static partial class Gdi32
 	// *plpal );
 	[PInvokeData("wingdi.h", MSDNShortId = "f3462198-9360-4b77-ac62-9fe21ec666be")]
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+	[return: AddAsCtor]
 	public static extern SafeHPALETTE CreatePalette([In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<LOGPALETTE>))] LOGPALETTE plpal);
 
 	/// <summary>The <c>DeleteColorSpace</c> function removes and destroys a specified color space.</summary>
@@ -411,7 +414,7 @@ public static partial class Gdi32
 	// proc, LPARAM param );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a93e6239-b6c7-4e37-9f06-03790a3ed53f")]
-	public static extern int EnumICMProfiles(HDC hdc, EnumICMProfilesProcCallback proc, [Optional] IntPtr param);
+	public static extern int EnumICMProfiles([In, AddAsMember] HDC hdc, EnumICMProfilesProcCallback proc, [Optional] IntPtr param);
 
 	/// <summary>The <c>GetColorAdjustment</c> function retrieves the color adjustment values for the specified device context (DC).</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -425,7 +428,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "405c0d0d-9433-4f4a-9957-5c42a0fb3a07")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetColorAdjustment(HDC hdc, ref COLORADJUSTMENT lpca);
+	public static extern bool GetColorAdjustment([In, AddAsMember] HDC hdc, ref COLORADJUSTMENT lpca);
 
 	/// <summary>The <c>GetColorSpace</c> function retrieves the handle to the input color space from a specified device context.</summary>
 	/// <param name="hdc">Specifies a device context that is to have its input color space handle retrieved.</param>
@@ -439,22 +442,48 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getcolorspace HCOLORSPACE GetColorSpace( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "6d092755-2c7a-46a7-9127-df72c26c3ae9")]
-	public static extern HCOLORSPACE GetColorSpace(HDC hdc);
+	public static extern HCOLORSPACE GetColorSpace([In, AddAsMember] HDC hdc);
 
-	/// <summary>The <c>GetDeviceGammaRamp</c> function gets the gamma ramp on direct color display boards having drivers that support downloadable gamma ramps in hardware.</summary>
+	/// <summary>
+	/// The <c>GetDeviceGammaRamp</c> function gets the gamma ramp on direct color display boards having drivers that support downloadable
+	/// gamma ramps in hardware.
+	/// </summary>
 	/// <param name="hdc">Specifies the device context of the direct color display board in question.</param>
-	/// <param name="lpRamp">Points to a buffer where the function can place the current gamma ramp of the color display board. The gamma ramp is specified in three arrays of 256 <c>WORD</c> elements each, which contain the mapping between RGB values in the frame buffer and digital-analog-converter (DAC) values. The sequence of the arrays is red, green, blue.</param>
+	/// <param name="lpRamp">
+	/// Points to a buffer where the function can place the current gamma ramp of the color display board. The gamma ramp is specified in
+	/// three arrays of 256 <c>WORD</c> elements each, which contain the mapping between RGB values in the frame buffer and
+	/// digital-analog-converter (DAC) values. The sequence of the arrays is red, green, blue.
+	/// </param>
 	/// <returns>
 	/// <para>If this function succeeds, the return value is <c>TRUE</c>.</para>
 	/// <para>If this function fails, the return value is <c>FALSE</c>.</para>
 	/// </returns>
-	/// <remarks>Direct color display modes do not use color lookup tables and are usually 16, 24, or 32 bit. Not all direct color video boards support loadable gamma ramps. <c>GetDeviceGammaRamp</c> succeeds only for devices with drivers that support downloadable gamma ramps in hardware.</remarks>
+	/// <remarks>
+	/// Direct color display modes do not use color lookup tables and are usually 16, 24, or 32 bit. Not all direct color video boards
+	/// support loadable gamma ramps. <c>GetDeviceGammaRamp</c> succeeds only for devices with drivers that support downloadable gamma ramps
+	/// in hardware.
+	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getdevicegammaramp
 	// BOOL GetDeviceGammaRamp( HDC hdc, LPVOID lpRamp );
-	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c32600a9-545e-4bbf-a3c1-21878f5106b0")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetDeviceGammaRamp(HDC hdc, IntPtr lpRamp);
+	public static bool GetDeviceGammaRamp([In, AddAsMember] HDC hdc, out ushort[,] lpRamp)
+	{
+		lpRamp = new ushort[3,256];
+		var flatRamp = new ushort[256 * 3];
+		var ret = GetDeviceGammaRamp(hdc, flatRamp);
+		if (ret)
+			for (int i = 0; i < 256; i++)
+			{
+				lpRamp[0, i] = flatRamp[i];
+				lpRamp[1, i] = flatRamp[i + 256];
+				lpRamp[2, i] = flatRamp[i + 512];
+			}
+		return ret;
+
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetDeviceGammaRamp([In, AddAsMember] HDC hdc, [Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 256 * 3)] ushort[] lpRamp);
+	}
 
 	/// <summary>
 	/// The <c>GetICMProfile</c> function retrieves the file name of the current output color profile for a specified device context.
@@ -508,7 +537,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "1e16771a-80c5-47bb-9c98-14169d4dd773")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetICMProfile(HDC hdc, ref uint pBufSize, StringBuilder? pszFilename);
+	public static extern bool GetICMProfile([In, AddAsMember] HDC hdc, ref uint pBufSize, [Out, SizeDef(nameof(pBufSize), SizingMethod.Query)] StringBuilder? pszFilename);
 
 	/// <summary>The <c>GetLogColorSpace</c> function retrieves the color space definition identified by a specified handle.</summary>
 	/// <param name="hColorSpace">Specifies the handle to a color space.</param>
@@ -527,7 +556,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "01862a48-8c2f-4b29-b928-2800c02218a2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetLogColorSpace(HCOLORSPACE hColorSpace, ref LOGCOLORSPACE lpBuffer, uint nSize);
+	public static extern bool GetLogColorSpace([In, AddAsMember] HCOLORSPACE hColorSpace, ref LOGCOLORSPACE lpBuffer, uint nSize);
 
 	/// <summary>
 	/// The <c>GetNearestColor</c> function retrieves a color value identifying a color from the system palette that will be displayed
@@ -545,7 +574,7 @@ public static partial class Gdi32
 	// color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "89e4e19b-47be-442e-8eb4-c867bb78f36a")]
-	public static extern COLORREF GetNearestColor(HDC hdc, COLORREF color);
+	public static extern COLORREF GetNearestColor([In, AddAsMember] HDC hdc, COLORREF color);
 
 	/// <summary>
 	/// The <c>GetNearestPaletteIndex</c> function retrieves the index for the entry in the specified logical palette most closely
@@ -566,7 +595,7 @@ public static partial class Gdi32
 	// COLORREF crColor );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Wingdi.h")]
-	public static extern uint GetNearestPaletteIndex(HPALETTE hpal, COLORREF crColor);
+	public static extern uint GetNearestPaletteIndex([In, AddAsMember] HPALETTE hpal, COLORREF crColor);
 
 	/// <summary>The <c>GetPaletteEntries</c> function retrieves a specified range of palette entries from the given logical palette.</summary>
 	/// <param name="hpal">A handle to the logical palette.</param>
@@ -598,8 +627,8 @@ public static partial class Gdi32
 	// UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5e72e881-32e1-458e-a09e-91fa13abe178")]
-	public static extern uint GetPaletteEntries([Optional] HPALETTE hpal, uint iStart, uint cEntries,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[] pPalEntries);
+	public static extern uint GetPaletteEntries([In, Optional] HPALETTE hpal, [Optional] uint iStart, [Optional] uint cEntries,
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[]? pPalEntries);
 
 	/// <summary>
 	/// The <c>GetSystemPaletteEntries</c> function retrieves a range of palette entries from the system palette that is associated with
@@ -625,8 +654,8 @@ public static partial class Gdi32
 	// hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "67bb0adf-ae7f-48d5-bc62-82ece45aeee6")]
-	public static extern uint GetSystemPaletteEntries(HDC hdc, uint iStart, uint cEntries,
-		[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[]? pPalEntries);
+	public static extern uint GetSystemPaletteEntries([In, AddAsMember] HDC hdc, [Optional] uint iStart, [Optional] uint cEntries,
+		[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[]? pPalEntries);
 
 	/// <summary>
 	/// The <c>GetSystemPaletteUse</c> function retrieves the current state of the system (physical) palette for the specified device
@@ -670,7 +699,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-getsystempaletteuse UINT GetSystemPaletteUse( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0a9e7906-2f81-4fda-b03d-86feb0755327")]
-	public static extern SYSPAL GetSystemPaletteUse(HDC hdc);
+	public static extern SYSPAL GetSystemPaletteUse([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>PALETTEINDEX</c> macro accepts an index to a logical-color palette entry and returns a palette-entry specifier consisting of a
@@ -725,7 +754,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-realizepalette UINT RealizePalette( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "1c744ad2-09bc-455f-bc3c-9a2583b57a30")]
-	public static extern uint RealizePalette(HDC hdc);
+	public static extern uint RealizePalette([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>ResizePalette</c> function increases or decreases the size of a logical palette based on the specified value.</summary>
 	/// <param name="hpal">A handle to the palette to be changed.</param>
@@ -752,7 +781,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "77178869-cbfb-4b91-a5b0-7d0404e7534f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ResizePalette(HPALETTE hpal, uint n);
+	public static extern bool ResizePalette([In, AddAsMember] HPALETTE hpal, uint n);
 
 	/// <summary>The <c>SelectPalette</c> function selects the specified logical palette into a device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -793,7 +822,7 @@ public static partial class Gdi32
 	// hPal, BOOL bForceBkgd );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "1fc3356f-6fa3-444f-b224-b953acd2394b")]
-	public static extern HPALETTE SelectPalette(HDC hdc, HPALETTE hPal, [MarshalAs(UnmanagedType.Bool)] bool bForceBkgd);
+	public static extern HPALETTE SelectPalette([In, AddAsMember] HDC hdc, HPALETTE hPal, [MarshalAs(UnmanagedType.Bool)] bool bForceBkgd);
 
 	/// <summary>
 	/// The <c>SetColorAdjustment</c> function sets the color adjustment values for a device context (DC) using the specified values.
@@ -813,7 +842,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "292d6cdc-cafa-438a-9392-a9c22e7d44a5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetColorAdjustment(HDC hdc, in COLORADJUSTMENT lpca);
+	public static extern bool SetColorAdjustment([In, AddAsMember] HDC hdc, in COLORADJUSTMENT lpca);
 
 	/// <summary>The <c>SetColorSpace</c> function defines the input color space for a given device context.</summary>
 	/// <param name="hdc">Specifies the handle to a device context.</param>
@@ -826,7 +855,7 @@ public static partial class Gdi32
 	// hcs );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "037c864f-f8ec-4467-9236-74ea4493d743")]
-	public static extern HCOLORSPACE SetColorSpace(HDC hdc, HCOLORSPACE hcs);
+	public static extern HCOLORSPACE SetColorSpace([In, AddAsMember] HDC hdc, HCOLORSPACE hcs);
 
 	/// <summary>
 	/// The <c>SetDeviceGammaRamp</c> function sets the gamma ramp on direct color display boards having drivers that support
@@ -849,10 +878,24 @@ public static partial class Gdi32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setdevicegammaramp
 	// BOOL SetDeviceGammaRamp( HDC hdc, LPVOID lpRamp );
-	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "8e4cc9a4-f292-47a1-a12a-43a479326ca7")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetDeviceGammaRamp(HDC hdc, IntPtr lpRamp);
+	public static bool SetDeviceGammaRamp([In, AddAsMember] HDC hdc, [In] ushort[,] lpRamp)
+	{
+		if (lpRamp.GetLength(0) != 3 || lpRamp.GetLength(1) != 256)
+			throw new ArgumentException("lpRamp must be a 3x256 array.", nameof(lpRamp));
+		var flatRamp = new ushort[256 * 3];
+		for (int i = 0; i < 256; i++)
+		{
+			flatRamp[i] = lpRamp[0, i];
+			flatRamp[256 + i] = lpRamp[1, i];
+			flatRamp[512 + i] = lpRamp[2, i];
+		}
+		return SetDeviceGammaRamp(hdc, flatRamp);
+
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool SetDeviceGammaRamp([In] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 256 * 3)] ushort[] lpRamp);
+	}
 
 	/// <summary>
 	/// The <c>SetICMMode</c> function causes Image Color Management to be enabled, disabled, or queried on a given device context (DC).
@@ -926,7 +969,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-seticmmode int SetICMMode( HDC hdc, int mode );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "40d70c1f-c580-43c4-b44b-6c9388e138fb")]
-	public static extern int SetICMMode(HDC hdc, ICM mode);
+	public static extern int SetICMMode([In, AddAsMember] HDC hdc, ICM mode);
 
 	/// <summary>
 	/// The <c>SetICMProfile</c> function sets a specified color profile as the output profile for a specified device context (DC).
@@ -957,7 +1000,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c95f6536-9377-4766-9eb6-004a41bcf6c5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetICMProfile(HDC hdc, string lpFileName);
+	public static extern bool SetICMProfile([In, AddAsMember] HDC hdc, string lpFileName);
 
 	/// <summary>
 	/// The <c>SetPaletteEntries</c> function sets RGB (red, green, blue) color values and flags in a range of entries in a logical palette.
@@ -986,7 +1029,7 @@ public static partial class Gdi32
 	// UINT iStart, UINT cEntries, const PALETTEENTRY *pPalEntries );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "df38f482-75ba-4800-8b26-92204c63255e")]
-	public static extern uint SetPaletteEntries(HPALETTE hpal, uint iStart, uint cEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[] pPalEntries);
+	public static extern uint SetPaletteEntries([In, AddAsMember] HPALETTE hpal, uint iStart, uint cEntries, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PALETTEENTRY[] pPalEntries);
 
 	/// <summary>
 	/// The <c>SetSystemPaletteUse</c> function allows an application to specify whether the system palette contains 2 or 20 static
@@ -1076,7 +1119,7 @@ public static partial class Gdi32
 	// use );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "6ff245d3-1bcc-4778-a595-c1eb16531ad3")]
-	public static extern SYSPAL SetSystemPaletteUse(HDC hdc, SYSPAL use);
+	public static extern SYSPAL SetSystemPaletteUse([In, AddAsMember] HDC hdc, SYSPAL use);
 
 	/// <summary>
 	/// The <c>UnrealizeObject</c> function resets the origin of a brush or resets a logical palette. If the hgdiobj parameter is a
@@ -1105,7 +1148,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b84cd0b3-fdf1-4f12-bc45-308032d6d698")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnrealizeObject(HGDIOBJ h);
+	public static extern bool UnrealizeObject([In, AddAsMember] HGDIOBJ h);
 
 	/// <summary>
 	/// The <c>UpdateColors</c> function updates the client area of the specified device context by remapping the current colors in the
@@ -1136,23 +1179,23 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "61dfd579-3fc9-4e0a-bfd9-d04c6f918fd8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateColors(HDC hdc);
+	public static extern bool UpdateColors([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>CIEXYZ</c> structure contains the x,y, and z coordinates of a specific color in a specified color space.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-ciexyz typedef struct tagCIEXYZ { FXPT2DOT30 ciexyzX;
 	// FXPT2DOT30 ciexyzY; FXPT2DOT30 ciexyzZ; } CIEXYZ;
 	[PInvokeData("wingdi.h", MSDNShortId = "3735c143-8eb3-4b91-a81e-5bc6bda1dfaa")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CIEXYZ
+	public struct CIEXYZ(int x, int y, int z)
 	{
 		/// <summary>The x coordinate in fix point (2.30).</summary>
-		public int ciexyzX;
+		public int ciexyzX = x;
 
 		/// <summary>The y coordinate in fix point (2.30).</summary>
-		public int ciexyzY;
+		public int ciexyzY = y;
 
 		/// <summary>The z coordinate in fix point (2.30).</summary>
-		public int ciexyzZ;
+		public int ciexyzZ = z;
 	}
 
 	/// <summary>
@@ -1370,18 +1413,18 @@ public static partial class Gdi32
 	// lcsGammaRed; DWORD lcsGammaGreen; DWORD lcsGammaBlue; CHAR lcsFilename[MAX_PATH]; } LOGCOLORSPACEA, *LPLOGCOLORSPACEA;
 	[PInvokeData("wingdi.h", MSDNShortId = "b08aec07-6ac0-47be-8dc9-d604d94dedde")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct LOGCOLORSPACE
+	public struct LOGCOLORSPACE()
 	{
 		private const uint LCS_SIGNATURE = 0x50534f43;
 
 		/// <summary>Color space signature. At present, this member should always be set to LCS_SIGNATURE.</summary>
-		public uint lcsSignature;
+		public uint lcsSignature = LCS_SIGNATURE;
 
 		/// <summary>Version number; must be 0x400.</summary>
-		public uint lcsVersion;
+		public uint lcsVersion = 0x400;
 
 		/// <summary>Size of this structure, in bytes.</summary>
-		public uint lcsSize;
+		public uint lcsSize = (uint)Marshal.SizeOf<LOGCOLORSPACE>();
 
 		/// <summary>
 		/// <para>Color space type. The member can be one of the following values.</para>
@@ -1466,10 +1509,10 @@ public static partial class Gdi32
 		/// this structure should be set to reasonable values, even if the values are not completely accurate.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-		public string lcsFilename;
+		public string lcsFilename = "";
 
 		/// <summary>The default structure with size and default fields preset.</summary>
-		public static readonly LOGCOLORSPACE Default = new() { lcsSignature = LCS_SIGNATURE, lcsVersion = 0x400, lcsSize = (uint)Marshal.SizeOf(typeof(LOGCOLORSPACE)) };
+		public static readonly LOGCOLORSPACE Default = new();
 	}
 
 	/// <summary>
@@ -1480,15 +1523,21 @@ public static partial class Gdi32
 	// rgbtGreen; BYTE rgbtRed; } RGBTRIPLE, *PRGBTRIPLE, *NPRGBTRIPLE, *LPRGBTRIPLE;
 	[PInvokeData("wingdi.h", MSDNShortId = "bc1467a5-0027-4f22-bfc9-1deab562c573")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct RGBTRIPLE
+	public struct RGBTRIPLE(byte r, byte g, byte b)
 	{
 		/// <summary>The intensity of blue in the color.</summary>
-		public byte rgbtBlue;
+		public byte rgbtBlue = b;
 
 		/// <summary>The intensity of green in the color.</summary>
-		public byte rgbtGreen;
+		public byte rgbtGreen = g;
 
 		/// <summary>The intensity of red in the color.</summary>
-		public byte rgbtRed;
+		public byte rgbtRed = r;
+
+		/// <summary>Performs an implicit conversion from <see cref="RGBTRIPLE"/> to <see cref="COLORREF"/>.</summary>
+		public static implicit operator COLORREF(RGBTRIPLE v) => new(v.rgbtRed, v.rgbtGreen, v.rgbtBlue);
+
+		/// <summary>Performs an implicit conversion from <see cref="COLORREF"/> to <see cref="RGBTRIPLE"/>.</summary>
+		public static implicit operator RGBTRIPLE(COLORREF v) => new(v.R, v.G, v.B);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace Vanara.PInvoke;
@@ -153,7 +154,7 @@ public static partial class Gdi32
 	// NEWTEXTMETRIC *lpntm, _In_ DWORD FontType, _In_ LPARAM lParam );
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("Wingdi.h")]
-	public delegate int EnumFontFamProc(in ENUMLOGFONT lpelf, in NEWTEXTMETRIC lpntm, uint FontType, IntPtr lParam);
+	public delegate int EnumFontFamProc(in ENUMLOGFONT lpelf, in NEWTEXTMETRIC lpntm, FontType FontType, IntPtr lParam);
 
 	/// <summary>
 	/// <para>
@@ -205,7 +206,7 @@ public static partial class Gdi32
 	// TEXTMETRIC *lptm, _In_ DWORD dwType, _In_ LPARAM lpData );
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("Wingdi.h")]
-	public delegate int EnumFontsProc(in LOGFONT lplf, in TEXTMETRIC lptm, uint dwType, IntPtr lpData);
+	public delegate int EnumFontsProc(in LOGFONT lplf, in TEXTMETRIC lptm, FontType dwType, IntPtr lpData);
 
 	/// <summary>The character set (4-bytes).</summary>
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
@@ -594,7 +595,7 @@ public static partial class Gdi32
 		GGI_MARK_NONEXISTING_GLYPHS = 1
 	}
 
-	/// <summary>The format of the data that <see cref="GetGlyphOutline"/> retrieves.</summary>
+	/// <summary>The format of the data that <c>GetGlyphOutline</c> retrieves.</summary>
 	[PInvokeData("wingdi.h", MSDNShortId = "08f06007-5b21-44ab-b234-21a58c94ed4e")]
 	public enum GGO
 	{
@@ -1279,7 +1280,7 @@ public static partial class Gdi32
 	// DWORD cjSize, PVOID pvResrved, DWORD *pNumFonts );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "ad5153ba-fa9d-4a07-9be3-a07b524c1539")]
-	public static extern HANDLE AddFontMemResourceEx(IntPtr pFileView, uint cjSize, [Optional] IntPtr pvResrved, ref uint pNumFonts);
+	public static extern HANDLE AddFontMemResourceEx([In, SizeDef(nameof(cjSize))] IntPtr pFileView, uint cjSize, [Optional, Ignore] IntPtr pvResrved, out uint pNumFonts);
 
 	/// <summary>
 	/// <para>
@@ -1980,6 +1981,7 @@ public static partial class Gdi32
 	// DWORD iClipPrecision, DWORD iQuality, DWORD iPitchAndFamily, LPCSTR pszFaceName );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "373bac6e-5d4d-4909-8096-2f0e909d2f1d")]
+	[return: AddAsCtor]
 	public static extern SafeHFONT CreateFont([Optional] int cHeight, [Optional] int cWidth, [Optional] int cEscapement, [Optional] int cOrientation,
 		[Optional] int cWeight, [Optional, MarshalAs(UnmanagedType.Bool)] bool bItalic, [Optional, MarshalAs(UnmanagedType.Bool)] bool bUnderline,
 		[Optional, MarshalAs(UnmanagedType.Bool)] bool bStrikeOut, CharacterSet iCharSet = CharacterSet.DEFAULT_CHARSET,
@@ -2025,6 +2027,7 @@ public static partial class Gdi32
 	// *lplf );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b7919fb6-8515-4f1b-af9c-dc7eac381b90")]
+	[return: AddAsCtor]
 	public static extern SafeHFONT CreateFontIndirect(in LOGFONT lplf);
 
 	/// <summary>
@@ -2056,6 +2059,7 @@ public static partial class Gdi32
 	// ENUMLOGFONTEXDVA *Arg1 );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "1161b79e-f9c8-4073-97c4-1ccc1a78279b")]
+	[return: AddAsCtor]
 	public static extern SafeHFONT CreateFontIndirectEx(in ENUMLOGFONTEXDV Arg1);
 
 	/// <summary>
@@ -2309,18 +2313,12 @@ public static partial class Gdi32
 	/// </param>
 	/// <returns>A sequence of tuples that contain the ENUMLOGFONTEXDV, ENUMTEXTMETRIC and FontType for each font family.</returns>
 	[PInvokeData("wingdi.h", MSDNShortId = "4d70906d-8005-4c4a-869e-16dd3e6fa3f2")]
-	public static IEnumerable<(ENUMLOGFONTEXDV lpelfe, ENUMTEXTMETRIC lpntme, FontType FontType)> EnumFontFamiliesEx(HDC hdc, CharacterSet lfCharSet = CharacterSet.ANSI_CHARSET, string lfFaceName = "")
+	public static IEnumerable<(ENUMLOGFONTEXDV lpelfe, ENUMTEXTMETRIC lpntme, FontType FontType)> EnumFontFamiliesEx([In, AddAsMember] HDC hdc, CharacterSet lfCharSet = CharacterSet.DEFAULT_CHARSET, string lfFaceName = "")
 	{
 		LOGFONT lf = new() { lfCharSet = lfCharSet, lfFaceName = lfFaceName };
-		List<(ENUMLOGFONTEXDV lpelfe, ENUMTEXTMETRIC lpntme, FontType FontType)> l = new();
-		_ = EnumFontFamiliesEx(hdc, lf, EnumProc);
+		List<(ENUMLOGFONTEXDV lpelfe, ENUMTEXTMETRIC lpntme, FontType FontType)> l = [];
+		_ = EnumFontFamiliesEx(hdc, lf, (in v, in m, t, _) => { l.Add((v, m, t)); return 1; });
 		return l;
-
-		int EnumProc(in ENUMLOGFONTEXDV lpelfe, in ENUMTEXTMETRIC lpntme, FontType FontType, IntPtr lParam)
-		{
-			l.Add((lpelfe, lpntme, FontType));
-			return 1;
-		}
 	}
 
 	/// <summary>
@@ -2360,7 +2358,7 @@ public static partial class Gdi32
 	// FONTENUMPROCA lpProc, LPARAM lParam );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b5dfc38d-c400-4900-a15b-f251815ee346")]
-	public static extern int EnumFonts(HDC hdc, [Optional] string? lpLogfont, EnumFontsProc lpProc, [Optional] IntPtr lParam);
+	public static extern int EnumFonts([In] HDC hdc, [Optional] string? lpLogfont, EnumFontsProc lpProc, [Optional] IntPtr lParam);
 
 	/// <summary>
 	/// The <c>ExtTextOut</c> function draws text using the currently selected font, background color, and text color. You can optionally
@@ -2535,7 +2533,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "74f8fcb8-8ad4-47f2-a330-fa56713bdb37")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ExtTextOut(HDC hdc, int x, int y, ETO options, [In, Optional] PRECT lprect, string lpString, uint c, [In, Optional] int[]? lpDx);
+	public static extern bool ExtTextOut([In, AddAsMember] HDC hdc, int x, int y, ETO options, [In, Optional] PRECT? lprect, string lpString, uint c, [In, Optional] int[]? lpDx);
 
 	/// <summary>The <c>GetAspectRatioFilterEx</c> function retrieves the setting for the current aspect-ratio filter.</summary>
 	/// <param name="hdc">Handle to a device context.</param>
@@ -2556,7 +2554,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3f2dd47d-08bf-4848-897f-5ae506fba342")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetAspectRatioFilterEx(HDC hdc, out SIZE lpsize);
+	public static extern bool GetAspectRatioFilterEx([In, AddAsMember] HDC hdc, out SIZE lpsize);
 
 	/// <summary>
 	/// The <c>GetCharABCWidths</c> function retrieves the widths, in logical units, of consecutive characters in a specified range from the
@@ -2594,7 +2592,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b48ab66d-ff0a-48d9-b7dd-28610bf69d51")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCharABCWidths(HDC hdc, uint wFirst, uint wLast, [In, Out] ABC[] lpABC);
+	public static extern bool GetCharABCWidths([In, AddAsMember] HDC hdc, uint wFirst, uint wLast, [In, Out] ABC[] lpABC);
 
 	/// <summary>
 	/// The <c>GetCharABCWidthsFloat</c> function retrieves the widths, in logical units, of consecutive characters in a specified range from
@@ -2635,7 +2633,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "552942c9-e2a6-43f9-901f-3aba1e2523e5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCharABCWidthsFloat(HDC hdc, uint iFirst, uint iLast, [In, Out] ABCFLOAT[] lpABC);
+	public static extern bool GetCharABCWidthsFloat([In, AddAsMember] HDC hdc, uint iFirst, uint iLast, [In, Out] ABCFLOAT[] lpABC);
 
 	/// <summary>
 	/// The <c>GetCharABCWidthsI</c> function retrieves the widths, in logical units, of consecutive glyph indices in a specified range from
@@ -2680,7 +2678,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "7d1210ee-42b7-4f2e-9e89-fb1543d76290")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCharABCWidthsI(HDC hdc, uint giFirst, uint cgi, [In, Optional] ushort[]? pgi, [In, Out] ABC[] pabc);
+	public static extern bool GetCharABCWidthsI([In, AddAsMember] HDC hdc, uint giFirst, uint cgi, [In, Optional] ushort[]? pgi, [In, Out] ABC[] pabc);
 
 	/// <summary>
 	/// <para>
@@ -2914,7 +2912,7 @@ public static partial class Gdi32
 	// LPCSTR lpString, int nCount, int nMexExtent, LPGCP_RESULTSA lpResults, DWORD dwFlags );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "80d3f4b3-503b-4abb-826c-e5c09972ba2f")]
-	public static extern uint GetCharacterPlacement(HDC hdc, string lpString, int nCount, int nMexExtent, out GCP_RESULTS lpResults, GCP dwFlags);
+	public static extern uint GetCharacterPlacement([In, AddAsMember] HDC hdc, string lpString, int nCount, int nMexExtent, [In, Out] StructPointer<GCP_RESULTS> lpResults, GCP dwFlags);
 
 	/// <summary>
 	/// The <c>GetCharWidth32</c> function retrieves the widths, in logical coordinates, of consecutive characters in a specified range from
@@ -2942,7 +2940,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "f7d6e9b3-72aa-42d8-8346-b230b9e98237")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCharWidth32(HDC hdc, uint iFirst, uint iLast, [Out] int[] lpBuffer);
+	public static extern bool GetCharWidth32([In, AddAsMember] HDC hdc, uint iFirst, uint iLast, [Out] int[] lpBuffer);
 
 	/// <summary>
 	/// The <c>GetCharWidthFloat</c> function retrieves the fractional widths of consecutive characters in a specified range from the current font.
@@ -2968,7 +2966,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "7a90b701-63f9-41e5-9069-10d344edfe02")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCharWidthFloat(HDC hdc, uint iFirst, uint iLast, [Out] float[] lpBuffer);
+	public static extern bool GetCharWidthFloat([In, AddAsMember] HDC hdc, uint iFirst, uint iLast, [Out] float[] lpBuffer);
 
 	/// <summary>
 	/// The <c>GetCharWidthI</c> function retrieves the widths, in logical coordinates, of consecutive glyph indices in a specified range
@@ -2999,7 +2997,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5f532149-7c2f-4972-9900-68c2f185d255")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetCharWidthI(HDC hdc, uint giFirst, uint cgi, [In, Optional] ushort[]? pgi, [Out] int[] piWidths);
+	public static extern bool GetCharWidthI([In, AddAsMember] HDC hdc, uint giFirst, uint cgi, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ushort[]? pgi, [Out] int[] piWidths);
 
 	/// <summary>The <c>GetFontData</c> function retrieves font metric data for a TrueType font.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -3044,7 +3042,8 @@ public static partial class Gdi32
 	// dwOffset, PVOID pvBuffer, DWORD cjBuffer );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "ec716ad8-bdc2-4f61-968e-f86288123cec")]
-	public static extern uint GetFontData(HDC hdc, [Optional] uint dwTable, [Optional] uint dwOffset, [Optional] IntPtr pvBuffer, [Optional] uint cjBuffer);
+	public static extern uint GetFontData([In, AddAsMember] HDC hdc, [Optional] FOURCC dwTable, [Optional] uint dwOffset,
+		[Out, Optional, SizeDef(nameof(cjBuffer), SizingMethod.QueryResultInReturn)] IntPtr pvBuffer, [Optional] uint cjBuffer);
 
 	/// <summary>
 	/// The <c>GetFontLanguageInfo</c> function returns information about the currently selected font for the specified display context.
@@ -3108,7 +3107,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getfontlanguageinfo DWORD GetFontLanguageInfo( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c2f19423-4410-44dd-83f1-5b858852051d")]
-	public static extern GCP GetFontLanguageInfo(HDC hdc);
+	public static extern GCP GetFontLanguageInfo([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>GetFontUnicodeRanges</c> function returns information about which Unicode characters are supported by a font. The information
@@ -3130,7 +3129,7 @@ public static partial class Gdi32
 	// LPGLYPHSET lpgs );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "51b0ab12-c467-4a89-8173-fdc513868aae")]
-	public static extern uint GetFontUnicodeRanges(HDC hdc, IntPtr lpgs);
+	public static extern uint GetFontUnicodeRanges([In] HDC hdc, [Out] ManagedStructPointer<GLYPHSET> lpgs);
 
 	/// <summary>
 	/// The <c>GetFontUnicodeRanges</c> function returns information about which Unicode characters are supported by a font. The information
@@ -3139,7 +3138,7 @@ public static partial class Gdi32
 	/// <param name="hdc">A handle to the device context.</param>
 	/// <returns>A <see cref="GLYPHSET"/> structure with the glyph set information.</returns>
 	/// <exception cref="Exception">An unspecified error has occurred.</exception>
-	public static GLYPHSET GetFontUnicodeRanges(HDC hdc)
+	public static GLYPHSET GetFontUnicodeRanges([In, AddAsMember] HDC hdc)
 	{
 		uint l = GetFontUnicodeRanges(hdc, IntPtr.Zero);
 		if (l == 0) throw new Exception();
@@ -3186,7 +3185,7 @@ public static partial class Gdi32
 	// int c, LPWORD pgi, DWORD fl );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "7abfee7a-dd5d-4f33-96f1-b38364ba5afd")]
-	public static extern uint GetGlyphIndices(HDC hdc, string lpstr, int c, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ushort[] pgi, GGI fl = GGI.GGI_MARK_NONEXISTING_GLYPHS);
+	public static extern uint GetGlyphIndices([In, AddAsMember] HDC hdc, string lpstr, int c, [Out, MarshalAs(UnmanagedType.LPArray)] ushort[] pgi, GGI fl = GGI.GGI_MARK_NONEXISTING_GLYPHS);
 
 	/// <summary>
 	/// The <c>GetGlyphOutline</c> function retrieves the outline or bitmap for a character in the TrueType font that is selected into the
@@ -3307,7 +3306,7 @@ public static partial class Gdi32
 	// fuFormat, LPGLYPHMETRICS lpgm, DWORD cjBuffer, LPVOID pvBuffer, const MAT2 *lpmat2 );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "08f06007-5b21-44ab-b234-21a58c94ed4e")]
-	public static extern uint GetGlyphOutline(HDC hdc, uint uChar, GGO fuFormat, out GLYPHMETRICS lpgm, uint cjBuffer, IntPtr pvBuffer, in MAT2 lpmat2);
+	public static extern uint GetGlyphOutline([In, AddAsMember] HDC hdc, uint uChar, GGO fuFormat, out GLYPHMETRICS lpgm, uint cjBuffer, [SizeDef(nameof(cjBuffer), SizingMethod.QueryResultInReturn)] IntPtr pvBuffer, in MAT2 lpmat2);
 
 	/// <summary>
 	/// The <c>GetKerningPairs</c> function retrieves the character-kerning pairs for the currently selected font for the specified device context.
@@ -3329,11 +3328,10 @@ public static partial class Gdi32
 	// LPKERNINGPAIR lpKernPair );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9aba629f-afab-4ef3-8e1d-d0b90e122e94")]
-	public static extern uint GetKerningPairs(HDC hdc, uint nPairs, [Out] KERNINGPAIR[] lpKernPair);
+	public static extern uint GetKerningPairs([In, AddAsMember] HDC hdc, uint nPairs, [Out, SizeDef(nameof(nPairs), SizingMethod.QueryResultInReturn)] KERNINGPAIR[] lpKernPair);
 
 	/// <summary>The <c>GetOutlineTextMetrics</c> function retrieves text metrics for TrueType fonts.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
-	/// <param name="cjCopy">The size, in bytes, of the array that receives the text metrics.</param>
 	/// <param name="potm">
 	/// A pointer to an <see cref="OUTLINETEXTMETRIC"/> structure. If this parameter is <c>NULL</c>, the function returns the size of the
 	/// buffer required for the retrieved metric data.
@@ -3348,9 +3346,17 @@ public static partial class Gdi32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getoutlinetextmetricsa UINT GetOutlineTextMetricsA( HDC hdc, UINT
 	// cjCopy, LPOUTLINETEXTMETRICA potm );
-	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b8c7a557-ca35-41a4-9043-8496e5b01564")]
-	public static extern uint GetOutlineTextMetrics(HDC hdc, uint cjCopy, IntPtr potm);
+	public static uint GetOutlineTextMetrics([In, AddAsMember] HDC hdc, out SafeCoTaskMemStruct<OUTLINETEXTMETRIC> potm)
+	{
+		uint ret = GetOutlineTextMetrics(hdc);
+		potm = new(ret);
+		ret = GetOutlineTextMetrics(hdc, potm.Size, potm);
+		return ret;
+
+		[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
+		static extern uint GetOutlineTextMetrics([In] HDC hdc, [Optional] uint cjCopy, [Out, Optional] ManagedStructPointer<OUTLINETEXTMETRIC> potm);
+	}
 
 	/// <summary>The <c>GetRasterizerCaps</c> function returns flags indicating whether TrueType fonts are installed in the system.</summary>
 	/// <param name="lpraststat">A pointer to a RASTERIZER_STATUS structure that receives information about the rasterizer.</param>
@@ -3375,7 +3381,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0898d1c0-5480-4bd2-aa45-918340172a05")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetRasterizerCaps(out RASTERIZER_STATUS lpraststat, uint cjBytes);
+	public static extern bool GetRasterizerCaps(out RASTERIZER_STATUS lpraststat, uint cjBytes = 6);
 
 	/// <summary>The <c>GetTextAlign</c> function retrieves the text-alignment setting for the specified device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -3502,7 +3508,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextalign UINT GetTextAlign( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d3ec0350-2eb8-4843-88bb-d72cece710e7")]
-	public static extern TextAlign GetTextAlign(HDC hdc);
+	public static extern TextAlign GetTextAlign([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>GetTextCharacterExtra</c> function retrieves the current intercharacter spacing for the specified device context.</summary>
 	/// <param name="hdc">Handle to the device context.</param>
@@ -3517,7 +3523,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextcharacterextra int GetTextCharacterExtra( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "44d5145d-1c42-429e-89c4-dc31d275bc73")]
-	public static extern int GetTextCharacterExtra(HDC hdc);
+	public static extern int GetTextCharacterExtra([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>GetTextColor</c> function retrieves the current text color for the specified device context.</summary>
 	/// <param name="hdc">Handle to the device context.</param>
@@ -3529,7 +3535,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextcolor COLORREF GetTextColor( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d3d91b86-5143-431a-ba18-b951b832d7b6")]
-	public static extern COLORREF GetTextColor(HDC hdc);
+	public static extern COLORREF GetTextColor([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>GetTextExtentExPoint</c> function retrieves the number of characters in a specified string that will fit within a specified
@@ -3603,7 +3609,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b873a059-5aa3-47d0-b109-7acd542c7d79")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTextExtentExPoint(HDC hdc, string lpszString, int cchString, int nMaxExtent, out int lpnFit, [Out] int[] lpnDx, out SIZE lpSize);
+	public static extern bool GetTextExtentExPoint([In, AddAsMember] HDC hdc, string lpszString, int cchString, int nMaxExtent, out int lpnFit, [Out] int[]? lpnDx, out SIZE lpSize);
 
 	/// <summary>
 	/// The <c>GetTextExtentExPointI</c> function retrieves the number of characters in a specified string that will fit within a specified
@@ -3653,7 +3659,8 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d543ec43-f6f1-4463-b27d-a1abf1cf3961")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTextExtentExPointI(HDC hdc, [In] ushort[] lpwszString, int cwchString, int nMaxExtent, out int lpnFit, [Out] int[] lpnDx, out SIZE lpSize);
+	public static extern bool GetTextExtentExPointI([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ushort[] lpwszString, int cwchString,
+		int nMaxExtent, out int lpnFit, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[]? lpnDx, out SIZE lpSize);
 
 	/// <summary>
 	/// <para>The <c>GetTextExtentPoint</c> function computes the width and height of the specified string of text.</para>
@@ -3691,7 +3698,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "731085ce-009d-42e1-885f-2f5151e0f6d3")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTextExtentPoint(HDC hdc, string lpString, int c, out SIZE lpsz);
+	public static extern bool GetTextExtentPoint([In, AddAsMember] HDC hdc, string lpString, int c, out SIZE lpsz);
 
 	/// <summary>The <c>GetTextExtentPoint32</c> function computes the width and height of the specified string of text.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -3754,7 +3761,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "530280ee-dfd8-4905-9b72-6c19efcff133")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTextExtentPoint32(HDC hdc, string lpString, int c, out SIZE psizl);
+	public static extern bool GetTextExtentPoint32([In, AddAsMember] HDC hdc, string lpString, int c, out SIZE psizl);
 
 	/// <summary>The <c>GetTextExtentPointI</c> function computes the width and height of the specified array of glyph indices.</summary>
 	/// <param name="hdc">Handle to the device context.</param>
@@ -3791,7 +3798,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d06a48dd-3f38-4c60-a4c6-954e43f718d1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTextExtentPointI(HDC hdc, [In] ushort[] pgiIn, int cgi, out SIZE psize);
+	public static extern bool GetTextExtentPointI([In, AddAsMember] HDC hdc, [In] ushort[] pgiIn, int cgi, out SIZE psize);
 
 	/// <summary>The <c>GetTextFace</c> function retrieves the typeface name of the font that is selected into the specified device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -3816,7 +3823,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextfacea int GetTextFaceA( HDC hdc, int c, LPSTR lpName );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c4c8c8f5-3651-481b-a55f-da7f49d92f3a")]
-	public static extern int GetTextFace(HDC hdc, int c, [Optional] StringBuilder lpName);
+	public static extern int GetTextFace([In, AddAsMember] HDC hdc, int c, [Optional, SizeDef(nameof(c), SizingMethod.QueryResultInReturn)] StringBuilder? lpName);
 
 	/// <summary>The <c>GetTextMetrics</c> function fills the specified buffer with the metrics for the currently selected font.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -3838,7 +3845,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "92d45a3b-12df-42ff-8d87-5c27b44dc481")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTextMetrics(HDC hdc, out TEXTMETRIC lptm);
+	public static extern bool GetTextMetrics([In, AddAsMember] HDC hdc, out TEXTMETRIC lptm);
 
 	/// <summary>
 	/// The <c>PolyTextOut</c> function draws several strings using the font and text colors currently selected in the specified device context.
@@ -3866,7 +3873,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "643b4f6a-843f-4795-adc8-a90223bdc246")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PolyTextOut(HDC hdc, [In] POLYTEXT[] ppt, int nstrings);
+	public static extern bool PolyTextOut([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POLYTEXT[] ppt, int nstrings);
 
 	/// <summary>The <c>RemoveFontMemResourceEx</c> function removes the fonts added from a memory image file.</summary>
 	/// <param name="h">A handle to the font-resource. This handle is returned by the AddFontMemResourceEx function.</param>
@@ -3978,7 +3985,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setmapperflags DWORD SetMapperFlags( HDC hdc, DWORD flags );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "74cfe0d3-0d20-4382-8e76-55a6e2323308")]
-	public static extern uint SetMapperFlags(HDC hdc, uint flags);
+	public static extern uint SetMapperFlags([In, AddAsMember] HDC hdc, uint flags);
 
 	/// <summary>The <c>SetTextAlign</c> function sets the text-alignment flags for the specified device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -4075,7 +4082,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-settextalign UINT SetTextAlign( HDC hdc, UINT align );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "422868c5-14c9-4374-9cc5-b7bf91ab9eb4")]
-	public static extern TextAlign SetTextAlign(HDC hdc, TextAlign align);
+	public static extern TextAlign SetTextAlign([In, AddAsMember] HDC hdc, TextAlign align);
 
 	/// <summary>
 	/// The <c>SetTextCharacterExtra</c> function sets the intercharacter spacing. Intercharacter spacing is added to each character,
@@ -4104,7 +4111,7 @@ public static partial class Gdi32
 	// extra );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "83b7d225-4fb9-4c75-bc4a-e1bea7f901f1")]
-	public static extern int SetTextCharacterExtra(HDC hdc, int extra);
+	public static extern int SetTextCharacterExtra([In, AddAsMember] HDC hdc, int extra);
 
 	/// <summary>The <c>SetTextColor</c> function sets the text color for the specified device context to the specified color.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -4124,7 +4131,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-settextcolor COLORREF SetTextColor( HDC hdc, COLORREF color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3875a247-7c32-4917-bf6d-50b2a49848a6")]
-	public static extern COLORREF SetTextColor(HDC hdc, COLORREF color);
+	public static extern COLORREF SetTextColor([In, AddAsMember] HDC hdc, COLORREF color);
 
 	/// <summary>
 	/// The <c>SetTextJustification</c> function specifies the amount of space the system should add to the break characters in a string of
@@ -4169,7 +4176,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "55fb5a28-b7da-40d8-8e64-4b42c23fa8b1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetTextJustification(HDC hdc, int extra, int count);
+	public static extern bool SetTextJustification([In, AddAsMember] HDC hdc, int extra, int count);
 
 	/// <summary>
 	/// The <c>TextOut</c> function writes a character string at the specified location, using the currently selected font, background color,
@@ -4258,7 +4265,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "0c437ff8-3893-4dc3-827b-fa9ce4bcd7e6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TextOut(HDC hdc, int x, int y, string lpString, int c);
+	public static extern bool TextOut([In, AddAsMember] HDC hdc, int x, int y, string lpString, int c);
 
 	/// <summary>The <c>ABC</c> structure contains the width of a character in a TrueType font.</summary>
 	/// <remarks>
@@ -4506,7 +4513,7 @@ public static partial class Gdi32
 		/// <summary>Performs an implicit conversion from <see cref="decimal"/> to <see cref="FIXED"/>.</summary>
 		/// <param name="d">The decimal value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator FIXED(decimal d) => new() { value = (short)Math.Truncate(d), fract = ushort.Parse(d.ToString(NumberFormatInfo.InvariantInfo).Split(new[] { NumberFormatInfo.InvariantInfo.NumberDecimalSeparator }, StringSplitOptions.None)[1], NumberFormatInfo.InvariantInfo) };
+		public static implicit operator FIXED(decimal d) => new() { value = (short)Math.Truncate(d), fract = ushort.Parse(d.ToString(NumberFormatInfo.InvariantInfo).Split([NumberFormatInfo.InvariantInfo.NumberDecimalSeparator], StringSplitOptions.None)[1], NumberFormatInfo.InvariantInfo) };
 
 		/// <summary>Converts to string.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -4581,8 +4588,7 @@ public static partial class Gdi32
 		/// string is identical to the original string, but may be different if the string needs reordering and the GCP_REORDER flag is set
 		/// or if the original string exceeds the maximum extent and the GCP_MAXEXTENT flag is set.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)]
-		public string lpOutString;
+		public StrPtrAuto lpOutString;
 
 		/// <summary>
 		/// <para>
@@ -4598,7 +4604,7 @@ public static partial class Gdi32
 		/// of each element in the original string.
 		/// </para>
 		/// </summary>
-		public IntPtr lpOrder;
+		public ArrayPointer<uint> lpOrder;
 
 		/// <summary>
 		/// <para>
@@ -4612,7 +4618,7 @@ public static partial class Gdi32
 		/// </para>
 		/// <para>width = lpDx[lpOrder[i]];</para>
 		/// </summary>
-		public IntPtr lpDx;
+		public ArrayPointer<int> lpDx;
 
 		/// <summary>
 		/// <para>
@@ -4628,7 +4634,7 @@ public static partial class Gdi32
 		/// </para>
 		/// <para>position = lpCaretPos[i];</para>
 		/// </summary>
-		public IntPtr lpCaretPos;
+		public ArrayPointer<int> lpCaretPos;
 
 		/// <summary>
 		/// <para>
@@ -4720,7 +4726,7 @@ public static partial class Gdi32
 		/// </para>
 		/// <para>If GetFontLanguageInfo does not return GCP_REORDER for the current font, only the GCPCLASS_LATIN value is meaningful.</para>
 		/// </summary>
-		public IntPtr lpClass;
+		public ArrayPointer<GCPCLASS> lpClass;
 
 		/// <summary>
 		/// <para>
@@ -4754,7 +4760,7 @@ public static partial class Gdi32
 		/// be treated as if it is in the middle of a word.
 		/// </para>
 		/// </summary>
-		public IntPtr lpGlyphs;
+		public ArrayPointer<ushort> lpGlyphs;
 
 		/// <summary>
 		/// On input, this member must be set to the size of the arrays pointed to by the array pointer members. On output, this is set to
@@ -4773,7 +4779,45 @@ public static partial class Gdi32
 		public int nMaxFit;
 
 		/// <summary>The default instance of this structure with the structure size value set.</summary>
-		public static GCP_RESULTS Default = new() { lStructSize = (uint)Marshal.SizeOf(typeof(GCP_RESULTS)) };
+		public static readonly GCP_RESULTS Default = new() { lStructSize = (uint)Marshal.SizeOf<GCP_RESULTS>() };
+
+		/// <summary>
+		/// Creates a new <see cref="SafeCoTaskMemStruct{GCP_RESULTS}"/> instance with memory layout sized and initialized for the specified string.
+		/// </summary>
+		/// <remarks>
+		/// The returned structure has its internal pointer fields (such as lpOrder, lpDx, lpCaretPos, lpClass, and lpGlyphs) initialized to
+		/// point to the correct offsets within the allocated memory block, based on the length of the input string. This method is typically
+		/// used to prepare a GCP_RESULTS structure for use with native text processing APIs that require pre-allocated buffers.
+		/// </remarks>
+		/// <param name="text">
+		/// The text for which the <see cref="GCP_RESULTS"/> structure will be prepared. The length of this string determines the size of the
+		/// allocated memory buffers.
+		/// </param>
+		/// <param name="classes">
+		/// Optional array that contains and/or receives character classifications. The values indicate how to lay out characters in the
+		/// string and are similar (but not identical) to the CT_CTYPE2 values returned by the GetStringTypeEx function.
+		/// </param>
+		/// <returns>
+		/// A <see cref="SafeCoTaskMemStruct{GCP_RESULTS}"/> instance with internal buffers sized appropriately for the specified string.
+		/// </returns>
+		public static SafeCoTaskMemStruct<GCP_RESULTS> CreateForString(string text, GCPCLASS[]? classes = null)
+		{
+			if (classes is not null && classes.Length != text.Length)
+				throw new ArgumentException("The length of the classes array must match the length of the text string.", nameof(classes));
+			SafeCoTaskMemStruct<GCP_RESULTS> val = new GCP_RESULTS { lStructSize = (uint)Marshal.SizeOf<GCP_RESULTS>() };
+			var asz = sizeof(int) * text.Length;
+			val.Size += asz * 6; // lpOrder, lpDx, lpCaretPos, lpClass
+			ref var refVal = ref val.AsRef();
+			refVal.lpOrder = ((IntPtr)val).Offset(refVal.lStructSize);
+			refVal.lpDx = ((IntPtr)val).Offset(refVal.lStructSize + asz);
+			refVal.lpCaretPos = ((IntPtr)val).Offset(refVal.lStructSize + (asz * 2));
+			refVal.lpClass = ((IntPtr)val).Offset(refVal.lStructSize + (asz * 3));
+			if (classes is not null)
+				Marshal.UnsafeAddrOfPinnedArrayElement(classes, 0).CopyTo((IntPtr)refVal.lpClass, classes.Length * sizeof(GCPCLASS));
+			refVal.lpGlyphs = ((IntPtr)val).Offset(refVal.lStructSize + (asz * 4));
+			refVal.lpOutString = ((IntPtr)val).Offset(refVal.lStructSize + (asz * 5));
+			return val;
+		}
 	}
 
 	/// <summary>
@@ -5118,10 +5162,10 @@ public static partial class Gdi32
 	// otmpFaceName; PSTR otmpStyleName; PSTR otmpFullName; } OUTLINETEXTMETRICA, *POUTLINETEXTMETRICA, *NPOUTLINETEXTMETRICA, *LPOUTLINETEXTMETRICA;
 	[PInvokeData("wingdi.h", MSDNShortId = "79d77df0-193a-49a8-b93d-4ef5807c3c9b")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct OUTLINETEXTMETRIC
+	public struct OUTLINETEXTMETRIC()
 	{
 		/// <summary>The size, in bytes, of the <c>OUTLINETEXTMETRIC</c> structure.</summary>
-		public uint otmSize;
+		public uint otmSize = (uint)Marshal.SizeOf<OUTLINETEXTMETRIC>();
 
 		/// <summary>A TEXTMETRIC structure containing further information about the font.</summary>
 		public TEXTMETRIC otmTextMetrics;
@@ -5265,22 +5309,22 @@ public static partial class Gdi32
 		public int otmsUnderscorePosition;
 
 		/// <summary>The offset from the beginning of the structure to a string specifying the family name for the font.</summary>
-		public IntPtr otmpFamilyName;
+		public nint otmpFamilyName;
 
 		/// <summary>
 		/// The offset from the beginning of the structure to a string specifying the typeface name for the font. (This typeface name
 		/// corresponds to the name specified in the LOGFONT structure.)
 		/// </summary>
-		public IntPtr otmpFaceName;
+		public nint otmpFaceName;
 
 		/// <summary>The offset from the beginning of the structure to a string specifying the style name for the font.</summary>
-		public IntPtr otmpStyleName;
+		public nint otmpStyleName;
 
 		/// <summary>
 		/// The offset from the beginning of the structure to a string specifying the full name for the font. This name is unique for the
 		/// font and often contains a version number or other identifying information.
 		/// </summary>
-		public IntPtr otmpFullName;
+		public nint otmpFullName;
 	}
 
 	/// <summary>
@@ -5881,26 +5925,27 @@ public static partial class Gdi32
 	// LPCWSTR lpstr; UINT uiFlags; RECT rcl; int *pdx; } POLYTEXTW, *PPOLYTEXTW, *NPPOLYTEXTW, *LPPOLYTEXTW;
 	[PInvokeData("wingdi.h", MSDNShortId = "6f03e2ff-c15f-498c-8c3d-33106222279e")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct POLYTEXT
+	public struct POLYTEXT(int x, int y, string str, ETO flags = 0, in RECT rect = default, ArrayPointer<int> dx = default)
 	{
 		/// <summary>
 		/// The horizontal reference point for the string. The string is aligned to this point using the current text-alignment mode.
 		/// </summary>
-		public int x;
+		public int x = x;
 
 		/// <summary>
 		/// The vertical reference point for the string. The string is aligned to this point using the current text-alignment mode.
 		/// </summary>
-		public int y;
+		public int y = y;
 
 		/// <summary>The length of the string pointed to by <c>lpstr</c>.</summary>
-		public uint n;
+		public uint n = (uint)(str?.Length ?? 0);
 
 		/// <summary>
 		/// Pointer to a string of text to be drawn by the PolyTextOut function. This string need not be null-terminated, since <c>n</c>
 		/// specifies the length of the string.
 		/// </summary>
-		[MarshalAs(UnmanagedType.LPTStr)] public string lpstr;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string lpstr = str ?? "";
 
 		/// <summary>
 		/// <para>
@@ -5922,16 +5967,16 @@ public static partial class Gdi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public ETO uiFlags;
+		public ETO uiFlags = flags;
 
 		/// <summary>
 		/// A rectangle structure that contains the dimensions of the opaquing or clipping rectangle. This member is ignored if neither of
 		/// the ETO_OPAQUE nor the ETO_CLIPPED value is specified for the <c>uiFlags</c> member.
 		/// </summary>
-		public RECT rcl;
+		public RECT rcl = rect;
 
 		/// <summary>Pointer to an array containing the width value for each character in the string.</summary>
-		public IntPtr pdx;
+		public ArrayPointer<int> pdx = dx;
 	}
 
 	/// <summary>

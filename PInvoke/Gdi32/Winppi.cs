@@ -5,6 +5,17 @@ public static partial class Gdi32
 	/// <summary>Enable color optimization.</summary>
 	public const uint EMF_PP_COLOR_OPTIMIZATION = 0x01;
 
+	/// <summary>Specifies the page type.</summary>
+	[PInvokeData("winppi.h", MSDNShortId = "7eaed9d2-20fa-4cf1-b924-fbe1443535e9")]
+	public enum EMF_PP : uint
+	{
+		/// <summary>The page is a normal page.</summary>
+		EMF_PP_NORMAL = 1,
+
+		/// <summary>The page is a form or has a watermark. (Not currently supported.)</summary>
+		EMF_PP_FORM = 2,
+	}
+
 	/// <summary>The <c>GdiDeleteSpoolFileHandle</c> function releases a spool file handle.</summary>
 	/// <param name="SpoolFileHandle">Caller-supplied spool file handle, obtained by a previous call to GdiGetSpoolFileHandle.</param>
 	/// <returns>If the operation succeeds, the function returns <c>TRUE</c>. Otherwise the function returns <c>FALSE</c>.</returns>
@@ -49,7 +60,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winppi.h", MSDNShortId = "e58403d4-aacc-4d22-98e5-86db1a69c54a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiEndDocEMF(HSPOOLFILE SpoolFileHandle);
+	public static extern bool GdiEndDocEMF([In, AddAsMember] HSPOOLFILE SpoolFileHandle);
 
 	/// <summary>The <c>GdiEndPageEMF</c> function ends EMF playback operations for a physical page of an EMF-formatted print job.</summary>
 	/// <param name="SpoolFileHandle">Caller-supplied spool file handle, obtained by a previous call to GdiGetSpoolFileHandle.</param>
@@ -108,7 +119,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winppi.h", MSDNShortId = "e15344a5-32ed-43a8-93c2-d5201617d595")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiEndPageEMF(HSPOOLFILE SpoolFileHandle, uint dwOptimization);
+	public static extern bool GdiEndPageEMF([In, AddAsMember] HSPOOLFILE SpoolFileHandle, uint dwOptimization);
 
 	/// <summary>The <c>GdiGetDC</c> function returns a handle to a printer's device context.</summary>
 	/// <param name="SpoolFileHandle">Caller-supplied spool file handle, obtained by a previous call to GdiGetSpoolFileHandle.</param>
@@ -127,7 +138,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/winppi/nf-winppi-gdigetdc HDC GdiGetDC( HANDLE SpoolFileHandle );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winppi.h", MSDNShortId = "f8aacb6d-4e8a-4fdb-902c-3d0efbc40f08")]
-	public static extern HDC GdiGetDC(HSPOOLFILE SpoolFileHandle);
+	public static extern HDC GdiGetDC([In, AddAsMember] HSPOOLFILE SpoolFileHandle);
 
 	/// <summary>
 	/// The <c>GdiGetDevmodeForPage</c> function returns DEVMODEW structures for the specified and previous pages of a print job.
@@ -168,7 +179,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winppi.h", MSDNShortId = "3410e8b1-820f-4892-8d26-d803e3f943da")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiGetDevmodeForPage(HSPOOLFILE SpoolFileHandle, uint dwPageNumber, out IntPtr pCurrDM, out IntPtr pLastDM);
+	public static extern bool GdiGetDevmodeForPage([In, AddAsMember] HSPOOLFILE SpoolFileHandle, uint dwPageNumber, out ManagedStructPointer<DEVMODE> pCurrDM, out ManagedStructPointer<DEVMODE> pLastDM);
 
 	/// <summary>The <c>GdiGetPageCount</c> function returns the number of pages in a print job.</summary>
 	/// <param name="SpoolFileHandle">Caller-supplied spool file handle, obtained by a previous call to GdiGetSpoolFileHandle.</param>
@@ -191,7 +202,7 @@ public static partial class Gdi32
 	// SpoolFileHandle );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winppi.h", MSDNShortId = "0a101b59-c610-4158-97a8-002222a94309")]
-	public static extern uint GdiGetPageCount(HSPOOLFILE SpoolFileHandle);
+	public static extern uint GdiGetPageCount([In, AddAsMember] HSPOOLFILE SpoolFileHandle);
 
 	/// <summary>The <c>GdiGetPageHandle</c> function returns a handle to the specified page within a print job.</summary>
 	/// <param name="SpoolFileHandle">Caller-supplied spool file handle, obtained by a previous call to GdiGetSpoolFileHandle.</param>
@@ -233,7 +244,7 @@ public static partial class Gdi32
 	// SpoolFileHandle, DWORD Page, LPDWORD pdwPageType );
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winppi.h", MSDNShortId = "7eaed9d2-20fa-4cf1-b924-fbe1443535e9")]
-	public static extern HANDLE GdiGetPageHandle(HSPOOLFILE SpoolFileHandle, uint Page, out uint pdwPageType);
+	public static extern HANDLE GdiGetPageHandle([In, AddAsMember] HSPOOLFILE SpoolFileHandle, uint Page, out EMF_PP pdwPageType);
 
 	/// <summary>The <c>GdiGetSpoolFileHandle</c> function returns a handle to a print job's EMF file.</summary>
 	/// <param name="pwszPrinterName">
@@ -282,6 +293,7 @@ public static partial class Gdi32
 	// GdiGetSpoolFileHandle( LPWSTR pwszPrinterName, LPDEVMODEW pDevmode, LPWSTR pwszDocName );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winppi.h", MSDNShortId = "c820ee94-29c2-4478-884c-49dd68cd713a")]
+	[return: AddAsCtor]
 	public static extern SafeHSPOOLFILE GdiGetSpoolFileHandle([MarshalAs(UnmanagedType.LPWStr)] string pwszPrinterName, in DEVMODE pDevmode, [MarshalAs(UnmanagedType.LPWStr)] string pwszDocName);
 
 	/// <summary>
@@ -332,7 +344,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winppi.h", MSDNShortId = "e0122858-0c9d-4aa8-a394-89d65fb98fda")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiPlayPageEMF(HSPOOLFILE SpoolFileHandle, HANDLE hemf, in RECT prectDocument, [In, Optional] PRECT? prectBorder, [In, Optional] PRECT? prectClip);
+	public static extern bool GdiPlayPageEMF([In, AddAsMember] HSPOOLFILE SpoolFileHandle, HANDLE hemf, in RECT prectDocument, [In, Optional] PRECT? prectBorder, [In, Optional] PRECT? prectClip);
 
 	/// <summary>The <c>GdiResetDCEMF</c> function resets a printer's device context during playback of a spooled EMF print job.</summary>
 	/// <param name="SpoolFileHandle">Caller-supplied spool file handle, obtained by a previous call to GdiGetSpoolFileHandle.</param>
@@ -354,7 +366,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winppi.h", MSDNShortId = "ea97cc22-6057-427d-90c1-4f23ced932aa")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiResetDCEMF(HSPOOLFILE SpoolFileHandle, IntPtr pCurrDM);
+	public static extern bool GdiResetDCEMF([In, AddAsMember] HSPOOLFILE SpoolFileHandle, IntPtr pCurrDM);
 
 	/// <summary>The <c>GdiStartDocEMF</c> function performs initialization operations for an EMF-formatted print job.</summary>
 	/// <param name="SpoolFileHandle">Caller-supplied spool file handle, obtained by a previous call to GdiGetSpoolFileHandle.</param>
@@ -387,7 +399,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winppi.h", MSDNShortId = "aca4534a-871e-4d86-b329-cb4f84611a29")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiStartDocEMF(HSPOOLFILE SpoolFileHandle, in DOCINFO pDocInfo);
+	public static extern bool GdiStartDocEMF([In, AddAsMember] HSPOOLFILE SpoolFileHandle, in DOCINFO pDocInfo);
 
 	/// <summary>
 	/// The <c>GdiStartPageEMF</c> function performs initialization operations for a physical page of an EMF-formatted print job.
@@ -412,5 +424,5 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winppi.h", MSDNShortId = "963c809f-da89-4f27-ba8b-3de8cdcec179")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiStartPageEMF(HSPOOLFILE SpoolFileHandle);
+	public static extern bool GdiStartPageEMF([In, AddAsMember] HSPOOLFILE SpoolFileHandle);
 }

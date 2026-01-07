@@ -253,7 +253,8 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiGradientFill(HDC hdc, in TRIVERTEX pVertex, uint nVertex, IntPtr pMesh, uint nCount, GradientFillMode ulMode);
+	public static extern bool GdiGradientFill([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] TRIVERTEX[] pVertex,
+		uint nVertex, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] GRADIENT_TRIANGLE[] pMesh, uint nCount, GradientFillMode ulMode);
 
 	/// <summary>The <c>GdiGradientFill</c> function fills rectangle and triangle structures.</summary>
 	/// <param name="hdc">A handle to the destination device context.</param>
@@ -332,86 +333,8 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiGradientFill(HDC hdc, in TRIVERTEX pVertex, uint nVertex, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] GRADIENT_TRIANGLE[] pMesh, uint nCount, GradientFillMode ulMode);
-
-	/// <summary>The <c>GdiGradientFill</c> function fills rectangle and triangle structures.</summary>
-	/// <param name="hdc">A handle to the destination device context.</param>
-	/// <param name="pVertex">A pointer to an array of TRIVERTEX structures that each define a triangle vertex.</param>
-	/// <param name="nVertex">The number of vertices in pVertex.</param>
-	/// <param name="pMesh">
-	/// An array of GRADIENT_TRIANGLE structures in triangle mode, or an array of GRADIENT_RECT structures in rectangle mode.
-	/// </param>
-	/// <param name="nCount">The number of elements (triangles or rectangles) in pMesh.</param>
-	/// <param name="ulMode">
-	/// <para>The gradient fill mode. This parameter can be one of the following values.</para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>GRADIENT_FILL_RECT_H</term>
-	/// <term>
-	/// In this mode, two endpoints describe a rectangle. The rectangle is defined to have a constant color (specified by the TRIVERTEX
-	/// structure) for the left and right edges. GDI interpolates the color from the left to right edge and fills the interior.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>GRADIENT_FILL_RECT_V</term>
-	/// <term>
-	/// In this mode, two endpoints describe a rectangle. The rectangle is defined to have a constant color (specified by the TRIVERTEX
-	/// structure) for the top and bottom edges. GDI interpolates the color from the top to bottom edge and fills the interior.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>GRADIENT_FILL_TRIANGLE</term>
-	/// <term>
-	/// In this mode, an array of TRIVERTEX structures is passed to GDI along with a list of array indexes that describe separate
-	/// triangles. GDI performs linear interpolation between triangle vertices and fills the interior. Drawing is done directly in 24-
-	/// and 32-bpp modes. Dithering is performed in 16-, 8-, 4-, and 1-bpp mode.
-	/// </term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the return value is <c>TRUE</c>.</para>
-	/// <para>If the function fails, the return value is <c>FALSE</c>.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para><c>Note</c> This function is the same as GradientFill.</para>
-	/// <para>
-	/// To add smooth shading to a triangle, call the <c>GdiGradientFill</c> function with the three triangle endpoints. GDI will
-	/// linearly interpolate and fill the triangle. Here is the drawing output of a shaded triangle.
-	/// </para>
-	/// <para>
-	/// To add smooth shading to a rectangle, call <c>GdiGradientFill</c> with the upper-left and lower-right coordinates of the
-	/// rectangle. There are two shading modes used when drawing a rectangle. In horizontal mode, the rectangle is shaded from
-	/// left-to-right. In vertical mode, the rectangle is shaded from top-to-bottom. Here is the drawing output of two shaded rectangles
-	/// - one in horizontal mode, the other in vertical mode.
-	/// </para>
-	/// <para>
-	/// The <c>GdiGradientFill</c> function uses a mesh method to specify the endpoints of the object to draw. All vertices are passed
-	/// to <c>GdiGradientFill</c> in the pVertex array. The pMesh parameter specifies how these vertices are connected to form an
-	/// object. When filling a rectangle, pMesh points to an array of GRADIENT_RECT structures. Each <c>GRADIENT_RECT</c> structure
-	/// specifies the index of two vertices in the pVertex array. These two vertices form the upper-left and lower-right boundary of one rectangle.
-	/// </para>
-	/// <para>
-	/// In the case of filling a triangle, pMesh points to an array of GRADIENT_TRIANGLE structures. Each <c>GRADIENT_TRIANGLE</c>
-	/// structure specifies the index of three vertices in the pVertex array. These three vertices form one triangle.
-	/// </para>
-	/// <para>To simplify hardware acceleration, this routine is not required to be pixel-perfect in the triangle interior.</para>
-	/// <para>
-	/// Note that <c>GdiGradientFill</c> does not use the Alpha member of the TRIVERTEX structure. To use <c>GdiGradientFill</c> with
-	/// transparency, call <c>GdiGradientFill</c> and then call GdiAlphaBlend with the desired values for the alpha channel of each vertex.
-	/// </para>
-	/// <para>For more information, see Smooth Shading, Drawing a Shaded Triangle, and Drawing a Shaded Rectangle.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gdigradientfill
-	// BOOL GdiGradientFill( HDC hdc, PTRIVERTEX pVertex, ULONG nVertex, PVOID pMesh, ULONG nCount, ULONG ulMode );
-	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("wingdi.h", MSDNShortId = "c88c1137-5690-4139-9d10-90d036e8f31c")]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GdiGradientFill(HDC hdc, in TRIVERTEX pVertex, uint nVertex, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] GRADIENT_RECT[] pMesh, uint nCount, GradientFillMode ulMode);
+	public static extern bool GdiGradientFill([In, AddAsMember] HDC hdc, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] TRIVERTEX[] pVertex,
+		uint nVertex, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] GRADIENT_RECT[] pMesh, uint nCount, GradientFillMode ulMode);
 
 	/// <summary>
 	/// The <c>GdiSetBatchLimit</c> function sets the maximum number of function calls that can be accumulated in the calling thread's
@@ -451,7 +374,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getbkcolor COLORREF GetBkColor( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "1c6e8d05-4b8d-476d-852c-f06f316cb8b7")]
-	public static extern COLORREF GetBkColor(HDC hdc);
+	public static extern COLORREF GetBkColor([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>GetBkMode</c> function returns the current background mix mode for a specified device context. The background mix mode of
@@ -465,7 +388,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getbkmode int GetBkMode( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "3faedb48-3163-48fd-b26e-712de9c4bfaf")]
-	public static extern BackgroundMode GetBkMode(HDC hdc);
+	public static extern BackgroundMode GetBkMode([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// <para>The <c>GetBoundsRect</c> function obtains the current accumulated bounding rectangle for a specified device context.</para>
@@ -529,7 +452,7 @@ public static partial class Gdi32
 	// flags );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "139d4550-9adc-48b3-a15c-03ae1f1ef1ab")]
-	public static extern DCB GetBoundsRect(HDC hdc, out RECT lprect, [Optional] DCB flags);
+	public static extern DCB GetBoundsRect([In, AddAsMember] HDC hdc, out RECT lprect, [Optional] DCB flags);
 
 	/// <summary>
 	/// The <c>GetROP2</c> function retrieves the foreground mix mode of the specified device context. The mix mode specifies how the pen
@@ -616,7 +539,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getrop2 int GetROP2( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "ca1930e0-f6f4-44c8-979c-f50881f3c225")]
-	public static extern R2 GetROP2(HDC hdc);
+	public static extern R2 GetROP2([In, AddAsMember] HDC hdc);
 
 	/// <summary>
 	/// The <c>SetBkColor</c> function sets the current background color to the specified color value, or to the nearest physical color
@@ -644,7 +567,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setbkcolor COLORREF SetBkColor( HDC hdc, COLORREF color );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9163370b-19c5-4c23-9197-793e4b8d50c4")]
-	public static extern COLORREF SetBkColor(HDC hdc, COLORREF color);
+	public static extern COLORREF SetBkColor([In, AddAsMember] HDC hdc, COLORREF color);
 
 	/// <summary>
 	/// The <c>SetBkMode</c> function sets the background mix mode of the specified device context. The background mix mode is used with
@@ -689,7 +612,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setbkmode int SetBkMode( HDC hdc, int mode );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "60e4467a-14ab-421e-b174-4b9c0134ce72")]
-	public static extern BackgroundMode SetBkMode(HDC hdc, BackgroundMode mode);
+	public static extern BackgroundMode SetBkMode([In, AddAsMember] HDC hdc, BackgroundMode mode);
 
 	/// <summary>
 	/// The <c>SetBoundsRect</c> function controls the accumulation of bounding rectangle information for the specified device context.
@@ -770,88 +693,7 @@ public static partial class Gdi32
 	// UINT flags );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "ad361e78-42e8-4945-9395-fab983e396df")]
-	public static extern DCB SetBoundsRect(HDC hdc, in RECT lprect, DCB flags);
-
-	/// <summary>
-	/// The <c>SetBoundsRect</c> function controls the accumulation of bounding rectangle information for the specified device context.
-	/// The system can maintain a bounding rectangle for all drawing operations. An application can examine and set this rectangle. The
-	/// drawing boundaries are useful for invalidating bitmap caches.
-	/// </summary>
-	/// <param name="hdc">A handle to the device context for which to accumulate bounding rectangles.</param>
-	/// <param name="lprect">
-	/// A pointer to a RECT structure used to set the bounding rectangle. Rectangle dimensions are in logical coordinates. This parameter
-	/// can be <c>NULL</c>.
-	/// </param>
-	/// <param name="flags">
-	/// <para>
-	/// Specifies how the new rectangle will be combined with the accumulated rectangle. This parameter can be one of more of the
-	/// following values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>DCB_ACCUMULATE</term>
-	/// <term>
-	/// Adds the rectangle specified by the lprcBounds parameter to the bounding rectangle (using a rectangle union operation). Using
-	/// both DCB_RESET and DCB_ACCUMULATE sets the bounding rectangle to the rectangle specified by the lprcBounds parameter.
-	/// </term>
-	/// </item>
-	/// <item>
-	/// <term>DCB_DISABLE</term>
-	/// <term>Turns off boundary accumulation.</term>
-	/// </item>
-	/// <item>
-	/// <term>DCB_ENABLE</term>
-	/// <term>Turns on boundary accumulation, which is disabled by default.</term>
-	/// </item>
-	/// <item>
-	/// <term>DCB_RESET</term>
-	/// <term>Clears the bounding rectangle.</term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <returns>
-	/// <para>
-	/// If the function succeeds, the return value specifies the previous state of the bounding rectangle. This state can be a
-	/// combination of the following values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>DCB_DISABLE</term>
-	/// <term>Boundary accumulation is off.</term>
-	/// </item>
-	/// <item>
-	/// <term>DCB_ENABLE</term>
-	/// <term>Boundary accumulation is on. DCB_ENABLE and DCB_DISABLE are mutually exclusive.</term>
-	/// </item>
-	/// <item>
-	/// <term>DCB_RESET</term>
-	/// <term>Bounding rectangle is empty.</term>
-	/// </item>
-	/// <item>
-	/// <term>DCB_SET</term>
-	/// <term>Bounding rectangle is not empty. DCB_SET and DCB_RESET are mutually exclusive.</term>
-	/// </item>
-	/// </list>
-	/// <para>If the function fails, the return value is zero.</para>
-	/// </returns>
-	/// <remarks>
-	/// The DCB_SET value is a combination of the bit values DCB_ACCUMULATE and DCB_RESET. Applications that check the DCB_RESET bit to
-	/// determine whether the bounding rectangle is empty must also check the DCB_ACCUMULATE bit. The bounding rectangle is empty only if
-	/// the DCB_RESET bit is 1 and the DCB_ACCUMULATE bit is 0.
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setboundsrect UINT SetBoundsRect( HDC hdc, const RECT *lprect,
-	// UINT flags );
-	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
-	[PInvokeData("wingdi.h", MSDNShortId = "ad361e78-42e8-4945-9395-fab983e396df")]
-	public static extern DCB SetBoundsRect(HDC hdc, [Optional] IntPtr lprect, DCB flags);
+	public static extern DCB SetBoundsRect([In, AddAsMember] HDC hdc, [In, Optional] PRECT? lprect, DCB flags);
 
 	/// <summary>
 	/// The <c>SetROP2</c> function sets the current foreground mix mode. GDI uses the foreground mix mode to combine pens and interiors
@@ -948,5 +790,5 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setrop2 int SetROP2( HDC hdc, int rop2 );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a462a03d-e2c8-403e-aab4-ae03fb96f06f")]
-	public static extern R2 SetROP2(HDC hdc, R2 rop2);
+	public static extern R2 SetROP2([In, AddAsMember] HDC hdc, R2 rop2);
 }

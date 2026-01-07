@@ -36,7 +36,7 @@ public static partial class Gdi32
 	/// </returns>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static RGN_TYPE CopyRgn(HRGN hrgnDst, HRGN hrgnSrc) => CombineRgn(hrgnDst, hrgnSrc, HRGN.NULL, 0);
+	public static RGN_TYPE CopyRgn([In, AddAsMember] HRGN hrgnDst, [In] HRGN hrgnSrc) => CombineRgn(hrgnDst, hrgnSrc, HRGN.NULL, 0);
 
 	/// <summary>
 	/// Deletes a logical bitmap, freeing all system resources associated with the object. After the object is deleted, the specified handle
@@ -336,7 +336,7 @@ public static partial class Gdi32
 	/// <remarks>The three regions need not be distinct. For example, the hrgnSrc1 parameter can equal the hrgnDest parameter.</remarks>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static RGN_TYPE IntersectRgn(HRGN hrgnResult, HRGN hrgnA, HRGN hrgnB) => CombineRgn(hrgnResult, hrgnA, hrgnB, RGN_COMB.RGN_AND);
+	public static RGN_TYPE IntersectRgn([In, AddAsMember] HRGN hrgnResult, HRGN hrgnA, HRGN hrgnB) => CombineRgn(hrgnResult, hrgnA, hrgnB, RGN_COMB.RGN_AND);
 
 	/// <summary>Selects an object into the specified device context (DC). The new object replaces the previous object of the same type.</summary>
 	/// <param name="hdc">A handle to the DC.</param>
@@ -344,7 +344,7 @@ public static partial class Gdi32
 	/// <returns>A handle to the object being replaced.</returns>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static HBITMAP SelectBitmap(HDC hdc, HBITMAP hbm) => SelectObject(hdc, hbm);
+	public static HBITMAP SelectBitmap([In, AddAsMember] HDC hdc, HBITMAP hbm) => SelectObject(hdc, hbm);
 
 	/// <summary>Selects an object into the specified device context (DC). The new object replaces the previous object of the same type.</summary>
 	/// <param name="hdc">A handle to the DC.</param>
@@ -352,7 +352,7 @@ public static partial class Gdi32
 	/// <returns>A handle to the object being replaced.</returns>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static HBRUSH SelectBrush(HDC hdc, HBRUSH hbr) => SelectObject(hdc, hbr);
+	public static HBRUSH SelectBrush([In, AddAsMember] HDC hdc, HBRUSH hbr) => SelectObject(hdc, hbr);
 
 	/// <summary>Selects an object into the specified device context (DC). The new object replaces the previous object of the same type.</summary>
 	/// <param name="hdc">A handle to the DC.</param>
@@ -360,7 +360,7 @@ public static partial class Gdi32
 	/// <returns>A handle to the object being replaced.</returns>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static HFONT SelectFont(HDC hdc, HFONT hfont) => SelectObject(hdc, hfont);
+	public static HFONT SelectFont([In, AddAsMember] HDC hdc, HFONT hfont) => SelectObject(hdc, hfont);
 
 	/// <summary>Selects an object into the specified device context (DC). The new object replaces the previous object of the same type.</summary>
 	/// <param name="hdc">A handle to the DC.</param>
@@ -368,7 +368,7 @@ public static partial class Gdi32
 	/// <returns>A handle to the object being replaced.</returns>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static HPEN SelectPen(HDC hdc, HPEN hpen) => SelectObject(hdc, hpen);
+	public static HPEN SelectPen([In, AddAsMember] HDC hdc, HPEN hpen) => SelectObject(hdc, hpen);
 
 	/// <summary>Subtracts two regions and stores the result in a third region.</summary>
 	/// <param name="hrgnResult">
@@ -404,7 +404,7 @@ public static partial class Gdi32
 	/// <remarks>The three regions need not be distinct. For example, the hrgnSrc1 parameter can equal the hrgnDest parameter.</remarks>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static RGN_TYPE SubtractRgn(HRGN hrgnResult, HRGN hrgnA, HRGN hrgnB) => CombineRgn(hrgnResult, hrgnA, hrgnB, RGN_COMB.RGN_OR);
+	public static RGN_TYPE SubtractRgn([In, AddAsMember] HRGN hrgnResult, HRGN hrgnA, HRGN hrgnB) => CombineRgn(hrgnResult, hrgnA, hrgnB, RGN_COMB.RGN_OR);
 
 	/// <summary>Unions two regions and stores the result in a third region.</summary>
 	/// <param name="hrgnResult">
@@ -440,7 +440,7 @@ public static partial class Gdi32
 	/// <remarks>The three regions need not be distinct. For example, the hrgnSrc1 parameter can equal the hrgnDest parameter.</remarks>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static RGN_TYPE UnionRgn(HRGN hrgnResult, HRGN hrgnA, HRGN hrgnB) => CombineRgn(hrgnResult, hrgnA, hrgnB, RGN_COMB.RGN_XOR);
+	public static RGN_TYPE UnionRgn([In, AddAsMember] HRGN hrgnResult, HRGN hrgnA, HRGN hrgnB) => CombineRgn(hrgnResult, hrgnA, hrgnB, RGN_COMB.RGN_XOR);
 
 	/// <summary>XORs two regions and stores the result in a third region.</summary>
 	/// <param name="hrgnResult">
@@ -476,5 +476,5 @@ public static partial class Gdi32
 	/// <remarks>The three regions need not be distinct. For example, the hrgnSrc1 parameter can equal the hrgnDest parameter.</remarks>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static RGN_TYPE XorRgn(HRGN hrgnResult, HRGN hrgnA, HRGN hrgnB) => CombineRgn(hrgnResult, hrgnA, hrgnB, RGN_COMB.RGN_DIFF);
+	public static RGN_TYPE XorRgn([In, AddAsMember] HRGN hrgnResult, HRGN hrgnA, HRGN hrgnB) => CombineRgn(hrgnResult, hrgnA, hrgnB, RGN_COMB.RGN_DIFF);
 }

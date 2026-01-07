@@ -88,7 +88,7 @@ public static partial class Gdi32
 	// top, int right, int bottom );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5b29c44a-3959-498e-8327-c42ef16a8609")]
-	public static extern RegionFlags ExcludeClipRect(HDC hdc, int left, int top, int right, int bottom);
+	public static extern RegionFlags ExcludeClipRect([In, AddAsMember] HDC hdc, int left, int top, int right, int bottom);
 
 	/// <summary>
 	/// The <c>ExtSelectClipRgn</c> function combines the specified region with the current clipping region using the specified mode.
@@ -169,7 +169,7 @@ public static partial class Gdi32
 	// mode );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d222defe-2ef9-4622-b2e1-462a91cb1b0a")]
-	public static extern RegionFlags ExtSelectClipRgn(HDC hdc, [In, Optional] HRGN hrgn, RegionOp mode);
+	public static extern RegionFlags ExtSelectClipRgn([In, AddAsMember] HDC hdc, [In, Optional] HRGN hrgn, RegionOp mode);
 
 	/// <summary>
 	/// The <c>GetClipBox</c> function retrieves the dimensions of the tightest bounding rectangle that can be drawn around the current
@@ -206,7 +206,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getclipbox int GetClipBox( HDC hdc, LPRECT lprect );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "b4ee68ab-b99e-48b6-90ce-6d6c0ae144e2")]
-	public static extern RegionFlags GetClipBox(HDC hdc, out RECT lprect);
+	public static extern RegionFlags GetClipBox([In, AddAsMember] HDC hdc, out RECT lprect);
 
 	/// <summary>
 	/// The <c>GetClipRgn</c> function retrieves a handle identifying the current application-defined clipping region for the specified
@@ -235,7 +235,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getcliprgn int GetClipRgn( HDC hdc, HRGN hrgn );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "66c807b8-129f-40f2-b8d8-995e0a5e22e4")]
-	public static extern int GetClipRgn(HDC hdc, [In, Out] HRGN hrgn);
+	public static extern int GetClipRgn([In, AddAsMember] HDC hdc, [In, Out] HRGN hrgn);
 
 	/// <summary>The <c>GetMetaRgn</c> function retrieves the current metaregion for the specified device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -258,7 +258,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9c2741cf-30e4-4100-bae9-ad99a7ae37f1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetMetaRgn(HDC hdc, [In, Out] HRGN hrgn);
+	public static extern bool GetMetaRgn([In, AddAsMember] HDC hdc, [In, Out] HRGN hrgn);
 
 	/// <summary>The <c>GetRandomRgn</c> function copies the system clipping region of a specified device context to a specific region.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -284,7 +284,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getrandomrgn int GetRandomRgn( HDC hdc, HRGN hrgn, INT i );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "a7527d7a-7b5e-4dd5-9270-94bc92b5a4a0")]
-	public static extern int GetRandomRgn(HDC hdc, [In, Out, Optional] HRGN hrgn, int i = 4 /* SYSRGN */);
+	public static extern int GetRandomRgn([In, AddAsMember] HDC hdc, [In, Out, Optional] HRGN hrgn, int i = 4 /* SYSRGN */);
 
 	/// <summary>
 	/// The <c>IntersectClipRect</c> function creates a new clipping region from the intersection of the current clipping region and the
@@ -331,7 +331,7 @@ public static partial class Gdi32
 	// int top, int right, int bottom );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9b3f9bfb-337b-45f0-b9ec-399e5f563638")]
-	public static extern RegionFlags IntersectClipRect(HDC hdc, int left, int top, int right, int bottom);
+	public static extern RegionFlags IntersectClipRect([In, AddAsMember] HDC hdc, int left, int top, int right, int bottom);
 
 	/// <summary>The <c>OffsetClipRgn</c> function moves the clipping region of a device context by the specified offsets.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -365,7 +365,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-offsetcliprgn int OffsetClipRgn( HDC hdc, int x, int y );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "332ab3f8-6ad3-4bbc-85a3-b0d2a4b07bc5")]
-	public static extern RegionFlags OffsetClipRgn(HDC hdc, int x, int y);
+	public static extern RegionFlags OffsetClipRgn([In, AddAsMember] HDC hdc, int x, int y);
 
 	/// <summary>The <c>PtVisible</c> function determines whether the specified point is within the clipping region of a device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -380,7 +380,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "72ccbd0f-f85b-434d-b0fc-dbe26348a74d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PtVisible(HDC hdc, int x, int y);
+	public static extern bool PtVisible([In, AddAsMember] HDC hdc, int x, int y);
 
 	/// <summary>
 	/// The <c>RectVisible</c> function determines whether any part of the specified rectangle lies within the clipping region of a
@@ -407,7 +407,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "990e9b22-0ce3-42b8-a87e-32fd2f2bc2fb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RectVisible(HDC hdc, in RECT lprect);
+	public static extern bool RectVisible([In, AddAsMember] HDC hdc, in RECT lprect);
 
 	/// <summary>
 	/// The <c>SelectClipPath</c> function selects the current path as a clipping region for a device context, combining the new region
@@ -458,7 +458,7 @@ public static partial class Gdi32
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c5102e1b-ba33-4cce-a4e5-93cf10c1c0bb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SelectClipPath(HDC hdc, RegionOp mode);
+	public static extern bool SelectClipPath([In, AddAsMember] HDC hdc, RegionOp mode);
 
 	/// <summary>The <c>SelectClipRgn</c> function selects a region as the current clipping region for the specified device context.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -501,7 +501,7 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-selectcliprgn int SelectClipRgn( HDC hdc, HRGN hrgn );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "7a4f0b9c-8588-4da8-a030-ed9d8b4ee08d")]
-	public static extern RegionFlags SelectClipRgn(HDC hdc, [In, Optional] HRGN hrgn);
+	public static extern RegionFlags SelectClipRgn([In, AddAsMember] HDC hdc, [In, Optional] HRGN hrgn);
 
 	/// <summary>
 	/// The <c>SetMetaRgn</c> function intersects the current clipping region for the specified device context with the current
@@ -544,5 +544,5 @@ public static partial class Gdi32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-setmetargn int SetMetaRgn( HDC hdc );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "79f5dc01-bdec-4844-be94-1f9cf5bfd712")]
-	public static extern RegionFlags SetMetaRgn(HDC hdc);
+	public static extern RegionFlags SetMetaRgn([In, AddAsMember] HDC hdc);
 }

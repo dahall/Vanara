@@ -1,4 +1,6 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Runtime.Versioning;
+
+namespace Vanara.PInvoke;
 
 public static partial class Gdi32
 {
@@ -263,6 +265,32 @@ public static partial class Gdi32
 		/// starting in Windows 10.
 		/// </summary>
 		DISPLAYCONFIG_MODE_INFO_TYPE_DESKTOP_IMAGE,
+	}
+
+	/// <summary>The DISPLAYCONFIG_PATH enumeration specifies the state of a display path.</summary>
+	[Flags]
+	public enum DISPLAYCONFIG_PATH : uint
+	{
+		/// <summary>
+		/// Set by QueryDisplayConfig to indicate that the path is active and part of the desktop. If this flag value is set,
+		/// SetDisplayConfig attempts to enable this path.
+		/// </summary>
+		DISPLAYCONFIG_PATH_ACTIVE = 0x01,
+
+		/// <summary>
+		/// Set by QueryDisplayConfig to indicate that the path supports virtual modes. This flag is for reporting only and cannot be modified.
+		/// </summary>
+		[SupportedOSPlatform("windows10.0")]
+		DISPLAYCONFIG_PATH_SUPPORT_VIRTUAL_MODE = 0x08,
+
+		/// <summary>
+		/// Set by QueryDisplayConfig to indicate that the path is configured to automatically boost the refresh rate between the virtual
+		/// refresh rate and the physical refresh rate (this is known as "Dynamic refresh rate"). This value can be set or removed for a path
+		/// by SetDisplayConfig. The virtual refresh rate is set by DISPLAYCONFIG_PATH_TARGET_INFO.refreshRate and the physical refresh rate
+		/// is selected by DISPLAYCONFIG_TARGET_MODE.targetVideoSignalInfo.
+		/// </summary>
+		[SupportedOSPlatform("windows10.0.22000")] // win11
+		DISPLAYCONFIG_PATH_BOOST_REFRESH_RATE = 0x10,
 	}
 
 	/// <summary>The DISPLAYCONFIG_PIXELFORMAT enumeration specifies pixel format in various bits per pixel (BPP) values.</summary>
@@ -627,46 +655,38 @@ public static partial class Gdi32
 	/// information about the device, and the DisplayConfigSetDeviceInfo function uses the DISPLAYCONFIG_DEVICE_INFO_HEADER structure for
 	/// setting display configuration information for the device.
 	/// </remarks>
+	/// <remarks>
+	/// Initializes a new instance of the <see cref="DISPLAYCONFIG_DEVICE_INFO_HEADER"/> struct.
+	/// </remarks>
+	/// <param name="type">The type.</param>
+	/// <param name="adapterId">The adapter identifier.</param>
+	/// <param name="id">The identifier.</param>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/ns-wingdi-displayconfig_device_info_header typedef struct
 	// DISPLAYCONFIG_DEVICE_INFO_HEADER { DISPLAYCONFIG_DEVICE_INFO_TYPE type; UINT32 size; LUID adapterId; UINT32 id; } DISPLAYCONFIG_DEVICE_INFO_HEADER;
 	[PInvokeData("wingdi.h", MSDNShortId = "2fdfa54e-2a5f-448f-98e3-e51ce0acaeaf")]
 	[StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Auto)]
-	public struct DISPLAYCONFIG_DEVICE_INFO_HEADER
+	public struct DISPLAYCONFIG_DEVICE_INFO_HEADER(Gdi32.DISPLAYCONFIG_DEVICE_INFO_TYPE type, ulong adapterId, uint id)
 	{
 		/// <summary>
 		/// A DISPLAYCONFIG_DEVICE_INFO_TYPE enumerated value that determines the type of device information to retrieve or set. The
 		/// remainder of the packet for the retrieve or set operation follows immediately after the DISPLAYCONFIG_DEVICE_INFO_HEADER structure.
 		/// </summary>
-		public DISPLAYCONFIG_DEVICE_INFO_TYPE type;
+		public DISPLAYCONFIG_DEVICE_INFO_TYPE type = type;
 
 		/// <summary>
 		/// The size, in bytes, of the device information that is retrieved or set. This size includes the size of the header and the size of
 		/// the additional data that follows the header. This device information depends on the request type.
 		/// </summary>
-		public uint size;
+		public uint size = (uint)Marshal.SizeOf<DISPLAYCONFIG_DEVICE_INFO_HEADER>();
 
 		/// <summary>A locally unique identifier (LUID) that identifies the adapter that the device information packet refers to.</summary>
-		public ulong adapterId;
+		public ulong adapterId = adapterId;
 
 		/// <summary>
 		/// The source or target identifier to get or set the device information for. The meaning of this identifier is related to the type
 		/// of information being requested. For example, in the case of DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_NAME, this is the source identifier.
 		/// </summary>
-		public uint id;
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="DISPLAYCONFIG_DEVICE_INFO_HEADER"/> struct.
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="adapterId">The adapter identifier.</param>
-		/// <param name="id">The identifier.</param>
-		public DISPLAYCONFIG_DEVICE_INFO_HEADER(DISPLAYCONFIG_DEVICE_INFO_TYPE type, ulong adapterId, uint id)
-		{
-			size = (uint)Marshal.SizeOf(typeof(DISPLAYCONFIG_DEVICE_INFO_HEADER));
-			this.type = type;
-			this.adapterId = adapterId;
-			this.id = id;
-		}
+		public uint id = id;
 	}
 
 	/// <summary>A structure that contains <see cref="DISPLAYCONFIG_DEVICE_INFO_HEADER"/> as the first field.</summary>
@@ -746,17 +766,8 @@ public static partial class Gdi32
 		/// <summary>A DISPLAYCONFIG_PATH_TARGET_INFO structure that contains the target information for the path.</summary>
 		public DISPLAYCONFIG_PATH_TARGET_INFO targetInfo;
 
-		/// <summary>
-		/// <para>A bitwise OR of flag values that indicates the state of the path. The following values are supported:</para>
-		/// <para>DISPLAYCONFIG_PATH_ACTIVE</para>
-		/// <para>
-		/// Set by QueryDisplayConfig to indicate that the path is active and part of the desktop. If this flag value is set,
-		/// SetDisplayConfig attempts to enable this path.
-		/// </para>
-		/// <para>DISPLAYCONFIG_PATH_SUPPORT_VIRTUAL_MODE</para>
-		/// <para>Set by QueryDisplayConfig to indicate that the path supports the virtual mode. Supported starting in Windows 10.</para>
-		/// </summary>
-		public uint flags;
+		/// <summary>A bitwise OR of flag values that indicates the state of the path.</summary>
+		public DISPLAYCONFIG_PATH flags;
 	}
 
 	/// <summary>The DISPLAYCONFIG_PATH_SOURCE_INFO structure contains source information for a single path.</summary>
