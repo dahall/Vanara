@@ -142,6 +142,22 @@ public abstract class SafeMemStruct<TStruct, TMem> : SafeMemoryHandle<TMem>, IEq
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 	public override int GetHashCode() => handle.ToInt32();
 
+	/// <summary>Retrieves a string from the current memory block at the specified offset, using the given character encoding.</summary>
+	/// <param name="offsetFromStart">
+	/// The offset, in bytes, from the start of the memory block at which to begin reading the string. Must not exceed the size of the memory block.
+	/// </param>
+	/// <param name="charSet">The character encoding to use when interpreting the string. The default is CharSet.Auto.</param>
+	/// <returns>A string read from the specified offset, or null if the memory block has no value.</returns>
+	/// <exception cref="ArgumentOutOfRangeException">Thrown if offsetFromStart is greater than the size of the memory block.</exception>
+	public virtual string? GetStringAtOffset(long offsetFromStart, CharSet charSet = CharSet.Auto)
+	{
+		if (!HasValue)
+			return null;
+		if (offsetFromStart > Size)
+			throw new ArgumentOutOfRangeException(nameof(offsetFromStart));
+		return StringHelper.GetString(handle.Offset(offsetFromStart), charSet, Size - offsetFromStart);
+	}
+
 	/// <summary>Retrieves the value of the current <see cref="SafeMemStruct{TStruct, TMem}"/> object, or the specified default value.</summary>
 	/// <param name="defaultValue">A value to return if the <see cref="HasValue"/> property is <see langword="false"/>.</param>
 	/// <returns>
