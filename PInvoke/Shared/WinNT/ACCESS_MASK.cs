@@ -8,7 +8,7 @@
 public partial struct ACCESS_MASK(uint val) : IEquatable<ACCESS_MASK>
 {
 	[Flags]
-	private enum _ACCESS_MASK : uint
+	private enum INT_ACCESS_MASK : uint
 	{
 		DELETE = 0x00010000,
 		READ_CONTROL = 0x00020000,
@@ -33,61 +33,61 @@ public partial struct ACCESS_MASK(uint val) : IEquatable<ACCESS_MASK>
 	/// Controls the ability to get or set the SACL in an object's security descriptor. The system grants this access right only if the
 	/// SE_SECURITY_NAME privilege is enabled in the access token of the requesting thread.
 	/// </summary>
-	public const uint ACCESS_SYSTEM_SECURITY = (uint)_ACCESS_MASK.ACCESS_SYSTEM_SECURITY;
+	public const uint ACCESS_SYSTEM_SECURITY = (uint)INT_ACCESS_MASK.ACCESS_SYSTEM_SECURITY;
 
 	/// <summary>The right to delete the object.</summary>
-	public const uint DELETE = (uint)_ACCESS_MASK.DELETE;
+	public const uint DELETE = (uint)INT_ACCESS_MASK.DELETE;
 
 	/// <summary>All possible access rights.</summary>
-	public const uint GENERIC_ALL = (uint)_ACCESS_MASK.GENERIC_ALL;
+	public const uint GENERIC_ALL = (uint)INT_ACCESS_MASK.GENERIC_ALL;
 
 	/// <summary>Execute access.</summary>
-	public const uint GENERIC_EXECUTE = (uint)_ACCESS_MASK.GENERIC_EXECUTE;
+	public const uint GENERIC_EXECUTE = (uint)INT_ACCESS_MASK.GENERIC_EXECUTE;
 
 	/// <summary>Read access.</summary>
-	public const uint GENERIC_READ = (uint)_ACCESS_MASK.GENERIC_READ;
+	public const uint GENERIC_READ = (uint)INT_ACCESS_MASK.GENERIC_READ;
 
 	/// <summary>Write access.</summary>
-	public const uint GENERIC_WRITE = (uint)_ACCESS_MASK.GENERIC_WRITE;
+	public const uint GENERIC_WRITE = (uint)INT_ACCESS_MASK.GENERIC_WRITE;
 
 	/// <summary>Request that the object be opened with all the access rights that are valid for the caller.</summary>
-	public const uint MAXIMUM_ALLOWED = (uint)_ACCESS_MASK.MAXIMUM_ALLOWED;
+	public const uint MAXIMUM_ALLOWED = (uint)INT_ACCESS_MASK.MAXIMUM_ALLOWED;
 
 	/// <summary>
 	/// The right to read the information in the object's security descriptor, not including the information in the system access control
 	/// list (SACL).
 	/// </summary>
-	public const uint READ_CONTROL = (uint)_ACCESS_MASK.READ_CONTROL;
+	public const uint READ_CONTROL = (uint)INT_ACCESS_MASK.READ_CONTROL;
 
 	/// <summary>The specific rights all</summary>
-	public const uint SPECIFIC_RIGHTS_ALL = (uint)_ACCESS_MASK.SPECIFIC_RIGHTS_ALL;
+	public const uint SPECIFIC_RIGHTS_ALL = (uint)INT_ACCESS_MASK.SPECIFIC_RIGHTS_ALL;
 
 	/// <summary>Combines DELETE, READ_CONTROL, WRITE_DAC, WRITE_OWNER, and SYNCHRONIZE access.</summary>
-	public const uint STANDARD_RIGHTS_ALL = (uint)_ACCESS_MASK.STANDARD_RIGHTS_ALL;
+	public const uint STANDARD_RIGHTS_ALL = (uint)INT_ACCESS_MASK.STANDARD_RIGHTS_ALL;
 
 	/// <summary>Currently defined to equal READ_CONTROL.</summary>
-	public const uint STANDARD_RIGHTS_EXECUTE = (uint)_ACCESS_MASK.STANDARD_RIGHTS_EXECUTE;
+	public const uint STANDARD_RIGHTS_EXECUTE = (uint)INT_ACCESS_MASK.STANDARD_RIGHTS_EXECUTE;
 
 	/// <summary>Currently defined to equal READ_CONTROL.</summary>
-	public const uint STANDARD_RIGHTS_READ = (uint)_ACCESS_MASK.STANDARD_RIGHTS_READ;
+	public const uint STANDARD_RIGHTS_READ = (uint)INT_ACCESS_MASK.STANDARD_RIGHTS_READ;
 
 	/// <summary>Combines DELETE, READ_CONTROL, WRITE_DAC, and WRITE_OWNER access.</summary>
-	public const uint STANDARD_RIGHTS_REQUIRED = (uint)_ACCESS_MASK.STANDARD_RIGHTS_REQUIRED;
+	public const uint STANDARD_RIGHTS_REQUIRED = (uint)INT_ACCESS_MASK.STANDARD_RIGHTS_REQUIRED;
 
 	/// <summary>Currently defined to equal READ_CONTROL.</summary>
-	public const uint STANDARD_RIGHTS_WRITE = (uint)_ACCESS_MASK.STANDARD_RIGHTS_WRITE;
+	public const uint STANDARD_RIGHTS_WRITE = (uint)INT_ACCESS_MASK.STANDARD_RIGHTS_WRITE;
 
 	/// <summary>
 	/// The right to use the object for synchronization. This enables a thread to wait until the object is in the signaled state. Some
 	/// object types do not support this access right.
 	/// </summary>
-	public const uint SYNCHRONIZE = (uint)_ACCESS_MASK.SYNCHRONIZE;
+	public const uint SYNCHRONIZE = (uint)INT_ACCESS_MASK.SYNCHRONIZE;
 
 	/// <summary>The right to modify the discretionary access control list (DACL) in the object's security descriptor.</summary>
-	public const uint WRITE_DAC = (uint)_ACCESS_MASK.WRITE_DAC;
+	public const uint WRITE_DAC = (uint)INT_ACCESS_MASK.WRITE_DAC;
 
 	/// <summary>The right to change the owner in the object's security descriptor.</summary>
-	public const uint WRITE_OWNER = (uint)_ACCESS_MASK.WRITE_OWNER;
+	public const uint WRITE_OWNER = (uint)INT_ACCESS_MASK.WRITE_OWNER;
 
 	private readonly uint value = val;
 
@@ -97,7 +97,7 @@ public partial struct ACCESS_MASK(uint val) : IEquatable<ACCESS_MASK>
 
 	/// <summary>Gets the raw value.</summary>
 	/// <value>The value.</value>
-	public uint Value => value;
+	public readonly uint Value => value;
 
 	/// <summary>Creates an <see cref="ACCESS_MASK"/> from an enum value.</summary>
 	/// <typeparam name="TEnum">The type of the enum.</typeparam>
@@ -164,34 +164,34 @@ public partial struct ACCESS_MASK(uint val) : IEquatable<ACCESS_MASK>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 	/// <inheritdoc/>
-	public bool Equals(ACCESS_MASK other) => value.Equals(other.value);
+	public readonly bool Equals(ACCESS_MASK other) => value.Equals(other.value);
 
 	/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 	/// <inheritdoc/>
-	public override bool Equals(object? obj) => obj is ACCESS_MASK am ? Equals(am) : base.Equals(obj);
+	public override readonly bool Equals(object? obj) => obj is ACCESS_MASK am ? Equals(am) : base.Equals(obj);
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 	/// <inheritdoc/>
-	public override int GetHashCode() => ToInt32();
+	public override readonly int GetHashCode() => ToInt32();
 
 	/// <summary>Determines whether [is flag set] [the specified mask].</summary>
 	/// <param name="mask">The mask.</param>
 	/// <returns><c>true</c> if [is flag set] [the specified mask]; otherwise, <c>false</c>.</returns>
-	public bool IsFlagSet(ACCESS_MASK mask) => (value & (uint)mask) != 0;
+	public readonly bool IsFlagSet(ACCESS_MASK mask) => (value & (uint)mask) != 0;
 
 	/// <summary>Converts to int32.</summary>
 	/// <returns></returns>
-	public int ToInt32() => unchecked((int)value);
+	public readonly int ToInt32() => unchecked((int)value);
 
 	/// <summary>Converts to string.</summary>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 	/// <inheritdoc/>
-	public override string ToString() => ((_ACCESS_MASK)value).ToString();
+	public override readonly string ToString() => ((INT_ACCESS_MASK)value).ToString();
 
 	/// <summary>Converts to uint32.</summary>
 	/// <returns></returns>
-	public uint ToUInt32() => value;
+	public readonly uint ToUInt32() => value;
 }

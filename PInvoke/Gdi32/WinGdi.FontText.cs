@@ -3328,7 +3328,7 @@ public static partial class Gdi32
 	// LPKERNINGPAIR lpKernPair );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "9aba629f-afab-4ef3-8e1d-d0b90e122e94")]
-	public static extern uint GetKerningPairs([In, AddAsMember] HDC hdc, uint nPairs, [Out, SizeDef(nameof(nPairs), SizingMethod.QueryResultInReturn)] KERNINGPAIR[] lpKernPair);
+	public static extern uint GetKerningPairs([In, AddAsMember] HDC hdc, uint nPairs, [Out, SizeDef(nameof(nPairs), SizingMethod.QueryResultInReturn)] KERNINGPAIR[]? lpKernPair);
 
 	/// <summary>The <c>GetOutlineTextMetrics</c> function retrieves text metrics for TrueType fonts.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
