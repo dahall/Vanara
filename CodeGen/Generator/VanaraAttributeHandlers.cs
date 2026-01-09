@@ -106,10 +106,10 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 				: $"if (global::Vanara.PInvoke.FailedHelper.FAILED({retVarName}, false)) return {retVarName};";
 			ret = ret.WithBody(Block(statements.setupVariables
 				.Concat(statements.initOutParams)
-				.Concat(statements.setupArgs)
+				.Concat(statements.setupArgs.DistinctBy(StmtToKey))
 				.Concat([queryStmt]).WhereNotNull()
-				.Concat(statements.queryFailureHandler)
-				.Concat(statements.assignAfterQuery)
+				.Concat(statements.queryFailureHandler.DistinctBy(StmtToKey))
+				.Concat(statements.assignAfterQuery.DistinctBy(StmtToKey))
 				.Concat([invokeStmt])
 				.Concat(returnIsVoid || ignoreErrHandler ? [] : [ParseStatement(errHandler)])
 				.Concat(statements.assignOutParams)
@@ -124,6 +124,8 @@ internal class MethodBodyBuilder(MethodDeclarationSyntax methodDecl)
 			tmpDocs?.InsertParamDocAfter(thisParamName, $"The <see cref=\"{interfaceName}\"/> interface instance value used for the extension method.");
 		}
 		return tmpDocs is not null ? ret.WithDocs(tmpDocs) : ret;
+
+		static string StmtToKey(StatementSyntax s) => s.ToString();
 	}
 
 	internal MethodBodyBuilder MakeInvokableClone()

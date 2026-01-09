@@ -7,6 +7,13 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Vanara.Generators;
 
+internal class StatementComparer : IEqualityComparer<StatementSyntax>
+{
+	public static readonly StatementComparer Default = new();
+	public bool Equals(StatementSyntax? x, StatementSyntax? y) => x?.IsEquivalentTo(y) ?? y is null;
+	public int GetHashCode(StatementSyntax obj) => obj.GetHashCode();
+}
+
 internal class SyntaxComparer : IEqualityComparer<SyntaxNode>
 {
 	public static readonly SyntaxComparer Default = new();
