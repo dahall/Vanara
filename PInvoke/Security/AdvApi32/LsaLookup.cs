@@ -183,7 +183,7 @@ public static partial class AdvApi32
 			pNativeData = IntPtr.Zero;
 		}
 
-		public int GetNativeDataSize() => Marshal.SizeOf(typeof(LSA_STRING));
+		public int GetNativeDataSize() => Marshal.SizeOf<LSA_STRING>();
 
 		public IntPtr MarshalManagedToNative(object ManagedObj)
 		{

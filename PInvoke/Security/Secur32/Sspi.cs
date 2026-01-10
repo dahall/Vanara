@@ -7531,7 +7531,7 @@ public static partial class Secur32
 		public T[]? ToArray<T>(int count, int prefixBytes = 0)
 		{
 			if (IsInvalid) return null;
-			//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
+			//if (Size < Marshal.SizeOf<T>() * count + prefixBytes)
 			//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 			return handle.ToArray<T>(count, prefixBytes);
@@ -7786,7 +7786,7 @@ public static partial class Secur32
 	[PInvokeData("sspi.h", MSDNShortId = "fc6ef09c-3ba9-4bcb-a3c2-07422af8eaa9")]
 	public class SafeSecBufferDesc : SafeNativeArrayBase<SecBuffer, HGlobalMemoryMethods>
 	{
-		private static readonly uint HdrSize = (uint)Marshal.SizeOf(typeof(SecBufferDesc));
+		private static readonly uint HdrSize = (uint)Marshal.SizeOf<SecBufferDesc>();
 
 		private readonly List<SafeAllocatedMemoryHandle> items = new();
 		private SecBufferDesc desc = SecBufferDesc.Default;

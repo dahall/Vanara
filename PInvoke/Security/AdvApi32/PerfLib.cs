@@ -1591,7 +1591,7 @@ public static partial class AdvApi32
 		public string InstanceName;
 
 		/// <summary>An instance of this structure with the size property preset.</summary>
-		public static readonly PERF_COUNTER_IDENTIFIER_WITH_INST_NAME Default = new() { Size = (uint)Marshal.SizeOf(typeof(PERF_COUNTER_IDENTIFIER_WITH_INST_NAME)) };
+		public static readonly PERF_COUNTER_IDENTIFIER_WITH_INST_NAME Default = new() { Size = (uint)Marshal.SizeOf<PERF_COUNTER_IDENTIFIER_WITH_INST_NAME>() };
 	}
 
 	/// <summary>Defines the counter that is sent to a provider's callback when the consumer adds or removes a counter from the query.</summary>
@@ -2336,7 +2336,7 @@ public static partial class AdvApi32
 		public IntPtr pMemContext;
 
 		/// <summary>Provides a default instance of this structure with the size preset.</summary>
-		public static readonly PERF_PROVIDER_CONTEXT Default = new() { ContextSize = (uint)Marshal.SizeOf(typeof(PERF_PROVIDER_CONTEXT)) };
+		public static readonly PERF_PROVIDER_CONTEXT Default = new() { ContextSize = (uint)Marshal.SizeOf<PERF_PROVIDER_CONTEXT>() };
 	}
 
 	/// <summary>

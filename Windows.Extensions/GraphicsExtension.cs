@@ -226,7 +226,7 @@ public static partial class GdiExtension
 	/// <seealso cref="System.IDisposable"/>
 	public class SmartBitmapLock : IDisposable, IEnumerable<Color>
 	{
-		private static readonly int intSz = Marshal.SizeOf(typeof(int));
+		private static readonly int intSz = Marshal.SizeOf<int>();
 		private readonly BitmapData bd;
 		private readonly Bitmap bmp;
 

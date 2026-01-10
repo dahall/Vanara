@@ -1658,7 +1658,7 @@ public static partial class ComCtl32
 		public HDLAYOUT(RECT rc)
 		{
 			prc = rc.MarshalToPtr(Marshal.AllocHGlobal, out var _);
-			pwpos = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WINDOWPOS)));
+			pwpos = Marshal.AllocHGlobal(Marshal.SizeOf<WINDOWPOS>());
 		}
 
 		/// <summary>Gets or sets the coordinates.</summary>

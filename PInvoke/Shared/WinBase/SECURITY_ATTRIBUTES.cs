@@ -54,5 +54,5 @@ public struct tagSECURITY_ATTRIBUTES
 	[MarshalAs(UnmanagedType.Bool)] public bool bInheritHandle;
 
 	/// <summary>A default instance of this structure with the size set.</summary>
-	public static readonly tagSECURITY_ATTRIBUTES Default = new() { nLength = Marshal.SizeOf(typeof(SECURITY_ATTRIBUTES)) };
+	public static readonly tagSECURITY_ATTRIBUTES Default = new() { nLength = Marshal.SizeOf<SECURITY_ATTRIBUTES>() };
 }

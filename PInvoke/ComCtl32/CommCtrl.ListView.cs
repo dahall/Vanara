@@ -5924,7 +5924,7 @@ public static partial class ComCtl32
 		/// <param name="mask">The mask.</param>
 		public LVGROUPMETRICS(ListViewGroupMetricsMask mask = ListViewGroupMetricsMask.LVGMF_NONE) : this()
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(LVGROUPMETRICS));
+			cbSize = (uint)Marshal.SizeOf<LVGROUPMETRICS>();
 			this.mask = mask;
 		}
 
@@ -5935,7 +5935,7 @@ public static partial class ComCtl32
 		/// <param name="bottom">The width of the bottom border.</param>
 		public LVGROUPMETRICS(int left, int top, int right, int bottom) : this()
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(LVGROUPMETRICS));
+			cbSize = (uint)Marshal.SizeOf<LVGROUPMETRICS>();
 			SetBorderSize(left, top, right, bottom);
 		}
 
@@ -6047,7 +6047,7 @@ public static partial class ComCtl32
 		/// <param name="insertAfter">if set to <c>true</c> the insertion point appears after the item specified.</param>
 		public LVINSERTMARK(int insertAtItem, bool insertAfter = false) : this()
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(LVINSERTMARK));
+			cbSize = (uint)Marshal.SizeOf<LVINSERTMARK>();
 			dwFlags = insertAfter ? ListViewInsertMarkFlag.LVIM_AFTER : ListViewInsertMarkFlag.LVIM_BEFORE;
 			iItem = insertAtItem;
 		}
@@ -6115,7 +6115,7 @@ public static partial class ComCtl32
 		/// <param name="mask">The mask.</param>
 		public LVTILEVIEWINFO(ListViewTileViewMask mask) : this()
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(LVTILEVIEWINFO));
+			cbSize = (uint)Marshal.SizeOf<LVTILEVIEWINFO>();
 			dwMask = mask;
 		}
 
@@ -6914,7 +6914,7 @@ public static partial class ComCtl32
 	public sealed class LVGROUP : IDisposable
 	{
 		/// <summary>Size of this structure, in bytes.</summary>
-		public int cbSize = Marshal.SizeOf(typeof(LVGROUP));
+		public int cbSize = Marshal.SizeOf<LVGROUP>();
 
 		/// <summary>Mask that specifies which members of the structure are valid input.</summary>
 		public ListViewGroupMask mask;
@@ -7323,9 +7323,9 @@ public static partial class ComCtl32
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_TEXT))
 				pszText = new StrPtrAuto(cchTextMax = 1024);
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_COLUMNS))
-				puColumns = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(int)) * MAX_COLS);
+				puColumns = Marshal.AllocHGlobal(Marshal.SizeOf<int>() * MAX_COLS);
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_COLFMT))
-				piColFmt = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(int)) * MAX_COLS);
+				piColFmt = Marshal.AllocHGlobal(Marshal.SizeOf<int>() * MAX_COLS);
 			iItem = item;
 			iSubItem = subitem;
 			this.stateMask = stateMask;
@@ -7571,7 +7571,7 @@ public static partial class ComCtl32
 		/// <param name="columnFormats">A dictionary of column indicies and their associated formats.</param>
 		public LVTILEINFO(int item, IReadOnlyDictionary<int, ListViewColumnFormat> columnFormats)
 		{
-			cbSize = (uint)Marshal.SizeOf(typeof(LVTILEINFO));
+			cbSize = (uint)Marshal.SizeOf<LVTILEINFO>();
 			iItem = item;
 			ColumnFormats = columnFormats;
 		}

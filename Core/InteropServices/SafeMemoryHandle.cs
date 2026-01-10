@@ -952,7 +952,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	public T[] ToArray<T>(SizeT count, SizeT prefixBytes = default)
 	{
 		if (IsInvalid) return [];
-		//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
+		//if (Size < Marshal.SizeOf<T>() * count + prefixBytes)
 		//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 		//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 		//Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);
@@ -970,7 +970,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	public IEnumerable<T> ToEnumerable<T>(SizeT count, SizeT prefixBytes = default)
 	{
 		if (IsInvalid) yield break;
-		//if (Size < Marshal.SizeOf(typeof(T)) * count + prefixBytes)
+		//if (Size < Marshal.SizeOf<T>() * count + prefixBytes)
 		//	throw new InsufficientMemoryException("Requested array is larger than the memory allocated.");
 		//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 		//Debug.Assert(typeof(T).StructLayoutAttribute?.Value == LayoutKind.Sequential);

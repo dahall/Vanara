@@ -4794,7 +4794,7 @@ public static partial class AdvApi32
 
 		/// <summary>Gets the size in bytes of this instance.</summary>
 		/// <value>The size in bytes.</value>
-		public uint SizeInBytes => (uint)Marshal.SizeOf(typeof(uint)) * 2 + (uint)(Marshal.SizeOf(typeof(LUID_AND_ATTRIBUTES)) * (PrivilegeCount == 0 ? 1 : PrivilegeCount));
+		public uint SizeInBytes => (uint)Marshal.SizeOf<uint>() * 2 + (uint)(Marshal.SizeOf<LUID_AND_ATTRIBUTES>() * (PrivilegeCount == 0 ? 1 : PrivilegeCount));
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -4824,8 +4824,8 @@ public static partial class AdvApi32
 				if (ps.Privilege.Length != ps.PrivilegeCount)
 					ptr.FillMemory(0, (int)ps.SizeInBytes);
 				Marshal.WriteInt32(ptr, (int)ps.PrivilegeCount);
-				Marshal.WriteInt32(ptr, Marshal.SizeOf(typeof(int)), (int)ps.Control);
-				ptr.Write(ps.Privilege, Marshal.SizeOf(typeof(int)) * 2);
+				Marshal.WriteInt32(ptr, Marshal.SizeOf<int>(), (int)ps.Control);
+				ptr.Write(ps.Privilege, Marshal.SizeOf<int>() * 2);
 				return ptr;
 			}
 
@@ -4997,8 +4997,8 @@ public static partial class AdvApi32
 	[DebuggerDisplay("{DebugString}")]
 	public class SafePACE : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IComparable<SafePACE>, IComparable<PACE>, IEquatable<SafePACE>, IEquatable<PACE>
 	{
-		private static readonly int hdrSz = Marshal.SizeOf(typeof(ACE_HEADER));
-		private static readonly int structSize = Marshal.SizeOf(typeof(ACCESS_ALLOWED_ACE));
+		private static readonly int hdrSz = Marshal.SizeOf<ACE_HEADER>();
+		private static readonly int structSize = Marshal.SizeOf<ACCESS_ALLOWED_ACE>();
 
 		/// <summary>The null value for a SafePACE.</summary>
 		public static readonly SafePACE Null = new();
@@ -5263,7 +5263,7 @@ public static partial class AdvApi32
 		/// <value>The comparer.</value>
 		public static IComparer<SafePACE> Comparer => AceComparer.Instance;
 
-		private int SidOffset => hdrSz + sizeof(uint) + (IsObjectAce ? sizeof(uint) + Marshal.SizeOf(typeof(Guid)) * 2 : 0);
+		private int SidOffset => hdrSz + sizeof(uint) + (IsObjectAce ? sizeof(uint) + Marshal.SizeOf<Guid>() * 2 : 0);
 
 		internal string DebugString => IsInvalid ? "NULL" : $"Principal: {TrusteeSid:N}, Type: {AceType}, Access: {Mask}, Flags: {Header.AceFlags}, Size:{Length}";
 
@@ -5313,7 +5313,7 @@ public static partial class AdvApi32
 	[DebuggerDisplay("{DebugString}")]
 	public class SafePACL : SafeMemoryHandle<LocalMemoryMethods>, ISecurityObject, IList<PACE>, IComparable<SafePACL>, IComparable<PACL>, IEquatable<SafePACL>, IEquatable<PACL>
 	{
-		private static readonly int AclStructSize = Marshal.SizeOf(typeof(ACL));
+		private static readonly int AclStructSize = Marshal.SizeOf<ACL>();
 
 		/// <summary>The null value for a SafePACL.</summary>
 		public static readonly SafePACL Null = new();
@@ -5564,7 +5564,7 @@ public static partial class AdvApi32
 		{
 			if (typeof(TAce).Name.Contains("ALERT"))
 				throw new ArgumentException("Alert ACEs cannot be added with just a SID.", nameof(ace));
-			using SafeCoTaskMemStruct<TAce> pAce = new(ace, Marshal.SizeOf(typeof(TAce)) + sid.Length() - sizeof(uint));
+			using SafeCoTaskMemStruct<TAce> pAce = new(ace, Marshal.SizeOf<TAce>() + sid.Length() - sizeof(uint));
 			pAce.GetFieldAddress("SidStart").Write(sid.GetBinaryForm());
 			Insert(index, (PACE)pAce.DangerousGetHandle());
 		}

@@ -1852,5 +1852,5 @@ public struct DEVMODE
 	public uint dmPanningHeight;
 
 	/// <summary>A default value with dmSize and dmSpecVersion set.</summary>
-	public static readonly DEVMODE Default = new() { dmSize = (ushort)Marshal.SizeOf(typeof(DEVMODE)), dmSpecVersion = DM_SPECVERSION };
+	public static readonly DEVMODE Default = new() { dmSize = (ushort)Marshal.SizeOf<DEVMODE>(), dmSpecVersion = DM_SPECVERSION };
 }

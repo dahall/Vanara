@@ -880,7 +880,7 @@ public static partial class Ole32
 		public uint dwTickCountDeadline;
 
 		/// <summary>Initializes a new instance of the <see cref="BIND_OPTS_V"/> class.</summary>
-		public BIND_OPTS_V() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS_V));
+		public BIND_OPTS_V() => cbStruct = (uint)Marshal.SizeOf<BIND_OPTS_V>();
 
 		/// <summary>Performs an implicit conversion from <see cref="BIND_OPTS_V"/> to <see cref="BIND_OPTS"/>.</summary>
 		/// <param name="bo">The <see cref="BIND_OPTS_V"/> instance.</param>
@@ -954,7 +954,7 @@ public static partial class Ole32
 		public IntPtr pServerInfo;
 
 		/// <summary>Initializes a new instance of the <see cref="BIND_OPTS2"/> class.</summary>
-		public BIND_OPTS2() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS2));
+		public BIND_OPTS2() => cbStruct = (uint)Marshal.SizeOf<BIND_OPTS2>();
 	}
 
 	/// <summary>Contains parameters used during a moniker-binding operation.</summary>
@@ -988,7 +988,7 @@ public static partial class Ole32
 		public HWND hwnd;
 
 		/// <summary>Initializes a new instance of the <see cref="BIND_OPTS3"/> class.</summary>
-		public BIND_OPTS3() => cbStruct = (uint)Marshal.SizeOf(typeof(BIND_OPTS3));
+		public BIND_OPTS3() => cbStruct = (uint)Marshal.SizeOf<BIND_OPTS3>();
 	}
 
 	/// <summary>Simple generic implementation of <see cref="IEnumUnknown"/>.</summary>

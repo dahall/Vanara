@@ -76,7 +76,7 @@ public class MarshalingStream : Stream
 	public T? Read<T>()
 	{
 		//if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Type to be read must be blittable.", nameof(T));
-		var sz = Marshal.SizeOf(typeof(T));
+		var sz = Marshal.SizeOf<T>();
 		var ret = (T?)Pointer.ToStructure(typeof(T), Capacity, (int)Position, out _);
 		Position += sz;
 		return ret;

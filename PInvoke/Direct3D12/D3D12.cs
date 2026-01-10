@@ -2202,7 +2202,7 @@ public static partial class D3D12
 											{
 												D3D12_ROOT_DESCRIPTOR_TABLE1 table_1_1 = desc_1_1.pParameters[n].DescriptorTable;
 
-												SizeT DescriptorRangesSize = Marshal.SizeOf(typeof(D3D12_DESCRIPTOR_RANGE)) * table_1_1.NumDescriptorRanges;
+												SizeT DescriptorRangesSize = Marshal.SizeOf<D3D12_DESCRIPTOR_RANGE>() * table_1_1.NumDescriptorRanges;
 												SafeHeapBlock pDescriptorRanges = (DescriptorRangesSize > 0 && hr.Succeeded) ? HeapAlloc(GetProcessHeap(), 0, DescriptorRangesSize) : SafeHeapBlock.Null;
 												if (DescriptorRangesSize > 0 && pDescriptorRanges.IsInvalid)
 												{

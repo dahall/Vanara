@@ -13396,5 +13396,5 @@ public static partial class Dwrite
 	/// </remarks>
 	public static void SetCurrentGlyph(this IDWritePaintReader rdr, uint glyphIndex, out DWRITE_PAINT_ELEMENT paintElement, out D2D_RECT_F clipBox,
 		out DWRITE_PAINT_ATTRIBUTES glyphAttributes) =>
-		rdr.SetCurrentGlyph(glyphIndex, out paintElement, (uint)Marshal.SizeOf(typeof(DWRITE_PAINT_ELEMENT)), out clipBox, out glyphAttributes);
+		rdr.SetCurrentGlyph(glyphIndex, out paintElement, (uint)Marshal.SizeOf<DWRITE_PAINT_ELEMENT>(), out clipBox, out glyphAttributes);
 }

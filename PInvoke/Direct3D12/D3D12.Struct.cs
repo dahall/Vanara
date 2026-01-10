@@ -8048,7 +8048,7 @@ public static partial class D3D12
 			return mem.DangerousGetHandle().ToStructure<D3D12_STATE_OBJECT_DESC>();
 		}
 
-		private int[] GetSizes() => [ Marshal.SizeOf(typeof(D3D12_STATE_OBJECT_DESC)), pSubobjects.Count * Marshal.SizeOf(typeof(D3D12_STATE_SUBOBJECT)),
+		private int[] GetSizes() => [ Marshal.SizeOf<D3D12_STATE_OBJECT_DESC>(), pSubobjects.Count * Marshal.SizeOf<D3D12_STATE_SUBOBJECT>(),
 			pSubobjects.Sum(o => Marshal.SizeOf(o.desc)) ];
 
 		/// <inheritdoc/>

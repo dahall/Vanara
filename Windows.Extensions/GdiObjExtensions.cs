@@ -161,7 +161,7 @@ public static class GdiObjExtensions2
 	// bmp.RotateFlip(RotateFlipType.Rotate180FlipNone); return bmp;
 
 	// static (ushort bpp, int width, int height, int scanBytes, IntPtr bits, bool isdib) GetInfo(in HBITMAP hbmp) { var dibSz =
-	// Marshal.SizeOf(typeof(DIBSECTION)); using var mem = GetObject(hbmp, dibSz); if (mem.Size == dibSz) { var dib =
+	// Marshal.SizeOf<DIBSECTION>(); using var mem = GetObject(hbmp, dibSz); if (mem.Size == dibSz) { var dib =
 	// mem.ToStructure<DIBSECTION>(); return (dib.dsBm.bmBitsPixel, dib.dsBmih.biWidth, dib.dsBmih.biHeight, dib.dsBm.bmWidthBytes,
 	// dib.dsBm.bmBits, true); } else { var bmp = mem.ToStructure<BITMAP>(); return (bmp.bmBitsPixel, bmp.bmWidth, bmp.bmHeight,
 	// bmp.bmWidthBytes, bmp.bmBits, false); } }

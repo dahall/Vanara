@@ -1609,7 +1609,7 @@ public static partial class AdvApi32
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeInheritedFromArray"/> class.</summary>
 		/// <param name="aceCount">The count of ACEs that are contained in the ACL.</param>
-		public SafeInheritedFromArray(ushort aceCount) : base(aceCount * Marshal.SizeOf(typeof(INHERITED_FROM))) => AceCount = aceCount;
+		public SafeInheritedFromArray(ushort aceCount) : base(aceCount * Marshal.SizeOf<INHERITED_FROM>()) => AceCount = aceCount;
 
 		/// <summary>Gets the count of ACEs that are contained in the ACL.</summary>
 		/// <value>The ACE count.</value>

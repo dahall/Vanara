@@ -3247,7 +3247,7 @@ public static partial class AdvApi32
 	/// <seealso cref="ICustomMarshaler"/>
 	internal class LsaUnicodeStringMarshaler : ICustomMarshaler
 	{
-		internal static readonly int ssz = Marshal.SizeOf(typeof(LSA_UNICODE_STRING));
+		internal static readonly int ssz = Marshal.SizeOf<LSA_UNICODE_STRING>();
 
 		public static ICustomMarshaler GetInstance(string _) => new LsaUnicodeStringMarshaler();
 
@@ -3261,7 +3261,7 @@ public static partial class AdvApi32
 			Marshal.FreeCoTaskMem(pNativeData);
 		}
 
-		public int GetNativeDataSize() => Marshal.SizeOf(typeof(LSA_UNICODE_STRING));
+		public int GetNativeDataSize() => Marshal.SizeOf<LSA_UNICODE_STRING>();
 
 		public IntPtr MarshalManagedToNative(object? ManagedObj) => ManagedObj is string s ? MarshalValue(s) : IntPtr.Zero;
 

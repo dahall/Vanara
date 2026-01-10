@@ -47,7 +47,7 @@ public static class BitHelper
 #else
 		unmanaged, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable
 #endif
-		=> (idx < Marshal.SizeOf(typeof(T)) * 8) ? (bits.ToInt64(null) & 1 << idx) != 0 : throw new ArgumentOutOfRangeException(nameof(idx));
+		=> (idx < Marshal.SizeOf<T>() * 8) ? (bits.ToInt64(null) & 1 << idx) != 0 : throw new ArgumentOutOfRangeException(nameof(idx));
 
 	/// <summary>Gets the bit array value from the specified range in a bit vector.</summary>
 	/// <typeparam name="T">The type of the bit vector. Must be of type <see cref="IConvertible"/>.</typeparam>
@@ -62,8 +62,8 @@ public static class BitHelper
 		unmanaged, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable
 #endif
 	{
-		if (startIdx >= Marshal.SizeOf(typeof(T)) * 8) throw new ArgumentOutOfRangeException(nameof(startIdx));
-		return count + startIdx > Marshal.SizeOf(typeof(T)) * 8
+		if (startIdx >= Marshal.SizeOf<T>() * 8) throw new ArgumentOutOfRangeException(nameof(startIdx));
+		return count + startIdx > Marshal.SizeOf<T>() * 8
 			? throw new ArgumentOutOfRangeException(nameof(count))
 			: (T)Convert.ChangeType((bits.ToInt64(null) >> startIdx) & ((1 << count) - 1), typeof(T));
 	}
@@ -113,7 +113,7 @@ public static class BitHelper
 		unmanaged, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable
 #endif
 	{
-		if (idx >= Marshal.SizeOf(typeof(T)) * 8) throw new ArgumentOutOfRangeException(nameof(idx));
+		if (idx >= Marshal.SizeOf<T>() * 8) throw new ArgumentOutOfRangeException(nameof(idx));
 		long bit = 1 << idx;
 		var l = bits.ToInt64(null);
 		bits = (T)Convert.ChangeType(value ? l | bit : l & ~bit, typeof(T));
@@ -139,8 +139,8 @@ public static class BitHelper
 		unmanaged, IComparable, IComparable<TValue>, IConvertible, IEquatable<TValue>, IFormattable
 #endif
 	{
-		if (startIdx >= Marshal.SizeOf(typeof(T)) * 8) throw new ArgumentOutOfRangeException(nameof(startIdx));
-		if (count + startIdx > Marshal.SizeOf(typeof(T)) * 8) throw new ArgumentOutOfRangeException(nameof(count));
+		if (startIdx >= Marshal.SizeOf<T>() * 8) throw new ArgumentOutOfRangeException(nameof(startIdx));
+		if (count + startIdx > Marshal.SizeOf<T>() * 8) throw new ArgumentOutOfRangeException(nameof(count));
 		var val = value.ToInt64(null);
 		if (val >= 1 << count) throw new ArgumentOutOfRangeException(nameof(value));
 		bits = (T)Convert.ChangeType(bits.ToInt64(null) & ~(((1 << count) - 1) << startIdx) | (val << startIdx), typeof(T));

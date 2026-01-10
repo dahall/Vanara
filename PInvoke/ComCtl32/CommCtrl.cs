@@ -1436,7 +1436,7 @@ public static partial class ComCtl32
 		public INITCOMMONCONTROLSEX(CommonControlClass ccc)
 		{
 			dwICC = ccc;
-			dwSize = Marshal.SizeOf(typeof(INITCOMMONCONTROLSEX));
+			dwSize = Marshal.SizeOf<INITCOMMONCONTROLSEX>();
 		}
 	}
 

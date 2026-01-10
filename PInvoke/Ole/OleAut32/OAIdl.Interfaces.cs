@@ -3787,7 +3787,7 @@ public static partial class OleAut32
 		// Convert parameters to VARIANTs in reverse order and store in array.
 		if (args.Length > 0)
 		{
-			dp.rgvarg = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(VARIANT)) * args.Length);
+			dp.rgvarg = Marshal.AllocCoTaskMem(Marshal.SizeOf<VARIANT>() * args.Length);
 			dp.cArgs = args.Length;
 			unsafe
 			{

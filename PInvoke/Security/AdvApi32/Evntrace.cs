@@ -2572,7 +2572,7 @@ public static partial class AdvApi32
 	public static IEnumerable<TOut> EnumerateTraceGuidsEx<TOut, TIn>(TRACE_QUERY_INFO_CLASS TraceQueryInfoClass, in TIn InBuffer) where TOut : struct where TIn : struct
 	{
 		using var buffer = EnumerateTraceGuidsEx<TIn>(TraceQueryInfoClass, InBuffer);
-		return buffer.ToArray<TOut>(buffer.Size / Marshal.SizeOf(typeof(TOut)));
+		return buffer.ToArray<TOut>(buffer.Size / Marshal.SizeOf<TOut>());
 	}
 
 	/// <summary>Use this function to retrieve information about trace providers that are registered on the computer.</summary>
@@ -2597,7 +2597,7 @@ public static partial class AdvApi32
 	public static IEnumerable<TOut> EnumerateTraceGuidsEx<TOut>(TRACE_QUERY_INFO_CLASS TraceQueryInfoClass) where TOut : struct
 	{
 		using var buffer = EnumerateTraceGuidsEx<int>(TraceQueryInfoClass, null);
-		return buffer.ToArray<TOut>(buffer.Size / Marshal.SizeOf(typeof(TOut)));
+		return buffer.ToArray<TOut>(buffer.Size / Marshal.SizeOf<TOut>());
 	}
 
 	/// <summary>Use this function to retrieve information about trace providers that are registered on the computer.</summary>
@@ -5743,7 +5743,7 @@ public static partial class AdvApi32
 		/// <summary/>
 		public const int MaxLogFileNameLength = 1024;
 
-		private static readonly uint SizeOf = (uint)Marshal.SizeOf(typeof(EVENT_TRACE_PROPERTIES));
+		private static readonly uint SizeOf = (uint)Marshal.SizeOf<EVENT_TRACE_PROPERTIES>();
 		private static readonly uint StrLen = SizeOf > 4096 ? 2048U : 1024U;
 
 		/// <summary>

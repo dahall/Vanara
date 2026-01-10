@@ -2479,7 +2479,7 @@ public static partial class Authz
 		{
 			if (count == 0) return;
 			ResultListLength = (int)count;
-			var sz = Marshal.SizeOf(typeof(uint)) * (int)count;
+			var sz = Marshal.SizeOf<uint>() * (int)count;
 			GrantedAccessMask = Marshal.AllocHGlobal(sz);
 			SaclEvaluationResults = Marshal.AllocHGlobal(sz);
 			Error = Marshal.AllocHGlobal(sz);
@@ -2597,8 +2597,8 @@ public static partial class Authz
 		{
 			// Determine size
 			if (ManagedObj is not AUTHZ_SECURITY_ATTRIBUTES_INFORMATION attrInfo) throw new InvalidOperationException("This marshaler only works on AUTHZ_SECURITY_ATTRIBUTES_INFORMATION structures.");
-			var sz1 = Marshal.SizeOf(typeof(Internal_AUTHZ_SECURITY_ATTRIBUTES_INFORMATION)) +
-					 attrInfo.AttributeCount * Marshal.SizeOf(typeof(Internal_AUTHZ_SECURITY_ATTRIBUTE_V1));
+			var sz1 = Marshal.SizeOf<Internal_AUTHZ_SECURITY_ATTRIBUTES_INFORMATION>() +
+					 attrInfo.AttributeCount * Marshal.SizeOf<Internal_AUTHZ_SECURITY_ATTRIBUTE_V1>();
 			var sz2 = 0L;
 			for (var i = 0; i < attrInfo.AttributeCount; i++)
 			{
@@ -2611,7 +2611,7 @@ public static partial class Authz
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_BOOLEAN:
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_INT64:
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_UINT64:
-						sz2 += Marshal.SizeOf(typeof(long)) * v1.ValueCount;
+						sz2 += Marshal.SizeOf<long>() * v1.ValueCount;
 						break;
 
 					case AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_STRING:

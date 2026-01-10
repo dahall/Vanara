@@ -235,7 +235,7 @@ public static class WinNTExtensions
 	public static uint GetMask(this PACE pAce)
 	{
 		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-		var offset = Marshal.SizeOf(typeof(ACE_HEADER));
+		var offset = Marshal.SizeOf<ACE_HEADER>();
 		return unchecked((uint)Marshal.ReadInt32(((IntPtr)pAce).Offset(offset)));
 	}
 
@@ -256,8 +256,8 @@ public static class WinNTExtensions
 	public static SafePSID GetSid(this PACE pAce)
 	{
 		if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-		var offset = Marshal.SizeOf(typeof(ACE_HEADER)) + sizeof(uint);
-		if (pAce.IsObjectAce()) offset += sizeof(uint) + Marshal.SizeOf(typeof(Guid)) * 2;
+		var offset = Marshal.SizeOf<ACE_HEADER>() + sizeof(uint);
+		if (pAce.IsObjectAce()) offset += sizeof(uint) + Marshal.SizeOf<Guid>() * 2;
 		if (pAce.IsAlarmAce())
 			return GetSid((PACE)((IntPtr)pAce).Offset(offset));
 		return SafePSID.CreateFromPtr(((IntPtr)pAce).Offset(offset));
