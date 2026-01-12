@@ -936,7 +936,7 @@ public static partial class Imm32
 		public static APPLETIDLIST CreateAllocated(int cnt)
 		{
 			APPLETIDLIST al = new();
-			al._pIIDList = Marshal.AllocCoTaskMem((al.count = cnt) * Marshal.SizeOf(typeof(Guid)));
+			al._pIIDList = Marshal.AllocCoTaskMem((al.count = cnt) * Marshal.SizeOf<Guid>());
 			return al;
 		}
 	}

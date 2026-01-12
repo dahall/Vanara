@@ -1409,7 +1409,7 @@ public static partial class Imm32
 		/// <param name="tabId">The initial tab ID, 0 or 1.</param>
 		public IMEDLG(HWND hwnd, string? display = null, int tabId = 0)
 		{
-			cbIMEDLG = Marshal.SizeOf(typeof(IMEDLG));
+			cbIMEDLG = Marshal.SizeOf<IMEDLG>();
 			this.hwnd = hwnd;
 			lpwstrWord = display;
 			nTabId = tabId;

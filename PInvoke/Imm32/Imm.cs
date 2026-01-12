@@ -1755,7 +1755,7 @@ public static partial class Imm32
 	[PInvokeData("imm.h", MSDNShortId = "NF:imm.ImmGetImeMenuItemsA")]
 	public static uint ImmGetImeMenuItems(HIMC hIMC, IGIMIF dwFlags, IGIMII dwType,
 		out IMEMENUITEMINFO lpImeParentMenu, [Out, Optional, MarshalAs(UnmanagedType.LPArray)] IMEMENUITEMINFO[]? lpImeMenu) =>
-		ImmGetImeMenuItems(hIMC, dwFlags, dwType, out lpImeParentMenu, lpImeMenu, lpImeMenu is null ? 0 : Marshal.SizeOf(typeof(IMEMENUITEMINFO)) * lpImeMenu.Length);
+		ImmGetImeMenuItems(hIMC, dwFlags, dwType, out lpImeParentMenu, lpImeMenu, lpImeMenu is null ? 0 : Marshal.SizeOf<IMEMENUITEMINFO>() * lpImeMenu.Length);
 
 	/// <summary>Determines whether the IME is open or closed.</summary>
 	/// <param name="hIMC">Handle to the input context.</param>
@@ -2651,7 +2651,7 @@ public static partial class Imm32
 
 	private class CANDIDATELISTMarshaler : IVanaraMarshaler
 	{
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(CANDIDATELIST));
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<CANDIDATELIST>();
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => new SafeHGlobalStruct<CANDIDATELIST>();
 

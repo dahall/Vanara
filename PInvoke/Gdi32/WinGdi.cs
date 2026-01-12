@@ -401,21 +401,21 @@ public static partial class Gdi32
 	// *PDISPLAY_DEVICEA, *LPDISPLAY_DEVICEA;
 	[PInvokeData("wingdi.h", MSDNShortId = "9a7813fe-358a-44eb-99da-c63f98d055c3")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct DISPLAY_DEVICE
+	public struct DISPLAY_DEVICE()
 	{
 		/// <summary>Size, in bytes, of the <c>DISPLAY_DEVICE</c> structure. This must be initialized prior to calling EnumDisplayDevices.</summary>
-		public uint cb;
+		public uint cb = (uint)Marshal.SizeOf<DISPLAY_DEVICE>();
 
 		/// <summary>An array of characters identifying the device name. This is either the adapter device or the monitor device.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-		public string DeviceName;
+		public string DeviceName = string.Empty;
 
 		/// <summary>
 		/// An array of characters containing the device context string. This is either a description of the display adapter or of the
 		/// display monitor.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-		public string DeviceString;
+		public string DeviceString = string.Empty;
 
 		/// <summary>
 		/// <para>Device state flags. It can be any reasonable combination of the following.</para>
@@ -464,13 +464,13 @@ public static partial class Gdi32
 
 		/// <summary>Not used.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-		public string DeviceID;
+		public string DeviceID = string.Empty;
 
 		/// <summary>Reserved.</summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-		public string DeviceKey;
+		public string DeviceKey = string.Empty;
 
 		/// <summary>Gets an empty structure with the <see cref="cb"/> set to the size of the structure.</summary>
-		public static readonly DISPLAY_DEVICE Default = new() { cb = (uint)Marshal.SizeOf<DISPLAY_DEVICE>() };
+		public static readonly DISPLAY_DEVICE Default = new();
 	}
 }
