@@ -262,5 +262,6 @@ public static partial class User32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HACCEL"/> that is disposed using <see cref="DestroyAcceleratorTable"/>.</summary>
 	[AutoSafeHandle("DestroyAcceleratorTable(handle)", typeof(HACCEL))]
+	[AdjustAutoMethodNamePattern("AcceleratorTable", "")]
 	public partial class SafeHACCEL : IUserHandle { }
 }

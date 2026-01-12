@@ -5545,7 +5545,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "iswindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWindow([In, AddAsMember] HWND hWnd);
+	public static extern bool IsWindow([In] HWND hWnd);
 
 	/// <summary>Determines whether the specified window is enabled for mouse and keyboard input.</summary>
 	/// <param name="hWnd">
@@ -10118,6 +10118,7 @@ public static partial class User32
 	/// Provides a <see cref="SafeHandle"/> to a window or dialog that releases a created HWND instance at disposal using DestroyWindow.
 	/// </summary>
 	[AutoSafeHandle(null, typeof(HWND))]
+	[AdjustAutoMethodNamePattern("GetWindowDC", "GetNonClientDC", "CloseWindow", "Minimize", "WINNLS|Windows?|^Win|Indirect|Ex$", "")]
 	public partial class SafeHWND : IUserHandle
 	{
 		/// <inheritdoc/>
@@ -10125,7 +10126,7 @@ public static partial class User32
 		{
 			var hp = GetAncestor(GetAncestorFlag.GA_ROOT);
 			if (hp != this) return true;
-			return DestroyWindow();
+			return Destroy();
 		}
 	}
 

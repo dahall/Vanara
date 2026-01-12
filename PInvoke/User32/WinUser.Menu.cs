@@ -4154,7 +4154,7 @@ public static partial class User32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HMENU"/> that is disposed using <see cref="DestroyMenu"/>.</summary>
 	[AutoSafeHandle("DestroyMenu(handle)", typeof(HMENU))]
-	[DeferAutoMethodFrom(typeof(HMENU)), AdjustAutoMethodNamePattern("Menu", "")]
+	[DeferAutoMethodFrom(typeof(HMENU)), AdjustAutoMethodNamePattern("Menu|Indirect|Ex$", "")]
 	public partial class SafeHMENU : IUserHandle { }
 
 	/// <summary>

@@ -1285,7 +1285,7 @@ public static partial class User32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HICON instance at disposal using DestroyIcon.</summary>
 	[AutoSafeHandle("DestroyIcon(handle)", typeof(HICON))]
-	[Vanara.PInvoke.AdjustAutoMethodNamePattern("Icon|Ex\b|Indirect\b", "")]
+	[AdjustAutoMethodNamePattern("Image_Icon|Icon|Indirect|Ex$", "")]
 	public partial class SafeHICON : IUserHandle
 	{
 		/// <summary>Gets the size of this icon in pixels.</summary>

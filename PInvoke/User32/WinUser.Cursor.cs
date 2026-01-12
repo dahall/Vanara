@@ -870,6 +870,7 @@ public static partial class User32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HCURSOR instance at disposal using DestroyCursor.</summary>
 	[AutoSafeHandle("DestroyCursor(handle)", typeof(HCURSOR))]
+	[AdjustAutoMethodNamePattern("Image_Cursor|Cursor", "")]
 	public partial class SafeHCURSOR : IUserHandle { }
 
 	/// <summary>Predefined cursors for <c>LoadCursor</c>.</summary>

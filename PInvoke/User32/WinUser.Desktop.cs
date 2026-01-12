@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke;
 
@@ -1150,43 +1149,6 @@ public static partial class User32
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool GetUserObjectSecurity(HANDLE hObj, in SECURITY_INFORMATION pSIRequested, PSECURITY_DESCRIPTOR pSID,
 		uint nLength, out uint lpnLengthNeeded);
-
-	/// <summary>The <c>GetUserObjectSecurity</c> function retrieves security information for the specified user object.</summary>
-	/// <param name="hObj">A handle to the user object for which to return security information.</param>
-	/// <param name="pSIRequested">A pointer to a SECURITY_INFORMATION value that specifies the security information being requested.</param>
-	/// <param name="pSID">
-	/// A pointer to a SECURITY_DESCRIPTOR structure in self-relative format that contains the requested information when the function
-	/// returns. This buffer must be aligned on a 4-byte boundary.
-	/// </param>
-	/// <returns>
-	/// <para>If the function succeeds, the function returns nonzero.</para>
-	/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// To read the owner, group, or discretionary access control list (DACL) from the user object's security descriptor, the calling
-	/// process must have been granted READ_CONTROL access when the handle was opened.
-	/// </para>
-	/// <para>
-	/// To read the system access control list (SACL) from the security descriptor, the calling process must have been granted
-	/// ACCESS_SYSTEM_SECURITY access when the handle was opened. The correct way to get this access is to enable the SE_SECURITY_NAME
-	/// privilege in the caller's current token, open the handle for ACCESS_SYSTEM_SECURITY access, and then disable the privilege.
-	/// </para>
-	/// </remarks>
-	[PInvokeData("winuser.h", MSDNShortId = "998c2520-7833-4efd-a794-b13b528f0485")]
-	public static bool GetUserObjectSecurity(this IUserObjectHandle hObj, in SECURITY_INFORMATION pSIRequested, out SafePSECURITY_DESCRIPTOR pSID)
-	{
-		pSID = SafePSECURITY_DESCRIPTOR.Null;
-		GetUserObjectSecurity(hObj.DangerousGetHandle(), in pSIRequested, default, 0, out var sz);
-		SafePSECURITY_DESCRIPTOR mem = new((int)sz);
-		if (!GetUserObjectSecurity(hObj.DangerousGetHandle(), in pSIRequested, mem, sz, out var _))
-		{
-			mem.Dispose();
-			return false;
-		}
-		pSID = mem;
-		return true;
-	}
 
 	/// <summary>
 	/// <para>Retrieves information about the specified window station or desktop object.</para>

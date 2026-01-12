@@ -24,7 +24,7 @@ ACCEL ACCESSTIMEOUT ALTTABINFO ANIMATIONINFO AUDIODESCRIPTION BSMINFO CBTACTIVAT
     <AdditionalFiles Include="handles.csv" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
   </ItemGroup>
   <ItemGroup>
