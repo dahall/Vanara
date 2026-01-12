@@ -28,6 +28,7 @@ Struct | Description
 [Vanara.BOOL](https://github.com/dahall/Vanara/search?l=C%23&q=BOOL) | Managed instance of the four-byte BOOL type.
 [Vanara.BOOLEAN](https://github.com/dahall/Vanara/search?l=C%23&q=BOOLEAN) | Managed instance of the single-byte BOOLEAN type.
 [Vanara.Extensions.EnumFlagIndexer&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=EnumFlagIndexer%26lt%3BT%26gt%3B) | Structure to use in place of a enumerated type with the `System.FlagsAttribute` set. Allows for indexer access to flags and simplifies boolean logic.
+[Vanara.PInvoke.EnumRebase&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=EnumRebase%26lt%3BT%26gt%3B) | Helper to convert enum to different underlying base type.
 [Vanara.InteropServices.GuidPtr](https://github.com/dahall/Vanara/search?l=C%23&q=GuidPtr) | The GuidPtr structure represents a LPGUID.
 [Vanara.PInvoke.HANDLE](https://github.com/dahall/Vanara/search?l=C%23&q=HANDLE) | Provides a generic Windows handle.
 [Vanara.PInvoke.IUnknownPointer&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=IUnknownPointer%26lt%3BT%26gt%3B) | This structure is used to hold a reference to an IUnknown interface pointer.
@@ -84,6 +85,7 @@ Class | Description
 [Vanara.InteropServices.CorrespondingTypeAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=CorrespondingTypeAttribute) | Attribute for enum values that provides information about corresponding types and related actions. Useful for Get/Set methods that use an enumeration value to determine the type to get or set.
 [Vanara.InteropServices.CoTaskMemoryMethods](https://github.com/dahall/Vanara/search?l=C%23&q=CoTaskMemoryMethods) | Unmanaged memory methods for COM.
 [Vanara.PInvoke.DeferAutoMethodFromAttribute](https://github.com/dahall/Vanara/search?l=C%23&q=DeferAutoMethodFromAttribute) | <note type="implement">This attribute does not yet have an implemented generator.</note> <p>Applying this attribute to a class or structure will defer the auto-generated methods from that type to this type.</p>
+[Vanara.Collections.DisposingList](https://github.com/dahall/Vanara/search?l=C%23&q=DisposingList) | Represents a list of objects that disposes its elements when disposed.
 [Vanara.Collections.EnumerableEqualityComparer&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=EnumerableEqualityComparer%26lt%3BT%26gt%3B) | Checks the linear equality of two enumerated lists. For lists to be equal, they must have the same number of elements and each index must hold the same value in each list.
 [Vanara.Extensions.EnumExtensions](https://github.com/dahall/Vanara/search?l=C%23&q=EnumExtensions) | Extensions for enumerated types.
 [Vanara.Collections.EventedList&lt;T&gt;](https://github.com/dahall/Vanara/search?l=C%23&q=EventedList%26lt%3BT%26gt%3B) | A generic list that provides event for changes to the list. This is an alternative to ObservableCollection that provides distinct events for each action (add, insert, remove, changed).

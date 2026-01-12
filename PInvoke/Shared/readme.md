@@ -96,6 +96,7 @@ Struct | Description
 [Vanara.PInvoke.DEVMODE](https://github.com/dahall/Vanara/search?l=C%23&q=DEVMODE) | The <c>DEVMODE</c> data structure contains information about the initialization and environment of a printer or a display device.
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Dma](https://github.com/dahall/Vanara/search?l=C%23&q=Dma) | 
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.DmaV3](https://github.com/dahall/Vanara/search?l=C%23&q=DmaV3) | 
+[Vanara.PInvoke.FOURCC](https://github.com/dahall/Vanara/search?l=C%23&q=FOURCC) | Represents a four-character code (FOURCC) used to identify data formats, such as video or audio codecs, in multimedia file formats or font metric tables.
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Generic](https://github.com/dahall/Vanara/search?l=C%23&q=Generic) | 
 [Vanara.PInvoke.HACCEL](https://github.com/dahall/Vanara/search?l=C%23&q=HACCEL) | Provides a handle to an accelerator table.
 [Vanara.PInvoke.HBITMAP](https://github.com/dahall/Vanara/search?l=C%23&q=HBITMAP) | Provides a handle to a bitmap.
@@ -103,7 +104,6 @@ Struct | Description
 [Vanara.PInvoke.HCOLORSPACE](https://github.com/dahall/Vanara/search?l=C%23&q=HCOLORSPACE) | Provides a handle to a color space.
 [Vanara.PInvoke.HCURSOR](https://github.com/dahall/Vanara/search?l=C%23&q=HCURSOR) | Provides a handle to cursor.
 [Vanara.PInvoke.HDC](https://github.com/dahall/Vanara/search?l=C%23&q=HDC) | Provides a handle to a graphic device context.
-[Vanara.PInvoke.HDESK](https://github.com/dahall/Vanara/search?l=C%23&q=HDESK) | Provides a handle to a desktop.
 [Vanara.PInvoke.HDPA](https://github.com/dahall/Vanara/search?l=C%23&q=HDPA) | Provides a handle to a DPA.
 [Vanara.PInvoke.HDROP](https://github.com/dahall/Vanara/search?l=C%23&q=HDROP) | Provides a handle to a Windows drop operation.
 [Vanara.PInvoke.HDSA](https://github.com/dahall/Vanara/search?l=C%23&q=HDSA) | Provides a handle to a DSA.
@@ -133,7 +133,6 @@ Struct | Description
 [Vanara.PInvoke.HTHREAD](https://github.com/dahall/Vanara/search?l=C%23&q=HTHREAD) | Provides a handle to a thread.
 [Vanara.PInvoke.HTHUMBNAIL](https://github.com/dahall/Vanara/search?l=C%23&q=HTHUMBNAIL) | Provides a handle to a Windows thumbnail.
 [Vanara.PInvoke.HTOKEN](https://github.com/dahall/Vanara/search?l=C%23&q=HTOKEN) | Provides a handle to an access token.
-[Vanara.PInvoke.HWINSTA](https://github.com/dahall/Vanara/search?l=C%23&q=HWINSTA) | Provides a handle to a windows station.
 [Vanara.PInvoke.HWND](https://github.com/dahall/Vanara/search?l=C%23&q=HWND) | Provides a handle to a window or dialog.
 [Vanara.PInvoke.CM_PARTIAL_RESOURCE_DESCRIPTOR.Interrupt](https://github.com/dahall/Vanara/search?l=C%23&q=Interrupt) | 
 [Vanara.PInvoke.LANGID](https://github.com/dahall/Vanara/search?l=C%23&q=LANGID) | Managed instance of the 16 bit LANGID type. <p> A language identifier is a standard international numeric abbreviation for the language in a country or geographical region. Each language has a unique language identifier (data type LANGID), a 16-bit value that consists of a primary language identifier and a sublanguage identifier. </p>

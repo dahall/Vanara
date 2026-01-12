@@ -51,7 +51,7 @@ public class PreventShutdownContext : IDisposable
 		{
 			if (!ShutdownBlockReasonQuery(href.Handle, out var reason))
 				Win32Error.ThrowLastError();
-			return reason;
+			return reason ?? "";
 		}
 		set
 		{
