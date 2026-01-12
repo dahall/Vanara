@@ -664,11 +664,13 @@ public class CodeGenTests
 			/// <summary>A 64-bit test dll</summary>
 			public static partial class Test64
 			{
-				//public static extern NTStatus HidP_GetButtonArray([Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5), SizeDef(nameof(ButtonDataLength), SizingMethod.CheckLastError)] BOOL[] ButtonData,
-				//	ref ushort ButtonDataLength, [Optional, Ignore] int LinkCollection, [In, SizeDef(nameof(ReportLength))] IntPtr Report, uint ReportLength);
+				//public static extern NTStatus TwoDiffSizeDefParams([In, AddAsMember] HTEST hAlgorithm, out SafeHTEST phHash, [Out, Optional, SizeDef(nameof(cbHashObject), SizingMethod.Bytes)] IntPtr pbHashObject,
+				//	[Optional] uint cbHashObject, [In, Optional, SizeDef(nameof(cbSecret), SizingMethod.Bytes)] IntPtr pbSecret, [Optional] uint cbSecret, uint dwFlags = 0);
 
-				public static extern NTStatus BCryptCreateHash([In, AddAsMember] HTEST hAlgorithm, out SafeHTEST phHash, [Out, Optional, SizeDef(nameof(cbHashObject), SizingMethod.Bytes)] IntPtr pbHashObject,
-					[Optional] uint cbHashObject, [In, Optional, SizeDef(nameof(cbSecret), SizingMethod.Bytes)] IntPtr pbSecret, [Optional] uint cbSecret, uint dwFlags = 0);
+				public static extern uint TwoSizeDefParamsWithSameSizer(string szFileName, int nIconIndex, int cxIcon, int cyIcon,
+					[Optional, Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(nIcons), SizingMethod.QueryResultInReturn)] SafeHICON[]? phicon,
+					[Optional, Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(nIcons), SizingMethod.QueryResultInReturn)] uint[]? piconid,
+					[Optional] uint nIcons, [Optional] LoadImageOptions flags);
 			}
 		}
 		""";

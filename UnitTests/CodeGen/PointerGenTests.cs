@@ -83,7 +83,7 @@ internal static partial class PointerMethods
 	}
 }
 
-    #nullable enable
+	#nullable enable
 #pragma warning disable 1591
 using System;
 using System.ComponentModel.DataAnnotations;

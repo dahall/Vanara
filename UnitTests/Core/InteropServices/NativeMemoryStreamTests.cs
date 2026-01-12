@@ -281,7 +281,7 @@ public class NativeMemoryStreamTests
 		Assert.That(ms.Pointer.ToArray(IntPtr.Size == 4 ? typeof(uint) : typeof(ulong), pcnt), Is.EquivalentTo(new[] { 0, 0, 0 }));
 		var newGuid = Guid.NewGuid();
 		Assert.That(() => ms.WriteReference(newGuid), Throws.Nothing);
-		isz += Marshal.SizeOf(typeof(Guid)); pcnt++;
+		isz += Marshal.SizeOf<Guid>(); pcnt++;
 		Assert.That(ms.Length, Is.EqualTo(Len()));
 		Assert.That(ms.Position, Is.EqualTo(Pos()));
 		Assert.That(ms.Capacity, Is.EqualTo(62));
@@ -468,7 +468,7 @@ public class NativeMemoryStreamTests
 		Assert.That(ms.Capacity, Is.EqualTo(24));
 		var newGuid = Guid.NewGuid();
 		Assert.That(() => ms.Write(newGuid), Throws.Nothing);
-		isz += Marshal.SizeOf(typeof(Guid));
+		isz += Marshal.SizeOf<Guid>();
 		Assert.That(ms.Length, Is.EqualTo(Len()));
 		Assert.That(ms.Position, Is.EqualTo(Pos()));
 		Assert.That(ms.Capacity, Is.EqualTo(40));

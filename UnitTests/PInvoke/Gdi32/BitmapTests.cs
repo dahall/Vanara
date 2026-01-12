@@ -166,7 +166,7 @@ public class BitmapTests
 
 		//pbi.Zero();
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 15, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
-		//Assert.That(h.biSize, Is.EqualTo(Marshal.SizeOf(typeof(BITMAPINFOHEADER))));
+		//Assert.That(h.biSize, Is.EqualTo(Marshal.SizeOf<BITMAPINFOHEADER>()));
 		//Assert.That(pbch.bcWidth, Is.EqualTo(16));
 		//Assert.That(pbch.bcHeight, Is.EqualTo(16));
 		//Assert.That(pbch.bcPlanes, Is.EqualTo(1));
@@ -176,7 +176,7 @@ public class BitmapTests
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 15, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
 
 		pbi.Zero();
-		pbi.HeaderSize = Marshal.SizeOf(typeof(BITMAPV5HEADER)) + 4;
+		pbi.HeaderSize = Marshal.SizeOf<BITMAPV5HEADER>() + 4;
 		Assert.That(GetDIBits(hdcScreen, hbmp, 0, 15, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
 		ref BITMAPV5HEADER pbV5Header = ref pbi.GetHeaderAsRef<BITMAPV5HEADER>();
 		Assert.That(pbV5Header.bV5RedMask, Is.Zero);
@@ -312,7 +312,7 @@ public class BitmapTests
 		//h.biCompression = BI_PNG;
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 5, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
 
-		//h.biSize = Marshal.SizeOf(typeof(BITMAPINFOHEADER));
+		//h.biSize = Marshal.SizeOf<BITMAPINFOHEADER>();
 		//h.biWidth = 4;
 		//h.biHeight = 4;
 		//h.biPlanes = 1;
@@ -326,7 +326,7 @@ public class BitmapTests
 		//cjSizeImage = ((h.biWidth * h.biBitCount + 31) / 32) * 4 * h.biHeight;
 		//pvBits = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, 512);
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 4, pvBits, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(4));
-		//Assert.That(h.biSize, Is.EqualTo(Marshal.SizeOf(typeof(BITMAPINFOHEADER))));
+		//Assert.That(h.biSize, Is.EqualTo(Marshal.SizeOf<BITMAPINFOHEADER>()));
 		//Assert.That(h.biWidth, Is.EqualTo(4));
 		//Assert.That(h.biHeight, Is.EqualTo(4));
 		//Assert.That(h.biPlanes, Is.EqualTo(1));
@@ -356,7 +356,7 @@ public class BitmapTests
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 4, pvBits, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
 
 		//pbi.Zero();
-		//h.biSize = Marshal.SizeOf(typeof(BITMAPINFOHEADER));
+		//h.biSize = Marshal.SizeOf<BITMAPINFOHEADER>();
 		//h.biBitCount = 5;
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 4, pvBits, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(0));
 
@@ -366,7 +366,7 @@ public class BitmapTests
 		//hbmp = CreateBitmap(3, 5, 1, 4, default);
 		//Assert.That(hbmp != 0, "failed to create bitmap\n");
 		//pbi.Zero();
-		//h.biSize = Marshal.SizeOf(typeof(BITMAPINFOHEADER));
+		//h.biSize = Marshal.SizeOf<BITMAPINFOHEADER>();
 		//Assert.That(GetDIBits(hdcScreen, hbmp, 0, 0, default, pbi, DIBColorMode.DIB_RGB_COLORS), ResultIs.Value(1));
 		//Assert.That(h.biWidth, Is.EqualTo(3));
 		//Assert.That(h.biHeight, Is.EqualTo(5));

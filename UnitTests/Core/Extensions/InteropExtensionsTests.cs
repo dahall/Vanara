@@ -8,7 +8,7 @@ namespace Vanara.Extensions.Tests;
 [TestFixture()]
 public class InteropExtensionsTests
 {
-	private readonly int intSz = Marshal.SizeOf(typeof(int));
+	private readonly int intSz = Marshal.SizeOf<int>();
 
 	[Test()]
 	public void IsBlittableTest()
@@ -42,7 +42,7 @@ public class InteropExtensionsTests
 	[Test()]
 	public void MarshalToPtrTest()
 	{
-		var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + intSz);
+		var h = new SafeHGlobalHandle(Marshal.SizeOf<RECT>() * 2 + intSz);
 		var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
 		((IntPtr)h).Write(rs, intSz, h.Size);
 		Assert.That(Marshal.ReadInt32((IntPtr)h, 4 * intSz), Is.EqualTo(0));
@@ -63,7 +63,7 @@ public class InteropExtensionsTests
 			var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
 			h = rs.MarshalToPtr(Marshal.AllocHGlobal, out var a, intSz);
 			Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
-			Assert.That(a, Is.EqualTo(Marshal.SizeOf(typeof(RECT)) * rs.Length + intSz));
+			Assert.That(a, Is.EqualTo(Marshal.SizeOf<RECT>() * rs.Length + intSz));
 			Assert.That(Marshal.ReadInt32((IntPtr)h, 4 * intSz), Is.EqualTo(0));
 			Assert.That(Marshal.ReadInt32((IntPtr)h, 5 * intSz), Is.EqualTo(10));
 			Assert.That(Marshal.ReadInt32((IntPtr)h, 7 * intSz), Is.EqualTo(12));
@@ -420,7 +420,7 @@ public class InteropExtensionsTests
 	[Test]
 	public unsafe void AsUnmanagedArrayPointerTest()
 	{
-		var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + intSz);
+		var h = new SafeHGlobalHandle(Marshal.SizeOf<RECT>() * 2 + intSz);
 		var rs = new[] { new RECT(0, 1, 2, 3), new RECT(10, 11, 12, 13) };
 		((IntPtr)h).Write(rs, intSz, h.Size);
 

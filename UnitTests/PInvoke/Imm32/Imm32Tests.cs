@@ -28,13 +28,11 @@ public class Imm32Tests
 	[Test]
 	public void ImmEscapeTest()
 	{
-		int max = GetKeyboardLayoutList(0, null);
-		HKL[] layouts = new HKL[max];
-		Assert.That(GetKeyboardLayoutList(max, layouts), Is.EqualTo(max));
+		Assert.That(GetKeyboardLayoutList(out var layouts), ResultIs.Not.Value(0));
 
 		SafeCoTaskMemString str = new(256);
 		StringBuilder sb = new(256);
-		foreach (var hkl in layouts)
+		foreach (var hkl in layouts!)
 		{
 			str.Zero();
 			sb.Clear();

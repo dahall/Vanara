@@ -136,7 +136,7 @@ public partial class User32Tests
 	{
 		var array = new GESTURECONFIG[] { new(GID.GID_ZOOM), new(GID.GID_ROTATE), new(GID.GID_PAN) };
 		var aLen = (uint)array.Length;
-		var b = GetGestureConfig(FindWindow(null, null), 0, 0, ref aLen, array, (uint)Marshal.SizeOf(typeof(GESTURECONFIG)));
+		var b = GetGestureConfig(FindWindow(null, null), 0, 0, ref aLen, array, (uint)Marshal.SizeOf<GESTURECONFIG>());
 		if (!b) Win32Error.ThrowLastError();
 		Assert.That(b, Is.True);
 		Assert.That(aLen, Is.GreaterThan(0));
@@ -148,10 +148,10 @@ public partial class User32Tests
 	public void GetRawInputDeviceInfoTest()
 	{
 		uint nDev = 0;
-		Assert.That(GetRawInputDeviceList(null, ref nDev, (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICELIST))), ResultIs.Not.Value(uint.MaxValue));
+		Assert.That(GetRawInputDeviceList(null, ref nDev, (uint)Marshal.SizeOf<RAWINPUTDEVICELIST>()), ResultIs.Not.Value(uint.MaxValue));
 		Assert.That(nDev, Is.GreaterThan(0));
 		RAWINPUTDEVICELIST[] devs = new RAWINPUTDEVICELIST[(int)nDev];
-		Assert.That(nDev = GetRawInputDeviceList(devs, ref nDev, (uint)Marshal.SizeOf(typeof(RAWINPUTDEVICELIST))), ResultIs.Not.Value(uint.MaxValue));
+		Assert.That(nDev = GetRawInputDeviceList(devs, ref nDev, (uint)Marshal.SizeOf<RAWINPUTDEVICELIST>()), ResultIs.Not.Value(uint.MaxValue));
 		Assert.That(nDev, Is.GreaterThan(0));
 
 		for (int i = 0; i < nDev; i++)
@@ -162,6 +162,12 @@ public partial class User32Tests
 			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, RIDI.RIDI_DEVICENAME, data, ref sz), Is.GreaterThan(0));
 			TestContext.WriteLine($"{data}");
 		}
+	}
+
+	[Test]
+	public void GetAsyncKeyStateTest()
+	{
+		Assert.That(GetAsyncKeyState(VK.VK_SPACE), ResultIs.Not.Value(0));
 	}
 
 	[Test]
@@ -550,7 +556,7 @@ public partial class User32Tests
 		Assert.That(SystemParametersInfo(SPI.SPI_GETWORKAREA, out RECT area), ResultIs.Successful);
 		area.right /= 2;
 		using (var ptr = new PinnedObject(area))
-			Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, (uint)Marshal.SizeOf(typeof(RECT)), (IntPtr)ptr, SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
+			Assert.That(SystemParametersInfo(SPI.SPI_SETWORKAREA, (uint)Marshal.SizeOf<RECT>(), (IntPtr)ptr, SPIF.SPIF_SENDCHANGE), ResultIs.Successful);
 
 		// Try set generic struct value
 		area.right *= 2;
@@ -593,6 +599,19 @@ public partial class User32Tests
 			gotMsg = true;
 			return false;
 		}
+	}
+
+	// A test that exercises generated methods for GetPointerDevices, GetPointerFrameInfoHistory, and GetPointerFramePenInfoHistory
+	[Test]
+	public void PointerDeviceTests()
+	{
+		Assert.That(GetPointerDevices(out POINTER_DEVICE_INFO[]? devices), ResultIs.Successful);
+		TestContext.WriteLine($"Found {devices!.Length} pointer devices. Using '{devices[0].productString}'.");
+		devices.WriteValues();
+
+		Assert.That(GetPointerDeviceProperties(devices[0].device, out var props), ResultIs.Successful);
+		props!.WriteValues();
+
 	}
 
 	private IntPtr DlgProc(HWND hwndDlg, uint uMsg, IntPtr wParam, IntPtr lParam)
