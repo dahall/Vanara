@@ -141,7 +141,7 @@ public static partial class User32
 		ISMEX_SEND = 0x00000001,
 	}
 
-	/// <summary>Flags for <see cref="MsgWaitForMultipleObjectsEx"/></summary>
+	/// <summary>Flags for <c>MsgWaitForMultipleObjectsEx</c></summary>
 	[PInvokeData("winuser.h", MSDNShortId = "1774b721-3ad4-492e-96af-b71de9066f0c")]
 	[Flags]
 	public enum MWMO
@@ -1517,8 +1517,8 @@ public static partial class User32
 	// DWORD nCount, const HANDLE *pHandles, BOOL fWaitAll, DWORD dwMilliseconds, DWORD dwWakeMask );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "0629f1b3-6805-43a7-9aeb-4f80939ec62c")]
-	public static extern uint MsgWaitForMultipleObjects(uint nCount, HANDLE[]? pHandles, [MarshalAs(UnmanagedType.Bool)] bool fWaitAll, uint dwMilliseconds,
-		QS dwWakeMask);
+	public static extern uint MsgWaitForMultipleObjects(uint nCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HANDLE[]? pHandles,
+		[MarshalAs(UnmanagedType.Bool)] bool fWaitAll, uint dwMilliseconds, QS dwWakeMask);
 
 	/// <summary>
 	/// <para>
@@ -1780,7 +1780,8 @@ public static partial class User32
 	// MsgWaitForMultipleObjectsEx( DWORD nCount, const HANDLE *pHandles, DWORD dwMilliseconds, DWORD dwWakeMask, DWORD dwFlags );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "1774b721-3ad4-492e-96af-b71de9066f0c")]
-	public static extern uint MsgWaitForMultipleObjectsEx(uint nCount, HANDLE[]? pHandles, uint dwMilliseconds, QS dwWakeMask, MWMO dwFlags);
+	public static extern uint MsgWaitForMultipleObjectsEx(uint nCount, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HANDLE[]? pHandles,
+		uint dwMilliseconds, QS dwWakeMask, MWMO dwFlags);
 
 	/// <summary>Packs a Dynamic Data Exchange (DDE) lParam value into an internal structure used for sharing DDE data between processes.</summary>
 	/// <param name="msg">
@@ -2131,7 +2132,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-peekmessagea BOOL PeekMessageA( LPMSG lpMsg, HWND hWnd,
 	// UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg );
 	[PInvokeData("winuser.h")]
-	public static bool PeekMessage<TMsg>(out MSG lpMsg, [Optional] HWND hWnd, TMsg wMsgFilterMin, TMsg wMsgFilterMax, [Optional] PM wRemoveMsg) where TMsg : struct, IConvertible =>
+	public static bool PeekMessage<TMsg>(out MSG lpMsg, [In, Optional, AddAsMember] HWND hWnd, TMsg wMsgFilterMin, TMsg wMsgFilterMax, [Optional] PM wRemoveMsg) where TMsg : struct, IConvertible =>
 		PeekMessage(out lpMsg, hWnd, Convert.ToUInt32(wMsgFilterMin), Convert.ToUInt32(wMsgFilterMax), wRemoveMsg);
 
 	/// <summary>
@@ -2326,7 +2327,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-postmessagea BOOL PostMessageA( HWND hWnd, UINT Msg,
 	// WPARAM wParam, LPARAM lParam );
 	[PInvokeData("winuser.h")]
-	public static bool PostMessage<TMsg>([Optional] HWND hWnd, TMsg Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam) where TMsg : struct, IConvertible =>
+	public static bool PostMessage<TMsg>([Optional, AddAsMember] HWND hWnd, TMsg Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam) where TMsg : struct, IConvertible =>
 		PostMessage(hWnd, Convert.ToUInt32(Msg), wParam, lParam);
 
 	/// <summary>
@@ -2628,7 +2629,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[System.Security.SecurityCritical]
-	public static extern IntPtr SendMessage(HWND hWnd, uint msg, [In, Optional] IntPtr wParam, [In, Out, Optional] IntPtr lParam);
+	public static extern IntPtr SendMessage([In, AddAsMember] HWND hWnd, uint msg, [In, Optional] IntPtr wParam, [In, Out, Optional] IntPtr lParam);
 
 	/// <summary>
 	/// <para>
@@ -2698,7 +2699,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[System.Security.SecurityCritical]
-	public static extern IntPtr SendMessage(HWND hWnd, uint msg, [In, Optional] IntPtr wParam, string? lParam);
+	public static extern IntPtr SendMessage([In, AddAsMember] HWND hWnd, uint msg, [In, Optional] IntPtr wParam, string? lParam);
 
 	/// <summary>
 	/// <para>
@@ -2768,7 +2769,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[System.Security.SecurityCritical]
-	public static extern IntPtr SendMessage(HWND hWnd, uint msg, ref int wParam, [In, Out] StringBuilder lParam);
+	public static extern IntPtr SendMessage([In, AddAsMember] HWND hWnd, uint msg, ref int wParam, [In, Out] StringBuilder lParam);
 
 	/// <summary>
 	/// <para>
@@ -2838,7 +2839,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[System.Security.SecurityCritical]
-	public static extern IntPtr SendMessage(HWND hWnd, uint msg, [In, Optional] IntPtr wParam, [In, Out] StringBuilder lParam);
+	public static extern IntPtr SendMessage([In, AddAsMember] HWND hWnd, uint msg, [In, Optional] IntPtr wParam, [In, Out] StringBuilder lParam);
 
 	/// <summary>
 	/// <para>
@@ -2899,7 +2900,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg>(HWND hWnd, TMsg msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam)
+	public static IntPtr SendMessage<TMsg>([In, AddAsMember] HWND hWnd, TMsg msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam)
 		where TMsg : struct, IConvertible
 		=> SendMessage(hWnd, Convert.ToUInt32(msg), wParam, lParam);
 
@@ -2971,7 +2972,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg, TWP>(HWND hWnd, TMsg msg, TWP wParam, [Optional] IntPtr lParam)
+	public static IntPtr SendMessage<TMsg, TWP>([In, AddAsMember] HWND hWnd, TMsg msg, TWP wParam, [Optional] IntPtr lParam)
 		where TMsg : struct, IConvertible where TWP : struct, IConvertible
 		=> SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), lParam);
 
@@ -3043,7 +3044,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg, TWP>(HWND hWnd, TMsg msg, in TWP wParam, [Optional] IntPtr lParam)
+	public static IntPtr SendMessage<TMsg, TWP>([In, AddAsMember] HWND hWnd, TMsg msg, in TWP wParam, [Optional] IntPtr lParam)
 		where TMsg : struct, IConvertible where TWP : struct
 	{
 		using var wmem = SafeCoTaskMemHandle.CreateFromStructure(wParam);
@@ -3118,7 +3119,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg, TWP>(HWND hWnd, TMsg msg, TWP wParam, string lParam)
+	public static IntPtr SendMessage<TMsg, TWP>([In, AddAsMember] HWND hWnd, TMsg msg, TWP wParam, string lParam)
 		where TMsg : struct, IConvertible where TWP : struct, IConvertible
 		=> SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), lParam);
 
@@ -3189,7 +3190,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg>(HWND hWnd, TMsg msg, [In, Optional] IntPtr wParam, string lParam)
+	public static IntPtr SendMessage<TMsg>([In, AddAsMember] HWND hWnd, TMsg msg, [In, Optional] IntPtr wParam, string lParam)
 		where TMsg : struct, IConvertible
 		=> SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), lParam);
 
@@ -3260,7 +3261,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg>(HWND hWnd, TMsg msg, [In, Optional] IntPtr wParam, StringBuilder lParam)
+	public static IntPtr SendMessage<TMsg>([In, AddAsMember] HWND hWnd, TMsg msg, [In, Optional] IntPtr wParam, StringBuilder lParam)
 		where TMsg : struct, IConvertible
 		=> SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), lParam);
 
@@ -3332,7 +3333,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg, TWP>(HWND hWnd, TMsg msg, TWP wParam, StringBuilder lParam)
+	public static IntPtr SendMessage<TMsg, TWP>([In, AddAsMember] HWND hWnd, TMsg msg, TWP wParam, StringBuilder lParam)
 		where TMsg : struct, IConvertible where TWP : struct, IConvertible
 		=> SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), lParam);
 
@@ -3404,7 +3405,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg, TLP>(HWND hWnd, TMsg msg, [Optional] IntPtr wParam, TLP lParam)
+	public static IntPtr SendMessage<TMsg, TLP>([In, AddAsMember] HWND hWnd, TMsg msg, [Optional] IntPtr wParam, TLP lParam)
 		where TMsg : struct, IConvertible where TLP : struct, IConvertible
 		=> SendMessage(hWnd, Convert.ToUInt32(msg), wParam, (IntPtr)Convert.ToInt64(lParam));
 
@@ -3476,7 +3477,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg, TLP>(HWND hWnd, TMsg msg, [Optional] IntPtr wParam, ref TLP lParam)
+	public static IntPtr SendMessage<TMsg, TLP>([In, AddAsMember] HWND hWnd, TMsg msg, [Optional] IntPtr wParam, ref TLP lParam)
 		where TMsg : struct, IConvertible where TLP : struct
 		=> SendMessage(hWnd, Convert.ToUInt32(msg), wParam, ref lParam);
 
@@ -3549,7 +3550,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg, TWP, TLP>(HWND hWnd, TMsg msg, TWP wParam, ref TLP lParam)
+	public static IntPtr SendMessage<TMsg, TWP, TLP>([In, AddAsMember] HWND hWnd, TMsg msg, TWP wParam, ref TLP lParam)
 		where TMsg : struct, IConvertible where TWP : struct, IConvertible where TLP : struct
 		=> SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)Convert.ToInt64(wParam), ref lParam);
 
@@ -3622,7 +3623,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg, TWP, TLP>(HWND hWnd, TMsg msg, TWP wParam, [In] TLP lParam)
+	public static IntPtr SendMessage<TMsg, TWP, TLP>([In, AddAsMember] HWND hWnd, TMsg msg, TWP wParam, [In] TLP lParam)
 		where TMsg : struct, IConvertible where TWP : struct, IConvertible where TLP : class
 	{
 		if (typeof(TLP).StructLayoutAttribute?.Value != LayoutKind.Sequential)
@@ -3700,14 +3701,14 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessage
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.SendMessage")]
-	public static IntPtr SendMessage<TMsg, TWP, TLP>(HWND hWnd, TMsg msg, in TWP wParam, ref TLP lParam)
+	public static IntPtr SendMessage<TMsg, TWP, TLP>([In, AddAsMember] HWND hWnd, TMsg msg, in TWP wParam, ref TLP lParam)
 		where TMsg : struct, IConvertible where TWP : struct where TLP : struct
 	{
 		using var wmem = SafeCoTaskMemHandle.CreateFromStructure(wParam);
 		return SendMessage(hWnd, Convert.ToUInt32(msg), wmem, ref lParam);
 	}
 
-	private static IntPtr SendMessage<TLP>(HWND hWnd, uint msg, IntPtr wParam, ref TLP lParam) where TLP : struct
+	private static IntPtr SendMessage<TLP>([In, AddAsMember] HWND hWnd, uint msg, IntPtr wParam, ref TLP lParam) where TLP : struct
 	{
 		using var lmem = SafeCoTaskMemHandle.CreateFromStructure(lParam);
 		var lret = SendMessage(hWnd, msg, wParam, lmem);
@@ -3786,7 +3787,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SendMessageCallback(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, Sendasyncproc lpResultCallBack, IntPtr dwData);
+	public static extern bool SendMessageCallback([In, AddAsMember] HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, Sendasyncproc lpResultCallBack, IntPtr dwData);
 
 	/// <summary>Sends the specified message to one or more windows.</summary>
 	/// <param name="hWnd">
@@ -3888,7 +3889,7 @@ public static partial class User32
 	// hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, UINT fuFlags, UINT uTimeout, PDWORD_PTR lpdwResult );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr SendMessageTimeout(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, SMTO fuFlags, uint uTimeout, ref IntPtr lpdwResult);
+	public static extern IntPtr SendMessageTimeout([In, AddAsMember] HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, SMTO fuFlags, uint uTimeout, ref IntPtr lpdwResult);
 
 	/// <summary>
 	/// <para>
@@ -3976,7 +3977,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SendNotifyMessage(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam);
+	public static extern bool SendNotifyMessage([In, AddAsMember] HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam);
 
 	/// <summary>
 	/// Sets the extra message information for the current thread. Extra message information is an application- or driver-defined value
@@ -3995,7 +3996,7 @@ public static partial class User32
 	// lParam );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr SetMessageExtraInfo(IntPtr lParam);
+	public static extern IntPtr SetMessageExtraInfo([In] IntPtr lParam);
 
 	/// <summary>
 	/// Translates virtual-key messages into character messages. The character messages are posted to the calling thread's message queue,
@@ -4103,13 +4104,13 @@ public static partial class User32
 	// hdesk; HWND hwnd; LUID luid; } BSMINFO, *PBSMINFO;
 	[PInvokeData("winuser.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct BSMINFO
+	public struct BSMINFO()
 	{
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>
 		/// <para>The size, in bytes, of this structure.</para>
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<BSMINFO>();
 
 		/// <summary>
 		/// <para>Type: <c>HDESK</c></para>
@@ -4130,6 +4131,6 @@ public static partial class User32
 		/// <para>Type: <c>LUID</c></para>
 		/// <para>A locally unique identifier (LUID) for the window.</para>
 		/// </summary>
-		public uint luid;
+		public LUID luid;
 	}
 }

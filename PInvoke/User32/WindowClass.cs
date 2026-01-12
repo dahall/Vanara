@@ -64,7 +64,7 @@ public class WindowClass
 	/// A handle to the class background brush. This member can be a handle to the brush to be used for painting the background, or it
 	/// can be a color value. A color value must be one of the following standard system colors (the value 1 must be added to the chosen color).
 	/// <para>
-	/// The system automatically deletes class background brushes when the class is unregistered by using <see cref="UnregisterClass"/>.
+	/// The system automatically deletes class background brushes when the class is unregistered by using <c>UnregisterClass</c>.
 	/// An application should not delete these brushes.
 	/// </para>
 	/// <para>

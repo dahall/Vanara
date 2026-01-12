@@ -195,7 +195,7 @@ public static partial class User32
 		}
 		else if (!CorrespondingTypeAttribute.CanGet(type, typeof(T)))
 			throw new ArgumentException("Request type does not match type param value.");
-		DISPLAYCONFIG_DEVICE_INFO_HEADER hdr = new() { size = (uint)Marshal.SizeOf(typeof(T)), type = type, adapterId = adapterId, id = id };
+		DISPLAYCONFIG_DEVICE_INFO_HEADER hdr = new() { size = (uint)Marshal.SizeOf<T>(), type = type, adapterId = adapterId, id = id };
 		using var mem = new SafeCoTaskMemStruct<T>((int)hdr.size);
 		Marshal.StructureToPtr(hdr, (IntPtr)mem, false);
 		DisplayConfigGetDeviceInfo(mem).ThrowIfFailed();

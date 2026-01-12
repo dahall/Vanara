@@ -48,7 +48,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool KillTimer([Optional] HWND hWnd, nuint uIDEvent);
+	public static extern bool KillTimer([Optional, In, AddAsMember] HWND hWnd, nuint uIDEvent);
 
 	/// <summary>Creates a timer with the specified time-out value and coalescing tolerance delay.</summary>
 	/// <param name="hWnd">
@@ -152,7 +152,7 @@ public static partial class User32
 	// UINT_PTR SetCoalescableTimer( HWND hWnd, UINT_PTR nIDEvent, UINT uElapse, TIMERPROC lpTimerFunc, ULONG uToleranceDelay );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "39303811-972f-4131-deea-cebf84c50867")]
-	public static extern nuint SetCoalescableTimer([Optional] HWND hWnd, nuint nIDEvent, uint uElapse, [Optional] Timerproc? lpTimerFunc, uint uToleranceDelay);
+	public static extern nuint SetCoalescableTimer([Optional, In, AddAsMember] HWND hWnd, nuint nIDEvent, uint uElapse, [Optional] Timerproc? lpTimerFunc, uint uToleranceDelay = 0);
 
 	/// <summary>Creates a timer with the specified time-out value.</summary>
 	/// <param name="hWnd">
@@ -221,5 +221,5 @@ public static partial class User32
 	// UINT uElapse, TIMERPROC lpTimerFunc );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
-	public static extern nuint SetTimer([Optional] HWND hWnd, [Optional] nuint nIDEvent, [Optional] uint uElapse, [Optional] Timerproc? lpTimerFunc);
+	public static extern nuint SetTimer([Optional, In, AddAsMember] HWND hWnd, [Optional] nuint nIDEvent, [Optional] uint uElapse, [Optional] Timerproc? lpTimerFunc);
 }

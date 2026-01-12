@@ -152,7 +152,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "clipcursor")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ClipCursor([In, Optional] PRECT lpRect);
+	public static extern bool ClipCursor([In, Optional] PRECT? lpRect);
 
 	/// <summary>
 	/// Creates a new cursor and copies the attributes of the specified image to the new one. If necessary, the function stretches the
@@ -216,10 +216,10 @@ public static partial class User32
 	/// <para>The return value is a safe handle to the newly created image.</para>
 	/// </returns>
 	[PInvokeData("winuser.h")]
-	public static SafeHCURSOR CopyCursor(HCURSOR h, SIZE desiredSize = default, CopyImageOptions options = 0)
+	public static SafeHCURSOR CopyCursor([In, AddAsMember] HCURSOR h, SIZE desiredSize = default, CopyImageOptions options = 0)
 	{
 		var hret = CopyImage(h.DangerousGetHandle(), LoadImageType.IMAGE_CURSOR, desiredSize.Width, desiredSize.Height, options);
-		if (hret == HANDLE.NULL) Win32Error.ThrowLastError();
+		if (hret.IsNull) Win32Error.ThrowLastError();
 		return new SafeHCURSOR(hret.DangerousGetHandle(), true);
 	}
 
@@ -279,7 +279,7 @@ public static partial class User32
 	// xHotSpot, int yHotSpot, int nWidth, int nHeight, CONST VOID *pvANDPlane, CONST VOID *pvXORPlane );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "createcursor")]
-	public static extern SafeHCURSOR CreateCursor(HINSTANCE hInst, int xHotSpot, int yHotSpot, int nWidth, int nHeight, IntPtr pvANDPlane, IntPtr pvXORPlane);
+	public static extern SafeHCURSOR CreateCursor([In, AddAsMember] HINSTANCE hInst, int xHotSpot, int yHotSpot, int nWidth, int nHeight, IntPtr pvANDPlane, IntPtr pvXORPlane);
 
 	/// <summary>
 	/// <para>Destroys a cursor and frees any memory the cursor occupied. Do not use this function to destroy a shared cursor.</para>
@@ -360,6 +360,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getcursor HCURSOR GetCursor( );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getcursor")]
+	[return: AddAsCtor]
 	public static extern SafeHCURSOR GetCursor();
 
 	/// <summary>
@@ -548,121 +549,8 @@ public static partial class User32
 	// LPCSTR lpCursorName );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "loadcursor")]
-	public static extern SafeHCURSOR LoadCursor([Optional] HINSTANCE hInstance, string lpCursorName);
-
-	/// <summary>
-	/// <para>Loads the specified cursor resource from the executable (.EXE) file associated with an application instance.</para>
-	/// <para><c>Note</c> This function has been superseded by the LoadImage function.</para>
-	/// </summary>
-	/// <param name="hInstance">
-	/// <para>Type: <c>HINSTANCE</c></para>
-	/// <para>A handle to an instance of the module whose executable file contains the cursor to be loaded.</para>
-	/// </param>
-	/// <param name="lpCursorName">
-	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>
-	/// The name of the cursor resource to be loaded. Alternatively, this parameter can consist of the resource identifier in the
-	/// low-order word and zero in the high-order word. The MAKEINTRESOURCE macro can also be used to create this value. To use one of
-	/// the predefined cursors, the application must set the hInstance parameter to <c>NULL</c> and the lpCursorName parameter to one the
-	/// following values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>IDC_APPSTARTING MAKEINTRESOURCE(32650)</term>
-	/// <term>Standard arrow and small hourglass</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_ARROW MAKEINTRESOURCE(32512)</term>
-	/// <term>Standard arrow</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_CROSS MAKEINTRESOURCE(32515)</term>
-	/// <term>Crosshair</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_HAND MAKEINTRESOURCE(32649)</term>
-	/// <term>Hand</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_HELP MAKEINTRESOURCE(32651)</term>
-	/// <term>Arrow and question mark</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_IBEAM MAKEINTRESOURCE(32513)</term>
-	/// <term>I-beam</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_ICON MAKEINTRESOURCE(32641)</term>
-	/// <term>Obsolete for applications marked version 4.0 or later.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_NO MAKEINTRESOURCE(32648)</term>
-	/// <term>Slashed circle</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_SIZE MAKEINTRESOURCE(32640)</term>
-	/// <term>Obsolete for applications marked version 4.0 or later. Use IDC_SIZEALL.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_SIZEALL MAKEINTRESOURCE(32646)</term>
-	/// <term>Four-pointed arrow pointing north, south, east, and west</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_SIZENESW MAKEINTRESOURCE(32643)</term>
-	/// <term>Double-pointed arrow pointing northeast and southwest</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_SIZENS MAKEINTRESOURCE(32645)</term>
-	/// <term>Double-pointed arrow pointing north and south</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_SIZENWSE MAKEINTRESOURCE(32642)</term>
-	/// <term>Double-pointed arrow pointing northwest and southeast</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_SIZEWE MAKEINTRESOURCE(32644)</term>
-	/// <term>Double-pointed arrow pointing west and east</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_UPARROW MAKEINTRESOURCE(32516)</term>
-	/// <term>Vertical arrow</term>
-	/// </item>
-	/// <item>
-	/// <term>IDC_WAIT MAKEINTRESOURCE(32514)</term>
-	/// <term>Hourglass</term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <c>HCURSOR</c></para>
-	/// <para>If the function succeeds, the return value is the handle to the newly loaded cursor.</para>
-	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The <c>LoadCursor</c> function loads the cursor resource only if it has not been loaded; otherwise, it retrieves the handle to
-	/// the existing resource. This function returns a valid cursor handle only if the lpCursorName parameter is a pointer to a cursor
-	/// resource. If lpCursorName is a pointer to any type of resource other than a cursor (such as an icon), the return value is not
-	/// <c>NULL</c>, even though it is not a valid cursor handle.
-	/// </para>
-	/// <para>
-	/// The <c>LoadCursor</c> function searches the cursor resource most appropriate for the cursor for the current display device. The
-	/// cursor resource can be a color or monochrome bitmap.
-	/// </para>
-	/// <para>DPI Virtualization</para>
-	/// <para>This API does not participate in DPI virtualization. The output returned is not affected by the DPI of the calling thread.</para>
-	/// <para>Examples</para>
-	/// <para>For an example, see Creating a Cursor.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-loadcursora HCURSOR LoadCursorA( HINSTANCE hInstance,
-	// LPCSTR lpCursorName );
-	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	[PInvokeData("winuser.h", MSDNShortId = "loadcursor")]
-	public static extern SafeHCURSOR LoadCursor([Optional] HINSTANCE hInstance, ResourceId lpCursorName);
+	[return: AddAsCtor]
+	public static extern SafeHCURSOR LoadCursor([In, Optional] HINSTANCE hInstance, SafeResourceId lpCursorName);
 
 	/// <summary>
 	/// <para>Creates a cursor based on data contained in a file.</para>
@@ -701,6 +589,7 @@ public static partial class User32
 	// lpFileName );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "loadcursorfromfile")]
+	[return: AddAsCtor]
 	public static extern SafeHCURSOR LoadCursorFromFile(string lpFileName);
 
 	/// <summary>
@@ -739,7 +628,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setcursor HCURSOR SetCursor( HCURSOR hCursor );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setcursor")]
-	public static extern SafeHCURSOR SetCursor([Optional] HCURSOR hCursor);
+	public static extern HCURSOR SetCursor([Optional] HCURSOR hCursor);
 
 	/// <summary>
 	/// <para>
@@ -983,7 +872,7 @@ public static partial class User32
 	[AutoSafeHandle("DestroyCursor(handle)", typeof(HCURSOR))]
 	public partial class SafeHCURSOR : IUserHandle { }
 
-	/// <summary>Predefined cursors for <see cref="LoadCursor(HINSTANCE, ResourceId)"/>.</summary>
+	/// <summary>Predefined cursors for <c>LoadCursor</c>.</summary>
 	[PInvokeData("winuser.h", MSDNShortId = "loadcursor")]
 	public static class StandardCursor
 	{

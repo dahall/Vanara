@@ -2,6 +2,9 @@
 
 public static partial class User32
 {
+	/// <summary>Maximum length for a keyboard layout name.</summary>
+	public const int KL_NAMELENGTH = 9;
+
 	/// <summary>Flags used by WM_GETHOTKEY and WM_SETHOTKEY</summary>
 	[PInvokeData("winuser.h")]
 	[Flags]
@@ -979,7 +982,7 @@ public static partial class User32
 	// hkl, UINT Flags );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
-	public static extern HKL ActivateKeyboardLayout(HKL hkl, KLF Flags);
+	public static extern HKL ActivateKeyboardLayout([In, AddAsMember] HKL hkl, KLF Flags);
 
 	/// <summary>Blocks keyboard and mouse input events from reaching applications.</summary>
 	/// <param name="fBlockIt">
@@ -1110,7 +1113,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getasynckeystate SHORT GetAsyncKeyState( int vKey );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern short GetAsyncKeyState(int vKey);
+	public static extern short GetAsyncKeyState(EnumRebase<VK, int> vKey);
 
 	/// <summary>
 	/// <para>Retrieves the current code page.</para>
@@ -1199,7 +1202,7 @@ public static partial class User32
 	// nBuff, HKL *lpList );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int GetKeyboardLayoutList(int nBuff, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] HKL[]? lpList);
+	public static extern int GetKeyboardLayoutList(int nBuff, [Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(nBuff), SizingMethod.QueryResultInReturn)] HKL[]? lpList);
 
 	/// <summary>Retrieves the name of the active input locale identifier (formerly called the keyboard layout) for the system.</summary>
 	/// <param name="pwszKLID">
@@ -1231,7 +1234,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetKeyboardLayoutName(StringBuilder pwszKLID);
+	public static extern bool GetKeyboardLayoutName([Out, SizeDef(KL_NAMELENGTH)] StringBuilder pwszKLID);
 
 	/// <summary>Copies the status of the 256 virtual keys to the specified buffer.</summary>
 	/// <param name="lpKeyState">
@@ -1297,7 +1300,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetKeyboardState(byte[] lpKeyState);
+	public static extern bool GetKeyboardState([Out, SizeDef(256)] byte[] lpKeyState);
 
 	/// <summary>Retrieves information about the current keyboard.</summary>
 	/// <param name="nTypeFlag">
@@ -1470,7 +1473,7 @@ public static partial class User32
 	// lpString, int cchSize );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int GetKeyNameText(int lParam, StringBuilder lpString, int cchSize);
+	public static extern int GetKeyNameText(int lParam, [Out, SizeDef(nameof(cchSize), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpString, int cchSize);
 
 	/// <summary>
 	/// Retrieves the status of the specified virtual key. The status specifies whether the key is up, down, or toggled (on,
@@ -1531,7 +1534,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeystate SHORT GetKeyState( int nVirtKey );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern short GetKeyState(int nVirtKey);
+	public static extern short GetKeyState(EnumRebase<VK, int> nVirtKey);
 
 	/// <summary>
 	/// <para>
@@ -1586,7 +1589,7 @@ public static partial class User32
 	// dwFlags, ULONG_PTR dwExtraInfo );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern void keybd_event(byte bVk, byte bScan, KEYEVENTF dwFlags, IntPtr dwExtraInfo = default);
+	public static extern void keybd_event(VK bVk, byte bScan, KEYEVENTF dwFlags, IntPtr dwExtraInfo = default);
 
 	/// <summary>
 	/// <para>Loads a new input locale identifier (formerly called the keyboard layout) into the system.</para>
@@ -2089,7 +2092,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "registerhotkey")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterHotKey([Optional] HWND hWnd, int id, HotKeyModifiers fsModifiers, uint vk);
+	public static extern bool RegisterHotKey([In, Optional, AddAsMember] HWND hWnd, int id, HotKeyModifiers fsModifiers, EnumRebase<VK, uint> vk);
 
 	/// <summary>
 	/// <para>
@@ -2198,7 +2201,7 @@ public static partial class User32
 	// BYTE *lpKeyState, LPWORD lpChar, UINT uFlags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int ToAscii(uint uVirtKey, uint uScanCode, byte[] lpKeyState, out ushort lpChar, uint uFlags);
+	public static extern int ToAscii(EnumRebase<VK, uint> uVirtKey, uint uScanCode, [In, Optional] byte[]? lpKeyState, out ushort lpChar, uint uFlags);
 
 	/// <summary>
 	/// Translates the specified virtual-key code and keyboard state to the corresponding character or characters. The function
@@ -2287,7 +2290,7 @@ public static partial class User32
 	// const BYTE *lpKeyState, LPWORD lpChar, UINT uFlags, HKL dwhkl );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int ToAsciiEx(uint uVirtKey, uint uScanCode, byte[] lpKeyState, out ushort lpChar, uint uFlags, HKL dwhkl);
+	public static extern int ToAsciiEx(EnumRebase<VK, uint> uVirtKey, uint uScanCode, [In, Optional] byte[]? lpKeyState, out ushort lpChar, uint uFlags, [In, Optional] HKL dwhkl);
 
 	/// <summary>
 	/// <para>Translates the specified virtual-key code and keyboard state to the corresponding Unicode character or characters.</para>
@@ -2379,7 +2382,7 @@ public static partial class User32
 	// const BYTE *lpKeyState, LPWSTR pwszBuff, int cchBuff, UINT wFlags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int ToUnicode(uint wVirtKey, uint wScanCode, byte[] lpKeyState, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, int cchBuff, uint wFlags);
+	public static extern int ToUnicode(EnumRebase<VK, uint> wVirtKey, uint wScanCode, [In, Optional] byte[]? lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, int cchBuff, uint wFlags);
 
 	/// <summary>Translates the specified virtual-key code and keyboard state to the corresponding Unicode character or characters.</summary>
 	/// <param name="wVirtKey">
@@ -2484,7 +2487,7 @@ public static partial class User32
 	// wScanCode, const BYTE *lpKeyState, LPWSTR pwszBuff, int cchBuff, UINT wFlags, HKL dwhkl );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[] lpKeyState, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, int cchBuff, uint wFlags, HKL dwhkl);
+	public static extern int ToUnicodeEx(EnumRebase<VK, uint> wVirtKey, uint wScanCode, [In, Optional] byte[]? lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, int cchBuff, uint wFlags, HKL dwhkl);
 
 	/// <summary>Unloads an input locale identifier (formerly called a keyboard layout).</summary>
 	/// <param name="hkl">
@@ -2547,7 +2550,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "unregisterhotkey")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UnregisterHotKey([Optional] HWND hWnd, int id);
+	public static extern bool UnregisterHotKey([Optional, AddAsMember] HWND hWnd, int id);
 
 	/// <summary>
 	/// <para>
@@ -2875,7 +2878,7 @@ public static partial class User32
 		/// <c>KEYEVENTF_UNICODE</c>, <c>wVk</c> must be 0.
 		/// </para>
 		/// </summary>
-		public ushort wVk;
+		public EnumRebase<VK, ushort> wVk;
 
 		/// <summary>
 		/// <para>Type: <c>WORD</c></para>

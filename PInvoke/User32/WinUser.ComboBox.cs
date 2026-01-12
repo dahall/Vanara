@@ -1615,25 +1615,25 @@ public static partial class User32
 			if (hComboBox.IsNull)
 				throw new ArgumentException("ComboBox handle cannot be NULL.", nameof(hComboBox));
 
-			COMBOBOXINFO cbi = new() { cbSize = Marshal.SizeOf(typeof(COMBOBOXINFO)) };
+			COMBOBOXINFO cbi = new() { cbSize = Marshal.SizeOf<COMBOBOXINFO>() };
 			_ = SendMessage(hComboBox, ComboBoxMessage.CB_GETCOMBOBOXINFO, 0, ref cbi);
 			return cbi;
 		}
 
 		/// <summary>Gets a value indicating whether this <see cref="COMBOBOXINFO"/> is invisible.</summary>
 		/// <value><c>true</c> if invisible; otherwise, <c>false</c>.</value>
-		public bool Invisible => (buttonState & ComboBoxInfoState.STATE_SYSTEM_INVISIBLE) == ComboBoxInfoState.STATE_SYSTEM_INVISIBLE;
+		public readonly bool Invisible => (buttonState & ComboBoxInfoState.STATE_SYSTEM_INVISIBLE) == ComboBoxInfoState.STATE_SYSTEM_INVISIBLE;
 
 		/// <summary>Gets a value indicating whether this <see cref="COMBOBOXINFO"/> is pressed.</summary>
 		/// <value><c>true</c> if pressed; otherwise, <c>false</c>.</value>
-		public bool Pressed => (buttonState & ComboBoxInfoState.STATE_SYSTEM_PRESSED) == ComboBoxInfoState.STATE_SYSTEM_PRESSED;
+		public readonly bool Pressed => (buttonState & ComboBoxInfoState.STATE_SYSTEM_PRESSED) == ComboBoxInfoState.STATE_SYSTEM_PRESSED;
 
 		/// <summary>Gets the item rectangle.</summary>
 		/// <value>The item rectangle.</value>
-		public RECT ItemRectangle => rcItem;
+		public readonly RECT ItemRectangle => rcItem;
 
 		/// <summary>Gets the button rectangle.</summary>
 		/// <value>The button rectangle.</value>
-		public RECT ButtonRectangle => rcButton;
+		public readonly RECT ButtonRectangle => rcButton;
 	}
 }

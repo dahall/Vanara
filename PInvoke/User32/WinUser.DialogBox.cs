@@ -282,7 +282,8 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createdialoga void CreateDialogA( hInstance, lpName,
 	// hWndParent, lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "createdialog")]
-	public static SafeHWND CreateDialog([Optional] HINSTANCE hInstance, SafeResourceId lpName, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogParam(hInstance, lpName, hWndParent, lpDialogFunc);
+	[return: AddAsCtor]
+	public static SafeHWND CreateDialog([In, Optional, AddAsMember] HINSTANCE hInstance, SafeResourceId lpName, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogParam(hInstance, lpName, hWndParent, lpDialogFunc);
 
 	/// <summary>
 	/// <para>
@@ -351,7 +352,8 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createdialogindirecta void CreateDialogIndirectA( hInstance,
 	// lpTemplate, hWndParent, lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "createdialogindirect")]
-	public static SafeHWND CreateDialogIndirect(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+	[return: AddAsCtor]
+	public static SafeHWND CreateDialogIndirect([In, Optional] HINSTANCE hInstance, StructPointer<DLGTEMPLATE> lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 	/// <summary>
 	/// <para>
@@ -426,7 +428,7 @@ public static partial class User32
 	// HINSTANCE hInstance, LPCDLGTEMPLATEA lpTemplate, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "createdialogindirectparam")]
-	public static extern SafeHWND CreateDialogIndirectParam([Optional] HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern SafeHWND CreateDialogIndirectParam([Optional] HINSTANCE hInstance, StructPointer<DLGTEMPLATE> lpTemplate, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// <para>
@@ -579,57 +581,8 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxa void DialogBoxA( hInstance, lpTemplate, hWndParent,
 	// lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "dialogbox")]
-	public static IntPtr DialogBox([In, Optional] HINSTANCE hInstance, string lpTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
-
-	/// <summary>
-	/// <para>
-	/// Creates a modal dialog box from a dialog box template resource. <c>DialogBox</c> does not return control until the specified callback
-	/// function terminates the modal dialog box by calling the EndDialog function.
-	/// </para>
-	/// <para><c>DialogBox</c> is implemented as a call to the DialogBoxParam function.</para>
-	/// </summary>
-	/// <param name="hInstance">
-	/// <para>Type: <c>HINSTANCE</c></para>
-	/// <para>A handle to the module which contains the dialog box template. If this parameter is NULL, then the current executable is used.</para>
-	/// </param>
-	/// <param name="lpTemplate">
-	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>
-	/// The dialog box template. This parameter is either the pointer to a null-terminated character string that specifies the name of the
-	/// dialog box template or an integer value that specifies the resource identifier of the dialog box template. If the parameter specifies
-	/// a resource identifier, its high-order word must be zero and its low-order word must contain the identifier. You can use the
-	/// MAKEINTRESOURCE macro to create this value.
-	/// </para>
-	/// </param>
-	/// <param name="hWndParent">
-	/// <para>Type: <c>HWND</c></para>
-	/// <para>A handle to the window that owns the dialog box.</para>
-	/// </param>
-	/// <param name="lpDialogFunc">
-	/// <para>Type: <c>DLGPROC</c></para>
-	/// <para>A pointer to the dialog box procedure. For more information about the dialog box procedure, see DialogProc.</para>
-	/// </param>
-	/// <returns>
-	/// <para>None</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The <c>DialogBox</c> macro uses the CreateWindowEx function to create the dialog box. <c>DialogBox</c> then sends a WM_INITDIALOG
-	/// message (and a WM_SETFONT message if the template specifies the DS_SETFONT or DS_SHELLFONT style) to the dialog box procedure. The
-	/// function displays the dialog box (regardless of whether the template specifies the <c>WS_VISIBLE</c> style), disables the owner
-	/// window, and starts its own message loop to retrieve and dispatch messages for the dialog box.
-	/// </para>
-	/// <para>
-	/// When the dialog box procedure calls the EndDialog function, <c>DialogBox</c> destroys the dialog box, ends the message loop, enables
-	/// the owner window (if previously enabled), and returns the nResult parameter specified by the dialog box procedure when it called <c>EndDialog</c>.
-	/// </para>
-	/// <para>Examples</para>
-	/// <para>For an example, see Creating a Modal Dialog Box.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxa void DialogBoxA( hInstance, lpTemplate, hWndParent,
-	// lpDialogFunc );
-	[PInvokeData("winuser.h", MSDNShortId = "dialogbox")]
-	public static IntPtr DialogBox([In, Optional] HINSTANCE hInstance, ResourceId lpTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+	public static IntPtr DialogBox([In, Optional] HINSTANCE hInstance, SafeResourceId lpTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc) =>
+		DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 	/// <summary>
 	/// <para>
@@ -702,7 +655,8 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxindirecta void DialogBoxIndirectA( hInstance,
 	// lpTemplate, hWndParent, lpDialogFunc );
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxindirect")]
-	public static IntPtr DialogBoxIndirect([In, Optional] HINSTANCE hInstance, IntPtr lpTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc) => DialogBoxIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+	public static IntPtr DialogBoxIndirect([In, Optional] HINSTANCE hInstance, StructPointer<DLGTEMPLATE> lpTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc) =>
+		DialogBoxIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 	/// <summary>
 	/// <para>
@@ -784,7 +738,8 @@ public static partial class User32
 	// HINSTANCE hInstance, LPCDLGTEMPLATEA hDialogTemplate, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxindirectparam")]
-	public static extern IntPtr DialogBoxIndirectParam([In, Optional] HINSTANCE hInstance, IntPtr hDialogTemplate, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc, [In, Optional] IntPtr dwInitParam);
+	public static extern IntPtr DialogBoxIndirectParam([In, Optional] HINSTANCE hInstance, StructPointer<DLGTEMPLATE> hDialogTemplate, [In, Optional] HWND hWndParent,
+		[In, Optional] DialogProc? lpDialogFunc, [In, Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// Creates a modal dialog box from a dialog box template in memory. Before displaying the dialog box, the function passes an
@@ -876,7 +831,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	public static extern IntPtr DialogBoxIndirectParam([In, Optional] HINSTANCE hInstance,
 		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<DLGTEMPLATE_MGD>))] DLGTEMPLATE_MGD hDialogTemplate,
-		[In, Optional] HWND hWndParent, [In, Optional] DialogProc lpDialogFunc, [In, Optional] IntPtr dwInitParam);
+		[In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc, [In, Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// Creates a modal dialog box from a dialog box template in memory. Before displaying the dialog box, the function passes an
@@ -968,7 +923,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	public static extern IntPtr DialogBoxIndirectParam([In, Optional] HINSTANCE hInstance,
 		[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(VanaraCustomMarshaler<DLGTEMPLATEEX_MGD>))] DLGTEMPLATEEX_MGD hDialogTemplate,
-		[In, Optional] HWND hWndParent, [In, Optional] DialogProc lpDialogFunc, [In, Optional] IntPtr dwInitParam);
+		[In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc, [In, Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// <para>
@@ -1031,70 +986,7 @@ public static partial class User32
 	// LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "dialogboxparam")]
-	public static extern IntPtr DialogBoxParam([In, Optional] HINSTANCE hInstance, string lpTemplateName, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc, [Optional] IntPtr dwInitParam);
-
-	/// <summary>
-	/// <para>
-	/// Creates a modal dialog box from a dialog box template resource. Before displaying the dialog box, the function passes an
-	/// application-defined value to the dialog box procedure as the lParam parameter of the WM_INITDIALOG message. An application can use
-	/// this value to initialize dialog box controls.
-	/// </para>
-	/// </summary>
-	/// <param name="hInstance">
-	/// <para>Type: <c>HINSTANCE</c></para>
-	/// <para>A handle to the module which contains the dialog box template. If this parameter is NULL, then the current executable is used.</para>
-	/// </param>
-	/// <param name="lpTemplateName">
-	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>
-	/// The dialog box template. This parameter is either the pointer to a null-terminated character string that specifies the name of the
-	/// dialog box template or an integer value that specifies the resource identifier of the dialog box template. If the parameter specifies
-	/// a resource identifier, its high-order word must be zero and its low-order word must contain the identifier. You can use the
-	/// MAKEINTRESOURCE macro to create this value.
-	/// </para>
-	/// </param>
-	/// <param name="hWndParent">
-	/// <para>Type: <c>HWND</c></para>
-	/// <para>A handle to the window that owns the dialog box.</para>
-	/// </param>
-	/// <param name="lpDialogFunc">
-	/// <para>Type: <c>DLGPROC</c></para>
-	/// <para>A pointer to the dialog box procedure. For more information about the dialog box procedure, see DialogProc.</para>
-	/// </param>
-	/// <param name="dwInitParam">
-	/// <para>Type: <c>LPARAM</c></para>
-	/// <para>The value to pass to the dialog box in the lParam parameter of the WM_INITDIALOG message.</para>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <c>INT_PTR</c></para>
-	/// <para>
-	/// If the function succeeds, the return value is the value of the nResult parameter specified in the call to the EndDialog function used
-	/// to terminate the dialog box.
-	/// </para>
-	/// <para>
-	/// If the function fails because the hWndParent parameter is invalid, the return value is zero. The function returns zero in this case
-	/// for compatibility with previous versions of Windows. If the function fails for any other reason, the return value is –1. To get
-	/// extended error information, call GetLastError.
-	/// </para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The <c>DialogBoxParam</c> function uses the CreateWindowEx function to create the dialog box. <c>DialogBoxParam</c> then sends a
-	/// WM_INITDIALOG message (and a WM_SETFONT message if the template specifies the DS_SETFONT or DS_SHELLFONT style) to the dialog box
-	/// procedure. The function displays the dialog box (regardless of whether the template specifies the <c>WS_VISIBLE</c> style), disables
-	/// the owner window, and starts its own message loop to retrieve and dispatch messages for the dialog box.
-	/// </para>
-	/// <para>
-	/// When the dialog box procedure calls the EndDialog function, <c>DialogBoxParam</c> destroys the dialog box, ends the message loop,
-	/// enables the owner window (if previously enabled), and returns the nResult parameter specified by the dialog box procedure when it
-	/// called <c>EndDialog</c>.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxparama INT_PTR DialogBoxParamA( HINSTANCE hInstance,
-	// LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
-	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	[PInvokeData("winuser.h", MSDNShortId = "dialogboxparam")]
-	public static extern IntPtr DialogBoxParam([In, Optional] HINSTANCE hInstance, ResourceId lpTemplateName, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc, [Optional] IntPtr dwInitParam);
+	public static extern IntPtr DialogBoxParam([In, Optional] HINSTANCE hInstance, SafeResourceId lpTemplateName, [In, Optional] HWND hWndParent, [In, Optional] DialogProc? lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 	/// <summary>
 	/// Replaces the contents of a list box with the names of the subdirectories and files in a specified directory. You can filter the list
@@ -1228,7 +1120,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.DlgDirListA")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DlgDirList([In] HWND hDlg, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathSpec, int nIDListBox, int nIDStaticPath, DDL uFileType);
+	public static extern bool DlgDirList([In, AddAsMember] HWND hDlg, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathSpec, int nIDListBox, int nIDStaticPath, DDL uFileType);
 
 	/// <summary>
 	/// Replaces the contents of a combo box with the names of the subdirectories and files in a specified directory. You can filter the list
@@ -1374,7 +1266,7 @@ public static partial class User32
 	// [in, out] LPSTR lpPathSpec, [in] int nIDComboBox, [in] int nIDStaticPath, [in] UINT uFiletype );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.DlgDirListComboBoxA")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	public static extern int DlgDirListComboBox([In] HWND hDlg, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathSpec, int nIDComboBox, int nIDStaticPath, DDL uFiletype);
+	public static extern int DlgDirListComboBox([In, AddAsMember] HWND hDlg, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathSpec, int nIDComboBox, int nIDStaticPath, DDL uFiletype);
 
 	/// <summary>
 	/// Retrieves the current selection from a combo box filled by using the DlgDirListComboBox function. The selection is interpreted as a
@@ -1426,7 +1318,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DlgDirSelectComboBoxEx(HWND hwndDlg, StringBuilder lpString, int cchOut, int idComboBox);
+	public static extern bool DlgDirSelectComboBoxEx([In, AddAsMember] HWND hwndDlg, [Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cchOut))] StringBuilder lpString, int cchOut, int idComboBox);
 
 	/// <summary>
 	/// Retrieves the current selection from a single-selection list box. It assumes that the list box has been filled by the DlgDirList
@@ -1486,7 +1378,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.DlgDirSelectExW")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DlgDirSelectEx([In] HWND hwndDlg, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpString, int chCount, int idListBox);
+	public static extern bool DlgDirSelectEx([In, AddAsMember] HWND hwndDlg, [Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(chCount))] StringBuilder lpString, int chCount, int idListBox);
 
 	/// <summary>
 	/// <para>Destroys a modal dialog box, causing the system to end any processing for the dialog box.</para>
@@ -1526,7 +1418,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "enddialog")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EndDialog(HWND hDlg, IntPtr nResult);
+	public static extern bool EndDialog([In, AddAsMember] HWND hDlg, IntPtr nResult);
 
 	/// <summary>
 	/// <para>
@@ -1606,7 +1498,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdlgctrlid int GetDlgCtrlID( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getdlgctrlid")]
-	public static extern int GetDlgCtrlID(HWND hWnd);
+	public static extern int GetDlgCtrlID([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Retrieves a handle to a control in the specified dialog box.</para>
@@ -1639,7 +1531,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdlgitem HWND GetDlgItem( HWND hDlg, int nIDDlgItem );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getdlgitem")]
-	public static extern HWND GetDlgItem(HWND hDlg, int nIDDlgItem);
+	public static extern HWND GetDlgItem([In, AddAsMember] HWND hDlg, int nIDDlgItem);
 
 	/// <summary>
 	/// <para>Translates the text of a specified control in a dialog box into an integer value.</para>
@@ -1699,7 +1591,7 @@ public static partial class User32
 	// BOOL *lpTranslated, BOOL bSigned );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getdlgitemint")]
-	public static extern uint GetDlgItemInt(HWND hDlg, int nIDDlgItem, [MarshalAs(UnmanagedType.Bool)] out bool lpTranslated, [MarshalAs(UnmanagedType.Bool)] bool bSigned);
+	public static extern uint GetDlgItemInt([In, AddAsMember] HWND hDlg, int nIDDlgItem, [MarshalAs(UnmanagedType.Bool)] out bool lpTranslated, [MarshalAs(UnmanagedType.Bool)] bool bSigned);
 
 	/// <summary>
 	/// <para>Retrieves the title or text associated with a control in a dialog box.</para>
@@ -1741,7 +1633,7 @@ public static partial class User32
 	// nIDDlgItem, LPSTR lpString, int cchMax );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getdlgitemtext")]
-	public static extern uint GetDlgItemText(HWND hDlg, int nIDDlgItem, StringBuilder lpString, int cchMax);
+	public static extern uint GetDlgItemText([In, AddAsMember] HWND hDlg, int nIDDlgItem, [Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cchMax), SizingMethod.QueryResultInReturn)] StringBuilder? lpString, uint cchMax);
 
 	/// <summary>
 	/// <para>
@@ -1799,7 +1691,7 @@ public static partial class User32
 	// hCtl, BOOL bPrevious );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getnextdlggroupitem")]
-	public static extern HWND GetNextDlgGroupItem(HWND hDlg, [Optional] HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
+	public static extern HWND GetNextDlgGroupItem([In, AddAsMember] HWND hDlg, [Optional] HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
 
 	/// <summary>
 	/// <para>Retrieves a handle to the first control that has the WS_TABSTOP style that precedes (or follows) the specified control.</para>
@@ -1841,7 +1733,7 @@ public static partial class User32
 	// hCtl, BOOL bPrevious );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getnextdlgtabitem")]
-	public static extern HWND GetNextDlgTabItem(HWND hDlg, [Optional] HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
+	public static extern HWND GetNextDlgTabItem([In, AddAsMember] HWND hDlg, [Optional] HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
 
 	/// <summary>
 	/// <para>Determines whether a message is intended for the specified dialog box and, if it is, processes the message.</para>
@@ -1883,7 +1775,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "isdialogmessage")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsDialogMessage(HWND hDlg, in MSG lpMsg);
+	public static extern bool IsDialogMessage([In, AddAsMember] HWND hDlg, in MSG lpMsg);
 
 	/// <summary>
 	/// <para>
@@ -1923,7 +1815,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "mapdialogrect")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MapDialogRect(HWND hDlg, ref RECT lpRect);
+	public static extern bool MapDialogRect([In, AddAsMember] HWND hDlg, ref RECT lpRect);
 
 	/// <summary>
 	/// <para>Sends a message to the specified control in a dialog box.</para>
@@ -1963,7 +1855,7 @@ public static partial class User32
 	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-	public static extern IntPtr SendDlgItemMessage(HWND hDlg, int nIDDlgItem, uint Msg, [In, Optional] IntPtr wParam, [In, Out, Optional] IntPtr lParam);
+	public static extern IntPtr SendDlgItemMessage([In, AddAsMember] HWND hDlg, int nIDDlgItem, uint Msg, [In, Optional] IntPtr wParam, [In, Out, Optional] IntPtr lParam);
 
 	/// <summary>
 	/// <para>Sends a message to the specified control in a dialog box.</para>
@@ -2003,7 +1895,7 @@ public static partial class User32
 	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-	public static extern IntPtr SendDlgItemMessage(HWND hDlg, int nIDDlgItem, uint Msg, [In, Optional] IntPtr wParam, string? lParam);
+	public static extern IntPtr SendDlgItemMessage([In, AddAsMember] HWND hDlg, int nIDDlgItem, uint Msg, [In, Optional] IntPtr wParam, string? lParam);
 
 	/// <summary>
 	/// <para>Sends a message to the specified control in a dialog box.</para>
@@ -2043,7 +1935,7 @@ public static partial class User32
 	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-	public static extern IntPtr SendDlgItemMessage(HWND hDlg, int nIDDlgItem, uint Msg, [In, Optional] IntPtr wParam, [In, Out] StringBuilder lParam);
+	public static extern IntPtr SendDlgItemMessage([In, AddAsMember] HWND hDlg, int nIDDlgItem, uint Msg, [In, Optional] IntPtr wParam, [In, Out] StringBuilder lParam);
 
 	/// <summary>Sends a message to the specified control in a dialog box.</summary>
 	/// <typeparam name="TMsg">The type of the MSG.</typeparam>
@@ -2072,7 +1964,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
 	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, TWP wParam, [In, Out, Optional] IntPtr lParam)
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>([In, AddAsMember] HWND hDlg, int nIDDlgItem, TMsg Msg, TWP wParam, [In, Out, Optional] IntPtr lParam)
 		where TMsg : struct, IConvertible where TWP : struct, IConvertible
 		=> SendDlgItemMessage(hDlg, nIDDlgItem, Convert.ToUInt32(Msg), (IntPtr)Convert.ToInt64(wParam), lParam);
 
@@ -2103,7 +1995,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
 	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, in TWP wParam, [In, Out, Optional] IntPtr lParam)
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>([In, AddAsMember] HWND hDlg, int nIDDlgItem, TMsg Msg, in TWP wParam, [In, Out, Optional] IntPtr lParam)
 		where TMsg : struct, IConvertible where TWP : struct
 	{
 		using var wmem = SafeCoTaskMemHandle.CreateFromStructure(wParam);
@@ -2137,7 +2029,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
 	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, TWP wParam, string? lParam)
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>([In, AddAsMember] HWND hDlg, int nIDDlgItem, TMsg Msg, TWP wParam, string? lParam)
 		where TMsg : struct, IConvertible where TWP : struct, IConvertible
 		=> SendDlgItemMessage(hDlg, nIDDlgItem, Convert.ToUInt32(Msg), (IntPtr)Convert.ToInt64(wParam), lParam);
 
@@ -2168,7 +2060,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
 	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, in TWP wParam, string? lParam)
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>([In, AddAsMember] HWND hDlg, int nIDDlgItem, TMsg Msg, in TWP wParam, string? lParam)
 		where TMsg : struct, IConvertible where TWP : struct
 	{
 		using var wmem = SafeCoTaskMemHandle.CreateFromStructure(wParam);
@@ -2202,7 +2094,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
 	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, TWP wParam, [In, Out] StringBuilder lParam)
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>([In, AddAsMember] HWND hDlg, int nIDDlgItem, TMsg Msg, TWP wParam, [In, Out] StringBuilder lParam)
 		where TMsg : struct, IConvertible where TWP : struct, IConvertible
 		=> SendDlgItemMessage(hDlg, nIDDlgItem, Convert.ToUInt32(Msg), (IntPtr)Convert.ToInt64(wParam), lParam);
 
@@ -2233,7 +2125,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-senddlgitemmessagea LRESULT SendDlgItemMessageA( HWND hDlg,
 	// int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 	[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-	public static IntPtr SendDlgItemMessage<TMsg, TWP>(HWND hDlg, int nIDDlgItem, TMsg Msg, in TWP wParam, [In, Out] StringBuilder lParam)
+	public static IntPtr SendDlgItemMessage<TMsg, TWP>([In, AddAsMember] HWND hDlg, int nIDDlgItem, TMsg Msg, in TWP wParam, [In, Out] StringBuilder lParam)
 		where TMsg : struct, IConvertible where TWP : struct
 	{
 		using var wmem = SafeCoTaskMemHandle.CreateFromStructure(wParam);
@@ -2276,7 +2168,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setdlgitemint")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetDlgItemInt(HWND hDlg, int nIDDlgItem, uint uValue, [MarshalAs(UnmanagedType.Bool)] bool bSigned);
+	public static extern bool SetDlgItemInt([In, AddAsMember] HWND hDlg, int nIDDlgItem, uint uValue, [MarshalAs(UnmanagedType.Bool)] bool bSigned);
 
 	/// <summary>
 	/// <para>Sets the title or text of a control in a dialog box.</para>
@@ -2308,7 +2200,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "setdlgitemtext")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetDlgItemText(HWND hDlg, int nIDDlgItem, string lpString);
+	public static extern bool SetDlgItemText([In, AddAsMember] HWND hDlg, int nIDDlgItem, string lpString);
 
 	/// <summary>
 	/// <para>
@@ -2751,7 +2643,7 @@ public static partial class User32
 		public static DlgItemTemplate MakeStatic(string text, ushort id, short x, short y, short cx = 50, short cy = 14, WindowStyles style = WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | (WindowStyles)StaticStyle.SS_LEFT, WindowStylesEx exstyle = 0) =>
 			MakeControl(0x0082, text, id, x, y, cx, cy, style, exstyle);
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(DLGTEMPLATE)) + sizeof(ushort) * 3;
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<DLGTEMPLATE>() + sizeof(ushort) * 3;
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -2838,9 +2730,11 @@ public static partial class User32
 			if (allocatedBytes < ((IVanaraMarshaler)this).GetNativeSize())
 				throw new ArgumentException("Invalid data", nameof(pNativeData));
 			NativeMemoryStream buffer = new(pNativeData, allocatedBytes);
-			DLGTEMPLATE_MGD dt = new();
-			dt.style = buffer.Read<WindowStyles>();
-			dt.dwExtendedStyle = buffer.Read<WindowStylesEx>();
+			DLGTEMPLATE_MGD dt = new()
+			{
+				style = buffer.Read<WindowStyles>(),
+				dwExtendedStyle = buffer.Read<WindowStylesEx>()
+			};
 			var cc = buffer.Read<ushort>();
 			dt.x = buffer.Read<short>();
 			dt.y = buffer.Read<short>();
@@ -2861,19 +2755,21 @@ public static partial class User32
 			DlgItemTemplate ReadControl()
 			{
 				buffer.Position = Macros.ALIGN_TO_MULTIPLE(buffer.Position, 4);
-				DlgItemTemplate item = new();
-				item.style = buffer.Read<WindowStyles>();
-				item.dwExtendedStyle = buffer.Read<WindowStylesEx>();
-				item.x = buffer.Read<short>();
-				item.y = buffer.Read<short>();
-				item.cx = buffer.Read<short>();
-				item.cy = buffer.Read<short>();
-				item.id = buffer.Read<ushort>();
-				item.wclass = ReadId() ?? new();
-				item.title = ReadId() ?? new();
+				DlgItemTemplate item = new()
+				{
+					style = buffer.Read<WindowStyles>(),
+					dwExtendedStyle = buffer.Read<WindowStylesEx>(),
+					x = buffer.Read<short>(),
+					y = buffer.Read<short>(),
+					cx = buffer.Read<short>(),
+					cy = buffer.Read<short>(),
+					id = buffer.Read<ushort>(),
+					wclass = ReadId() ?? new(),
+					title = ReadId() ?? new()
+				};
 				var c = buffer.Read<ushort>();
 				if (c > 0)
-					item.creationData = buffer.ReadArray<byte>(c, false).ToArray();
+					item.creationData = [.. buffer.ReadArray<byte>(c, false)];
 				return item;
 			}
 			DlgTemplateId? ReadId()
@@ -3399,20 +3295,22 @@ public static partial class User32
 			DlgItemTemplateEx ReadControl()
 			{
 				buffer.Position = Macros.ALIGN_TO_MULTIPLE(buffer.Position, 4);
-				DlgItemTemplateEx item = new();
-				item.helpID = buffer.Read<uint>();
-				item.exStyle = buffer.Read<WindowStylesEx>();
-				item.style = buffer.Read<WindowStyles>();
-				item.x = buffer.Read<short>();
-				item.y = buffer.Read<short>();
-				item.cx = buffer.Read<short>();
-				item.cy = buffer.Read<short>();
-				item.id = buffer.Read<uint>();
-				item.windowClass = ReadId()!;
-				item.title = ReadId()!;
+				DlgItemTemplateEx item = new()
+				{
+					helpID = buffer.Read<uint>(),
+					exStyle = buffer.Read<WindowStylesEx>(),
+					style = buffer.Read<WindowStyles>(),
+					x = buffer.Read<short>(),
+					y = buffer.Read<short>(),
+					cx = buffer.Read<short>(),
+					cy = buffer.Read<short>(),
+					id = buffer.Read<uint>(),
+					windowClass = ReadId()!,
+					title = ReadId()!
+				};
 				var c = buffer.Read<ushort>();
 				if (c > 0)
-					item.creationData = buffer.ReadArray<byte>(c, false).ToArray();
+					item.creationData = [.. buffer.ReadArray<byte>(c, false)];
 				return item;
 			}
 			DlgTemplateId? ReadId()

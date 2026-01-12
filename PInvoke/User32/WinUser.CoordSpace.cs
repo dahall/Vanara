@@ -53,7 +53,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "3b1e2699-7f5f-444d-9072-f2ca7c8fa511")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ClientToScreen(HWND hWnd, ref POINT lpPoint);
+	public static extern bool ClientToScreen([In, AddAsMember] HWND hWnd, ref POINT lpPoint);
 
 	/// <summary>Retrieves the screen auto-rotation preferences for the current process.</summary>
 	/// <param name="pOrientation">
@@ -173,7 +173,7 @@ public static partial class User32
 	[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[System.Security.SecurityCritical]
-	public static extern bool ScreenToClient(HWND hWnd, [In, Out] ref POINT lpPoint);
+	public static extern bool ScreenToClient([In, AddAsMember] HWND hWnd, [In, Out] ref POINT lpPoint);
 
 	/// <summary>Sets the orientation preferences of the display.</summary>
 	/// <param name="orientation">The orientation.</param>

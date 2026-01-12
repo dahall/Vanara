@@ -200,7 +200,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CharToOem(string pSrc, StringBuilder pDst);
+	public static extern bool CharToOem(string pSrc, [Out] StringBuilder pDst);
 
 	/// <summary>Translates a specified number of characters in a string into the OEM-defined character set.</summary>
 	/// <param name="lpszSrc">
@@ -235,7 +235,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CharToOemBuff(string lpszSrc, StringBuilder lpszDst, uint cchDstLength);
+	public static extern bool CharToOemBuff(string lpszSrc, [Out] StringBuilder lpszDst, uint cchDstLength);
 
 	/// <summary>
 	/// Retrieves an AR_STATE value containing the state of screen auto-rotation for the system, for example whether auto-rotation is
@@ -282,7 +282,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OemToChar(string pSrc, StringBuilder pDst);
+	public static extern bool OemToChar(string pSrc, [Out] StringBuilder pDst);
 
 	/// <summary>
 	/// Translates a specified number of characters in a string from the OEM-defined character set into either an ANSI or a
@@ -320,7 +320,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OemToCharBuff(string lpszSrc, StringBuilder lpszDst, uint cchDstLength);
+	public static extern bool OemToCharBuff(string lpszSrc, [Out] StringBuilder lpszDst, uint cchDstLength);
 
 	/// <summary>Registers or unregisters windows to receive notification to dismiss their tooltip windows.</summary>
 	/// <param name="hWnd">
@@ -390,7 +390,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.RegisterForTooltipDismissNotification")]
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterForTooltipDismissNotification(HWND hWnd, TOOLTIP_DISMISS_FLAGS tdFlags);
+	public static extern bool RegisterForTooltipDismissNotification([In, AddAsMember] HWND hWnd, TOOLTIP_DISMISS_FLAGS tdFlags);
 
 	/// <summary>
 	/// <para>Sets the last-error code.</para>
@@ -421,17 +421,15 @@ public static partial class User32
 	public static extern void SetLastErrorEx(uint dwErrCode, uint dwType = 0);
 
 	/// <summary>For all notifications coming through WM_COMMAND, the <c>wParam</c> parameter can be cast to <see cref="CmdNotifyWParam"/>.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="CmdNotifyWParam"/> struct.</remarks>
+	/// <param name="wParam">A WPARAM value.</param>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CmdNotifyWParam
+	public struct CmdNotifyWParam(IntPtr wParam)
 	{
 		/// <summary>The control's identifier.</summary>
-		public ushort ctrlId;
+		public ushort ctrlId = Macros.LOWORD(wParam);
 
 		/// <summary>The notification code.</summary>
-		public ushort notification;
-
-		/// <summary>Initializes a new instance of the <see cref="CmdNotifyWParam"/> struct.</summary>
-		/// <param name="wParam">A WPARAM value.</param>
-		public CmdNotifyWParam(IntPtr wParam) { ctrlId = Macros.LOWORD(wParam); notification = Macros.HIWORD(wParam); }
+		public ushort notification = Macros.HIWORD(wParam);
 	}
 }

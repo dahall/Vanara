@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace Vanara.PInvoke;
 
@@ -163,7 +164,7 @@ public static partial class User32
 	// int CALLBACK WinMain( _In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms633559")]
-	public delegate int WinMain([In] HINSTANCE hInstance, [In] HINSTANCE hPrevInstance, [In][MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
+	public delegate int WinMain([In] HINSTANCE hInstance, [In] HINSTANCE hPrevInstance, [In, MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
 
 	/// <summary>
 	/// The type of animation. Note that, by default, these flags take effect when showing a window. To take effect when hiding a window,
@@ -1461,7 +1462,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "animatewindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AnimateWindow(HWND hWnd, uint dwTime, uint dwFlags);
+	public static extern bool AnimateWindow([In, AddAsMember] HWND hWnd, uint dwTime, uint dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -1510,7 +1511,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-arrangeiconicwindows UINT ArrangeIconicWindows( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "arrangeiconicwindows")]
-	public static extern uint ArrangeIconicWindows(HWND hWnd);
+	public static extern uint ArrangeIconicWindows([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Allocates memory for a multiple-window- position structure and returns the handle to the structure.</para>
@@ -1551,6 +1552,7 @@ public static partial class User32
 	// nNumWindows );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "begindeferwindowpos")]
+	[return: AddAsCtor]
 	public static extern HDWP BeginDeferWindowPos(int nNumWindows);
 
 	/// <summary>
@@ -1579,7 +1581,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "bringwindowtotop")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool BringWindowToTop(HWND hWnd);
+	public static extern bool BringWindowToTop([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>
@@ -1906,7 +1908,8 @@ public static partial class User32
 	// wHow, CONST RECT *lpRect, UINT cKids, const HWND *lpKids );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "cascadewindows")]
-	public static extern ushort CascadeWindows([Optional] HWND hwndParent, uint wHow, [In, Optional] PRECT? lpRect, uint cKids, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[]? lpKids);
+	public static extern ushort CascadeWindows([Optional, In, AddAsMember] HWND hwndParent, MdiTileFlags wHow, [In, Optional] PRECT? lpRect,
+		uint cKids, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[]? lpKids);
 
 	/// <summary>
 	/// <para>
@@ -2048,7 +2051,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "changewindowmessagefilterex")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ChangeWindowMessageFilterEx(HWND hwnd, uint message, MessageFilterExAction action, ref CHANGEFILTERSTRUCT pChangeFilterStruct);
+	public static extern bool ChangeWindowMessageFilterEx([In, AddAsMember] HWND hwnd, uint message, MessageFilterExAction action, ref CHANGEFILTERSTRUCT pChangeFilterStruct);
 
 	/// <summary>
 	/// <para>
@@ -2093,7 +2096,7 @@ public static partial class User32
 	// hWndParent, POINT Point );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "childwindowfrompoint")]
-	public static extern HWND ChildWindowFromPoint(HWND hWndParent, POINT Point);
+	public static extern HWND ChildWindowFromPoint([In, AddAsMember] HWND hWndParent, POINT Point);
 
 	/// <summary>
 	/// <para>
@@ -2155,7 +2158,7 @@ public static partial class User32
 	// hwnd, POINT pt, UINT flags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "childwindowfrompointex")]
-	public static extern HWND ChildWindowFromPointEx(HWND hwnd, POINT pt, ChildWindowSkipOptions flags);
+	public static extern HWND ChildWindowFromPointEx([In, AddAsMember] HWND hwnd, POINT pt, ChildWindowSkipOptions flags);
 
 	/// <summary>
 	/// <para>Minimizes (but does not destroy) the specified window.</para>
@@ -2176,7 +2179,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "closewindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CloseWindow(HWND hWnd);
+	public static extern bool CloseWindow([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>
@@ -2418,6 +2421,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowa
 	// void CreateWindowA( lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.CreateWindowA")]
+	[return: AddAsCtor]
 	public static SafeHWND CreateWindow(string lpClassName, [Optional] string? lpWindowName, [Optional] WindowStyles dwStyle,
 		[Optional] int x, [Optional] int y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
 		[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam)
@@ -2632,6 +2636,7 @@ public static partial class User32
 	// HINSTANCE hInstance, LPVOID lpParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "createwindowex")]
+	[return: AddAsCtor]
 	public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, [MarshalAs(UnmanagedType.LPTStr)] string lpClassName,
 		[MarshalAs(UnmanagedType.LPTStr), Optional] string? lpWindowName, [Optional] WindowStyles dwStyle, [Optional] int X,
 		[Optional] int Y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
@@ -2846,7 +2851,8 @@ public static partial class User32
 	// HINSTANCE hInstance, LPVOID lpParam );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "createwindowex")]
-	public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, IntPtr lpClassName,
+	[return: AddAsCtor]
+	public static extern SafeHWND CreateWindowEx([Optional] WindowStylesEx dwExStyle, Kernel32.ATOM lpClassName,
 		[MarshalAs(UnmanagedType.LPTStr), Optional] string? lpWindowName, [Optional] WindowStyles dwStyle, [Optional] int X,
 		[Optional] int Y, [Optional] int nWidth, [Optional] int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu,
 		[Optional] HINSTANCE hInstance, [Optional] IntPtr lpParam);
@@ -3058,7 +3064,7 @@ public static partial class User32
 	// hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, UINT uFlags );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "deferwindowpos")]
-	public static extern HDWP DeferWindowPos(HDWP hWinPosInfo, HWND hWnd, [Optional] HWND hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
+	public static extern HDWP DeferWindowPos([In, AddAsMember] HDWP hWinPosInfo, HWND hWnd, [Optional] HWND hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
 
 	/// <summary>
 	/// Provides default processing for any window messages that the window procedure of a multiple-document interface (MDI) frame window
@@ -3133,7 +3139,7 @@ public static partial class User32
 	// hWndMDIClient, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr DefFrameProc(HWND hWnd, [Optional] HWND hWndMDIClient, uint uMsg, IntPtr wParam, IntPtr lParam);
+	public static extern IntPtr DefFrameProc([In, AddAsMember] HWND hWnd, [Optional] HWND hWndMDIClient, uint uMsg, IntPtr wParam, IntPtr lParam);
 
 	/// <summary>
 	/// Provides default processing for any window message that the window procedure of a multiple-document interface (MDI) child window
@@ -3214,7 +3220,7 @@ public static partial class User32
 	// hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr DefMDIChildProc(HWND hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+	public static extern IntPtr DefMDIChildProc([In, AddAsMember] HWND hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
 	/// <summary>
 	/// Calls the default window procedure to provide default processing for any window messages that an application does not process.
@@ -3245,7 +3251,7 @@ public static partial class User32
 	// UINT Msg, WPARAM wParam, LPARAM lParam );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr DefWindowProc(HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+	public static extern IntPtr DefWindowProc([In, AddAsMember] HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
 	/// <summary>
 	/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -3270,7 +3276,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "deregistershellhookwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DeregisterShellHookWindow(HWND hwnd);
+	public static extern bool DeregisterShellHookWindow([In, AddAsMember] HWND hwnd);
 
 	/// <summary>
 	/// <para>
@@ -3307,7 +3313,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "destroywindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DestroyWindow(HWND hWnd);
+	public static extern bool DestroyWindow([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// Disables the window ghosting feature for the calling GUI process. Window ghosting is a Windows Manager feature that lets the user
@@ -3347,7 +3353,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DragDetect(HWND hwnd, POINT pt);
+	public static extern bool DragDetect([In, AddAsMember] HWND hwnd, POINT pt);
 
 	/// <summary>
 	/// Enables or disables mouse and keyboard input to the specified window or control. When input is disabled, the window does not
@@ -3396,7 +3402,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EnableWindow(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bEnable);
+	public static extern bool EnableWindow([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bEnable);
 
 	/// <summary>
 	/// <para>Simultaneously updates the position and size of one or more windows in a single screen-refreshing cycle.</para>
@@ -3423,7 +3429,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "enddeferwindowpos")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EndDeferWindowPos(IntPtr hWinPosInfo);
+	public static extern bool EndDeferWindowPos(HDWP hWinPosInfo);
 
 	/// <summary>
 	/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -3460,7 +3466,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "endtask")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EndTask(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShutDown, [MarshalAs(UnmanagedType.Bool)] bool fForce);
+	public static extern bool EndTask([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShutDown, [MarshalAs(UnmanagedType.Bool)] bool fForce);
 
 	/// <summary>
 	/// Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, to
@@ -3513,13 +3519,13 @@ public static partial class User32
 	/// </para>
 	/// </param>
 	/// <returns>An ordered sequence of child window handles.</returns>
-	public static IReadOnlyList<HWND> EnumChildWindows(this HWND hWndParent)
+	public static IReadOnlyList<HWND> EnumChildWindows([In, AddAsMember] this HWND hWndParent)
 	{
 		var children = new List<HWND>();
 		Win32Error.ThrowLastErrorIfFalse(EnumChildWindows(hWndParent, EnumProc, default));
 		return children;
 
-		bool EnumProc(HWND hwnd, IntPtr lParam) { children.Add(hwnd); return true; }
+		bool EnumProc([In, AddAsMember] HWND hwnd, IntPtr lParam) { children.Add(hwnd); return true; }
 	}
 
 	/// <summary>
@@ -3710,7 +3716,7 @@ public static partial class User32
 	// HWND FindWindowExA( [in, optional] HWND hWndParent, [in, optional] HWND hWndChildAfter, [in, optional] LPCSTR lpszClass, [in, optional] LPCSTR lpszWindow );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.FindWindowExA")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	public static extern HWND FindWindowEx([In, Optional] HWND hWndParent, [In, Optional] HWND hWndChildAfter, [In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpszClass,
+	public static extern HWND FindWindowEx([In, AddAsMember, Optional] HWND hWndParent, [In, Optional] HWND hWndChildAfter, [In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpszClass,
 		[In, Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpszWindow);
 
 	/// <summary>
@@ -3824,7 +3830,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "c4af997d-5cb8-4d5d-ae8d-1e0cc724fe02")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FlashWindow(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bInvert);
+	public static extern bool FlashWindow([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bInvert);
 
 	/// <summary>Flashes the specified window. It does not change the active state of the window.</summary>
 	/// <param name="pfwi">A pointer to a FLASHWINFO structure.</param>
@@ -3908,7 +3914,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getalttabinfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetAltTabInfo(HWND hwnd, int iItem, ref ALTTABINFO pati, [Optional] StringBuilder? pszItemText, uint cchItemText);
+	public static extern bool GetAltTabInfo([In, AddAsMember] HWND hwnd, int iItem, ref ALTTABINFO pati, [Out, Optional] StringBuilder? pszItemText, uint cchItemText);
 
 	/// <summary>
 	/// <para>Retrieves the handle to the ancestor of the specified window.</para>
@@ -3948,7 +3954,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getancestor HWND GetAncestor( HWND hwnd, UINT gaFlags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getancestor")]
-	public static extern HWND GetAncestor(HWND hwnd, GetAncestorFlag gaFlags);
+	public static extern HWND GetAncestor([In, AddAsMember] HWND hwnd, GetAncestorFlag gaFlags);
 
 	/// <summary>
 	/// Retrieves a handle to the window (if any) that has captured the mouse. Only one window at a time can capture the mouse; this
@@ -3982,7 +3988,7 @@ public static partial class User32
 	/// If the function succeeds, the return value is a window handle. If no window exists with the specified relationship to the
 	/// specified window, the return value is NULL. To get extended error information, call GetLastError.
 	/// </returns>
-	public static HWND GetChildWindow(this HWND hWnd) => GetWindow(hWnd, GetWindowCmd.GW_CHILD);
+	public static HWND GetChildWindow([In, AddAsMember] HWND hWnd) => GetWindow(hWnd, GetWindowCmd.GW_CHILD);
 
 	/// <summary>
 	/// <para>Retrieves information about a window class.</para>
@@ -4064,7 +4070,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassinfoexa BOOL GetClassInfoExA( HINSTANCE hInstance,
 	// LPCSTR lpszClass, LPWNDCLASSEXA lpwcx );
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static bool GetClassInfoEx([In] HINSTANCE hInstance, string lpszClass, out WNDCLASSEX lpwcx)
+	public static bool GetClassInfoEx([In, Optional] HINSTANCE hInstance, string lpszClass, out WNDCLASSEX lpwcx)
 	{
 		WNDCLASSEXB wc = new();
 		var ret = GetClassInfoEx(hInstance, lpszClass, ref wc);
@@ -4111,7 +4117,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassinfoexa BOOL GetClassInfoExA( HINSTANCE hInstance,
 	// LPCSTR lpszClass, LPWNDCLASSEXA lpwcx );
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static bool GetClassInfoEx([In] HINSTANCE hInstance, IntPtr lpszClass, out WNDCLASSEX lpwcx)
+	public static bool GetClassInfoEx([In, Optional] HINSTANCE hInstance, Kernel32.ATOM lpszClass, out WNDCLASSEX lpwcx)
 	{
 		WNDCLASSEXB wc = new();
 		var ret = GetClassInfoEx(hInstance, lpszClass, ref wc);
@@ -4207,7 +4213,7 @@ public static partial class User32
 	/// the RegisterClassEx function.
 	/// </remarks>
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static IntPtr GetClassLong(HWND hWnd, int nIndex) => IntPtr.Size > 4 ? GetClassLongPtr(hWnd, nIndex) : (IntPtr)GetClassLong32(hWnd, nIndex);
+	public static IntPtr GetClassLong([In, AddAsMember] HWND hWnd, int nIndex) => IntPtr.Size > 4 ? GetClassLongPtr(hWnd, nIndex) : (IntPtr)GetClassLong32(hWnd, nIndex);
 
 	/// <summary>
 	/// <para>Retrieves the specified value from the WNDCLASSEX structure associated with the specified window.</para>
@@ -4297,7 +4303,7 @@ public static partial class User32
 	/// the RegisterClassEx function.
 	/// </remarks>
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static IntPtr GetClassLong(HWND hWnd, GetClassLongFlag nIndex) => GetClassLong(hWnd, (int)nIndex);
+	public static IntPtr GetClassLong([In, AddAsMember] HWND hWnd, GetClassLongFlag nIndex) => GetClassLong(hWnd, (int)nIndex);
 
 	/// <summary>Retrieves the name of the class to which the specified window belongs.</summary>
 	/// <param name="hWnd">
@@ -4323,7 +4329,7 @@ public static partial class User32
 	// lpClassName, int nMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern int GetClassName(HWND hWnd, StringBuilder lpClassName, int nMaxCount);
+	public static extern int GetClassName([In, AddAsMember] HWND hWnd, [Out, SizeDef(nameof(nMaxCount), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpClassName, int nMaxCount);
 
 	/// <summary>
 	/// <para>
@@ -4393,7 +4399,7 @@ public static partial class User32
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[System.Security.SecurityCritical]
-	public static extern bool GetClientRect(HWND hWnd, out RECT lpRect);
+	public static extern bool GetClientRect([In, AddAsMember] HWND hWnd, out RECT lpRect);
 
 	/// <summary>
 	/// Retrieves a handle to the desktop window. The desktop window covers the entire screen. The desktop window is the area on top of
@@ -4403,6 +4409,7 @@ public static partial class User32
 	// HWND WINAPI GetDesktopWindow(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633504(v=vs.85).aspx
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winuser.h", MSDNShortId = "ms633504")]
+	[return: AddAsCtor]
 	public static extern HWND GetDesktopWindow();
 
 	/// <summary>
@@ -4433,6 +4440,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getfocus HWND GetFocus( );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
+	[return: AddAsCtor]
 	public static extern HWND GetFocus();
 
 	/// <summary>
@@ -4451,6 +4459,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getforegroundwindow HWND GetForegroundWindow( );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getforegroundwindow")]
+	[return: AddAsCtor]
 	public static extern HWND GetForegroundWindow();
 
 	/// <summary>
@@ -4576,7 +4585,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getlastactivepopup HWND GetLastActivePopup( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getlastactivepopup")]
-	public static extern HWND GetLastActivePopup(HWND hWnd);
+	public static extern HWND GetLastActivePopup([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Retrieves the opacity and transparency color key of a layered window.</para>
@@ -4641,7 +4650,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getlayeredwindowattributes")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetLayeredWindowAttributes(HWND hwnd, out COLORREF pcrKey, out byte pbAlpha, out LayeredWindowAttributes pdwFlags);
+	public static extern bool GetLayeredWindowAttributes([In, AddAsMember] HWND hwnd, out COLORREF pcrKey, out byte pbAlpha, out LayeredWindowAttributes pdwFlags);
 
 	/// <summary>
 	/// <para>
@@ -4687,7 +4696,7 @@ public static partial class User32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getnextwindow void GetNextWindow( hWnd, wCmd );
 	[PInvokeData("winuser.h", MSDNShortId = "getnextwindow")]
-	public static void GetNextWindow(HWND hWnd, GetWindowCmd wCmd) => GetWindow(hWnd, wCmd);
+	public static void GetNextWindow([In, AddAsMember] HWND hWnd, GetWindowCmd wCmd) => GetWindow(hWnd, wCmd);
 
 	/// <summary>
 	/// <para>Retrieves a handle to the specified window's parent or owner.</para>
@@ -4725,7 +4734,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getparent HWND GetParent( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getparent")]
-	public static extern HWND GetParent(HWND hWnd);
+	public static extern HWND GetParent([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Retrieves the default layout that is used when windows are created with no parent or owner.</para>
@@ -4762,6 +4771,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getshellwindow HWND GetShellWindow( );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getshellwindow")]
+	[return: AddAsCtor]
 	public static extern HWND GetShellWindow();
 
 	/// <summary>
@@ -4788,7 +4798,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "gettitlebarinfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetTitleBarInfo(HWND hwnd, ref TITLEBARINFO pti);
+	public static extern bool GetTitleBarInfo([In, AddAsMember] HWND hwnd, ref TITLEBARINFO pti);
 
 	/// <summary>
 	/// <para>
@@ -4902,7 +4912,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindow HWND GetWindow( HWND hWnd, UINT uCmd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindow")]
-	public static extern HWND GetWindow(HWND hWnd, GetWindowCmd uCmd);
+	public static extern HWND GetWindow([In, AddAsMember] HWND hWnd, GetWindowCmd uCmd);
 
 	/// <summary>Retrieves a handle to a window that has the specified relationship (Z-Order or owner) to the specified window.</summary>
 	/// <param name="hWnd">
@@ -4987,7 +4997,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindow HWND GetWindow( HWND hWnd, UINT uCmd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern HWND GetWindow(HWND hWnd, uint uCmd);
+	public static extern HWND GetWindow([In, AddAsMember] HWND hWnd, uint uCmd);
 
 	/// <summary>Retrieves the Help context identifier, if any, associated with the specified window.</summary>
 	/// <param name="Arg1">
@@ -5002,7 +5012,7 @@ public static partial class User32
 	// Arg1 );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "28e57c01-0327-4f64-9ef4-ca13c3c32b0c")]
-	public static extern uint GetWindowContextHelpId(HWND Arg1);
+	public static extern uint GetWindowContextHelpId([In, AddAsMember] HWND Arg1);
 
 	/// <summary>
 	/// <para>Retrieves the current display affinity setting, from any process, for a given window.</para>
@@ -5043,7 +5053,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowdisplayaffinity")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowDisplayAffinity(HWND hWnd, out WindowDisplayAffinity pdwAffinity);
+	public static extern bool GetWindowDisplayAffinity([In, AddAsMember] HWND hWnd, out WindowDisplayAffinity pdwAffinity);
 
 	/// <summary>Retrieves the feedback configuration for a window.</summary>
 	/// <param name="hwnd">The window to check for feedback configuration.</param>
@@ -5069,7 +5079,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a40806b3-9085-42b6-9a87-95be0d1669c6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowFeedbackSetting(HWND hwnd, FEEDBACK_TYPE feedback, GWFS dwFlags, ref uint pSize, [MarshalAs(UnmanagedType.Bool)] out bool config);
+	public static extern bool GetWindowFeedbackSetting([In, AddAsMember] HWND hwnd, FEEDBACK_TYPE feedback, GWFS dwFlags, ref uint pSize, [MarshalAs(UnmanagedType.Bool)] out bool config);
 
 	/// <summary>
 	/// <para>Retrieves information about the specified window.</para>
@@ -5096,7 +5106,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowinfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowInfo(HWND hwnd, ref WINDOWINFO pwi);
+	public static extern bool GetWindowInfo([In, AddAsMember] HWND hwnd, ref WINDOWINFO pwi);
 
 	/// <summary>
 	/// <para>Retrieves the full path and file name of the module associated with the specified window handle.</para>
@@ -5121,7 +5131,7 @@ public static partial class User32
 	// HWND hwnd, LPSTR pszFileName, UINT cchFileNameMax );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowmodulefilename")]
-	public static extern uint GetWindowModuleFileName(HWND hwnd, StringBuilder pszFileName, uint cchFileNameMax);
+	public static extern uint GetWindowModuleFileName([In, AddAsMember] HWND hwnd, [Out, SizeDef(nameof(cchFileNameMax), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? pszFileName, uint cchFileNameMax);
 
 	/// <summary>
 	/// <para>Retrieves the show state and the restored, minimized, and maximized positions of the specified window.</para>
@@ -5158,7 +5168,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowplacement")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetWindowPlacement(HWND hWnd, ref WINDOWPLACEMENT lpwndpl);
+	public static extern bool GetWindowPlacement([In, AddAsMember] HWND hWnd, ref WINDOWPLACEMENT lpwndpl);
 
 	/// <summary>
 	/// Retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen coordinates that
@@ -5176,7 +5186,7 @@ public static partial class User32
 	[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[System.Security.SecurityCritical]
-	public static extern bool GetWindowRect(HWND hWnd, out RECT lpRect);
+	public static extern bool GetWindowRect([In, AddAsMember] HWND hWnd, out RECT lpRect);
 
 	/// <summary>
 	/// <para>
@@ -5227,7 +5237,7 @@ public static partial class User32
 	// lpString, int nMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowtext")]
-	public static extern int GetWindowText(HWND hWnd, StringBuilder lpString, int nMaxCount);
+	public static extern int GetWindowText([In, AddAsMember] HWND hWnd, [Out, SizeDef(nameof(nMaxCount), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpString, int nMaxCount);
 
 	/// <summary>
 	/// <para>
@@ -5269,7 +5279,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowtextlengtha int GetWindowTextLengthA( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowtextlength")]
-	public static extern int GetWindowTextLength(HWND hWnd);
+	public static extern int GetWindowTextLength([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>
@@ -5296,7 +5306,7 @@ public static partial class User32
 	// HWND hWnd, LPDWORD lpdwProcessId );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowthreadprocessid")]
-	public static extern uint GetWindowThreadProcessId(HWND hWnd, out uint lpdwProcessId);
+	public static extern uint GetWindowThreadProcessId([In, AddAsMember] HWND hWnd, out uint lpdwProcessId);
 
 	/// <summary>
 	/// Enables a Dynamic Data Exchange (DDE) server application to impersonate a DDE client application's security context. This
@@ -5337,7 +5347,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dde.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ImpersonateDdeClientWindow(HWND hWndClient, HWND hWndServer);
+	public static extern bool ImpersonateDdeClientWindow([In, AddAsMember] HWND hWndClient, HWND hWndServer);
 
 	/// <summary>
 	/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -5382,7 +5392,8 @@ public static partial class User32
 	// hWnd, LPWSTR pString, int cchMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "internalgetwindowtext")]
-	public static extern int InternalGetWindowText(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pString, int cchMaxCount);
+	public static extern int InternalGetWindowText([In, AddAsMember] HWND hWnd,
+		[Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(cchMaxCount), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? pString, int cchMaxCount);
 
 	/// <summary>
 	/// <para>
@@ -5408,7 +5419,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "ischild")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsChild(HWND hWndParent, HWND hWnd);
+	public static extern bool IsChild([In, AddAsMember] HWND hWndParent, HWND hWnd);
 
 	/// <summary>
 	/// <para>Determines whether the calling thread is already a GUI thread. It can also optionally convert the thread to a GUI thread.</para>
@@ -5468,7 +5479,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "ishungappwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsHungAppWindow(HWND hwnd);
+	public static extern bool IsHungAppWindow([In, AddAsMember] HWND hwnd);
 
 	/// <summary>
 	/// <para>Determines whether the specified window is minimized (iconic).</para>
@@ -5486,7 +5497,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "isiconic")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsIconic(HWND hWnd);
+	public static extern bool IsIconic([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>[</para>
@@ -5534,7 +5545,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "iswindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWindow(HWND hWnd);
+	public static extern bool IsWindow([In, AddAsMember] HWND hWnd);
 
 	/// <summary>Determines whether the specified window is enabled for mouse and keyboard input.</summary>
 	/// <param name="hWnd">
@@ -5551,7 +5562,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWindowEnabled(HWND hWnd);
+	public static extern bool IsWindowEnabled([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// The <c>IsWindowRedirectedForPrint</c> function determines whether the specified window is currently redirected for printing.
@@ -5605,7 +5616,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "iswindowunicode")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWindowUnicode(HWND hWnd);
+	public static extern bool IsWindowUnicode([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Determines the visibility state of the specified window.</para>
@@ -5639,7 +5650,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "iswindowvisible")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsWindowVisible(HWND hWnd);
+	public static extern bool IsWindowVisible([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Determines whether a window is maximized.</para>
@@ -5657,7 +5668,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "iszoomed")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsZoomed(HWND hWnd);
+	public static extern bool IsZoomed([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// The foreground process can call the <c>LockSetForegroundWindow</c> function to disable calls to the SetForegroundWindow function.
@@ -5759,7 +5770,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "logicaltophysicalpoint")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LogicalToPhysicalPoint(HWND hWnd, ref POINT lpPoint);
+	public static extern bool LogicalToPhysicalPoint([In, AddAsMember] HWND hWnd, ref POINT lpPoint);
 
 	/// <summary>
 	/// <para>
@@ -5817,7 +5828,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "movewindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool MoveWindow(HWND hWnd, int X, int Y, int nWidth, int nHeight, [MarshalAs(UnmanagedType.Bool)] bool bRepaint);
+	public static extern bool MoveWindow([In, AddAsMember] HWND hWnd, int X, int Y, int nWidth, int nHeight, [MarshalAs(UnmanagedType.Bool)] bool bRepaint);
 
 	/// <summary>
 	/// Signals the system that a predefined event occurred. If any client applications have registered a hook function for the event,
@@ -5876,7 +5887,7 @@ public static partial class User32
 	// hwnd, LONG idObject, LONG idChild );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "08e74d45-95b6-44c2-a2e0-5ba6ffdcd56a")]
-	public static extern void NotifyWinEvent(uint winEvent, HWND hwnd, int idObject, int idChild);
+	public static extern void NotifyWinEvent(uint winEvent, [In, AddAsMember] HWND hwnd, int idObject, int idChild);
 
 	/// <summary>
 	/// <para>Restores a minimized (iconic) window to its previous size and position; it then activates the window.</para>
@@ -5897,7 +5908,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "openicon")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OpenIcon(HWND hWnd);
+	public static extern bool OpenIcon([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Converts the physical coordinates of a point in a window to logical coordinates.</para>
@@ -5954,7 +5965,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "physicaltologicalpoint")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PhysicalToLogicalPoint(HWND hWnd, ref POINT lpPoint);
+	public static extern bool PhysicalToLogicalPoint([In, AddAsMember] HWND hWnd, ref POINT lpPoint);
 
 	/// <summary>
 	/// The <c>PrintWindow</c> function copies a visual window into the specified device context (DC), typically a printer DC.
@@ -5996,7 +6007,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "00b38cd8-1cfb-408e-88da-6e61563d9d8e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PrintWindow(HWND hwnd, HDC hdcBlt, PW nFlags);
+	public static extern bool PrintWindow([In, AddAsMember] HWND hwnd, HDC hdcBlt, PW nFlags);
 
 	/// <summary>
 	/// <para>
@@ -6029,7 +6040,7 @@ public static partial class User32
 	// HWND hwndParent, POINT ptParentClientCoords );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "realchildwindowfrompoint")]
-	public static extern HWND RealChildWindowFromPoint(HWND hwndParent, POINT ptParentClientCoords);
+	public static extern HWND RealChildWindowFromPoint([In, AddAsMember] HWND hwndParent, POINT ptParentClientCoords);
 
 	/// <summary>
 	/// <para>Retrieves a string that specifies the window type.</para>
@@ -6055,7 +6066,8 @@ public static partial class User32
 	// LPWSTR ptszClassName, UINT cchClassNameMax );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "realgetwindowclass")]
-	public static extern uint RealGetWindowClass(HWND hwnd, StringBuilder ptszClassName, uint cchClassNameMax);
+	public static extern uint RealGetWindowClass([In, AddAsMember] HWND hwnd,
+		[Out, SizeDef(nameof(cchClassNameMax), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? ptszClassName, uint cchClassNameMax);
 
 	/// <summary>
 	/// <para>Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx function.</para>
@@ -6247,7 +6259,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "registershellhookwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RegisterShellHookWindow(HWND hwnd);
+	public static extern bool RegisterShellHookWindow([In, AddAsMember] HWND hwnd);
 
 	/// <summary>
 	/// Releases the mouse capture from a window in the current thread and restores normal mouse input processing. A window that has
@@ -6293,7 +6305,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setactivewindow HWND SetActiveWindow( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern HWND SetActiveWindow(HWND hWnd);
+	public static extern HWND SetActiveWindow([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <note type="warning"><c>SetAdditionalForegroundBoostProcesses</c> is a <c>limited access feature</c>. Contact
@@ -6397,7 +6409,7 @@ public static partial class User32
 	[PInvokeData("Winuser.h", MSDNShortId = "NF:winuser.SetAdditionalForegroundBoostProcesses", MinClient = PInvokeClient.Windows11)]
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetAdditionalForegroundBoostProcesses(HWND topLevelWindow, uint processHandleCount,
+	public static extern bool SetAdditionalForegroundBoostProcesses([In, AddAsMember] HWND topLevelWindow, uint processHandleCount,
 		[Optional, In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] HPROCESS[]? processHandleArray);
 
 	/// <summary>
@@ -6440,7 +6452,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setcapture HWND SetCapture( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern HWND SetCapture(HWND hWnd);
+	public static extern HWND SetCapture([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// Replaces the specified value at the specified offset in the extra class memory or the WNDCLASSEX structure for the class to which
@@ -6545,7 +6557,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclasslongptra ULONG_PTR SetClassLongPtrA( HWND hWnd,
 	// int nIndex, LONG_PTR dwNewLong );
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static IntPtr SetClassLong(HWND hWnd, int nIndex, IntPtr dwNewLong) => IntPtr.Size > 4 ? SetClassLongPtr(hWnd, nIndex, dwNewLong) : (IntPtr)SetClassLong32(hWnd, nIndex, dwNewLong.ToInt32());
+	public static IntPtr SetClassLong([In, AddAsMember] HWND hWnd, int nIndex, IntPtr dwNewLong) => IntPtr.Size > 4 ? SetClassLongPtr(hWnd, nIndex, dwNewLong) : (IntPtr)SetClassLong32(hWnd, nIndex, dwNewLong.ToInt32());
 
 	/// <summary>
 	/// Replaces the specified value at the specified offset in the extra class memory or the WNDCLASSEX structure for the class to which
@@ -6650,7 +6662,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclasslongptra ULONG_PTR SetClassLongPtrA( HWND hWnd,
 	// int nIndex, LONG_PTR dwNewLong );
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static IntPtr SetClassLong(HWND hWnd, GetClassLongFlag nIndex, IntPtr dwNewLong) => SetClassLong(hWnd, (int)nIndex, dwNewLong);
+	public static IntPtr SetClassLong([In, AddAsMember] HWND hWnd, GetClassLongFlag nIndex, IntPtr dwNewLong) => SetClassLong(hWnd, (int)nIndex, dwNewLong);
 
 	/// <summary>
 	/// <para>
@@ -6694,7 +6706,7 @@ public static partial class User32
 	// WORD wNewWord );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern ushort SetClassWord(HWND hWnd, int nIndex, ushort wNewWord);
+	public static extern ushort SetClassWord([In, AddAsMember] HWND hWnd, int nIndex, ushort wNewWord);
 
 	/// <summary>Sets the keyboard focus to the specified window. The window must be attached to the calling thread's message queue.</summary>
 	/// <param name="hWnd">
@@ -6797,7 +6809,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setforegroundwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetForegroundWindow(HWND hWnd);
+	public static extern bool SetForegroundWindow([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// <para>Sets the opacity and transparency color key of a layered window.</para>
@@ -6862,7 +6874,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setlayeredwindowattributes")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetLayeredWindowAttributes(HWND hwnd, COLORREF crKey, byte bAlpha, LayeredWindowAttributes dwFlags);
+	public static extern bool SetLayeredWindowAttributes([In, AddAsMember] HWND hwnd, COLORREF crKey, byte bAlpha, LayeredWindowAttributes dwFlags);
 
 	/// <summary>
 	/// <para>Changes the parent window of the specified child window.</para>
@@ -6926,7 +6938,7 @@ public static partial class User32
 	// hWndNewParent );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setparent")]
-	public static extern HWND SetParent(HWND hWndChild, [Optional] HWND hWndNewParent);
+	public static extern HWND SetParent([In, AddAsMember] HWND hWndChild, [Optional] HWND hWndNewParent);
 
 	/// <summary>
 	/// <para>Changes the default layout when windows are created with no parent or owner only for the currently running process.</para>
@@ -7046,7 +7058,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "7e0963d1-5807-4db5-9abf-cdb21a03b525")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowContextHelpId(HWND arg1, uint arg2);
+	public static extern bool SetWindowContextHelpId([In, AddAsMember] HWND arg1, uint arg2);
 
 	/// <summary>
 	/// <para>Stores the display affinity setting in kernel mode on the hWnd associated with the window.</para>
@@ -7088,7 +7100,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowdisplayaffinity")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowDisplayAffinity(HWND hWnd, WindowDisplayAffinity dwAffinity);
+	public static extern bool SetWindowDisplayAffinity([In, AddAsMember] HWND hWnd, WindowDisplayAffinity dwAffinity);
 
 	/// <summary>Sets the feedback configuration for a window.</summary>
 	/// <param name="hwnd">The window to configure feedback on.</param>
@@ -7104,7 +7116,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "72bee160-7004-40be-9c91-e431b06ccaed")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowFeedbackSetting(HWND hwnd, FEEDBACK_TYPE feedback, [Optional] uint dwFlags, uint size, [Optional] IntPtr configuration);
+	public static extern bool SetWindowFeedbackSetting([In, AddAsMember] HWND hwnd, FEEDBACK_TYPE feedback, [Optional, Ignore] uint dwFlags, uint size, [In, Optional, SizeDef(nameof(size))] IntPtr configuration);
 
 	/// <summary>
 	/// <para>Sets the show state and the restored, minimized, and maximized positions of the specified window.</para>
@@ -7142,7 +7154,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowplacement")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowPlacement(HWND hWnd, ref WINDOWPLACEMENT lpwndpl);
+	public static extern bool SetWindowPlacement([In, AddAsMember] HWND hWnd, ref WINDOWPLACEMENT lpwndpl);
 
 	/// <summary>
 	/// <para>
@@ -7352,7 +7364,7 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowpos")]
 	[System.Security.SecurityCritical]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
+	public static extern bool SetWindowPos([In, AddAsMember] HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
 
 	/// <summary>
 	/// <para>
@@ -7392,7 +7404,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "setwindowtext")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetWindowText(HWND hWnd, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpString);
+	public static extern bool SetWindowText([In, AddAsMember] HWND hWnd, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? lpString);
 
 	/// <summary>
 	/// <para>Shows or hides all pop-up windows owned by the specified window.</para>
@@ -7425,7 +7437,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "showownedpopups")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShowOwnedPopups(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShow);
+	public static extern bool ShowOwnedPopups([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShow);
 
 	/// <summary>
 	/// <para>Sets the specified window's show state.</para>
@@ -7554,7 +7566,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "showwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShowWindow(HWND hWnd, ShowWindowCommand nCmdShow);
+	public static extern bool ShowWindow([In, AddAsMember] HWND hWnd, ShowWindowCommand nCmdShow);
 
 	/// <summary>
 	/// <para>Sets the show state of a window without waiting for the operation to complete.</para>
@@ -7582,7 +7594,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "showwindowasync")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShowWindowAsync(HWND hWnd, ShowWindowCommand nCmdShow);
+	public static extern bool ShowWindowAsync([In, AddAsMember] HWND hWnd, ShowWindowCommand nCmdShow);
 
 	/// <summary>
 	/// <para>Triggers a visual signal to indicate that a sound is playing.</para>
@@ -7643,7 +7655,7 @@ public static partial class User32
 	// BOOL fUnknown );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "switchtothiswindow")]
-	public static extern void SwitchToThisWindow(HWND hwnd, [MarshalAs(UnmanagedType.Bool)] bool fUnknown);
+	public static extern void SwitchToThisWindow([In, AddAsMember] HWND hwnd, [MarshalAs(UnmanagedType.Bool)] bool fUnknown);
 
 	/// <summary>
 	/// <para>Tiles the specified child windows of the specified parent window.</para>
@@ -7704,7 +7716,7 @@ public static partial class User32
 	// CONST RECT *lpRect, UINT cKids, const HWND *lpKids );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "tilewindows")]
-	public static extern ushort TileWindows([Optional] HWND hwndParent, MdiTileFlags wHow, [Optional] PRECT? lpRect, uint cKids, [In, Optional] HWND[]? lpKids);
+	public static extern ushort TileWindows([In, AddAsMember, Optional] HWND hwndParent, MdiTileFlags wHow, [Optional] PRECT? lpRect, uint cKids, [In, Optional] HWND[]? lpKids);
 
 	/// <summary>
 	/// Processes accelerator keystrokes for window menu commands of the multiple-document interface (MDI) child windows associated with
@@ -7732,7 +7744,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool TranslateMDISysAccel(HWND hWndClient, ref MSG lpMsg);
+	public static extern bool TranslateMDISysAccel([In, AddAsMember] HWND hWndClient, ref MSG lpMsg);
 
 	/// <summary>Unregisters a window class, freeing the memory required for the class.</summary>
 	/// <param name="lpClassName">
@@ -7769,6 +7781,42 @@ public static partial class User32
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool UnregisterClass(string lpClassName, HINSTANCE hInstance);
+
+	/// <summary>Unregisters a window class, freeing the memory required for the class.</summary>
+	/// <param name="lpClassName">
+	/// <para>Type: <c>LPCTSTR</c></para>
+	/// <para>
+	/// A null-terminated string or a class atom. If lpClassName is a string, it specifies the window class name. This class name must
+	/// have been registered by a previous call to the RegisterClass or RegisterClassEx function. System classes, such as dialog box
+	/// controls, cannot be unregistered. If this parameter is an atom, it must be a class atom created by a previous call to the
+	/// <c>RegisterClass</c> or <c>RegisterClassEx</c> function. The atom must be in the low-order word of lpClassName; the high-order
+	/// word must be zero.
+	/// </para>
+	/// </param>
+	/// <param name="hInstance">
+	/// <para>Type: <c>HINSTANCE</c></para>
+	/// <para>A handle to the instance of the module that created the class.</para>
+	/// </param>
+	/// <returns>
+	/// <para>Type: <c>Type: <c>BOOL</c></c></para>
+	/// <para>If the function succeeds, the return value is nonzero.</para>
+	/// <para>
+	/// If the class could not be found or if a window still exists that was created with the class, the return value is zero. To get
+	/// extended error information, call GetLastError.
+	/// </para>
+	/// </returns>
+	/// <remarks>
+	/// <para>Before calling this function, an application must destroy all windows created with the specified class.</para>
+	/// <para>All window classes that an application registers are unregistered when it terminates.</para>
+	/// <para>Class atoms are special atoms returned only by RegisterClass and RegisterClassEx.</para>
+	/// <para>No window classes registered by a DLL are unregistered when the .dll is unloaded.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-unregisterclassa BOOL UnregisterClassA( LPCSTR
+	// lpClassName, HINSTANCE hInstance );
+	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+	[PInvokeData("winuser.h", MSDNShortId = "")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool UnregisterClass([In] Kernel32.ATOM lpClassName, HINSTANCE hInstance);
 
 	/// <summary>
 	/// <para>Updates the position, size, shape, content, and translucency of a layered window.</para>
@@ -7891,7 +7939,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateLayeredWindow(HWND hWnd, HDC hdcDst, in POINT pptDst, in SIZE psize, HDC hdcSrc,
+	public static extern bool UpdateLayeredWindow([In, AddAsMember] HWND hWnd, HDC hdcDst, in POINT pptDst, in SIZE psize, HDC hdcSrc,
 		in POINT pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 	/// <summary>
@@ -8015,7 +8063,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateLayeredWindow(HWND hWnd, [In, Optional] HDC hdcDst, [In, Optional] IntPtr pptDst, [In, Optional] IntPtr psize,
+	public static extern bool UpdateLayeredWindow([In, AddAsMember] HWND hWnd, [In, Optional] HDC hdcDst, [In, Optional] IntPtr pptDst, [In, Optional] IntPtr psize,
 		[In, Optional] HDC hdcSrc, [In, Optional] IntPtr pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 	/// <summary>Updates the position, size, shape, content, and translucency of a layered window.</summary>
@@ -8043,7 +8091,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winuser.h", MSDNShortId = "ms633557")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateLayeredWindowIndirect([In] HWND hwnd, in UPDATELAYEREDWINDOWINFO pULWInfo);
+	public static extern bool UpdateLayeredWindowIndirect([In, AddAsMember] HWND hwnd, in UPDATELAYEREDWINDOWINFO pULWInfo);
 
 	/// <summary>
 	/// <para>Retrieves a handle to the window that contains the specified physical point.</para>
@@ -8121,7 +8169,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winnls32.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool WINNLSEnableIME([In, Optional] HWND hWnd, [In][MarshalAs(UnmanagedType.Bool)] bool fEnable);
+	public static extern bool WINNLSEnableIME([In, Optional, AddAsMember] HWND hWnd, [In][MarshalAs(UnmanagedType.Bool)] bool fEnable);
 
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -8129,7 +8177,7 @@ public static partial class User32
 
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	private static extern bool GetClassInfoEx([In] HINSTANCE hInstance, [In] IntPtr lpszClass, ref WNDCLASSEXB lpwcx);
+	private static extern bool GetClassInfoEx([In] HINSTANCE hInstance, [In] Kernel32.ATOM lpszClass, ref WNDCLASSEXB lpwcx);
 
 	/// <summary>
 	/// <para>Retrieves the specified 32-bit ( <c>DWORD</c>) value from the WNDCLASSEX structure associated with the specified window.</para>
@@ -8221,7 +8269,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclasslonga DWORD GetClassLongA( HWND hWnd, int nIndex );
 	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "GetClassLong", CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	private static extern int GetClassLong32(HWND hWnd, int nIndex);
+	private static extern int GetClassLong32([In] HWND hWnd, int nIndex);
 
 	/// <summary>
 	/// <para>Retrieves the specified value from the WNDCLASSEX structure associated with the specified window.</para>
@@ -8314,7 +8362,7 @@ public static partial class User32
 	// int nIndex );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	private static extern IntPtr GetClassLongPtr(HWND hWnd, int nIndex);
+	private static extern IntPtr GetClassLongPtr([In] HWND hWnd, int nIndex);
 
 	/// <summary>
 	/// <para>
@@ -8428,7 +8476,7 @@ public static partial class User32
 	// LONG dwNewLong );
 	[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetClassLong", CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	private static extern uint SetClassLong32(HWND hWnd, int nIndex, int dwNewLong);
+	private static extern uint SetClassLong32([In] HWND hWnd, int nIndex, int dwNewLong);
 
 	/// <summary>
 	/// Replaces the specified value at the specified offset in the extra class memory or the WNDCLASSEX structure for the class to which
@@ -8534,7 +8582,7 @@ public static partial class User32
 	// int nIndex, LONG_PTR dwNewLong );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	private static extern IntPtr SetClassLongPtr(HWND hWnd, int nIndex, IntPtr dwNewLong);
+	private static extern IntPtr SetClassLongPtr([In, AddAsMember] HWND hWnd, int nIndex, IntPtr dwNewLong);
 
 	/// <summary>
 	/// <para>Contains status information for the application-switching (ALT+TAB) window.</para>
@@ -8699,13 +8747,13 @@ public static partial class User32
 	// { DWORD cbSize; DWORD ExtStatus; } CHANGEFILTERSTRUCT, *PCHANGEFILTERSTRUCT;
 	[PInvokeData("winuser.h", MSDNShortId = "changefilterstruct")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct CHANGEFILTERSTRUCT
+	public struct CHANGEFILTERSTRUCT()
 	{
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
 		/// <para>The size of the structure, in bytes. Must be set to , otherwise the function fails with <c>ERROR_INVALID_PARAMETER</c>.</para>
 		/// </summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<CHANGEFILTERSTRUCT>();
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8742,7 +8790,7 @@ public static partial class User32
 		public MessageFilterInformation ExtStatus;
 
 		/// <summary>The default value for this structure with the size field set appropriately.</summary>
-		public static CHANGEFILTERSTRUCT Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(CHANGEFILTERSTRUCT)) };
+		public static readonly CHANGEFILTERSTRUCT Default = new();
 	}
 
 	/// <summary>
@@ -9315,7 +9363,7 @@ public static partial class User32
 		/// be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public IntPtr pptDst;
+		public StructPointer<POINT> pptDst;
 
 		/// <summary>
 		/// <para>Type: <c>const SIZE*</c></para>
@@ -9324,7 +9372,7 @@ public static partial class User32
 		/// <c>hdcSrc</c> is <c>NULL</c>, <c>psize</c> must be <c>NULL</c>.
 		/// </para>
 		/// </summary>
-		public IntPtr psize;
+		public StructPointer<SIZE> psize;
 
 		/// <summary>
 		/// <para>Type: <c>HDC</c></para>
@@ -9339,7 +9387,7 @@ public static partial class User32
 		/// <para>Type: <c>const POINT*</c></para>
 		/// <para>The location of the layer in the device context. If <c>hdcSrc</c> is <c>NULL</c>, <c>pptSrc</c> should be <c>NULL</c>.</para>
 		/// </summary>
-		public IntPtr pptSrc;
+		public StructPointer<POINT> pptSrc;
 
 		/// <summary>
 		/// <para>Type: <c>COLORREF</c></para>
@@ -9351,7 +9399,7 @@ public static partial class User32
 		/// <para>Type: <c>const BLENDFUNCTION*</c></para>
 		/// <para>The transparency value to be used when composing the layered window.</para>
 		/// </summary>
-		public IntPtr pblend;
+		public StructPointer<Gdi32.BLENDFUNCTION> pblend;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -9385,7 +9433,7 @@ public static partial class User32
 		/// </list>
 		/// <para>If <c>hdcSrc</c> is <c>NULL</c>, <c>dwFlags</c> should be zero.</para>
 		/// </summary>
-		public uint dwFlags;
+		public UpdateLayeredWindowFlags dwFlags;
 
 		/// <summary>
 		/// <para>Type: <c>const RECT*</c></para>
@@ -9394,7 +9442,7 @@ public static partial class User32
 		/// the source DC.
 		/// </para>
 		/// </summary>
-		public IntPtr prcDirty;
+		public StructPointer<RECT> prcDirty;
 	}
 
 	/// <summary>
@@ -10047,7 +10095,7 @@ public static partial class User32
 
 		public HICON hIconSm;
 
-		public WNDCLASSEXB() => cbSize = (uint)Marshal.SizeOf(typeof(WNDCLASSEXB));
+		public WNDCLASSEXB() => cbSize = (uint)Marshal.SizeOf<WNDCLASSEXB>();
 
 		public static implicit operator WNDCLASSEX(WNDCLASSEXB wc) => new()
 		{
@@ -10075,9 +10123,9 @@ public static partial class User32
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle()
 		{
-			var hp = GetAncestor(this, GetAncestorFlag.GA_ROOT);
+			var hp = GetAncestor(GetAncestorFlag.GA_ROOT);
 			if (hp != this) return true;
-			return DestroyWindow(this);
+			return DestroyWindow();
 		}
 	}
 

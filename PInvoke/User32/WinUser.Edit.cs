@@ -2534,31 +2534,35 @@ public static partial class User32
 	}
 
 	/// <summary>Contains information about a balloon tip associated with a button control.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="EDITBALLOONTIP"/> struct.</remarks>
+	/// <param name="title">The title.</param>
+	/// <param name="text">The text.</param>
+	/// <param name="icon">The icon.</param>
 	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-editballoontip typedef struct _tagEDITBALLOONTIP { DWORD
 	// cbStruct; LPCWSTR pszTitle; LPCWSTR pszText; INT ttiIcon; } EDITBALLOONTIP, *PEDITBALLOONTIP;
 	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl._tagEDITBALLOONTIP")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct EDITBALLOONTIP
+	public struct EDITBALLOONTIP(string title, string text, int icon = 0)
 	{
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
 		/// <para>A <c>DWORD</c> that contains the size, in bytes, of the structure.</para>
 		/// </summary>
-		public uint cbStruct;
+		public uint cbStruct = (uint)Marshal.SizeOf<EDITBALLOONTIP>();
 
 		/// <summary>
 		/// <para>Type: <c>LPCWSTR</c></para>
 		/// <para>A pointer to a Unicode string that contains the title of the balloon tip.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pszTitle;
+		public string pszTitle = title;
 
 		/// <summary>
 		/// <para>Type: <c>LPCWSTR</c></para>
 		/// <para>A pointer to a Unicode string that contains the balloon tip text.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
-		public string pszText;
+		public string pszText = text;
 
 		/// <summary>
 		/// <para>Type: <c>INT</c></para>
@@ -2601,19 +2605,7 @@ public static partial class User32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public int ttiIcon;
-
-		/// <summary>Initializes a new instance of the <see cref="EDITBALLOONTIP"/> struct.</summary>
-		/// <param name="title">The title.</param>
-		/// <param name="text">The text.</param>
-		/// <param name="icon">The icon.</param>
-		public EDITBALLOONTIP(string title, string text, int icon = 0)
-		{
-			cbStruct = (uint)Marshal.SizeOf(typeof(EDITBALLOONTIP));
-			pszText = text;
-			pszTitle = title;
-			ttiIcon = icon;
-		}
+		public int ttiIcon = icon;
 	}
 
 	/// <summary>Contains information used to handle an EN_SEARCHWEB notification code.</summary>

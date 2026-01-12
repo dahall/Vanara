@@ -56,7 +56,8 @@ public static partial class User32
 	// hAccelSrc, LPACCEL lpAccelDst, int cAccelEntries );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern int CopyAcceleratorTable(HACCEL hAccelSrc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ACCEL[]? lpAccelDst, int cAccelEntries);
+	public static extern int CopyAcceleratorTable([In, AddAsMember] HACCEL hAccelSrc,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(cAccelEntries), SizingMethod.QueryResultInReturn)] ACCEL[]? lpAccelDst, int cAccelEntries);
 
 	/// <summary>Creates an accelerator table.</summary>
 	/// <param name="paccel">
@@ -86,6 +87,7 @@ public static partial class User32
 	// LPACCEL paccel, int cAccel );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
+	[return: AddAsCtor]
 	public static extern SafeHACCEL CreateAcceleratorTable([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ACCEL[] paccel, int cAccel);
 
 	/// <summary>Destroys an accelerator table.</summary>
@@ -139,7 +141,7 @@ public static partial class User32
 	// hInstance, LPCSTR lpTableName );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern HACCEL LoadAccelerators(HINSTANCE hInstance, SafeResourceId lpTableName);
+	public static extern HACCEL LoadAccelerators([In, AddAsMember] HINSTANCE hInstance, SafeResourceId lpTableName);
 
 	/// <summary>
 	/// Processes accelerator keys for menu commands. The function translates a WM_KEYDOWN or WM_SYSKEYDOWN message to a WM_COMMAND or
@@ -216,7 +218,7 @@ public static partial class User32
 	// hWnd, HACCEL hAccTable, LPMSG lpMsg );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h")]
-	public static extern int TranslateAccelerator([In] HWND hWnd, [In] HACCEL hAccTable, in MSG lpMsg);
+	public static extern int TranslateAccelerator([In, AddAsMember] HWND hWnd, [In] HACCEL hAccTable, in MSG lpMsg);
 
 	/// <summary>Defines an accelerator key used in an accelerator table.</summary>
 	/// <param name="cmd">

@@ -145,22 +145,17 @@ public class ExaminedMessagePump : MessagePump
 /// keyboard shortcuts efficiently. It processes messages in a loop, invoking pre-processing, post-processing, and accelerator key handling
 /// as needed.
 /// </remarks>
-public class MessagePumpWithAccelerators : MessagePump
+/// <remarks>Initializes a new instance of the <see cref="MessagePumpWithAccelerators"/> class.</remarks>
+/// <param name="hWndParent">The handle to the parent window of the message pump.</param>
+/// <param name="hAccel">The handle to the accelerator table associated with the application.</param>
+public class MessagePumpWithAccelerators(HWND hWndParent, HACCEL hAccel = default) : MessagePump
 {
-	/// <summary>Initializes a new instance of the <see cref="MessagePumpWithAccelerators"/> class.</summary>
-	/// <param name="hWndParent">The handle to the parent window of the message pump.</param>
-	/// <param name="hAccel">The handle to the accelerator table associated with the application.</param>
-	public MessagePumpWithAccelerators(HWND hWndParent, HACCEL hAccel = default)
-	{
-		AcceleratorTableHandle = hAccel;
-		ParentWindowHandle = hWndParent;
-	}
 
 	/// <summary>Gets or sets the handle to the accelerator table associated with the application.</summary>
-	public virtual HACCEL AcceleratorTableHandle { get; set; }
+	public virtual HACCEL AcceleratorTableHandle { get; set; } = hAccel;
 
 	/// <summary>Gets or sets the handle to the parent window of the message pump.</summary>
-	public virtual HWND ParentWindowHandle { get; set; }
+	public virtual HWND ParentWindowHandle { get; set; } = hWndParent;
 
 	/// <inheritdoc/>
 	protected override int RunLoop()

@@ -43,6 +43,6 @@ public static partial class User32
 
 		/// <summary>Updates the <see cref="NMHDR"/> value pointed to by an LPARAM value from this instance.</summary>
 		/// <param name="lParam">The LPARAM value to update.</param>
-		public void UpdateLParam(IntPtr lParam) => Marshal.StructureToPtr(this, lParam, false);
+		public readonly void UpdateLParam(IntPtr lParam) => Marshal.StructureToPtr(this, lParam, false);
 	}
 }

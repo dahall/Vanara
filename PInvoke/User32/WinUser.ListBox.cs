@@ -1319,7 +1319,7 @@ public static partial class User32
 	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getlistboxinfo DWORD GetListBoxInfo( [in] HWND hwnd );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GetListBoxInfo")]
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-	public static extern uint GetListBoxInfo([In] HWND hwnd);
+	public static extern uint GetListBoxInfo([In, AddAsMember] HWND hwnd);
 
 	/// <summary>Gets a string from a list box. You can use this macro or send the LB_GETTEXT message explicitly.</summary>
 	/// <param name="hwndCtl">
@@ -1334,7 +1334,7 @@ public static partial class User32
 	// https://learn.microsoft.com/en-us/windows/win32/api/windowsx/nf-windowsx-listbox_gettext void ListBox_GetText( hwndCtl, index,
 	// lpszBuffer );
 	[PInvokeData("windowsx.h", MSDNShortId = "NF:windowsx.ListBox_GetText")]
-	public static string ListBox_GetText(HWND hwndCtl, int index)
+	public static string ListBox_GetText([In, AddAsMember] HWND hwndCtl, int index)
 	{
 		int len = SendMessage(hwndCtl, ListBoxMessage.LB_GETTEXTLEN, index).ToInt32();
 		StringBuilder sb = new(len + 1);

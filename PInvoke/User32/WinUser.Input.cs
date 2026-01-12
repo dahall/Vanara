@@ -180,7 +180,7 @@ public static partial class User32
 		RI_MOUSE_HWHEEL = 0x0800,
 	}
 
-	/// <summary>The command flag for <see cref="GetRawInputData"/>.</summary>
+	/// <summary>The command flag for <c>GetRawInputData</c>.</summary>
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	public enum RID
 	{
@@ -319,7 +319,7 @@ public static partial class User32
 	// *paRawInput, INT nInput, UINT cbSizeHeader );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
-	public static extern IntPtr DefRawInputProc(RAWINPUT[] paRawInput, int nInput, uint cbSizeHeader);
+	public static extern IntPtr DefRawInputProc([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] RAWINPUT[] paRawInput, int nInput, uint cbSizeHeader);
 
 	/// <summary>Retrieves the source of the input message.</summary>
 	/// <param name="inputMessageSource">
@@ -409,7 +409,7 @@ public static partial class User32
 	// pData, PUINT pcbSize, UINT cbSizeHeader );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern uint GetRawInputBuffer([Optional] IntPtr pData, ref uint pcbSize, uint cbSizeHeader);
+	public static extern uint GetRawInputBuffer([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(pcbSize), SizingMethod.Query | SizingMethod.Bytes)] RAWINPUT[]? pData, ref uint pcbSize, uint cbSizeHeader);
 
 	/// <summary>Retrieves the raw input from the specified device.</summary>
 	/// <param name="hRawInput">
@@ -465,7 +465,7 @@ public static partial class User32
 	// hRawInput, UINT uiCommand, LPVOID pData, PUINT pcbSize, UINT cbSizeHeader );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
-	public static extern uint GetRawInputData(HRAWINPUT hRawInput, RID uiCommand, [Optional] IntPtr pData, ref uint pcbSize, uint cbSizeHeader);
+	public static extern uint GetRawInputData([In, AddAsMember] HRAWINPUT hRawInput, RID uiCommand, [Out, SizeDef(nameof(pcbSize), SizingMethod.Query | SizingMethod.Bytes)] IntPtr pData, ref uint pcbSize, uint cbSizeHeader);
 
 	/// <summary>Retrieves information about the raw input device.</summary>
 	/// <param name="hDevice">
@@ -530,7 +530,7 @@ public static partial class User32
 	// UINT GetRawInputDeviceInfoA( [in, optional] HANDLE hDevice, [in] UINT uiCommand, [in, out, optional] LPVOID pData, [in, out] PUINT pcbSize );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GetRawInputDeviceInfoA")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, uint uiCommand, [Optional] IntPtr pData, ref uint pcbSize);
+	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, uint uiCommand, [Out, SizeDef(nameof(pcbSize), SizingMethod.Query | SizingMethod.Bytes)] IntPtr pData, ref uint pcbSize);
 
 	/// <summary>Retrieves information about the raw input device.</summary>
 	/// <param name="hDevice">
@@ -595,7 +595,7 @@ public static partial class User32
 	// UINT GetRawInputDeviceInfoA( [in, optional] HANDLE hDevice, [in] UINT uiCommand, [in, out, optional] LPVOID pData, [in, out] PUINT pcbSize );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.GetRawInputDeviceInfoA")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, RIDI uiCommand, [Optional] IntPtr pData, ref uint pcbSize);
+	public static extern uint GetRawInputDeviceInfo(HANDLE hDevice, RIDI uiCommand, [Out, SizeDef(nameof(pcbSize), SizingMethod.Query | SizingMethod.Bytes)] IntPtr pData, ref uint pcbSize);
 
 	/// <summary>Enumerates the raw input devices attached to the system.</summary>
 	/// <param name="pRawInputDeviceList">
@@ -633,7 +633,7 @@ public static partial class User32
 	// PRAWINPUTDEVICELIST pRawInputDeviceList, PUINT puiNumDevices, UINT cbSize );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern uint GetRawInputDeviceList([In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] RAWINPUTDEVICELIST[]? pRawInputDeviceList, ref uint puiNumDevices, uint cbSize);
+	public static extern uint GetRawInputDeviceList([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(puiNumDevices), SizingMethod.Query)] RAWINPUTDEVICELIST[]? pRawInputDeviceList, ref uint puiNumDevices, uint cbSize);
 
 	/// <summary>Retrieves the information about the raw input devices for the current application.</summary>
 	/// <param name="pRawInputDevices">
@@ -664,7 +664,7 @@ public static partial class User32
 	// GetRegisteredRawInputDevices( PRAWINPUTDEVICE pRawInputDevices, PUINT puiNumDevices, UINT cbSize );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
-	public static extern uint GetRegisteredRawInputDevices([In, Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] RAWINPUTDEVICE[]? pRawInputDevices, ref uint puiNumDevices, uint cbSize);
+	public static extern uint GetRegisteredRawInputDevices([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(puiNumDevices), SizingMethod.Query)] RAWINPUTDEVICE[]? pRawInputDevices, ref uint puiNumDevices, uint cbSize);
 
 	/// <summary>Registers the devices that supply the raw input data.</summary>
 	/// <param name="pRawInputDevices">
@@ -828,19 +828,19 @@ public static partial class User32
 		/// <para>Type: <c>MOUSEINPUT</c></para>
 		/// <para>The information about a simulated mouse event.</para>
 		/// </summary>
-		public MOUSEINPUT mi { get => union.mi; set => union.mi = value; }
+		public MOUSEINPUT mi { readonly get => union.mi; set => union.mi = value; }
 
 		/// <summary>
 		/// <para>Type: <c>KEYBDINPUT</c></para>
 		/// <para>The information about a simulated keyboard event.</para>
 		/// </summary>
-		public KEYBDINPUT ki { get => union.ki; set => union.ki = value; }
+		public KEYBDINPUT ki { readonly get => union.ki; set => union.ki = value; }
 
 		/// <summary>
 		/// <para>Type: <c>HARDWAREINPUT</c></para>
 		/// <para>The information about a simulated hardware event.</para>
 		/// </summary>
-		public HARDWAREINPUT hi { get => union.hi; set => union.hi = value; }
+		public HARDWAREINPUT hi { readonly get => union.hi; set => union.hi = value; }
 
 		[StructLayout(LayoutKind.Explicit)]
 		private struct UNION
@@ -954,7 +954,7 @@ public static partial class User32
 		public uint dwTime;
 
 		/// <summary>Gets a default instance with the size field set appropriately.</summary>
-		public static readonly LASTINPUTINFO Default = new() { cbSize = (uint)Marshal.SizeOf(typeof(LASTINPUTINFO)) };
+		public static readonly LASTINPUTINFO Default = new() { cbSize = (uint)Marshal.SizeOf<LASTINPUTINFO>() };
 	}
 
 	/// <summary>Contains information about a simulated mouse event.</summary>
@@ -1214,7 +1214,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawinput typedef struct tagRAWINPUT { RAWINPUTHEADER
 	// header; union { RAWMOUSE mouse; RAWKEYBOARD keyboard; RAWHID hid; } data; } RAWINPUT, *PRAWINPUT, *LPRAWINPUT;
 	[PInvokeData("winuser.h")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 8)]
 	public struct RAWINPUT
 	{
 		/// <summary>

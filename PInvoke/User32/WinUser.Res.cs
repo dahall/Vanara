@@ -221,6 +221,7 @@ public static partial class User32
 	/// If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is
 	/// NULL.To get extended error information, call GetLastError.
 	/// </returns>
+	[return: AddAsCtor]
 	public static SafeHBITMAP LoadImage_Bitmap([Optional] HINSTANCE hinst, SafeResourceId lpszName, int cxDesired, int cyDesired, LoadImageOptions fuLoad) =>
 		new(LoadImage(hinst, lpszName, LoadImageType.IMAGE_BITMAP, cxDesired, cyDesired, fuLoad), true);
 
@@ -266,6 +267,7 @@ public static partial class User32
 	/// If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is
 	/// NULL.To get extended error information, call GetLastError.
 	/// </returns>
+	[return: AddAsCtor]
 	public static SafeHCURSOR LoadImage_Cursor([Optional] HINSTANCE hinst, SafeResourceId lpszName, int cxDesired, int cyDesired, LoadImageOptions fuLoad) =>
 		new(LoadImage(hinst, lpszName, LoadImageType.IMAGE_CURSOR, cxDesired, cyDesired, fuLoad), true);
 
@@ -311,6 +313,7 @@ public static partial class User32
 	/// If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is
 	/// NULL.To get extended error information, call GetLastError.
 	/// </returns>
+	[return: AddAsCtor]
 	public static SafeHENHMETAFILE LoadImage_EnhMetaFile([Optional] HINSTANCE hinst, SafeResourceId lpszName, int cxDesired, int cyDesired, LoadImageOptions fuLoad) =>
 		new(LoadImage(hinst, lpszName, LoadImageType.IMAGE_ENHMETAFILE, cxDesired, cyDesired, fuLoad), true);
 
@@ -356,6 +359,7 @@ public static partial class User32
 	/// If the function succeeds, the return value is the handle of the newly loaded image. If the function fails, the return value is
 	/// NULL.To get extended error information, call GetLastError.
 	/// </returns>
+	[return: AddAsCtor]
 	public static SafeHICON LoadImage_Icon([Optional] HINSTANCE hinst, SafeResourceId lpszName, int cxDesired, int cyDesired, LoadImageOptions fuLoad) =>
 		new(LoadImage(hinst, lpszName, LoadImageType.IMAGE_ICON, cxDesired, cyDesired, fuLoad), true);
 
@@ -380,7 +384,7 @@ public static partial class User32
 	[PInvokeData("WinUser.h", MSDNShortId = "ms647486")]
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 	[System.Security.SecurityCritical, SuppressAutoGen]
-	public static extern int LoadString(HINSTANCE hInstance, int uID, StringBuilder lpBuffer, int nBufferMax);
+	public static extern int LoadString(HINSTANCE hInstance, int uID, [Out, SizeDef(nameof(nBufferMax), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, int nBufferMax);
 
 	/// <summary>Loads a string resource from the executable file associated with a specified module.</summary>
 	/// <param name="hInstance">
@@ -392,7 +396,7 @@ public static partial class User32
 	[PInvokeData("WinUser.h", MSDNShortId = "ms647486")]
 	public static string? LoadString(HINSTANCE hInstance, int uID)
 	{
-		var l = LoadString(hInstance, uID, out var p);
+		var l = LoadString(hInstance, uID, out StrPtrAuto p);
 		if (l == 0) Win32Error.ThrowLastError();
 		return p;
 	}

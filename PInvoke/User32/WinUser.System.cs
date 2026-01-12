@@ -4118,7 +4118,7 @@ public static partial class User32
 	// LPCTSTR lpCaption, UINT uType );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "messagebox")]
-	public static extern MB_RESULT MessageBox([Optional] HWND hWnd, string lpText, [Optional] string? lpCaption, [Optional] MB_FLAGS uType);
+	public static extern MB_RESULT MessageBox([Optional, In, AddAsMember] HWND hWnd, string lpText, [Optional] string? lpCaption, [Optional] MB_FLAGS uType);
 
 	/// <summary>
 	/// Creates, displays, and operates a message box. The message box contains application-defined message text and title, any icon, and
@@ -4469,7 +4469,7 @@ public static partial class User32
 	// int MessageBox( [in, optional] HWND hWnd, [in, optional] LPCTSTR lpText, [in, optional] LPCTSTR lpCaption, [in] UINT uType );
 	[PInvokeData("winuser.h")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	public static extern MB_RESULT MessageBoxTimeout([Optional] HWND hWnd, string lpText, [Optional] string? lpCaption, [Optional] MB_FLAGS uType, [Optional] LANGID wLanguageId, [Optional] uint dwMilliseconds);
+	public static extern MB_RESULT MessageBoxTimeout([Optional, In, AddAsMember] HWND hWnd, string lpText, [Optional] string? lpCaption, [Optional] MB_FLAGS uType, [Optional] LANGID wLanguageId, [Optional] uint dwMilliseconds);
 
 	/// <summary>
 	/// Indicates that the system cannot be shut down and sets a reason string to be displayed to the user if system shutdown is initiated.
@@ -4486,7 +4486,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShutdownBlockReasonCreate(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] string reason);
+	public static extern bool ShutdownBlockReasonCreate([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] string reason);
 
 	/// <summary>Indicates that the system can be shut down and frees the reason string.</summary>
 	/// <param name="hWnd">A handle to the main window of the application.</param>
@@ -4497,7 +4497,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShutdownBlockReasonDestroy(HWND hWnd);
+	public static extern bool ShutdownBlockReasonDestroy([In, AddAsMember] HWND hWnd);
 
 	/// <summary>Retrieves the reason string set by the <see cref="ShutdownBlockReasonCreate"/> function.</summary>
 	/// <param name="hWnd">A handle to the main window of the application.</param>
@@ -4517,25 +4517,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Winuser.h")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ShutdownBlockReasonQuery(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder? pwszBuff, ref uint pcchBuff);
-
-	/// <summary>Retrieves the reason string set by the <see cref="ShutdownBlockReasonCreate"/> function.</summary>
-	/// <param name="hWnd">A handle to the main window of the application.</param>
-	/// <param name="reason">On success, receives the reason string.</param>
-	/// <returns>
-	/// If the call succeeds, the return value is nonzero. If the call fails, the return value is zero. To get extended error
-	/// information, call GetLastError.
-	/// </returns>
-	public static bool ShutdownBlockReasonQuery(HWND hWnd, out string reason)
-	{
-		uint sz = 0;
-		reason = "";
-		if (!ShutdownBlockReasonQuery(hWnd, null, ref sz)) return false;
-		var sb = new StringBuilder((int)sz);
-		if (!ShutdownBlockReasonQuery(hWnd, sb, ref sz)) return false;
-		reason = sb.ToString();
-		return true;
-	}
+	public static extern bool ShutdownBlockReasonQuery([In, AddAsMember] HWND hWnd, [MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(pcchBuff), SizingMethod.Query)] StringBuilder? pwszBuff, ref uint pcchBuff);
 
 	/// <summary>
 	/// Retrieves or sets the value of one of the system-wide parameters. This function can also update the user profile while setting a parameter.
@@ -4864,7 +4846,7 @@ public static partial class User32
 		/// <summary>
 		/// The locale identifier (LCID) of the language for the audio description. For more information, see Locales and Languages.
 		/// </summary>
-		public uint Locale;
+		public LCID Locale;
 	}
 
 	/// <summary>
@@ -4946,6 +4928,7 @@ public static partial class User32
 		public HFC dwFlags;
 
 		/// <summary>Points to a string that contains the name of the color scheme that will be set to the default scheme.</summary>
+		[MarshalAs(UnmanagedType.LPTStr)]
 		public string lpszDefaultScheme;
 	}
 
@@ -5097,13 +5080,13 @@ public static partial class User32
 	/// <summary>Contains information used to display a message box. The MessageBoxIndirect function uses this structure.</summary>
 	[PInvokeData("Winuser.h")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct MSGBOXPARAMS
+	public struct MSGBOXPARAMS(string text, string? caption = null, MB_FLAGS style = 0, HWND owner = default)
 	{
 		/// <summary>The structure size, in bytes.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<MSGBOXPARAMS>();
 
 		/// <summary>A handle to the owner window. This member can be NULL.</summary>
-		public HWND hwndOwner;
+		public HWND hwndOwner = owner;
 
 		/// <summary>
 		/// A handle to the module that contains the icon resource identified by the lpszIcon member, and the string resource identified
@@ -5112,13 +5095,15 @@ public static partial class User32
 		public HINSTANCE hInstance;
 
 		/// <summary>A null-terminated string, or the identifier of a string resource, that contains the message to be displayed.</summary>
-		public string lpszText;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string lpszText = text;
 
 		/// <summary>
 		/// A null-terminated string, or the identifier of a string resource, that contains the message box title. If this member is
 		/// NULL, the default title Error is used.
 		/// </summary>
-		public string lpszCaption;
+		[MarshalAs(UnmanagedType.LPTStr)]
+		public string? lpszCaption = caption;
 
 		/// <summary>
 		/// The contents and behavior of the dialog box. This member can be a combination of flags described for the uType parameter of
@@ -5128,7 +5113,7 @@ public static partial class User32
 		/// the lpszIcon member.
 		/// </para>
 		/// </summary>
-		public MB_FLAGS dwStyle;
+		public MB_FLAGS dwStyle = style;
 
 		/// <summary>
 		/// Identifies an icon resource. This parameter can be either a null-terminated string or an integer resource identifier passed
@@ -5151,7 +5136,8 @@ public static partial class User32
 		/// A pointer to the callback function that processes help events for the message box.
 		/// <para>If this member is NULL, the message box sends WM_HELP messages to the owner window when help events occur.</para>
 		/// </summary>
-		public MsgBoxCallback lpfnMsgBoxCallback;
+		[MarshalAs(UnmanagedType.FunctionPtr)]
+		public MsgBoxCallback? lpfnMsgBoxCallback;
 
 		/// <summary>
 		/// The language in which to display the text contained in the predefined push buttons. This value must be in the form returned
@@ -5164,7 +5150,7 @@ public static partial class User32
 		/// specifying a language identifier, you should enumerate the locales that are installed on a system.
 		/// </para>
 		/// </summary>
-		public uint dwLanguageId;
+		public LANGID dwLanguageId;
 	}
 
 	/// <summary>
@@ -5424,7 +5410,8 @@ public static partial class User32
 		public bool bUseHWTimeStamp;
 	}
 
-	internal class SPCorrespondingTypeAttribute : CorrespondingTypeAttribute
+	internal class SPCorrespondingTypeAttribute(Type typeRef, CorrespondingAction action,
+SPCorrespondingTypeAttribute.SetParameterMethod type = Pointer) : CorrespondingTypeAttribute(typeRef, action)
 	{
 		internal enum SetParameterMethod
 		{
@@ -5433,10 +5420,7 @@ public static partial class User32
 			UiParam
 		}
 
-		public SPCorrespondingTypeAttribute(Type typeRef, CorrespondingAction action,
-			SetParameterMethod type = Pointer) : base(typeRef, action) => Type = type;
-
-		public SetParameterMethod Type { get; }
+		public SetParameterMethod Type { get; } = type;
 
 		public static SetParameterMethod SetMethodIs(object value) =>
 			GetAttrForObj(value).OfType<SPCorrespondingTypeAttribute>().FirstOrDefault()?.Type ?? Pointer;

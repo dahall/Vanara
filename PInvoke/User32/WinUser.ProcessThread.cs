@@ -154,5 +154,5 @@ public static partial class User32
 	// DWORD dwMilliseconds );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "2a684921-36f1-438c-895c-5bebc242635a")]
-	public static extern Kernel32.WAIT_STATUS WaitForInputIdle(HPROCESS hProcess, uint dwMilliseconds);
+	public static extern Kernel32.WAIT_STATUS WaitForInputIdle([In] HPROCESS hProcess, uint dwMilliseconds);
 }

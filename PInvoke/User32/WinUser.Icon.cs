@@ -148,7 +148,8 @@ public static partial class User32
 	/// <returns>
 	/// <para>The return value is a safe handle to the newly created image.</para>
 	/// </returns>
-	public static SafeHICON CopyIcon(HICON h, SIZE desiredSize = default, CopyImageOptions options = 0)
+	[return: AddAsCtor]
+	public static SafeHICON CopyIcon([In, AddAsMember] HICON h, SIZE desiredSize = default, CopyImageOptions options = 0)
 	{
 		var hret = CopyImage(h.DangerousGetHandle(), LoadImageType.IMAGE_ICON, desiredSize.Width, desiredSize.Height, options);
 		if (hret == HANDLE.NULL) Win32Error.ThrowLastError();
@@ -236,7 +237,8 @@ public static partial class User32
 	// nWidth, int nHeight, BYTE cPlanes, BYTE cBitsPixel, CONST BYTE *lpbANDbits, CONST BYTE *lpbXORbits );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "createicon")]
-	public static extern SafeHICON CreateIcon(HINSTANCE hInstance, int nWidth, int nHeight, byte cPlanes, byte cBitsPixel, [In] byte[] lpbANDbits, [In] byte[] lpbXORbits);
+	[return: AddAsCtor]
+	public static extern SafeHICON CreateIcon([In] HINSTANCE hInstance, int nWidth, int nHeight, byte cPlanes, byte cBitsPixel, [In] byte[] lpbANDbits, [In] byte[] lpbXORbits);
 
 	/// <summary>
 	/// <para>Creates an icon or cursor from resource bits describing the icon.</para>
@@ -284,7 +286,7 @@ public static partial class User32
 	// presbits, DWORD dwResSize, BOOL fIcon, DWORD dwVer );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "createiconfromresource")]
-	public static extern SafeHICON CreateIconFromResource([In] byte[] presbits, uint dwResSize, [MarshalAs(UnmanagedType.Bool)] bool fIcon, uint dwVer);
+	public static extern SafeHICON CreateIconFromResource([In, MarshalAs(UnmanagedType.LPArray)] byte[] presbits, uint dwResSize, [MarshalAs(UnmanagedType.Bool)] bool fIcon, uint dwVer = 0x00030000);
 
 	/// <summary>
 	/// <para>Creates an icon or cursor from resource bits describing the icon.</para>
@@ -381,7 +383,8 @@ public static partial class User32
 	// PBYTE presbits, DWORD dwResSize, BOOL fIcon, DWORD dwVer, int cxDesired, int cyDesired, UINT Flags );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "createiconfromresourceex")]
-	public static extern SafeHICON CreateIconFromResourceEx([In] byte[] presbits, uint dwResSize, [MarshalAs(UnmanagedType.Bool)] bool fIcon, uint dwVer, int cxDesired, int cyDesired, LoadImageOptions Flags);
+	[return: AddAsCtor]
+	public static extern SafeHICON CreateIconFromResourceEx([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] presbits, uint dwResSize, [MarshalAs(UnmanagedType.Bool)] bool fIcon, uint dwVer = 0x00030000, int cxDesired = 0, int cyDesired = 0, LoadImageOptions Flags = 0);
 
 	/// <summary>
 	/// <para>Creates an icon or cursor from an ICONINFO structure.</para>
@@ -408,6 +411,7 @@ public static partial class User32
 	// piconinfo );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "createiconindirect")]
+	[return: AddAsCtor]
 	public static extern SafeHICON CreateIconIndirect([In] ICONINFO piconinfo);
 
 	/// <summary>
@@ -494,7 +498,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "drawicon")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawIcon(HDC hDC, int X, int Y, HICON hIcon);
+	public static extern bool DrawIcon([In, AddAsMember] HDC hDC, int X, int Y, [In, AddAsMember] HICON hIcon);
 
 	/// <summary>
 	/// <para>
@@ -605,7 +609,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "drawiconex")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawIconEx(HDC hdc, int xLeft, int yTop, HICON hIcon, int cxWidth, int cyWidth, uint istepIfAniCur, [Optional] HBRUSH hbrFlickerFreeDraw, DrawIconExFlags diFlags);
+	public static extern bool DrawIconEx([In, AddAsMember] HDC hdc, int xLeft, int yTop, [In, AddAsMember] HICON hIcon, int cxWidth, int cyWidth, uint istepIfAniCur, [Optional] HBRUSH hbrFlickerFreeDraw, DrawIconExFlags diFlags);
 
 	/// <summary>
 	/// <para>Retrieves information about the specified icon or cursor.</para>
@@ -846,7 +850,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "geticoninfoex")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetIconInfoEx(HICON hicon, ref ICONINFOEX piconinfo);
+	public static extern bool GetIconInfoEx([In, AddAsMember] HICON hicon, ref ICONINFOEX piconinfo);
 
 	/// <summary>Gets the size of an icon from its handle.</summary>
 	/// <param name="hIcon">The icon handle.</param>
@@ -870,7 +874,7 @@ public static partial class User32
 
 	/// <summary>
 	/// <para>Loads the specified icon resource from the executable (.exe) file associated with an application instance.</para>
-	/// <para><c>Note</c> This function has been superseded by the LoadImage function.</para>
+	/// <para><c>Note</c> This function has been superseded by the LoadImage_Icon function.</para>
 	/// </summary>
 	/// <param name="hInstance">
 	/// <para>Type: <c>HINSTANCE</c></para>
@@ -956,97 +960,7 @@ public static partial class User32
 	// lpIconName );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "loadicon")]
-	public static extern SafeHICON LoadIcon([Optional] HINSTANCE hInstance, string lpIconName);
-
-	/// <summary>
-	/// <para>Loads the specified icon resource from the executable (.exe) file associated with an application instance.</para>
-	/// <para><c>Note</c> This function has been superseded by the LoadImage function.</para>
-	/// </summary>
-	/// <param name="hInstance">
-	/// <para>Type: <c>HINSTANCE</c></para>
-	/// <para>
-	/// A handle to an instance of the module whose executable file contains the icon to be loaded. This parameter must be <c>NULL</c>
-	/// when a standard icon is being loaded.
-	/// </para>
-	/// </param>
-	/// <param name="lpIconName">
-	/// <para>Type: <c>LPCTSTR</c></para>
-	/// <para>
-	/// The name of the icon resource to be loaded. Alternatively, this parameter can contain the resource identifier in the low-order
-	/// word and zero in the high-order word. Use the MAKEINTRESOURCE macro to create this value.
-	/// </para>
-	/// <para>
-	/// To use one of the predefined icons, set the hInstance parameter to <c>NULL</c> and the lpIconName parameter to one of the
-	/// following values.
-	/// </para>
-	/// <list type="table">
-	/// <listheader>
-	/// <term>Value</term>
-	/// <term>Meaning</term>
-	/// </listheader>
-	/// <item>
-	/// <term>IDI_APPLICATION MAKEINTRESOURCE(32512)</term>
-	/// <term>Default application icon.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDI_ASTERISK MAKEINTRESOURCE(32516)</term>
-	/// <term>Asterisk icon. Same as IDI_INFORMATION.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDI_ERROR MAKEINTRESOURCE(32513)</term>
-	/// <term>Hand-shaped icon.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDI_EXCLAMATION MAKEINTRESOURCE(32515)</term>
-	/// <term>Exclamation point icon. Same as IDI_WARNING.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDI_HAND MAKEINTRESOURCE(32513)</term>
-	/// <term>Hand-shaped icon. Same as IDI_ERROR.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDI_INFORMATION MAKEINTRESOURCE(32516)</term>
-	/// <term>Asterisk icon.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDI_QUESTION MAKEINTRESOURCE(32514)</term>
-	/// <term>Question mark icon.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDI_SHIELD MAKEINTRESOURCE(32518)</term>
-	/// <term>Security Shield icon.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDI_WARNING MAKEINTRESOURCE(32515)</term>
-	/// <term>Exclamation point icon.</term>
-	/// </item>
-	/// <item>
-	/// <term>IDI_WINLOGO MAKEINTRESOURCE(32517)</term>
-	/// <term>Default application icon. Windows 2000: Windows logo icon.</term>
-	/// </item>
-	/// </list>
-	/// </param>
-	/// <returns>
-	/// <para>Type: <c>HICON</c></para>
-	/// <para>If the function succeeds, the return value is a handle to the newly loaded icon.</para>
-	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// <c>LoadIcon</c> loads the icon resource only if it has not been loaded; otherwise, it retrieves a handle to the existing
-	/// resource. The function searches the icon resource for the icon most appropriate for the current display. The icon resource can be
-	/// a color or monochrome bitmap.
-	/// </para>
-	/// <para>
-	/// <c>LoadIcon</c> can only load an icon whose size conforms to the <c>SM_CXICON</c> and <c>SM_CYICON</c> system metric values. Use
-	/// the LoadImage function to load icons of other sizes.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-loadicona HICON LoadIconA( HINSTANCE hInstance, LPCSTR
-	// lpIconName );
-	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-	[PInvokeData("winuser.h", MSDNShortId = "loadicon")]
-	public static extern SafeHICON LoadIcon([Optional] HINSTANCE hInstance, ResourceId lpIconName);
+	public static extern SafeHICON LoadIcon([Optional] HINSTANCE hInstance, SafeResourceId lpIconName);
 
 	/// <summary>
 	/// <para>Searches through icon or cursor data for the icon or cursor that best fits the current display device.</para>
@@ -1253,7 +1167,9 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "privateextracticons")]
 	public static extern uint PrivateExtractIcons(string szFileName, int nIconIndex, int cxIcon, int cyIcon,
-		[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SafeHICON[] phicon, out uint piconid, uint nIcons, LoadImageOptions flags);
+		[Optional, Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(nIcons), SizingMethod.QueryResultInReturn)] SafeHICON[]? phicon,
+		[Optional, Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(nIcons), SizingMethod.QueryResultInReturn)] uint[]? piconid,
+		[Optional] uint nIcons, [Optional] LoadImageOptions flags);
 
 #if WPF && !NETSTANDARD2_0
 	/// <summary>Creates a <see cref="System.Windows.Media.Imaging.BitmapSource"/> from an <see cref="HICON"/>.</summary>
@@ -1369,6 +1285,7 @@ public static partial class User32
 
 	/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HICON instance at disposal using DestroyIcon.</summary>
 	[AutoSafeHandle("DestroyIcon(handle)", typeof(HICON))]
+	[Vanara.PInvoke.AdjustAutoMethodNamePattern("Icon|Ex\b|Indirect\b", "")]
 	public partial class SafeHICON : IUserHandle
 	{
 		/// <summary>Gets the size of this icon in pixels.</summary>

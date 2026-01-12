@@ -32,7 +32,7 @@ public static partial class User32
 	// hProcess );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "94236ECF-E69A-4D77-AABA-D43FE8DF8203")]
-	public static extern uint GetSystemDpiForProcess([Optional] HPROCESS hProcess);
+	public static extern uint GetSystemDpiForProcess([In, Optional, AddAsMember] HPROCESS hProcess);
 
 	/// <summary>Retrieves the specified system metric or system configuration setting taking into account a provided DPI.</summary>
 	/// <param name="nIndex">The system metric or configuration setting to be retrieved. See GetSystemMetrics for the possible values.</param>

@@ -13224,20 +13224,17 @@ public static partial class User32
 	}
 
 	/// <summary>The state specified in the wParam value of WM_*UISTATE* commands.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="UISTATE"/> struct.</remarks>
+	/// <param name="lParam">The lParam value from *UISTATE*.</param>
 	[PInvokeData("winuser.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct UISTATE
+	public readonly struct UISTATE(IntPtr lParam)
 	{
 		/// <summary>Specifies the action to be taken.</summary>
-		public readonly UIS action;
+		public readonly UIS action = (UIS)Macros.LOWORD(unchecked((uint)lParam.ToInt64()));
 
 		/// <summary>The state</summary>
-		public readonly UISF state;
-
-		/// <summary>Initializes a new instance of the <see cref="UISTATE"/> struct.</summary>
-		/// <param name="lParam">The lParam value from *UISTATE*.</param>
-		public UISTATE(IntPtr lParam)
-		{ action = (UIS)Macros.LOWORD(unchecked((uint)lParam.ToInt64())); state = (UISF)Macros.HIWORD(unchecked((uint)lParam.ToInt64())); }
+		public readonly UISF state = (UISF)Macros.HIWORD(unchecked((uint)lParam.ToInt64()));
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="UISTATE"/>.</summary>
 		/// <param name="p">The wParam.</param>
@@ -13246,22 +13243,19 @@ public static partial class User32
 	}
 
 	/// <summary>Handles lParam value of WM_HOTKEY.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="WM_HOTKEY_LPARAM"/> struct.</remarks>
+	/// <param name="lParam">The lParam value from *UISTATE*.</param>
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct WM_HOTKEY_LPARAM
+	public readonly struct WM_HOTKEY_LPARAM(IntPtr lParam)
 	{
-		private readonly ushort _Modifiers;
-		private readonly ushort _VirtualKeyCode;
+		private readonly ushort _Modifiers = Macros.LOWORD(unchecked((uint)lParam.ToInt64()));
+		private readonly ushort _VirtualKeyCode = Macros.HIWORD(unchecked((uint)lParam.ToInt64()));
 
 		/// <summary>The keys that were to be pressed in combination with the key specified by the high-order word to generate the message.</summary>
 		public HotKeyModifiers Modifiers => (HotKeyModifiers)_Modifiers;
 
 		/// <summary>Gets the virtual key code of the hot key.</summary>
 		public VK VirtualKeyCode => (VK)_VirtualKeyCode;
-
-		/// <summary>Initializes a new instance of the <see cref="WM_HOTKEY_LPARAM"/> struct.</summary>
-		/// <param name="lParam">The lParam value from *UISTATE*.</param>
-		public WM_HOTKEY_LPARAM(IntPtr lParam)
-		{ _Modifiers = Macros.LOWORD(unchecked((uint)lParam.ToInt64())); _VirtualKeyCode = Macros.HIWORD(unchecked((uint)lParam.ToInt64())); }
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WM_HOTKEY_LPARAM"/>.</summary>
 		/// <param name="p">The wParam.</param>
@@ -13336,22 +13330,19 @@ public static partial class User32
 	}
 
 	/// <summary>The state specified in the wParam value of WM_*MOUSEWHEEL* commands.</summary>
+	/// <remarks>Initializes a new instance of the <see cref="WM_SCROLL_LPARAM"/> struct.</remarks>
+	/// <param name="lParam">The lParam value from *UISTATE*.</param>
 	[PInvokeData("winuser.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct WM_SCROLL_LPARAM
+	public readonly struct WM_SCROLL_LPARAM(IntPtr lParam)
 	{
-		private readonly ushort _scrollbarEvent;
+		private readonly ushort _scrollbarEvent = Macros.LOWORD(unchecked((uint)lParam.ToInt64()));
 
 		/// <summary>The current position of the scroll box if the low-order word of lParam is SB_THUMBPOSITION.</summary>
-		public readonly ushort scrollPosition;
+		public readonly ushort scrollPosition = Macros.HIWORD(unchecked((uint)lParam.ToInt64()));
 
 		/// <summary>The scroll bar event.</summary>
 		public SBCMD ScrollbarEvent => (SBCMD)_scrollbarEvent;
-
-		/// <summary>Initializes a new instance of the <see cref="WM_SCROLL_LPARAM"/> struct.</summary>
-		/// <param name="lParam">The lParam value from *UISTATE*.</param>
-		public WM_SCROLL_LPARAM(IntPtr lParam)
-		{ _scrollbarEvent = Macros.LOWORD(unchecked((uint)lParam.ToInt64())); scrollPosition = Macros.HIWORD(unchecked((uint)lParam.ToInt64())); }
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="WM_SCROLL_LPARAM"/>.</summary>
 		/// <param name="p">The wParam.</param>

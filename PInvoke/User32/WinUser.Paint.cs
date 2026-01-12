@@ -474,7 +474,7 @@ public static partial class User32
 	// lpPaint );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "513341d7-bed8-469c-a067-ee71dc8860f9")]
-	public static extern HDC BeginPaint(HWND hWnd, out PAINTSTRUCT lpPaint);
+	public static extern HDC BeginPaint([In, AddAsMember] HWND hWnd, out PAINTSTRUCT lpPaint);
 
 	/// <summary>Animates the caption of a window to indicate the opening of an icon or the minimizing or maximizing of a window.</summary>
 	/// <param name="hwnd">
@@ -501,7 +501,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "54a9234a-0056-4cfe-9158-86635dc31bc6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawAnimatedRects(HWND hwnd, IDANI idAni, in RECT lprcFrom, in RECT lprcTo);
+	public static extern bool DrawAnimatedRects([In, AddAsMember] HWND hwnd, IDANI idAni, in RECT lprcFrom, in RECT lprcTo);
 
 	/// <summary>The <c>DrawCaption</c> function draws a window caption.</summary>
 	/// <param name="hwnd">A handle to a window that supplies text and an icon for the window caption.</param>
@@ -560,7 +560,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "9348e29f-ce56-4664-8862-f5810c797622")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawCaption(HWND hwnd, HDC hdc, in RECT lprect, DrawCaptionFlags flags);
+	public static extern bool DrawCaption([In, AddAsMember] HWND hwnd, HDC hdc, in RECT lprect, DrawCaptionFlags flags);
 
 	/// <summary>The <c>DrawEdge</c> function draws one or more edges of rectangle.</summary>
 	/// <param name="hdc">A handle to the device context.</param>
@@ -726,7 +726,7 @@ public static partial class User32
 	// BOOL DrawEdge( _In_ HDC hdc, _Inout_ LPRECT qrc, _In_ UINT edge, _In_ UINT grfFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/dd162477(v=vs.85).aspx
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Winuser.h", MSDNShortId = "dd162477")]
-	public static extern bool DrawEdge(HDC hdc, ref RECT qrc, BorderStyles3D edge, BorderFlags grfFlags);
+	public static extern bool DrawEdge([In, AddAsMember] HDC hdc, ref RECT qrc, BorderStyles3D edge, BorderFlags grfFlags);
 
 	/// <summary>The <c>DrawFocusRect</c> function draws a rectangle in the style used to indicate that the rectangle has the focus.</summary>
 	/// <param name="hDC">A handle to the device context.</param>
@@ -757,7 +757,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a910d04f-fe4d-4fc9-a518-abac864da6f3")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawFocusRect(HDC hDC, in RECT lprc);
+	public static extern bool DrawFocusRect([In, AddAsMember] HDC hDC, in RECT lprc);
 
 	/// <summary>The <c>DrawFrameControl</c> function draws a frame control of the specified type and style.</summary>
 	/// <param name="hdc">Handle to the device context of the window in which to draw the control.</param>
@@ -788,7 +788,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "3102007e-e9f7-46d8-ae10-cf156d2131f6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawFrameControl(HDC hdc, in RECT lprc, FrameControlType uType, FrameControlState uState);
+	public static extern bool DrawFrameControl([In, AddAsMember] HDC hdc, in RECT lprc, FrameControlType uType, FrameControlState uState);
 
 	/// <summary>
 	/// The <c>DrawState</c> function displays an image and applies a visual effect to indicate a state, such as a disabled or default state.
@@ -910,7 +910,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "b92150be-8264-4ea8-a2ea-d70b7fba6361")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawState(HDC hdc, HBRUSH hbrFore, [Optional] DrawStateProc? qfnCallBack, [Optional] IntPtr lData,
+	public static extern bool DrawState([In, AddAsMember] HDC hdc, HBRUSH hbrFore, [Optional] DrawStateProc? qfnCallBack, [Optional] IntPtr lData,
 		[Optional] IntPtr wData, int x, int y, [Optional] int cx, [Optional] int cy, DrawStateFlags uFlags);
 
 	/// <summary>
@@ -1033,7 +1033,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "b92150be-8264-4ea8-a2ea-d70b7fba6361")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool DrawState(HDC hdc, HBRUSH hbrFore, [Optional] DrawStateProc? qfnCallBack, [MarshalAs(UnmanagedType.LPTStr)] string lData,
+	public static extern bool DrawState([In, AddAsMember] HDC hdc, HBRUSH hbrFore, [Optional] DrawStateProc? qfnCallBack, [MarshalAs(UnmanagedType.LPTStr)] string lData,
 		[Optional] nuint wData, int x, int y, [Optional] int cx, [Optional] int cy, DrawStateFlags uFlags);
 
 	/// <summary>
@@ -1054,7 +1054,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "b07cfed9-21c4-4459-855a-eaf4d1d34ab8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool EndPaint(HWND hWnd, in PAINTSTRUCT lpPaint);
+	public static extern bool EndPaint([In, AddAsMember] HWND hWnd, in PAINTSTRUCT lpPaint);
 
 	/// <summary>
 	/// The <c>ExcludeUpdateRgn</c> function prevents drawing within invalid areas of a window by excluding an updated region in the
@@ -1090,7 +1090,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-excludeupdatergn int ExcludeUpdateRgn( HDC hDC, HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "408fda82-30c3-4eb4-be42-3085c71ba99e")]
-	public static extern Gdi32.RegionFlags ExcludeUpdateRgn(HDC hDC, HWND hWnd);
+	public static extern Gdi32.RegionFlags ExcludeUpdateRgn([In, AddAsMember] HDC hDC, HWND hWnd);
 
 	/// <summary>
 	/// The <c>FillRect</c> function fills a rectangle by using the specified brush. This function includes the left and top borders, but
@@ -1124,7 +1124,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "98ab34da-ea07-4446-a62e-509c849d95f9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FillRect(HDC hDC, in RECT lprc, HBRUSH hbr);
+	public static extern bool FillRect([In, AddAsMember] HDC hDC, in RECT lprc, HBRUSH hbr);
 
 	/// <summary>
 	/// The <c>FrameRect</c> function draws a border around the specified rectangle by using the specified brush. The width and height of
@@ -1154,7 +1154,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "a1083cb5-5e6c-4134-badf-9fc5142d1453")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FrameRect(HDC hDC, in RECT lprc, HBRUSH hbr);
+	public static extern bool FrameRect([In, AddAsMember] HDC hDC, in RECT lprc, HBRUSH hbr);
 
 	/// <summary>
 	/// The <c>GetUpdateRect</c> function retrieves the coordinates of the smallest rectangle that completely encloses the update region
@@ -1190,7 +1190,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "e54483a1-8738-4b22-a24e-c0b31f6ca9d6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetUpdateRect(HWND hWnd, [Optional] PRECT? lpRect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
+	public static extern bool GetUpdateRect([In, AddAsMember] HWND hWnd, [Optional] PRECT? lpRect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
 
 	/// <summary>
 	/// The <c>GetUpdateRgn</c> function retrieves the update region of a window by copying it into the specified region. The coordinates
@@ -1235,7 +1235,7 @@ public static partial class User32
 	// bErase );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "d80c4b44-3f50-46f9-bf5a-fff7868d91ba")]
-	public static extern Gdi32.RegionFlags GetUpdateRgn(HWND hWnd, HRGN hRgn, [MarshalAs(UnmanagedType.Bool)] bool bErase);
+	public static extern Gdi32.RegionFlags GetUpdateRgn([In, AddAsMember] HWND hWnd, HRGN hRgn, [MarshalAs(UnmanagedType.Bool)] bool bErase);
 
 	/// <summary>
 	/// <para>
@@ -1280,7 +1280,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowdc HDC GetWindowDC( HWND hWnd );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "9e6a135e-e337-4129-a3ad-faf9a8ac9b2d")]
-	public static extern HDC GetWindowDC([Optional] HWND hWnd);
+	public static extern HDC GetWindowDC([Optional, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// The <c>GetWindowRgn</c> function obtains a copy of the window region of a window. The window region of a window is set by calling
@@ -1325,7 +1325,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowrgn int GetWindowRgn( HWND hWnd, HRGN hRgn );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "c8a8fa46-354b-489e-b016-fd2e728958ce")]
-	public static extern Gdi32.RegionFlags GetWindowRgn(HWND hWnd, HRGN hRgn);
+	public static extern Gdi32.RegionFlags GetWindowRgn([In, AddAsMember] HWND hWnd, HRGN hRgn);
 
 	/// <summary>
 	/// The <c>GetWindowRgnBox</c> function retrieves the dimensions of the tightest bounding rectangle for the window region of a window.
@@ -1371,7 +1371,7 @@ public static partial class User32
 	// lprc );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "20e23474-a1c5-4afe-976e-a7e5790fb91b")]
-	public static extern Gdi32.RegionFlags GetWindowRgnBox(HWND hWnd, out RECT lprc);
+	public static extern Gdi32.RegionFlags GetWindowRgnBox([In, AddAsMember] HWND hWnd, out RECT lprc);
 
 	/// <summary>
 	/// <para>
@@ -1478,7 +1478,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "5a823d36-d08b-41c9-8857-540576f54b55")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InvalidateRect(HWND hWnd, [In, Optional] PRECT? lpRect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
+	public static extern bool InvalidateRect([In, AddAsMember] HWND hWnd, [In, Optional] PRECT? lpRect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
 
 	/// <summary>
 	/// The <c>InvalidateRgn</c> function invalidates the client area within the specified region by adding it to the current update
@@ -1516,7 +1516,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "b5b44efe-8045-4e54-89f9-1766689a053d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InvalidateRgn(HWND hWnd, [In, Optional] HRGN hRgn, [MarshalAs(UnmanagedType.Bool)] bool bErase);
+	public static extern bool InvalidateRgn([In, AddAsMember] HWND hWnd, [In, Optional] HRGN hRgn, [MarshalAs(UnmanagedType.Bool)] bool bErase);
 
 	/// <summary>
 	/// The <c>LockWindowUpdate</c> function disables or enables drawing in the specified window. Only one window can be locked at a time.
@@ -1553,7 +1553,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "00ec40c7-8ab2-40db-a9bb-48e18d66bf1a")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LockWindowUpdate([Optional] HWND hWndLock);
+	public static extern bool LockWindowUpdate([Optional, AddAsMember] HWND hWndLock);
 
 	/// <summary>
 	/// The <c>PaintDesktop</c> function fills the clipping region in the specified device context with the desktop pattern or wallpaper.
@@ -1568,7 +1568,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "738500d4-32f5-43cf-8d40-9ad201ca6d4b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool PaintDesktop(HDC hdc);
+	public static extern bool PaintDesktop([In, AddAsMember] HDC hdc);
 
 	/// <summary>The <c>RedrawWindow</c> function updates the specified rectangle or region in a window's client area.</summary>
 	/// <param name="hWnd">A handle to the window to be redrawn. If this parameter is <c>NULL</c>, the desktop window is updated.</param>
@@ -1703,7 +1703,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "c6cb7f74-237e-4d3e-a852-894da36e990c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RedrawWindow(HWND hWnd, [In, Optional] PRECT? lprcUpdate, [Optional] HRGN hrgnUpdate, RedrawWindowFlags flags);
+	public static extern bool RedrawWindow([In, AddAsMember] HWND hWnd, [In, Optional] PRECT? lprcUpdate, [Optional] HRGN hrgnUpdate, RedrawWindowFlags flags);
 
 	/// <summary>
 	/// The <c>SetWindowRgn</c> function sets the window region of a window. The window region determines the area within the window
@@ -1747,7 +1747,7 @@ public static partial class User32
 	// bRedraw );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "06209d0c-14f9-45ec-ae2c-9cc596b5bbaa")]
-	public static extern int SetWindowRgn(HWND hWnd, [In, Optional] HRGN hRgn, [MarshalAs(UnmanagedType.Bool)] bool bRedraw);
+	public static extern int SetWindowRgn([In, AddAsMember] HWND hWnd, [In, Optional] HRGN hRgn, [MarshalAs(UnmanagedType.Bool)] bool bRedraw);
 
 	/// <summary>
 	/// The <c>UpdateWindow</c> function updates the client area of the specified window by sending a WM_PAINT message to the window if
@@ -1763,7 +1763,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "51a50f1f-7b4d-4acd-83a0-1877f5181766")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool UpdateWindow(HWND hWnd);
+	public static extern bool UpdateWindow([In, AddAsMember] HWND hWnd);
 
 	/// <summary>
 	/// The <c>ValidateRect</c> function validates the client area within a rectangle by removing the rectangle from the update region of
@@ -1793,7 +1793,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "961dd768-1849-44df-bc7f-480881ed6477")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ValidateRect([Optional] HWND hWnd, [In, Optional] PRECT? lpRect);
+	public static extern bool ValidateRect([Optional, AddAsMember] HWND hWnd, [In, Optional] PRECT? lpRect);
 
 	/// <summary>
 	/// The <c>ValidateRgn</c> function validates the client area within a region by removing the region from the current update region
@@ -1819,7 +1819,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "80fb1d4a-d9b1-4e67-b585-eee81893ed34")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ValidateRgn(HWND hWnd, [In, Optional] HRGN hRgn);
+	public static extern bool ValidateRgn([In, AddAsMember] HWND hWnd, [In, Optional] HRGN hRgn);
 
 	/// <summary>
 	/// <para>

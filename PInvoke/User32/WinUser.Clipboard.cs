@@ -537,7 +537,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "addclipboardformatlistener")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool AddClipboardFormatListener(HWND hwnd);
+	public static extern bool AddClipboardFormatListener([In, AddAsMember] HWND hwnd);
 
 	/// <summary>
 	/// <para>Removes a specified window from the chain of clipboard viewers.</para>
@@ -573,7 +573,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "changeclipboardchain")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ChangeClipboardChain(HWND hWndRemove, HWND hWndNewNext);
+	public static extern bool ChangeClipboardChain([In] HWND hWndRemove, HWND hWndNewNext);
 
 	/// <summary>
 	/// <para>Closes the clipboard.</para>
@@ -803,7 +803,7 @@ public static partial class User32
 	// format, LPSTR lpszFormatName, int cchMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getclipboardformatname")]
-	public static extern int GetClipboardFormatName(uint format, StringBuilder lpszFormatName, int cchMaxCount);
+	public static extern int GetClipboardFormatName(uint format, [Out, SizeDef(nameof(cchMaxCount), SizingMethod.QueryResultInReturn)] StringBuilder? lpszFormatName, int cchMaxCount);
 
 	/// <summary>
 	/// <para>Retrieves the window handle of the current owner of the clipboard.</para>
@@ -907,7 +907,7 @@ public static partial class User32
 	// UINT *paFormatPriorityList, int cFormats );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getpriorityclipboardformat")]
-	public static extern int GetPriorityClipboardFormat([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[] paFormatPriorityList, int cFormats);
+	public static extern int GetPriorityClipboardFormat([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(cFormats), SizingMethod.QueryResultInReturn)] uint[]? paFormatPriorityList, int cFormats);
 
 	/// <summary>
 	/// <para>Retrieves the currently supported clipboard formats.</para>
@@ -933,7 +933,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "getupdatedclipboardformats")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetUpdatedClipboardFormats([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] uint[]? lpuiFormats, uint cFormats, out uint pcFormatsOut);
+	public static extern bool GetUpdatedClipboardFormats([Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(cFormats), SizingMethod.Query, OutVarName = nameof(pcFormatsOut))] uint[]? lpuiFormats, uint cFormats, out uint pcFormatsOut);
 
 	/// <summary>
 	/// <para>Determines whether the clipboard contains data in the specified format.</para>
@@ -997,7 +997,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "openclipboard")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool OpenClipboard([Optional] HWND hWndNewOwner);
+	public static extern bool OpenClipboard([In, Optional, AddAsMember] HWND hWndNewOwner);
 
 	/// <summary>
 	/// <para>Registers a new clipboard format. This format can then be used as a valid clipboard format.</para>
@@ -1049,7 +1049,7 @@ public static partial class User32
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "removeclipboardformatlistener")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool RemoveClipboardFormatListener(HWND hwnd);
+	public static extern bool RemoveClipboardFormatListener([In, AddAsMember] HWND hwnd);
 
 	/// <summary>
 	/// <para>
@@ -1149,7 +1149,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclipboardviewer HWND SetClipboardViewer( HWND hWndNewViewer );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "setclipboardviewer")]
-	public static extern HWND SetClipboardViewer(HWND hWndNewViewer);
+	public static extern HWND SetClipboardViewer([In, AddAsMember] HWND hWndNewViewer);
 
 	/// <summary>
 	/// <para>Defines the metafile picture format used for exchanging metafile data through the clipboard.</para>

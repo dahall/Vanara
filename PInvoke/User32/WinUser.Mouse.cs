@@ -1,7 +1,12 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Vanara.PInvoke;
 
 public static partial class User32
 {
+	/// <summary>Use the default hover time.</summary>
+	public const uint HOVER_DEFAULT = 0xFFFFFFFF;
+
 	/// <summary>The resolution desired.</summary>
 	[PInvokeData("winuser.h")]
 	public enum GMMP
@@ -242,7 +247,7 @@ public static partial class User32
 	// cbSize, LPMOUSEMOVEPOINT lppt, LPMOUSEMOVEPOINT lpptBuf, int nBufPoints, DWORD resolution );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h")]
-	public static extern int GetMouseMovePointsEx(uint cbSize, in MOUSEMOVEPOINT lppt, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] MOUSEMOVEPOINT[] lpptBuf, int nBufPoints, GMMP resolution);
+	public static extern int GetMouseMovePointsEx(uint cbSize, in MOUSEMOVEPOINT lppt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] MOUSEMOVEPOINT[]? lpptBuf, [Range(1, 64)] int nBufPoints, GMMP resolution);
 
 	/// <summary>
 	/// <para>The <c>mouse_event</c> function synthesizes mouse motion and button clicks.</para>
@@ -496,19 +501,19 @@ public static partial class User32
 	// x; int y; DWORD time; ULONG_PTR dwExtraInfo; } MOUSEMOVEPOINT, *PMOUSEMOVEPOINT, *LPMOUSEMOVEPOINT;
 	[PInvokeData("winuser.h")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct MOUSEMOVEPOINT
+	public struct MOUSEMOVEPOINT(int x, int y)
 	{
 		/// <summary>
 		/// <para>Type: <c>int</c></para>
 		/// <para>The x-coordinate of the mouse.</para>
 		/// </summary>
-		public int x;
+		public int x = x;
 
 		/// <summary>
 		/// <para>Type: <c>int</c></para>
 		/// <para>The y-coordinate of the mouse.</para>
 		/// </summary>
-		public int y;
+		public int y = y;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -521,6 +526,9 @@ public static partial class User32
 		/// <para>Additional information associated with this coordinate.</para>
 		/// </summary>
 		public IntPtr dwExtraInfo;
+
+		/// <summary>Gets the size of the structure.</summary>
+		public static uint Size => (uint)Marshal.SizeOf<MOUSEMOVEPOINT>();
 	}
 
 	/// <summary>
@@ -529,21 +537,21 @@ public static partial class User32
 	/// </summary>
 	[PInvokeData("Winuser.h", MSDNShortId = "ms645604")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct TRACKMOUSEEVENT
+	public struct TRACKMOUSEEVENT(HWND hwnd, TME flags = TME.TME_HOVER | TME.TME_LEAVE, uint hoverTime = HOVER_DEFAULT)
 	{
 		/// <summary>The size of the TRACKMOUSEEVENT structure, in bytes.</summary>
-		public uint cbSize;
+		public uint cbSize = (uint)Marshal.SizeOf<TRACKMOUSEEVENT>();
 
 		/// <summary>The services requested</summary>
-		public TME dwFlags;
+		public TME dwFlags = flags;
 
 		/// <summary>A handle to the window to track.</summary>
-		public HWND hwndTrack;
+		public HWND hwndTrack = hwnd;
 
 		/// <summary>
 		/// The hover time-out (if TME_HOVER was specified in dwFlags), in milliseconds. Can be HOVER_DEFAULT, which means to use the
 		/// system default hover time-out.
 		/// </summary>
-		public uint dwHoverTime;
+		public uint dwHoverTime = hoverTime;
 	}
 }
