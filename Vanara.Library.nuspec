@@ -123,6 +123,7 @@
       <dependency id="Vanara.PInvoke.UxTheme" version="5.0.0" />
       <dependency id="Vanara.PInvoke.Version" version="5.0.0" />
       <dependency id="Vanara.PInvoke.VirtDisk" version="5.0.0" />
+      <dependency id="" version="5.0.0" />
       <dependency id="Vanara.PInvoke.WcmApi" version="5.0.0" />
       <dependency id="Vanara.PInvoke.WcnApi" version="5.0.0" />
       <dependency id="Vanara.PInvoke.WebSocket" version="5.0.0" />
@@ -147,6 +148,7 @@
       <dependency id="Vanara.Windows.Forms" version="5.0.0" />
       <dependency id="Vanara.Windows.Shell.Common" version="5.0.0" />
       <dependency id="Vanara.Windows.Shell" version="5.0.0" />
+      <dependency id="Vanara.WindowsUpdate" version="5.0.0" />
       <dependency id="Vanara.WinUI.Extensions" version="5.0.0" />
       <dependency id="Vanara.WPF.Extensions" version="5.0.0" />
     </dependencies>

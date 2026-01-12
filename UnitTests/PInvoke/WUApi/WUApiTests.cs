@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 #if !WUTYPELIB
@@ -53,7 +54,7 @@ public class WUApiTests
 	}
 
 	[Test]
-	public void TestInstaller()
+	public async Task TestInstaller()
 	{
 		AutomaticUpdates auto = new();
 		if (!auto.ServiceEnabled)
@@ -83,12 +84,16 @@ public class WUApiTests
 		var autoUpd = new UpdateSearcher().Search("IsInstalled=0").Updates.Where(u => u.AutoSelectOnWebSites).ToList();
 		var dnld = autoUpd.Where(u => !u.IsDownloaded).ToList();
 		if (dnld.Count > 0)
-			new UpdateDownloader(dnld).DownloadAsync(p => p.WriteValues()).Result.WriteValues();
+		{
+			var dres = await new UpdateDownloader(dnld).DownloadAsync(p => p.WriteValues());
+			dres.WriteValues();
+			Assert.That(dres.HResult, ResultIs.Successful);
+		}
 
-		var res = new UpdateInstaller(autoUpd) { AllowSourcePrompts = false, ForceQuiet = true }.InstallAsync(p => p.WriteValues()).Result;
+		var res = await new UpdateInstaller(autoUpd) { AllowSourcePrompts = false, ForceQuiet = true }.InstallAsync(p => p.WriteValues());
 #endif
-		Assert.That(res.HResult, Is.EqualTo((HRESULT)0));
 		res.WriteValues();
+		Assert.That(res.HResult, ResultIs.Successful);
 	}
 
 	[Test]
@@ -115,7 +120,7 @@ public class WUApiTests
 	{
 		UpdateSearcher searcher = new();
 		var res = searcher.Search("");
-		foreach (var upd in res.Updates.Cast<IUpdate>())
+		foreach (var upd in res.Updates.Cast<Update>())
 		{
 			TestContext.WriteLine(new string('=', 50));
 			TestContext.WriteLine(upd.Title);
@@ -142,7 +147,7 @@ public class WUApiTests
 	{
 		UpdateSearcher searcher = new();
 		var res = await searcher.SearchAsync("IsInstalled=1");
-		foreach (var upd in res.Updates.Cast<IUpdate>())
+		foreach (var upd in res.Updates.Cast<Update>())
 		{
 			TestContext.WriteLine(new string('=', 50));
 			TestContext.WriteLine(upd.Title);
@@ -171,7 +176,7 @@ public class WUApiTests
 		Assert.That(wp.BypassList, Contains.Item("168.0.0.1"));
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void TestUpdateServiceManager()
 	{
 		const string svcid = "7971f918-a847-4430-9279-4a52d1efe18d"; // Guid.NewGuid().ToString("D");
