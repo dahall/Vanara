@@ -45,11 +45,11 @@ ArrayLayout, Bitness, CorrespondingAction, FileAttributeConstant, FileOpConstant
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="InteropServices\SafeIDispatch.cs" />
-    <Compile Remove="InteropServices\StructMarshaler.cs" />
+    <Compile Remove="Marshaler\StructMarshaler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="InteropServices\SafeIDispatch.cs" />
-    <None Include="InteropServices\StructMarshaler.cs" />
+    <None Include="Marshaler\StructMarshaler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="InteropServices\SafeLPSTR.cs">
