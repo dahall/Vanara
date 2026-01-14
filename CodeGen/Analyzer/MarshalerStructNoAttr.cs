@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Vanara.Marshaler;
 
 /// <summary>A diagnostic analyzer that checks for parameters of type [Marshaled] structures.</summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
@@ -36,7 +35,7 @@ public class MarshalerStructNoAttrAnalyzer : DiagnosticAnalyzer
 		// Check if the node is a parameter with a parameter type that has the MarshaledAttribute applied
 		if (context.Node is ParameterSyntax parameterSyntax &&
 			context.SemanticModel.GetDeclaredSymbol(parameterSyntax) is IParameterSymbol parameterSymbol &&
-			parameterSymbol.Type.GetAttributes().Any(attr => attr.AttributeClass?.Name == nameof(MarshaledAttribute)))
+			parameterSymbol.Type.GetAttributes().Any(attr => attr.AttributeClass?.Name == "MarshaledAttribute"))
 		{
 			// Check if the parameter has a MarshalAsAttribute applied
 			var marshaledAttr = parameterSymbol.GetAttributes().FirstOrDefault(attr => attr.AttributeClass?.Name == nameof(MarshalAsAttribute));

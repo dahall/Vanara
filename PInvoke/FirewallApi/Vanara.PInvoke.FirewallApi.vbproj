@@ -25,7 +25,7 @@ INetFwAuthorizedApplication INetFwAuthorizedApplications INetFwIcmpSettings INet
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CustomMarshalers" Condition=" $(TargetFramework.StartsWith('net2')) Or $(TargetFramework.StartsWith('net3')) Or $(TargetFramework.StartsWith('net4')) " />

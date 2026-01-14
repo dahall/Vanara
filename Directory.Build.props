@@ -25,11 +25,11 @@
   </PropertyGroup>
 
   <!-- Custom generator -->
-  <ItemGroup Condition="'$(MSBuildProjectName)'!='Vanara.Core' And !$(MSBuildProjectName.StartsWith('Vanara.CodeGen'))">
+  <ItemGroup Condition="!$(MSBuildProjectName.StartsWith('Vanara.CodeGen'))">
     <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\Generator\Vanara.CodeGen.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" PrivateAssets="all" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\Analyzer\Vanara.CodeGen.Analyzer.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)CodeGen\CodeFixes\Vanara.CodeGen.CodeFixes.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-    <ProjectReference Include="$(MSBuildThisFileDirectory)Core\Vanara.Core.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)Core\Vanara.Core.csproj" OutputItemType="Analyzer" Condition="'$(MSBuildProjectName)'!='Vanara.Core'"/>
   </ItemGroup>
   <PropertyGroup Condition="'$(MSBuildProjectExtension)'=='.csproj'">
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>

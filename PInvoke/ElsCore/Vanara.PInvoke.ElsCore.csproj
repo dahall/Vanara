@@ -20,7 +20,4 @@ MAPPING_DATA_RANGE MAPPING_ENUM_OPTIONS MAPPING_OPTIONS MAPPING_PROPERTY_BAG MAP
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

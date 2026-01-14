@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-/// <summary>Analyzer for supplying <see langword="null"/> as a value for a <see cref="Vanara.PInvoke.SafeHANDLE"/> typed argument.</summary>
+/// <summary>Analyzer for supplying <see langword="null"/> as a value for a <c>Vanara.PInvoke.SafeHANDLE</c> typed argument.</summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class SafeHANDLENullAnalyzer : DiagnosticAnalyzer
 {

@@ -26,7 +26,4 @@ IDot11AdHocInterface IDot11AdHocInterfaceNotificationSink IDot11AdHocManager IDo
   <ItemGroup>
     <AdditionalFiles Include="handles.csv" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

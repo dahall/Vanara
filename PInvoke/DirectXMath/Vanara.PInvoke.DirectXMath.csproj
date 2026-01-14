@@ -21,9 +21,6 @@ Structures
 </PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="CommunityToolkit.HighPerformance" />
   </ItemGroup>
 </Project>

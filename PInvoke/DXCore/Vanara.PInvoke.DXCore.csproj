@@ -23,7 +23,4 @@ IDXCoreAdapter IDXCoreAdapter1 IDXCoreAdapterFactory IDXCoreAdapterFactory1 IDXC
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

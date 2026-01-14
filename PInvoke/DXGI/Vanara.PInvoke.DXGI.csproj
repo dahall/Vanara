@@ -24,9 +24,6 @@ ID3DBlob ID3DDestructionNotifier IDXGIAdapter IDXGIAdapter1 IDXGIAdapter2 IDXGIA
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="CommunityToolkit.HighPerformance" />
   </ItemGroup>
 </Project>

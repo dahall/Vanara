@@ -23,7 +23,4 @@ CLOSESTATUS DATA WEB_SOCKET_BUFFER WEB_SOCKET_HANDLE WEB_SOCKET_HTTP_HEADER WEB_
   <ItemGroup>
     <AdditionalFiles Include="handles.csv" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

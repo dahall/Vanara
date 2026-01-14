@@ -26,7 +26,4 @@ BCRYPT_ALGORITHM_IDENTIFIER BCRYPT_ALG_HANDLE BCRYPT_DH_PARAMETER_HEADER BCRYPT_
   <ItemGroup>
     <AdditionalFiles Include="handles.csv" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

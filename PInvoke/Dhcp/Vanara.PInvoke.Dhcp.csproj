@@ -20,7 +20,4 @@ DHCPAPI_PARAMS DHCPCAPI_CLASSID DHCPCAPI_PARAMS_ARRAY DHCPV6CAPI_CLASSID DHCPV6C
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

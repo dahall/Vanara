@@ -20,7 +20,4 @@ IFindSimilarResults IRdcComparator IRdcFileReader IRdcFileWriter IRdcGenerator I
 </PackageReleaseNotes>
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>

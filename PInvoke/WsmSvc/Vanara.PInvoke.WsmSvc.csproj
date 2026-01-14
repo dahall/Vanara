@@ -26,7 +26,4 @@ IWSMan IWSManConnectionOptions IWSManConnectionOptionsEx IWSManConnectionOptions
   <ItemGroup>
     <AdditionalFiles Include="handles.csv" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-  </ItemGroup>
 </Project>
