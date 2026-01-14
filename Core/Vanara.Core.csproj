@@ -6,7 +6,13 @@
 * Extension and helper methods to marshaling structures arrays and strings
 * SafeHandle based classes for working with memory allocated via CoTaskMem, HGlobal, or Local calls that handles packing and extracting arrays, structures and raw memory
 * Safe pinning of objects in memory
-* Memory stream based on marshaled memory</Description>
+* Memory stream based on marshaled memory
+* IEnumerable helpers for COM enumerations
+* Custom marshaler for CoTaskMem pointers
+* Enhanced error results classes for HRESULT, Win32Error and NTStatus
+* Standard windows.h macros (e.g. HIWORD, MAKELONG, etc.)
+* Overlapped method wrapper
+* Resource ID holder</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <AssemblyName>Vanara.Core</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
