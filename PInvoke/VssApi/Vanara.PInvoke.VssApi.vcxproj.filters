@@ -70,9 +70,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)docs\icons\Vanara64x64.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Vanara.PInvoke.VssApi.nuspec" />
     <None Include="packages.config" />
     <None Include="cpp.hint" />
