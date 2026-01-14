@@ -7,10 +7,12 @@
   <ItemGroup>
     <None Include="InteropServices\StructMarshalerTests.cs" />
     <None Include="Marshaler\TestStructures.cs" />
+    <None Include="SampleAttributeTestCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="InteropServices\StructMarshalerTests.cs" />
     <Compile Remove="Marshaler\TestStructures.cs" />
+    <Compile Remove="SampleAttributeTestCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoFixture" />
