@@ -1118,7 +1118,7 @@ public static partial class ComCtl32
 		/// <para>The returned string corresponds to the text that is currently displayed by the button.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbuttontext
-		[MsgParams(typeof(int), typeof(LPSTR))]
+		[MsgParams(typeof(int), typeof(PSTR))]
 		TB_GETBUTTONTEXTA = WM_USER + 45,
 
 		/// <summary>
@@ -1144,7 +1144,7 @@ public static partial class ComCtl32
 		/// <para>The returned string corresponds to the text that is currently displayed by the button.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbuttontext
-		[MsgParams(typeof(int), typeof(LPWSTR))]
+		[MsgParams(typeof(int), typeof(PWSTR))]
 		TB_GETBUTTONTEXTW = WM_USER + 75,
 
 		/// <summary>
@@ -2001,7 +2001,7 @@ public static partial class ComCtl32
 		/// currently being displayed by a button. To retrieve a button's current text string, send the toolbar a <c>TB_GETBUTTONTEXT</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getstring
-		[MsgParams(typeof(uint), typeof(LPWSTR))]
+		[MsgParams(typeof(uint), typeof(PWSTR))]
 		TB_GETSTRINGW = WM_USER + 91,
 
 		/// <summary>
@@ -2019,7 +2019,7 @@ public static partial class ComCtl32
 		/// currently being displayed by a button. To retrieve a button's current text string, send the toolbar a <c>TB_GETBUTTONTEXT</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getstring
-		[MsgParams(typeof(uint), typeof(LPSTR))]
+		[MsgParams(typeof(uint), typeof(PSTR))]
 		TB_GETSTRINGA = WM_USER + 92,
 
 		/// <summary>
@@ -3381,7 +3381,7 @@ public static partial class ComCtl32
 	/// <summary>
 	/// Contains and receives display information for a toolbar item. This structure is used with the TBN_GETDISPINFO notification code.
 	/// </summary>
-	// typedef struct { NMHDR hdr; DWORD dwMask; int idCommand; DWORD_PTR lParam; int iImage; LPTSTR pszText; int cchText;} NMTBDISPINFO,
+	// typedef struct { NMHDR hdr; DWORD dwMask; int idCommand; DWORD_PTR lParam; int iImage; PTSTR pszText; int cchText;} NMTBDISPINFO,
 	// *LPNMTBDISPINFO; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760452(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760452")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -3448,7 +3448,7 @@ public static partial class ComCtl32
 		public int iImage;
 
 		/// <summary>
-		/// <para>Type: <c><c>LPTSTR</c></c></para>
+		/// <para>Type: <c><c>PTSTR</c></c></para>
 		/// <para>Pointer to a character buffer that receives the item's text.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -3485,7 +3485,7 @@ public static partial class ComCtl32
 	/// <summary>
 	/// Contains and receives infotip information for a toolbar item. This structure is used with the TBN_GETINFOTIP notification code.
 	/// </summary>
-	// typedef struct tagNMTBGETINFOTIP { NMHDR hdr; LPTSTR pszText; int cchTextMax; int iItem; LPARAM lParam;} NMTBGETINFOTIP,
+	// typedef struct tagNMTBGETINFOTIP { NMHDR hdr; PTSTR pszText; int cchTextMax; int iItem; LPARAM lParam;} NMTBGETINFOTIP,
 	// *LPNMTBGETINFOTIP; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760454(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760454")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -3498,7 +3498,7 @@ public static partial class ComCtl32
 		public NMHDR hdr;
 
 		/// <summary>
-		/// <para>Type: <c><c>LPTSTR</c></c></para>
+		/// <para>Type: <c><c>PTSTR</c></c></para>
 		/// <para>Address of a character buffer that receives the infotip text.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -3807,7 +3807,7 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Contains information used to process toolbar notification codes. This structure supersedes the <c>TBNOTIFY</c> structure.</summary>
-	// typedef struct tagNMTOOLBAR { NMHDR hdr; int iItem; TBBUTTON tbButton; int cchText; LPTSTR pszText; RECT rcButton;} NMTOOLBAR,
+	// typedef struct tagNMTOOLBAR { NMHDR hdr; int iItem; TBBUTTON tbButton; int cchText; PTSTR pszText; RECT rcButton;} NMTOOLBAR,
 	// *LPNMTOOLBAR; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760473(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760473")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -3841,7 +3841,7 @@ public static partial class ComCtl32
 		public int cchText;
 
 		/// <summary>
-		/// <para>Type: <c><c>LPTSTR</c></c></para>
+		/// <para>Type: <c><c>PTSTR</c></c></para>
 		/// <para>Address of a character buffer that contains the button text.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -3974,7 +3974,7 @@ public static partial class ComCtl32
 	}
 
 	/// <summary>Contains or receives information for a specific button in a toolbar.</summary>
-	// typedef struct { UINT cbSize; DWORD dwMask; int idCommand; int iImage; BYTE fsState; BYTE fsStyle; WORD cx; DWORD_PTR lParam; LPTSTR
+	// typedef struct { UINT cbSize; DWORD dwMask; int idCommand; int iImage; BYTE fsState; BYTE fsStyle; WORD cx; DWORD_PTR lParam; PTSTR
 	// pszText; int cchText;} TBBUTTONINFO, *LPTBBUTTONINFO; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760478(v=vs.85).aspx
 	[PInvokeData("Commctrl.h", MSDNShortId = "bb760478")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -4081,7 +4081,7 @@ public static partial class ComCtl32
 		public IntPtr lParam;
 
 		/// <summary>
-		/// <para>Type: <c><c>LPTSTR</c></c></para>
+		/// <para>Type: <c><c>PTSTR</c></c></para>
 		/// <para>Address of a character buffer that contains or receives the button text.</para>
 		/// </summary>
 		public IntPtr pszText;

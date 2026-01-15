@@ -11,7 +11,7 @@ public static partial class Shell32
 	{
 		/// <summary>Retrieves the full path and file name of the executable file associated with the file type.</summary>
 		/// <param name="ppsz">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>
 		/// When this method returns, contains the address of a pointer to a null-terminated, Unicode string that contains the full path
 		/// of the file, including the file name.
@@ -22,13 +22,13 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iassochandler-getname HRESULT GetName(
-		// LPWSTR *ppsz );
+		// PWSTR *ppsz );
 		[PreserveSig]
 		HRESULT GetName([MarshalAs(UnmanagedType.LPWStr)] out string ppsz);
 
 		/// <summary>Retrieves the display name of an application.</summary>
 		/// <param name="ppsz">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>
 		/// When this method returns, contains the address of a pointer to a null-terminated, Unicode string that contains the display
 		/// name of the application.
@@ -39,13 +39,13 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iassochandler-getuiname HRESULT GetUIName(
-		// LPWSTR *ppsz );
+		// PWSTR *ppsz );
 		[PreserveSig]
 		HRESULT GetUIName([MarshalAs(UnmanagedType.LPWStr)] out string ppsz);
 
 		/// <summary>Retrieves the location of the icon associated with the application.</summary>
 		/// <param name="ppszPath">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>
 		/// When this method returns, contains the address of a pointer to a null-terminated, Unicode string that contains the path to
 		/// the application's icon.
@@ -68,7 +68,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iassochandler-geticonlocation HRESULT
-		// GetIconLocation( LPWSTR *ppszPath, int *pIndex );
+		// GetIconLocation( PWSTR *ppszPath, int *pIndex );
 		[PreserveSig]
 		HRESULT GetIconLocation([MarshalAs(UnmanagedType.LPWStr)] out string ppszPath, out int pIndex);
 

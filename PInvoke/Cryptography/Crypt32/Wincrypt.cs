@@ -1703,7 +1703,7 @@ public static partial class Crypt32
 	/// The <c>CERT_EXTENSION</c> structure contains the extension information for a certificate, Certificate Revocation List (CRL) or
 	/// Certificate Trust List (CTL).
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_extension typedef struct _CERT_EXTENSION { LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_extension typedef struct _CERT_EXTENSION { PSTR
 	// pszObjId; BOOL fCritical; CRYPT_OBJID_BLOB Value; } CERT_EXTENSION, *PCERT_EXTENSION;
 	[PInvokeData("wincrypt.h", MSDNShortId = "787a4df0-c0e3-46b9-a7e6-eb3bee3ed717")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1713,7 +1713,7 @@ public static partial class Crypt32
 		/// Object identifier (OID) that specifies the structure of the extension data contained in the <c>Value</c> member. For
 		/// specifics on extension OIDs and their related structures, see X.509 Certificate Extension Structures.
 		/// </summary>
-		public LPSTR pszObjId;
+		public PSTR pszObjId;
 
 		/// <summary>
 		/// If <c>TRUE</c>, any limitations specified by the extension in the <c>Value</c> member of this structure are imperative. If
@@ -1928,7 +1928,7 @@ public static partial class Crypt32
 	/// in a CERT_RDN structure that contains an array of <c>CERT_RDN_ATTR</c> structures.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_rdn_attr
-	// typedef struct _CERT_RDN_ATTR { LPSTR pszObjId; DWORD dwValueType; CERT_RDN_VALUE_BLOB Value; } CERT_RDN_ATTR, *PCERT_RDN_ATTR;
+	// typedef struct _CERT_RDN_ATTR { PSTR pszObjId; DWORD dwValueType; CERT_RDN_VALUE_BLOB Value; } CERT_RDN_ATTR, *PCERT_RDN_ATTR;
 	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CERT_RDN_ATTR")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CERT_RDN_ATTR
@@ -2344,7 +2344,7 @@ public static partial class Crypt32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_strong_sign_para typedef struct
 	// _CERT_STRONG_SIGN_PARA { DWORD cbSize; DWORD dwInfoChoice; union { void *pvInfo; PCERT_STRONG_SIGN_SERIALIZED_INFO
-	// pSerializedInfo; LPSTR pszOID; } DUMMYUNIONNAME; } CERT_STRONG_SIGN_PARA, *PCERT_STRONG_SIGN_PARA;
+	// pSerializedInfo; PSTR pszOID; } DUMMYUNIONNAME; } CERT_STRONG_SIGN_PARA, *PCERT_STRONG_SIGN_PARA;
 	[PInvokeData("wincrypt.h", MSDNShortId = "12D9F82C-F484-43B0-BD55-F07321058671")]
 	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
 	public struct CERT_STRONG_SIGN_PARA
@@ -2411,7 +2411,7 @@ public static partial class Crypt32
 		/// </list>
 		/// </summary>
 		[FieldOffset(8)]
-		public LPSTR pszOID;
+		public PSTR pszOID;
 	}
 
 	/// <summary>Contains the <i>signature algorithm</i>/<i>hash algorithm</i> and <i>public key algorithm</i>/<i>bit length</i> pairs that can be used for strong signing. This structure is used by the <c>CERT_STRONG_SIGN_PARA</c> structure.</summary>
@@ -2451,7 +2451,7 @@ public static partial class Crypt32
 	/// </list>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_strong_sign_serialized_info typedef struct
-	// _CERT_STRONG_SIGN_SERIALIZED_INFO { DWORD dwFlags; LPWSTR pwszCNGSignHashAlgids; LPWSTR pwszCNGPubKeyMinBitLengths; }
+	// _CERT_STRONG_SIGN_SERIALIZED_INFO { DWORD dwFlags; PWSTR pwszCNGSignHashAlgids; PWSTR pwszCNGPubKeyMinBitLengths; }
 	// CERT_STRONG_SIGN_SERIALIZED_INFO, *PCERT_STRONG_SIGN_SERIALIZED_INFO;
 	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CERT_STRONG_SIGN_SERIALIZED_INFO")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2481,10 +2481,10 @@ public static partial class Crypt32
 		public uint dwFlags;
 
 		/// <summary>Pointer to a null-terminated Unicode string that contains a set of <i>signature algorithm</i>/<i>hash algorithm</i> pairs. A Unicode semicolon (L";") separates the pairs. This is shown by the following example.</summary>
-		public LPWSTR pwszCNGSignHashAlgids;
+		public PWSTR pwszCNGSignHashAlgids;
 
 		/// <summary>Pointer to a null-terminated Unicode string that contains a set of <i>public key algorithm</i>/<i>bit length</i> pairs. A Unicode semicolon (L";") separates the pairs. This is shown by the following example.</summary>
-		public LPWSTR pwszCNGPubKeyMinBitLengths;
+		public PWSTR pwszCNGPubKeyMinBitLengths;
 	}
 
 	/// <summary>
@@ -2864,7 +2864,7 @@ public static partial class Crypt32
 	public struct CRYPT_ALGORITHM_IDENTIFIER
 	{
 		/// <summary>An OID of an algorithm.</summary>
-		public LPSTR pszObjId;
+		public PSTR pszObjId;
 
 		/// <summary>
 		/// A BLOB that provides encoded algorithm-specific parameters. In many cases, there are no parameters. This is indicated by
@@ -2874,14 +2874,14 @@ public static partial class Crypt32
 	}
 
 	/// <summary>The <c>CRYPT_ATTRIBUTE</c> structure specifies an attribute that has one or more values.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_attribute typedef struct _CRYPT_ATTRIBUTE { LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_attribute typedef struct _CRYPT_ATTRIBUTE { PSTR
 	// pszObjId; DWORD cValue; PCRYPT_ATTR_BLOB rgValue; } CRYPT_ATTRIBUTE, *PCRYPT_ATTRIBUTE;
 	[PInvokeData("wincrypt.h", MSDNShortId = "cdbaf38d-ddbe-4be0-afbc-f8bd76ef4847")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CRYPT_ATTRIBUTE
 	{
 		/// <summary>An object identifier (OID) that specifies the type of data contained in the <c>rgValue</c> array.</summary>
-		public LPSTR pszObjId;
+		public PSTR pszObjId;
 
 		/// <summary>A <c>DWORD</c> value that indicates the number of elements in the <c>rgValue</c> array.</summary>
 		public uint cValue;
@@ -2897,13 +2897,13 @@ public static partial class Crypt32
 	/// The <c>CRYPT_ATTRIBUTE_TYPE_VALUE</c> structure contains a single attribute value. The <c>Value</c> member's CRYPT_OBJID_BLOB is encoded.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wincrypt/ns-wincrypt-_crypt_attribute_type_value typedef struct
-	// _CRYPT_ATTRIBUTE_TYPE_VALUE { LPSTR pszObjId; CRYPT_OBJID_BLOB Value; } CRYPT_ATTRIBUTE_TYPE_VALUE, *PCRYPT_ATTRIBUTE_TYPE_VALUE;
+	// _CRYPT_ATTRIBUTE_TYPE_VALUE { PSTR pszObjId; CRYPT_OBJID_BLOB Value; } CRYPT_ATTRIBUTE_TYPE_VALUE, *PCRYPT_ATTRIBUTE_TYPE_VALUE;
 	[PInvokeData("wincrypt.h", MSDNShortId = "84057581-d0a9-464a-9399-ba806e37516f")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CRYPT_ATTRIBUTE_TYPE_VALUE
 	{
 		/// <summary>Object identifier (OID) that specifies the attribute type data contained in the <c>Value</c> BLOB.</summary>
-		public LPTSTR pszObjId;
+		public PTSTR pszObjId;
 
 		/// <summary>
 		/// A CRYPT_OBJID_BLOB that contains the encoded attribute. The <c>cbData</c> member of the <c>CRYPT_OBJID_BLOB</c> structure
@@ -2944,7 +2944,7 @@ public static partial class Crypt32
 	/// The <c>CRYPT_KEY_PROV_INFO</c> structure contains information about a key container within a cryptographic service provider (CSP).
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_key_prov_info typedef struct _CRYPT_KEY_PROV_INFO {
-	// LPWSTR pwszContainerName; LPWSTR pwszProvName; DWORD dwProvType; DWORD dwFlags; DWORD cProvParam; PCRYPT_KEY_PROV_PARAM
+	// PWSTR pwszContainerName; PWSTR pwszProvName; DWORD dwProvType; DWORD dwFlags; DWORD cProvParam; PCRYPT_KEY_PROV_PARAM
 	// rgProvParam; DWORD dwKeySpec; } CRYPT_KEY_PROV_INFO, *PCRYPT_KEY_PROV_INFO;
 	[PInvokeData("wincrypt.h", MSDNShortId = "6aea2f47-9d4a-4069-ac6d-f28907df00be")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -3139,7 +3139,7 @@ public static partial class Crypt32
 	/// The <c>CRYPT_TIMESTAMP_INFO</c> structure contains a signed data content type in Cryptographic Message Syntax (CMS) format.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_timestamp_info typedef struct _CRYPT_TIMESTAMP_INFO
-	// { DWORD dwVersion; LPSTR pszTSAPolicyId; CRYPT_ALGORITHM_IDENTIFIER HashAlgorithm; CRYPT_DER_BLOB HashedMessage;
+	// { DWORD dwVersion; PSTR pszTSAPolicyId; CRYPT_ALGORITHM_IDENTIFIER HashAlgorithm; CRYPT_DER_BLOB HashedMessage;
 	// CRYPT_INTEGER_BLOB SerialNumber; FILETIME ftTime; PCRYPT_TIMESTAMP_ACCURACY pvAccuracy; BOOL fOrdering; CRYPT_DER_BLOB Nonce;
 	// CRYPT_DER_BLOB Tsa; DWORD cExtension; PCERT_EXTENSION rgExtension; } CRYPT_TIMESTAMP_INFO, *PCRYPT_TIMESTAMP_INFO;
 	[PInvokeData("wincrypt.h", MSDNShortId = "05ca0877-5e9d-4b21-9fca-a1eef2cb4626")]
@@ -3165,7 +3165,7 @@ public static partial class Crypt32
 		/// Optional. A pointer to a null-terminated string that specifies the Time Stamping Authority (TSA) policy under which the time
 		/// stamp token was provided. This value must correspond with the value passed in the CRYPT_TIMESTAMP_REQUEST structure.
 		/// </summary>
-		public LPSTR pszTSAPolicyId;
+		public PSTR pszTSAPolicyId;
 
 		/// <summary>
 		/// A CRYPT_ALGORITHM_IDENTIFIER structure that contains information about the algorithm used to calculate the hash. This value
@@ -3219,7 +3219,7 @@ public static partial class Crypt32
 		/// Optional. A pointer to a null-terminated character string that contains the Time Stamping Authority (TSA) policy under which
 		/// the time stamp token should be provided.
 		/// </summary>
-		public LPSTR pszTSAPolicyId;
+		public PSTR pszTSAPolicyId;
 
 		/// <summary>
 		/// A Boolean value that specifies whether the TSA must include the certificates used to sign the time stamp token in the
@@ -3469,7 +3469,7 @@ public static partial class Crypt32
 	/// <c>CTL_USAGE</c> structures are used in functions that search for CTLs for specific uses.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-ctl_usage typedef struct _CTL_USAGE { DWORD
-	// cUsageIdentifier; LPSTR *rgpszUsageIdentifier; } CTL_USAGE, *PCTL_USAGE, CERT_ENHKEY_USAGE, *PCERT_ENHKEY_USAGE;
+	// cUsageIdentifier; PSTR *rgpszUsageIdentifier; } CTL_USAGE, *PCTL_USAGE, CERT_ENHKEY_USAGE, *PCERT_ENHKEY_USAGE;
 	[PInvokeData("wincrypt.h", MSDNShortId = "70ee138a-df94-4fc4-9de5-0d8b7704b890")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CTL_USAGE(IntPtr usageIdentifiers = default, uint count = 0)
@@ -3707,10 +3707,10 @@ public static partial class Crypt32
 		/// <returns>The resulting <see cref="SafeOID"/> instance from the conversion.</returns>
 		public static implicit operator SafeOID(uint value) => new(value);
 
-		/// <summary>Performs an implicit conversion from <see cref="SafeOID"/> to <see cref="LPSTR"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="SafeOID"/> to <see cref="PSTR"/>.</summary>
 		/// <param name="value">The value.</param>
-		/// <returns>The resulting <see cref="LPSTR"/> instance from the conversion.</returns>
-		public static implicit operator LPSTR(SafeOID value) => value.handle;
+		/// <returns>The resulting <see cref="PSTR"/> instance from the conversion.</returns>
+		public static implicit operator PSTR(SafeOID value) => value.handle;
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SafeOID"/>.</summary>
 		/// <param name="oidToDuplicate">The OID to duplicate into a new SafeOID.</param>

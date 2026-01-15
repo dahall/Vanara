@@ -3192,7 +3192,7 @@ public static partial class NtDll
 		/// elements in the array immediately follows this element.
 		/// </para>
 		/// </summary>
-		public LPWSTR Name;
+		public PWSTR Name;
 	}
 
 	/// <summary>
@@ -3276,7 +3276,7 @@ public static partial class NtDll
 		/// elements in the array immediately follows this element.
 		/// </para>
 		/// </summary>
-		public LPWSTR Class;
+		public PWSTR Class;
 	}
 
 	/// <summary>
@@ -3334,7 +3334,7 @@ public static partial class NtDll
 		/// elements in the array immediately follows this element.
 		/// </para>
 		/// </summary>
-		public LPWSTR Name;
+		public PWSTR Name;
 	}
 
 	/// <summary>

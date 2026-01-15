@@ -470,7 +470,7 @@ public static partial class AdvApi32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sddl/nf-sddl-convertsecuritydescriptortostringsecuritydescriptora BOOL
 	// ConvertSecurityDescriptorToStringSecurityDescriptorA( PSECURITY_DESCRIPTOR SecurityDescriptor, DWORD RequestedStringSDRevision,
-	// SECURITY_INFORMATION SecurityInformation, LPSTR *StringSecurityDescriptor, PULONG StringSecurityDescriptorLen );
+	// SECURITY_INFORMATION SecurityInformation, PSTR *StringSecurityDescriptor, PULONG StringSecurityDescriptorLen );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("sddl.h", MSDNShortId = "36140833-8e30-4c32-a88a-c10751b6c223")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -508,7 +508,7 @@ public static partial class AdvApi32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sddl/nf-sddl-convertsecuritydescriptortostringsecuritydescriptora BOOL
 	// ConvertSecurityDescriptorToStringSecurityDescriptorA( PSECURITY_DESCRIPTOR SecurityDescriptor, DWORD RequestedStringSDRevision,
-	// SECURITY_INFORMATION SecurityInformation, LPSTR *StringSecurityDescriptor, PULONG StringSecurityDescriptorLen );
+	// SECURITY_INFORMATION SecurityInformation, PSTR *StringSecurityDescriptor, PULONG StringSecurityDescriptorLen );
 	[PInvokeData("sddl.h", MSDNShortId = "36140833-8e30-4c32-a88a-c10751b6c223")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static string ConvertSecurityDescriptorToStringSecurityDescriptor(PSECURITY_DESCRIPTOR SecurityDescriptor, SECURITY_INFORMATION SecurityInformation)

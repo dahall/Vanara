@@ -245,8 +245,8 @@ public static partial class AdvApi32
 	/// <para>Examples</para>
 	/// <para>For an example, see Displaying the Shutdown Dialog Box.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-initiatesystemshutdowna BOOL InitiateSystemShutdownA( LPSTR
-	// lpMachineName, LPSTR lpMessage, DWORD dwTimeout, BOOL bForceAppsClosed, BOOL bRebootAfterShutdown );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-initiatesystemshutdowna BOOL InitiateSystemShutdownA( PSTR
+	// lpMachineName, PSTR lpMessage, DWORD dwTimeout, BOOL bForceAppsClosed, BOOL bRebootAfterShutdown );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winreg.h", MSDNShortId = "cad54fea-7f59-438c-83ac-f0160d81496b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -630,7 +630,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regcreatekeyexa LSTATUS RegCreateKeyExA( HKEY hKey, LPCSTR
-	// lpSubKey, DWORD Reserved, LPSTR lpClass, DWORD dwOptions, REGSAM samDesired, CONST LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+	// lpSubKey, DWORD Reserved, PSTR lpClass, DWORD dwOptions, REGSAM samDesired, CONST LPSECURITY_ATTRIBUTES lpSecurityAttributes,
 	// PHKEY phkResult, LPDWORD lpdwDisposition );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winreg.h", MSDNShortId = "e9ffad7f-c0b6-44ce-bf22-fbe45ca98bf4")]
@@ -792,7 +792,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regcreatekeytransacteda LSTATUS RegCreateKeyTransactedA(
-	// HKEY hKey, LPCSTR lpSubKey, DWORD Reserved, LPSTR lpClass, DWORD dwOptions, REGSAM samDesired, CONST LPSECURITY_ATTRIBUTES
+	// HKEY hKey, LPCSTR lpSubKey, DWORD Reserved, PSTR lpClass, DWORD dwOptions, REGSAM samDesired, CONST LPSECURITY_ATTRIBUTES
 	// lpSecurityAttributes, PHKEY phkResult, LPDWORD lpdwDisposition, HANDLE hTransaction, PVOID pExtendedParemeter );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winreg.h", MSDNShortId = "f18e5ff9-41c3-4c26-8d01-a8ec69bcdef2")]
@@ -1302,7 +1302,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regenumkeya LSTATUS RegEnumKeyA( HKEY hKey, DWORD dwIndex,
-	// LPSTR lpName, DWORD cchName );
+	// PSTR lpName, DWORD cchName );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winreg.h", MSDNShortId = "18a05c60-6c6d-438f-9003-f07d688d86a3")]
 	public static extern Win32Error RegEnumKey(HKEY hKey, uint dwIndex, StringBuilder lpName, uint cchName);
@@ -1411,7 +1411,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regenumkeyexa
-	// LSTATUS RegEnumKeyExA( [in] HKEY hKey, [in] DWORD dwIndex, [out] LPSTR lpName, [in, out] LPDWORD lpcchName, LPDWORD lpReserved, [in, out] LPSTR lpClass, [in, out, optional] LPDWORD lpcchClass, [out, optional] PFILETIME lpftLastWriteTime );
+	// LSTATUS RegEnumKeyExA( [in] HKEY hKey, [in] DWORD dwIndex, [out] PSTR lpName, [in, out] LPDWORD lpcchName, LPDWORD lpReserved, [in, out] PSTR lpClass, [in, out, optional] LPDWORD lpcchClass, [out, optional] PFILETIME lpftLastWriteTime );
 	[PInvokeData("winreg.h", MSDNShortId = "NF:winreg.RegEnumKeyExA")]
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	public static extern Win32Error RegEnumKeyEx(HKEY hKey, uint dwIndex, StringBuilder lpName, ref uint lpcchName, [Optional] IntPtr lpReserved, [Optional] StringBuilder? lpClass, ref uint lpcchClass, out FILETIME lpftLastWriteTime);
@@ -1590,7 +1590,7 @@ public static partial class AdvApi32
 	/// <para>For an example, see Enumerating Registry Subkeys.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regenumvaluea LSTATUS RegEnumValueA( HKEY hKey, DWORD
-	// dwIndex, LPSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved, LPDWORD lpType, __out_data_source(REGISTRY)LPBYTE lpData,
+	// dwIndex, PSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved, LPDWORD lpType, __out_data_source(REGISTRY)LPBYTE lpData,
 	// LPDWORD lpcbData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winreg.h", MSDNShortId = "7014ff96-c655-486f-af32-180b87281b06")]
@@ -1700,7 +1700,7 @@ public static partial class AdvApi32
 	/// <para>For an example, see Enumerating Registry Subkeys.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regenumvaluea LSTATUS RegEnumValueA( HKEY hKey, DWORD
-	// dwIndex, LPSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved, LPDWORD lpType, __out_data_source(REGISTRY)LPBYTE lpData,
+	// dwIndex, PSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved, LPDWORD lpType, __out_data_source(REGISTRY)LPBYTE lpData,
 	// LPDWORD lpcbData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winreg.h", MSDNShortId = "7014ff96-c655-486f-af32-180b87281b06")]
@@ -2281,7 +2281,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regloadmuistringa LSTATUS RegLoadMUIStringA( HKEY hKey,
-	// LPCSTR pszValue, LPSTR pszOutBuf, DWORD cbOutBuf, LPDWORD pcbData, DWORD Flags, LPCSTR pszDirectory );
+	// LPCSTR pszValue, PSTR pszOutBuf, DWORD cbOutBuf, LPDWORD pcbData, DWORD Flags, LPCSTR pszDirectory );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("winreg.h", MSDNShortId = "76ffc77f-a1bc-4e01-858f-4a76563a2bbc")]
 	public static extern Win32Error RegLoadMUIString(HKEY hKey, string pszValue, StringBuilder pszOutBuf, uint cbOutBuf, out uint pcbData, [Optional] REG_MUI_STRING Flags, [Optional] string? pszDirectory);
@@ -2702,7 +2702,7 @@ public static partial class AdvApi32
 	/// <para>If the function fails, the return value is a system error code.</para>
 	/// <para>If the lpClass buffer is too small to receive the name of the class, the function returns ERROR_MORE_DATA.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regqueryinfokeya LSTATUS RegQueryInfoKeyA( HKEY hKey, LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regqueryinfokeya LSTATUS RegQueryInfoKeyA( HKEY hKey, PSTR
 	// lpClass, LPDWORD lpcchClass, LPDWORD lpReserved, LPDWORD lpcSubKeys, LPDWORD lpcbMaxSubKeyLen, LPDWORD lpcbMaxClassLen, LPDWORD
 	// lpcValues, LPDWORD lpcbMaxValueNameLen, LPDWORD lpcbMaxValueLen, LPDWORD lpcbSecurityDescriptor, PFILETIME lpftLastWriteTime );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
@@ -2789,7 +2789,7 @@ public static partial class AdvApi32
 	/// <para>If the function fails, the return value is a system error code.</para>
 	/// <para>If the lpClass buffer is too small to receive the name of the class, the function returns ERROR_MORE_DATA.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regqueryinfokeya LSTATUS RegQueryInfoKeyA( HKEY hKey, LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regqueryinfokeya LSTATUS RegQueryInfoKeyA( HKEY hKey, PSTR
 	// lpClass, LPDWORD lpcchClass, LPDWORD lpReserved, LPDWORD lpcSubKeys, LPDWORD lpcbMaxSubKeyLen, LPDWORD lpcbMaxClassLen, LPDWORD
 	// lpcValues, LPDWORD lpcbMaxValueNameLen, LPDWORD lpcbMaxValueLen, LPDWORD lpcbSecurityDescriptor, PFILETIME lpftLastWriteTime );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
@@ -2880,7 +2880,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regquerymultiplevaluesa LSTATUS RegQueryMultipleValuesA(
-	// HKEY hKey, PVALENTA val_list, DWORD num_vals, __out_data_source(REGISTRY)LPSTR lpValueBuf, LPDWORD ldwTotsize );
+	// HKEY hKey, PVALENTA val_list, DWORD num_vals, __out_data_source(REGISTRY)PSTR lpValueBuf, LPDWORD ldwTotsize );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winreg.h", MSDNShortId = "e718534a-6e68-40f5-9cdd-170ce9b5e6e5")]
 	public static extern Win32Error RegQueryMultipleValues(HKEY hKey, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] VALENT[] val_list, uint num_vals, [Optional] IntPtr lpValueBuf, ref uint ldwTotsize);
@@ -2920,7 +2920,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regquerymultiplevaluesa
-	// LSTATUS RegQueryMultipleValuesA( [in] HKEY hKey, [out] PVALENTA val_list, [in] DWORD num_vals, [out, optional] LPSTR lpValueBuf, [in, out, optional] LPDWORD ldwTotsize );
+	// LSTATUS RegQueryMultipleValuesA( [in] HKEY hKey, [out] PVALENTA val_list, [in] DWORD num_vals, [out, optional] PSTR lpValueBuf, [in, out, optional] LPDWORD ldwTotsize );
 	[PInvokeData("winreg.h", MSDNShortId = "NF:winreg.RegQueryMultipleValuesA")]
 	public static IReadOnlyDictionary<string, object?> RegQueryMultipleValues(HKEY hKey, params string[] val_list)
 	{
@@ -3047,7 +3047,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regqueryvaluea LSTATUS RegQueryValueA( HKEY hKey, LPCSTR
-	// lpSubKey, __out_data_source(REGISTRY)LPSTR lpData, PLONG lpcbData );
+	// lpSubKey, __out_data_source(REGISTRY)PSTR lpData, PLONG lpcbData );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winreg.h", MSDNShortId = "18f27717-3bd9-45ac-a1ea-61abc1753a52")]
 	public static extern Win32Error RegQueryValue(HKEY hKey, [Optional] string? lpSubKey, [Optional] IntPtr lpData, ref int lpcbData);
@@ -4126,7 +4126,7 @@ public static partial class AdvApi32
 	public static extern Win32Error RegUnLoadKey(HKEY hKey, string lpSubKey);
 
 	/// <summary>Contains information about a registry value. The RegQueryMultipleValues function uses this structure.</summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/ns-winreg-value_enta typedef struct value_entA { LPSTR ve_valuename;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/ns-winreg-value_enta typedef struct value_entA { PSTR ve_valuename;
 	// DWORD ve_valuelen; DWORD_PTR ve_valueptr; DWORD ve_type; } VALENTA, *PVALENTA;
 	[PInvokeData("winreg.h", MSDNShortId = "7881eea8-e4e3-48cf-ba8f-b5c23910ae7d")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]

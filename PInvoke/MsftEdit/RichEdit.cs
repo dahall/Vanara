@@ -8029,9 +8029,9 @@ public static partial class MsftEdit
 		/// <para>Type: <c>PFNHYPHENATEPROC</c></para>
 		/// <para>The client-defined HyphenateProc callback function.</para>
 		/// </summary>
-		public Action<LPWSTR, LANGID, int, IntPtr> pfnHyphenate
+		public Action<PWSTR, LANGID, int, IntPtr> pfnHyphenate
 		{
-			get => (Action<LPWSTR, LANGID, int, IntPtr>)Marshal.GetDelegateForFunctionPointer(pfn, typeof(Action<LPWSTR, LANGID, int, IntPtr>));
+			get => (Action<PWSTR, LANGID, int, IntPtr>)Marshal.GetDelegateForFunctionPointer(pfn, typeof(Action<PWSTR, LANGID, int, IntPtr>));
 			set => pfn = Marshal.GetFunctionPointerForDelegate(value);
 		}
 	}
@@ -9121,7 +9121,7 @@ public static partial class MsftEdit
 
 	/// <summary>Contains information about the punctuation used in a rich edit control.</summary>
 	/// <remarks>This structure is used only in Asian-language versions of the operating system.</remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/richedit/ns-richedit-punctuation typedef struct _punctuation { UINT iSize; LPSTR
+	// https://learn.microsoft.com/en-us/windows/win32/api/richedit/ns-richedit-punctuation typedef struct _punctuation { UINT iSize; PSTR
 	// szPunctuation; } PUNCTUATION;
 	[PInvokeData("richedit.h", MSDNShortId = "NS:richedit._punctuation")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -9134,7 +9134,7 @@ public static partial class MsftEdit
 		public uint iSize;
 
 		/// <summary>
-		/// <para>Type: <c>LPSTR</c></para>
+		/// <para>Type: <c>PSTR</c></para>
 		/// <para>The buffer containing the punctuation characters.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPStr)]
@@ -9574,7 +9574,7 @@ public static partial class MsftEdit
 	/// can lead to mismatches that result in compilation or runtime errors. For more information, see Conventions for Function Prototypes.
 	/// </para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/richedit/ns-richedit-textrangea typedef struct _textrange { CHARRANGE chrg; LPSTR
+	// https://learn.microsoft.com/en-us/windows/win32/api/richedit/ns-richedit-textrangea typedef struct _textrange { CHARRANGE chrg; PSTR
 	// lpstrText; } TEXTRANGEA;
 	[PInvokeData("richedit.h", MSDNShortId = "NS:richedit._textrange")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -9587,7 +9587,7 @@ public static partial class MsftEdit
 		public CHARRANGE chrg;
 
 		/// <summary>
-		/// <para>Type: <c>LPSTR</c></para>
+		/// <para>Type: <c>PSTR</c></para>
 		/// <para>The text.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]

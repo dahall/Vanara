@@ -359,7 +359,7 @@ public static partial class SearchApi
 
 		/// <summary>Retrieves the property name, operation, and value from a leaf search condition node.</summary>
 		/// <param name="ppszPropertyName">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>Receives the name of the property of the leaf condition as a Unicode string.</para>
 		/// </param>
 		/// <param name="pcop">
@@ -372,22 +372,22 @@ public static partial class SearchApi
 		/// </param>
 		/// <remarks>Any or all of the three parameters can be <c>NULL</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getcomparisoninfo
-		// HRESULT GetComparisonInfo( LPWSTR *ppszPropertyName, CONDITION_OPERATION *pcop, PROPVARIANT *ppropvar );
+		// HRESULT GetComparisonInfo( PWSTR *ppszPropertyName, CONDITION_OPERATION *pcop, PROPVARIANT *ppropvar );
 		void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszPropertyName, out CONDITION_OPERATION pcop, [In, Out] PROPVARIANT ppropvar);
 
 		/// <summary>Retrieves the semantic type of the value of the search condition node.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>Receives either a pointer to the semantic type of the value as a Unicode string or <c>NULL</c>.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getvaluetype
-		// HRESULT GetValueType( LPWSTR *ppszValueTypeName );
+		// HRESULT GetValueType( PWSTR *ppszValueTypeName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetValueType();
 
 		/// <summary>Retrieves the character-normalized value of the search condition node.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>Receives a pointer to a Unicode string representation of the value.</para>
 		/// </returns>
 		/// <remarks>
@@ -397,7 +397,7 @@ public static partial class SearchApi
 		/// representation of the value.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getvaluenormalization
-		// HRESULT GetValueNormalization( LPWSTR *ppszNormalization );
+		// HRESULT GetValueNormalization( PWSTR *ppszNormalization );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetValueNormalization();
 
@@ -696,7 +696,7 @@ public static partial class SearchApi
 
 		/// <summary>Retrieves the property name, operation, and value from a leaf search condition node.</summary>
 		/// <param name="ppszPropertyName">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>Receives the name of the property of the leaf condition as a Unicode string.</para>
 		/// </param>
 		/// <param name="pcop">
@@ -709,22 +709,22 @@ public static partial class SearchApi
 		/// </param>
 		/// <remarks>Any or all of the three parameters can be <c>NULL</c>.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getcomparisoninfo
-		// HRESULT GetComparisonInfo( LPWSTR *ppszPropertyName, CONDITION_OPERATION *pcop, PROPVARIANT *ppropvar );
+		// HRESULT GetComparisonInfo( PWSTR *ppszPropertyName, CONDITION_OPERATION *pcop, PROPVARIANT *ppropvar );
 		new void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszPropertyName, out CONDITION_OPERATION pcop, [In, Out] PROPVARIANT ppropvar);
 
 		/// <summary>Retrieves the semantic type of the value of the search condition node.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>Receives either a pointer to the semantic type of the value as a Unicode string or <c>NULL</c>.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getvaluetype
-		// HRESULT GetValueType( LPWSTR *ppszValueTypeName );
+		// HRESULT GetValueType( PWSTR *ppszValueTypeName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetValueType();
 
 		/// <summary>Retrieves the character-normalized value of the search condition node.</summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>Receives a pointer to a Unicode string representation of the value.</para>
 		/// </returns>
 		/// <remarks>
@@ -734,7 +734,7 @@ public static partial class SearchApi
 		/// representation of the value.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getvaluenormalization
-		// HRESULT GetValueNormalization( LPWSTR *ppszNormalization );
+		// HRESULT GetValueNormalization( PWSTR *ppszNormalization );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string GetValueNormalization();
 
@@ -793,11 +793,11 @@ public static partial class SearchApi
 		/// <para>Retrieves the property name, operation, and value from a leaf search condition node.</para>
 		/// </summary>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>Receives the name of the locale of the leaf condition as a Unicode string. This parameter can be <c>NULL</c>.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition2-getlocale
-		// HRESULT GetLocale( LPWSTR *ppszLocaleName );
+		// HRESULT GetLocale( PWSTR *ppszLocaleName );
 		[PInvokeData("structuredquerycondition.h", MSDNShortId = "")]
 		string? GetLocale();
 
@@ -838,7 +838,7 @@ public static partial class SearchApi
 		/// <para>Receives the length of the range. This parameter can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="ppsz">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>Receives the associated Unicode string value, or <c>NULL</c> if not available.</para>
 		/// </param>
 		/// <param name="pValue">
@@ -853,7 +853,7 @@ public static partial class SearchApi
 		/// <para>Prior to Windows 7, this was declared in structuredquery.idl and structuredquery.h.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-irichchunk-getdata
-		// HRESULT GetData( ULONG *pFirstPos, ULONG *pLength, LPWSTR *ppsz, PROPVARIANT *pValue );
+		// HRESULT GetData( ULONG *pFirstPos, ULONG *pLength, PWSTR *ppsz, PROPVARIANT *pValue );
 		void GetData(out uint pFirstPos, out uint pLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppsz, [In, Out] PROPVARIANT pValue);
 	}
 

@@ -736,7 +736,7 @@ public static partial class Hid
 		public PDRIVER_OBJECT DriverObject;
 
 		/// <summary>Pointer to the minidriver's registry path.</summary>
-		public LPWSTR RegistryPath;
+		public PWSTR RegistryPath;
 
 		/// <summary>Specifies the length, in bytes, that the minidriver requests for a device extension.</summary>
 		public uint DeviceExtensionSize;

@@ -1864,13 +1864,13 @@ public static partial class VirtDisk
 			/// Optional path to a parent virtual disk object. Associates the new virtual disk with an existing virtual disk. If this
 			/// parameter is not NULL, SourcePath must be NULL.
 			/// </summary>
-			public LPWSTR ParentPath;
+			public PWSTR ParentPath;
 
 			/// <summary>
 			/// Optional fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path
 			/// may refer to a virtual disk or a physical disk. If this parameter is not NULL, ParentPath must be NULL.
 			/// </summary>
-			public LPWSTR SourcePath;
+			public PWSTR SourcePath;
 		}
 
 		/// <summary>
@@ -1909,13 +1909,13 @@ public static partial class VirtDisk
 			/// Optional path to a parent virtual disk object. Associates the new virtual disk with an existing virtual disk. If this
 			/// parameter is not NULL, SourcePath must be NULL.
 			/// </summary>
-			public LPWSTR ParentPath;
+			public PWSTR ParentPath;
 
 			/// <summary>
 			/// Optional fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path
 			/// may refer to a virtual disk or a physical disk. If this parameter is not NULL, ParentPath must be NULL.
 			/// </summary>
-			public LPWSTR SourcePath;
+			public PWSTR SourcePath;
 
 			/// <summary>Zero or more flags from the OPEN_VIRTUAL_DISK_FLAG enumeration describing how the virtual disk is to be opened.</summary>
 			public OPEN_VIRTUAL_DISK_FLAG OpenFlags;
@@ -1966,13 +1966,13 @@ public static partial class VirtDisk
 			/// Optional path to a parent virtual disk object. Associates the new virtual disk with an existing virtual disk. If this
 			/// parameter is not NULL, SourcePath must be NULL.
 			/// </summary>
-			public LPWSTR ParentPath;
+			public PWSTR ParentPath;
 
 			/// <summary>
 			/// Optional fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path
 			/// may refer to a virtual disk or a physical disk. If this parameter is not NULL, ParentPath must be NULL.
 			/// </summary>
-			public LPWSTR SourcePath;
+			public PWSTR SourcePath;
 
 			/// <summary>Zero or more flags from the OPEN_VIRTUAL_DISK_FLAG enumeration describing how the virtual disk is to be opened.</summary>
 			public OPEN_VIRTUAL_DISK_FLAG OpenFlags;
@@ -1987,7 +1987,7 @@ public static partial class VirtDisk
 			public Guid ResiliencyGuid;
 
 			/// <summary></summary>
-			public LPWSTR SourceLimitPath;
+			public PWSTR SourceLimitPath;
 
 			/// <summary></summary>
 			public VIRTUAL_STORAGE_TYPE BackingStorageType;
@@ -2320,7 +2320,7 @@ public static partial class VirtDisk
 
 			/// <summary>The file path for the default Snapshot of the Vhd Set.</summary>
 			[FieldOffset(0)]
-			public LPWSTR DefaultFilePath;
+			public PWSTR DefaultFilePath;
 		}
 
 		/// <summary>A structure with the following members.</summary>
@@ -2332,7 +2332,7 @@ public static partial class VirtDisk
 			public Guid SnapshotId;
 
 			/// <summary>The new file path for the Snapshot indicated by the SnapshotId field.</summary>
-			public LPWSTR SnapshotFilePath;
+			public PWSTR SnapshotFilePath;
 		}
 	}
 
@@ -2523,7 +2523,7 @@ public static partial class VirtDisk
 
 		/// <summary>Path to the parent backing store.</summary>
 		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
-		public LPWSTR ParentFilePath { get => union.ParentFilePath; set => union.ParentFilePath = value; }
+		public PWSTR ParentFilePath { get => union.ParentFilePath; set => union.ParentFilePath = value; }
 
 		/// <summary>Unique identifier of the VHD.</summary>
 		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
@@ -2558,7 +2558,7 @@ public static partial class VirtDisk
 		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 		private struct UNION
 		{
-			[FieldOffset(0)] public LPWSTR ParentFilePath;
+			[FieldOffset(0)] public PWSTR ParentFilePath;
 
 			[FieldOffset(0)] public Guid UniqueIdentifier;
 
@@ -2585,7 +2585,7 @@ public static partial class VirtDisk
 			public Guid LinkageId;
 
 			/// <summary>The path of the file for the parent VHD.</summary>
-			public LPWSTR ParentFilePath;
+			public PWSTR ParentFilePath;
 		}
 
 		/// <summary>Sets the parent file path and the child depth.</summary>
@@ -2597,7 +2597,7 @@ public static partial class VirtDisk
 			public uint ChildDepth;
 
 			/// <summary>Specifies the depth to the parent from the leaf. The leaf itself is at depth 1.</summary>
-			public LPWSTR ParentFilePath;
+			public PWSTR ParentFilePath;
 		}
 	}
 

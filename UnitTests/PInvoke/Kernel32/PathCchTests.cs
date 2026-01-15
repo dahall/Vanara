@@ -66,12 +66,12 @@ public class PathCchTests
 	[Test]
 	public void PathCchAddBackslashExTest2()
 	{
-		SafeLPWSTR sb = new(TestCaseSources.TempDirWhack, 64);
-		Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out LPWSTR end, out _), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
+		SafePWSTR sb = new(TestCaseSources.TempDirWhack, 64);
+		Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out PWSTR end, out _), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
 		Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 		Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(sb.Length * 2)));
 
-		sb = new SafeLPWSTR(TestCaseSources.TempDir, 64);
+		sb = new SafePWSTR(TestCaseSources.TempDir, 64);
 		Assert.That(PathCchAddBackslashEx(sb, sb.Size, out end, out _), Is.EqualTo((HRESULT)0));
 		Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 		Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(sb.Length * 2)));
@@ -137,7 +137,7 @@ public class PathCchTests
 	public void PathCchFindExtensionTest()
 	{
 		SafeCoTaskMemString sb = new(@"C:\Temp\dog.txt", 64);
-		Assert.That(PathCchFindExtension((IntPtr)sb, sb.Capacity, out LPWSTR ptr), Is.EqualTo((HRESULT)0));
+		Assert.That(PathCchFindExtension((IntPtr)sb, sb.Capacity, out PWSTR ptr), Is.EqualTo((HRESULT)0));
 		Assert.That(ptr, Is.EqualTo(sb.DangerousGetHandle().Offset(22)));
 	}
 
@@ -160,7 +160,7 @@ public class PathCchTests
 	public void PathCchRemoveBackslashExTest()
 	{
 		SafeCoTaskMemString sb = new(TestCaseSources.TempDirWhack, 64);
-		Assert.That(PathCchRemoveBackslashEx((IntPtr)sb, sb.Capacity, out LPWSTR end, out SIZE_T rem), Is.EqualTo((HRESULT)0));
+		Assert.That(PathCchRemoveBackslashEx((IntPtr)sb, sb.Capacity, out PWSTR end, out SIZE_T rem), Is.EqualTo((HRESULT)0));
 		Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDir));
 		Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(14)));
 
@@ -206,7 +206,7 @@ public class PathCchTests
 	public void PathCchSkipRootTest()
 	{
 		SafeCoTaskMemString sb = new(TestCaseSources.TempDirWhack, 64);
-		Assert.That(PathCchSkipRoot((IntPtr)sb, out LPWSTR end), Is.EqualTo((HRESULT)0));
+		Assert.That(PathCchSkipRoot((IntPtr)sb, out PWSTR end), Is.EqualTo((HRESULT)0));
 		Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(6)));
 	}
 
@@ -237,7 +237,7 @@ public class PathCchTests
 	[Test]
 	public void PathIsUNCExTest()
 	{
-		Assert.That(PathIsUNCEx(@"\\path1\path2\path3", out LPWSTR svr), Is.True);
+		Assert.That(PathIsUNCEx(@"\\path1\path2\path3", out PWSTR svr), Is.True);
 		Assert.That(svr.ToString(), Is.EqualTo(@"path1\path2\path3"));
 	}
 }

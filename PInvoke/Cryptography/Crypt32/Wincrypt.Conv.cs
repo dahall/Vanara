@@ -366,7 +366,7 @@ public static partial class Crypt32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certalgidtooid LPCSTR CertAlgIdToOID( DWORD dwAlgId );
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "2a66c6da-22dd-4192-9f3d-2fb85f8032e0")]
-	public static extern LPSTR CertAlgIdToOID(uint dwAlgId);
+	public static extern PSTR CertAlgIdToOID(uint dwAlgId);
 
 	/// <summary>
 	/// The <c>CertGetNameString</c> function obtains the subject or issuer name from a certificate CERT_CONTEXT structure and converts
@@ -505,7 +505,7 @@ public static partial class Crypt32
 	/// the specified name type is not found, returns a <c>null</c>-terminated empty string with a returned character count of 1.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetnamestringa DWORD CertGetNameStringA(
-	// PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD dwFlags, void *pvTypePara, LPSTR pszNameString, DWORD cchNameString );
+	// PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD dwFlags, void *pvTypePara, PSTR pszNameString, DWORD cchNameString );
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "300e6345-0be0-48c7-a3a3-174879cf0bbb")]
 	public static extern uint CertGetNameString(PCCERT_CONTEXT pCertContext, CertNameType dwType, CertNameFlags dwFlags, [In] SafeOID pvTypePara,
@@ -648,7 +648,7 @@ public static partial class Crypt32
 	/// the specified name type is not found, returns a <c>null</c>-terminated empty string with a returned character count of 1.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetnamestringa DWORD CertGetNameStringA(
-	// PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD dwFlags, void *pvTypePara, LPSTR pszNameString, DWORD cchNameString );
+	// PCCERT_CONTEXT pCertContext, DWORD dwType, DWORD dwFlags, void *pvTypePara, PSTR pszNameString, DWORD cchNameString );
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "300e6345-0be0-48c7-a3a3-174879cf0bbb")]
 	public static extern uint CertGetNameString(PCCERT_CONTEXT pCertContext, CertNameType dwType, CertNameFlags dwFlags, in uint pvTypePara,
@@ -841,7 +841,7 @@ public static partial class Crypt32
 	/// <para>Example C Program: Converting Names from Certificates to ASN.1 and Back.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certnametostra DWORD CertNameToStrA( DWORD
-	// dwCertEncodingType, PCERT_NAME_BLOB pName, DWORD dwStrType, LPSTR psz, DWORD csz );
+	// dwCertEncodingType, PCERT_NAME_BLOB pName, DWORD dwStrType, PSTR psz, DWORD csz );
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b3d96de8-5cbc-4ccb-b759-6757520bbda3")]
 	public static extern uint CertNameToStr(CertEncodingType dwCertEncodingType, in CRYPTOAPI_BLOB pName, CertNameStringFormat dwStrType,
@@ -942,7 +942,7 @@ public static partial class Crypt32
 	/// If psz is not <c>NULL</c> and csz is not zero, the returned psz is always a possibly empty <c>null</c>-terminated string.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certrdnvaluetostra DWORD CertRDNValueToStrA( DWORD
-	// dwValueType, PCERT_RDN_VALUE_BLOB pValue, LPSTR psz, DWORD csz );
+	// dwValueType, PCERT_RDN_VALUE_BLOB pValue, PSTR psz, DWORD csz );
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "c1e0af19-320e-411e-85bf-c7f01befcac4")]
 	public static extern uint CertRDNValueToStr(CertRDNType dwValueType, in CRYPTOAPI_BLOB pValue,
@@ -1228,7 +1228,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "8bdfafa6-9833-4689-a155-dff09647ec8d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertStrToName(CertEncodingType dwCertEncodingType, [MarshalAs(UnmanagedType.LPTStr)] string pszX500, CertNameStringFormat dwStrType,
-		[Optional, Ignore] IntPtr pvReserved, [Out, Optional, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded, out LPTSTR ppszError);
+		[Optional, Ignore] IntPtr pvReserved, [Out, Optional, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded, out PTSTR ppszError);
 
 	/// <summary>The <c>CryptBinaryToString</c> function converts an array of bytes into a formatted string.</summary>
 	/// <param name="pbBinary">A pointer to the array of bytes to be converted into a string.</param>
@@ -1334,7 +1334,7 @@ public static partial class Crypt32
 	/// no new line sequence is appended to the string.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptbinarytostringa BOOL CryptBinaryToStringA( const
-	// BYTE *pbBinary, DWORD cbBinary, DWORD dwFlags, LPSTR pszString, DWORD *pcchString );
+	// BYTE *pbBinary, DWORD cbBinary, DWORD dwFlags, PSTR pszString, DWORD *pcchString );
 	[DllImport(Lib.Crypt32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "e6bdf931-fba3-4a33-b22e-5f818f565842")]
 	[return: MarshalAs(UnmanagedType.Bool)]

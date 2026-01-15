@@ -58,7 +58,7 @@ public static partial class XpsObjectModel
 		/// <para>The <c>category</c> property contains categorization of the content.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcategory HRESULT
-		// GetCategory( LPWSTR *category );
+		// GetCategory( PWSTR *category );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetCategory();
 
@@ -80,7 +80,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcontentstatus
-		// HRESULT GetContentStatus( LPWSTR *contentStatus );
+		// HRESULT GetContentStatus( PWSTR *contentStatus );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetContentStatus();
 
@@ -106,7 +106,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcontenttype
-		// HRESULT GetContentType( LPWSTR *contentType );
+		// HRESULT GetContentType( PWSTR *contentType );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetContentType();
 
@@ -143,7 +143,7 @@ public static partial class XpsObjectModel
 		/// <para>The <c>creator</c> property describes the entity that is primarily responsible for making the content of the resource.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getcreator HRESULT
-		// GetCreator( LPWSTR *creator );
+		// GetCreator( PWSTR *creator );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetCreator();
 
@@ -164,7 +164,7 @@ public static partial class XpsObjectModel
 		/// <para>The <c>description</c> property provides an explanation of the content.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getdescription
-		// HRESULT GetDescription( LPWSTR *description );
+		// HRESULT GetDescription( PWSTR *description );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetDescription();
 
@@ -185,7 +185,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getidentifier
-		// HRESULT GetIdentifier( LPWSTR *identifier );
+		// HRESULT GetIdentifier( PWSTR *identifier );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetIdentifier();
 
@@ -209,7 +209,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getkeywords HRESULT
-		// GetKeywords( LPWSTR *keywords );
+		// GetKeywords( PWSTR *keywords );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetKeywords();
 
@@ -233,7 +233,7 @@ public static partial class XpsObjectModel
 		/// <para>Internet Engineering Task Force (IETF) RFC 3066 describes the recommended encoding for this property.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getlanguage HRESULT
-		// GetLanguage( LPWSTR *language );
+		// GetLanguage( PWSTR *language );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetLanguage();
 
@@ -256,7 +256,7 @@ public static partial class XpsObjectModel
 		/// <para>The <c>lastModifiedBy</c> property describes the user who performed the last modification.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getlastmodifiedby
-		// HRESULT GetLastModifiedBy( LPWSTR *lastModifiedBy );
+		// HRESULT GetLastModifiedBy( PWSTR *lastModifiedBy );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetLastModifiedBy();
 
@@ -308,7 +308,7 @@ public static partial class XpsObjectModel
 		/// <para>The <c>revision</c> property contains the resource's revision number.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getrevision HRESULT
-		// GetRevision( LPWSTR *revision );
+		// GetRevision( PWSTR *revision );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetRevision();
 
@@ -325,7 +325,7 @@ public static partial class XpsObjectModel
 		/// <returns>The string that is read from the <c>subject</c> property.</returns>
 		/// <remarks>The <c>subject</c> property contains the topic of the resource's content.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getsubject HRESULT
-		// GetSubject( LPWSTR *subject );
+		// GetSubject( PWSTR *subject );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetSubject();
 
@@ -342,7 +342,7 @@ public static partial class XpsObjectModel
 		/// <returns>The string that is read from the <c>title</c> property.</returns>
 		/// <remarks>The <c>title</c> property contains the resource's name.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-gettitle HRESULT
-		// GetTitle( LPWSTR *title );
+		// GetTitle( PWSTR *title );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetTitle();
 
@@ -359,7 +359,7 @@ public static partial class XpsObjectModel
 		/// <returns>The string that is read from the <c>version</c> property.</returns>
 		/// <remarks>The <c>version</c> property contains the resource's version number.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcoreproperties-getversion HRESULT
-		// GetVersion( LPWSTR *version );
+		// GetVersion( PWSTR *version );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetVersion();
 
@@ -1293,7 +1293,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-getlanguage HRESULT
-		// GetLanguage( LPWSTR *language );
+		// GetLanguage( PWSTR *language );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetLanguage();
@@ -1316,7 +1316,7 @@ public static partial class XpsObjectModel
 		/// The <c>Name</c> property of the page. A <c>NULL</c> pointer is returned if the <c>Name</c> property has not been set.
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-getname HRESULT GetName(
-		// LPWSTR *name );
+		// PWSTR *name );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetName();
@@ -1673,7 +1673,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsompage-generateunusedlookupkey
-		// HRESULT GenerateUnusedLookupKey( XPS_OBJECT_TYPE type, LPWSTR *key );
+		// HRESULT GenerateUnusedLookupKey( XPS_OBJECT_TYPE type, PWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GenerateUnusedLookupKey([In] XPS_OBJECT_TYPE type);

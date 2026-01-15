@@ -957,7 +957,7 @@ public static partial class FwpUClnt
 
 	/// <summary>The <c>IKEEXT_CERT_EKUS0</c> structure contains information about the extended key usage (EKU) properties of a certificate.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iketypes/ns-iketypes-ikeext_cert_ekus0 typedef struct IKEEXT_CERT_EKUS0_ { ULONG
-	// numEku; LPSTR *eku; } IKEEXT_CERT_EKUS0;
+	// numEku; PSTR *eku; } IKEEXT_CERT_EKUS0;
 	[PInvokeData("iketypes.h", MSDNShortId = "NS:iketypes.IKEEXT_CERT_EKUS0_")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct IKEEXT_CERT_EKUS0 : IBlob<string>
@@ -969,7 +969,7 @@ public static partial class FwpUClnt
 		public uint numEku;
 
 		/// <summary>
-		/// <para>Type: <c>LPSTR*</c></para>
+		/// <para>Type: <c>PSTR*</c></para>
 		/// <para>The list of EKU object identifiers (OIDs).</para>
 		/// </summary>
 		public IntPtr eku;
@@ -977,7 +977,7 @@ public static partial class FwpUClnt
 
 	/// <summary>The <c>IKEEXT_CERT_NAME0</c> structure specifies certificate selection "subject" criteria for an authentication method.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/iketypes/ns-iketypes-ikeext_cert_name0 typedef struct IKEEXT_CERT_NAME0_ {
-	// IKEEXT_CERT_CRITERIA_NAME_TYPE nameType; LPWSTR certName; } IKEEXT_CERT_NAME0;
+	// IKEEXT_CERT_CRITERIA_NAME_TYPE nameType; PWSTR certName; } IKEEXT_CERT_NAME0;
 	[PInvokeData("iketypes.h", MSDNShortId = "NS:iketypes.IKEEXT_CERT_NAME0_")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct IKEEXT_CERT_NAME0
@@ -989,7 +989,7 @@ public static partial class FwpUClnt
 		public IKEEXT_CERT_CRITERIA_NAME_TYPE nameType;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>The string to be used for matching the "subject" criteria.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -2364,13 +2364,13 @@ public static partial class FwpUClnt
 		/// <para>Key container name of the public key/private key pair that was used to generate the CGA.</para>
 		/// <para>Same semantics as the <c>pwszContainerName</c> member of the CRYPT_KEY_PROV_INFO structure.</para>
 		/// </summary>
-		public LPWSTR keyContainerName;
+		public PWSTR keyContainerName;
 
 		/// <summary>
 		/// <para>Name of the CSP that stores the key container. If <c>NULL</c>, default provider will be used.</para>
 		/// <para>Same semantics as the <c>pwszProvName</c> member of the CRYPT_KEY_PROV_INFO structure.</para>
 		/// </summary>
-		public LPWSTR cspName;
+		public PWSTR cspName;
 
 		/// <summary>
 		/// <para>Type of the CSP that stores the key container.</para>
@@ -2459,7 +2459,7 @@ public static partial class FwpUClnt
 		/// <para>Type: <c>wchar_t*</c></para>
 		/// <para>The Kerberos proxy server.</para>
 		/// </summary>
-		public LPWSTR proxyServer;
+		public PWSTR proxyServer;
 	}
 
 	/// <summary>

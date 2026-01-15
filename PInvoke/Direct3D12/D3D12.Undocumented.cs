@@ -26243,7 +26243,7 @@ public static partial class D3D12
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string ProgramName;
 		public uint NumExports;
-		public ArrayPointer<LPWSTR> pExports;
+		public ArrayPointer<PWSTR> pExports;
 		public uint NumSubobjects;
 		public ArrayPointer<D3D12_STATE_SUBOBJECT> ppSubobjects;
 

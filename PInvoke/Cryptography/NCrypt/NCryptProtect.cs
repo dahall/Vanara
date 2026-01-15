@@ -868,7 +868,7 @@ public static partial class NCrypt
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ncryptprotect/nf-ncryptprotect-ncryptqueryprotectiondescriptorname
-	// SECURITY_STATUS NCryptQueryProtectionDescriptorName( LPCWSTR pwszName, LPWSTR pwszDescriptorString, SIZE_T *pcDescriptorString,
+	// SECURITY_STATUS NCryptQueryProtectionDescriptorName( LPCWSTR pwszName, PWSTR pwszDescriptorString, SIZE_T *pcDescriptorString,
 	// DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "32953AEC-01EE-4ED1-80F3-29963F43004F")]

@@ -7967,7 +7967,7 @@ public static partial class D2d1
 	// HRESULT SetValue( UINT32 index, D2D1_PROPERTY_TYPE type, const BYTE *data, UINT32 dataSize );
 	public static void SetValue(this ID2D1Properties props, uint index, string data)
 	{
-		using SafeLPWSTR mem = new(data);
+		using SafePWSTR mem = new(data);
 		props.SetValue(index, D2D1_PROPERTY_TYPE.D2D1_PROPERTY_TYPE_STRING, mem, (uint)mem.Size);
 	}
 
@@ -8002,7 +8002,7 @@ public static partial class D2d1
 	// HRESULT SetValueByName( PCWSTR name, D2D1_PROPERTY_TYPE type, const BYTE *data, UINT32 dataSize );
 	public static void SetValueByName(this ID2D1Properties props, string name, D2D1_PROPERTY_TYPE type, string data)
 	{
-		using SafeLPWSTR mem = new(data);
+		using SafePWSTR mem = new(data);
 		props.SetValueByName(name, type, mem, (uint)mem.Size);
 	}
 

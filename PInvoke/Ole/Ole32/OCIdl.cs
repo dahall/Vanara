@@ -8914,7 +8914,7 @@ public static partial class Ole32
 	// LPOLESTR *pElems; } CALPOLESTR, *LPCALPOLESTR;
 	[PInvokeData("ocidl.h", MSDNShortId = "NS:ocidl.tagCALPOLESTR")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CALPOLESTR : IArrayStruct<LPWSTR>
+	public struct CALPOLESTR : IArrayStruct<PWSTR>
 	{
 		/// <summary>The size of the array pointed to by <c>pElems</c>.</summary>
 		public uint cElems;

@@ -3013,7 +3013,7 @@ public static partial class Tdh
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/tdh/ns-tdh-payload_filter_predicate typedef struct _PAYLOAD_FILTER_PREDICATE {
-	// LPWSTR FieldName; USHORT CompareOp; LPWSTR Value; } PAYLOAD_FILTER_PREDICATE, *PPAYLOAD_FILTER_PREDICATE;
+	// PWSTR FieldName; USHORT CompareOp; PWSTR Value; } PAYLOAD_FILTER_PREDICATE, *PPAYLOAD_FILTER_PREDICATE;
 	[PInvokeData("tdh.h", MSDNShortId = "6B8C03C9-2936-4FEE-AEF4-ABC368B1CB75")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PAYLOAD_FILTER_PREDICATE

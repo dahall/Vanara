@@ -4267,7 +4267,7 @@ public static partial class OleDb
 	[StructLayout(LayoutKind.Sequential)]
 	public struct DBCOLUMNDESC
 	{
-		public LPWSTR pwszTypeName;
+		public PWSTR pwszTypeName;
 		public IntPtr pTypeInfo;
 		public IntPtr rgPropertySets;
 		public GuidPtr pclsid;
@@ -4320,7 +4320,7 @@ public static partial class OleDb
 		public IntPtr pReferencedTableID;
 		public DBORDINAL cForeignKeyColumns;
 		public IntPtr rgForeignKeyColumnList;
-		public LPWSTR pwszConstraintText;
+		public PWSTR pwszConstraintText;
 		public DBUPDELRULE UpdateRule;
 		public DBUPDELRULE DeleteRule;
 		public DBMATCHTYPE MatchType;
@@ -4358,7 +4358,7 @@ public static partial class OleDb
 		public struct UNAME
 		{
 			[FieldOffset(0)]
-			public LPWSTR pwszName;
+			public PWSTR pwszName;
 
 			[FieldOffset(0)]
 			public uint ulPropid;

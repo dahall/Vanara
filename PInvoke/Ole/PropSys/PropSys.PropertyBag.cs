@@ -408,7 +408,7 @@ public static partial class PropSys
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pspropertybag_readstr PSSTDAPI PSPropertyBag_ReadStr(
-	// IPropertyBag *propBag, LPCWSTR propName, LPWSTR value, int characterCount );
+	// IPropertyBag *propBag, LPCWSTR propName, PWSTR value, int characterCount );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "2E3E86D6-B070-49fc-AAF0-D6DCF0EA16B7")]
 	public static extern HRESULT PSPropertyBag_ReadStr(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder value, int characterCount);

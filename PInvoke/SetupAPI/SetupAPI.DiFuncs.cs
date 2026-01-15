@@ -2082,7 +2082,7 @@ public static partial class SetupAPI
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetActualSectionToInstall(HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string InfSectionName,
 		[Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? InfSectionWithExt, [Optional] uint InfSectionWithExtSize,
-		out uint RequiredSize, out LPTSTR Extension);
+		out uint RequiredSize, out PTSTR Extension);
 
 	/// <summary>
 	/// The <c>SetupDiGetActualSectionToInstallEx</c> function retrieves the name of the INF DDInstall section that installs a device
@@ -2187,7 +2187,7 @@ public static partial class SetupAPI
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetActualSectionToInstallEx(HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string InfSectionName,
 		[In, Optional] IntPtr AlternatePlatformInfo, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? InfSectionWithExt,
-		uint InfSectionWithExtSize, out uint RequiredSize, out LPTSTR Extension, IntPtr Reserved = default);
+		uint InfSectionWithExtSize, out uint RequiredSize, out PTSTR Extension, IntPtr Reserved = default);
 
 	/// <summary>
 	/// The <c>SetupDiGetActualSectionToInstallEx</c> function retrieves the name of the INF DDInstall section that installs a device
@@ -2292,7 +2292,7 @@ public static partial class SetupAPI
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SetupDiGetActualSectionToInstallEx(HINF InfHandle, [MarshalAs(UnmanagedType.LPTStr)] string InfSectionName,
 		in SP_ALTPLATFORM_INFO AlternatePlatformInfo, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? InfSectionWithExt,
-		uint InfSectionWithExtSize, out uint RequiredSize, out LPTSTR Extension, IntPtr Reserved = default);
+		uint InfSectionWithExtSize, out uint RequiredSize, out PTSTR Extension, IntPtr Reserved = default);
 
 	/// <summary>The <c>SetupDiGetClassBitmapIndex</c> function retrieves the index of the mini-icon supplied for the specified class.</summary>
 	/// <param name="ClassGuid">

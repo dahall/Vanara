@@ -3820,7 +3820,7 @@ public static partial class Gdi32
 	/// <para>The typeface name is copied as a null-terminated character string.</para>
 	/// <para>If the name is longer than the number of characters specified by the nCount parameter, the name is truncated.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextfacea int GetTextFaceA( HDC hdc, int c, LPSTR lpName );
+	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextfacea int GetTextFaceA( HDC hdc, int c, PSTR lpName );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c4c8c8f5-3651-481b-a55f-da7f49d92f3a")]
 	public static extern int GetTextFace([In, AddAsMember] HDC hdc, int c, [Optional, SizeDef(nameof(c), SizingMethod.QueryResultInReturn)] StringBuilder? lpName);
@@ -4573,7 +4573,7 @@ public static partial class Gdi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-gcp_resultsa typedef struct tagGCP_RESULTSA { DWORD lStructSize;
-	// LPSTR lpOutString; UINT *lpOrder; int *lpDx; int *lpCaretPos; LPSTR lpClass; LPWSTR lpGlyphs; UINT nGlyphs; int nMaxFit; }
+	// PSTR lpOutString; UINT *lpOrder; int *lpDx; int *lpCaretPos; PSTR lpClass; PWSTR lpGlyphs; UINT nGlyphs; int nMaxFit; }
 	// GCP_RESULTSA, *LPGCP_RESULTSA;
 	[PInvokeData("wingdi.h", MSDNShortId = "7692637e-963a-4e0a-8a04-e05a6d01c417")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -4588,7 +4588,7 @@ public static partial class Gdi32
 		/// string is identical to the original string, but may be different if the string needs reordering and the GCP_REORDER flag is set
 		/// or if the original string exceeds the maximum extent and the GCP_MAXEXTENT flag is set.
 		/// </summary>
-		public LPTSTR lpOutString;
+		public PTSTR lpOutString;
 
 		/// <summary>
 		/// <para>

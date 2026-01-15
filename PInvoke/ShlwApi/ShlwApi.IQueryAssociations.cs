@@ -652,7 +652,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </param>
 	/// <param name="pszOut">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>
 	/// Pointer to a null-terminated string that, when this function returns successfully, receives the requested string. Set this
 	/// parameter to <c>NULL</c> to retrieve the required buffer size.
@@ -708,7 +708,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-assocquerystringa LWSTDAPI AssocQueryStringA( ASSOCF
-	// flags, ASSOCSTR str, LPCSTR pszAssoc, LPCSTR pszExtra, LPSTR pszOut, DWORD *pcchOut );
+	// flags, ASSOCSTR str, LPCSTR pszAssoc, LPCSTR pszExtra, PSTR pszOut, DWORD *pcchOut );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "026b841d-b831-475e-a788-2c79801e20b8")]
 	public static extern HRESULT AssocQueryString(ASSOCF flags, ASSOCSTR str, string pszAssoc, [Optional] string? pszExtra, StringBuilder? pszOut, ref uint pcchOut);

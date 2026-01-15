@@ -6596,7 +6596,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetFinalPathNameByHandle( _In_ HANDLE hFile, _Out_ LPTSTR lpszFilePath, _In_ DWORD cchFilePath, _In_ DWORD dwFlags);
+	// DWORD WINAPI GetFinalPathNameByHandle( _In_ HANDLE hFile, _Out_ PTSTR lpszFilePath, _In_ DWORD cchFilePath, _In_ DWORD dwFlags);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364962")]
 	public static extern uint GetFinalPathNameByHandle([In, AddAsMember] HFILE hFile, [SizeDef(nameof(cchFilePath), SizingMethod.QueryResultInReturn)] StringBuilder? lpszFilePath,
@@ -6638,10 +6638,10 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails for any other reason, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetFullPathName( _In_ LPCTSTR lpFileName, _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer, _Out_ LPTSTR *lpFilePart);
+	// DWORD WINAPI GetFullPathName( _In_ LPCTSTR lpFileName, _In_ DWORD nBufferLength, _Out_ PTSTR lpBuffer, _Out_ PTSTR *lpFilePart);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetFullPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364963")]
-	public static extern uint GetFullPathName(string lpFileName, [Optional] uint nBufferLength, [Optional] LPWSTR lpBuffer, out LPWSTR lpFilePart);
+	public static extern uint GetFullPathName(string lpFileName, [Optional] uint nBufferLength, [Optional] PWSTR lpBuffer, out PWSTR lpFilePart);
 
 	/// <summary>
 	/// <para>Retrieves the full path and file name of the specified file.</para>
@@ -6749,7 +6749,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Obtaining a File Name From a File Handle.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getlogicaldrivestringsw
-	// DWORD GetLogicalDriveStringsW( DWORD nBufferLength, LPWSTR lpBuffer );
+	// DWORD GetLogicalDriveStringsW( DWORD nBufferLength, PWSTR lpBuffer );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetLogicalDriveStrings")]
 	public static extern uint GetLogicalDriveStrings(uint nBufferLength, IntPtr lpBuffer);
@@ -6799,7 +6799,7 @@ public static partial class Kernel32
 	/// information, call <c>GetLastError</c>.
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetLongPathName( _In_ LPCTSTR lpszShortPath, _Out_ LPTSTR lpszLongPath, _In_ DWORD cchBuffer);
+	// DWORD WINAPI GetLongPathName( _In_ LPCTSTR lpszShortPath, _Out_ PTSTR lpszLongPath, _In_ DWORD cchBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetLongPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364980")]
 	public static extern uint GetLongPathName(string lpszShortPath, [Optional, SizeDef(nameof(cchBuffer), SizingMethod.QueryResultInReturn)] StringBuilder? lpszLongPath,
@@ -6838,7 +6838,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails for any other reason, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetShortPathName( _In_ LPCTSTR lpszLongPath, _Out_ LPTSTR lpszShortPath, _In_ DWORD cchBuffer);
+	// DWORD WINAPI GetShortPathName( _In_ LPCTSTR lpszLongPath, _Out_ PTSTR lpszShortPath, _In_ DWORD cchBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetShortPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364989")]
 	public static extern uint GetShortPathName([MaxLength(MAX_PATH - 14)] string lpszLongPath, [Optional, SizeDef(nameof(cchBuffer), SizingMethod.QueryResultInReturn)] StringBuilder? lpszShortPath,
@@ -6960,7 +6960,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Creating and Using a Temporary File.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-gettempfilenamea UINT GetTempFileNameA( LPCSTR lpPathName,
-	// LPCSTR lpPrefixString, UINT uUnique, LPSTR lpTempFileName );
+	// LPCSTR lpPrefixString, UINT uUnique, PSTR lpTempFileName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "0a30055f-a3b9-439f-9304-40ee8a07b967")]
 	public static extern uint GetTempFileName([MaxLength(MAX_PATH - 14)] string lpPathName, [MaxLength(3)] string lpPrefixString,
@@ -6987,7 +6987,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// <para>The maximum possible return value is <c>MAX_PATH</c>+1 (261).</para>
 	/// </returns>
-	// DWORD WINAPI GetTempPath( _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer);
+	// DWORD WINAPI GetTempPath( _In_ DWORD nBufferLength, _Out_ PTSTR lpBuffer);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364992")]
 	public static extern uint GetTempPath([Optional, Range(0, MAX_PATH + 1)] uint nBufferLength,
@@ -7078,7 +7078,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-gettemppath2w
-	// DWORD GetTempPath2W( [in] DWORD BufferLength, [out] LPWSTR Buffer );
+	// DWORD GetTempPath2W( [in] DWORD BufferLength, [out] PWSTR Buffer );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("fileapi.h", MSDNShortId = "NF:fileapi.GetTempPath2W")]
 	public static extern uint GetTempPath2([Optional, Range(0, MAX_PATH + 1)] uint BufferLength,
@@ -7325,9 +7325,9 @@ public static partial class Kernel32
 	/// <para>If all the requested information is retrieved, the return value is nonzero.</para>
 	/// <para>If not all the requested information is retrieved, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI GetVolumeInformationByHandleW( _In_ HANDLE hFile, _Out_opt_ LPWSTR lpVolumeNameBuffer, _In_ DWORD nVolumeNameSize,
+	// BOOL WINAPI GetVolumeInformationByHandleW( _In_ HANDLE hFile, _Out_opt_ PWSTR lpVolumeNameBuffer, _In_ DWORD nVolumeNameSize,
 	// _Out_opt_ LPDWORD lpVolumeSerialNumber, _Out_opt_ LPDWORD lpMaximumComponentLength, _Out_opt_ LPDWORD lpFileSystemFlags, _Out_opt_
-	// LPWSTR lpFileSystemNameBuffer, _In_ DWORD nFileSystemNameSize);
+	// PWSTR lpFileSystemNameBuffer, _In_ DWORD nFileSystemNameSize);
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa964920")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -7364,7 +7364,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI GetVolumeNameForVolumeMountPoint( _In_ LPCTSTR lpszVolumeMountPoint, _Out_ LPTSTR lpszVolumeName, _In_ DWORD cchBufferLength);
+	// BOOL WINAPI GetVolumeNameForVolumeMountPoint( _In_ LPCTSTR lpszVolumeMountPoint, _Out_ PTSTR lpszVolumeName, _In_ DWORD cchBufferLength);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364994")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -7393,7 +7393,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI GetVolumePathName( _In_ LPCTSTR lpszFileName, _Out_ LPTSTR lpszVolumePathName, _In_ DWORD cchBufferLength);
+	// BOOL WINAPI GetVolumePathName( _In_ LPCTSTR lpszFileName, _Out_ PTSTR lpszVolumePathName, _In_ DWORD cchBufferLength);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364996")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -7429,7 +7429,7 @@ public static partial class Kernel32
 	/// the required buffer size.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI GetVolumePathNamesForVolumeName( _In_ LPCTSTR lpszVolumeName, _Out_ LPTSTR lpszVolumePathNames, _In_ DWORD
+	// BOOL WINAPI GetVolumePathNamesForVolumeName( _In_ LPCTSTR lpszVolumeName, _Out_ PTSTR lpszVolumePathNames, _In_ DWORD
 	// cchBufferLength, _Out_ PDWORD lpcchReturnLength);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364998")]

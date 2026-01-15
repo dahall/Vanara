@@ -347,7 +347,7 @@ Partial Public Module FirewallApi
         Public userSid As PSID
 
         ''' <summary>
-        ''' <para>Type: <c>LPWSTR</c></para>
+        ''' <para>Type: <c>PWSTR</c></para>
         ''' <para>Friendly name of the app container.</para>
         ''' </summary>
         <MarshalAs(UnmanagedType.LPWStr)>

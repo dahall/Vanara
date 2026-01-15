@@ -2730,7 +2730,7 @@ public static partial class AdvApi32
 		/// A pointer to a string of Unicode characters that contains the name of the security attribute. This string must be at least 4
 		/// bytes in length.
 		/// </summary>
-		public LPWSTR Name;
+		public PWSTR Name;
 
 		/// <summary>
 		/// <para>
@@ -2841,7 +2841,7 @@ public static partial class AdvApi32
 
 			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>PWSTR</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING"/>.</summary>
 			[FieldOffset(0)]
-			public ArrayPointer<LPWSTR> ppString;
+			public ArrayPointer<PWSTR> ppString;
 
 			/// <summary>
 			/// Pointer to an array of <c>ValueCount</c> members where each member is a fully qualified binary name value of type <see cref="CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE"/>.

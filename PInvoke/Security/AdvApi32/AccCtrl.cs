@@ -326,7 +326,7 @@ public static partial class AdvApi32
 	/// information stored in an ACE.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/accctrl/ns-accctrl-_actrl_access_entrya typedef struct _ACTRL_ACCESS_ENTRYA {
-	// TRUSTEE_A Trustee; ULONG fAccessFlags; ACCESS_RIGHTS Access; ACCESS_RIGHTS ProvSpecificAccess; INHERIT_FLAGS Inheritance; LPSTR
+	// TRUSTEE_A Trustee; ULONG fAccessFlags; ACCESS_RIGHTS Access; ACCESS_RIGHTS ProvSpecificAccess; INHERIT_FLAGS Inheritance; PSTR
 	// lpInheritProperty; } ACTRL_ACCESS_ENTRYA, *PACTRL_ACCESS_ENTRYA;
 	[PInvokeData("accctrl.h", MSDNShortId = "bcb2ad72-7b00-4582-b05e-e00720a4db77")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -514,7 +514,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/accctrl/ns-accctrl-_actrl_property_entrya typedef struct _ACTRL_PROPERTY_ENTRYA {
-	// LPSTR lpProperty; PACTRL_ACCESS_ENTRY_LISTA pAccessEntryList; ULONG fListFlags; } ACTRL_PROPERTY_ENTRYA, *PACTRL_PROPERTY_ENTRYA;
+	// PSTR lpProperty; PACTRL_ACCESS_ENTRY_LISTA pAccessEntryList; ULONG fListFlags; } ACTRL_PROPERTY_ENTRYA, *PACTRL_PROPERTY_ENTRYA;
 	[PInvokeData("accctrl.h", MSDNShortId = "90b13dd1-0ca6-4674-b9fa-a61aed4637d7")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct ACTRL_PROPERTY_ENTRY
@@ -730,7 +730,7 @@ public static partial class AdvApi32
 	/// EXPLICIT_ACCESS structure.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/accctrl/ns-accctrl-_objects_and_name_a typedef struct _OBJECTS_AND_NAME_A { DWORD
-	// ObjectsPresent; SE_OBJECT_TYPE ObjectType; LPSTR ObjectTypeName; LPSTR InheritedObjectTypeName; LPSTR ptstrName; } OBJECTS_AND_NAME_A, *POBJECTS_AND_NAME_A;
+	// ObjectsPresent; SE_OBJECT_TYPE ObjectType; PSTR ObjectTypeName; PSTR InheritedObjectTypeName; PSTR ptstrName; } OBJECTS_AND_NAME_A, *POBJECTS_AND_NAME_A;
 	[PInvokeData("accctrl.h", MSDNShortId = "ad91a302-f693-44e9-9655-ec4488ff78c4")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
 	public struct OBJECTS_AND_NAME
@@ -764,7 +764,7 @@ public static partial class AdvApi32
 		/// <para>A pointer to a null-terminated string that identifies the type of object to which the ACE applies.</para>
 		/// <para>This string must be a valid LDAP display name in the Active Directory schema.</para>
 		/// </summary>
-		public LPTSTR ObjectTypeName;
+		public PTSTR ObjectTypeName;
 
 		/// <summary>
 		/// <para>A pointer to a null-terminated string that identifies the type of object that can inherit the ACE.</para>
@@ -776,10 +776,10 @@ public static partial class AdvApi32
 		/// protection against inheritance placed on the child objects.
 		/// </para>
 		/// </summary>
-		public LPTSTR InheritedObjectTypeName;
+		public PTSTR InheritedObjectTypeName;
 
 		/// <summary>A pointer to a null-terminated string that contains the name of the trustee.</summary>
-		public LPTSTR ptstrName;
+		public PTSTR ptstrName;
 	}
 
 	/// <summary>

@@ -621,7 +621,7 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_get_device_interface_aliasw CMAPI CONFIGRET
-	// CM_Get_Device_Interface_AliasW( LPCWSTR pszDeviceInterface, LPGUID AliasInterfaceGuid, LPWSTR pszAliasDeviceInterface, PULONG
+	// CM_Get_Device_Interface_AliasW( LPCWSTR pszDeviceInterface, LPGUID AliasInterfaceGuid, PWSTR pszAliasDeviceInterface, PULONG
 	// pulLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_Interface_AliasW")]

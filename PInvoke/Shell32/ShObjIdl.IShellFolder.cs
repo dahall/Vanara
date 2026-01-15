@@ -212,7 +212,7 @@ public static partial class Shell32
 	{
 		/// <summary>Gets the name of a categorizer, such as Group By Device Type, that can be displayed in the UI.</summary>
 		/// <param name="pszDesc">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>When this method returns, contains a pointer to a string of length cch that contains the categorizer name.</para>
 		/// </param>
 		/// <param name="cch">
@@ -436,7 +436,7 @@ public static partial class Shell32
 		/// <para>A pointer to a GUID.</para>
 		/// </param>
 		/// <param name="pszName">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>When this method returns, contains a pointer to a string that receives the name of the category.</para>
 		/// </param>
 		/// <param name="cch">
@@ -448,7 +448,7 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-icategoryprovider-getcategoryname HRESULT
-		// GetCategoryName( const GUID *pguid, LPWSTR pszName, UINT cch );
+		// GetCategoryName( const GUID *pguid, PWSTR pszName, UINT cch );
 		[PreserveSig]
 		HRESULT GetCategoryName(in Guid pguid, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszName, uint cch);
 
@@ -592,7 +592,7 @@ public static partial class Shell32
 		/// <para>If no data is being passed to or received from the parsing function, this value can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="pszDisplayName">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>
 		/// A null-terminated Unicode string with the display name. Because each Shell folder defines its own parsing syntax, the form
 		/// this string can take may vary. The desktop folder, for instance, accepts paths such as "C:\My Docs\My File.txt". It also
@@ -1243,7 +1243,7 @@ public static partial class Shell32
 		/// <para>If no data is being passed to or received from the parsing function, this value can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="pszDisplayName">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>
 		/// A null-terminated Unicode string with the display name. Because each Shell folder defines its own parsing syntax, the form
 		/// this string can take may vary. The desktop folder, for instance, accepts paths such as "C:\My Docs\My File.txt". It also
@@ -2419,7 +2419,7 @@ public static partial class Shell32
 	/// <para>If no data is being passed to or received from the parsing function, this value can be <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="pszDisplayName">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>PWSTR</c></para>
 	/// <para>
 	/// A null-terminated Unicode string with the display name. Because each Shell folder defines its own parsing syntax, the form this
 	/// string can take may vary. The desktop folder, for instance, accepts paths such as "C:\My Docs\My File.txt". It also will accept
@@ -2511,7 +2511,7 @@ public static partial class Shell32
 	/// <para>If no data is being passed to or received from the parsing function, this value can be <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="pszDisplayName">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>PWSTR</c></para>
 	/// <para>
 	/// A null-terminated Unicode string with the display name. Because each Shell folder defines its own parsing syntax, the form this
 	/// string can take may vary. The desktop folder, for instance, accepts paths such as "C:\My Docs\My File.txt". It also will accept

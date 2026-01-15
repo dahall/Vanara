@@ -1777,8 +1777,8 @@ public static partial class Shell32
 	[Obsolete("Unnecessary when using PInvoke since values are freed when converting to System.String. This method does nothing.")]
 	public static void FreeKnownFolderDefinitionFields(in KNOWNFOLDER_DEFINITION pKFD) { }
 	//{
-	//	foreach (var fi in pKFD.GetType().GetFields().Where(f => f.FieldType == typeof(LPWSTR)))
-	//		Marshal.FreeCoTaskMem((IntPtr)(LPWSTR)fi.GetValue(pKFD)!);
+	//	foreach (var fi in pKFD.GetType().GetFields().Where(f => f.FieldType == typeof(PWSTR)))
+	//		Marshal.FreeCoTaskMem((IntPtr)(PWSTR)fi.GetValue(pKFD)!);
 	//}
 
 	/// <summary>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</summary>

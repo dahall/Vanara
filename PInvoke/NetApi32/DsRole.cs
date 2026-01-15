@@ -199,8 +199,8 @@ public static partial class NetApi32
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsrole/ns-dsrole-_dsrole_primary_domain_info_basic typedef struct
-	// _DSROLE_PRIMARY_DOMAIN_INFO_BASIC { DSROLE_MACHINE_ROLE MachineRole; ULONG Flags; LPWSTR DomainNameFlat; LPWSTR DomainNameDns;
-	// LPWSTR DomainForestName; GUID DomainGuid; } DSROLE_PRIMARY_DOMAIN_INFO_BASIC, *PDSROLE_PRIMARY_DOMAIN_INFO_BASIC;
+	// _DSROLE_PRIMARY_DOMAIN_INFO_BASIC { DSROLE_MACHINE_ROLE MachineRole; ULONG Flags; PWSTR DomainNameFlat; PWSTR DomainNameDns;
+	// PWSTR DomainForestName; GUID DomainGuid; } DSROLE_PRIMARY_DOMAIN_INFO_BASIC, *PDSROLE_PRIMARY_DOMAIN_INFO_BASIC;
 	[PInvokeData("dsrole.h", MSDNShortId = "8a7b34e8-46d6-46dc-9fef-ec37b0f65eea")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DSROLE_PRIMARY_DOMAIN_INFO_BASIC

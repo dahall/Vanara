@@ -702,7 +702,7 @@ public static partial class Kernel32
 
 		using SafeCoTaskMemString buf = new((int)bufferLength, CharSet.Unicode);
 		using SafeNativeArray<uint> props = new((int)count);
-		using SafeNativeArray<LPWSTR> fns = new((int)count);
+		using SafeNativeArray<PWSTR> fns = new((int)count);
 		err = FindPackagesByPackageFamily(packageFamilyName!, packageFilters, ref count, fns, ref bufferLength, buf, props);
 		if (err.Succeeded)
 		{
@@ -1936,7 +1936,7 @@ public static partial class Kernel32
 	[PInvokeData("appmodel.h", MSDNShortId = "C2163203-D654-4491-9090-0CC43F42EC35")]
 	[SuppressAutoGen]
 	public static extern Win32Error GetPackagesByPackageFamily(string packageFamilyName, ref uint count,
-		[Optional, Out, SizeDef(nameof(count), SizingMethod.Query)] LPWSTR[]? packageFullNames,
+		[Optional, Out, SizeDef(nameof(count), SizingMethod.Query)] PWSTR[]? packageFullNames,
 		ref uint bufferLength, [Optional, Out, SizeDef(nameof(bufferLength), SizingMethod.Query)] IntPtr buffer);
 
 	/// <summary>Gets the packages with the specified family name for the current user.</summary>
@@ -1954,7 +1954,7 @@ public static partial class Kernel32
 		if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			return err;
 
-		var mem = new LPWSTR[(int)count];
+		var mem = new PWSTR[(int)count];
 		using SafeCoTaskMemString buffer = new((int)bufferLength);
 		err = GetPackagesByPackageFamily(packageFamilyName, ref count, mem, ref bufferLength, buffer);
 		if (err.Succeeded)

@@ -12,7 +12,7 @@ public static partial class Gdi32
 	/// This function must return a positive value to continue enumeration, or zero to stop enumeration. It may not return a negative value.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nc-wingdi-icmenumprocw ICMENUMPROCW Icmenumprocw; int Icmenumprocw(
-	// LPWSTR Arg1, LPARAM Arg2 ) {...}
+	// PWSTR Arg1, LPARAM Arg2 ) {...}
 	[PInvokeData("wingdi.h", MSDNShortId = "6e8f4ce5-c546-4e6a-8f35-4a22d60b6754")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	public delegate int EnumICMProfilesProcCallback(string lpszFilename, IntPtr lParam);
@@ -533,7 +533,7 @@ public static partial class Gdi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-geticmprofilea BOOL GetICMProfileA( HDC hdc, LPDWORD pBufSize,
-	// LPSTR pszFilename );
+	// PSTR pszFilename );
 	[DllImport(Lib.Gdi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "1e16771a-80c5-47bb-9c98-14169d4dd773")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -996,7 +996,7 @@ public static partial class Gdi32
 	/// files to your application, as outlined in Microsoft Layer for Unicode on Windows 95/98/Me Systems.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-seticmprofilew BOOL SetICMProfileW( HDC hdc, LPWSTR lpFileName );
+	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-seticmprofilew BOOL SetICMProfileW( HDC hdc, PWSTR lpFileName );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c95f6536-9377-4766-9eb6-004a41bcf6c5")]
 	[return: MarshalAs(UnmanagedType.Bool)]

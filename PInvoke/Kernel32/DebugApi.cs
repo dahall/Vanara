@@ -676,7 +676,7 @@ public static partial class Kernel32
 		}
 
 		/// <summary>Contains the address, format, and length, in bytes, of a debugging string.</summary>
-		// typedef struct _OUTPUT_DEBUG_STRING_INFO { LPSTR lpDebugStringData; WORD fUnicode; WORD nDebugStringLength;} OUTPUT_DEBUG_STRING_INFO,
+		// typedef struct _OUTPUT_DEBUG_STRING_INFO { PSTR lpDebugStringData; WORD fUnicode; WORD nDebugStringLength;} OUTPUT_DEBUG_STRING_INFO,
 		// *LPOUTPUT_DEBUG_STRING_INFO;// https://msdn.microsoft.com/en-us/library/windows/desktop/ms680545(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms680545")]
 		[StructLayout(LayoutKind.Sequential)]

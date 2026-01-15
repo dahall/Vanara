@@ -1916,7 +1916,7 @@ public static partial class User32
 	/// <para>The <c>DrawTextEx</c> function supports only fonts whose escapement and orientation are both zero.</para>
 	/// <para>The text alignment mode for the device context must include the TA_LEFT, TA_TOP, and TA_NOUPDATECP flags.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-drawtextexa int DrawTextExA( HDC hdc, LPSTR lpchText, int
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-drawtextexa int DrawTextExA( HDC hdc, PSTR lpchText, int
 	// cchText, LPRECT lprc, UINT format, LPDRAWTEXTPARAMS lpdtp );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "77b9973b-77f1-4508-a021-52d61d576c23")]
@@ -2101,7 +2101,7 @@ public static partial class User32
 	/// <para>The <c>DrawTextEx</c> function supports only fonts whose escapement and orientation are both zero.</para>
 	/// <para>The text alignment mode for the device context must include the TA_LEFT, TA_TOP, and TA_NOUPDATECP flags.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-drawtextexa int DrawTextExA( HDC hdc, LPSTR lpchText, int
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-drawtextexa int DrawTextExA( HDC hdc, PSTR lpchText, int
 	// cchText, LPRECT lprc, UINT format, LPDRAWTEXTPARAMS lpdtp );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "77b9973b-77f1-4508-a021-52d61d576c23")]

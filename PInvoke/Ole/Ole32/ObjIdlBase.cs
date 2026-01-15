@@ -1036,7 +1036,7 @@ public static partial class Ole32
 	}
 
 	/// <summary>
-	/// Enumerate strings. <c>LPWSTR</c> is the type that indicates a pointer to a zero-terminated string of wide, or Unicode, characters.
+	/// Enumerate strings. <c>PWSTR</c> is the type that indicates a pointer to a zero-terminated string of wide, or Unicode, characters.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nn-objidl-ienumstring
 	[PInvokeData("objidl.h", MSDNShortId = "NN:objidl.IEnumString")]

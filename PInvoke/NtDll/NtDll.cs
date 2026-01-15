@@ -1694,7 +1694,7 @@ public static partial class NtDll
 		/// remaining elements in the array immediately follows this element.
 		/// </para>
 		/// </summary>
-		public LPWSTR Name;
+		public PWSTR Name;
 	}
 
 	/// <summary>Used by <see cref="LdrDllNotification"/>.</summary>

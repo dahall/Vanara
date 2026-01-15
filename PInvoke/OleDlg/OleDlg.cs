@@ -519,7 +519,7 @@ public static partial class OleDlg
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oledlg/nf-oledlg-ioleuilinkcontainera-setlinksource HRESULT SetLinkSource(
-		// DWORD dwLink, LPSTR lpszDisplayName, ULONG lenFileName, ULONG *pchEaten, BOOL fValidateSource );
+		// DWORD dwLink, PSTR lpszDisplayName, ULONG lenFileName, ULONG *pchEaten, BOOL fValidateSource );
 		[PreserveSig]
 		HRESULT SetLinkSource(uint dwLink, [MarshalAs(UnmanagedType.LPStr)] string lpszDisplayName,
 			uint lenFileName, out uint pchEaten, [MarshalAs(UnmanagedType.Bool)] bool fValidateSource);
@@ -587,7 +587,7 @@ public static partial class OleDlg
 		/// <para>Call this method during dialog box initialization, after returning from the <c>Change Source</c> dialog box.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oledlg/nf-oledlg-ioleuilinkcontainera-getlinksource HRESULT GetLinkSource(
-		// DWORD dwLink, LPSTR *lplpszDisplayName, ULONG *lplenFileName, LPSTR *lplpszFullLinkType, LPSTR *lplpszShortLinkType, BOOL
+		// DWORD dwLink, PSTR *lplpszDisplayName, ULONG *lplenFileName, PSTR *lplpszFullLinkType, PSTR *lplpszShortLinkType, BOOL
 		// *lpfSourceAvailable, BOOL *lpfIsSelected );
 		[PreserveSig]
 		HRESULT GetLinkSource(uint dwLink, [MarshalAs(UnmanagedType.LPStr)] out string lplpszDisplayName, out uint lplenFileName,
@@ -938,7 +938,7 @@ public static partial class OleDlg
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/oledlg/nf-oledlg-ioleuiobjinfoa-getobjectinfo HRESULT GetObjectInfo( DWORD
-		// dwObject, DWORD *lpdwObjSize, LPSTR *lplpszLabel, LPSTR *lplpszType, LPSTR *lplpszShortType, LPSTR *lplpszLocation );
+		// dwObject, DWORD *lpdwObjSize, PSTR *lplpszLabel, PSTR *lplpszType, PSTR *lplpszShortType, PSTR *lplpszLocation );
 		[PreserveSig]
 		HRESULT GetObjectInfo(uint dwObject, out uint lpdwObjSize, [In, Out, Optional] IntPtr lplpszLabel, [In, Out, Optional] IntPtr lplpszType,
 			[In, Out, Optional] IntPtr lplpszShortType, [In, Out, Optional] IntPtr lplpszLocation);
@@ -2640,7 +2640,7 @@ public static partial class OleDlg
 	/// <returns>Returns <c>TRUE</c> if the links were successfully updated; otherwise, <c>FALSE</c>.</returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/oledlg/nf-oledlg-oleuiupdatelinksa BOOL OleUIUpdateLinksA(
-	// LPOLEUILINKCONTAINERA lpOleUILinkCntr, HWND hwndParent, LPSTR lpszTitle, int cLinks );
+	// LPOLEUILINKCONTAINERA lpOleUILinkCntr, HWND hwndParent, PSTR lpszTitle, int cLinks );
 	[DllImport(Lib_OleDlg, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("oledlg.h", MSDNShortId = "NF:oledlg.OleUIUpdateLinksA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2853,7 +2853,7 @@ public static partial class OleDlg
 	// https://docs.microsoft.com/en-us/windows/win32/api/oledlg/ns-oledlg-oleuichangesourcea typedef struct tagOLEUICHANGESOURCEA {
 	// DWORD cbStruct; DWORD dwFlags; HWND hWndOwner; LPCSTR lpszCaption; LPFNOLEUIHOOK lpfnHook; LPARAM lCustData; HINSTANCE hInstance;
 	// LPCSTR lpszTemplate; HRSRC hResource; OPENFILENAMEA *lpOFN; DWORD dwReserved1[4]; LPOLEUILINKCONTAINERA lpOleUILinkContainer;
-	// DWORD dwLink; LPSTR lpszDisplayName; ULONG nFileLength; LPSTR lpszFrom; LPSTR lpszTo; } OLEUICHANGESOURCEA, *POLEUICHANGESOURCEA, *LPOLEUICHANGESOURCEA;
+	// DWORD dwLink; PSTR lpszDisplayName; ULONG nFileLength; PSTR lpszFrom; PSTR lpszTo; } OLEUICHANGESOURCEA, *POLEUICHANGESOURCEA, *LPOLEUICHANGESOURCEA;
 	[PInvokeData("oledlg.h", MSDNShortId = "NS:oledlg.tagOLEUICHANGESOURCEA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct OLEUICHANGESOURCE
@@ -2973,7 +2973,7 @@ public static partial class OleDlg
 	// https://docs.microsoft.com/en-us/windows/win32/api/oledlg/ns-oledlg-oleuiconverta typedef struct tagOLEUICONVERTA { DWORD
 	// cbStruct; DWORD dwFlags; HWND hWndOwner; LPCSTR lpszCaption; LPFNOLEUIHOOK lpfnHook; LPARAM lCustData; HINSTANCE hInstance;
 	// LPCSTR lpszTemplate; HRSRC hResource; CLSID clsid; CLSID clsidConvertDefault; CLSID clsidActivateDefault; CLSID clsidNew; DWORD
-	// dvAspect; WORD wFormat; BOOL fIsLinkedObject; HGLOBAL hMetaPict; LPSTR lpszUserType; BOOL fObjectsIconChanged; LPSTR
+	// dvAspect; WORD wFormat; BOOL fIsLinkedObject; HGLOBAL hMetaPict; PSTR lpszUserType; BOOL fObjectsIconChanged; PSTR
 	// lpszDefLabel; UINT cClsidExclude; LPCLSID lpClsidExclude; } OLEUICONVERTA, *POLEUICONVERTA, *LPOLEUICONVERTA;
 	[PInvokeData("oledlg.h", MSDNShortId = "NS:oledlg.tagOLEUICONVERTA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -3286,7 +3286,7 @@ public static partial class OleDlg
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/oledlg/ns-oledlg-oleuiinsertobjecta typedef struct tagOLEUIINSERTOBJECTA {
 	// DWORD cbStruct; DWORD dwFlags; HWND hWndOwner; LPCSTR lpszCaption; LPFNOLEUIHOOK lpfnHook; LPARAM lCustData; HINSTANCE hInstance;
-	// LPCSTR lpszTemplate; HRSRC hResource; CLSID clsid; LPSTR lpszFile; UINT cchFile; UINT cClsidExclude; LPCLSID lpClsidExclude; IID
+	// LPCSTR lpszTemplate; HRSRC hResource; CLSID clsid; PSTR lpszFile; UINT cchFile; UINT cClsidExclude; LPCLSID lpClsidExclude; IID
 	// iid; DWORD oleRender; LPFORMATETC lpFormatEtc; LPOLECLIENTSITE lpIOleClientSite; LPSTORAGE lpIStorage; LPVOID *ppvObj; SCODE sc;
 	// HGLOBAL hMetaPict; } OLEUIINSERTOBJECTA, *POLEUIINSERTOBJECTA, *LPOLEUIINSERTOBJECTA;
 	[PInvokeData("oledlg.h", MSDNShortId = "NS:oledlg.tagOLEUIINSERTOBJECTA")]

@@ -508,7 +508,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Enumerating all Device Drivers in the System.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getdevicedriverbasenamea DWORD GetDeviceDriverBaseNameA( LPVOID
-	// ImageBase, LPSTR lpFilename, DWORD nSize );
+	// ImageBase, PSTR lpFilename, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "a19a927d-4669-4d4c-951e-43f294a8fb40")]
 	public static extern uint GetDeviceDriverBaseName(IntPtr ImageBase, [SizeDef(nameof(nSize))] StringBuilder lpFilename, uint nSize);
@@ -544,7 +544,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getdevicedriverfilenamea DWORD GetDeviceDriverFileNameA( LPVOID
-	// ImageBase, LPSTR lpFilename, DWORD nSize );
+	// ImageBase, PSTR lpFilename, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "6ddbcf7e-e41c-4ea7-b60a-01ed5c98c530")]
 	public static extern uint GetDeviceDriverFileName(IntPtr ImageBase, [SizeDef(nameof(nSize))] StringBuilder lpFilename, uint nSize);
@@ -612,7 +612,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Obtaining a File Name From a File Handle.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getmappedfilenamea DWORD GetMappedFileNameA( HANDLE hProcess,
-	// LPVOID lpv, LPSTR lpFilename, DWORD nSize );
+	// LPVOID lpv, PSTR lpFilename, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "10a2e5ab-f495-486d-8ef7-ef763716afd1")]
 	public static extern uint GetMappedFileName(HPROCESS hProcess, IntPtr lpv, [SizeDef(nameof(nSize))] StringBuilder lpFilename, uint nSize);
@@ -676,7 +676,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Enumerating All Processes.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getmodulebasenamea DWORD GetModuleBaseNameA( HANDLE hProcess,
-	// HMODULE hModule, LPSTR lpBaseName, DWORD nSize );
+	// HMODULE hModule, PSTR lpBaseName, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "31a9eb69-95f0-4dd7-8fd5-296f2cff0b8a")]
 	public static extern uint GetModuleBaseName(HPROCESS hProcess, [Optional] HINSTANCE hModule, [MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(nSize))] StringBuilder lpBaseName, uint nSize);
@@ -748,7 +748,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexa DWORD GetModuleFileNameExA( HANDLE hProcess,
-	// HMODULE hModule, LPSTR lpFilename, DWORD nSize );
+	// HMODULE hModule, PSTR lpFilename, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "NF:psapi.GetModuleFileNameExA")]
 	public static extern uint GetModuleFileNameEx(HPROCESS hProcess, [Optional] HINSTANCE hModule, [MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(nSize))] StringBuilder lpFilename, uint nSize);
@@ -875,7 +875,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getprocessimagefilenamea DWORD GetProcessImageFileNameA( HANDLE
-	// hProcess, LPSTR lpImageFileName, DWORD nSize );
+	// hProcess, PSTR lpImageFileName, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "819fc2f4-0801-417b-9cbb-d7fd2894634e")]
 	public static extern uint GetProcessImageFileName([In, AddAsMember] HPROCESS hProcess, [SizeDef(nameof(nSize))] StringBuilder lpImageFileName, uint nSize);

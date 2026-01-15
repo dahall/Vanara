@@ -47,7 +47,7 @@ public static partial class NetApi32
 	/// local group can successfully execute the <c>NetStatisticsGet</c> function on a remote server.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmstats/nf-lmstats-netstatisticsget NET_API_STATUS NET_API_FUNCTION
-	// NetStatisticsGet( LPTSTR ServerName, LPTSTR Service, DWORD Level, DWORD Options, LPBYTE *Buffer );
+	// NetStatisticsGet( PTSTR ServerName, PTSTR Service, DWORD Level, DWORD Options, LPBYTE *Buffer );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmstats.h", MSDNShortId = "d0e51d8a-2f54-42ca-9759-0da82c1f0f55")]
 	public static extern Win32Error NetStatisticsGet([Optional] string? ServerName, string Service, uint Level, [Optional] uint Options, out SafeNetApiBuffer Buffer);

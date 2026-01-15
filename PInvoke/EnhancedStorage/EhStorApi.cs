@@ -78,14 +78,14 @@ public static partial class EnhancedStorage
             /// <summary>Returns the volume associated with the Addressable Command Target (ACT).</summary>
             /// <returns>The volume associated with the ACT.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstorageact-getmatchingvolume HRESULT
-            // GetMatchingVolume( [out] LPWSTR *ppwszVolume );
+            // GetMatchingVolume( [out] PWSTR *ppwszVolume );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             string GetMatchingVolume();
 
             /// <summary>Retrieves the unique identity of the Addressable Command Target (ACT).</summary>
             /// <returns>The unique identity of the ACT.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstorageact-getuniqueidentity HRESULT
-            // GetUniqueIdentity( [out] LPWSTR *ppwszIdentity );
+            // GetUniqueIdentity( [out] PWSTR *ppwszIdentity );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             string GetUniqueIdentity();
 
@@ -136,14 +136,14 @@ public static partial class EnhancedStorage
             /// <summary>Returns the volume associated with the Addressable Command Target (ACT).</summary>
             /// <returns>The volume associated with the ACT.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstorageact-getmatchingvolume HRESULT
-            // GetMatchingVolume( [out] LPWSTR *ppwszVolume );
+            // GetMatchingVolume( [out] PWSTR *ppwszVolume );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             new string GetMatchingVolume();
 
             /// <summary>Retrieves the unique identity of the Addressable Command Target (ACT).</summary>
             /// <returns>The unique identity of the ACT.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstorageact-getuniqueidentity HRESULT
-            // GetUniqueIdentity( [out] LPWSTR *ppwszIdentity );
+            // GetUniqueIdentity( [out] PWSTR *ppwszIdentity );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             new string GetUniqueIdentity();
 
@@ -163,7 +163,7 @@ public static partial class EnhancedStorage
             /// </summary>
             /// <returns>The device name associated with the ACT.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstorageact2-getdevicename HRESULT
-            // GetDeviceName( [out] LPWSTR *ppwszDeviceName );
+            // GetDeviceName( [out] PWSTR *ppwszDeviceName );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             string GetDeviceName();
 
@@ -213,14 +213,14 @@ public static partial class EnhancedStorage
             /// <summary>Returns the volume associated with the Addressable Command Target (ACT).</summary>
             /// <returns>The volume associated with the ACT.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstorageact-getmatchingvolume HRESULT
-            // GetMatchingVolume( [out] LPWSTR *ppwszVolume );
+            // GetMatchingVolume( [out] PWSTR *ppwszVolume );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             new string GetMatchingVolume();
 
             /// <summary>Retrieves the unique identity of the Addressable Command Target (ACT).</summary>
             /// <returns>The unique identity of the ACT.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstorageact-getuniqueidentity HRESULT
-            // GetUniqueIdentity( [out] LPWSTR *ppwszIdentity );
+            // GetUniqueIdentity( [out] PWSTR *ppwszIdentity );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             new string GetUniqueIdentity();
 
@@ -240,7 +240,7 @@ public static partial class EnhancedStorage
             /// </summary>
             /// <returns>The device name associated with the ACT.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstorageact2-getdevicename HRESULT
-            // GetDeviceName( [out] LPWSTR *ppwszDeviceName );
+            // GetDeviceName( [out] PWSTR *ppwszDeviceName );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             new string GetDeviceName();
 
@@ -347,7 +347,7 @@ public static partial class EnhancedStorage
             /// </summary>
             /// <returns>The path to the Silo device node.</returns>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstoragesilo-getdevicepath HRESULT
-            // GetDevicePath( [out] LPWSTR *ppwszSiloDevicePath );
+            // GetDevicePath( [out] PWSTR *ppwszSiloDevicePath );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             string GetDevicePath();
         }
@@ -367,7 +367,7 @@ public static partial class EnhancedStorage
             /// </para>
             /// </remarks>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstoragesiloaction-getname HRESULT GetName(
-            // [out] LPWSTR *ppwszActionName );
+            // [out] PWSTR *ppwszActionName );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             string GetName();
 
@@ -380,7 +380,7 @@ public static partial class EnhancedStorage
             /// </para>
             /// </remarks>
             // https://docs.microsoft.com/en-us/windows/win32/api/ehstorapi/nf-ehstorapi-ienhancedstoragesiloaction-getdescription HRESULT
-            // GetDescription( [out] LPWSTR *ppwszActionDescription );
+            // GetDescription( [out] PWSTR *ppwszActionDescription );
             [return: MarshalAs(UnmanagedType.LPWStr)]
             string GetDescription();
 

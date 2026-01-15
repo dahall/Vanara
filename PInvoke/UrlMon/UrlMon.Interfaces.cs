@@ -101,7 +101,7 @@ public static partial class UrlMon
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775079(v=vs.85)
-		// HRESULT Authenticate( [out] HWND *phwnd, [out] LPWSTR *pszUsername, [out] LPWSTR *pszPassword );
+		// HRESULT Authenticate( [out] HWND *phwnd, [out] PWSTR *pszUsername, [out] PWSTR *pszPassword );
 		[PreserveSig]
 		HRESULT Authenticate(out HWND phwnd, [MarshalAs(UnmanagedType.LPWStr)] out string pszUsername, [MarshalAs(UnmanagedType.LPWStr)] out string pszPassword);
 	}
@@ -172,7 +172,7 @@ public static partial class UrlMon
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775079(v=vs.85)
-		// HRESULT Authenticate( [out] HWND *phwnd, [out] LPWSTR *pszUsername, [out] LPWSTR *pszPassword );
+		// HRESULT Authenticate( [out] HWND *phwnd, [out] PWSTR *pszUsername, [out] PWSTR *pszPassword );
 		[PreserveSig]
 		new HRESULT Authenticate(out HWND phwnd, [MarshalAs(UnmanagedType.LPWStr)] out string pszUsername, [MarshalAs(UnmanagedType.LPWStr)] out string pszPassword);
 
@@ -232,7 +232,7 @@ public static partial class UrlMon
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/cc709426(v=vs.85)
-		// HRESULT AuthenticateEx( [out] HWND *phwnd, [out] LPWSTR *pszUsername, [out] LPWSTR *pszPassword, [in] AUTHENTICATEINFO
+		// HRESULT AuthenticateEx( [out] HWND *phwnd, [out] PWSTR *pszUsername, [out] PWSTR *pszPassword, [in] AUTHENTICATEINFO
 		// *pauthinfo );
 		[PreserveSig]
 		HRESULT AuthenticateEx(out HWND phwnd, [MarshalAs(UnmanagedType.LPWStr)] out string pszUsername, [MarshalAs(UnmanagedType.LPWStr)] out string pszPassword,
@@ -1809,7 +1809,7 @@ public static partial class UrlMon
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774990(v=vs.85)
 		// HRESULT GetFragment( [out] DWORD *pcchFragment, [out] LPCWSTR *ppwzFragment );
-		void GetFragment(out uint pcchFragment, out LPWSTR ppwzFragment);
+		void GetFragment(out uint pcchFragment, out PWSTR ppwzFragment);
 
 		/// <summary>Retrieves the value of the host component.</summary>
 		/// <param name="pcchHost">
@@ -1822,7 +1822,7 @@ public static partial class UrlMon
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774991(v=vs.85)
 		// HRESULT GetHost( [out] DWORD *pcchHost, [out] LPCWSTR *ppwzHost );
-		void GetHost(out uint pcchHost, out LPWSTR ppwzHost);
+		void GetHost(out uint pcchHost, out PWSTR ppwzHost);
 
 		/// <summary>Retrieves the value of the password component.</summary>
 		/// <param name="pcchPassword">
@@ -1835,7 +1835,7 @@ public static partial class UrlMon
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774993(v=vs.85)
 		// HRESULT GetPassword( [out] DWORD *pcchPassword, [out] LPCWSTR *ppwzPassword );
-		void GetPassword(out uint pcchPassword, out LPWSTR ppwzPassword);
+		void GetPassword(out uint pcchPassword, out PWSTR ppwzPassword);
 
 		/// <summary>Retrieves the value of the path component.</summary>
 		/// <param name="pcchPath">
@@ -1848,7 +1848,7 @@ public static partial class UrlMon
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774994(v=vs.85)
 		// HRESULT GetPath( [out] DWORD *pcchPath, [out] LPCWSTR *ppwzPath );
-		void GetPath(out uint pcchPath, out LPWSTR ppwzPath);
+		void GetPath(out uint pcchPath, out PWSTR ppwzPath);
 
 		/// <summary>Retrieves the value of the port component.</summary>
 		/// <param name="pfHasPort">
@@ -1871,7 +1871,7 @@ public static partial class UrlMon
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774996(v=vs.85)
 		// HRESULT GetQuery( [out] DWORD *pcchQuery, [out] LPCWSTR *ppwzQuery );
-		void GetQuery(out uint pcchQuery, out LPWSTR ppwzQuery);
+		void GetQuery(out uint pcchQuery, out PWSTR ppwzQuery);
 
 		/// <summary>Retrieves the value of the protocol scheme name.</summary>
 		/// <param name="pcchSchemeName">
@@ -1884,7 +1884,7 @@ public static partial class UrlMon
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774997(v=vs.85)
 		// HRESULT GetSchemeName( [out] DWORD *pcchSchemeName, [out] LPCWSTR *ppwzSchemeName );
-		void GetSchemeName(out uint pcchSchemeName, out LPWSTR ppwzSchemeName);
+		void GetSchemeName(out uint pcchSchemeName, out PWSTR ppwzSchemeName);
 
 		/// <summary>Retrieves the value of the username component.</summary>
 		/// <param name="pcchUserName">
@@ -1897,7 +1897,7 @@ public static partial class UrlMon
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774998(v=vs.85)
 		// HRESULT GetUserName( [out] DWORD *pcchUserName, [out] LPCWSTR *ppwzUserName );
-		void GetUserName(out uint pcchUserName, out LPWSTR ppwzUserName);
+		void GetUserName(out uint pcchUserName, out PWSTR ppwzUserName);
 
 		/// <summary>Sets the fragment component.</summary>
 		/// <param name="pwzNewValue">String variable that contains the new value, or NULL to remove the fragment component.</param>

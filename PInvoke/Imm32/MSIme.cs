@@ -1382,7 +1382,7 @@ public static partial class Imm32
 	}
 
 	/// <summary>Used when invoking the Microsoft IME's Dictionary Tool or Word Register Dialog Window from the app.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/msime/ns-msime-imedlg typedef struct _IMEDLG { int cbIMEDLG; HWND hwnd; LPWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/msime/ns-msime-imedlg typedef struct _IMEDLG { int cbIMEDLG; HWND hwnd; PWSTR
 	// lpwstrWord; int nTabId; } IMEDLG;
 	[PInvokeData("msime.h", MSDNShortId = "NS:msime._IMEDLG")]
 	[StructLayout(LayoutKind.Sequential)]

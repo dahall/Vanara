@@ -308,13 +308,13 @@ public static partial class HttpApi
 
 		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkFromFragmentCache</c>.</summary>
 		/// <param name="fragmentName">Name of the fragment.</param>
-		public HTTP_DATA_CHUNK(SafeLPWSTR fragmentName) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFragmentCache) => FromFragmentCache = new(fragmentName);
+		public HTTP_DATA_CHUNK(SafePWSTR fragmentName) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFragmentCache) => FromFragmentCache = new(fragmentName);
 
 		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkFromFragmentCacheEx</c>.</summary>
 		/// <param name="fragmentName">Name of the fragment.</param>
 		/// <param name="startingOffset">The starting offset.</param>
 		/// <param name="length">The length.</param>
-		public HTTP_DATA_CHUNK(SafeLPWSTR fragmentName, ulong startingOffset = 0, ulong length = HTTP_BYTE_RANGE_TO_EOF) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFragmentCacheEx) =>
+		public HTTP_DATA_CHUNK(SafePWSTR fragmentName, ulong startingOffset = 0, ulong length = HTTP_BYTE_RANGE_TO_EOF) : this(HTTP_DATA_CHUNK_TYPE.HttpDataChunkFromFragmentCacheEx) =>
 			FromFragmentCacheEx = new() { pFragmentName = fragmentName, ByteRange = new() { StartingOffset = startingOffset, Length = length } };
 
 		/// <summary>Initializes a new instance of the <see cref="HTTP_DATA_CHUNK"/> struct for <c>HttpDataChunkTrailers</c>.</summary>
@@ -405,9 +405,9 @@ public static partial class HttpApi
 			/// Pointer to a string that contains the fragment name assigned when the fragment was added to the response-fragment cache using
 			/// the HttpAddFragmentToCache function.
 			/// </summary>
-			public LPWSTR pFragmentName;
+			public PWSTR pFragmentName;
 
-			internal FROMFRAGMENTCACHE(SafeLPWSTR fragmentName)
+			internal FROMFRAGMENTCACHE(SafePWSTR fragmentName)
 			{
 				pFragmentName = fragmentName;
 				FragmentNameLength = (ushort)(fragmentName?.Length ?? 0);
@@ -428,7 +428,7 @@ public static partial class HttpApi
 			/// </para>
 			/// <para><c>Note</c> This string must be NULL terminated.</para>
 			/// </summary>
-			public LPWSTR pFragmentName;
+			public PWSTR pFragmentName;
 		}
 
 		/// <summary/>

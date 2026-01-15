@@ -33,7 +33,7 @@ public static partial class EnhancedStorage
         ///[VT_LPWSTR] Semi-colon delimited string of asymmetric key cryptography supported
         /// </code>
         /// </summary>
-        [CorrespondingType(typeof(LPWSTR))]
+        [CorrespondingType(typeof(PWSTR))]
         public static readonly PROPERTYKEY ENHANCED_STORAGE_CAPABILITY_ASYMMETRIC_KEY_CRYPTOGRAPHY = new(new Guid(0x91248166, 0xb832, 0x4ad4, 0xba, 0xa4, 0x7c, 0xa0, 0xb6, 0xb2, 0x79, 0x8c), 4002);
 
         /// <summary>
@@ -51,7 +51,7 @@ public static partial class EnhancedStorage
         ///[VT_LPWSTR] Semi-colon delimited string of hash algorithm identifiers
         /// </code>
         /// </summary>
-        [CorrespondingType(typeof(LPWSTR))]
+        [CorrespondingType(typeof(PWSTR))]
         public static readonly PROPERTYKEY ENHANCED_STORAGE_CAPABILITY_HASH_ALGS = new(new Guid(0x91248166, 0xb832, 0x4ad4, 0xba, 0xa4, 0x7c, 0xa0, 0xb6, 0xb2, 0x79, 0x8c), 4001);
 
         /// <summary>
@@ -69,7 +69,7 @@ public static partial class EnhancedStorage
         ///[VT_LPWSTR] Semi-colon delimited string of signing algorithm identifiers
         /// </code>
         /// </summary>
-        [CorrespondingType(typeof(LPWSTR))]
+        [CorrespondingType(typeof(PWSTR))]
         public static readonly PROPERTYKEY ENHANCED_STORAGE_CAPABILITY_SIGNING_ALGS = new(new Guid(0x91248166, 0xb832, 0x4ad4, 0xba, 0xa4, 0x7c, 0xa0, 0xb6, 0xb2, 0x79, 0x8c), 4003);
 
         /// <summary>
@@ -605,7 +605,7 @@ public static partial class EnhancedStorage
         ///[ VT_LPCSTR ] The admin hint
         /// </code>
         /// </summary>
-        [CorrespondingType(typeof(LPSTR))]
+        [CorrespondingType(typeof(PSTR))]
         public static readonly PROPERTYKEY ENHANCED_STORAGE_PROPERTY_ADMIN_HINT = new(new Guid(0x91248166, 0xb832, 0x4ad4, 0xba, 0xa4, 0x7c, 0xa0, 0xb6, 0xb2, 0x79, 0x8c), 2011);
 
         /// <summary>
@@ -632,7 +632,7 @@ public static partial class EnhancedStorage
         ///[ VT_LPWSTR ] The certificate silo's ACT friendly name
         /// </code>
         /// </summary>
-        [CorrespondingType(typeof(LPWSTR))]
+        [CorrespondingType(typeof(PWSTR))]
         public static readonly PROPERTYKEY ENHANCED_STORAGE_PROPERTY_CERTIFICATE_ACT_FRIENDLY_NAME = new(new Guid(0x91248166, 0xb832, 0x4ad4, 0xba, 0xa4, 0x7c, 0xa0, 0xb6, 0xb2, 0x79, 0x8c), 3014);
 
         /// <summary>
@@ -694,7 +694,7 @@ public static partial class EnhancedStorage
         ///[ VT_LPWSTR ] The certificate silo GUID
         /// </code>
         /// </summary>
-        [CorrespondingType(typeof(LPWSTR))]
+        [CorrespondingType(typeof(PWSTR))]
         public static readonly PROPERTYKEY ENHANCED_STORAGE_PROPERTY_CERTIFICATE_SILO_GUID = new(new Guid(0x91248166, 0xb832, 0x4ad4, 0xba, 0xa4, 0x7c, 0xa0, 0xb6, 0xb2, 0x79, 0x8c), 3015);
 
         /// <summary>
@@ -857,7 +857,7 @@ public static partial class EnhancedStorage
         ///[ VT_LPCSTR ] The friendly name for the silo
         /// </code>
         /// </summary>
-        [CorrespondingType(typeof(LPSTR))]
+        [CorrespondingType(typeof(PSTR))]
         public static readonly PROPERTYKEY ENHANCED_STORAGE_PROPERTY_SILO_NAME = new(new Guid(0x91248166, 0xb832, 0x4ad4, 0xba, 0xa4, 0x7c, 0xa0, 0xb6, 0xb2, 0x79, 0x8c), 2012);
 
         /// <summary>
@@ -884,7 +884,7 @@ public static partial class EnhancedStorage
         ///[ VT_LPCSTR ] The user hint
         /// </code>
         /// </summary>
-        [CorrespondingType(typeof(LPSTR))]
+        [CorrespondingType(typeof(PSTR))]
         public static readonly PROPERTYKEY ENHANCED_STORAGE_PROPERTY_USER_HINT = new(new Guid(0x91248166, 0xb832, 0x4ad4, 0xba, 0xa4, 0x7c, 0xa0, 0xb6, 0xb2, 0x79, 0x8c), 2009);
 
         /// <summary>
@@ -893,7 +893,7 @@ public static partial class EnhancedStorage
         ///[ VT_LPCSTR ] The friendly user name
         /// </code>
         /// </summary>
-        [CorrespondingType(typeof(LPSTR))]
+        [CorrespondingType(typeof(PSTR))]
         public static readonly PROPERTYKEY ENHANCED_STORAGE_PROPERTY_USER_NAME = new(new Guid(0x91248166, 0xb832, 0x4ad4, 0xba, 0xa4, 0x7c, 0xa0, 0xb6, 0xb2, 0x79, 0x8c), 2010);
 
         /// <summary>

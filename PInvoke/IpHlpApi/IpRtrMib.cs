@@ -197,13 +197,13 @@ public static partial class IpHlpApi
 		/// A pointer to the name of the module. This field should be a <c>NULL</c> pointer when passed to GetOwnerModuleFromTcpEntry or
 		/// GetOwnerModuleFromTcp6Entry function.
 		/// </summary>
-		public LPWSTR pModuleName;
+		public PWSTR pModuleName;
 
 		/// <summary>
 		/// A pointer to the full path of the module, including the module name. This field should be a <c>NULL</c> pointer when passed
 		/// to GetOwnerModuleFromTcpEntry or GetOwnerModuleFromTcp6Entry function.
 		/// </summary>
-		public LPWSTR pModulePath;
+		public PWSTR pModulePath;
 
 		/// <summary>Performs an implicit conversion from <see cref="TCPIP_OWNER_MODULE_BASIC_INFO_UNMGD"/> to <see cref="TCPIP_OWNER_MODULE_BASIC_INFO"/>.</summary>
 		/// <param name="unmgd">The unmanaged structure.</param>

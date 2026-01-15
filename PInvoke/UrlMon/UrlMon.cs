@@ -1718,7 +1718,7 @@ public static partial class UrlMon
 	/// bytes required to hold the result, including the terminating <c>NULL</c> character.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775085(v=vs.85) HRESULT
-	// CoInternetCombineUrl( LPCWSTR pwzBaseUrl, LPCWSTR pwzRelativeUrl, DWORD dwCombineFlags, LPWSTR pwzResult, DWORD cchResult, DWORD
+	// CoInternetCombineUrl( LPCWSTR pwzBaseUrl, LPCWSTR pwzRelativeUrl, DWORD dwCombineFlags, PWSTR pwzResult, DWORD cchResult, DWORD
 	// *pcchResult, _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
@@ -1942,7 +1942,7 @@ public static partial class UrlMon
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775088(v=vs.85) STDAPI
-	// CoInternetParseIUri( _In_ IUri *pIUri, _In_ PARSEACTION ParseAction, _In_ DWORD dwFlags, _In_ LPWSTR pwzResult, _In_ DWORD
+	// CoInternetParseIUri( _In_ IUri *pIUri, _In_ PARSEACTION ParseAction, _In_ DWORD dwFlags, _In_ PWSTR pwzResult, _In_ DWORD
 	// cchResult, _Out_ DWORD *pcchResult, _Reserved_ DWORD_PTR dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
@@ -2037,7 +2037,7 @@ public static partial class UrlMon
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775089(v=vs.85) STDAPI
-	// CoInternetParseUrl( LPCWSTR pwzUrl, PARSEACTION ParseAction, DWORD dwFlags, LPWSTR pszResult, DWORD cchResult, DWORD *pcchResult,
+	// CoInternetParseUrl( LPCWSTR pwzUrl, PARSEACTION ParseAction, DWORD dwFlags, PWSTR pszResult, DWORD cchResult, DWORD *pcchResult,
 	// _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
@@ -2944,7 +2944,7 @@ public static partial class UrlMon
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775107(v=vs.85) HRESULT
-	// FindMimeFromData( LPBC pBC, LPCWSTR pwzUrl, LPVOID pBuffer, DWORD cbSize, LPCWSTR pwzMimeProposed, DWORD dwMimeFlags, LPWSTR
+	// FindMimeFromData( LPBC pBC, LPCWSTR pwzUrl, LPVOID pBuffer, DWORD cbSize, LPCWSTR pwzMimeProposed, DWORD dwMimeFlags, PWSTR
 	// *ppwzMimeOut, _Reserved_ DWORD dwReserved );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
@@ -3013,7 +3013,7 @@ public static partial class UrlMon
 	/// to a lack of dependence on just-in-time (JIT) in components.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa359665(v=vs.85) HRESULT
-	// GetComponentIDFromCLSSPEC( _In_ uCLSSPEC *pClassSpec, _Out_ LPSTR *ppszComponentID );
+	// GetComponentIDFromCLSSPEC( _In_ uCLSSPEC *pClassSpec, _Out_ PSTR *ppszComponentID );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
 	public static extern HRESULT GetComponentIDFromCLSSPEC(in uCLSSPEC pClassSpec, out SafeCoTaskMemHandle ppszComponentID);
@@ -3192,7 +3192,7 @@ public static partial class UrlMon
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775113(v=vs.85) HRESULT
-	// MkParseDisplayNameEx( _In_ IBindCtx *pbc, _In_ LPWSTR szDisplayName, _Out_ unsigned long *pcchEaten, _Out_ IMoniker **ppmk );
+	// MkParseDisplayNameEx( _In_ IBindCtx *pbc, _In_ PWSTR szDisplayName, _Out_ unsigned long *pcchEaten, _Out_ IMoniker **ppmk );
 	[DllImport(Lib.UrlMon, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("Urlmon.h")]
 	public static extern HRESULT MkParseDisplayNameEx(IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string szDisplayName, out uint pcchEaten, out IMoniker ppmk);
@@ -3486,7 +3486,7 @@ public static partial class UrlMon
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775122(v=vs.85) HRESULT
-	// URLDownloadToCacheFile( _In_ LPUNKNOWN lpUnkcaller, _In_ LPCSTR szURL, _Out_ LPTSTR szFileName, _In_ DWORD cchFileName,
+	// URLDownloadToCacheFile( _In_ LPUNKNOWN lpUnkcaller, _In_ LPCSTR szURL, _Out_ PTSTR szFileName, _In_ DWORD cchFileName,
 	// _Reserved_ DWORD dwReserved, _In_opt_ IBindStatusCallback *pBSC );
 	[DllImport(Lib.UrlMon, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Urlmon.h")]
@@ -3771,8 +3771,8 @@ public static partial class UrlMon
 	/// the structure. For more information, see Handling BINDINFO Structures.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms774966%28v%3dvs.85%29
-	// typedef struct _tagBINDINFO { unsigned long cbSize; LPWSTR szExtraInfo; STGMEDIUM stgmedData; DWORD grfBindInfoF; DWORD
-	// dwBindVerb; LPWSTR szCustomVerb; DWORD cbStgmedData; DWORD dwOptions; DWORD dwOptionsFlags; DWORD dwCodePage; SECURITY_ATTRIBUTES
+	// typedef struct _tagBINDINFO { unsigned long cbSize; PWSTR szExtraInfo; STGMEDIUM stgmedData; DWORD grfBindInfoF; DWORD
+	// dwBindVerb; PWSTR szCustomVerb; DWORD cbStgmedData; DWORD dwOptions; DWORD dwOptionsFlags; DWORD dwCodePage; SECURITY_ATTRIBUTES
 	// securityAttributes; IID iid; IUnknown *pUnk; DWORD dwReserved; } BINDINFO;
 	[PInvokeData("Urlmon.h")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]

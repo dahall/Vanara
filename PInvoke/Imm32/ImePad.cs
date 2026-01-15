@@ -93,7 +93,7 @@ public static partial class Imm32
 	{
 		/// <summary>
 		/// Insert a string into the app as a composition string.
-		/// <para>wParam: Pointer to the NULL-terminated string (LPWSTR) to be inserted into the app.</para>
+		/// <para>wParam: Pointer to the NULL-terminated string (PWSTR) to be inserted into the app.</para>
 		/// <para>lParam: Not used. Must be set to 0.</para>
 		/// </summary>
 		IMEPADREQ_INSERTSTRING = IMEPADREQ_FIRST + 1,
@@ -117,7 +117,7 @@ public static partial class Imm32
 
 		/// <summary>
 		/// Gets the current composition string text.
-		/// <para>wParam: Points to the buffer (LPWSTR) that is to receive the current composition string text.</para>
+		/// <para>wParam: Points to the buffer (PWSTR) that is to receive the current composition string text.</para>
 		/// <para>lParam: The maximum number of characters to copy, including the terminating null character.</para>
 		/// </summary>
 		IMEPADREQ_GETCOMPOSITIONSTRING = IMEPADREQ_FIRST + 6,
@@ -141,7 +141,7 @@ public static partial class Imm32
 
 		/// <summary>
 		/// Replace part of the composition string.
-		/// <para>wParam: Pointer to the replacement string (LPWSTR).</para>
+		/// <para>wParam: Pointer to the replacement string (PWSTR).</para>
 		/// <para>
 		/// lParam: LOWORD(lParam) specifies the start position of the composition string to be replaced. HIWORD(lParam) specifies the length
 		/// of the composition string to be replaced.
@@ -289,7 +289,7 @@ public static partial class Imm32
 
 		/// <summary>
 		/// <para>IMEPADREQ_SETTITLEFONT</para>
-		/// <para>wParam = (WPARAM)(LPWSTR)lpwstrFontFace; //FontFace name</para>
+		/// <para>wParam = (WPARAM)(PWSTR)lpwstrFontFace; //FontFace name</para>
 		/// <para>lParam = (LPARAM)(INT)charSet; //character set</para>
 		/// </summary>
 		IMEPADREQ_SETTITLEFONT = IMEPADREQ_FIRST + 11,

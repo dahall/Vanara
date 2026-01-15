@@ -638,7 +638,7 @@ public static partial class Kernel32
 	/// that's part of the same app. Also, named pipes must use the syntax for the pipe name.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getnamedpipeclientcomputernamea BOOL
-	// GetNamedPipeClientComputerNameA( [in] HANDLE Pipe, [out] LPSTR ClientComputerName, [in] ULONG ClientComputerNameLength );
+	// GetNamedPipeClientComputerNameA( [in] HANDLE Pipe, [out] PSTR ClientComputerName, [in] ULONG ClientComputerNameLength );
 	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.GetNamedPipeClientComputerNameA")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -761,7 +761,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// BOOL WINAPI GetNamedPipeHandleState( _In_ HANDLE hNamedPipe, _Out_opt_ LPDWORD lpState, _Out_opt_ LPDWORD lpCurInstances,
-	// _Out_opt_ LPDWORD lpMaxCollectionCount, _Out_opt_ LPDWORD lpCollectDataTimeout, _Out_opt_ LPTSTR lpUserName, _In_ DWORD
+	// _Out_opt_ LPDWORD lpMaxCollectionCount, _Out_opt_ LPDWORD lpCollectDataTimeout, _Out_opt_ PTSTR lpUserName, _In_ DWORD
 	// nMaxUserNameSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365443(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa365443")]
@@ -834,7 +834,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// BOOL WINAPI GetNamedPipeHandleState( _In_ HANDLE hNamedPipe, _Out_opt_ LPDWORD lpState, _Out_opt_ LPDWORD lpCurInstances,
-	// _Out_opt_ LPDWORD lpMaxCollectionCount, _Out_opt_ LPDWORD lpCollectDataTimeout, _Out_opt_ LPTSTR lpUserName, _In_ DWORD
+	// _Out_opt_ LPDWORD lpMaxCollectionCount, _Out_opt_ LPDWORD lpCollectDataTimeout, _Out_opt_ PTSTR lpUserName, _In_ DWORD
 	// nMaxUserNameSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365443(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("namedpipeapi.h", MSDNShortId = "aa365443")]

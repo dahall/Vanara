@@ -390,8 +390,8 @@ public static partial class NetApi32
 	/// already exists. To add additional targets to an existing DFS link, you can specify zero in the Flags parameter.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsadd NET_API_STATUS NET_API_FUNCTION NetDfsAdd( LPWSTR
-	// DfsEntryPath, LPWSTR ServerName, LPWSTR ShareName, LPWSTR Comment, DWORD Flags );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsadd NET_API_STATUS NET_API_FUNCTION NetDfsAdd( PWSTR
+	// DfsEntryPath, PWSTR ServerName, PWSTR ShareName, PWSTR Comment, DWORD Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "2c8816b2-5489-486e-b749-605932ba9fe9")]
 	public static extern Win32Error NetDfsAdd(string DfsEntryPath, string ServerName, string ShareName, [Optional] string? Comment, DfsAddFlags Flags);
@@ -429,7 +429,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsaddftroot NET_API_STATUS NET_API_FUNCTION
-	// NetDfsAddFtRoot( LPWSTR ServerName, LPWSTR RootShare, LPWSTR FtDfsName, LPWSTR Comment, DWORD Flags );
+	// NetDfsAddFtRoot( PWSTR ServerName, PWSTR RootShare, PWSTR FtDfsName, PWSTR Comment, DWORD Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "df3192f8-f8fc-40ad-a5ff-fb991befff09")]
 	public static extern Win32Error NetDfsAddFtRoot(string ServerName, string RootShare, string FtDfsName, [Optional] string? Comment, uint Flags = 0);
@@ -530,7 +530,7 @@ public static partial class NetApi32
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsaddroottarget NET_API_STATUS NET_API_FUNCTION
-	// NetDfsAddRootTarget( LPWSTR pDfsPath, LPWSTR pTargetPath, ULONG MajorVersion, LPWSTR pComment, ULONG Flags );
+	// NetDfsAddRootTarget( PWSTR pDfsPath, PWSTR pTargetPath, ULONG MajorVersion, PWSTR pComment, ULONG Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "c4ce8f50-f090-4783-b6c9-834d9e0c33de")]
 	public static extern Win32Error NetDfsAddRootTarget(string pDfsPath, [Optional] string? pTargetPath, uint MajorVersion, [Optional] string? pComment, uint Flags = 0);
@@ -560,7 +560,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsaddstdroot NET_API_STATUS NET_API_FUNCTION
-	// NetDfsAddStdRoot( LPWSTR ServerName, LPWSTR RootShare, LPWSTR Comment, DWORD Flags );
+	// NetDfsAddStdRoot( PWSTR ServerName, PWSTR RootShare, PWSTR Comment, DWORD Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "e59236ac-06d7-4b2f-b318-ec13e6c662ac")]
 	public static extern Win32Error NetDfsAddStdRoot(string ServerName, string RootShare, [Optional] string? Comment, uint Flags = 0);
@@ -600,7 +600,7 @@ public static partial class NetApi32
 	/// administrator privileges, see Running with Special Privileges.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/previous-versions/bb524808(v=vs.85)
-	// NET_API_STATUS NetDfsAddStdRootForced( _In_ LPWSTR ServerName, _In_ LPWSTR RootShare, _In_opt_ LPWSTR Comment, _In_ LPWSTR Store );
+	// NET_API_STATUS NetDfsAddStdRootForced( _In_ PWSTR ServerName, _In_ PWSTR RootShare, _In_opt_ PWSTR Comment, _In_ PWSTR Store );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("LmDfs.h", MSDNShortId = "")]
 	public static extern Win32Error NetDfsAddStdRootForced(string ServerName, string RootShare, [Optional] string? Comment, string Store);
@@ -727,7 +727,7 @@ public static partial class NetApi32
 	/// the memory allocated for the information buffer.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsenum NET_API_STATUS NET_API_FUNCTION NetDfsEnum( LPWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsenum NET_API_STATUS NET_API_FUNCTION NetDfsEnum( PWSTR
 	// DfsName, DWORD Level, DWORD PrefMaxLen, LPBYTE *Buffer, LPDWORD EntriesRead, LPDWORD ResumeHandle );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "c05a8d78-41f4-4c19-a25e-ef4885869584")]
@@ -788,7 +788,7 @@ public static partial class NetApi32
 	/// </returns>
 	/// <remarks>No special group membership is required for using the <c>NetDfsGetClientInfo</c> function.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsgetclientinfo NET_API_STATUS NET_API_FUNCTION
-	// NetDfsGetClientInfo( LPWSTR DfsEntryPath, LPWSTR ServerName, LPWSTR ShareName, DWORD Level, LPBYTE *Buffer );
+	// NetDfsGetClientInfo( PWSTR DfsEntryPath, PWSTR ServerName, PWSTR ShareName, DWORD Level, LPBYTE *Buffer );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "065ec002-cb90-4d78-a70c-6ac37f71994f")]
 	public static extern Win32Error NetDfsGetClientInfo(string DfsEntryPath, [Optional] string? ServerName, [Optional] string? ShareName, uint Level, out SafeNetApiBuffer Buffer);
@@ -817,7 +817,7 @@ public static partial class NetApi32
 	/// the domain specified in the DomainName parameter.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsgetftcontainersecurity NET_API_STATUS NET_API_FUNCTION
-	// NetDfsGetFtContainerSecurity( LPWSTR DomainName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR
+	// NetDfsGetFtContainerSecurity( PWSTR DomainName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR
 	// *ppSecurityDescriptor, LPDWORD lpcbSecurityDescriptor );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "88e988db-1418-49d5-8cac-1ea6144474a5")]
@@ -925,7 +925,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsgetinfo NET_API_STATUS NET_API_FUNCTION NetDfsGetInfo(
-	// LPWSTR DfsEntryPath, LPWSTR ServerName, LPWSTR ShareName, DWORD Level, LPBYTE *Buffer );
+	// PWSTR DfsEntryPath, PWSTR ServerName, PWSTR ShareName, DWORD Level, LPBYTE *Buffer );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "bbb2f24d-1c49-4016-a16b-60fde4a78193")]
 	public static extern Win32Error NetDfsGetInfo(string DfsEntryPath, [Optional] string? ServerName, [Optional] string? ShareName, uint Level, out SafeNetApiBuffer Buffer);
@@ -972,7 +972,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsgetsecurity NET_API_STATUS NET_API_FUNCTION
-	// NetDfsGetSecurity( LPWSTR DfsEntryPath, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR *ppSecurityDescriptor,
+	// NetDfsGetSecurity( PWSTR DfsEntryPath, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR *ppSecurityDescriptor,
 	// LPDWORD lpcbSecurityDescriptor );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "a6db7c82-c2ec-464a-8c05-2360622880b4")]
@@ -1000,7 +1000,7 @@ public static partial class NetApi32
 	/// MachineName parameter.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsgetstdcontainersecurity NET_API_STATUS NET_API_FUNCTION
-	// NetDfsGetStdContainerSecurity( LPWSTR MachineName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR
+	// NetDfsGetStdContainerSecurity( PWSTR MachineName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR
 	// *ppSecurityDescriptor, LPDWORD lpcbSecurityDescriptor );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "63ad610e-c66f-4fad-b3b6-2ee15e90a723")]
@@ -1136,8 +1136,8 @@ public static partial class NetApi32
 	/// the DFS links were actually created on the root targets or that DFS links can be created on the root targets' storage.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsmove NET_API_STATUS NET_API_FUNCTION NetDfsMove( LPWSTR
-	// OldDfsEntryPath, LPWSTR NewDfsEntryPath, ULONG Flags );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsmove NET_API_STATUS NET_API_FUNCTION NetDfsMove( PWSTR
+	// OldDfsEntryPath, PWSTR NewDfsEntryPath, ULONG Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "d9d225ac-26b9-4074-93b6-6294538a3504")]
 	public static extern Win32Error NetDfsMove(string OldDfsEntryPath, string NewDfsEntryPath, DfsMoveFlags Flags);
@@ -1190,7 +1190,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsremove NET_API_STATUS NET_API_FUNCTION NetDfsRemove(
-	// LPWSTR DfsEntryPath, LPWSTR ServerName, LPWSTR ShareName );
+	// PWSTR DfsEntryPath, PWSTR ServerName, PWSTR ShareName );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "c879ba56-cc42-4fa3-960f-ddc65a75dbe3")]
 	public static extern Win32Error NetDfsRemove(string DfsEntryPath, [Optional] string? ServerName, [Optional] string? ShareName);
@@ -1226,7 +1226,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsremoveftroot NET_API_STATUS NET_API_FUNCTION
-	// NetDfsRemoveFtRoot( LPWSTR ServerName, LPWSTR RootShare, LPWSTR FtDfsName, DWORD Flags );
+	// NetDfsRemoveFtRoot( PWSTR ServerName, PWSTR RootShare, PWSTR FtDfsName, DWORD Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "aa5c9991-ca8e-48ba-922d-feadaff45cc2")]
 	public static extern Win32Error NetDfsRemoveFtRoot(string ServerName, string RootShare, string FtDfsName, uint Flags = 0);
@@ -1279,7 +1279,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsremoveftrootforced NET_API_STATUS NET_API_FUNCTION
-	// NetDfsRemoveFtRootForced( LPWSTR DomainName, LPWSTR ServerName, LPWSTR RootShare, LPWSTR FtDfsName, DWORD Flags );
+	// NetDfsRemoveFtRootForced( PWSTR DomainName, PWSTR ServerName, PWSTR RootShare, PWSTR FtDfsName, DWORD Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "4eaa0e2a-fa09-4a20-98e1-4c0c4ff5d0ef")]
 	public static extern Win32Error NetDfsRemoveFtRootForced(string DomainName, string ServerName, string RootShare, string FtDfsName, uint Flags = 0);
@@ -1350,7 +1350,7 @@ public static partial class NetApi32
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsremoveroottarget NET_API_STATUS NET_API_FUNCTION
-	// NetDfsRemoveRootTarget( LPWSTR pDfsPath, LPWSTR pTargetPath, ULONG Flags );
+	// NetDfsRemoveRootTarget( PWSTR pDfsPath, PWSTR pTargetPath, ULONG Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "9a8c78f4-3170-4568-940c-1c51aebad3ae")]
 	public static extern Win32Error NetDfsRemoveRootTarget(string pDfsPath, [Optional] string? pTargetPath, DfsRemoveFlags Flags);
@@ -1374,7 +1374,7 @@ public static partial class NetApi32
 	/// administrator privileges, see Running with Special Privileges.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfsremovestdroot NET_API_STATUS NET_API_FUNCTION
-	// NetDfsRemoveStdRoot( LPWSTR ServerName, LPWSTR RootShare, DWORD Flags );
+	// NetDfsRemoveStdRoot( PWSTR ServerName, PWSTR RootShare, DWORD Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "850427cc-56da-45cc-8833-e242acc53589")]
 	public static extern Win32Error NetDfsRemoveStdRoot(string ServerName, string RootShare, uint Flags = 0);
@@ -1443,7 +1443,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfssetclientinfo NET_API_STATUS NET_API_FUNCTION
-	// NetDfsSetClientInfo( LPWSTR DfsEntryPath, LPWSTR ServerName, LPWSTR ShareName, DWORD Level, LPBYTE Buffer );
+	// NetDfsSetClientInfo( PWSTR DfsEntryPath, PWSTR ServerName, PWSTR ShareName, DWORD Level, LPBYTE Buffer );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "4c95dffb-a092-45ad-9a3f-37d3abbf4427")]
 	public static extern Win32Error NetDfsSetClientInfo(string DfsEntryPath, [Optional] string? ServerName, [Optional] string? ShareName, uint Level, IntPtr Buffer);
@@ -1468,7 +1468,7 @@ public static partial class NetApi32
 	/// the domain specified in the DomainName parameter.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfssetftcontainersecurity NET_API_STATUS NET_API_FUNCTION
-	// NetDfsSetFtContainerSecurity( LPWSTR DomainName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR
+	// NetDfsSetFtContainerSecurity( PWSTR DomainName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR
 	// pSecurityDescriptor );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "84300e38-b263-4c38-bc31-5221621b89f1")]
@@ -1587,7 +1587,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfssetinfo NET_API_STATUS NET_API_FUNCTION NetDfsSetInfo(
-	// LPWSTR DfsEntryPath, LPWSTR ServerName, LPWSTR ShareName, DWORD Level, LPBYTE Buffer );
+	// PWSTR DfsEntryPath, PWSTR ServerName, PWSTR ShareName, DWORD Level, LPBYTE Buffer );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "5526afa7-82bc-47c7-99d6-44e41ef772b1")]
 	public static extern Win32Error NetDfsSetInfo(string DfsEntryPath, [Optional] string? ServerName, [Optional] string? ShareName, uint Level, IntPtr Buffer);
@@ -1630,7 +1630,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfssetsecurity NET_API_STATUS NET_API_FUNCTION
-	// NetDfsSetSecurity( LPWSTR DfsEntryPath, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor );
+	// NetDfsSetSecurity( PWSTR DfsEntryPath, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "7ee81f67-face-498f-b5bd-ca2636408012")]
 	public static extern Win32Error NetDfsSetSecurity(string DfsEntryPath, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor);
@@ -1656,7 +1656,7 @@ public static partial class NetApi32
 	/// MachineName parameter.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/nf-lmdfs-netdfssetstdcontainersecurity NET_API_STATUS NET_API_FUNCTION
-	// NetDfsSetStdContainerSecurity( LPWSTR MachineName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR
+	// NetDfsSetStdContainerSecurity( PWSTR MachineName, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR
 	// pSecurityDescriptor );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmdfs.h", MSDNShortId = "BC408A12-5106-45A0-BBED-0468D51708BC")]
@@ -1752,7 +1752,7 @@ public static partial class NetApi32
 	/// NetDfsGetClientInfo, and NetDfsGetInfo functions and the FSCTL_DFS_GET_PKT_ENTRY_STATE control code.
 	/// </summary>
 	/// <remarks>The DFS functions use the <c>DFS_INFO_1</c> structure to retrieve information about a DFS root or link.</remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_1 typedef struct _DFS_INFO_1 { LPWSTR EntryPath; }
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_1 typedef struct _DFS_INFO_1 { PWSTR EntryPath; }
 	// DFS_INFO_1, *PDFS_INFO_1, *LPDFS_INFO_1;
 	[PInvokeData("lmdfs.h", MSDNShortId = "96647570-BADD-4925-AB90-054A00BA04C4")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -1785,7 +1785,7 @@ public static partial class NetApi32
 
 	/// <summary>Contains a comment associated with a Distributed File System (DFS) root or link.</summary>
 	/// <remarks>The DFS functions use the <c>DFS_INFO_100</c> structure to retrieve and set information about a DFS root or link.</remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_100 typedef struct _DFS_INFO_100 { LPWSTR Comment; }
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_100 typedef struct _DFS_INFO_100 { PWSTR Comment; }
 	// DFS_INFO_100, *PDFS_INFO_100, *LPDFS_INFO_100;
 	[PInvokeData("lmdfs.h", MSDNShortId = "763ba0f0-01e9-47cf-bbe5-93e13aa83aa0")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -1940,7 +1940,7 @@ public static partial class NetApi32
 	/// Contains information about a DFS root or link, including comment, state, time-out, and DFS behaviors specified by property flags.
 	/// This structure is only for use with the NetDfsSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_105 typedef struct _DFS_INFO_105 { LPWSTR Comment;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_105 typedef struct _DFS_INFO_105 { PWSTR Comment;
 	// DWORD State; ULONG Timeout; ULONG PropertyFlagMask; ULONG PropertyFlags; } DFS_INFO_105, *PDFS_INFO_105, *LPDFS_INFO_105;
 	[PInvokeData("lmdfs.h", MSDNShortId = "b9ad9e41-d5b4-446f-ac99-a51808344f77")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2063,7 +2063,7 @@ public static partial class NetApi32
 	/// Contains information about a DFS root or link, including the comment, state, time-out, property flags, and link reparse point
 	/// security descriptor. This structure is only for use with the NetDfsGetInfo and NetDfsSetInfo functions.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_107 typedef struct _DFS_INFO_107 { LPWSTR Comment;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_107 typedef struct _DFS_INFO_107 { PWSTR Comment;
 	// DWORD State; ULONG Timeout; ULONG PropertyFlagMask; ULONG PropertyFlags; ULONG SecurityDescriptorLength; #if ... PUCHAR
 	// pSecurityDescriptor; ULONG SdLengthReserved; #else PSECURITY_DESCRIPTOR pSecurityDescriptor; #endif } DFS_INFO_107,
 	// *PDFS_INFO_107, *LPDFS_INFO_107;
@@ -2204,8 +2204,8 @@ public static partial class NetApi32
 	/// <para>The DFS functions use the <c>DFS_INFO_2</c> structure to retrieve information about a DFS root or link.</para>
 	/// <para>Following is an example that describes interpretation of the flags that can be returned in the <c>State</c> member:</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_2 typedef struct _DFS_INFO_2 { LPWSTR EntryPath;
-	// LPWSTR Comment; DWORD State; DWORD NumberOfStorages; } DFS_INFO_2, *PDFS_INFO_2, *LPDFS_INFO_2;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_2 typedef struct _DFS_INFO_2 { PWSTR EntryPath;
+	// PWSTR Comment; DWORD State; DWORD NumberOfStorages; } DFS_INFO_2, *PDFS_INFO_2, *LPDFS_INFO_2;
 	[PInvokeData("lmdfs.h", MSDNShortId = "c5fe27be-fd6e-4cf0-abf6-8363c78edf5b")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DFS_INFO_2
@@ -2267,7 +2267,7 @@ public static partial class NetApi32
 
 	/// <summary>Contains the name of a domain-based Distributed File System (DFS) namespace.</summary>
 	/// <remarks>The <c>DFS_INFO_200</c> structure is used to enumerate domain-based DFS namespaces in a domain.</remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_200 typedef struct _DFS_INFO_200 { LPWSTR FtDfsName;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_200 typedef struct _DFS_INFO_200 { PWSTR FtDfsName;
 	// } DFS_INFO_200, *PDFS_INFO_200, *LPDFS_INFO_200;
 	[PInvokeData("lmdfs.h", MSDNShortId = "a37a97b2-f2f2-45fc-9466-da75e273b075")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2283,8 +2283,8 @@ public static partial class NetApi32
 	/// NetDfsGetClientInfo, and NetDfsGetInfo functions and the FSCTL_DFS_GET_PKT_ENTRY_STATE control code.
 	/// </summary>
 	/// <remarks>A <c>DFS_INFO_3</c> structure contains one or more DFS_STORAGE_INFO structures, one for each DFS target.</remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_3 typedef struct _DFS_INFO_3 { LPWSTR EntryPath;
-	// LPWSTR Comment; DWORD State; DWORD NumberOfStorages; #if ... LPDFS_STORAGE_INFO Storage; #else LPDFS_STORAGE_INFO Storage; #endif
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_3 typedef struct _DFS_INFO_3 { PWSTR EntryPath;
+	// PWSTR Comment; DWORD State; DWORD NumberOfStorages; #if ... LPDFS_STORAGE_INFO Storage; #else LPDFS_STORAGE_INFO Storage; #endif
 	// } DFS_INFO_3, *PDFS_INFO_3, *LPDFS_INFO_3;
 	[PInvokeData("lmdfs.h", MSDNShortId = "fd60cb52-fa17-4cac-a7e8-9803303336dc")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2354,7 +2354,7 @@ public static partial class NetApi32
 	/// <summary>Contains the name and type (domain-based or stand-alone) of a DFS namespace.</summary>
 	/// <remarks>The DFS functions use the <c>DFS_INFO_300</c> structure to enumerate DFS namespaces hosted on a machine.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_300 typedef struct _DFS_INFO_300 { DWORD Flags;
-	// LPWSTR DfsName; } DFS_INFO_300, *PDFS_INFO_300, *LPDFS_INFO_300;
+	// PWSTR DfsName; } DFS_INFO_300, *PDFS_INFO_300, *LPDFS_INFO_300;
 	[PInvokeData("lmdfs.h", MSDNShortId = "b418517a-9313-49e9-a679-69b02f4ee37f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DFS_INFO_300
@@ -2394,8 +2394,8 @@ public static partial class NetApi32
 	/// NetDfsEnum, NetDfsGetClientInfo, and NetDfsGetInfo functions and the FSCTL_DFS_GET_PKT_ENTRY_STATE control code.
 	/// </summary>
 	/// <remarks>A <c>DFS_INFO_4</c> structure contains one or more DFS_STORAGE_INFO structures, one for each DFS target.</remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_4 typedef struct _DFS_INFO_4 { LPWSTR EntryPath;
-	// LPWSTR Comment; DWORD State; ULONG Timeout; GUID Guid; DWORD NumberOfStorages; #if ... LPDFS_STORAGE_INFO Storage; #else
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_4 typedef struct _DFS_INFO_4 { PWSTR EntryPath;
+	// PWSTR Comment; DWORD State; ULONG Timeout; GUID Guid; DWORD NumberOfStorages; #if ... LPDFS_STORAGE_INFO Storage; #else
 	// LPDFS_STORAGE_INFO Storage; #endif } DFS_INFO_4, *PDFS_INFO_4, *LPDFS_INFO_4;
 	[PInvokeData("lmdfs.h", MSDNShortId = "0b255be8-b719-4f40-9051-7e8a1bffa0e0")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2480,8 +2480,8 @@ public static partial class NetApi32
 	/// To retrieve information about targets and target priorities, use the DFS_INFO_6 structure. <c>DFS_INFO_5</c> is used to specify
 	/// information about a DFS namespace without target information.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_5 typedef struct _DFS_INFO_5 { LPWSTR EntryPath;
-	// LPWSTR Comment; DWORD State; ULONG Timeout; GUID Guid; ULONG PropertyFlags; ULONG MetadataSize; DWORD NumberOfStorages; }
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_5 typedef struct _DFS_INFO_5 { PWSTR EntryPath;
+	// PWSTR Comment; DWORD State; ULONG Timeout; GUID Guid; ULONG PropertyFlags; ULONG MetadataSize; DWORD NumberOfStorages; }
 	// DFS_INFO_5, *PDFS_INFO_5, *LPDFS_INFO_5;
 	[PInvokeData("lmdfs.h", MSDNShortId = "bd68d7bf-94e1-41f9-84e9-e58ab34378a1")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2628,8 +2628,8 @@ public static partial class NetApi32
 	/// <para>To obtain information about the DFS namespace without target information, use DFS_INFO_5 instead.</para>
 	/// </summary>
 	/// <remarks>For more information about how server target priority is determined, see DFS Server Target Prioritization.</remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_6 typedef struct _DFS_INFO_6 { LPWSTR EntryPath;
-	// LPWSTR Comment; DWORD State; ULONG Timeout; GUID Guid; ULONG PropertyFlags; ULONG MetadataSize; DWORD NumberOfStorages; #if ...
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_6 typedef struct _DFS_INFO_6 { PWSTR EntryPath;
+	// PWSTR Comment; DWORD State; ULONG Timeout; GUID Guid; ULONG PropertyFlags; ULONG MetadataSize; DWORD NumberOfStorages; #if ...
 	// LPDFS_STORAGE_INFO_1 Storage; #else LPDFS_STORAGE_INFO_1 Storage; #endif } DFS_INFO_6, *PDFS_INFO_6, *LPDFS_INFO_6;
 	[PInvokeData("lmdfs.h", MSDNShortId = "96a9c5eb-f79f-4577-b320-ebacff84fcc4")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2802,8 +2802,8 @@ public static partial class NetApi32
 	/// Contains the name, status, <c>GUID</c>, time-out, property flags, metadata size, DFS target information, and link reparse point
 	/// security descriptor for a root or link. This structure is only for use with the NetDfsGetInfo and NetDfsEnum functions.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_8 typedef struct _DFS_INFO_8 { LPWSTR EntryPath;
-	// LPWSTR Comment; DWORD State; ULONG Timeout; GUID Guid; ULONG PropertyFlags; ULONG MetadataSize; ULONG SecurityDescriptorLength;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_8 typedef struct _DFS_INFO_8 { PWSTR EntryPath;
+	// PWSTR Comment; DWORD State; ULONG Timeout; GUID Guid; ULONG PropertyFlags; ULONG MetadataSize; ULONG SecurityDescriptorLength;
 	// #if ... PUCHAR pSecurityDescriptor; ULONG SdLengthReserved; #else PSECURITY_DESCRIPTOR pSecurityDescriptor; #endif DWORD
 	// NumberOfStorages; } DFS_INFO_8, *PDFS_INFO_8, *LPDFS_INFO_8;
 	[PInvokeData("lmdfs.h", MSDNShortId = "d1f1051e-fe4d-4771-9665-85d6f718b081")]
@@ -2955,8 +2955,8 @@ public static partial class NetApi32
 	/// security descriptor, and a list of DFS targets for a root or link. This structure is only for use with the NetDfsGetInfo and
 	/// NetDfsEnum functions.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_9 typedef struct _DFS_INFO_9 { LPWSTR EntryPath;
-	// LPWSTR Comment; DWORD State; ULONG Timeout; GUID Guid; ULONG PropertyFlags; ULONG MetadataSize; ULONG SecurityDescriptorLength;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_info_9 typedef struct _DFS_INFO_9 { PWSTR EntryPath;
+	// PWSTR Comment; DWORD State; ULONG Timeout; GUID Guid; ULONG PropertyFlags; ULONG MetadataSize; ULONG SecurityDescriptorLength;
 	// #if ... PUCHAR pSecurityDescriptor; ULONG SdLengthReserved; #else PSECURITY_DESCRIPTOR pSecurityDescriptor; #endif DWORD
 	// NumberOfStorages; #if ... LPDFS_STORAGE_INFO_1 Storage; #else LPDFS_STORAGE_INFO_1 Storage; #endif } DFS_INFO_9, *PDFS_INFO_9, *LPDFS_INFO_9;
 	[PInvokeData("lmdfs.h", MSDNShortId = "d09ebaa7-4ec7-4d25-8b77-fe568264e6b9")]
@@ -3119,7 +3119,7 @@ public static partial class NetApi32
 	/// Only one target can be marked as the active target. It is possible that no targets will be marked active.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_storage_info typedef struct _DFS_STORAGE_INFO { ULONG
-	// State; LPWSTR ServerName; LPWSTR ShareName; } DFS_STORAGE_INFO, *PDFS_STORAGE_INFO, *LPDFS_STORAGE_INFO;
+	// State; PWSTR ServerName; PWSTR ShareName; } DFS_STORAGE_INFO, *PDFS_STORAGE_INFO, *LPDFS_STORAGE_INFO;
 	[PInvokeData("lmdfs.h", MSDNShortId = "f50f32d8-1745-4ff6-97a6-ddd6fff95955")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DFS_STORAGE_INFO
@@ -3155,7 +3155,7 @@ public static partial class NetApi32
 	/// </summary>
 	/// <remarks>This structure is used as the <c>Storage</c> member of the DFS_INFO_6 structure.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmdfs/ns-lmdfs-_dfs_storage_info_1 typedef struct _DFS_STORAGE_INFO_1 { ULONG
-	// State; LPWSTR ServerName; LPWSTR ShareName; DFS_TARGET_PRIORITY TargetPriority; } DFS_STORAGE_INFO_1, *PDFS_STORAGE_INFO_1, *LPDFS_STORAGE_INFO_1;
+	// State; PWSTR ServerName; PWSTR ShareName; DFS_TARGET_PRIORITY TargetPriority; } DFS_STORAGE_INFO_1, *PDFS_STORAGE_INFO_1, *LPDFS_STORAGE_INFO_1;
 	[PInvokeData("lmdfs.h", MSDNShortId = "777b9688-9e34-48dd-bc8c-df17bef396d0")]
 	public struct DFS_STORAGE_INFO_1
 	{

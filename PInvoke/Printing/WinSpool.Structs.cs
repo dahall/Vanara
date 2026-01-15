@@ -6,7 +6,7 @@ public static partial class WinSpool
 	/// The <c>ADDJOB_INFO_1</c> structure identifies a print job as well as the directory and file in which an application can store
 	/// that job.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addjob-info-1 typedef struct _ADDJOB_INFO_1 { LPTSTR Path; DWORD JobId;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addjob-info-1 typedef struct _ADDJOB_INFO_1 { PTSTR Path; DWORD JobId;
 	// } ADDJOB_INFO_1, *PADDJOB_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "de915932-11a7-47e8-9be9-edab76d94189")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -45,7 +45,7 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>DATATYPES_INFO_1</c> structure contains information about the data type used to record a print job.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/datatypes-info-1 typedef struct _DATATYPES_INFO_1 { LPTSTR pName; }
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/datatypes-info-1 typedef struct _DATATYPES_INFO_1 { PTSTR pName; }
 	// DATATYPES_INFO_1, *PDATATYPES_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "6169006c-12d4-4608-865c-732f04107f9f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -57,8 +57,8 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>DOC_INFO_1</c> structure describes a document that will be printed.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/doc-info-1 typedef struct _DOC_INFO_1 { LPTSTR pDocName; LPTSTR
-	// pOutputFile; LPTSTR pDatatype; } DOC_INFO_1;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/doc-info-1 typedef struct _DOC_INFO_1 { PTSTR pDocName; PTSTR
+	// pOutputFile; PTSTR pDatatype; } DOC_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "142d988b-dd74-4312-8b27-331a7ec70344")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct DOC_INFO_1
@@ -79,8 +79,8 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>DOC_INFO_2</c> structure describes a document that will be printed.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/doc-info-2 typedef struct _DOC_INFO_2 { LPTSTR pDocName; LPTSTR
-	// pOutputFile; LPTSTR pDatatype; DWORD dwMode; DWORD JobId; } DOC_INFO_2, *PDOC_INFO_2;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/doc-info-2 typedef struct _DOC_INFO_2 { PTSTR pDocName; PTSTR
+	// pOutputFile; PTSTR pDatatype; DWORD dwMode; DWORD JobId; } DOC_INFO_2, *PDOC_INFO_2;
 	[PInvokeData("winspool.h", MSDNShortId = "d62333f3-cc39-4c9b-8fb3-02a2d24bbbad")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct DOC_INFO_2
@@ -115,8 +115,8 @@ public static partial class WinSpool
 	/// The DI_MEMORYMAP_WRITE setting in <c>DOC_INFO_3</c> is an optimization. This allows GDI to map spool files in the application
 	/// and speed up the recording.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/doc-info-3 typedef struct _DOC_INFO_3 { LPTSTR pDocName; LPTSTR
-	// pOutputFile; LPTSTR pDatatype; DWORD dwFlags; } DOC_INFO_3, *PDOC_INFO_3;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/doc-info-3 typedef struct _DOC_INFO_3 { PTSTR pDocName; PTSTR
+	// pOutputFile; PTSTR pDatatype; DWORD dwFlags; } DOC_INFO_3, *PDOC_INFO_3;
 	[PInvokeData("winspool.h", MSDNShortId = "6e7b6727-da04-4f67-af77-6b51c68a4eb3")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct DOC_INFO_3
@@ -150,7 +150,7 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>DRIVER_INFO_1</c> structure identifies a printer driver.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-1 typedef struct _DRIVER_INFO_1 { LPTSTR pName; }
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-1 typedef struct _DRIVER_INFO_1 { PTSTR pName; }
 	// DRIVER_INFO_1, *PDRIVER_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "9435192b-3eba-4937-8cd3-bff4e9eb84d3")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -165,8 +165,8 @@ public static partial class WinSpool
 	/// The <c>DRIVER_INFO_2</c> structure identifies a printer driver, the driver version number, the environment for which the driver
 	/// was written, the name of the file in which the driver is stored, and so on.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-2 typedef struct _DRIVER_INFO_2 { DWORD cVersion; LPTSTR
-	// pName; LPTSTR pEnvironment; LPTSTR pDriverPath; LPTSTR pDataFile; LPTSTR pConfigFile; } DRIVER_INFO_2, *PDRIVER_INFO_2;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-2 typedef struct _DRIVER_INFO_2 { DWORD cVersion; PTSTR
+	// pName; PTSTR pEnvironment; PTSTR pDriverPath; PTSTR pDataFile; PTSTR pConfigFile; } DRIVER_INFO_2, *PDRIVER_INFO_2;
 	[PInvokeData("winspool.h", MSDNShortId = "cca1227d-69b9-44df-8dac-384c2f8843ae")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct DRIVER_INFO_2
@@ -208,9 +208,9 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>DRIVER_INFO_3</c> structure contains printer driver information.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-3 typedef struct _DRIVER_INFO_3 { DWORD cVersion; LPTSTR
-	// pName; LPTSTR pEnvironment; LPTSTR pDriverPath; LPTSTR pDataFile; LPTSTR pConfigFile; LPTSTR pHelpFile; LPTSTR pDependentFiles;
-	// LPTSTR pMonitorName; LPTSTR pDefaultDataType; } DRIVER_INFO_3, *PDRIVER_INFO_3;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-3 typedef struct _DRIVER_INFO_3 { DWORD cVersion; PTSTR
+	// pName; PTSTR pEnvironment; PTSTR pDriverPath; PTSTR pDataFile; PTSTR pConfigFile; PTSTR pHelpFile; PTSTR pDependentFiles;
+	// PTSTR pMonitorName; PTSTR pDefaultDataType; } DRIVER_INFO_3, *PDRIVER_INFO_3;
 	[PInvokeData("winspool.h", MSDNShortId = "ccf87319-0bcf-4f71-8de3-0190459d2b0e")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct DRIVER_INFO_3
@@ -281,9 +281,9 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>DRIVER_INFO_4</c> structure contains printer driver information.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-4 typedef struct _DRIVER_INFO_4 { DWORD cVersion; LPTSTR
-	// pName; LPTSTR pEnvironment; LPTSTR pDriverPath; LPTSTR pDataFile; LPTSTR pConfigFile; LPTSTR pHelpFile; LPTSTR pDependentFiles;
-	// LPTSTR pMonitorName; LPTSTR pDefaultDataType; LPTSTR pszzPreviousNames; } DRIVER_INFO_4, *PDRIVER_INFO_4;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-4 typedef struct _DRIVER_INFO_4 { DWORD cVersion; PTSTR
+	// pName; PTSTR pEnvironment; PTSTR pDriverPath; PTSTR pDataFile; PTSTR pConfigFile; PTSTR pHelpFile; PTSTR pDependentFiles;
+	// PTSTR pMonitorName; PTSTR pDefaultDataType; PTSTR pszzPreviousNames; } DRIVER_INFO_4, *PDRIVER_INFO_4;
 	[PInvokeData("winspool.h", MSDNShortId = "63000de6-74e7-4427-98d7-7bbd2dd61080")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct DRIVER_INFO_4
@@ -358,8 +358,8 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>DRIVER_INFO_5</c> structure contains printer driver information.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-5 typedef struct _DRIVER_INFO_5 { DWORD cVersion; LPTSTR
-	// pName; LPTSTR pEnvironment; LPTSTR pDriverPath; LPTSTR pDataFile; LPTSTR pConfigFile; DWORD dwDriverAttributes; DWORD
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-5 typedef struct _DRIVER_INFO_5 { DWORD cVersion; PTSTR
+	// pName; PTSTR pEnvironment; PTSTR pDriverPath; PTSTR pDataFile; PTSTR pConfigFile; DWORD dwDriverAttributes; DWORD
 	// dwConfigVersion; DWORD dwDriverVersion; } DRIVER_INFO_5, *PDRIVER_INFO_5;
 	[PInvokeData("winspool.h", MSDNShortId = "6fb63a9f-5227-46a3-97dc-8de1968e9d63")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -422,10 +422,10 @@ public static partial class WinSpool
 	/// set to 0, and <c>ftDriverDate</c> set to (0,0).
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-6 typedef struct _DRIVER_INFO_6 { DWORD cVersion; LPTSTR
-	// pName; LPTSTR pEnvironment; LPTSTR pDriverPath; LPTSTR pDataFile; LPTSTR pConfigFile; LPTSTR pHelpFile; LPTSTR pDependentFiles;
-	// LPTSTR pMonitorName; LPTSTR pDefaultDataType; LPTSTR pszzPreviousNames; FILETIME ftDriverDate; DWORDLONG dwlDriverVersion; LPTSTR
-	// pszMfgName; LPTSTR pszOEMUrl; LPTSTR pszHardwareID; LPTSTR pszProvider; } DRIVER_INFO_6, *PDRIVER_INFO_6, *LPDRIVER_INFO_6;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-6 typedef struct _DRIVER_INFO_6 { DWORD cVersion; PTSTR
+	// pName; PTSTR pEnvironment; PTSTR pDriverPath; PTSTR pDataFile; PTSTR pConfigFile; PTSTR pHelpFile; PTSTR pDependentFiles;
+	// PTSTR pMonitorName; PTSTR pDefaultDataType; PTSTR pszzPreviousNames; FILETIME ftDriverDate; DWORDLONG dwlDriverVersion; PTSTR
+	// pszMfgName; PTSTR pszOEMUrl; PTSTR pszHardwareID; PTSTR pszProvider; } DRIVER_INFO_6, *PDRIVER_INFO_6, *LPDRIVER_INFO_6;
 	[PInvokeData("winspool.h", MSDNShortId = "9771cbb5-caaa-4b7d-9a96-d24234440bac")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct DRIVER_INFO_6
@@ -526,11 +526,11 @@ public static partial class WinSpool
 
 	/// <summary>Contains printer driver information.</summary>
 	/// <remarks>The strings for these members are contained in the .inf file that is used to add the driver.</remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-8 typedef struct _DRIVER_INFO_8 { DWORD cVersion; LPTSTR
-	// pName; LPTSTR pEnvironment; LPTSTR pDriverPath; LPTSTR pDataFile; LPTSTR pConfigFile; LPTSTR pHelpFile; LPTSTR pDependentFiles;
-	// LPTSTR pMonitorName; LPTSTR pDefaultDataType; LPTSTR pszzPreviousNames; FILETIME ftDriverDate; DWORDLONG dwlDriverVersion; LPTSTR
-	// pszMfgName; LPTSTR pszOEMUrl; LPTSTR pszHardwareID; LPTSTR pszProvider; LPTSTR pszPrintProcessor; LPTSTR pszVendorSetup; LPTSTR
-	// pszzColorProfiles; LPTSTR pszInfPath; DWORD dwPrinterDriverAttributes; LPTSTR pszzCoreDriverDependencies; FILETIME
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/driver-info-8 typedef struct _DRIVER_INFO_8 { DWORD cVersion; PTSTR
+	// pName; PTSTR pEnvironment; PTSTR pDriverPath; PTSTR pDataFile; PTSTR pConfigFile; PTSTR pHelpFile; PTSTR pDependentFiles;
+	// PTSTR pMonitorName; PTSTR pDefaultDataType; PTSTR pszzPreviousNames; FILETIME ftDriverDate; DWORDLONG dwlDriverVersion; PTSTR
+	// pszMfgName; PTSTR pszOEMUrl; PTSTR pszHardwareID; PTSTR pszProvider; PTSTR pszPrintProcessor; PTSTR pszVendorSetup; PTSTR
+	// pszzColorProfiles; PTSTR pszInfPath; DWORD dwPrinterDriverAttributes; PTSTR pszzCoreDriverDependencies; FILETIME
 	// ftMinInboxDriverVerDate; DWORDLONG dwlMinInboxDriverVerVersion; } DRIVER_INFO_8, *PDRIVER_INFO_8, *LPDRIVER_INFO_8;
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct DRIVER_INFO_8
@@ -743,7 +743,7 @@ public static partial class WinSpool
 	/// The <c>FORM_INFO_1</c> structure contains information about a print form. The information includes the print form's origin, its
 	/// name, its dimensions, and the dimensions of its printable area.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/form-info-1 typedef struct _FORM_INFO_1 { DWORD Flags; LPTSTR pName;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/form-info-1 typedef struct _FORM_INFO_1 { DWORD Flags; PTSTR pName;
 	// SIZEL Size; RECTL ImageableArea; } FORM_INFO_1, *PFORM_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "1c42ea6c-82cf-463c-bc67-44a8d8c4a1e7")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -824,7 +824,7 @@ public static partial class WinSpool
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/form-info-2 typedef struct _FORM_INFO_2 { DWORD Flags; LPTSTR pName;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/form-info-2 typedef struct _FORM_INFO_2 { DWORD Flags; PTSTR pName;
 	// SIZEL Size; RECTL ImageableArea; LPCSTR pKeyword; DWORD StringType; LPCTSTR pMuiDll; DWORD dwResourceId; LPCTSTR pDisplayName;
 	// LANGID wLangId; } FORM_INFO_2, *PFORM_INFO_2;
 	[PInvokeData("winspool.h", MSDNShortId = "5cc11a77-2b9d-44a4-88de-6ed0b7460bc8")]
@@ -930,8 +930,8 @@ public static partial class WinSpool
 	/// <remarks>
 	/// Port monitors that do not support TrueEndOfJob will set the job as JOB_STATUS_PRINTED right after the job is submitted to the printer.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/job-info-1 typedef struct _JOB_INFO_1 { DWORD JobId; LPTSTR
-	// pPrinterName; LPTSTR pMachineName; LPTSTR pUserName; LPTSTR pDocument; LPTSTR pDatatype; LPTSTR pStatus; DWORD Status; DWORD
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/job-info-1 typedef struct _JOB_INFO_1 { DWORD JobId; PTSTR
+	// pPrinterName; PTSTR pMachineName; PTSTR pUserName; PTSTR pDocument; PTSTR pDatatype; PTSTR pStatus; DWORD Status; DWORD
 	// Priority; DWORD Position; DWORD TotalPages; DWORD PagesPrinted; SYSTEMTIME Submitted; } JOB_INFO_1, *PJOB_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "d42ada89-6bc7-4006-81d9-dbcc0347edd3")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -1095,9 +1095,9 @@ public static partial class WinSpool
 	/// <remarks>
 	/// Port monitors that do not support TrueEndOfJob will set the job as JOB_STATUS_PRINTED right after the job is submitted to the printer.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/job-info-2 typedef struct _JOB_INFO_2 { DWORD JobId; LPTSTR
-	// pPrinterName; LPTSTR pMachineName; LPTSTR pUserName; LPTSTR pDocument; LPTSTR pNotifyName; LPTSTR pDatatype; LPTSTR
-	// pPrintProcessor; LPTSTR pParameters; LPTSTR pDriverName; LPDEVMODE pDevMode; LPTSTR pStatus; PSECURITY_DESCRIPTOR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/job-info-2 typedef struct _JOB_INFO_2 { DWORD JobId; PTSTR
+	// pPrinterName; PTSTR pMachineName; PTSTR pUserName; PTSTR pDocument; PTSTR pNotifyName; PTSTR pDatatype; PTSTR
+	// pPrintProcessor; PTSTR pParameters; PTSTR pDriverName; LPDEVMODE pDevMode; PTSTR pStatus; PSECURITY_DESCRIPTOR
 	// pSecurityDescriptor; DWORD Status; DWORD Priority; DWORD Position; DWORD StartTime; DWORD UntilTime; DWORD TotalPages; DWORD
 	// Size; SYSTEMTIME Submitted; DWORD Time; DWORD PagesPrinted; } JOB_INFO_2, *PJOB_INFO_2;
 	[PInvokeData("winspool.h", MSDNShortId = "0cc61e35-4ac9-47bd-bb0d-ff43854bdee5")]
@@ -1328,9 +1328,9 @@ public static partial class WinSpool
 	/// Port monitors that do not support TrueEndOfJob will set the job as JOB_STATUS_PRINTED immediately after the job is submitted to
 	/// the printer.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/job-info-4 typedef struct _JOB_INFO_4 { DWORD JobId; LPTSTR
-	// pPrinterName; LPTSTR pMachineName; LPTSTR pUserName; LPTSTR pDocument; LPTSTR pNotifyName; LPTSTR pDatatype; LPTSTR
-	// pPrintProcessor; LPTSTR pParameters; LPTSTR pDriverName; LPDEVMODE pDevMode; LPTSTR pStatus; PSECURITY_DESCRIPTOR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/job-info-4 typedef struct _JOB_INFO_4 { DWORD JobId; PTSTR
+	// pPrinterName; PTSTR pMachineName; PTSTR pUserName; PTSTR pDocument; PTSTR pNotifyName; PTSTR pDatatype; PTSTR
+	// pPrintProcessor; PTSTR pParameters; PTSTR pDriverName; LPDEVMODE pDevMode; PTSTR pStatus; PSECURITY_DESCRIPTOR
 	// pSecurityDescriptor; DWORD Status; DWORD Priority; DWORD Position; DWORD StartTime; DWORD UntilTime; DWORD TotalPages; DWORD
 	// Size; SYSTEMTIME Submitted; DWORD Time; DWORD PagesPrinted; LONG SizeHigh; } JOB_INFO_4, *PJOB_INFO_4;
 	[PInvokeData("winspool.h", MSDNShortId = "90932ae2-ea9e-43bc-9a1d-c68223f6d0ee")]
@@ -1541,7 +1541,7 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>MONITOR_INFO_1</c> structure identifies an installed monitor.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/monitor-info-1 typedef struct _MONITOR_INFO_1 { LPTSTR pName; }
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/monitor-info-1 typedef struct _MONITOR_INFO_1 { PTSTR pName; }
 	// MONITOR_INFO_1, *PMONITOR_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "7a4660bd-5df8-49dd-92f6-9574f451f10d")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -1553,8 +1553,8 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>MONITOR_INFO_2</c> structure identifies a monitor.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/monitor-info-2 typedef struct _MONITOR_INFO_2 { LPTSTR pName; LPTSTR
-	// pEnvironment; LPTSTR pDLLName; } MONITOR_INFO_2, *PMONITOR_INFO_2;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/monitor-info-2 typedef struct _MONITOR_INFO_2 { PTSTR pName; PTSTR
+	// pEnvironment; PTSTR pDLLName; } MONITOR_INFO_2, *PMONITOR_INFO_2;
 	[PInvokeData("winspool.h", MSDNShortId = "4dd1ca15-6983-403e-8159-1a6d35a88162")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct MONITOR_INFO_2
@@ -1576,7 +1576,7 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>PORT_INFO_1</c> structure identifies a supported printer port.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/port-info-1 typedef struct _PORT_INFO_1 { LPTSTR pName; } PORT_INFO_1, *PPORT_INFO_1;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/port-info-1 typedef struct _PORT_INFO_1 { PTSTR pName; } PORT_INFO_1, *PPORT_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "e474fe9c-e554-406a-a5bf-de07f9a72b32")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PORT_INFO_1
@@ -1597,8 +1597,8 @@ public static partial class WinSpool
 	/// printer attributes (as returned by the <c>Attributes</c> member of <c>PRINTER_INFO_2</c>).
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/port-info-2 typedef struct _PORT_INFO_2 { LPTSTR pPortName; LPTSTR
-	// pMonitorName; LPTSTR pDescription; DWORD fPortType; DWORD Reserved; } PORT_INFO_2, *PPORT_INFO_2;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/port-info-2 typedef struct _PORT_INFO_2 { PTSTR pPortName; PTSTR
+	// pMonitorName; PTSTR pDescription; DWORD fPortType; DWORD Reserved; } PORT_INFO_2, *PPORT_INFO_2;
 	[PInvokeData("winspool.h", MSDNShortId = "93675294-61d4-40e4-b84c-f252978e0285")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PORT_INFO_2
@@ -1632,7 +1632,7 @@ public static partial class WinSpool
 	/// When you set a printer port status value with the severity value PORT_STATUS_TYPE_ERROR, the print spooler stops sending jobs to
 	/// the port. The print spooler does not resume sending jobs to the port until another <c>SetPort</c> call is made to clear the status.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/port-info-3 typedef struct _PORT_INFO_3 { DWORD dwStatus; LPTSTR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/port-info-3 typedef struct _PORT_INFO_3 { DWORD dwStatus; PTSTR
 	// pszStatus; DWORD dwSeverity; } PORT_INFO_3, *PPORT_INFO_3;
 	[PInvokeData("winspool.h", MSDNShortId = "0939353f-284b-4dbb-89a2-04918c934430")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -1754,7 +1754,7 @@ public static partial class WinSpool
 
 	/// <summary>Represents information about a connection to a printer.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-connection-info-1 typedef struct _PRINTER_CONNECTION_INFO_1 {
-	// DWORD dwFlags; LPTSTR pszDriverName; } PRINTER_CONNECTION_INFO_1, *PPRINTER_CONNECTION_INFO_1;
+	// DWORD dwFlags; PTSTR pszDriverName; } PRINTER_CONNECTION_INFO_1, *PPRINTER_CONNECTION_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "afac3f91-74eb-46f7-94b4-d37b2b8a32a4")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PRINTER_CONNECTION_INFO_1
@@ -1795,7 +1795,7 @@ public static partial class WinSpool
 	/// The <c>PRINTER_ENUM_VALUES</c> structure specifies the value name, type, and data for a printer configuration value returned by
 	/// the <c>EnumPrinterDataEx</c> function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-enum-values typedef struct _PRINTER_ENUM_VALUES { LPTSTR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-enum-values typedef struct _PRINTER_ENUM_VALUES { PTSTR
 	// pValueName; DWORD cbValueName; DWORD dwType; LPBYTE pData; DWORD cbData; } PRINTER_ENUM_VALUES, *PPRINTER_ENUM_VALUES;
 	[PInvokeData("winspool.h", MSDNShortId = "87eb1452-0d9d-46bd-8af8-0542a11a929b")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -1821,8 +1821,8 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>PRINTER_INFO_1</c> structure specifies general printer information.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-info-1 typedef struct _PRINTER_INFO_1 { DWORD Flags; LPTSTR
-	// pDescription; LPTSTR pName; LPTSTR pComment; } PRINTER_INFO_1, *PPRINTER_INFO_1;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-info-1 typedef struct _PRINTER_INFO_1 { DWORD Flags; PTSTR
+	// pDescription; PTSTR pName; PTSTR pComment; } PRINTER_INFO_1, *PPRINTER_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "0b0e2d0e-2625-4cab-a8f9-536185479443")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PRINTER_INFO_1
@@ -1901,9 +1901,9 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>PRINTER_INFO_2</c> structure specifies detailed printer information.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-info-2 typedef struct _PRINTER_INFO_2 { LPTSTR pServerName;
-	// LPTSTR pPrinterName; LPTSTR pShareName; LPTSTR pPortName; LPTSTR pDriverName; LPTSTR pComment; LPTSTR pLocation; LPDEVMODE
-	// pDevMode; LPTSTR pSepFile; LPTSTR pPrintProcessor; LPTSTR pDatatype; LPTSTR pParameters; PSECURITY_DESCRIPTOR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-info-2 typedef struct _PRINTER_INFO_2 { PTSTR pServerName;
+	// PTSTR pPrinterName; PTSTR pShareName; PTSTR pPortName; PTSTR pDriverName; PTSTR pComment; PTSTR pLocation; LPDEVMODE
+	// pDevMode; PTSTR pSepFile; PTSTR pPrintProcessor; PTSTR pDatatype; PTSTR pParameters; PSECURITY_DESCRIPTOR
 	// pSecurityDescriptor; DWORD Attributes; DWORD Priority; DWORD DefaultPriority; DWORD StartTime; DWORD UntilTime; DWORD Status;
 	// DWORD cJobs; DWORD AveragePPM; } PRINTER_INFO_2, *PPRINTER_INFO_2;
 	[PInvokeData("winspool.h", MSDNShortId = "944cbfcd-9edf-4b60-a45c-9bb1839f8141")]
@@ -2275,8 +2275,8 @@ public static partial class WinSpool
 	/// <c>PRINTER_ATTRIBUTE_LOCAL</c> and <c>PRINTER_ATTRIBUTE_NETWORK</c>.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-info-4 typedef struct _PRINTER_INFO_4 { LPTSTR pPrinterName;
-	// LPTSTR pServerName; DWORD Attributes; } PRINTER_INFO_4, *PPRINTER_INFO_4;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-info-4 typedef struct _PRINTER_INFO_4 { PTSTR pPrinterName;
+	// PTSTR pServerName; DWORD Attributes; } PRINTER_INFO_4, *PPRINTER_INFO_4;
 	[PInvokeData("winspool.h", MSDNShortId = "81bd0eab-dc1e-4cf1-8f63-3686f1711c1f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PRINTER_INFO_4
@@ -2310,8 +2310,8 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>PRINTER_INFO_5</c> structure specifies detailed printer information.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-info-5 typedef struct _PRINTER_INFO_5 { LPTSTR pPrinterName;
-	// LPTSTR pPortName; DWORD Attributes; DWORD DeviceNotSelectedTimeout; DWORD TransmissionRetryTimeout; } PRINTER_INFO_5, *PPRINTER_INFO_5;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-info-5 typedef struct _PRINTER_INFO_5 { PTSTR pPrinterName;
+	// PTSTR pPortName; DWORD Attributes; DWORD DeviceNotSelectedTimeout; DWORD TransmissionRetryTimeout; } PRINTER_INFO_5, *PPRINTER_INFO_5;
 	[PInvokeData("winspool.h", MSDNShortId = "c8599f2e-3b7c-4fde-a340-ca7d3ddaa106")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PRINTER_INFO_5
@@ -2572,7 +2572,7 @@ public static partial class WinSpool
 	/// data is to call the <c>GetPrinterDataEx</c> function.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-info-7 typedef struct _PRINTER_INFO_7 { LPTSTR pszObjectGUID;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-info-7 typedef struct _PRINTER_INFO_7 { PTSTR pszObjectGUID;
 	// DWORD dwAction; } PRINTER_INFO_7, *PPRINTER_INFO_7;
 	[PInvokeData("winspool.h", MSDNShortId = "9443855e-df7d-41a1-a0df-5649a97b2915")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -3369,7 +3369,7 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>PRINTPROCESSOR_INFO_1</c> structure specifies the name of an installed print processor.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printprocessor-info-1 typedef struct _PRINTPROCESSOR_INFO_1 { LPTSTR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printprocessor-info-1 typedef struct _PRINTPROCESSOR_INFO_1 { PTSTR
 	// pName; } PRINTPROCESSOR_INFO_1, *PPRINTPROCESSOR_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "49b272c8-156b-4996-b3fd-92cde831f4ae")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -3381,8 +3381,8 @@ public static partial class WinSpool
 	}
 
 	/// <summary>The <c>PROVIDOR_INFO_1</c> structure identifies a print provider.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/providor-info-1 typedef struct _PROVIDOR_INFO_1 { LPTSTR pName; LPTSTR
-	// pEnvironment; LPTSTR pDLLName; } PROVIDOR_INFO_1, *PPROVIDOR_INFO_1;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/providor-info-1 typedef struct _PROVIDOR_INFO_1 { PTSTR pName; PTSTR
+	// pEnvironment; PTSTR pDLLName; } PROVIDOR_INFO_1, *PPROVIDOR_INFO_1;
 	[PInvokeData("winspool.h", MSDNShortId = "0eff115a-b3d2-4c8f-b820-46e7f62dd295")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PROVIDOR_INFO_1
@@ -3408,7 +3408,7 @@ public static partial class WinSpool
 	/// This structure is used when calling <c>AddPrintProvidor</c>, level 2, to add the specified print provider to the end of the
 	/// print provider order list. The provider is immediately used for routing if the call succeeds.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/providor-info-2 typedef struct _PROVIDOR_INFO_2 { LPTSTR pOrder; }
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/providor-info-2 typedef struct _PROVIDOR_INFO_2 { PTSTR pOrder; }
 	// PROVIDOR_INFO_2, *PPROVIDOR_INFO_2;
 	[PInvokeData("winspool.h", MSDNShortId = "840523ca-22d0-460f-81fb-e0a9e2d4f5d6")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -3422,7 +3422,7 @@ public static partial class WinSpool
 	/// <summary>
 	/// The <c>PRINTER_DEFAULTS</c> structure specifies the default data type, environment, initialization data, and access rights for a printer.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-defaults typedef struct _PRINTER_DEFAULTS { LPTSTR pDatatype;
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/printer-defaults typedef struct _PRINTER_DEFAULTS { PTSTR pDatatype;
 	// LPDEVMODE pDevMode; ACCESS_MASK DesiredAccess; } PRINTER_DEFAULTS, *PPRINTER_DEFAULTS;
 	[PInvokeData("winspool.h", MSDNShortId = "df29c3a6-b1d1-4d40-887d-5ffc032a5871")]
 	public class PRINTER_DEFAULTS

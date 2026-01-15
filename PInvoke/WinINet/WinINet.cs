@@ -3175,7 +3175,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-createurlcacheentryw BOOLAPI CreateUrlCacheEntryW( LPCWSTR
-	// lpszUrlName, DWORD dwExpectedFileSize, LPCWSTR lpszFileExtension, LPWSTR lpszFileName, DWORD dwReserved );
+	// lpszUrlName, DWORD dwExpectedFileSize, LPCWSTR lpszFileExtension, PWSTR lpszFileName, DWORD dwReserved );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "9a58cf05-2306-4a0f-876d-85f5e91c5a2b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3760,7 +3760,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-ftpgetcurrentdirectorya BOOLAPI FtpGetCurrentDirectoryA(
-	// HINTERNET hConnect, LPSTR lpszCurrentDirectory, LPDWORD lpdwCurrentDirectory );
+	// HINTERNET hConnect, PSTR lpszCurrentDirectory, LPDWORD lpdwCurrentDirectory );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "1b757061-469b-4c11-9d0d-38b300216221")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -4417,7 +4417,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-geturlcacheentryinfoexa BOOLAPI GetUrlCacheEntryInfoExA(
-	// LPCSTR lpszUrl, LPINTERNET_CACHE_ENTRY_INFOA lpCacheEntryInfo, LPDWORD lpcbCacheEntryInfo, LPSTR lpszRedirectUrl, LPDWORD
+	// LPCSTR lpszUrl, LPINTERNET_CACHE_ENTRY_INFOA lpCacheEntryInfo, LPDWORD lpcbCacheEntryInfo, PSTR lpszRedirectUrl, LPDWORD
 	// lpcbRedirectUrl, LPVOID lpReserved, DWORD dwFlags );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "3842dae9-9474-492a-83fa-29d7927dc92d")]
@@ -4475,7 +4475,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-gophercreatelocatora BOOLAPI GopherCreateLocatorA( LPCSTR
-	// lpszHost, INTERNET_PORT nServerPort, LPCSTR lpszDisplayString, LPCSTR lpszSelectorString, DWORD dwGopherType, LPSTR lpszLocator,
+	// lpszHost, INTERNET_PORT nServerPort, LPCSTR lpszDisplayString, LPCSTR lpszSelectorString, DWORD dwGopherType, PSTR lpszLocator,
 	// LPDWORD lpdwBufferLength );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "972a4ff9-efda-4784-9ac8-c76e679e8032")]
@@ -5658,7 +5658,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetcanonicalizeurla BOOLAPI InternetCanonicalizeUrlA(
-	// LPCSTR lpszUrl, LPSTR lpszBuffer, LPDWORD lpdwBufferLength, DWORD dwFlags );
+	// LPCSTR lpszUrl, PSTR lpszBuffer, LPDWORD lpdwBufferLength, DWORD dwFlags );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "3bfde980-e478-4960-b41f-e1c8105ef419")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -5819,7 +5819,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetconfirmzonecrossing void
-	// InternetConfirmZoneCrossing( HWND hWnd, LPSTR szUrlPrev, LPSTR szUrlNew, BOOL bPost );
+	// InternetConfirmZoneCrossing( HWND hWnd, PSTR szUrlPrev, PSTR szUrlNew, BOOL bPost );
 	[DllImport(Lib.WinInet, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "e14f58df-5457-4a17-919c-6a25691c2ee1")]
 	public static extern Win32Error InternetConfirmZoneCrossing(HWND hWnd, string szUrlPrev, string szUrlNew, [MarshalAs(UnmanagedType.Bool)] bool bPost = false);
@@ -6101,7 +6101,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetcreateurla BOOLAPI InternetCreateUrlA(
-	// LPURL_COMPONENTSA lpUrlComponents, DWORD dwFlags, LPSTR lpszUrl, LPDWORD lpdwUrlLength );
+	// LPURL_COMPONENTSA lpUrlComponents, DWORD dwFlags, PSTR lpszUrl, LPDWORD lpdwUrlLength );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "b01bb684-0b2f-4c17-ab32-9f83fdd89e69")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -6152,7 +6152,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetcreateurla BOOLAPI InternetCreateUrlA(
-	// LPURL_COMPONENTSA lpUrlComponents, DWORD dwFlags, LPSTR lpszUrl, LPDWORD lpdwUrlLength );
+	// LPURL_COMPONENTSA lpUrlComponents, DWORD dwFlags, PSTR lpszUrl, LPDWORD lpdwUrlLength );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "b01bb684-0b2f-4c17-ab32-9f83fdd89e69")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -6241,14 +6241,14 @@ public static partial class WinINet
 	/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetdial void InternetDial( HWND hwndParent, LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetdial void InternetDial( HWND hwndParent, PSTR
 	// lpszConnectoid, DWORD dwFlags, LPDWORD lpdwConnection, DWORD dwReserved );
 	[DllImport(Lib.WinInet, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "b8ce748b-9879-4f68-aea1-32e2bfaee8ab")]
 	public static extern Win32Error InternetDial(HWND hwndParent, [Optional] string? lpszConnectoid, INTERNET_DIAL dwFlags, out uint lpdwConnection, uint dwReserved = 0);
 
 	/// <summary>Retrieves the domains and cookie settings of websites for which site-specific cookie regulations are set.</summary>
-	/// <param name="pszSiteName">An <c>LPSTR</c> that receives a string specifying a website domain.</param>
+	/// <param name="pszSiteName">An <c>PSTR</c> that receives a string specifying a website domain.</param>
 	/// <param name="pcSiteNameSize">
 	/// A pointer to an unsigned long that specifies the size of the pcSiteNameSize parameter provided to the
 	/// InternetEnumPerSiteCookieDecision function when it is called. When <c>InternetEnumPerSiteCookieDecision</c> returns,
@@ -6275,7 +6275,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetenumpersitecookiedecisiona BOOLAPI
-	// InternetEnumPerSiteCookieDecisionA( LPSTR pszSiteName, unsigned long *pcSiteNameSize, unsigned long *pdwDecision, unsigned long
+	// InternetEnumPerSiteCookieDecisionA( PSTR pszSiteName, unsigned long *pcSiteNameSize, unsigned long *pdwDecision, unsigned long
 	// dwIndex );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "de1db7e6-21f4-4bbb-b4fc-277bbd01f32c")]
@@ -6712,7 +6712,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgetconnectedstateex BOOLAPI
-	// InternetGetConnectedStateEx( LPDWORD lpdwFlags, LPSTR lpszConnectionName, DWORD dwNameLen, DWORD dwReserved );
+	// InternetGetConnectedStateEx( LPDWORD lpdwFlags, PSTR lpszConnectionName, DWORD dwNameLen, DWORD dwReserved );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "0b27b86d-6e55-4022-84ce-d4116d71f124")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -6771,7 +6771,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgetcookiea BOOLAPI InternetGetCookieA( LPCSTR
-	// lpszUrl, LPCSTR lpszCookieName, LPSTR lpszCookieData, LPDWORD lpdwSize );
+	// lpszUrl, LPCSTR lpszCookieName, PSTR lpszCookieData, LPDWORD lpdwSize );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "12c1ebab-3954-4995-9e1f-bf29699af396")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -6864,7 +6864,7 @@ public static partial class WinINet
 	/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgetcookieexa BOOLAPI InternetGetCookieExA( LPCSTR
-	// lpszUrl, LPCSTR lpszCookieName, LPSTR lpszCookieData, LPDWORD lpdwSize, DWORD dwFlags, LPVOID lpReserved );
+	// lpszUrl, LPCSTR lpszCookieName, PSTR lpszCookieData, LPDWORD lpdwSize, DWORD dwFlags, LPVOID lpReserved );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "5006f009-e217-4fdc-9e4e-800ff5fcbf03")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -6908,7 +6908,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgetlastresponseinfoa BOOLAPI
-	// InternetGetLastResponseInfoA( LPDWORD lpdwError, LPSTR lpszBuffer, LPDWORD lpdwBufferLength );
+	// InternetGetLastResponseInfoA( LPDWORD lpdwError, PSTR lpszBuffer, LPDWORD lpdwBufferLength );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "0aa274c5-0aa0-4eb9-8aef-3128e735759d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -6975,7 +6975,7 @@ public static partial class WinINet
 	/// <c>Note</c> WinINet does not support server implementations. In addition, it should not be used from a service. For server
 	/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgoonline BOOLAPI InternetGoOnline( LPSTR lpszURL,
+	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internetgoonline BOOLAPI InternetGoOnline( PSTR lpszURL,
 	// HWND hwndParent, DWORD dwFlags );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "ed1c0282-5469-49d5-8a8c-b7671d27ebd2")]
@@ -8118,7 +8118,7 @@ public static partial class WinINet
 	/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-internettimefromsystemtime BOOLAPI
-	// InternetTimeFromSystemTime( const SYSTEMTIME *pst, DWORD dwRFC, LPSTR lpszTime, DWORD cbTime );
+	// InternetTimeFromSystemTime( const SYSTEMTIME *pst, DWORD dwRFC, PSTR lpszTime, DWORD cbTime );
 	[DllImport(Lib.WinInet, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wininet.h", MSDNShortId = "b52ba402-bad1-4005-b9d0-7630194272d1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -8224,7 +8224,7 @@ public static partial class WinINet
 	/// and dwType.
 	/// </param>
 	/// <param name="pszBuffer">
-	/// An <c>LPWSTR</c> that points to a buffer containing a <c>LPCWSTR</c> representing a string version of the pdwTemplate or a
+	/// An <c>PWSTR</c> that points to a buffer containing a <c>LPCWSTR</c> representing a string version of the pdwTemplate or a
 	/// customized string if the pdwTemplate is set to <c>PRIVACY_TEMPLATE_CUSTOM</c>. See PrivacySetZonePreferenceW for a description
 	/// of a customized privacy preferences string.
 	/// </param>
@@ -8245,7 +8245,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/nf-wininet-privacygetzonepreferencew void PrivacyGetZonePreferenceW(
-	// DWORD dwZone, DWORD dwType, LPDWORD pdwTemplate, LPWSTR pszBuffer, LPDWORD pdwBufferLength );
+	// DWORD dwZone, DWORD dwType, LPDWORD pdwTemplate, PWSTR pszBuffer, LPDWORD pdwBufferLength );
 	[DllImport(Lib.WinInet, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("wininet.h", MSDNShortId = "530a86a0-bb67-406a-be83-5f2b463a1aa1")]
 	public static extern Win32Error PrivacyGetZonePreferenceW(URLZONE dwZone, PrivacyType dwType, out PrivacyTemplate pdwTemplate, StringBuilder pszBuffer, ref uint pdwBufferLength);
@@ -8860,10 +8860,10 @@ public static partial class WinINet
 			public struct GOPHER_ADMIN_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public LPTSTR Comment;
+				public PTSTR Comment;
 
 				/// <summary/>
-				public LPTSTR EmailAddress;
+				public PTSTR EmailAddress;
 			}
 
 			/// <summary/>
@@ -8906,7 +8906,7 @@ public static partial class WinINet
 			public struct GOPHER_SITE_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public LPTSTR Site;
+				public PTSTR Site;
 			}
 
 			/// <summary/>
@@ -8914,7 +8914,7 @@ public static partial class WinINet
 			public struct GOPHER_ORGANIZATION_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public LPTSTR Organization;
+				public PTSTR Organization;
 			}
 
 			/// <summary/>
@@ -8922,7 +8922,7 @@ public static partial class WinINet
 			public struct GOPHER_LOCATION_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public LPTSTR Location;
+				public PTSTR Location;
 			}
 
 			/// <summary/>
@@ -8961,7 +8961,7 @@ public static partial class WinINet
 			public struct GOPHER_PROVIDER_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public LPTSTR Provider;
+				public PTSTR Provider;
 			}
 
 			/// <summary/>
@@ -8969,7 +8969,7 @@ public static partial class WinINet
 			public struct GOPHER_VERSION_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public LPTSTR Version;
+				public PTSTR Version;
 			}
 
 			/// <summary/>
@@ -8977,10 +8977,10 @@ public static partial class WinINet
 			public struct GOPHER_ABSTRACT_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public LPTSTR ShortAbstract;
+				public PTSTR ShortAbstract;
 
 				/// <summary/>
-				public LPTSTR AbstractFile;
+				public PTSTR AbstractFile;
 			}
 
 			/// <summary/>
@@ -8988,10 +8988,10 @@ public static partial class WinINet
 			public struct GOPHER_VIEW_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public LPTSTR ContentType;
+				public PTSTR ContentType;
 
 				/// <summary/>
-				public LPTSTR Language;
+				public PTSTR Language;
 
 				/// <summary/>
 				public uint Size;
@@ -9010,10 +9010,10 @@ public static partial class WinINet
 			public struct GOPHER_ASK_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public LPTSTR QuestionType;
+				public PTSTR QuestionType;
 
 				/// <summary/>
-				public LPTSTR QuestionText;
+				public PTSTR QuestionText;
 			}
 
 			/// <summary/>
@@ -9021,7 +9021,7 @@ public static partial class WinINet
 			public struct GOPHER_UNKNOWN_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public LPTSTR Text;
+				public PTSTR Text;
 			}
 		}
 	}
@@ -9388,9 +9388,9 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/ns-wininet-internet_cache_entry_infoa typedef struct
-	// _INTERNET_CACHE_ENTRY_INFOA { DWORD dwStructSize; LPSTR lpszSourceUrlName; LPSTR lpszLocalFileName; DWORD CacheEntryType; DWORD
+	// _INTERNET_CACHE_ENTRY_INFOA { DWORD dwStructSize; PSTR lpszSourceUrlName; PSTR lpszLocalFileName; DWORD CacheEntryType; DWORD
 	// dwUseCount; DWORD dwHitRate; DWORD dwSizeLow; DWORD dwSizeHigh; FILETIME LastModifiedTime; FILETIME ExpireTime; FILETIME
-	// LastAccessTime; FILETIME LastSyncTime; LPSTR lpHeaderInfo; DWORD dwHeaderInfoSize; LPSTR lpszFileExtension; union { DWORD
+	// LastAccessTime; FILETIME LastSyncTime; PSTR lpHeaderInfo; DWORD dwHeaderInfoSize; PSTR lpszFileExtension; union { DWORD
 	// dwReserved; DWORD dwExemptDelta; }; } INTERNET_CACHE_ENTRY_INFOA, *LPINTERNET_CACHE_ENTRY_INFOA;
 	[PInvokeData("wininet.h", MSDNShortId = "7bda08e0-5df0-4087-a5cd-3a25c6ae5ade")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -9402,13 +9402,13 @@ public static partial class WinINet
 		/// <summary>
 		/// Pointer to a null-terminated string that contains the URL name. The string occupies the memory area at the end of this structure.
 		/// </summary>
-		public LPTSTR lpszSourceUrlName;
+		public PTSTR lpszSourceUrlName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that contains the local file name. The string occupies the memory area at the end of
 		/// this structure.
 		/// </summary>
-		public LPTSTR lpszLocalFileName;
+		public PTSTR lpszLocalFileName;
 
 		/// <summary>
 		/// <para>
@@ -9494,7 +9494,7 @@ public static partial class WinINet
 		/// <summary>
 		/// Pointer to a buffer that contains the header information. The buffer occupies the memory at the end of this structure.
 		/// </summary>
-		public LPTSTR lpHeaderInfo;
+		public PTSTR lpHeaderInfo;
 
 		/// <summary>Size of the <c>lpHeaderInfo</c> buffer, in <c>TCHARs</c>.</summary>
 		public uint dwHeaderInfoSize;
@@ -9503,7 +9503,7 @@ public static partial class WinINet
 		/// Pointer to a string that contains the file name extension used to retrieve the data as a file. The string occupies the
 		/// memory area at the end of this structure.
 		/// </summary>
-		public LPTSTR lpszFileExtension;
+		public PTSTR lpszFileExtension;
 
 		/// <summary/>
 		public uint dwReserved;
@@ -9527,9 +9527,9 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/ns-wininet-internet_cache_entry_infoa typedef struct
-	// _INTERNET_CACHE_ENTRY_INFOA { DWORD dwStructSize; LPSTR lpszSourceUrlName; LPSTR lpszLocalFileName; DWORD CacheEntryType; DWORD
+	// _INTERNET_CACHE_ENTRY_INFOA { DWORD dwStructSize; PSTR lpszSourceUrlName; PSTR lpszLocalFileName; DWORD CacheEntryType; DWORD
 	// dwUseCount; DWORD dwHitRate; DWORD dwSizeLow; DWORD dwSizeHigh; FILETIME LastModifiedTime; FILETIME ExpireTime; FILETIME
-	// LastAccessTime; FILETIME LastSyncTime; LPSTR lpHeaderInfo; DWORD dwHeaderInfoSize; LPSTR lpszFileExtension; union { DWORD
+	// LastAccessTime; FILETIME LastSyncTime; PSTR lpHeaderInfo; DWORD dwHeaderInfoSize; PSTR lpszFileExtension; union { DWORD
 	// dwReserved; DWORD dwExemptDelta; }; } INTERNET_CACHE_ENTRY_INFOA, *LPINTERNET_CACHE_ENTRY_INFOA;
 	[PInvokeData("wininet.h", MSDNShortId = "7bda08e0-5df0-4087-a5cd-3a25c6ae5ade")]
 	public struct INTERNET_CACHE_ENTRY_INFO_MGD
@@ -9619,7 +9619,7 @@ public static partial class WinINet
 	/// <remarks>
 	/// Despite what the header indicates, the implementation of INTERNET_CERTIFICATE_INFO is not Unicode-aware. All of the string
 	/// members are filled as ANSI strings regardless of whether Unicode is enabled. Consequently, when reading these values, the caller
-	/// must cast them to LPSTR if Unicode is enabled.
+	/// must cast them to PSTR if Unicode is enabled.
 	/// </remarks>
 	[PInvokeData("WinInet.h")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -9635,31 +9635,31 @@ public static partial class WinINet
 		/// Pointer to a buffer that contains the name of the organization, site, and server for which the certificate was issued. The
 		/// application must call LocalFree to release the resources allocated for this parameter.
 		/// </summary>
-		public LPSTR lpszSubjectInfo;
+		public PSTR lpszSubjectInfo;
 
 		/// <summary>
 		/// Pointer to a buffer that contains the name of the organization, site, and server that issued the certificate. The
 		/// application must call LocalFree to release the resources allocated for this parameter.
 		/// </summary>
-		public LPSTR lpszIssuerInfo;
+		public PSTR lpszIssuerInfo;
 
 		/// <summary>
 		/// Pointer to a buffer that contains the name of the protocol used to provide the secure connection. The application must call
 		/// LocalFree to release the resources allocated for this parameter.
 		/// </summary>
-		public LPSTR lpszProtocolName;
+		public PSTR lpszProtocolName;
 
 		/// <summary>
 		/// Pointer to a buffer that contains the name of the algorithm used for signing the certificate. The application must call
 		/// LocalFree to release the resources allocated for this parameter.
 		/// </summary>
-		public LPSTR lpszSignatureAlgName;
+		public PSTR lpszSignatureAlgName;
 
 		/// <summary>
 		/// Pointer to a buffer that contains the name of the algorithm used for doing encryption over the secure channel (SSL/PCT)
 		/// connection. The application must call LocalFree to release the resources allocated for this parameter.
 		/// </summary>
-		public LPSTR lpszEncryptionAlgName;
+		public PSTR lpszEncryptionAlgName;
 
 		/// <summary>Size, in TCHARs, of the key.</summary>
 		public uint dwKeySize;
@@ -9704,7 +9704,7 @@ public static partial class WinINet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/ns-wininet-internet_per_conn_optiona typedef struct { DWORD dwOption;
-	// union { DWORD dwValue; LPSTR pszValue; FILETIME ftValue; } Value; } INTERNET_PER_CONN_OPTIONA, *LPINTERNET_PER_CONN_OPTIONA;
+	// union { DWORD dwValue; PSTR pszValue; FILETIME ftValue; } Value; } INTERNET_PER_CONN_OPTIONA, *LPINTERNET_PER_CONN_OPTIONA;
 	[PInvokeData("wininet.h", MSDNShortId = "NS:wininet.__unnamed_struct_3")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct INTERNET_PER_CONN_OPTION
@@ -9819,7 +9819,7 @@ public static partial class WinINet
 
 			/// <summary>Pointer to a string value.</summary>
 			[FieldOffset(0)]
-			public LPTSTR pszValue;
+			public PTSTR pszValue;
 
 			/// <summary>A FILETIME structure.</summary>
 			[FieldOffset(0)]
@@ -9839,7 +9839,7 @@ public static partial class WinINet
 		/// Pointer to a string that contains the name of the RAS connection or NULL, which indicates the default or LAN connection, to
 		/// set or query options on.
 		/// </summary>
-		public LPTSTR pszConnection;
+		public PTSTR pszConnection;
 
 		/// <summary>Number of options to query or set.</summary>
 		public uint dwOptionCount;
@@ -9866,10 +9866,10 @@ public static partial class WinINet
 		public InternetOpenType dwAccessType;
 
 		/// <summary>Pointer to a string that contains the proxy server list.</summary>
-		public LPTSTR lpszProxy;
+		public PTSTR lpszProxy;
 
 		/// <summary>Pointer to a string that contains the proxy bypass list.</summary>
-		public LPTSTR lpszProxyBypass;
+		public PTSTR lpszProxyBypass;
 	}
 
 	/// <summary>
@@ -9907,9 +9907,9 @@ public static partial class WinINet
 	/// implementations or services use Microsoft Windows HTTP Services (WinHTTP).
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/ns-wininet-url_componentsa typedef struct { DWORD dwStructSize; LPSTR
-	// lpszScheme; DWORD dwSchemeLength; INTERNET_SCHEME nScheme; LPSTR lpszHostName; DWORD dwHostNameLength; INTERNET_PORT nPort; LPSTR
-	// lpszUserName; DWORD dwUserNameLength; LPSTR lpszPassword; DWORD dwPasswordLength; LPSTR lpszUrlPath; DWORD dwUrlPathLength; LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/wininet/ns-wininet-url_componentsa typedef struct { DWORD dwStructSize; PSTR
+	// lpszScheme; DWORD dwSchemeLength; INTERNET_SCHEME nScheme; PSTR lpszHostName; DWORD dwHostNameLength; INTERNET_PORT nPort; PSTR
+	// lpszUserName; DWORD dwUserNameLength; PSTR lpszPassword; DWORD dwPasswordLength; PSTR lpszUrlPath; DWORD dwUrlPathLength; PSTR
 	// lpszExtraInfo; DWORD dwExtraInfoLength; } URL_COMPONENTSA, *LPURL_COMPONENTSA;
 	[PInvokeData("wininet.h", MSDNShortId = "faebdd29-f746-486b-b779-cceeecac9163")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]

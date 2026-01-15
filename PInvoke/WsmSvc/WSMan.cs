@@ -2437,7 +2437,7 @@ public static partial class WsmSvc
 		public uint bufferLength;
 
 		/// <summary>Specifies the storage location for the textual data.</summary>
-		public LPWSTR buffer;
+		public PWSTR buffer;
 	}
 
 	/// <summary>
@@ -2739,7 +2739,7 @@ public static partial class WsmSvc
 	public struct WSMAN_RECEIVE_DATA_RESULT
 	{
 		/// <summary>Represents the <c>streamId</c> for which <c>streamData</c> is defined.</summary>
-		public LPWSTR streamId;
+		public PWSTR streamId;
 
 		/// <summary>
 		/// Represents the data associated with <c>streamId</c>. The data can be stream text, binary content, or XML. For more
@@ -2751,7 +2751,7 @@ public static partial class WsmSvc
 		/// Specifies the status of the command. If this member is set to <c>WSMAN_COMMAND_STATE_DONE</c>, the command should be
 		/// immediately closed.
 		/// </summary>
-		public LPWSTR commandState;
+		public PWSTR commandState;
 
 		/// <summary>
 		/// Defines the exit code of the command. This value is relevant only if the <c>commandState</c> member is set to <c>WSMAN_COMMAND_STATE_DONE</c>.

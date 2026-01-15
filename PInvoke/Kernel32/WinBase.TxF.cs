@@ -2302,7 +2302,7 @@ public static partial class Kernel32
 	/// <para>SMB 3.0 does not support TxF.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getfullpathnametransacteda DWORD
-	// GetFullPathNameTransactedA( LPCSTR lpFileName, DWORD nBufferLength, LPSTR lpBuffer, LPSTR *lpFilePart, HANDLE hTransaction );
+	// GetFullPathNameTransactedA( LPCSTR lpFileName, DWORD nBufferLength, PSTR lpBuffer, PSTR *lpFilePart, HANDLE hTransaction );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "63cbcec6-e9f0-4db3-bf2f-03a987000af1")]
 	public static extern uint GetFullPathNameTransacted(string lpFileName, uint nBufferLength, StringBuilder lpBuffer, out IntPtr lpFilePart, HTRXN hTransaction);
@@ -2401,7 +2401,7 @@ public static partial class Kernel32
 	/// <para>SMB 3.0 does not support TxF.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getlongpathnametransacteda DWORD
-	// GetLongPathNameTransactedA( LPCSTR lpszShortPath, LPSTR lpszLongPath, DWORD cchBuffer, HANDLE hTransaction );
+	// GetLongPathNameTransactedA( LPCSTR lpszShortPath, PSTR lpszLongPath, DWORD cchBuffer, HANDLE hTransaction );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "8523cde9-f0dd-4832-8d9d-9e68bac89344")]
 	public static extern uint GetLongPathNameTransacted(string lpszShortPath, StringBuilder lpszLongPath, uint cchBuffer, HTRXN hTransaction);

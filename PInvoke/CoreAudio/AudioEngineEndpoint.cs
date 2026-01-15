@@ -785,7 +785,7 @@ public static partial class CoreAudio
 		/// <param name="_uConnectorId">The identifier for the endpoint connector.</param>
 		/// <returns>The number of available endpoint connectors that can handle offloaded audio streams.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioengineendpoint/nf-audioengineendpoint-ihardwareaudioenginebase-getavailableoffloadconnectorcount
-		// HRESULT GetAvailableOffloadConnectorCount( LPWSTR _pwstrDeviceId, UINT32 _uConnectorId, UINT32 *_pAvailableConnectorInstanceCount );
+		// HRESULT GetAvailableOffloadConnectorCount( PWSTR _pwstrDeviceId, UINT32 _uConnectorId, UINT32 *_pAvailableConnectorInstanceCount );
 		uint GetAvailableOffloadConnectorCount([MarshalAs(UnmanagedType.LPWStr)] string _pwstrDeviceId, uint _uConnectorId);
 
 		/// <summary>The <c>GetEngineFormat</c> method retrieves the current data format of the offloaded audio stream.</summary>

@@ -1355,7 +1355,7 @@ public static partial class Gdi32
 	/// <para>For an example, see Sizing a JPEG or PNG Image.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-extescape int ExtEscape( HDC hdc, int iEscape, int cjInput,
-	// LPCSTR lpInData, int cjOutput, LPSTR lpOutData );
+	// LPCSTR lpInData, int cjOutput, PSTR lpOutData );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wingdi.h", MSDNShortId = "5ca74f61-75dd-4a8c-9f0f-9c1b4719c75f")]
 	public static extern int ExtEscape([In, AddAsMember] HDC hdc, EscapeFunction iEscape, [Optional] int cjInput, [In, Optional] IntPtr lpInData, [Optional] int cjOutput, [Out, Optional] IntPtr lpOutData);

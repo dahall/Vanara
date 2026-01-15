@@ -1211,7 +1211,7 @@ public static partial class P2P
 		public PEER_MEMBER_CHANGE_TYPE changeType;
 
 		/// <summary>Pointer to a Unicode string that contains the peer name of the peer group member.</summary>
-		public LPWSTR pwzIdentity;
+		public PWSTR pwzIdentity;
 	}
 
 	/// <summary>
@@ -1255,7 +1255,7 @@ public static partial class P2P
 		public ulong ullNodeId;
 
 		/// <summary>Specifies the peer ID of the node that has changed.</summary>
-		public LPWSTR pwzPeerId;
+		public PWSTR pwzPeerId;
 	}
 
 	/// <summary>

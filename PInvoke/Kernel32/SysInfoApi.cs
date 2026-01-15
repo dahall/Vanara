@@ -625,7 +625,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-dnshostnametocomputernamea BOOL DnsHostnameToComputerNameA(
-	// LPCSTR Hostname, LPSTR ComputerName, LPDWORD nSize );
+	// LPCSTR Hostname, PSTR ComputerName, LPDWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "d5646fe6-9112-42cd-ace9-00dd1b590ecb")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -765,7 +765,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a nonzero value.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI GetComputerName( _Out_ LPTSTR lpBuffer, _Inout_ LPDWORD lpnSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724295(v=vs.85).aspx
+	// BOOL WINAPI GetComputerName( _Out_ PTSTR lpBuffer, _Inout_ LPDWORD lpnSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724295(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724295")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -884,7 +884,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI GetComputerNameEx( _In_ COMPUTER_NAME_FORMAT NameType, _Out_ LPTSTR lpBuffer, _Inout_ LPDWORD lpnSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724301(v=vs.85).aspx
+	// BOOL WINAPI GetComputerNameEx( _In_ COMPUTER_NAME_FORMAT NameType, _Out_ PTSTR lpBuffer, _Inout_ LPDWORD lpnSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724301(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724301")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1700,7 +1700,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// UINT WINAPI GetSystemDirectory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724373(v=vs.85).aspx
+	// UINT WINAPI GetSystemDirectory( _Out_ PTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724373(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724373")]
 	public static extern uint GetSystemDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
@@ -1955,7 +1955,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// UINT WINAPI GetSystemWindowsDirectory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724403(v=vs.85).aspx
+	// UINT WINAPI GetSystemWindowsDirectory( _Out_ PTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724403(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724403")]
 	public static extern uint GetSystemWindowsDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);
@@ -2075,7 +2075,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// UINT WINAPI GetWindowsDirectory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724454(v=vs.85).aspx
+	// UINT WINAPI GetWindowsDirectory( _Out_ PTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724454(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724454")]
 	public static extern uint GetWindowsDirectory([Optional, SizeDef(nameof(uSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer, uint uSize);

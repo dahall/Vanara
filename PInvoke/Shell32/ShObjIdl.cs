@@ -770,7 +770,7 @@ public static partial class Shell32
 		/// </para>
 		/// </param>
 		/// <param name="ppszAssociation">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>When this method returns, contains the address of a pointer to the ProgID that identifies the current default association.</para>
 		/// <para><c>Note</c> It is the responsibility of the calling application to release the string through CoTaskMemFree.</para>
 		/// </param>
@@ -785,7 +785,7 @@ public static partial class Shell32
 		/// identifier (CLSID) string instead of a ProgID.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iapplicationassociationregistration-querycurrentdefault
-		// HRESULT QueryCurrentDefault( LPCWSTR pszQuery, ASSOCIATIONTYPE atQueryType, ASSOCIATIONLEVEL alQueryLevel, LPWSTR
+		// HRESULT QueryCurrentDefault( LPCWSTR pszQuery, ASSOCIATIONTYPE atQueryType, ASSOCIATIONLEVEL alQueryLevel, PWSTR
 		// *ppszAssociation );
 		void QueryCurrentDefault([MarshalAs(UnmanagedType.LPWStr)] string pszQuery, ASSOCIATIONTYPE atQueryType, ASSOCIATIONLEVEL alQueryLevel, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszAssociation);
 
@@ -1205,7 +1205,7 @@ public static partial class Shell32
 	{
 		/// <summary>Retrieves the name of the application that is using the file.</summary>
 		/// <param name="ppszName">
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>The address of a pointer to a buffer that, when this method returns successfully, receives the application name.</para>
 		/// </param>
 		/// <returns>
@@ -1217,7 +1217,7 @@ public static partial class Shell32
 		/// accordingly. For instance "File.txt is in use by Litware."
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getappname HRESULT
-		// GetAppName( LPWSTR *ppszName );
+		// GetAppName( PWSTR *ppszName );
 		[PreserveSig]
 		HRESULT GetAppName([MarshalAs(UnmanagedType.LPWStr)] out string? ppszName);
 

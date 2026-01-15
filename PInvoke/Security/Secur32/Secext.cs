@@ -78,7 +78,7 @@ public static partial class Secur32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/secext/nf-secext-getcomputerobjectnamea BOOLEAN SEC_ENTRY
-	// GetComputerObjectNameA( EXTENDED_NAME_FORMAT NameFormat, LPSTR lpNameBuffer, PULONG nSize );
+	// GetComputerObjectNameA( EXTENDED_NAME_FORMAT NameFormat, PSTR lpNameBuffer, PULONG nSize );
 	[DllImport(Lib.Secur32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("secext.h", MSDNShortId = "aead19ae-a27c-486e-aa2e-220d337044fc")]
 	[return: MarshalAs(UnmanagedType.U1)]
@@ -134,7 +134,7 @@ public static partial class Secur32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/secext/nf-secext-getusernameexa BOOLEAN SEC_ENTRY GetUserNameExA(
-	// EXTENDED_NAME_FORMAT NameFormat, LPSTR lpNameBuffer, PULONG nSize );
+	// EXTENDED_NAME_FORMAT NameFormat, PSTR lpNameBuffer, PULONG nSize );
 	[DllImport(Lib.Secur32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("secext.h", MSDNShortId = "7e7d618b-2e64-4b0b-aed3-f3221b0443ca")]
 	[return: MarshalAs(UnmanagedType.U1)]
@@ -165,7 +165,7 @@ public static partial class Secur32
 	/// </returns>
 	/// <remarks><c>TranslateName</c> fails if it cannot bind to Active Directory on a domain controller.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/secext/nf-secext-translatenamea BOOLEAN SEC_ENTRY TranslateNameA( LPCSTR
-	// lpAccountName, EXTENDED_NAME_FORMAT AccountNameFormat, EXTENDED_NAME_FORMAT DesiredNameFormat, LPSTR lpTranslatedName, PULONG
+	// lpAccountName, EXTENDED_NAME_FORMAT AccountNameFormat, EXTENDED_NAME_FORMAT DesiredNameFormat, PSTR lpTranslatedName, PULONG
 	// nSize );
 	[DllImport(Lib.Secur32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("secext.h", MSDNShortId = "4df25519-e7d6-46ea-b0e8-ba1f82e5f94f")]

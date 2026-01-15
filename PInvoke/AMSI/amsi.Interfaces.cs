@@ -61,11 +61,11 @@ public static partial class AMSI
 		/// </listheader>
 		/// <item>
 		/// <term><c>AMSI_ATTRIBUTE_APP_NAME</c></term>
-		/// <term>The name, version, or GUID string of the calling application, copied from a <c>LPWSTR</c>.</term>
+		/// <term>The name, version, or GUID string of the calling application, copied from a <c>PWSTR</c>.</term>
 		/// </item>
 		/// <item>
 		/// <term><c>AMSI_ATTRIBUTE_CONTENT_NAME</c></term>
-		/// <term>The filename, URL, unique script ID, or similar of the content, copied from a <c>LPWSTR</c>.</term>
+		/// <term>The filename, URL, unique script ID, or similar of the content, copied from a <c>PWSTR</c>.</term>
 		/// </item>
 		/// <item>
 		/// <term><c>AMSI_ATTRIBUTE_CONTENT_SIZE</c></term>
@@ -369,7 +369,7 @@ public static partial class AMSI
 		void CloseSession(ulong session);
 
 		/// <summary>The name of the antimalware provider to be displayed.</summary>
-		/// <param name="displayName">A pointer to a <c>LPWSTR</c> that contains the display name.</param>
+		/// <param name="displayName">A pointer to a <c>PWSTR</c> that contains the display name.</param>
 		/// <returns>
 		/// <para>This method can return one of these values.</para>
 		/// <list type="table">
@@ -392,7 +392,7 @@ public static partial class AMSI
 		/// </list>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/amsi/nf-amsi-iantimalwareprovider-displayname HRESULT DisplayName( [out]
-		// LPWSTR *displayName );
+		// PWSTR *displayName );
 		[PreserveSig]
 		HRESULT DisplayName([MarshalAs(UnmanagedType.LPWStr)] out string displayName);
 	}
@@ -445,7 +445,7 @@ public static partial class AMSI
 		new void CloseSession(ulong session);
 
 		/// <summary>The name of the antimalware provider to be displayed.</summary>
-		/// <param name="displayName">A pointer to a <c>LPWSTR</c> that contains the display name.</param>
+		/// <param name="displayName">A pointer to a <c>PWSTR</c> that contains the display name.</param>
 		/// <returns>
 		/// <para>This method can return one of these values.</para>
 		/// <list type="table">
@@ -468,7 +468,7 @@ public static partial class AMSI
 		/// </list>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/amsi/nf-amsi-iantimalwareprovider-displayname HRESULT DisplayName( [out]
-		// LPWSTR *displayName );
+		// PWSTR *displayName );
 		[PreserveSig]
 		new HRESULT DisplayName([MarshalAs(UnmanagedType.LPWStr)] out string displayName);
 
@@ -600,11 +600,11 @@ public static partial class AMSI
 		/// </listheader>
 		/// <item>
 		/// <term><c>AMSI_ATTRIBUTE_APP_NAME</c></term>
-		/// <term>The name, version, or GUID string of the calling application, copied from a <c>LPWSTR</c>.</term>
+		/// <term>The name, version, or GUID string of the calling application, copied from a <c>PWSTR</c>.</term>
 		/// </item>
 		/// <item>
 		/// <term><c>AMSI_ATTRIBUTE_CONTENT_NAME</c></term>
-		/// <term>The filename, URL, unique script ID, or similar of the content, copied from a <c>LPWSTR</c>.</term>
+		/// <term>The filename, URL, unique script ID, or similar of the content, copied from a <c>PWSTR</c>.</term>
 		/// </item>
 		/// <item>
 		/// <term><c>AMSI_ATTRIBUTE_CONTENT_SIZE</c></term>

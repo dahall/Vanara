@@ -3,20 +3,20 @@ using System.Diagnostics;
 
 namespace Vanara.InteropServices;
 
-/// <summary>The LPSTR structure represents a pointer to an Ansi string.</summary>
+/// <summary>The PSTR structure represents a pointer to an Ansi string.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
-public struct LPSTR : IEquatable<string>, IEquatable<LPSTR>, IEquatable<IntPtr>
+public struct PSTR : IEquatable<string>, IEquatable<PSTR>, IEquatable<IntPtr>
 {
 	const CharSet thisCharSet = CharSet.Ansi;
 	private IntPtr ptr;
 
-	/// <summary>Initializes a new instance of the <see cref="LPSTR"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="PSTR"/> struct.</summary>
 	/// <param name="s">The string value.</param>
-	public LPSTR(string s) => ptr = StringHelper.AllocString(s, thisCharSet);
+	public PSTR(string s) => ptr = StringHelper.AllocString(s, thisCharSet);
 
-	/// <summary>Initializes a new instance of the <see cref="LPSTR"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="PSTR"/> struct.</summary>
 	/// <param name="charLen">Number of characters to reserve in memory.</param>
-	public LPSTR(uint charLen) => ptr = StringHelper.AllocChars(charLen, thisCharSet);
+	public PSTR(uint charLen) => ptr = StringHelper.AllocChars(charLen, thisCharSet);
 
 	/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
@@ -56,10 +56,10 @@ public struct LPSTR : IEquatable<string>, IEquatable<LPSTR>, IEquatable<IntPtr>
 	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 	public readonly bool Equals(string? other) => EqualityComparer<string?>.Default.Equals(this, other);
 
-	/// <summary>Determines whether the specified <see cref="LPSTR"/>, is equal to this instance.</summary>
-	/// <param name="other">The <see cref="LPSTR"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="LPSTR"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public readonly bool Equals(LPSTR other) => Equals(other.ptr);
+	/// <summary>Determines whether the specified <see cref="PSTR"/>, is equal to this instance.</summary>
+	/// <param name="other">The <see cref="PSTR"/> to compare with this instance.</param>
+	/// <returns><c>true</c> if the specified <see cref="PSTR"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	public readonly bool Equals(PSTR other) => Equals(other.ptr);
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
@@ -68,7 +68,7 @@ public struct LPSTR : IEquatable<string>, IEquatable<LPSTR>, IEquatable<IntPtr>
 	{
 		null => IsNull,
 		string s => Equals(s),
-		LPSTR p => Equals(p),
+		PSTR p => Equals(p),
 		IntPtr p => Equals(p),
 		_ => base.Equals(obj),
 	};
@@ -84,53 +84,53 @@ public struct LPSTR : IEquatable<string>, IEquatable<LPSTR>, IEquatable<IntPtr>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
 	public override readonly string ToString() => StringHelper.GetString(ptr, thisCharSet) ?? "null";
 
-	/// <summary>Performs an implicit conversion from <see cref="LPSTR"/> to <see cref="string"/>.</summary>
-	/// <param name="p">The <see cref="LPSTR"/> instance.</param>
+	/// <summary>Performs an implicit conversion from <see cref="PSTR"/> to <see cref="string"/>.</summary>
+	/// <param name="p">The <see cref="PSTR"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator string?(LPSTR p) => p.IsNull ? null : p.ToString();
+	public static implicit operator string?(PSTR p) => p.IsNull ? null : p.ToString();
 
-	/// <summary>Performs an explicit conversion from <see cref="LPSTR"/> to <see cref="byte"/>*.</summary>
-	/// <param name="p">The <see cref="LPSTR"/> reference.</param>
+	/// <summary>Performs an explicit conversion from <see cref="PSTR"/> to <see cref="byte"/>*.</summary>
+	/// <param name="p">The <see cref="PSTR"/> reference.</param>
 	/// <returns>The resulting <see cref="byte"/>* from the conversion.</returns>
-	public static unsafe explicit operator byte*(LPSTR p) => (byte*)p.ptr;
+	public static unsafe explicit operator byte*(PSTR p) => (byte*)p.ptr;
 
-	/// <summary>Performs an explicit conversion from <see cref="LPSTR"/> to <see cref="IntPtr"/>.</summary>
-	/// <param name="p">The <see cref="LPSTR"/> instance.</param>
+	/// <summary>Performs an explicit conversion from <see cref="PSTR"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="p">The <see cref="PSTR"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static explicit operator IntPtr(LPSTR p) => p.ptr;
+	public static explicit operator IntPtr(PSTR p) => p.ptr;
 
-	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="LPSTR"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PSTR"/>.</summary>
 	/// <param name="p">The pointer.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator LPSTR(IntPtr p) => new() { ptr = p };
+	public static implicit operator PSTR(IntPtr p) => new() { ptr = p };
 
-	/// <summary>Determines whether two specified instances of <see cref="LPSTR"/> are equal.</summary>
+	/// <summary>Determines whether two specified instances of <see cref="PSTR"/> are equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
 	/// <param name="right">The second pointer or handle to compare.</param>
 	/// <returns><see langword="true"/> if <paramref name="left"/> equals <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
-	public static bool operator ==(LPSTR left, LPSTR right) => left.Equals(right);
+	public static bool operator ==(PSTR left, PSTR right) => left.Equals(right);
 
-	/// <summary>Determines whether two specified instances of <see cref="LPSTR"/> are not equal.</summary>
+	/// <summary>Determines whether two specified instances of <see cref="PSTR"/> are not equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
 	/// <param name="right">The second pointer or handle to compare.</param>
 	/// <returns><see langword="true"/> if <paramref name="left"/> does not equal <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
-	public static bool operator !=(LPSTR left, LPSTR right) => !left.Equals(right);
+	public static bool operator !=(PSTR left, PSTR right) => !left.Equals(right);
 }
 
-/// <summary>The LPTSTR structure represents a pointer to an Auto string.</summary>
+/// <summary>The PTSTR structure represents a pointer to an Auto string.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
-public struct LPTSTR : IEquatable<string>, IEquatable<LPTSTR>, IEquatable<IntPtr>
+public struct PTSTR : IEquatable<string>, IEquatable<PTSTR>, IEquatable<IntPtr>
 {
 	const CharSet thisCharSet = CharSet.Auto;
 	private IntPtr ptr;
 
-	/// <summary>Initializes a new instance of the <see cref="LPTSTR"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="PTSTR"/> struct.</summary>
 	/// <param name="s">The string value.</param>
-	public LPTSTR(string s) => ptr = StringHelper.AllocString(s, thisCharSet);
+	public PTSTR(string s) => ptr = StringHelper.AllocString(s, thisCharSet);
 
-	/// <summary>Initializes a new instance of the <see cref="LPTSTR"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="PTSTR"/> struct.</summary>
 	/// <param name="charLen">Number of characters to reserve in memory.</param>
-	public LPTSTR(uint charLen) => ptr = StringHelper.AllocChars(charLen, thisCharSet);
+	public PTSTR(uint charLen) => ptr = StringHelper.AllocChars(charLen, thisCharSet);
 
 	/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
@@ -170,10 +170,10 @@ public struct LPTSTR : IEquatable<string>, IEquatable<LPTSTR>, IEquatable<IntPtr
 	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 	public readonly bool Equals(string? other) => EqualityComparer<string?>.Default.Equals(this, other);
 
-	/// <summary>Determines whether the specified <see cref="LPTSTR"/>, is equal to this instance.</summary>
-	/// <param name="other">The <see cref="LPTSTR"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="LPTSTR"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public readonly bool Equals(LPTSTR other) => Equals(other.ptr);
+	/// <summary>Determines whether the specified <see cref="PTSTR"/>, is equal to this instance.</summary>
+	/// <param name="other">The <see cref="PTSTR"/> to compare with this instance.</param>
+	/// <returns><c>true</c> if the specified <see cref="PTSTR"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	public readonly bool Equals(PTSTR other) => Equals(other.ptr);
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
@@ -182,7 +182,7 @@ public struct LPTSTR : IEquatable<string>, IEquatable<LPTSTR>, IEquatable<IntPtr
 	{
 		null => IsNull,
 		string s => Equals(s),
-		LPTSTR p => Equals(p),
+		PTSTR p => Equals(p),
 		IntPtr p => Equals(p),
 		_ => base.Equals(obj),
 	};
@@ -198,53 +198,53 @@ public struct LPTSTR : IEquatable<string>, IEquatable<LPTSTR>, IEquatable<IntPtr
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
 	public override readonly string ToString() => StringHelper.GetString(ptr, thisCharSet) ?? "null";
 
-	/// <summary>Performs an implicit conversion from <see cref="LPTSTR"/> to <see cref="string"/>.</summary>
-	/// <param name="p">The <see cref="LPTSTR"/> instance.</param>
+	/// <summary>Performs an implicit conversion from <see cref="PTSTR"/> to <see cref="string"/>.</summary>
+	/// <param name="p">The <see cref="PTSTR"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator string?(LPTSTR p) => p.IsNull ? null : p.ToString();
+	public static implicit operator string?(PTSTR p) => p.IsNull ? null : p.ToString();
 
-	/// <summary>Performs an explicit conversion from <see cref="LPTSTR"/> to <see cref="byte"/>*.</summary>
-	/// <param name="p">The <see cref="LPTSTR"/> reference.</param>
+	/// <summary>Performs an explicit conversion from <see cref="PTSTR"/> to <see cref="byte"/>*.</summary>
+	/// <param name="p">The <see cref="PTSTR"/> reference.</param>
 	/// <returns>The resulting <see cref="byte"/>* from the conversion.</returns>
-	public static unsafe explicit operator byte*(LPTSTR p) => (byte*)p.ptr;
+	public static unsafe explicit operator byte*(PTSTR p) => (byte*)p.ptr;
 
-	/// <summary>Performs an explicit conversion from <see cref="LPTSTR"/> to <see cref="IntPtr"/>.</summary>
-	/// <param name="p">The <see cref="LPTSTR"/> instance.</param>
+	/// <summary>Performs an explicit conversion from <see cref="PTSTR"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="p">The <see cref="PTSTR"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static explicit operator IntPtr(LPTSTR p) => p.ptr;
+	public static explicit operator IntPtr(PTSTR p) => p.ptr;
 
-	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="LPTSTR"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PTSTR"/>.</summary>
 	/// <param name="p">The pointer.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator LPTSTR(IntPtr p) => new() { ptr = p };
+	public static implicit operator PTSTR(IntPtr p) => new() { ptr = p };
 
-	/// <summary>Determines whether two specified instances of <see cref="LPTSTR"/> are equal.</summary>
+	/// <summary>Determines whether two specified instances of <see cref="PTSTR"/> are equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
 	/// <param name="right">The second pointer or handle to compare.</param>
 	/// <returns><see langword="true"/> if <paramref name="left"/> equals <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
-	public static bool operator ==(LPTSTR left, LPTSTR right) => left.Equals(right);
+	public static bool operator ==(PTSTR left, PTSTR right) => left.Equals(right);
 
-	/// <summary>Determines whether two specified instances of <see cref="LPTSTR"/> are not equal.</summary>
+	/// <summary>Determines whether two specified instances of <see cref="PTSTR"/> are not equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
 	/// <param name="right">The second pointer or handle to compare.</param>
 	/// <returns><see langword="true"/> if <paramref name="left"/> does not equal <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
-	public static bool operator !=(LPTSTR left, LPTSTR right) => !left.Equals(right);
+	public static bool operator !=(PTSTR left, PTSTR right) => !left.Equals(right);
 }
 
-/// <summary>The LPWSTR structure represents a pointer to an Unicode string.</summary>
+/// <summary>The PWSTR structure represents a pointer to an Unicode string.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
-public struct LPWSTR : IEquatable<string>, IEquatable<LPWSTR>, IEquatable<IntPtr>
+public struct PWSTR : IEquatable<string>, IEquatable<PWSTR>, IEquatable<IntPtr>
 {
 	const CharSet thisCharSet = CharSet.Unicode;
 	private IntPtr ptr;
 
-	/// <summary>Initializes a new instance of the <see cref="LPWSTR"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="PWSTR"/> struct.</summary>
 	/// <param name="s">The string value.</param>
-	public LPWSTR(string s) => ptr = StringHelper.AllocString(s, thisCharSet);
+	public PWSTR(string s) => ptr = StringHelper.AllocString(s, thisCharSet);
 
-	/// <summary>Initializes a new instance of the <see cref="LPWSTR"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="PWSTR"/> struct.</summary>
 	/// <param name="charLen">Number of characters to reserve in memory.</param>
-	public LPWSTR(uint charLen) => ptr = StringHelper.AllocChars(charLen, thisCharSet);
+	public PWSTR(uint charLen) => ptr = StringHelper.AllocChars(charLen, thisCharSet);
 
 	/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
@@ -284,10 +284,10 @@ public struct LPWSTR : IEquatable<string>, IEquatable<LPWSTR>, IEquatable<IntPtr
 	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 	public readonly bool Equals(string? other) => EqualityComparer<string?>.Default.Equals(this, other);
 
-	/// <summary>Determines whether the specified <see cref="LPWSTR"/>, is equal to this instance.</summary>
-	/// <param name="other">The <see cref="LPWSTR"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="LPWSTR"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public readonly bool Equals(LPWSTR other) => Equals(other.ptr);
+	/// <summary>Determines whether the specified <see cref="PWSTR"/>, is equal to this instance.</summary>
+	/// <param name="other">The <see cref="PWSTR"/> to compare with this instance.</param>
+	/// <returns><c>true</c> if the specified <see cref="PWSTR"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	public readonly bool Equals(PWSTR other) => Equals(other.ptr);
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
@@ -296,7 +296,7 @@ public struct LPWSTR : IEquatable<string>, IEquatable<LPWSTR>, IEquatable<IntPtr
 	{
 		null => IsNull,
 		string s => Equals(s),
-		LPWSTR p => Equals(p),
+		PWSTR p => Equals(p),
 		IntPtr p => Equals(p),
 		_ => base.Equals(obj),
 	};
@@ -312,46 +312,46 @@ public struct LPWSTR : IEquatable<string>, IEquatable<LPWSTR>, IEquatable<IntPtr
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
 	public override readonly string ToString() => StringHelper.GetString(ptr, thisCharSet) ?? "null";
 
-	/// <summary>Performs an implicit conversion from <see cref="LPWSTR"/> to <see cref="string"/>.</summary>
-	/// <param name="p">The <see cref="LPWSTR"/> instance.</param>
+	/// <summary>Performs an implicit conversion from <see cref="PWSTR"/> to <see cref="string"/>.</summary>
+	/// <param name="p">The <see cref="PWSTR"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator string?(LPWSTR p) => p.IsNull ? null : p.ToString();
+	public static implicit operator string?(PWSTR p) => p.IsNull ? null : p.ToString();
 
-	/// <summary>Performs an explicit conversion from <see cref="LPWSTR"/> to <see cref="byte"/>*.</summary>
-	/// <param name="p">The <see cref="LPWSTR"/> reference.</param>
+	/// <summary>Performs an explicit conversion from <see cref="PWSTR"/> to <see cref="byte"/>*.</summary>
+	/// <param name="p">The <see cref="PWSTR"/> reference.</param>
 	/// <returns>The resulting <see cref="byte"/>* from the conversion.</returns>
-	public static unsafe explicit operator byte*(LPWSTR p) => (byte*)p.ptr;
+	public static unsafe explicit operator byte*(PWSTR p) => (byte*)p.ptr;
 
-	/// <summary>Performs an explicit conversion from <see cref="LPWSTR"/> to <see cref="char"/>*.</summary>
+	/// <summary>Performs an explicit conversion from <see cref="PWSTR"/> to <see cref="char"/>*.</summary>
 	/// <param name="p">The <see cref="char"/>* reference.</param>
 	/// <returns>The resulting <see cref="char"/>* from the conversion.</returns>
-	public static unsafe explicit operator char*(LPWSTR p) => (char*)p.ptr;
+	public static unsafe explicit operator char*(PWSTR p) => (char*)p.ptr;
 
-	/// <summary>Performs an implicit conversion from <see cref="char"/>* to <see cref="LPWSTR"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="char"/>* to <see cref="PWSTR"/>.</summary>
 	/// <param name="p">The pointer.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static unsafe implicit operator LPWSTR(char* p) => new() { ptr = (IntPtr)p };
+	public static unsafe implicit operator PWSTR(char* p) => new() { ptr = (IntPtr)p };
 
-	/// <summary>Performs an explicit conversion from <see cref="LPWSTR"/> to <see cref="IntPtr"/>.</summary>
-	/// <param name="p">The <see cref="LPWSTR"/> instance.</param>
+	/// <summary>Performs an explicit conversion from <see cref="PWSTR"/> to <see cref="IntPtr"/>.</summary>
+	/// <param name="p">The <see cref="PWSTR"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static explicit operator IntPtr(LPWSTR p) => p.ptr;
+	public static explicit operator IntPtr(PWSTR p) => p.ptr;
 
-	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="LPWSTR"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PWSTR"/>.</summary>
 	/// <param name="p">The pointer.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator LPWSTR(IntPtr p) => new() { ptr = p };
+	public static implicit operator PWSTR(IntPtr p) => new() { ptr = p };
 
-	/// <summary>Determines whether two specified instances of <see cref="LPWSTR"/> are equal.</summary>
+	/// <summary>Determines whether two specified instances of <see cref="PWSTR"/> are equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
 	/// <param name="right">The second pointer or handle to compare.</param>
 	/// <returns><see langword="true"/> if <paramref name="left"/> equals <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
-	public static bool operator ==(LPWSTR left, LPWSTR right) => left.Equals(right);
+	public static bool operator ==(PWSTR left, PWSTR right) => left.Equals(right);
 
-	/// <summary>Determines whether two specified instances of <see cref="LPWSTR"/> are not equal.</summary>
+	/// <summary>Determines whether two specified instances of <see cref="PWSTR"/> are not equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
 	/// <param name="right">The second pointer or handle to compare.</param>
 	/// <returns><see langword="true"/> if <paramref name="left"/> does not equal <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
-	public static bool operator !=(LPWSTR left, LPWSTR right) => !left.Equals(right);
+	public static bool operator !=(PWSTR left, PWSTR right) => !left.Equals(right);
 }
 

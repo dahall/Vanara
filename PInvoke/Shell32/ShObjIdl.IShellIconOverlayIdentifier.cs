@@ -124,7 +124,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishelliconoverlayidentifier-getoverlayinfo
-		// HRESULT GetOverlayInfo( LPWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags );
+		// HRESULT GetOverlayInfo( PWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags );
 		[PreserveSig]
 		HRESULT GetOverlayInfo([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszIconFile, int cchMax, out int pIndex, out ISIOI pdwFlags);
 

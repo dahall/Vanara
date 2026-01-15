@@ -1859,7 +1859,7 @@ After:
 	public unsafe struct LOADED_IMAGE_UNSAFE
 	{
 		/// <summary>The file name of the mapped file.</summary>
-		public LPSTR ModuleName;
+		public PSTR ModuleName;
 
 		/// <summary>A handle to the mapped file.</summary>
 		public HFILE hFile;

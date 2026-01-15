@@ -521,7 +521,7 @@ public static partial class DXC
 	/// <summary><b>IDxcCompiler2</b> is deprecated; use <c>IDxcCompiler3</c> instead.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/ns-dxcapi-idxccompiler2 struct IDxcCompiler2 : IDxcCompiler { HRESULT
 	// CompileWithDebug( IDxcBlob *pSource, LPCWSTR pSourceName, LPCWSTR pEntryPoint, LPCWSTR pTargetProfile, LPCWSTR *pArguments, UINT32
-	// argCount, const DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, LPWSTR
+	// argCount, const DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, PWSTR
 	// *ppDebugBlobName, IDxcBlob **ppDebugBlob ); };
 	[PInvokeData("dxcapi.h", MSDNShortId = "NS:dxcapi.IDxcCompiler2")]
 	[ComImport, Guid("a005a9d9-b8bb-4594-b5c9-0e633bec4d37"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -599,7 +599,7 @@ public static partial class DXC
 		/// <param name="ppDebugBlob">The debug blob.</param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxccompiler2-compilewithdebug HRESULT CompileWithDebug(
 		// IDxcBlob *pSource, LPCWSTR pSourceName, LPCWSTR pEntryPoint, LPCWSTR pTargetProfile, LPCWSTR *pArguments, UINT32 argCount, const
-		// DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, LPWSTR
+		// DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, PWSTR
 		// *ppDebugBlobName, IDxcBlob **ppDebugBlob );
 		[PreserveSig]
 		HRESULT CompileWithDebug([In] IDxcBlob pSource, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pSourceName,
@@ -1133,14 +1133,14 @@ public static partial class DXC
 		/// <summary><c>ppResult</c></summary>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getoptionname HRESULT GetOptionName(
-		// LPWSTR *ppResult );
+		// PWSTR *ppResult );
 		[PreserveSig]
 		HRESULT GetOptionName([MarshalAs(UnmanagedType.LPWStr)] out string ppResult);
 
 		/// <summary><c>ppResult</c></summary>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getdescription HRESULT GetDescription(
-		// LPWSTR *ppResult );
+		// PWSTR *ppResult );
 		[PreserveSig]
 		HRESULT GetDescription([MarshalAs(UnmanagedType.LPWStr)] out string ppResult);
 
@@ -1158,7 +1158,7 @@ public static partial class DXC
 		/// <param name="argIndex"/>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getoptionargname HRESULT GetOptionArgName(
-		// UINT32 argIndex, LPWSTR *ppResult );
+		// UINT32 argIndex, PWSTR *ppResult );
 		[PreserveSig]
 		HRESULT GetOptionArgName(uint argIndex, [MarshalAs(UnmanagedType.LPWStr)] out string ppResult);
 
@@ -1169,7 +1169,7 @@ public static partial class DXC
 		/// <param name="argIndex"/>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getoptionargdescription HRESULT
-		// GetOptionArgDescription( UINT32 argIndex, LPWSTR *ppResult );
+		// GetOptionArgDescription( UINT32 argIndex, PWSTR *ppResult );
 		[PreserveSig]
 		HRESULT GetOptionArgDescription(uint argIndex, [MarshalAs(UnmanagedType.LPWStr)] out string? ppResult);
 	}

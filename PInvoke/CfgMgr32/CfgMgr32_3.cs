@@ -1479,7 +1479,7 @@ public static partial class CfgMgr32
 	/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_query_and_remove_subtreew CMAPI CONFIGRET
-	// CM_Query_And_Remove_SubTreeW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
+	// CM_Query_And_Remove_SubTreeW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, PWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTreeW")]
 	public static extern CONFIGRET CM_Query_And_Remove_SubTree(uint dnAncestor, out PNP_VETO_TYPE pVetoType,
@@ -1537,7 +1537,7 @@ public static partial class CfgMgr32
 	/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_query_and_remove_subtreew CMAPI CONFIGRET
-	// CM_Query_And_Remove_SubTreeW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
+	// CM_Query_And_Remove_SubTreeW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, PWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTreeW")]
 	public static extern CONFIGRET CM_Query_And_Remove_SubTree(uint dnAncestor, [In, Optional] IntPtr pVetoType,
@@ -1610,7 +1610,7 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_query_and_remove_subtree_exw CMAPI CONFIGRET
-	// CM_Query_And_Remove_SubTree_ExW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG
+	// CM_Query_And_Remove_SubTree_ExW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, PWSTR pszVetoName, ULONG ulNameLength, ULONG
 	// ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTree_ExW")]
@@ -1685,7 +1685,7 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_query_and_remove_subtree_exw CMAPI CONFIGRET
-	// CM_Query_And_Remove_SubTree_ExW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG
+	// CM_Query_And_Remove_SubTree_ExW( DEVINST dnAncestor, PPNP_VETO_TYPE pVetoType, PWSTR pszVetoName, ULONG ulNameLength, ULONG
 	// ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Query_And_Remove_SubTree_ExW")]
@@ -2035,7 +2035,7 @@ public static partial class CfgMgr32
 	/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_request_device_ejectw CMAPI CONFIGRET
-	// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
+	// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, PWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_EjectW")]
 	public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, out PNP_VETO_TYPE pVetoType,
@@ -2091,7 +2091,7 @@ public static partial class CfgMgr32
 	/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_request_device_ejectw CMAPI CONFIGRET
-	// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
+	// CM_Request_Device_EjectW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, PWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_EjectW")]
 	public static extern CONFIGRET CM_Request_Device_Eject(uint dnDevInst, [In, Optional] IntPtr pVetoType,
@@ -2165,7 +2165,7 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_request_device_eject_exw CMAPI CONFIGRET
-	// CM_Request_Device_Eject_ExW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags,
+	// CM_Request_Device_Eject_ExW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, PWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags,
 	// HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_Eject_ExW")]
@@ -2240,7 +2240,7 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_request_device_eject_exw CMAPI CONFIGRET
-	// CM_Request_Device_Eject_ExW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, LPWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags,
+	// CM_Request_Device_Eject_ExW( DEVINST dnDevInst, PPNP_VETO_TYPE pVetoType, PWSTR pszVetoName, ULONG ulNameLength, ULONG ulFlags,
 	// HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Request_Device_Eject_ExW")]

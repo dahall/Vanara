@@ -2158,7 +2158,7 @@ public static partial class DbgHelp
 	public struct MINIDUMP_MODULE_CALLBACK
 	{
 		/// <summary>The fully qualified path of the module executable.</summary>
-		public LPWSTR FullPath;
+		public PWSTR FullPath;
 
 		/// <summary>The base address of the module executable image in memory.</summary>
 		public ulong BaseOfImage;

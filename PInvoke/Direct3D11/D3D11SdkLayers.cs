@@ -6056,7 +6056,7 @@ public static partial class D3D11
 		/// <para>Type: <c>const char*</c></para>
 		/// <para>The message string.</para>
 		/// </summary>
-		public LPSTR pDescription;
+		public PSTR pDescription;
 
 		/// <summary>
 		/// <para>Type: <c>SIZE_T</c></para>

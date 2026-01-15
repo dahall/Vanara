@@ -439,12 +439,12 @@ public static partial class Crypt32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptunprotectdata DPAPI_IMP BOOL CryptUnprotectData( DATA_BLOB
-	// *pDataIn, LPWSTR *ppszDataDescr, DATA_BLOB *pOptionalEntropy, PVOID pvReserved, CRYPTPROTECT_PROMPTSTRUCT *pPromptStruct, DWORD
+	// *pDataIn, PWSTR *ppszDataDescr, DATA_BLOB *pOptionalEntropy, PVOID pvReserved, CRYPTPROTECT_PROMPTSTRUCT *pPromptStruct, DWORD
 	// dwFlags, DATA_BLOB *pDataOut );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "54eab3b0-d341-47c6-9c32-79328d7a7155")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptUnprotectData(in CRYPTOAPI_BLOB pDataIn, out LPWSTR ppszDataDescr,
+	public static extern bool CryptUnprotectData(in CRYPTOAPI_BLOB pDataIn, out PWSTR ppszDataDescr,
 		in CRYPTOAPI_BLOB pOptionalEntropy, [Optional] IntPtr pvReserved, in CRYPTPROTECT_PROMPTSTRUCT pPromptStruct, CryptProtectFlags dwFlags, [Out] IntPtr pDataOut);
 
 	/// <summary>
@@ -529,7 +529,7 @@ public static partial class Crypt32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptunprotectdata DPAPI_IMP BOOL CryptUnprotectData( DATA_BLOB
-	// *pDataIn, LPWSTR *ppszDataDescr, DATA_BLOB *pOptionalEntropy, PVOID pvReserved, CRYPTPROTECT_PROMPTSTRUCT *pPromptStruct, DWORD
+	// *pDataIn, PWSTR *ppszDataDescr, DATA_BLOB *pOptionalEntropy, PVOID pvReserved, CRYPTPROTECT_PROMPTSTRUCT *pPromptStruct, DWORD
 	// dwFlags, DATA_BLOB *pDataOut );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "54eab3b0-d341-47c6-9c32-79328d7a7155")]

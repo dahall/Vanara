@@ -816,7 +816,7 @@ public static partial class SetupAPI
 	public static extern bool SetupCopyOEMInf([MarshalAs(UnmanagedType.LPTStr)] string SourceInfFileName,
 		[Optional, MarshalAs(UnmanagedType.LPTStr)] string? OEMSourceMediaLocation, uint OEMSourceMediaType, CopyStyle CopyStyle,
 		[Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? DestinationInfFileName, uint DestinationInfFileNameSize, out uint RequiredSize,
-		[MarshalAs(UnmanagedType.LPTStr)] out LPTSTR DestinationInfFileNameComponent);
+		[MarshalAs(UnmanagedType.LPTStr)] out PTSTR DestinationInfFileNameComponent);
 
 	/// <summary>
 	/// <para>

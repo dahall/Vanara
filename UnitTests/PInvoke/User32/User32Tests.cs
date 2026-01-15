@@ -158,7 +158,7 @@ public partial class User32Tests
 		{
 			uint sz = 0;
 			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, RIDI.RIDI_DEVICENAME, default, ref sz), ResultIs.Value(0));
-			SafeLPTSTR data = new((int)sz + 1);
+			SafePTSTR data = new((int)sz + 1);
 			Assert.That(GetRawInputDeviceInfo(devs[i].hDevice, RIDI.RIDI_DEVICENAME, data, ref sz), Is.GreaterThan(0));
 			TestContext.WriteLine($"{data}");
 		}

@@ -97,9 +97,9 @@ public struct GuidPtr(Guid g) : IEquatable<GuidPtr>, IEquatable<Guid?>, IEquatab
 	public static bool operator !=(GuidPtr left, GuidPtr right) => !left.Equals(right);
 }
 
-/// <summary>The StrPtr structure represents a LPWSTR.</summary>
+/// <summary>The StrPtr structure represents a PWSTR.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
-[Obsolete("Use LPSTR instead.", false)]
+[Obsolete("Use PSTR instead.", false)]
 public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatable<IntPtr>
 {
 	private IntPtr ptr;
@@ -161,7 +161,7 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 		null => IsNull,
 		string s => Equals(s),
 		StrPtrAnsi p => Equals(p),
-		LPSTR p => Equals((IntPtr)p),
+		PSTR p => Equals((IntPtr)p),
 		IntPtr p => Equals(p),
 		_ => base.Equals(obj),
 	};
@@ -197,15 +197,15 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator StrPtrAnsi(IntPtr p) => new() { ptr = p };
 
-	/// <summary>Performs an explicit conversion from <see cref="LPSTR"/> to <see cref="StrPtrAnsi"/>.</summary>
-	/// <param name="p">The <see cref="LPSTR"/> instance.</param>
+	/// <summary>Performs an explicit conversion from <see cref="PSTR"/> to <see cref="StrPtrAnsi"/>.</summary>
+	/// <param name="p">The <see cref="PSTR"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static explicit operator StrPtrAnsi(LPSTR p) => (IntPtr)p;
+	public static explicit operator StrPtrAnsi(PSTR p) => (IntPtr)p;
 
-	/// <summary>Performs an implicit conversion from <see cref="StrPtrAnsi"/> to <see cref="LPSTR"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="StrPtrAnsi"/> to <see cref="PSTR"/>.</summary>
 	/// <param name="p">The pointer.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator LPSTR(StrPtrAnsi p) => p.ptr;
+	public static implicit operator PSTR(StrPtrAnsi p) => p.ptr;
 
 	/// <summary>Determines whether two specified instances of <see cref="StrPtrAnsi"/> are equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
@@ -220,9 +220,9 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 	public static bool operator !=(StrPtrAnsi left, StrPtrAnsi right) => !left.Equals(right);
 }
 
-/// <summary>The StrPtr structure represents a LPTSTR.</summary>
+/// <summary>The StrPtr structure represents a PTSTR.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
-[Obsolete("Use LPTSTR instead.", false)]
+[Obsolete("Use PTSTR instead.", false)]
 public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatable<IntPtr>
 {
 	private IntPtr ptr;
@@ -284,7 +284,7 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 		null => IsNull,
 		string s => Equals(s),
 		StrPtrAuto p => Equals(p),
-		LPTSTR p => Equals((IntPtr)p),
+		PTSTR p => Equals((IntPtr)p),
 		IntPtr p => Equals(p),
 		_ => base.Equals(obj),
 	};
@@ -315,15 +315,15 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator StrPtrAuto(IntPtr p) => new() { ptr = p };
 
-	/// <summary>Performs an explicit conversion from <see cref="LPTSTR"/> to <see cref="StrPtrAuto"/>.</summary>
-	/// <param name="p">The <see cref="LPTSTR"/> instance.</param>
+	/// <summary>Performs an explicit conversion from <see cref="PTSTR"/> to <see cref="StrPtrAuto"/>.</summary>
+	/// <param name="p">The <see cref="PTSTR"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static explicit operator StrPtrAuto(LPTSTR p) => (IntPtr)p;
+	public static explicit operator StrPtrAuto(PTSTR p) => (IntPtr)p;
 
-	/// <summary>Performs an implicit conversion from <see cref="StrPtrAuto"/> to <see cref="LPTSTR"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="StrPtrAuto"/> to <see cref="PTSTR"/>.</summary>
 	/// <param name="p">The pointer.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator LPTSTR(StrPtrAuto p) => p.ptr;
+	public static implicit operator PTSTR(StrPtrAuto p) => p.ptr;
 
 	/// <summary>Determines whether two specified instances of <see cref="StrPtrAuto"/> are equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
@@ -338,9 +338,9 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 	public static bool operator !=(StrPtrAuto left, StrPtrAuto right) => !left.Equals(right);
 }
 
-/// <summary>The StrPtr structure represents a LPWSTR.</summary>
+/// <summary>The StrPtr structure represents a PWSTR.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
-[Obsolete("Use LPWSTR instead.", false)]
+[Obsolete("Use PWSTR instead.", false)]
 public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<IntPtr>
 {
 	private IntPtr ptr;
@@ -405,15 +405,15 @@ public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator StrPtrUni(IntPtr p) => new() { ptr = p };
 
-	/// <summary>Performs an explicit conversion from <see cref="LPWSTR"/> to <see cref="StrPtrUni"/>.</summary>
-	/// <param name="p">The <see cref="LPWSTR"/> instance.</param>
+	/// <summary>Performs an explicit conversion from <see cref="PWSTR"/> to <see cref="StrPtrUni"/>.</summary>
+	/// <param name="p">The <see cref="PWSTR"/> instance.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static explicit operator StrPtrUni(LPWSTR p) => (IntPtr)p;
+	public static explicit operator StrPtrUni(PWSTR p) => (IntPtr)p;
 
-	/// <summary>Performs an implicit conversion from <see cref="StrPtrUni"/> to <see cref="LPWSTR"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="StrPtrUni"/> to <see cref="PWSTR"/>.</summary>
 	/// <param name="p">The pointer.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator LPWSTR(StrPtrUni p) => p.ptr;
+	public static implicit operator PWSTR(StrPtrUni p) => p.ptr;
 
 	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
@@ -438,7 +438,7 @@ public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<
 		null => IsNull,
 		string s => Equals(s),
 		StrPtrUni p => Equals(p),
-		LPWSTR p => Equals((IntPtr)p),
+		PWSTR p => Equals((IntPtr)p),
 		IntPtr p => Equals(p),
 		_ => base.Equals(obj),
 	};

@@ -143,11 +143,11 @@ public static partial class DnsApi
 	{
 		/// <summary>For use with Unicode on Windows 2000.</summary>
 		[CorrespondingType(typeof(string))]
-		[CorrespondingType(typeof(LPWSTR))]
+		[CorrespondingType(typeof(PWSTR))]
 		DnsConfigPrimaryDomainName_W,
 
 		/// <summary>For use with ANSI on Windows 2000.</summary>
-		[CorrespondingType(typeof(LPSTR))]
+		[CorrespondingType(typeof(PSTR))]
 		DnsConfigPrimaryDomainName_A,
 
 		/// <summary>For use with UTF8 on Windows 2000.</summary>
@@ -193,11 +193,11 @@ public static partial class DnsApi
 		/// Specifies configuration of the host name in Unicode on Windows XP, Windows Server 2003, and later versions of Windows.
 		/// </summary>
 		[CorrespondingType(typeof(string))]
-		[CorrespondingType(typeof(LPWSTR))]
+		[CorrespondingType(typeof(PWSTR))]
 		DnsConfigHostName_W,
 
 		/// <summary>Specifies configuration of the host name in ANSI on Windows XP, Windows Server 2003, and later versions of Windows.</summary>
-		[CorrespondingType(typeof(LPSTR))]
+		[CorrespondingType(typeof(PSTR))]
 		DnsConfigHostName_A,
 
 		/// <summary>Specifies configuration of the host name in UTF8 on Windows XP, Windows Server 2003, and later versions of Windows.</summary>
@@ -208,14 +208,14 @@ public static partial class DnsApi
 		/// and later versions of Windows.
 		/// </summary>
 		[CorrespondingType(typeof(string))]
-		[CorrespondingType(typeof(LPWSTR))]
+		[CorrespondingType(typeof(PWSTR))]
 		DnsConfigFullHostName_W,
 
 		/// <summary>
 		/// Specifies configuration of the full host name (fully qualified domain name) in ANSI on Windows XP, Windows Server 2003, and
 		/// later versions of Windows.
 		/// </summary>
-		[CorrespondingType(typeof(LPSTR))]
+		[CorrespondingType(typeof(PSTR))]
 		DnsConfigFullHostName_A,
 
 		/// <summary>
@@ -1116,7 +1116,7 @@ public static partial class DnsApi
 		public IntPtr pNext;
 
 		/// <summary>DNS Record Name.</summary>
-		public LPWSTR pszName;
+		public PWSTR pszName;
 
 		/// <summary>DNS Record Type.</summary>
 		public DNS_TYPE wType;
@@ -3010,7 +3010,7 @@ public static partial class DnsApi
 
 	/// <summary>Represents a DNS service running on the network.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/windns/ns-windns-dns_service_instance typedef struct _DNS_SERVICE_INSTANCE {
-	// #if ... DNSSD_RPC_STRING pszInstanceName; #else LPWSTR pszInstanceName; #endif #if ... DNSSD_RPC_STRING pszHostName; #else LPWSTR
+	// #if ... DNSSD_RPC_STRING pszInstanceName; #else PWSTR pszInstanceName; #endif #if ... DNSSD_RPC_STRING pszHostName; #else PWSTR
 	// pszHostName; #endif IP4_ADDRESS *ip4Address; IP6_ADDRESS *ip6Address; WORD wPort; WORD wPriority; WORD wWeight; DWORD
 	// dwPropertyCount; #if ... DNSSD_RPC_STRING *keys; #if ... DNSSD_RPC_STRING *values; #else PWSTR *keys; #endif #else PWSTR *values;
 	// #endif DWORD dwInterfaceIndex; } DNS_SERVICE_INSTANCE, *PDNS_SERVICE_INSTANCE;

@@ -38,7 +38,7 @@ public static partial class Kernel32
 	/// call <c>GetLastError</c>.
 	/// </para>
 	/// </returns>
-	// INT WINAPI GetExpandedName( _In_ LPTSTR lpszSource, _Out_ LPTSTR lpszBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364941(v=vs.85).aspx
+	// INT WINAPI GetExpandedName( _In_ PTSTR lpszSource, _Out_ PTSTR lpszBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364941(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("LzExpand.h", MSDNShortId = "aa364941")]
 	[Obsolete(LZobsoleteMsg)]
@@ -268,7 +268,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// INT WINAPI LZOpenFile( _In_ LPTSTR lpFileName, _Out_ LPOFSTRUCT lpReOpenBuf, _In_ WORD wStyle); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365225(v=vs.85).aspx
+	// INT WINAPI LZOpenFile( _In_ PTSTR lpFileName, _Out_ LPOFSTRUCT lpReOpenBuf, _In_ WORD wStyle); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365225(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("LzExpand.h", MSDNShortId = "aa365225")]
 	[Obsolete(LZobsoleteMsg)]
@@ -325,7 +325,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>There is no extended error information for this function; do not call <c>GetLastError</c>.</para>
 	/// </returns>
-	// INT WINAPI LZRead( _In_ INT hFile, _Out_ LPSTR lpBuffer, _In_ INT cbRead); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365226(v=vs.85).aspx
+	// INT WINAPI LZRead( _In_ INT hFile, _Out_ PSTR lpBuffer, _In_ INT cbRead); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365226(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("LzExpand.h", MSDNShortId = "aa365226")]
 	[Obsolete(LZobsoleteMsg)]

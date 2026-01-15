@@ -124,7 +124,7 @@ public static partial class WinMm
 	/// </para>
 	/// <para>When searching for a specified I/O procedure, local procedures are searched first, then global procedures.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nc-mmiscapi-mmioproc MMIOPROC Mmioproc; LRESULT Mmioproc( LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nc-mmiscapi-mmioproc MMIOPROC Mmioproc; LRESULT Mmioproc( PSTR
 	// lpmmioinfo, UINT uMsg, LPARAM lParam1, LPARAM lParam2 ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NC:mmiscapi.MMIOPROC")]
@@ -1462,7 +1462,7 @@ public static partial class WinMm
 	/// application exits.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmioopen HMMIO mmioOpen( LPSTR pszFileName, LPMMIOINFO
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmioopen HMMIO mmioOpen( PSTR pszFileName, LPMMIOINFO
 	// pmmioinfo, DWORD fdwOpen );
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioOpen")]
@@ -1718,7 +1718,7 @@ public static partial class WinMm
 	/// application exits.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmioopen HMMIO mmioOpen( LPSTR pszFileName, LPMMIOINFO
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmioopen HMMIO mmioOpen( PSTR pszFileName, LPMMIOINFO
 	// pmmioinfo, DWORD fdwOpen );
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioOpen")]
@@ -1870,7 +1870,7 @@ public static partial class WinMm
 	/// pchBuffer to <c>NULL</c> and cchBuffer to the new buffer size. The contents of the buffer can be changed after resizing.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmiosetbuffer MMRESULT mmioSetBuffer( HMMIO hmmio, LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/nf-mmiscapi-mmiosetbuffer MMRESULT mmioSetBuffer( HMMIO hmmio, PSTR
 	// pchBuffer, LONG cchBuffer, UINT fuBuffer );
 	[DllImport(Lib_Winmm, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mmiscapi.h", MSDNShortId = "NF:mmiscapi.mmioSetBuffer")]
@@ -2110,20 +2110,20 @@ public static partial class WinMm
 		public int cchBuffer;
 
 		/// <summary>Pointer to the file's I/O buffer. If the file is unbuffered, this member is NULL.</summary>
-		public LPSTR pchBuffer;
+		public PSTR pchBuffer;
 
 		/// <summary>
 		/// Pointer to the next location in the I/O buffer to be read or written. If no more bytes can be read without calling the
 		/// mmioAdvance or mmioRead function, this member points to the pchEndRead member. If no more bytes can be written without
 		/// calling the mmioAdvance or mmioWrite function, this member points to the pchEndWrite member.
 		/// </summary>
-		public LPSTR pchNext;
+		public PSTR pchNext;
 
 		/// <summary>Pointer to the location that is 1 byte past the last location in the buffer that can be read.</summary>
-		public LPSTR pchEndRead;
+		public PSTR pchEndRead;
 
 		/// <summary>Pointer to the location that is 1 byte past the last location in the buffer that can be written.</summary>
-		public LPSTR pchEndWrite;
+		public PSTR pchEndWrite;
 
 		/// <summary>Reserved.</summary>
 		public int lBufOffset;

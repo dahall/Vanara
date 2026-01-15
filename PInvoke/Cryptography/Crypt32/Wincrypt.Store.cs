@@ -3824,7 +3824,7 @@ public static partial class Crypt32
 	/// structures are passed directly to system calls of CertOpenStore to open the physical store.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cert_physical_store_info typedef struct
-	// _CERT_PHYSICAL_STORE_INFO { DWORD cbSize; LPSTR pszOpenStoreProvider; DWORD dwOpenEncodingType; DWORD dwOpenFlags;
+	// _CERT_PHYSICAL_STORE_INFO { DWORD cbSize; PSTR pszOpenStoreProvider; DWORD dwOpenEncodingType; DWORD dwOpenFlags;
 	// CRYPT_DATA_BLOB OpenParameters; DWORD dwFlags; DWORD dwPriority; } CERT_PHYSICAL_STORE_INFO, *PCERT_PHYSICAL_STORE_INFO;
 	[PInvokeData("wincrypt.h", MSDNShortId = "ad86f388-27af-442a-a76f-f386f66296ac")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -3844,7 +3844,7 @@ public static partial class Crypt32
 		/// CryptInstallOIDFunctionAddress or CryptRegisterOIDFunction. For more information, see CertOpenStore.
 		/// </para>
 		/// </summary>
-		public LPSTR pszOpenStoreProvider;
+		public PSTR pszOpenStoreProvider;
 
 		/// <summary>
 		/// <para>

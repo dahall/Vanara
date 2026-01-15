@@ -2345,7 +2345,7 @@ public static partial class Ws2_32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wsipv6ok/nf-wsipv6ok-inet_ntoa void inet_ntoa( a );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("wsipv6ok.h", MSDNShortId = "01cd32e7-a01d-40e8-afb5-69223d643a0e")]
-	public static extern LPSTR inet_ntoa(IN_ADDR a);
+	public static extern PSTR inet_ntoa(IN_ADDR a);
 
 	/// <summary>The <c>ioctlsocket</c> function controls the I/O mode of a socket.</summary>
 	/// <param name="s">A descriptor identifying a socket.</param>
@@ -6261,7 +6261,7 @@ public static partial class Ws2_32
 	public struct PROTOENT
 	{
 		/// <summary>Official name of the protocol.</summary>
-		public LPSTR p_name;
+		public PSTR p_name;
 
 		/// <summary>Null-terminated array of alternate names.</summary>
 		public IntPtr p_aliases;
@@ -6339,18 +6339,18 @@ public static partial class Ws2_32
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		private struct SERVENTx32
 		{
-			public LPSTR s_name;
+			public PSTR s_name;
 			public IntPtr s_aliases;
 			public short s_port;
-			public LPSTR s_proto;
+			public PSTR s_proto;
 		}
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		private struct SERVENTx64
 		{
-			public LPSTR s_name;
+			public PSTR s_name;
 			public IntPtr s_aliases;
-			public LPSTR s_proto;
+			public PSTR s_proto;
 			public short s_port;
 		}
 	}

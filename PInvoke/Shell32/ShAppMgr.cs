@@ -1019,7 +1019,7 @@ public static partial class Shell32
 	/// complete list of categories for an application publisher.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/appmgmt/ns-appmgmt-appcategoryinfo typedef struct _APPCATEGORYINFO { LCID Locale;
-	// LPWSTR pszDescription; GUID AppCategoryId; } APPCATEGORYINFO;
+	// PWSTR pszDescription; GUID AppCategoryId; } APPCATEGORYINFO;
 	[PInvokeData("appmgmt.h", MSDNShortId = "NS:appmgmt._APPCATEGORYINFO")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct APPCATEGORYINFO
@@ -1030,7 +1030,7 @@ public static partial class Shell32
 		/// </summary>
 		public LCID Locale;
 
-		internal LPWSTR pszDescription;
+		internal PWSTR pszDescription;
 
 		/// <summary>
 		/// A string containing the display name of the category. This string displays in the <c>Category</c> list in Add/Remove
@@ -1084,10 +1084,10 @@ public static partial class Shell32
 
 	/// <summary>Provides information about a published application to the Add/Remove Programs Control Panel utility.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/shappmgr/ns-shappmgr-appinfodata typedef struct _AppInfoData { DWORD cbSize; DWORD
-	// dwMask; LPWSTR pszDisplayName; LPWSTR pszVersion; LPWSTR pszPublisher; LPWSTR pszProductID; LPWSTR pszRegisteredOwner; LPWSTR
-	// pszRegisteredCompany; LPWSTR pszLanguage; LPWSTR pszSupportUrl; LPWSTR pszSupportTelephone; LPWSTR pszHelpLink; LPWSTR
-	// pszInstallLocation; LPWSTR pszInstallSource; LPWSTR pszInstallDate; LPWSTR pszContact; LPWSTR pszComments; LPWSTR pszImage; LPWSTR
-	// pszReadmeUrl; LPWSTR pszUpdateInfoUrl; } APPINFODATA, *PAPPINFODATA;
+	// dwMask; PWSTR pszDisplayName; PWSTR pszVersion; PWSTR pszPublisher; PWSTR pszProductID; PWSTR pszRegisteredOwner; PWSTR
+	// pszRegisteredCompany; PWSTR pszLanguage; PWSTR pszSupportUrl; PWSTR pszSupportTelephone; PWSTR pszHelpLink; PWSTR
+	// pszInstallLocation; PWSTR pszInstallSource; PWSTR pszInstallDate; PWSTR pszContact; PWSTR pszComments; PWSTR pszImage; PWSTR
+	// pszReadmeUrl; PWSTR pszUpdateInfoUrl; } APPINFODATA, *PAPPINFODATA;
 	[PInvokeData("shappmgr.h", MSDNShortId = "NS:shappmgr._AppInfoData")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct APPINFODATA
@@ -1112,7 +1112,7 @@ public static partial class Shell32
 		public APPINFODATAFLAGS dwMask;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>
 		/// A pointer to a string that contains the application display name. Memory for this string must be allocated using CoTaskMemAlloc
 		/// and freed using CoTaskMemFree.
@@ -1122,7 +1122,7 @@ public static partial class Shell32
 		public string pszDisplayName;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -1133,37 +1133,37 @@ public static partial class Shell32
 		public string pszPublisher;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszProductID;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszRegisteredOwner;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszRegisteredCompany;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszLanguage;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>
 		/// A URL to support information. This string is displayed as a link with the application name in Control Panel Add/Remove Programs.
 		/// Memory for this string must be allocated using CoTaskMemAlloc and freed using CoTaskMemFree.
@@ -1173,70 +1173,70 @@ public static partial class Shell32
 		public string pszSupportUrl;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszSupportTelephone;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszHelpLink;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszInstallLocation;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszInstallSource;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszInstallDate;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszContact;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszComments;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszImage;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pszReadmeUrl;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>Not applicable to published applications.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -1247,7 +1247,7 @@ public static partial class Shell32
 	/// Provides information about a published application from an application publisher to <c>Add/Remove Programs</c> in Control Panel.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/shappmgr/ns-shappmgr-pubappinfo typedef struct _PubAppInfo { DWORD cbSize; DWORD
-	// dwMask; LPWSTR pszSource; SYSTEMTIME stAssigned; SYSTEMTIME stPublished; SYSTEMTIME stScheduled; SYSTEMTIME stExpire; } PUBAPPINFO, *PPUBAPPINFO;
+	// dwMask; PWSTR pszSource; SYSTEMTIME stAssigned; SYSTEMTIME stPublished; SYSTEMTIME stScheduled; SYSTEMTIME stExpire; } PUBAPPINFO, *PPUBAPPINFO;
 	[PInvokeData("shappmgr.h", MSDNShortId = "NS:shappmgr._PubAppInfo")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PUBAPPINFO
@@ -1267,7 +1267,7 @@ public static partial class Shell32
 		public PUBAPPINFOFLAGS dwMask;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>
 		/// A pointer to a string containing the display name of the publisher. This name appears in <c>Add/Remove Programs</c> if duplicate
 		/// application names are encountered. The string buffer must be allocated using the Shell task allocator.
@@ -1316,7 +1316,7 @@ public static partial class Shell32
 	/// applicable to published applications. Therefore, this structure is also not applicable to published applications.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/shappmgr/ns-shappmgr-slowappinfo typedef struct _tagSlowAppInfo { ULONGLONG
-	// ullSize; FILETIME ftLastUsed; int iTimesUsed; LPWSTR pszImage; } SLOWAPPINFO, *PSLOWAPPINFO;
+	// ullSize; FILETIME ftLastUsed; int iTimesUsed; PWSTR pszImage; } SLOWAPPINFO, *PSLOWAPPINFO;
 	[PInvokeData("shappmgr.h", MSDNShortId = "NS:shappmgr._tagSlowAppInfo")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct SLOWAPPINFO
@@ -1340,7 +1340,7 @@ public static partial class Shell32
 		public int iTimesUsed;
 
 		/// <summary>
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>
 		/// A pointer to a string containing the path to the image that represents the application. The string buffer must be allocated using
 		/// CoTaskMemAlloc and freed using CoTaskMemFree.

@@ -91,7 +91,7 @@ public static partial class Macros
 	/// <summary>Converts the specified atom into a pointer, so it can be passed to functions which accept either atoms or strings.</summary>
 	/// <param name="i">The numeric value to be made into an integer atom. This parameter can be either an integer atom or a string atom.</param>
 	/// <returns>A pointer with the atom as the low-order word.</returns>
-	/// <remarks>Although the return value of the <c>MAKEINTATOM</c> macro is cast as an <c>LPTSTR</c> value, it cannot be used as a string pointer except when it is passed to atom-management functions that require an <c>LPTSTR</c> argument.</remarks>
+	/// <remarks>Although the return value of the <c>MAKEINTATOM</c> macro is cast as an <c>PTSTR</c> value, it cannot be used as a string pointer except when it is passed to atom-management functions that require an <c>PTSTR</c> argument.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-makeintatom
 	// void MAKEINTATOM( i );
 	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.MAKEINTATOM")]

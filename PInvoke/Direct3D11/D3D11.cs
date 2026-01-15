@@ -841,7 +841,7 @@ public static partial class D3D11
 
 		/// <summary>Gets the instance name of the current HLSL class.</summary>
 		/// <param name="pInstanceName">
-		/// <para>Type: <c>LPSTR</c></para>
+		/// <para>Type: <c>PSTR</c></para>
 		/// <para>The instance name of the current HLSL class.</para>
 		/// </param>
 		/// <param name="pBufferLength">
@@ -855,13 +855,13 @@ public static partial class D3D11
 		/// <para><c>Windows Phone 8:</c> This API is supported.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11classinstance-getinstancename void GetInstanceName(
-		// [out, optional] LPSTR pInstanceName, [in, out] SIZE_T *pBufferLength );
+		// [out, optional] PSTR pInstanceName, [in, out] SIZE_T *pBufferLength );
 		[PreserveSig]
 		void GetInstanceName([Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pInstanceName, ref SIZE_T pBufferLength);
 
 		/// <summary>Gets the type of the current HLSL class.</summary>
 		/// <param name="pTypeName">
-		/// <para>Type: <c>LPSTR</c></para>
+		/// <para>Type: <c>PSTR</c></para>
 		/// <para>Type of the current HLSL class.</para>
 		/// </param>
 		/// <param name="pBufferLength">
@@ -875,7 +875,7 @@ public static partial class D3D11
 		/// <para><c>Windows Phone 8:</c> This API is supported.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11classinstance-gettypename void GetTypeName( [out,
-		// optional] LPSTR pTypeName, [in, out] SIZE_T *pBufferLength );
+		// optional] PSTR pTypeName, [in, out] SIZE_T *pBufferLength );
 		[PreserveSig]
 		void GetTypeName([Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pTypeName, ref SIZE_T pBufferLength);
 	}
@@ -3488,7 +3488,7 @@ public static partial class D3D11
 		/// </para>
 		/// </param>
 		/// <param name="szName">
-		/// <para>Type: <c>LPSTR</c></para>
+		/// <para>Type: <c>PSTR</c></para>
 		/// <para>
 		/// String to be filled with a brief name for the counter. May be <c>NULL</c> if the application is not interested in the name of
 		/// the counter.
@@ -3499,7 +3499,7 @@ public static partial class D3D11
 		/// <para>Length of the string returned to szName. Can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="szUnits">
-		/// <para>Type: <c>LPSTR</c></para>
+		/// <para>Type: <c>PSTR</c></para>
 		/// <para>
 		/// Name of the units a counter measures, provided the memory the pointer points to has enough room to hold the string. Can be
 		/// <c>NULL</c>. The returned string will always be in English.
@@ -3510,7 +3510,7 @@ public static partial class D3D11
 		/// <para>Length of the string returned to szUnits. Can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="szDescription">
-		/// <para>Type: <c>LPSTR</c></para>
+		/// <para>Type: <c>PSTR</c></para>
 		/// <para>
 		/// A description of the counter, provided the memory the pointer points to has enough room to hold the string. Can be <c>NULL</c>.
 		/// The returned string will always be in English.
@@ -3536,8 +3536,8 @@ public static partial class D3D11
 		/// <para><c>Windows Phone 8:</c> This API is supported.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-checkcounter HRESULT CheckCounter( [in] const
-		// D3D11_COUNTER_DESC *pDesc, [out] D3D11_COUNTER_TYPE *pType, [out] uint *pActiveCounters, [out, optional] LPSTR szName, [in, out,
-		// optional] uint *pNameLength, [out, optional] LPSTR szUnits, [in, out, optional] uint *pUnitsLength, [out, optional] LPSTR
+		// D3D11_COUNTER_DESC *pDesc, [out] D3D11_COUNTER_TYPE *pType, [out] uint *pActiveCounters, [out, optional] PSTR szName, [in, out,
+		// optional] uint *pNameLength, [out, optional] PSTR szUnits, [in, out, optional] uint *pUnitsLength, [out, optional] PSTR
 		// szDescription, [in, out, optional] uint *pDescriptionLength );
 		[PreserveSig]
 		HRESULT CheckCounter(in D3D11_COUNTER_DESC pDesc, out D3D11_COUNTER_TYPE pType, out uint pActiveCounters,

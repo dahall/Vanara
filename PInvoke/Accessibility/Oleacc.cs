@@ -863,7 +863,7 @@ public static partial class Oleacc
 	/// <para>One of the object role constants.</para>
 	/// </param>
 	/// <param name="lpszRole">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>
 	/// Address of a buffer that receives the role text string. If this parameter is <c>NULL</c>, the function returns the role string's
 	/// length, not including the null character.
@@ -888,7 +888,7 @@ public static partial class Oleacc
 	/// extended error information, call GetLastError.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-getroletexta UINT GetRoleTextA( DWORD lRole, LPSTR lpszRole,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-getroletexta UINT GetRoleTextA( DWORD lRole, PSTR lpszRole,
 	// UINT cchRoleMax );
 	[DllImport(Lib.Oleacc, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("oleacc.h", MSDNShortId = "58436001-92d7-4afa-af07-169c8bbda9ba")]
@@ -904,7 +904,7 @@ public static partial class Oleacc
 	/// <para>One of the object state constants.</para>
 	/// </param>
 	/// <param name="lpszState">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>
 	/// Address of a buffer that receives the state text string. If this parameter is <c>NULL</c>, the function returns the state string's
 	/// length, not including the null character.
@@ -930,7 +930,7 @@ public static partial class Oleacc
 	/// </para>
 	/// </returns>
 	/// <remarks>This function accepts only one state bit at a time, not a bitmask.</remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-getstatetexta UINT GetStateTextA( DWORD lStateBit, LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/oleacc/nf-oleacc-getstatetexta UINT GetStateTextA( DWORD lStateBit, PSTR
 	// lpszState, UINT cchState );
 	[DllImport(Lib.Oleacc, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("oleacc.h", MSDNShortId = "2a136883-870e-48c3-b182-1cdc64768894")]

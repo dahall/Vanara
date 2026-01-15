@@ -9344,7 +9344,7 @@ public static partial class BCrypt
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_algorithm_identifier typedef struct
-	// _BCRYPT_ALGORITHM_IDENTIFIER { LPWSTR pszName; ULONG dwClass; ULONG dwFlags; } BCRYPT_ALGORITHM_IDENTIFIER;
+	// _BCRYPT_ALGORITHM_IDENTIFIER { PWSTR pszName; ULONG dwClass; ULONG dwFlags; } BCRYPT_ALGORITHM_IDENTIFIER;
 	[PInvokeData("bcrypt.h", MSDNShortId = "a49a21c9-5668-4709-b52a-f6cacd944845")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct BCRYPT_ALGORITHM_IDENTIFIER
@@ -9583,7 +9583,7 @@ public static partial class BCrypt
 
 	/// <summary>The <c>BCRYPT_PROVIDER_NAME</c> structure contains the name of a CNG provider.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_provider_name typedef struct _BCRYPT_PROVIDER_NAME {
-	// LPWSTR pszProviderName; } BCRYPT_PROVIDER_NAME;
+	// PWSTR pszProviderName; } BCRYPT_PROVIDER_NAME;
 	[PInvokeData("bcrypt.h", MSDNShortId = "0c57aa3f-1d9a-4bb2-b142-bce9c054e658")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct BCRYPT_PROVIDER_NAME

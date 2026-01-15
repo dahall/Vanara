@@ -2466,7 +2466,7 @@ public static partial class IpHlpApi
 	/// <para>If the function succeeds, the return value is NO_ERROR.</para>
 	/// <para>If the function fails, use <c>FormatMessage</c> to obtain the message string for the returned error.</para>
 	/// </returns>
-	// DWORD GetAdapterIndex( _In_ LPWSTR AdapterName, _Inout_ PULONG IfIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365909(v=vs.85).aspx
+	// DWORD GetAdapterIndex( _In_ PWSTR AdapterName, _Inout_ PULONG IfIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365909(v=vs.85).aspx
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("IpHlpApi.h", MSDNShortId = "aa365909")]
 	public static extern Win32Error GetAdapterIndex([MarshalAs(UnmanagedType.LPWStr)] string AdapterName, out uint IfIndex);

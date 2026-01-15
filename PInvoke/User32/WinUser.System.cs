@@ -3717,7 +3717,7 @@ public static partial class User32
 	// https://docs.microsoft.com/en-us/windows/desktop/dlgbox/mb-getstring LPCWSTR WINAPI MB_GetString( UINT wBtn );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("", MSDNShortId = "D2AF238D-F5A8-477D-BF47-0F5D4D68B27E")]
-	public static extern LPWSTR MB_GetString(uint wBtn);
+	public static extern PWSTR MB_GetString(uint wBtn);
 
 	/// <summary>
 	/// <para>Plays a waveform sound. The waveform sound for each sound type is identified by an entry in the registry.</para>

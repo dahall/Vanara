@@ -219,7 +219,7 @@ public static partial class XpsObjectModel
 		/// </list>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gettransformlookup HRESULT
-		// GetTransformLookup( LPWSTR *key );
+		// GetTransformLookup( PWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetTransformLookup();
@@ -409,7 +409,7 @@ public static partial class XpsObjectModel
 		/// </list>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getclipgeometrylookup
-		// HRESULT GetClipGeometryLookup( LPWSTR *key );
+		// HRESULT GetClipGeometryLookup( PWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetClipGeometryLookup();
@@ -615,7 +615,7 @@ public static partial class XpsObjectModel
 		/// </list>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getopacitymaskbrushlookup
-		// HRESULT GetOpacityMaskBrushLookup( LPWSTR *key );
+		// HRESULT GetOpacityMaskBrushLookup( PWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetOpacityMaskBrushLookup();
@@ -668,7 +668,7 @@ public static partial class XpsObjectModel
 		/// <summary>Gets the <c>Name</c> property of the visual.</summary>
 		/// <returns>The <c>Name</c> property string. If the <c>Name</c> property has not been set, a <c>NULL</c> pointer is returned.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getname HRESULT GetName(
-		// LPWSTR *name );
+		// PWSTR *name );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetName();
@@ -764,7 +764,7 @@ public static partial class XpsObjectModel
 		/// <para>Internet Engineering Task Force (IETF) RFC 3066 specifies the recommended encoding for the <c>Language</c> property.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getlanguage HRESULT
-		// GetLanguage( LPWSTR *language );
+		// GetLanguage( PWSTR *language );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetLanguage();
@@ -878,7 +878,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcanvas-getaccessibilityshortdescription
-		// HRESULT GetAccessibilityShortDescription( LPWSTR *shortDescription );
+		// HRESULT GetAccessibilityShortDescription( PWSTR *shortDescription );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetAccessibilityShortDescription();
 
@@ -911,7 +911,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomcanvas-getaccessibilitylongdescription
-		// HRESULT GetAccessibilityLongDescription( LPWSTR *longDescription );
+		// HRESULT GetAccessibilityLongDescription( PWSTR *longDescription );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetAccessibilityLongDescription();
 
@@ -1401,7 +1401,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomdictionary-getat HRESULT GetAt(
-		// UINT32 index, LPWSTR *key, IXpsOMShareable **entry );
+		// UINT32 index, PWSTR *key, IXpsOMShareable **entry );
 		IXpsOMShareable GetAt([In] uint index, [MarshalAs(UnmanagedType.LPWStr)] out string key);
 
 		/// <summary>Gets the IXpsOMShareable interface pointer of the entry that contains the specified key.</summary>
@@ -2033,7 +2033,7 @@ public static partial class XpsObjectModel
 		/// </list>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgeometry-gettransformlookup HRESULT
-		// GetTransformLookup( LPWSTR *lookup );
+		// GetTransformLookup( PWSTR *lookup );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetTransformLookup();
 
@@ -2785,7 +2785,7 @@ public static partial class XpsObjectModel
 		/// </list>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-gettransformlookup HRESULT
-		// GetTransformLookup( LPWSTR *key );
+		// GetTransformLookup( PWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetTransformLookup();
@@ -2975,7 +2975,7 @@ public static partial class XpsObjectModel
 		/// </list>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getclipgeometrylookup
-		// HRESULT GetClipGeometryLookup( LPWSTR *key );
+		// HRESULT GetClipGeometryLookup( PWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetClipGeometryLookup();
@@ -3181,7 +3181,7 @@ public static partial class XpsObjectModel
 		/// </list>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getopacitymaskbrushlookup
-		// HRESULT GetOpacityMaskBrushLookup( LPWSTR *key );
+		// HRESULT GetOpacityMaskBrushLookup( PWSTR *key );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetOpacityMaskBrushLookup();
@@ -3234,7 +3234,7 @@ public static partial class XpsObjectModel
 		/// <summary>Gets the <c>Name</c> property of the visual.</summary>
 		/// <returns>The <c>Name</c> property string. If the <c>Name</c> property has not been set, a <c>NULL</c> pointer is returned.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getname HRESULT GetName(
-		// LPWSTR *name );
+		// PWSTR *name );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetName();
@@ -3330,7 +3330,7 @@ public static partial class XpsObjectModel
 		/// <para>Internet Engineering Task Force (IETF) RFC 3066 specifies the recommended encoding for the <c>Language</c> property.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomvisual-getlanguage HRESULT
-		// GetLanguage( LPWSTR *language );
+		// GetLanguage( PWSTR *language );
 		[MethodImpl(MethodImplOptions.InternalCall)]
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetLanguage();
@@ -3351,7 +3351,7 @@ public static partial class XpsObjectModel
 		/// <summary>Gets the text in unescaped UTF-16 scalar values.</summary>
 		/// <returns>The UTF-16 Unicode string of the text to be displayed. If the string is empty, a <c>NULL</c> pointer is returned.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomglyphs-getunicodestring HRESULT
-		// GetUnicodeString( LPWSTR *unicodeString );
+		// GetUnicodeString( PWSTR *unicodeString );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetUnicodeString();
 
@@ -3491,7 +3491,7 @@ public static partial class XpsObjectModel
 		/// <para>The escaped version of the device font name is created when the object is serialized.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomglyphs-getdevicefontname HRESULT
-		// GetDeviceFontName( LPWSTR *deviceFontName );
+		// GetDeviceFontName( PWSTR *deviceFontName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetDeviceFontName();
 
@@ -3758,7 +3758,7 @@ public static partial class XpsObjectModel
 		/// </list>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomglyphs-getfillbrushlookup HRESULT
-		// GetFillBrushLookup( LPWSTR *key );
+		// GetFillBrushLookup( PWSTR *key );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetFillBrushLookup();
 
@@ -3838,7 +3838,7 @@ public static partial class XpsObjectModel
 		/// <summary>Gets the text in unescaped UTF-16 scalar values.</summary>
 		/// <returns>The UTF-16 Unicode string. If the string is empty, a <c>NULL</c> pointer is returned.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomglyphseditor-getunicodestring
-		// HRESULT GetUnicodeString( LPWSTR *unicodeString );
+		// HRESULT GetUnicodeString( PWSTR *unicodeString );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetUnicodeString();
 
@@ -4067,7 +4067,7 @@ public static partial class XpsObjectModel
 		/// <para>The device font name uniquely identifies a specific device font and is typically defined by a hardware or font vendor.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomglyphseditor-getdevicefontname
-		// HRESULT GetDeviceFontName( LPWSTR *deviceFontName );
+		// HRESULT GetDeviceFontName( PWSTR *deviceFontName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetDeviceFontName();
 
@@ -4348,7 +4348,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomgradientbrush-gettransformlookup
-		// HRESULT GetTransformLookup( LPWSTR *key );
+		// HRESULT GetTransformLookup( PWSTR *key );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetTransformLookup();
 
@@ -4830,7 +4830,7 @@ public static partial class XpsObjectModel
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/xpsobjectmodel/nf-xpsobjectmodel-ixpsomtilebrush-gettransformlookup
-		// HRESULT GetTransformLookup( LPWSTR *key );
+		// HRESULT GetTransformLookup( PWSTR *key );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string? GetTransformLookup();
 

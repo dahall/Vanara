@@ -2377,7 +2377,7 @@ public static partial class Kernel32
 	/// Contains information about a power request. This structure is used by the <c>PowerCreateRequest</c> and <c>SetWaitableTimerEx</c> functions.
 	/// </summary>
 	// typedef struct _REASON_CONTEXT { ULONG Version; DWORD Flags; union { struct { HMODULE LocalizedReasonModule; ULONG LocalizedReasonId;
-	// ULONG ReasonStringCount; LPWSTR *ReasonStrings; } Detailed; LPWSTR SimpleReasonString; } Reason;} REASON_CONTEXT, *PREASON_CONTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/dd405536(v=vs.85).aspx
+	// ULONG ReasonStringCount; PWSTR *ReasonStrings; } Detailed; PWSTR SimpleReasonString; } Reason;} REASON_CONTEXT, *PREASON_CONTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/dd405536(v=vs.85).aspx
 	[PInvokeData("MinWinBase.h", MSDNShortId = "dd405536")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public class REASON_CONTEXT : IDisposable

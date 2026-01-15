@@ -393,7 +393,7 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaaddresstostringa INT WSAAPI WSAAddressToStringA(
-	// LPSOCKADDR lpsaAddress, DWORD dwAddressLength, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSTR lpszAddressString, LPDWORD
+	// LPSOCKADDR lpsaAddress, DWORD dwAddressLength, LPWSAPROTOCOL_INFOA lpProtocolInfo, PSTR lpszAddressString, LPDWORD
 	// lpdwAddressStringLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
@@ -447,7 +447,7 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaaddresstostringa INT WSAAPI WSAAddressToStringA(
-	// LPSOCKADDR lpsaAddress, DWORD dwAddressLength, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSTR lpszAddressString, LPDWORD
+	// LPSOCKADDR lpsaAddress, DWORD dwAddressLength, LPWSAPROTOCOL_INFOA lpProtocolInfo, PSTR lpszAddressString, LPDWORD
 	// lpdwAddressStringLength );
 	[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
 	public static string WSAAddressToString([In] SOCKADDR lpsaAddress, [In, Optional] WSAPROTOCOL_INFO? lpProtocolInfo)
@@ -564,7 +564,7 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-wsaaddresstostringa INT WSAAPI WSAAddressToStringA(
-	// LPSOCKADDR lpsaAddress, DWORD dwAddressLength, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSTR lpszAddressString, LPDWORD
+	// LPSOCKADDR lpsaAddress, DWORD dwAddressLength, LPWSAPROTOCOL_INFOA lpProtocolInfo, PSTR lpszAddressString, LPDWORD
 	// lpdwAddressStringLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "d72e55e6-79a9-4386-9e1a-24a322f13426")]
@@ -3991,7 +3991,7 @@ public static partial class Ws2_32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsagetserviceclassnamebyclassida INT WSAAPI
-	// WSAGetServiceClassNameByClassIdA( LPGUID lpServiceClassId, LPSTR lpszServiceClassName, LPDWORD lpdwBufferLength );
+	// WSAGetServiceClassNameByClassIdA( LPGUID lpServiceClassId, PSTR lpszServiceClassName, LPDWORD lpdwBufferLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "0a61751e-10e5-4f91-a0b2-8c1baf477653")]
 	public static extern WSRESULT WSAGetServiceClassNameByClassId(in Guid lpServiceClassId, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszServiceClassName, ref uint lpdwBufferLength);
@@ -12099,7 +12099,7 @@ public static partial class Ws2_32
 	/// Server 2012 R2, and later.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( PSTR
 	// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
@@ -12181,7 +12181,7 @@ public static partial class Ws2_32
 	/// Server 2012 R2, and later.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( PSTR
 	// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
@@ -12263,7 +12263,7 @@ public static partial class Ws2_32
 	/// Server 2012 R2, and later.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( PSTR
 	// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 	[DllImport(Lib.Ws2_32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
@@ -12307,7 +12307,7 @@ public static partial class Ws2_32
 	/// Server 2012 R2, and later.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( LPSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastringtoaddressa INT WSAAPI WSAStringToAddressA( PSTR
 	// AddressString, INT AddressFamily, LPWSAPROTOCOL_INFOA lpProtocolInfo, LPSOCKADDR lpAddress, LPINT lpAddressLength );
 	[PInvokeData("winsock2.h", MSDNShortId = "7b9946c3-c8b3-45ae-9bde-03faaf604bba")]
 	public static SOCKADDR_INET WSAStringToAddress(string AddressString, ADDRESS_FAMILY AddressFamily, [In, Optional] WSAPROTOCOL_INFO? lpProtocolInfo)

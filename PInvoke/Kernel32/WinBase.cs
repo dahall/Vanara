@@ -1482,7 +1482,7 @@ public static partial class Kernel32
 	/// <para><c>Warning</c> Do not use. Consider using StringCchCopy instead. See Remarks.</para>
 	/// </summary>
 	/// <param name="lpDest">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>
 	/// The destination buffer, which receives the copied characters. The buffer must be large enough to contain the number of
 	/// <c>TCHAR</c> values specified by iMaxLength, including room for a terminating null character.
@@ -1500,7 +1500,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>
 	/// If the function succeeds, the return value is a pointer to the buffer. The function can succeed even if the source string is
 	/// greater than iMaxLength characters.
@@ -1538,11 +1538,11 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>Review Security Considerations: Windows User Interface before continuing.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-lstrcpyna LPSTR lstrcpynA( LPSTR lpDest, LPCSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-lstrcpyna PSTR lstrcpynA( PSTR lpDest, LPCSTR
 	// lpSrc, int iMaxLength );
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h")]
-	public static extern LPTSTR lstrcpyn(StringBuilder lpDest, string? lpSrc, int iMaxLength);
+	public static extern PTSTR lstrcpyn(StringBuilder lpDest, string? lpSrc, int iMaxLength);
 
 	/// <summary>Determines the length of the specified string (not including the terminating null character).</summary>
 	/// <param name="lpString">
@@ -1952,7 +1952,7 @@ public static partial class Kernel32
 	/// <para>To compile an application that uses this function, define _WIN32_WINNT as 0x0600 or later.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-queryfullprocessimagenamea BOOL
-	// QueryFullProcessImageNameA( HANDLE hProcess, DWORD dwFlags, LPSTR lpExeName, PDWORD lpdwSize );
+	// QueryFullProcessImageNameA( HANDLE hProcess, DWORD dwFlags, PSTR lpExeName, PDWORD lpdwSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "49a9d1aa-30f3-45ea-a4ec-9f55df692b8b")]
 	[return: MarshalAs(UnmanagedType.Bool)]

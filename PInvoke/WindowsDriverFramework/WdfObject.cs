@@ -493,7 +493,7 @@ public static partial class WindowsDriverFramework
 		public uint Size;
 
 		/// <summary>A quoted string that represents the name of a driver-defined structure that contains an object's context information.</summary>
-		public LPWSTR ContextName;
+		public PWSTR ContextName;
 
 		/// <summary>
 		/// The size, in bytes, of the structure that the <b>ContextName</b> member specifies. The framework allocates space for this

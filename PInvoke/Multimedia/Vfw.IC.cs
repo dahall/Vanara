@@ -1462,7 +1462,7 @@ public static partial class Msvfw32
 	/// initializing the structure, see the ICSeqCompressFrameStart function and <c>COMPVARS</c>.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-iccompressorchoose BOOL VFWAPI ICCompressorChoose( HWND hwnd, UINT
-	// uiFlags, LPVOID pvIn, LPVOID lpData, PCOMPVARS pc, LPSTR lpszTitle );
+	// uiFlags, LPVOID pvIn, LPVOID lpData, PCOMPVARS pc, PSTR lpszTitle );
 	[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICCompressorChoose")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2714,7 +2714,7 @@ public static partial class Msvfw32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-icinstall BOOL VFWAPI ICInstall( DWORD fccType, DWORD fccHandler,
-	// LPARAM lParam, LPSTR szDesc, UINT wFlags );
+	// LPARAM lParam, PSTR szDesc, UINT wFlags );
 	[DllImport(Lib_Msvfw32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.ICInstall")]
 	[return: MarshalAs(UnmanagedType.Bool)]

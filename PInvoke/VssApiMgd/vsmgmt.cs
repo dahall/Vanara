@@ -960,9 +960,9 @@ public struct VSS_MGMT_OBJECT_PROP : IDisposable
 [StructLayout(LayoutKind.Sequential)]
 public struct VSS_MGMT_OBJECT_UNION
 {
-	internal LPWSTR szOne;
+	internal PWSTR szOne;
 
-	internal LPWSTR szTwo;
+	internal PWSTR szTwo;
 
 	internal long lOne;
 

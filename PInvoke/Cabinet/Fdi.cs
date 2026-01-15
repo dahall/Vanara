@@ -387,8 +387,8 @@ public static partial class Cabinet
 	/// <para>If the function succeeds, it returns <c>TRUE</c>; otherwise, <c>FALSE</c>.</para>
 	/// <para>Extended error information is provided in the ERF structure used to create the FDI context.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fdicopy BOOL DIAMONDAPI FDICopy( HFDI hfdi, LPSTR pszCabinet,
-	// LPSTR pszCabPath, int flags, PFNFDINOTIFY pfnfdin, PFNFDIDECRYPT pfnfdid, void *pvUser );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fdicopy BOOL DIAMONDAPI FDICopy( HFDI hfdi, PSTR pszCabinet,
+	// PSTR pszCabPath, int flags, PFNFDINOTIFY pfnfdin, PFNFDIDECRYPT pfnfdid, void *pvUser );
 	[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 	[PInvokeData("fdi.h", MSDNShortId = "6ec2b10b-f70a-4a22-beff-df6b6a4c4cfd")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -501,7 +501,7 @@ public static partial class Cabinet
 	/// <para>Extended error information is provided in the ERF structure used to create the FDI context.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/fdi/nf-fdi-fditruncatecabinet BOOL DIAMONDAPI FDITruncateCabinet( HFDI hfdi,
-	// LPSTR pszCabinetName, USHORT iFolderToDelete );
+	// PSTR pszCabinetName, USHORT iFolderToDelete );
 	[DllImport(Lib.Cabinet, SetLastError = false, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 	[PInvokeData("fdi.h", MSDNShortId = "c923b0a5-1a8d-42aa-bd05-0d318199756d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -647,13 +647,13 @@ public static partial class Cabinet
 		public int cb;
 
 		/// <summary>A null-terminated string.</summary>
-		public Vanara.InteropServices.LPSTR psz1;
+		public Vanara.InteropServices.PSTR psz1;
 
 		/// <summary>A null-terminated string.</summary>
 		public IntPtr psz2;
 
 		/// <summary>A null-terminated string.</summary>
-		public Vanara.InteropServices.LPSTR psz3;
+		public Vanara.InteropServices.PSTR psz3;
 
 		/// <summary>Pointer to an application-defined value.</summary>
 		public IntPtr pv;

@@ -833,7 +833,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-gethelptext
-		[MsgParams(typeof(uint), typeof(LPSTR))]
+		[MsgParams(typeof(uint), typeof(PSTR))]
 		DFM_GETHELPTEXT = 5,
 
 		/// <summary>
@@ -974,7 +974,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-gethelptextw
-		[MsgParams(typeof(uint), typeof(LPWSTR))]
+		[MsgParams(typeof(uint), typeof(PWSTR))]
 		DFM_GETHELPTEXTW = 11,
 
 		/// <summary>
@@ -1044,7 +1044,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-mapcommandname
-		[MsgParams(typeof(LPTSTR), typeof(int?))]
+		[MsgParams(typeof(PTSTR), typeof(int?))]
 		DFM_MAPCOMMANDNAME = 13,
 
 		/// <summary>
@@ -1097,7 +1097,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-getverb
-		[MsgParams(typeof(uint), typeof(LPWSTR))]
+		[MsgParams(typeof(uint), typeof(PWSTR))]
 		DFM_GETVERBW = 15,
 
 		/// <summary>
@@ -1121,7 +1121,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-getverb
-		[MsgParams(typeof(uint), typeof(LPSTR))]
+		[MsgParams(typeof(uint), typeof(PSTR))]
 		DFM_GETVERBA = 16,
 
 		/// <summary>
@@ -6150,7 +6150,7 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <param name="pszPath">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>
 	/// When this function returns, this value points to the directory path and appended subpath. This is a <c>null</c>-terminated string
 	/// of length MAX_PATH. This string is empty when the function returns an error code.
@@ -6161,7 +6161,7 @@ public static partial class Shell32
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetfolderpathandsubdira HRESULT
-	// SHGetFolderPathAndSubDirA( HWND hwnd, int csidl, HANDLE hToken, DWORD dwFlags, LPCSTR pszSubDir, LPSTR pszPath );
+	// SHGetFolderPathAndSubDirA( HWND hwnd, int csidl, HANDLE hToken, DWORD dwFlags, LPCSTR pszSubDir, PSTR pszPath );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "7e92e136-1036-4c96-931f-6e0129fb839a")]
 	public static extern HRESULT SHGetFolderPathAndSubDir(HWND hwnd, CSIDL csidl, [Optional] HTOKEN hToken, SHGFP dwFlags, string pszSubDir, StringBuilder pszPath);
@@ -8858,9 +8858,9 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-shfoldercustomsettings typedef struct
-	// SHFOLDERCUSTOMSETTINGS { DWORD dwSize; DWORD dwMask; SHELLVIEWID *pvid; LPWSTR pszWebViewTemplate; DWORD cchWebViewTemplate;
-	// LPWSTR pszWebViewTemplateVersion; LPWSTR pszInfoTip; DWORD cchInfoTip; CLSID *pclsid; DWORD dwFlags; LPWSTR pszIconFile; DWORD
-	// cchIconFile; int iIconIndex; LPWSTR pszLogo; DWORD cchLogo; } *LPSHFOLDERCUSTOMSETTINGS;
+	// SHFOLDERCUSTOMSETTINGS { DWORD dwSize; DWORD dwMask; SHELLVIEWID *pvid; PWSTR pszWebViewTemplate; DWORD cchWebViewTemplate;
+	// PWSTR pszWebViewTemplateVersion; PWSTR pszInfoTip; DWORD cchInfoTip; CLSID *pclsid; DWORD dwFlags; PWSTR pszIconFile; DWORD
+	// cchIconFile; int iIconIndex; PWSTR pszLogo; DWORD cchLogo; } *LPSHFOLDERCUSTOMSETTINGS;
 	[PInvokeData("shlobj_core.h", MSDNShortId = "a6357372-80ef-4719-b53f-87eb3fdc1b0d")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct SHFOLDERCUSTOMSETTINGS(FOLDERCUSTOMSETTINGSMASK mask)
@@ -8903,10 +8903,10 @@ public static partial class Shell32
 		public IntPtr pvid;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>A pointer to a null-terminated string containing the path to the folder's WebView template.</para>
 		/// </summary>
-		public LPTSTR pszWebViewTemplate;
+		public PTSTR pszWebViewTemplate;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8919,16 +8919,16 @@ public static partial class Shell32
 		public uint cchWebViewTemplate;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the WebView template version.</para>
 		/// </summary>
-		public LPTSTR pszWebViewTemplateVersion;
+		public PTSTR pszWebViewTemplateVersion;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the text of the folder's infotip.</para>
 		/// </summary>
-		public LPTSTR pszInfoTip;
+		public PTSTR pszInfoTip;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8955,10 +8955,10 @@ public static partial class Shell32
 		public uint dwFlags;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the path to file containing the folder's icon.</para>
 		/// </summary>
-		public LPTSTR pszIconFile;
+		public PTSTR pszIconFile;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8976,13 +8976,13 @@ public static partial class Shell32
 		public int iIconIndex;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>
 		/// A pointer to a null-terminated buffer containing the path to the file containing the folder's logo image. This is the image
 		/// used in thumbnail views.
 		/// </para>
 		/// </summary>
-		public LPTSTR pszLogo;
+		public PTSTR pszLogo;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>

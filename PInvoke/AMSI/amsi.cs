@@ -13,11 +13,11 @@ public static partial class AMSI
 	[PInvokeData("amsi.h", MSDNShortId = "NE:amsi.AMSI_ATTRIBUTE")]
 	public enum AMSI_ATTRIBUTE
 	{
-		/// <summary>Return the name, version, or GUID string of the calling application, copied from a <c>LPWSTR</c>.</summary>
+		/// <summary>Return the name, version, or GUID string of the calling application, copied from a <c>PWSTR</c>.</summary>
 		[CorrespondingType(typeof(string))]
 		AMSI_ATTRIBUTE_APP_NAME = 0,
 
-		/// <summary>Return the filename, URL, unique script ID, or similar of the content, copied from a <c>LPWSTR</c>.</summary>
+		/// <summary>Return the filename, URL, unique script ID, or similar of the content, copied from a <c>PWSTR</c>.</summary>
 		[CorrespondingType(typeof(string))]
 		AMSI_ATTRIBUTE_CONTENT_NAME,
 

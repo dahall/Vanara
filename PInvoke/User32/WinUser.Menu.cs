@@ -1506,7 +1506,7 @@ public static partial class User32
 	/// <para>The menu item to be changed, as determined by the uFlag parameter.</para>
 	/// </param>
 	/// <param name="lpString">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>
 	/// The buffer that receives the null-terminated string. If the string is as long or longer than lpString, the string is truncated
 	/// and the terminating null character is added. If lpString is <c>NULL</c>, the function returns the length of the menu string.
@@ -1563,7 +1563,7 @@ public static partial class User32
 	/// <para>For an example, see Creating User Editable Accelerators.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmenustringa int GetMenuStringA( HMENU hMenu, UINT
-	// uIDItem, LPSTR lpString, int cchMax, UINT flags );
+	// uIDItem, PSTR lpString, int cchMax, UINT flags );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getmenustring.htm")]
 	public static extern int GetMenuString([In, AddAsMember] HMENU hMenu, uint uIDItem, [SizeDef(nameof(cchMax), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpString, int cchMax, MenuFlags flags);
@@ -3717,7 +3717,7 @@ public static partial class User32
 	/// <remarks>Initializes a new instance of the <see cref="MENUITEMINFO"/> struct.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagmenuiteminfoa typedef struct tagMENUITEMINFOA { UINT
 	// cbSize; UINT fMask; UINT fType; UINT fState; UINT wID; HMENU hSubMenu; HBITMAP hbmpChecked; HBITMAP hbmpUnchecked; ULONG_PTR
-	// dwItemData; LPSTR dwTypeData; UINT cch; HBITMAP hbmpItem; } MENUITEMINFOA, *LPMENUITEMINFOA;
+	// dwItemData; PSTR dwTypeData; UINT cch; HBITMAP hbmpItem; } MENUITEMINFOA, *LPMENUITEMINFOA;
 	[PInvokeData("winuser.h", MSDNShortId = "menuiteminfo.htm")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct MENUITEMINFO(MenuItemInfoMask mask)
@@ -3940,7 +3940,7 @@ public static partial class User32
 		public IntPtr dwItemData;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>
 		/// The contents of the menu item. The meaning of this member depends on the value of <c>fType</c> and is used only if the
 		/// <c>MIIM_TYPE</c> flag is set in the <c>fMask</c> member.
@@ -3957,7 +3957,7 @@ public static partial class User32
 		/// </para>
 		/// <para><c>dwTypeData</c> is used only if the <c>MIIM_STRING</c> flag is set in the <c>fMask</c> member</para>
 		/// </summary>
-		public LPTSTR dwTypeData;
+		public PTSTR dwTypeData;
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>

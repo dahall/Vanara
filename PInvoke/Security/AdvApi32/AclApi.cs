@@ -163,7 +163,7 @@ public static partial class AdvApi32
 	/// <para>This function does not return a value.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-buildexplicitaccesswithnamea void
-	// BuildExplicitAccessWithNameA( PEXPLICIT_ACCESS_A pExplicitAccess, LPSTR pTrusteeName, DWORD AccessPermissions, ACCESS_MODE
+	// BuildExplicitAccessWithNameA( PEXPLICIT_ACCESS_A pExplicitAccess, PSTR pTrusteeName, DWORD AccessPermissions, ACCESS_MODE
 	// AccessMode, DWORD Inheritance );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "5f12db19-63cf-4be6-9450-3c36e425967b")]
@@ -413,7 +413,7 @@ public static partial class AdvApi32
 	/// <para>This function does not return a value.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-buildtrusteewithnamea void BuildTrusteeWithNameA( PTRUSTEE_A
-	// pTrustee, LPSTR pName );
+	// pTrustee, PSTR pName );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "a66c23ac-8211-40fd-bfe8-ef9089bf3745")]
 	public static extern void BuildTrusteeWithName(out TRUSTEE pTrustee, string pName);
@@ -460,8 +460,8 @@ public static partial class AdvApi32
 	/// <para>For more information about object-specific ACEs, see Object-specific ACEs.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-buildtrusteewithobjectsandnamea void
-	// BuildTrusteeWithObjectsAndNameA( PTRUSTEE_A pTrustee, POBJECTS_AND_NAME_A pObjName, SE_OBJECT_TYPE ObjectType, LPSTR
-	// ObjectTypeName, LPSTR InheritedObjectTypeName, LPSTR Name );
+	// BuildTrusteeWithObjectsAndNameA( PTRUSTEE_A pTrustee, POBJECTS_AND_NAME_A pObjName, SE_OBJECT_TYPE ObjectType, PSTR
+	// ObjectTypeName, PSTR InheritedObjectTypeName, PSTR Name );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "62edadfe-0a7b-43ec-bd02-a63f928c7618")]
 	public static extern void BuildTrusteeWithObjectsAndName(out TRUSTEE pTrustee, in OBJECTS_AND_NAME pObjName, SE_OBJECT_TYPE ObjectType, string ObjectTypeName, string InheritedObjectTypeName, string Name);
@@ -973,10 +973,10 @@ public static partial class AdvApi32
 	/// <remarks>
 	/// <para>The <c>GetTrusteeName</c> function does not allocate any memory.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-gettrusteenamea LPSTR GetTrusteeNameA( PTRUSTEE_A pTrustee );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-gettrusteenamea PSTR GetTrusteeNameA( PTRUSTEE_A pTrustee );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "9d3ce528-fb28-4e2e-bf7f-7d84c697fcb6")]
-	public static extern LPTSTR GetTrusteeName(in TRUSTEE pTrustee);
+	public static extern PTSTR GetTrusteeName(in TRUSTEE pTrustee);
 
 	/// <summary>
 	/// <para>
@@ -1441,7 +1441,7 @@ public static partial class AdvApi32
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-treeresetnamedsecurityinfoa DWORD
-	// TreeResetNamedSecurityInfoA( LPSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID
+	// TreeResetNamedSecurityInfoA( PSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID
 	// pGroup, PACL pDacl, PACL pSacl, BOOL KeepExplicit, FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, PVOID Args );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "adae7d07-a452-409e-b1a1-e9f86f873e39")]
@@ -1594,7 +1594,7 @@ public static partial class AdvApi32
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/aclapi/nf-aclapi-treesetnamedsecurityinfow DWORD TreeSetNamedSecurityInfoW(
-	// LPWSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID pGroup, PACL pDacl, PACL
+	// PWSTR pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID pOwner, PSID pGroup, PACL pDacl, PACL
 	// pSacl, DWORD dwAction, FN_PROGRESS fnProgress, PROG_INVOKE_SETTING ProgressInvokeSetting, PVOID Args );
 	[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("aclapi.h", MSDNShortId = "caa711c3-301b-4ed7-b1f4-dc6a48563905")]

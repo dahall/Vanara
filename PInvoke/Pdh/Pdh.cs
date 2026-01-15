@@ -3912,7 +3912,7 @@ public static partial class Pdh
 	/// pcchBufferSize to 0), and the second time to get the data.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhgetdefaultperfcountera PDH_FUNCTION PdhGetDefaultPerfCounterA(
-	// LPCSTR szDataSource, LPCSTR szMachineName, LPCSTR szObjectName, LPSTR szDefaultCounterName, LPDWORD pcchBufferSize );
+	// LPCSTR szDataSource, LPCSTR szMachineName, LPCSTR szObjectName, PSTR szDefaultCounterName, LPDWORD pcchBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "0eb78071-3496-40e9-91b0-3c06547c88d5")]
 	public static extern Win32Error PdhGetDefaultPerfCounter([Optional] string? szDataSource, [Optional] string? szMachineName, string szObjectName, [Optional] StringBuilder? szDefaultCounterName, ref uint pcchBufferSize);
@@ -3991,7 +3991,7 @@ public static partial class Pdh
 	/// pcchBufferSize to 0), and the second time to get the data.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhgetdefaultperfcounterha PDH_FUNCTION PdhGetDefaultPerfCounterHA(
-	// PDH_HLOG hDataSource, LPCSTR szMachineName, LPCSTR szObjectName, LPSTR szDefaultCounterName, LPDWORD pcchBufferSize );
+	// PDH_HLOG hDataSource, LPCSTR szMachineName, LPCSTR szObjectName, PSTR szDefaultCounterName, LPDWORD pcchBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "d1b3de9a-99ab-4339-8e9f-906f5a5d291d")]
 	public static extern Win32Error PdhGetDefaultPerfCounterH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, string szObjectName, [Optional] StringBuilder? szDefaultCounterName, ref uint pcchBufferSize);
@@ -4058,7 +4058,7 @@ public static partial class Pdh
 	/// pcchBufferSize to 0), and the second time to get the data.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhgetdefaultperfobjecta PDH_FUNCTION PdhGetDefaultPerfObjectA(
-	// LPCSTR szDataSource, LPCSTR szMachineName, LPSTR szDefaultObjectName, LPDWORD pcchBufferSize );
+	// LPCSTR szDataSource, LPCSTR szMachineName, PSTR szDefaultObjectName, LPDWORD pcchBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "7c6d4d82-8b60-4422-8108-8ac10f254278")]
 	public static extern Win32Error PdhGetDefaultPerfObject([Optional] string? szDataSource, [Optional] string? szMachineName, [Optional] StringBuilder? szDefaultObjectName, ref uint pcchBufferSize);
@@ -4130,7 +4130,7 @@ public static partial class Pdh
 	/// pcchBufferSize to 0), and the second time to get the data.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhgetdefaultperfobjectha PDH_FUNCTION PdhGetDefaultPerfObjectHA(
-	// PDH_HLOG hDataSource, LPCSTR szMachineName, LPSTR szDefaultObjectName, LPDWORD pcchBufferSize );
+	// PDH_HLOG hDataSource, LPCSTR szMachineName, PSTR szDefaultObjectName, LPDWORD pcchBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "4950d5b7-3a6f-410d-830f-7868aa84f6d5")]
 	public static extern Win32Error PdhGetDefaultPerfObjectH([Optional] PDH_HLOG hDataSource, [Optional] string? szMachineName, [Optional] StringBuilder? szDefaultObjectName, ref uint pcchBufferSize);
@@ -4617,7 +4617,7 @@ public static partial class Pdh
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhlookupperfnamebyindexa PDH_FUNCTION PdhLookupPerfNameByIndexA(
-	// LPCSTR szMachineName, DWORD dwNameIndex, LPSTR szNameBuffer, LPDWORD pcchNameBufferSize );
+	// LPCSTR szMachineName, DWORD dwNameIndex, PSTR szNameBuffer, LPDWORD pcchNameBufferSize );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "6d5e1465-296b-4d8c-b0cb-aefdffb8539e")]
 	public static extern Win32Error PdhLookupPerfNameByIndex([Optional] string? szMachineName, uint dwNameIndex, [Optional] StringBuilder? szNameBuffer, ref uint pcchNameBufferSize);
@@ -4694,7 +4694,7 @@ public static partial class Pdh
 	/// pcchBufferSize to 0), and the second time to get the data.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhmakecounterpatha PDH_FUNCTION PdhMakeCounterPathA(
-	// PPDH_COUNTER_PATH_ELEMENTS_A pCounterPathElements, LPSTR szFullPathBuffer, LPDWORD pcchBufferSize, DWORD dwFlags );
+	// PPDH_COUNTER_PATH_ELEMENTS_A pCounterPathElements, PSTR szFullPathBuffer, LPDWORD pcchBufferSize, DWORD dwFlags );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "f2dc5f77-9f9e-4290-95fa-ce2f1e81fc69")]
 	public static extern Win32Error PdhMakeCounterPath(in PDH_COUNTER_PATH_ELEMENTS pCounterPathElements, [Optional] StringBuilder? szFullPathBuffer, ref uint pcchBufferSize, [Optional] PDH_PATH dwFlags);
@@ -4772,7 +4772,7 @@ public static partial class Pdh
 	/// pcchBufferSize to 0), and the second time to get the data.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhmakecounterpatha PDH_FUNCTION PdhMakeCounterPathA(
-	// PPDH_COUNTER_PATH_ELEMENTS_A pCounterPathElements, LPSTR szFullPathBuffer, LPDWORD pcchBufferSize, DWORD dwFlags );
+	// PPDH_COUNTER_PATH_ELEMENTS_A pCounterPathElements, PSTR szFullPathBuffer, LPDWORD pcchBufferSize, DWORD dwFlags );
 	[PInvokeData("pdh.h", MSDNShortId = "f2dc5f77-9f9e-4290-95fa-ce2f1e81fc69")]
 	public static Win32Error PdhMakeCounterPath(in PDH_COUNTER_PATH_ELEMENTS pCounterPathElements, [Optional] StringBuilder? szFullPathBuffer, ref uint pcchBufferSize, PDH_PATH dwFlags, ushort langId) =>
 		PdhMakeCounterPath(pCounterPathElements, szFullPathBuffer, ref pcchBufferSize, PDH_PATH_LANG_FLAGS(langId, dwFlags));
@@ -5125,7 +5125,7 @@ public static partial class Pdh
 	/// sizes to 0), and the second time to get the data.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhparseinstancenamea PDH_FUNCTION PdhParseInstanceNameA( LPCSTR
-	// szInstanceString, LPSTR szInstanceName, LPDWORD pcchInstanceNameLength, LPSTR szParentName, LPDWORD pcchParentNameLength, LPDWORD
+	// szInstanceString, PSTR szInstanceName, LPDWORD pcchInstanceNameLength, PSTR szParentName, LPDWORD pcchParentNameLength, LPDWORD
 	// lpIndex );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "8304ecee-5141-450a-be11-838b9f52413b")]
@@ -5263,7 +5263,7 @@ public static partial class Pdh
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/nf-pdh-pdhselectdatasourcea PDH_FUNCTION PdhSelectDataSourceA( HWND
-	// hWndOwner, DWORD dwFlags, LPSTR szDataSource, LPDWORD pcchBufferLength );
+	// hWndOwner, DWORD dwFlags, PSTR szDataSource, LPDWORD pcchBufferLength );
 	[DllImport(Lib.Pdh, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("pdh.h", MSDNShortId = "211d4504-e1f9-48a0-8ddd-613f2f183c59")]
 	public static extern Win32Error PdhSelectDataSource([Optional] HWND hWndOwner, PdhSelectDataSourceFlags dwFlags, StringBuilder szDataSource, ref uint pcchBufferLength);
@@ -5572,9 +5572,9 @@ public static partial class Pdh
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/ns-pdh-pdh_browse_dlg_config_a typedef struct _BrowseDlgConfig_A { DWORD
 	// bIncludeInstanceIndex : 1; DWORD bSingleCounterPerAdd : 1; DWORD bSingleCounterPerDialog : 1; DWORD bLocalCountersOnly : 1; DWORD
 	// bWildCardInstances : 1; DWORD bHideDetailBox : 1; DWORD bInitializePath : 1; DWORD bDisableMachineSelection : 1; DWORD
-	// bIncludeCostlyObjects : 1; DWORD bShowObjectBrowser : 1; DWORD bReserved : 22; HWND hWndOwner; LPSTR szDataSource; LPSTR
+	// bIncludeCostlyObjects : 1; DWORD bShowObjectBrowser : 1; DWORD bReserved : 22; HWND hWndOwner; PSTR szDataSource; PSTR
 	// szReturnPathBuffer; DWORD cchReturnPathLength; CounterPathCallBack pCallBack; DWORD_PTR dwCallBackArg; PDH_STATUS CallBackStatus;
-	// DWORD dwDefaultDetailLevel; LPSTR szDialogBoxCaption; } PDH_BROWSE_DLG_CONFIG_A, *PPDH_BROWSE_DLG_CONFIG_A;
+	// DWORD dwDefaultDetailLevel; PSTR szDialogBoxCaption; } PDH_BROWSE_DLG_CONFIG_A, *PPDH_BROWSE_DLG_CONFIG_A;
 	[PInvokeData("pdh.h", MSDNShortId = "8e045e0b-c157-4527-902c-6096c7922642")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PDH_BROWSE_DLG_CONFIG
@@ -5683,9 +5683,9 @@ public static partial class Pdh
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/ns-pdh-pdh_browse_dlg_config_ha typedef struct _BrowseDlgConfig_HA { DWORD
 	// bIncludeInstanceIndex : 1; DWORD bSingleCounterPerAdd : 1; DWORD bSingleCounterPerDialog : 1; DWORD bLocalCountersOnly : 1; DWORD
 	// bWildCardInstances : 1; DWORD bHideDetailBox : 1; DWORD bInitializePath : 1; DWORD bDisableMachineSelection : 1; DWORD
-	// bIncludeCostlyObjects : 1; DWORD bShowObjectBrowser : 1; DWORD bReserved : 22; HWND hWndOwner; PDH_HLOG hDataSource; LPSTR
+	// bIncludeCostlyObjects : 1; DWORD bShowObjectBrowser : 1; DWORD bReserved : 22; HWND hWndOwner; PDH_HLOG hDataSource; PSTR
 	// szReturnPathBuffer; DWORD cchReturnPathLength; CounterPathCallBack pCallBack; DWORD_PTR dwCallBackArg; PDH_STATUS CallBackStatus;
-	// DWORD dwDefaultDetailLevel; LPSTR szDialogBoxCaption; } PDH_BROWSE_DLG_CONFIG_HA, *PPDH_BROWSE_DLG_CONFIG_HA;
+	// DWORD dwDefaultDetailLevel; PSTR szDialogBoxCaption; } PDH_BROWSE_DLG_CONFIG_HA, *PPDH_BROWSE_DLG_CONFIG_HA;
 	[PInvokeData("pdh.h", MSDNShortId = "db30ff94-3238-45a0-a78e-8b3cd00ec79c")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PDH_BROWSE_DLG_CONFIG_H
@@ -5786,9 +5786,9 @@ public static partial class Pdh
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/ns-pdh-pdh_counter_info_a typedef struct _PDH_COUNTER_INFO_A { DWORD
 	// dwLength; DWORD dwType; DWORD CVersion; DWORD CStatus; LONG lScale; LONG lDefaultScale; DWORD_PTR dwUserData; DWORD_PTR
-	// dwQueryUserData; LPSTR szFullPath; union { PDH_DATA_ITEM_PATH_ELEMENTS_A DataItemPath; PDH_COUNTER_PATH_ELEMENTS_A CounterPath;
-	// struct { LPSTR szMachineName; LPSTR szObjectName; LPSTR szInstanceName; LPSTR szParentInstance; DWORD dwInstanceIndex; LPSTR
-	// szCounterName; }; }; LPSTR szExplainText; DWORD DataBuffer[1]; } PDH_COUNTER_INFO_A, *PPDH_COUNTER_INFO_A;
+	// dwQueryUserData; PSTR szFullPath; union { PDH_DATA_ITEM_PATH_ELEMENTS_A DataItemPath; PDH_COUNTER_PATH_ELEMENTS_A CounterPath;
+	// struct { PSTR szMachineName; PSTR szObjectName; PSTR szInstanceName; PSTR szParentInstance; DWORD dwInstanceIndex; PSTR
+	// szCounterName; }; }; PSTR szExplainText; DWORD DataBuffer[1]; } PDH_COUNTER_INFO_A, *PPDH_COUNTER_INFO_A;
 	[PInvokeData("pdh.h", MSDNShortId = "c9ede50e-85de-4a68-b539-54285c2599cb")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PDH_COUNTER_INFO
@@ -5827,40 +5827,40 @@ public static partial class Pdh
 		public IntPtr dwQueryUserData;
 
 		/// <summary><c>Null</c>-terminated string that specifies the full counter path. The string follows this structure in memory.</summary>
-		public LPTSTR szFullPath;
+		public PTSTR szFullPath;
 
 		/// <summary>
 		/// <c>Null</c>-terminated string that contains the name of the computer specified in the counter path. Is <c>NULL</c>, if the
 		/// path does not specify a computer. The string follows this structure in memory.
 		/// </summary>
-		public LPTSTR szMachineName;
+		public PTSTR szMachineName;
 
 		/// <summary>
 		/// <c>Null</c>-terminated string that contains the name of the performance object specified in the counter path. The string
 		/// follows this structure in memory.
 		/// </summary>
-		public LPTSTR szObjectName;
+		public PTSTR szObjectName;
 
 		/// <summary>
 		/// <c>Null</c>-terminated string that contains the name of the object instance specified in the counter path. Is <c>NULL</c>, if
 		/// the path does not specify an instance. The string follows this structure in memory.
 		/// </summary>
-		public LPTSTR szInstanceName;
+		public PTSTR szInstanceName;
 
 		/// <summary>
 		/// <c>Null</c>-terminated string that contains the name of the parent instance specified in the counter path. Is <c>NULL</c>, if
 		/// the path does not specify a parent instance. The string follows this structure in memory.
 		/// </summary>
-		public LPTSTR szParentInstance;
+		public PTSTR szParentInstance;
 
 		/// <summary>Instance index specified in the counter path. Is 0, if the path does not specify an instance index.</summary>
 		public uint dwInstanceIndex;
 
 		/// <summary><c>Null</c>-terminated string that contains the counter name. The string follows this structure in memory.</summary>
-		public LPTSTR szCounterName;
+		public PTSTR szCounterName;
 
 		/// <summary>Help text that describes the counter. Is <c>NULL</c> if the source is a log file.</summary>
-		public LPTSTR szExplainText;
+		public PTSTR szExplainText;
 
 		/// <summary>Start of the string data that is appended to the structure.</summary>
 		public uint DataBuffer;
@@ -5876,9 +5876,9 @@ public static partial class Pdh
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/ns-pdh-pdh_counter_info_a typedef struct _PDH_COUNTER_INFO_A { DWORD
 	// dwLength; DWORD dwType; DWORD CVersion; DWORD CStatus; LONG lScale; LONG lDefaultScale; DWORD_PTR dwUserData; DWORD_PTR
-	// dwQueryUserData; LPSTR szFullPath; union { PDH_DATA_ITEM_PATH_ELEMENTS_A DataItemPath; PDH_COUNTER_PATH_ELEMENTS_A CounterPath;
-	// struct { LPSTR szMachineName; LPSTR szObjectName; LPSTR szInstanceName; LPSTR szParentInstance; DWORD dwInstanceIndex; LPSTR
-	// szCounterName; }; }; LPSTR szExplainText; DWORD DataBuffer[1]; } PDH_COUNTER_INFO_A, *PPDH_COUNTER_INFO_A;
+	// dwQueryUserData; PSTR szFullPath; union { PDH_DATA_ITEM_PATH_ELEMENTS_A DataItemPath; PDH_COUNTER_PATH_ELEMENTS_A CounterPath;
+	// struct { PSTR szMachineName; PSTR szObjectName; PSTR szInstanceName; PSTR szParentInstance; DWORD dwInstanceIndex; PSTR
+	// szCounterName; }; }; PSTR szExplainText; DWORD DataBuffer[1]; } PDH_COUNTER_INFO_A, *PPDH_COUNTER_INFO_A;
 	[PInvokeData("pdh.h", MSDNShortId = "c9ede50e-85de-4a68-b539-54285c2599cb")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PDH_COUNTER_INFO_MGD
@@ -5980,8 +5980,8 @@ public static partial class Pdh
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/ns-pdh-pdh_counter_path_elements_a typedef struct
-	// _PDH_COUNTER_PATH_ELEMENTS_A { LPSTR szMachineName; LPSTR szObjectName; LPSTR szInstanceName; LPSTR szParentInstance; DWORD
-	// dwInstanceIndex; LPSTR szCounterName; } PDH_COUNTER_PATH_ELEMENTS_A, *PPDH_COUNTER_PATH_ELEMENTS_A;
+	// _PDH_COUNTER_PATH_ELEMENTS_A { PSTR szMachineName; PSTR szObjectName; PSTR szInstanceName; PSTR szParentInstance; DWORD
+	// dwInstanceIndex; PSTR szCounterName; } PDH_COUNTER_PATH_ELEMENTS_A, *PPDH_COUNTER_PATH_ELEMENTS_A;
 	[PInvokeData("pdh.h", MSDNShortId = "ffa2a076-7267-406b-8eed-4a49504a7ad6")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PDH_COUNTER_PATH_ELEMENTS
@@ -6012,7 +6012,7 @@ public static partial class Pdh
 
 	/// <summary>The <c>PDH_DATA_ITEM_PATH_ELEMENTS</c> structure contains the path elements of a specific data item.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/ns-pdh-pdh_data_item_path_elements_a typedef struct
-	// _PDH_DATA_ITEM_PATH_ELEMENTS_A { LPSTR szMachineName; GUID ObjectGUID; DWORD dwItemId; LPSTR szInstanceName; }
+	// _PDH_DATA_ITEM_PATH_ELEMENTS_A { PSTR szMachineName; GUID ObjectGUID; DWORD dwItemId; PSTR szInstanceName; }
 	// PDH_DATA_ITEM_PATH_ELEMENTS_A, *PPDH_DATA_ITEM_PATH_ELEMENTS_A;
 	[PInvokeData("pdh.h", MSDNShortId = "7d80d9ac-0123-4743-93a2-fa9d609d81b2")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -6066,16 +6066,16 @@ public static partial class Pdh
 
 		/// <summary>The computed counter value as a <c>LPCSTR</c>. Not supported.</summary>
 		[FieldOffset(8)]
-		public LPSTR AnsiStringValue;
+		public PSTR AnsiStringValue;
 
 		/// <summary>The computed counter value as a <c>LPCWSTR</c>. Not supported.</summary>
 		[FieldOffset(8)]
-		public LPWSTR WideStringValue;
+		public PWSTR WideStringValue;
 	}
 
 	/// <summary>The <c>PDH_FMT_COUNTERVALUE_ITEM</c> structure contains the instance name and formatted value of a counter.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/ns-pdh-pdh_fmt_countervalue_item_a typedef struct
-	// _PDH_FMT_COUNTERVALUE_ITEM_A { LPSTR szName; PDH_FMT_COUNTERVALUE FmtValue; } PDH_FMT_COUNTERVALUE_ITEM_A, *PPDH_FMT_COUNTERVALUE_ITEM_A;
+	// _PDH_FMT_COUNTERVALUE_ITEM_A { PSTR szName; PDH_FMT_COUNTERVALUE FmtValue; } PDH_FMT_COUNTERVALUE_ITEM_A, *PPDH_FMT_COUNTERVALUE_ITEM_A;
 	[PInvokeData("pdh.h", MSDNShortId = "d3bc6ad3-0cab-4843-ae1d-5f384948a1ea")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PDH_FMT_COUNTERVALUE_ITEM
@@ -6125,7 +6125,7 @@ public static partial class Pdh
 
 	/// <summary>The <c>PDH_RAW_COUNTER_ITEM</c> structure contains the instance name and raw value of a counter.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/pdh/ns-pdh-pdh_raw_counter_item_a typedef struct _PDH_RAW_COUNTER_ITEM_A {
-	// LPSTR szName; PDH_RAW_COUNTER RawValue; } PDH_RAW_COUNTER_ITEM_A, *PPDH_RAW_COUNTER_ITEM_A;
+	// PSTR szName; PDH_RAW_COUNTER RawValue; } PDH_RAW_COUNTER_ITEM_A, *PPDH_RAW_COUNTER_ITEM_A;
 	[PInvokeData("pdh.h", MSDNShortId = "602e0d44-3551-4a26-a5b7-8f7015131f9a")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PDH_RAW_COUNTER_ITEM

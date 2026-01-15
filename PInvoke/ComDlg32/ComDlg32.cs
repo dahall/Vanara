@@ -1136,7 +1136,7 @@ public static partial class ComDlg32
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/commdlg/ns-commdlg-choosefonta typedef struct tagCHOOSEFONTA { DWORD
 	// lStructSize; HWND hwndOwner; HDC hDC; LPLOGFONTA lpLogFont; INT iPointSize; DWORD Flags; COLORREF rgbColors; LPARAM lCustData;
-	// LPCFHOOKPROC lpfnHook; LPCSTR lpTemplateName; HINSTANCE hInstance; LPSTR lpszStyle; WORD nFontType; WORD ___MISSING_ALIGNMENT__;
+	// LPCFHOOKPROC lpfnHook; LPCSTR lpTemplateName; HINSTANCE hInstance; PSTR lpszStyle; WORD nFontType; WORD ___MISSING_ALIGNMENT__;
 	// INT nSizeMin; INT nSizeMax; } CHOOSEFONTA;
 	[PInvokeData("commdlg.h", MSDNShortId = "NS:commdlg.tagCHOOSEFONTA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -1441,14 +1441,14 @@ public static partial class ComDlg32
 		public HINSTANCE hInstance;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>
 		/// The style data. If the <c>CF_USESTYLE</c> flag is specified, ChooseFont uses the data in this buffer to initialize the
 		/// <c>Font Style</c> combo box. When the user closes the dialog box, <c>ChooseFont</c> copies the string in the <c>Font
 		/// Style</c> combo box into this buffer.
 		/// </para>
 		/// </summary>
-		public LPTSTR lpszStyle;
+		public PTSTR lpszStyle;
 
 		/// <summary>
 		/// <para>Type: <c>WORD</c></para>
@@ -1572,7 +1572,7 @@ public static partial class ComDlg32
 	/// window of a <c>Find</c> or <c>Replace</c> dialog box.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/commdlg/ns-commdlg-findreplacea typedef struct tagFINDREPLACEA { DWORD
-	// lStructSize; HWND hwndOwner; HINSTANCE hInstance; DWORD Flags; LPSTR lpstrFindWhat; LPSTR lpstrReplaceWith; WORD wFindWhatLen;
+	// lStructSize; HWND hwndOwner; HINSTANCE hInstance; DWORD Flags; PSTR lpstrFindWhat; PSTR lpstrReplaceWith; WORD wFindWhatLen;
 	// WORD wReplaceWithLen; LPARAM lCustData; LPFRHOOKPROC lpfnHook; LPCSTR lpTemplateName; } FINDREPLACEA, *LPFINDREPLACEA;
 	[PInvokeData("commdlg.h", MSDNShortId = "NS:commdlg.tagFINDREPLACEA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -1721,7 +1721,7 @@ public static partial class ComDlg32
 		public FR Flags;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>
 		/// The search string that the user typed in the <c>Find What</c> edit control. You must dynamically allocate the buffer or use
 		/// a global or static array so it does not go out of scope before the dialog box closes. The buffer should be at least 80
@@ -1732,10 +1732,10 @@ public static partial class ComDlg32
 		/// <c>lpstrFindWhat</c> contains the string to be replaced.
 		/// </para>
 		/// </summary>
-		public LPTSTR lpstrFindWhat;
+		public PTSTR lpstrFindWhat;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>
 		/// The replacement string that the user typed in the <c>Replace With</c> edit control. You must dynamically allocate the buffer
 		/// or use a global or static array so it does not go out of scope before the dialog box closes. If the buffer contains a string
@@ -1747,7 +1747,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// <para>The FindText function ignores this member.</para>
 		/// </summary>
-		public LPTSTR lpstrReplaceWith;
+		public PTSTR lpstrReplaceWith;
 
 		/// <summary>
 		/// <para>Type: <c>WORD</c></para>
@@ -1805,7 +1805,7 @@ public static partial class ComDlg32
 	/// notification message uses the OFNOTIFYEX structure.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/commdlg/ns-commdlg-ofnotifya typedef struct _OFNOTIFYA { NMHDR hdr;
-	// LPOPENFILENAMEA lpOFN; LPSTR pszFile; } OFNOTIFYA, *LPOFNOTIFYA;
+	// LPOPENFILENAMEA lpOFN; PSTR pszFile; } OFNOTIFYA, *LPOFNOTIFYA;
 	[PInvokeData("commdlg.h", MSDNShortId = "NS:commdlg._OFNOTIFYA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct OFNOTIFY
@@ -1829,7 +1829,7 @@ public static partial class ComDlg32
 		public IntPtr lpOFN;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>
 		/// The file name for which a network sharing violation has occurred. This member is valid only with the CDN_SHAREVIOLATION
 		/// notification message.
@@ -1891,8 +1891,8 @@ public static partial class ComDlg32
 	/// For compatibility reasons, the Places Bar is hidden if <c>Flags</c> is set to <c>OFN_ENABLEHOOK</c> and <c>lStructSize</c> is <c>OPENFILENAME_SIZE_VERSION_400</c>.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/commdlg/ns-commdlg-openfilenamea typedef struct tagOFNA { DWORD lStructSize;
-	// HWND hwndOwner; HINSTANCE hInstance; LPCSTR lpstrFilter; LPSTR lpstrCustomFilter; DWORD nMaxCustFilter; DWORD nFilterIndex; LPSTR
-	// lpstrFile; DWORD nMaxFile; LPSTR lpstrFileTitle; DWORD nMaxFileTitle; LPCSTR lpstrInitialDir; LPCSTR lpstrTitle; DWORD Flags;
+	// HWND hwndOwner; HINSTANCE hInstance; LPCSTR lpstrFilter; PSTR lpstrCustomFilter; DWORD nMaxCustFilter; DWORD nFilterIndex; PSTR
+	// lpstrFile; DWORD nMaxFile; PSTR lpstrFileTitle; DWORD nMaxFileTitle; LPCSTR lpstrInitialDir; LPCSTR lpstrTitle; DWORD Flags;
 	// WORD nFileOffset; WORD nFileExtension; LPCSTR lpstrDefExt; LPARAM lCustData; LPOFNHOOKPROC lpfnHook; LPCSTR lpTemplateName;
 	// LPEDITMENU lpEditInfo; LPCSTR lpstrPrompt; void *pvReserved; DWORD dwReserved; DWORD FlagsEx; } OPENFILENAMEA, *LPOPENFILENAMEA;
 	[PInvokeData("commdlg.h", MSDNShortId = "NS:commdlg.tagOFNA")]
@@ -1959,7 +1959,7 @@ public static partial class ComDlg32
 		public string? lpstrFilter;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>
 		/// A static buffer that contains a pair of null-terminated filter strings for preserving the filter pattern chosen by the user.
 		/// The first string is your display string that describes the custom filter, and the second string is the filter pattern
@@ -1975,7 +1975,7 @@ public static partial class ComDlg32
 		/// the <c>lpstrCustomFilter</c> buffer.
 		/// </para>
 		/// </summary>
-		public LPTSTR lpstrCustomFilter;
+		public PTSTR lpstrCustomFilter;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -2002,7 +2002,7 @@ public static partial class ComDlg32
 		public uint nFilterIndex;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>
 		/// The file name used to initialize the <c>File Name</c> edit control. The first character of this buffer must be <c>NULL</c>
 		/// if initialization is not necessary. When the GetOpenFileName or GetSaveFileName function returns successfully, this buffer
@@ -2022,7 +2022,7 @@ public static partial class ComDlg32
 		/// bytes or characters.
 		/// </para>
 		/// </summary>
-		public LPTSTR lpstrFile;
+		public PTSTR lpstrFile;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -2036,10 +2036,10 @@ public static partial class ComDlg32
 		public uint nMaxFile;
 
 		/// <summary>
-		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>Type: <c>PTSTR</c></para>
 		/// <para>The file name and extension (without path information) of the selected file. This member can be <c>NULL</c>.</para>
 		/// </summary>
-		public LPTSTR lpstrFileTitle;
+		public PTSTR lpstrFileTitle;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>

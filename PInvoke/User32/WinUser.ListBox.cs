@@ -272,7 +272,7 @@ public static partial class User32
 		/// </para>
 		/// <para><em>lParam</em></para>
 		/// <para>
-		/// A pointer to the buffer that will receive the string; it is type <c>LPTSTR</c> which is subsequently cast to an <c>LPARAM</c>.
+		/// A pointer to the buffer that will receive the string; it is type <c>PTSTR</c> which is subsequently cast to an <c>LPARAM</c>.
 		/// The buffer must have sufficient space for the string and a terminating null character. An <c>LB_GETTEXTLEN</c> message can be
 		/// sent before the <c>LB_GETTEXT</c> message to retrieve the length, in <c>TCHAR</c> s, of the string.
 		/// </para>
@@ -287,7 +287,7 @@ public static partial class User32
 		/// receives the value associated with the item (the item data).
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-gettext
-		[MsgParams(typeof(int), typeof(LPTSTR))]
+		[MsgParams(typeof(int), typeof(PTSTR))]
 		LB_GETTEXT = 0x0189,
 
 		/// <summary>
@@ -476,7 +476,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-dir
-		[MsgParams(typeof(DDL), typeof(LPTSTR))]
+		[MsgParams(typeof(DDL), typeof(PTSTR))]
 		LB_DIR = 0x018D,
 
 		/// <summary>

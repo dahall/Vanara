@@ -65,7 +65,7 @@ public static partial class ClfsW32
 	/// <para>The following list identifies the possible error codes:</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-addlogcontainer CLFSUSER_API BOOL AddLogContainer( [in] HANDLE
-	// hLog, [in, optional] PULONGLONG pcbContainer, [in] LPWSTR pwszContainerPath, [in, out, optional] LPVOID pReserved );
+	// hLog, [in, optional] PULONGLONG pcbContainer, [in] PWSTR pwszContainerPath, [in, out, optional] LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainer")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -115,7 +115,7 @@ public static partial class ClfsW32
 	/// <para>The following list identifies the possible error codes:</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-addlogcontainer CLFSUSER_API BOOL AddLogContainer( [in] HANDLE
-	// hLog, [in, optional] PULONGLONG pcbContainer, [in] LPWSTR pwszContainerPath, [in, out, optional] LPVOID pReserved );
+	// hLog, [in, optional] PULONGLONG pcbContainer, [in] PWSTR pwszContainerPath, [in, out, optional] LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainer")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -177,7 +177,7 @@ public static partial class ClfsW32
 	/// <para>Containers are created and opened in a noncompressed mode, and are initialized with 0 (zeros) when they are created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-addlogcontainerset CLFSUSER_API BOOL AddLogContainerSet( [in]
-	// HANDLE hLog, [in] USHORT cContainer, [in, optional] PULONGLONG pcbContainer, [in] LPWSTR *rgwszContainerPath, [in, out, optional]
+	// HANDLE hLog, [in] USHORT cContainer, [in, optional] PULONGLONG pcbContainer, [in] PWSTR *rgwszContainerPath, [in, out, optional]
 	// LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainerSet")]
@@ -241,7 +241,7 @@ public static partial class ClfsW32
 	/// <para>Containers are created and opened in a noncompressed mode, and are initialized with 0 (zeros) when they are created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-addlogcontainerset CLFSUSER_API BOOL AddLogContainerSet( [in]
-	// HANDLE hLog, [in] USHORT cContainer, [in, optional] PULONGLONG pcbContainer, [in] LPWSTR *rgwszContainerPath, [in, out, optional]
+	// HANDLE hLog, [in] USHORT cContainer, [in, optional] PULONGLONG pcbContainer, [in] PWSTR *rgwszContainerPath, [in, out, optional]
 	// LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainerSet")]
@@ -2449,7 +2449,7 @@ public static partial class ClfsW32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-removelogcontainer CLFSUSER_API BOOL RemoveLogContainer( [in]
-	// HANDLE hLog, [in] LPWSTR pwszContainerPath, [in] BOOL fForce, [in, out, optional] LPVOID pReserved );
+	// HANDLE hLog, [in] PWSTR pwszContainerPath, [in] BOOL fForce, [in, out, optional] LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.RemoveLogContainer")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2505,7 +2505,7 @@ public static partial class ClfsW32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-removelogcontainerset CLFSUSER_API BOOL RemoveLogContainerSet(
-	// [in] HANDLE hLog, [in] USHORT cContainer, [in] LPWSTR *rgwszContainerPath, [in] BOOL fForce, [in, out, optional] LPVOID pReserved );
+	// [in] HANDLE hLog, [in] USHORT cContainer, [in] PWSTR *rgwszContainerPath, [in] BOOL fForce, [in, out, optional] LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.RemoveLogContainerSet")]
 	[return: MarshalAs(UnmanagedType.Bool)]

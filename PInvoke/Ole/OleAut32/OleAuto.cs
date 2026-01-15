@@ -1983,7 +1983,7 @@ public static partial class OleAut32
 	public struct METHODDATA
 	{
 		/// <summary>The method name.</summary>
-		public LPWSTR szName;
+		public PWSTR szName;
 
 		/// <summary>An array of method parameters.</summary>
 		public IntPtr ppdata;
@@ -2111,7 +2111,7 @@ public static partial class OleAut32
 		/// control characters, and 32 or fewer characters. The name should be localized because each type description provides names
 		/// for a particular locale.
 		/// </summary>
-		public LPWSTR szName;
+		public PWSTR szName;
 
 		/// <summary>The parameter type. If more than one parameter type is accepted, VT_VARIANT should be specified.</summary>
 		public VARTYPE vt;

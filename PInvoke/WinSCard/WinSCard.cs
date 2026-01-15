@@ -1883,7 +1883,7 @@ public static partial class WinSCard
 	/// a valid handle obtained from a previous call to the SCardEstablishContext function.
 	/// </para>
 	/// <para>
-	/// <code>LPTSTR szProvider = NULL; LPTSTR szCardName = _T("WindowsCard"); DWORD chProvider = SCARD_AUTOALLOCATE; LONG lReturn = SCARD_S_SUCCESS; // Retrieve the provider name. // hContext was set by SCardEstablishContext. lReturn = SCardGetCardTypeProviderName(hContext, szCardName, SCARD_PROVIDER_CSP, (LPTSTR)&amp;szProvider, &amp;chProvider); if (SCARD_S_SUCCESS == lReturn) { BOOL fSts = TRUE; HCRYPTPROV hProv = NULL; // Acquire a Cryptographic operation context. fSts = CryptAcquireContext(&amp;hProv, NULL, szProvider, PROV_RSA_FULL, 0); // Perform Cryptographic operations with smart card // ... // Free memory allocated by SCardGetCardTypeProviderName. lReturn = SCardFreeMemory(hContext, szProvider); }</code>
+	/// <code>PTSTR szProvider = NULL; PTSTR szCardName = _T("WindowsCard"); DWORD chProvider = SCARD_AUTOALLOCATE; LONG lReturn = SCARD_S_SUCCESS; // Retrieve the provider name. // hContext was set by SCardEstablishContext. lReturn = SCardGetCardTypeProviderName(hContext, szCardName, SCARD_PROVIDER_CSP, (PTSTR)&amp;szProvider, &amp;chProvider); if (SCARD_S_SUCCESS == lReturn) { BOOL fSts = TRUE; HCRYPTPROV hProv = NULL; // Acquire a Cryptographic operation context. fSts = CryptAcquireContext(&amp;hProv, NULL, szProvider, PROV_RSA_FULL, 0); // Perform Cryptographic operations with smart card // ... // Free memory allocated by SCardGetCardTypeProviderName. lReturn = SCardFreeMemory(hContext, szProvider); }</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>
@@ -2059,7 +2059,7 @@ public static partial class WinSCard
 	/// </para>
 	/// <para>Examples</para>
 	/// <para>
-	/// <code> LONG lReturn; LPTSTR szReaderName = "USB Smart Card Reader 0"; WCHAR szDeviceInstanceId[256]; DWORD cchDeviceInstanceId = 256; // Retrieve the reader's device instance ID. // hContext was set by a previous call to SCardEstablishContext. lReturn = SCardGetReaderDeviceInstanceId (hContext, szReaderName, szDeviceInstanceId, &amp;cchDeviceInstanceId); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardGetReaderDeviceInstanceId - %x\n", lReturn); // Take appropriate action. }</code>
+	/// <code> LONG lReturn; PTSTR szReaderName = "USB Smart Card Reader 0"; WCHAR szDeviceInstanceId[256]; DWORD cchDeviceInstanceId = 256; // Retrieve the reader's device instance ID. // hContext was set by a previous call to SCardEstablishContext. lReturn = SCardGetReaderDeviceInstanceId (hContext, szReaderName, szDeviceInstanceId, &amp;cchDeviceInstanceId); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardGetReaderDeviceInstanceId - %x\n", lReturn); // Take appropriate action. }</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>
@@ -2072,7 +2072,7 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardgetreaderdeviceinstanceida LONG
-	// SCardGetReaderDeviceInstanceIdA( [in] SCARDCONTEXT hContext, [in] LPCSTR szReaderName, [out, optional] LPSTR szDeviceInstanceId, [in,
+	// SCardGetReaderDeviceInstanceIdA( [in] SCARDCONTEXT hContext, [in] LPCSTR szReaderName, [out, optional] PSTR szDeviceInstanceId, [in,
 	// out] LPDWORD pcchDeviceInstanceId );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardGetReaderDeviceInstanceIdA")]
@@ -2119,7 +2119,7 @@ public static partial class WinSCard
 	/// <para>The icon should be 256 × 256 pixels with no alpha channel.</para>
 	/// <para>Examples</para>
 	/// <para>
-	/// <code>PBYTE pbIcon = NULL; DWORD cbIcon = SCARD_AUTOALLOCATE; DWORD i; LONG lReturn; LPTSTR szReaderName = "USB Smart Card Reader 0"; // Retrieve the reader's icon. // hContext was set by a previous call to SCardEstablishContext. lReturn = SCardGetReaderIcon(hContext, szReaderName, (PBYTE)&amp;pbIcon, &amp;cbIcon); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardGetReaderIcon - %x\n", lReturn); // Take appropriate action. } else { // Free the memory when done. lReturn = SCardFreeMemory(hContext, pbIcon); }</code>
+	/// <code>PBYTE pbIcon = NULL; DWORD cbIcon = SCARD_AUTOALLOCATE; DWORD i; LONG lReturn; PTSTR szReaderName = "USB Smart Card Reader 0"; // Retrieve the reader's icon. // hContext was set by a previous call to SCardEstablishContext. lReturn = SCardGetReaderIcon(hContext, szReaderName, (PBYTE)&amp;pbIcon, &amp;cbIcon); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardGetReaderIcon - %x\n", lReturn); // Take appropriate action. } else { // Free the memory when done. lReturn = SCardFreeMemory(hContext, pbIcon); }</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>
@@ -2657,7 +2657,7 @@ public static partial class WinSCard
 	/// <para>Examples</para>
 	/// <para>The following example shows listing of the smart cards.</para>
 	/// <para>
-	/// <code>LPTSTR pmszCards = NULL; LPTSTR pCard; LONG lReturn; DWORD cch = SCARD_AUTOALLOCATE; // Retrieve the list of cards. lReturn = SCardListCards(NULL, NULL, NULL, NULL, (LPTSTR)&amp;pmszCards, &amp;cch ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardListCards\n"); exit(1); // Or other appropriate error action } // Do something with the multi string of cards. // Output the values. // A double-null terminates the list of values. pCard = pmszCards; while ( '\0' != *pCard ) { // Display the value. printf("%S\n", pCard ); // Advance to the next value. pCard = pCard + wcslen(pCard) + 1; } // Remember to free pmszCards (by calling SCardFreeMemory). // ...</code>
+	/// <code>PTSTR pmszCards = NULL; PTSTR pCard; LONG lReturn; DWORD cch = SCARD_AUTOALLOCATE; // Retrieve the list of cards. lReturn = SCardListCards(NULL, NULL, NULL, NULL, (PTSTR)&amp;pmszCards, &amp;cch ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardListCards\n"); exit(1); // Or other appropriate error action } // Do something with the multi string of cards. // Output the values. // A double-null terminates the list of values. pCard = pmszCards; while ( '\0' != *pCard ) { // Display the value. printf("%S\n", pCard ); // Advance to the next value. pCard = pCard + wcslen(pCard) + 1; } // Remember to free pmszCards (by calling SCardFreeMemory). // ...</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>
@@ -3011,7 +3011,7 @@ public static partial class WinSCard
 	/// <para>Examples</para>
 	/// <para>The following example shows listing the reader groups.</para>
 	/// <para>
-	/// <code>LPTSTR pmszReaderGroups = NULL; LPTSTR pReaderGroup; LONG lReturn; DWORD cch = SCARD_AUTOALLOCATE; // Retrieve the list the reader groups. // hSC was set by a previous call to SCardEstablishContext. lReturn = SCardListReaderGroups(hSC, (LPTSTR)&amp;pmszReaderGroups, &amp;cch ); if ( SCARD_S_SUCCESS != lReturn ) printf("Failed SCardListReaderGroups\n"); else { // Do something with the multi string of reader groups. // Output the values. // A double-null terminates the list of values. pReaderGroup = pmszReaderGroups; while ( '\0' != *pReaderGroup ) { // Display the value. printf("%S\n", pReaderGroup ); // Advance to the next value. pReaderGroup = pReaderGroup + wcslen((wchar_t *) pReaderGroup) + 1; } // Remember to free pmszReaderGroups by a call to SCardFreeMemory. // ... }</code>
+	/// <code>PTSTR pmszReaderGroups = NULL; PTSTR pReaderGroup; LONG lReturn; DWORD cch = SCARD_AUTOALLOCATE; // Retrieve the list the reader groups. // hSC was set by a previous call to SCardEstablishContext. lReturn = SCardListReaderGroups(hSC, (PTSTR)&amp;pmszReaderGroups, &amp;cch ); if ( SCARD_S_SUCCESS != lReturn ) printf("Failed SCardListReaderGroups\n"); else { // Do something with the multi string of reader groups. // Output the values. // A double-null terminates the list of values. pReaderGroup = pmszReaderGroups; while ( '\0' != *pReaderGroup ) { // Display the value. printf("%S\n", pReaderGroup ); // Advance to the next value. pReaderGroup = pReaderGroup + wcslen((wchar_t *) pReaderGroup) + 1; } // Remember to free pmszReaderGroups by a call to SCardFreeMemory. // ... }</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>
@@ -3024,7 +3024,7 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardlistreadergroupsa LONG SCardListReaderGroupsA( [in]
-	// SCARDCONTEXT hContext, [out] LPSTR mszGroups, [in, out] LPDWORD pcchGroups );
+	// SCARDCONTEXT hContext, [out] PSTR mszGroups, [in, out] LPDWORD pcchGroups );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListReaderGroupsA")]
 	public static extern SCARD_RET SCardListReaderGroups([In, Optional] SCARDCONTEXT hContext, [Out] IntPtr mszGroups, ref uint pcchGroups);
@@ -3197,7 +3197,7 @@ public static partial class WinSCard
 	/// <para>Examples</para>
 	/// <para>The following example shows listing the readers.</para>
 	/// <para>
-	/// <code>LPTSTR pmszReaders = NULL; LPTSTR pReader; LONG lReturn, lReturn2; DWORD cch = SCARD_AUTOALLOCATE; // Retrieve the list the readers. // hSC was set by a previous call to SCardEstablishContext. lReturn = SCardListReaders(hSC, NULL, (LPTSTR)&amp;pmszReaders, &amp;cch ); switch( lReturn ) { case SCARD_E_NO_READERS_AVAILABLE: printf("Reader is not in groups.\n"); // Take appropriate action. // ... break; case SCARD_S_SUCCESS: // Do something with the multi string of readers. // Output the values. // A double-null terminates the list of values. pReader = pmszReaders; while ( '\0' != *pReader ) { // Display the value. printf("Reader: %S\n", pReader ); // Advance to the next value. pReader = pReader + wcslen((wchar_t *)pReader) + 1; } // Free the memory. lReturn2 = SCardFreeMemory( hSC, pmszReaders ); if ( SCARD_S_SUCCESS != lReturn2 ) printf("Failed SCardFreeMemory\n"); break; default: printf("Failed SCardListReaders\n"); // Take appropriate action. // ... break; }</code>
+	/// <code>PTSTR pmszReaders = NULL; PTSTR pReader; LONG lReturn, lReturn2; DWORD cch = SCARD_AUTOALLOCATE; // Retrieve the list the readers. // hSC was set by a previous call to SCardEstablishContext. lReturn = SCardListReaders(hSC, NULL, (PTSTR)&amp;pmszReaders, &amp;cch ); switch( lReturn ) { case SCARD_E_NO_READERS_AVAILABLE: printf("Reader is not in groups.\n"); // Take appropriate action. // ... break; case SCARD_S_SUCCESS: // Do something with the multi string of readers. // Output the values. // A double-null terminates the list of values. pReader = pmszReaders; while ( '\0' != *pReader ) { // Display the value. printf("Reader: %S\n", pReader ); // Advance to the next value. pReader = pReader + wcslen((wchar_t *)pReader) + 1; } // Free the memory. lReturn2 = SCardFreeMemory( hSC, pmszReaders ); if ( SCARD_S_SUCCESS != lReturn2 ) printf("Failed SCardFreeMemory\n"); break; default: printf("Failed SCardListReaders\n"); // Take appropriate action. // ... break; }</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>
@@ -3210,7 +3210,7 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardlistreadersa LONG SCardListReadersA( [in] SCARDCONTEXT
-	// hContext, [in, optional] LPCSTR mszGroups, [out] LPSTR mszReaders, [in, out] LPDWORD pcchReaders );
+	// hContext, [in, optional] LPCSTR mszGroups, [out] PSTR mszReaders, [in, out] LPDWORD pcchReaders );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListReadersA")]
 	public static extern SCARD_RET SCardListReaders([In, Optional] SCARDCONTEXT hContext,
@@ -3352,8 +3352,8 @@ public static partial class WinSCard
 	/// <para>
 	/// <code language="cpp"><![CDATA[szDeviceInstanceIdcchReaderNameLONG     lReturn, lReturn2;
 	/// 
-	/// LPTSTR   pmszReaders = NULL;
-	/// LPTSTR   pReader = NULL;WCHAR
+	/// PTSTR   pmszReaders = NULL;
+	/// PTSTR   pReader = NULL;WCHAR
 	/// DWORD    cchReaderName = SCARD_AUTOALLOCATE;
 	/// 
 	/// // Retrieve the reader’s name from it’s device instance ID
@@ -3362,7 +3362,7 @@ public static partial class WinSCard
 	/// // szDeviceInstanceId was obtained by calling SetupDiGetDeviceInstanceId
 	/// lReturn = SCardListReadersWithDeviceInstanceId (hContext,
 	///                          szDeviceInstanceId,
-	///                          (LPTSTR)&pmszReaders,
+	///                          (PTSTR)&pmszReaders,
 	///                          &cchReaderName);
 	/// 
 	/// switch( lReturn )
@@ -3409,7 +3409,7 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardlistreaderswithdeviceinstanceida LONG
-	// SCardListReadersWithDeviceInstanceIdA( [in] SCARDCONTEXT hContext, [in] LPCSTR szDeviceInstanceId, [out, optional] LPSTR mszReaders,
+	// SCardListReadersWithDeviceInstanceIdA( [in] SCARDCONTEXT hContext, [in] LPCSTR szDeviceInstanceId, [out, optional] PSTR mszReaders,
 	// [in, out] LPDWORD pcchReaders );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardListReadersWithDeviceInstanceIdA")]
@@ -3505,7 +3505,7 @@ public static partial class WinSCard
 	/// <para>Examples</para>
 	/// <para>The following example shows locating smart cards.</para>
 	/// <para>
-	/// <code>// Copyright (C) Microsoft. All rights reserved. #include &lt;stdio.h&gt; #include &lt;winscard.h&gt; #include &lt;tchar.h&gt; #pragma comment(lib, "winscard.lib") HRESULT __cdecl main() { HRESULT hr = S_OK; LPTSTR szReaders, szRdr; DWORD cchReaders = SCARD_AUTOALLOCATE; DWORD dwI, dwRdrCount; SCARD_READERSTATE rgscState[MAXIMUM_SMARTCARD_READERS]; TCHAR szCard[MAX_PATH]; SCARDCONTEXT hSC; LONG lReturn; // Establish the card to watch for. // Multiple cards can be looked for, but // this sample looks for only one card. _tcscat_s ( szCard, MAX_PATH * sizeof(TCHAR), TEXT("GemSAFE")); szCard[lstrlen(szCard) + 1] = 0; // Double trailing zero. // Establish a context. lReturn = SCardEstablishContext(SCARD_SCOPE_USER, NULL, NULL, &amp;hSC ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardEstablishContext\n"); exit(1); } // Determine which readers are available. lReturn = SCardListReaders(hSC, NULL, (LPTSTR)&amp;szReaders, &amp;cchReaders ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardListReaders\n"); exit(1); } // Place the readers into the state array. szRdr = szReaders; for ( dwI = 0; dwI &lt; MAXIMUM_SMARTCARD_READERS; dwI++ ) { if ( 0 == *szRdr ) break; rgscState[dwI].szReader = szRdr; rgscState[dwI].dwCurrentState = SCARD_STATE_UNAWARE; szRdr += lstrlen(szRdr) + 1; } dwRdrCount = dwI; // If any readers are available, proceed. if ( 0 != dwRdrCount ) { for (;;) { // Look for the card. lReturn = SCardLocateCards(hSC, szCard, rgscState, dwRdrCount ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardLocateCards\n"); exit(1); } // Look through the array of readers. for ( dwI=0; dwI &lt; dwRdrCount; dwI++) { if ( 0 != ( SCARD_STATE_ATRMATCH &amp; rgscState[dwI].dwEventState)) { _tprintf( TEXT("Card '%s' found in reader '%s'.\n"), szCard, rgscState[dwI].szReader ); SCardFreeMemory( hSC, szReaders ); return 0; // Context will be release automatically. } // Update the state. rgscState[dwI].dwCurrentState = rgscState[dwI].dwEventState; } // Card not found yet; wait until there is a change. lReturn = SCardGetStatusChange(hSC, INFINITE, // infinite wait rgscState, dwRdrCount ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardGetStatusChange\n"); exit(1); } } // for (;;) } else printf("No readers available\n"); // Release the context. lReturn = SCardReleaseContext(hSC); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardReleaseContext\n"); exit(1); } SCardFreeMemory( hSC, szReaders ); return hr; }</code>
+	/// <code>// Copyright (C) Microsoft. All rights reserved. #include &lt;stdio.h&gt; #include &lt;winscard.h&gt; #include &lt;tchar.h&gt; #pragma comment(lib, "winscard.lib") HRESULT __cdecl main() { HRESULT hr = S_OK; PTSTR szReaders, szRdr; DWORD cchReaders = SCARD_AUTOALLOCATE; DWORD dwI, dwRdrCount; SCARD_READERSTATE rgscState[MAXIMUM_SMARTCARD_READERS]; TCHAR szCard[MAX_PATH]; SCARDCONTEXT hSC; LONG lReturn; // Establish the card to watch for. // Multiple cards can be looked for, but // this sample looks for only one card. _tcscat_s ( szCard, MAX_PATH * sizeof(TCHAR), TEXT("GemSAFE")); szCard[lstrlen(szCard) + 1] = 0; // Double trailing zero. // Establish a context. lReturn = SCardEstablishContext(SCARD_SCOPE_USER, NULL, NULL, &amp;hSC ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardEstablishContext\n"); exit(1); } // Determine which readers are available. lReturn = SCardListReaders(hSC, NULL, (PTSTR)&amp;szReaders, &amp;cchReaders ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardListReaders\n"); exit(1); } // Place the readers into the state array. szRdr = szReaders; for ( dwI = 0; dwI &lt; MAXIMUM_SMARTCARD_READERS; dwI++ ) { if ( 0 == *szRdr ) break; rgscState[dwI].szReader = szRdr; rgscState[dwI].dwCurrentState = SCARD_STATE_UNAWARE; szRdr += lstrlen(szRdr) + 1; } dwRdrCount = dwI; // If any readers are available, proceed. if ( 0 != dwRdrCount ) { for (;;) { // Look for the card. lReturn = SCardLocateCards(hSC, szCard, rgscState, dwRdrCount ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardLocateCards\n"); exit(1); } // Look through the array of readers. for ( dwI=0; dwI &lt; dwRdrCount; dwI++) { if ( 0 != ( SCARD_STATE_ATRMATCH &amp; rgscState[dwI].dwEventState)) { _tprintf( TEXT("Card '%s' found in reader '%s'.\n"), szCard, rgscState[dwI].szReader ); SCardFreeMemory( hSC, szReaders ); return 0; // Context will be release automatically. } // Update the state. rgscState[dwI].dwCurrentState = rgscState[dwI].dwEventState; } // Card not found yet; wait until there is a change. lReturn = SCardGetStatusChange(hSC, INFINITE, // infinite wait rgscState, dwRdrCount ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardGetStatusChange\n"); exit(1); } } // for (;;) } else printf("No readers available\n"); // Release the context. lReturn = SCardReleaseContext(hSC); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardReleaseContext\n"); exit(1); } SCardFreeMemory( hSC, szReaders ); return hr; }</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>
@@ -3626,11 +3626,11 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardreadcachea LONG SCardReadCacheA( [in] SCARDCONTEXT
-	// hContext, [in] UUID *CardIdentifier, [in] DWORD FreshnessCounter, [in] LPSTR LookupName, [out] PBYTE Data, [out] DWORD *DataLen );
+	// hContext, [in] UUID *CardIdentifier, [in] DWORD FreshnessCounter, [in] PSTR LookupName, [out] PBYTE Data, [out] DWORD *DataLen );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardReadCacheA")]
 	public static extern SCARD_RET SCardReadCache([In] SCARDCONTEXT hContext, in Guid CardIdentifier, [In] uint FreshnessCounter,
-		[In] SafeLPTSTR LookupName, [Out] IntPtr Data, out uint DataLen);
+		[In] SafePTSTR LookupName, [Out] IntPtr Data, out uint DataLen);
 
 	/// <summary>
 	/// The <c>SCardReconnect</c> function reestablishes an existing connection between the calling application and a smart card. This
@@ -3994,7 +3994,7 @@ public static partial class WinSCard
 	/// <para>Examples</para>
 	/// <para>The following example shows how to specify the card type provider name.</para>
 	/// <para>
-	/// <code>LPTSTR szNewProvName = _T("My Provider Name"); LPTSTR szCardName = _T("WindowsCard"); LONG lReturn = SCARD_S_SUCCESS; // Set the card type provider name. // hContext was set by SCardEstablishContext. lReturn = SCardSetCardTypeProviderName(hContext, szCardName, SCARD_PROVIDER_CSP, szNewProvName); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardSetCardTypeProviderName - %x\n", lReturn); exit(1); }</code>
+	/// <code>PTSTR szNewProvName = _T("My Provider Name"); PTSTR szCardName = _T("WindowsCard"); LONG lReturn = SCARD_S_SUCCESS; // Set the card type provider name. // hContext was set by SCardEstablishContext. lReturn = SCardSetCardTypeProviderName(hContext, szCardName, SCARD_PROVIDER_CSP, szNewProvName); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardSetCardTypeProviderName - %x\n", lReturn); exit(1); }</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>
@@ -4112,7 +4112,7 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardstatusa LONG SCardStatusA( [in] SCARDHANDLE hCard, [out]
-	// LPSTR mszReaderNames, [in, out, optional] LPDWORD pcchReaderLen, [out, optional] LPDWORD pdwState, [out, optional] LPDWORD
+	// PSTR mszReaderNames, [in, out, optional] LPDWORD pcchReaderLen, [out, optional] LPDWORD pdwState, [out, optional] LPDWORD
 	// pdwProtocol, [out] LPBYTE pbAtr, [in, out, optional] LPDWORD pcbAtrLen );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardStatusA")]
@@ -4257,7 +4257,7 @@ public static partial class WinSCard
 	/// <para>Examples</para>
 	/// <para>The following example shows how to display the smart card <c>Select Card</c> dialog box.</para>
 	/// <para>
-	/// <code>SCARDCONTEXT hSC; OPENCARDNAME_EX dlgStruct; WCHAR szReader[256]; WCHAR szCard[256]; LONG lReturn; // Establish a context. // It will be assigned to the structure's hSCardContext field. lReturn = SCardEstablishContext(SCARD_SCOPE_USER, NULL, NULL, &amp;hSC ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardEstablishContext\n"); exit(1); } // Initialize the structure. memset(&amp;dlgStruct, 0, sizeof(dlgStruct)); dlgStruct.dwStructSize = sizeof(dlgStruct); dlgStruct.hSCardContext = hSC; dlgStruct.dwFlags = SC_DLG_FORCE_UI; dlgStruct.lpstrRdr = (LPSTR) szReader; dlgStruct.nMaxRdr = 256; dlgStruct.lpstrCard = (LPSTR) szCard; dlgStruct.nMaxCard = 256; dlgStruct.lpstrTitle = (LPSTR) "My Select Card Title"; // Display the select card dialog box. lReturn = SCardUIDlgSelectCard(&amp;dlgStruct); if ( SCARD_S_SUCCESS != lReturn ) printf("Failed SCardUIDlgSelectCard - %x\n", lReturn ); else printf("Reader: %S\nCard: %S\n", szReader, szCard ); // Release the context (by SCardReleaseContext - not shown here).</code>
+	/// <code>SCARDCONTEXT hSC; OPENCARDNAME_EX dlgStruct; WCHAR szReader[256]; WCHAR szCard[256]; LONG lReturn; // Establish a context. // It will be assigned to the structure's hSCardContext field. lReturn = SCardEstablishContext(SCARD_SCOPE_USER, NULL, NULL, &amp;hSC ); if ( SCARD_S_SUCCESS != lReturn ) { printf("Failed SCardEstablishContext\n"); exit(1); } // Initialize the structure. memset(&amp;dlgStruct, 0, sizeof(dlgStruct)); dlgStruct.dwStructSize = sizeof(dlgStruct); dlgStruct.hSCardContext = hSC; dlgStruct.dwFlags = SC_DLG_FORCE_UI; dlgStruct.lpstrRdr = (PSTR) szReader; dlgStruct.nMaxRdr = 256; dlgStruct.lpstrCard = (PSTR) szCard; dlgStruct.nMaxCard = 256; dlgStruct.lpstrTitle = (PSTR) "My Select Card Title"; // Display the select card dialog box. lReturn = SCardUIDlgSelectCard(&amp;dlgStruct); if ( SCARD_S_SUCCESS != lReturn ) printf("Failed SCardUIDlgSelectCard - %x\n", lReturn ); else printf("Reader: %S\nCard: %S\n", szReader, szCard ); // Release the context (by SCardReleaseContext - not shown here).</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>
@@ -4315,7 +4315,7 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winscard/nf-winscard-scardwritecachea LONG SCardWriteCacheA( [in] SCARDCONTEXT
-	// hContext, [in] UUID *CardIdentifier, [in] DWORD FreshnessCounter, [in] LPSTR LookupName, [in] PBYTE Data, [in] DWORD DataLen );
+	// hContext, [in] UUID *CardIdentifier, [in] DWORD FreshnessCounter, [in] PSTR LookupName, [in] PBYTE Data, [in] DWORD DataLen );
 	[DllImport(Lib_Winscard, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winscard.h", MSDNShortId = "NF:winscard.SCardWriteCacheA")]
 	public static extern SCARD_RET SCardWriteCache([In] SCARDCONTEXT hContext, in Guid CardIdentifier, [In] uint FreshnessCounter,
@@ -4350,7 +4350,7 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winscard/ns-winscard-opencard_search_criteriaa typedef struct { DWORD dwStructSize;
-	// LPSTR lpstrGroupNames; DWORD nMaxGroupNames; LPCGUID rgguidInterfaces; DWORD cguidInterfaces; LPSTR lpstrCardNames; DWORD
+	// PSTR lpstrGroupNames; DWORD nMaxGroupNames; LPCGUID rgguidInterfaces; DWORD cguidInterfaces; PSTR lpstrCardNames; DWORD
 	// nMaxCardNames; LPOCNCHKPROC lpfnCheck; LPOCNCONNPROCA lpfnConnect; LPOCNDSCPROC lpfnDisconnect; LPVOID pvUserData; DWORD dwShareMode;
 	// DWORD dwPreferredProtocols; } OPENCARD_SEARCH_CRITERIAA, *POPENCARD_SEARCH_CRITERIAA, *LPOPENCARD_SEARCH_CRITERIAA;
 	[PInvokeData("winscard.h", MSDNShortId = "NS:winscard.__unnamed_struct_2")]
@@ -4442,8 +4442,8 @@ public static partial class WinSCard
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winscard/ns-winscard-opencardnamea typedef struct { DWORD dwStructSize; HWND
-	// hwndOwner; SCARDCONTEXT hSCardContext; LPSTR lpstrGroupNames; DWORD nMaxGroupNames; LPSTR lpstrCardNames; DWORD nMaxCardNames; LPCGUID
-	// rgguidInterfaces; DWORD cguidInterfaces; LPSTR lpstrRdr; DWORD nMaxRdr; LPSTR lpstrCard; DWORD nMaxCard; LPCSTR lpstrTitle; DWORD
+	// hwndOwner; SCARDCONTEXT hSCardContext; PSTR lpstrGroupNames; DWORD nMaxGroupNames; PSTR lpstrCardNames; DWORD nMaxCardNames; LPCGUID
+	// rgguidInterfaces; DWORD cguidInterfaces; PSTR lpstrRdr; DWORD nMaxRdr; PSTR lpstrCard; DWORD nMaxCard; LPCSTR lpstrTitle; DWORD
 	// dwFlags; LPVOID pvUserData; DWORD dwShareMode; DWORD dwPreferredProtocols; DWORD dwActiveProtocol; LPOCNCONNPROCA lpfnConnect;
 	// LPOCNCHKPROC lpfnCheck; LPOCNDSCPROC lpfnDisconnect; SCARDHANDLE hCardHandle; } OPENCARDNAMEA, *POPENCARDNAMEA, *LPOPENCARDNAMEA;
 	[PInvokeData("winscard.h", MSDNShortId = "NS:winscard.__unnamed_struct_8")]
@@ -4628,7 +4628,7 @@ public static partial class WinSCard
 	// https://docs.microsoft.com/en-us/windows/win32/api/winscard/ns-winscard-opencardname_exa typedef struct { DWORD dwStructSize;
 	// SCARDCONTEXT hSCardContext; HWND hwndOwner; DWORD dwFlags; LPCSTR lpstrTitle; LPCSTR lpstrSearchDesc; HICON hIcon;
 	// POPENCARD_SEARCH_CRITERIAA pOpenCardSearchCriteria; LPOCNCONNPROCA lpfnConnect; LPVOID pvUserData; DWORD dwShareMode; DWORD
-	// dwPreferredProtocols; LPSTR lpstrRdr; DWORD nMaxRdr; LPSTR lpstrCard; DWORD nMaxCard; DWORD dwActiveProtocol; SCARDHANDLE hCardHandle;
+	// dwPreferredProtocols; PSTR lpstrRdr; DWORD nMaxRdr; PSTR lpstrCard; DWORD nMaxCard; DWORD dwActiveProtocol; SCARDHANDLE hCardHandle;
 	// } OPENCARDNAME_EXA, *POPENCARDNAME_EXA, *LPOPENCARDNAME_EXA;
 	[PInvokeData("winscard.h", MSDNShortId = "NS:winscard.__unnamed_struct_4")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]

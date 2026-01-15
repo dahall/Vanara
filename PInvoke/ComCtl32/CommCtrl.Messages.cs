@@ -133,7 +133,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ccm-setwindowtheme
-		[MsgParams(null, typeof(LPWSTR), LResultType = null)]
+		[MsgParams(null, typeof(PWSTR), LResultType = null)]
 		CCM_SETWINDOWTHEME = CCM_FIRST + 0xb,
 
 		/// <summary>

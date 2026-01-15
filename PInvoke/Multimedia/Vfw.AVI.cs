@@ -257,7 +257,7 @@ public static partial class AviFil32
 	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-avibuildfiltera HRESULT AVIBuildFilterA( LPSTR lpszFilter, LONG
+	// https://docs.microsoft.com/en-us/windows/win32/api/vfw/nf-vfw-avibuildfiltera HRESULT AVIBuildFilterA( PSTR lpszFilter, LONG
 	// cbFilter, BOOL fSaving );
 	[DllImport(Lib_Avifil32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("vfw.h", MSDNShortId = "NF:vfw.AVIBuildFilterA")]

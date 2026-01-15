@@ -16,12 +16,12 @@ public class TaskDialogTests
 		Assert.That(ThemeEnablement.SupportsVisualStyles, Is.True);
 
 		TASKDIALOG_BUTTON[] buttons = [
-			new() { nButtonID = 101, pszButtonText = new SafeLPTSTR("Basic File Open") },
-			new() { nButtonID = 102, pszButtonText = new SafeLPTSTR("Add Items to Common Places") },
-			new() { nButtonID = 103, pszButtonText = new SafeLPTSTR("Add Custom Controls") },
-			new() { nButtonID = 104, pszButtonText = new SafeLPTSTR("Change Property Order") },
-			new() { nButtonID = 105, pszButtonText = new SafeLPTSTR("Write Properties Using Handlers") },
-			new() { nButtonID = 106, pszButtonText = new SafeLPTSTR("Write Properties without Using Handlers") },
+			new() { nButtonID = 101, pszButtonText = new SafePTSTR("Basic File Open") },
+			new() { nButtonID = 102, pszButtonText = new SafePTSTR("Add Items to Common Places") },
+			new() { nButtonID = 103, pszButtonText = new SafePTSTR("Add Custom Controls") },
+			new() { nButtonID = 104, pszButtonText = new SafePTSTR("Change Property Order") },
+			new() { nButtonID = 105, pszButtonText = new SafePTSTR("Write Properties Using Handlers") },
+			new() { nButtonID = 106, pszButtonText = new SafePTSTR("Write Properties without Using Handlers") },
 		];
 
 		TASKDIALOGCONFIG taskDialogParams = new()

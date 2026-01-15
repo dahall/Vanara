@@ -681,7 +681,7 @@ public static partial class PropSys
 	/// <para>A flag that specifies the format to apply to the property string. See PROPDESC_FORMAT_FLAGS for possible values.</para>
 	/// </param>
 	/// <param name="pwszText">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>PWSTR</c></para>
 	/// <para>
 	/// When the function returns, contains a pointer to the formatted value as a null-terminated, Unicode string. The calling
 	/// application is responsible for allocating memory for the buffer before it calls PSFormatForDisplay.
@@ -888,7 +888,7 @@ public static partial class PropSys
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psformatfordisplay PSSTDAPI PSFormatForDisplay(
-	// REFPROPERTYKEY propkey, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags, LPWSTR pwszText, DWORD cchText );
+	// REFPROPERTYKEY propkey, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags, PWSTR pwszText, DWORD cchText );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "71442967-ee8a-448c-83cf-949934ddd152")]
 	public static extern HRESULT PSFormatForDisplay(in PROPERTYKEY propkey, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags,
@@ -1126,7 +1126,7 @@ public static partial class PropSys
 	/// </para>
 	/// </param>
 	/// <param name="ppszDisplay">
-	/// <para>Type: <c>LPWSTR*</c></para>
+	/// <para>Type: <c>PWSTR*</c></para>
 	/// <para>When the function returns, contains a pointer to the formatted value as a null-terminated, Unicode string.</para>
 	/// </param>
 	/// <returns>
@@ -1283,7 +1283,7 @@ public static partial class PropSys
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psformatpropertyvalue PSSTDAPI PSFormatPropertyValue(
-	// IPropertyStore *pps, IPropertyDescription *ppd, PROPDESC_FORMAT_FLAGS pdff, LPWSTR *ppszDisplay );
+	// IPropertyStore *pps, IPropertyDescription *ppd, PROPDESC_FORMAT_FLAGS pdff, PWSTR *ppszDisplay );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "35c2b424-05bd-4d7d-8365-5900e165e2e2")]
 	public static extern HRESULT PSFormatPropertyValue(IPropertyStore pps, IPropertyDescription ppd, PROPDESC_FORMAT_FLAGS pdff,
@@ -2482,7 +2482,7 @@ public static partial class PropSys
 	/// <para>Reference to a PROPERTYKEY structure that identifies a property.</para>
 	/// </param>
 	/// <param name="psz">
-	/// <para>Type: <c>LPWSTR</c></para>
+	/// <para>Type: <c>PWSTR</c></para>
 	/// <para>Pointer to a buffer that receives the output string. The buffer should be large enough to contain PKEYSTR_MAX <c>WCHAR</c><c>s</c>.</para>
 	/// </param>
 	/// <param name="cch">
@@ -2499,7 +2499,7 @@ public static partial class PropSys
 	/// <para>The following example, to be included as part of a larger program, demonstrates the use of PSPropertyKeyFromString.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psstringfrompropertykey PSSTDAPI PSStringFromPropertyKey(
-	// REFPROPERTYKEY pkey, LPWSTR psz, UINT cch );
+	// REFPROPERTYKEY pkey, PWSTR psz, UINT cch );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propsys.h", MSDNShortId = "081f8e6d-9189-44f9-9b27-e85f4793da48")]
 	public static extern HRESULT PSStringFromPropertyKey(in PROPERTYKEY pkey, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder psz, uint cch);

@@ -182,7 +182,7 @@ public static partial class User32
 	/// <para>The null-terminated string to be translated.</para>
 	/// </param>
 	/// <param name="pDst">
-	/// <para>Type: <c>LPSTR</c></para>
+	/// <para>Type: <c>PSTR</c></para>
 	/// <para>
 	/// The destination buffer, which receives the translated string. If the <c>CharToOem</c> function is being used as an ANSI function,
 	/// the string can be translated in place by setting the lpszDst parameter to the same address as the lpszSrc parameter. This cannot
@@ -196,7 +196,7 @@ public static partial class User32
 	/// the function. In this case the function returns zero and GetLastError returns <c>ERROR_INVALID_ADDRESS</c>.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-chartooema BOOL CharToOemA( LPCSTR pSrc, LPSTR pDst );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-chartooema BOOL CharToOemA( LPCSTR pSrc, PSTR pDst );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -208,7 +208,7 @@ public static partial class User32
 	/// <para>The null-terminated string to be translated.</para>
 	/// </param>
 	/// <param name="lpszDst">
-	/// <para>Type: <c>LPSTR</c></para>
+	/// <para>Type: <c>PSTR</c></para>
 	/// <para>
 	/// The buffer for the translated string. If the <c>CharToOemBuff</c> function is being used as an ANSI function, the string can be
 	/// translated in place by setting the lpszDst parameter to the same address as the lpszSrc parameter. This cannot be done if
@@ -230,7 +230,7 @@ public static partial class User32
 	/// Unlike the CharToOem function, the <c>CharToOemBuff</c> function does not stop converting characters when it encounters a null
 	/// character in the buffer pointed to by lpszSrc. The <c>CharToOemBuff</c> function converts all cchDstLength characters.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-chartooembuffa BOOL CharToOemBuffA( LPCSTR lpszSrc, LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-chartooembuffa BOOL CharToOemBuffA( LPCSTR lpszSrc, PSTR
 	// lpszDst, DWORD cchDstLength );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
@@ -264,7 +264,7 @@ public static partial class User32
 	/// <para>A null-terminated string of characters from the OEM-defined character set.</para>
 	/// </param>
 	/// <param name="pDst">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>
 	/// The destination buffer, which receives the translated string. If the <c>OemToChar</c> function is being used as an ANSI function,
 	/// the string can be translated in place by setting the lpszDst parameter to the same address as the lpszSrc parameter. This cannot
@@ -278,7 +278,7 @@ public static partial class User32
 	/// the function. In this case the function returns zero and GetLastError returns <c>ERROR_INVALID_ADDRESS</c>.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-oemtochara BOOL OemToCharA( LPCSTR pSrc, LPSTR pDst );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-oemtochara BOOL OemToCharA( LPCSTR pSrc, PSTR pDst );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -293,7 +293,7 @@ public static partial class User32
 	/// <para>One or more characters from the OEM-defined character set.</para>
 	/// </param>
 	/// <param name="lpszDst">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>
 	/// The destination buffer, which receives the translated string. If the <c>OemToCharBuff</c> function is being used as an ANSI
 	/// function, the string can be translated in place by setting the lpszDst parameter to the same address as the lpszSrc parameter.
@@ -315,7 +315,7 @@ public static partial class User32
 	/// Unlike the OemToChar function, the <c>OemToCharBuff</c> function does not stop converting characters when it encounters a null
 	/// character in the buffer pointed to by lpszSrc. The <c>OemToCharBuff</c> function converts all cchDstLength characters.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-oemtocharbuffa BOOL OemToCharBuffA( LPCSTR lpszSrc, LPSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-oemtocharbuffa BOOL OemToCharBuffA( LPCSTR lpszSrc, PSTR
 	// lpszDst, DWORD cchDstLength );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]

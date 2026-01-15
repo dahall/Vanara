@@ -34,7 +34,7 @@ public static partial class Shell32
 	{
 		/// <summary>Gets the drive letter of a CD drive that has been marked as write-enabled.</summary>
 		/// <param name="pszDrive">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>A pointer to a string containing the drive letter, for example "F:".</para>
 		/// </param>
 		/// <param name="cch">
@@ -53,7 +53,7 @@ public static partial class Shell32
 		/// <para>If a recordable CD drive is present but that option has been deselected, the method will return an error code.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-icdburn-getrecorderdriveletter HRESULT
-		// GetRecorderDriveLetter( LPWSTR pszDrive, UINT cch );
+		// GetRecorderDriveLetter( PWSTR pszDrive, UINT cch );
 		void GetRecorderDriveLetter([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDrive, uint cch);
 
 		/// <summary>Instructs data to be copied from the staging area to a writable CD.</summary>

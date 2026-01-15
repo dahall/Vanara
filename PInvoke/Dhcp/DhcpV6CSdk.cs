@@ -120,7 +120,7 @@ public static partial class Dhcp
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6releaseprefix DWORD Dhcpv6ReleasePrefix( LPWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6releaseprefix DWORD Dhcpv6ReleasePrefix( PWSTR
 	// adapterName, LPDHCPV6CAPI_CLASSID classId, LPDHCPV6PrefixLeaseInformation leaseInfo );
 	[DllImport(Lib_Dhcpcsvc6, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpv6csdk.h", MSDNShortId = "NF:dhcpv6csdk.Dhcpv6ReleasePrefix")]
@@ -169,7 +169,7 @@ public static partial class Dhcp
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6releaseprefix DWORD Dhcpv6ReleasePrefix( LPWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6releaseprefix DWORD Dhcpv6ReleasePrefix( PWSTR
 	// adapterName, LPDHCPV6CAPI_CLASSID classId, LPDHCPV6PrefixLeaseInformation leaseInfo );
 	[DllImport(Lib_Dhcpcsvc6, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpv6csdk.h", MSDNShortId = "NF:dhcpv6csdk.Dhcpv6ReleasePrefix")]
@@ -219,7 +219,7 @@ public static partial class Dhcp
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6renewprefix DWORD Dhcpv6RenewPrefix( LPWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6renewprefix DWORD Dhcpv6RenewPrefix( PWSTR
 	// adapterName, LPDHCPV6CAPI_CLASSID pclassId, LPDHCPV6PrefixLeaseInformation prefixleaseInfo, DWORD *pdwTimeToWait, DWORD
 	// bValidatePrefix );
 	[DllImport(Lib_Dhcpcsvc6, SetLastError = false, ExactSpelling = true)]
@@ -270,7 +270,7 @@ public static partial class Dhcp
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6renewprefix DWORD Dhcpv6RenewPrefix( LPWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6renewprefix DWORD Dhcpv6RenewPrefix( PWSTR
 	// adapterName, LPDHCPV6CAPI_CLASSID pclassId, LPDHCPV6PrefixLeaseInformation prefixleaseInfo, DWORD *pdwTimeToWait, DWORD
 	// bValidatePrefix );
 	[DllImport(Lib_Dhcpcsvc6, SetLastError = false, ExactSpelling = true)]
@@ -320,7 +320,7 @@ public static partial class Dhcp
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6requestparams DWORD Dhcpv6RequestParams( BOOL
-	// forceNewInform, LPVOID reserved, LPWSTR adapterName, LPDHCPV6CAPI_CLASSID classId, DHCPV6CAPI_PARAMS_ARRAY recdParams, LPBYTE
+	// forceNewInform, LPVOID reserved, PWSTR adapterName, LPDHCPV6CAPI_CLASSID classId, DHCPV6CAPI_PARAMS_ARRAY recdParams, LPBYTE
 	// buffer, LPDWORD pSize );
 	[DllImport(Lib_Dhcpcsvc6, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpv6csdk.h", MSDNShortId = "NF:dhcpv6csdk.Dhcpv6RequestParams")]
@@ -370,7 +370,7 @@ public static partial class Dhcp
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6requestparams DWORD Dhcpv6RequestParams( BOOL
-	// forceNewInform, LPVOID reserved, LPWSTR adapterName, LPDHCPV6CAPI_CLASSID classId, DHCPV6CAPI_PARAMS_ARRAY recdParams, LPBYTE
+	// forceNewInform, LPVOID reserved, PWSTR adapterName, LPDHCPV6CAPI_CLASSID classId, DHCPV6CAPI_PARAMS_ARRAY recdParams, LPBYTE
 	// buffer, LPDWORD pSize );
 	[DllImport(Lib_Dhcpcsvc6, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpv6csdk.h", MSDNShortId = "NF:dhcpv6csdk.Dhcpv6RequestParams")]
@@ -455,7 +455,7 @@ public static partial class Dhcp
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6requestprefix DWORD Dhcpv6RequestPrefix( LPWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6requestprefix DWORD Dhcpv6RequestPrefix( PWSTR
 	// adapterName, LPDHCPV6CAPI_CLASSID pclassId, LPDHCPV6PrefixLeaseInformation prefixleaseInfo, DWORD *pdwTimeToWait );
 	[DllImport(Lib_Dhcpcsvc6, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpv6csdk.h", MSDNShortId = "NF:dhcpv6csdk.Dhcpv6RequestPrefix")]
@@ -539,7 +539,7 @@ public static partial class Dhcp
 	/// </item>
 	/// </list>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6requestprefix DWORD Dhcpv6RequestPrefix( LPWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpv6csdk/nf-dhcpv6csdk-dhcpv6requestprefix DWORD Dhcpv6RequestPrefix( PWSTR
 	// adapterName, LPDHCPV6CAPI_CLASSID pclassId, LPDHCPV6PrefixLeaseInformation prefixleaseInfo, DWORD *pdwTimeToWait );
 	[DllImport(Lib_Dhcpcsvc6, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpv6csdk.h", MSDNShortId = "NF:dhcpv6csdk.Dhcpv6RequestPrefix")]

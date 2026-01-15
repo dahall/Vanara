@@ -1834,7 +1834,7 @@ public static partial class PropSys
 		/// <para>The format of the property string. See PROPDESC_FORMAT_FLAGS for possible values.</para>
 		/// </param>
 		/// <param name="pszText">
-		/// <para>Type: <c>LPWSTR</c></para>
+		/// <para>Type: <c>PWSTR</c></para>
 		/// <para>
 		/// Receives the formatted value as a null-terminated, Unicode string. The calling application must allocate memory for the buffer.
 		/// </para>
@@ -1969,7 +1969,7 @@ public static partial class PropSys
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertysystem-formatfordisplay HRESULT
-		// FormatForDisplay( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, LPWSTR pszText, DWORD cchText );
+		// FormatForDisplay( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, PWSTR pszText, DWORD cchText );
 		void FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszText, uint cchText);
 
 		/// <summary>Gets a string representation of a property value to an allocated memory buffer.</summary>
@@ -1986,7 +1986,7 @@ public static partial class PropSys
 		/// <para>The format of the property string. See PROPDESC_FORMAT_FLAGS.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>Type: <c>PWSTR*</c></para>
 		/// <para>When this method returns, contains a pointer to the formatted value as a null-terminated, Unicode string.</para>
 		/// </returns>
 		/// <remarks>
@@ -2116,7 +2116,7 @@ public static partial class PropSys
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/propsys/nf-propsys-ipropertysystem-formatfordisplayalloc HRESULT
-		// FormatForDisplayAlloc( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, LPWSTR *ppszDisplay );
+		// FormatForDisplayAlloc( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, PWSTR *ppszDisplay );
 		string FormatForDisplayAlloc(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff);
 
 		/// <summary>Informs the schema subsystem of the addition of a property description schema file.</summary>

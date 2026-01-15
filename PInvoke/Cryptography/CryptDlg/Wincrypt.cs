@@ -274,7 +274,7 @@ public static partial class CryptDlg
 	/// The return value is the number of characters, including the terminating <c>NULL</c> character, in the returned display name.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cryptdlg/nf-cryptdlg-getfriendlynameofcerta CRYPTDLGAPI DWORD
-	// GetFriendlyNameOfCertA( PCCERT_CONTEXT pccert, LPSTR pch, DWORD cch );
+	// GetFriendlyNameOfCertA( PCCERT_CONTEXT pccert, PSTR pch, DWORD cch );
 	[DllImport(Lib.CryptDlg, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cryptdlg.h", MSDNShortId = "a66a8573-b234-4d5d-bd38-72a3a44a0419")]
 	public static extern uint GetFriendlyNameOfCert(PCCERT_CONTEXT pccert,
@@ -299,7 +299,7 @@ public static partial class CryptDlg
 	/// The return value is the number of characters, including the terminating <c>NULL</c> character, in the returned display name.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cryptdlg/nf-cryptdlg-getfriendlynameofcerta CRYPTDLGAPI DWORD
-	// GetFriendlyNameOfCertA( PCCERT_CONTEXT pccert, LPSTR pch, DWORD cch );
+	// GetFriendlyNameOfCertA( PCCERT_CONTEXT pccert, PSTR pch, DWORD cch );
 	[DllImport(Lib.CryptDlg, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cryptdlg.h", MSDNShortId = "a66a8573-b234-4d5d-bd38-72a3a44a0419")]
 	public static extern uint GetFriendlyNameOfCert(PCCERT_CONTEXT pccert, IntPtr pch, uint cch);
@@ -400,7 +400,7 @@ public static partial class CryptDlg
 		/// A pointer to a string representation of an object identifier (OID) for an enhanced key usage (EKU). If an OID is provided,
 		/// only certificates that include this EKU will be displayed.
 		/// </summary>
-		public LPSTR szPurposeOid;
+		public PSTR szPurposeOid;
 
 		/// <summary>
 		/// The number of elements in the <c>arrayCertContext</c> array. After the CertSelectCertificate function returns, this member
@@ -467,7 +467,7 @@ public static partial class CryptDlg
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cryptdlg/ns-cryptdlg-cert_viewproperties_struct_a typedef struct
 	// tagCERT_VIEWPROPERTIES_STRUCT_A { DWORD dwSize; HWND hwndParent; HINSTANCE hInstance; DWORD dwFlags; LPCSTR szTitle;
-	// PCCERT_CONTEXT pCertContext; LPSTR *arrayPurposes; DWORD cArrayPurposes; DWORD cRootStores; HCERTSTORE *rghstoreRoots; DWORD
+	// PCCERT_CONTEXT pCertContext; PSTR *arrayPurposes; DWORD cArrayPurposes; DWORD cRootStores; HCERTSTORE *rghstoreRoots; DWORD
 	// cStores; HCERTSTORE *rghstoreCAs; DWORD cTrustStores; HCERTSTORE *rghstoreTrust; HCRYPTPROV hprov; LPARAM lCustData; DWORD dwPad;
 	// LPCSTR szHelpFileName; DWORD dwHelpId; DWORD nStartPage; DWORD cArrayPropSheetPages; PROPSHEETPAGE *arrayPropSheetPages; }
 	// CERT_VIEWPROPERTIES_STRUCT_A, *PCERT_VIEWPROPERTIES_STRUCT_A;
@@ -543,7 +543,7 @@ public static partial class CryptDlg
 		public PCCERT_CONTEXT pCertContext;
 
 		/// <summary>A pointer to an array of null-terminated strings that specify the certificate purposes.</summary>
-		public LPTSTR arrayPurposes;
+		public PTSTR arrayPurposes;
 
 		/// <summary>Number of elements in the <c>arrayPurposes</c> array. If this value is zero, then no trust status is displayed.</summary>
 		public uint cArrayPurposes;

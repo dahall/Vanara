@@ -101,7 +101,7 @@ public static partial class NTDSApi
 	/// <para>Returns a Win32 error code, including the following.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsparse/nf-dsparse-dscrackspna DSPARSE DWORD DsCrackSpnA( LPCSTR pszSpn,
-	// LPDWORD pcServiceClass, LPSTR ServiceClass, LPDWORD pcServiceName, LPSTR ServiceName, LPDWORD pcInstanceName, LPSTR InstanceName,
+	// LPDWORD pcServiceClass, PSTR ServiceClass, LPDWORD pcServiceName, PSTR ServiceName, LPDWORD pcInstanceName, PSTR InstanceName,
 	// USHORT *pInstancePort );
 	[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsparse.h", MSDNShortId = "65c81c23-a259-480c-9c1e-03484d3e89c9")]
@@ -421,7 +421,7 @@ public static partial class NTDSApi
 	/// <para>String parameters cannot include the forward slash (/) character, as it is used to separate the components of the SPN.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/dsparse/nf-dsparse-dsmakespnw DSPARSE DWORD DsMakeSpnW( LPCWSTR ServiceClass,
-	// LPCWSTR ServiceName, LPCWSTR InstanceName, USHORT InstancePort, LPCWSTR Referrer, DWORD *pcSpnLength, LPWSTR pszSpn );
+	// LPCWSTR ServiceName, LPCWSTR InstanceName, USHORT InstancePort, LPCWSTR Referrer, DWORD *pcSpnLength, PWSTR pszSpn );
 	[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("dsparse.h", MSDNShortId = "fca3c59c-bb81-42a0-acd3-2e55c902febe")]
 	public static extern Win32Error DsMakeSpn(string ServiceClass, string ServiceName, [Optional] string? InstanceName, ushort InstancePort, [Optional] string? Referrer, ref uint pcSpnLength, [Optional] StringBuilder? pszSpn);

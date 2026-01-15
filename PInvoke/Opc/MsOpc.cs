@@ -651,7 +651,7 @@ public static partial class Opc
 		/// <para>The following code shows how to use CoTaskMemFree to free the memory of the buffers and the strings they contain.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getnamespaces HRESULT GetNamespaces(
-		// LPWSTR **prefixes, LPWSTR **namespaces, UINT32 *count );
+		// PWSTR **prefixes, PWSTR **namespaces, UINT32 *count );
 		void GetNamespaces([MarshalAs(UnmanagedType.LPWStr)] out string prefixes, [MarshalAs(UnmanagedType.LPWStr)] out string namespaces, out uint count);
 
 		/// <summary>Gets the value of the <c>Id</c> attribute from the <c>Signature</c> element of the signature markup.</summary>
@@ -668,7 +668,7 @@ public static partial class Opc
 		/// <para>To access the Id before the signature is generated, call the IOpcSigningOptions::GetSignatureId. method.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getsignatureid HRESULT GetSignatureId(
-		// LPWSTR *signatureId );
+		// PWSTR *signatureId );
 		[return: MarshalAs(UnmanagedType.LPWStr)] 
 		string GetSignatureId();
 
@@ -719,7 +719,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getsignaturemethod HRESULT
-		// GetSignatureMethod( LPWSTR *signatureMethod );
+		// GetSignatureMethod( PWSTR *signatureMethod );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetSignatureMethod();
 
@@ -813,7 +813,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcdigitalsignature-getsigningtime HRESULT GetSigningTime(
-		// LPWSTR *signingTime );
+		// PWSTR *signingTime );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetSigningTime();
 
@@ -2020,7 +2020,7 @@ public static partial class Opc
 		/// <para>Packaging objects are not thread-safe.</para>
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcpart-getcontenttype HRESULT GetContentType( LPWSTR
+		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcpart-getcontenttype HRESULT GetContentType( PWSTR
 		// *contentType );
 		[return: MarshalAs(UnmanagedType.LPWStr)] 
 		string GetContentType();
@@ -3261,7 +3261,7 @@ public static partial class Opc
 		/// <para>Packaging objects are not thread-safe.</para>
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationship-getid HRESULT GetId( LPWSTR
+		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationship-getid HRESULT GetId( PWSTR
 		// *relationshipIdentifier );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetId();
@@ -3289,7 +3289,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationship-getrelationshiptype HRESULT
-		// GetRelationshipType( LPWSTR *relationshipType );
+		// GetRelationshipType( PWSTR *relationshipType );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetRelationshipType();
 
@@ -3684,7 +3684,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcrelationshipselector-getselectioncriterion HRESULT
-		// GetSelectionCriterion( LPWSTR *selectionCriterion );
+		// GetSelectionCriterion( PWSTR *selectionCriterion );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetSelectionCriterion();
 	}
@@ -4617,7 +4617,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturepartreference-getcontenttype HRESULT
-		// GetContentType( LPWSTR *contentType );
+		// GetContentType( PWSTR *contentType );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetContentType();
 
@@ -4629,7 +4629,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturepartreference-getdigestmethod HRESULT
-		// GetDigestMethod( LPWSTR *digestMethod );
+		// GetDigestMethod( PWSTR *digestMethod );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetDigestMethod();
 
@@ -4966,7 +4966,7 @@ public static partial class Opc
 		/// <para>Packaging objects are not thread-safe.</para>
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-getid HRESULT GetId( LPWSTR
+		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-getid HRESULT GetId( PWSTR
 		// *referenceId );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetId();
@@ -5025,7 +5025,7 @@ public static partial class Opc
 		/// <para>Packaging objects are not thread-safe.</para>
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-gettype HRESULT GetType( LPWSTR
+		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-gettype HRESULT GetType( PWSTR
 		// *type );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetType();
@@ -5044,7 +5044,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturereference-getdigestmethod HRESULT
-		// GetDigestMethod( LPWSTR *digestMethod );
+		// GetDigestMethod( PWSTR *digestMethod );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetDigestMethod();
 
@@ -5400,7 +5400,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsignaturerelationshipreference-getdigestmethod HRESULT
-		// GetDigestMethod( LPWSTR *digestMethod );
+		// GetDigestMethod( PWSTR *digestMethod );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetDigestMethod();
 
@@ -5869,7 +5869,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-getsignatureid HRESULT GetSignatureId(
-		// LPWSTR *signatureId );
+		// PWSTR *signatureId );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetSignatureId();
 
@@ -5922,7 +5922,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-getsignaturemethod HRESULT
-		// GetSignatureMethod( LPWSTR *signatureMethod );
+		// GetSignatureMethod( PWSTR *signatureMethod );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetSignatureMethod();
 
@@ -5972,7 +5972,7 @@ public static partial class Opc
 		/// <para>For more information, see the Getting Started with the Packaging API.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/msopc/nf-msopc-iopcsigningoptions-getdefaultdigestmethod HRESULT
-		// GetDefaultDigestMethod( LPWSTR *digestMethod );
+		// GetDefaultDigestMethod( PWSTR *digestMethod );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetDefaultDigestMethod();
 

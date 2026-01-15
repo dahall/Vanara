@@ -787,7 +787,7 @@ public static partial class AdvApi32
 	[PInvokeData("wincrypt.h", MSDNShortId = "c0b7c1c8-aa42-4d40-a7f7-99c0821c8977")]
 	public enum ProvParam
 	{
-		/// <summary>Returns the administrator personal identification number (PIN) in the pbData parameter as a LPSTR.</summary>
+		/// <summary>Returns the administrator personal identification number (PIN) in the pbData parameter as a PSTR.</summary>
 		PP_ADMIN_PIN = 0x1F,
 
 		/// <summary>This constant is not used.</summary>
@@ -3337,7 +3337,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptenumprovidersa BOOL CryptEnumProvidersA( DWORD dwIndex,
-	// DWORD *pdwReserved, DWORD dwFlags, DWORD *pdwProvType, LPSTR szProvName, DWORD *pcbProvName );
+	// DWORD *pdwReserved, DWORD dwFlags, DWORD *pdwProvType, PSTR szProvName, DWORD *pcbProvName );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "2d93ef0f-b48f-481b-ba62-c535476fde08")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3443,7 +3443,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptenumprovidertypesa BOOL CryptEnumProviderTypesA( DWORD
-	// dwIndex, DWORD *pdwReserved, DWORD dwFlags, DWORD *pdwProvType, LPSTR szTypeName, DWORD *pcbTypeName );
+	// dwIndex, DWORD *pdwReserved, DWORD dwFlags, DWORD *pdwProvType, PSTR szTypeName, DWORD *pcbTypeName );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "7568c963-4d06-4af0-bd15-240402425046")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -4554,7 +4554,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptgetdefaultprovidera BOOL CryptGetDefaultProviderA( DWORD
-	// dwProvType, DWORD *pdwReserved, DWORD dwFlags, LPSTR pszProvName, DWORD *pcbProvName );
+	// dwProvType, DWORD *pdwReserved, DWORD dwFlags, PSTR pszProvName, DWORD *pcbProvName );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "5d15641e-1ad7-441d-9423-65fd51de9812")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -5182,7 +5182,7 @@ public static partial class AdvApi32
 	/// </listheader>
 	/// <item>
 	/// <term>PP_ADMIN_PIN 31 (0x1F)</term>
-	/// <term>Returns the administrator personal identification number (PIN) in the pbData parameter as a LPSTR.</term>
+	/// <term>Returns the administrator personal identification number (PIN) in the pbData parameter as a PSTR.</term>
 	/// </item>
 	/// <item>
 	/// <term>PP_APPLI_CERT 18 (0x12)</term>
@@ -5680,7 +5680,7 @@ public static partial class AdvApi32
 	/// </listheader>
 	/// <item>
 	/// <term>PP_ADMIN_PIN 31 (0x1F)</term>
-	/// <term>Returns the administrator personal identification number (PIN) in the pbData parameter as a LPSTR.</term>
+	/// <term>Returns the administrator personal identification number (PIN) in the pbData parameter as a PSTR.</term>
 	/// </item>
 	/// <item>
 	/// <term>PP_APPLI_CERT 18 (0x12)</term>
@@ -8469,7 +8469,7 @@ public static partial class AdvApi32
 	/// Diffie-Hellman key information.
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-cms_dh_key_info typedef struct _CMS_DH_KEY_INFO { DWORD
-	// dwVersion; ALG_ID Algid; LPSTR pszContentEncObjId; CRYPT_DATA_BLOB PubInfo; void *pReserved; } CMS_DH_KEY_INFO, *PCMS_DH_KEY_INFO;
+	// dwVersion; ALG_ID Algid; PSTR pszContentEncObjId; CRYPT_DATA_BLOB PubInfo; void *pReserved; } CMS_DH_KEY_INFO, *PCMS_DH_KEY_INFO;
 	[PInvokeData("wincrypt.h", MSDNShortId = "NS:wincrypt._CMS_DH_KEY_INFO")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CMS_DH_KEY_INFO

@@ -674,7 +674,7 @@ public static partial class Marshaler
 	}
 
 	/// <summary>
-	/// Marshaler for string types. This marshaler is used for all string types read from a pointer, including BSTR, LPSTR, LPWSTR, and LPUTF8Str.
+	/// Marshaler for string types. This marshaler is used for all string types read from a pointer, including BSTR, PSTR, PWSTR, and LPUTF8Str.
 	/// </summary>
 	internal class StringMarshaler(FieldInfo fieldInfo, MarshalerOptions options) : IndirectMarshaler(fieldInfo, options)
 	{

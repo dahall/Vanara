@@ -396,14 +396,14 @@ public static partial class User32
 	[PInvokeData("WinUser.h", MSDNShortId = "ms647486")]
 	public static string? LoadString(HINSTANCE hInstance, int uID)
 	{
-		var l = LoadString(hInstance, uID, out LPTSTR p);
+		var l = LoadString(hInstance, uID, out PTSTR p);
 		if (l == 0) Win32Error.ThrowLastError();
 		return p;
 	}
 
 	[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 	[System.Security.SecurityCritical]
-	private static extern int LoadString(HINSTANCE hInstance, int uID, out LPTSTR lpBuffer, int nBufferMax = 0);
+	private static extern int LoadString(HINSTANCE hInstance, int uID, out PTSTR lpBuffer, int nBufferMax = 0);
 
 	/// <summary/>
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]

@@ -141,7 +141,7 @@ public static partial class Shell32
 		/// A pointer to the string. This memory must be allocated with CoTaskMemAlloc. It is the calling application's responsibility to
 		/// free this memory with CoTaskMemFree when it is no longer needed.
 		/// </summary>
-		public LPWSTR pOleStr => union.pOleStr; // must be freed by caller of GetDisplayNameOf
+		public PWSTR pOleStr => union.pOleStr; // must be freed by caller of GetDisplayNameOf
 
 		/// <summary>The offset into the item identifier list.</summary>
 		public uint uOffset => union.uOffset; // Offset into SHITEMID
@@ -169,11 +169,11 @@ public static partial class Shell32
 		private struct DUMMYUNIONNAME
 		{
 			[FieldOffset(0)]
-			public LPWSTR pOleStr;
+			public PWSTR pOleStr;
 			[FieldOffset(0)]
 			public uint uOffset;
 			[FieldOffset(0)]
-			public LPSTR cStr;
+			public PSTR cStr;
 		}
 
 		/// <summary>Performs an implicit conversion from <see cref="STRRET"/> to <see cref="System.String"/>.</summary>

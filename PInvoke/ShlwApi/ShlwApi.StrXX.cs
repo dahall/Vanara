@@ -70,7 +70,7 @@ public static partial class ShlwApi
 	// int cchDestBuffSize );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "ce8c002f-f4f8-4b5f-a9e2-7bcd21f8808c")]
-	public static extern LPTSTR StrCatBuff(StringBuilder pszDest, string pszSrc, int cchDestBuffSize);
+	public static extern PTSTR StrCatBuff(StringBuilder pszDest, string pszSrc, int cchDestBuffSize);
 
 	/// <summary>
 	/// <para>Concatenates two Unicode strings. Used when repeated concatenations to the same buffer are required.</para>
@@ -146,7 +146,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strcatw PWSTR StrCatW( PWSTR psz1, PCWSTR psz2 );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "fd357462-83be-42a8-9f39-1e023bd5f86e")]
-	public static extern LPWSTR StrCatW(StringBuilder psz1, string psz2);
+	public static extern PWSTR StrCatW(StringBuilder psz1, string psz2);
 
 	/// <summary>
 	/// <para>Searches a string for the first occurrence of a character that matches the specified character. The comparison is case-sensitive.</para>
@@ -169,7 +169,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strchra PCSTR StrChrA( PCSTR pszStart, WORD wMatch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "3e4c20cb-0b46-4f84-bbd1-860fdedde8c8")]
-	public static extern LPTSTR StrChr(string pszStart, char wMatch);
+	public static extern PTSTR StrChr(string pszStart, char wMatch);
 
 	/// <summary>
 	/// <para>
@@ -194,7 +194,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strchria PCSTR StrChrIA( PCSTR pszStart, WORD wMatch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "bad606d2-e337-42b5-853e-c7afa8d3d71b")]
-	public static extern LPTSTR StrChrI(string pszStart, char wMatch);
+	public static extern PTSTR StrChrI(string pszStart, char wMatch);
 
 	/// <summary>
 	/// <para>Searches a string for the first occurrence of a specified character. The comparison is not case-sensitive.</para>
@@ -223,7 +223,7 @@ public static partial class ShlwApi
 	// UINT cchMax );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "01F2CC10-F59A-45dd-8A18-7DC33BDD717F")]
-	public static extern LPWSTR StrChrNIW(string pszStart, char wMatch, uint cchMax);
+	public static extern PWSTR StrChrNIW(string pszStart, char wMatch, uint cchMax);
 
 	/// <summary>
 	/// <para>Searches a string for the first occurrence of a specified character. The comparison is case-sensitive.</para>
@@ -252,7 +252,7 @@ public static partial class ShlwApi
 	// UINT cchMax );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f90470c3-62db-4fbb-a045-8fdd300a6aa4")]
-	public static extern LPWSTR StrChrNW(string pszStart, char wMatch, uint cchMax);
+	public static extern PWSTR StrChrNW(string pszStart, char wMatch, uint cchMax);
 
 	/// <summary>
 	/// <para>Compares strings using C run-time (ASCII) collation rules. The comparison is case-sensitive.</para>
@@ -623,7 +623,7 @@ public static partial class ShlwApi
 	// cchMax );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "7e21414d-0d82-40b9-b32f-5eaf351166da")]
-	public static extern LPWSTR StrCpyNW(StringBuilder pszDst, string pszSrc, int cchMax);
+	public static extern PWSTR StrCpyNW(StringBuilder pszDst, string pszSrc, int cchMax);
 
 	/// <summary>
 	/// <para>Copies one string to another.</para>
@@ -657,7 +657,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strcpyw PWSTR StrCpyW( PWSTR psz1, PCWSTR psz2 );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "83d1a8dc-fc43-4b06-b36c-c9c91d779d25")]
-	public static extern LPWSTR StrCpyW(StringBuilder psz1, string psz2);
+	public static extern PWSTR StrCpyW(StringBuilder psz1, string psz2);
 
 	/// <summary>
 	/// <para>
@@ -747,7 +747,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strdupa PSTR StrDupA( PCSTR pszSrch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "fa77f0b3-8a9b-4221-87e3-9aebff4409fb")]
-	public static extern LPTSTR StrDup(string pszSrch);
+	public static extern PTSTR StrDup(string pszSrch);
 
 	/// <summary>
 	/// <para>
@@ -810,7 +810,7 @@ public static partial class ShlwApi
 	// qdw, PSTR pszBuf, UINT cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "b56dd90a-7033-409b-a8ea-e81a7a8a2342")]
-	public static extern LPSTR StrFormatByteSize64A(long qdw, StringBuilder pszBuf, uint cchBuf);
+	public static extern PSTR StrFormatByteSize64A(long qdw, StringBuilder pszBuf, uint cchBuf);
 
 	/// <summary>
 	/// <para>
@@ -873,7 +873,7 @@ public static partial class ShlwApi
 	// pszBuf, UINT cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "244f93cb-0976-4a31-958c-ae0ed81c1dcf")]
-	public static extern LPSTR StrFormatByteSizeA(uint dw, StringBuilder pszBuf, uint cchBuf);
+	public static extern PSTR StrFormatByteSizeA(uint dw, StringBuilder pszBuf, uint cchBuf);
 
 	/// <summary>
 	/// <para>
@@ -993,7 +993,7 @@ public static partial class ShlwApi
 	// pszBuf, UINT cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "244f93cb-0976-4a31-958c-ae0ed81c1dcf")]
-	public static extern LPWSTR StrFormatByteSizeW(long dw, StringBuilder pszBuf, uint cchBuf);
+	public static extern PWSTR StrFormatByteSizeW(long dw, StringBuilder pszBuf, uint cchBuf);
 
 	/// <summary>
 	/// <para>Converts a numeric value into a string that represents the number expressed as a size value in kilobytes.</para>
@@ -1021,7 +1021,7 @@ public static partial class ShlwApi
 	// pszBuf, UINT cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "029c2eb8-3bcd-4302-8894-be2dbe430426")]
-	public static extern LPTSTR StrFormatKBSize(long qdw, StringBuilder pszBuf, uint cchBuf);
+	public static extern PTSTR StrFormatKBSize(long qdw, StringBuilder pszBuf, uint cchBuf);
 
 	/// <summary>
 	/// <para>Converts a time interval, specified in milliseconds, to a string.</para>
@@ -1176,7 +1176,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strncata PSTR StrNCatA( PSTR psz1, PCSTR psz2, int cchMax );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "28099350-5759-4595-8353-3452c5cf6ca8")]
-	public static extern LPTSTR StrNCat(StringBuilder psz1, string psz2, int cchMax);
+	public static extern PTSTR StrNCat(StringBuilder psz1, string psz2, int cchMax);
 
 	/// <summary>
 	/// <para>
@@ -1202,7 +1202,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strpbrka PCSTR StrPBrkA( PCSTR psz, PCSTR pszSet );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "116c0791-33dd-4c3f-b8a4-a7df91fc5f6a")]
-	public static extern LPTSTR StrPBrk(string psz, string pszSet);
+	public static extern PTSTR StrPBrk(string psz, string pszSet);
 
 	/// <summary>
 	/// <para>Searches a string for the last occurrence of a specified character. The comparison is case-sensitive.</para>
@@ -1233,7 +1233,7 @@ public static partial class ShlwApi
 	// WORD wMatch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "7f1e91ad-aaa0-4449-834e-8e309c88d6b1")]
-	public static extern LPTSTR StrRChr(string pszStart, [Optional] string? pszEnd, char wMatch);
+	public static extern PTSTR StrRChr(string pszStart, [Optional] string? pszEnd, char wMatch);
 
 	/// <summary>
 	/// <para>Searches a string for the last occurrence of a specified character. The comparison is not case-sensitive.</para>
@@ -1264,7 +1264,7 @@ public static partial class ShlwApi
 	// WORD wMatch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "3dc39c2a-d621-4f46-b65b-eb8a531e5abe")]
-	public static extern LPTSTR StrRChrI(string pszStart, [Optional] string? pszEnd, char wMatch);
+	public static extern PTSTR StrRChrI(string pszStart, [Optional] string? pszEnd, char wMatch);
 
 	/// <summary>
 	/// Accepts a STRRET structure returned by IShellFolder::GetDisplayNameOf that contains or points to a string, and returns that
@@ -1310,7 +1310,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to the item's ITEMIDLIST structure.</para>
 	/// </param>
 	/// <param name="pszBuf">
-	/// <para>Type: <c>LPTSTR</c></para>
+	/// <para>Type: <c>PTSTR</c></para>
 	/// <para>
 	/// A buffer to hold the display name. It will be returned as a null-terminated string. If cchBuf is too small, the name will be
 	/// truncated to fit.
@@ -1331,7 +1331,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strrettobufa LWSTDAPI StrRetToBufA( STRRET *pstr,
-	// PCUITEMID_CHILD pidl, LPSTR pszBuf, UINT cchBuf );
+	// PCUITEMID_CHILD pidl, PSTR pszBuf, UINT cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "89dab3ee-e9f8-499a-97ec-6fe732315891")]
 	public static extern HRESULT StrRetToBuf([In] IntPtr pstr, [In] IntPtr pidl, StringBuilder pszBuf, uint cchBuf);
@@ -1351,7 +1351,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to the item's ITEMIDLIST structure. This value can be <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="ppsz">
-	/// <para>Type: <c>LPTSTR*</c></para>
+	/// <para>Type: <c>PTSTR*</c></para>
 	/// <para>
 	/// A pointer to an allocated string containing the result. <c>StrRetToStr</c> allocates memory for this string with CoTaskMemAlloc.
 	/// You should free the string with CoTaskMemFree when it is no longer needed.
@@ -1362,7 +1362,7 @@ public static partial class ShlwApi
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strrettostra LWSTDAPI StrRetToStrA( STRRET *pstr,
-	// PCUITEMID_CHILD pidl, LPSTR *ppsz );
+	// PCUITEMID_CHILD pidl, PSTR *ppsz );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "03b0dffb-8ef7-41da-9773-81ed55275802")]
 	public static extern HRESULT StrRetToStr([In] IntPtr pstr, [In, Optional] IntPtr pidl,
@@ -1394,7 +1394,7 @@ public static partial class ShlwApi
 	// PCSTR pszSrch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "41057976-6443-40dc-96f7-f2cbd5d494de")]
-	public static extern LPTSTR StrRStrI(string pszSource, [Optional] string? pszLast, string pszSrch);
+	public static extern PTSTR StrRStrI(string pszSource, [Optional] string? pszLast, string pszSrch);
 
 	/// <summary>
 	/// <para>Obtains the length of a substring within a string that consists entirely of characters contained in a specified buffer.</para>
@@ -1434,7 +1434,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strstra PCSTR StrStrA( PCSTR pszFirst, PCSTR pszSrch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "b1de5007-6773-4dea-8a15-ccd5f6924a13")]
-	public static extern LPTSTR StrStr(string pszFirst, string pszSrch);
+	public static extern PTSTR StrStr(string pszFirst, string pszSrch);
 
 	/// <summary>
 	/// <para>Finds the first occurrence of a substring within a string. The comparison is not case-sensitive.</para>
@@ -1454,7 +1454,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-strstria PCSTR StrStrIA( PCSTR pszFirst, PCSTR pszSrch );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "b0281641-1375-4815-a707-03e1ce7e5a29")]
-	public static extern LPTSTR StrStrI(string pszFirst, string pszSrch);
+	public static extern PTSTR StrStrI(string pszFirst, string pszSrch);
 
 	/// <summary>
 	/// <para>Finds the first occurrence of a substring within a string. The comparison is case-insensitive.</para>
@@ -1479,7 +1479,7 @@ public static partial class ShlwApi
 	// pszSrch, UINT cchMax );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "743f74f6-a0a6-4c03-b3bf-7f819bbc665f")]
-	public static extern LPWSTR StrStrNIW(string pszFirst, string pszSrch, uint cchMax);
+	public static extern PWSTR StrStrNIW(string pszFirst, string pszSrch, uint cchMax);
 
 	/// <summary>
 	/// <para>Finds the first occurrence of a substring within a string. The comparison is case-sensitive.</para>
@@ -1504,7 +1504,7 @@ public static partial class ShlwApi
 	// UINT cchMax );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "e7aac4c7-b2d5-43d8-97f5-1b11ebb24ee1")]
-	public static extern LPWSTR StrStrNW(string pszFirst, string pszSrch, uint cchMax);
+	public static extern PWSTR StrStrNW(string pszFirst, string pszSrch, uint cchMax);
 
 	/// <summary>
 	/// <para>Converts a string that represents a decimal value to an integer. The <c>StrToLong</c> macro is identical to this function.</para>

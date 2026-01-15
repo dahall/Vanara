@@ -4873,7 +4873,7 @@ public static partial class NCrypt
 
 	/// <summary>The <c>NCryptAlgorithmName</c> structure is used to contain information about a CNG algorithm.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ncrypt/ns-ncrypt-ncryptalgorithmname typedef struct _NCryptAlgorithmName {
-	// LPWSTR pszName; DWORD dwClass; DWORD dwAlgOperations; DWORD dwFlags; } NCryptAlgorithmName;
+	// PWSTR pszName; DWORD dwClass; DWORD dwAlgOperations; DWORD dwFlags; } NCryptAlgorithmName;
 	[PInvokeData("ncrypt.h", MSDNShortId = "79b0193e-3be8-46ce-a422-40ed9698363f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct NCryptAlgorithmName
@@ -5125,7 +5125,7 @@ public static partial class NCrypt
 
 	/// <summary>The <b>NCryptKeyName</b> structure is used to contain information about a CNG key.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/ncrypt/ns-ncrypt-ncryptkeyname
-	// typedef struct NCryptKeyName { LPWSTR pszName; LPWSTR pszAlgid; DWORD dwLegacyKeySpec; DWORD dwFlags; } NCryptKeyName;
+	// typedef struct NCryptKeyName { PWSTR pszName; PWSTR pszAlgid; DWORD dwLegacyKeySpec; DWORD dwFlags; } NCryptKeyName;
 	[PInvokeData("ncrypt.h", MSDNShortId = "NS:ncrypt.NCryptKeyName")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct NCryptKeyName
@@ -5186,7 +5186,7 @@ public static partial class NCrypt
 	/// NCryptEnumStorageProviders function to return the names of the registered CNG key storage providers.
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/ncrypt/ns-ncrypt-ncryptprovidername
-	// typedef struct NCryptProviderName { LPWSTR pszName; LPWSTR pszComment; } NCryptProviderName;
+	// typedef struct NCryptProviderName { PWSTR pszName; PWSTR pszComment; } NCryptProviderName;
 	[PInvokeData("ncrypt.h", MSDNShortId = "NS:ncrypt.NCryptProviderName")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct NCryptProviderName

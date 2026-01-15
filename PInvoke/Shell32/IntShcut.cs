@@ -91,7 +91,7 @@ public static partial class Url
 
 		/// <summary>Retrieves an object's URL.</summary>
 		/// <param name="ppszUrl">
-		/// Address of an LPSTR that will be filled with a pointer to the object's URL. Because this method allocates memory for the
+		/// Address of an PSTR that will be filled with a pointer to the object's URL. Because this method allocates memory for the
 		/// string, you must create and instance of an IMalloc interface and free the memory using IMalloc::Free when it is no longer needed.
 		/// </param>
 		void GetUrl([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszUrl);

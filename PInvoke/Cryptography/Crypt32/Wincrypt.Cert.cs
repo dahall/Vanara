@@ -2315,7 +2315,7 @@ public static partial class Crypt32
 	/// information, call GetLastError.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetvalidusages BOOL CertGetValidUsages( DWORD cCerts,
-	// PCCERT_CONTEXT *rghCerts, int *cNumOIDs, LPSTR *rghOIDs, DWORD *pcbOIDs );
+	// PCCERT_CONTEXT *rghCerts, int *cNumOIDs, PSTR *rghOIDs, DWORD *pcbOIDs );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "1504f166-2fa9-4041-9d72-b150cd8baa8a")]
 	[SuppressAutoGen]
@@ -2336,7 +2336,7 @@ public static partial class Crypt32
 	/// information, call GetLastError.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetvalidusages BOOL CertGetValidUsages( DWORD cCerts,
-	// PCCERT_CONTEXT *rghCerts, int *cNumOIDs, LPSTR *rghOIDs, DWORD *pcbOIDs );
+	// PCCERT_CONTEXT *rghCerts, int *cNumOIDs, PSTR *rghOIDs, DWORD *pcbOIDs );
 	[PInvokeData("wincrypt.h", MSDNShortId = "1504f166-2fa9-4041-9d72-b150cd8baa8a")]
 	public static bool CertGetValidUsages(PCCERT_CONTEXT[] rghCerts, out string[] rghOIDs)
 	{
@@ -2570,7 +2570,7 @@ public static partial class Crypt32
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certretrievelogoorbiometricinfo BOOL
 	// CertRetrieveLogoOrBiometricInfo( PCCERT_CONTEXT pCertContext, LPCSTR lpszLogoOrBiometricType, DWORD dwRetrievalFlags, DWORD
-	// dwTimeout, DWORD dwFlags, void *pvReserved, BYTE **ppbData, DWORD *pcbData, LPWSTR *ppwszMimeType );
+	// dwTimeout, DWORD dwFlags, void *pvReserved, BYTE **ppbData, DWORD *pcbData, PWSTR *ppwszMimeType );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "35813928-728e-40b7-b627-817d3094eeb1")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3255,7 +3255,7 @@ public static partial class Crypt32
 		/// A pointer to a <c>null</c>-terminated wide character string that contains extended error information. If <c>NULL</c>, there
 		/// is no extended error information.
 		/// </summary>
-		public LPWSTR pwszExtendedErrorInfo;
+		public PWSTR pwszExtendedErrorInfo;
 	}
 
 	/// <summary>
@@ -3313,7 +3313,7 @@ public static partial class Crypt32
 		public uint dwRevocationResult;
 
 		/// <summary>Not currently used and is set to <c>NULL</c>.</summary>
-		public LPSTR pszRevocationOid;
+		public PSTR pszRevocationOid;
 
 		/// <summary>Not currently used and is set to <c>NULL</c>.</summary>
 		public IntPtr pvOidSpecificInfo;

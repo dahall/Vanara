@@ -2348,8 +2348,8 @@ public static partial class Ole32
 	// *targetDescription, PWSTR *dataDescription );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ole2.h", MSDNShortId = "1DAD2A9A-EDA2-49D2-90F7-2A9022988177")]
-	public static extern HRESULT OleGetClipboardWithEnterpriseInfo(out IDataObject dataObject, out LPWSTR dataEnterpriseId,
-		out LPWSTR sourceDescription, out LPWSTR targetDescription, out LPWSTR dataDescription);
+	public static extern HRESULT OleGetClipboardWithEnterpriseInfo(out IDataObject dataObject, out PWSTR dataEnterpriseId,
+		out PWSTR sourceDescription, out PWSTR targetDescription, out PWSTR dataDescription);
 
 	/// <summary>Returns a handle to a metafile containing an icon and a string label for the specified CLSID.</summary>
 	/// <param name="rclsid">The CLSID for which the icon and string are to be requested.</param>
@@ -3433,7 +3433,7 @@ public static partial class Ole32
 	/// to the caller.
 	/// </param>
 	/// <param name="lplpszUserType">
-	/// Address of <c>LPWSTR</c> pointer variable that receives a pointer to the null-terminated Unicode user-type string. The caller can
+	/// Address of <c>PWSTR</c> pointer variable that receives a pointer to the null-terminated Unicode user-type string. The caller can
 	/// specify <c>NULL</c> for this parameter, which indicates that the user type is of no interest. This function allocates memory for
 	/// the string. The caller is responsible for freeing the memory with CoTaskMemFree.
 	/// </param>

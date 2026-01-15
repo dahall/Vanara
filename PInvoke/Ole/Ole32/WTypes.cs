@@ -501,16 +501,16 @@ public static partial class Ole32
 			[FieldOffset(0)] public Guid clsid;
 
 			/// <summary/>
-			[FieldOffset(0)] public LPWSTR pFileExt;
+			[FieldOffset(0)] public PWSTR pFileExt;
 
 			/// <summary/>
-			[FieldOffset(0)] public LPWSTR pMimeType;
+			[FieldOffset(0)] public PWSTR pMimeType;
 
 			/// <summary/>
-			[FieldOffset(0)] public LPWSTR pProgId;
+			[FieldOffset(0)] public PWSTR pProgId;
 
 			/// <summary/>
-			[FieldOffset(0)] public LPWSTR pFileName;
+			[FieldOffset(0)] public PWSTR pFileName;
 
 			/// <summary/>
 			[FieldOffset(0)] public BYNAME ByName;
@@ -522,7 +522,7 @@ public static partial class Ole32
 			public struct BYNAME
 			{
 				/// <summary/>
-				public LPWSTR pPackageName;
+				public PWSTR pPackageName;
 
 				/// <summary/>
 				public Guid PolicyId;

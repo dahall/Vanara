@@ -353,7 +353,7 @@ public static partial class WinMm
 	/// than MAXERRORLENGTH characters long.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mmeapi/nf-mmeapi-midiingeterrortext MMRESULT midiInGetErrorText( MMRESULT
-	// mmrError, LPSTR pszText, UINT cchText );
+	// mmrError, PSTR pszText, UINT cchText );
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("mmeapi.h", MSDNShortId = "NF:mmeapi.midiInGetErrorText")]
 	public static extern MMRESULT midiInGetErrorText(MMRESULT mmrError, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder pszText, uint cchText);
@@ -1176,7 +1176,7 @@ public static partial class WinMm
 	/// are less than MAXERRORLENGTH characters long.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mmeapi/nf-mmeapi-midioutgeterrortext MMRESULT midiOutGetErrorText( MMRESULT
-	// mmrError, LPSTR pszText, UINT cchText );
+	// mmrError, PSTR pszText, UINT cchText );
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("mmeapi.h", MSDNShortId = "NF:mmeapi.midiOutGetErrorText")]
 	public static extern MMRESULT midiOutGetErrorText(MMRESULT mmrError, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder pszText, uint cchText);
@@ -2370,7 +2370,7 @@ public static partial class WinMm
 	}
 
 	/// <summary>The <c>MIDIHDR</c> structure defines the header used to identify a MIDI system-exclusive or stream buffer.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mmeapi/ns-mmeapi-midihdr typedef struct midihdr_tag { LPSTR lpData; DWORD
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmeapi/ns-mmeapi-midihdr typedef struct midihdr_tag { PSTR lpData; DWORD
 	// dwBufferLength; DWORD dwBytesRecorded; DWORD_PTR dwUser; DWORD dwFlags; struct midihdr_tag *lpNext; DWORD_PTR reserved; DWORD
 	// dwOffset; DWORD_PTR dwReserved[8]; } MIDIHDR, *PMIDIHDR, *NPMIDIHDR, *LPMIDIHDR;
 	[PInvokeData("mmeapi.h", MSDNShortId = "NS:mmeapi.midihdr_tag")]

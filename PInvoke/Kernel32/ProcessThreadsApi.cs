@@ -1662,7 +1662,7 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ PTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
@@ -1878,7 +1878,7 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ PTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
@@ -5926,7 +5926,7 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ PTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
@@ -6106,7 +6106,7 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ PTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
@@ -7032,7 +7032,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Creating Processes.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-_startupinfoa typedef struct _STARTUPINFOA {
-	// DWORD cb; LPSTR lpReserved; LPSTR lpDesktop; LPSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
+	// DWORD cb; PSTR lpReserved; PSTR lpDesktop; PSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
 	// DWORD dwYCountChars; DWORD dwFillAttribute; DWORD dwFlags; WORD wShowWindow; WORD cbReserved2; LPBYTE lpReserved2; HANDLE hStdInput;
 	// HANDLE hStdOutput; HANDLE hStdError; } STARTUPINFOA, *LPSTARTUPINFOA;
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "cf4b795c-52c1-4573-8328-99ee13f68bb3")]
@@ -7564,7 +7564,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Creating Processes.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-_startupinfoa typedef struct _STARTUPINFOA {
-	// DWORD cb; LPSTR lpReserved; LPSTR lpDesktop; LPSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
+	// DWORD cb; PSTR lpReserved; PSTR lpDesktop; PSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
 	// DWORD dwYCountChars; DWORD dwFillAttribute; DWORD dwFlags; WORD wShowWindow; WORD cbReserved2; LPBYTE lpReserved2; HANDLE hStdInput;
 	// HANDLE hStdOutput; HANDLE hStdError; } STARTUPINFOA, *LPSTARTUPINFOA;
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "cf4b795c-52c1-4573-8328-99ee13f68bb3")]
@@ -7586,7 +7586,7 @@ public static partial class Kernel32
 		/// </summary>
 		//[MarshalAs(UnmanagedType.LPTStr)]
 		//public string lpDesktop;
-		public LPTSTR lpDesktop;
+		public PTSTR lpDesktop;
 
 		/// <summary>
 		/// For console processes, this is the title displayed in the title bar if a new console window is created. If NULL, the name of the
@@ -7595,7 +7595,7 @@ public static partial class Kernel32
 		/// </summary>
 		//[MarshalAs(UnmanagedType.LPTStr)]
 		//public string lpTitle;
-		public LPTSTR lpTitle;
+		public PTSTR lpTitle;
 
 		/// <summary>
 		/// <para>
