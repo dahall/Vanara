@@ -4511,7 +4511,7 @@ public static partial class Ws2_32
 		/// <para>Type: <c>LPTSTR</c></para>
 		/// <para>A display string that identifies the namespace provider.</para>
 		/// </summary>
-		public StrPtrUni lpszIdentifier;
+		public LPWSTR lpszIdentifier;
 
 		/// <summary>
 		/// <para>Type: <c>BLOB</c></para>
@@ -4622,7 +4622,7 @@ public static partial class Ws2_32
 		/// <para>Type: <c>LPTSTR</c></para>
 		/// <para>A display string that identifies the namespace provider.</para>
 		/// </summary>
-		public StrPtrUni lpszIdentifier;
+		public LPWSTR lpszIdentifier;
 	}
 
 	/// <summary>

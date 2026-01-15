@@ -2879,7 +2879,7 @@ public static partial class AdvApi32
 		/// <summary>
 		/// Pointer to a wide character string. Note that the strings returned by the various LSA functions might not be null-terminated.
 		/// </summary>
-		public StrPtrUni Buffer;
+		public LPWSTR Buffer;
 
 		/* REMOVED TO AVOID MEMORY LEAK
 		 *

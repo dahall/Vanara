@@ -132,7 +132,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-addstring
-		[MsgParams(null, typeof(StrPtrAuto), LResultType = typeof(int))]
+		[MsgParams(null, typeof(LPTSTR), LResultType = typeof(int))]
 		CB_ADDSTRING = 0x0143,
 
 		/// <summary>
@@ -230,7 +230,7 @@ public static partial class User32
 		/// <para>The list displays long file names, if any.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-dir
-		[MsgParams(typeof(DDL), typeof(StrPtrAuto), LResultType = typeof(int))]
+		[MsgParams(typeof(DDL), typeof(LPTSTR), LResultType = typeof(int))]
 		CB_DIR = 0x0145,
 
 		/// <summary>
@@ -294,7 +294,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-getlbtext
-		[MsgParams(typeof(int), typeof(StrPtrAuto), LResultType = typeof(int))]
+		[MsgParams(typeof(int), typeof(LPTSTR), LResultType = typeof(int))]
 		CB_GETLBTEXT = 0x0148,
 
 		/// <summary>
@@ -918,7 +918,7 @@ public static partial class User32
 		/// </summary>
 		/// <remarks>The cue banner is text that is displayed in the edit control of a combo box when there is no selection.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-setcuebanner
-		[MsgParams(null, typeof(StrPtrUni), LResultType = typeof(int))]
+		[MsgParams(null, typeof(LPWSTR), LResultType = typeof(int))]
 		CB_SETCUEBANNER = CBM_FIRST + 3,
 
 		/// <summary>
@@ -941,7 +941,7 @@ public static partial class User32
 		/// </para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cb-getcuebanner
-		[MsgParams(typeof(StrPtrUni), typeof(int), LResultType = typeof(int))]
+		[MsgParams(typeof(LPWSTR), typeof(int), LResultType = typeof(int))]
 		CB_GETCUEBANNER = CBM_FIRST + 4,
 
 		/// <summary>
@@ -1226,7 +1226,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-setwindowtheme
-		[MsgParams(null, typeof(StrPtrUni), LResultType = null)]
+		[MsgParams(null, typeof(LPWSTR), LResultType = null)]
 		CBEM_SETWINDOWTHEME = 0x200B,
 	}
 

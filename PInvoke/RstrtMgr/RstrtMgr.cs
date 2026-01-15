@@ -1076,7 +1076,7 @@ public static class RstrtMgr
 		private struct UNION
 		{
 			[FieldOffset(0)]
-			public StrPtrUni str;
+			public LPWSTR str;
 
 			[FieldOffset(0)]
 			public RM_UNIQUE_PROCESS proc;

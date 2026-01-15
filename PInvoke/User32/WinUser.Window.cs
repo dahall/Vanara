@@ -9016,13 +9016,13 @@ public static partial class User32
 		/// <para>Type: <c>LPCTSTR</c></para>
 		/// <para>The name of the new window.</para>
 		/// </summary>
-		public StrPtrAuto lpszName;
+		public LPTSTR lpszName;
 
 		/// <summary>
 		/// <para>Type: <c>LPCTSTR</c></para>
 		/// <para>A pointer to a null-terminated string or an atom that specifies the class name of the new window.</para>
 		/// </summary>
-		public StrPtrAuto lpszClass;
+		public LPTSTR lpszClass;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -10089,9 +10089,9 @@ public static partial class User32
 
 		public HBRUSH hbrBackground;
 
-		public StrPtrAuto lpszMenuName;
+		public LPTSTR lpszMenuName;
 
-		public StrPtrAuto lpszClassName;
+		public LPTSTR lpszClassName;
 
 		public HICON hIconSm;
 

@@ -45,6 +45,6 @@ public static partial class Shell32
 		/// <para>Pointer to a buffer that, when this method returns successfully, receives the full text entered in the search box.</para>
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-isearchboxinfo-gettext HRESULT GetText( LPWSTR *ppsz );
-		void GetText(out StrPtrUni ppsz);
+		void GetText(out LPWSTR ppsz);
 	}
 }

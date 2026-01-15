@@ -145,12 +145,12 @@ public class Safe<#= classes[i] #> : SafeMemString<CoTaskMemoryMethods>
 
 	/// <summary>Initializes a new instance of the <see cref="Safe<#= classes[i] #>"/> class.</summary>
 	/// <param name="s">The string value.</param>
-	public Safe<#= classes[i] #>(string s) : base(s, thisCharSet) { }
+	public Safe<#= classes[i] #>(string? s) : base(s, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="Safe<#= classes[i] #>"/> class.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="capacity">The size of the buffer in characters.</param>
-	public Safe<#= classes[i] #>(string s, int capacity) : base(s, capacity, thisCharSet) { }
+	public Safe<#= classes[i] #>(string? s, int capacity) : base(s, capacity, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="Safe<#= classes[i] #>"/> class.</summary>
 	/// <param name="s">The string value.</param>

@@ -1814,19 +1814,19 @@ public static partial class WinTrust
 		public IntPtr pgActionID;
 
 		/// <summary>Pointer to the name of the provider DLL.</summary>
-		public StrPtrUni pwszDllName;
+		public LPWSTR pwszDllName;
 
 		/// <summary>
 		/// Pointer to the name of the function that loads the callback data to be returned when the WintrustGetDefaultForUsage function
 		/// is called with the dwAction parameter set to <c>DWACTION_ALLOCANDFILL</c>. This information also exists in the WINTRUST_DATA structure.
 		/// </summary>
-		public StrPtrUni pwszLoadCallbackDataFunctionName;
+		public LPWSTR pwszLoadCallbackDataFunctionName;
 
 		/// <summary>
 		/// Pointer to the name of the function that frees allocated memory when the WintrustGetDefaultForUsage function is called with
 		/// the dwAction parameter set to <c>DWACTION_FREE</c>. This information also exists in the WINTRUST_DATA structure.
 		/// </summary>
-		public StrPtrUni pwszFreeCallbackDataFunctionName;
+		public LPWSTR pwszFreeCallbackDataFunctionName;
 	}
 
 	/// <summary>
@@ -1975,40 +1975,40 @@ public static partial class WinTrust
 		/// A pointer to a <c>null</c>-terminated string for the <c>Yes</c> button text. If this parameter is <c>NULL</c>, then
 		/// "&amp;Yes" is used.
 		/// </summary>
-		public StrPtrUni pYesButtonText;
+		public LPWSTR pYesButtonText;
 
 		/// <summary>
 		/// A pointer to a <c>null</c>-terminated string for the <c>No</c> button text. If this parameter is <c>NULL</c>, then "&amp;No"
 		/// is used.
 		/// </summary>
-		public StrPtrUni pNoButtonText;
+		public LPWSTR pNoButtonText;
 
 		/// <summary>
 		/// A pointer to a <c>null</c>-terminated string for the <c>More Info</c> button text. If this parameter is <c>NULL</c>, then
 		/// "&amp;More Info" is used.
 		/// </summary>
-		public StrPtrUni pMoreInfoButtonText;
+		public LPWSTR pMoreInfoButtonText;
 
 		/// <summary>A pointer to a <c>null</c>-terminated string for the <c>Advanced</c> button text.</summary>
-		public StrPtrUni pAdvancedLinkText;
+		public LPWSTR pAdvancedLinkText;
 
 		/// <summary>
 		/// A pointer to a <c>null</c>-terminated string for the text used when the trust is valid and a time stamp is used. If this
 		/// parameter is <c>NULL</c>, then "Do you want to install and run ""%1"" signed on %2 and distributed by:" is used.
 		/// </summary>
-		public StrPtrUni pCopyActionText;
+		public LPWSTR pCopyActionText;
 
 		/// <summary>
 		/// A pointer to a <c>null</c>-terminated string for the text used when the trust is valid but a time stamp is not used. If this
 		/// parameter is <c>NULL</c>, then "Do you want to install and run ""%1"" signed on an unknown date/time and distributed by:" is used.
 		/// </summary>
-		public StrPtrUni pCopyActionTextNoTS;
+		public LPWSTR pCopyActionTextNoTS;
 
 		/// <summary>
 		/// A pointer to a <c>null</c>-terminated string for the text used when a signature is not provided. If this parameter is
 		/// <c>NULL</c>, then "Do you want to install and run ""%1""?" is used.
 		/// </summary>
-		public StrPtrUni pCopyActionTextNotSigned;
+		public LPWSTR pCopyActionTextNotSigned;
 	}
 
 	/// <summary>
@@ -2115,10 +2115,10 @@ public static partial class WinTrust
 		public uint cbStruct;
 
 		/// <summary>A pointer to a null-terminated string for the DLL name.</summary>
-		public StrPtrUni pwszDLLName;
+		public LPWSTR pwszDLLName;
 
 		/// <summary>A pointer to a null-terminated string for the function name.</summary>
-		public StrPtrUni pwszFunctionName;
+		public LPWSTR pwszFunctionName;
 	}
 
 	/// <summary>
@@ -2218,7 +2218,7 @@ public static partial class WinTrust
 		public Guid gSubject;
 
 		/// <summary>A string that contains the name of the memory object pointed to by <c>pbMem</c>.</summary>
-		public StrPtrUni pcwszDisplayName;
+		public LPWSTR pcwszDisplayName;
 
 		/// <summary>The length, in bytes, of the memory BLOB to be verified.</summary>
 		public uint cbMemObject;
@@ -2251,13 +2251,13 @@ public static partial class WinTrust
 		public uint dwCatalogVersion;
 
 		/// <summary>The full path and file name of the catalog file that contains the member to be verified.</summary>
-		public StrPtrUni pcwszCatalogFilePath;
+		public LPWSTR pcwszCatalogFilePath;
 
 		/// <summary>Tag of a member file to be verified.</summary>
-		public StrPtrUni pcwszMemberTag;
+		public LPWSTR pcwszMemberTag;
 
 		/// <summary>The full path and file name of the catalog member file to be verified.</summary>
-		public StrPtrUni pcwszMemberFilePath;
+		public LPWSTR pcwszMemberFilePath;
 
 		/// <summary>
 		/// Optional. Handle of the open catalog member file to be verified. The handle must be to a file with at least read permissions.
@@ -2301,7 +2301,7 @@ public static partial class WinTrust
 		public uint cbStruct;
 
 		/// <summary>String with the name of the memory object pointed to by the <c>pbMem</c> member of the WINTRUST_BLOB_INFO structure.</summary>
-		public StrPtrUni pcwszDisplayName;
+		public LPWSTR pcwszDisplayName;
 
 		/// <summary>A pointer to the CERT_CONTEXT to be verified.</summary>
 		public IntPtr psCertContext;
@@ -2333,7 +2333,7 @@ public static partial class WinTrust
 		public uint cbStruct;
 
 		/// <summary>Full path and file name of the file to be verified. This parameter cannot be <c>NULL</c>.</summary>
-		public StrPtrUni pcwszFilePath;
+		public LPWSTR pcwszFilePath;
 
 		/// <summary>
 		/// Optional. File handle to the open file to be verified. This handle must be to a file that has at least read permission. This
@@ -2363,7 +2363,7 @@ public static partial class WinTrust
 		public uint cbStruct;
 
 		/// <summary>String with the name representing the signer to be checked.</summary>
-		public StrPtrUni pcwszDisplayName;
+		public LPWSTR pcwszDisplayName;
 
 		/// <summary>A pointer to a CMSG_SIGNER_INFO structure that includes the signature to be verified.</summary>
 		public IntPtr psSignerInfo;
@@ -2464,7 +2464,7 @@ public static partial class WinTrust
 		public HANDLE hWVTStateData;
 
 		/// <summary>Reserved for future use. Set to NULL.</summary>
-		private StrPtrUni pwszURLReference;
+		private LPWSTR pwszURLReference;
 
 		/// <summary>DWORD value that specifies trust provider settings.</summary>
 		public WTD_TRUST dwProvFlags;

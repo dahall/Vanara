@@ -745,20 +745,20 @@ public static partial class Shell32
 		/// </para>
 		/// <para>If <c>dwScope</c> is not set to RESOURCE_CONNECTED, this field is undefined.</para>
 		/// </summary>
-		public StrPtrAuto lpLocalName;
+		public LPTSTR lpLocalName;
 
 		/// <summary>
 		/// If the enumerated item is a network resource, this field contains a remote network name. This name may be then passed to
 		/// NPAddConnection to make a network connection if <c>dwUsage</c> is set to RESOURCEUSAGE_CONNECTABLE. If the enumerated item is
 		/// a current connection, this field will refer to the remote network name that <c>lpLocalName</c> is connected to.
 		/// </summary>
-		public StrPtrAuto lpRemoteName;
+		public LPTSTR lpRemoteName;
 
 		/// <summary>May be any provider-supplied comment associated with the enumerated item.</summary>
-		public StrPtrAuto lpComment;
+		public LPTSTR lpComment;
 
 		/// <summary>Specifies the name of the provider that owns this enumerated item.</summary>
-		public StrPtrAuto lpProvider;
+		public LPTSTR lpProvider;
 	}
 
 	/// <summary>Defines the <see cref="ShellClipboardFormat.CFSTR_NETRESOURCES"/> clipboard format.</summary>

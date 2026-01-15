@@ -984,7 +984,7 @@ public static partial class CryptUI
 		/// Enhanced key usage object identifier (OID) of the certificates that will initially appear in the dialog box. The default
 		/// value is <c>NULL</c>, which displays all certificates.
 		/// </summary>
-		public StrPtrAnsi pszInitUsageOID;
+		public LPSTR pszInitUsageOID;
 	}
 
 	/// <summary>
@@ -1149,7 +1149,7 @@ public static partial class CryptUI
 		/// <summary>
 		/// An array of pointers to null-terminated strings that contain the purposes for which this certificate will be validated.
 		/// </summary>
-		public ArrayPointer<StrPtrAuto> rgszPurposes;
+		public ArrayPointer<LPTSTR> rgszPurposes;
 
 		/// <summary>The number of purposes in the <c>rgszPurposes</c> array.</summary>
 		public uint cPurposes;
@@ -1387,7 +1387,7 @@ public static partial class CryptUI
 		/// A pointer to a null-terminated ANSI string that contains the object identifier (OID) of the hash algorithm used for the
 		/// signature. The default value is <c>NULL</c>, which indicates that the SHA-1 hash algorithm is used.
 		/// </summary>
-		public StrPtrAnsi pszHashAlg;
+		public LPSTR pszHashAlg;
 
 		/// <summary>
 		/// A pointer to a null-terminated Unicode string that contains the string displayed on the digital signature wizard page. The
@@ -1466,7 +1466,7 @@ public static partial class CryptUI
 			/// used if <c>CRYPTUI_WIZ_DIGITAL_SIGN_SUBJECT_FILE</c> is specified for the <c>dwSubjectChoice</c> member.
 			/// </summary>
 			[FieldOffset(0)]
-			public StrPtrUni pwszFileName;
+			public LPWSTR pwszFileName;
 
 			/// <summary>
 			/// A pointer to a CRYPTUI_WIZ_DIGITAL_SIGN_BLOB_INFO structure that contains the BLOB to sign. This member is used if
@@ -1890,7 +1890,7 @@ public static partial class CryptUI
 			/// certificate to import. This member is used if the <c>dwSubjectChoice</c> member contains <c>CRYPTUI_WIZ_IMPORT_SUBJECT_FILE</c>.
 			/// </summary>
 			[FieldOffset(0)]
-			public StrPtrUni pwszFileName;
+			public LPWSTR pwszFileName;
 
 			/// <summary>
 			/// A pointer to the CERT_CONTEXT structure that contains the certificate to import. This member is used if the

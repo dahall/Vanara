@@ -404,11 +404,11 @@ public static partial class AdvApi32
 		/// </para>
 		/// </summary>
 		[FieldOffset(0)]
-		public StrPtrUni FileExt;
+		public LPWSTR FileExt;
 
 		/// <summary/>
 		[FieldOffset(0)]
-		public StrPtrUni ProgId;
+		public LPWSTR ProgId;
 
 		/// <summary/>
 		[FieldOffset(0)]
@@ -422,7 +422,7 @@ public static partial class AdvApi32
 			/// The user-friendly name of the application as it appears in <c>Add or Remove Programs</c> and the Group Policy Object
 			/// Editor. You can obtain the name by calling GetManagedApplications.
 			/// </summary>
-			public StrPtrUni Name;
+			public LPWSTR Name;
 
 			/// <summary>
 			/// The <c>GUID</c> for the group policy object in which the application exists. You can obtain the group policy object
@@ -531,19 +531,19 @@ public static partial class AdvApi32
 		public ushort Language;
 
 		/// <summary>This member is unused.</summary>
-		public StrPtrUni pszOwner;
+		public LPWSTR pszOwner;
 
 		/// <summary>This member is unused.</summary>
-		public StrPtrUni pszCompany;
+		public LPWSTR pszCompany;
 
 		/// <summary>This member is unused.</summary>
-		public StrPtrUni pszComments;
+		public LPWSTR pszComments;
 
 		/// <summary>This member is unused.</summary>
-		public StrPtrUni pszContact;
+		public LPWSTR pszContact;
 
 		/// <summary>This member is unused.</summary>
-		public StrPtrUni pszSupportUrl;
+		public LPWSTR pszSupportUrl;
 
 		/// <summary>
 		/// <para>Indicates the type of package used to install the application. This member can have one of the following values.</para>

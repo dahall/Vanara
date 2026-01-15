@@ -647,13 +647,13 @@ public static partial class Cabinet
 		public int cb;
 
 		/// <summary>A null-terminated string.</summary>
-		public Vanara.InteropServices.StrPtrAnsi psz1;
+		public Vanara.InteropServices.LPSTR psz1;
 
 		/// <summary>A null-terminated string.</summary>
 		public IntPtr psz2;
 
 		/// <summary>A null-terminated string.</summary>
-		public Vanara.InteropServices.StrPtrAnsi psz3;
+		public Vanara.InteropServices.LPSTR psz3;
 
 		/// <summary>Pointer to an application-defined value.</summary>
 		public IntPtr pv;

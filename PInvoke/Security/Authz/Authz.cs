@@ -2733,7 +2733,7 @@ public static partial class Authz
 		private struct Internal_AUTHZ_SECURITY_ATTRIBUTE_V1
 		{
 			/// <summary>A pointer to a name of a security attribute.</summary>
-			public StrPtrUni pName;
+			public LPWSTR pName;
 
 			/// <summary>The data type of the values pointed to by the Values member.</summary>
 			public AUTHZ_SECURITY_ATTRIBUTE_DATATYPE ValueType;

@@ -126,12 +126,12 @@ public class SafeLPSTR : SafeMemString<CoTaskMemoryMethods>
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
-	public SafeLPSTR(string s) : base(s, thisCharSet) { }
+	public SafeLPSTR(string? s) : base(s, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="capacity">The size of the buffer in characters.</param>
-	public SafeLPSTR(string s, int capacity) : base(s, capacity, thisCharSet) { }
+	public SafeLPSTR(string? s, int capacity) : base(s, capacity, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
@@ -357,12 +357,12 @@ public class SafeLPTSTR : SafeMemString<CoTaskMemoryMethods>
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPTSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
-	public SafeLPTSTR(string s) : base(s, thisCharSet) { }
+	public SafeLPTSTR(string? s) : base(s, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPTSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="capacity">The size of the buffer in characters.</param>
-	public SafeLPTSTR(string s, int capacity) : base(s, capacity, thisCharSet) { }
+	public SafeLPTSTR(string? s, int capacity) : base(s, capacity, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPTSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
@@ -598,12 +598,12 @@ public class SafeLPWSTR : SafeMemString<CoTaskMemoryMethods>
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPWSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
-	public SafeLPWSTR(string s) : base(s, thisCharSet) { }
+	public SafeLPWSTR(string? s) : base(s, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPWSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>
 	/// <param name="capacity">The size of the buffer in characters.</param>
-	public SafeLPWSTR(string s, int capacity) : base(s, capacity, thisCharSet) { }
+	public SafeLPWSTR(string? s, int capacity) : base(s, capacity, thisCharSet) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPWSTR"/> class.</summary>
 	/// <param name="s">The string value.</param>

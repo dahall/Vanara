@@ -397,7 +397,7 @@ public static partial class Hid
 		public ushort HardwareIDsLength;
 
 		/// <summary/>
-		public StrPtrUni HardwareIDs;
+		public LPWSTR HardwareIDs;
 
 		/// <summary>
 		/// Use the <b>VHF_CONFIG_INIT</b> function to initialize the required members of the <c>VHF_CONFIG</c> structure allocated by the

@@ -3844,7 +3844,7 @@ public static partial class Crypt32
 		/// CryptInstallOIDFunctionAddress or CryptRegisterOIDFunction. For more information, see CertOpenStore.
 		/// </para>
 		/// </summary>
-		public StrPtrAnsi pszOpenStoreProvider;
+		public LPSTR pszOpenStoreProvider;
 
 		/// <summary>
 		/// <para>

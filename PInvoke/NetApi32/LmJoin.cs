@@ -3062,15 +3062,15 @@ public static partial class NetApi32
 		{
 			public DSREG_JOIN_TYPE joinType; 
 			public IntPtr pJoinCertificate;
-			public StrPtrUni pszDeviceId;
-			public StrPtrUni pszIdpDomain;
-			public StrPtrUni pszTenantId;
-			public StrPtrUni pszJoinUserEmail;
-			public StrPtrUni pszTenantDisplayName;
-			public StrPtrUni pszMdmEnrollmentUrl;
-			public StrPtrUni pszMdmTermsOfUseUrl;
-			public StrPtrUni pszMdmComplianceUrl;
-			public StrPtrUni pszUserSettingSyncUrl;
+			public LPWSTR pszDeviceId;
+			public LPWSTR pszIdpDomain;
+			public LPWSTR pszTenantId;
+			public LPWSTR pszJoinUserEmail;
+			public LPWSTR pszTenantDisplayName;
+			public LPWSTR pszMdmEnrollmentUrl;
+			public LPWSTR pszMdmTermsOfUseUrl;
+			public LPWSTR pszMdmComplianceUrl;
+			public LPWSTR pszUserSettingSyncUrl;
 			public IntPtr pUserInfo;
 		}
 	}

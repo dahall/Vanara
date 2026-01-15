@@ -3014,7 +3014,7 @@ public static partial class D2d1
 	public struct D2D1_INPUT_ELEMENT_DESC
 	{
 		/// <summary>The HLSL semantic associated with this element in a shader input-signature.</summary>
-		public StrPtrAnsi semanticName;
+		public LPSTR semanticName;
 
 		/// <summary>
 		/// The semantic index for the element. A semantic index modifies a semantic, with an integer index number. A semantic index is only

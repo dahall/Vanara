@@ -2110,20 +2110,20 @@ public static partial class WinMm
 		public int cchBuffer;
 
 		/// <summary>Pointer to the file's I/O buffer. If the file is unbuffered, this member is NULL.</summary>
-		public StrPtrAnsi pchBuffer;
+		public LPSTR pchBuffer;
 
 		/// <summary>
 		/// Pointer to the next location in the I/O buffer to be read or written. If no more bytes can be read without calling the
 		/// mmioAdvance or mmioRead function, this member points to the pchEndRead member. If no more bytes can be written without
 		/// calling the mmioAdvance or mmioWrite function, this member points to the pchEndWrite member.
 		/// </summary>
-		public StrPtrAnsi pchNext;
+		public LPSTR pchNext;
 
 		/// <summary>Pointer to the location that is 1 byte past the last location in the buffer that can be read.</summary>
-		public StrPtrAnsi pchEndRead;
+		public LPSTR pchEndRead;
 
 		/// <summary>Pointer to the location that is 1 byte past the last location in the buffer that can be written.</summary>
-		public StrPtrAnsi pchEndWrite;
+		public LPSTR pchEndWrite;
 
 		/// <summary>Reserved.</summary>
 		public int lBufOffset;

@@ -1542,7 +1542,7 @@ public static partial class Kernel32
 	// lpSrc, int iMaxLength );
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h")]
-	public static extern StrPtrAuto lstrcpyn(StringBuilder lpDest, string? lpSrc, int iMaxLength);
+	public static extern LPTSTR lstrcpyn(StringBuilder lpDest, string? lpSrc, int iMaxLength);
 
 	/// <summary>Determines the length of the specified string (not including the terminating null character).</summary>
 	/// <param name="lpString">

@@ -2546,7 +2546,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetHomeDirectory")]
 	[return: MarshalAs(UnmanagedType.LPTStr)]
-	public static extern StrPtrAuto SymGetHomeDirectory(IMAGEHLP_HD_TYPE type, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder dir, SizeT size);
+	public static extern LPTSTR SymGetHomeDirectory(IMAGEHLP_HD_TYPE type, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder dir, SizeT size);
 
 	/// <summary>Locates the source line for the specified address.</summary>
 	/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
@@ -4698,7 +4698,7 @@ public static partial class DbgHelp
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymMatchFileName")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SymMatchFileName([MarshalAs(UnmanagedType.LPTStr)] string FileName, [MarshalAs(UnmanagedType.LPTStr)] string Match,
-		out StrPtrAuto FileNameStop, out StrPtrAuto MatchStop);
+		out LPTSTR FileNameStop, out LPTSTR MatchStop);
 
 	/// <summary>Compares the specified string to the specified wildcard expression.</summary>
 	/// <param name="string">The string, such as a symbol name, to be compared to the expression parameter.</param>
@@ -5191,7 +5191,7 @@ public static partial class DbgHelp
 	// HANDLE hProcess, PCSTR dir );
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymSetHomeDirectory")]
-	public static extern StrPtrAuto SymSetHomeDirectory([Optional] HPROCESS hProcess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? dir);
+	public static extern LPTSTR SymSetHomeDirectory([Optional] HPROCESS hProcess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? dir);
 
 	/// <summary>Sets the options mask.</summary>
 	/// <param name="SymOptions">

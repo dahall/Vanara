@@ -1953,13 +1953,13 @@ public struct VSS_PROVIDER_PROP
 	public Guid m_ProviderId;
 
 	/// <summary>String containing the provider name.</summary>
-	public StrPtrUni m_pwszProviderName;
+	public LPWSTR m_pwszProviderName;
 
 	/// <summary>Provider type. See VSS_PROVIDER_TYPE for more information.</summary>
 	public VSS_PROVIDER_TYPE m_eProviderType;
 
 	/// <summary>String containing the provider version in readable format.</summary>
-	public StrPtrUni m_pwszProviderVersion;
+	public LPWSTR m_pwszProviderVersion;
 
 	/// <summary>A VSS_ID (GUID) uniquely identifying the version of a provider.</summary>
 	public Guid m_ProviderVersionId;
@@ -2033,29 +2033,29 @@ public struct VSS_SNAPSHOT_PROP
 	/// </para>
 	/// <para>The device name does not contain a trailing "".</para>
 	/// </summary>
-	public StrPtrUni m_pwszSnapshotDeviceObject;
+	public LPWSTR m_pwszSnapshotDeviceObject;
 
 	/// <summary>String containing the name of the volume that had been shadow copied.</summary>
-	public StrPtrUni m_pwszOriginalVolumeName;
+	public LPWSTR m_pwszOriginalVolumeName;
 
 	/// <summary>String containing the name of the machine containing the original volume.</summary>
-	public StrPtrUni m_pwszOriginatingMachine;
+	public LPWSTR m_pwszOriginatingMachine;
 
 	/// <summary>String containing the name of the machine running the Volume Shadow Copy Service that created the shadow copy.</summary>
-	public StrPtrUni m_pwszServiceMachine;
+	public LPWSTR m_pwszServiceMachine;
 
 	/// <summary>
 	/// String containing the name of the shadow copy when it is exposed. This is a drive letter or mounted folder (if the shadow copy
 	/// is exposed as a local volume), or a share name. Corresponds to the wszExpose parameter of the
 	/// IVssBackupComponents::ExposeSnapshot method.
 	/// </summary>
-	public StrPtrUni m_pwszExposedName;
+	public LPWSTR m_pwszExposedName;
 
 	/// <summary>
 	/// String indicating the portion of the shadow copy of a volume made available if it is exposed as a share. Corresponds to the
 	/// wszPathFromRoot parameter of the IVssBackupComponents::ExposeSnapshot method.
 	/// </summary>
-	public StrPtrUni m_pwszExposedPath;
+	public LPWSTR m_pwszExposedPath;
 
 	/// <summary>A VSS_ID (GUID) uniquely identifying the provider used to create this shadow copy.</summary>
 	public Guid m_ProviderId;

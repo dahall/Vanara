@@ -1448,7 +1448,7 @@ public static partial class ComDlg32
 		/// Style</c> combo box into this buffer.
 		/// </para>
 		/// </summary>
-		public StrPtrAuto lpszStyle;
+		public LPTSTR lpszStyle;
 
 		/// <summary>
 		/// <para>Type: <c>WORD</c></para>
@@ -1732,7 +1732,7 @@ public static partial class ComDlg32
 		/// <c>lpstrFindWhat</c> contains the string to be replaced.
 		/// </para>
 		/// </summary>
-		public StrPtrAuto lpstrFindWhat;
+		public LPTSTR lpstrFindWhat;
 
 		/// <summary>
 		/// <para>Type: <c>LPTSTR</c></para>
@@ -1747,7 +1747,7 @@ public static partial class ComDlg32
 		/// </para>
 		/// <para>The FindText function ignores this member.</para>
 		/// </summary>
-		public StrPtrAuto lpstrReplaceWith;
+		public LPTSTR lpstrReplaceWith;
 
 		/// <summary>
 		/// <para>Type: <c>WORD</c></para>
@@ -1975,7 +1975,7 @@ public static partial class ComDlg32
 		/// the <c>lpstrCustomFilter</c> buffer.
 		/// </para>
 		/// </summary>
-		public StrPtrAuto lpstrCustomFilter;
+		public LPTSTR lpstrCustomFilter;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -2022,7 +2022,7 @@ public static partial class ComDlg32
 		/// bytes or characters.
 		/// </para>
 		/// </summary>
-		public StrPtrAuto lpstrFile;
+		public LPTSTR lpstrFile;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -2039,7 +2039,7 @@ public static partial class ComDlg32
 		/// <para>Type: <c>LPTSTR</c></para>
 		/// <para>The file name and extension (without path information) of the selected file. This member can be <c>NULL</c>.</para>
 		/// </summary>
-		public StrPtrAuto lpstrFileTitle;
+		public LPTSTR lpstrFileTitle;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>

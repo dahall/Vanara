@@ -569,7 +569,7 @@ public static partial class ActiveDS
 	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-allocadsstr LPWSTR AllocADsStr( [in] LPCWSTR pStr );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.AllocADsStr")]
 	[DllImport(Lib_Activeds, SetLastError = true, ExactSpelling = true)]
-	public static extern StrPtrUni AllocADsStr([MarshalAs(UnmanagedType.LPWStr)] string pStr);
+	public static extern LPWSTR AllocADsStr([MarshalAs(UnmanagedType.LPWStr)] string pStr);
 
 	/// <summary>The <c>BinarySDToSecurityDescriptor</c> function converts a binary security descriptor to an IADsSecurityDescriptor object.</summary>
 	/// <param name="pSecurityDescriptor">
@@ -672,7 +672,7 @@ public static partial class ActiveDS
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.FreeADsStr")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FreeADsStr(StrPtrUni pStr);
+	public static extern bool FreeADsStr(LPWSTR pStr);
 
 	/// <summary>The <c>ReallocADsMem</c> function reallocates and copies an existing memory block.</summary>
 	/// <param name="pOldMem">
@@ -730,7 +730,7 @@ public static partial class ActiveDS
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ReallocADsStr")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReallocADsStr(ref StrPtrUni ppStr, [MarshalAs(UnmanagedType.LPWStr)] string pStr);
+	public static extern bool ReallocADsStr(ref LPWSTR ppStr, [MarshalAs(UnmanagedType.LPWStr)] string pStr);
 
 	/// <summary>
 	/// The <c>SecurityDescriptorToBinarySD</c> function converts an IADsSecurityDescriptor object to the binary security descriptor format.

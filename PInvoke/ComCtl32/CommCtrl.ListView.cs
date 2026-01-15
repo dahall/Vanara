@@ -1256,7 +1256,7 @@ public static partial class ComCtl32
 		/// contain the string without truncating it, you must add padding to the returned string width.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getstringwidth
-		[MsgParams(null, typeof(StrPtrAuto))]
+		[MsgParams(null, typeof(LPTSTR))]
 		LVM_GETSTRINGWIDTH = LVM_FIRST + 87,
 
 		/// <summary>
@@ -3599,7 +3599,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getemptytext
-		[MsgParams(typeof(uint), typeof(StrPtrUni), LResultType = typeof(BOOL))]
+		[MsgParams(typeof(uint), typeof(LPWSTR), LResultType = typeof(BOOL))]
 		LVM_GETEMPTYTEXT = LVM_FIRST + 204,
 
 		/// <summary>
@@ -6501,7 +6501,7 @@ public static partial class ComCtl32
 		/// specified by the <c>cchTextMax</c> structure.
 		/// </para>
 		/// </summary>
-		public StrPtrAuto pszText;
+		public LPTSTR pszText;
 
 		/// <summary>
 		/// <para>Type: <c>int</c></para>
@@ -6684,7 +6684,7 @@ public static partial class ComCtl32
 		/// LVBKIF_SOURCE_URL flag is set in ulFlags. This member must be initialized to point to the buffer that contains or receives the
 		/// text before sending the message.
 		/// </summary>
-		public StrPtrAuto pszImage;
+		public LPTSTR pszImage;
 
 		/// <summary>Size of the buffer at the address in pszImage. If information is being sent to the control, this member is ignored.</summary>
 		public uint cchImageMax;
@@ -6752,7 +6752,7 @@ public static partial class ComCtl32
 		{
 			ulFlags = flags;
 			if (ulFlags.IsFlagSet(ListViewBkImageFlag.LVBKIF_SOURCE_URL))
-				pszImage = new StrPtrAuto(cchImageMax = 1024);
+				pszImage = new LPTSTR(cchImageMax = 1024);
 		}
 
 		/// <summary>Gets or sets the URL.</summary>
@@ -6795,7 +6795,7 @@ public static partial class ComCtl32
 		/// If the structure is receiving information about a column, this member specifies the address of the buffer that receives the
 		/// column header text.
 		/// </summary>
-		public StrPtrAuto pszText;
+		public LPTSTR pszText;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszText member. If the structure is not receiving information about a column, this
@@ -6834,7 +6834,7 @@ public static partial class ComCtl32
 		{
 			this.mask = mask;
 			if (mask.IsFlagSet(ListViewColumMask.LVCF_TEXT))
-				pszText = new StrPtrAuto(cchTextMax = 1024);
+				pszText = new LPTSTR(cchTextMax = 1024);
 		}
 
 		/// <summary>Gets or sets the format.</summary>
@@ -6923,7 +6923,7 @@ public static partial class ComCtl32
 		/// Pointer to a null-terminated string that contains the header text when item information is being set. If group information is
 		/// being retrieved, this member specifies the address of the buffer that receives the header text.
 		/// </summary>
-		public StrPtrAuto pszHeader;
+		public LPTSTR pszHeader;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszHeader member. If the structure is not receiving information about a group,
@@ -6935,7 +6935,7 @@ public static partial class ComCtl32
 		/// Pointer to a null-terminated string that contains the footer text when item information is being set. If group information is
 		/// being retrieved, this member specifies the address of the buffer that receives the footer text.
 		/// </summary>
-		public StrPtrAuto pszFooter;
+		public LPTSTR pszFooter;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszFooter member. If the structure is not receiving information about a group,
@@ -6965,7 +6965,7 @@ public static partial class ComCtl32
 		/// being retrieved, this member specifies the address of the buffer that receives the subtitle text. This element is drawn under the
 		/// header text.
 		/// </summary>
-		public StrPtrAuto pszSubtitle;
+		public LPTSTR pszSubtitle;
 
 		/// <summary>
 		/// Size, in TCHARs, of the buffer pointed to by the pszSubtitle member. If the structure is not receiving information about a group,
@@ -6978,7 +6978,7 @@ public static partial class ComCtl32
 		/// information is being retrieved, this member specifies the address of the buffer that receives the task text. This item is drawn
 		/// right-aligned opposite the header text. When clicked by the user, the task link generates an LVN_LINKCLICK notification.
 		/// </summary>
-		public StrPtrAuto pszTask;
+		public LPTSTR pszTask;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszTask member. If the structure is not receiving information about a group, this
@@ -6991,7 +6991,7 @@ public static partial class ComCtl32
 		/// information is being retrieved, this member specifies the address of the buffer that receives the top description text. This item
 		/// is drawn opposite the title image when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.
 		/// </summary>
-		public StrPtrAuto pszDescriptionTop;
+		public LPTSTR pszDescriptionTop;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszDescriptionTop member. If the structure is not receiving information about a
@@ -7004,7 +7004,7 @@ public static partial class ComCtl32
 		/// information is being retrieved, this member specifies the address of the buffer that receives the bottom description text. This
 		/// item is drawn under the top description text when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.
 		/// </summary>
-		public StrPtrAuto pszDescriptionBottom;
+		public LPTSTR pszDescriptionBottom;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszDescriptionBottom member. If the structure is not receiving information about a
@@ -7029,7 +7029,7 @@ public static partial class ComCtl32
 		/// being set. If group information is being retrieved, this member specifies the address of the buffer that receives the subset
 		/// title text.
 		/// </summary>
-		public StrPtrAuto pszSubsetTitle;
+		public LPTSTR pszSubsetTitle;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszSubsetTitle member. If the structure is not receiving information about a
@@ -7055,22 +7055,22 @@ public static partial class ComCtl32
 			if (header != null)
 				Header = header;
 			else if ((mask & ListViewGroupMask.LVGF_HEADER) != 0)
-				pszHeader = new StrPtrAuto(cchHeader = 1024);
+				pszHeader = new LPTSTR(cchHeader = 1024);
 
 			if ((mask & ListViewGroupMask.LVGF_FOOTER) != 0)
-				pszFooter = new StrPtrAuto(cchFooter = 1024);
+				pszFooter = new LPTSTR(cchFooter = 1024);
 
 			if ((mask & ListViewGroupMask.LVGF_SUBTITLE) != 0)
-				pszSubtitle = new StrPtrAuto(cchSubtitle = 1024);
+				pszSubtitle = new LPTSTR(cchSubtitle = 1024);
 
 			if ((mask & ListViewGroupMask.LVGF_TASK) != 0)
-				pszTask = new StrPtrAuto(cchTask = 1024);
+				pszTask = new LPTSTR(cchTask = 1024);
 
 			if ((mask & ListViewGroupMask.LVGF_DESCRIPTIONBOTTOM) != 0)
-				pszDescriptionBottom = new StrPtrAuto(cchDescriptionBottom = 1024);
+				pszDescriptionBottom = new LPTSTR(cchDescriptionBottom = 1024);
 
 			if ((mask & ListViewGroupMask.LVGF_DESCRIPTIONTOP) != 0)
-				pszDescriptionTop = new StrPtrAuto(cchDescriptionTop = 1024);
+				pszDescriptionTop = new LPTSTR(cchDescriptionTop = 1024);
 		}
 
 		/// <summary>Gets or sets the bottom description text.</summary>
@@ -7250,7 +7250,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para>Do not set pszText to LPSTR_TEXTCALLBACK if the list-view control has the LVS_SORTASCENDING or LVS_SORTDESCENDING style.</para>
 		/// </summary>
-		public StrPtrAuto pszText;
+		public LPTSTR pszText;
 
 		/// <summary>
 		/// Number of TCHARs in the buffer pointed to by pszText, including the terminating NULL.
@@ -7321,7 +7321,7 @@ public static partial class ComCtl32
 		{
 			this.mask = mask;
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_TEXT))
-				pszText = new StrPtrAuto(cchTextMax = 1024);
+				pszText = new LPTSTR(cchTextMax = 1024);
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_COLUMNS))
 				puColumns = Marshal.AllocHGlobal(Marshal.SizeOf<int>() * MAX_COLS);
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_COLFMT))

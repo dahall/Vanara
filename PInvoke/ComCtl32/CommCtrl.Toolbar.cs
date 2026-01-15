@@ -1118,7 +1118,7 @@ public static partial class ComCtl32
 		/// <para>The returned string corresponds to the text that is currently displayed by the button.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbuttontext
-		[MsgParams(typeof(int), typeof(StrPtrAnsi))]
+		[MsgParams(typeof(int), typeof(LPSTR))]
 		TB_GETBUTTONTEXTA = WM_USER + 45,
 
 		/// <summary>
@@ -1144,7 +1144,7 @@ public static partial class ComCtl32
 		/// <para>The returned string corresponds to the text that is currently displayed by the button.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getbuttontext
-		[MsgParams(typeof(int), typeof(StrPtrUni))]
+		[MsgParams(typeof(int), typeof(LPWSTR))]
 		TB_GETBUTTONTEXTW = WM_USER + 75,
 
 		/// <summary>
@@ -2001,7 +2001,7 @@ public static partial class ComCtl32
 		/// currently being displayed by a button. To retrieve a button's current text string, send the toolbar a <c>TB_GETBUTTONTEXT</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getstring
-		[MsgParams(typeof(uint), typeof(StrPtrUni))]
+		[MsgParams(typeof(uint), typeof(LPWSTR))]
 		TB_GETSTRINGW = WM_USER + 91,
 
 		/// <summary>
@@ -2019,7 +2019,7 @@ public static partial class ComCtl32
 		/// currently being displayed by a button. To retrieve a button's current text string, send the toolbar a <c>TB_GETBUTTONTEXT</c> message.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/tb-getstring
-		[MsgParams(typeof(uint), typeof(StrPtrAnsi))]
+		[MsgParams(typeof(uint), typeof(LPSTR))]
 		TB_GETSTRINGA = WM_USER + 92,
 
 		/// <summary>

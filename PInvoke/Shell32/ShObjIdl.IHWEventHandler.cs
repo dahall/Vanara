@@ -54,7 +54,7 @@ public static partial class Shell32
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-idynamichwhandler-getdynamicinfo HRESULT
 		// GetDynamicInfo( LPCWSTR pszDeviceID, DWORD dwContentType, LPWSTR *ppszAction );
 		[PreserveSig]
-		HRESULT GetDynamicInfo([MarshalAs(UnmanagedType.LPWStr)] string pszDeviceID, uint dwContentType, out StrPtrUni ppszAction);
+		HRESULT GetDynamicInfo([MarshalAs(UnmanagedType.LPWStr)] string pszDeviceID, uint dwContentType, out LPWSTR ppszAction);
 	}
 
 	/// <summary>Called by AutoPlay to implement the handling of registered media types.</summary>

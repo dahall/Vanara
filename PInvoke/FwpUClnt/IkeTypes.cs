@@ -2364,13 +2364,13 @@ public static partial class FwpUClnt
 		/// <para>Key container name of the public key/private key pair that was used to generate the CGA.</para>
 		/// <para>Same semantics as the <c>pwszContainerName</c> member of the CRYPT_KEY_PROV_INFO structure.</para>
 		/// </summary>
-		public StrPtrUni keyContainerName;
+		public LPWSTR keyContainerName;
 
 		/// <summary>
 		/// <para>Name of the CSP that stores the key container. If <c>NULL</c>, default provider will be used.</para>
 		/// <para>Same semantics as the <c>pwszProvName</c> member of the CRYPT_KEY_PROV_INFO structure.</para>
 		/// </summary>
-		public StrPtrUni cspName;
+		public LPWSTR cspName;
 
 		/// <summary>
 		/// <para>Type of the CSP that stores the key container.</para>
@@ -2459,7 +2459,7 @@ public static partial class FwpUClnt
 		/// <para>Type: <c>wchar_t*</c></para>
 		/// <para>The Kerberos proxy server.</para>
 		/// </summary>
-		public StrPtrUni proxyServer;
+		public LPWSTR proxyServer;
 	}
 
 	/// <summary>

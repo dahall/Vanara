@@ -1290,7 +1290,7 @@ public static partial class Ole32
 
 		/// <summary>Initializes a new instance of the <see cref="PROPSPEC"/> struct.</summary>
 		/// <param name="propName">Specifies a pointer to the string name of the property.</param>
-		public PROPSPEC(StrPtrUni propName)
+		public PROPSPEC(LPWSTR propName)
 		{
 			ulKind = PRSPEC.PRSPEC_LPWSTR;
 			union = (IntPtr)propName;

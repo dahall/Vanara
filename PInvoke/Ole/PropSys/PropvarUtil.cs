@@ -2481,7 +2481,7 @@ public static partial class PropSys
 			return hr;
 		}
 		prgsz = new string[(int)cnt];
-		StrPtrUni[] sptrs = ptr.ToArray<StrPtrUni>((int)cnt);
+		LPWSTR[] sptrs = ptr.ToArray<LPWSTR>((int)cnt);
 		for (int i = 0; i < cnt; i++)
 		{
 			prgsz[i] = sptrs[i].ToString();
@@ -3233,7 +3233,7 @@ public static partial class PropSys
 	// REFVARIANT var, ULONG iElem, PWSTR *ppszVal );
 	[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("propvarutil.h", MSDNShortId = "c4d1a37e-f7d1-4c0e-8d05-93a0153f2878")]
-	public static extern HRESULT VariantGetStringElem(in VARIANT var, uint iElem, out StrPtrUni ppszVal);
+	public static extern HRESULT VariantGetStringElem(in VARIANT var, uint iElem, out LPWSTR ppszVal);
 
 	/// <summary>Extracts a single unsigned <c>Int16</c> element from a variant structure.</summary>
 	/// <param name="var">

@@ -8860,10 +8860,10 @@ public static partial class WinINet
 			public struct GOPHER_ADMIN_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public StrPtrAuto Comment;
+				public LPTSTR Comment;
 
 				/// <summary/>
-				public StrPtrAuto EmailAddress;
+				public LPTSTR EmailAddress;
 			}
 
 			/// <summary/>
@@ -8906,7 +8906,7 @@ public static partial class WinINet
 			public struct GOPHER_SITE_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public StrPtrAuto Site;
+				public LPTSTR Site;
 			}
 
 			/// <summary/>
@@ -8914,7 +8914,7 @@ public static partial class WinINet
 			public struct GOPHER_ORGANIZATION_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public StrPtrAuto Organization;
+				public LPTSTR Organization;
 			}
 
 			/// <summary/>
@@ -8922,7 +8922,7 @@ public static partial class WinINet
 			public struct GOPHER_LOCATION_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public StrPtrAuto Location;
+				public LPTSTR Location;
 			}
 
 			/// <summary/>
@@ -8961,7 +8961,7 @@ public static partial class WinINet
 			public struct GOPHER_PROVIDER_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public StrPtrAuto Provider;
+				public LPTSTR Provider;
 			}
 
 			/// <summary/>
@@ -8969,7 +8969,7 @@ public static partial class WinINet
 			public struct GOPHER_VERSION_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public StrPtrAuto Version;
+				public LPTSTR Version;
 			}
 
 			/// <summary/>
@@ -8977,10 +8977,10 @@ public static partial class WinINet
 			public struct GOPHER_ABSTRACT_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public StrPtrAuto ShortAbstract;
+				public LPTSTR ShortAbstract;
 
 				/// <summary/>
-				public StrPtrAuto AbstractFile;
+				public LPTSTR AbstractFile;
 			}
 
 			/// <summary/>
@@ -8988,10 +8988,10 @@ public static partial class WinINet
 			public struct GOPHER_VIEW_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public StrPtrAuto ContentType;
+				public LPTSTR ContentType;
 
 				/// <summary/>
-				public StrPtrAuto Language;
+				public LPTSTR Language;
 
 				/// <summary/>
 				public uint Size;
@@ -9010,10 +9010,10 @@ public static partial class WinINet
 			public struct GOPHER_ASK_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public StrPtrAuto QuestionType;
+				public LPTSTR QuestionType;
 
 				/// <summary/>
-				public StrPtrAuto QuestionText;
+				public LPTSTR QuestionText;
 			}
 
 			/// <summary/>
@@ -9021,7 +9021,7 @@ public static partial class WinINet
 			public struct GOPHER_UNKNOWN_ATTRIBUTE_TYPE
 			{
 				/// <summary/>
-				public StrPtrAuto Text;
+				public LPTSTR Text;
 			}
 		}
 	}
@@ -9402,13 +9402,13 @@ public static partial class WinINet
 		/// <summary>
 		/// Pointer to a null-terminated string that contains the URL name. The string occupies the memory area at the end of this structure.
 		/// </summary>
-		public StrPtrAuto lpszSourceUrlName;
+		public LPTSTR lpszSourceUrlName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that contains the local file name. The string occupies the memory area at the end of
 		/// this structure.
 		/// </summary>
-		public StrPtrAuto lpszLocalFileName;
+		public LPTSTR lpszLocalFileName;
 
 		/// <summary>
 		/// <para>
@@ -9494,7 +9494,7 @@ public static partial class WinINet
 		/// <summary>
 		/// Pointer to a buffer that contains the header information. The buffer occupies the memory at the end of this structure.
 		/// </summary>
-		public StrPtrAuto lpHeaderInfo;
+		public LPTSTR lpHeaderInfo;
 
 		/// <summary>Size of the <c>lpHeaderInfo</c> buffer, in <c>TCHARs</c>.</summary>
 		public uint dwHeaderInfoSize;
@@ -9503,7 +9503,7 @@ public static partial class WinINet
 		/// Pointer to a string that contains the file name extension used to retrieve the data as a file. The string occupies the
 		/// memory area at the end of this structure.
 		/// </summary>
-		public StrPtrAuto lpszFileExtension;
+		public LPTSTR lpszFileExtension;
 
 		/// <summary/>
 		public uint dwReserved;
@@ -9635,31 +9635,31 @@ public static partial class WinINet
 		/// Pointer to a buffer that contains the name of the organization, site, and server for which the certificate was issued. The
 		/// application must call LocalFree to release the resources allocated for this parameter.
 		/// </summary>
-		public StrPtrAnsi lpszSubjectInfo;
+		public LPSTR lpszSubjectInfo;
 
 		/// <summary>
 		/// Pointer to a buffer that contains the name of the organization, site, and server that issued the certificate. The
 		/// application must call LocalFree to release the resources allocated for this parameter.
 		/// </summary>
-		public StrPtrAnsi lpszIssuerInfo;
+		public LPSTR lpszIssuerInfo;
 
 		/// <summary>
 		/// Pointer to a buffer that contains the name of the protocol used to provide the secure connection. The application must call
 		/// LocalFree to release the resources allocated for this parameter.
 		/// </summary>
-		public StrPtrAnsi lpszProtocolName;
+		public LPSTR lpszProtocolName;
 
 		/// <summary>
 		/// Pointer to a buffer that contains the name of the algorithm used for signing the certificate. The application must call
 		/// LocalFree to release the resources allocated for this parameter.
 		/// </summary>
-		public StrPtrAnsi lpszSignatureAlgName;
+		public LPSTR lpszSignatureAlgName;
 
 		/// <summary>
 		/// Pointer to a buffer that contains the name of the algorithm used for doing encryption over the secure channel (SSL/PCT)
 		/// connection. The application must call LocalFree to release the resources allocated for this parameter.
 		/// </summary>
-		public StrPtrAnsi lpszEncryptionAlgName;
+		public LPSTR lpszEncryptionAlgName;
 
 		/// <summary>Size, in TCHARs, of the key.</summary>
 		public uint dwKeySize;
@@ -9819,7 +9819,7 @@ public static partial class WinINet
 
 			/// <summary>Pointer to a string value.</summary>
 			[FieldOffset(0)]
-			public StrPtrAuto pszValue;
+			public LPTSTR pszValue;
 
 			/// <summary>A FILETIME structure.</summary>
 			[FieldOffset(0)]
@@ -9839,7 +9839,7 @@ public static partial class WinINet
 		/// Pointer to a string that contains the name of the RAS connection or NULL, which indicates the default or LAN connection, to
 		/// set or query options on.
 		/// </summary>
-		public StrPtrAuto pszConnection;
+		public LPTSTR pszConnection;
 
 		/// <summary>Number of options to query or set.</summary>
 		public uint dwOptionCount;
@@ -9866,10 +9866,10 @@ public static partial class WinINet
 		public InternetOpenType dwAccessType;
 
 		/// <summary>Pointer to a string that contains the proxy server list.</summary>
-		public StrPtrAuto lpszProxy;
+		public LPTSTR lpszProxy;
 
 		/// <summary>Pointer to a string that contains the proxy bypass list.</summary>
-		public StrPtrAuto lpszProxyBypass;
+		public LPTSTR lpszProxyBypass;
 	}
 
 	/// <summary>

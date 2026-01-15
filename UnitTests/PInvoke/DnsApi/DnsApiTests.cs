@@ -67,7 +67,7 @@ public class DnsApiTests
 	public void DnsQueryConfigTest([Values] DNS_CONFIG_TYPE ctype)
 	{
 		var type = CorrespondingTypeAttribute.GetCorrespondingTypes(ctype, CorrespondingAction.GetSet).FirstOrDefault();
-		if (type is null || type == typeof(StrPtrAnsi)) Assert.Pass($"{ctype} Ignored");
+		if (type is null || type == typeof(LPSTR)) Assert.Pass($"{ctype} Ignored");
 		var sz = 0U;
 		_ = DnsQueryConfig(ctype, 0, null, default, default, ref sz);
 		if (ctype == DNS_CONFIG_TYPE.DnsConfigPrimaryDomainName_W) return;

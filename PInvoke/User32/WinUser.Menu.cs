@@ -3957,7 +3957,7 @@ public static partial class User32
 		/// </para>
 		/// <para><c>dwTypeData</c> is used only if the <c>MIIM_STRING</c> flag is set in the <c>fMask</c> member</para>
 		/// </summary>
-		public StrPtrAuto dwTypeData;
+		public LPTSTR dwTypeData;
 
 		/// <summary>
 		/// <para>Type: <c>UINT</c></para>

@@ -755,7 +755,7 @@ public static partial class FwpUClnt
 		/// </para>
 		/// </summary>
 		[FieldOffset(8)]
-		public StrPtrUni unicodeString;
+		public LPWSTR unicodeString;
 
 		/// <summary>
 		/// <para>Available when <c>type</c> is FWP_BYTE_ARRAY6_TYPE.</para>
@@ -1016,7 +1016,7 @@ public static partial class FwpUClnt
 		/// <para>A pointer to a null-terminated unicode string.</para>
 		/// </summary>
 		[FieldOffset(8)]
-		public StrPtrUni unicodeString;
+		public LPWSTR unicodeString;
 
 		/// <summary>
 		/// <para>case(FWP_BYTE_ARRAY6_TYPE)</para>

@@ -1631,7 +1631,7 @@ public static partial class ShlwApi
 	// PWSTR *ppsz );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "e3f140c4-4033-4c82-af2c-4a7744461920")]
-	public static extern HRESULT IStream_ReadStr([In] IStream pstm, out StrPtrUni ppsz);
+	public static extern HRESULT IStream_ReadStr([In] IStream pstm, out LPWSTR ppsz);
 
 	/// <summary>Moves the seek position in a specified stream to the beginning of the stream.</summary>
 	/// <param name="pstm">

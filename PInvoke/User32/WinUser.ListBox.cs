@@ -287,7 +287,7 @@ public static partial class User32
 		/// receives the value associated with the item (the item data).
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-gettext
-		[MsgParams(typeof(int), typeof(StrPtrAuto))]
+		[MsgParams(typeof(int), typeof(LPTSTR))]
 		LB_GETTEXT = 0x0189,
 
 		/// <summary>
@@ -476,7 +476,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/lb-dir
-		[MsgParams(typeof(DDL), typeof(StrPtrAuto))]
+		[MsgParams(typeof(DDL), typeof(LPTSTR))]
 		LB_DIR = 0x018D,
 
 		/// <summary>

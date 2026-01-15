@@ -8029,9 +8029,9 @@ public static partial class MsftEdit
 		/// <para>Type: <c>PFNHYPHENATEPROC</c></para>
 		/// <para>The client-defined HyphenateProc callback function.</para>
 		/// </summary>
-		public Action<StrPtrUni, LANGID, int, IntPtr> pfnHyphenate
+		public Action<LPWSTR, LANGID, int, IntPtr> pfnHyphenate
 		{
-			get => (Action<StrPtrUni, LANGID, int, IntPtr>)Marshal.GetDelegateForFunctionPointer(pfn, typeof(Action<StrPtrUni, LANGID, int, IntPtr>));
+			get => (Action<LPWSTR, LANGID, int, IntPtr>)Marshal.GetDelegateForFunctionPointer(pfn, typeof(Action<LPWSTR, LANGID, int, IntPtr>));
 			set => pfn = Marshal.GetFunctionPointerForDelegate(value);
 		}
 	}

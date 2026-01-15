@@ -2341,7 +2341,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "8f0006a9-0930-4b71-87ce-e72371095e4c")]
 	[return: MarshalAs(UnmanagedType.LPWStr)]
-	public static extern StrPtrUni CryptFindLocalizedName([MarshalAs(UnmanagedType.LPWStr)] string pwszCryptName);
+	public static extern LPWSTR CryptFindLocalizedName([MarshalAs(UnmanagedType.LPWStr)] string pwszCryptName);
 
 	/// <summary>
 	/// <note>Important: This API is deprecated. New and existing software should start using Cryptography Next Generation APIs.
@@ -6302,7 +6302,7 @@ public static partial class Crypt32
 		public CertKeySpec dwKeySpec;
 
 		/// <summary>An <c>LPSTR</c> variable that contains the object identifier (OID) of the private key to be exported.</summary>
-		public StrPtrAnsi pszPrivateKeyObjId;
+		public LPSTR pszPrivateKeyObjId;
 
 		/// <summary>
 		/// A PCRYPT_ENCRYPT_PRIVATE_KEY_FUNC pointer that points to a callback to a function that encrypts the private key. If this is

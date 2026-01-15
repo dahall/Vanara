@@ -1483,12 +1483,12 @@ public static partial class AdvApi32
 		/// </para>
 		/// <para>This member is case-insensitive.</para>
 		/// </summary>
-		public StrPtrAuto TargetName;
+		public LPTSTR TargetName;
 
 		/// <summary>
 		/// A string comment from the user that describes this credential. This member cannot be longer than CRED_MAX_STRING_LENGTH (256) characters.
 		/// </summary>
-		public StrPtrAuto Comment;
+		public LPTSTR Comment;
 
 		/// <summary>
 		/// The time, in Coordinated Universal Time (Greenwich Mean Time), of the last modification of the credential. For write
@@ -1578,7 +1578,7 @@ public static partial class AdvApi32
 		/// Alias for the TargetName member. This member can be read and written. It cannot be longer than CRED_MAX_STRING_LENGTH (256) characters.
 		/// <para>If the credential Type is CRED_TYPE_GENERIC, this member can be non-NULL, but the credential manager ignores the member.</para>
 		/// </summary>
-		public StrPtrAuto TargetAlias;
+		public LPTSTR TargetAlias;
 
 		/// <summary>
 		/// The user name of the account used to connect to TargetName.
@@ -1590,7 +1590,7 @@ public static partial class AdvApi32
 		/// <para>If the credential Type is CRED_TYPE_GENERIC, this member can be non-NULL, but the credential manager ignores the member.</para>
 		/// <para>This member cannot be longer than CRED_MAX_USERNAME_LENGTH (513) characters.</para>
 		/// </summary>
-		public StrPtrAuto UserName;
+		public LPTSTR UserName;
 	}
 
 	/// <summary>The CREDENTIAL structure contains an individual credential.</summary>

@@ -5560,7 +5560,7 @@ public static partial class AdvApi32
 		/// </para>
 		/// <para>If this member is valid, the notification callback function must free the string using the LocalFree function.</para>
 		/// </summary>
-		public StrPtrAuto pszServiceNames;
+		public LPTSTR pszServiceNames;
 	}
 
 	/// <summary>

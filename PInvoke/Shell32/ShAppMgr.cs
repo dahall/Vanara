@@ -1030,7 +1030,7 @@ public static partial class Shell32
 		/// </summary>
 		public LCID Locale;
 
-		internal StrPtrUni pszDescription;
+		internal LPWSTR pszDescription;
 
 		/// <summary>
 		/// A string containing the display name of the category. This string displays in the <c>Category</c> list in Add/Remove

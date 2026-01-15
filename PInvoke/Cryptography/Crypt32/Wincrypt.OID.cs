@@ -1428,7 +1428,7 @@ public static partial class Crypt32
 		public uint cbSize;
 
 		/// <summary>The OID associated with this OID information.</summary>
-		public StrPtrAnsi pszOID;
+		public LPSTR pszOID;
 
 		/// <summary>The display name associated with an OID.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)] public string pwszName;

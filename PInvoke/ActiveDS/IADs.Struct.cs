@@ -75,7 +75,7 @@ public static partial class ActiveDS
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct ADS_ATTR_INFO_UNMGD : IVanaraMarshaler
 		{
-			public StrPtrUni pszAttrName;
+			public LPWSTR pszAttrName;
 			public ADS_ATTR dwControlCode;
 			public ADSTYPE dwADsType;
 			public IntPtr pADsValues;
@@ -223,7 +223,7 @@ public static partial class ActiveDS
 		{
 			public uint dwLength;
 			public IntPtr lpBinaryValue;
-			public StrPtrUni pszDNString;
+			public LPWSTR pszDNString;
 
 			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
 
@@ -277,8 +277,8 @@ public static partial class ActiveDS
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct ADS_DN_WITH_STRING_UNMGD : IVanaraMarshaler
 		{
-			public StrPtrUni pszStringValue;
-			public StrPtrUni pszDNString;
+			public LPWSTR pszStringValue;
+			public LPWSTR pszDNString;
 
 			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
 
@@ -341,7 +341,7 @@ public static partial class ActiveDS
 	public struct ADS_EMAIL_UNMGD
 	{
 		/// <summary>The null-terminated Unicode string that contains the user address.</summary>
-		public StrPtrUni Address;
+		public LPWSTR Address;
 
 		/// <summary>Type of the email message.</summary>
 		public uint Type;
@@ -364,7 +364,7 @@ public static partial class ActiveDS
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct ADS_FAXNUMBER_UNMGD : IVanaraMarshaler
 		{
-			public StrPtrUni TelephoneNumber;
+			public LPWSTR TelephoneNumber;
 			public uint NumberOfBits;
 			public IntPtr Parameters;
 
@@ -430,7 +430,7 @@ public static partial class ActiveDS
 	public struct ADS_HOLD_UNMGD
 	{
 		/// <summary>The null-terminated Unicode string that contains the name of an object put on hold.</summary>
-		public StrPtrUni ObjectName;
+		public LPWSTR ObjectName;
 
 		/// <summary>Number of charges that a server places against the user on hold while it verifies the user account balance.</summary>
 		public uint Amount;
@@ -656,7 +656,7 @@ public static partial class ActiveDS
 		internal struct ADS_REPLICAPOINTER_UNMGD : IVanaraMarshaler
 		{
 			/// <summary>The null-terminated Unicode string that contains the name of the name server that holds the replica.</summary>
-			public StrPtrUni ServerName;
+			public LPWSTR ServerName;
 
 			/// <summary>Type of replica: master, secondary, or read-only.</summary>
 			public uint ReplicaType;
@@ -730,7 +730,7 @@ public static partial class ActiveDS
 		internal struct ADS_SEARCH_COLUMN_UNMGD : IVanaraMarshaler
 		{
 			/// <summary>A null-terminated Unicode string that contains the name of the attribute whose values are contained in the current search column.</summary>
-			public StrPtrUni pszAttrName;
+			public LPWSTR pszAttrName;
 
 			/// <summary>Value from the ADSTYPEENUM enumeration that indicates how the attribute values are interpreted.</summary>
 			public ADSTYPE dwADsType;
@@ -1011,23 +1011,23 @@ public static partial class ActiveDS
 
 		/// <summary>The null-terminated Unicode string that identifies the distinguished name (path) of a directory service object, as defined by <c>ADS_DN_STRING</c>, an ADSI simple data type.</summary>
 		[IgnoreDataMember, DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		public StrPtrUni DNString { readonly get => union.String; set => union.String = value; }
+		public LPWSTR DNString { readonly get => union.String; set => union.String = value; }
 
 		/// <summary>The null-terminated Unicode string to be interpreted case-sensitively, as defined by <c>ADS_CASE_EXACT_STRING</c>, an ADSI simple data type.</summary>
 		[IgnoreDataMember, DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		public StrPtrUni CaseExactString { readonly get => union.String; set => union.String = value; }
+		public LPWSTR CaseExactString { readonly get => union.String; set => union.String = value; }
 
 		/// <summary>The null-terminated Unicode string to be interpreted without regard to case, as defined by <c>ADS_CASE_IGNORE_STRING</c>, an ADSI simple data type.</summary>
 		[IgnoreDataMember, DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		public StrPtrUni CaseIgnoreString { readonly get => union.String; set => union.String = value; }
+		public LPWSTR CaseIgnoreString { readonly get => union.String; set => union.String = value; }
 
 		/// <summary>The null-terminated Unicode string that can be displayed or printed, as defined by <c>ADS_PRINTABLE_STRING</c>, an ADSI simple data type.</summary>
 		[IgnoreDataMember, DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		public StrPtrUni PrintableString { readonly get => union.String; set => union.String = value; }
+		public LPWSTR PrintableString { readonly get => union.String; set => union.String = value; }
 
 		/// <summary>The null-terminated Unicode string that contains numerals to be interpreted as text, as defined by <c>ADS_NUMERIC_STRING</c>, an ADSI simple data type.</summary>
 		[IgnoreDataMember, DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		public StrPtrUni NumericString { readonly get => union.String; set => union.String = value; }
+		public LPWSTR NumericString { readonly get => union.String; set => union.String = value; }
 
 		/// <summary>Boolean value, as defined by <c>ADS_BOOLEAN</c>, an ADSI simple data type.</summary>
 		[IgnoreDataMember, DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1051,7 +1051,7 @@ public static partial class ActiveDS
 
 		/// <summary>Class name string, as defined by <c>ADS_OBJECT_CLASS</c>, an ADSI simple data type.</summary>
 		[IgnoreDataMember, DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		public StrPtrUni ClassName { readonly get => union.String; set => union.String = value; }
+		public LPWSTR ClassName { readonly get => union.String; set => union.String = value; }
 
 		/// <summary>Provider-specific structure, as defined by ADS_PROV_SPECIFIC, an ADSI-defined data type.</summary>
 		[IgnoreDataMember, DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1121,7 +1121,7 @@ public static partial class ActiveDS
 		private struct UNION
 		{
 			[FieldOffset(0)]
-			public StrPtrUni String;
+			public LPWSTR String;
 
 			[FieldOffset(0)]
 			public BOOL Boolean;

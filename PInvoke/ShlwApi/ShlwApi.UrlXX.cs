@@ -925,7 +925,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-urlgetlocationa LPCSTR UrlGetLocationA( PCSTR pszURL );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "e75bde92-2ca0-4d34-a276-50b4eeceda1c")]
-	public static extern StrPtrAuto UrlGetLocation(string pszURL);
+	public static extern LPTSTR UrlGetLocation(string pszURL);
 
 	/// <summary>
 	/// <para>Accepts a URL string and returns a specified part of that URL.</para>

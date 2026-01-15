@@ -2975,27 +2975,27 @@ public static partial class NTDSApi
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the NetBIOS name of the domain controller.
 		/// </summary>
-		public StrPtrAuto NetbiosName;
+		public LPTSTR NetbiosName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the DNS host name of the domain controller.
 		/// </summary>
-		public StrPtrAuto DnsHostName;
+		public LPTSTR DnsHostName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the site to which the domain controller belongs.
 		/// </summary>
-		public StrPtrAuto SiteName;
+		public LPTSTR SiteName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the computer object on the domain controller.
 		/// </summary>
-		public StrPtrAuto ComputerObjectName;
+		public LPTSTR ComputerObjectName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the server object on the domain controller.
 		/// </summary>
-		public StrPtrAuto ServerObjectName;
+		public LPTSTR ServerObjectName;
 
 		/// <summary>
 		/// A Boolean value that indicates whether or not this domain controller is the primary domain controller. If this value is TRUE,
@@ -3034,37 +3034,37 @@ public static partial class NTDSApi
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the NetBIOS name of the domain controller.
 		/// </summary>
-		public StrPtrAuto NetbiosName;
+		public LPTSTR NetbiosName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the DNS host name of the domain controller.
 		/// </summary>
-		public StrPtrAuto DnsHostName;
+		public LPTSTR DnsHostName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the site to which the domain controller belongs.
 		/// </summary>
-		public StrPtrAuto SiteName;
+		public LPTSTR SiteName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the site object on the domain controller.
 		/// </summary>
-		public StrPtrAuto SiteObjectName;
+		public LPTSTR SiteObjectName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the computer object on the domain controller.
 		/// </summary>
-		public StrPtrAuto ComputerObjectName;
+		public LPTSTR ComputerObjectName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the server object on the domain controller.
 		/// </summary>
-		public StrPtrAuto ServerObjectName;
+		public LPTSTR ServerObjectName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the NTDS DSA object on the domain controller.
 		/// </summary>
-		public StrPtrAuto NtdsDsaObjectName;
+		public LPTSTR NtdsDsaObjectName;
 
 		/// <summary>
 		/// A Boolean value that indicates whether or not this domain controller is the primary domain controller. If this value is TRUE,
@@ -3131,37 +3131,37 @@ public static partial class NTDSApi
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the NetBIOS name of the domain controller.
 		/// </summary>
-		public StrPtrAuto NetbiosName;
+		public LPTSTR NetbiosName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the DNS host name of the domain controller.
 		/// </summary>
-		public StrPtrAuto DnsHostName;
+		public LPTSTR DnsHostName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the site to which the domain controller belongs.
 		/// </summary>
-		public StrPtrAuto SiteName;
+		public LPTSTR SiteName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the site object on the domain controller.
 		/// </summary>
-		public StrPtrAuto SiteObjectName;
+		public LPTSTR SiteObjectName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the computer object on the domain controller.
 		/// </summary>
-		public StrPtrAuto ComputerObjectName;
+		public LPTSTR ComputerObjectName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the server object on the domain controller.
 		/// </summary>
-		public StrPtrAuto ServerObjectName;
+		public LPTSTR ServerObjectName;
 
 		/// <summary>
 		/// Pointer to a null-terminated string that specifies the name of the NTDS DSA object on the domain controller.
 		/// </summary>
-		public StrPtrAuto NtdsDsaObjectName;
+		public LPTSTR NtdsDsaObjectName;
 
 		/// <summary>
 		/// A Boolean value that indicates whether or not this domain controller is the primary domain controller. If this value is TRUE,

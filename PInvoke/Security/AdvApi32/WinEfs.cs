@@ -514,7 +514,7 @@ public static partial class AdvApi32
 		/// <summary>
 		/// User-displayable information for the certificate. This is usually the user's common name and universal principal name (UPN).
 		/// </summary>
-		public StrPtrUni lpDisplayInformation;
+		public LPWSTR lpDisplayInformation;
 	}
 
 	/// <summary>Contains a list of certificate hashes.</summary>

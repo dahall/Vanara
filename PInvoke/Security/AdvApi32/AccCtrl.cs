@@ -764,7 +764,7 @@ public static partial class AdvApi32
 		/// <para>A pointer to a null-terminated string that identifies the type of object to which the ACE applies.</para>
 		/// <para>This string must be a valid LDAP display name in the Active Directory schema.</para>
 		/// </summary>
-		public StrPtrAuto ObjectTypeName;
+		public LPTSTR ObjectTypeName;
 
 		/// <summary>
 		/// <para>A pointer to a null-terminated string that identifies the type of object that can inherit the ACE.</para>
@@ -776,10 +776,10 @@ public static partial class AdvApi32
 		/// protection against inheritance placed on the child objects.
 		/// </para>
 		/// </summary>
-		public StrPtrAuto InheritedObjectTypeName;
+		public LPTSTR InheritedObjectTypeName;
 
 		/// <summary>A pointer to a null-terminated string that contains the name of the trustee.</summary>
-		public StrPtrAuto ptstrName;
+		public LPTSTR ptstrName;
 	}
 
 	/// <summary>

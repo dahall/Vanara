@@ -487,16 +487,16 @@ public static partial class WinHTTP
 		/// Pointer to a null-terminated Unicode string that contains the auto-configuration URL if the Internet Explorer proxy configuration
 		/// for the current user specifies "Use automatic proxy configuration".
 		/// </summary>
-		public StrPtrUni lpszAutoConfigUrl;
+		public LPWSTR lpszAutoConfigUrl;
 
 		/// <summary>
 		/// Pointer to a null-terminated Unicode string that contains the proxy URL if the Internet Explorer proxy configuration for the
 		/// current user specifies "use a proxy server".
 		/// </summary>
-		public StrPtrUni lpszProxy;
+		public LPWSTR lpszProxy;
 
 		/// <summary>Pointer to a null-terminated Unicode string that contains the optional proxy by-pass server list.</summary>
-		public StrPtrUni lpszProxyBypass;
+		public LPWSTR lpszProxyBypass;
 
 		/// <summary>Frees the memory tied to the strings in this structure.</summary>
 		public void FreeMemory()
@@ -562,7 +562,7 @@ public static partial class WinHTTP
 		/// <para>Type: <c>PCWSTR</c></para>
 		/// <para>A string containing the host name.</para>
 		/// </summary>
-		public StrPtrUni pwszHost;
+		public LPWSTR pwszHost;
 
 		/// <summary>
 		/// <para>Type: <c>ULONG</c></para>
@@ -663,10 +663,10 @@ public static partial class WinHTTP
 		public WINHTTP_ACCESS_TYPE dwAccessType;
 
 		/// <summary>Pointer to a string value that contains the proxy server list.</summary>
-		public StrPtrUni lpszProxy;
+		public LPWSTR lpszProxy;
 
 		/// <summary>Pointer to a string value that contains the proxy bypass list.</summary>
-		public StrPtrUni lpszProxyBypass;
+		public LPWSTR lpszProxyBypass;
 
 		/// <summary>Frees the memory tied to the strings in this structure.</summary>
 		public void FreeMemory()
@@ -1163,7 +1163,7 @@ public static partial class WinHTTP
 		public uint dwStructSize;
 
 		/// <summary>Pointer to a string value that contains the scheme name.</summary>
-		public StrPtrUni lpszScheme;
+		public LPWSTR lpszScheme;
 
 		/// <summary>Length of the scheme name, in characters.</summary>
 		public uint dwSchemeLength;
@@ -1188,7 +1188,7 @@ public static partial class WinHTTP
 		public INTERNET_SCHEME nScheme;
 
 		/// <summary>Pointer to a string value that contains the host name.</summary>
-		public StrPtrUni lpszHostName;
+		public LPWSTR lpszHostName;
 
 		/// <summary>Length of the host name, in characters.</summary>
 		public uint dwHostNameLength;
@@ -1197,25 +1197,25 @@ public static partial class WinHTTP
 		public ushort nPort;
 
 		/// <summary>Pointer to a string that contains the user name.</summary>
-		public StrPtrUni lpszUserName;
+		public LPWSTR lpszUserName;
 
 		/// <summary>Length of the user name, in characters.</summary>
 		public uint dwUserNameLength;
 
 		/// <summary>Pointer to a string that contains the password.</summary>
-		public StrPtrUni lpszPassword;
+		public LPWSTR lpszPassword;
 
 		/// <summary>Length of the password, in characters.</summary>
 		public uint dwPasswordLength;
 
 		/// <summary>Pointer to a string that contains the URL path.</summary>
-		public StrPtrUni lpszUrlPath;
+		public LPWSTR lpszUrlPath;
 
 		/// <summary>Length of the URL path, in characters.</summary>
 		public uint dwUrlPathLength;
 
 		/// <summary>Pointer to a string value that contains the extra information, for example, ?something or #something.</summary>
-		public StrPtrUni lpszExtraInfo;
+		public LPWSTR lpszExtraInfo;
 
 		/// <summary>Unsigned long integer value that contains the length of the extra information, in characters.</summary>
 		public uint dwExtraInfoLength;
@@ -1350,7 +1350,7 @@ public static partial class WinHTTP
 			return new(S(c.lpszScheme, c.dwSchemeLength), c.nScheme, S(c.lpszHostName, c.dwHostNameLength), c.nPort, S(c.lpszUserName, c.dwUserNameLength),
 				S(c.lpszPassword, c.dwPasswordLength), S(c.lpszUrlPath, c.dwUrlPathLength), S(c.lpszExtraInfo, c.dwExtraInfoLength));
 
-			static string? S(StrPtrUni p, uint l) => StringHelper.GetString((IntPtr)p, (int)l, CharSet.Unicode);
+			static string? S(LPWSTR p, uint l) => StringHelper.GetString((IntPtr)p, (int)l, CharSet.Unicode);
 		}
 	}
 

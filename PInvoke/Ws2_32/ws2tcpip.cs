@@ -2355,7 +2355,7 @@ public static partial class Ws2_32
 	// VOID *pAddr, PSTR pStringBuf, size_t StringBufSize );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("ws2tcpip.h", MSDNShortId = "1e26b88c-808f-4807-8641-e5c6b10853ad")]
-	public static extern StrPtrAnsi inet_ntop(ADDRESS_FAMILY Family, in IN_ADDR pAddr, StringBuilder pStringBuf, SizeT StringBufSize);
+	public static extern LPSTR inet_ntop(ADDRESS_FAMILY Family, in IN_ADDR pAddr, StringBuilder pStringBuf, SizeT StringBufSize);
 
 	/// <summary>
 	/// The <c>InetNtop</c> function converts an IPv4 or IPv6 Internet network address into a string in Internet standard format. The
@@ -2494,7 +2494,7 @@ public static partial class Ws2_32
 	// VOID *pAddr, PSTR pStringBuf, size_t StringBufSize );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("ws2tcpip.h", MSDNShortId = "1e26b88c-808f-4807-8641-e5c6b10853ad")]
-	public static extern StrPtrAnsi inet_ntop(ADDRESS_FAMILY Family, in IN6_ADDR pAddr, StringBuilder pStringBuf, SizeT StringBufSize);
+	public static extern LPSTR inet_ntop(ADDRESS_FAMILY Family, in IN6_ADDR pAddr, StringBuilder pStringBuf, SizeT StringBufSize);
 
 	/// <summary>
 	/// The <c>InetPton</c> function converts an IPv4 or IPv6 Internet network address in its standard text presentation form into its
@@ -2919,7 +2919,7 @@ public static partial class Ws2_32
 	// *pAddr, PWSTR pStringBuf, size_t StringBufSize );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ws2tcpip.h", MSDNShortId = "1e26b88c-808f-4807-8641-e5c6b10853ad")]
-	public static extern StrPtrUni InetNtopW(ADDRESS_FAMILY Family, in IN_ADDR pAddr, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pStringBuf, SizeT StringBufSize);
+	public static extern LPWSTR InetNtopW(ADDRESS_FAMILY Family, in IN_ADDR pAddr, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pStringBuf, SizeT StringBufSize);
 
 	/// <summary>
 	/// The <c>InetNtop</c> function converts an IPv4 or IPv6 Internet network address into a string in Internet standard format. The
@@ -3058,7 +3058,7 @@ public static partial class Ws2_32
 	// *pAddr, PWSTR pStringBuf, size_t StringBufSize );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ws2tcpip.h", MSDNShortId = "1e26b88c-808f-4807-8641-e5c6b10853ad")]
-	public static extern StrPtrUni InetNtopW(ADDRESS_FAMILY Family, in IN6_ADDR pAddr, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pStringBuf, SizeT StringBufSize);
+	public static extern LPWSTR InetNtopW(ADDRESS_FAMILY Family, in IN6_ADDR pAddr, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pStringBuf, SizeT StringBufSize);
 
 	/// <summary>
 	/// The <c>InetPton</c> function converts an IPv4 or IPv6 Internet network address in its standard text presentation form into its

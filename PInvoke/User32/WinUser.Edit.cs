@@ -796,7 +796,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getline
-		[MsgParams(typeof(int), typeof(StrPtrAuto), LResultType = typeof(int))]
+		[MsgParams(typeof(int), typeof(LPTSTR), LResultType = typeof(int))]
 		EM_GETLINE = 0x00C4,
 
 		/// <summary>
@@ -1592,7 +1592,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setcuebanner
-		[MsgParams(typeof(BOOL), typeof(StrPtrUni), LResultType = typeof(BOOL))]
+		[MsgParams(typeof(BOOL), typeof(LPWSTR), LResultType = typeof(BOOL))]
 		EM_SETCUEBANNER = ECM_FIRST + 1,     // Set the cue banner with the lParm = LPCWSTR
 
 		/// <summary>
@@ -1615,7 +1615,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getcuebanner
-		[MsgParams(typeof(StrPtrUni), typeof(uint), LResultType = typeof(BOOL))]
+		[MsgParams(typeof(LPWSTR), typeof(uint), LResultType = typeof(BOOL))]
 		EM_GETCUEBANNER = ECM_FIRST + 2,     // Set the cue banner with the lParm = LPCWSTR
 
 		/// <summary>

@@ -103,7 +103,7 @@ public static partial class SpeechApi
 			GC.SuppressFinalize(this);
 		}
 
-		public static HRESULT CheckStringSizeBytes(StrPtrUni psz, SizeT cbMax, out SizeT pcb)
+		public static HRESULT CheckStringSizeBytes(LPWSTR psz, SizeT cbMax, out SizeT pcb)
 		{
 			pcb = 0;
 			if (!psz.IsNull)

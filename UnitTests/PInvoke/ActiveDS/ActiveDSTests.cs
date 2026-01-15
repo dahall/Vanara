@@ -43,7 +43,7 @@ public class ActiveDSTests
 	[Test]
 	public void AllocADsStrTest()
 	{
-		StrPtrUni p = AllocADsStr("test");
+		LPWSTR p = AllocADsStr("test");
 		Assert.That((IntPtr)p, Is.Not.EqualTo(IntPtr.Zero));
 		Assert.That(p.ToString(), Is.EqualTo("test"));
 		Assert.That(ReallocADsStr(ref p, "newval"));

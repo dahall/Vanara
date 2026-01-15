@@ -7586,7 +7586,7 @@ public static partial class Kernel32
 		/// </summary>
 		//[MarshalAs(UnmanagedType.LPTStr)]
 		//public string lpDesktop;
-		public StrPtrAuto lpDesktop;
+		public LPTSTR lpDesktop;
 
 		/// <summary>
 		/// For console processes, this is the title displayed in the title bar if a new console window is created. If NULL, the name of the
@@ -7595,7 +7595,7 @@ public static partial class Kernel32
 		/// </summary>
 		//[MarshalAs(UnmanagedType.LPTStr)]
 		//public string lpTitle;
-		public StrPtrAuto lpTitle;
+		public LPTSTR lpTitle;
 
 		/// <summary>
 		/// <para>

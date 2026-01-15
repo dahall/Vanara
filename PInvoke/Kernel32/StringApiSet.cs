@@ -1024,7 +1024,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
 	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [In, SizeDef(nameof(cbMultiByte))] IntPtr lpMultiByteStr,
-		[Optional, DefaultParameterValue(-1)] int cbMultiByte, [Out, SizeDef(nameof(cchWideChar))] StrPtrUni lpWideCharStr, int cchWideChar);
+		[Optional, DefaultParameterValue(-1)] int cbMultiByte, [Out, SizeDef(nameof(cchWideChar))] LPWSTR lpWideCharStr, int cchWideChar);
 
 	/// <summary>
 	/// Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
@@ -1578,8 +1578,8 @@ public static partial class Kernel32
 	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
-	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In, SizeDef(nameof(cchWideChar))] StrPtrUni lpWideCharStr,
-		[Optional, DefaultParameterValue(-1)] int cchWideChar, [Out, Optional, SizeDef(nameof(cbMultiByte), SizingMethod.QueryResultInReturn | SizingMethod.Query | SizingMethod.InclNullTerm | SizingMethod.Bytes)] StrPtrAnsi lpMultiByteStr,
+	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In, SizeDef(nameof(cchWideChar))] LPWSTR lpWideCharStr,
+		[Optional, DefaultParameterValue(-1)] int cchWideChar, [Out, Optional, SizeDef(nameof(cbMultiByte), SizingMethod.QueryResultInReturn | SizingMethod.Query | SizingMethod.InclNullTerm | SizingMethod.Bytes)] LPSTR lpMultiByteStr,
 		[Optional] int cbMultiByte, [In, Optional] IntPtr lpDefaultChar, [MarshalAs(UnmanagedType.Bool)] out bool lpUsedDefaultChar);
 
 	/// <summary>

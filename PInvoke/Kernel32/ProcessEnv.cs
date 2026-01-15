@@ -241,7 +241,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365527")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	public static extern uint SearchPath([In, Optional] string? lpPath, string lpFileName, [In, Optional] string? lpExtension, uint nBufferLength,
-		[Out] StringBuilder? lpBuffer, out StrPtrAuto lpFilePart);
+		[Out] StringBuilder? lpBuffer, out LPTSTR lpFilePart);
 
 	/// <summary>Searches for a specified file in a specified path.</summary>
 	/// <param name="lpPath">

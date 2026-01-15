@@ -405,7 +405,7 @@ public static partial class HttpApi
 			/// Pointer to a string that contains the fragment name assigned when the fragment was added to the response-fragment cache using
 			/// the HttpAddFragmentToCache function.
 			/// </summary>
-			public StrPtrUni pFragmentName;
+			public LPWSTR pFragmentName;
 
 			internal FROMFRAGMENTCACHE(SafeLPWSTR fragmentName)
 			{
@@ -428,7 +428,7 @@ public static partial class HttpApi
 			/// </para>
 			/// <para><c>Note</c> This string must be NULL terminated.</para>
 			/// </summary>
-			public StrPtrUni pFragmentName;
+			public LPWSTR pFragmentName;
 		}
 
 		/// <summary/>

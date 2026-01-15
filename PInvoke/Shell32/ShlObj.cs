@@ -833,7 +833,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-gethelptext
-		[MsgParams(typeof(uint), typeof(StrPtrAnsi))]
+		[MsgParams(typeof(uint), typeof(LPSTR))]
 		DFM_GETHELPTEXT = 5,
 
 		/// <summary>
@@ -974,7 +974,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-gethelptextw
-		[MsgParams(typeof(uint), typeof(StrPtrUni))]
+		[MsgParams(typeof(uint), typeof(LPWSTR))]
 		DFM_GETHELPTEXTW = 11,
 
 		/// <summary>
@@ -1044,7 +1044,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-mapcommandname
-		[MsgParams(typeof(StrPtrAuto), typeof(int?))]
+		[MsgParams(typeof(LPTSTR), typeof(int?))]
 		DFM_MAPCOMMANDNAME = 13,
 
 		/// <summary>
@@ -1097,7 +1097,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-getverb
-		[MsgParams(typeof(uint), typeof(StrPtrUni))]
+		[MsgParams(typeof(uint), typeof(LPWSTR))]
 		DFM_GETVERBW = 15,
 
 		/// <summary>
@@ -1121,7 +1121,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-getverb
-		[MsgParams(typeof(uint), typeof(StrPtrAnsi))]
+		[MsgParams(typeof(uint), typeof(LPSTR))]
 		DFM_GETVERBA = 16,
 
 		/// <summary>
@@ -8906,7 +8906,7 @@ public static partial class Shell32
 		/// <para>Type: <c>LPTSTR</c></para>
 		/// <para>A pointer to a null-terminated string containing the path to the folder's WebView template.</para>
 		/// </summary>
-		public StrPtrAuto pszWebViewTemplate;
+		public LPTSTR pszWebViewTemplate;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8922,13 +8922,13 @@ public static partial class Shell32
 		/// <para>Type: <c>LPTSTR</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the WebView template version.</para>
 		/// </summary>
-		public StrPtrAuto pszWebViewTemplateVersion;
+		public LPTSTR pszWebViewTemplateVersion;
 
 		/// <summary>
 		/// <para>Type: <c>LPTSTR</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the text of the folder's infotip.</para>
 		/// </summary>
-		public StrPtrAuto pszInfoTip;
+		public LPTSTR pszInfoTip;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8958,7 +8958,7 @@ public static partial class Shell32
 		/// <para>Type: <c>LPTSTR</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the path to file containing the folder's icon.</para>
 		/// </summary>
-		public StrPtrAuto pszIconFile;
+		public LPTSTR pszIconFile;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8982,7 +8982,7 @@ public static partial class Shell32
 		/// used in thumbnail views.
 		/// </para>
 		/// </summary>
-		public StrPtrAuto pszLogo;
+		public LPTSTR pszLogo;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>

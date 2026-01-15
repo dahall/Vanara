@@ -491,7 +491,7 @@ public static partial class ElsCore
 		/// <para>Available action Ids for this subrange. They are usable for calling MappingDoAction.</para>
 		/// <para><c>Note</c>  In Windows 7, the ELS services do not expose any actions.</para>
 		/// </summary>
-		public ArrayPointer<StrPtrUni> prgActionIds;
+		public ArrayPointer<LPWSTR> prgActionIds;
 
 		/// <summary>
 		/// <para>Available action Ids for this subrange. They are usable for calling MappingDoAction.</para>
@@ -509,7 +509,7 @@ public static partial class ElsCore
 		/// <para>Action display names for this subrange. These strings can be localized.</para>
 		/// <para><c>Note</c>  In Windows 7, the ELS services do not expose any actions.</para>
 		/// </summary>
-		public ArrayPointer<StrPtrUni> prgActionDisplayNames;
+		public ArrayPointer<LPWSTR> prgActionDisplayNames;
 
 		/// <summary>
 		/// <para>Action display names for this subrange. These strings can be localized.</para>
@@ -861,7 +861,7 @@ public static partial class ElsCore
 		/// found at Text Media Types.
 		/// </para>
 		/// </summary>
-		public ArrayPointer<StrPtrUni> prgInputContentTypes;
+		public ArrayPointer<LPWSTR> prgInputContentTypes;
 
 		/// <summary>
 		/// <para>
@@ -882,7 +882,7 @@ public static partial class ElsCore
 		/// Optional. Pointer to an array of output content types, following the format of the MIME content types, that identify the format
 		/// in which the service retrieves data.
 		/// </summary>
-		public ArrayPointer<StrPtrUni> prgOutputContentTypes;
+		public ArrayPointer<LPWSTR> prgOutputContentTypes;
 
 		/// <summary>
 		/// Optional. The array of output content types, following the format of the MIME content types, that identify the format in which
@@ -899,7 +899,7 @@ public static partial class ElsCore
 		/// Pointer to an array of the input languages, following the IETF naming convention, that the service accepts. This member is set to
 		/// <c>NULL</c> if the service can work with any input language.
 		/// </summary>
-		public ArrayPointer<StrPtrUni> prgInputLanguages;
+		public ArrayPointer<LPWSTR> prgInputLanguages;
 
 		/// <summary>
 		/// The array of the input languages, following the IETF naming convention, that the service accepts. This member is set to
@@ -917,7 +917,7 @@ public static partial class ElsCore
 		/// Pointer to an array of output languages, following the IETF naming convention, in which the service can retrieve results. This
 		/// member is set to <c>NULL</c> if the service can retrieve results in any language, or if the service ignores the output language.
 		/// </summary>
-		public ArrayPointer<StrPtrUni> prgOutputLanguages;
+		public ArrayPointer<LPWSTR> prgOutputLanguages;
 
 		/// <summary>
 		/// The array of output languages, following the IETF naming convention, in which the service can retrieve results. This member is
@@ -932,7 +932,7 @@ public static partial class ElsCore
 		/// Pointer to an array of input scripts, with Unicode standard script names, that are supported by the service. This member is set
 		/// to <c>NULL</c> if the service can work with any scripts, or if the service ignores the input scripts.
 		/// </summary>
-		public ArrayPointer<StrPtrUni> prgInputScripts;
+		public ArrayPointer<LPWSTR> prgInputScripts;
 
 		/// <summary>
 		/// The array of input scripts, with Unicode standard script names, that are supported by the service. This member is set to
@@ -950,7 +950,7 @@ public static partial class ElsCore
 		/// Pointer to an array of output scripts supported by the service. This member is set to <c>NULL</c> if the service can work with
 		/// any scripts, or the service ignores the output scripts.
 		/// </summary>
-		public ArrayPointer<StrPtrUni> prgOutputScripts;
+		public ArrayPointer<LPWSTR> prgOutputScripts;
 
 		/// <summary>
 		/// The array of output scripts supported by the service. This member is set to <c>NULL</c> if the service can work with any scripts,

@@ -1491,7 +1491,7 @@ public static partial class Kernel32
 		/// If section information was captured, this is the file path backing the section (if any). The path may be in NT namespace. The
 		/// string may not be terminated by a <c>NULL</c> character. The pointer is valid for the lifetime of the walk marker passed to PssWalkSnapshot.
 		/// </summary>
-		public StrPtrUni MappedFileName;
+		public LPWSTR MappedFileName;
 	}
 
 	/// <summary>Holds virtual address (VA) space information returned by PssQuerySnapshot.</summary>

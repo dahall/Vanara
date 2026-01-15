@@ -4265,7 +4265,7 @@ public static partial class ComCtl32
 		/// Address of a character buffer that contains the text to be displayed. If you want to change the text displayed in the tooltip,
 		/// you will need to modify the contents of this buffer. The size of this buffer is specified by the cchTextMax structure.
 		/// </summary>
-		public StrPtrAuto pszText;
+		public LPTSTR pszText;
 
 		/// <summary>
 		/// Size of the buffer at pszText, in characters. Although you should never assume that this buffer will be of any particular size,
@@ -4683,7 +4683,7 @@ public static partial class ComCtl32
 		/// address of the buffer that receives the item text. Note that although the tree-view control allows any length string to be stored
 		/// as item text, only the first 260 characters are displayed.
 		/// </summary>
-		public StrPtrAuto pszText;
+		public LPTSTR pszText;
 
 		/// <summary>
 		/// Size of the buffer pointed to by the pszText member, in characters. If this structure is being used to set item attributes, this

@@ -143,11 +143,11 @@ public static partial class DnsApi
 	{
 		/// <summary>For use with Unicode on Windows 2000.</summary>
 		[CorrespondingType(typeof(string))]
-		[CorrespondingType(typeof(StrPtrUni))]
+		[CorrespondingType(typeof(LPWSTR))]
 		DnsConfigPrimaryDomainName_W,
 
 		/// <summary>For use with ANSI on Windows 2000.</summary>
-		[CorrespondingType(typeof(StrPtrAnsi))]
+		[CorrespondingType(typeof(LPSTR))]
 		DnsConfigPrimaryDomainName_A,
 
 		/// <summary>For use with UTF8 on Windows 2000.</summary>
@@ -193,11 +193,11 @@ public static partial class DnsApi
 		/// Specifies configuration of the host name in Unicode on Windows XP, Windows Server 2003, and later versions of Windows.
 		/// </summary>
 		[CorrespondingType(typeof(string))]
-		[CorrespondingType(typeof(StrPtrUni))]
+		[CorrespondingType(typeof(LPWSTR))]
 		DnsConfigHostName_W,
 
 		/// <summary>Specifies configuration of the host name in ANSI on Windows XP, Windows Server 2003, and later versions of Windows.</summary>
-		[CorrespondingType(typeof(StrPtrAnsi))]
+		[CorrespondingType(typeof(LPSTR))]
 		DnsConfigHostName_A,
 
 		/// <summary>Specifies configuration of the host name in UTF8 on Windows XP, Windows Server 2003, and later versions of Windows.</summary>
@@ -208,14 +208,14 @@ public static partial class DnsApi
 		/// and later versions of Windows.
 		/// </summary>
 		[CorrespondingType(typeof(string))]
-		[CorrespondingType(typeof(StrPtrUni))]
+		[CorrespondingType(typeof(LPWSTR))]
 		DnsConfigFullHostName_W,
 
 		/// <summary>
 		/// Specifies configuration of the full host name (fully qualified domain name) in ANSI on Windows XP, Windows Server 2003, and
 		/// later versions of Windows.
 		/// </summary>
-		[CorrespondingType(typeof(StrPtrAnsi))]
+		[CorrespondingType(typeof(LPSTR))]
 		DnsConfigFullHostName_A,
 
 		/// <summary>
@@ -1116,7 +1116,7 @@ public static partial class DnsApi
 		public IntPtr pNext;
 
 		/// <summary>DNS Record Name.</summary>
-		public StrPtrUni pszName;
+		public LPWSTR pszName;
 
 		/// <summary>DNS Record Type.</summary>
 		public DNS_TYPE wType;

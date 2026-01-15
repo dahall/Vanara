@@ -550,6 +550,6 @@ public static partial class Ole32
 		[DllImport("api-ms-win-core-winrt-string-l1-1-0.dll", CallingConvention = CallingConvention.StdCall)]
 		[SecurityCritical]
 		[SuppressUnmanagedCodeSecurity]
-		private static extern StrPtrUni WindowsGetStringRawBuffer(IntPtr hstring, out uint length);
+		private static extern LPWSTR WindowsGetStringRawBuffer(IntPtr hstring, out uint length);
 	}
 }

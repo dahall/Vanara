@@ -6641,7 +6641,7 @@ public static partial class Kernel32
 	// DWORD WINAPI GetFullPathName( _In_ LPCTSTR lpFileName, _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer, _Out_ LPTSTR *lpFilePart);
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "GetFullPathNameW", CharSet = CharSet.Unicode)]
 	[PInvokeData("FileAPI.h", MSDNShortId = "aa364963")]
-	public static extern uint GetFullPathName(string lpFileName, [Optional] uint nBufferLength, [Optional] StrPtrUni lpBuffer, out StrPtrUni lpFilePart);
+	public static extern uint GetFullPathName(string lpFileName, [Optional] uint nBufferLength, [Optional] LPWSTR lpBuffer, out LPWSTR lpFilePart);
 
 	/// <summary>
 	/// <para>Retrieves the full path and file name of the specified file.</para>

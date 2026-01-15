@@ -1985,10 +1985,10 @@ public static partial class SpeechApi
 		public uint ulRetainedSizeBytes;
 
 		/// <summary>The display text for this element (for example, ",").</summary>
-		public StrPtrUni pszDisplayText;
+		public LPWSTR pszDisplayText;
 
 		/// <summary>The lexical form of this element (for example, "comma" for ",").</summary>
-		public StrPtrUni pszLexicalForm;
+		public LPWSTR pszLexicalForm;
 
 		/// <summary>The pronunciation for this element as a null-terminated array of SPPHONEID.</summary>
 		public ArrayPointer<SPPHONEID> pszPronunciation;
@@ -2096,7 +2096,7 @@ public static partial class SpeechApi
 	public partial struct SPPHRASEPROPERTY
 	{
 		/// <summary>Name of the null-terminated string of the semantic property.</summary>
-		public StrPtrUni pszName;
+		public LPWSTR pszName;
 
 		private UNION union;
 
@@ -2126,7 +2126,7 @@ public static partial class SpeechApi
 		public ushort usArrayIndex { readonly get => union.usArrayIndex; set => union.usArrayIndex = value; }
 
 		/// <summary>Null-terminated string value of the semantic property.</summary>
-		public StrPtrUni pszValue;
+		public LPWSTR pszValue;
 
 		/// <summary>
 		/// VARIANT value of a semantic property. The type has to be on of the following: VT_BOOL, VT_I4, VT_R4, VT_R8, or VT_BYREF (only for
@@ -2235,7 +2235,7 @@ public static partial class SpeechApi
 		public SPDISPLAYATTRIBUTES bDisplayAttributes;
 
 		/// <summary>Text for the replacement.</summary>
-		public StrPtrUni pszReplacementText;
+		public LPWSTR pszReplacementText;
 
 		/// <summary>Offset of the first spoken element to be replaced.</summary>
 		public uint ulFirstElement;
@@ -2274,7 +2274,7 @@ public static partial class SpeechApi
 	public partial struct SPPHRASERULE
 	{
 		/// <summary>Name of this rule (in Speech Text Grammar Format set using &lt;RULE NAME="MyName"&gt;).</summary>
-		public StrPtrUni pszName;
+		public LPWSTR pszName;
 
 		/// <summary>ID of this rule (set using &lt;RULE ID="123"&gt;).</summary>
 		public uint ulId;
@@ -2437,13 +2437,13 @@ public static partial class SpeechApi
 		public uint ulLineNumber;
 
 		/// <summary>The text of the line where the error occurred.</summary>
-		public StrPtrUni pszScriptLine;
+		public LPWSTR pszScriptLine;
 
 		/// <summary>The location of the file in which the error occurred.</summary>
-		public StrPtrUni pszSource;
+		public LPWSTR pszSource;
 
 		/// <summary>A description of the error.</summary>
-		public StrPtrUni pszDescription;
+		public LPWSTR pszDescription;
 
 		/// <summary>The code number of the error.</summary>
 		public HRESULT hrResultCode;
@@ -2496,9 +2496,9 @@ public static partial class SpeechApi
 
 		public SPSHORTCUTTYPE shType;
 
-		public StrPtrUni pszDisplay;
+		public LPWSTR pszDisplay;
 
-		public StrPtrUni pszSpoken;
+		public LPWSTR pszSpoken;
 	}
 
 	[StructLayout(LayoutKind.Sequential, Pack = 8)]
@@ -2581,7 +2581,7 @@ public static partial class SpeechApi
 		public SPWORDTYPE eWordType;
 
 		/// <summary>Pointer to the offset of the word entry.</summary>
-		public StrPtrUni pszWord;
+		public LPWSTR pszWord;
 
 		/// <summary>Pointer to an <c>SPWORDPRONUNCIATION</c> structure containing the first possible pronunciation of the word.</summary>
 		public unsafe SPWORDPRONUNCIATION* pFirstWordPronunciation;

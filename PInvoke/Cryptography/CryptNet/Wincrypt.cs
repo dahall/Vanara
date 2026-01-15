@@ -2121,7 +2121,7 @@ public static partial class CryptNet
 		public uint dwHttpStatusCode;
 
 		/// <summary/>
-		public ArrayPointer<StrPtrUni> ppwszErrorResponseHeaders;
+		public ArrayPointer<LPWSTR> ppwszErrorResponseHeaders;
 
 		/// <summary/>
 		public StructPointer<StructPointer<CRYPTOAPI_BLOB>> ppErrorContentBlob;

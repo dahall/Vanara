@@ -4588,7 +4588,7 @@ public static partial class Gdi32
 		/// string is identical to the original string, but may be different if the string needs reordering and the GCP_REORDER flag is set
 		/// or if the original string exceeds the maximum extent and the GCP_MAXEXTENT flag is set.
 		/// </summary>
-		public StrPtrAuto lpOutString;
+		public LPTSTR lpOutString;
 
 		/// <summary>
 		/// <para>

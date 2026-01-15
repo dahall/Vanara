@@ -168,10 +168,10 @@ public static partial class Rpc
 	public struct RPC_PROTSEQ_ENDPOINT
 	{
 		/// <summary/>
-		public StrPtrAnsi RpcProtocolSequence;
+		public LPSTR RpcProtocolSequence;
 
 		/// <summary/>
-		public StrPtrAnsi Endpoint;
+		public LPSTR Endpoint;
 	}
 
 	/// <summary/>

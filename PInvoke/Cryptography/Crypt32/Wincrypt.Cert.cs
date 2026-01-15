@@ -3255,7 +3255,7 @@ public static partial class Crypt32
 		/// A pointer to a <c>null</c>-terminated wide character string that contains extended error information. If <c>NULL</c>, there
 		/// is no extended error information.
 		/// </summary>
-		public StrPtrUni pwszExtendedErrorInfo;
+		public LPWSTR pwszExtendedErrorInfo;
 	}
 
 	/// <summary>
@@ -3313,7 +3313,7 @@ public static partial class Crypt32
 		public uint dwRevocationResult;
 
 		/// <summary>Not currently used and is set to <c>NULL</c>.</summary>
-		public StrPtrAnsi pszRevocationOid;
+		public LPSTR pszRevocationOid;
 
 		/// <summary>Not currently used and is set to <c>NULL</c>.</summary>
 		public IntPtr pvOidSpecificInfo;

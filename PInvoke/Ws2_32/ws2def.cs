@@ -666,7 +666,7 @@ public static partial class Ws2_32
 		public SizeT ai_addrlen;
 
 		/// <summary>The canonical name for the host.</summary>
-		public StrPtrUni ai_canonname;
+		public LPWSTR ai_canonname;
 
 		/// <summary>
 		/// A pointer to a sockaddr structure. The <c>ai_addr</c> member in each returned <c>addrinfoex2</c> structure points to a
@@ -698,7 +698,7 @@ public static partial class Ws2_32
 		public int ai_version;
 
 		/// <summary>The fully qualified domain name for the host.</summary>
-		public StrPtrUni ai_fqdn;
+		public LPWSTR ai_fqdn;
 
 		/// <summary>
 		/// <para>Type: <c>struct sockaddr*</c></para>
@@ -1034,7 +1034,7 @@ public static partial class Ws2_32
 		/// <para>Type: <c>PCTSTR</c></para>
 		/// <para>The canonical name for the host.</para>
 		/// </summary>
-		public StrPtrUni ai_canonname;
+		public LPWSTR ai_canonname;
 
 		/// <summary>
 		/// <para>Type: <c>struct sockaddr*</c></para>
@@ -1443,7 +1443,7 @@ public static partial class Ws2_32
 		/// <para>Type: <c>char*</c></para>
 		/// <para>The canonical name for the host.</para>
 		/// </summary>
-		public StrPtrUni ai_canonname;
+		public LPWSTR ai_canonname;
 
 		/// <summary>
 		/// <para>Type: <c>struct sockaddr*</c></para>

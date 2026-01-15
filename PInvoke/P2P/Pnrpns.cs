@@ -173,13 +173,13 @@ public static partial class P2P
 		public Ws2_32.BLOB blobPayload { get => union.blob; set => union.blob = value; }
 
 		/// <summary/>
-		public StrPtrUni pwszPayload { get => union.str; set => union.str = value; }
+		public LPWSTR pwszPayload { get => union.str; set => union.str = value; }
 
 		[StructLayout(LayoutKind.Explicit)]
 		private struct UNION
 		{
 			[FieldOffset(0)] public Ws2_32.BLOB blob;
-			[FieldOffset(0)] public StrPtrUni str;
+			[FieldOffset(0)] public LPWSTR str;
 		}
 	}
 }

@@ -400,7 +400,7 @@ public static partial class CryptDlg
 		/// A pointer to a string representation of an object identifier (OID) for an enhanced key usage (EKU). If an OID is provided,
 		/// only certificates that include this EKU will be displayed.
 		/// </summary>
-		public StrPtrAnsi szPurposeOid;
+		public LPSTR szPurposeOid;
 
 		/// <summary>
 		/// The number of elements in the <c>arrayCertContext</c> array. After the CertSelectCertificate function returns, this member
@@ -543,7 +543,7 @@ public static partial class CryptDlg
 		public PCCERT_CONTEXT pCertContext;
 
 		/// <summary>A pointer to an array of null-terminated strings that specify the certificate purposes.</summary>
-		public StrPtrAuto arrayPurposes;
+		public LPTSTR arrayPurposes;
 
 		/// <summary>Number of elements in the <c>arrayPurposes</c> array. If this value is zero, then no trust status is displayed.</summary>
 		public uint cArrayPurposes;

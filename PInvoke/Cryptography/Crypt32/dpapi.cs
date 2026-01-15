@@ -444,7 +444,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("dpapi.h", MSDNShortId = "54eab3b0-d341-47c6-9c32-79328d7a7155")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool CryptUnprotectData(in CRYPTOAPI_BLOB pDataIn, out StrPtrUni ppszDataDescr,
+	public static extern bool CryptUnprotectData(in CRYPTOAPI_BLOB pDataIn, out LPWSTR ppszDataDescr,
 		in CRYPTOAPI_BLOB pOptionalEntropy, [Optional] IntPtr pvReserved, in CRYPTPROTECT_PROMPTSTRUCT pPromptStruct, CryptProtectFlags dwFlags, [Out] IntPtr pDataOut);
 
 	/// <summary>

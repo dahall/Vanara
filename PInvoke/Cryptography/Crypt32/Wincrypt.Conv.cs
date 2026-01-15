@@ -366,7 +366,7 @@ public static partial class Crypt32
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certalgidtooid LPCSTR CertAlgIdToOID( DWORD dwAlgId );
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "2a66c6da-22dd-4192-9f3d-2fb85f8032e0")]
-	public static extern StrPtrAnsi CertAlgIdToOID(uint dwAlgId);
+	public static extern LPSTR CertAlgIdToOID(uint dwAlgId);
 
 	/// <summary>
 	/// The <c>CertGetNameString</c> function obtains the subject or issuer name from a certificate CERT_CONTEXT structure and converts
@@ -1228,7 +1228,7 @@ public static partial class Crypt32
 	[PInvokeData("wincrypt.h", MSDNShortId = "8bdfafa6-9833-4689-a155-dff09647ec8d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool CertStrToName(CertEncodingType dwCertEncodingType, [MarshalAs(UnmanagedType.LPTStr)] string pszX500, CertNameStringFormat dwStrType,
-		[Optional, Ignore] IntPtr pvReserved, [Out, Optional, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded, out StrPtrAuto ppszError);
+		[Optional, Ignore] IntPtr pvReserved, [Out, Optional, SizeDef(nameof(pcbEncoded), SizingMethod.Query)] IntPtr pbEncoded, ref uint pcbEncoded, out LPTSTR ppszError);
 
 	/// <summary>The <c>CryptBinaryToString</c> function converts an array of bytes into a formatted string.</summary>
 	/// <param name="pbBinary">A pointer to the array of bytes to be converted into a string.</param>

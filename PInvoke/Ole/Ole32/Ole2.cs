@@ -2348,8 +2348,8 @@ public static partial class Ole32
 	// *targetDescription, PWSTR *dataDescription );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ole2.h", MSDNShortId = "1DAD2A9A-EDA2-49D2-90F7-2A9022988177")]
-	public static extern HRESULT OleGetClipboardWithEnterpriseInfo(out IDataObject dataObject, out StrPtrUni dataEnterpriseId,
-		out StrPtrUni sourceDescription, out StrPtrUni targetDescription, out StrPtrUni dataDescription);
+	public static extern HRESULT OleGetClipboardWithEnterpriseInfo(out IDataObject dataObject, out LPWSTR dataEnterpriseId,
+		out LPWSTR sourceDescription, out LPWSTR targetDescription, out LPWSTR dataDescription);
 
 	/// <summary>Returns a handle to a metafile containing an icon and a string label for the specified CLSID.</summary>
 	/// <param name="rclsid">The CLSID for which the icon and string are to be requested.</param>

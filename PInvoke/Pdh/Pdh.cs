@@ -5827,40 +5827,40 @@ public static partial class Pdh
 		public IntPtr dwQueryUserData;
 
 		/// <summary><c>Null</c>-terminated string that specifies the full counter path. The string follows this structure in memory.</summary>
-		public StrPtrAuto szFullPath;
+		public LPTSTR szFullPath;
 
 		/// <summary>
 		/// <c>Null</c>-terminated string that contains the name of the computer specified in the counter path. Is <c>NULL</c>, if the
 		/// path does not specify a computer. The string follows this structure in memory.
 		/// </summary>
-		public StrPtrAuto szMachineName;
+		public LPTSTR szMachineName;
 
 		/// <summary>
 		/// <c>Null</c>-terminated string that contains the name of the performance object specified in the counter path. The string
 		/// follows this structure in memory.
 		/// </summary>
-		public StrPtrAuto szObjectName;
+		public LPTSTR szObjectName;
 
 		/// <summary>
 		/// <c>Null</c>-terminated string that contains the name of the object instance specified in the counter path. Is <c>NULL</c>, if
 		/// the path does not specify an instance. The string follows this structure in memory.
 		/// </summary>
-		public StrPtrAuto szInstanceName;
+		public LPTSTR szInstanceName;
 
 		/// <summary>
 		/// <c>Null</c>-terminated string that contains the name of the parent instance specified in the counter path. Is <c>NULL</c>, if
 		/// the path does not specify a parent instance. The string follows this structure in memory.
 		/// </summary>
-		public StrPtrAuto szParentInstance;
+		public LPTSTR szParentInstance;
 
 		/// <summary>Instance index specified in the counter path. Is 0, if the path does not specify an instance index.</summary>
 		public uint dwInstanceIndex;
 
 		/// <summary><c>Null</c>-terminated string that contains the counter name. The string follows this structure in memory.</summary>
-		public StrPtrAuto szCounterName;
+		public LPTSTR szCounterName;
 
 		/// <summary>Help text that describes the counter. Is <c>NULL</c> if the source is a log file.</summary>
-		public StrPtrAuto szExplainText;
+		public LPTSTR szExplainText;
 
 		/// <summary>Start of the string data that is appended to the structure.</summary>
 		public uint DataBuffer;
@@ -6066,11 +6066,11 @@ public static partial class Pdh
 
 		/// <summary>The computed counter value as a <c>LPCSTR</c>. Not supported.</summary>
 		[FieldOffset(8)]
-		public StrPtrAnsi AnsiStringValue;
+		public LPSTR AnsiStringValue;
 
 		/// <summary>The computed counter value as a <c>LPCWSTR</c>. Not supported.</summary>
 		[FieldOffset(8)]
-		public StrPtrUni WideStringValue;
+		public LPWSTR WideStringValue;
 	}
 
 	/// <summary>The <c>PDH_FMT_COUNTERVALUE_ITEM</c> structure contains the instance name and formatted value of a counter.</summary>

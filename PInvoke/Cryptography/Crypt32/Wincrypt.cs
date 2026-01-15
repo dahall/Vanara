@@ -1713,7 +1713,7 @@ public static partial class Crypt32
 		/// Object identifier (OID) that specifies the structure of the extension data contained in the <c>Value</c> member. For
 		/// specifics on extension OIDs and their related structures, see X.509 Certificate Extension Structures.
 		/// </summary>
-		public StrPtrAnsi pszObjId;
+		public LPSTR pszObjId;
 
 		/// <summary>
 		/// If <c>TRUE</c>, any limitations specified by the extension in the <c>Value</c> member of this structure are imperative. If
@@ -2411,7 +2411,7 @@ public static partial class Crypt32
 		/// </list>
 		/// </summary>
 		[FieldOffset(8)]
-		public StrPtrAnsi pszOID;
+		public LPSTR pszOID;
 	}
 
 	/// <summary>Contains the <i>signature algorithm</i>/<i>hash algorithm</i> and <i>public key algorithm</i>/<i>bit length</i> pairs that can be used for strong signing. This structure is used by the <c>CERT_STRONG_SIGN_PARA</c> structure.</summary>
@@ -2481,10 +2481,10 @@ public static partial class Crypt32
 		public uint dwFlags;
 
 		/// <summary>Pointer to a null-terminated Unicode string that contains a set of <i>signature algorithm</i>/<i>hash algorithm</i> pairs. A Unicode semicolon (L";") separates the pairs. This is shown by the following example.</summary>
-		public StrPtrUni pwszCNGSignHashAlgids;
+		public LPWSTR pwszCNGSignHashAlgids;
 
 		/// <summary>Pointer to a null-terminated Unicode string that contains a set of <i>public key algorithm</i>/<i>bit length</i> pairs. A Unicode semicolon (L";") separates the pairs. This is shown by the following example.</summary>
-		public StrPtrUni pwszCNGPubKeyMinBitLengths;
+		public LPWSTR pwszCNGPubKeyMinBitLengths;
 	}
 
 	/// <summary>
@@ -2864,7 +2864,7 @@ public static partial class Crypt32
 	public struct CRYPT_ALGORITHM_IDENTIFIER
 	{
 		/// <summary>An OID of an algorithm.</summary>
-		public StrPtrAnsi pszObjId;
+		public LPSTR pszObjId;
 
 		/// <summary>
 		/// A BLOB that provides encoded algorithm-specific parameters. In many cases, there are no parameters. This is indicated by
@@ -2881,7 +2881,7 @@ public static partial class Crypt32
 	public struct CRYPT_ATTRIBUTE
 	{
 		/// <summary>An object identifier (OID) that specifies the type of data contained in the <c>rgValue</c> array.</summary>
-		public StrPtrAnsi pszObjId;
+		public LPSTR pszObjId;
 
 		/// <summary>A <c>DWORD</c> value that indicates the number of elements in the <c>rgValue</c> array.</summary>
 		public uint cValue;
@@ -2903,7 +2903,7 @@ public static partial class Crypt32
 	public struct CRYPT_ATTRIBUTE_TYPE_VALUE
 	{
 		/// <summary>Object identifier (OID) that specifies the attribute type data contained in the <c>Value</c> BLOB.</summary>
-		public StrPtrAuto pszObjId;
+		public LPTSTR pszObjId;
 
 		/// <summary>
 		/// A CRYPT_OBJID_BLOB that contains the encoded attribute. The <c>cbData</c> member of the <c>CRYPT_OBJID_BLOB</c> structure
@@ -3165,7 +3165,7 @@ public static partial class Crypt32
 		/// Optional. A pointer to a null-terminated string that specifies the Time Stamping Authority (TSA) policy under which the time
 		/// stamp token was provided. This value must correspond with the value passed in the CRYPT_TIMESTAMP_REQUEST structure.
 		/// </summary>
-		public StrPtrAnsi pszTSAPolicyId;
+		public LPSTR pszTSAPolicyId;
 
 		/// <summary>
 		/// A CRYPT_ALGORITHM_IDENTIFIER structure that contains information about the algorithm used to calculate the hash. This value
@@ -3219,7 +3219,7 @@ public static partial class Crypt32
 		/// Optional. A pointer to a null-terminated character string that contains the Time Stamping Authority (TSA) policy under which
 		/// the time stamp token should be provided.
 		/// </summary>
-		public StrPtrAnsi pszTSAPolicyId;
+		public LPSTR pszTSAPolicyId;
 
 		/// <summary>
 		/// A Boolean value that specifies whether the TSA must include the certificates used to sign the time stamp token in the
@@ -3707,10 +3707,10 @@ public static partial class Crypt32
 		/// <returns>The resulting <see cref="SafeOID"/> instance from the conversion.</returns>
 		public static implicit operator SafeOID(uint value) => new(value);
 
-		/// <summary>Performs an implicit conversion from <see cref="SafeOID"/> to <see cref="StrPtrAnsi"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="SafeOID"/> to <see cref="LPSTR"/>.</summary>
 		/// <param name="value">The value.</param>
-		/// <returns>The resulting <see cref="StrPtrAnsi"/> instance from the conversion.</returns>
-		public static implicit operator StrPtrAnsi(SafeOID value) => value.handle;
+		/// <returns>The resulting <see cref="LPSTR"/> instance from the conversion.</returns>
+		public static implicit operator LPSTR(SafeOID value) => value.handle;
 
 		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="SafeOID"/>.</summary>
 		/// <param name="oidToDuplicate">The OID to duplicate into a new SafeOID.</param>

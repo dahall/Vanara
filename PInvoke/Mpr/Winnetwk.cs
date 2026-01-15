@@ -1843,7 +1843,7 @@ public static partial class Mpr
 	// LPTSTR *lplpSystem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385469(v=vs.85).aspx
 	[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnetwk.h", MSDNShortId = "aa385469")]
-	public static extern Win32Error WNetGetResourceInformation(NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer, out StrPtrAuto lplpSystem);
+	public static extern Win32Error WNetGetResourceInformation(NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer, out LPTSTR lplpSystem);
 
 	/// <summary>
 	/// <para>
