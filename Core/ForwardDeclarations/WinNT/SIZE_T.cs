@@ -13,43 +13,42 @@ namespace Vanara.PInvoke;
 [StructLayout(LayoutKind.Sequential), Serializable]
 [TypeConverter(typeof(SizeTTypeConverter))]
 [DebuggerDisplay("{Value}")]
-[Obsolete("Use 'SIZE_T' instead. This type will be removed in a future release.", false)]
-public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComparable, ISerializable
+public struct SIZE_T : IEquatable<SIZE_T>, IComparable<SIZE_T>, IConvertible, IComparable, ISerializable
 #if NET7_0_OR_GREATER
-	, IParsable<SizeT>, ISpanParsable<SizeT>, IBinaryInteger<SizeT>, IUnsignedNumber<SizeT>
+	, IParsable<SIZE_T>, ISpanParsable<SIZE_T>, IBinaryInteger<SIZE_T>, IUnsignedNumber<SIZE_T>
 #endif
 {
 	/// <summary>
-	/// Represents the largest possible value of <see cref="SizeT"/>. This property is determined by the maximum bit-size of a pointer.
+	/// Represents the largest possible value of <see cref="SIZE_T"/>. This property is determined by the maximum bit-size of a pointer.
 	/// </summary>
-	public static readonly SizeT MaxValue =
+	public static readonly SIZE_T MaxValue =
 #if NET6_0_OR_GREATER
 		nuint.MaxValue;
 #else
 		UIntPtr.Size == 8 ? new(ulong.MaxValue) : new(uint.MaxValue);
 #endif
 
-	/// <summary>Represents the smallest possible value of <see cref="SizeT"/>. This field is constant.</summary>
-	public static readonly SizeT MinValue = 0;
+	/// <summary>Represents the smallest possible value of <see cref="SIZE_T"/>. This field is constant.</summary>
+	public static readonly SIZE_T MinValue = 0;
 
-	/// <summary>Represents the zero value of <see cref="SizeT"/>. This field is constant.</summary>
-	public static readonly SizeT Zero = default;
+	/// <summary>Represents the zero value of <see cref="SIZE_T"/>. This field is constant.</summary>
+	public static readonly SIZE_T Zero = default;
 
 	private nuint val;
 
-	/// <summary>Initializes a new instance of the <see cref="SizeT"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="SIZE_T"/> struct.</summary>
 	/// <param name="value">The value.</param>
-	public SizeT(uint value) => val = value;
+	public SIZE_T(uint value) => val = value;
 
-	/// <summary>Initializes a new instance of the <see cref="SizeT"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="SIZE_T"/> struct.</summary>
 	/// <param name="value">The value.</param>
-	public SizeT(ulong value) => val = new UIntPtr(value);
+	public SIZE_T(ulong value) => val = new UIntPtr(value);
 
-	/// <summary>Initializes a new instance of the <see cref="SizeT"/> struct.</summary>
+	/// <summary>Initializes a new instance of the <see cref="SIZE_T"/> struct.</summary>
 	/// <param name="value">The value.</param>
-	public unsafe SizeT(void* value) => val = (nuint)value;
+	public unsafe SIZE_T(void* value) => val = (nuint)value;
 
-	private SizeT(SerializationInfo info, StreamingContext context) => val = (nuint)info.GetUInt64("value");
+	private SIZE_T(SerializationInfo info, StreamingContext context) => val = (nuint)info.GetUInt64("value");
 
 	/// <inheritdoc/>
 	readonly void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
@@ -64,237 +63,227 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 
 #if NET7_0_OR_GREATER
 	/// <inheritdoc/>
-	static SizeT IAdditiveIdentity<SizeT, SizeT>.AdditiveIdentity => Zero;
+	static SIZE_T IAdditiveIdentity<SIZE_T, SIZE_T>.AdditiveIdentity => Zero;
 
 	/// <inheritdoc/>
-	static SizeT IMultiplicativeIdentity<SizeT, SizeT>.MultiplicativeIdentity => new(1UL);
+	static SIZE_T IMultiplicativeIdentity<SIZE_T, SIZE_T>.MultiplicativeIdentity => new(1UL);
 
 	/// <inheritdoc/>
-	static SizeT INumberBase<SizeT>.One => new(1UL);
+	static SIZE_T INumberBase<SIZE_T>.One => new(1UL);
 
 	/// <inheritdoc/>
-	static int INumberBase<SizeT>.Radix => 2;
+	static int INumberBase<SIZE_T>.Radix => 2;
 
 	/// <inheritdoc/>
-	static SizeT INumberBase<SizeT>.Zero => Zero;
+	static SIZE_T INumberBase<SIZE_T>.Zero => Zero;
 #endif
 
-	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="short"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="SIZE_T"/> to <see cref="short"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator short(SizeT value) => ((IConvertible)value).ToInt16(null);
+	public static implicit operator short(SIZE_T value) => ((IConvertible)value).ToInt16(null);
 
-	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="int"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="SIZE_T"/> to <see cref="int"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator int(SizeT value) => ((IConvertible)value).ToInt32(null);
+	public static implicit operator int(SIZE_T value) => ((IConvertible)value).ToInt32(null);
 
-	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="long"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="SIZE_T"/> to <see cref="long"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator long(SizeT value) => ((IConvertible)value).ToInt64(null);
+	public static implicit operator long(SIZE_T value) => ((IConvertible)value).ToInt64(null);
 
-	/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="SizeT"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="SIZE_T"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SizeT(short value) => value >= 0 ? new SizeT((uint)value) : throw new ArgumentOutOfRangeException(nameof(value));
+	public static implicit operator SIZE_T(short value) => value >= 0 ? new SIZE_T((uint)value) : throw new ArgumentOutOfRangeException(nameof(value));
 
-	/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="SizeT"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="SIZE_T"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SizeT(ushort value) => new((uint)value);
+	public static implicit operator SIZE_T(ushort value) => new((uint)value);
 
-	/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="SizeT"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="SIZE_T"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SizeT(int value) => value >= 0 ? new SizeT((uint)value) : throw new ArgumentOutOfRangeException(nameof(value));
+	public static implicit operator SIZE_T(int value) => value >= 0 ? new SIZE_T((uint)value) : throw new ArgumentOutOfRangeException(nameof(value));
 
-	/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="SizeT"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="uint"/> to <see cref="SIZE_T"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SizeT(uint value) => new(value);
+	public static implicit operator SIZE_T(uint value) => new(value);
 
-	/// <summary>Performs an implicit conversion from <see cref="long"/> to <see cref="SizeT"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="long"/> to <see cref="SIZE_T"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SizeT(long value) => value >= 0 ? new SizeT((ulong)value) : throw new ArgumentOutOfRangeException(nameof(value));
+	public static implicit operator SIZE_T(long value) => value >= 0 ? new SIZE_T((ulong)value) : throw new ArgumentOutOfRangeException(nameof(value));
 
-	/// <summary>Performs an implicit conversion from <see cref="ulong"/> to <see cref="SizeT"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="ulong"/> to <see cref="SIZE_T"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SizeT(ulong value) => new(value);
+	public static implicit operator SIZE_T(ulong value) => new(value);
 
-	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="ushort"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="SIZE_T"/> to <see cref="ushort"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator ushort(SizeT value) => (ushort)value.val;
+	public static implicit operator ushort(SIZE_T value) => (ushort)value.val;
 
-	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="uint"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="SIZE_T"/> to <see cref="uint"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator uint(SizeT value) => (uint)value.val;
+	public static implicit operator uint(SIZE_T value) => (uint)value.val;
 
-	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="ulong"/>.</summary>
+	/// <summary>Performs an implicit conversion from <see cref="SIZE_T"/> to <see cref="ulong"/>.</summary>
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
-	public static implicit operator ulong(SizeT value) => value.val;
+	public static implicit operator ulong(SIZE_T value) => value.val;
 
-	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="SIZE_T"/>.</summary>
-	/// <param name="value">The value.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SIZE_T(SizeT value) => value.val;
-
-	/// <summary>Performs an implicit conversion from <see cref="SIZE_T"/> to <see cref="SizeT"/>.</summary>
-	/// <param name="value">The value.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SizeT(SIZE_T value) => (nuint)value;
-
-	/// <summary>Subtracts two specified <see cref="SizeT"/> values.</summary>
+	/// <summary>Subtracts two specified <see cref="SIZE_T"/> values.</summary>
 	/// <param name="s1">The minuend.</param>
 	/// <param name="s2">The subtrahend.</param>
 	/// <returns>The result of subtracting <paramref name="s2"/> from <paramref name="s1"/>.</returns>
-	public static SizeT operator -(SizeT s1, SizeT s2) => s1.Value - s2.Value;
+	public static SIZE_T operator -(SIZE_T s1, SIZE_T s2) => s1.Value - s2.Value;
 
 	/// <inheritdoc/>
-	public static SizeT operator -(SizeT value) => UIntPtr.Zero - value.val;
+	public static SIZE_T operator -(SIZE_T value) => UIntPtr.Zero - value.val;
 
-	/// <summary>Decrements the <see cref="SizeT"/> by 1.</summary>
+	/// <summary>Decrements the <see cref="SIZE_T"/> by 1.</summary>
 	/// <param name="s1">The value to decrement.</param>
 	/// <returns>The value of <paramref name="s1"/> decremented by 1.</returns>
-	public static SizeT operator --(SizeT s1) => s1.Value += 1;
+	public static SIZE_T operator --(SIZE_T s1) => s1.Value += 1;
 
-	/// <summary>Indicates whether two <see cref="SizeT"/> instances are not equal.</summary>
+	/// <summary>Indicates whether two <see cref="SIZE_T"/> instances are not equal.</summary>
 	/// <param name="s1">The first integral size to compare.</param>
 	/// <param name="s2">The second integral size to compare.</param>
 	/// <returns>
 	/// <see langword="true"/> if the value of <paramref name="s1"/> is not equal to the value of <paramref name="s2"/>; otherwise, <see langword="false"/>.
 	/// </returns>
-	public static bool operator !=(SizeT s1, SizeT s2) => !s1.Equals(s2);
+	public static bool operator !=(SIZE_T s1, SIZE_T s2) => !s1.Equals(s2);
 
-	/// <summary>Returns the remainder resulting from dividing two specified <see cref="SizeT"/> values.</summary>
+	/// <summary>Returns the remainder resulting from dividing two specified <see cref="SIZE_T"/> values.</summary>
 	/// <param name="s1">The divident.</param>
 	/// <param name="s2">The divisor.</param>
 	/// <returns>The remainder resulting from dividing <paramref name="s1"/> by <paramref name="s2"/>.</returns>
-	public static SizeT operator %(SizeT s1, SizeT s2) => s1.Value % s2.Value;
+	public static SIZE_T operator %(SIZE_T s1, SIZE_T s2) => s1.Value % s2.Value;
 
 	/// <inheritdoc/>
-	public static SizeT operator &(SizeT left, SizeT right) => left.Value & right.Value;
+	public static SIZE_T operator &(SIZE_T left, SIZE_T right) => left.Value & right.Value;
 
-	/// <summary>Multiplies two specified <see cref="SizeT"/> values.</summary>
+	/// <summary>Multiplies two specified <see cref="SIZE_T"/> values.</summary>
 	/// <param name="s1">The first value to multiply.</param>
 	/// <param name="s2">The second value to multiply.</param>
 	/// <returns>The result of multiplying <paramref name="s1"/> by <paramref name="s2"/>.</returns>
-	public static SizeT operator *(SizeT s1, SizeT s2) => s1.Value * s2.Value;
+	public static SIZE_T operator *(SIZE_T s1, SIZE_T s2) => s1.Value * s2.Value;
 
-	/// <summary>Divides two specified <see cref="SizeT"/> values.</summary>
+	/// <summary>Divides two specified <see cref="SIZE_T"/> values.</summary>
 	/// <param name="s1">The divident.</param>
 	/// <param name="s2">The divisor.</param>
 	/// <returns>The result of dividing <paramref name="s1"/> by <paramref name="s2"/>.</returns>
-	public static SizeT operator /(SizeT s1, SizeT s2) => s1.Value / s2.Value;
+	public static SIZE_T operator /(SIZE_T s1, SIZE_T s2) => s1.Value / s2.Value;
 
 	/// <inheritdoc/>
-	public static SizeT operator ^(SizeT left, SizeT right) => left.Value ^ right.Value;
+	public static SIZE_T operator ^(SIZE_T left, SIZE_T right) => left.Value ^ right.Value;
 
 	/// <inheritdoc/>
-	public static SizeT operator ~(SizeT value) => ~value.Value;
+	public static SIZE_T operator ~(SIZE_T value) => ~value.Value;
 
-	/// <summary>Adds two specified <see cref="SizeT"/> values.</summary>
+	/// <summary>Adds two specified <see cref="SIZE_T"/> values.</summary>
 	/// <param name="s1">The first value to add.</param>
 	/// <param name="s2">The second value to add.</param>
 	/// <returns>The result of adding <paramref name="s1"/> and <paramref name="s2"/>.</returns>
-	public static SizeT operator +(SizeT s1, SizeT s2) => s1.Value + s2.Value;
+	public static SIZE_T operator +(SIZE_T s1, SIZE_T s2) => s1.Value + s2.Value;
 
 	/// <inheritdoc/>
-	public static SizeT operator +(SizeT value) => +value.Value;
+	public static SIZE_T operator +(SIZE_T value) => +value.Value;
 
-	/// <summary>Increments the <see cref="SizeT"/> by 1.</summary>
+	/// <summary>Increments the <see cref="SIZE_T"/> by 1.</summary>
 	/// <param name="s1">The value to increment.</param>
 	/// <returns>The value of <paramref name="s1"/> incremented by 1.</returns>
-	public static SizeT operator ++(SizeT s1) => s1.Value += 1;
+	public static SIZE_T operator ++(SIZE_T s1) => s1.Value += 1;
 
-	/// <summary>Indicates whether a specified <see cref="SizeT"/> is less than another specified <see cref="SizeT"/>.</summary>
+	/// <summary>Indicates whether a specified <see cref="SIZE_T"/> is less than another specified <see cref="SIZE_T"/>.</summary>
 	/// <param name="s1">The first integral size to compare.</param>
 	/// <param name="s2">The second integral size to compare.</param>
 	/// <returns>
 	/// <see langword="true"/> if the value of <paramref name="s1"/> is less than the value of <paramref name="s2"/>; otherwise, <see langword="false"/>.
 	/// </returns>
-	public static bool operator <(SizeT s1, SizeT s2) => s1.CompareTo(s2) < 0;
+	public static bool operator <(SIZE_T s1, SIZE_T s2) => s1.CompareTo(s2) < 0;
 
 	/// <inheritdoc/>
-	public static SizeT operator <<(SizeT value, int shiftAmount) => value.Value << shiftAmount;
+	public static SIZE_T operator <<(SIZE_T value, int shiftAmount) => value.Value << shiftAmount;
 
-	/// <summary>Indicates whether a specified <see cref="SizeT"/> is less than or equal to another specified <see cref="SizeT"/>.</summary>
+	/// <summary>Indicates whether a specified <see cref="SIZE_T"/> is less than or equal to another specified <see cref="SIZE_T"/>.</summary>
 	/// <param name="s1">The first integral size to compare.</param>
 	/// <param name="s2">The second integral size to compare.</param>
 	/// <returns>
 	/// <see langword="true"/> if the value of <paramref name="s1"/> is less than or equal to the value of <paramref name="s2"/>;
 	/// otherwise, <see langword="false"/>.
 	/// </returns>
-	public static bool operator <=(SizeT s1, SizeT s2) => s1.CompareTo(s2) <= 0;
+	public static bool operator <=(SIZE_T s1, SIZE_T s2) => s1.CompareTo(s2) <= 0;
 
-	/// <summary>Indicates whether two <see cref="SizeT"/> instances are equal.</summary>
+	/// <summary>Indicates whether two <see cref="SIZE_T"/> instances are equal.</summary>
 	/// <param name="s1">The first integral size to compare.</param>
 	/// <param name="s2">The second integral size to compare.</param>
 	/// <returns>
 	/// <see langword="true"/> if the value of <paramref name="s1"/> is equal to the value of <paramref name="s2"/>; otherwise, <see langword="false"/>.
 	/// </returns>
-	public static bool operator ==(SizeT s1, SizeT s2) => s1.Equals(s2);
+	public static bool operator ==(SIZE_T s1, SIZE_T s2) => s1.Equals(s2);
 
-	/// <summary>Indicates whether a specified <see cref="SizeT"/> is greater than another specified <see cref="SizeT"/>.</summary>
+	/// <summary>Indicates whether a specified <see cref="SIZE_T"/> is greater than another specified <see cref="SIZE_T"/>.</summary>
 	/// <param name="s1">The first integral size to compare.</param>
 	/// <param name="s2">The second integral size to compare.</param>
 	/// <returns>
 	/// <see langword="true"/> if the value of <paramref name="s1"/> is greater than the value of <paramref name="s2"/>; otherwise, <see langword="false"/>.
 	/// </returns>
-	public static bool operator >(SizeT s1, SizeT s2) => s1.CompareTo(s2) > 0;
+	public static bool operator >(SIZE_T s1, SIZE_T s2) => s1.CompareTo(s2) > 0;
 
-	/// <summary>Indicates whether a specified <see cref="SizeT"/> is greater than or equal to another specified <see cref="SizeT"/>.</summary>
+	/// <summary>Indicates whether a specified <see cref="SIZE_T"/> is greater than or equal to another specified <see cref="SIZE_T"/>.</summary>
 	/// <param name="s1">The first integral size to compare.</param>
 	/// <param name="s2">The second integral size to compare.</param>
 	/// <returns>
 	/// <see langword="true"/> if the value of <paramref name="s1"/> is greater than or equal to the value of <paramref name="s2"/>;
 	/// otherwise, <see langword="false"/>.
 	/// </returns>
-	public static bool operator >=(SizeT s1, SizeT s2) => s1.CompareTo(s2) >= 0;
+	public static bool operator >=(SIZE_T s1, SIZE_T s2) => s1.CompareTo(s2) >= 0;
 
 	/// <inheritdoc/>
-	public static SizeT operator >>(SizeT value, int shiftAmount) => value.Value >> shiftAmount;
+	public static SIZE_T operator >>(SIZE_T value, int shiftAmount) => value.Value >> shiftAmount;
 
 	/// <inheritdoc/>
-	public static SizeT operator >>>(SizeT value, int shiftAmount) => value.Value >>> shiftAmount;
+	public static SIZE_T operator >>>(SIZE_T value, int shiftAmount) => value.Value >>> shiftAmount;
 
 	/// <inheritdoc/>
-	public static SizeT Parse(string s, IFormatProvider? provider = null) => Parse(s, NumberStyles.Any, provider);
+	public static SIZE_T Parse(string s, IFormatProvider? provider = null) => Parse(s, NumberStyles.Any, provider);
 
 	/// <inheritdoc/>
-	public static SizeT Parse(string s, NumberStyles style, IFormatProvider? provider) => ulong.Parse(s, style, provider);
+	public static SIZE_T Parse(string s, NumberStyles style, IFormatProvider? provider) => ulong.Parse(s, style, provider);
 
 	/// <inheritdoc/>
-	public static SizeT Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => Parse(s.ToString(), NumberStyles.Any, provider);
+	public static SIZE_T Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => Parse(s.ToString(), NumberStyles.Any, provider);
 
 	/// <inheritdoc/>
-	public static SizeT Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider) => Parse(s.ToString(), style, provider);
+	public static SIZE_T Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider) => Parse(s.ToString(), style, provider);
 
 	/// <inheritdoc/>
-	public static bool TryParse(string? s, IFormatProvider? provider, out SizeT result) => TryParse(s, NumberStyles.Any, provider, out result);
+	public static bool TryParse(string? s, IFormatProvider? provider, out SIZE_T result) => TryParse(s, NumberStyles.Any, provider, out result);
 
 	/// <inheritdoc/>
-	public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out SizeT result) => TryParse(s.ToString(), NumberStyles.Any, provider, out result);
+	public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out SIZE_T result) => TryParse(s.ToString(), NumberStyles.Any, provider, out result);
 
 	/// <inheritdoc/>
-	public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider, out SizeT result) { var b = ulong.TryParse(s, style, provider, out var r); result = b ? r : default; return b; }
+	public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider, out SIZE_T result) { var b = ulong.TryParse(s, style, provider, out var r); result = b ? r : default; return b; }
 
 	/// <inheritdoc/>
-	public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out SizeT result) => TryParse(s.ToString(), style, provider, out result);
+	public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out SIZE_T result) => TryParse(s.ToString(), style, provider, out result);
 
 	/// <inheritdoc/>
-	public readonly int CompareTo(SizeT other) => Value.CompareTo(other.Value);
+	public readonly int CompareTo(SIZE_T other) => Value.CompareTo(other.Value);
 
 	/// <inheritdoc/>
-	public override readonly bool Equals(object? obj) => obj is SizeT s ? Equals(s) : Value.Equals(obj);
+	public override readonly bool Equals(object? obj) => obj is SIZE_T s ? Equals(s) : Value.Equals(obj);
 
 	/// <inheritdoc/>
-	public readonly bool Equals(SizeT other) => Value.Equals(other.Value);
+	public readonly bool Equals(SIZE_T other) => Value.Equals(other.Value);
 
 	/// <inheritdoc/>
 	public override readonly int GetHashCode() => Value.GetHashCode();
@@ -319,88 +308,88 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 
 #if NET7_0_OR_GREATER
 	/// <inheritdoc/>
-	static SizeT INumberBase<SizeT>.Abs(SizeT value) => value;
+	static SIZE_T INumberBase<SIZE_T>.Abs(SIZE_T value) => value;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsCanonical(SizeT value) => true;
+	static bool INumberBase<SIZE_T>.IsCanonical(SIZE_T value) => true;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsComplexNumber(SizeT value) => false;
+	static bool INumberBase<SIZE_T>.IsComplexNumber(SIZE_T value) => false;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsEvenInteger(SizeT value) => (value.Value & 1) == 0;
+	static bool INumberBase<SIZE_T>.IsEvenInteger(SIZE_T value) => (value.Value & 1) == 0;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsFinite(SizeT value) => true;
+	static bool INumberBase<SIZE_T>.IsFinite(SIZE_T value) => true;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsImaginaryNumber(SizeT value) => false;
+	static bool INumberBase<SIZE_T>.IsImaginaryNumber(SIZE_T value) => false;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsInfinity(SizeT value) => false;
+	static bool INumberBase<SIZE_T>.IsInfinity(SIZE_T value) => false;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsInteger(SizeT value) => true;
+	static bool INumberBase<SIZE_T>.IsInteger(SIZE_T value) => true;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsNaN(SizeT value) => false;
+	static bool INumberBase<SIZE_T>.IsNaN(SIZE_T value) => false;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsNegative(SizeT value) => false;
+	static bool INumberBase<SIZE_T>.IsNegative(SIZE_T value) => false;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsNegativeInfinity(SizeT value) => false;
+	static bool INumberBase<SIZE_T>.IsNegativeInfinity(SIZE_T value) => false;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsNormal(SizeT value) => value.Value != 0;
+	static bool INumberBase<SIZE_T>.IsNormal(SIZE_T value) => value.Value != 0;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsOddInteger(SizeT value) => (value.Value & 1) != 0;
+	static bool INumberBase<SIZE_T>.IsOddInteger(SIZE_T value) => (value.Value & 1) != 0;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsPositive(SizeT value) => true;
+	static bool INumberBase<SIZE_T>.IsPositive(SIZE_T value) => true;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsPositiveInfinity(SizeT value) => false;
+	static bool INumberBase<SIZE_T>.IsPositiveInfinity(SIZE_T value) => false;
 
 	/// <inheritdoc/>
-	static bool IBinaryNumber<SizeT>.IsPow2(SizeT value) => nuint.IsPow2(value.val);
+	static bool IBinaryNumber<SIZE_T>.IsPow2(SIZE_T value) => nuint.IsPow2(value.val);
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsRealNumber(SizeT value) => true;
+	static bool INumberBase<SIZE_T>.IsRealNumber(SIZE_T value) => true;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsSubnormal(SizeT value) => false;
+	static bool INumberBase<SIZE_T>.IsSubnormal(SIZE_T value) => false;
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.IsZero(SizeT value) => value.val == nuint.Zero;
+	static bool INumberBase<SIZE_T>.IsZero(SIZE_T value) => value.val == nuint.Zero;
 
 	/// <inheritdoc/>
-	static SizeT IBinaryNumber<SizeT>.Log2(SizeT value) => nuint.Log2(value.val);
+	static SIZE_T IBinaryNumber<SIZE_T>.Log2(SIZE_T value) => nuint.Log2(value.val);
 
 	/// <inheritdoc/>
-	static SizeT INumberBase<SizeT>.MaxMagnitude(SizeT x, SizeT y) => Math.Max(x.Value, y.Value);
+	static SIZE_T INumberBase<SIZE_T>.MaxMagnitude(SIZE_T x, SIZE_T y) => Math.Max(x.Value, y.Value);
 
 	/// <inheritdoc/>
-	static SizeT INumberBase<SizeT>.MaxMagnitudeNumber(SizeT x, SizeT y) => Math.Max(x.Value, y.Value);
+	static SIZE_T INumberBase<SIZE_T>.MaxMagnitudeNumber(SIZE_T x, SIZE_T y) => Math.Max(x.Value, y.Value);
 
 	/// <inheritdoc/>
-	static SizeT INumberBase<SizeT>.MinMagnitude(SizeT x, SizeT y) => Math.Min(x.Value, y.Value);
+	static SIZE_T INumberBase<SIZE_T>.MinMagnitude(SIZE_T x, SIZE_T y) => Math.Min(x.Value, y.Value);
 
 	/// <inheritdoc/>
-	static SizeT INumberBase<SizeT>.MinMagnitudeNumber(SizeT x, SizeT y) => Math.Min(x.Value, y.Value);
+	static SIZE_T INumberBase<SIZE_T>.MinMagnitudeNumber(SIZE_T x, SIZE_T y) => Math.Min(x.Value, y.Value);
 
 	/// <inheritdoc/>
-	public static SizeT operator |(SizeT left, SizeT right) => left.Value | right.Value;
+	public static SIZE_T operator |(SIZE_T left, SIZE_T right) => left.Value | right.Value;
 
 	/// <inheritdoc/>
-	static SizeT IBinaryInteger<SizeT>.PopCount(SizeT value) => nuint.PopCount(value.val);
+	static SIZE_T IBinaryInteger<SIZE_T>.PopCount(SIZE_T value) => nuint.PopCount(value.val);
 
 	/// <inheritdoc/>
-	static SizeT IBinaryInteger<SizeT>.TrailingZeroCount(SizeT value) => nuint.TrailingZeroCount(value.val);
+	static SIZE_T IBinaryInteger<SIZE_T>.TrailingZeroCount(SIZE_T value) => nuint.TrailingZeroCount(value.val);
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.TryConvertFromChecked<TOther>(TOther value, out SizeT result)
+	static bool INumberBase<SIZE_T>.TryConvertFromChecked<TOther>(TOther value, out SIZE_T result)
 	{
 		// In order to reduce overall code duplication and improve the inlinabilty of these
 		// methods for the corelib types we have `ConvertFrom` handle the same sign and
@@ -467,7 +456,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.TryConvertFromSaturating<TOther>(TOther value, out SizeT result)
+	static bool INumberBase<SIZE_T>.TryConvertFromSaturating<TOther>(TOther value, out SIZE_T result)
 	{
 		// In order to reduce overall code duplication and improve the inlinabilty of these
 		// methods for the corelib types we have `ConvertFrom` handle the same sign and
@@ -535,7 +524,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.TryConvertFromTruncating<TOther>(TOther value, out SizeT result)
+	static bool INumberBase<SIZE_T>.TryConvertFromTruncating<TOther>(TOther value, out SIZE_T result)
 	{
 		// In order to reduce overall code duplication and improve the inlinabilty of these
 		// methods for the corelib types we have `ConvertFrom` handle the same sign and
@@ -603,7 +592,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.TryConvertToChecked<TOther>(SizeT value, [MaybeNullWhen(false)] out TOther result)
+	static bool INumberBase<SIZE_T>.TryConvertToChecked<TOther>(SIZE_T value, [MaybeNullWhen(false)] out TOther result)
 	{
 		// In order to reduce overall code duplication and improve the inlinabilty of these
 		// methods for the corelib types we have `ConvertFrom` handle the same sign and
@@ -676,7 +665,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.TryConvertToSaturating<TOther>(SizeT value, [MaybeNullWhen(false)] out TOther result)
+	static bool INumberBase<SIZE_T>.TryConvertToSaturating<TOther>(SIZE_T value, [MaybeNullWhen(false)] out TOther result)
 	{
 		if (typeof(TOther) == typeof(double))
 		{
@@ -740,7 +729,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	static bool INumberBase<SizeT>.TryConvertToTruncating<TOther>(SizeT value, [MaybeNullWhen(false)] out TOther result)
+	static bool INumberBase<SIZE_T>.TryConvertToTruncating<TOther>(SIZE_T value, [MaybeNullWhen(false)] out TOther result)
 	{
 		// In order to reduce overall code duplication and improve the inlinabilty of these
 		// methods for the corelib types we have `ConvertFrom` handle the same sign and
@@ -813,7 +802,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	static bool IBinaryInteger<SizeT>.TryReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned, out SizeT value)
+	static bool IBinaryInteger<SIZE_T>.TryReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned, out SIZE_T value)
 	{
 		ulong result = default;
 
@@ -870,7 +859,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	static bool IBinaryInteger<SizeT>.TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out SizeT value)
+	static bool IBinaryInteger<SIZE_T>.TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out SIZE_T value)
 	{
 		ulong result = default;
 
@@ -928,16 +917,16 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	int IBinaryInteger<SizeT>.GetByteCount() => ((IBinaryInteger<nuint>)val).GetByteCount();
+	int IBinaryInteger<SIZE_T>.GetByteCount() => ((IBinaryInteger<nuint>)val).GetByteCount();
 
 	/// <inheritdoc/>
-	int IBinaryInteger<SizeT>.GetShortestBitLength() => ((IBinaryInteger<nuint>)val).GetShortestBitLength();
+	int IBinaryInteger<SIZE_T>.GetShortestBitLength() => ((IBinaryInteger<nuint>)val).GetShortestBitLength();
 
 	/// <inheritdoc/>
-	bool IBinaryInteger<SizeT>.TryWriteBigEndian(Span<byte> destination, out int bytesWritten) => ((IBinaryInteger<nuint>)val).TryWriteBigEndian(destination, out bytesWritten);
+	bool IBinaryInteger<SIZE_T>.TryWriteBigEndian(Span<byte> destination, out int bytesWritten) => ((IBinaryInteger<nuint>)val).TryWriteBigEndian(destination, out bytesWritten);
 
 	/// <inheritdoc/>
-	bool IBinaryInteger<SizeT>.TryWriteLittleEndian(Span<byte> destination, out int bytesWritten) => ((IBinaryInteger<nuint>)val).TryWriteLittleEndian(destination, out bytesWritten);
+	bool IBinaryInteger<SIZE_T>.TryWriteLittleEndian(Span<byte> destination, out int bytesWritten) => ((IBinaryInteger<nuint>)val).TryWriteLittleEndian(destination, out bytesWritten);
 #endif
 
 	/// <inheritdoc/>
@@ -1071,9 +1060,9 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	internal class SizeTTypeConverter : UInt64Converter
 	{
 		public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
-			new SizeT((ulong)base.ConvertFrom(context, culture, value)!);
+			new SIZE_T((ulong)base.ConvertFrom(context, culture, value)!);
 
 		public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType) =>
-					value is SizeT sz ? base.ConvertTo(context, culture, sz.Value, destinationType) : throw new NotSupportedException();
+					value is SIZE_T sz ? base.ConvertTo(context, culture, sz.Value, destinationType) : throw new NotSupportedException();
 	}
 }

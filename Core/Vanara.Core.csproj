@@ -52,6 +52,11 @@ ArrayLayout, Bitness, CorrespondingAction, FileAttributeConstant, FileOpConstant
     <None Include="Marshaler\StructMarshaler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="ForwardDeclarations\WinNT\LPSTR.cs">
+      <DependentUpon>LPSTR.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="InteropServices\SafeLPSTR.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -70,6 +75,10 @@ ArrayLayout, Bitness, CorrespondingAction, FileAttributeConstant, FileOpConstant
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Update="ForwardDeclarations\WinNT\LPSTR.tt">
+      <LastGenOutput>LPSTR.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="InteropServices\SafeLPSTR.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SafeLPSTR.cs</LastGenOutput>
