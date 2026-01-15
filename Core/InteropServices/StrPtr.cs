@@ -99,7 +99,7 @@ public struct GuidPtr(Guid g) : IEquatable<GuidPtr>, IEquatable<Guid?>, IEquatab
 
 /// <summary>The StrPtr structure represents a LPWSTR.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
-[Obsolete("Use LPSTR instead.")]
+[Obsolete("Use LPSTR instead.", false)]
 public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatable<IntPtr>
 {
 	private IntPtr ptr;
@@ -222,7 +222,7 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 
 /// <summary>The StrPtr structure represents a LPTSTR.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
-[Obsolete("Use LPTSTR instead.")]
+[Obsolete("Use LPTSTR instead.", false)]
 public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatable<IntPtr>
 {
 	private IntPtr ptr;
@@ -340,7 +340,7 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 
 /// <summary>The StrPtr structure represents a LPWSTR.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
-[Obsolete("Use LPWSTR instead.")]
+[Obsolete("Use LPWSTR instead.", false)]
 public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<IntPtr>
 {
 	private IntPtr ptr;
