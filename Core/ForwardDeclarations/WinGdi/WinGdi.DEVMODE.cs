@@ -921,7 +921,7 @@ public struct DEVMODE
 	/// For printer devices only, selects the orientation of the paper. This member can be either DMORIENT_PORTRAIT (1) or
 	/// DMORIENT_LANDSCAPE (2).
 	/// </summary>
-	public DMORIENT dmOrientation { get => Union.dmOrientation; set => Union.dmOrientation = value; }
+	public DMORIENT dmOrientation { readonly get => Union.dmOrientation; set => Union.dmOrientation = value; }
 
 	/// <summary>
 	/// <para>
@@ -1396,27 +1396,27 @@ public struct DEVMODE
 	/// </item>
 	/// </list>
 	/// </summary>
-	public DMPAPER dmPaperSize { get => Union.dmPaperSize; set => Union.dmPaperSize = value; }
+	public DMPAPER dmPaperSize { readonly get => Union.dmPaperSize; set => Union.dmPaperSize = value; }
 
 	/// <summary>
 	/// For printer devices only, overrides the length of the paper specified by the <c>dmPaperSize</c> member, either for custom
 	/// paper sizes or for devices such as dot-matrix printers that can print on a page of arbitrary length. These values, along with
 	/// all other values in this structure that specify a physical length, are in tenths of a millimeter.
 	/// </summary>
-	public short dmPaperLength { get => Union.dmPaperLength; set => Union.dmPaperLength = value; }
+	public short dmPaperLength { readonly get => Union.dmPaperLength; set => Union.dmPaperLength = value; }
 
 	/// <summary>For printer devices only, overrides the width of the paper specified by the <c>dmPaperSize</c> member.</summary>
-	public short dmPaperWidth { get => Union.dmPaperWidth; set => Union.dmPaperWidth = value; }
+	public short dmPaperWidth { readonly get => Union.dmPaperWidth; set => Union.dmPaperWidth = value; }
 
 	/// <summary>
 	/// Specifies the factor by which the printed output is to be scaled. The apparent page size is scaled from the physical page
 	/// size by a factor of <c>dmScale</c> /100. For example, a letter-sized page with a <c>dmScale</c> value of 50 would contain as
 	/// much data as a page of 17- by 22-inches because the output text and graphics would be half their original height and width.
 	/// </summary>
-	public short dmScale { get => Union.dmScale; set => Union.dmScale = value; }
+	public short dmScale { readonly get => Union.dmScale; set => Union.dmScale = value; }
 
 	/// <summary>Selects the number of copies printed if the device supports multiple-page copies.</summary>
-	public short dmCopies { get => Union.dmCopies; set => Union.dmCopies = value; }
+	public short dmCopies { readonly get => Union.dmCopies; set => Union.dmCopies = value; }
 
 	/// <summary>
 	/// <para>
@@ -1425,19 +1425,19 @@ public struct DEVMODE
 	/// </para>
 	/// <para>This member can be one of the following values, or it can be a device-specific value greater than or equal to DMBIN_USER.</para>
 	/// </summary>
-	public short dmDefaultSource { get => Union.dmDefaultSource; set => Union.dmDefaultSource = value; }
+	public short dmDefaultSource { readonly get => Union.dmDefaultSource; set => Union.dmDefaultSource = value; }
 
 	/// <summary>
 	/// <para>Specifies the printer resolution. There are four predefined device-independent values:</para>
 	/// <para>If a positive value is specified, it specifies the number of dots per inch (DPI) and is therefore device dependent.</para>
 	/// </summary>
-	public DMRES dmPrintQuality { get => Union.dmPrintQuality; set => Union.dmPrintQuality = value; }
+	public DMRES dmPrintQuality { readonly get => Union.dmPrintQuality; set => Union.dmPrintQuality = value; }
 
 	/// <summary>
 	/// For display devices only, a POINTL structure that indicates the positional coordinates of the display device in reference to
 	/// the desktop area. The primary display device is always located at coordinates (0,0).
 	/// </summary>
-	public POINT dmPosition { get => Union.dmPosition; set => Union.dmPosition = value; }
+	public POINT dmPosition { readonly get => Union.dmPosition; set => Union.dmPosition = value; }
 
 	/// <summary>
 	/// <para>
@@ -1471,7 +1471,7 @@ public struct DEVMODE
 	/// </para>
 	/// <para><c>Windows 2000:</c> Not supported.</para>
 	/// </summary>
-	public DMDO dmDisplayOrientation { get => Union.dmDisplayOrientation; set => Union.dmDisplayOrientation = value; }
+	public DMDO dmDisplayOrientation { readonly get => Union.dmDisplayOrientation; set => Union.dmDisplayOrientation = value; }
 
 	/// <summary>
 	/// <para>
@@ -1501,7 +1501,7 @@ public struct DEVMODE
 	/// </list>
 	/// <para><c>Windows 2000:</c> Not supported.</para>
 	/// </summary>
-	public DMDFO dmDisplayFixedOutput { get => Union.dmDisplayFixedOutput; set => Union.dmDisplayFixedOutput = value; }
+	public DMDFO dmDisplayFixedOutput { readonly get => Union.dmDisplayFixedOutput; set => Union.dmDisplayFixedOutput = value; }
 
 	/// <summary>
 	/// <para>Switches between color and monochrome on color printers. The following are the possible values:</para>
@@ -1659,7 +1659,7 @@ public struct DEVMODE
 	/// Display drivers use this member, for example, in the ChangeDisplaySettings function. Printer drivers do not use this member.
 	/// </para>
 	/// </summary>
-	public DMDISPLAY dmDisplayFlags { get => Union2.dmDisplayFlags; set => Union2.dmDisplayFlags = value; }
+	public DMDISPLAY dmDisplayFlags { readonly get => Union2.dmDisplayFlags; set => Union2.dmDisplayFlags = value; }
 
 	/// <summary>
 	/// <para>Specifies where the NUP is done. It can be one of the following.</para>
@@ -1678,7 +1678,7 @@ public struct DEVMODE
 	/// </item>
 	/// </list>
 	/// </summary>
-	public DMNUP dmNup { get => Union2.dmNup; set => Union2.dmNup = value; }
+	public DMNUP dmNup { readonly get => Union2.dmNup; set => Union2.dmNup = value; }
 
 	/// <summary>
 	/// <para>

@@ -359,7 +359,7 @@ public struct SYSTEMTIME : IEquatable<SYSTEMTIME>, IComparable<SYSTEMTIME>
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
-	public override string ToString() => ToString(DateTimeKind.Unspecified, null, null);
+	public override readonly string ToString() => ToString(DateTimeKind.Unspecified, null, null);
 
 	/// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
 	/// <param name="kind">One of the enumeration values that indicates whether the new object represents local time, UTC, or neither.</param>

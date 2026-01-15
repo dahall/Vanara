@@ -16,11 +16,11 @@ public partial struct Win32Error(uint i) : IEquatable<uint>, IErrorProvider2<Win
 
 	/// <summary>Gets a value indicating whether this <see cref="Win32Error"/> is a failure.</summary>
 	/// <value><see langword="true"/> if failed; otherwise, <see langword="false"/>.</value>
-	public bool Failed => !Succeeded;
+	public readonly bool Failed => !Succeeded;
 
 	/// <summary>Gets a value indicating whether this <see cref="Win32Error"/> is a success.</summary>
 	/// <value><see langword="true"/><see langword="true"/> if succeeded; otherwise, <see langword="false"/>.</value>
-	public bool Succeeded => value == ERROR_SUCCESS;
+	public readonly bool Succeeded => value == ERROR_SUCCESS;
 
 	/// <summary>Performs an explicit conversion from <see cref="Win32Error"/> to <see cref="HRESULT"/>.</summary>
 	/// <param name="error">The error.</param>
@@ -155,7 +155,7 @@ public partial struct Win32Error(uint i) : IEquatable<uint>, IErrorProvider2<Win
 	/// Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>.
 	/// Greater than zero This object is greater than <paramref name="other"/>.
 	/// </returns>
-	public int CompareTo(Win32Error other) => value.CompareTo(other.value);
+	public readonly int CompareTo(Win32Error other) => value.CompareTo(other.value);
 
 	/// <summary>
 	/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance
@@ -167,7 +167,7 @@ public partial struct Win32Error(uint i) : IEquatable<uint>, IErrorProvider2<Win
 	/// zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the sort
 	/// order as <paramref name="obj"/>. Greater than zero This instance follows <paramref name="obj"/> in the sort order.
 	/// </returns>
-	public int CompareTo(object? obj)
+	public readonly int CompareTo(object? obj)
 	{
 		var v = ValueFromObj(obj);
 		return v.HasValue
@@ -179,18 +179,18 @@ public partial struct Win32Error(uint i) : IEquatable<uint>, IErrorProvider2<Win
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 	/// <exception cref="NotImplementedException"></exception>
-	public bool Equals(uint other) => other == value;
+	public readonly bool Equals(uint other) => other == value;
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to this instance; otherwise, <see langword="false"/>.</returns>
-	public override bool Equals(object? obj) => Equals(value, ValueFromObj(obj));
+	public override readonly bool Equals(object? obj) => Equals(value, ValueFromObj(obj));
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 	/// <exception cref="NotImplementedException"></exception>
-	public bool Equals(Win32Error other) => other.value == value;
+	public readonly bool Equals(Win32Error other) => other.value == value;
 
 	/// <summary>
 	/// Gets the .NET <see cref="Exception"/> associated with the <see cref="Win32Error"/> value and optionally adds the supplied message.
@@ -198,17 +198,17 @@ public partial struct Win32Error(uint i) : IEquatable<uint>, IErrorProvider2<Win
 	/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 	/// <returns>The associated <see cref="Exception"/> or <see langword="null"/> if this <see cref="Win32Error"/> is not a failure.</returns>
 	[SecurityCritical, SecuritySafeCritical]
-	public Exception? GetException(string? message = null) => Succeeded ? null : ToHRESULT().GetException(message);
+	public readonly Exception? GetException(string? message = null) => Succeeded ? null : ToHRESULT().GetException(message);
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => unchecked((int)value);
+	public override readonly int GetHashCode() => unchecked((int)value);
 
 	/// <summary>Throws if failed.</summary>
 	/// <param name="message">The message.</param>
 	/// <exception cref="Win32Exception"></exception>
 	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
-	public void ThrowIfFailed(string? message = null)
+	public readonly void ThrowIfFailed(string? message = null)
 	{
 		if (value != ERROR_SUCCESS) throw GetException(message)!;
 	}
@@ -217,58 +217,58 @@ public partial struct Win32Error(uint i) : IEquatable<uint>, IErrorProvider2<Win
 	/// <param name="exception">The failure code to ignore.</param>
 	/// <param name="message">The message.</param>
 	[System.Diagnostics.DebuggerStepThrough]
-	public void ThrowUnless(Win32Error exception, string? message = null)
+	public readonly void ThrowUnless(Win32Error exception, string? message = null)
 	{
 		if (value != ERROR_SUCCESS && value != (uint)exception) throw GetException(message)!;
 	}
 
 	/// <summary>Converts this error to an <see cref="HRESULT"/>.</summary>
 	/// <returns>The <see cref="HRESULT"/> equivalent of this error.</returns>
-	public HRESULT ToHRESULT() => (HRESULT)this;
+	public readonly HRESULT ToHRESULT() => (HRESULT)this;
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
-	public override string ToString()
+	public override readonly string ToString()
 	{
 		_ = StaticFieldValueHash.TryGetFieldName<Win32Error, uint>(value, out var err);
 		var msg = ErrorHelper.GetErrorMessage<Win32Error, uint>(value);
 		return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", value)) + (msg == null ? "" : ": " + msg);
 	}
 
-	TypeCode IConvertible.GetTypeCode() => value.GetTypeCode();
+	readonly TypeCode IConvertible.GetTypeCode() => value.GetTypeCode();
 
-	bool IConvertible.ToBoolean(IFormatProvider? provider) => Succeeded;
+	readonly bool IConvertible.ToBoolean(IFormatProvider? provider) => Succeeded;
 
-	byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)value).ToByte(provider);
+	readonly byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)value).ToByte(provider);
 
-	char IConvertible.ToChar(IFormatProvider? provider) => throw new NotSupportedException();
+	readonly char IConvertible.ToChar(IFormatProvider? provider) => throw new NotSupportedException();
 
-	DateTime IConvertible.ToDateTime(IFormatProvider? provider) => throw new NotSupportedException();
+	readonly DateTime IConvertible.ToDateTime(IFormatProvider? provider) => throw new NotSupportedException();
 
-	decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)value).ToDecimal(provider);
+	readonly decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)value).ToDecimal(provider);
 
-	double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)value).ToDouble(provider);
+	readonly double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)value).ToDouble(provider);
 
-	short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)value).ToInt16(provider);
+	readonly short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)value).ToInt16(provider);
 
-	int IConvertible.ToInt32(IFormatProvider? provider) => ((IConvertible)value).ToInt32(provider);
+	readonly int IConvertible.ToInt32(IFormatProvider? provider) => ((IConvertible)value).ToInt32(provider);
 
-	long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)value).ToInt64(provider);
+	readonly long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)value).ToInt64(provider);
 
-	sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)value).ToSByte(provider);
+	readonly sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)value).ToSByte(provider);
 
-	float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)value).ToSingle(provider);
+	readonly float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)value).ToSingle(provider);
 
-	string IConvertible.ToString(IFormatProvider? provider) => ToString();
+	readonly string IConvertible.ToString(IFormatProvider? provider) => ToString();
 
-	object IConvertible.ToType(Type conversionType, IFormatProvider? provider) =>
+	readonly object IConvertible.ToType(Type conversionType, IFormatProvider? provider) =>
 		((IConvertible)value).ToType(conversionType, provider);
 
-	ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)value).ToUInt16(provider);
+	readonly ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)value).ToUInt16(provider);
 
-	uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)value).ToUInt32(provider);
+	readonly uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)value).ToUInt32(provider);
 
-	ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)value).ToUInt64(provider);
+	readonly ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)value).ToUInt64(provider);
 
 	private static uint? ValueFromObj(object? obj)
 	{

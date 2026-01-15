@@ -38,7 +38,7 @@ public struct RGBQUAD : IEquatable<RGBQUAD>
 
 	/// <summary>Gets a value indicating whether any transparency is defined.</summary>
 	/// <value><see langword="true"/> if this value is transparent; otherwise, <see langword="false"/>.</value>
-	public bool IsTransparent => rgbReserved == 0;
+	public readonly bool IsTransparent => rgbReserved == 0;
 
 	/// <summary>Gets or sets the color associated with the <see cref="RGBQUAD"/> structure.</summary>
 	/// <value>The color.</value>
@@ -49,18 +49,18 @@ public struct RGBQUAD : IEquatable<RGBQUAD>
 	}
 
 	/// <inheritdoc/>
-	public override bool Equals(object? obj) => obj is RGBQUAD q && Equals(q);
+	public override readonly bool Equals(object? obj) => obj is RGBQUAD q && Equals(q);
 
 	/// <summary>Determines whether the specified object is equal to the current object.</summary>
 	/// <param name="q">The object to compare with the current object.</param>
 	/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
-	public bool Equals(RGBQUAD q) => q.rgbBlue == rgbBlue && q.rgbGreen == rgbGreen && q.rgbRed == rgbRed && q.rgbReserved == rgbReserved;
+	public readonly bool Equals(RGBQUAD q) => q.rgbBlue == rgbBlue && q.rgbGreen == rgbGreen && q.rgbRed == rgbRed && q.rgbReserved == rgbReserved;
 
 	/// <inheritdoc/>
-	public override int GetHashCode() => unchecked((int)(uint)this);
+	public override readonly int GetHashCode() => unchecked((int)(uint)this);
 
 	/// <inheritdoc/>
-	public override string ToString() => $"{{R={rgbRed},G={rgbGreen},B={rgbBlue}}}";
+	public override readonly string ToString() => $"{{R={rgbRed},G={rgbGreen},B={rgbBlue}}}";
 
 	/// <summary>Performs an implicit conversion from <see cref="RGBQUAD"/> to <see cref="uint"/>.</summary>
 	/// <param name="c">The <see cref="RGBQUAD"/> value.</param>

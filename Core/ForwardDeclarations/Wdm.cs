@@ -1066,7 +1066,7 @@ public struct CM_PARTIAL_RESOURCE_DESCRIPTOR
 		/// <summary>The data</summary>
 		public uint[] Data
 		{
-			get => [data0, data1, data2];
+			readonly get => [data0, data1, data2];
 			set
 			{
 				data0 = value[0];

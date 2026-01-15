@@ -143,7 +143,7 @@ public struct ResourceId : IEquatable<string>, IEquatable<IntPtr>, IEquatable<in
 	public static explicit operator string(ResourceId r) => r.ToString();
 
 	/// <inheritdoc/>
-	public override bool Equals(object? obj)
+	public override readonly bool Equals(object? obj)
 	{
 		try
 		{
@@ -163,25 +163,25 @@ public struct ResourceId : IEquatable<string>, IEquatable<IntPtr>, IEquatable<in
 	}
 
 	/// <inheritdoc/>
-	public override int GetHashCode() => ptr.GetHashCode();
+	public override readonly int GetHashCode() => ptr.GetHashCode();
 
 	/// <inheritdoc/>
-	public override string ToString() => IS_INTRESOURCE(ptr) ? $"#{ptr.ToInt32()}" : Marshal.PtrToStringAuto(ptr) ?? "";
+	public override readonly string ToString() => IS_INTRESOURCE(ptr) ? $"#{ptr.ToInt32()}" : Marshal.PtrToStringAuto(ptr) ?? "";
 
 	/// <inheritdoc/>
 	public readonly bool Equals(int other) => ptr.ToInt32().Equals(other);
 
 	/// <inheritdoc/>
-	public bool Equals(string? other) => string.Equals(ToString(), other);
+	public readonly bool Equals(string? other) => string.Equals(ToString(), other);
 
 	/// <inheritdoc/>
 	public readonly bool Equals(IntPtr other) => ptr.Equals(other);
 
 	/// <inheritdoc/>
-	public bool Equals(ResourceId other) => string.Equals(other.ToString(), ToString());
+	public readonly bool Equals(ResourceId other) => string.Equals(other.ToString(), ToString());
 
 	/// <inheritdoc/>
-	public IntPtr DangerousGetHandle() => ptr;
+	public readonly IntPtr DangerousGetHandle() => ptr;
 }
 
 /// <summary>Helper structure to use for a pointer that can morph into a string, handle or integer.</summary>
@@ -195,7 +195,7 @@ public struct ResourceIdOrHandle<THandle> : IEquatable<string>, IEquatable<int>,
 	/// <value>The identifier.</value>
 	public int id
 	{
-		get => IS_INTRESOURCE(ptr) ? (ushort)ptr.ToInt32() : 0;
+		readonly get => IS_INTRESOURCE(ptr) ? (ushort)ptr.ToInt32() : 0;
 		set
 		{
 			if (value is > ushort.MaxValue or <= 0) throw new ArgumentOutOfRangeException(nameof(id));
@@ -248,7 +248,7 @@ public struct ResourceIdOrHandle<THandle> : IEquatable<string>, IEquatable<int>,
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj)
+	public override readonly bool Equals(object? obj)
 	{
 		switch (obj)
 		{
@@ -278,36 +278,36 @@ public struct ResourceIdOrHandle<THandle> : IEquatable<string>, IEquatable<int>,
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => ptr.GetHashCode();
+	public override readonly int GetHashCode() => ptr.GetHashCode();
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
-	public override string ToString() => IS_INTRESOURCE(ptr) ? $"#{ptr.ToInt32()}" : Marshal.PtrToStringAuto(ptr) ?? "";
+	public override readonly string ToString() => IS_INTRESOURCE(ptr) ? $"#{ptr.ToInt32()}" : Marshal.PtrToStringAuto(ptr) ?? "";
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(int other) => ptr.ToInt32().Equals(other);
-
-	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-	/// <param name="other">An object to compare with this object.</param>
-	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	/// <exception cref="NotImplementedException"></exception>
-	public bool Equals(string? other) => string.Equals(ToString(), other);
-
-	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-	/// <param name="other">An object to compare with this object.</param>
-	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(IntPtr other) => ptr.Equals(other);
+	public readonly bool Equals(int other) => ptr.ToInt32().Equals(other);
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 	/// <exception cref="NotImplementedException"></exception>
-	public bool Equals(ResourceIdOrHandle<THandle> other) => string.Equals(other.ToString(), ToString());
+	public readonly bool Equals(string? other) => string.Equals(ToString(), other);
+
+	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+	/// <param name="other">An object to compare with this object.</param>
+	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+	public readonly bool Equals(IntPtr other) => ptr.Equals(other);
+
+	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+	/// <param name="other">An object to compare with this object.</param>
+	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+	/// <exception cref="NotImplementedException"></exception>
+	public readonly bool Equals(ResourceIdOrHandle<THandle> other) => string.Equals(other.ToString(), ToString());
 
 	/// <inheritdoc/>
-	public IntPtr DangerousGetHandle() => ptr;
+	public readonly IntPtr DangerousGetHandle() => ptr;
 }
 
 /// <summary>Represents a system resource name that can identify as a string, integer, or pointer.</summary>

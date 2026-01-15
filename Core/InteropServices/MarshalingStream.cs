@@ -4,19 +4,13 @@ namespace Vanara.InteropServices;
 
 /// <summary>A <see cref="Stream"/> derivative for working with unmanaged memory.</summary>
 /// <seealso cref="Stream"/>
+/// <remarks>Initializes a new instance of the <see cref="MarshalingStream"/> class.</remarks>
+/// <param name="unmanagedPtr">The unmanaged PTR.</param>
+/// <param name="bytesAllocated">The bytes allocated.</param>
 [Obsolete("This class may not be available in future releases. Please replace uses with Vanara.InteropServices.NativeMemoryStream.")]
-public class MarshalingStream : Stream
+public class MarshalingStream(IntPtr unmanagedPtr, long bytesAllocated) : Stream
 {
-	private readonly IntPtr ptr;
-
-	/// <summary>Initializes a new instance of the <see cref="MarshalingStream"/> class.</summary>
-	/// <param name="unmanagedPtr">The unmanaged PTR.</param>
-	/// <param name="bytesAllocated">The bytes allocated.</param>
-	public MarshalingStream(IntPtr unmanagedPtr, long bytesAllocated)
-	{
-		ptr = unmanagedPtr;
-		Capacity = bytesAllocated;
-	}
+	private readonly IntPtr ptr = unmanagedPtr;
 
 	/// <summary>Clears all buffers for this stream and causes any buffered data to be written to the underlying device.</summary>
 	public override void Flush() { }
@@ -170,7 +164,7 @@ public class MarshalingStream : Stream
 
 	/// <summary>Gets the capacity.</summary>
 	/// <value>The capacity.</value>
-	public long Capacity { get; }
+	public long Capacity { get; } = bytesAllocated;
 
 	/// <summary>Gets or sets the character set.</summary>
 	/// <value>The character set.</value>

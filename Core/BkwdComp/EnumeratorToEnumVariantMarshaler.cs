@@ -87,11 +87,9 @@ internal static class ComDataHelpers
 	}
 }
 
-internal class EnumVariantViewOfEnumerator : IEnumVARIANT, ICustomAdapter
+internal class EnumVariantViewOfEnumerator(IEnumerator enumerator) : IEnumVARIANT, ICustomAdapter
 {
-	public EnumVariantViewOfEnumerator(IEnumerator enumerator) => Enumerator = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
-
-	public IEnumerator Enumerator { get; }
+	public IEnumerator Enumerator { get; } = enumerator ?? throw new ArgumentNullException(nameof(enumerator));
 
 	IEnumVARIANT IEnumVARIANT.Clone() => Enumerator is ICloneable clonable
 			? new EnumVariantViewOfEnumerator((IEnumerator)clonable.Clone())
@@ -149,14 +147,11 @@ internal class EnumVariantViewOfEnumerator : IEnumVARIANT, ICustomAdapter
 	object ICustomAdapter.GetUnderlyingObject() => Enumerator;
 }
 
-internal class EnumeratorViewOfEnumVariant : ICustomAdapter, IEnumerator
+internal class EnumeratorViewOfEnumVariant(IEnumVARIANT enumVariantObject) : ICustomAdapter, IEnumerator
 {
-	private readonly IEnumVARIANT _enumVariantObject;
+	private readonly IEnumVARIANT _enumVariantObject = enumVariantObject;
 	private bool _fetchedLastObject = false;
 	private readonly object[] _nextArray = new object[1];
-
-	public EnumeratorViewOfEnumVariant(IEnumVARIANT enumVariantObject) =>
-		_enumVariantObject = enumVariantObject;
 
 	object IEnumerator.Current => _nextArray[0];
 

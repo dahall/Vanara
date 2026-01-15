@@ -33,14 +33,12 @@ public static class FormatterComposer
 
 /// <summary>Binds multiple formatters together.</summary>
 /// <seealso cref="Formatter"/>
-internal sealed class CompositeFormatter : Formatter
+/// <remarks>Initializes a new instance of the <see cref="CompositeFormatter"/> class.</remarks>
+/// <param name="culture">The culture.</param>
+/// <param name="formatters">The formatters.</param>
+internal sealed class CompositeFormatter(CultureInfo? culture = null, params Formatter[] formatters) : Formatter(culture)
 {
-	private readonly List<Formatter> _formatters;
-
-	/// <summary>Initializes a new instance of the <see cref="CompositeFormatter"/> class.</summary>
-	/// <param name="culture">The culture.</param>
-	/// <param name="formatters">The formatters.</param>
-	public CompositeFormatter(CultureInfo? culture = null, params Formatter[] formatters) : base(culture) => _formatters = new(formatters);
+	private readonly List<Formatter> _formatters = new(formatters);
 
 	/// <summary>Adds the specified formatter.</summary>
 	/// <param name="formatter">The formatter.</param>
@@ -69,15 +67,14 @@ internal sealed class CompositeFormatter : Formatter
 }
 
 /// <summary>Base class for expandable formatters.</summary>
-public abstract class Formatter : IFormatProvider, ICustomFormatter
+/// <remarks>Initializes a new instance of the <see cref="Formatter"/> class.</remarks>
+/// <param name="culture">The culture.</param>
+public abstract class Formatter(CultureInfo? culture = null) : IFormatProvider, ICustomFormatter
 {
-	/// <summary>Initializes a new instance of the <see cref="Formatter"/> class.</summary>
-	/// <param name="culture">The culture.</param>
-	protected Formatter(CultureInfo? culture = null) => Culture = culture ?? CultureInfo.InvariantCulture;
 
 	/// <summary>Gets the culture.</summary>
 	/// <value>The culture.</value>
-	public CultureInfo Culture { get; }
+	public CultureInfo Culture { get; } = culture ?? CultureInfo.InvariantCulture;
 
 	/// <summary>Gets a default instance of a composite formatter.</summary>
 	/// <param name="culture">The culture.</param>

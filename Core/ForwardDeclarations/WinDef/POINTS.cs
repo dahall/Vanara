@@ -38,7 +38,7 @@ public struct POINTS(short x, short y) : IEquatable<POINTS>
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj) => obj switch
+	public override readonly bool Equals(object? obj) => obj switch
 	{
 		POINTS pt => Equals(pt),
 		POINT ptl => Equals(ptl),
@@ -47,7 +47,7 @@ public struct POINTS(short x, short y) : IEquatable<POINTS>
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => IsEmpty ? 0 : x.GetHashCode() ^ y.GetHashCode();
+	public override readonly int GetHashCode() => IsEmpty ? 0 : x.GetHashCode() ^ y.GetHashCode();
 
 	/// <summary>Converts this structure to a <see cref="POINT"/> structure.</summary>
 	/// <returns>An equivalent <see cref="POINT"/> structure.</returns>
@@ -55,7 +55,7 @@ public struct POINTS(short x, short y) : IEquatable<POINTS>
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
-	public override string ToString() => $"{{x={x}, y={y}}}";
+	public override readonly string ToString() => $"{{x={x}, y={y}}}";
 
 	/// <summary>Performs an implicit conversion from <see cref="POINTS"/> to <see cref="POINT"/>.</summary>
 	/// <param name="p">The <see cref="POINTS"/>.</param>

@@ -47,13 +47,11 @@ public interface IVirtualReadOnlyListMethods<T>
 
 /// <summary>A virtual list that implements a lot of the scaffolding.</summary>
 /// <typeparam name="T">The element type.</typeparam>
-public class VirtualList<T> : VirtualReadOnlyList<T>, IList<T>
+/// <remarks>Initializes a new instance of the <see cref="VirtualList{T}"/> class.</remarks>
+public class VirtualList<T>(IVirtualListMethods<T> impl) : VirtualReadOnlyList<T>(impl), IList<T>
 {
 	/// <summary>The implementation.</summary>
-	protected readonly IVirtualListMethods<T> impl;
-
-	/// <summary>Initializes a new instance of the <see cref="VirtualList{T}"/> class.</summary>
-	public VirtualList(IVirtualListMethods<T> impl) : base(impl) => this.impl = impl;
+	protected readonly IVirtualListMethods<T> impl = impl;
 
 	/// <inheritdoc/>
 	bool ICollection<T>.IsReadOnly => false;
@@ -100,42 +98,33 @@ public class VirtualList<T> : VirtualReadOnlyList<T>, IList<T>
 /// <summary>Wrapper for <see cref="IVirtualListMethods{T}"/> that allows for the use of delegates instead of implementing the interface.</summary>
 /// <typeparam name="T">The element type.</typeparam>
 /// <seealso cref="IVirtualListMethods&lt;T&gt;"/>
-public class VirtualListMethodCarrier<T> : IVirtualListMethods<T>
+/// <remarks>Initializes a new instance of the <see cref="VirtualListMethodCarrier{T}"/> class.</remarks>
+/// <param name="tryGet">Delegate that tries to get the element at the specified index.</param>
+/// <param name="getCount">Delegate that gets the number of elements in the collection.</param>
+/// <param name="add">Delegate that adds an item to the end of the list.</param>
+/// <param name="insert">Delegate that inserts an item to the list at the specified index.</param>
+/// <param name="removeAt">Delegate that removes the item at the specified index.</param>
+/// <param name="setAt">Delegate that sets the element at the specified index.</param>
+public class VirtualListMethodCarrier<T>(VirtualReadOnlyList<T>.TryGetDelegate tryGet, Func<int> getCount, Action<T>? add = null, Action<int, T>? insert = null, Action<int>? removeAt = null, Action<int, T>? setAt = null) : IVirtualListMethods<T>
 {
-	/// <summary>Initializes a new instance of the <see cref="VirtualListMethodCarrier{T}"/> class.</summary>
-	/// <param name="tryGet">Delegate that tries to get the element at the specified index.</param>
-	/// <param name="getCount">Delegate that gets the number of elements in the collection.</param>
-	/// <param name="add">Delegate that adds an item to the end of the list.</param>
-	/// <param name="insert">Delegate that inserts an item to the list at the specified index.</param>
-	/// <param name="removeAt">Delegate that removes the item at the specified index.</param>
-	/// <param name="setAt">Delegate that sets the element at the specified index.</param>
-	public VirtualListMethodCarrier(VirtualReadOnlyList<T>.TryGetDelegate tryGet, Func<int> getCount, Action<T>? add = null, Action<int, T>? insert = null, Action<int>? removeAt = null, Action<int, T>? setAt = null)
-	{
-		TryGet = tryGet;
-		GetCount = getCount;
-		Add = add;
-		Insert = insert;
-		RemoveAt = removeAt;
-		SetAt = setAt;
-	}
 
 	/// <summary>Delegate that adds an item to the end of the list.</summary>
-	public Action<T>? Add { get; }
+	public Action<T>? Add { get; } = add;
 
 	/// <summary>Delegate that gets the number of elements in the collection.</summary>
-	public Func<int> GetCount { get; }
+	public Func<int> GetCount { get; } = getCount;
 
 	/// <summary>Delegate that inserts an item to the list at the specified index.</summary>
-	public Action<int, T>? Insert { get; }
+	public Action<int, T>? Insert { get; } = insert;
 
 	/// <summary>Delegate that removes the item at the specified index.</summary>
-	public Action<int>? RemoveAt { get; }
+	public Action<int>? RemoveAt { get; } = removeAt;
 
 	/// <summary>Delegate that sets the element at the specified index.</summary>
-	public Action<int, T>? SetAt { get; }
+	public Action<int, T>? SetAt { get; } = setAt;
 
 	/// <summary>Delegate that tries to get the element at the specified index.</summary>
-	public VirtualReadOnlyList<T>.TryGetDelegate TryGet { get; }
+	public VirtualReadOnlyList<T>.TryGetDelegate TryGet { get; } = tryGet;
 
 	/// <inheritdoc/>
 	void IVirtualListMethods<T>.AddItem(T item) => Add?.Invoke(item);
@@ -158,13 +147,11 @@ public class VirtualListMethodCarrier<T> : IVirtualListMethods<T>
 
 /// <summary>A virtual read-only list that implements a lot of the scaffolding.</summary>
 /// <typeparam name="T">The element type.</typeparam>
-public class VirtualReadOnlyList<T> : IReadOnlyList<T>
+/// <remarks>Initializes a new instance of the <see cref="VirtualList{T}"/> class.</remarks>
+public class VirtualReadOnlyList<T>(IVirtualReadOnlyListMethods<T> impl) : IReadOnlyList<T>
 {
 	/// <summary>The read only implementation.</summary>
-	protected readonly IVirtualReadOnlyListMethods<T> readOnlyImpl;
-
-	/// <summary>Initializes a new instance of the <see cref="VirtualList{T}"/> class.</summary>
-	public VirtualReadOnlyList(IVirtualReadOnlyListMethods<T> impl) => readOnlyImpl = impl;
+	protected readonly IVirtualReadOnlyListMethods<T> readOnlyImpl = impl;
 
 	/// <summary>Delegate for a method that tries to get the element at the specified index.</summary>
 	/// <param name="index">The zero-based index of the element to get.</param>

@@ -37,10 +37,10 @@ public struct MSG(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, POINT pt = 
 	public POINT pt = pt;
 
 	/// <summary>The horizontal cursor position, in screen coordinates, when the message was posted.</summary>
-	public int pt_x { get => pt.X; set => pt.X = value; }
+	public int pt_x { readonly get => pt.X; set => pt.X = value; }
 
 	/// <summary>The vertical cursor position, in screen coordinates, when the message was posted.</summary>
-	public int pt_y { get => pt.Y; set => pt.Y = value; }
+	public int pt_y { readonly get => pt.Y; set => pt.Y = value; }
 
 	/// <summary>Initializes a new instance of the <see cref="MSG"/> struct.</summary>
 	/// <param name="hwnd">

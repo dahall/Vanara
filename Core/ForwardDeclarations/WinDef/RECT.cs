@@ -42,22 +42,22 @@ public struct RECT(int left, int top, int right, int bottom) : IEquatable<PRECT>
 	}
 
 	/// <summary>The x-coordinate of the upper-left corner of the rectangle.</summary>
-	public int Left { get => left; set => left = value; }
+	public int Left { readonly get => left; set => left = value; }
 
 	/// <summary>The x-coordinate of the lower-right corner of the rectangle.</summary>
-	public int Right { get => right; set => right = value; }
+	public int Right { readonly get => right; set => right = value; }
 
 	/// <summary>The y-coordinate of the upper-left corner of the rectangle.</summary>
-	public int Top { get => top; set => top = value; }
+	public int Top { readonly get => top; set => top = value; }
 
 	/// <summary>The y-coordinate of the lower-right corner of the rectangle.</summary>
-	public int Bottom { get => bottom; set => bottom = value; }
+	public int Bottom { readonly get => bottom; set => bottom = value; }
 
 	/// <summary>Gets or sets the x-coordinate of the upper-left corner of this <see cref="RECT"/> structure.</summary>
 	/// <value>The x-coordinate of the upper-left corner of this <see cref="RECT"/> structure. The default is 0.</value>
 	public int X
 	{
-		get => left;
+		readonly get => left;
 		set
 		{
 			right -= left - value;
@@ -69,7 +69,7 @@ public struct RECT(int left, int top, int right, int bottom) : IEquatable<PRECT>
 	/// <value>The y-coordinate of the upper-left corner of this <see cref="RECT"/> structure. The default is 0.</value>
 	public int Y
 	{
-		get => top;
+		readonly get => top;
 		set
 		{
 			bottom -= top - value;
@@ -81,7 +81,7 @@ public struct RECT(int left, int top, int right, int bottom) : IEquatable<PRECT>
 	/// <value>The height of this <see cref="RECT"/> structure. The default is 0.</value>
 	public int Height
 	{
-		get => bottom - top;
+		readonly get => bottom - top;
 		set => bottom = value + top;
 	}
 
@@ -89,7 +89,7 @@ public struct RECT(int left, int top, int right, int bottom) : IEquatable<PRECT>
 	/// <value>The width of this <see cref="RECT"/> structure. The default is 0.</value>
 	public int Width
 	{
-		get => right - left;
+		readonly get => right - left;
 		set => right = value + left;
 	}
 
@@ -97,7 +97,7 @@ public struct RECT(int left, int top, int right, int bottom) : IEquatable<PRECT>
 	/// <value>A Point that represents the upper-left corner of this <see cref="RECT"/> structure.</value>
 	public POINT Location
 	{
-		get => new(left, top);
+		readonly get => new(left, top);
 		set
 		{
 			X = value.X;
@@ -109,7 +109,7 @@ public struct RECT(int left, int top, int right, int bottom) : IEquatable<PRECT>
 	/// <value>A Size that represents the width and height of this <see cref="RECT"/> structure.</value>
 	public SIZE Size
 	{
-		get => new(Width, Height);
+		readonly get => new(Width, Height);
 		set
 		{
 			Width = value.Width;
@@ -119,7 +119,7 @@ public struct RECT(int left, int top, int right, int bottom) : IEquatable<PRECT>
 
 	/// <summary>Tests whether all numeric properties of this <see cref="RECT"/> have values of zero.</summary>
 	/// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
-	public bool IsEmpty => left == 0 && top == 0 && right == 0 && bottom == 0;
+	public readonly bool IsEmpty => left == 0 && top == 0 && right == 0 && bottom == 0;
 
 	/// <summary>Performs an implicit conversion from <see cref="RECT"/> to <see cref="Rectangle"/>.</summary>
 	/// <param name="r">The <see cref="RECT"/> structure.</param>
@@ -146,22 +146,22 @@ public struct RECT(int left, int top, int right, int bottom) : IEquatable<PRECT>
 	/// <summary>Determines whether the specified <see cref="RECT"/>, is equal to this instance.</summary>
 	/// <param name="r">The <see cref="RECT"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="RECT"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(RECT r) => r.left == left && r.top == top && r.right == right && r.bottom == bottom;
+	public readonly bool Equals(RECT r) => r.left == left && r.top == top && r.right == right && r.bottom == bottom;
 
 	/// <summary>Determines whether the specified <see cref="PRECT"/>, is equal to this instance.</summary>
 	/// <param name="r">The <see cref="PRECT"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="PRECT"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(PRECT? r) => r is not null && Equals(r.rect);
+	public readonly bool Equals(PRECT? r) => r is not null && Equals(r.rect);
 
 	/// <summary>Determines whether the specified <see cref="Rectangle"/>, is equal to this instance.</summary>
 	/// <param name="r">The <see cref="Rectangle"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="Rectangle"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(Rectangle r) => r.Left == left && r.Top == top && r.Right == right && r.Bottom == bottom;
+	public readonly bool Equals(Rectangle r) => r.Left == left && r.Top == top && r.Right == right && r.Bottom == bottom;
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj) => obj switch
+	public override readonly bool Equals(object? obj) => obj switch
 	{
 		null => false,
 		RECT r => Equals(r),
@@ -172,11 +172,11 @@ public struct RECT(int left, int top, int right, int bottom) : IEquatable<PRECT>
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => ((Rectangle)this).GetHashCode();
+	public override readonly int GetHashCode() => ((Rectangle)this).GetHashCode();
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
-	public override string ToString() => $"{{left={left},top={top},right={right},bottom={bottom}}}";
+	public override readonly string ToString() => $"{{left={left},top={top},right={right},bottom={bottom}}}";
 
 	/// <summary>Represents an empty instance where all values are set to 0.</summary>
 	public static readonly RECT Empty = new();

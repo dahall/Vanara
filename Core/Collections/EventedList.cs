@@ -876,10 +876,10 @@ public class EventedList<T> : IList<T?>, IList where T : class, INotifyPropertyC
 
 		/// <summary>Gets the current.</summary>
 		/// <value>The current.</value>
-		object? IEnumerator.Current => index != 0 && index != list.Count + 1 ? Current : throw new InvalidOperationException();
+		readonly object? IEnumerator.Current => index != 0 && index != list.Count + 1 ? Current : throw new InvalidOperationException();
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-		public void Dispose() { }
+		public readonly void Dispose() { }
 
 		/// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
 		/// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created.</exception>

@@ -78,5 +78,5 @@ public struct WIN32_FIND_DATA
 
 	/// <summary>Gets the size of the file, combining <see cref="nFileSizeLow"/> and <see cref="nFileSizeHigh"/>.</summary>
 	/// <value>The size of the file.</value>
-	public ulong FileSize => Macros.MAKELONG64(nFileSizeLow, nFileSizeHigh);
+	public readonly ulong FileSize => Macros.MAKELONG64(nFileSizeLow, nFileSizeHigh);
 }

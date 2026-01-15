@@ -549,14 +549,9 @@ public class NativeMemoryStream : Stream
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private T ThrowIfDisposed<T>(T value) => !IsDisposed ? value : throw new ObjectDisposedException(nameof(NativeMemoryStream));
 
-	private class Reference
+	private class Reference(long offset, object? val)
 	{
-		public long Offset, WriteOffset;
-		public object? Value;
-
-		public Reference(long offset, object? val)
-		{
-			Offset = offset; Value = val;
-		}
+		public long Offset = offset, WriteOffset;
+		public object? Value = val;
 	}
 }

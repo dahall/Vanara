@@ -54,7 +54,7 @@ public struct EnumFlagIndexer<TEnum> : IEquatable<TEnum>, IEquatable<EnumFlagInd
 	/// <returns><c>true</c> if the flag is set; <c>false</c> otherwise.</returns>
 	public bool this[TEnum flag]
 	{
-		get => (Convert.ToInt64(flags) & Convert.ToInt64(flag)) != 0;
+		readonly get => (Convert.ToInt64(flags) & Convert.ToInt64(flag)) != 0;
 		set
 		{
 			long flagsValue = Convert.ToInt64(flags);
@@ -112,17 +112,17 @@ public struct EnumFlagIndexer<TEnum> : IEquatable<TEnum>, IEquatable<EnumFlagInd
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
-	public bool Equals(TEnum other) => Convert.ToInt64(flags) == Convert.ToInt64(other);
+	public readonly bool Equals(TEnum other) => Convert.ToInt64(flags) == Convert.ToInt64(other);
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
-	public bool Equals(EnumFlagIndexer<TEnum> other) => Convert.ToInt64(flags) == Convert.ToInt64(other.flags);
+	public readonly bool Equals(EnumFlagIndexer<TEnum> other) => Convert.ToInt64(flags) == Convert.ToInt64(other.flags);
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj) => obj is TEnum e ? Equals(e) : (obj is EnumFlagIndexer<TEnum> i ? Equals(i) : Equals(obj, flags));
+	public override readonly bool Equals(object? obj) => obj is TEnum e ? Equals(e) : (obj is EnumFlagIndexer<TEnum> i ? Equals(i) : Equals(obj, flags));
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -130,11 +130,11 @@ public struct EnumFlagIndexer<TEnum> : IEquatable<TEnum>, IEquatable<EnumFlagInd
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
-	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	readonly IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 	/// <summary>Returns an enumerator that iterates through the collection.</summary>
 	/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator{TEnum}"/> that can be used to iterate through the collection.</returns>
-	public IEnumerator<TEnum> GetEnumerator()
+	public readonly IEnumerator<TEnum> GetEnumerator()
 	{
 		long t = 0;
 		foreach (TEnum e in Enum.GetValues(typeof(TEnum)).OfType<TEnum>())

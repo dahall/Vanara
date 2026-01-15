@@ -51,7 +51,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	private SizeT(SerializationInfo info, StreamingContext context) => val = (nuint)info.GetUInt64("value");
 
 	/// <inheritdoc/>
-	void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+	readonly void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
 	{
 		if (info is null) throw new ArgumentNullException(nameof(info));
 		info.AddValue("value", (ulong)val);
@@ -59,7 +59,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 
 	/// <summary>Gets the value.</summary>
 	/// <value>The value.</value>
-	public ulong Value { get => val; private set => val = new UIntPtr(value); }
+	public ulong Value { readonly get => val; private set => val = new UIntPtr(value); }
 
 #if NET7_0_OR_GREATER
 	/// <inheritdoc/>
@@ -277,32 +277,32 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out SizeT result) => TryParse(s.ToString(), style, provider, out result);
 
 	/// <inheritdoc/>
-	public int CompareTo(SizeT other) => Value.CompareTo(other.Value);
+	public readonly int CompareTo(SizeT other) => Value.CompareTo(other.Value);
 
 	/// <inheritdoc/>
-	public override bool Equals(object? obj) => obj is SizeT s ? Equals(s) : Value.Equals(obj);
+	public override readonly bool Equals(object? obj) => obj is SizeT s ? Equals(s) : Value.Equals(obj);
 
 	/// <inheritdoc/>
-	public bool Equals(SizeT other) => Value.Equals(other.Value);
+	public readonly bool Equals(SizeT other) => Value.Equals(other.Value);
 
 	/// <inheritdoc/>
-	public override int GetHashCode() => Value.GetHashCode();
+	public override readonly int GetHashCode() => Value.GetHashCode();
 
 	/// <inheritdoc/>
-	public TypeCode GetTypeCode() => Value.GetTypeCode();
+	public readonly TypeCode GetTypeCode() => Value.GetTypeCode();
 
 	/// <inheritdoc/>
-	public override string ToString() => Value.ToString();
+	public override readonly string ToString() => Value.ToString();
 
 	/// <inheritdoc/>
-	public string ToString(IFormatProvider? provider) => Value.ToString(provider);
+	public readonly string ToString(IFormatProvider? provider) => Value.ToString(provider);
 
 	/// <inheritdoc/>
-	public string ToString(string? format, IFormatProvider? formatProvider) => Value.ToString(format, formatProvider);
+	public readonly string ToString(string? format, IFormatProvider? formatProvider) => Value.ToString(format, formatProvider);
 
 #if NET6_0_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 	/// <inheritdoc/>
-	public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider) =>
+	public readonly bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider) =>
 		Value.TryFormat(destination, out charsWritten, format, provider);
 #endif
 
@@ -930,13 +930,13 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 #endif
 
 	/// <inheritdoc/>
-	int IComparable.CompareTo(object? obj) => Value.CompareTo(Convert.ChangeType(obj, typeof(ulong)));
+	readonly int IComparable.CompareTo(object? obj) => Value.CompareTo(Convert.ChangeType(obj, typeof(ulong)));
 
 	/// <inheritdoc/>
-	bool IConvertible.ToBoolean(IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
+	readonly bool IConvertible.ToBoolean(IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
 
 	/// <inheritdoc/>
-	byte IConvertible.ToByte(IFormatProvider? provider)
+	readonly byte IConvertible.ToByte(IFormatProvider? provider)
 	{
 		var ul = Value;
 		if (ul <= byte.MaxValue)
@@ -947,13 +947,13 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	char IConvertible.ToChar(IFormatProvider? provider) => ((IConvertible)Value).ToChar(provider);
+	readonly char IConvertible.ToChar(IFormatProvider? provider) => ((IConvertible)Value).ToChar(provider);
 
 	/// <inheritdoc/>
-	DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ((IConvertible)Value).ToDateTime(provider);
+	readonly DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ((IConvertible)Value).ToDateTime(provider);
 
 	/// <inheritdoc/>
-	decimal IConvertible.ToDecimal(IFormatProvider? provider)
+	readonly decimal IConvertible.ToDecimal(IFormatProvider? provider)
 	{
 		var ul = Value;
 		if (ul <= decimal.MaxValue)
@@ -964,7 +964,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	double IConvertible.ToDouble(IFormatProvider? provider)
+	readonly double IConvertible.ToDouble(IFormatProvider? provider)
 	{
 		var ul = Value;
 		if (ul <= double.MaxValue)
@@ -975,7 +975,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	short IConvertible.ToInt16(IFormatProvider? provider)
+	readonly short IConvertible.ToInt16(IFormatProvider? provider)
 	{
 		var ul = Value;
 		if (ul <= (ulong)short.MaxValue)
@@ -986,7 +986,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	int IConvertible.ToInt32(IFormatProvider? provider)
+	readonly int IConvertible.ToInt32(IFormatProvider? provider)
 	{
 		var ul = Value;
 		if (ul <= int.MaxValue)
@@ -997,7 +997,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	long IConvertible.ToInt64(IFormatProvider? provider)
+	readonly long IConvertible.ToInt64(IFormatProvider? provider)
 	{
 		var ul = Value;
 		if (ul <= long.MaxValue)
@@ -1008,7 +1008,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	sbyte IConvertible.ToSByte(IFormatProvider? provider)
+	readonly sbyte IConvertible.ToSByte(IFormatProvider? provider)
 	{
 		var ul = Value;
 		if (ul <= (ulong)sbyte.MaxValue)
@@ -1019,7 +1019,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	float IConvertible.ToSingle(IFormatProvider? provider)
+	readonly float IConvertible.ToSingle(IFormatProvider? provider)
 	{
 		var ul = Value;
 		if (ul <= float.MaxValue)
@@ -1030,10 +1030,10 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => ((IConvertible)Value).ToType(conversionType, provider);
+	readonly object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => ((IConvertible)Value).ToType(conversionType, provider);
 
 	/// <inheritdoc/>
-	ushort IConvertible.ToUInt16(IFormatProvider? provider)
+	readonly ushort IConvertible.ToUInt16(IFormatProvider? provider)
 	{
 		var ul = Value;
 		if (ul <= ushort.MaxValue)
@@ -1044,7 +1044,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	uint IConvertible.ToUInt32(IFormatProvider? provider)
+	readonly uint IConvertible.ToUInt32(IFormatProvider? provider)
 	{
 		var ul = Value;
 		if (ul <= uint.MaxValue)
@@ -1055,7 +1055,7 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	}
 
 	/// <inheritdoc/>
-	ulong IConvertible.ToUInt64(IFormatProvider? provider) => Value;
+	readonly ulong IConvertible.ToUInt64(IFormatProvider? provider) => Value;
 
 	internal class SizeTTypeConverter : UInt64Converter
 	{

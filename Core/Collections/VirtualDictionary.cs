@@ -70,15 +70,14 @@ public class GenericVirtualReadOnlyDictionary<TKey, TValue> : VirtualReadOnlyDic
 /// </summary>
 /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
 /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-public abstract class VirtualDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>, IDictionary<TKey, TValue> where TKey : notnull
+/// <remarks>Initializes a new instance of the <see cref="VirtualDictionary{TKey, TValue}"/> class.</remarks>
+/// <param name="readOnly">if set to <c>true</c> makes the collection read-only.</param>
+public abstract class VirtualDictionary<TKey, TValue>(bool readOnly) : IReadOnlyDictionary<TKey, TValue>, IDictionary<TKey, TValue> where TKey : notnull
 {
-	/// <summary>Initializes a new instance of the <see cref="VirtualDictionary{TKey, TValue}"/> class.</summary>
-	/// <param name="readOnly">if set to <c>true</c> makes the collection read-only.</param>
-	protected VirtualDictionary(bool readOnly) => IsReadOnly = readOnly;
 
 	/// <summary>Gets a value indicating whether this instance is read only.</summary>
 	/// <value><see langword="true"/> if this instance is read only; otherwise, <see langword="false"/>.</value>
-	public bool IsReadOnly { get; internal set; }
+	public bool IsReadOnly { get; internal set; } = readOnly;
 
 	/// <summary>Gets an <see cref="ICollection{TKey}"/> containing the keys of the <see cref="IDictionary{TKey, TValue}"/>.</summary>
 	/// <value>An <see cref="ICollection{TKey}"/> containing the keys of the object that implements <see cref="IDictionary{TKey, TValue}"/>.</value>

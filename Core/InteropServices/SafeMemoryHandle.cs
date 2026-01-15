@@ -374,16 +374,14 @@ public abstract class MemoryMethodsBase : IMemoryMethods
 /// <seealso cref="System.IComparable{T}" />
 /// <seealso cref="System.IEquatable{T}" />
 /// <seealso cref="SafeHANDLE" />
-public abstract class SafeAllocatedMemoryHandleBase : SafeHANDLE, ISafeMemoryHandleBase, IComparable<SafeAllocatedMemoryHandleBase>,
+/// <remarks>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandleBase"/> class.</remarks>
+/// <param name="handle">The handle.</param>
+/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+public abstract class SafeAllocatedMemoryHandleBase(IntPtr handle, bool ownsHandle) : SafeHANDLE(handle, ownsHandle), ISafeMemoryHandleBase, IComparable<SafeAllocatedMemoryHandleBase>,
 	IEquatable<SafeAllocatedMemoryHandleBase>
 {
 	/// <summary>Occurs when the handle has changed.</summary>
 	public event EventHandler<IntPtr>? HandleChanged;
-
-	/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandleBase"/> class.</summary>
-	/// <param name="handle">The handle.</param>
-	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	protected SafeAllocatedMemoryHandleBase(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) { }
 
 #if DEBUG
 	/// <summary>Dumps memory to byte string.</summary>
@@ -622,18 +620,16 @@ public abstract class SafeAllocatedMemoryHandleBase : SafeHANDLE, ISafeMemoryHan
 
 /// <summary>Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.</summary>
 /// <seealso cref="SafeHandle"/>
-public abstract class SafeAllocatedMemoryHandle : SafeAllocatedMemoryHandleBase
+/// <remarks>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandle"/> class.</remarks>
+/// <param name="handle">The handle.</param>
+/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+public abstract class SafeAllocatedMemoryHandle(IntPtr handle, bool ownsHandle) : SafeAllocatedMemoryHandleBase(handle, ownsHandle)
 {
 	/// <summary>
 	/// Maintains reference to other SafeMemoryHandleExt objects, the pointer to which are referred to by this object. This is to ensure
 	/// that such objects being referred to wouldn't be unreferenced until this object is active.
 	/// </summary>
 	private List<IDisposable>? references;
-
-	/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandle"/> class.</summary>
-	/// <param name="handle">The handle.</param>
-	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	protected SafeAllocatedMemoryHandle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) { }
 
 	/// <summary>
 	/// Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that

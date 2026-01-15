@@ -935,14 +935,14 @@ public struct LANGID : IEquatable<LANGID>, IEquatable<ushort>, IConvertible, ICo
 	public LANGID(LCID lcid) => val = (ushort)(uint)lcid;
 
 	/// <summary>Extracts a primary language identifier from a language identifier.</summary>
-	public LANG PRIMARYLANGID => (LANG)(val & 0x3ff);
+	public readonly LANG PRIMARYLANGID => (LANG)(val & 0x3ff);
 
 	/// <summary>Extracts a Sublanguage identifier from a language identifier.</summary>
-	public SUBLANG SUBLANGID => (SUBLANG)(val >> 10);
+	public readonly SUBLANG SUBLANGID => (SUBLANG)(val >> 10);
 
 	/// <summary>Gets the value.</summary>
 	/// <value>The value.</value>
-	public ushort Value { get => val; private set => val = value; }
+	public ushort Value { readonly get => val; private set => val = value; }
 
 	/// <summary>Performs an implicit conversion from <see cref="ushort"/> to <see cref="LANGID"/>.</summary>
 	/// <param name="value">The value.</param>
@@ -987,73 +987,73 @@ public struct LANGID : IEquatable<LANGID>, IEquatable<ushort>, IConvertible, ICo
 	public static bool operator ==(LANGID s1, LANGID s2) => s1.Equals(s2);
 
 	/// <inheritdoc/>
-	public override bool Equals(object? obj) => obj is LANGID s ? Equals(s) : (obj is ushort b ? Value.Equals(b) : Value.Equals(obj));
+	public override readonly bool Equals(object? obj) => obj is LANGID s ? Equals(s) : (obj is ushort b ? Value.Equals(b) : Value.Equals(obj));
 
 	/// <inheritdoc/>
-	public bool Equals(LANGID other) => Value.Equals(other.Value);
+	public readonly bool Equals(LANGID other) => Value.Equals(other.Value);
 
 	/// <inheritdoc/>
-	public bool Equals(ushort other) => Value.Equals(other);
+	public readonly bool Equals(ushort other) => Value.Equals(other);
 
 	/// <inheritdoc/>
-	public override int GetHashCode() => val;
+	public override readonly int GetHashCode() => val;
 
 	/// <inheritdoc/>
-	public TypeCode GetTypeCode() => Value.GetTypeCode();
+	public readonly TypeCode GetTypeCode() => Value.GetTypeCode();
 
 	/// <inheritdoc/>
-	public override string ToString() => Value.ToString();
+	public override readonly string ToString() => Value.ToString();
 
 	/// <inheritdoc/>
-	public string ToString(IFormatProvider? provider) => Value.ToString(provider);
+	public readonly string ToString(IFormatProvider? provider) => Value.ToString(provider);
 
 	/// <inheritdoc/>
-	int IComparable.CompareTo(object? obj) => Value.CompareTo(Convert.ChangeType(obj, typeof(ulong)));
+	readonly int IComparable.CompareTo(object? obj) => Value.CompareTo(Convert.ChangeType(obj, typeof(ulong)));
 
 	/// <inheritdoc/>
-	bool IConvertible.ToBoolean(IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
+	readonly bool IConvertible.ToBoolean(IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
 
 	/// <inheritdoc/>
-	byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)Value).ToByte(provider);
+	readonly byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)Value).ToByte(provider);
 
 	/// <inheritdoc/>
-	char IConvertible.ToChar(IFormatProvider? provider) => ((IConvertible)Value).ToChar(provider);
+	readonly char IConvertible.ToChar(IFormatProvider? provider) => ((IConvertible)Value).ToChar(provider);
 
 	/// <inheritdoc/>
-	DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ((IConvertible)Value).ToDateTime(provider);
+	readonly DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ((IConvertible)Value).ToDateTime(provider);
 
 	/// <inheritdoc/>
-	decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)Value).ToDecimal(provider);
+	readonly decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)Value).ToDecimal(provider);
 
 	/// <inheritdoc/>
-	double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)Value).ToDouble(provider);
+	readonly double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)Value).ToDouble(provider);
 
 	/// <inheritdoc/>
-	short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)Value).ToInt16(provider);
+	readonly short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)Value).ToInt16(provider);
 
 	/// <inheritdoc/>
-	int IConvertible.ToInt32(IFormatProvider? provider) => ((IConvertible)Value).ToInt32(provider);
+	readonly int IConvertible.ToInt32(IFormatProvider? provider) => ((IConvertible)Value).ToInt32(provider);
 
 	/// <inheritdoc/>
-	long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)Value).ToInt64(provider);
+	readonly long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)Value).ToInt64(provider);
 
 	/// <inheritdoc/>
-	sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)Value).ToSByte(provider);
+	readonly sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)Value).ToSByte(provider);
 
 	/// <inheritdoc/>
-	float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)Value).ToSingle(provider);
+	readonly float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)Value).ToSingle(provider);
 
 	/// <inheritdoc/>
-	object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
+	readonly object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
 
 	/// <inheritdoc/>
-	ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)Value).ToUInt16(provider);
+	readonly ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)Value).ToUInt16(provider);
 
 	/// <inheritdoc/>
-	uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)Value).ToUInt32(provider);
+	readonly uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)Value).ToUInt32(provider);
 
 	/// <inheritdoc/>
-	ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)Value).ToUInt64(provider);
+	readonly ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)Value).ToUInt64(provider);
 
 	internal class LANGIDTypeConverter : UInt16Converter
 	{

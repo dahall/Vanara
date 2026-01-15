@@ -242,27 +242,27 @@ public partial struct NTStatus : IEquatable<int>, IEquatable<uint>, IErrorProvid
 
 	/// <summary>Gets the code portion of the <see cref="NTStatus"/>.</summary>
 	/// <value>The code value (bits 0-15).</value>
-	public ushort Code => GetCode(_value);
+	public readonly ushort Code => GetCode(_value);
 
 	/// <summary>Gets a value indicating whether this code is customer defined (true) or from Microsoft (false).</summary>
 	/// <value><c>true</c> if customer defined; otherwise, <c>false</c>.</value>
-	public bool CustomerDefined => IsCustomerDefined(_value);
+	public readonly bool CustomerDefined => IsCustomerDefined(_value);
 
 	/// <summary>Gets the facility portion of the <see cref="NTStatus"/>.</summary>
 	/// <value>The facility value (bits 16-26).</value>
-	public FacilityCode Facility => GetFacility(_value);
+	public readonly FacilityCode Facility => GetFacility(_value);
 
 	/// <summary>Gets a value indicating whether this <see cref="NTStatus"/> is a failure (Severity bit 31 equals 1).</summary>
 	/// <value><c>true</c> if failed; otherwise, <c>false</c>.</value>
-	public bool Failed => Severity == SeverityLevel.STATUS_SEVERITY_ERROR;
+	public readonly bool Failed => Severity == SeverityLevel.STATUS_SEVERITY_ERROR;
 
 	/// <summary>Gets the severity level of the <see cref="NTStatus"/>.</summary>
 	/// <value>The severity level.</value>
-	public SeverityLevel Severity => GetSeverity(_value);
+	public readonly SeverityLevel Severity => GetSeverity(_value);
 
 	/// <summary>Gets a value indicating whether this <see cref="NTStatus"/> is a success (Severity bit 31 equals 0).</summary>
 	/// <value><c>true</c> if succeeded; otherwise, <c>false</c>.</value>
-	public bool Succeeded => !Failed;
+	public readonly bool Succeeded => !Failed;
 
 	/// <summary>Performs an explicit conversion from <see cref="NTStatus"/> to <see cref="HRESULT"/>.</summary>
 	/// <param name="value">The value.</param>
@@ -398,7 +398,7 @@ public partial struct NTStatus : IEquatable<int>, IEquatable<uint>, IErrorProvid
 	/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal
 	/// to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 	/// </returns>
-	public int CompareTo(NTStatus other) => _value.CompareTo(other._value);
+	public readonly int CompareTo(NTStatus other) => _value.CompareTo(other._value);
 
 	/// <summary>
 	/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
@@ -410,7 +410,7 @@ public partial struct NTStatus : IEquatable<int>, IEquatable<uint>, IErrorProvid
 	/// than zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the
 	/// sort order as <paramref name="obj"/> . Greater than zero This instance follows <paramref name="obj"/> in the sort order.
 	/// </returns>
-	public int CompareTo(object? obj)
+	public readonly int CompareTo(object? obj)
 	{
 		var v = ValueFromObj(obj);
 		return v.HasValue
@@ -421,17 +421,17 @@ public partial struct NTStatus : IEquatable<int>, IEquatable<uint>, IErrorProvid
 	/// <summary>Indicates whether the current object is equal to an <see cref="int"/>.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(int other) => other == _value;
+	public readonly bool Equals(int other) => other == _value;
 
 	/// <summary>Indicates whether the current object is equal to an <see cref="uint"/>.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(uint other) => unchecked((int)other) == _value;
+	public readonly bool Equals(uint other) => unchecked((int)other) == _value;
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj) => obj switch
+	public override readonly bool Equals(object? obj) => obj switch
 	{
 		null => false,
 		NTStatus n => Equals(n),
@@ -443,18 +443,18 @@ public partial struct NTStatus : IEquatable<int>, IEquatable<uint>, IErrorProvid
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(NTStatus other) => other._value == _value;
+	public readonly bool Equals(NTStatus other) => other._value == _value;
 
 	/// <summary>Gets the .NET <see cref="Exception"/> associated with the NTStatus value and optionally adds the supplied message.</summary>
 	/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 	/// <returns>The associated <see cref="Exception"/> or <c>null</c> if this NTStatus is not a failure.</returns>
 	[SecurityCritical]
 	[SecuritySafeCritical]
-	public Exception? GetException(string? message = null) => !Failed ? null : ToHRESULT().GetException(message);
+	public readonly Exception? GetException(string? message = null) => !Failed ? null : ToHRESULT().GetException(message);
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => _value;
+	public override readonly int GetHashCode() => _value;
 
 	/// <summary>
 	/// If this <see cref="NTStatus"/> represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.
@@ -463,7 +463,7 @@ public partial struct NTStatus : IEquatable<int>, IEquatable<uint>, IErrorProvid
 	[SecurityCritical]
 	[SecuritySafeCritical]
 	[System.Diagnostics.DebuggerStepThrough, System.Diagnostics.DebuggerHidden, System.Diagnostics.StackTraceHidden]
-	public void ThrowIfFailed(string? message = null)
+	public readonly void ThrowIfFailed(string? message = null)
 	{
 		var exception = GetException(message);
 		if (exception != null)
@@ -472,7 +472,7 @@ public partial struct NTStatus : IEquatable<int>, IEquatable<uint>, IErrorProvid
 
 	/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT"/>.</summary>
 	/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT"/>.</returns>
-	public HRESULT ToHRESULT()
+	public readonly HRESULT ToHRESULT()
 	{
 		Win32Error werr = RtlNtStatusToDosError(_value);
 		return werr != Win32Error.ERROR_MR_MID_NOT_FOUND ? (HRESULT)werr : HRESULT_FROM_NT(_value);
@@ -480,7 +480,7 @@ public partial struct NTStatus : IEquatable<int>, IEquatable<uint>, IErrorProvid
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
-	public override string ToString()
+	public override readonly string ToString()
 	{
 		// Check for defined NTStatus value
 		StaticFieldValueHash.TryGetFieldName<NTStatus, int>(_value, out var err);
@@ -488,40 +488,40 @@ public partial struct NTStatus : IEquatable<int>, IEquatable<uint>, IErrorProvid
 		return (err ?? string.Format(CultureInfo.InvariantCulture, "0x{0:X8}", _value)) + (msg == null ? "" : ": " + msg);
 	}
 
-	TypeCode IConvertible.GetTypeCode() => _value.GetTypeCode();
+	readonly TypeCode IConvertible.GetTypeCode() => _value.GetTypeCode();
 
-	bool IConvertible.ToBoolean(IFormatProvider? provider) => Succeeded;
+	readonly bool IConvertible.ToBoolean(IFormatProvider? provider) => Succeeded;
 
-	byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)_value).ToByte(provider);
+	readonly byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)_value).ToByte(provider);
 
-	char IConvertible.ToChar(IFormatProvider? provider) => throw new NotSupportedException();
+	readonly char IConvertible.ToChar(IFormatProvider? provider) => throw new NotSupportedException();
 
-	DateTime IConvertible.ToDateTime(IFormatProvider? provider) => throw new NotSupportedException();
+	readonly DateTime IConvertible.ToDateTime(IFormatProvider? provider) => throw new NotSupportedException();
 
-	decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)_value).ToDecimal(provider);
+	readonly decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)_value).ToDecimal(provider);
 
-	double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)_value).ToDouble(provider);
+	readonly double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)_value).ToDouble(provider);
 
-	short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)_value).ToInt16(provider);
+	readonly short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)_value).ToInt16(provider);
 
-	int IConvertible.ToInt32(IFormatProvider? provider) => _value;
+	readonly int IConvertible.ToInt32(IFormatProvider? provider) => _value;
 
-	long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)_value).ToInt64(provider);
+	readonly long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)_value).ToInt64(provider);
 
-	sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)_value).ToSByte(provider);
+	readonly sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)_value).ToSByte(provider);
 
-	float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)_value).ToSingle(provider);
+	readonly float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)_value).ToSingle(provider);
 
-	string IConvertible.ToString(IFormatProvider? provider) => ToString();
+	readonly string IConvertible.ToString(IFormatProvider? provider) => ToString();
 
-	object IConvertible.ToType(Type conversionType, IFormatProvider? provider) =>
+	readonly object IConvertible.ToType(Type conversionType, IFormatProvider? provider) =>
 		((IConvertible)_value).ToType(conversionType, provider);
 
-	ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)unchecked((uint)_value)).ToUInt16(provider);
+	readonly ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)unchecked((uint)_value)).ToUInt16(provider);
 
-	uint IConvertible.ToUInt32(IFormatProvider? provider) => unchecked((uint)_value);
+	readonly uint IConvertible.ToUInt32(IFormatProvider? provider) => unchecked((uint)_value);
 
-	ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)unchecked((uint)_value)).ToUInt64(provider);
+	readonly ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)unchecked((uint)_value)).ToUInt64(provider);
 
 	[ExcludeFromCodeCoverage]
 	private static HRESULT HRESULT_FROM_NT(int ntStatus) => ntStatus | FACILITY_NT_BIT;

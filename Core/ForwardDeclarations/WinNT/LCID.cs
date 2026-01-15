@@ -92,14 +92,14 @@ public partial struct LCID : IComparable, IComparable<LCID>, IConvertible, IEqua
 	public LCID(LANGID lgid, SORT srtid) => _value = (((uint)(ushort)srtid) << sortShift) | lgid;
 
 	/// <summary>Retrieves a language identifier from a locale identifier.</summary>
-	public LANGID LANGID => (LANGID)_value;
+	public readonly LANGID LANGID => (LANGID)_value;
 
 	/// <summary>Retrieves a sort order identifier from a locale identifier.</summary>
-	public SORT SORTID => (SORT)(((_value) >> sortShift) & 0xf);
+	public readonly SORT SORTID => (SORT)(((_value) >> sortShift) & 0xf);
 
 	/// <summary>Gets the value.</summary>
 	/// <value>The value.</value>
-	public uint Value { get => _value; private set => _value = value; }
+	public uint Value { readonly get => _value; private set => _value = value; }
 
 	/// <summary>Compares the current object with another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
@@ -108,7 +108,7 @@ public partial struct LCID : IComparable, IComparable<LCID>, IConvertible, IEqua
 	/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal
 	/// to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 	/// </returns>
-	public int CompareTo(LCID other) => _value.CompareTo(other._value);
+	public readonly int CompareTo(LCID other) => _value.CompareTo(other._value);
 
 	/// <summary>
 	/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
@@ -120,37 +120,37 @@ public partial struct LCID : IComparable, IComparable<LCID>, IConvertible, IEqua
 	/// than zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the
 	/// sort order as <paramref name="obj"/> . Greater than zero This instance follows <paramref name="obj"/> in the sort order.
 	/// </returns>
-	public int CompareTo(object? obj) => obj is IConvertible c ? _value.CompareTo(c.ToUInt32(null)) :
+	public readonly int CompareTo(object? obj) => obj is IConvertible c ? _value.CompareTo(c.ToUInt32(null)) :
 		throw new ArgumentException(@"Object cannot be converted to a UInt32 value for comparison.", nameof(obj));
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj) => obj is IConvertible c && _value.Equals(c.ToUInt32(null));
+	public override readonly bool Equals(object? obj) => obj is IConvertible c && _value.Equals(c.ToUInt32(null));
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(LCID other) => other._value == _value;
+	public readonly bool Equals(LCID other) => other._value == _value;
 
 	/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 	/// <param name="other">An object to compare with this object.</param>
 	/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-	public bool Equals(uint other) => other == _value;
+	public readonly bool Equals(uint other) => other == _value;
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => _value.GetHashCode();
+	public override readonly int GetHashCode() => _value.GetHashCode();
 
 	/// <inheritdoc/>
-	public TypeCode GetTypeCode() => Value.GetTypeCode();
+	public readonly TypeCode GetTypeCode() => Value.GetTypeCode();
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
-	public override string ToString() => ToString(CultureInfo.InvariantCulture);
+	public override readonly string ToString() => ToString(CultureInfo.InvariantCulture);
 
 	/// <inheritdoc/>
-	public string ToString(IFormatProvider? provider) => string.Format(provider, "0x{0:X8}", _value);
+	public readonly string ToString(IFormatProvider? provider) => string.Format(provider, "0x{0:X8}", _value);
 
 	/// <summary>Implements the operator ==.</summary>
 	/// <param name="hrLeft">The first <see cref="LCID"/>.</param>
@@ -232,47 +232,47 @@ public partial struct LCID : IComparable, IComparable<LCID>, IConvertible, IEqua
 	public static LCID LOCALE_INVARIANT => new(new LANGID(LANGID.LANG.LANG_INVARIANT, LANGID.SUBLANG.SUBLANG_NEUTRAL), SORT.SORT_DEFAULT);
 
 	/// <inheritdoc/>
-	bool IConvertible.ToBoolean(IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
+	readonly bool IConvertible.ToBoolean(IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
 
 	/// <inheritdoc/>
-	byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)Value).ToByte(provider);
+	readonly byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)Value).ToByte(provider);
 
 	/// <inheritdoc/>
-	char IConvertible.ToChar(IFormatProvider? provider) => ((IConvertible)Value).ToChar(provider);
+	readonly char IConvertible.ToChar(IFormatProvider? provider) => ((IConvertible)Value).ToChar(provider);
 
 	/// <inheritdoc/>
-	DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ((IConvertible)Value).ToDateTime(provider);
+	readonly DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ((IConvertible)Value).ToDateTime(provider);
 
 	/// <inheritdoc/>
-	decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)Value).ToDecimal(provider);
+	readonly decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)Value).ToDecimal(provider);
 
 	/// <inheritdoc/>
-	double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)Value).ToDouble(provider);
+	readonly double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)Value).ToDouble(provider);
 
 	/// <inheritdoc/>
-	short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)Value).ToInt16(provider);
+	readonly short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)Value).ToInt16(provider);
 
 	/// <inheritdoc/>
-	int IConvertible.ToInt32(IFormatProvider? provider) => ((IConvertible)Value).ToInt32(provider);
+	readonly int IConvertible.ToInt32(IFormatProvider? provider) => ((IConvertible)Value).ToInt32(provider);
 
 	/// <inheritdoc/>
-	long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)Value).ToInt64(provider);
+	readonly long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)Value).ToInt64(provider);
 
 	/// <inheritdoc/>
-	sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)Value).ToSByte(provider);
+	readonly sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)Value).ToSByte(provider);
 
 	/// <inheritdoc/>
-	float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)Value).ToSingle(provider);
+	readonly float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)Value).ToSingle(provider);
 
 	/// <inheritdoc/>
-	object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
+	readonly object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
 
 	/// <inheritdoc/>
-	ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)Value).ToUInt16(provider);
+	readonly ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)Value).ToUInt16(provider);
 
 	/// <inheritdoc/>
-	uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)Value).ToUInt32(provider);
+	readonly uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)Value).ToUInt32(provider);
 
 	/// <inheritdoc/>
-	ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)Value).ToUInt64(provider);
+	readonly ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)Value).ToUInt64(provider);
 }

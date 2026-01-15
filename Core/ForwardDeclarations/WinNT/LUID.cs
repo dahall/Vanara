@@ -65,19 +65,19 @@ public struct LUID : IEquatable<LUID>
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	public override string ToString()
+	public override readonly string ToString()
 	{
 		try { return GetName(); } catch { return $"0x{Macros.MAKELONG64(LowPart, (uint)HighPart):X}"; }
 	}
 
 	/// <inheritdoc/>
-	public override bool Equals(object? obj) => obj is LUID lUID && Equals(lUID);
+	public override readonly bool Equals(object? obj) => obj is LUID lUID && Equals(lUID);
 
 	/// <inheritdoc/>
 	public readonly bool Equals(LUID other) => LowPart == other.LowPart && HighPart == other.HighPart;
 
 	/// <inheritdoc/>
-	public override int GetHashCode()
+	public override readonly int GetHashCode()
 	{
 		int hashCode = -1615512156;
 		hashCode = hashCode * -1521134295 + LowPart.GetHashCode();

@@ -100,15 +100,15 @@ public struct COLORREF : IEquatable<COLORREF>
 	}
 
 	/// <inheritdoc/>
-	public override bool Equals(object? obj) => obj is COLORREF q && Equals(q);
+	public override readonly bool Equals(object? obj) => obj is COLORREF q && Equals(q);
 
 	/// <summary>Determines whether the specified object is equal to the current object.</summary>
 	/// <param name="c">The object to compare with the current object.</param>
 	/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
-	public bool Equals(COLORREF c) => c.A == A && c.B == B && c.G == G && c.R == R;
+	public readonly bool Equals(COLORREF c) => c.A == A && c.B == B && c.G == G && c.R == R;
 
 	/// <inheritdoc/>
-	public override int GetHashCode() => ToArgb();
+	public override readonly int GetHashCode() => ToArgb();
 
 	/// <summary>A method to lighten a color by a percentage of the difference between the color and Black.</summary>
 	/// <param name="percent">The percentage by which to lighten the original color.</param>
@@ -126,7 +126,7 @@ public struct COLORREF : IEquatable<COLORREF>
 
 	/// <summary>Gets the 32-bit ARGB value of this <see cref="COLORREF"/> structure.</summary>
 	/// <returns>The 32-bit ARGB value of this <see cref="COLORREF"/> structure.</returns>
-	public int ToArgb() => unchecked((int)Value);
+	public readonly int ToArgb() => unchecked((int)Value);
 
 	/// <summary>Performs an implicit conversion from <see cref="COLORREF"/> to <see cref="Color"/>.</summary>
 	/// <param name="cr">The <see cref="COLORREF"/> value.</param>
@@ -165,5 +165,5 @@ public struct COLORREF : IEquatable<COLORREF>
 	public static COLORREF Default = new(0xFF000000);
 
 	/// <inheritdoc />
-	public override string ToString() => ((Color)this).ToString();
+	public override readonly string ToString() => ((Color)this).ToString();
 }

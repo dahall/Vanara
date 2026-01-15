@@ -100,14 +100,13 @@ public enum StringEncoding
 /// <summary>
 /// Indicates that a struct has an alternative type that can be used for marshaling purposes.
 /// </summary>
+/// <remarks>Initializes a new instance of the <see cref="MarshaledAlternativeAttribute"/> class.</remarks>
 [System.AttributeUsage(AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
-public class MarshaledAlternativeAttribute : Attribute
+public class MarshaledAlternativeAttribute(Type altType) : Attribute
 {
-	/// <summary>Initializes a new instance of the <see cref="MarshaledAlternativeAttribute"/> class.</summary>
-	public MarshaledAlternativeAttribute(Type altType) => AlternateType = altType ?? throw new ArgumentNullException(nameof(altType));
 
 	/// <summary>Gets the alternate type.</summary>
-	public Type AlternateType { get; }
+	public Type AlternateType { get; } = altType ?? throw new ArgumentNullException(nameof(altType));
 }
 
 /// <summary>Attribute that can be applied to classes and structures to indicate that they support custom marshaling.</summary>

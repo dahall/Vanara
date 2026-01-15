@@ -24,7 +24,7 @@ public struct BOOL : IComparable, IComparable<BOOL>, IComparable<bool>, IConvert
 
 	/// <summary>Gets the value.</summary>
 	/// <value>The value.</value>
-	public bool Value { get => val != False; private set => val = value ? True : False; }
+	public bool Value { readonly get => val != False; private set => val = value ? True : False; }
 
 	/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="BOOL"/>.</summary>
 	/// <param name="value">The value.</param>
@@ -134,79 +134,79 @@ public struct BOOL : IComparable, IComparable<BOOL>, IComparable<bool>, IConvert
 #endif
 
 	/// <inheritdoc/>
-	public int CompareTo(BOOL other) => Value.CompareTo(other.Value);
+	public readonly int CompareTo(BOOL other) => Value.CompareTo(other.Value);
 
 	/// <inheritdoc/>
-	public int CompareTo(bool other) => Value.CompareTo(other);
+	public readonly int CompareTo(bool other) => Value.CompareTo(other);
 
 	/// <inheritdoc/>
-	public override bool Equals(object? obj) => obj is BOOL s ? Equals(s) : (obj is bool b ? Value.Equals(b) : Value.Equals(obj));
+	public override readonly bool Equals(object? obj) => obj is BOOL s ? Equals(s) : (obj is bool b ? Value.Equals(b) : Value.Equals(obj));
 
 	/// <inheritdoc/>
-	public bool Equals(BOOL other) => Value.Equals(other.Value);
+	public readonly bool Equals(BOOL other) => Value.Equals(other.Value);
 
 	/// <inheritdoc/>
-	public bool Equals(bool other) => Value.Equals(other);
+	public readonly bool Equals(bool other) => Value.Equals(other);
 
 	/// <inheritdoc/>
-	public override int GetHashCode() => unchecked((int)val);
+	public override readonly int GetHashCode() => unchecked((int)val);
 
 	/// <inheritdoc/>
-	public TypeCode GetTypeCode() => Value.GetTypeCode();
+	public readonly TypeCode GetTypeCode() => Value.GetTypeCode();
 
 	/// <inheritdoc/>
-	public override string ToString() => Value.ToString();
+	public override readonly string ToString() => Value.ToString();
 
 	/// <inheritdoc/>
-	public string ToString(IFormatProvider? provider) => Value.ToString(provider);
+	public readonly string ToString(IFormatProvider? provider) => Value.ToString(provider);
 
 	/// <inheritdoc/>
-	int IComparable.CompareTo(object? obj) => Value.CompareTo(Convert.ChangeType(obj, typeof(ulong)));
+	readonly int IComparable.CompareTo(object? obj) => Value.CompareTo(Convert.ChangeType(obj, typeof(ulong)));
 
 	/// <inheritdoc/>
-	bool IConvertible.ToBoolean(IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
+	readonly bool IConvertible.ToBoolean(IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
 
 	/// <inheritdoc/>
-	byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)Value).ToByte(provider);
+	readonly byte IConvertible.ToByte(IFormatProvider? provider) => ((IConvertible)Value).ToByte(provider);
 
 	/// <inheritdoc/>
-	char IConvertible.ToChar(IFormatProvider? provider) => ((IConvertible)Value).ToChar(provider);
+	readonly char IConvertible.ToChar(IFormatProvider? provider) => ((IConvertible)Value).ToChar(provider);
 
 	/// <inheritdoc/>
-	DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ((IConvertible)Value).ToDateTime(provider);
+	readonly DateTime IConvertible.ToDateTime(IFormatProvider? provider) => ((IConvertible)Value).ToDateTime(provider);
 
 	/// <inheritdoc/>
-	decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)Value).ToDecimal(provider);
+	readonly decimal IConvertible.ToDecimal(IFormatProvider? provider) => ((IConvertible)Value).ToDecimal(provider);
 
 	/// <inheritdoc/>
-	double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)Value).ToDouble(provider);
+	readonly double IConvertible.ToDouble(IFormatProvider? provider) => ((IConvertible)Value).ToDouble(provider);
 
 	/// <inheritdoc/>
-	short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)Value).ToInt16(provider);
+	readonly short IConvertible.ToInt16(IFormatProvider? provider) => ((IConvertible)Value).ToInt16(provider);
 
 	/// <inheritdoc/>
-	int IConvertible.ToInt32(IFormatProvider? provider) => ((IConvertible)Value).ToInt32(provider);
+	readonly int IConvertible.ToInt32(IFormatProvider? provider) => ((IConvertible)Value).ToInt32(provider);
 
 	/// <inheritdoc/>
-	long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)Value).ToInt64(provider);
+	readonly long IConvertible.ToInt64(IFormatProvider? provider) => ((IConvertible)Value).ToInt64(provider);
 
 	/// <inheritdoc/>
-	sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)Value).ToSByte(provider);
+	readonly sbyte IConvertible.ToSByte(IFormatProvider? provider) => ((IConvertible)Value).ToSByte(provider);
 
 	/// <inheritdoc/>
-	float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)Value).ToSingle(provider);
+	readonly float IConvertible.ToSingle(IFormatProvider? provider) => ((IConvertible)Value).ToSingle(provider);
 
 	/// <inheritdoc/>
-	object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
+	readonly object IConvertible.ToType(Type conversionType, IFormatProvider? provider) => ((IConvertible)Value).ToBoolean(provider);
 
 	/// <inheritdoc/>
-	ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)Value).ToUInt16(provider);
+	readonly ushort IConvertible.ToUInt16(IFormatProvider? provider) => ((IConvertible)Value).ToUInt16(provider);
 
 	/// <inheritdoc/>
-	uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)Value).ToUInt32(provider);
+	readonly uint IConvertible.ToUInt32(IFormatProvider? provider) => ((IConvertible)Value).ToUInt32(provider);
 
 	/// <inheritdoc/>
-	ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)Value).ToUInt64(provider);
+	readonly ulong IConvertible.ToUInt64(IFormatProvider? provider) => ((IConvertible)Value).ToUInt64(provider);
 
 	internal class BOOLTypeConverter : UInt32Converter
 	{

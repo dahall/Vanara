@@ -5,14 +5,12 @@ using System.Runtime.InteropServices.ComTypes;
 namespace Vanara.PInvoke.InteropServices;
 
 /// <summary>A COM enumerator for <see cref="string"/> values. This is used to enumerate the values of a <see cref="IEnumString"/> interface.</summary>
-public class ComEnumString : IEnumString, IReadOnlyList<string>
+/// <remarks>Initializes a new instance of the <see cref="ComEnumString"/> class with a sequence of strings.</remarks>
+/// <param name="items">The sequence of strings.</param>
+public class ComEnumString(IEnumerable<string> items) : IEnumString, IReadOnlyList<string>
 {
-	private readonly IReadOnlyList<string> list;
+	private readonly IReadOnlyList<string> list = items is IReadOnlyList<string> l ? l : new List<string>(items);
 	private int cur;
-
-	/// <summary>Initializes a new instance of the <see cref="ComEnumString"/> class with a sequence of strings.</summary>
-	/// <param name="items">The sequence of strings.</param>
-	public ComEnumString(IEnumerable<string> items) => list = items is IReadOnlyList<string> l ? l : new List<string>(items);
 
 	/// <summary>Initializes a new instance of the <see cref="ComEnumString"/> class from an <see cref="IEnumString"/> instance.</summary>
 	/// <param name="ienum">The <see cref="IEnumString"/> instance.</param>

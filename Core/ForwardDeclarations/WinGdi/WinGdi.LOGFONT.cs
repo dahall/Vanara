@@ -384,7 +384,7 @@ public struct LOGFONT
 	/// <value>The font family.</value>
 	public FontFamily FontFamily
 	{
-		get => (FontFamily)(lfPitchAndFamily & 0xF0);
+		readonly get => (FontFamily)(lfPitchAndFamily & 0xF0);
 		set => lfPitchAndFamily = (byte)((lfPitchAndFamily & 0x0F) | (byte)value);
 	}
 
@@ -396,7 +396,7 @@ public struct LOGFONT
 	/// <value>The face name of the font.</value>
 	public string lfFaceName
 	{
-		get => _lfFaceName;
+		readonly get => _lfFaceName;
 		set => _lfFaceName = value?.Length <= 31 ? value : throw new ArgumentException(@"The face name may not have more than 31 characters.", nameof(lfFaceName));
 	}
 
@@ -406,7 +406,7 @@ public struct LOGFONT
 	/// </summary>
 	public short lfWeight
 	{
-		get => (short)_lfWeight;
+		readonly get => (short)_lfWeight;
 		set => _lfWeight = value is >= 0 and <= 1000 ? value : throw new ArgumentOutOfRangeException(nameof(lfWeight), @"Font weight must be a value in the range 0 through 1000.");
 	}
 
@@ -414,11 +414,11 @@ public struct LOGFONT
 	/// <value>The pitch.</value>
 	public FontPitch Pitch
 	{
-		get => (FontPitch)(lfPitchAndFamily & 0x0F);
+		readonly get => (FontPitch)(lfPitchAndFamily & 0x0F);
 		set => lfPitchAndFamily = (byte)((lfPitchAndFamily & 0xF0) | (byte)value);
 	}
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	public override string ToString() => $"lfHeight={lfHeight}, lfWidth={lfWidth}, lfEscapement={lfEscapement}, lfOrientation={lfOrientation}, lfWeight={lfWeight}, lfItalic={lfItalic}, lfUnderline={lfUnderline}, lfStrikeOut={lfStrikeOut}, lfCharSet={lfCharSet}, lfOutPrecision={lfOutPrecision}, lfClipPrecision={lfClipPrecision}, lfQuality={lfQuality}, lfPitchAndFamily={lfPitchAndFamily}, lfFaceName={lfFaceName}";
+	public override readonly string ToString() => $"lfHeight={lfHeight}, lfWidth={lfWidth}, lfEscapement={lfEscapement}, lfOrientation={lfOrientation}, lfWeight={lfWeight}, lfItalic={lfItalic}, lfUnderline={lfUnderline}, lfStrikeOut={lfStrikeOut}, lfCharSet={lfCharSet}, lfOutPrecision={lfOutPrecision}, lfClipPrecision={lfClipPrecision}, lfQuality={lfQuality}, lfPitchAndFamily={lfPitchAndFamily}, lfFaceName={lfFaceName}";
 }
