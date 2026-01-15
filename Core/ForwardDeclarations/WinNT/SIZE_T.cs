@@ -10,9 +10,7 @@ using System.Runtime.Serialization;
 namespace Vanara.PInvoke;
 
 /// <summary>Managed instance of the SIZE_T type.</summary>
-[StructLayout(LayoutKind.Sequential), Serializable]
-[TypeConverter(typeof(SizeTTypeConverter))]
-[DebuggerDisplay("{Value}")]
+[StructLayout(LayoutKind.Sequential), Serializable, TypeConverter(typeof(SIZE_TTypeConverter)), DebuggerDisplay("{Value}")]
 public struct SIZE_T : IEquatable<SIZE_T>, IComparable<SIZE_T>, IConvertible, IComparable, ISerializable
 #if NET7_0_OR_GREATER
 	, IParsable<SIZE_T>, ISpanParsable<SIZE_T>, IBinaryInteger<SIZE_T>, IUnsignedNumber<SIZE_T>
@@ -1057,7 +1055,7 @@ public struct SIZE_T : IEquatable<SIZE_T>, IComparable<SIZE_T>, IConvertible, IC
 	/// <inheritdoc/>
 	readonly ulong IConvertible.ToUInt64(IFormatProvider? provider) => Value;
 
-	internal class SizeTTypeConverter : UInt64Converter
+	internal class SIZE_TTypeConverter : UInt64Converter
 	{
 		public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
 			new SIZE_T((ulong)base.ConvertFrom(context, culture, value)!);
