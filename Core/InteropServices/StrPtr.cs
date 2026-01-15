@@ -4,22 +4,20 @@ using System.Diagnostics;
 namespace Vanara.InteropServices;
 
 /// <summary>The GuidPtr structure represents a LPGUID.</summary>
+/// <remarks>Initializes a new instance of the <see cref="GuidPtr"/> struct by allocating memory with <see cref="Marshal.AllocCoTaskMem(int)"/>.</remarks>
+/// <param name="g">The guid value.</param>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
-public struct GuidPtr : IEquatable<GuidPtr>, IEquatable<Guid?>, IEquatable<IntPtr>
+public struct GuidPtr(Guid g) : IEquatable<GuidPtr>, IEquatable<Guid?>, IEquatable<IntPtr>
 {
-	private IntPtr ptr;
-
-	/// <summary>Initializes a new instance of the <see cref="GuidPtr"/> struct by allocating memory with <see cref="Marshal.AllocCoTaskMem(int)"/>.</summary>
-	/// <param name="g">The guid value.</param>
-	public GuidPtr(Guid g) => ptr = g.MarshalToPtr(Marshal.AllocCoTaskMem, out _);
+	private IntPtr ptr = g.MarshalToPtr(Marshal.AllocCoTaskMem, out _);
 
 	/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>Gets the value of the Guid.</summary>
 	/// <value>The value pointed to by this pointer.</value>
-	public Guid? Value => IsNull ? null : ptr.ToStructure<Guid>();
+	public readonly Guid? Value => IsNull ? null : ptr.ToStructure<Guid>();
 
 	/// <summary>Assigns a new Guid value to the pointer.</summary>
 	/// <param name="g">The guid value.</param>
@@ -34,20 +32,20 @@ public struct GuidPtr : IEquatable<GuidPtr>, IEquatable<Guid?>, IEquatable<IntPt
 	/// <summary>Determines whether the specified <see cref="Nullable{Guid}"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="Nullable{Guid}"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="Nullable{Guid}"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(Guid? other) => EqualityComparer<Guid?>.Default.Equals(Value, other);
+	public readonly bool Equals(Guid? other) => EqualityComparer<Guid?>.Default.Equals(Value, other);
 
 	/// <summary>Determines whether the specified <see cref="GuidPtr"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="GuidPtr"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="GuidPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(GuidPtr other) => Equals(other.ptr);
+	public readonly bool Equals(GuidPtr other) => Equals(other.ptr);
 
 	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(IntPtr other) => EqualityComparer<IntPtr>.Default.Equals(ptr, other);
+	public readonly bool Equals(IntPtr other) => EqualityComparer<IntPtr>.Default.Equals(ptr, other);
 
 	/// <inheritdoc/>
-	public override bool Equals(object? obj) => obj switch
+	public override readonly bool Equals(object? obj) => obj switch
 	{
 		null => IsNull,
 		IntPtr p => Equals(p),
@@ -57,13 +55,14 @@ public struct GuidPtr : IEquatable<GuidPtr>, IEquatable<Guid?>, IEquatable<IntPt
 	};
 
 	/// <summary>Frees the unmanaged memory.</summary>
-	public void Free() { Marshal.FreeCoTaskMem(ptr); ptr = IntPtr.Zero; }
+	public void Free()
+	{ Marshal.FreeCoTaskMem(ptr); ptr = IntPtr.Zero; }
 
 	/// <inheritdoc/>
-	public override int GetHashCode() => ptr.GetHashCode();
+	public override readonly int GetHashCode() => ptr.GetHashCode();
 
 	/// <inheritdoc/>
-	public override string ToString() => Value?.ToString("B") ?? "";
+	public override readonly string ToString() => Value?.ToString("B") ?? "";
 
 	/// <summary>Performs an implicit conversion from <see cref="GuidPtr"/> to <see cref="Nullable{Guid}"/>.</summary>
 	/// <param name="g">The pointer to a Guid.</param>
@@ -100,6 +99,7 @@ public struct GuidPtr : IEquatable<GuidPtr>, IEquatable<Guid?>, IEquatable<IntPt
 
 /// <summary>The StrPtr structure represents a LPWSTR.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
+[Obsolete("Use LPSTR instead.")]
 public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatable<IntPtr>
 {
 	private IntPtr ptr;
@@ -114,17 +114,19 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 
 	/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>Indicates whether the specified string is <see langword="null"/> or an empty string ("").</summary>
-	/// <returns>
-	/// <see langword="true"/> if the value parameter is <see langword="null"/> or an empty string (""); otherwise, <see langword="false"/>.
-	/// </returns>
-	public bool IsNullOrEmpty => ptr == IntPtr.Zero || Marshal.ReadByte(ptr) == 0;
+	/// <returns><see langword="true"/> if the value parameter is <see langword="null"/> or an empty string (""); otherwise, <see langword="false"/>.</returns>
+	public readonly bool IsNullOrEmpty => ptr == IntPtr.Zero || Marshal.ReadByte(ptr) == 0;
+
+	/// <summary>Assigns a string pointer value to the pointer.</summary>
+	/// <param name="stringPtr">The string pointer value.</param>
+	public void Assign(IntPtr stringPtr) { Free(); ptr = stringPtr; }
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
-	public void Assign(string? s) => StringHelper.RefreshString(ref ptr, out var _, s, CharSet.Ansi);
+	public void Assign(string? s) => StringHelper.RefreshString(ref ptr, out uint _, s, CharSet.Ansi);
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
@@ -139,26 +141,27 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(IntPtr other) => EqualityComparer<IntPtr>.Default.Equals(ptr, other);
+	public readonly bool Equals(IntPtr other) => EqualityComparer<IntPtr>.Default.Equals(ptr, other);
 
 	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(string? other) => EqualityComparer<string?>.Default.Equals(this, other);
+	public readonly bool Equals(string? other) => EqualityComparer<string?>.Default.Equals(this, other);
 
 	/// <summary>Determines whether the specified <see cref="StrPtrAnsi"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="StrPtrAnsi"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="StrPtrAnsi"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(StrPtrAnsi other) => Equals(other.ptr);
+	public readonly bool Equals(StrPtrAnsi other) => Equals(other.ptr);
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj) => obj switch
+	public override readonly bool Equals(object? obj) => obj switch
 	{
 		null => IsNull,
 		string s => Equals(s),
 		StrPtrAnsi p => Equals(p),
+		LPSTR p => Equals((IntPtr)p),
 		IntPtr p => Equals(p),
 		_ => base.Equals(obj),
 	};
@@ -168,11 +171,11 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => ptr.GetHashCode();
+	public override readonly int GetHashCode() => ptr.GetHashCode();
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
-	public override string ToString() => StringHelper.GetString(ptr, CharSet.Ansi) ?? "null";
+	public override readonly string ToString() => StringHelper.GetString(ptr, CharSet.Ansi) ?? "null";
 
 	/// <summary>Performs an implicit conversion from <see cref="StrPtrAnsi"/> to <see cref="string"/>.</summary>
 	/// <param name="p">The <see cref="StrPtrAnsi"/> instance.</param>
@@ -194,6 +197,16 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator StrPtrAnsi(IntPtr p) => new() { ptr = p };
 
+	/// <summary>Performs an explicit conversion from <see cref="LPSTR"/> to <see cref="StrPtrAnsi"/>.</summary>
+	/// <param name="p">The <see cref="LPSTR"/> instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static explicit operator StrPtrAnsi(LPSTR p) => (IntPtr)p;
+
+	/// <summary>Performs an implicit conversion from <see cref="StrPtrAnsi"/> to <see cref="LPSTR"/>.</summary>
+	/// <param name="p">The pointer.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator LPSTR(StrPtrAnsi p) => p.ptr;
+
 	/// <summary>Determines whether two specified instances of <see cref="StrPtrAnsi"/> are equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
 	/// <param name="right">The second pointer or handle to compare.</param>
@@ -209,6 +222,7 @@ public struct StrPtrAnsi : IEquatable<string>, IEquatable<StrPtrAnsi>, IEquatabl
 
 /// <summary>The StrPtr structure represents a LPTSTR.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
+[Obsolete("Use LPTSTR instead.")]
 public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatable<IntPtr>
 {
 	private IntPtr ptr;
@@ -223,7 +237,11 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 
 	/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
+
+	/// <summary>Indicates whether the specified string is <see langword="null"/> or an empty string ("").</summary>
+	/// <returns><see langword="true"/> if the value parameter is <see langword="null"/> or an empty string (""); otherwise, <see langword="false"/>.</returns>
+	public readonly bool IsNullOrEmpty => ptr == IntPtr.Zero || Marshal.SystemDefaultCharSize == 2 ? Marshal.ReadInt16(ptr) == 0 : Marshal.ReadByte(ptr) == 0;
 
 	/// <summary>Assigns a string pointer value to the pointer.</summary>
 	/// <param name="stringPtr">The string pointer value.</param>
@@ -231,7 +249,7 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
-	public void Assign(string? s) => StringHelper.RefreshString(ref ptr, out var _, s);
+	public void Assign(string? s) => StringHelper.RefreshString(ref ptr, out uint _, s);
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
@@ -241,16 +259,46 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 
 	/// <summary>Assigns an integer to the pointer for uses such as LPSTR_TEXTCALLBACK.</summary>
 	/// <param name="value">The value to assign.</param>
-	public void AssignConstant(int value) { Free(); ptr = (IntPtr)value; }
+	public void AssignConstant(int value) => Assign((IntPtr)value);
+
+	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
+	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
+	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	public readonly bool Equals(IntPtr other) => EqualityComparer<IntPtr>.Default.Equals(ptr, other);
+
+	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
+	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
+	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	public readonly bool Equals(string? other) => EqualityComparer<string?>.Default.Equals(this, other);
+
+	/// <summary>Determines whether the specified <see cref="StrPtrAuto"/>, is equal to this instance.</summary>
+	/// <param name="other">The <see cref="StrPtrAuto"/> to compare with this instance.</param>
+	/// <returns><c>true</c> if the specified <see cref="StrPtrAuto"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	public readonly bool Equals(StrPtrAuto other) => Equals(other.ptr);
+
+	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	public override readonly bool Equals(object? obj) => obj switch
+	{
+		null => IsNull,
+		string s => Equals(s),
+		StrPtrAuto p => Equals(p),
+		LPTSTR p => Equals((IntPtr)p),
+		IntPtr p => Equals(p),
+		_ => base.Equals(obj),
+	};
 
 	/// <summary>Frees the unmanaged string memory.</summary>
 	public void Free() { StringHelper.FreeString(ptr); ptr = IntPtr.Zero; }
 
-	/// <summary>Indicates whether the specified string is <see langword="null"/> or an empty string ("").</summary>
-	/// <returns>
-	/// <see langword="true"/> if the value parameter is <see langword="null"/> or an empty string (""); otherwise, <see langword="false"/>.
-	/// </returns>
-	public bool IsNullOrEmpty => ptr == IntPtr.Zero || Marshal.SystemDefaultCharSize == 2 ? Marshal.ReadInt16(ptr) == 0 : Marshal.ReadByte(ptr) == 0;
+	/// <summary>Returns a hash code for this instance.</summary>
+	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+	public override readonly int GetHashCode() => ptr.GetHashCode();
+
+	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+	/// <returns>A <see cref="string"/> that represents this instance.</returns>
+	public override readonly string ToString() => StringHelper.GetString(ptr) ?? "null";
 
 	/// <summary>Performs an implicit conversion from <see cref="StrPtrAuto"/> to <see cref="string"/>.</summary>
 	/// <param name="p">The <see cref="StrPtrAuto"/> instance.</param>
@@ -267,40 +315,15 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator StrPtrAuto(IntPtr p) => new() { ptr = p };
 
-	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
-	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(IntPtr other) => EqualityComparer<IntPtr>.Default.Equals(ptr, other);
+	/// <summary>Performs an explicit conversion from <see cref="LPTSTR"/> to <see cref="StrPtrAuto"/>.</summary>
+	/// <param name="p">The <see cref="LPTSTR"/> instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static explicit operator StrPtrAuto(LPTSTR p) => (IntPtr)p;
 
-	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
-	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(string? other) => EqualityComparer<string?>.Default.Equals(this, other);
-
-	/// <summary>Determines whether the specified <see cref="StrPtrAuto"/>, is equal to this instance.</summary>
-	/// <param name="other">The <see cref="StrPtrAuto"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="StrPtrAuto"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(StrPtrAuto other) => Equals(other.ptr);
-
-	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
-	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj) => obj switch
-	{
-		null => IsNull,
-		string s => Equals(s),
-		StrPtrAuto p => Equals(p),
-		IntPtr p => Equals(p),
-		_ => base.Equals(obj),
-	};
-
-	/// <summary>Returns a hash code for this instance.</summary>
-	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => ptr.GetHashCode();
-
-	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
-	/// <returns>A <see cref="string"/> that represents this instance.</returns>
-	public override string ToString() => StringHelper.GetString(ptr) ?? "null";
+	/// <summary>Performs an implicit conversion from <see cref="StrPtrAuto"/> to <see cref="LPTSTR"/>.</summary>
+	/// <param name="p">The pointer.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator LPTSTR(StrPtrAuto p) => p.ptr;
 
 	/// <summary>Determines whether two specified instances of <see cref="StrPtrAuto"/> are equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
@@ -317,6 +340,7 @@ public struct StrPtrAuto : IEquatable<string>, IEquatable<StrPtrAuto>, IEquatabl
 
 /// <summary>The StrPtr structure represents a LPWSTR.</summary>
 [StructLayout(LayoutKind.Sequential), DebuggerDisplay("{ptr}, {ToString()}")]
+[Obsolete("Use LPWSTR instead.")]
 public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<IntPtr>
 {
 	private IntPtr ptr;
@@ -331,11 +355,11 @@ public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<
 
 	/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 	/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
-	public bool IsNull => ptr == IntPtr.Zero;
+	public readonly bool IsNull => ptr == IntPtr.Zero;
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
-	public void Assign(string? s) => StringHelper.RefreshString(ref ptr, out var _, s, CharSet.Unicode);
+	public void Assign(string? s) => StringHelper.RefreshString(ref ptr, out uint _, s, CharSet.Unicode);
 
 	/// <summary>Assigns a new string value to the pointer.</summary>
 	/// <param name="s">The string value.</param>
@@ -345,16 +369,16 @@ public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<
 
 	/// <summary>Assigns an integer to the pointer for uses such as LPSTR_TEXTCALLBACK.</summary>
 	/// <param name="value">The value to assign.</param>
-	public void AssignConstant(int value) { Free(); ptr = (IntPtr)value; }
+	public void AssignConstant(int value)
+	{ Free(); ptr = (IntPtr)value; }
 
 	/// <summary>Frees the unmanaged string memory.</summary>
-	public void Free() { StringHelper.FreeString(ptr, CharSet.Unicode); ptr = IntPtr.Zero; }
+	public void Free()
+	{ StringHelper.FreeString(ptr, CharSet.Unicode); ptr = IntPtr.Zero; }
 
 	/// <summary>Indicates whether the specified string is <see langword="null"/> or an empty string ("").</summary>
-	/// <returns>
-	/// <see langword="true"/> if the value parameter is <see langword="null"/> or an empty string (""); otherwise, <see langword="false"/>.
-	/// </returns>
-	public bool IsNullOrEmpty => ptr == IntPtr.Zero || Marshal.ReadInt16(ptr) == 0;
+	/// <returns><see langword="true"/> if the value parameter is <see langword="null"/> or an empty string (""); otherwise, <see langword="false"/>.</returns>
+	public readonly bool IsNullOrEmpty => ptr == IntPtr.Zero || Marshal.ReadInt16(ptr) == 0;
 
 	/// <summary>Performs an implicit conversion from <see cref="StrPtrUni"/> to <see cref="string"/>.</summary>
 	/// <param name="p">The <see cref="StrPtrUni"/> instance.</param>
@@ -381,40 +405,51 @@ public struct StrPtrUni : IEquatable<string>, IEquatable<StrPtrUni>, IEquatable<
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator StrPtrUni(IntPtr p) => new() { ptr = p };
 
-	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
-	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
-	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(IntPtr other) => EqualityComparer<IntPtr>.Default.Equals(ptr, other);
+	/// <summary>Performs an explicit conversion from <see cref="LPWSTR"/> to <see cref="StrPtrUni"/>.</summary>
+	/// <param name="p">The <see cref="LPWSTR"/> instance.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static explicit operator StrPtrUni(LPWSTR p) => (IntPtr)p;
+
+	/// <summary>Performs an implicit conversion from <see cref="StrPtrUni"/> to <see cref="LPWSTR"/>.</summary>
+	/// <param name="p">The pointer.</param>
+	/// <returns>The result of the conversion.</returns>
+	public static implicit operator LPWSTR(StrPtrUni p) => p.ptr;
 
 	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(string? other) => EqualityComparer<string?>.Default.Equals(this, other);
+	public readonly bool Equals(IntPtr other) => EqualityComparer<IntPtr>.Default.Equals(ptr, other);
+
+	/// <summary>Determines whether the specified <see cref="IntPtr"/>, is equal to this instance.</summary>
+	/// <param name="other">The <see cref="IntPtr"/> to compare with this instance.</param>
+	/// <returns><c>true</c> if the specified <see cref="IntPtr"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+	public readonly bool Equals(string? other) => EqualityComparer<string?>.Default.Equals(this, other);
 
 	/// <summary>Determines whether the specified <see cref="StrPtrUni"/>, is equal to this instance.</summary>
 	/// <param name="other">The <see cref="StrPtrUni"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="StrPtrUni"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public bool Equals(StrPtrUni other) => Equals(other.ptr);
+	public readonly bool Equals(StrPtrUni other) => Equals(other.ptr);
 
 	/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 	/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 	/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-	public override bool Equals(object? obj) => obj switch
+	public override readonly bool Equals(object? obj) => obj switch
 	{
 		null => IsNull,
 		string s => Equals(s),
 		StrPtrUni p => Equals(p),
+		LPWSTR p => Equals((IntPtr)p),
 		IntPtr p => Equals(p),
 		_ => base.Equals(obj),
 	};
 
 	/// <summary>Returns a hash code for this instance.</summary>
 	/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-	public override int GetHashCode() => ptr.GetHashCode();
+	public override readonly int GetHashCode() => ptr.GetHashCode();
 
 	/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 	/// <returns>A <see cref="string"/> that represents this instance.</returns>
-	public override string ToString() => StringHelper.GetString(ptr, CharSet.Unicode) ?? "null";
+	public override readonly string ToString() => StringHelper.GetString(ptr, CharSet.Unicode) ?? "null";
 
 	/// <summary>Determines whether two specified instances of <see cref="StrPtrUni"/> are equal.</summary>
 	/// <param name="left">The first pointer or handle to compare.</param>
@@ -447,11 +482,6 @@ public class SafeGuidPtr : SafeMemStruct<Guid, CoTaskMemoryMethods>
 	/// <param name="guid">The unique identifier to assign to the pointer.</param>
 	public SafeGuidPtr(in Guid guid) : base(guid) { }
 
-	/// <summary>Performs an implicit conversion from <see cref="Nullable{Guid}"/> to <see cref="SafeGuidPtr"/>.</summary>
-	/// <param name="guid">The unique identifier.</param>
-	/// <returns>The resulting <see cref="SafeGuidPtr"/> instance from the conversion.</returns>
-	public static implicit operator SafeGuidPtr(Guid? guid) => guid.HasValue ? new SafeGuidPtr(guid.Value) : Null;
-
 	/// <summary>Converts a SafeGuidPtr instance to a pointer to a Guid structure.</summary>
 	/// <remarks>
 	/// This operator exposes the underlying pointer managed by the SafeGuidPtr. Use with caution, as improper use of the returned pointer
@@ -460,4 +490,9 @@ public class SafeGuidPtr : SafeMemStruct<Guid, CoTaskMemoryMethods>
 	/// </remarks>
 	/// <param name="sgp">The SafeGuidPtr instance to convert. Must not be null or disposed.</param>
 	public static unsafe implicit operator Guid*(SafeGuidPtr sgp) => (Guid*)(void*)sgp.DangerousGetHandle();
+
+	/// <summary>Performs an implicit conversion from <see cref="Nullable{Guid}"/> to <see cref="SafeGuidPtr"/>.</summary>
+	/// <param name="guid">The unique identifier.</param>
+	/// <returns>The resulting <see cref="SafeGuidPtr"/> instance from the conversion.</returns>
+	public static implicit operator SafeGuidPtr(Guid? guid) => guid.HasValue ? new SafeGuidPtr(guid.Value) : Null;
 }
