@@ -1313,7 +1313,7 @@ public static partial class D3D12
 		/// <remarks>Refer to the remarks and examples for <c>CreatePipelineLibrary</c>.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12pipelinelibrary-getserializedsize SIZE_T GetSerializedSize();
 		[PreserveSig]
-		SizeT GetSerializedSize();
+		SIZE_T GetSerializedSize();
 
 		/// <summary>Writes the contents of the library to the provided memory, to be provided back to the runtime at a later time.</summary>
 		/// <param name="pData">
@@ -1336,7 +1336,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12pipelinelibrary-serialize HRESULT Serialize( [out] void
 		// *pData, SIZE_T DataSizeInBytes );
 		[PreserveSig]
-		HRESULT Serialize([Out] IntPtr pData, SizeT DataSizeInBytes);
+		HRESULT Serialize([Out] IntPtr pData, SIZE_T DataSizeInBytes);
 	}
 
 	/// <summary>
@@ -1612,7 +1612,7 @@ public static partial class D3D12
 		/// <remarks>Refer to the remarks and examples for <c>CreatePipelineLibrary</c>.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12pipelinelibrary-getserializedsize SIZE_T GetSerializedSize();
 		[PreserveSig]
-		new SizeT GetSerializedSize();
+		new SIZE_T GetSerializedSize();
 
 		/// <summary>Writes the contents of the library to the provided memory, to be provided back to the runtime at a later time.</summary>
 		/// <param name="pData">
@@ -1635,7 +1635,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12pipelinelibrary-serialize HRESULT Serialize( [out] void
 		// *pData, SIZE_T DataSizeInBytes );
 		[PreserveSig]
-		new HRESULT Serialize([Out] IntPtr pData, SizeT DataSizeInBytes);
+		new HRESULT Serialize([Out] IntPtr pData, SIZE_T DataSizeInBytes);
 
 		/// <summary>
 		/// Retrieves the requested PSO from the library. The pipeline stream description is matched against the library database, and

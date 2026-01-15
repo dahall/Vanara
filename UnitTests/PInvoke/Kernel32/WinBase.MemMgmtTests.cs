@@ -14,7 +14,7 @@ public partial class WinBaseTests_MemMgmt
 		try
 		{
 			Assert.That(GlobalFlags(hMem), ResultIs.Value(GMEM.GMEM_FIXED));
-			Assert.That(GlobalSize(hMem), ResultIs.Value(new SizeT(256)));
+			Assert.That(GlobalSize(hMem), ResultIs.Value(new SIZE_T(256)));
 			IntPtr ptr;
 			Assert.That(ptr = GlobalLock(hMem), ResultIs.ValidHandle);
 			Assert.That(GlobalHandle(ptr), ResultIs.Value(hMem));
@@ -35,7 +35,7 @@ public partial class WinBaseTests_MemMgmt
 		try
 		{
 			Assert.That(LocalFlags(hMem), ResultIs.Value(LMEM.LMEM_FIXED));
-			Assert.That(LocalSize(hMem), ResultIs.Value(new SizeT(256)));
+			Assert.That(LocalSize(hMem), ResultIs.Value(new SIZE_T(256)));
 			IntPtr ptr;
 			Assert.That(ptr = LocalLock(hMem), ResultIs.ValidHandle);
 			Assert.That(LocalHandle(ptr), ResultIs.Value(hMem));

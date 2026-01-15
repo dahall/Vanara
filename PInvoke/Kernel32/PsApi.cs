@@ -1371,13 +1371,13 @@ public static partial class Kernel32
 		public uint Reserved;
 
 		/// <summary>The total size of the pagefile, in pages.</summary>
-		public SizeT TotalSize;
+		public SIZE_T TotalSize;
 
 		/// <summary>The current pagefile usage, in pages.</summary>
-		public SizeT TotalInUse;
+		public SIZE_T TotalInUse;
 
 		/// <summary>The peak pagefile usage, in pages.</summary>
-		public SizeT PeakUsage;
+		public SIZE_T PeakUsage;
 	}
 
 	/// <summary>Contains the module load address, size, and entry point.</summary>
@@ -1419,41 +1419,41 @@ public static partial class Kernel32
 		/// The number of pages currently committed by the system. Note that committing pages (using VirtualAlloc with MEM_COMMIT) changes
 		/// this value immediately; however, the physical memory is not charged until the pages are accessed.
 		/// </summary>
-		public SizeT CommitTotal;
+		public SIZE_T CommitTotal;
 
 		/// <summary>
 		/// The current maximum number of pages that can be committed by the system without extending the paging file(s). This number can
 		/// change if memory is added or deleted, or if pagefiles have grown, shrunk, or been added. If the paging file can be extended, this
 		/// is a soft limit.
 		/// </summary>
-		public SizeT CommitLimit;
+		public SIZE_T CommitLimit;
 
 		/// <summary>The maximum number of pages that were simultaneously in the committed state since the last system reboot.</summary>
-		public SizeT CommitPeak;
+		public SIZE_T CommitPeak;
 
 		/// <summary>The amount of actual physical memory, in pages.</summary>
-		public SizeT PhysicalTotal;
+		public SIZE_T PhysicalTotal;
 
 		/// <summary>
 		/// The amount of physical memory currently available, in pages. This is the amount of physical memory that can be immediately reused
 		/// without having to write its contents to disk first. It is the sum of the size of the standby, free, and zero lists.
 		/// </summary>
-		public SizeT PhysicalAvailable;
+		public SIZE_T PhysicalAvailable;
 
 		/// <summary>The amount of system cache memory, in pages. This is the size of the standby list plus the system working set.</summary>
-		public SizeT SystemCache;
+		public SIZE_T SystemCache;
 
 		/// <summary>The sum of the memory currently in the paged and nonpaged kernel pools, in pages.</summary>
-		public SizeT KernelTotal;
+		public SIZE_T KernelTotal;
 
 		/// <summary>The memory currently in the paged kernel pool, in pages.</summary>
-		public SizeT KernelPaged;
+		public SIZE_T KernelPaged;
 
 		/// <summary>The memory currently in the nonpaged kernel pool, in pages.</summary>
-		public SizeT KernelNonpaged;
+		public SIZE_T KernelNonpaged;
 
 		/// <summary>The size of a page, in bytes.</summary>
-		public SizeT PageSize;
+		public SIZE_T PageSize;
 
 		/// <summary>The current number of open handles.</summary>
 		public uint HandleCount;
@@ -1484,31 +1484,31 @@ public static partial class Kernel32
 		public uint PageFaultCount;
 
 		/// <summary>The peak working set size, in bytes.</summary>
-		public SizeT PeakWorkingSetSize;
+		public SIZE_T PeakWorkingSetSize;
 
 		/// <summary>The current working set size, in bytes.</summary>
-		public SizeT WorkingSetSize;
+		public SIZE_T WorkingSetSize;
 
 		/// <summary>The peak paged pool usage, in bytes.</summary>
-		public SizeT QuotaPeakPagedPoolUsage;
+		public SIZE_T QuotaPeakPagedPoolUsage;
 
 		/// <summary>The current paged pool usage, in bytes.</summary>
-		public SizeT QuotaPagedPoolUsage;
+		public SIZE_T QuotaPagedPoolUsage;
 
 		/// <summary>The peak nonpaged pool usage, in bytes.</summary>
-		public SizeT QuotaPeakNonPagedPoolUsage;
+		public SIZE_T QuotaPeakNonPagedPoolUsage;
 
 		/// <summary>The current nonpaged pool usage, in bytes.</summary>
-		public SizeT QuotaNonPagedPoolUsage;
+		public SIZE_T QuotaNonPagedPoolUsage;
 
 		/// <summary>
 		/// The Commit Charge value in bytes for this process. Commit Charge is the total amount of memory that the memory manager has
 		/// committed for a running process.
 		/// </summary>
-		public SizeT PagefileUsage;
+		public SIZE_T PagefileUsage;
 
 		/// <summary>The peak value in bytes of the Commit Charge during the lifetime of this process.</summary>
-		public SizeT PeakPagefileUsage;
+		public SIZE_T PeakPagefileUsage;
 
 		/// <summary>A default initialized instance.</summary>
 		public static readonly PROCESS_MEMORY_COUNTERS Default = new();
@@ -1530,22 +1530,22 @@ public static partial class Kernel32
 		public uint PageFaultCount;
 
 		/// <summary>The peak working set size, in bytes.</summary>
-		public SizeT PeakWorkingSetSize;
+		public SIZE_T PeakWorkingSetSize;
 
 		/// <summary>The current working set size, in bytes.</summary>
-		public SizeT WorkingSetSize;
+		public SIZE_T WorkingSetSize;
 
 		/// <summary>The peak paged pool usage, in bytes.</summary>
-		public SizeT QuotaPeakPagedPoolUsage;
+		public SIZE_T QuotaPeakPagedPoolUsage;
 
 		/// <summary>The current paged pool usage, in bytes.</summary>
-		public SizeT QuotaPagedPoolUsage;
+		public SIZE_T QuotaPagedPoolUsage;
 
 		/// <summary>The peak nonpaged pool usage, in bytes.</summary>
-		public SizeT QuotaPeakNonPagedPoolUsage;
+		public SIZE_T QuotaPeakNonPagedPoolUsage;
 
 		/// <summary>The current nonpaged pool usage, in bytes.</summary>
-		public SizeT QuotaNonPagedPoolUsage;
+		public SIZE_T QuotaNonPagedPoolUsage;
 
 		/// <summary>
 		/// <para>
@@ -1556,16 +1556,16 @@ public static partial class Kernel32
 		/// <c>Windows 7 and Windows Server 2008 R2 and earlier:</c><c>PagefileUsage</c> is always zero. Check <c>PrivateUsage</c> instead.
 		/// </para>
 		/// </summary>
-		public SizeT PagefileUsage;
+		public SIZE_T PagefileUsage;
 
 		/// <summary>The peak value in bytes of the Commit Charge during the lifetime of this process.</summary>
-		public SizeT PeakPagefileUsage;
+		public SIZE_T PeakPagefileUsage;
 
 		/// <summary>
 		/// Same as <c>PagefileUsage</c>. The Commit Charge value in bytes for this process. Commit Charge is the total amount of memory that
 		/// the memory manager has committed for a running process.
 		/// </summary>
-		public SizeT PrivateUsage;
+		public SIZE_T PrivateUsage;
 
 		/// <summary>A default initialized instance.</summary>
 		public static readonly PROCESS_MEMORY_COUNTERS_EX Default = new();

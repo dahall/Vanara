@@ -2279,7 +2279,7 @@ public static partial class Kernel32
 		/// </summary>
 		public ushort wVersion = 1;
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<COMMCONFIG_UNMGD>();
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<COMMCONFIG_UNMGD>();
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -2299,7 +2299,7 @@ public static partial class Kernel32
 			return mem;
 		}
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == default || allocatedBytes == default) return null;
 			ref COMMCONFIG_UNMGD cc = ref pNativeData.AsRef<COMMCONFIG_UNMGD>();

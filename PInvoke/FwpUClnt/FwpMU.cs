@@ -554,12 +554,12 @@ public static partial class FwpUClnt
 	{
 		private readonly bool byRef;
 
-		internal SafeFwpmArray(IntPtr preexistingHandle, SizeT count, bool byRef = false) : base(preexistingHandle, true)
+		internal SafeFwpmArray(IntPtr preexistingHandle, SIZE_T count, bool byRef = false) : base(preexistingHandle, true)
 		{
 			Count = count; this.byRef = byRef;
 		}
 
-		internal SafeFwpmArray(SafeFwpmMem preexistingHandle, SizeT count, bool byRef = false) : this(preexistingHandle.ReleaseOwnership(), count, byRef)
+		internal SafeFwpmArray(SafeFwpmMem preexistingHandle, SIZE_T count, bool byRef = false) : this(preexistingHandle.ReleaseOwnership(), count, byRef)
 		{
 		}
 
@@ -600,7 +600,7 @@ public static partial class FwpUClnt
 		/// of elements.
 		/// </param>
 		/// <returns>An array of type <typeparamref name="T"/> of length <paramref name="elemCount"/>.</returns>
-		public T[] ToArray<T>(SizeT elemCount, bool byRef) => byRef ? Array.ConvertAll(handle.ToArray<IntPtr>(elemCount) ?? [], p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)!) : handle.ToArray<T>(elemCount) ?? [];
+		public T[] ToArray<T>(SIZE_T elemCount, bool byRef) => byRef ? Array.ConvertAll(handle.ToArray<IntPtr>(elemCount) ?? [], p => p.Convert<T>(uint.MaxValue, CharSet.Unicode)!) : handle.ToArray<T>(elemCount) ?? [];
 
 		/// <summary>Extracts a structure from this memory.</summary>
 		/// <typeparam name="T">The type of the structure to extract.</typeparam>

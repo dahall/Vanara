@@ -33,17 +33,17 @@ public struct ArrayPointer<T> where T : unmanaged
 	/// <summary>Gets a <see cref="ReadOnlySpan{T}"/> over the pointer.</summary>
 	/// <param name="length">The number of elements allocated to this pointer.</param>
 	/// <returns>A <see cref="ReadOnlySpan{T}"/> over the pointer.</returns>
-	public readonly ReadOnlySpan<T> AsReadOnlySpan(SizeT length) => ptr == IntPtr.Zero ? [] : ptr.AsReadOnlySpan<T>(length);
+	public readonly ReadOnlySpan<T> AsReadOnlySpan(SIZE_T length) => ptr == IntPtr.Zero ? [] : ptr.AsReadOnlySpan<T>(length);
 
 	/// <summary>Gets a writable <see cref="Span{T}"/> over the pointer.</summary>
 	/// <param name="length">The number of elements allocated to this pointer.</param>
 	/// <returns>A writable <see cref="Span{T}"/> over the pointer.</returns>
-	public readonly Span<T> AsSpan(SizeT length) => ptr == IntPtr.Zero ? [] : ptr.AsSpan<T>(length);
+	public readonly Span<T> AsSpan(SIZE_T length) => ptr == IntPtr.Zero ? [] : ptr.AsSpan<T>(length);
 
 	/// <summary>Converts this pointer to a copied array of <typeparamref name="T"/> elements.</summary>
 	/// <param name="length">The number of elements allocated to this pointer.</param>
 	/// <returns>A copied array of <typeparamref name="T"/> elements.</returns>
-	public readonly T[] ToArray(SizeT length) => ptr.ToArray<T>(length) ?? [];
+	public readonly T[] ToArray(SIZE_T length) => ptr.ToArray<T>(length) ?? [];
 
 	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="ArrayPointer{T}"/>.</summary>
 	/// <param name="p">The <see cref="IntPtr"/> to assign to this pointer.</param>
@@ -151,7 +151,7 @@ public struct LPCSTRArrayPointer
 	/// <summary>Converts this pointer to a copied array of <see cref="string"/> elements.</summary>
 	/// <param name="length">The number of elements allocated to this pointer.</param>
 	/// <returns>A copied array of <see cref="string"/> elements.</returns>
-	public readonly string?[] ToArray(SizeT length) => Array.ConvertAll(ptr.ToArray<IntPtr>(length) ?? [], Marshal.PtrToStringAnsi);
+	public readonly string?[] ToArray(SIZE_T length) => Array.ConvertAll(ptr.ToArray<IntPtr>(length) ?? [], Marshal.PtrToStringAnsi);
 
 	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="LPCSTRArrayPointer"/>.</summary>
 	/// <param name="p">The <see cref="IntPtr"/> to assign to this pointer.</param>
@@ -187,7 +187,7 @@ public struct LPCTSTRArrayPointer
 	/// <summary>Converts this pointer to a copied array of <see cref="string"/> elements.</summary>
 	/// <param name="length">The number of elements allocated to this pointer.</param>
 	/// <returns>A copied array of <see cref="string"/> elements.</returns>
-	public readonly string?[] ToArray(SizeT length) => Array.ConvertAll(ptr.ToArray<IntPtr>(length) ?? [], Marshal.PtrToStringAuto);
+	public readonly string?[] ToArray(SIZE_T length) => Array.ConvertAll(ptr.ToArray<IntPtr>(length) ?? [], Marshal.PtrToStringAuto);
 
 	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="LPCSTRArrayPointer"/>.</summary>
 	/// <param name="p">The <see cref="IntPtr"/> to assign to this pointer.</param>
@@ -223,7 +223,7 @@ public struct LPCWSTRArrayPointer
 	/// <summary>Converts this pointer to a copied array of <see cref="string"/> elements.</summary>
 	/// <param name="length">The number of elements allocated to this pointer.</param>
 	/// <returns>A copied array of <see cref="string"/> elements.</returns>
-	public readonly string?[] ToArray(SizeT length) => Array.ConvertAll(ptr.ToArray<IntPtr>(length) ?? [], Marshal.PtrToStringUni);
+	public readonly string?[] ToArray(SIZE_T length) => Array.ConvertAll(ptr.ToArray<IntPtr>(length) ?? [], Marshal.PtrToStringUni);
 
 	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="LPCSTRArrayPointer"/>.</summary>
 	/// <param name="p">The <see cref="IntPtr"/> to assign to this pointer.</param>
@@ -421,7 +421,7 @@ public struct ManagedArrayPointer<T> where T : struct
 	/// <summary>Converts this pointer to a copied array of <typeparamref name="T"/> elements.</summary>
 	/// <param name="length">The number of elements allocated to this pointer.</param>
 	/// <returns>A copied array of <typeparamref name="T"/> elements.</returns>
-	public readonly T[] ToArray(SizeT length) => ptr.ToArray<T>(length) ?? [];
+	public readonly T[] ToArray(SIZE_T length) => ptr.ToArray<T>(length) ?? [];
 
 	/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="ManagedArrayPointer{T}"/>.</summary>
 	/// <param name="p">The <see cref="IntPtr"/> to assign to this pointer.</param>
@@ -463,7 +463,7 @@ public static class SizeFieldNameAttributeExt
 	/// <returns>
 	/// The size of the array indicated by the referenced field, if available, or <see langword="null"/> if no attribute was found.
 	/// </returns>
-	public static SizeT? GetFieldSizeViaAttribute<T>(this T structInstance, FieldInfo fi) where T : struct
+	public static SIZE_T? GetFieldSizeViaAttribute<T>(this T structInstance, FieldInfo fi) where T : struct
 	{
 		var attr = fi.GetCustomAttribute<SizeDefAttribute>();
 		if (attr is null)
@@ -480,6 +480,6 @@ public static class SizeFieldNameAttributeExt
 	/// <returns>
 	/// The size of the array indicated by the referenced field, if available, or <see langword="null"/> if no attribute was found.
 	/// </returns>
-	public static SizeT? GetFieldSizeViaAttribute<T>(this T structInstance, string fieldName) where T : struct =>
+	public static SIZE_T? GetFieldSizeViaAttribute<T>(this T structInstance, string fieldName) where T : struct =>
 		GetFieldSizeViaAttribute(structInstance, typeof(T).GetField(fieldName) ?? throw new ArgumentException("Unable to find matching field.", nameof(fieldName)));
 }

@@ -3917,7 +3917,7 @@ public static partial class D3D12
 		public IntPtr pCreationParameters;
 
 		/// <summary>The size of the pCreationParameters parameter structure, in bytes.</summary>
-		public SizeT CreationParametersSizeInBytes;
+		public SIZE_T CreationParametersSizeInBytes;
 
 		/// <summary>
 		/// The allocation size of the video extension command in the L0 memory pool. L0 is the physical system memory pool. When the
@@ -3959,7 +3959,7 @@ public static partial class D3D12
 		public IntPtr pInputData;
 
 		/// <summary>The byte size of the input data allocation.</summary>
-		public SizeT InputDataSizeInBytes;
+		public SIZE_T InputDataSizeInBytes;
 
 		/// <summary>
 		/// Output data for the capability query allocated by the caller with a size of OutputDataSizeInBytes. This struct is enumerable as
@@ -3968,7 +3968,7 @@ public static partial class D3D12
 		public IntPtr pOutputData;
 
 		/// <summary>The byte size of the output data allocation.</summary>
-		public SizeT OutputDataSizeInBytes;
+		public SIZE_T OutputDataSizeInBytes;
 	}
 
 	/// <summary>

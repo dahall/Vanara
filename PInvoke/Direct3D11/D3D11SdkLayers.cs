@@ -5409,7 +5409,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-getmessage HRESULT
 		// GetMessage( [in] UINT64 MessageIndex, [out, optional] D3D11_MESSAGE *pMessage, [in, out] SIZE_T *pMessageByteLength );
 		[PreserveSig]
-		HRESULT GetMessage(ulong MessageIndex, [Out, Optional] StructPointer<D3D11_MESSAGE> pMessage, ref SizeT pMessageByteLength);
+		HRESULT GetMessage(ulong MessageIndex, [Out, Optional] StructPointer<D3D11_MESSAGE> pMessage, ref SIZE_T pMessageByteLength);
 
 		/// <summary>Get the number of messages that were allowed to pass through a storage filter.</summary>
 		/// <returns>
@@ -5507,7 +5507,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-getstoragefilter HRESULT
 		// GetStorageFilter( [out, optional] D3D11_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetStorageFilter([Out, Optional] StructPointer<D3D11_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetStorageFilter([Out, Optional] StructPointer<D3D11_INFO_QUEUE_FILTER> pFilter, ref SIZE_T pFilterByteLength);
 
 		/// <summary>Remove a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5599,7 +5599,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11sdklayers/nf-d3d11sdklayers-id3d11infoqueue-getretrievalfilter HRESULT
 		// GetRetrievalFilter( [out, optional] D3D11_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetRetrievalFilter([Out, Optional] StructPointer<D3D11_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetRetrievalFilter([Out, Optional] StructPointer<D3D11_INFO_QUEUE_FILTER> pFilter, ref SIZE_T pFilterByteLength);
 
 		/// <summary>Remove a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
@@ -6062,6 +6062,6 @@ public static partial class D3D11
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The length of pDescription in bytes.</para>
 		/// </summary>
-		public SizeT DescriptionByteLength;
+		public SIZE_T DescriptionByteLength;
 	}
 }

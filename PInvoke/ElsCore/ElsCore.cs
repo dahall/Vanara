@@ -532,7 +532,7 @@ public static partial class ElsCore
 	public struct MAPPING_ENUM_OPTIONS
 	{
 		/// <summary>Size of the structure, used to validate the structure version. This value is required.</summary>
-		public SizeT Size;
+		public SIZE_T Size;
 
 		/// <summary>
 		/// Optional. Pointer to a service category, for example, "Language Detection". The application must set this member to <c>NULL</c>
@@ -631,7 +631,7 @@ public static partial class ElsCore
 	public struct MAPPING_OPTIONS
 	{
 		/// <summary>Size of the structure, used to validate the structure version. This value is required.</summary>
-		public SizeT Size = Marshal.SizeOf(typeof(MAPPING_OPTIONS));
+		public SIZE_T Size = Marshal.SizeOf(typeof(MAPPING_OPTIONS));
 
 		/// <summary>
 		/// Optional. Pointer to an input language string, following the IETF naming convention, that identifies the input language that the
@@ -773,7 +773,7 @@ public static partial class ElsCore
 	public struct MAPPING_PROPERTY_BAG
 	{
 		/// <summary>Size of the structure, used to verify the structure version. This value is required.</summary>
-		public SizeT Size = Marshal.SizeOf(typeof(MAPPING_PROPERTY_BAG));
+		public SIZE_T Size = Marshal.SizeOf(typeof(MAPPING_PROPERTY_BAG));
 
 		/// <summary>
 		/// Pointer to an array of MAPPING_DATA_RANGE structures containing all recognized text range results. This member is populated by MappingRecognizeText.
@@ -830,7 +830,7 @@ public static partial class ElsCore
 	public struct MAPPING_SERVICE_INFO
 	{
 		/// <summary>Size of the structure, used to validate the structure version. This value is required.</summary>
-		public SizeT Size;
+		public SIZE_T Size;
 
 		/// <summary>Pointer to copyright information about the service.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -1048,7 +1048,7 @@ public static partial class ElsCore
 	/// <seealso cref="IReadOnlyList{T}"/>
 	public class SafeMAPPING_SERVICE_INFOArray : SafeHANDLE, IReadOnlyList<MAPPING_SERVICE_INFO>
 	{
-		private static readonly SizeT elemSize = Marshal.SizeOf(typeof(MAPPING_SERVICE_INFO));
+		private static readonly SIZE_T elemSize = Marshal.SizeOf(typeof(MAPPING_SERVICE_INFO));
 
 		internal SafeMAPPING_SERVICE_INFOArray(IntPtr ptr, int count) : base(IntPtr.Zero, true)
 		{

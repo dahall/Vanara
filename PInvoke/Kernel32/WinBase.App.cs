@@ -648,7 +648,7 @@ public static partial class Kernel32
 	[PInvokeData("Winbase.h", MSDNShortId = "aa375700")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool QueryActCtxSettingsW([Optional, Ignore] uint dwFlags, [In, AddAsMember] HACTCTX hActCtx, [Optional] string? settingsNameSpace,
-		string settingName, [Out, SizeDef(nameof(dwBuffer), SizingMethod.Query, OutVarName = nameof(pdwWrittenOrRequired))] StringBuilder? pvBuffer, SizeT dwBuffer, out SizeT pdwWrittenOrRequired);
+		string settingName, [Out, SizeDef(nameof(dwBuffer), SizingMethod.Query, OutVarName = nameof(pdwWrittenOrRequired))] StringBuilder? pvBuffer, SIZE_T dwBuffer, out SIZE_T pdwWrittenOrRequired);
 
 	/// <summary>The <c>QueryActCtxW</c> function queries the activation context.</summary>
 	/// <param name="dwFlags">
@@ -804,7 +804,7 @@ public static partial class Kernel32
 	[PInvokeData("winbase.h", MSDNShortId = "7d45f63f-0baf-4236-b245-d36f9eb32e8c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool QueryActCtxW(QueryActCtxFlag dwFlags, [In] HACTCTX hActCtx, [In, Optional] IntPtr pvSubInstance,
-		ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, IntPtr pvBuffer, SizeT cbBuffer, out SizeT pcbWrittenOrRequired);
+		ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, IntPtr pvBuffer, SIZE_T cbBuffer, out SIZE_T pcbWrittenOrRequired);
 
 	/// <summary>The <c>QueryActCtxW</c> function queries the activation context.</summary>
 	/// <typeparam name="T">The type of the requested return value.</typeparam>

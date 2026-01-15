@@ -857,7 +857,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11classinstance-getinstancename void GetInstanceName(
 		// [out, optional] LPSTR pInstanceName, [in, out] SIZE_T *pBufferLength );
 		[PreserveSig]
-		void GetInstanceName([Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pInstanceName, ref SizeT pBufferLength);
+		void GetInstanceName([Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pInstanceName, ref SIZE_T pBufferLength);
 
 		/// <summary>Gets the type of the current HLSL class.</summary>
 		/// <param name="pTypeName">
@@ -877,7 +877,7 @@ public static partial class D3D11
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11classinstance-gettypename void GetTypeName( [out,
 		// optional] LPSTR pTypeName, [in, out] SIZE_T *pBufferLength );
 		[PreserveSig]
-		void GetTypeName([Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pTypeName, ref SizeT pBufferLength);
+		void GetTypeName([Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pTypeName, ref SIZE_T pBufferLength);
 	}
 
 	/// <summary>This interface encapsulates an HLSL dynamic linkage.</summary>
@@ -13735,7 +13735,7 @@ public static partial class D3D11
 	/// <param name="mapFlag">Flag that specifies what the CPU does when the GPU is busy. This flag is optional.</param>
 	/// <returns>The copied memory from <see cref="D3D11_MAPPED_SUBRESOURCE.pData"/>.</returns>
 	public static SafeCoTaskMemHandle GetMappedData(this ID3D11DeviceContext context, ID3D11Resource resource, uint subResource, D3D11_MAP mapType,
-		SizeT size, D3D11_MAP_FLAG mapFlag = 0)
+		SIZE_T size, D3D11_MAP_FLAG mapFlag = 0)
 	{
 		SafeCoTaskMemHandle mem = SafeCoTaskMemHandle.Null;
 		ActionWhileMapped(context, resource, subResource, mapType, action, mapFlag);

@@ -22,7 +22,7 @@ public static class TestHelper
 		{
 			Converters = new JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter(),
 				new Newtonsoft.Json.Converters.BinaryConverter(),
-				new GenJsonConverter<ulong, SizeT>(i => new SizeT(i), o => o.Value),
+				new GenJsonConverter<ulong, SIZE_T>(i => new SIZE_T(i), o => o.Value),
 				new GenJsonConverter<DateTime, FILETIME>(dt => dt.ToFileTimeStruct(), ft => ft.ToDateTime()),
 				new GenJsonConverter<string, IPAddress>(i => IPAddress.Parse(i), o => o.ToString()),
 				new GenJsonConverter<string, GenericSecurityDescriptor>(i => new RawSecurityDescriptor(i), o => o.GetSddlForm(AccessControlSections.All)),

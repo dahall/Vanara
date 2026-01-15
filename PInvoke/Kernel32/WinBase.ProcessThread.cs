@@ -140,7 +140,7 @@ public static partial class Kernel32
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms682402(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682402")]
-	public static extern IntPtr CreateFiber([Optional] SizeT dwStackSize, FiberProc lpStartAddress, [In, Optional] IntPtr lpParameter);
+	public static extern IntPtr CreateFiber([Optional] SIZE_T dwStackSize, FiberProc lpStartAddress, [In, Optional] IntPtr lpParameter);
 
 	/// <summary>
 	/// Allocates a fiber object, assigns it a stack, and sets up execution to begin at the specified start address, typically the fiber
@@ -177,7 +177,7 @@ public static partial class Kernel32
 	// LPFIBER_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682406(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682406")]
-	public static extern IntPtr CreateFiberEx([Optional] SizeT dwStackCommitSize, [Optional] SizeT dwStackReserveSize, FIBER_FLAG dwFlags, FiberProc lpStartAddress, [In, Optional] IntPtr lpParameter);
+	public static extern IntPtr CreateFiberEx([Optional] SIZE_T dwStackCommitSize, [Optional] SIZE_T dwStackReserveSize, FIBER_FLAG dwFlags, FiberProc lpStartAddress, [In, Optional] IntPtr lpParameter);
 
 	/// <summary>Deletes an existing fiber.</summary>
 	/// <param name="lpFiber">The address of the fiber to be deleted.</param>
@@ -471,7 +471,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683226")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessWorkingSetSize([In, AddAsMember] HPROCESS hProcess, [Out] out SizeT lpMinimumWorkingSetSize, [Out] out SizeT lpMaximumWorkingSetSize);
+	public static extern bool GetProcessWorkingSetSize([In, AddAsMember] HPROCESS hProcess, [Out] out SIZE_T lpMinimumWorkingSetSize, [Out] out SIZE_T lpMaximumWorkingSetSize);
 
 	/// <summary>
 	/// <para>
@@ -678,7 +678,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "1e28c8db-112d-481d-b470-8ca618e125ce")]
 	public static extern IntPtr MapViewOfFileExNuma([In, AddAsMember] HSECTION hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh,
-		uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap, IntPtr lpBaseAddress, uint nndPreferred);
+		uint dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap, IntPtr lpBaseAddress, uint nndPreferred);
 
 	/// <summary>Sets a processor affinity mask for the threads of the specified process.</summary>
 	/// <param name="hProcess">
@@ -750,7 +750,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686234")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessWorkingSetSize([In, AddAsMember] HPROCESS hProcess, SizeT dwMinimumWorkingSetSize, SizeT dwMaximumWorkingSetSize);
+	public static extern bool SetProcessWorkingSetSize([In, AddAsMember] HPROCESS hProcess, SIZE_T dwMinimumWorkingSetSize, SIZE_T dwMaximumWorkingSetSize);
 
 	/// <summary>Sets a processor affinity mask for the specified thread.</summary>
 	/// <param name="hThread">

@@ -6440,13 +6440,13 @@ public static partial class Crypt32
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
 		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-		public SafeCryptMem(SizeT size = default) : base(size) { }
+		public SafeCryptMem(SIZE_T size = default) : base(size) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="handle">The handle.</param>
 		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-		public SafeCryptMem(IntPtr handle, SizeT size, bool ownsHandle) : base(handle, size, ownsHandle) { }
+		public SafeCryptMem(IntPtr handle, SIZE_T size, bool ownsHandle) : base(handle, size, ownsHandle) { }
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
@@ -6463,12 +6463,12 @@ public static partial class Crypt32
 		public SafeCryptMem(string s, CharSet charSet = CharSet.Unicode) : base(s, charSet) { }
 
 		/// <inheritdoc/>
-		public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeCryptMem(handle, size, ownsHandle);
+		public static ISafeMemoryHandle Create(IntPtr handle, SIZE_T size, bool ownsHandle = true) => new SafeCryptMem(handle, size, ownsHandle);
 
 		/// <inheritdoc/>
 		public static ISafeMemoryHandle Create(byte[] bytes) => new SafeCryptMem(bytes);
 
 		/// <inheritdoc/>
-		public static ISafeMemoryHandle Create(SizeT size) => new SafeCryptMem(size);
+		public static ISafeMemoryHandle Create(SIZE_T size) => new SafeCryptMem(size);
 	}
 }

@@ -18,7 +18,7 @@ public partial class WinBaseTests
 		Assert.That(AddSecureMemoryCacheCallback(callback), ResultIs.Successful);
 		Assert.That(RemoveSecureMemoryCacheCallback(callback), ResultIs.Successful);
 
-		static bool callback(IntPtr Addr, SizeT Range) => true;
+		static bool callback(IntPtr Addr, SIZE_T Range) => true;
 	}
 
 	[TestWhenElevated]

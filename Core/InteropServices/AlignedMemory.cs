@@ -12,7 +12,7 @@ public class AlignedMemory<TMem> : SafeAllocatedMemoryHandle where TMem : IMemor
 	protected TMem mm = new();
 
 	/// <summary>The number of bytes currently allocated.</summary>
-	protected SizeT sz;
+	protected SIZE_T sz;
 
 	private int alignment;
 	private IntPtr rawMemPtr;
@@ -50,7 +50,7 @@ public class AlignedMemory<TMem> : SafeAllocatedMemoryHandle where TMem : IMemor
 
 	/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
 	/// <value>The size in bytes of the allocated memory block.</value>
-	public override SizeT Size
+	public override SIZE_T Size
 	{
 		get => IsInvalid ? 0 : sz + 1 - alignment;
 		set
@@ -73,7 +73,7 @@ public class AlignedMemory<TMem> : SafeAllocatedMemoryHandle where TMem : IMemor
 	}
 
 	/// <inheritdoc/>
-	public override void DangerousOverrideSize(SizeT newSize) => sz = newSize;
+	public override void DangerousOverrideSize(SIZE_T newSize) => sz = newSize;
 
 	/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
 	/// <returns>

@@ -14,22 +14,22 @@ public class SafeNativeLinkedList<TElem, TMem> : SafeNativeListBase<TElem, TMem>
 	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
 	/// <param name="getNextMethod">The method to use to get the next item in the list.</param>
-	public SafeNativeLinkedList(IntPtr ptr, SizeT size, bool ownsHandle, Func<TElem, IntPtr> getNextMethod) : base(ptr, size, ownsHandle) => GetNextMethod = getNextMethod;
+	public SafeNativeLinkedList(IntPtr ptr, SIZE_T size, bool ownsHandle, Func<TElem, IntPtr> getNextMethod) : base(ptr, size, ownsHandle) => GetNextMethod = getNextMethod;
 
 	/// <summary>Initializes a new instance of the <see cref="SafeNativeLinkedList{TElem, TMem}"/> class.</summary>
 	/// <param name="byteCount">The number of bytes to allocate for this new array.</param>
 	/// <param name="getNextMethod">The method to use to get the next item in the list.</param>
-	public SafeNativeLinkedList(SizeT byteCount, Func<TElem, IntPtr> getNextMethod) : base(byteCount) => GetNextMethod = getNextMethod;
+	public SafeNativeLinkedList(SIZE_T byteCount, Func<TElem, IntPtr> getNextMethod) : base(byteCount) => GetNextMethod = getNextMethod;
 
 	/// <summary>Initializes a new instance of the <see cref="SafeNativeLinkedList{TElem, TMem}"/> class.</summary>
 	/// <param name="ptr">The handle.</param>
 	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	public SafeNativeLinkedList(IntPtr ptr, SizeT size, bool ownsHandle) : base(ptr, size, ownsHandle) { }
+	public SafeNativeLinkedList(IntPtr ptr, SIZE_T size, bool ownsHandle) : base(ptr, size, ownsHandle) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeNativeLinkedList{TElem, TMem}"/> class.</summary>
 	/// <param name="byteCount">The number of bytes to allocate for this new array.</param>
-	public SafeNativeLinkedList(SizeT byteCount) : base(byteCount) { }
+	public SafeNativeLinkedList(SIZE_T byteCount) : base(byteCount) { }
 
 	/// <summary>Gets or sets the method to use to get the next item in the list.</summary>
 	/// <value>The method to get the next value. It should return <see cref="IntPtr.Zero"/> if there are no more items.</value>

@@ -2651,11 +2651,11 @@ public static partial class Imm32
 
 	private class CANDIDATELISTMarshaler : IVanaraMarshaler
 	{
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<CANDIDATELIST>();
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<CANDIDATELIST>();
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => new SafeHGlobalStruct<CANDIDATELIST>();
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			var mem = new SafeHGlobalStruct<CANDIDATELIST>(pNativeData, false, allocatedBytes);
 			CANDIDATELIST info = mem.Value;

@@ -640,9 +640,9 @@ public static partial class Ws2_32
 		/// </summary>
 		public byte[]? lpBlob;
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(WSAQUERYSET));
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(WSAQUERYSET));
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => throw new NotImplementedException();
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 			WSAQUERYSET qs = (WSAQUERYSET)Marshal.PtrToStructure(pNativeData, typeof(WSAQUERYSET))!;

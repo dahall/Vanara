@@ -2228,11 +2228,11 @@ public static partial class DnsApi
 		/// </summary>
 		public SOCKADDR_INET sourceAddr { get; private set; }
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(_DNS_QUERY_RAW_RESULT));
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(_DNS_QUERY_RAW_RESULT));
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => throw new NotImplementedException();
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero || allocatedBytes == 0)
 				return null;
@@ -3925,11 +3925,11 @@ public static partial class DnsApi
 		{
 		}
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(DNS_MESSAGE_BUFFER));
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(DNS_MESSAGE_BUFFER));
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => SafeCoTaskMemHandle.Null;
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 			using PDNS_MESSAGE_BUFFER s = new(pNativeData, allocatedBytes);
@@ -3937,7 +3937,7 @@ public static partial class DnsApi
 		}
 	}
 
-	internal class PDNS_MESSAGE_BUFFER(IntPtr allocatedMemory, SizeT size) : SafeAnysizeStructBase<DNS_MESSAGE_BUFFER>(allocatedMemory, size, false)
+	internal class PDNS_MESSAGE_BUFFER(IntPtr allocatedMemory, SIZE_T size) : SafeAnysizeStructBase<DNS_MESSAGE_BUFFER>(allocatedMemory, size, false)
 	{
 		protected override int GetArrayLength(in DNS_MESSAGE_BUFFER local) => Size - 12;
 	}
@@ -3946,7 +3946,7 @@ public static partial class DnsApi
 	{
 		internal SafeDNS_NSEC3_DATA(DNS_NSEC3_DATA value) : base(baseSz) => ToNative(value);
 
-		internal SafeDNS_NSEC3_DATA(IntPtr allocatedMemory, SizeT size) : base(allocatedMemory, size, false)
+		internal SafeDNS_NSEC3_DATA(IntPtr allocatedMemory, SIZE_T size) : base(allocatedMemory, size, false)
 		{
 			if (allocatedMemory == IntPtr.Zero) throw new ArgumentNullException(nameof(allocatedMemory));
 			if (baseSz > size) throw new OutOfMemoryException();
@@ -3960,12 +3960,12 @@ public static partial class DnsApi
 	{
 		public SafeDNS_NSEC3_DATAMarshaler(string _) { }
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(DNS_NSEC3_DATA));
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(DNS_NSEC3_DATA));
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) =>
 			managedObject is null ? SafeCoTaskMemHandle.Null : new SafeDNS_NSEC3_DATA((DNS_NSEC3_DATA)managedObject);
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 			using SafeDNS_NSEC3_DATA s = new(pNativeData, allocatedBytes);

@@ -2840,25 +2840,25 @@ public static partial class Kernel32
 		public uint dwMemoryLoad;
 
 		/// <summary>The amount of actual physical memory, in bytes.</summary>
-		public SizeT dwTotalPhys;
+		public SIZE_T dwTotalPhys;
 
 		/// <summary>
 		/// The amount of physical memory currently available, in bytes. This is the amount of physical memory that can be immediately
 		/// reused without having to write its contents to disk first. It is the sum of the size of the standby, free, and zero lists.
 		/// </summary>
-		public SizeT dwAvailPhys;
+		public SIZE_T dwAvailPhys;
 
 		/// <summary>
 		/// The current size of the committed memory limit, in bytes. This is physical memory plus the size of the page file, minus a
 		/// small overhead.
 		/// </summary>
-		public SizeT dwTotalPageFile;
+		public SIZE_T dwTotalPageFile;
 
 		/// <summary>
 		/// The maximum amount of memory the current process can commit, in bytes. This value should be smaller than the system-wide
 		/// available commit. To calculate this value, call <c>GetPerformanceInfo</c> and subtract the value of <c>CommitTotal</c> from <c>CommitLimit</c>.
 		/// </summary>
-		public SizeT dwAvailPageFile;
+		public SIZE_T dwAvailPageFile;
 
 		/// <summary>
 		/// The size of the user-mode portion of the virtual address space of the calling process, in bytes. This value depends on the
@@ -2866,13 +2866,13 @@ public static partial class Kernel32
 		/// approximately 2 GB for most 32-bit processes on an x86 processor and approximately 3 GB for 32-bit processes that are large
 		/// address aware running on a system with 4 GT RAM Tuning enabled.
 		/// </summary>
-		public SizeT dwTotalVirtual;
+		public SIZE_T dwTotalVirtual;
 
 		/// <summary>
 		/// The amount of unreserved and uncommitted memory currently in the user-mode portion of the virtual address space of the
 		/// calling process, in bytes.
 		/// </summary>
-		public SizeT dwAvailVirtual;
+		public SIZE_T dwAvailVirtual;
 
 		/// <summary>Gets a default instance with the size pre-set.</summary>
 		public static readonly MEMORYSTATUS Default = new() { dwLength = (uint)Marshal.SizeOf<MEMORYSTATUS>() };
@@ -3585,7 +3585,7 @@ public static partial class Kernel32
 	/// <summary>Holds a list of <see cref="SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX"/> structures retrived from <see cref="GetLogicalProcessorInformationEx(LOGICAL_PROCESSOR_RELATIONSHIP, out SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List)"/>.</summary>
 	public class SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List : SafeMemoryHandle<CoTaskMemoryMethods>
 	{
-		internal SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List(SizeT size) : base(size)
+		internal SafeSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX_List(SIZE_T size) : base(size)
 		{
 		}
 

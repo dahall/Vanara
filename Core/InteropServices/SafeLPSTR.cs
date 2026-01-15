@@ -33,7 +33,7 @@ public class SafeLPSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
-	private SafeLPSTR(StrPtrAnsi ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
+	private SafeLPSTR(StrPtrAnsi ptr, bool ownsHandle = true, PInvoke.SIZE_T allocatedBytes = default) :
 		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPSTR"/> class.</summary>
@@ -41,7 +41,7 @@ public class SafeLPSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
-	private SafeLPSTR(LPSTR ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
+	private SafeLPSTR(LPSTR ptr, bool ownsHandle = true, PInvoke.SIZE_T allocatedBytes = default) :
 		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
 
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
@@ -150,7 +150,7 @@ public class SafeLPTSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
-	private SafeLPTSTR(StrPtrAuto ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
+	private SafeLPTSTR(StrPtrAuto ptr, bool ownsHandle = true, PInvoke.SIZE_T allocatedBytes = default) :
 		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPTSTR"/> class.</summary>
@@ -158,7 +158,7 @@ public class SafeLPTSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
-	private SafeLPTSTR(LPTSTR ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
+	private SafeLPTSTR(LPTSTR ptr, bool ownsHandle = true, PInvoke.SIZE_T allocatedBytes = default) :
 		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
 
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
@@ -267,7 +267,7 @@ public class SafeLPWSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
-	private SafeLPWSTR(StrPtrUni ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
+	private SafeLPWSTR(StrPtrUni ptr, bool ownsHandle = true, PInvoke.SIZE_T allocatedBytes = default) :
 		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLPWSTR"/> class.</summary>
@@ -275,7 +275,7 @@ public class SafeLPWSTR : SafeMemString<CoTaskMemoryMethods>
 	/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
-	private SafeLPWSTR(LPWSTR ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
+	private SafeLPWSTR(LPWSTR ptr, bool ownsHandle = true, PInvoke.SIZE_T allocatedBytes = default) :
 		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
 
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>

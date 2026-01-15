@@ -23,7 +23,7 @@ public static class UnionHelper
 	/// Thrown if <paramref name="index"/> is less than zero or greater than or equal to the number of items of type <typeparamref name="T"/>
 	/// that can fit within the original structure.
 	/// </exception>
-	public static T GetArrayItemAtOffset<T, TOrig>(this TOrig o, SizeT index) where TOrig : unmanaged where T : unmanaged
+	public static T GetArrayItemAtOffset<T, TOrig>(this TOrig o, SIZE_T index) where TOrig : unmanaged where T : unmanaged
 	{
 		unsafe
 		{
@@ -49,7 +49,7 @@ public static class UnionHelper
 	/// <exception cref="ArgumentOutOfRangeException">
 	/// Thrown if <paramref name="offset"/> is less than 0 or greater than or equal to the size of <typeparamref name="TOrig"/>.
 	/// </exception>
-	public static T GetValueAtOffset<T, TOrig>(this TOrig o, SizeT offset) where TOrig : unmanaged where T : unmanaged
+	public static T GetValueAtOffset<T, TOrig>(this TOrig o, SIZE_T offset) where TOrig : unmanaged where T : unmanaged
 	{
 		unsafe
 		{
@@ -72,7 +72,7 @@ public static class UnionHelper
 	/// <exception cref="ArgumentOutOfRangeException">
 	/// Thrown if <paramref name="index"/> is less than 0 or greater than or equal to the number of items that can fit within the original structure.
 	/// </exception>
-	public static void SetArrayItemAtOffset<T, TOrig>(ref TOrig o, SizeT index, T value) where TOrig : unmanaged where T : unmanaged
+	public static void SetArrayItemAtOffset<T, TOrig>(ref TOrig o, SIZE_T index, T value) where TOrig : unmanaged where T : unmanaged
 	{
 		unsafe
 		{
@@ -98,7 +98,7 @@ public static class UnionHelper
 	/// <exception cref="ArgumentOutOfRangeException">
 	/// Thrown if <paramref name="offset"/> is less than 0 or greater than or equal to the size of the original structure.
 	/// </exception>
-	public static void SetValueAtOffset<T, TOrig>(ref TOrig o, SizeT offset, T value) where TOrig : unmanaged where T : unmanaged
+	public static void SetValueAtOffset<T, TOrig>(ref TOrig o, SIZE_T offset, T value) where TOrig : unmanaged where T : unmanaged
 	{
 		unsafe
 		{

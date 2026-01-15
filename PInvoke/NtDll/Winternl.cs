@@ -1094,40 +1094,40 @@ public static partial class NtDll
 		public IntPtr Reserved3;
 
 		/// <summary>The peak size, in bytes, of the virtual memory used by the process.</summary>
-		public SizeT PeakVirtualSize;
+		public SIZE_T PeakVirtualSize;
 
 		/// <summary>The current size, in bytes, of virtual memory used by the process.</summary>
-		public SizeT VirtualSize;
+		public SIZE_T VirtualSize;
 
 		/// <summary>Reserved.</summary>
 		public uint Reserved4;
 
 		/// <summary>The peak size, in kilobytes, of the working set of the process.</summary>
-		public SizeT PeakWorkingSetSize;
+		public SIZE_T PeakWorkingSetSize;
 
 		/// <summary>The current quota charged to the process for paged pool usage.</summary>
-		public SizeT WorkingSetSize;
+		public SIZE_T WorkingSetSize;
 
 		/// <summary>Reserved.</summary>
 		public IntPtr Reserved5;
 
 		/// <summary>The current quota charged to the process for paged pool usage.</summary>
-		public SizeT QuotaPagedPoolUsage;
+		public SIZE_T QuotaPagedPoolUsage;
 
 		/// <summary>Reserved.</summary>
 		public IntPtr Reserved6;
 
 		/// <summary>The current quota charged to the process for nonpaged pool usage.</summary>
-		public SizeT QuotaNonPagedPoolUsage;
+		public SIZE_T QuotaNonPagedPoolUsage;
 
 		/// <summary>The number of bytes of page file storage in use by the process.</summary>
-		public SizeT PagefileUsage;
+		public SIZE_T PagefileUsage;
 
 		/// <summary>The maximum number of bytes of page-file storage used by the process.</summary>
-		public SizeT PeakPagefileUsage;
+		public SIZE_T PeakPagefileUsage;
 
 		/// <summary>The number of memory pages allocated for the use of this process.</summary>
-		public SizeT PrivatePageCount;
+		public SIZE_T PrivatePageCount;
 
 		/// <summary>Reserved.</summary>
 		public long Reserved7_1;

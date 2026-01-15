@@ -42,12 +42,12 @@ public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>, 
 	/// <param name="handle">The handle.</param>
 	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	public SafeLocalHandle(HLOCAL handle, SizeT size, bool ownsHandle = true) : base((IntPtr)handle, size, ownsHandle) { }
+	public SafeLocalHandle(HLOCAL handle, SIZE_T size, bool ownsHandle = true) : base((IntPtr)handle, size, ownsHandle) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeLocalHandle"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
 	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-	public SafeLocalHandle(SizeT size) : base(size) { }
+	public SafeLocalHandle(SIZE_T size) : base(size) { }
 
 	/// <summary>
 	/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
@@ -78,13 +78,13 @@ public partial class SafeLocalHandle : SafeMemoryHandleExt<LocalMemoryMethods>, 
 	public static SafeLocalHandle Null { get; } = new SafeLocalHandle(IntPtr.Zero, 0, false);
 
 	/// <inheritdoc/>
-	public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeLocalHandle(handle, size, ownsHandle);
+	public static ISafeMemoryHandle Create(IntPtr handle, SIZE_T size, bool ownsHandle = true) => new SafeLocalHandle(handle, size, ownsHandle);
 
 	/// <inheritdoc/>
 	public static ISafeMemoryHandle Create(byte[] bytes) => new SafeLocalHandle(bytes);
 
 	/// <inheritdoc/>
-	public static ISafeMemoryHandle Create(SizeT size) => new SafeLocalHandle(size);
+	public static ISafeMemoryHandle Create(SIZE_T size) => new SafeLocalHandle(size);
 
 	/// <summary>Creates a <see cref="SafeLocalHandle"/> instance from a specified memory pointer.</summary>
 	/// <remarks>

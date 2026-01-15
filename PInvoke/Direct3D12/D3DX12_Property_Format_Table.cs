@@ -812,7 +812,7 @@ public static partial class D3D12
 				? (HRESULT)INTSAFE_E_ARITHMETIC_OVERFLOW : (HRESULT)HRESULT.S_OK;
 		}
 
-		public static HRESULT CalculateResourceSize(uint width, uint height, uint depth, DXGI_FORMAT format, uint mipLevels, uint subresources, out SizeT totalByteSize, [Out] D3D12_MEMCPY_DEST[]? pDst = null)
+		public static HRESULT CalculateResourceSize(uint width, uint height, uint depth, DXGI_FORMAT format, uint mipLevels, uint subresources, out SIZE_T totalByteSize, [Out] D3D12_MEMCPY_DEST[]? pDst = null)
 		{
 			totalByteSize = 0;
 
@@ -882,7 +882,7 @@ public static partial class D3D12
 				{
 					return INTSAFE_E_ARITHMETIC_OVERFLOW;
 				}
-				SizeT subresourceByteSize = (ulong)subDepth * depthPitch;
+				SIZE_T subresourceByteSize = (ulong)subDepth * depthPitch;
 
 				if (pDst is not null)
 				{
@@ -899,7 +899,7 @@ public static partial class D3D12
 				// Align the subresource size.
 				Debug.Assert((MAP_ALIGN_REQUIREMENT & (MAP_ALIGN_REQUIREMENT - 1)) == 0, "This code expects MAP_ALIGN_REQUIREMENT to be a power of 2.");
 
-				SizeT subresourceByteSizeAligned = subresourceByteSize + MAP_ALIGN_REQUIREMENT - 1;
+				SIZE_T subresourceByteSizeAligned = subresourceByteSize + MAP_ALIGN_REQUIREMENT - 1;
 				subresourceByteSizeAligned &= ~(MAP_ALIGN_REQUIREMENT - 1);
 				totalByteSize += subresourceByteSizeAligned;
 
@@ -1229,7 +1229,7 @@ public static partial class D3D12
 			return uint.MaxValue != Index ? Index : throw new ArgumentException("", nameof(Format));
 		}
 
-		public static DXGI_FORMAT GetFormat(SizeT Index) => Index < s_NumFormats ? s_FormatDetail[Index].DXGIFormat : _BADFMT;
+		public static DXGI_FORMAT GetFormat(SIZE_T Index) => Index < s_NumFormats ? s_FormatDetail[Index].DXGIFormat : _BADFMT;
 
 		public static DXGI_FORMAT[]? GetFormatCastSet(DXGI_FORMAT Format) => s_FormatDetail[(uint)Format].pDefaultFormatCastSet;
 

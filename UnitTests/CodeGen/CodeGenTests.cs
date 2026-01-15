@@ -485,7 +485,7 @@ public class CodeGenTests
 				/// <param name="p1">The p1.</param>
 				/// <returns>The ret.</returns>
 				[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
-				public static extern int GoodSizeDef03([MarshalAs(UnmanagedType.LPWStr), SizeDef("p2", SizingMethod.Bytes)] StringBuilder? p1, SizeT p2);
+				public static extern int GoodSizeDef03([MarshalAs(UnmanagedType.LPWStr), SizeDef("p2", SizingMethod.Bytes)] StringBuilder? p1, SIZE_T p2);
 			}
 		}
 		""";
@@ -521,7 +521,7 @@ public class CodeGenTests
 				/// <param name="p1">The p1.</param>
 				/// <returns>The ret.</returns>
 				[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
-				public static extern int GoodSizeDef03([MarshalAs(UnmanagedType.LPWStr), SizeDef("p2", SizingMethod.InclNullTerm)] StringBuilder? p1, SizeT p2);
+				public static extern int GoodSizeDef03([MarshalAs(UnmanagedType.LPWStr), SizeDef("p2", SizingMethod.InclNullTerm)] StringBuilder? p1, SIZE_T p2);
 			}
 		}
 		""";
@@ -557,7 +557,7 @@ public class CodeGenTests
 				/// <param name="p1">The p1.</param>
 				/// <returns>The ret.</returns>
 				[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
-				public static extern int GoodSizeDef03([MarshalAs(UnmanagedType.LPWStr), SizeDef("p2", SizingMethod.Query)] StringBuilder? p1, ref SizeT p2);
+				public static extern int GoodSizeDef03([MarshalAs(UnmanagedType.LPWStr), SizeDef("p2", SizingMethod.Query)] StringBuilder? p1, ref SIZE_T p2);
 
 				/// <summary>Gets the object.</summary>
 				/// <param name="p1">The p1.</param>
@@ -611,7 +611,7 @@ public class CodeGenTests
 				/// <param name="p1">The p1.</param>
 				/// <returns>The ret.</returns>
 				[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
-				public static extern int GoodSizeDef03([MarshalAs(UnmanagedType.LPWStr), SizeDef("p2", SizingMethod.Query)] IntPtr p1, ref SizeT p2);
+				public static extern int GoodSizeDef03([MarshalAs(UnmanagedType.LPWStr), SizeDef("p2", SizingMethod.Query)] IntPtr p1, ref SIZE_T p2);
 
 				/// <summary>Gets the object.</summary>
 				/// <param name="p1">The p1.</param>

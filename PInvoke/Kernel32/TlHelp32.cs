@@ -440,7 +440,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("tlhelp32.h", MSDNShortId = "e579b813-32ef-481d-8dc6-f959ec9b6bad")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Toolhelp32ReadProcessMemory(uint th32ProcessID, IntPtr lpBaseAddress, IntPtr lpBuffer, SizeT cbRead, out SizeT lpNumberOfBytesRead);
+	public static extern bool Toolhelp32ReadProcessMemory(uint th32ProcessID, IntPtr lpBaseAddress, IntPtr lpBuffer, SIZE_T cbRead, out SIZE_T lpNumberOfBytesRead);
 
 	/// <summary>Describes one entry (block) of a heap that is being examined.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/tlhelp32/ns-tlhelp32-tagheapentry32 typedef struct tagHEAPENTRY32 { SIZE_T
@@ -454,7 +454,7 @@ public static partial class Kernel32
 		/// The size of the structure, in bytes. Before calling the Heap32First function, set this member to . If you do not initialize
 		/// <c>dwSize</c>, <c>Heap32First</c> fails.
 		/// </summary>
-		public SizeT dwSize = (uint)Marshal.SizeOf<HEAPENTRY32>();
+		public SIZE_T dwSize = (uint)Marshal.SizeOf<HEAPENTRY32>();
 
 		/// <summary>A handle to the heap block.</summary>
 		public IntPtr hHandle;
@@ -463,7 +463,7 @@ public static partial class Kernel32
 		public UIntPtr dwAddress;
 
 		/// <summary>The size of the heap block, in bytes.</summary>
-		public SizeT dwBlockSize;
+		public SIZE_T dwBlockSize;
 
 		/// <summary>
 		/// <para>This member can be one of the following values.</para>
@@ -517,7 +517,7 @@ public static partial class Kernel32
 		/// The size of the structure, in bytes. Before calling the Heap32ListFirst function, set this member to . If you do not initialize
 		/// <c>dwSize</c>, <c>Heap32ListFirst</c> will fail.
 		/// </summary>
-		public SizeT dwSize = (uint)Marshal.SizeOf<HEAPLIST32>();
+		public SIZE_T dwSize = (uint)Marshal.SizeOf<HEAPLIST32>();
 
 		/// <summary>The identifier of the process to be examined.</summary>
 		public uint th32ProcessID;

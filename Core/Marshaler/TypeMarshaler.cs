@@ -205,7 +205,7 @@ public static partial class Marshaler
 		}
 	}
 
-/*	internal static SizeT SizeOf(System.Collections.IEnumerable items, MarshalerOptions options, out Type elemType, out int count)
+/*	internal static SIZE_T SizeOf(System.Collections.IEnumerable items, MarshalerOptions options, out Type elemType, out int count)
 	{
 		int c = 0;
 		Type? elem = null;
@@ -222,7 +222,7 @@ public static partial class Marshaler
 		}
 	}
 
-	public static SizeT Write(this IntPtr ptr, System.Collections.IEnumerable items, SizeT offset = default, SizeT allocatedBytes = default, MarshalerOptions? options = null)
+	public static SIZE_T Write(this IntPtr ptr, System.Collections.IEnumerable items, SIZE_T offset = default, SIZE_T allocatedBytes = default, MarshalerOptions? options = null)
 	{
 		options ??= new();
 		int c = 0;

@@ -8405,13 +8405,13 @@ public static partial class D2d1
 	public struct D2D1_RESOURCE_USAGE
 	{
 		/// <summary><c>workingTextureAreaMemory</c> An approximate amount of memory usage by image pipeline processing textures.</summary>
-		public SizeT workingTextureAreaMemory;
+		public SIZE_T workingTextureAreaMemory;
 
 		/// <summary><c>cachingTextureAreaMemory</c> The approximate amount of memory used by the cached effect.</summary>
-		public SizeT cachingTextureAreaMemory;
+		public SIZE_T cachingTextureAreaMemory;
 
 		/// <summary><c>shaderCacheMemory</c> The approximate amount of memory used by cached shaders.</summary>
-		public SizeT shaderCacheMemory;
+		public SIZE_T shaderCacheMemory;
 	}
 
 	/// <summary>Describes the stroke that outlines a shape.</summary>

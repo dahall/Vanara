@@ -807,7 +807,7 @@ public static partial class DXCore
 		// DXCoreAdapterState state, _In_reads_bytes_opt_(sizeof(T1)) const T1 *inputStateDetails, _Out_writes_bytes_(sizeof(T2)) T2
 		// *outputBuffer); template &lt;class T&gt; HRESULT QueryState( DXCoreAdapterState state, _Out_writes_bytes_(sizeof(T)) T *outputBuffer);
 		[PreserveSig]
-		HRESULT QueryState(DXCoreAdapterState state, SizeT inputStateDetailsSize, [In, Optional] IntPtr inputStateDetails, SizeT outputBufferSize,
+		HRESULT QueryState(DXCoreAdapterState state, SIZE_T inputStateDetailsSize, [In, Optional] IntPtr inputStateDetails, SIZE_T outputBufferSize,
 			[Out] IntPtr outputBuffer);
 
 		/// <summary>
@@ -900,7 +900,7 @@ public static partial class DXCore
 		// const void *inputData) = 0; template &lt;class T1, class T2&gt; HRESULT SetState( DXCoreAdapterState state, const T1
 		// *inputStateDetails, const T2 *inputData);
 		[PreserveSig]
-		HRESULT SetState(DXCoreAdapterState state, SizeT inputStateDetailsSize, [In, Optional] IntPtr inputStateDetails, SizeT inputDataSize,
+		HRESULT SetState(DXCoreAdapterState state, SIZE_T inputStateDetailsSize, [In, Optional] IntPtr inputStateDetails, SIZE_T inputDataSize,
 			[Out] IntPtr inputData);
 
 		/// <summary>
@@ -1212,7 +1212,7 @@ public static partial class DXCore
 		// DXCoreAdapterState state, _In_reads_bytes_opt_(sizeof(T1)) const T1 *inputStateDetails, _Out_writes_bytes_(sizeof(T2)) T2
 		// *outputBuffer); template &lt;class T&gt; HRESULT QueryState( DXCoreAdapterState state, _Out_writes_bytes_(sizeof(T)) T *outputBuffer);
 		[PreserveSig]
-		new HRESULT QueryState(DXCoreAdapterState state, SizeT inputStateDetailsSize, [In, Optional] IntPtr inputStateDetails, SizeT outputBufferSize,
+		new HRESULT QueryState(DXCoreAdapterState state, SIZE_T inputStateDetailsSize, [In, Optional] IntPtr inputStateDetails, SIZE_T outputBufferSize,
 			[Out] IntPtr outputBuffer);
 
 		/// <summary>
@@ -1305,7 +1305,7 @@ public static partial class DXCore
 		// const void *inputData) = 0; template &lt;class T1, class T2&gt; HRESULT SetState( DXCoreAdapterState state, const T1
 		// *inputStateDetails, const T2 *inputData);
 		[PreserveSig]
-		new HRESULT SetState(DXCoreAdapterState state, SizeT inputStateDetailsSize, [In, Optional] IntPtr inputStateDetails, SizeT inputDataSize,
+		new HRESULT SetState(DXCoreAdapterState state, SIZE_T inputStateDetailsSize, [In, Optional] IntPtr inputStateDetails, SIZE_T inputDataSize,
 			[Out] IntPtr inputData);
 
 		/// <summary>
@@ -1371,8 +1371,8 @@ public static partial class DXCore
 		// DXCoreAdapterProperty property, _In_reads_bytes_opt_(sizeof(T1)) const T1 *inputPropertyDetails, _Out_writes_bytes_(sizeof(T2))
 		// T2 *outputBuffer);
 		[PreserveSig]
-		HRESULT GetPropertyWithInput(DXCoreAdapterProperty property, SizeT inputPropertyDetailsSize, [In, Optional] IntPtr inputPropertyDetails,
-			SizeT outputBufferSize, [Out] IntPtr outputBuffer);
+		HRESULT GetPropertyWithInput(DXCoreAdapterProperty property, SIZE_T inputPropertyDetailsSize, [In, Optional] IntPtr inputPropertyDetails,
+			SIZE_T outputBufferSize, [Out] IntPtr outputBuffer);
 	}
 
 	/// <summary>

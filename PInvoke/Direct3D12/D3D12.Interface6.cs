@@ -6427,7 +6427,7 @@ public static partial class D3D12
 		// SIZE_T InitializationParametersDataSizeInBytes );
 		[PreserveSig]
 		void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pInitializationParametersData,
-			[In] SizeT InitializationParametersDataSizeInBytes);
+			[In] SIZE_T InitializationParametersDataSizeInBytes);
 
 		/// <summary>
 		/// <para>Records the execution (or invocation) of the specified meta command into a graphics command list.</para>
@@ -6467,7 +6467,7 @@ public static partial class D3D12
 		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SIZE_T
 		// ExecutionParametersDataSizeInBytes );
 		[PreserveSig]
-		void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SizeT ExecutionParametersDataSizeInBytes);
+		void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SIZE_T ExecutionParametersDataSizeInBytes);
 
 		/// <summary>
 		/// Performs a raytracing acceleration structure build on the GPU and optionally outputs post-build information immediately after
@@ -9842,7 +9842,7 @@ public static partial class D3D12
 		// SIZE_T InitializationParametersDataSizeInBytes );
 		[PreserveSig]
 		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pInitializationParametersData,
-			[In] SizeT InitializationParametersDataSizeInBytes);
+			[In] SIZE_T InitializationParametersDataSizeInBytes);
 
 		/// <summary>
 		/// <para>Records the execution (or invocation) of the specified meta command into a graphics command list.</para>
@@ -9882,7 +9882,7 @@ public static partial class D3D12
 		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SIZE_T
 		// ExecutionParametersDataSizeInBytes );
 		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SizeT ExecutionParametersDataSizeInBytes);
+		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SIZE_T ExecutionParametersDataSizeInBytes);
 
 		/// <summary>
 		/// Performs a raytracing acceleration structure build on the GPU and optionally outputs post-build information immediately after
@@ -13338,7 +13338,7 @@ public static partial class D3D12
 		// SIZE_T InitializationParametersDataSizeInBytes );
 		[PreserveSig]
 		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pInitializationParametersData,
-			[In] SizeT InitializationParametersDataSizeInBytes);
+			[In] SIZE_T InitializationParametersDataSizeInBytes);
 
 		/// <summary>
 		/// <para>Records the execution (or invocation) of the specified meta command into a graphics command list.</para>
@@ -13378,7 +13378,7 @@ public static partial class D3D12
 		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SIZE_T
 		// ExecutionParametersDataSizeInBytes );
 		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SizeT ExecutionParametersDataSizeInBytes);
+		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SIZE_T ExecutionParametersDataSizeInBytes);
 
 		/// <summary>
 		/// Performs a raytracing acceleration structure build on the GPU and optionally outputs post-build information immediately after
@@ -16847,7 +16847,7 @@ public static partial class D3D12
 		// SIZE_T InitializationParametersDataSizeInBytes );
 		[PreserveSig]
 		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pInitializationParametersData,
-			[In] SizeT InitializationParametersDataSizeInBytes);
+			[In] SIZE_T InitializationParametersDataSizeInBytes);
 
 		/// <summary>
 		/// <para>Records the execution (or invocation) of the specified meta command into a graphics command list.</para>
@@ -16887,7 +16887,7 @@ public static partial class D3D12
 		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SIZE_T
 		// ExecutionParametersDataSizeInBytes );
 		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SizeT ExecutionParametersDataSizeInBytes);
+		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SIZE_T ExecutionParametersDataSizeInBytes);
 
 		/// <summary>
 		/// Performs a raytracing acceleration structure build on the GPU and optionally outputs post-build information immediately after

@@ -79,7 +79,7 @@ public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[
 
 	/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
 	/// <value>The size in bytes of the allocated memory block.</value>
-	SizeT Size { get; set; }
+	SIZE_T Size { get; set; }
 
 	/// <summary>Occurs when the handle has changed.</summary>
 	event EventHandler<IntPtr>? HandleChanged;
@@ -101,13 +101,13 @@ public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[
 	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
 	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length"/> bytes.</param>
 	/// <param name="length">The number of bytes to copy.</param>
-	void CopyTo(IntPtr dest, SizeT length);
+	void CopyTo(IntPtr dest, SIZE_T length);
 
 	/// <summary>Copies memory from this allocation to an allocated memory pointer.</summary>
 	/// <param name="start">The starting offset within this allocation at which to start copying.</param>
 	/// <param name="dest">A pointer to allocated memory that must be at least <paramref name="length" /> bytes.</param>
 	/// <param name="length">The number of bytes to copy.</param>
-	void CopyTo(SizeT start, IntPtr dest, SizeT length);
+	void CopyTo(SIZE_T start, IntPtr dest, SIZE_T length);
 
 	/// <summary>Copies memory from this allocation to an allocated memory handle.</summary>
 	/// <param name="dest">A safe handle to allocated memory.</param>
@@ -122,14 +122,14 @@ public interface ISafeMemoryHandleBase : IDisposable, IHandle, IComparable<byte[
 	/// <param name="destOffset">The offset within <paramref name="dest"/> at which to start copying.</param>
 	/// <exception cref="System.ArgumentNullException">dest</exception>
 	/// <exception cref="System.ArgumentOutOfRangeException">destOffset - The destination buffer is not large enough.</exception>
-	void CopyTo(SizeT start, SizeT length, ISafeMemoryHandleBase dest, SizeT destOffset = default);
+	void CopyTo(SIZE_T start, SIZE_T length, ISafeMemoryHandleBase dest, SIZE_T destOffset = default);
 
 	/// <summary>
 	/// Overrides the stored size of the allocated memory. This should be used with extreme caution only in cases where the the derived class
 	/// is returned from a P/Invoke call and no size has been set in a constructor.
 	/// </summary>
 	/// <param name="newSize">The size to be set as the new size of the allocated memory.</param>
-	void DangerousOverrideSize(SizeT newSize);
+	void DangerousOverrideSize(SIZE_T newSize);
 
 	/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
 	/// <returns>A byte array with the copied bytes.</returns>
@@ -181,7 +181,7 @@ public partial interface ISafeMemoryHandle : ISafeMemoryHandleBase
 	/// <param name="count">The number of structures to retrieve.</param>
 	/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 	/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
-	T[] ToArray<T>(SizeT count, SizeT prefixBytes = default);
+	T[] ToArray<T>(SIZE_T count, SIZE_T prefixBytes = default);
 
 	/// <summary>
 	/// Extracts an enumeration of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note
@@ -191,7 +191,7 @@ public partial interface ISafeMemoryHandle : ISafeMemoryHandleBase
 	/// <param name="count">The number of structures to retrieve.</param>
 	/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 	/// <returns>An enumeration of structures of <typeparamref name="T"/>.</returns>
-	IEnumerable<T> ToEnumerable<T>(SizeT count, SizeT prefixBytes = default);
+	IEnumerable<T> ToEnumerable<T>(SIZE_T count, SIZE_T prefixBytes = default);
 
 	/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 	/// <param name="len">The length.</param>
@@ -204,7 +204,7 @@ public partial interface ISafeMemoryHandle : ISafeMemoryHandleBase
 	/// <param name="prefixBytes">Number of bytes preceding the string pointer.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	string? ToString(int len, SizeT prefixBytes, CharSet charSet = CharSet.Unicode);
+	string? ToString(int len, SIZE_T prefixBytes, CharSet charSet = CharSet.Unicode);
 
 	/// <summary>
 	/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character
@@ -213,7 +213,7 @@ public partial interface ISafeMemoryHandle : ISafeMemoryHandleBase
 	/// <param name="charSet">The character set of the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>Enumeration of strings.</returns>
-	IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, SizeT prefixBytes = default);
+	IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, SIZE_T prefixBytes = default);
 
 	/// <summary>
 	/// Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length
@@ -223,7 +223,7 @@ public partial interface ISafeMemoryHandle : ISafeMemoryHandleBase
 	/// <param name="charSet">The character set of the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>An enumerated list of strings.</returns>
-	IEnumerable<string?> ToStringEnum(SizeT count, CharSet charSet = CharSet.Auto, SizeT prefixBytes = default);
+	IEnumerable<string?> ToStringEnum(SIZE_T count, CharSet charSet = CharSet.Auto, SIZE_T prefixBytes = default);
 
 	/// <summary>
 	/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
@@ -231,7 +231,7 @@ public partial interface ISafeMemoryHandle : ISafeMemoryHandleBase
 	/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 	/// <param name="prefixBytes">Number of bytes preceding the structure.</param>
 	/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
-	T? ToStructure<T>(SizeT prefixBytes = default);
+	T? ToStructure<T>(SIZE_T prefixBytes = default);
 }
 
 /// <summary>
@@ -245,7 +245,7 @@ public partial interface ISafeMemoryHandleFactory : ISafeMemoryHandle
 	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
 	/// <returns>A safe handle to the allocated memory.</returns>
-	static abstract ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true);
+	static abstract ISafeMemoryHandle Create(IntPtr handle, SIZE_T size, bool ownsHandle = true);
 
 	/// <summary>Creates an instance of the memory handle and copies the contents of the specified array to unmanaged memory.</summary>
 	/// <param name="bytes">Array of bytes used to initialize allocated memory.</param>
@@ -255,7 +255,7 @@ public partial interface ISafeMemoryHandleFactory : ISafeMemoryHandle
 	/// <summary>Creates an instance of the memory handle allocating the specified size.</summary>
 	/// <param name="size">The number of bytes to allocate.</param>
 	/// <returns>A safe handle to the allocated memory.</returns>
-	static abstract ISafeMemoryHandle Create(SizeT size);
+	static abstract ISafeMemoryHandle Create(SIZE_T size);
 #endif
 }
 
@@ -398,7 +398,7 @@ public abstract class SafeAllocatedMemoryHandleBase(IntPtr handle, bool ownsHand
 
 	/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
 	/// <value>The size in bytes of the allocated memory block.</value>
-	public abstract SizeT Size { get; set; }
+	public abstract SIZE_T Size { get; set; }
 
 	/// <summary>Performs an explicit conversion from <see cref="SafeAllocatedMemoryHandleBase"/> to <see cref="byte"/> pointer.</summary>
 	/// <param name="hMem">The <see cref="SafeAllocatedMemoryHandleBase"/> instance.</param>
@@ -480,18 +480,18 @@ public abstract class SafeAllocatedMemoryHandleBase(IntPtr handle, bool ownsHand
 
 	/// <inheritdoc/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public void CopyTo(IntPtr dest, SizeT length) => CopyTo(0, dest, length);
+	public void CopyTo(IntPtr dest, SIZE_T length) => CopyTo(0, dest, length);
 
 	/// <inheritdoc/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public void CopyTo(SizeT start, IntPtr dest, SizeT length) => CallLocked(p => p.CopyTo(start, dest, length));
+	public void CopyTo(SIZE_T start, IntPtr dest, SIZE_T length) => CallLocked(p => p.CopyTo(start, dest, length));
 
 	/// <inheritdoc/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void CopyTo(ISafeMemoryHandleBase dest) => CopyTo(0, Size, dest);
 
 	/// <inheritdoc/>
-	public void CopyTo(SizeT start, SizeT length, ISafeMemoryHandleBase dest, SizeT destOffset = default)
+	public void CopyTo(SIZE_T start, SIZE_T length, ISafeMemoryHandleBase dest, SIZE_T destOffset = default)
 	{
 		if (dest is null) throw new ArgumentNullException(nameof(dest));
 		if (start + length > Size) throw new ArgumentOutOfRangeException(nameof(start), "The start offset and length exceed the size of the memory block.");
@@ -504,7 +504,7 @@ public abstract class SafeAllocatedMemoryHandleBase(IntPtr handle, bool ownsHand
 	/// is returned from a P/Invoke call and no size has been set in a constructor.
 	/// </summary>
 	/// <param name="newSize">The size to be set as the new size of the allocated memory.</param>
-	public abstract void DangerousOverrideSize(SizeT newSize);
+	public abstract void DangerousOverrideSize(SIZE_T newSize);
 
 	/// <inheritdoc/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -691,14 +691,14 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	protected static readonly TMem mm = new();
 
 	/// <summary>The number of bytes currently allocated.</summary>
-	protected SizeT sz;
+	protected SIZE_T sz;
 
 	private IntPtr unlockedHandle;
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
 	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-	protected SafeMemoryHandle(SizeT size = default) : base(IntPtr.Zero, true)
+	protected SafeMemoryHandle(SIZE_T size = default) : base(IntPtr.Zero, true)
 	{
 		if (size == 0) return;
 		InitFromSize(size);
@@ -710,7 +710,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	/// <param name="handle">The handle.</param>
 	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	protected SafeMemoryHandle(IntPtr handle, SizeT size, bool ownsHandle) : base(handle, ownsHandle) => sz = size;
+	protected SafeMemoryHandle(IntPtr handle, SIZE_T size, bool ownsHandle) : base(handle, ownsHandle) => sz = size;
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class using the specified byte array.</summary>
 	/// <remarks>
@@ -776,7 +776,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 
 	/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
 	/// <value>The size in bytes of the allocated memory block.</value>
-	public override SizeT Size
+	public override SIZE_T Size
 	{
 		get => sz;
 		set
@@ -801,7 +801,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 	/// is returned from a P/Invoke call and no size has been set in a constructor.
 	/// </summary>
 	/// <param name="newSize">The size to be set as the new size of the allocated memory.</param>
-	public override void DangerousOverrideSize(SizeT newSize) => sz = newSize;
+	public override void DangerousOverrideSize(SIZE_T newSize) => sz = newSize;
 
 	/// <summary>Locks this instance.</summary>
 	public override void Lock()
@@ -872,7 +872,7 @@ public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where T
 		return true;
 	}
 
-	private void InitFromSize(SizeT size)
+	private void InitFromSize(SIZE_T size)
 	{
 		RuntimeHelpers.PrepareConstrainedRegions();
 		SetHandle(mm.AllocMem(sz = size));
@@ -886,13 +886,13 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
 	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-	protected SafeMemoryHandleExt(SizeT size) : base(size) { }
+	protected SafeMemoryHandleExt(SIZE_T size) : base(size) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class.</summary>
 	/// <param name="handle">The handle.</param>
 	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	protected SafeMemoryHandleExt(IntPtr handle, SizeT size, bool ownsHandle) : base(handle, size, ownsHandle) { }
+	protected SafeMemoryHandleExt(IntPtr handle, SIZE_T size, bool ownsHandle) : base(handle, size, ownsHandle) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandleExt{T}"/> class using the specified byte array.</summary>
 	/// <remarks>
@@ -945,7 +945,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="count">The number of structures to retrieve.</param>
 	/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 	/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
-	public T[] ToArray<T>(SizeT count, SizeT prefixBytes = default)
+	public T[] ToArray<T>(SIZE_T count, SIZE_T prefixBytes = default)
 	{
 		if (IsInvalid) return [];
 		//if (Size < Marshal.SizeOf<T>() * count + prefixBytes)
@@ -963,7 +963,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="count">The number of structures to retrieve.</param>
 	/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 	/// <returns>An enumeration of structures of <typeparamref name="T"/>.</returns>
-	public IEnumerable<T> ToEnumerable<T>(SizeT count, SizeT prefixBytes = default)
+	public IEnumerable<T> ToEnumerable<T>(SIZE_T count, SIZE_T prefixBytes = default)
 	{
 		if (IsInvalid) yield break;
 		//if (Size < Marshal.SizeOf<T>() * count + prefixBytes)
@@ -993,7 +993,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="prefixBytes">Number of bytes preceding the string pointer.</param>
 	/// <param name="charSet">The character set of the string.</param>
 	/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-	public string? ToString(int len, SizeT prefixBytes, CharSet charSet = CharSet.Unicode)
+	public string? ToString(int len, SIZE_T prefixBytes, CharSet charSet = CharSet.Unicode)
 	{
 		var str = CallLocked(p => StringHelper.GetString(p.Offset(prefixBytes), charSet, sz == 0 ? long.MaxValue : sz - prefixBytes));
 		return len == -1 ? str : str?.Substring(0, Math.Min(len, str.Length));
@@ -1007,7 +1007,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="charSet">The character set of the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>Enumeration of strings.</returns>
-	public IEnumerable<string?> ToStringEnum(SizeT count, CharSet charSet = CharSet.Auto, SizeT prefixBytes = default) =>
+	public IEnumerable<string?> ToStringEnum(SIZE_T count, CharSet charSet = CharSet.Auto, SIZE_T prefixBytes = default) =>
 		IsInvalid ? [] : CallLocked(p => p.ToStringEnum(count, charSet, prefixBytes, sz));
 
 	/// <summary>
@@ -1017,7 +1017,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <param name="charSet">The character set of the strings.</param>
 	/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 	/// <returns>An enumerated list of strings.</returns>
-	public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, SizeT prefixBytes = default) =>
+	public IEnumerable<string> ToStringEnum(CharSet charSet = CharSet.Auto, SIZE_T prefixBytes = default) =>
 		IsInvalid ? [] : CallLocked(p => p.ToStringEnum(charSet, prefixBytes, sz));
 
 	/// <summary>
@@ -1026,7 +1026,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 	/// <param name="prefixBytes">Number of bytes preceding the structure.</param>
 	/// <returns>A managed object that contains the data that this <see cref="SafeMemoryHandleExt{T}"/> holds.</returns>
-	public T? ToStructure<T>(SizeT prefixBytes = default)
+	public T? ToStructure<T>(SIZE_T prefixBytes = default)
 	{
 		if (IsInvalid) return default;
 		return CallLocked(p => p.ToStructure<T>(sz, prefixBytes));
@@ -1042,7 +1042,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="items"/>.
 	/// </param>
 	/// <param name="offset">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
-	public SizeT Write<T>(IEnumerable<T> items, bool autoExtend = true, SizeT offset = default)
+	public SIZE_T Write<T>(IEnumerable<T> items, bool autoExtend = true, SIZE_T offset = default)
 	{
 		if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
 		if (autoExtend)
@@ -1064,7 +1064,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="value"/>.
 	/// </param>
 	/// <param name="offset">The number of bytes to offset from the beginning of this allocated memory before writing.</param>
-	public SizeT Write<T>(in T value, bool autoExtend = true, SizeT offset = default) where T : struct
+	public SIZE_T Write<T>(in T value, bool autoExtend = true, SIZE_T offset = default) where T : struct
 	{
 		if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
 		if (autoExtend)
@@ -1084,7 +1084,7 @@ public abstract class SafeMemoryHandleExt<TMem> : SafeMemoryHandle<TMem>, ISafeM
 	/// if set to <c>true</c> automatically extend the allocated memory to the size required to hold <paramref name="value"/>.
 	/// </param>
 	/// <param name="offset">The number of bytes to offset from the beginning of this allocated memory before writing.</param>
-	public SizeT Write(object value, bool autoExtend = true, SizeT offset = default)
+	public SIZE_T Write(object value, bool autoExtend = true, SIZE_T offset = default)
 	{
 		if (IsInvalid) throw new MemberAccessException("Safe memory pointer is not valid.");
 		if (value is null) return 0;

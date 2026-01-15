@@ -752,7 +752,7 @@ public static partial class Kernel32
 		public MEM_PROTECTION AllocationProtect;
 
 		/// <summary>The size of the region beginning at the base address in which all pages have identical attributes, in bytes.</summary>
-		public SizeT RegionSize;
+		public SIZE_T RegionSize;
 
 		/// <summary>
 		/// <para>The state of the pages in the region. This member can be one of the following values.</para>

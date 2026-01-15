@@ -2382,7 +2382,7 @@ public static partial class Ws2_32
 	// int WSCGetProviderInfo( [in] LPGUID lpProviderId, [in] WSC_PROVIDER_INFO_TYPE InfoType, [out] PBYTE Info, [in, out] size_t *InfoSize, [in] DWORD Flags, [out] LPINT lpErrno );
 	[PInvokeData("ws2spi.h", MSDNShortId = "NF:ws2spi.WSCGetProviderInfo")]
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
-	public static extern WSRESULT WSCGetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SizeT InfoSize, uint Flags, out int lpErrno);
+	public static extern WSRESULT WSCGetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SIZE_T InfoSize, uint Flags, out int lpErrno);
 
 	/// <summary>The **WSCGetProviderInfo32** function retrieves the data associated with an information class for a 32-bit layered service provider (LSP).</summary>
 	/// <param name="lpProviderId">A pointer to a globally unique identifier (GUID) for the provider.</param>
@@ -2545,7 +2545,7 @@ public static partial class Ws2_32
 	// lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, PBYTE Info, size_t *InfoSize, DWORD Flags, LPINT lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "91686b38-3cde-4979-8bf6-45e805dd37ff")]
-	public static extern WSRESULT WSCGetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SizeT InfoSize, uint Flags, out int lpErrno);
+	public static extern WSRESULT WSCGetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SIZE_T InfoSize, uint Flags, out int lpErrno);
 
 	/// <summary>The <c>WSCGetProviderPath</c> function retrieves the DLL path for the specified provider.</summary>
 	/// <param name="lpProviderId">
@@ -3768,7 +3768,7 @@ public static partial class Ws2_32
 	// lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, PBYTE Info, size_t InfoSize, DWORD Flags, LPINT lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "10eed3e6-d5a0-4ba4-964e-3d924a231afb")]
-	public static extern WSRESULT WSCSetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SizeT InfoSize, uint Flags, out int lpErrno);
+	public static extern WSRESULT WSCSetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SIZE_T InfoSize, uint Flags, out int lpErrno);
 
 	/// <summary>The **WSCSetProviderInfo32** function sets the data value for specified information class for a layered service provider (LSP).</summary>
 	/// <param name="lpProviderId">A pointer to a globally unique identifier (GUID) for the provider.</param>
@@ -3931,7 +3931,7 @@ public static partial class Ws2_32
 	// lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, PBYTE Info, size_t InfoSize, DWORD Flags, LPINT lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "adb2737f-5327-4306-bd57-f165f339f911")]
-	public static extern WSRESULT WSCSetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SizeT InfoSize, uint Flags, out int lpErrno);
+	public static extern WSRESULT WSCSetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SIZE_T InfoSize, uint Flags, out int lpErrno);
 
 	/// <summary>The <c>WSCUnInstallNameSpace</c> function uninstalls the indicated name-space provider.</summary>
 	/// <param name="lpProviderId">A pointer to a globally unique identifier (GUID) for the name-space provider to be uninstalled.</param>

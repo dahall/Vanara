@@ -6307,7 +6307,7 @@ public static partial class Ws2_32
 			return new SERVENT { s_name = s.s_name, s_aliases = s.s_aliases.ToStringEnum(s.s_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).Where(s => s is not null).ToArray()!, s_port = s.s_port, s_proto = s.s_proto };
 		}
 
-		readonly SizeT IVanaraMarshaler.GetNativeSize() => IntPtr.Size == 8 ? Marshal.SizeOf(typeof(SERVENTx64)) : Marshal.SizeOf(typeof(SERVENT));
+		readonly SIZE_T IVanaraMarshaler.GetNativeSize() => IntPtr.Size == 8 ? Marshal.SizeOf(typeof(SERVENTx64)) : Marshal.SizeOf(typeof(SERVENT));
 
 		readonly SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -6334,7 +6334,7 @@ public static partial class Ws2_32
 			throw new ArgumentException("Object must be of type SERVENT.", nameof(managedObject));
 		}
 
-		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes) => FromIntPtr(pNativeData);
+		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes) => FromIntPtr(pNativeData);
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		private struct SERVENTx32

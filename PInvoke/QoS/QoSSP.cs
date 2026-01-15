@@ -200,7 +200,7 @@ public static partial class Qwave
 		/// <summary>Describes the buffer used, in the form of a PARAM_BUFFER structure.</summary>
 		public PARAM_BUFFER? ParamBuffer;
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(ACTUAL));
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(ACTUAL));
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -239,7 +239,7 @@ public static partial class Qwave
 		private static readonly int bufOffset = Marshal.OffsetOf(typeof(ACTUAL), "union").ToInt32() +
 					Marshal.OffsetOf(typeof(UNION.DUMMYBUF), "Buffer").ToInt32();
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero || allocatedBytes == 0)
 			{

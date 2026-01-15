@@ -337,7 +337,7 @@ public static partial class DXC
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
 		[PreserveSig]
-		new SizeT GetBufferSize();
+		new SIZE_T GetBufferSize();
 
 		/// <summary>Retrieve the encoding for this blob.</summary>
 		/// <param name="pKnown">Pointer to a variable that will be set to <c>TRUE</c> if the encoding is known.</param>
@@ -378,7 +378,7 @@ public static partial class DXC
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
 		[PreserveSig]
-		new SizeT GetBufferSize();
+		new SIZE_T GetBufferSize();
 
 		/// <summary>Retrieve the encoding for this blob.</summary>
 		/// <param name="pKnown">Pointer to a variable that will be set to <c>TRUE</c> if the encoding is known.</param>
@@ -399,7 +399,7 @@ public static partial class DXC
 		/// <summary>Retrieves the length of the string stored in this blob, in characters, excluding the null-terminator.</summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcblobutf8-getstringlength SIZE_T GetStringLength();
 		[PreserveSig]
-		SizeT GetStringLength();
+		SIZE_T GetStringLength();
 	}
 
 	/// <summary>
@@ -428,7 +428,7 @@ public static partial class DXC
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
 		[PreserveSig]
-		new SizeT GetBufferSize();
+		new SIZE_T GetBufferSize();
 
 		/// <summary>Retrieve the encoding for this blob.</summary>
 		/// <param name="pKnown">Pointer to a variable that will be set to <c>TRUE</c> if the encoding is known.</param>
@@ -449,7 +449,7 @@ public static partial class DXC
 		/// <summary>Retrieves the length of the string stored in this blob, in characters, excluding the null-terminator.</summary>
 		// SIZE_T GetStringLength();
 		[PreserveSig]
-		SizeT GetStringLength();
+		SIZE_T GetStringLength();
 	}
 
 	/// <summary><b>IDxcCompiler</b> is deprecated; use <c>IDxcCompiler3</c> instead.</summary>
@@ -2057,7 +2057,7 @@ public static partial class DXC
 		public IntPtr Ptr;
 
 		/// <summary>The size of the buffer, in bytes.</summary>
-		public SizeT Size;
+		public SIZE_T Size;
 
 		/// <summary>The encoding of the buffer. Use Encoding == 0 for non-text bytes, ANSI text, or unknown with byte-order mark (BOM).</summary>
 		public uint Encoding;

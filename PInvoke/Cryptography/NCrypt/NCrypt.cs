@@ -14,7 +14,7 @@ public static partial class NCrypt
 	/// <returns>Pointer to the allocated memory.</returns>
 	[PInvokeData("ncrypt.h")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate IntPtr PFN_NCRYPT_ALLOC(SizeT cbSize);
+	public delegate IntPtr PFN_NCRYPT_ALLOC(SIZE_T cbSize);
 
 	/// <summary>A custom function that can free allocated memory.</summary>
 	/// <param name="pv">Pointer to the allocated memory.</param>
@@ -4859,7 +4859,7 @@ public static partial class NCrypt
 	// cbSize; PFN_NCRYPT_ALLOC pfnAlloc; PFN_NCRYPT_FREE pfnFree; } NCRYPT_ALLOC_PARA;
 	[PInvokeData("ncrypt.h", MSDNShortId = "4F546F51-E4DE-4703-B1D1-F84165C3C31B")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct NCRYPT_ALLOC_PARA(Func<SizeT, IntPtr>? alloc = null, Action<IntPtr>? free = null)
+	public struct NCRYPT_ALLOC_PARA(Func<SIZE_T, IntPtr>? alloc = null, Action<IntPtr>? free = null)
 	{
 		/// <summary>The size, in bytes, of this structure.</summary>
 		public uint cbSize = (uint)Marshal.SizeOf<NCRYPT_ALLOC_PARA>();
@@ -5452,7 +5452,7 @@ public static partial class NCrypt
 		/// <param name="buffers">An array of NCryptBuffer objects to include in the buffer descriptor. Cannot be null.</param>
 		public static implicit operator NCryptBufferDesc(NCryptBuffer[] buffers) => new(buffers);
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<NCryptBufferInt>();
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<NCryptBufferInt>();
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -5470,7 +5470,7 @@ public static partial class NCrypt
 			return ret;
 		}
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero || allocatedBytes == 0) return null;
 			if (allocatedBytes < Marshal.SizeOf<NCryptBufferDescInt>()) throw new InsufficientMemoryException();

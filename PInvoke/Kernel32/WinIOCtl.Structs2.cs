@@ -6996,11 +6996,11 @@ public static partial class Kernel32
 	{
 		static readonly Lazy<long> propOffset = new(() => Marshal.OffsetOf(typeof(STORAGE_DEVICE_DESCRIPTOR), nameof(STORAGE_DEVICE_DESCRIPTOR.RawDeviceProperties)).ToInt64());
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<STORAGE_DEVICE_DESCRIPTOR>();
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<STORAGE_DEVICE_DESCRIPTOR>();
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => new SafeCoTaskMemHandle(1024);
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 			var sdd = (STORAGE_DEVICE_DESCRIPTOR)Marshal.PtrToStructure(pNativeData, typeof(STORAGE_DEVICE_DESCRIPTOR))!;

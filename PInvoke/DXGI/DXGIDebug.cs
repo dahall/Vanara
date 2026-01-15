@@ -289,7 +289,7 @@ public static partial class DXGI
 		// DXGI_DEBUG_ID Producer, [in] UINT64 MessageIndex, [out, optional] DXGI_INFO_QUEUE_MESSAGE *pMessage, [in, out] SIZE_T
 		// *pMessageByteLength );
 		[PreserveSig]
-		HRESULT GetMessage(DXGI_DEBUG_ID Producer, ulong MessageIndex, [Out, Optional] ManagedStructPointer<DXGI_INFO_QUEUE_MESSAGE> pMessage, ref SizeT pMessageByteLength);
+		HRESULT GetMessage(DXGI_DEBUG_ID Producer, ulong MessageIndex, [Out, Optional] ManagedStructPointer<DXGI_INFO_QUEUE_MESSAGE> pMessage, ref SIZE_T pMessageByteLength);
 
 		/// <summary>Gets the number of messages that can pass through a retrieval filter.</summary>
 		/// <param name="Producer">A <c>DXGI_DEBUG_ID</c> value that identifies the entity that gets the number.</param>
@@ -397,7 +397,7 @@ public static partial class DXGI
 		// GetStorageFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T
 		// *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetStorageFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetStorageFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SIZE_T pFilterByteLength);
 
 		/// <summary>Removes a storage filter from the top of the storage-filter stack.</summary>
 		/// <param name="Producer">A <c>DXGI_DEBUG_ID</c> value that identifies the entity that removes the filter.</param>
@@ -517,7 +517,7 @@ public static partial class DXGI
 		// GetRetrievalFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T
 		// *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetRetrievalFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetRetrievalFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SIZE_T pFilterByteLength);
 
 		/// <summary>Removes a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <param name="Producer">A <c>DXGI_DEBUG_ID</c> value that identifies the entity that removes the filter.</param>
@@ -872,6 +872,6 @@ public static partial class DXGI
 		public string? pDescription;
 
 		/// <summary>The length of the message string at <c>pDescription</c>, in bytes.</summary>
-		public SizeT DescriptionByteLength;
+		public SIZE_T DescriptionByteLength;
 	}
 }

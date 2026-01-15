@@ -2287,7 +2287,7 @@ public static partial class Kernel32
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("SynchAPI.h", MSDNShortId = "hh706898")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool WaitOnAddress(void* Address, void* CompareAddress, SizeT AddressSize, uint dwMilliseconds);
+	public static extern unsafe bool WaitOnAddress(void* Address, void* CompareAddress, SIZE_T AddressSize, uint dwMilliseconds);
 
 	/// <summary>Wake all threads waiting on the specified condition variable.</summary>
 	/// <param name="ConditionVariable">A pointer to the condition variable.</param>

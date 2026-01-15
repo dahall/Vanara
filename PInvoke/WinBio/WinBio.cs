@@ -136,7 +136,7 @@ public static partial class WinBio
 	// UnitId, PWINBIO_BIR Sample, SIZE_T SampleSize, WINBIO_REJECT_DETAIL RejectDetail ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("winbio.h", MSDNShortId = "NC:winbio.PWINBIO_CAPTURE_CALLBACK")]
-	public delegate void PWINBIO_CAPTURE_CALLBACK([In, Optional] IntPtr CaptureCallbackContext, [In] HRESULT OperationStatus, uint UnitId, [In] IntPtr Sample, SizeT SampleSize, WINBIO_REJECT_DETAIL RejectDetail);
+	public delegate void PWINBIO_CAPTURE_CALLBACK([In, Optional] IntPtr CaptureCallbackContext, [In] HRESULT OperationStatus, uint UnitId, [In] IntPtr Sample, SIZE_T SampleSize, WINBIO_REJECT_DETAIL RejectDetail);
 
 	/// <summary>
 	/// <para>
@@ -441,7 +441,7 @@ public static partial class WinBio
 	[PInvokeData("winbio.h", MSDNShortId = "NC:winbio.PWINBIO_VERIFY_CALLBACK")]
 	public delegate void PWINBIO_VERIFY_CALLBACK([In, Optional] IntPtr VerifyCallbackContext, HRESULT OperationStatus, uint UnitId, [MarshalAs(UnmanagedType.U1)] bool Match, WINBIO_REJECT_DETAIL RejectDetail);
 
-	private delegate HRESULT EnumFunc(WINBIO_BIOMETRIC_TYPE Factor, out SafeWinBioMemory array, out SizeT count);
+	private delegate HRESULT EnumFunc(WINBIO_BIOMETRIC_TYPE Factor, out SafeWinBioMemory array, out SIZE_T count);
 
 	/// <summary>
 	/// Defines constants that specify how completion notifications for asynchronous operations are to be delivered to the client
@@ -1490,7 +1490,7 @@ public static partial class WinBio
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioAsyncOpenSession")]
 	public static extern HRESULT WinBioAsyncOpenSession(WINBIO_BIOMETRIC_TYPE Factor, WINBIO_POOL_TYPE PoolType, WINBIO_SESSION_FLAGS Flags,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? UnitArray, [Optional] SizeT UnitCount, in Guid DatabaseId,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? UnitArray, [Optional] SIZE_T UnitCount, in Guid DatabaseId,
 		WINBIO_ASYNC_NOTIFICATION_METHOD NotificationMethod, [In, Optional] HWND TargetWindow,
 		[In, Optional] uint MessageCode, [In, Optional] PWINBIO_ASYNC_COMPLETION_CALLBACK? CallbackRoutine,
 		[In, Optional] IntPtr UserData, [MarshalAs(UnmanagedType.Bool)] bool AsynchronousOpen,
@@ -1839,7 +1839,7 @@ public static partial class WinBio
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioAsyncOpenSession")]
 	public static extern HRESULT WinBioAsyncOpenSession(WINBIO_BIOMETRIC_TYPE Factor, WINBIO_POOL_TYPE PoolType, WINBIO_SESSION_FLAGS Flags,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? UnitArray, [Optional] SizeT UnitCount, [In, Optional] GuidPtr DatabaseId,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? UnitArray, [Optional] SIZE_T UnitCount, [In, Optional] GuidPtr DatabaseId,
 		WINBIO_ASYNC_NOTIFICATION_METHOD NotificationMethod, [In, Optional] HWND TargetWindow,
 		[In, Optional] uint MessageCode, [In, Optional] PWINBIO_ASYNC_COMPLETION_CALLBACK? CallbackRoutine,
 		[In, Optional] IntPtr UserData, [MarshalAs(UnmanagedType.Bool)] bool AsynchronousOpen,
@@ -2196,7 +2196,7 @@ public static partial class WinBio
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioCaptureSample")]
 	public static extern HRESULT WinBioCaptureSample(WINBIO_SESSION_HANDLE SessionHandle, WINBIO_BIR_PURPOSE Purpose, WINBIO_BIR_DATA_FLAGS Flags,
-		out uint UnitId, out SafeWinBioMemory Sample, out SizeT SampleSize, out WINBIO_REJECT_DETAIL RejectDetail);
+		out uint UnitId, out SafeWinBioMemory Sample, out SIZE_T SampleSize, out WINBIO_REJECT_DETAIL RejectDetail);
 
 	/// <summary>
 	/// <para>
@@ -2609,8 +2609,8 @@ public static partial class WinBio
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioControlUnit")]
 	public static extern HRESULT WinBioControlUnit(WINBIO_SESSION_HANDLE SessionHandle, WINBIO_UNIT_ID UnitId, WINBIO_COMPONENT Component, uint ControlCode,
-		[In] IntPtr SendBuffer, SizeT SendBufferSize, [Out] IntPtr ReceiveBuffer, SizeT ReceiveBufferSize,
-		out SizeT ReceiveDataSize, out uint OperationStatus);
+		[In] IntPtr SendBuffer, SIZE_T SendBufferSize, [Out] IntPtr ReceiveBuffer, SIZE_T ReceiveBufferSize,
+		out SIZE_T ReceiveDataSize, out uint OperationStatus);
 
 	/// <summary>
 	/// Allows the caller to perform privileged vendor-defined control operations on a biometric unit. Starting with Windows 10, build
@@ -2759,8 +2759,8 @@ public static partial class WinBio
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioControlUnitPrivileged")]
 	public static extern HRESULT WinBioControlUnitPrivileged(WINBIO_SESSION_HANDLE SessionHandle, WINBIO_UNIT_ID UnitId, WINBIO_COMPONENT Component,
-		uint ControlCode, [In] IntPtr SendBuffer, SizeT SendBufferSize, [Out] IntPtr ReceiveBuffer, SizeT ReceiveBufferSize,
-		out SizeT ReceiveDataSize, out uint OperationStatus);
+		uint ControlCode, [In] IntPtr SendBuffer, SIZE_T SendBufferSize, [Out] IntPtr ReceiveBuffer, SIZE_T ReceiveBufferSize,
+		out SIZE_T ReceiveDataSize, out uint OperationStatus);
 
 	/// <summary>
 	/// Deletes a biometric template from the template store. Starting with Windows 10, build 1607, this function is available to use
@@ -3638,7 +3638,7 @@ public static partial class WinBio
 	// WINBIO_BIOMETRIC_TYPE Factor, WINBIO_UNIT_SCHEMA **UnitSchemaArray, SIZE_T *UnitCount );
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioEnumBiometricUnits")]
-	public static extern HRESULT WinBioEnumBiometricUnits(WINBIO_BIOMETRIC_TYPE Factor, out SafeWinBioMemory UnitSchemaArray, out SizeT UnitCount);
+	public static extern HRESULT WinBioEnumBiometricUnits(WINBIO_BIOMETRIC_TYPE Factor, out SafeWinBioMemory UnitSchemaArray, out SIZE_T UnitCount);
 
 	/// <summary>Enumerates all attached biometric units that match the input type.</summary>
 	/// <param name="Factor">
@@ -3757,7 +3757,7 @@ public static partial class WinBio
 	// WINBIO_BIOMETRIC_TYPE Factor, WINBIO_STORAGE_SCHEMA **StorageSchemaArray, SIZE_T *StorageCount );
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioEnumDatabases")]
-	public static extern HRESULT WinBioEnumDatabases(WINBIO_BIOMETRIC_TYPE Factor, out SafeWinBioMemory StorageSchemaArray, out SizeT StorageCount);
+	public static extern HRESULT WinBioEnumDatabases(WINBIO_BIOMETRIC_TYPE Factor, out SafeWinBioMemory StorageSchemaArray, out SIZE_T StorageCount);
 
 	/// <summary>Enumerates all registered databases that match a specified type.</summary>
 	/// <param name="Factor">
@@ -3923,7 +3923,7 @@ public static partial class WinBio
 	// SIZE_T *SubFactorCount );
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioEnumEnrollments")]
-	public static extern HRESULT WinBioEnumEnrollments(WINBIO_SESSION_HANDLE SessionHandle, WINBIO_UNIT_ID UnitId, in WINBIO_IDENTITY Identity, out SafeWinBioMemory SubFactorArray, out SizeT SubFactorCount);
+	public static extern HRESULT WinBioEnumEnrollments(WINBIO_SESSION_HANDLE SessionHandle, WINBIO_UNIT_ID UnitId, in WINBIO_IDENTITY Identity, out SafeWinBioMemory SubFactorArray, out SIZE_T SubFactorCount);
 
 	/// <summary>
 	/// Retrieves the biometric sub-factors enrolled for a specified identity and biometric unit. Starting with Windows 10, build 1607,
@@ -4129,7 +4129,7 @@ public static partial class WinBio
 	// WinBioEnumServiceProviders( WINBIO_BIOMETRIC_TYPE Factor, WINBIO_BSP_SCHEMA **BspSchemaArray, SIZE_T *BspCount );
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioEnumServiceProviders")]
-	public static extern HRESULT WinBioEnumServiceProviders(WINBIO_BIOMETRIC_TYPE Factor, out SafeWinBioMemory BspSchemaArray, out SizeT BspCount);
+	public static extern HRESULT WinBioEnumServiceProviders(WINBIO_BIOMETRIC_TYPE Factor, out SafeWinBioMemory BspSchemaArray, out SIZE_T BspCount);
 
 	/// <summary>
 	/// Retrieves information about installed biometric service providers. Starting with Windows 10, build 1607, this function is
@@ -4683,7 +4683,7 @@ public static partial class WinBio
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioGetProperty")]
 	public static extern HRESULT WinBioGetProperty(WINBIO_SESSION_HANDLE SessionHandle, WINBIO_PROPERTY_TYPE PropertyType, WINBIO_PROPERTY_ID PropertyId,
 		[In, Optional] WINBIO_UNIT_ID UnitId, [In, Optional] IntPtr Identity, [In, Optional] WINBIO_BIOMETRIC_SUBTYPE SubFactor,
-		out SafeWinBioMemory PropertyBuffer, out SizeT PropertyBufferSize);
+		out SafeWinBioMemory PropertyBuffer, out SIZE_T PropertyBufferSize);
 
 	/// <summary>
 	/// Retrieves a session, unit, or template property. Starting with Windows 10, build 1607, this function is available to use with a
@@ -4761,7 +4761,7 @@ public static partial class WinBio
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioGetProperty")]
 	public static extern HRESULT WinBioGetProperty(WINBIO_SESSION_HANDLE SessionHandle, WINBIO_PROPERTY_TYPE PropertyType, WINBIO_PROPERTY_ID PropertyId,
 		[In, Optional] WINBIO_UNIT_ID UnitId, in WINBIO_IDENTITY Identity, [In, Optional] WINBIO_BIOMETRIC_SUBTYPE SubFactor,
-		out SafeWinBioMemory PropertyBuffer, out SizeT PropertyBufferSize);
+		out SafeWinBioMemory PropertyBuffer, out SIZE_T PropertyBufferSize);
 
 	/// <summary>
 	/// Captures a biometric sample and determines whether it matches an existing biometric template. Starting with Windows 10, build
@@ -5663,7 +5663,7 @@ public static partial class WinBio
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioOpenSession")]
 	public static extern HRESULT WinBioOpenSession(WINBIO_BIOMETRIC_TYPE Factor, WINBIO_POOL_TYPE PoolType, WINBIO_SESSION_FLAGS Flags,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] WINBIO_UNIT_ID[]? UnitArray, [In, Optional] SizeT UnitCount,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] WINBIO_UNIT_ID[]? UnitArray, [In, Optional] SIZE_T UnitCount,
 		in Guid DatabaseId, out WINBIO_SESSION_HANDLE SessionHandle);
 
 	/// <summary>Connects to a biometric service provider and one or more biometric units.</summary>
@@ -5820,7 +5820,7 @@ public static partial class WinBio
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioOpenSession")]
 	public static extern HRESULT WinBioOpenSession(WINBIO_BIOMETRIC_TYPE Factor, WINBIO_POOL_TYPE PoolType, WINBIO_SESSION_FLAGS Flags,
-		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] WINBIO_UNIT_ID[]? UnitArray, [In, Optional] SizeT UnitCount,
+		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] WINBIO_UNIT_ID[]? UnitArray, [In, Optional] SIZE_T UnitCount,
 		[In, Optional] GuidPtr DatabaseId, out WINBIO_SESSION_HANDLE SessionHandle);
 
 	/// <summary>
@@ -6240,7 +6240,7 @@ public static partial class WinBio
 	// WINBIO_CREDENTIAL_TYPE Type, PUCHAR Credential, SIZE_T CredentialSize, WINBIO_CREDENTIAL_FORMAT Format );
 	[DllImport(Lib_Winbio, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioSetCredential")]
-	public static extern HRESULT WinBioSetCredential(WINBIO_CREDENTIAL_TYPE Type, [In] IntPtr Credential, SizeT CredentialSize, WINBIO_CREDENTIAL_FORMAT Format);
+	public static extern HRESULT WinBioSetCredential(WINBIO_CREDENTIAL_TYPE Type, [In] IntPtr Credential, SIZE_T CredentialSize, WINBIO_CREDENTIAL_FORMAT Format);
 
 	/// <summary>
 	/// Sets the value of a standard property associated with a biometric session, unit, template, or account. Starting with Windows 10,
@@ -6356,7 +6356,7 @@ public static partial class WinBio
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioSetProperty")]
 	public static extern HRESULT WinBioSetProperty(WINBIO_SESSION_HANDLE SessionHandle, WINBIO_PROPERTY_TYPE PropertyType, WINBIO_PROPERTY_ID PropertyId,
-		[Optional] WINBIO_UNIT_ID UnitId, in WINBIO_IDENTITY Identity, [Optional] WINBIO_BIOMETRIC_SUBTYPE SubFactor, [In] IntPtr PropertyBuffer, SizeT PropertyBufferSize);
+		[Optional] WINBIO_UNIT_ID UnitId, in WINBIO_IDENTITY Identity, [Optional] WINBIO_BIOMETRIC_SUBTYPE SubFactor, [In] IntPtr PropertyBuffer, SIZE_T PropertyBufferSize);
 
 	/// <summary>
 	/// Sets the value of a standard property associated with a biometric session, unit, template, or account. Starting with Windows 10,
@@ -6472,7 +6472,7 @@ public static partial class WinBio
 	[DllImport(Lib_Winbio, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winbio.h", MSDNShortId = "NF:winbio.WinBioSetProperty")]
 	public static extern HRESULT WinBioSetProperty(WINBIO_SESSION_HANDLE SessionHandle, WINBIO_PROPERTY_TYPE PropertyType, WINBIO_PROPERTY_ID PropertyId,
-		[Optional] WINBIO_UNIT_ID UnitId, [In, Optional] IntPtr Identity, [Optional] WINBIO_BIOMETRIC_SUBTYPE SubFactor, [In] IntPtr PropertyBuffer, SizeT PropertyBufferSize);
+		[Optional] WINBIO_UNIT_ID UnitId, [In, Optional] IntPtr Identity, [Optional] WINBIO_BIOMETRIC_SUBTYPE SubFactor, [In] IntPtr PropertyBuffer, SIZE_T PropertyBufferSize);
 
 	/// <summary>Releases the session lock on the specified biometric unit.</summary>
 	/// <param name="SessionHandle">
@@ -7434,7 +7434,7 @@ public static partial class WinBio
 				public WINBIO_IDENTITY Identity;
 
 				/// <summary>Number of elements in the array pointed to by the <c>SubFactorArray</c> member.</summary>
-				public SizeT SubFactorCount;
+				public SIZE_T SubFactorCount;
 
 				/// <summary>Pointer to an array of sub-factors. For more information, see Remarks.</summary>
 				public IntPtr _SubFactorArray;
@@ -7455,7 +7455,7 @@ public static partial class WinBio
 				public IntPtr Sample;
 
 				/// <summary>Size, in bytes, of the WINBIO_BIR structure returned in the <c>Sample</c> member.</summary>
-				public SizeT SampleSize;
+				public SIZE_T SampleSize;
 
 				/// <summary>Additional information about the failure to capture a biometric sample. For more information, see Remarks.</summary>
 				public WINBIO_REJECT_DETAIL RejectDetail;
@@ -7497,7 +7497,7 @@ public static partial class WinBio
 				public WINBIO_BIOMETRIC_SUBTYPE SubFactor;
 
 				/// <summary>Size, in bytes, of the property value pointed to by the <c>PropertyBuffer</c> member.</summary>
-				public SizeT PropertyBufferSize;
+				public SIZE_T PropertyBufferSize;
 
 				/// <summary>Pointer to the property value.</summary>
 				public IntPtr PropertyBuffer;
@@ -7541,7 +7541,7 @@ public static partial class WinBio
 				public WINBIO_BIOMETRIC_SUBTYPE SubFactor;
 
 				/// <summary/>
-				public SizeT PropertyBufferSize;
+				public SIZE_T PropertyBufferSize;
 
 				/// <summary>
 				/// A pointer to a structure that specifies the value to which the property was set. For the
@@ -7589,7 +7589,7 @@ public static partial class WinBio
 				public IntPtr SendBuffer;
 
 				/// <summary>Size, in bytes, of the buffer specified by the <c>SendBuffer</c> member.</summary>
-				public SizeT SendBufferSize;
+				public SIZE_T SendBufferSize;
 
 				/// <summary>
 				/// Pointer to a buffer that receives information sent by the adapter specified by the <c>Component</c> member. The
@@ -7598,10 +7598,10 @@ public static partial class WinBio
 				public IntPtr ReceiveBuffer;
 
 				/// <summary>Size, in bytes, of the buffer specified by the <c>ReceiveBuffer</c> member.</summary>
-				public SizeT ReceiveBufferSize;
+				public SIZE_T ReceiveBufferSize;
 
 				/// <summary>Size, in bytes, of the data written to the buffer specified by the <c>ReceiveBuffer</c> member.</summary>
-				public SizeT ReceiveDataSize;
+				public SIZE_T ReceiveDataSize;
 			}
 
 			/// <summary>Contains the results of an asynchronous call to WinBioEnumServiceProviders or WinBioAsyncEnumServiceProviders.</summary>
@@ -7613,7 +7613,7 @@ public static partial class WinBio
 			public struct ENUMSERVICEPROVIDERS
 			{
 				/// <summary>The number of structures pointed to by the <c>BspSchemaArray</c> member.</summary>
-				public SizeT BspCount;
+				public SIZE_T BspCount;
 
 				/// <summary>
 				/// Pointer to an array of WINBIO_BSP_SCHEMA structures that contain information about each of the available service providers.
@@ -7635,7 +7635,7 @@ public static partial class WinBio
 			public struct ENUMBIOMETRICUNITS
 			{
 				/// <summary>Number of structures pointed to by the <c>UnitSchemaArray</c> member.</summary>
-				public SizeT UnitCount;
+				public SIZE_T UnitCount;
 
 				/// <summary>An array of WINBIO_UNIT_SCHEMA structures that contain information about each enumerated biometric unit.</summary>
 				public IntPtr _UnitSchemaArray;
@@ -7653,7 +7653,7 @@ public static partial class WinBio
 			public struct ENUMDATABASES
 			{
 				/// <summary>Number of structures pointed to by the <c>StorageSchemaArray</c> member.</summary>
-				public SizeT StorageCount;
+				public SIZE_T StorageCount;
 
 				/// <summary>Array of WINBIO_STORAGE_SCHEMA structures that contain information about each database.</summary>
 				public IntPtr _StorageSchemaArray;
@@ -7734,7 +7734,7 @@ public static partial class WinBio
 				public WINBIO_PRESENCE_CHANGE ChangeType;
 
 				/// <summary>The size of the array that the <c>MonitorPresence.PresenceArray</c> member points to.</summary>
-				public SizeT PresenceCount;
+				public SIZE_T PresenceCount;
 
 				/// <summary>Address of the array of WINBIO_PRESENCE structures, one for each individual monitored.</summary>
 				public IntPtr _PresenceArray;
@@ -7812,7 +7812,7 @@ public static partial class WinBio
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in this handle.</param>
 		/// <param name="offset">The number of bytes to skip before reading the element.</param>
 		/// <returns>A managed object that contains the data pointed to by this safe handle.</returns>
-		public T ToStructure<T>(SizeT allocatedBytes, uint offset = 0) where T : struct => handle.ToStructure<T>(allocatedBytes, (int)offset);
+		public T ToStructure<T>(SIZE_T allocatedBytes, uint offset = 0) where T : struct => handle.ToStructure<T>(allocatedBytes, (int)offset);
 	}
 
 	/// <summary>A structure handler based on unmanaged memory allocated by AllocCoTaskMem.</summary>
@@ -7826,18 +7826,18 @@ public static partial class WinBio
 		/// <summary>Initializes a new instance of the <see cref="SafeWinBioStruct{TStruct}"/> class.</summary>
 		/// <param name="s">The TStruct value.</param>
 		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
-		public SafeWinBioStruct(in TStruct s, SizeT capacity = default) : base(s, capacity) { }
+		public SafeWinBioStruct(in TStruct s, SIZE_T capacity = default) : base(s, capacity) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeWinBioStruct{TStruct}"/> class.</summary>
 		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
-		public SafeWinBioStruct(SizeT capacity = default) : base(capacity) { }
+		public SafeWinBioStruct(SIZE_T capacity = default) : base(capacity) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeWinBioStruct{TStruct}"/> class.</summary>
 		/// <param name="ptr">The PTR.</param>
 		/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 		/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-		public SafeWinBioStruct(IntPtr ptr, bool ownsHandle = true, SizeT allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
+		public SafeWinBioStruct(IntPtr ptr, bool ownsHandle = true, SIZE_T allocatedBytes = default) : base(ptr, ownsHandle, allocatedBytes) { }
 		/// <summary>Performs an implicit conversion from <see cref="Nullable{TStruct}"/> to <see cref="SafeCoTaskMemStruct{TStruct}"/>.</summary>
 		/// <param name="s">The value of the <typeparamref name="TStruct"/> instance or <see langword="null"/>.</param>
 		/// <returns>The resulting <see cref="SafeWinBioStruct{TStruct}"/> instance from the conversion.</returns>

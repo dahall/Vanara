@@ -81,7 +81,7 @@ public static partial class ActiveDS
 			public IntPtr pADsValues;
 			public uint dwNumValues;
 
-			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
+			SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
 
 			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 			{
@@ -98,7 +98,7 @@ public static partial class ActiveDS
 				}).ToList() ?? [];
 				var sz = Marshal.SizeOf(typeof(ADS_ATTR_INFO_UNMGD));
 				var vsz = Marshal.SizeOf(typeof(ADSVALUE));
-				SizeT ext = vsz * vals.Count + (i.pszAttrName?.GetByteCount(true, CharSet.Unicode) ?? 0);
+				SIZE_T ext = vsz * vals.Count + (i.pszAttrName?.GetByteCount(true, CharSet.Unicode) ?? 0);
 				ret.Size += ext;
 
 				ADS_ATTR_INFO_UNMGD ii = new()
@@ -114,7 +114,7 @@ public static partial class ActiveDS
 				return ret;
 			}
 
-			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 			{
 				if (pNativeData == IntPtr.Zero || allocatedBytes == 0) return null;
 				var ii = (ADS_ATTR_INFO_UNMGD)Marshal.PtrToStructure(pNativeData, typeof(ADS_ATTR_INFO_UNMGD))!;
@@ -225,7 +225,7 @@ public static partial class ActiveDS
 			public IntPtr lpBinaryValue;
 			public LPWSTR pszDNString;
 
-			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
+			SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
 
 			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 			{
@@ -249,7 +249,7 @@ public static partial class ActiveDS
 				return pv;
 			}
 
-			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 			{
 				if (pNativeData == IntPtr.Zero || allocatedBytes == 0) return null;
 				var u = (ADS_DN_WITH_BINARY_UNMGD)Marshal.PtrToStructure(pNativeData, typeof(ADS_DN_WITH_BINARY_UNMGD))!;
@@ -280,7 +280,7 @@ public static partial class ActiveDS
 			public LPWSTR pszStringValue;
 			public LPWSTR pszDNString;
 
-			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
+			SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
 
 			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 			{
@@ -304,7 +304,7 @@ public static partial class ActiveDS
 				return pv;
 			}
 
-			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 			{
 				if (pNativeData == IntPtr.Zero || allocatedBytes == 0) return null;
 				var u = (ADS_DN_WITH_STRING_UNMGD)Marshal.PtrToStructure(pNativeData, typeof(ADS_DN_WITH_STRING_UNMGD))!;
@@ -368,7 +368,7 @@ public static partial class ActiveDS
 			public uint NumberOfBits;
 			public IntPtr Parameters;
 
-			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
+			SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
 
 			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 			{
@@ -392,7 +392,7 @@ public static partial class ActiveDS
 				return pv;
 			}
 
-			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 			{
 				if (pNativeData == IntPtr.Zero || allocatedBytes == 0)
 					return null;
@@ -456,7 +456,7 @@ public static partial class ActiveDS
 			public uint AddressLength;
 			public IntPtr Address;
 
-			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
+			SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
 
 			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 			{
@@ -467,7 +467,7 @@ public static partial class ActiveDS
 				return pu;
 			}
 
-			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 			{
 				if (pNativeData == IntPtr.Zero || allocatedBytes == 0)
 					return null;
@@ -670,14 +670,14 @@ public static partial class ActiveDS
 			/// <summary>A network address that is a likely reference to a node leading to the name server.</summary>
 			public IntPtr ReplicaAddressHints;
 
-			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
+			SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
 
 			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 			{
 				if (managedObject is not ADS_REPLICAPOINTER i)
 					throw new ArgumentException("Invalid object", nameof(managedObject));
 				ADS_REPLICAPOINTER_UNMGD ii = new() { ReplicaType = i.ReplicaType, ReplicaNumber = i.ReplicaNumber, Count = i.Count };
-				SizeT ext = (i.ServerName?.GetByteCount(true, CharSet.Unicode) ?? 0) + Marshal.SizeOf(typeof(ADS_NETADDRESS.ADS_NETADDRESS_UNMGD)) + (i.ReplicaAddressHints?.Address?.Length ?? 0);
+				SIZE_T ext = (i.ServerName?.GetByteCount(true, CharSet.Unicode) ?? 0) + Marshal.SizeOf(typeof(ADS_NETADDRESS.ADS_NETADDRESS_UNMGD)) + (i.ReplicaAddressHints?.Address?.Length ?? 0);
 				var sz = Marshal.SizeOf(typeof(ADS_REPLICAPOINTER_UNMGD));
 				var ret = new SafeCoTaskMemStruct<ADS_REPLICAPOINTER_UNMGD>(ext + sz);
 				ii.ServerName = ret.DangerousGetHandle().Offset(sz);
@@ -686,7 +686,7 @@ public static partial class ActiveDS
 				return ret;
 			}
 
-			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 			{
 				if (pNativeData == IntPtr.Zero || allocatedBytes == 0)
 					return null;
@@ -744,14 +744,14 @@ public static partial class ActiveDS
 			/// <summary>Reserved for internal use by providers.</summary>
 			public HANDLE hReserved;
 
-			SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
+			SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(this);
 
 			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 			{
 				if (managedObject is not ADS_SEARCH_COLUMN i)
 					throw new ArgumentException("Invalid object", nameof(managedObject));
 				ADS_SEARCH_COLUMN_UNMGD ii = new() { dwADsType = i.dwADsType, hReserved = i.hReserved, dwNumValues = (uint?)i.pADsValues?.Length ?? 0 };
-				SizeT ext = ii.dwNumValues * Marshal.SizeOf(typeof(ADSVALUE)) + (i.pszAttrName?.GetByteCount(true, CharSet.Unicode) ?? 0);
+				SIZE_T ext = ii.dwNumValues * Marshal.SizeOf(typeof(ADSVALUE)) + (i.pszAttrName?.GetByteCount(true, CharSet.Unicode) ?? 0);
 				var sz = Marshal.SizeOf(typeof(ADS_SEARCH_COLUMN_UNMGD));
 				var ret = new SafeCoTaskMemHandle(ext + sz);
 				ii.pszAttrName = ret.DangerousGetHandle().Offset(sz);
@@ -762,7 +762,7 @@ public static partial class ActiveDS
 				return ret;
 			}
 
-			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+			object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 			{
 				if (pNativeData == IntPtr.Zero || allocatedBytes == 0)
 					return null;

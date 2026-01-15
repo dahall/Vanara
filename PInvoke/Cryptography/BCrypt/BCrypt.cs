@@ -10496,7 +10496,7 @@ public static partial class BCrypt
 	public partial class SafeBCryptBuffer
 	{
 		/// <summary>Gets the size of the buffer.</summary>
-		public SizeT Size { get; internal set; }
+		public SIZE_T Size { get; internal set; }
 
 		/// <summary>Marshals data to a newly allocated managed object of the type specified by a generic type parameter.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>

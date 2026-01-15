@@ -1399,7 +1399,7 @@ After:
 		/// <returns>
 		/// The size, in bytes, of the base object in memory. This should return the equivalent of the sizeof(X) function in C/C++.
 		/// </returns>
-		public SizeT GetNativeSize() => Marshal.SizeOf(structType);
+		public SIZE_T GetNativeSize() => Marshal.SizeOf(structType);
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -1422,7 +1422,7 @@ After:
 			return ret;
 		}
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 
@@ -1989,13 +1989,13 @@ After:
 		public uint oCV;
 
 		/// <summary>The size of the CodeView record.</summary>
-		public SizeT cCV;
+		public SIZE_T cCV;
 
 		/// <summary>The offset of the Misc record.</summary>
 		public uint oMisc;
 
 		/// <summary>The size of the Misc record.</summary>
-		public SizeT cMisc;
+		public SIZE_T cMisc;
 
 		/// <summary>The date/time stamp of the image.</summary>
 		public uint dtImage;

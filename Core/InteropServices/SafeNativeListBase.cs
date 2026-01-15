@@ -14,11 +14,11 @@ public abstract class SafeNativeListBase<TElem, TMem> : SafeMemoryHandle<TMem>, 
 	/// <param name="ptr">The handle.</param>
 	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	protected SafeNativeListBase(IntPtr ptr, SizeT size, bool ownsHandle) : base(ptr, size, ownsHandle) { }
+	protected SafeNativeListBase(IntPtr ptr, SIZE_T size, bool ownsHandle) : base(ptr, size, ownsHandle) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeNativeLinkedList{TElem, TMem}"/> class.</summary>
 	/// <param name="byteCount">The number of bytes to allocate for this new array.</param>
-	public SafeNativeListBase(SizeT byteCount) : base(byteCount) { }
+	public SafeNativeListBase(SIZE_T byteCount) : base(byteCount) { }
 
 	/// <summary>Gets the number of elements contained in the <see cref="SafeNativeLinkedList{TElem, TMem}"/>.</summary>
 	public virtual int Count => IsInvalid ? 0 : Items.Count();

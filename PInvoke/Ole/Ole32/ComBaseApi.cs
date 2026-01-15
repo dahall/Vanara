@@ -3459,7 +3459,7 @@ public static partial class Ole32
 	// https://docs.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cotaskmemalloc LPVOID CoTaskMemAlloc( SIZE_T cb );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "c4cb588d-9482-4f90-a92e-75b604540d5c")]
-	public static extern IntPtr CoTaskMemAlloc(SizeT cb);
+	public static extern IntPtr CoTaskMemAlloc(SIZE_T cb);
 
 	/// <summary>Frees a block of task memory previously allocated through a call to the CoTaskMemAlloc or CoTaskMemRealloc function.</summary>
 	/// <param name="pv">A pointer to the memory block to be freed. If this parameter is <c>NULL</c>, the function has no effect.</param>
@@ -3511,7 +3511,7 @@ public static partial class Ole32
 	// SIZE_T cb );
 	[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("combaseapi.h", MSDNShortId = "83014a3e-198d-4b4b-91aa-0c0804c8e1bf")]
-	public static extern IntPtr CoTaskMemRealloc(IntPtr pv, SizeT cb);
+	public static extern IntPtr CoTaskMemRealloc(IntPtr pv, SIZE_T cb);
 
 	/// <summary>
 	/// <para>Determines whether the call being executed on the server has been canceled by the client.</para>

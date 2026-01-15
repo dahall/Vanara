@@ -192,7 +192,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592866")]
 	[return: AddAsCtor]
-	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SizeT dwSize, [Optional] SizeT dwInitialCommittment,
+	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SIZE_T dwSize, [Optional] SIZE_T dwInitialCommittment,
 		EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_SGX lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
 
 	/// <summary>
@@ -276,7 +276,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592866")]
 	[return: AddAsCtor]
-	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SizeT dwSize, [Optional] SizeT dwInitialCommittment,
+	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SIZE_T dwSize, [Optional] SIZE_T dwInitialCommittment,
 		EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_VBS lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
 
 	/// <summary>Deletes the specified enclave.</summary>
@@ -761,8 +761,8 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592871")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LoadEnclaveData(HPROCESS hProcess, IntPtr lpAddress, [Optional] IntPtr lpBuffer, [Optional] SizeT nSize, MEM_PROTECTION flProtect,
-		[Optional] IntPtr lpPageInformation, [Optional] uint dwInfoLength, out SizeT lpNumberOfBytesWritten, out uint lpEnclaveError);
+	public static extern bool LoadEnclaveData(HPROCESS hProcess, IntPtr lpAddress, [Optional] IntPtr lpBuffer, [Optional] SIZE_T nSize, MEM_PROTECTION flProtect,
+		[Optional] IntPtr lpPageInformation, [Optional] uint dwInfoLength, out SIZE_T lpNumberOfBytesWritten, out uint lpEnclaveError);
 
 	/// <summary>Loads an image and all of its imports into an enclave.</summary>
 	/// <param name="lpEnclaveAddress">The base address of the image into which to load the image.</param>
@@ -803,7 +803,7 @@ public static partial class Kernel32
 	// EnclaveCopyIntoEnclave( VOID *EnclaveAddress, const VOID *UnsecureAddress, SIZE_T NumberOfBytes );
 	[PInvokeData("winenclaveapi.h", MSDNShortId = "NF:winenclaveapi.EnclaveCopyIntoEnclave")]
 	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
-	public static extern HRESULT EnclaveCopyIntoEnclave([In] IntPtr EnclaveAddress, [In] IntPtr UnsecureAddress, SizeT NumberOfBytes);
+	public static extern HRESULT EnclaveCopyIntoEnclave([In] IntPtr EnclaveAddress, [In] IntPtr UnsecureAddress, SIZE_T NumberOfBytes);
 
 	/// <summary>Copies data from the enclave to an untrusted address (outside of the enclave).</summary>
 	/// <param name="UnsecureAddress">An address outside of the enclave to which to copy data.</param>
@@ -821,7 +821,7 @@ public static partial class Kernel32
 	// EnclaveCopyOutOfEnclave( VOID *UnsecureAddress, const VOID *EnclaveAddress, SIZE_T NumberOfBytes );
 	[PInvokeData("winenclaveapi.h", MSDNShortId = "NF:winenclaveapi.EnclaveCopyOutOfEnclave")]
 	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
-	public static extern HRESULT EnclaveCopyOutOfEnclave([In] IntPtr UnsecureAddress, [In] IntPtr EnclaveAddress, SizeT NumberOfBytes);
+	public static extern HRESULT EnclaveCopyOutOfEnclave([In] IntPtr UnsecureAddress, [In] IntPtr EnclaveAddress, SIZE_T NumberOfBytes);
 
 	/// <summary>
 	/// Restricts (or restores) access by an enclave to the address space of its containing process. This policy applies to all threads in
@@ -1016,7 +1016,7 @@ public static partial class Kernel32
 		public IntPtr BaseAddress;
 
 		/// <summary>The size of the enclave, in bytes.</summary>
-		public SizeT Size;
+		public SIZE_T Size;
 
 		/// <summary>The identity of the primary module of an enclave.</summary>
 		public ENCLAVE_IDENTITY Identity;

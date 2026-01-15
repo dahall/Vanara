@@ -700,10 +700,10 @@ public static partial class DirectXMath
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvector2transformcoordstream XMFLOAT2 *XM_CALLCONV
-	// XMVector2TransformCoordStream( [out] XMFLOAT2 *pOutputStream, [in] SizeT OutputStride, [in] const XMFLOAT2 *pInputStream, [in] SizeT
-	// InputStride, [in] SizeT VectorCount, [in] FXMMATRIX M );
+	// XMVector2TransformCoordStream( [out] XMFLOAT2 *pOutputStream, [in] SIZE_T OutputStride, [in] const XMFLOAT2 *pInputStream, [in] SIZE_T
+	// InputStride, [in] SIZE_T VectorCount, [in] FXMMATRIX M );
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVector2TransformCoordStream")]
-	public static unsafe XMFLOAT2* XMVector2TransformCoordStream([Out] XMFLOAT2* pOutputStream, [In] SizeT OutputStride, [In] XMFLOAT2* pInputStream, [In] SizeT InputStride, [In] SizeT VectorCount, [In] FXMMATRIX M)
+	public static unsafe XMFLOAT2* XMVector2TransformCoordStream([Out] XMFLOAT2* pOutputStream, [In] SIZE_T OutputStride, [In] XMFLOAT2* pInputStream, [In] SIZE_T InputStride, [In] SIZE_T VectorCount, [In] FXMMATRIX M)
 	{
 		if (pOutputStream is null) throw new ArgumentNullException(nameof(pOutputStream));
 		if (pInputStream is null) throw new ArgumentNullException(nameof(pInputStream));
@@ -718,7 +718,7 @@ public static partial class DirectXMath
 		XMVECTOR row1 = M.r[1];
 		XMVECTOR row3 = M.r[3];
 
-		for (SizeT i = 0; i < VectorCount; i++)
+		for (SIZE_T i = 0; i < VectorCount; i++)
 		{
 			XMVECTOR V = XMLoadFloat2(*(XMFLOAT2*)pInputVector);
 			XMVECTOR Y = XMVectorSplatY(V);
@@ -776,10 +776,10 @@ public static partial class DirectXMath
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvector2transformnormalstream XMFLOAT2 *XM_CALLCONV
-	// XMVector2TransformNormalStream( [out] XMFLOAT2 *pOutputStream, [in] SizeT OutputStride, [in] const XMFLOAT2 *pInputStream, [in] SizeT
-	// InputStride, [in] SizeT VectorCount, [in] FXMMATRIX M );
+	// XMVector2TransformNormalStream( [out] XMFLOAT2 *pOutputStream, [in] SIZE_T OutputStride, [in] const XMFLOAT2 *pInputStream, [in] SIZE_T
+	// InputStride, [in] SIZE_T VectorCount, [in] FXMMATRIX M );
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVector2TransformNormalStream")]
-	public static unsafe XMFLOAT2* XMVector2TransformNormalStream([Out] XMFLOAT2* pOutputStream, [In] SizeT OutputStride, [In] XMFLOAT2* pInputStream, [In] SizeT InputStride, [In] SizeT VectorCount, [In] FXMMATRIX M)
+	public static unsafe XMFLOAT2* XMVector2TransformNormalStream([Out] XMFLOAT2* pOutputStream, [In] SIZE_T OutputStride, [In] XMFLOAT2* pInputStream, [In] SIZE_T InputStride, [In] SIZE_T VectorCount, [In] FXMMATRIX M)
 	{
 		if (pOutputStream is null) throw new ArgumentNullException(nameof(pOutputStream));
 		if (pInputStream is null) throw new ArgumentNullException(nameof(pInputStream));
@@ -793,7 +793,7 @@ public static partial class DirectXMath
 		XMVECTOR row0 = M.r[0];
 		XMVECTOR row1 = M.r[1];
 
-		for (SizeT i = 0; i < VectorCount; i++)
+		for (SIZE_T i = 0; i < VectorCount; i++)
 		{
 			XMVECTOR V = XMLoadFloat2(*(XMFLOAT2*)pInputVector);
 			XMVECTOR Y = XMVectorSplatY(V);
@@ -827,10 +827,10 @@ public static partial class DirectXMath
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvector2transformstream XMFLOAT4 *XM_CALLCONV
-	// XMVector2TransformStream( [out] XMFLOAT4 *pOutputStream, [in] SizeT OutputStride, [in] const XMFLOAT2 *pInputStream, [in] SizeT
-	// InputStride, [in] SizeT VectorCount, [in] FXMMATRIX M );
+	// XMVector2TransformStream( [out] XMFLOAT4 *pOutputStream, [in] SIZE_T OutputStride, [in] const XMFLOAT2 *pInputStream, [in] SIZE_T
+	// InputStride, [in] SIZE_T VectorCount, [in] FXMMATRIX M );
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVector2TransformStream")]
-	public static unsafe XMFLOAT4* XMVector2TransformStream([Out] XMFLOAT4* pOutputStream, [In] SizeT OutputStride, [In] XMFLOAT2* pInputStream, [In] SizeT InputStride, [In] SizeT VectorCount, [In] FXMMATRIX M)
+	public static unsafe XMFLOAT4* XMVector2TransformStream([Out] XMFLOAT4* pOutputStream, [In] SIZE_T OutputStride, [In] XMFLOAT2* pInputStream, [In] SIZE_T InputStride, [In] SIZE_T VectorCount, [In] FXMMATRIX M)
 	{
 		var pInputVector = (byte*)pInputStream;
 		var pOutputVector = (byte*)pOutputStream;
@@ -839,7 +839,7 @@ public static partial class DirectXMath
 		XMVECTOR row1 = M.r[1];
 		XMVECTOR row3 = M.r[3];
 
-		for (SizeT i = 0; i < VectorCount; i++)
+		for (SIZE_T i = 0; i < VectorCount; i++)
 		{
 			XMVECTOR V = XMLoadFloat2(*(XMFLOAT2*)pInputVector);
 			XMVECTOR Y = XMVectorSplatY(V);
@@ -1504,12 +1504,12 @@ public static partial class DirectXMath
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvector3projectstream XMFLOAT3 *XM_CALLCONV
-	// XMVector3ProjectStream( [out] XMFLOAT3 *pOutputStream, [in] SizeT OutputStride, [in] const XMFLOAT3 *pInputStream, [in] SizeT
-	// InputStride, [in] SizeT VectorCount, [in] float ViewportX, [in] float ViewportY, [in] float ViewportWidth, [in] float ViewportHeight,
+	// XMVector3ProjectStream( [out] XMFLOAT3 *pOutputStream, [in] SIZE_T OutputStride, [in] const XMFLOAT3 *pInputStream, [in] SIZE_T
+	// InputStride, [in] SIZE_T VectorCount, [in] float ViewportX, [in] float ViewportY, [in] float ViewportWidth, [in] float ViewportHeight,
 	// [in] float ViewportMinZ, [in] float ViewportMaxZ, [in] FXMMATRIX Projection, [in] CXMMATRIX View, [in] CXMMATRIX World );
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVector3ProjectStream")]
-	public static unsafe XMFLOAT3* XMVector3ProjectStream([Out] XMFLOAT3* pOutputStream, [In] SizeT OutputStride,
-		[In] XMFLOAT3* pInputStream, [In] SizeT InputStride, [In] SizeT VectorCount, [In] float ViewportX,
+	public static unsafe XMFLOAT3* XMVector3ProjectStream([Out] XMFLOAT3* pOutputStream, [In] SIZE_T OutputStride,
+		[In] XMFLOAT3* pInputStream, [In] SIZE_T InputStride, [In] SIZE_T VectorCount, [In] float ViewportX,
 		[In] float ViewportY, [In] float ViewportWidth, [In] float ViewportHeight, [In] float ViewportMinZ,
 		[In] float ViewportMaxZ, in FXMMATRIX Projection, in CXMMATRIX View, in CXMMATRIX World)
 	{
@@ -1530,7 +1530,7 @@ public static partial class DirectXMath
 		var pInputVector = (byte*)pInputStream;
 		var pOutputVector = (byte*)pOutputStream;
 
-		for (SizeT i = 0; i < VectorCount; i++)
+		for (SIZE_T i = 0; i < VectorCount; i++)
 		{
 			XMVECTOR V = XMLoadFloat3(*(XMFLOAT3*)pInputVector);
 
@@ -1735,11 +1735,11 @@ public static partial class DirectXMath
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvector3transformcoordstream XMFLOAT3 *XM_CALLCONV
-	// XMVector3TransformCoordStream( [out] XMFLOAT3 *pOutputStream, [in] SizeT OutputStride, [in] const XMFLOAT3 *pInputStream, [in] SizeT
-	// InputStride, [in] SizeT VectorCount, [in] FXMMATRIX M );
+	// XMVector3TransformCoordStream( [out] XMFLOAT3 *pOutputStream, [in] SIZE_T OutputStride, [in] const XMFLOAT3 *pInputStream, [in] SIZE_T
+	// InputStride, [in] SIZE_T VectorCount, [in] FXMMATRIX M );
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVector3TransformCoordStream")]
-	public static unsafe XMFLOAT3* XMVector3TransformCoordStream([Out] XMFLOAT3* pOutputStream, [In] SizeT OutputStride,
-		[In] XMFLOAT3* pInputStream, [In] SizeT InputStride, [In] SizeT VectorCount, in FXMMATRIX M)
+	public static unsafe XMFLOAT3* XMVector3TransformCoordStream([Out] XMFLOAT3* pOutputStream, [In] SIZE_T OutputStride,
+		[In] XMFLOAT3* pInputStream, [In] SIZE_T InputStride, [In] SIZE_T VectorCount, in FXMMATRIX M)
 	{
 		if (pOutputStream is null) throw new ArgumentNullException(nameof(pOutputStream));
 		if (pInputStream is null) throw new ArgumentNullException(nameof(pInputStream));
@@ -1754,7 +1754,7 @@ public static partial class DirectXMath
 		XMVECTOR row2 = M.r[2];
 		XMVECTOR row3 = M.r[3];
 
-		for (SizeT i = 0; i < VectorCount; i++)
+		for (SIZE_T i = 0; i < VectorCount; i++)
 		{
 			XMVECTOR V = XMLoadFloat3(*(XMFLOAT3*)pInputVector);
 			XMVECTOR Z = XMVectorSplatZ(V);
@@ -1813,11 +1813,11 @@ public static partial class DirectXMath
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvector3transformnormalstream XMFLOAT3 *XM_CALLCONV
-	// XMVector3TransformNormalStream( [out] XMFLOAT3 *pOutputStream, [in] SizeT OutputStride, [in] const XMFLOAT3 *pInputStream, [in] SizeT
-	// InputStride, [in] SizeT VectorCount, [in] FXMMATRIX M );
+	// XMVector3TransformNormalStream( [out] XMFLOAT3 *pOutputStream, [in] SIZE_T OutputStride, [in] const XMFLOAT3 *pInputStream, [in] SIZE_T
+	// InputStride, [in] SIZE_T VectorCount, [in] FXMMATRIX M );
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVector3TransformNormalStream")]
-	public static unsafe XMFLOAT3* XMVector3TransformNormalStream([Out] XMFLOAT3* pOutputStream, [In] SizeT OutputStride,
-		[In] XMFLOAT3* pInputStream, [In] SizeT InputStride, [In] SizeT VectorCount, in FXMMATRIX M)
+	public static unsafe XMFLOAT3* XMVector3TransformNormalStream([Out] XMFLOAT3* pOutputStream, [In] SIZE_T OutputStride,
+		[In] XMFLOAT3* pInputStream, [In] SIZE_T InputStride, [In] SIZE_T VectorCount, in FXMMATRIX M)
 	{
 		if (pOutputStream is null) throw new ArgumentNullException(nameof(pOutputStream));
 		if (pInputStream is null) throw new ArgumentNullException(nameof(pInputStream));
@@ -1831,7 +1831,7 @@ public static partial class DirectXMath
 		XMVECTOR row1 = M.r[1];
 		XMVECTOR row2 = M.r[2];
 
-		for (SizeT i = 0; i < VectorCount; i++)
+		for (SIZE_T i = 0; i < VectorCount; i++)
 		{
 			XMVECTOR V = XMLoadFloat3(*(XMFLOAT3*)pInputVector);
 			XMVECTOR Z = XMVectorSplatZ(V);
@@ -1865,11 +1865,11 @@ public static partial class DirectXMath
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvector3transformstream XMFLOAT4 *XM_CALLCONV
-	// XMVector3TransformStream( [out] XMFLOAT4 *pOutputStream, [in] SizeT OutputStride, [in] const XMFLOAT3 *pInputStream, [in] SizeT
-	// InputStride, [in] SizeT VectorCount, [in] FXMMATRIX M );
+	// XMVector3TransformStream( [out] XMFLOAT4 *pOutputStream, [in] SIZE_T OutputStride, [in] const XMFLOAT3 *pInputStream, [in] SIZE_T
+	// InputStride, [in] SIZE_T VectorCount, [in] FXMMATRIX M );
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVector3TransformStream")]
-	public static unsafe XMFLOAT4* XMVector3TransformStream([Out] XMFLOAT4* pOutputStream, [In] SizeT OutputStride,
-		[In] XMFLOAT3* pInputStream, [In] SizeT InputStride, [In] SizeT VectorCount, in FXMMATRIX M)
+	public static unsafe XMFLOAT4* XMVector3TransformStream([Out] XMFLOAT4* pOutputStream, [In] SIZE_T OutputStride,
+		[In] XMFLOAT3* pInputStream, [In] SIZE_T InputStride, [In] SIZE_T VectorCount, in FXMMATRIX M)
 	{
 		if (pOutputStream is null) throw new ArgumentNullException(nameof(pOutputStream));
 		if (pInputStream is null) throw new ArgumentNullException(nameof(pInputStream));
@@ -1885,7 +1885,7 @@ public static partial class DirectXMath
 		XMVECTOR row2 = M.r[2];
 		XMVECTOR row3 = M.r[3];
 
-		for (SizeT i = 0; i < VectorCount; i++)
+		for (SIZE_T i = 0; i < VectorCount; i++)
 		{
 			XMVECTOR V = XMLoadFloat3(*(XMFLOAT3*)pInputVector);
 			XMVECTOR Z = XMVectorSplatZ(V);
@@ -2015,12 +2015,12 @@ public static partial class DirectXMath
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvector3unprojectstream XMFLOAT3 *XM_CALLCONV
-	// XMVector3UnprojectStream( [out] XMFLOAT3 *pOutputStream, [in] SizeT OutputStride, [in] const XMFLOAT3 *pInputStream, [in] SizeT
-	// InputStride, [in] SizeT VectorCount, [in] float ViewportX, [in] float ViewportY, [in] float ViewportWidth, [in] float ViewportHeight,
+	// XMVector3UnprojectStream( [out] XMFLOAT3 *pOutputStream, [in] SIZE_T OutputStride, [in] const XMFLOAT3 *pInputStream, [in] SIZE_T
+	// InputStride, [in] SIZE_T VectorCount, [in] float ViewportX, [in] float ViewportY, [in] float ViewportWidth, [in] float ViewportHeight,
 	// [in] float ViewportMinZ, [in] float ViewportMaxZ, [in] FXMMATRIX Projection, [in] CXMMATRIX View, [in] CXMMATRIX World );
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVector3UnprojectStream")]
-	public static unsafe XMFLOAT3* XMVector3UnprojectStream([Out] XMFLOAT3* pOutputStream, [In] SizeT OutputStride,
-		[In] XMFLOAT3* pInputStream, [In] SizeT InputStride, [In] SizeT VectorCount, [In] float ViewportX,
+	public static unsafe XMFLOAT3* XMVector3UnprojectStream([Out] XMFLOAT3* pOutputStream, [In] SIZE_T OutputStride,
+		[In] XMFLOAT3* pInputStream, [In] SIZE_T InputStride, [In] SIZE_T VectorCount, [In] float ViewportX,
 		[In] float ViewportY, [In] float ViewportWidth, [In] float ViewportHeight, [In] float ViewportMinZ,
 		[In] float ViewportMaxZ, in FXMMATRIX Projection, in CXMMATRIX View, in CXMMATRIX World)
 	{
@@ -2042,7 +2042,7 @@ public static partial class DirectXMath
 		var pInputVector = (byte*)pInputStream;
 		var pOutputVector = (byte*)pOutputStream;
 
-		for (SizeT i = 0; i < VectorCount; i++)
+		for (SIZE_T i = 0; i < VectorCount; i++)
 		{
 			XMVECTOR V = XMLoadFloat3(*(XMFLOAT3*)pInputVector);
 
@@ -2686,11 +2686,11 @@ public static partial class DirectXMath
 	/// <param name="M">Transformation matrix.</param>
 	/// <returns>Returns the address of the first <c>XMFLOAT4</c> in the destination stream.</returns>
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvector4transformstream XMFLOAT4 *XM_CALLCONV
-	// XMVector4TransformStream( [out] XMFLOAT4 *pOutputStream, [in] SizeT OutputStride, [in] const XMFLOAT4 *pInputStream, [in] SizeT
-	// InputStride, [in] SizeT VectorCount, [in] FXMMATRIX M );
+	// XMVector4TransformStream( [out] XMFLOAT4 *pOutputStream, [in] SIZE_T OutputStride, [in] const XMFLOAT4 *pInputStream, [in] SIZE_T
+	// InputStride, [in] SIZE_T VectorCount, [in] FXMMATRIX M );
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVector4TransformStream")]
-	public static unsafe XMFLOAT4* XMVector4TransformStream([Out] XMFLOAT4* pOutputStream, [In] SizeT OutputStride,
-		[In] XMFLOAT4* pInputStream, [In] SizeT InputStride, [In] SizeT VectorCount, in FXMMATRIX M)
+	public static unsafe XMFLOAT4* XMVector4TransformStream([Out] XMFLOAT4* pOutputStream, [In] SIZE_T OutputStride,
+		[In] XMFLOAT4* pInputStream, [In] SIZE_T InputStride, [In] SIZE_T VectorCount, in FXMMATRIX M)
 	{
 		if (pOutputStream == null) throw new ArgumentNullException(nameof(pOutputStream));
 		if (pInputStream == null) throw new ArgumentNullException(nameof(pInputStream));
@@ -2705,7 +2705,7 @@ public static partial class DirectXMath
 		XMVECTOR row2 = M.r[2];
 		XMVECTOR row3 = M.r[3];
 
-		for (SizeT i = 0; i < VectorCount; i++)
+		for (SIZE_T i = 0; i < VectorCount; i++)
 		{
 			XMVECTOR V = XMLoadFloat4(*(XMFLOAT4*)pInputVector);
 			XMVECTOR W = XMVectorSplatW(V);
@@ -3492,7 +3492,7 @@ public static partial class DirectXMath
 	// XMVectorGetByIndex( FXMVECTOR V, size_t i ) noexcept;
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVectorGetByIndex")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static float XMVectorGetByIndex(this FXMVECTOR V, SizeT i) => V[i];
+	public static float XMVectorGetByIndex(this FXMVECTOR V, SIZE_T i) => V[i];
 
 	/// <summary>
 	/// Retrieve, into an instance of a floating-point referenced by pointer, the value of one of the four components of an <c>XMVECTOR Data
@@ -3551,7 +3551,7 @@ public static partial class DirectXMath
 	// XMVectorGetByIndexPtr( [out] float *f, FXMVECTOR V, size_t i ) noexcept;
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVectorGetByIndexPtr")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static void XMVectorGetByIndexPtr(ref float f, in FXMVECTOR V, SizeT i) => f = XMVectorGetByIndex(V, i);
+	public static void XMVectorGetByIndexPtr(ref float f, in FXMVECTOR V, SIZE_T i) => f = XMVectorGetByIndex(V, i);
 
 	/// <summary>Retrieve the value of one of the four components of an <c>XMVECTOR Data Type</c> containing integer data by index.</summary>
 	/// <param name="V">A <c>XMVECTOR Data Type</c> containing integer data.</param>
@@ -3602,7 +3602,7 @@ public static partial class DirectXMath
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvectorgetintbyindex uint32_t XM_CALLCONV
 	// XMVectorGetIntByIndex( FXMVECTOR V, size_t i ) noexcept;
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVectorGetIntByIndex")]
-	public static uint XMVectorGetIntByIndex(this FXMVECTOR V, SizeT i)
+	public static uint XMVectorGetIntByIndex(this FXMVECTOR V, SIZE_T i)
 	{
 		if (i < 0 || i > 3)
 			throw new ArgumentOutOfRangeException(nameof(i), "Index must be value between 0 and 3.");
@@ -3666,7 +3666,7 @@ public static partial class DirectXMath
 	// XMVectorGetIntByIndexPtr( [out] uint32_t *x, FXMVECTOR V, size_t i ) noexcept;
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVectorGetIntByIndexPtr")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static void XMVectorGetIntByIndexPtr(ref uint x, in FXMVECTOR V, SizeT i) => x = XMVectorGetIntByIndex(V, i);
+	public static void XMVectorGetIntByIndexPtr(ref uint x, in FXMVECTOR V, SIZE_T i) => x = XMVectorGetIntByIndex(V, i);
 
 	/// <summary>Retrieve the <c>w</c> component of an <c>XMVECTOR Data Type</c>.</summary>
 	/// <param name="V">A valid 4D vector storing integer data.</param>
@@ -5019,7 +5019,7 @@ public static partial class DirectXMath
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvectorsetbyindex XMVECTOR XM_CALLCONV
 	// XMVectorSetByIndex( FXMVECTOR V, float f, size_t i ) noexcept;
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVectorSetByIndex")]
-	public static XMVECTOR XMVectorSetByIndex(this FXMVECTOR V, float f, SizeT i)
+	public static XMVECTOR XMVectorSetByIndex(this FXMVECTOR V, float f, SIZE_T i)
 	{
 		if (i < 0 || i > 3)
 			throw new ArgumentOutOfRangeException(nameof(i), "Index must be value between 0 and 3.");
@@ -5085,7 +5085,7 @@ public static partial class DirectXMath
 	// XMVectorSetByIndexPtr( FXMVECTOR V, [in] const float *f, size_t i ) noexcept;
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVectorSetByIndexPtr")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static unsafe XMVECTOR XMVectorSetByIndexPtr(this FXMVECTOR V, [In] float* f, SizeT i) => f is not null ? XMVectorSetByIndex(V, *f, i) : throw new ArgumentNullException(nameof(f));
+	public static unsafe XMVECTOR XMVectorSetByIndexPtr(this FXMVECTOR V, [In] float* f, SIZE_T i) => f is not null ? XMVectorSetByIndex(V, *f, i) : throw new ArgumentNullException(nameof(f));
 
 	/// <summary>Creates a vector with unsigned integer components.</summary>
 	/// <param name="x"><b>uint32_t</b> value to assign to the x-component of the returned vector.</param>
@@ -5162,7 +5162,7 @@ public static partial class DirectXMath
 	// https://learn.microsoft.com/en-us/windows/win32/api/directxmath/nf-directxmath-xmvectorsetintbyindex XMVECTOR XM_CALLCONV
 	// XMVectorSetIntByIndex( FXMVECTOR V, uint32_t x, size_t i ) noexcept;
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVectorSetIntByIndex")]
-	public static XMVECTOR XMVectorSetIntByIndex(this FXMVECTOR V, uint x, SizeT i)
+	public static XMVECTOR XMVectorSetIntByIndex(this FXMVECTOR V, uint x, SIZE_T i)
 	{
 		if (i < 0 || i > 3)
 			throw new ArgumentOutOfRangeException(nameof(i), "Index must be value between 0 and 3.");
@@ -5228,7 +5228,7 @@ public static partial class DirectXMath
 	// XMVectorSetIntByIndexPtr( FXMVECTOR V, [in] const uint32_t *x, size_t i ) noexcept;
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMVectorSetIntByIndexPtr")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static unsafe XMVECTOR XMVectorSetIntByIndexPtr(this FXMVECTOR V, [In] uint* x, SizeT i) => x is not null ? XMVectorSetIntByIndex(V, *x, i) : throw new ArgumentNullException(nameof(x));
+	public static unsafe XMVECTOR XMVectorSetIntByIndexPtr(this FXMVECTOR V, [In] uint* x, SIZE_T i) => x is not null ? XMVectorSetIntByIndex(V, *x, i) : throw new ArgumentNullException(nameof(x));
 
 	/// <summary>Set the value of the <c>w</c> component of an <c>XMVECTOR Data Type</c>.</summary>
 	/// <param name="V">A valid 4D unsigned integer vector.</param>

@@ -35,7 +35,7 @@ public static partial class DbgHelp
 	// Penumsourcefiletokenscallback; BOOL Penumsourcefiletokenscallback( PVOID token, size_t size ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NC:dbghelp.PENUMSOURCEFILETOKENSCALLBACK")]
-	public delegate bool PENUMSOURCEFILETOKENSCALLBACK(IntPtr token, SizeT size);
+	public delegate bool PENUMSOURCEFILETOKENSCALLBACK(IntPtr token, SIZE_T size);
 
 	/// <summary>
 	/// <para>An application-defined callback function used with the SymFindFileInPath function.</para>
@@ -1116,7 +1116,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymAddSourceStream")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SymAddSourceStream(HPROCESS hProcess, ulong Base, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? StreamFile, [In, Optional] IntPtr Buffer, SizeT Size);
+	public static extern bool SymAddSourceStream(HPROCESS hProcess, ulong Base, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? StreamFile, [In, Optional] IntPtr Buffer, SIZE_T Size);
 
 	/// <summary>Adds a virtual symbol to the specified module.</summary>
 	/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>
@@ -2546,7 +2546,7 @@ public static partial class DbgHelp
 	[DllImport(Lib_DbgHelp, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymGetHomeDirectory")]
 	[return: MarshalAs(UnmanagedType.LPTStr)]
-	public static extern LPTSTR SymGetHomeDirectory(IMAGEHLP_HD_TYPE type, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder dir, SizeT size);
+	public static extern LPTSTR SymGetHomeDirectory(IMAGEHLP_HD_TYPE type, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder dir, SIZE_T size);
 
 	/// <summary>Locates the source line for the specified address.</summary>
 	/// <param name="hProcess">A handle to the process that was originally passed to the SymInitialize function.</param>
@@ -3772,7 +3772,7 @@ public static partial class DbgHelp
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SymGetSymbolFile([Optional] HPROCESS hProcess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SymPath,
 		[MarshalAs(UnmanagedType.LPTStr)] string ImageFile, IMAGEHLP_SF_TYPE Type, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder SymbolFile,
-		SizeT cSymbolFile, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder DbgFile, SizeT cDbgFile);
+		SIZE_T cSymbolFile, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder DbgFile, SIZE_T cDbgFile);
 
 	/// <summary>
 	/// <para>Locates the symbol for the specified address.</para>
@@ -5598,7 +5598,7 @@ public static partial class DbgHelp
 	[PInvokeData("dbghelp.h", MSDNShortId = "NF:dbghelp.SymSrvGetFileIndexString")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool SymSrvGetFileIndexString(HPROCESS hProcess, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? SrvPath,
-		[MarshalAs(UnmanagedType.LPTStr)] string File, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder Index, SizeT Size, uint Flags = 0);
+		[MarshalAs(UnmanagedType.LPTStr)] string File, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder Index, SIZE_T Size, uint Flags = 0);
 
 	/// <summary>Retrieves the specified file from the supplement for a symbol store.</summary>
 	/// <param name="hProcess">A handle to a process. This handle must have been previously passed to the SymInitialize function.</param>

@@ -3253,7 +3253,7 @@ public static partial class Crypt32
 		/// <summary>Initializes a new instance of the <see cref="CRYPTOAPI_BLOB"/> struct with default values.</summary>
 		/// <param name="data">A pointer to the data buffer.</param>
 		/// <param name="size">The count, in bytes, of <paramref name="data"/>.</param>
-		public CRYPTOAPI_BLOB(IntPtr data, SizeT size) { pbData = data; cbData = size; }
+		public CRYPTOAPI_BLOB(IntPtr data, SIZE_T size) { pbData = data; cbData = size; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CRYPTOAPI_BLOB"/> struct from a <see cref="SafeAllocatedMemoryHandle"/> instance.

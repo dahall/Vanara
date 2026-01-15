@@ -2279,7 +2279,7 @@ public static partial class Shell32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shalloc
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "621e4335-1484-4111-9cfe-7ae5c6d5c609")]
-	public static extern IntPtr SHAlloc(SizeT cb);
+	public static extern IntPtr SHAlloc(SIZE_T cb);
 
 	/// <summary>
 	/// <para>Sends an appbar message to the system.</para>

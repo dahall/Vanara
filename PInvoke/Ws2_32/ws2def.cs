@@ -331,10 +331,10 @@ public static partial class Ws2_32
 	/// <param name="AddressCount">The address count.</param>
 	/// <returns>The size, in bytes, required to hold the structure. This does not include allocation for the addresses pointed to by each <see cref="SOCKET_ADDRESS"/>.</returns>
 	[PInvokeData("ws2def.h")]
-	public static SizeT SIZEOF_SOCKET_ADDRESS_LIST(SizeT AddressCount) => Marshal.OffsetOf(typeof(SOCKET_ADDRESS_LIST), "Address").ToInt32() + Marshal.SizeOf(typeof(SOCKET_ADDRESS)) * AddressCount;
+	public static SIZE_T SIZEOF_SOCKET_ADDRESS_LIST(SIZE_T AddressCount) => Marshal.OffsetOf(typeof(SOCKET_ADDRESS_LIST), "Address").ToInt32() + Marshal.SizeOf(typeof(SOCKET_ADDRESS)) * AddressCount;
 
 	/// <summary>The maximum natural alignment</summary>
-	public static readonly SizeT MAX_NATURAL_ALIGNMENT = IntPtr.Size;
+	public static readonly SIZE_T MAX_NATURAL_ALIGNMENT = IntPtr.Size;
 
 	[StructLayout(LayoutKind.Sequential)]
 	private struct AlignedStruct<T> where T : struct
@@ -343,20 +343,20 @@ public static partial class Ws2_32
 		public readonly T type;
 	}
 
-	/// <summary>Returns the alignment in bytes of the specified type as a value of type <see cref="SizeT"/>.</summary>
+	/// <summary>Returns the alignment in bytes of the specified type as a value of type <see cref="SIZE_T"/>.</summary>
 	/// <typeparam name="T">The type for which to get the alignment.</typeparam>
 	/// <returns>The alignment in bytes of the specified type.</returns>
-	public static SizeT TYPE_ALIGNMENT<T>() where T : struct => Marshal.OffsetOf(typeof(AlignedStruct<T>), "type").ToInt64();
+	public static SIZE_T TYPE_ALIGNMENT<T>() where T : struct => Marshal.OffsetOf(typeof(AlignedStruct<T>), "type").ToInt64();
 
-	/// <summary>Returns the alignment in bytes of padding as a value of type <see cref="SizeT"/>.</summary>
+	/// <summary>Returns the alignment in bytes of padding as a value of type <see cref="SIZE_T"/>.</summary>
 	/// <param name="length">The padding length.</param>
 	/// <returns>The alignment in bytes.</returns>
-	public static SizeT WSA_CMSGDATA_ALIGN(SizeT length) => (length + MAX_NATURAL_ALIGNMENT-1) & (~(MAX_NATURAL_ALIGNMENT-1));
+	public static SIZE_T WSA_CMSGDATA_ALIGN(SIZE_T length) => (length + MAX_NATURAL_ALIGNMENT-1) & (~(MAX_NATURAL_ALIGNMENT-1));
 
-	/// <summary>Returns the alignment in bytes of WSACMSGHDR with padding as a value of type <see cref="SizeT"/>.</summary>
+	/// <summary>Returns the alignment in bytes of WSACMSGHDR with padding as a value of type <see cref="SIZE_T"/>.</summary>
 	/// <param name="length">The padding length.</param>
 	/// <returns>The alignment in bytes.</returns>
-	public static SizeT WSA_CMSGHDR_ALIGN(SizeT length) =>
+	public static SIZE_T WSA_CMSGHDR_ALIGN(SIZE_T length) =>
 		(length + TYPE_ALIGNMENT<WSACMSGHDR>()-1) & (~(TYPE_ALIGNMENT<WSACMSGHDR>()-1));
 
 	/// <summary>
@@ -377,7 +377,7 @@ public static partial class Ws2_32
 	/// <summary>Returns the value to store in cmsg_len given the amount of data.</summary>
 	/// <param name="length">The length.</param>
 	/// <returns>The data length.</returns>
-	public static SizeT WSA_CMSG_LEN(SizeT length) => WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR))) + length;
+	public static SIZE_T WSA_CMSG_LEN(SIZE_T length) => WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR))) + length;
 
 	/// <summary>Returns the next ancillary data object, or a null if there are no more data objects.</summary>
 	/// <param name="msg">The message.</param>
@@ -397,7 +397,7 @@ public static partial class Ws2_32
 	/// <summary>Returns total size of an ancillary data object given the amount of data. Used to allocate the correct amount of space.</summary>
 	/// <param name="length">The length.</param>
 	/// <returns>Total size</returns>
-	public static SizeT WSA_CMSG_SPACE(SizeT length) => WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR)) + WSA_CMSGHDR_ALIGN(length));
+	public static SIZE_T WSA_CMSG_SPACE(SIZE_T length) => WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR)) + WSA_CMSGHDR_ALIGN(length));
 
 	/// <summary>
 	/// The addrinfoex2 structure is used by the GetAddrInfoEx function to hold host address information when both a canonical name and
@@ -663,7 +663,7 @@ public static partial class Ws2_32
 		public IPPROTO ai_protocol;
 
 		/// <summary>The length, in bytes, of the buffer pointed to by the <c>ai_addr</c> member.</summary>
-		public SizeT ai_addrlen;
+		public SIZE_T ai_addrlen;
 
 		/// <summary>The canonical name for the host.</summary>
 		public LPWSTR ai_canonname;
@@ -683,7 +683,7 @@ public static partial class Ws2_32
 		public IntPtr ai_blob;
 
 		/// <summary>The length, in bytes, of the <c>ai_blob</c> member.</summary>
-		public SizeT ai_bloblen;
+		public SIZE_T ai_bloblen;
 
 		/// <summary>A pointer to the GUID of a specific namespace provider.</summary>
 		public GuidPtr ai_provider;
@@ -1028,7 +1028,7 @@ public static partial class Ws2_32
 		/// <para>Type: <c>size_t</c></para>
 		/// <para>The length, in bytes, of the buffer pointed to by the <c>ai_addr</c> member.</para>
 		/// </summary>
-		public SizeT ai_addrlen;
+		public SIZE_T ai_addrlen;
 
 		/// <summary>
 		/// <para>Type: <c>PCTSTR</c></para>
@@ -1060,7 +1060,7 @@ public static partial class Ws2_32
 		/// <para>Type: <c>size_t</c></para>
 		/// <para>The length, in bytes, of the <c>ai_blob</c> member.</para>
 		/// </summary>
-		public SizeT ai_bloblen;
+		public SIZE_T ai_bloblen;
 
 		/// <summary>
 		/// <para>Type: <c>LPGUID</c></para>
@@ -1437,7 +1437,7 @@ public static partial class Ws2_32
 		/// <para>Type: <c>size_t</c></para>
 		/// <para>The length, in bytes, of the buffer pointed to by the <c>ai_addr</c> member.</para>
 		/// </summary>
-		public SizeT ai_addrlen;
+		public SIZE_T ai_addrlen;
 
 		/// <summary>
 		/// <para>Type: <c>char*</c></para>
@@ -1838,7 +1838,7 @@ public static partial class Ws2_32
 		/// <para>The number of bytes from the beginning of the CMSGHDR structure to the end of the control data.</para>
 		/// <para><c>Note</c> The value of the <c>cmsg_len</c> member does not account for any padding that may follow the control data.</para>
 		/// </summary>
-		public SizeT cmsg_len;
+		public SIZE_T cmsg_len;
 
 		/// <summary>The protocol that originated the control information.</summary>
 		public int cmsg_level;

@@ -222,7 +222,7 @@ public static partial class Ole32
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-prealloc SIZE_T PreAlloc( SIZE_T cbRequest );
 		[PreserveSig]
-		SizeT PreAlloc(SizeT cbRequest);
+		SIZE_T PreAlloc(SIZE_T cbRequest);
 
 		/// <summary>Performs operations required after calling IMalloc::Alloc.</summary>
 		/// <param name="pActual">The pointer returned from Alloc.</param>
@@ -297,7 +297,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-prerealloc SIZE_T PreRealloc( void *pRequest,
 		// SIZE_T cbRequest, void **ppNewRequest, BOOL fSpyed );
 		[PreserveSig]
-		SizeT PreRealloc(IntPtr pRequest, SizeT cbRequest, out IntPtr ppNewRequest, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
+		SIZE_T PreRealloc(IntPtr pRequest, SIZE_T cbRequest, out IntPtr ppNewRequest, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
 
 		/// <summary>Performs operations required after calling IMalloc::Realloc.</summary>
 		/// <param name="pActual">The pointer specified in the call to Realloc.</param>
@@ -348,7 +348,7 @@ public static partial class Ole32
 		// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nf-objidl-imallocspy-postgetsize SIZE_T PostGetSize( SIZE_T
 		// cbActual, BOOL fSpyed );
 		[PreserveSig]
-		SizeT PostGetSize(SizeT cbActual, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
+		SIZE_T PostGetSize(SIZE_T cbActual, [MarshalAs(UnmanagedType.Bool)] bool fSpyed);
 
 		/// <summary>Performs operations required before calling IMalloc::DidAlloc.</summary>
 		/// <param name="pRequest">The pointer specified in the call to DidAlloc.</param>

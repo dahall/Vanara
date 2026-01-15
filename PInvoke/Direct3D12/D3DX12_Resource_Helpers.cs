@@ -412,7 +412,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/direct3d12/memcpysubresource void inline MemcpySubresource( _In_ const
 	// D3D12_MEMCPY_DEST *pDest, _In_ const D3D12_SUBRESOURCE_DATA *pSrc, SIZE_T RowSizeInBytes, UINT NumRows, UINT NumSlices );
 	[PInvokeData("D3dx12.h")]
-	public static void MemcpySubresource(in D3D12_MEMCPY_DEST pDest, in D3D12_SUBRESOURCE_DATA pSrc, SizeT RowSizeInBytes, uint NumRows, uint NumSlices)
+	public static void MemcpySubresource(in D3D12_MEMCPY_DEST pDest, in D3D12_SUBRESOURCE_DATA pSrc, SIZE_T RowSizeInBytes, uint NumRows, uint NumSlices)
 	{
 		for (uint z = 0; z < NumSlices; ++z)
 		{
@@ -466,7 +466,7 @@ public static partial class D3D12
 	// https://learn.microsoft.com/en-us/windows/win32/direct3d12/memcpysubresource void inline MemcpySubresource( _In_ const
 	// D3D12_MEMCPY_DEST *pDest, _In_ const D3D12_SUBRESOURCE_DATA *pSrc, SIZE_T RowSizeInBytes, UINT NumRows, UINT NumSlices );
 	[PInvokeData("D3dx12.h")]
-	public static void MemcpySubresource(in D3D12_MEMCPY_DEST pDest, [In] IntPtr pResourceData, in D3D12_SUBRESOURCE_INFO pSrc, SizeT RowSizeInBytes, uint NumRows, uint NumSlices)
+	public static void MemcpySubresource(in D3D12_MEMCPY_DEST pDest, [In] IntPtr pResourceData, in D3D12_SUBRESOURCE_INFO pSrc, SIZE_T RowSizeInBytes, uint NumRows, uint NumSlices)
 	{
 		for (uint z = 0; z < NumSlices; ++z)
 		{

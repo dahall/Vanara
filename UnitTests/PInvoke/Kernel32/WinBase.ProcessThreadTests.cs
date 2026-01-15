@@ -120,7 +120,7 @@ public partial class WinBaseTests_ProcessThread
 	[Test]
 	public void GetSetProcessWorkingSetSizeTest()
 	{
-		Assert.That(GetProcessWorkingSetSize(GetCurrentProcess(), out SizeT min, out SizeT max), ResultIs.Successful);
+		Assert.That(GetProcessWorkingSetSize(GetCurrentProcess(), out SIZE_T min, out SIZE_T max), ResultIs.Successful);
 		TestContext.Write((min, max));
 		Assert.That(SetProcessWorkingSetSize(GetCurrentProcess(), min, max), ResultIs.Successful);
 	}

@@ -1291,7 +1291,7 @@ public static partial class Gdi32
 		/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
 		/// <param name="hdr">The <see cref="BITMAPINFOHEADER"/> to initialize.</param>
 		/// <param name="capacity">The capacity of the buffer, in bytes.</param>
-		public SafeBITMAPINFO(in BITMAPINFOHEADER hdr, SizeT capacity = default) : base(hdrSize + capacity) => bmiHeader = hdr;
+		public SafeBITMAPINFO(in BITMAPINFOHEADER hdr, SIZE_T capacity = default) : base(hdrSize + capacity) => bmiHeader = hdr;
 
 		/// <summary>Initializes a new instance of the <see cref="SafeBITMAPINFO"/> class.</summary>
 		/// <param name="ptr">Existing handle.</param>
@@ -1382,7 +1382,7 @@ public static partial class Gdi32
 		/// Specifies the number of bytes required by the structure. This value does not include the size of the color table or the size
 		/// of the color masks, if they are appended to the end of structure. See Remarks.
 		/// </summary>
-		public SizeT HeaderSize { get => handle.ToStructure<uint>(); set => handle.Write((uint)value); }
+		public SIZE_T HeaderSize { get => handle.ToStructure<uint>(); set => handle.Write((uint)value); }
 
 		/// <summary>Represents the <see langword="null"/> equivalent of this class instances.</summary>
 		public static new readonly SafeBITMAPINFO Null = new(IntPtr.Zero, false);

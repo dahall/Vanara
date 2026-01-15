@@ -41,11 +41,11 @@ internal static partial class PointerMethods
 		}
 	}
 
-	public static bool CertVerifyCRLRevocation(CorrespondingAction dwCertEncodingType, in BOOL pCertId, uint cCrlInfo, StructPointer<SizeT>[]? rgpCrlInfo) => true;
+	public static bool CertVerifyCRLRevocation(CorrespondingAction dwCertEncodingType, in BOOL pCertId, uint cCrlInfo, StructPointer<SIZE_T>[]? rgpCrlInfo) => true;
 
-	public static bool CertVerifyCRLRevocation(CorrespondingAction dwCertEncodingType, in BOOL pCertId, SizeT[]? rgpCrlInfo)
+	public static bool CertVerifyCRLRevocation(CorrespondingAction dwCertEncodingType, in BOOL pCertId, SIZE_T[]? rgpCrlInfo)
 	{
-		StructPointer<SizeT>[]? __rgpCrlInfo = rgpCrlInfo is null ? null : Array.ConvertAll(rgpCrlInfo, ci => StructPointer.Make<SizeT>(ci, out var _));
+		StructPointer<SIZE_T>[]? __rgpCrlInfo = rgpCrlInfo is null ? null : Array.ConvertAll(rgpCrlInfo, ci => StructPointer.Make<SIZE_T>(ci, out var _));
 		return CertVerifyCRLRevocation(dwCertEncodingType, pCertId, (uint?)rgpCrlInfo?.Length ?? 0, __rgpCrlInfo);
 	}
 

@@ -1215,7 +1215,7 @@ public static partial class D3D12
 		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
-		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SizeT InitializationParametersSizeInBytes);
+		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SIZE_T InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into a decode command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -1236,7 +1236,7 @@ public static partial class D3D12
 		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
-		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SizeT ExecutionParametersSizeInBytes);
+		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SIZE_T ExecutionParametersSizeInBytes);
 	}
 
 	/// <summary>
@@ -1676,7 +1676,7 @@ public static partial class D3D12
 		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
-		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SizeT InitializationParametersSizeInBytes);
+		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SIZE_T InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into a decode command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -1697,7 +1697,7 @@ public static partial class D3D12
 		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
-		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SizeT ExecutionParametersSizeInBytes);
+		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SIZE_T ExecutionParametersSizeInBytes);
 
 		/// <summary>
 		/// <para>Adds a collection of barriers into a video decode command list recording.</para>
@@ -2825,7 +2825,7 @@ public static partial class D3D12
 		// CreationParametersDataSizeInBytes, ID3D12ProtectedResourceSession *pProtectedResourceSession, REFIID riid, void
 		// **ppVideoExtensionCommand );
 		[PreserveSig]
-		HRESULT CreateVideoExtensionCommand(in D3D12_VIDEO_EXTENSION_COMMAND_DESC pDesc, [In] IntPtr pCreationParameters, SizeT CreationParametersDataSizeInBytes,
+		HRESULT CreateVideoExtensionCommand(in D3D12_VIDEO_EXTENSION_COMMAND_DESC pDesc, [In] IntPtr pCreationParameters, SIZE_T CreationParametersDataSizeInBytes,
 			[In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppVideoExtensionCommand);
 
@@ -2866,7 +2866,7 @@ public static partial class D3D12
 		// ExecutionParametersSizeInBytes, void *pOutputData, SIZE_T OutputDataSizeInBytes );
 		[PreserveSig]
 		HRESULT ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters,
-			SizeT ExecutionParametersSizeInBytes, [Out] IntPtr pOutputData, SizeT OutputDataSizeInBytes);
+			SIZE_T ExecutionParametersSizeInBytes, [Out] IntPtr pOutputData, SIZE_T OutputDataSizeInBytes);
 	}
 
 	/// <summary>Extends the <c>ID3D12VideoDevice</c> interface to add support video encoding capabilities.</summary>
@@ -3062,7 +3062,7 @@ public static partial class D3D12
 		// CreationParametersDataSizeInBytes, ID3D12ProtectedResourceSession *pProtectedResourceSession, REFIID riid, void
 		// **ppVideoExtensionCommand );
 		[PreserveSig]
-		new HRESULT CreateVideoExtensionCommand(in D3D12_VIDEO_EXTENSION_COMMAND_DESC pDesc, [In] IntPtr pCreationParameters, SizeT CreationParametersDataSizeInBytes,
+		new HRESULT CreateVideoExtensionCommand(in D3D12_VIDEO_EXTENSION_COMMAND_DESC pDesc, [In] IntPtr pCreationParameters, SIZE_T CreationParametersDataSizeInBytes,
 			[In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppVideoExtensionCommand);
 
@@ -3103,7 +3103,7 @@ public static partial class D3D12
 		// ExecutionParametersSizeInBytes, void *pOutputData, SIZE_T OutputDataSizeInBytes );
 		[PreserveSig]
 		new HRESULT ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters,
-			SizeT ExecutionParametersSizeInBytes, [Out] IntPtr pOutputData, SizeT OutputDataSizeInBytes);
+			SIZE_T ExecutionParametersSizeInBytes, [Out] IntPtr pOutputData, SIZE_T OutputDataSizeInBytes);
 
 		/// <summary>Creates a new instance of <c>ID3D12VideoEncoder</c>.</summary>
 		/// <param name="pDesc">A <c>D3D12_VIDEO_ENCODER_DESC</c> representing the configuration parameters for the video encoder.</param>
@@ -3989,7 +3989,7 @@ public static partial class D3D12
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
 		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters,
-			SizeT InitializationParametersSizeInBytes);
+			SIZE_T InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into an encode command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -4011,7 +4011,7 @@ public static partial class D3D12
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
 		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters,
-			SizeT ExecutionParametersSizeInBytes);
+			SIZE_T ExecutionParametersSizeInBytes);
 	}
 
 	/// <summary>
@@ -4456,7 +4456,7 @@ public static partial class D3D12
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
 		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters,
-			SizeT InitializationParametersSizeInBytes);
+			SIZE_T InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into an encode command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -4478,7 +4478,7 @@ public static partial class D3D12
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
 		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters,
-			SizeT ExecutionParametersSizeInBytes);
+			SIZE_T ExecutionParametersSizeInBytes);
 
 		/// <summary>Encodes a bitstream.</summary>
 		/// <param name="pEncoder">A <c>ID3D12VideoEncoder</c> representing the video encoder to be used for the encode operation.</param>
@@ -4984,7 +4984,7 @@ public static partial class D3D12
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
 		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters,
-			SizeT InitializationParametersSizeInBytes);
+			SIZE_T InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into an encode command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -5006,7 +5006,7 @@ public static partial class D3D12
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
 		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters,
-			SizeT ExecutionParametersSizeInBytes);
+			SIZE_T ExecutionParametersSizeInBytes);
 
 		/// <summary>Encodes a bitstream.</summary>
 		/// <param name="pEncoder">A <c>ID3D12VideoEncoder</c> representing the video encoder to be used for the encode operation.</param>
@@ -7393,7 +7393,7 @@ public static partial class D3D12
 		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
-		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SizeT InitializationParametersSizeInBytes);
+		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SIZE_T InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into a video process command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -7414,7 +7414,7 @@ public static partial class D3D12
 		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
-		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SizeT ExecutionParametersSizeInBytes);
+		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SIZE_T ExecutionParametersSizeInBytes);
 	}
 
 	/// <summary>
@@ -7879,7 +7879,7 @@ public static partial class D3D12
 		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
-		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SizeT InitializationParametersSizeInBytes);
+		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SIZE_T InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into a video process command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -7900,7 +7900,7 @@ public static partial class D3D12
 		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
-		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SizeT ExecutionParametersSizeInBytes);
+		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SIZE_T ExecutionParametersSizeInBytes);
 
 		/// <summary>
 		/// <para>Adds a collection of barriers into a video process command list recording.</para>

@@ -18,7 +18,7 @@ public class MemoryApiTests
 		TestContext.Write("This computer has page size {0}.\n", sSysInfo.dwPageSize);
 
 		// Calculate the number of pages of memory to request.
-		SizeT NumberOfPages = MEMORY_REQUESTED / sSysInfo.dwPageSize;
+		SIZE_T NumberOfPages = MEMORY_REQUESTED / sSysInfo.dwPageSize;
 		TestContext.Write("Requesting {0} pages of memory.\n", NumberOfPages);
 
 		// Enable the privilege.
@@ -28,7 +28,7 @@ public class MemoryApiTests
 			// Allocate the physical memory.
 			IntPtr[] aPFNs = new IntPtr[NumberOfPages];
 
-			SizeT NumberOfPagesInitial = NumberOfPages;
+			SIZE_T NumberOfPagesInitial = NumberOfPages;
 
 			Assert.That(AllocateUserPhysicalPages(hProc, ref NumberOfPages, aPFNs), ResultIs.Successful);
 
@@ -84,14 +84,14 @@ public class MemoryApiTests
 	[Test]
 	public void GetProcessWorkingSetSizeExTest()
 	{
-		Assert.That(GetProcessWorkingSetSizeEx(GetCurrentProcess(), out SizeT min, out SizeT max, out QUOTA_LIMITS_HARDWS flg), Is.True);
+		Assert.That(GetProcessWorkingSetSizeEx(GetCurrentProcess(), out SIZE_T min, out SIZE_T max, out QUOTA_LIMITS_HARDWS flg), Is.True);
 		TestContext.WriteLine($"{min} : {max} : {flg}");
 	}
 
 	[Test]
 	public void GetSystemFileCacheSizeTest()
 	{
-		Assert.That(GetSystemFileCacheSize(out SizeT min, out SizeT max, out FILE_CACHE_LIMITS flg), Is.True);
+		Assert.That(GetSystemFileCacheSize(out SIZE_T min, out SIZE_T max, out FILE_CACHE_LIMITS flg), Is.True);
 		TestContext.WriteLine($"{min} : {max} : {flg}");
 	}
 

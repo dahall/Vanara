@@ -1068,7 +1068,7 @@ public static partial class DXGI
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The number of bytes of dedicated video memory that are not shared with the CPU.</para>
 		/// </summary>
-		public SizeT DedicatedVideoMemory;
+		public SIZE_T DedicatedVideoMemory;
 
 		/// <summary>
 		/// <para>Type: <c>SIZE_T</c></para>
@@ -1077,7 +1077,7 @@ public static partial class DXGI
 		/// memory at boot time.
 		/// </para>
 		/// </summary>
-		public SizeT DedicatedSystemMemory;
+		public SIZE_T DedicatedSystemMemory;
 
 		/// <summary>
 		/// <para>Type: <c>SIZE_T</c></para>
@@ -1086,7 +1086,7 @@ public static partial class DXGI
 		/// during operation. Any incidental memory consumed by the driver as it manages and uses video memory is additional.
 		/// </para>
 		/// </summary>
-		public SizeT SharedSystemMemory;
+		public SIZE_T SharedSystemMemory;
 
 		/// <summary>
 		/// <para>Type: <c>LUID</c></para>
@@ -1151,7 +1151,7 @@ public static partial class DXGI
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The number of bytes of dedicated video memory that are not shared with the CPU.</para>
 		/// </summary>
-		public SizeT DedicatedVideoMemory;
+		public SIZE_T DedicatedVideoMemory;
 
 		/// <summary>
 		/// <para>Type: <c>SIZE_T</c></para>
@@ -1160,7 +1160,7 @@ public static partial class DXGI
 		/// memory at boot time.
 		/// </para>
 		/// </summary>
-		public SizeT DedicatedSystemMemory;
+		public SIZE_T DedicatedSystemMemory;
 
 		/// <summary>
 		/// <para>Type: <c>SIZE_T</c></para>
@@ -1169,7 +1169,7 @@ public static partial class DXGI
 		/// during operation. Any incidental memory consumed by the driver as it manages and uses video memory is additional.
 		/// </para>
 		/// </summary>
-		public SizeT SharedSystemMemory;
+		public SIZE_T SharedSystemMemory;
 
 		/// <summary>
 		/// <para>Type: <c>LUID</c></para>

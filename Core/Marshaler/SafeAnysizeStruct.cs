@@ -33,7 +33,7 @@ public class SafeAnysizeStruct<T> : SafeAnysizeStructBase<T>
 	/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first
 	/// public field will be selected. If "*", then the array size will be determined by the amount of allocated memory.
 	/// </param>
-	public SafeAnysizeStruct(IntPtr allocatedMemory, SizeT size, string? sizeFieldName = null) : base(allocatedMemory, size, false)
+	public SafeAnysizeStruct(IntPtr allocatedMemory, SIZE_T size, string? sizeFieldName = null) : base(allocatedMemory, size, false)
 	{
 		if (allocatedMemory == IntPtr.Zero) throw new ArgumentNullException(nameof(allocatedMemory));
 		if (baseSz > size) throw new OutOfMemoryException();
@@ -46,7 +46,7 @@ public class SafeAnysizeStruct<T> : SafeAnysizeStructBase<T>
 	/// The name of the field in <typeparamref name="T"/> that holds the length of the array. If <see langword="null"/>, the first
 	/// public field will be selected.
 	/// </param>
-	public SafeAnysizeStruct(SizeT size, string? sizeFieldName = null) : base(size) => InitCountField(sizeFieldName);
+	public SafeAnysizeStruct(SIZE_T size, string? sizeFieldName = null) : base(size) => InitCountField(sizeFieldName);
 
 	/// <summary>Performs an implicit conversion from <typeparamref name="T"/> to <see cref="SafeAnysizeStructBase{T}"/>.</summary>
 	/// <param name="s">The <typeparamref name="T"/> instance.</param>
@@ -104,13 +104,13 @@ public abstract class SafeAnysizeStructBase<T> : SafeMemoryHandle<CoTaskMemoryMe
 
 	/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStructBase{T}"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
-	protected SafeAnysizeStructBase(SizeT size) : base(size) { }
+	protected SafeAnysizeStructBase(SIZE_T size) : base(size) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStructBase{T}"/> class.</summary>
 	/// <param name="allocatedMemory">The allocated memory.</param>
 	/// <param name="size">The size.</param>
 	/// <param name="ownsHandle">if set to <see langword="true"/> [owns handle].</param>
-	protected SafeAnysizeStructBase(IntPtr allocatedMemory, SizeT size, bool ownsHandle) : base(allocatedMemory, size, ownsHandle) { }
+	protected SafeAnysizeStructBase(IntPtr allocatedMemory, SIZE_T size, bool ownsHandle) : base(allocatedMemory, size, ownsHandle) { }
 
 	/// <summary>Gets or sets the structure value.</summary>
 	public T Value { get => FromNative(handle, Size); set => ToNative(value); }
@@ -224,12 +224,12 @@ public class SafeAnysizeStructMarshaler<T>(string? cookie) : IVanaraMarshaler
 	/// <summary>Initializes a new instance of the <see cref="SafeAnysizeStructMarshaler{T}"/> class.</summary>
 	public SafeAnysizeStructMarshaler() : this(null) { }
 
-	SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<T>();
+	SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<T>();
 
 	SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) =>
 		managedObject is null ? SafeCoTaskMemHandle.Null : new SafeAnysizeStruct<T>((T)managedObject, sizeFieldName);
 
-	object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+	object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 	{
 		if (pNativeData == IntPtr.Zero) return null;
 		using var s = new SafeAnysizeStruct<T>(pNativeData, allocatedBytes, sizeFieldName);
@@ -312,7 +312,7 @@ public class AnySizeStringMarshaler<T> : IVanaraMarshaler
 		if (fiCount is null && !allMem) throw new ArgumentException("Invalid string length field name.", nameof(cookie));
 	}
 
-	SizeT IVanaraMarshaler.GetNativeSize() => baseSz;
+	SIZE_T IVanaraMarshaler.GetNativeSize() => baseSz;
 
 	SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 	{
@@ -331,7 +331,7 @@ public class AnySizeStringMarshaler<T> : IVanaraMarshaler
 		return h;
 	}
 
-	object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+	object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 	{
 		if (pNativeData == IntPtr.Zero) return null;
 		var o = Marshal.PtrToStructure(pNativeData, typeof(T));

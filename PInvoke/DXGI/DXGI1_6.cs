@@ -3565,19 +3565,19 @@ public static partial class DXGI
 		public uint Revision;
 
 		/// <summary>The number of bytes of dedicated video memory that are not shared with the CPU.</summary>
-		public SizeT DedicatedVideoMemory;
+		public SIZE_T DedicatedVideoMemory;
 
 		/// <summary>
 		/// The number of bytes of dedicated system memory that are not shared with the CPU. This memory is allocated from available system
 		/// memory at boot time.
 		/// </summary>
-		public SizeT DedicatedSystemMemory;
+		public SIZE_T DedicatedSystemMemory;
 
 		/// <summary>
 		/// The number of bytes of shared system memory. This is the maximum value of system memory that may be consumed by the adapter
 		/// during operation. Any incidental memory consumed by the driver as it manages and uses video memory is additional.
 		/// </summary>
-		public SizeT SharedSystemMemory;
+		public SIZE_T SharedSystemMemory;
 
 		/// <summary>
 		/// A unique value that identifies the adapter. See LUID for a definition of the structure. <c>LUID</c> is defined in dxgi.h.

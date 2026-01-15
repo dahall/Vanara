@@ -1029,7 +1029,7 @@ public static partial class Magnification
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The size of the data.</para>
 		/// </summary>
-		public SizeT cbSize;
+		public SIZE_T cbSize;
 	}
 
 	/// <summary>Describes a transformation matrix that a magnifier control uses to magnify screen content.</summary>

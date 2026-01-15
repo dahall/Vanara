@@ -543,7 +543,7 @@ public static partial class D3DCompiler
 	// **ppCode, [out, optional] ID3DBlob **ppErrorMsgs );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DCompile")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DCompile([In] IntPtr pSrcData, [In] SizeT SrcDataSize,
+	public static extern HRESULT D3DCompile([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize,
 		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pSourceName, [In, Optional] IntPtr pDefines,
 		[In, Optional] ID3DInclude? pInclude, [In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pEntrypoint,
 		[In, MarshalAs(UnmanagedType.LPStr)] string pTarget, D3DCOMPILE Flags1, [Optional] D3DCOMPILE_FLAGS2 Flags2, out ID3DBlob ppCode,
@@ -635,7 +635,7 @@ public static partial class D3DCompiler
 	// **ppCode, [out, optional] ID3DBlob **ppErrorMsgs );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DCompile")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DCompile([In] IntPtr pSrcData, [In] SizeT SrcDataSize,
+	public static extern HRESULT D3DCompile([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize,
 		[In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pSourceName, in D3D_SHADER_MACRO pDefines,
 		[In, Optional] ID3DInclude? pInclude, [In, Optional, MarshalAs(UnmanagedType.LPStr)] string? pEntrypoint,
 		[In, MarshalAs(UnmanagedType.LPStr)] string pTarget, D3DCOMPILE Flags1, [Optional] D3DCOMPILE_FLAGS2 Flags2, out ID3DBlob ppCode,
@@ -809,11 +809,11 @@ public static partial class D3DCompiler
 	// ID3DBlob **ppErrorMsgs );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DCompile2")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DCompile2([In] IntPtr pSrcData, [In] SizeT SrcDataSize,
+	public static extern HRESULT D3DCompile2([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize,
 		[Optional, MarshalAs(UnmanagedType.LPStr)] string? pSourceName, [In, Optional] IntPtr pDefines, [In, Optional] ID3DInclude? pInclude,
 		[MarshalAs(UnmanagedType.LPStr)] string pEntrypoint, [MarshalAs(UnmanagedType.LPStr)] string pTarget, D3DCOMPILE Flags1,
 		[Optional] D3DCOMPILE_FLAGS2 Flags2, D3DCOMPILE_SECDATA SecondaryDataFlags, [In, Optional] IntPtr pSecondaryData,
-		[In] SizeT SecondaryDataSize, out ID3DBlob ppCode, [Out, Optional] IntPtr ppErrorMsgs);
+		[In] SIZE_T SecondaryDataSize, out ID3DBlob ppCode, [Out, Optional] IntPtr ppErrorMsgs);
 
 	/// <summary>Compiles Microsoft High Level Shader Language (HLSL) code into bytecode for a given target.</summary>
 	/// <param name="pSrcData">
@@ -983,11 +983,11 @@ public static partial class D3DCompiler
 	// ID3DBlob **ppErrorMsgs );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DCompile2")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DCompile2([In] IntPtr pSrcData, [In] SizeT SrcDataSize,
+	public static extern HRESULT D3DCompile2([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize,
 		[Optional, MarshalAs(UnmanagedType.LPStr)] string? pSourceName, in D3D_SHADER_MACRO pDefines, [In, Optional] ID3DInclude? pInclude,
 		[MarshalAs(UnmanagedType.LPStr)] string pEntrypoint, [MarshalAs(UnmanagedType.LPStr)] string pTarget, D3DCOMPILE Flags1,
 		[Optional] D3DCOMPILE_FLAGS2 Flags2, D3DCOMPILE_SECDATA SecondaryDataFlags, [In, Optional] IntPtr pSecondaryData,
-		[In] SizeT SecondaryDataSize, out ID3DBlob ppCode, out ID3DBlob ppErrorMsgs);
+		[In] SIZE_T SecondaryDataSize, out ID3DBlob ppCode, out ID3DBlob ppErrorMsgs);
 
 	/// <summary>
 	/// <para>A pointer to a constant null-terminated string that contains the name of the file that contains the shader code.</para>
@@ -1243,7 +1243,7 @@ public static partial class D3DCompiler
 	// [out] ID3DBlob **ppBlob );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DCreateBlob")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DCreateBlob([In] SizeT Size, out ID3DBlob ppBlob);
+	public static extern HRESULT D3DCreateBlob([In] SIZE_T Size, out ID3DBlob ppBlob);
 
 	/// <summary>
 	/// <para>Creates a function-linking-graph interface.</para>
@@ -1365,7 +1365,7 @@ public static partial class D3DCompiler
 	// UINT uFlags, [out] ID3DBlob **ppShaders, [out, optional] UINT *pTotalShaders );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DDecompressShaders")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DDecompressShaders([In] IntPtr pSrcData, [In] SizeT SrcDataSize, uint uNumShaders, uint uStartIndex,
+	public static extern HRESULT D3DDecompressShaders([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, uint uNumShaders, uint uStartIndex,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray)] uint[]? pIndices, [Optional, Ignore] uint uFlags, out ID3DBlob ppShaders, out uint pTotalShaders);
 
 	/// <summary>Disassembles compiled HLSL code.</summary>
@@ -1437,7 +1437,7 @@ public static partial class D3DCompiler
 	// pSrcData, [in] SIZE_T SrcDataSize, [in] UINT Flags, [in, optional] LPCSTR szComments, [out] ID3DBlob **ppDisassembly );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DDisassemble")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DDisassemble([In] IntPtr pSrcData, [In] SizeT SrcDataSize, D3D_DISASM Flags,
+	public static extern HRESULT D3DDisassemble([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, D3D_DISASM Flags,
 		[Optional, MarshalAs(UnmanagedType.LPStr)] string? szComments, out ID3DBlob ppDisassembly);
 
 	/// <summary>Disassembles compiled HLSL code from a Direct3D10 effect.</summary>
@@ -1531,9 +1531,9 @@ public static partial class D3DCompiler
 	// SIZE_T NumInsts, [out, optional] SIZE_T *pFinishByteOffset, [out] ID3DBlob **ppDisassembly );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DDisassembleRegion")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DDisassembleRegion([In] IntPtr pSrcData, [In] SizeT SrcDataSize, D3D_DISASM Flags,
-		[Optional, MarshalAs(UnmanagedType.LPStr)] string? szComments, [In] SizeT StartByteOffset, [In] SizeT NumInsts,
-		out SizeT pFinishByteOffset, out ID3DBlob ppDisassembly);
+	public static extern HRESULT D3DDisassembleRegion([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, D3D_DISASM Flags,
+		[Optional, MarshalAs(UnmanagedType.LPStr)] string? szComments, [In] SIZE_T StartByteOffset, [In] SIZE_T NumInsts,
+		out SIZE_T pFinishByteOffset, out ID3DBlob ppDisassembly);
 
 	/// <summary>Disassembles a specific region of compiled Microsoft High Level Shader Language (HLSL) code.</summary>
 	/// <param name="pSrcData">A pointer to compiled shader data.</param>
@@ -1603,8 +1603,8 @@ public static partial class D3DCompiler
 	// SIZE_T NumInsts, [out, optional] SIZE_T *pFinishByteOffset, [out] ID3DBlob **ppDisassembly );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DDisassembleRegion")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DDisassembleRegion([In] IntPtr pSrcData, [In] SizeT SrcDataSize, D3D_DISASM Flags,
-		[Optional, MarshalAs(UnmanagedType.LPStr)] string? szComments, [In] SizeT StartByteOffset, [In] SizeT NumInsts,
+	public static extern HRESULT D3DDisassembleRegion([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, D3D_DISASM Flags,
+		[Optional, MarshalAs(UnmanagedType.LPStr)] string? szComments, [In] SIZE_T StartByteOffset, [In] SIZE_T NumInsts,
 		[Out, Optional] IntPtr pFinishByteOffset, out ID3DBlob ppDisassembly);
 
 	/// <summary>Retrieves a specific part from a compilation result.</summary>
@@ -1640,7 +1640,7 @@ public static partial class D3DCompiler
 	// pSrcData, [in] SIZE_T SrcDataSize, [in] D3D_BLOB_PART Part, [in] UINT Flags, [out] ID3DBlob **ppPart );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetBlobPart")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DGetBlobPart([In] IntPtr pSrcData, [In] SizeT SrcDataSize, [In] D3D_BLOB_PART Part,
+	public static extern HRESULT D3DGetBlobPart([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, [In] D3D_BLOB_PART Part,
 		[Optional] uint Flags, out ID3DBlob ppPart);
 
 	/// <summary>
@@ -1672,7 +1672,7 @@ public static partial class D3DCompiler
 	// pSrcData, [in] SIZE_T SrcDataSize, [out] ID3DBlob **ppDebugInfo );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetDebugInfo")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DGetDebugInfo([In] IntPtr pSrcData, [In] SizeT SrcDataSize, out ID3DBlob ppDebugInfo);
+	public static extern HRESULT D3DGetDebugInfo([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, out ID3DBlob ppDebugInfo);
 
 	/// <summary>
 	/// <para>Type: <c>LPCVOID</c></para>
@@ -1702,7 +1702,7 @@ public static partial class D3DCompiler
 	// D3DGetInputAndOutputSignatureBlob( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [out] ID3DBlob **ppSignatureBlob );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetInputAndOutputSignatureBlob")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DGetInputAndOutputSignatureBlob([In] IntPtr pSrcData, [In] SizeT SrcDataSize, out ID3DBlob ppSignatureBlob);
+	public static extern HRESULT D3DGetInputAndOutputSignatureBlob([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, out ID3DBlob ppSignatureBlob);
 
 	/// <summary>
 	/// <para>Type: <c>LPCVOID</c></para>
@@ -1732,7 +1732,7 @@ public static partial class D3DCompiler
 	// D3DGetInputSignatureBlob( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [out] ID3DBlob **ppSignatureBlob );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetInputSignatureBlob")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DGetInputSignatureBlob([In] IntPtr pSrcData, [In] SizeT SrcDataSize, out ID3DBlob ppSignatureBlob);
+	public static extern HRESULT D3DGetInputSignatureBlob([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, out ID3DBlob ppSignatureBlob);
 
 	/// <summary>
 	/// <para>Type: <c>LPCVOID</c></para>
@@ -1762,7 +1762,7 @@ public static partial class D3DCompiler
 	// D3DGetOutputSignatureBlob( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [out] ID3DBlob **ppSignatureBlob );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetOutputSignatureBlob")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DGetOutputSignatureBlob([In] IntPtr pSrcData, [In] SizeT SrcDataSize, out ID3DBlob ppSignatureBlob);
+	public static extern HRESULT D3DGetOutputSignatureBlob([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, out ID3DBlob ppSignatureBlob);
 
 	/// <summary>Retrieves the byte offsets for instructions within a section of shader code.</summary>
 	/// <param name="pSrcData">A pointer to the compiled shader data.</param>
@@ -1806,8 +1806,8 @@ public static partial class D3DCompiler
 	// SIZE_T NumInsts, [out, optional] SIZE_T *pOffsets, [out, optional] SIZE_T *pTotalInsts );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DGetTraceInstructionOffsets")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DGetTraceInstructionOffsets([In] IntPtr pSrcData, [In] SizeT SrcDataSize, D3D_GET_INST_OFFSETS Flags,
-		[In] SizeT StartInstIndex, [In] SizeT NumInsts, out SizeT pOffsets, out SizeT pTotalInsts);
+	public static extern HRESULT D3DGetTraceInstructionOffsets([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, D3D_GET_INST_OFFSETS Flags,
+		[In] SIZE_T StartInstIndex, [In] SIZE_T NumInsts, out SIZE_T pOffsets, out SIZE_T pTotalInsts);
 
 	/// <summary>
 	/// <para>Creates a shader module interface from source data for the shader module.</para>
@@ -1842,7 +1842,7 @@ public static partial class D3DCompiler
 	// pSrcData, [in] SIZE_T cbSrcDataSize, [out] ID3D11Module **ppModule );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DLoadModule")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DLoadModule([In] IntPtr pSrcData, [In] SizeT cbSrcDataSize, out ID3D11Module ppModule);
+	public static extern HRESULT D3DLoadModule([In] IntPtr pSrcData, [In] SIZE_T cbSrcDataSize, out ID3D11Module ppModule);
 
 	/// <summary>Preprocesses uncompiled HLSL code.</summary>
 	/// <param name="pSrcData">
@@ -1892,7 +1892,7 @@ public static partial class D3DCompiler
 	// ID3DInclude *pInclude, [out] ID3DBlob **ppCodeText, [out, optional] ID3DBlob **ppErrorMsgs );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DPreprocess")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DPreprocess([In] IntPtr pSrcData, [In] SizeT SrcDataSize,
+	public static extern HRESULT D3DPreprocess([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize,
 		[Optional, MarshalAs(UnmanagedType.LPStr)] string? pSourceName, [In, Optional, MarshalAs(UnmanagedType.LPArray)] D3D_SHADER_MACRO[]? pDefines,
 		[In, Optional] ID3DInclude? pInclude, out ID3DBlob ppCodeText, out ID3DBlob? ppErrorMsgs);
 
@@ -1950,7 +1950,7 @@ public static partial class D3DCompiler
 	// [in] SIZE_T SrcDataSize, [in] REFIID pInterface, [out] void **ppReflector );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DReflect")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DReflect([In] IntPtr pSrcData, [In] SizeT SrcDataSize, in Guid pInterface,
+	public static extern HRESULT D3DReflect([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, in Guid pInterface,
 		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppReflector);
 
 	/// <summary>
@@ -1986,7 +1986,7 @@ public static partial class D3DCompiler
 	// LPCVOID pSrcData, [in] SIZE_T SrcDataSize, [in] REFIID riid, [out] LPVOID *ppReflector );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DReflectLibrary")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DReflectLibrary([In] IntPtr pSrcData, [In] SizeT SrcDataSize, in Guid riid,
+	public static extern HRESULT D3DReflectLibrary([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, in Guid riid,
 		[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object? ppReflector);
 
 	/// <summary>Sets information in a compilation result.</summary>
@@ -2038,8 +2038,8 @@ public static partial class D3DCompiler
 	// **ppNewShader );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DSetBlobPart")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DSetBlobPart([In] IntPtr pSrcData, [In] SizeT SrcDataSize, [In] D3D_BLOB_PART Part,
-		[Optional] uint Flags, [In] IntPtr pPart, [In] SizeT PartSize, out ID3DBlob ppNewShader);
+	public static extern HRESULT D3DSetBlobPart([In] IntPtr pSrcData, [In] SIZE_T SrcDataSize, [In] D3D_BLOB_PART Part,
+		[Optional] uint Flags, [In] IntPtr pPart, [In] SIZE_T PartSize, out ID3DBlob ppNewShader);
 
 	/// <summary>Removes unwanted blobs from a compilation result.</summary>
 	/// <param name="pShaderBytecode">
@@ -2069,7 +2069,7 @@ public static partial class D3DCompiler
 	// pShaderBytecode, [in] SIZE_T BytecodeLength, [in] UINT uStripFlags, [out] ID3DBlob **ppStrippedBlob );
 	[PInvokeData("d3dcompiler.h", MSDNShortId = "NF:d3dcompiler.D3DStripShader")]
 	[DllImport(Lib_D3dcompiler_47, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3DStripShader([In] IntPtr pShaderBytecode, [In] SizeT BytecodeLength, D3DCOMPILER_STRIP_FLAGS uStripFlags,
+	public static extern HRESULT D3DStripShader([In] IntPtr pShaderBytecode, [In] SIZE_T BytecodeLength, D3DCOMPILER_STRIP_FLAGS uStripFlags,
 		out ID3DBlob ppStrippedBlob);
 
 	/// <summary>
@@ -2127,6 +2127,6 @@ public static partial class D3DCompiler
 		public IntPtr pBytecode;
 
 		/// <summary>Length of shader data that <c>pBytecode</c> points to.</summary>
-		public SizeT BytecodeLength;
+		public SIZE_T BytecodeLength;
 	}
 }

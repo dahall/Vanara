@@ -5194,7 +5194,7 @@ public static partial class AdvApi32
 		}
 
 		/// <inheritdoc/>
-		public override SizeT Size
+		public override SIZE_T Size
 		{
 			get => base.Size;
 			set
@@ -5301,7 +5301,7 @@ public static partial class AdvApi32
 		/// <inheritdoc/>
 		public override int GetHashCode() => Header.GetHashCode();
 
-		private bool EnsureCapacity(SizeT addCap)
+		private bool EnsureCapacity(SIZE_T addCap)
 		{
 			if (Length + addCap > Size)
 				Size = Macros.ALIGN_TO_MULTIPLE(Length + addCap, 4);
@@ -5414,7 +5414,7 @@ public static partial class AdvApi32
 		public uint Revision => ((PACL)handle).Revision();
 
 		/// <inheritdoc/>
-		public override SizeT Size
+		public override SIZE_T Size
 		{
 			get => base.Size;
 			set
@@ -5812,7 +5812,7 @@ public static partial class AdvApi32
 
 		/// <summary>Gets or sets the size in bytes of the security descriptor.</summary>
 		/// <value>The size in bytes of the security descriptor.</value>
-		public override SizeT Size
+		public override SIZE_T Size
 		{
 			get
 			{
@@ -5965,8 +5965,8 @@ public static partial class AdvApi32
 			var pSD = new SafePSECURITY_DESCRIPTOR((int)cSD);
 			var pDacl = cDacl == 0 ? SafePACL.Null : new SafePACL((int)cDacl);
 			var pSacl = cSacl == 0 ? SafePACL.Null : new SafePACL((int)cSacl);
-			var pOwn = cOwn == 0 ? SafePSID.Null : new SafePSID((SizeT)cOwn);
-			var pGrp = cGrp == 0 ? SafePSID.Null : new SafePSID((SizeT)cGrp);
+			var pOwn = cOwn == 0 ? SafePSID.Null : new SafePSID((SIZE_T)cOwn);
+			var pGrp = cGrp == 0 ? SafePSID.Null : new SafePSID((SIZE_T)cGrp);
 			if (!MakeAbsoluteSD(this, pSD, ref cSD, pDacl, ref cDacl, pSacl, ref cSacl, pOwn, ref cOwn, pGrp, ref cGrp))
 				Win32Error.ThrowLastError();
 			return (pSD, pDacl, pSacl, pOwn, pGrp);

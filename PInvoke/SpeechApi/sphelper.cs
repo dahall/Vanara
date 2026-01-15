@@ -103,7 +103,7 @@ public static partial class SpeechApi
 			GC.SuppressFinalize(this);
 		}
 
-		public static HRESULT CheckStringSizeBytes(LPWSTR psz, SizeT cbMax, out SizeT pcb)
+		public static HRESULT CheckStringSizeBytes(LPWSTR psz, SIZE_T cbMax, out SIZE_T pcb)
 		{
 			pcb = 0;
 			if (!psz.IsNull)
@@ -142,7 +142,7 @@ public static partial class SpeechApi
 			if (cbMaxLength < (pcbUsed = (uint)Marshal.SizeOf(typeof(SPEVENT))))
 				return HRESULT.E_INVALIDARG;
 
-			SizeT cbExtraSize = cbMaxLength - pcbUsed;
+			SIZE_T cbExtraSize = cbMaxLength - pcbUsed;
 
 			unsafe
 			{
@@ -157,7 +157,7 @@ public static partial class SpeechApi
 				HRESULT hr = HRESULT.S_OK;
 				if (spEvent.lParam != IntPtr.Zero)
 				{
-					SizeT cbAlloc = 0;
+					SIZE_T cbAlloc = 0;
 					switch (spEvent.elParamType)
 					{
 						case SPEVENTLPARAMTYPE.SPET_LPARAM_IS_POINTER:
@@ -903,7 +903,7 @@ public static partial class SpeechApi
 		if (ppWords is null || ppWords.Length == 0 || (prgDispAttribs is not null && prgDispAttribs.Length != ppWords.Length))
 			return HRESULT.E_INVALIDARG;
 
-		SizeT cTotalChars = ppWords.Sum(w => w.Length + 1);
+		SIZE_T cTotalChars = ppWords.Sum(w => w.Length + 1);
 
 		SPPHONEID[] pphoneId = new SPPHONEID[cTotalChars];
 

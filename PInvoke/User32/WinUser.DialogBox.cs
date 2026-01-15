@@ -2643,7 +2643,7 @@ public static partial class User32
 		public static DlgItemTemplate MakeStatic(string text, ushort id, short x, short y, short cx = 50, short cy = 14, WindowStyles style = WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | (WindowStyles)StaticStyle.SS_LEFT, WindowStylesEx exstyle = 0) =>
 			MakeControl(0x0082, text, id, x, y, cx, cy, style, exstyle);
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<DLGTEMPLATE>() + sizeof(ushort) * 3;
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<DLGTEMPLATE>() + sizeof(ushort) * 3;
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -2723,7 +2723,7 @@ public static partial class User32
 			}
 		}
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero)
 				return null;
@@ -3189,7 +3189,7 @@ public static partial class User32
 			WindowStylesEx exstyle = 0, uint helpID = 0) =>
 			MakeControl(0x0082, text, id, x, y, cx, cy, style, exstyle, helpID);
 
-		SizeT IVanaraMarshaler.GetNativeSize() => 40;
+		SIZE_T IVanaraMarshaler.GetNativeSize() => 40;
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
 			if (managedObject is not DLGTEMPLATEEX_MGD dt)
@@ -3262,7 +3262,7 @@ public static partial class User32
 					buffer.Write(s, CharSet.Unicode);
 			}
 		}
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero)
 				return null;

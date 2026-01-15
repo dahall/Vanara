@@ -4936,7 +4936,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getmessage HRESULT
 		// GetMessage( [in] UINT64 MessageIndex, [out, optional] D3D12_MESSAGE *pMessage, [in, out] SIZE_T *pMessageByteLength );
 		[PreserveSig]
-		HRESULT GetMessage(ulong MessageIndex, [Out, Optional] ManagedStructPointer<D3D12_MESSAGE> pMessage, ref SizeT pMessageByteLength);
+		HRESULT GetMessage(ulong MessageIndex, [Out, Optional] ManagedStructPointer<D3D12_MESSAGE> pMessage, ref SIZE_T pMessageByteLength);
 
 		/// <summary>Get the number of messages that were allowed to pass through a storage filter.</summary>
 		/// <returns>
@@ -5032,7 +5032,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getstoragefilter HRESULT
 		// GetStorageFilter( [out, optional] D3D12_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetStorageFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetStorageFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SIZE_T pFilterByteLength);
 
 		/// <summary>Remove a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5135,7 +5135,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getretrievalfilter HRESULT
 		// GetRetrievalFilter( [out, optional] D3D12_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetRetrievalFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		HRESULT GetRetrievalFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SIZE_T pFilterByteLength);
 
 		/// <summary>Remove a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5378,7 +5378,7 @@ public static partial class D3D12
 	/// </remarks>
 	public static HRESULT GetMessage(this ID3D12InfoQueue queue, ulong MessageIndex, out D3D12_MESSAGE pMessage)
 	{
-		SizeT sz = 0;
+		SIZE_T sz = 0;
 		var hr = queue.GetMessage(MessageIndex, default, ref sz);
 		using SafeCoTaskMemStruct<D3D12_MESSAGE> mem = new(sz);
 		hr = queue.GetMessage(MessageIndex, mem, ref sz);
@@ -5392,7 +5392,7 @@ public static partial class D3D12
 	/// <returns>This method returns one of the <c>Direct3D 12 Return Codes</c>.</returns>
 	public static HRESULT GetStorageFilter(this ID3D12InfoQueue queue, out D3D12_INFO_QUEUE_FILTER pFilter)
 	{
-		SizeT sz = 0;
+		SIZE_T sz = 0;
 		var hr = queue.GetStorageFilter(default, ref sz);
 		using SafeCoTaskMemStruct<D3D12_INFO_QUEUE_FILTER> mem = new(sz);
 		hr = queue.GetStorageFilter(mem, ref sz);
@@ -5406,7 +5406,7 @@ public static partial class D3D12
 	/// <returns>This method returns one of the <c>Direct3D 12 Return Codes</c>.</returns>
 	public static HRESULT GetRetrievalFilter(this ID3D12InfoQueue queue, out D3D12_INFO_QUEUE_FILTER pFilter)
 	{
-		SizeT sz = 0;
+		SIZE_T sz = 0;
 		var hr = queue.GetRetrievalFilter(default, ref sz);
 		using SafeCoTaskMemStruct<D3D12_INFO_QUEUE_FILTER> mem = new(sz);
 		hr = queue.GetRetrievalFilter(mem, ref sz);
@@ -5479,7 +5479,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getmessage HRESULT
 		// GetMessage( [in] UINT64 MessageIndex, [out, optional] D3D12_MESSAGE *pMessage, [in, out] SIZE_T *pMessageByteLength );
 		[PreserveSig]
-		new HRESULT GetMessage(ulong MessageIndex, [Out, Optional] ManagedStructPointer<D3D12_MESSAGE> pMessage, ref SizeT pMessageByteLength);
+		new HRESULT GetMessage(ulong MessageIndex, [Out, Optional] ManagedStructPointer<D3D12_MESSAGE> pMessage, ref SIZE_T pMessageByteLength);
 
 		/// <summary>Get the number of messages that were allowed to pass through a storage filter.</summary>
 		/// <returns>
@@ -5575,7 +5575,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getstoragefilter HRESULT
 		// GetStorageFilter( [out, optional] D3D12_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T *pFilterByteLength );
 		[PreserveSig]
-		new HRESULT GetStorageFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		new HRESULT GetStorageFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SIZE_T pFilterByteLength);
 
 		/// <summary>Remove a storage filter from the top of the storage-filter stack.</summary>
 		/// <returns>None</returns>
@@ -5678,7 +5678,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12sdklayers/nf-d3d12sdklayers-id3d12infoqueue-getretrievalfilter HRESULT
 		// GetRetrievalFilter( [out, optional] D3D12_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T *pFilterByteLength );
 		[PreserveSig]
-		new HRESULT GetRetrievalFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
+		new HRESULT GetRetrievalFilter([Out, Optional] StructPointer<D3D12_INFO_QUEUE_FILTER> pFilter, ref SIZE_T pFilterByteLength);
 
 		/// <summary>Remove a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <returns>None</returns>
@@ -6117,6 +6117,6 @@ public static partial class D3D12
 		[MarshalAs(UnmanagedType.LPStr)] public string pDescription;
 
 		/// <summary>The length of <i>pDescription</i>, in bytes.</summary>
-		public SizeT DescriptionByteLength;
+		public SIZE_T DescriptionByteLength;
 	}
 }

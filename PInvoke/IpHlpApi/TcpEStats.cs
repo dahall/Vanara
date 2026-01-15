@@ -1583,13 +1583,13 @@ public static partial class IpHlpApi
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The current number of bytes of application data that has been acknowledged by TCP but not yet delivered to the application.</para>
 		/// </summary>
-		public SizeT CurAppRQueue;
+		public SIZE_T CurAppRQueue;
 
 		/// <summary>
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The maximum number of bytes of application data that has been acknowledged by TCP but not yet delivered to the application.</para>
 		/// </summary>
-		public SizeT MaxAppRQueue;
+		public SIZE_T MaxAppRQueue;
 
 		/// <summary>
 		/// <para>Type: <c>UCHAR</c></para>
@@ -1700,13 +1700,13 @@ public static partial class IpHlpApi
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The current number of bytes of data occupying the retransmit queue.</para>
 		/// </summary>
-		public SizeT CurRetxQueue;
+		public SIZE_T CurRetxQueue;
 
 		/// <summary>
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The maximum number of bytes of data occupying the retransmit queue.</para>
 		/// </summary>
-		public SizeT MaxRetxQueue;
+		public SIZE_T MaxRetxQueue;
 
 		/// <summary>
 		/// <para>Type: <c>SIZE_T</c></para>
@@ -1719,7 +1719,7 @@ public static partial class IpHlpApi
 		/// performance may suffer if there is insufficient queued write data.
 		/// </para>
 		/// </summary>
-		public SizeT CurAppWQueue;
+		public SIZE_T CurAppWQueue;
 
 		/// <summary>
 		/// <para>Type: <c>SIZE_T</c></para>
@@ -1730,7 +1730,7 @@ public static partial class IpHlpApi
 		/// insufficient application performance or excessive CPU load or scheduler latency).
 		/// </para>
 		/// </summary>
-		public SizeT MaxAppWQueue;
+		public SIZE_T MaxAppWQueue;
 	}
 
 	/// <summary>
@@ -1912,7 +1912,7 @@ public static partial class IpHlpApi
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The total number of bytes sent in the "Receiver Limited" state.</para>
 		/// </summary>
-		public SizeT SndLimBytesRwin;
+		public SIZE_T SndLimBytesRwin;
 
 		/// <summary>
 		/// <para>Type: <c>ULONG</c></para>
@@ -1937,7 +1937,7 @@ public static partial class IpHlpApi
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The total number of bytes sent in the "Congestion Limited" state.</para>
 		/// </summary>
-		public SizeT SndLimBytesCwnd;
+		public SIZE_T SndLimBytesCwnd;
 
 		/// <summary>
 		/// <para>Type: <c>ULONG</c></para>
@@ -1960,7 +1960,7 @@ public static partial class IpHlpApi
 		/// <para>Type: <c>SIZE_T</c></para>
 		/// <para>The total number of bytes sent in the "Sender Limited" state.</para>
 		/// </summary>
-		public SizeT SndLimBytesSnd;
+		public SIZE_T SndLimBytesSnd;
 
 		/// <summary>
 		/// <para>Type: <c>ULONG</c></para>

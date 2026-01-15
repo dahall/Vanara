@@ -1725,7 +1725,7 @@ public static partial class NetApi32
 		private class DFS_GET_PKT_ENTRY_STATE_ARG_Marshaler : IVanaraMarshaler
 		{
 			static readonly long bufferOffset = Marshal.OffsetOf(typeof(DFS_GET_PKT_ENTRY_STATE_ARG_NATIVE), "Buffer").ToInt64();
-			public SizeT GetNativeSize() => Marshal.SizeOf(typeof(DFS_GET_PKT_ENTRY_STATE_ARG_NATIVE));
+			public SIZE_T GetNativeSize() => Marshal.SizeOf(typeof(DFS_GET_PKT_ENTRY_STATE_ARG_NATIVE));
 			SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 			{
 				if (managedObject is not DFS_GET_PKT_ENTRY_STATE_ARG arg)
@@ -1743,7 +1743,7 @@ public static partial class NetApi32
 				StringHelper.Write(buffer, ((IntPtr)mem).Offset(bufferOffset), out _, false, CharSet.Unicode);
 				return mem;
 			}
-			object? IVanaraMarshaler.MarshalNativeToManaged(nint pNativeData, SizeT allocatedBytes) => throw new NotImplementedException();
+			object? IVanaraMarshaler.MarshalNativeToManaged(nint pNativeData, SIZE_T allocatedBytes) => throw new NotImplementedException();
 		}
 	}
 

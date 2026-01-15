@@ -568,7 +568,7 @@ public static partial class D3D12
 		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SIZE_T blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -2138,7 +2138,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device1-createpipelinelibrary HRESULT
 		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
+		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SIZE_T BlobLength, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
@@ -2953,7 +2953,7 @@ public static partial class D3D12
 		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SIZE_T
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SIZE_T CreationParametersDataSizeInBytes,
 			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
@@ -4359,7 +4359,7 @@ public static partial class D3D12
 		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SIZE_T blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -5929,7 +5929,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device1-createpipelinelibrary HRESULT
 		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
+		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SIZE_T BlobLength, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
@@ -6744,7 +6744,7 @@ public static partial class D3D12
 		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SIZE_T
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SIZE_T CreationParametersDataSizeInBytes,
 			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
@@ -8157,7 +8157,7 @@ public static partial class D3D12
 		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SIZE_T blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -9727,7 +9727,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device1-createpipelinelibrary HRESULT
 		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
+		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SIZE_T BlobLength, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
@@ -10542,7 +10542,7 @@ public static partial class D3D12
 		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SIZE_T
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SIZE_T CreationParametersDataSizeInBytes,
 			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
@@ -11412,7 +11412,7 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[]? pResourceAllocationInfo1);
 
 		[PreserveSig]
-		HRESULT OpenExistingHeapFromAddress1([In] IntPtr pAddress, SizeT size, in Guid riid,
+		HRESULT OpenExistingHeapFromAddress1([In] IntPtr pAddress, SIZE_T size, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvHeap);
 	}
 
@@ -11959,7 +11959,7 @@ public static partial class D3D12
 		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SIZE_T blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -13529,7 +13529,7 @@ public static partial class D3D12
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device1-createpipelinelibrary HRESULT
 		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
+		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SIZE_T BlobLength, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
@@ -14344,7 +14344,7 @@ public static partial class D3D12
 		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SIZE_T
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SIZE_T CreationParametersDataSizeInBytes,
 			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
@@ -15214,11 +15214,11 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[]? pResourceAllocationInfo1);
 
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromAddress1([In] IntPtr pAddress, SizeT size, in Guid riid,
+		new HRESULT OpenExistingHeapFromAddress1([In] IntPtr pAddress, SIZE_T size, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvHeap);
 
 		[PreserveSig]
-		HRESULT CreateRootSignatureFromSubobjectInLibrary(uint nodeMask, [In] IntPtr pLibraryBlob, SizeT blobLengthInBytes,
+		HRESULT CreateRootSignatureFromSubobjectInLibrary(uint nodeMask, [In] IntPtr pLibraryBlob, SIZE_T blobLengthInBytes,
 			[Optional, MarshalAs(UnmanagedType.LPWStr)] string? subobjectName, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppvRootSignature);
 	}
@@ -18533,7 +18533,7 @@ public static partial class D3D12
 		// SIZE_T InitializationParametersDataSizeInBytes );
 		[PreserveSig]
 		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pInitializationParametersData,
-			[In] SizeT InitializationParametersDataSizeInBytes);
+			[In] SIZE_T InitializationParametersDataSizeInBytes);
 
 		/// <summary>
 		/// <para>Records the execution (or invocation) of the specified meta command into a graphics command list.</para>
@@ -18573,7 +18573,7 @@ public static partial class D3D12
 		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SIZE_T
 		// ExecutionParametersDataSizeInBytes );
 		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SizeT ExecutionParametersDataSizeInBytes);
+		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SIZE_T ExecutionParametersDataSizeInBytes);
 
 		/// <summary>
 		/// Performs a raytracing acceleration structure build on the GPU and optionally outputs post-build information immediately after
@@ -22094,7 +22094,7 @@ public static partial class D3D12
 		// SIZE_T InitializationParametersDataSizeInBytes );
 		[PreserveSig]
 		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pInitializationParametersData,
-			[In] SizeT InitializationParametersDataSizeInBytes);
+			[In] SIZE_T InitializationParametersDataSizeInBytes);
 
 		/// <summary>
 		/// <para>Records the execution (or invocation) of the specified meta command into a graphics command list.</para>
@@ -22134,7 +22134,7 @@ public static partial class D3D12
 		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SIZE_T
 		// ExecutionParametersDataSizeInBytes );
 		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SizeT ExecutionParametersDataSizeInBytes);
+		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SIZE_T ExecutionParametersDataSizeInBytes);
 
 		/// <summary>
 		/// Performs a raytracing acceleration structure build on the GPU and optionally outputs post-build information immediately after
@@ -25643,7 +25643,7 @@ public static partial class D3D12
 		// SIZE_T InitializationParametersDataSizeInBytes );
 		[PreserveSig]
 		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pInitializationParametersData,
-			[In] SizeT InitializationParametersDataSizeInBytes);
+			[In] SIZE_T InitializationParametersDataSizeInBytes);
 
 		/// <summary>
 		/// <para>Records the execution (or invocation) of the specified meta command into a graphics command list.</para>
@@ -25683,7 +25683,7 @@ public static partial class D3D12
 		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SIZE_T
 		// ExecutionParametersDataSizeInBytes );
 		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SizeT ExecutionParametersDataSizeInBytes);
+		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SIZE_T ExecutionParametersDataSizeInBytes);
 
 		/// <summary>
 		/// Performs a raytracing acceleration structure build on the GPU and optionally outputs post-build information immediately after

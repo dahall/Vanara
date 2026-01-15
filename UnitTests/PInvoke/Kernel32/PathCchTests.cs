@@ -52,7 +52,7 @@ public class PathCchTests
 	public void PathCchAddBackslashExTest()
 	{
 		StringBuilder sb = new(TestCaseSources.TempDirWhack, 64);
-		Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out var end, out SizeT rem), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
+		Assert.That(PathCchAddBackslashEx(sb, sb.Capacity, out var end, out SIZE_T rem), Is.EqualTo((HRESULT)HRESULT.S_FALSE));
 		Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDirWhack));
 		Assert.That(end, Is.Not.EqualTo(IntPtr.Zero));
 		Assert.That(rem, Is.LessThan(60));
@@ -160,7 +160,7 @@ public class PathCchTests
 	public void PathCchRemoveBackslashExTest()
 	{
 		SafeCoTaskMemString sb = new(TestCaseSources.TempDirWhack, 64);
-		Assert.That(PathCchRemoveBackslashEx((IntPtr)sb, sb.Capacity, out LPWSTR end, out SizeT rem), Is.EqualTo((HRESULT)0));
+		Assert.That(PathCchRemoveBackslashEx((IntPtr)sb, sb.Capacity, out LPWSTR end, out SIZE_T rem), Is.EqualTo((HRESULT)0));
 		Assert.That(sb.ToString(), Is.EqualTo(TestCaseSources.TempDir));
 		Assert.That(end, Is.EqualTo(sb.DangerousGetHandle().Offset(14)));
 

@@ -663,7 +663,7 @@ public static partial class SetupAPI
 	/// <param name="mem">The pointer to the memory holding the value.</param>
 	/// <param name="memSize">Size of the allocated memory.</param>
 	/// <returns>An object of the specified type.</returns>
-	public static object? GetObject(this DEVPROPTYPE pType, IntPtr mem, SizeT memSize)
+	public static object? GetObject(this DEVPROPTYPE pType, IntPtr mem, SIZE_T memSize)
 	{
 		if (mem == IntPtr.Zero || memSize == 0) return null;
 		switch (pType)

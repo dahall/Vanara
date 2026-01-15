@@ -1453,7 +1453,7 @@ public static partial class Kernel32
 	/// <param name="FailedAllocationSize">Size of the failed allocation.</param>
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "")]
-	public static extern void TerminateProcessOnMemoryExhaustion(SizeT FailedAllocationSize);
+	public static extern void TerminateProcessOnMemoryExhaustion(SIZE_T FailedAllocationSize);
 
 	/// <summary>
 	/// An application-defined function that passes unhandled exceptions to the debugger, if the process is being debugged. Otherwise, it

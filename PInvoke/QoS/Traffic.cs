@@ -1832,7 +1832,7 @@ public static partial class Traffic
 		/// </summary>
 		public IQoSObjectHdr[]? TcObjects;
 
-		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(INT_TC_GEN_FLOW));
+		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(INT_TC_GEN_FLOW));
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -1854,7 +1854,7 @@ public static partial class Traffic
 			return pFlow;
 		}
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
 		{
 			var f = pNativeData.ToStructure<INT_TC_GEN_FLOW>(allocatedBytes);
 			TC_GEN_FLOW ret = new() { SendingFlowspec = f.SendingFlowspec, ReceivingFlowspec = f.ReceivingFlowspec, TcObjects = new IQoSObjectHdr[f.TcObjectsLength] };

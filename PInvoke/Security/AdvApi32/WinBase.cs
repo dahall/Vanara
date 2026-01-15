@@ -2600,7 +2600,7 @@ public static partial class AdvApi32
 		int sidSz = 0, sbSz = 0;
 		LookupAccountName(systemName, accountName, SafePSID.Null, ref sidSz, null, ref sbSz, out _);
 		var sb = new StringBuilder(sbSz);
-		sid = new SafePSID((SizeT)sidSz);
+		sid = new SafePSID((SIZE_T)sidSz);
 		var ret = LookupAccountName(systemName, accountName, sid, ref sidSz, sb, ref sbSz, out snu);
 		domainName = sb.ToString();
 		return ret;

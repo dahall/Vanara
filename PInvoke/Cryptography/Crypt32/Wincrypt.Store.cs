@@ -129,7 +129,7 @@ public static partial class Crypt32
 	/// <param name="cbSize">Size of the memory to allocate.</param>
 	/// <returns>A pointer to the allocated memory.</returns>
 	[PInvokeData("wincrypt.h")]
-	public delegate IntPtr PFN_CRYPT_ALLOC(SizeT cbSize);
+	public delegate IntPtr PFN_CRYPT_ALLOC(SIZE_T cbSize);
 
 	/// <summary>Delegate to free memory.</summary>
 	/// <param name="pv">The pointer to the memory to free.</param>

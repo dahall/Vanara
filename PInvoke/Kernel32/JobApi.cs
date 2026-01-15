@@ -1930,7 +1930,7 @@ public static partial class Kernel32
 		/// </para>
 		/// <para>If <c>MaximumWorkingSetSize</c> is nonzero, <c>MinimumWorkingSetSize</c> cannot be zero.</para>
 		/// </summary>
-		public SizeT MinimumWorkingSetSize;
+		public SIZE_T MinimumWorkingSetSize;
 
 		/// <summary>
 		/// <para>
@@ -1939,7 +1939,7 @@ public static partial class Kernel32
 		/// </para>
 		/// <para>If <c>MinimumWorkingSetSize</c> is nonzero, <c>MaximumWorkingSetSize</c> cannot be zero.</para>
 		/// </summary>
-		public SizeT MaximumWorkingSetSize;
+		public SIZE_T MaximumWorkingSetSize;
 
 		/// <summary>
 		/// <para>
@@ -2278,20 +2278,20 @@ public static partial class Kernel32
 		/// <c>JOB_OBJECT_LIMIT_PROCESS_MEMORY</c> value, this member specifies the limit for the virtual memory that can be committed by
 		/// a process. Otherwise, this member is ignored.
 		/// </summary>
-		public SizeT ProcessMemoryLimit;
+		public SIZE_T ProcessMemoryLimit;
 
 		/// <summary>
 		/// If the <c>LimitFlags</c> member of the <c>JOBOBJECT_BASIC_LIMIT_INFORMATION</c> structure specifies the
 		/// <c>JOB_OBJECT_LIMIT_JOB_MEMORY</c> value, this member specifies the limit for the virtual memory that can be committed for
 		/// the job. Otherwise, this member is ignored.
 		/// </summary>
-		public SizeT JobMemoryLimit;
+		public SIZE_T JobMemoryLimit;
 
 		/// <summary>The peak memory used by any process ever associated with the job.</summary>
-		public SizeT PeakProcessMemoryUsed;
+		public SIZE_T PeakProcessMemoryUsed;
 
 		/// <summary>The peak memory usage of all processes currently associated with the job.</summary>
-		public SizeT PeakJobMemoryUsed;
+		public SIZE_T PeakJobMemoryUsed;
 	}
 
 	/// <summary/>

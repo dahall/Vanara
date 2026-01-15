@@ -52,7 +52,7 @@ public abstract class SafeMemString<TMem> : SafeMemoryHandle<TMem>, IConvertible
 	/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
 	[ExcludeFromCodeCoverage]
-	protected SafeMemString(IntPtr ptr, CharSet charSet = CharSet.Unicode, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) : base(ptr, allocatedBytes, ownsHandle) => CharSet = charSet == CharSet.Auto ? charSet : defaultCharSet;
+	protected SafeMemString(IntPtr ptr, CharSet charSet = CharSet.Unicode, bool ownsHandle = true, PInvoke.SIZE_T allocatedBytes = default) : base(ptr, allocatedBytes, ownsHandle) => CharSet = charSet == CharSet.Auto ? charSet : defaultCharSet;
 
 	/// <summary>Gets the number of allocated characters or 0 if the size is unknown (for example if it is holding a <see cref="SecureString"/>.</summary>
 	/// <value>The number of allocated characters.</value>

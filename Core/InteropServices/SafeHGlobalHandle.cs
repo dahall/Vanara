@@ -82,7 +82,7 @@ public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethod
 	/// <param name="handle">The handle.</param>
 	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	public SafeHGlobalHandle(IntPtr handle, SizeT size, bool ownsHandle = true) : base(handle, size, ownsHandle) { }
+	public SafeHGlobalHandle(IntPtr handle, SIZE_T size, bool ownsHandle = true) : base(handle, size, ownsHandle) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
 	/// <param name="handle">The handle.</param>
@@ -92,7 +92,7 @@ public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethod
 	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
 	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-	public SafeHGlobalHandle(SizeT size) : base(size) { }
+	public SafeHGlobalHandle(SIZE_T size) : base(size) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class using the specified byte array.</summary>
 	/// <remarks>
@@ -135,13 +135,13 @@ public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethod
 	public static implicit operator SafeHGlobalHandle(IntPtr ptr) => new(ptr, 0, true);
 
 	/// <inheritdoc/>
-	public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeHGlobalHandle(handle, size, ownsHandle);
+	public static ISafeMemoryHandle Create(IntPtr handle, SIZE_T size, bool ownsHandle = true) => new SafeHGlobalHandle(handle, size, ownsHandle);
 
 	/// <inheritdoc/>
 	public static ISafeMemoryHandle Create(byte[] bytes) => new SafeHGlobalHandle(bytes);
 
 	/// <inheritdoc/>
-	public static ISafeMemoryHandle Create(SizeT size) => new SafeHGlobalHandle(size);
+	public static ISafeMemoryHandle Create(SIZE_T size) => new SafeHGlobalHandle(size);
 
 	/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
 	/// <typeparam name="T">Native type</typeparam>
@@ -172,9 +172,9 @@ public partial class SafeHGlobalHandle : SafeMemoryHandleExt<HGlobalMemoryMethod
 		CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new(InteropExtensions.MarshalToPtr(values, packing, mm.AllocMem, out int s, charSet, prefixBytes), s);
 
 	[DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
-	private static extern SizeT GlobalSize([In] IntPtr hMem);
+	private static extern SIZE_T GlobalSize([In] IntPtr hMem);
 
-	private static SizeT GetPtrSize(IntPtr hMem)
+	private static SIZE_T GetPtrSize(IntPtr hMem)
 	{
 		var sz = GlobalSize(hMem);
 		if (sz == 0)

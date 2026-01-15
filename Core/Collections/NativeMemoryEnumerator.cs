@@ -16,7 +16,7 @@ public class NativeMemoryEnumerator<T> : UntypedNativeMemoryEnumerator, IEnumera
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 	/// <exception cref="ArgumentOutOfRangeException">count</exception>
 	/// <exception cref="InsufficientMemoryException"></exception>
-	public NativeMemoryEnumerator(IntPtr ptr, int length, int prefixBytes = 0, SizeT allocatedBytes = default) : base(ptr, typeof(T), length, prefixBytes, allocatedBytes) { }
+	public NativeMemoryEnumerator(IntPtr ptr, int length, int prefixBytes = 0, SIZE_T allocatedBytes = default) : base(ptr, typeof(T), length, prefixBytes, allocatedBytes) { }
 
 	/// <summary>Initializes a new instance of the <see cref="NativeMemoryEnumerator{T}"/> class.</summary>
 	/// <param name="ptr">A pointer to the starting address of a specified number of <typeparamref name="T"/> elements in memory.</param>
@@ -25,7 +25,7 @@ public class NativeMemoryEnumerator<T> : UntypedNativeMemoryEnumerator, IEnumera
 	/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 	/// <exception cref="ArgumentOutOfRangeException">count</exception>
 	/// <exception cref="InsufficientMemoryException"></exception>
-	public NativeMemoryEnumerator(SafeHandle ptr, int length, int prefixBytes = 0, SizeT allocatedBytes = default) : base(ptr, typeof(T), length, prefixBytes, allocatedBytes) { }
+	public NativeMemoryEnumerator(SafeHandle ptr, int length, int prefixBytes = 0, SIZE_T allocatedBytes = default) : base(ptr, typeof(T), length, prefixBytes, allocatedBytes) { }
 
 	/// <summary>Gets the element in the collection at the current position of the enumerator.</summary>
 	public new T? Current => (T?)base.Current;
@@ -41,7 +41,7 @@ public class NativeMemoryEnumerator<T> : UntypedNativeMemoryEnumerator, IEnumera
 public class UntypedNativeMemoryEnumerator : IEnumerator, IEnumerable
 {
 	/// <summary>The number of allocated bytes.</summary>
-	protected SizeT allocated;
+	protected SIZE_T allocated;
 
 	/// <summary>The number of elements in the enumeration.</summary>
 	protected int count;
@@ -59,7 +59,7 @@ public class UntypedNativeMemoryEnumerator : IEnumerator, IEnumerable
 	protected SafeHandle? handle;
 
 	/// <summary>The size of <see cref="type"/>.</summary>
-	protected SizeT stSize;
+	protected SIZE_T stSize;
 
 	/// <summary>The type of the element to extract from memory.</summary>
 	protected Type type;
@@ -73,7 +73,7 @@ public class UntypedNativeMemoryEnumerator : IEnumerator, IEnumerable
 	/// <exception cref="ArgumentOutOfRangeException">count</exception>
 	/// <exception cref="ArgumentNullException">type</exception>
 	/// <exception cref="InsufficientMemoryException"></exception>
-	public UntypedNativeMemoryEnumerator(IntPtr ptr, Type type, int length, int prefixBytes = 0, SizeT allocatedBytes = default)
+	public UntypedNativeMemoryEnumerator(IntPtr ptr, Type type, int length, int prefixBytes = 0, SIZE_T allocatedBytes = default)
 	{
 		if (length < 0 || ptr == IntPtr.Zero && length != 0)
 			throw new ArgumentOutOfRangeException(nameof(length));
@@ -83,7 +83,7 @@ public class UntypedNativeMemoryEnumerator : IEnumerator, IEnumerable
 		this.ptr = ptr;
 		count = length;
 		prefix = prefixBytes;
-		allocated = allocatedBytes == default ? (SizeT)uint.MaxValue : allocatedBytes;
+		allocated = allocatedBytes == default ? (SIZE_T)uint.MaxValue : allocatedBytes;
 		stSize = InteropExtensions.SizeOf(type);
 		if (allocatedBytes > 0 && stSize * length + prefixBytes > allocatedBytes)
 			throw new InsufficientMemoryException();
@@ -98,7 +98,7 @@ public class UntypedNativeMemoryEnumerator : IEnumerator, IEnumerable
 	/// <exception cref="ArgumentOutOfRangeException">count</exception>
 	/// <exception cref="ArgumentNullException">type</exception>
 	/// <exception cref="InsufficientMemoryException"></exception>
-	public UntypedNativeMemoryEnumerator(SafeHandle ptr, Type type, int length, int prefixBytes = 0, SizeT allocatedBytes = default)
+	public UntypedNativeMemoryEnumerator(SafeHandle ptr, Type type, int length, int prefixBytes = 0, SIZE_T allocatedBytes = default)
 	{
 		if (length < 0 || ptr.IsInvalid && length != 0)
 			throw new ArgumentOutOfRangeException(nameof(length));
@@ -109,7 +109,7 @@ public class UntypedNativeMemoryEnumerator : IEnumerator, IEnumerable
 		handle = ptr;
 		count = length;
 		prefix = prefixBytes;
-		allocated = allocatedBytes == default ? (SizeT)uint.MaxValue : allocatedBytes;
+		allocated = allocatedBytes == default ? (SIZE_T)uint.MaxValue : allocatedBytes;
 		stSize = InteropExtensions.SizeOf(type);
 		if (allocatedBytes > 0 && stSize * length + prefixBytes > allocatedBytes)
 			throw new InsufficientMemoryException();

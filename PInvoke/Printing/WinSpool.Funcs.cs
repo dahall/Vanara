@@ -5127,7 +5127,7 @@ public static partial class WinSpool
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "8b4e32cc-5eeb-4a0d-a1b7-f6edb99ed8d8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsValidDevmode(in DEVMODE pDevmode, SizeT DevmodeSize);
+	public static extern bool IsValidDevmode(in DEVMODE pDevmode, SIZE_T DevmodeSize);
 
 	/// <summary>
 	/// The <c>OpenPrinter</c> function retrieves a handle to the specified printer or print server or other types of handles in the

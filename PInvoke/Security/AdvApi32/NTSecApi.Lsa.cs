@@ -3155,7 +3155,7 @@ public static partial class AdvApi32
 
 		/// <summary>Gets or sets the size that will be passed to limit buffer overruns.</summary>
 		/// <value>The size.</value>
-		public SizeT Size { get; set; } = 0;
+		public SIZE_T Size { get; set; } = 0;
 
 		/// <summary>
 		/// Extracts an array of structures of <typeparamref name="T"/> containing <paramref name="count"/> items. <note type="note">This
@@ -3166,7 +3166,7 @@ public static partial class AdvApi32
 		/// <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
 		/// <returns>An array of structures of <typeparamref name="T"/>.</returns>
 		public T[] ToArray<T>(int count, int prefixBytes = 0) =>
-			(IsInvalid ? null : handle.ToArray<T>(count, prefixBytes, Size == 0 ? (SizeT)int.MaxValue : Size)) ?? new T[0];
+			(IsInvalid ? null : handle.ToArray<T>(count, prefixBytes, Size == 0 ? (SIZE_T)int.MaxValue : Size)) ?? new T[0];
 
 		/// <summary>
 		/// Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.
@@ -3176,7 +3176,7 @@ public static partial class AdvApi32
 		public T ToStructure<T>() where T : struct
 		{
 			if (IsInvalid) return default;
-			return handle.ToStructure<T>(Size == 0 ? (SizeT)int.MaxValue : Size);
+			return handle.ToStructure<T>(Size == 0 ? (SIZE_T)int.MaxValue : Size);
 		}
 	}
 

@@ -3787,7 +3787,7 @@ public static partial class DXGI
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
 		[PreserveSig]
-		SizeT GetBufferSize();
+		SIZE_T GetBufferSize();
 	}
 
 	/// <summary>
