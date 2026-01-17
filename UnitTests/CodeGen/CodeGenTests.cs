@@ -1,6 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ using Vanara.Generators;
 namespace Vanara.PInvoke.Tests;
 
 [TestFixture]
-public class CodeGenTests
+public partial class CodeGenTests
 {
 	const string expoutput = /* lang=c#-test */ """
 			public partial struct HTEST
@@ -691,7 +693,7 @@ public class CodeGenTests
 		Assert.That(diag.Where(d => d.Severity == DiagnosticSeverity.Error).Count(), Is.EqualTo(errCount));
 	}
 
-	private static void CreateGeneratorDriverAndRun(CSharpCompilation compilation, IIncrementalGenerator sourceGenerator, string? additionalFile, out Compilation output, out System.Collections.Immutable.ImmutableArray<Diagnostic> diag) =>
+	private static void CreateGeneratorDriverAndRun(CSharpCompilation compilation, IIncrementalGenerator sourceGenerator, string? additionalFile, out Compilation output, out ImmutableArray<Diagnostic> diag) =>
 		CSharpGeneratorDriver.Create(
 			generators: [sourceGenerator.AsSourceGenerator()],
 			additionalTexts: additionalFile is not null ? [new InMemoryAdditionalText("handles.csv", File.ReadAllText(additionalFile))] : [],
@@ -702,6 +704,9 @@ public class CodeGenTests
 
 	private static readonly List<MetadataReference> metaRefs =
 		[.. AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic).Select(a => MetadataReference.CreateFromFile(a.Location)).Cast<MetadataReference>().Concat([MetadataReference.CreateFromFile(VanaraCoreRef)])];
+
+	private static MethodDeclarationSyntax? FindMethod(string name, SyntaxTree tree) =>
+		tree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().FirstOrDefault(m => m.Identifier.Text == name);
 
 	private static CSharpCompilation GetCompilation(params string[] sourceCode) => CSharpCompilation.Create(nameof(CodeGenTests),
 		Array.ConvertAll(sourceCode, i => CSharpSyntaxTree.ParseText(i)), metaRefs, new(OutputKind.DynamicallyLinkedLibrary));

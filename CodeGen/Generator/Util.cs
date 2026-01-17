@@ -31,6 +31,30 @@ internal class TypeComparer : IEqualityComparer<TypeDeclarationSyntax>
 
 internal static class Util
 {
+	/// <summary>Gets the flags of an enumerated value as an enumerated list.</summary>
+	/// <typeparam name="T">The enumerated type.</typeparam>
+	/// <param name="value">The enumerated value.</param>
+	/// <returns>An enumeration of individual flags that compose the <paramref name="value"/>.</returns>
+	public static IEnumerable<T> GetFlags<T>(this T value) where T : struct, Enum
+	{
+		foreach (T flag in Enum.GetValues(typeof(T)).OfType<T>())
+		{
+			if (value.IsFlagSet(flag))
+				yield return flag;
+		}
+	}
+
+	/// <summary>Determines whether the enumerated flag value has the specified flag set.</summary>
+	/// <typeparam name="T">The enumerated type.</typeparam>
+	/// <param name="flags">The enumerated flag value.</param>
+	/// <param name="flag">The flag value to check.</param>
+	/// <returns><c>true</c> if is flag set; otherwise, <c>false</c>.</returns>
+	public static bool IsFlagSet<T>(this T flags, T flag) where T : struct, Enum
+	{
+		var flagValue = Convert.ToInt64(flag);
+		return (Convert.ToInt64(flags) & flagValue) == flagValue;
+	}
+
 	public static XmlDocument? GetDocs(this SyntaxNode node)
 	{
 		string docComment = node.GetLeadingTrivia().Where(t => t.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)).FirstOrDefault().ToString();

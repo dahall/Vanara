@@ -18,10 +18,12 @@
     <Compile Remove="HandleTemplate.cs" />
     <Compile Remove="IUnkMethodGenerator.cs" />
     <Compile Remove="SafeHandleTemplate.cs" />
+    <Compile Remove="TypeDefTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="HandleTemplate.cs" />
     <EmbeddedResource Include="SafeHandleTemplate.cs" />
+    <EmbeddedResource Include="TypeDefTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AddAsMemberGenerator.cs" />
