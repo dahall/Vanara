@@ -11,7 +11,7 @@ namespace Vanara.PInvoke;
 
 /// <summary>Managed instance of the SIZE_T type.</summary>
 [StructLayout(LayoutKind.Sequential), Serializable, TypeConverter(typeof(SIZE_TTypeConverter)), DebuggerDisplay("{Value}")]
-public struct SIZE_T : IEquatable<SIZE_T>, IComparable<SIZE_T>, IConvertible, IComparable, ISerializable
+public struct SIZE_T : IEquatable<SIZE_T>, IEquatable<nuint>, IComparable<SIZE_T>, IConvertible, IComparable, ISerializable
 #if NET7_0_OR_GREATER
 	, IParsable<SIZE_T>, ISpanParsable<SIZE_T>, IBinaryInteger<SIZE_T>, IUnsignedNumber<SIZE_T>
 #endif
@@ -282,6 +282,9 @@ public struct SIZE_T : IEquatable<SIZE_T>, IComparable<SIZE_T>, IConvertible, IC
 
 	/// <inheritdoc/>
 	public readonly bool Equals(SIZE_T other) => Value.Equals(other.Value);
+
+	/// <inheritdoc/>
+	public readonly bool Equals(nuint other) => Value.Equals(other);
 
 	/// <inheritdoc/>
 	public override readonly int GetHashCode() => Value.GetHashCode();
