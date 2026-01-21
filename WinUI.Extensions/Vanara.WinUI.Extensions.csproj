@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Extension methods and conversions from Vanara P/Invoke types and methods to UWP and WinUI types and methods.</Description>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <TargetFrameworks>$(TargetFrameworksNotStd)</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworksNotStdCore)</TargetFrameworks>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <UseWPF>true</UseWPF>
     <AssemblyName>Vanara.WinUI.Extensions</AssemblyName>
