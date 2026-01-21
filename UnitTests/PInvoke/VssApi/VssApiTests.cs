@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System.Linq;
+using System.Threading;
 using Vanara.PInvoke.VssApi;
 using static Vanara.PInvoke.Kernel32;
 
@@ -33,7 +34,7 @@ public class VssApiTests
 	{
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void OpenStreamOnVSSCopy()
 	{
 		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents backup), ResultIs.Successful);
@@ -59,7 +60,7 @@ public class VssApiTests
 		_ = backup.PrepareForBackup();
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void QueryDiffAreasForVolumeTest()
 	{
 		Assert.That(vols, Has.Length.GreaterThan(0));
@@ -98,7 +99,7 @@ public class VssApiTests
 		}
 	}
 
-	[Test]
+	[TestWhenElevated]
 	public void TestBackupSnapshots()
 	{
 		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents backup), ResultIs.Successful);
