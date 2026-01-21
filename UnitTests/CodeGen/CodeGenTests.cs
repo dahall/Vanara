@@ -700,7 +700,7 @@ public partial class CodeGenTests
 			driverOptions: new GeneratorDriverOptions(default, trackIncrementalGeneratorSteps: true)).
 		RunGeneratorsAndUpdateCompilation(compilation, out output, out diag);
 
-	private static readonly string VanaraCoreRef = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\Documents\GitHubRepos\Vanara\Core\bin\Debug\netstandard2.0\Vanara.Core.dll";
+	private static readonly string VanaraCoreRef = $@"Vanara.Core.dll";
 
 	private static readonly List<MetadataReference> metaRefs =
 		[.. AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic).Select(a => MetadataReference.CreateFromFile(a.Location)).Cast<MetadataReference>().Concat([MetadataReference.CreateFromFile(VanaraCoreRef)])];
