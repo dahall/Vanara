@@ -1253,6 +1253,14 @@ public static partial class Ole32
 				=> new(new Guid("{90197CA7-FD8F-4E8C-9DA3-B57E1E609295}"), 100);
 
 			/// <summary>
+			/// <para>Name:     System.RemoteConflictingFile</para>
+			/// <para>Type:     Object</para>
+			/// <para>FormatID: {FCEFF153-E839-4CF3-A9E7-EA22832094B8}, 115</para>
+			/// </summary>
+			public static PROPERTYKEY RemoteConflictingFile
+				=> new(new Guid("{FCEFF153-E839-4CF3-A9E7-EA22832094B8}"), 115);
+
+			/// <summary>
 			/// <para>Name:     System.Sensitivity -- PKEY_Sensitivity</para>
 			/// <para>Description:</para>
 			/// <para>Type:     UInt16 -- VT_UI2</para>
