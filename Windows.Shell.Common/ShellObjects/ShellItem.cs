@@ -395,7 +395,7 @@ public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellI
 	protected bool disposed = false;
 	/// <summary>Represents the shell context menu associated with the current context, or null if no menu is available.</summary>
 	protected ShellContextMenu? menu;
-	private DisposingList disposables = [];
+	private readonly DisposingList disposables = [];
 	private ShellItemImages? images;
 	private PIDL? pidl;
 	private PropertyDescriptionList? propDescList;

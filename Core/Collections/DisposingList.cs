@@ -45,7 +45,10 @@ public class DisposingList : List<object>, IDisposable
 			if (item is IDisposable d)
 				d.Dispose();
 			else if (item.GetType().IsCOMObject)
-				Marshal.ReleaseComObject(item);
+			{
+				// Do nothing as this is causing issues with certain COM objects. (#573)
+				// Marshal.ReleaseComObject(item);
+			}
 		}
 		Clear();
 		disposed = true;
