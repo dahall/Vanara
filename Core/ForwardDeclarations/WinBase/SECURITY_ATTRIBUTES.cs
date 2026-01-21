@@ -34,10 +34,10 @@ public class SECURITY_ATTRIBUTES
 /// </summary>
 [PInvokeData("winbase.h")]
 [StructLayout(LayoutKind.Sequential)]
-public struct tagSECURITY_ATTRIBUTES
+public struct tagSECURITY_ATTRIBUTES()
 {
 	/// <summary>The size, in bytes, of this structure. Set this value to the size of the SECURITY_ATTRIBUTES structure.</summary>
-	public int nLength;
+	public int nLength = Marshal.SizeOf<SECURITY_ATTRIBUTES>();
 
 	/// <summary>
 	/// A pointer to a SECURITY_DESCRIPTOR structure that controls access to the object. If the value of this member is NULL, the object
@@ -54,5 +54,5 @@ public struct tagSECURITY_ATTRIBUTES
 	[MarshalAs(UnmanagedType.Bool)] public bool bInheritHandle;
 
 	/// <summary>A default instance of this structure with the size set.</summary>
-	public static readonly tagSECURITY_ATTRIBUTES Default = new() { nLength = Marshal.SizeOf<SECURITY_ATTRIBUTES>() };
+	public static readonly tagSECURITY_ATTRIBUTES Default = new();
 }
