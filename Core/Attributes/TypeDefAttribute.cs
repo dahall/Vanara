@@ -50,7 +50,18 @@ public sealed class TypeDefAttribute(Type typeRef) : Attribute
 	/// <value>The base type reference.</value>
 	public Type TypeRef { get; } = typeRef;
 
+	/// <summary>Gets or sets a type that is the exposed type.</summary>
+	public Type? ConvertTo { get; set; } = null;
+
 	/// <summary>Gets or sets a string containing a set of options to exclude certain features from generation.</summary>
 	/// <value>A string containing a set of options to exclude certain features from generation.</value>
 	public ExcludeOptions Excludes { get; set; } = 0;
+
+	/// <summary>Gets the code to convert from the base type (TypeRef) to the exposed type (ConverTo) using 'value' to represent the base type variable name.</summary>
+	/// <remarks>By default, the base type will use IConverible to change to the exposed type.</remarks>
+	public string? GetConvValue { get; set; } = null;
+
+	/// <summary>Gets the code to convert from the exposed type (ConvertTo) to the base type (TypeRef) using 'value' to represent the exposed type variable name.</summary>
+	/// <remarks>By default, the exposed type will use IConverible to change to the base type.</remarks>
+	public string? SetConvValue { get; set; } = null;
 }

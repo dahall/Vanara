@@ -1,4 +1,6 @@
 ﻿using System.Collections.Immutable;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace Vanara.Generators;
 
@@ -7,6 +9,25 @@ namespace Vanara.Generators;
 public class TypeDefGenerator : IIncrementalGenerator
 {
 	private const string attributeFullName = "Vanara.PInvoke.TypeDefAttribute";
+
+	private static Type? GetConvForAlias(string typeName) => typeName switch
+	{
+		"bool" => typeof(BooleanConverter),
+		"byte" => typeof(ByteConverter),
+		"sbyte" => typeof(SByteConverter),
+		"char" => typeof(CharConverter),
+		"decimal" => typeof(DecimalConverter),
+		"double" => typeof(DoubleConverter),
+		"float" => typeof(SingleConverter),
+		"int" => typeof(Int32Converter),
+		"uint" => typeof(UInt32Converter),
+		"long" or "nint" => typeof(Int64Converter),
+		"ulong" or "nuint" => typeof(UInt64Converter),
+		"short" => typeof(Int16Converter),
+		"ushort" => typeof(UInt16Converter),
+		"string" => typeof(StringConverter),
+		_ => Type.GetType(typeName, false) is Type t ? TypeDescriptor.GetConverter(t).GetType() : null,
+	};
 
 	/// <summary>Called to initialize the generator and register generation steps via callbacks on the <paramref name="context"/></summary>
 	/// <param name="context">The <see cref="IncrementalGeneratorInitializationContext"/> on which to register callbacks</param>
@@ -29,16 +50,19 @@ public class TypeDefGenerator : IIncrementalGenerator
 			var semanticModel = unit.compilation.GetSemanticModel(decl.SyntaxTree);
 			if (semanticModel.GetDeclaredSymbol(decl) is not { } symbol) continue;
 			var ns = symbol.ContainingNamespace.ToString();
-			string baseType = attr.ConstructorArguments.ElementAtOrDefault(0).Value?.ToString() ?? "";
-			ExcludeOptions exclOps = (ExcludeOptions)((uint?)attr.NamedArguments.ElementAtOrDefault(0).Value.Value ?? 0U);
+			INamedTypeSymbol baseType = attr.ConstructorArguments.ElementAtOrDefault(0).Value as INamedTypeSymbol ?? throw new InvalidOperationException("Base type not found.");
+			ExcludeOptions exclOps = (ExcludeOptions)((uint?)attr.NamedArguments.FirstOrDefault(na => na.Key == "Excludes").Value.Value ?? 0U);
+			INamedTypeSymbol? convType = attr.NamedArguments.FirstOrDefault(na => na.Key == "ConvertTo").Value.Value as INamedTypeSymbol;
+			string? getConvValue = attr.NamedArguments.FirstOrDefault(na => na.Key == "GetConvValue").Value.Value as string;
+			string? setConvValue = attr.NamedArguments.FirstOrDefault(na => na.Key == "SetConvValue").Value.Value as string;
 
-			string model = GetModel(ns, symbol.Name, baseType, exclOps);
+			string model = GetModel(ns, symbol.Name, baseType, exclOps, convType, getConvValue, setConvValue);
 			context.AddSource($"{symbol.Name}.g.cs", SourceText.From(model, Encoding.UTF8));
 		}
 
 		// Add extra classes if needed
 		if (unit.structs.Length > 0)
-			context.AddSource($"TypeDefSupportingClasses.g.cs", SourceText.From(extraClasses, Encoding.UTF8));
+			context.AddSource($"TypeDefSupportingClasses.g.cs", SourceText.From(Util.ReadAllTextFromAsmResource("Vanara.Generators.TypeDefSupportingTemplate.cs"), Encoding.UTF8));
 	}
 
 	[Flags]
@@ -75,17 +99,29 @@ public class TypeDefGenerator : IIncrementalGenerator
 		ToString = 0x800,
 	}
 
-	private static string GetModel(string ns, string typeName, string baseType, ExcludeOptions excludeSet)
+	private static string GetModel(string ns, string typeName, INamedTypeSymbol baseTypeSymbol, ExcludeOptions excludeSet, INamedTypeSymbol? convTypeSymbol, string? getConvValue, string? setConvValue)
 	{
+		bool noConv = convTypeSymbol is null || convTypeSymbol.Name == "Void";
+		if (noConv)
+			convTypeSymbol = baseTypeSymbol;
+		bool ifmt = convTypeSymbol!.ImplementsInterface("System.IFormattable");
+		bool ispanfmt = convTypeSymbol!.ImplementsInterface("System.ISpanFormattable");
+		var ptr = baseTypeSymbol.Name is "IntPtr" or "UIntPtr";
+		bool num = IsNumber(convTypeSymbol!.Name);
+		var baseType = baseTypeSymbol.ToString();
+		var convType = convTypeSymbol!.ToString();
+		getConvValue ??= $"({convType})Convert.ChangeType(value, typeof({convType}))";
+		setConvValue ??= $"({baseType})Convert.ChangeType(value, typeof({baseType}))";
+
 		// Process excludes
-		var sections = new Dictionary<IncludeOptions, (bool ireq7, string[] inf, string[] us)>
+		var sections = new Dictionary<IncludeOptions, (bool ireq7, List<string> inf, string[] us)>
 		{
 			[IncludeOptions.Comparable] = (false, ["IComparable", $"IComparable<{typeName}>"], []),
 			[IncludeOptions.Conversions] = (false, [], ["System.Globalization"]),
 			[IncludeOptions.Convertible] = (false, ["IConvertible"], []),
 			[IncludeOptions.PublicCtor] = (false, [], []),
 			[IncludeOptions.EqualsOverride] = (false, [], []),
-			[IncludeOptions.Equatable] = (false, [$"IEquatable<{typeName}>", $"IEquatable<{baseType}>"], []),
+			[IncludeOptions.Equatable] = (false, [$"IEquatable<{typeName}>", $"IEquatable<{convType}>"], []),
 			[IncludeOptions.Hash] = (false, [], []),
 			[IncludeOptions.Numerics] = (true, [$"IBinaryInteger<{typeName}>", $"IUnsignedNumber<{typeName}>"], ["System.Numerics"]),
 			[IncludeOptions.Parsable] = (true, [$"IParsable<{typeName}>", $"ISpanParsable<{typeName}>"], ["System.Globalization"]),
@@ -93,6 +129,7 @@ public class TypeDefGenerator : IIncrementalGenerator
 			[IncludeOptions.ToString] = (false, [], []),
 			[IncludeOptions.Value] = (false, [], []),
 		};
+		if (!noConv) sections[IncludeOptions.Equatable].inf.Add($"IEquatable<{baseType}>");
 		// Invert excludes to includes
 		IncludeOptions includeSet = (IncludeOptions)~excludeSet;
 
@@ -108,39 +145,41 @@ public class TypeDefGenerator : IIncrementalGenerator
 		itflist.Append(string.Join(", ", interfaces));
 		if (req7interfaces.Length > 0)
 		{
-			if (interfaces.Length > 0)
-				itflist.Append(", ");
 			itflist.AppendLine();
 			itflist.AppendLine("#if NET7_0_OR_GREATER");
-			itflist.AppendLine('\t' + string.Join(", ", req7interfaces));
+			itflist.AppendLine('\t' + (interfaces.Length > 0 ? ", " : "") + string.Join(", ", req7interfaces));
 			itflist.Append("#endif");
 		}
 
 		var ctorAcc = includeSet.IsFlagSet(IncludeOptions.PublicCtor) ? "public" : "internal";
+		var valueAcc = includeSet.IsFlagSet(IncludeOptions.Value) ? "public" : "internal";
 
 		// Load and process template
 		StringBuilder template = new(Util.ReadAllTextFromAsmResource("Vanara.Generators.TypeDefTemplate.cs"));
+		PickSection("CONVTYPE", !noConv);
+		PickSection("PTR", ptr);
+		PickSection("IFMT", ifmt);
+		PickSection("ISPANFMT", ispanfmt);
+		PickSection("ISNUM", ifmt);
+		if (ptr)
+			template.Replace("((IConvertible)value)", baseType is "nint" ? "((IConvertible)((IntPtr)value).ToInt64())" : "((IConvertible)((UIntPtr)value).ToUInt64())");
+		foreach (var f in excludeSet.GetFlags()) RemoveSection(f.ToString());
+		foreach(var f in includeSet.GetFlags()) RemoveSectionMarkers(f.ToString());
 		template.Replace("__NAMESPACE__", ns);
-		template.Replace("__TYPENAME__", typeName);
-		template.Replace("__BASETYPE__", baseType);
 		template.Replace("__INTERFACES__", itflist.ToString());
 		template.Replace("__USINGS__\r\n", usingsText);
+		template.Replace("__TYPENAME__", typeName);
+		template.Replace("__CONVTYPE__", convType);
+		var converterType = GetConvForAlias(convType!) ?? throw new InvalidOperationException($"No TypeConverter found for type '{convType}'.");
+		template.Replace("__CONVTYPEFULL__", converterType.FullName);
+		template.Replace("__BASETYPE__", baseType);
 		template.Replace("__CTORACC__", ctorAcc);
-		foreach(var f in excludeSet.GetFlags()) RemoveSection(template, f.ToString());
-		foreach(var f in includeSet.GetFlags()) RemoveSectionMarkers(template, f.ToString());
-		if (typeName is "System.IntPtr" or "System.UIntPtr" or "nint" or "nuint")
-		{
-			RemoveSection(template, "NONPTR");
-			RemoveSectionMarkers(template, "PTR");
-		}
-		else
-		{
-			RemoveSection(template, "PTR");
-			RemoveSectionMarkers(template, "NONPTR");
-		}
+		template.Replace("__VALUEACC__", valueAcc);
+		template.Replace("__GETCONVVALUE__", getConvValue);
+		template.Replace("__SETCONVVALUE__", setConvValue);
 		return template.ToString();
 
-		static void RemoveSection(StringBuilder template, string section)
+		void RemoveSection(string section)
 		{
 			var startTag = $"##{section.ToUpper()}";
 			var endTag = $"%%{section.ToUpper()}\r\n";
@@ -154,82 +193,16 @@ public class TypeDefGenerator : IIncrementalGenerator
 			}
 		}
 
-		static void RemoveSectionMarkers(StringBuilder template, string section)
-		{
-			template.Replace($"##{section.ToUpper()}\r\n", "");
-			template.Replace($"%%{section.ToUpper()}\r\n", "");
-		}
-	}
+		void RemoveSectionMarkers(string section) => 
+			template.Replace($"##{section.ToUpper()}\r\n", "").Replace($"%%{section.ToUpper()}\r\n", "");
 
-	const string extraClasses = """
-		#if NET7_0_OR_GREATER
-		#nullable enable
-		using System.Diagnostics.CodeAnalysis;
-		using System.Numerics;
-		namespace Vanara.PInvoke;
-		static class NumberBaseAccessor<T> where T : INumberBase<T>, IMinMaxValue<T>
+		void PickSection(string section, bool pick)
 		{
-			public static T AdditiveIdentity => T.AdditiveIdentity;
-			public static T MultiplicativeIdentity => T.MultiplicativeIdentity;
-			public static T One => T.One;
-			public static int Radix => T.Radix;
-			public static T Zero => T.Zero;
-			public static T MaxValue => T.MinValue;
-			public static T MinValue => T.MinValue;
-			public static T Negate(T value) => Zero - value;
-			public static T Abs(T value) => T.Abs(value);
-			public static bool IsCanonical(T value) => T.IsCanonical(value);
-			public static bool IsComplexNumber(T value) => T.IsComplexNumber(value);
-			public static bool IsEvenInteger(T value) => T.IsEvenInteger(value);
-			public static bool IsFinite(T value) => T.IsFinite(value);
-			public static bool IsImaginaryNumber(T value) => T.IsImaginaryNumber(value);
-			public static bool IsInfinity(T value) => T.IsInfinity(value);
-			public static bool IsInteger(T value) => T.IsInteger(value);
-			public static bool IsNaN(T value) => T.IsNaN(value);
-			public static bool IsNegative(T value) => T.IsNegative(value);
-			public static bool IsNegativeInfinity(T value) => T.IsNegativeInfinity(value);
-			public static bool IsNormal(T value) => T.IsNormal(value);
-			public static bool IsOddInteger(T value) => T.IsOddInteger(value);
-			public static bool IsPositive(T value) => T.IsPositive(value);
-			public static bool IsPositiveInfinity(T value) => T.IsPositiveInfinity(value);
-			public static bool IsRealNumber(T value) => T.IsRealNumber(value);
-			public static bool IsSubnormal(T value) => T.IsSubnormal(value);
-			public static bool IsZero(T value) => T.IsZero(value);
-			public static T MaxMagnitude(T x, T y) => T.MaxMagnitude(x, y);
-			public static T MaxMagnitudeNumber(T x, T y) => T.MaxMagnitudeNumber(x, y);
-			public static T MinMagnitude(T x, T y) => T.MinMagnitude(x, y);
-			public static T MinMagnitudeNumber(T x, T y) => T.MinMagnitudeNumber(x, y);
-			public static bool TryConvertFromChecked<TOther>(TOther value, out T result) => TryStaticCall("TryConvertFromChecked", value, out result!);
-			public static bool TryConvertFromSaturating<TOther>(TOther value, out T result) => TryStaticCall("TryConvertFromSaturating", value, out result!);
-			public static bool TryConvertFromTruncating<TOther>(TOther value, out T result) => TryStaticCall("TryConvertFromTruncating", value, out result!);
-			public static bool TryConvertToChecked<TOther>(T value, [MaybeNullWhen(false)] out TOther result) => TryStaticCall("TryConvertToChecked", value, out result);
-			public static bool TryConvertToSaturating<TOther>(T value, [MaybeNullWhen(false)] out TOther result) => TryStaticCall("TryConvertToSaturating", value, out result);
-			public static bool TryConvertToTruncating<TOther>(T value, [MaybeNullWhen(false)] out TOther result) => TryStaticCall("TryConvertToTruncating", value, out result);
-			static bool TryStaticCall<TOther, TOut>(string fName, TOther value, [MaybeNullWhen(false)] out TOut result)
-			{
-				try
-				{
-					object?[] args = [value, null];
-					var ret = typeof(T).InvokeStaticMethod<bool>(fName, args);
-					result = (TOut)args[1]!;
-					return ret;
-				}
-				catch { result = default!; return false; }
-			}
+			RemoveSection((pick ? "!" : "") + section);
+			RemoveSectionMarkers((pick ? "" : "!") + section);
 		}
-		static class BinaryIntegerAccessor<T> where T : IBinaryInteger<T>
-		{
-			public static bool IsPow2(T value) => T.IsPow2(value);
-			public static T Log2(T value) => T.Log2(value);
-			public static T PopCount(T value) => T.PopCount(value);
-			public static T TrailingZeroCount(T value) => T.TrailingZeroCount(value);
-			public static bool TryReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned, out T value) => T.TryReadBigEndian(source, isUnsigned, out value);
-			public static bool TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out T value) => T.TryReadLittleEndian(source, isUnsigned, out value);
-			public static int GetByteCount(T value) => ((IBinaryInteger<T>)value).GetByteCount();
-			public static int GetShortestBitLength(T value) => ((IBinaryInteger<T>)value).GetShortestBitLength();
-			public static bool TryWriteBigEndian(T value, Span<byte> destination, out int bytesWritten) => ((IBinaryInteger<T>)value).TryWriteBigEndian(destination, out bytesWritten);
-			public static bool TryWriteLittleEndian(T value, Span<byte> destination, out int bytesWritten) => value.TryWriteLittleEndian(destination, out bytesWritten);
-		}
-		#endif
-		""";
+
+		static bool IsNumber(string typeName) =>
+			typeName is "Byte" or "SByte" or "Int16" or "UInt16" or "Int32" or "UInt32" or "Int64" or "UInt64" or "Single" or "Double" or "Decimal" or "IntPtr" or "UIntPtr";
+	}
 }

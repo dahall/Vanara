@@ -158,6 +158,12 @@ internal static class Util
 
 	public static TypeDeclarationSyntax? GetTypeSyntax(this INamedTypeSymbol symbol) => (TypeDeclarationSyntax?)GetSyntax(symbol, n => n is ClassDeclarationSyntax or StructDeclarationSyntax);
 
+	public static bool ImplementsInterface(this ITypeSymbol symbol, string interfaceName) =>
+		symbol.AllInterfaces.Any(i => i.ToDisplayString() == interfaceName);
+
+	public static bool ImplementsInterface(this ITypeSymbol symbol, INamedTypeSymbol interfaceSymbol) =>
+		symbol.AllInterfaces.Any(i => SymbolEqualityComparer.Default.Equals(i, interfaceSymbol));
+
 	public static bool IsPartial(this INamedTypeSymbol symbol) => symbol.DeclaringSyntaxReferences.Any(sr =>
 		sr.GetSyntax() is BaseTypeDeclarationSyntax syn && syn.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword)));
 
