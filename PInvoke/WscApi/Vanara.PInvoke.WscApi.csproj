@@ -21,8 +21,6 @@ IWSCDefaultProduct IWscProduct IWscProduct2 IWscProduct3 IWscProductList
     <PackageReadmeFile>pkgreadme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
-    
   </ItemGroup>
 </Project>

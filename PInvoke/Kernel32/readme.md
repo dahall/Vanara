@@ -1551,6 +1551,7 @@ Native Enum | Header | Managed Enum
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[&lt;_OwnerID&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<_OwnerID>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Kernel32.ENCLAVE_CREATE_INFO_VBS.&lt;_OwnerID&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3B_OwnerID%26gt%3Be__FixedBuffer)  
 [&lt;ModuleHealth&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<ModuleHealth>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Kernel32.STORAGE_OPERATIONAL_REASON.NVDIMM_NStruct.&lt;ModuleHealth&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BModuleHealth%26gt%3Be__FixedBuffer)  
 [&lt;Reserved&gt;e__FixedBuffer](https://www.google.com/search?num=5&q=<Reserved>e__FixedBuffer+site%3Alearn.microsoft.com) |  | [Vanara.PInvoke.Kernel32.SYSTEM_LOGICAL_PROCESSOR_INFORMATION.ProcessorRelationUnion.&lt;Reserved&gt;e__FixedBuffer](https://github.com/dahall/Vanara/search?l=C%23&q=%26lt%3BReserved%26gt%3Be__FixedBuffer)  
 [ACTCTX](https://www.google.com/search?num=5&q=ACTCTX+site%3Alearn.microsoft.com) | Winbase.h | [Vanara.PInvoke.Kernel32.ACTCTX](https://github.com/dahall/Vanara/search?l=C%23&q=ACTCTX)  

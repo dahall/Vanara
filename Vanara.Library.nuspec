@@ -6,7 +6,7 @@
     <version>5.0.1</version>
     <description>The full set of packages associated with the Vanara PInvoke Libraries.</description>
     <tags>pinvoke;vanara;net-extensions;interop</tags>
-    <copyright>Copyright © 2017-2024</copyright>
+    <copyright>Copyright © 2017-2026</copyright>
     <authors>David Hall</authors>
     <owners>David Hall</owners>
     <license type="expression">MIT</license>
@@ -105,7 +105,6 @@
       <dependency id="Vanara.PInvoke.Security" version="5.0.1" />
       <dependency id="Vanara.PInvoke.SensorsApi" version="5.0.1" />
       <dependency id="Vanara.PInvoke.SetupAPI" version="5.0.1" />
-      <dependency id="Vanara.PInvoke.Shared" version="5.0.1" />
       <dependency id="Vanara.PInvoke.SHCore" version="5.0.1" />
       <dependency id="Vanara.PInvoke.Shell32" version="5.0.1" />
       <dependency id="Vanara.PInvoke.ShlwApi" version="5.0.1" />
@@ -123,7 +122,7 @@
       <dependency id="Vanara.PInvoke.UxTheme" version="5.0.1" />
       <dependency id="Vanara.PInvoke.Version" version="5.0.1" />
       <dependency id="Vanara.PInvoke.VirtDisk" version="5.0.1" />
-      <dependency id="" version="5.0.1" />
+      <dependency id="Vanara.PInvoke.VssApi" version="5.0.1" />
       <dependency id="Vanara.PInvoke.WcmApi" version="5.0.1" />
       <dependency id="Vanara.PInvoke.WcnApi" version="5.0.1" />
       <dependency id="Vanara.PInvoke.WebSocket" version="5.0.1" />
