@@ -60,10 +60,10 @@ public static partial class NCrypt
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ncryptprotect/nc-ncryptprotect-pfncryptstreamoutputcallback
 	// PFNCryptStreamOutputCallback Pfncryptstreamoutputcallback; SECURITY_STATUS Pfncryptstreamoutputcallback( void *pvCallbackCtxt,
-	// const BYTE *pbData, SIZE_T cbData, BOOL fFinal ) {...}
+	// const BYTE *pbData, SizeT cbData, BOOL fFinal ) {...}
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "D07B2B63-306B-4C41-AA14-320EFEFFB939")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate HRESULT PFNCryptStreamOutputCallback(IntPtr pvCallbackCtxt, IntPtr pbData, SIZE_T cbData, [MarshalAs(UnmanagedType.Bool)] bool fFinal);
+	public delegate HRESULT PFNCryptStreamOutputCallback(IntPtr pvCallbackCtxt, IntPtr pbData, SizeT cbData, [MarshalAs(UnmanagedType.Bool)] bool fFinal);
 
 	/// <summary>
 	/// The <c>PFNCryptStreamOutputCallbackEx</c> function receives encrypted or decrypted data from tasks started by using the
@@ -110,7 +110,7 @@ public static partial class NCrypt
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ncryptprotect/nc-ncryptprotect-pfncryptstreamoutputcallback
 	[PInvokeData("ncryptprotect.h")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate HRESULT PFNCryptStreamOutputCallbackEx(IntPtr pvCallbackCtxt, IntPtr pbData, SIZE_T cbData, NCRYPT_DESCRIPTOR_HANDLE hDescriptor, [MarshalAs(UnmanagedType.Bool)] bool fFinal);
+	public delegate HRESULT PFNCryptStreamOutputCallbackEx(IntPtr pvCallbackCtxt, IntPtr pbData, SizeT cbData, NCRYPT_DESCRIPTOR_HANDLE hDescriptor, [MarshalAs(UnmanagedType.Bool)] bool fFinal);
 
 	/// <summary>Flags for <c>NCryptCreateProtectionDescriptor</c>.</summary>
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "BA6B15AC-2CD8-4D9A-817F-65CF9C09D22C")]
@@ -868,13 +868,13 @@ public static partial class NCrypt
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ncryptprotect/nf-ncryptprotect-ncryptqueryprotectiondescriptorname
-	// SECURITY_STATUS NCryptQueryProtectionDescriptorName( LPCWSTR pwszName, PWSTR pwszDescriptorString, SIZE_T *pcDescriptorString,
+	// SECURITY_STATUS NCryptQueryProtectionDescriptorName( LPCWSTR pwszName, StrPtrUni pwszDescriptorString, SizeT *pcDescriptorString,
 	// DWORD dwFlags );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "32953AEC-01EE-4ED1-80F3-29963F43004F")]
 	public static extern HRESULT NCryptQueryProtectionDescriptorName(string pwszName,
 		[Optional, SizeDef(nameof(pcDescriptorString), SizingMethod.Query)] StringBuilder? pwszDescriptorString,
-		ref SIZE_T pcDescriptorString, [Optional] ProtectionDescriptorNameFlags dwFlags);
+		ref SizeT pcDescriptorString, [Optional] ProtectionDescriptorNameFlags dwFlags);
 
 	/// <summary>
 	/// <para>
@@ -1282,11 +1282,11 @@ public static partial class NCrypt
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ncryptprotect/nf-ncryptprotect-ncryptstreamupdate SECURITY_STATUS
-	// NCryptStreamUpdate( NCRYPT_STREAM_HANDLE hStream, const BYTE *pbData, SIZE_T cbData, BOOL fFinal );
+	// NCryptStreamUpdate( NCRYPT_STREAM_HANDLE hStream, const BYTE *pbData, SizeT cbData, BOOL fFinal );
 	[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ncryptprotect.h", MSDNShortId = "417F9267-6055-489C-AF26-BEF5E17CB8B4")]
 	public static extern HRESULT NCryptStreamUpdate([In, AddAsMember] NCRYPT_STREAM_HANDLE hStream,
-		[In, SizeDef(nameof(cbData))] IntPtr pbData, SIZE_T cbData, [MarshalAs(UnmanagedType.Bool)] bool fFinal);
+		[In, SizeDef(nameof(cbData))] IntPtr pbData, SizeT cbData, [MarshalAs(UnmanagedType.Bool)] bool fFinal);
 
 	/// <summary>
 	/// <para>

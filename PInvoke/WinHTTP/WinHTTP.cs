@@ -593,13 +593,13 @@ public static partial class WinHTTP
 		WINHTTP_CALLBACK_STATUS_CLOSING_CONNECTION = 0x00000100,
 
 		/// <summary>
-		/// Successfully connected to the server. The <c>lpvStatusInformation</c> parameter contains a pointer to an <c>PWSTR</c> that
+		/// Successfully connected to the server. The <c>lpvStatusInformation</c> parameter contains a pointer to an <c>StrPtrUni</c> that
 		/// indicates the IP address of the server in dotted notation.
 		/// </summary>
 		WINHTTP_CALLBACK_STATUS_CONNECTED_TO_SERVER = 0x00000008,
 
 		/// <summary>
-		/// Connecting to the server. The <c>lpvStatusInformation</c> parameter contains a pointer to an <c>PWSTR</c> that indicates the
+		/// Connecting to the server. The <c>lpvStatusInformation</c> parameter contains a pointer to an <c>StrPtrUni</c> that indicates the
 		/// IP address of the server in dotted notation.
 		/// </summary>
 		WINHTTP_CALLBACK_STATUS_CONNECTING_TO_SERVER = 0x00000004,
@@ -646,7 +646,7 @@ public static partial class WinHTTP
 
 		/// <summary>
 		/// Successfully found the IP address of the server. The <c>lpvStatusInformation</c> parameter contains a pointer to a
-		/// <c>PWSTR</c> that indicates the name that was resolved.
+		/// <c>StrPtrUni</c> that indicates the name that was resolved.
 		/// </summary>
 		WINHTTP_CALLBACK_STATUS_NAME_RESOLVED = 0x00000002,
 
@@ -667,7 +667,7 @@ public static partial class WinHTTP
 
 		/// <summary>
 		/// An HTTP request is about to automatically redirect the request. The <c>lpvStatusInformation</c> parameter contains a pointer
-		/// to an <c>PWSTR</c> indicating the new URL. At this point, the application can read any data returned by the server with the
+		/// to an <c>StrPtrUni</c> indicating the new URL. At this point, the application can read any data returned by the server with the
 		/// redirect response and can query the response headers. It can also cancel the operation by closing the handle.
 		/// </summary>
 		WINHTTP_CALLBACK_STATUS_REDIRECT = 0x00004000,
@@ -936,7 +936,7 @@ public static partial class WinHTTP
 		WINHTTP_FLAG_SECURE = 0x00800000,
 
 		/// <summary>
-		/// The string passed in for <c>pwszObjectName</c> is converted from an <c>LPCWSTR</c> to an <c>PSTR</c>. All unsafe characters
+		/// The string passed in for <c>pwszObjectName</c> is converted from an <c>LPCWSTR</c> to an <c>StrPtrAnsi</c>. All unsafe characters
 		/// are converted to an escape sequence including the percent symbol. By default, all unsafe characters except the percent symbol
 		/// are converted to an escape sequence.
 		/// </summary>

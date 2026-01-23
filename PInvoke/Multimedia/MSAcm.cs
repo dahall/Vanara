@@ -3661,7 +3661,7 @@ public static partial class MsAcm32
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msacm/ns-msacm-acmfilterchoose typedef struct tACMFILTERCHOOSE { DWORD
 	// cbStruct; DWORD fdwStyle; HWND hwndOwner; LPWAVEFILTER pwfltr; DWORD cbwfltr; LPCSTR pszTitle; char
-	// szFilterTag[ACMFILTERTAGDETAILS_FILTERTAG_CHARS]; char szFilter[ACMFILTERDETAILS_FILTER_CHARS]; PSTR pszName; DWORD cchName;
+	// szFilterTag[ACMFILTERTAGDETAILS_FILTERTAG_CHARS]; char szFilter[ACMFILTERDETAILS_FILTER_CHARS]; StrPtrAnsi pszName; DWORD cchName;
 	// DWORD fdwEnum; LPWAVEFILTER pwfltrEnum; HINSTANCE hInstance; LPCSTR pszTemplateName; LPARAM lCustData; ACMFILTERCHOOSEHOOKPROC
 	// pfnHook; } ACMFILTERCHOOSE, *PACMFILTERCHOOSE, *LPACMFILTERCHOOSE;
 	[PInvokeData("msacm.h", MSDNShortId = "NS:msacm.tACMFILTERCHOOSE")]
@@ -4063,7 +4063,7 @@ public static partial class MsAcm32
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/msacm/ns-msacm-acmformatchoose typedef struct tACMFORMATCHOOSE { DWORD
 	// cbStruct; DWORD fdwStyle; HWND hwndOwner; LPWAVEFORMATEX pwfx; DWORD cbwfx; LPCSTR pszTitle; char
-	// szFormatTag[ACMFORMATTAGDETAILS_FORMATTAG_CHARS]; char szFormat[ACMFORMATDETAILS_FORMAT_CHARS]; PSTR pszName; DWORD cchName;
+	// szFormatTag[ACMFORMATTAGDETAILS_FORMATTAG_CHARS]; char szFormat[ACMFORMATDETAILS_FORMAT_CHARS]; StrPtrAnsi pszName; DWORD cchName;
 	// DWORD fdwEnum; LPWAVEFORMATEX pwfxEnum; HINSTANCE hInstance; LPCSTR pszTemplateName; LPARAM lCustData; ACMFORMATCHOOSEHOOKPROC
 	// pfnHook; } ACMFORMATCHOOSE, *PACMFORMATCHOOSE, *LPACMFORMATCHOOSE;
 	[PInvokeData("msacm.h", MSDNShortId = "NS:msacm.tACMFORMATCHOOSE")]

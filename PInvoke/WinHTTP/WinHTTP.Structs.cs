@@ -226,8 +226,8 @@ public static partial class WinHTTP
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_certificate_info typedef struct
-	// _WINHTTP_CERTIFICATE_INFO { FILETIME ftExpiry; FILETIME ftStart; PWSTR lpszSubjectInfo; PWSTR lpszIssuerInfo; PWSTR
-	// lpszProtocolName; PWSTR lpszSignatureAlgName; PWSTR lpszEncryptionAlgName; DWORD dwKeySize; } WINHTTP_CERTIFICATE_INFO, *PWINHTTP_CERTIFICATE_INFO;
+	// _WINHTTP_CERTIFICATE_INFO { FILETIME ftExpiry; FILETIME ftStart; StrPtrUni lpszSubjectInfo; StrPtrUni lpszIssuerInfo; StrPtrUni
+	// lpszProtocolName; StrPtrUni lpszSignatureAlgName; StrPtrUni lpszEncryptionAlgName; DWORD dwKeySize; } WINHTTP_CERTIFICATE_INFO, *PWINHTTP_CERTIFICATE_INFO;
 	[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp._WINHTTP_CERTIFICATE_INFO")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct WINHTTP_CERTIFICATE_INFO
@@ -345,8 +345,8 @@ public static partial class WinHTTP
 	/// addition to proxy credentials, users needs to set the <c>WINHTTP_OPTION_USE_GLOBAL_SERVER_CREDENTIALS</c> option flag.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_creds typedef struct tagWINHTTP_CREDS { PSTR
-	// lpszUserName; PSTR lpszPassword; PSTR lpszRealm; DWORD dwAuthScheme; PSTR lpszHostName; DWORD dwPort; } WINHTTP_CREDS, *PWINHTTP_CREDS;
+	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_creds typedef struct tagWINHTTP_CREDS { StrPtrAnsi
+	// lpszUserName; StrPtrAnsi lpszPassword; StrPtrAnsi lpszRealm; DWORD dwAuthScheme; StrPtrAnsi lpszHostName; DWORD dwPort; } WINHTTP_CREDS, *PWINHTTP_CREDS;
 	[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp.tagWINHTTP_CREDS")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct WINHTTP_CREDS
@@ -411,8 +411,8 @@ public static partial class WinHTTP
 	/// addition to proxy credentials, users needs to set the <c>WINHTTP_OPTION_USE_GLOBAL_SERVER_CREDENTIALS</c> option flag.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_creds_ex typedef struct tagWINHTTP_CREDS_EX { PSTR
-	// lpszUserName; PSTR lpszPassword; PSTR lpszRealm; DWORD dwAuthScheme; PSTR lpszHostName; DWORD dwPort; PSTR lpszUrl; }
+	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_creds_ex typedef struct tagWINHTTP_CREDS_EX { StrPtrAnsi
+	// lpszUserName; StrPtrAnsi lpszPassword; StrPtrAnsi lpszRealm; DWORD dwAuthScheme; StrPtrAnsi lpszHostName; DWORD dwPort; StrPtrAnsi lpszUrl; }
 	// WINHTTP_CREDS_EX, *PWINHTTP_CREDS_EX;
 	[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp.tagWINHTTP_CREDS_EX")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -471,7 +471,7 @@ public static partial class WinHTTP
 
 	/// <summary>The <c>WINHTTP_CURRENT_USER_IE_PROXY_CONFIG</c> structure contains the Internet Explorer proxy configuration information.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_current_user_ie_proxy_config typedef struct
-	// _WINHTTP_CURRENT_USER_IE_PROXY_CONFIG { BOOL fAutoDetect; PWSTR lpszAutoConfigUrl; PWSTR lpszProxy; PWSTR lpszProxyBypass; }
+	// _WINHTTP_CURRENT_USER_IE_PROXY_CONFIG { BOOL fAutoDetect; StrPtrUni lpszAutoConfigUrl; StrPtrUni lpszProxy; StrPtrUni lpszProxyBypass; }
 	// WINHTTP_CURRENT_USER_IE_PROXY_CONFIG, *PWINHTTP_CURRENT_USER_IE_PROXY_CONFIG;
 	[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp._WINHTTP_CURRENT_USER_IE_PROXY_CONFIG")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -487,16 +487,16 @@ public static partial class WinHTTP
 		/// Pointer to a null-terminated Unicode string that contains the auto-configuration URL if the Internet Explorer proxy configuration
 		/// for the current user specifies "Use automatic proxy configuration".
 		/// </summary>
-		public PWSTR lpszAutoConfigUrl;
+		public StrPtrUni lpszAutoConfigUrl;
 
 		/// <summary>
 		/// Pointer to a null-terminated Unicode string that contains the proxy URL if the Internet Explorer proxy configuration for the
 		/// current user specifies "use a proxy server".
 		/// </summary>
-		public PWSTR lpszProxy;
+		public StrPtrUni lpszProxy;
 
 		/// <summary>Pointer to a null-terminated Unicode string that contains the optional proxy by-pass server list.</summary>
-		public PWSTR lpszProxyBypass;
+		public StrPtrUni lpszProxyBypass;
 
 		/// <summary>Frees the memory tied to the strings in this structure.</summary>
 		public void FreeMemory()
@@ -562,7 +562,7 @@ public static partial class WinHTTP
 		/// <para>Type: <c>PCWSTR</c></para>
 		/// <para>A string containing the host name.</para>
 		/// </summary>
-		public PWSTR pwszHost;
+		public StrPtrUni pwszHost;
 
 		/// <summary>
 		/// <para>Type: <c>ULONG</c></para>
@@ -634,7 +634,7 @@ public static partial class WinHTTP
 	/// <para><c>Note</c> For Windows XP and Windows 2000, see the Run-Time Requirements section of the WinHttp start page.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_proxy_info typedef struct _WINHTTP_PROXY_INFO { DWORD
-	// dwAccessType; PWSTR lpszProxy; PWSTR lpszProxyBypass; } WINHTTP_PROXY_INFO, *LPWINHTTP_PROXY_INFO, *PWINHTTP_PROXY_INFO;
+	// dwAccessType; StrPtrUni lpszProxy; StrPtrUni lpszProxyBypass; } WINHTTP_PROXY_INFO, *LPWINHTTP_PROXY_INFO, *PWINHTTP_PROXY_INFO;
 	[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp._WINHTTP_PROXY_INFO")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct WINHTTP_PROXY_INFO
@@ -663,10 +663,10 @@ public static partial class WinHTTP
 		public WINHTTP_ACCESS_TYPE dwAccessType;
 
 		/// <summary>Pointer to a string value that contains the proxy server list.</summary>
-		public PWSTR lpszProxy;
+		public StrPtrUni lpszProxy;
 
 		/// <summary>Pointer to a string value that contains the proxy bypass list.</summary>
-		public PWSTR lpszProxyBypass;
+		public StrPtrUni lpszProxyBypass;
 
 		/// <summary>Frees the memory tied to the strings in this structure.</summary>
 		public void FreeMemory()
@@ -699,7 +699,7 @@ public static partial class WinHTTP
 	/// <para><c>Note</c> For Windows XP and Windows 2000, see the Run-Time Requirements section of the WinHttp start page.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_proxy_info typedef struct _WINHTTP_PROXY_INFO { DWORD
-	// dwAccessType; PWSTR lpszProxy; PWSTR lpszProxyBypass; } WINHTTP_PROXY_INFO, *LPWINHTTP_PROXY_INFO, *PWINHTTP_PROXY_INFO;
+	// dwAccessType; StrPtrUni lpszProxy; StrPtrUni lpszProxyBypass; } WINHTTP_PROXY_INFO, *LPWINHTTP_PROXY_INFO, *PWINHTTP_PROXY_INFO;
 	[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp._WINHTTP_PROXY_INFO")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct WINHTTP_PROXY_INFO_IN
@@ -764,7 +764,7 @@ public static partial class WinHTTP
 	/// <summary>The <c>WINHTTP_PROXY_RESULT_ENTRY</c> structure contains a result entry from a call to WinHttpGetProxyResult.</summary>
 	/// <remarks>This structure is stored in an array inside of a WINHTTP_PROXY_RESULT structure.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-winhttp_proxy_result_entry typedef struct
-	// _WINHTTP_PROXY_RESULT_ENTRY { BOOL fProxy; BOOL fBypass; INTERNET_SCHEME ProxyScheme; PWSTR pwszProxy; INTERNET_PORT ProxyPort; } WINHTTP_PROXY_RESULT_ENTRY;
+	// _WINHTTP_PROXY_RESULT_ENTRY { BOOL fProxy; BOOL fBypass; INTERNET_SCHEME ProxyScheme; StrPtrUni pwszProxy; INTERNET_PORT ProxyPort; } WINHTTP_PROXY_RESULT_ENTRY;
 	[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp._WINHTTP_PROXY_RESULT_ENTRY")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct WINHTTP_PROXY_RESULT_ENTRY
@@ -1150,9 +1150,9 @@ public static partial class WinHTTP
 	/// <para><c>Note</c> For Windows XP and Windows 2000, see the Run-Time Requirements section of the WinHttp start page.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-url_components typedef struct _WINHTTP_URL_COMPONENTS { DWORD
-	// dwStructSize; PWSTR lpszScheme; DWORD dwSchemeLength; INTERNET_SCHEME nScheme; PWSTR lpszHostName; DWORD dwHostNameLength;
-	// INTERNET_PORT nPort; PWSTR lpszUserName; DWORD dwUserNameLength; PWSTR lpszPassword; DWORD dwPasswordLength; PWSTR lpszUrlPath;
-	// DWORD dwUrlPathLength; PWSTR lpszExtraInfo; DWORD dwExtraInfoLength; } URL_COMPONENTS, *LPURL_COMPONENTS;
+	// dwStructSize; StrPtrUni lpszScheme; DWORD dwSchemeLength; INTERNET_SCHEME nScheme; StrPtrUni lpszHostName; DWORD dwHostNameLength;
+	// INTERNET_PORT nPort; StrPtrUni lpszUserName; DWORD dwUserNameLength; StrPtrUni lpszPassword; DWORD dwPasswordLength; StrPtrUni lpszUrlPath;
+	// DWORD dwUrlPathLength; StrPtrUni lpszExtraInfo; DWORD dwExtraInfoLength; } URL_COMPONENTS, *LPURL_COMPONENTS;
 	[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp._WINHTTP_URL_COMPONENTS")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct WINHTTP_URL_COMPONENTS
@@ -1163,7 +1163,7 @@ public static partial class WinHTTP
 		public uint dwStructSize;
 
 		/// <summary>Pointer to a string value that contains the scheme name.</summary>
-		public PWSTR lpszScheme;
+		public StrPtrUni lpszScheme;
 
 		/// <summary>Length of the scheme name, in characters.</summary>
 		public uint dwSchemeLength;
@@ -1188,7 +1188,7 @@ public static partial class WinHTTP
 		public INTERNET_SCHEME nScheme;
 
 		/// <summary>Pointer to a string value that contains the host name.</summary>
-		public PWSTR lpszHostName;
+		public StrPtrUni lpszHostName;
 
 		/// <summary>Length of the host name, in characters.</summary>
 		public uint dwHostNameLength;
@@ -1197,25 +1197,25 @@ public static partial class WinHTTP
 		public ushort nPort;
 
 		/// <summary>Pointer to a string that contains the user name.</summary>
-		public PWSTR lpszUserName;
+		public StrPtrUni lpszUserName;
 
 		/// <summary>Length of the user name, in characters.</summary>
 		public uint dwUserNameLength;
 
 		/// <summary>Pointer to a string that contains the password.</summary>
-		public PWSTR lpszPassword;
+		public StrPtrUni lpszPassword;
 
 		/// <summary>Length of the password, in characters.</summary>
 		public uint dwPasswordLength;
 
 		/// <summary>Pointer to a string that contains the URL path.</summary>
-		public PWSTR lpszUrlPath;
+		public StrPtrUni lpszUrlPath;
 
 		/// <summary>Length of the URL path, in characters.</summary>
 		public uint dwUrlPathLength;
 
 		/// <summary>Pointer to a string value that contains the extra information, for example, ?something or #something.</summary>
-		public PWSTR lpszExtraInfo;
+		public StrPtrUni lpszExtraInfo;
 
 		/// <summary>Unsigned long integer value that contains the length of the extra information, in characters.</summary>
 		public uint dwExtraInfoLength;
@@ -1250,9 +1250,9 @@ public static partial class WinHTTP
 	/// <para><c>Note</c> For Windows XP and Windows 2000, see the Run-Time Requirements section of the WinHttp start page.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winhttp/ns-winhttp-url_components typedef struct _WINHTTP_URL_COMPONENTS { DWORD
-	// dwStructSize; PWSTR lpszScheme; DWORD dwSchemeLength; INTERNET_SCHEME nScheme; PWSTR lpszHostName; DWORD dwHostNameLength;
-	// INTERNET_PORT nPort; PWSTR lpszUserName; DWORD dwUserNameLength; PWSTR lpszPassword; DWORD dwPasswordLength; PWSTR lpszUrlPath;
-	// DWORD dwUrlPathLength; PWSTR lpszExtraInfo; DWORD dwExtraInfoLength; } URL_COMPONENTS, *LPURL_COMPONENTS;
+	// dwStructSize; StrPtrUni lpszScheme; DWORD dwSchemeLength; INTERNET_SCHEME nScheme; StrPtrUni lpszHostName; DWORD dwHostNameLength;
+	// INTERNET_PORT nPort; StrPtrUni lpszUserName; DWORD dwUserNameLength; StrPtrUni lpszPassword; DWORD dwPasswordLength; StrPtrUni lpszUrlPath;
+	// DWORD dwUrlPathLength; StrPtrUni lpszExtraInfo; DWORD dwExtraInfoLength; } URL_COMPONENTS, *LPURL_COMPONENTS;
 	[PInvokeData("winhttp.h", MSDNShortId = "NS:winhttp._WINHTTP_URL_COMPONENTS")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct WINHTTP_URL_COMPONENTS_IN
@@ -1350,7 +1350,7 @@ public static partial class WinHTTP
 			return new(S(c.lpszScheme, c.dwSchemeLength), c.nScheme, S(c.lpszHostName, c.dwHostNameLength), c.nPort, S(c.lpszUserName, c.dwUserNameLength),
 				S(c.lpszPassword, c.dwPasswordLength), S(c.lpszUrlPath, c.dwUrlPathLength), S(c.lpszExtraInfo, c.dwExtraInfoLength));
 
-			static string? S(PWSTR p, uint l) => StringHelper.GetString((IntPtr)p, (int)l, CharSet.Unicode);
+			static string? S(StrPtrUni p, uint l) => StringHelper.GetString((IntPtr)p, (int)l, CharSet.Unicode);
 		}
 	}
 

@@ -730,7 +730,7 @@ public static partial class Kernel32
 	/// forms of this structure.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_memory_basic_information typedef struct _MEMORY_BASIC_INFORMATION
-	// { PVOID BaseAddress; PVOID AllocationBase; DWORD AllocationProtect; SIZE_T RegionSize; DWORD State; DWORD Protect; DWORD Type; }
+	// { PVOID BaseAddress; PVOID AllocationBase; DWORD AllocationProtect; SizeT RegionSize; DWORD State; DWORD Protect; DWORD Type; }
 	// MEMORY_BASIC_INFORMATION, *PMEMORY_BASIC_INFORMATION;
 	[PInvokeData("winnt.h", MSDNShortId = "dc3fa48e-0986-49cc-88a9-ff8179fbe5f0")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -752,7 +752,7 @@ public static partial class Kernel32
 		public MEM_PROTECTION AllocationProtect;
 
 		/// <summary>The size of the region beginning at the base address in which all pages have identical attributes, in bytes.</summary>
-		public SIZE_T RegionSize;
+		public SizeT RegionSize;
 
 		/// <summary>
 		/// <para>The state of the pages in the region. This member can be one of the following values.</para>
@@ -1491,7 +1491,7 @@ public static partial class Kernel32
 		/// If section information was captured, this is the file path backing the section (if any). The path may be in NT namespace. The
 		/// string may not be terminated by a <c>NULL</c> character. The pointer is valid for the lifetime of the walk marker passed to PssWalkSnapshot.
 		/// </summary>
-		public PWSTR MappedFileName;
+		public StrPtrUni MappedFileName;
 	}
 
 	/// <summary>Holds virtual address (VA) space information returned by PssQuerySnapshot.</summary>

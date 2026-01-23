@@ -501,7 +501,7 @@ public static partial class ShlwApi
 	/// <para>The perceived type is supported by Windows compressed folders.</para>
 	/// </param>
 	/// <param name="ppszType">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>
 	/// If the function returns a success code, this contains the address of a pointer to a buffer that receives the perceived type
 	/// string, for instance "text" or "video". This value can be <c>NULL</c>.
@@ -521,7 +521,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-assocgetperceivedtype LWSTDAPI AssocGetPerceivedType(
-	// PCWSTR pszExt, PERCEIVED *ptype, PERCEIVEDFLAG *pflag, PWSTR *ppszType );
+	// PCWSTR pszExt, PERCEIVED *ptype, PERCEIVEDFLAG *pflag, StrPtrUni *ppszType );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "d37f1574-b261-43bf-9712-05a569ab4246")]
 	public static extern HRESULT AssocGetPerceivedType([MarshalAs(UnmanagedType.LPWStr)] string pszExt, out PERCEIVED ptype, out PERCEIVEDFLAG pflag, [MarshalAs(UnmanagedType.LPWStr)] out string ppszType);
@@ -652,7 +652,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </param>
 	/// <param name="pszOut">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// Pointer to a null-terminated string that, when this function returns successfully, receives the requested string. Set this
 	/// parameter to <c>NULL</c> to retrieve the required buffer size.
@@ -708,7 +708,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-assocquerystringa LWSTDAPI AssocQueryStringA( ASSOCF
-	// flags, ASSOCSTR str, LPCSTR pszAssoc, LPCSTR pszExtra, PSTR pszOut, DWORD *pcchOut );
+	// flags, ASSOCSTR str, LPCSTR pszAssoc, LPCSTR pszExtra, StrPtrAnsi pszOut, DWORD *pcchOut );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "026b841d-b831-475e-a788-2c79801e20b8")]
 	public static extern HRESULT AssocQueryString(ASSOCF flags, ASSOCSTR str, string pszAssoc, [Optional] string? pszExtra, StringBuilder? pszOut, ref uint pcchOut);

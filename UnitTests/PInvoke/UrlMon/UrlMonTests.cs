@@ -46,7 +46,7 @@ public class UrlMonTests
 		using var pUri2 = ComReleaserFactory.Create(iBld.CreateUri(Uri_CREATE.Uri_CREATE_ALLOW_RELATIVE));
 		Assert.That(iUri.IsEqual(pUri2.Item));
 
-		PWSTR sch = default;
+		StrPtrUni sch = default;
 		Assert.That(() => iBld.GetSchemeName(out _, out sch), Throws.Nothing);
 		Assert.That((string?)sch, Is.EqualTo("https"));
 	}

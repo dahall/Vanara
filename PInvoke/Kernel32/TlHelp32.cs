@@ -435,16 +435,16 @@ public static partial class Kernel32
 	/// <param name="lpNumberOfBytesRead">The number of bytes copied to the specified buffer. If this parameter is <c>NULL</c>, it is ignored.</param>
 	/// <returns>Returns <c>TRUE</c> if successful.</returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/tlhelp32/nf-tlhelp32-toolhelp32readprocessmemory BOOL
-	// Toolhelp32ReadProcessMemory( DWORD th32ProcessID, LPCVOID lpBaseAddress, LPVOID lpBuffer, SIZE_T cbRead, SIZE_T
+	// Toolhelp32ReadProcessMemory( DWORD th32ProcessID, LPCVOID lpBaseAddress, LPVOID lpBuffer, SizeT cbRead, SizeT
 	// *lpNumberOfBytesRead );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("tlhelp32.h", MSDNShortId = "e579b813-32ef-481d-8dc6-f959ec9b6bad")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Toolhelp32ReadProcessMemory(uint th32ProcessID, IntPtr lpBaseAddress, IntPtr lpBuffer, SIZE_T cbRead, out SIZE_T lpNumberOfBytesRead);
+	public static extern bool Toolhelp32ReadProcessMemory(uint th32ProcessID, IntPtr lpBaseAddress, IntPtr lpBuffer, SizeT cbRead, out SizeT lpNumberOfBytesRead);
 
 	/// <summary>Describes one entry (block) of a heap that is being examined.</summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/tlhelp32/ns-tlhelp32-tagheapentry32 typedef struct tagHEAPENTRY32 { SIZE_T
-	// dwSize; HANDLE hHandle; ULONG_PTR dwAddress; SIZE_T dwBlockSize; DWORD dwFlags; DWORD dwLockCount; DWORD dwResvd; DWORD th32ProcessID;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/tlhelp32/ns-tlhelp32-tagheapentry32 typedef struct tagHEAPENTRY32 { SizeT
+	// dwSize; HANDLE hHandle; ULONG_PTR dwAddress; SizeT dwBlockSize; DWORD dwFlags; DWORD dwLockCount; DWORD dwResvd; DWORD th32ProcessID;
 	// ULONG_PTR th32HeapID; } HEAPENTRY32;
 	[PInvokeData("tlhelp32.h", MSDNShortId = "c5f1dc66-d44f-4491-b0b7-961b163d0f1f")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -454,7 +454,7 @@ public static partial class Kernel32
 		/// The size of the structure, in bytes. Before calling the Heap32First function, set this member to . If you do not initialize
 		/// <c>dwSize</c>, <c>Heap32First</c> fails.
 		/// </summary>
-		public SIZE_T dwSize = (uint)Marshal.SizeOf<HEAPENTRY32>();
+		public SizeT dwSize = (uint)Marshal.SizeOf<HEAPENTRY32>();
 
 		/// <summary>A handle to the heap block.</summary>
 		public IntPtr hHandle;
@@ -463,7 +463,7 @@ public static partial class Kernel32
 		public UIntPtr dwAddress;
 
 		/// <summary>The size of the heap block, in bytes.</summary>
-		public SIZE_T dwBlockSize;
+		public SizeT dwBlockSize;
 
 		/// <summary>
 		/// <para>This member can be one of the following values.</para>
@@ -507,7 +507,7 @@ public static partial class Kernel32
 	/// <summary>
 	/// <para>Describes an entry from a list that enumerates the heaps used by a specified process.</para>
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/tlhelp32/ns-tlhelp32-tagheaplist32 typedef struct tagHEAPLIST32 { SIZE_T dwSize;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/tlhelp32/ns-tlhelp32-tagheaplist32 typedef struct tagHEAPLIST32 { SizeT dwSize;
 	// DWORD th32ProcessID; ULONG_PTR th32HeapID; DWORD dwFlags; } HEAPLIST32;
 	[PInvokeData("tlhelp32.h", MSDNShortId = "61e01d23-9f15-44c5-9f6d-45df4809ccad")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -517,7 +517,7 @@ public static partial class Kernel32
 		/// The size of the structure, in bytes. Before calling the Heap32ListFirst function, set this member to . If you do not initialize
 		/// <c>dwSize</c>, <c>Heap32ListFirst</c> will fail.
 		/// </summary>
-		public SIZE_T dwSize = (uint)Marshal.SizeOf<HEAPLIST32>();
+		public SizeT dwSize = (uint)Marshal.SizeOf<HEAPLIST32>();
 
 		/// <summary>The identifier of the process to be examined.</summary>
 		public uint th32ProcessID;

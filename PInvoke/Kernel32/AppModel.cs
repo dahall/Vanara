@@ -459,7 +459,7 @@ public static partial class Kernel32
 	/// <para>For more information, see Use the dynamic dependency API to reference framework packages at run time.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-addpackagedependency HRESULT AddPackageDependency( PCWSTR
-	// packageDependencyId, INT32 rank, AddPackageDependencyOptions options, PACKAGEDEPENDENCY_CONTEXT *packageDependencyContext, PWSTR
+	// packageDependencyId, INT32 rank, AddPackageDependencyOptions options, PACKAGEDEPENDENCY_CONTEXT *packageDependencyContext, StrPtrUni
 	// *packageFullName );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "NF:appmodel.AddPackageDependency")]
@@ -625,7 +625,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFullNames">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>A pointer to memory space that receives the strings of package full names that were found.</para>
 	/// </param>
 	/// <param name="bufferLength">
@@ -662,7 +662,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-findpackagesbypackagefamily LONG
-	// FindPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 packageFilters, UINT32 *count, PWSTR *packageFullNames, UINT32
+	// FindPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 packageFilters, UINT32 *count, StrPtrUni *packageFullNames, UINT32
 	// *bufferLength, WCHAR *buffer, UINT32 *packageProperties );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "D52E98BD-726F-4AC0-A034-02896B1D1687")]
@@ -677,7 +677,7 @@ public static partial class Kernel32
 	/// The package constants that specify how package information is retrieved. All package constants except
 	/// <c>PACKAGE_FILTER_ALL_LOADED</c> are supported.
 	/// </para></param>
-	/// <param name="packageFullNames"><para>Type: <c>PWSTR*</c></para>
+	/// <param name="packageFullNames"><para>Type: <c>StrPtrUni*</c></para>
 	/// <para>Receives the strings of package full names that were found.</para></param>
 	/// <param name="packageProperties"><para>Type: <c>UINT32*</c></para>
 	/// <para>Receives the package properties for all of the packages that were found.</para></param>
@@ -688,7 +688,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-findpackagesbypackagefamily LONG
-	// FindPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 packageFilters, UINT32 *count, PWSTR *packageFullNames, UINT32
+	// FindPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 packageFilters, UINT32 *count, StrPtrUni *packageFullNames, UINT32
 	// *bufferLength, WCHAR *buffer, UINT32 *packageProperties );
 	[PInvokeData("appmodel.h", MSDNShortId = "D52E98BD-726F-4AC0-A034-02896B1D1687")]
 	public static Win32Error FindPackagesByPackageFamily(string packageFamilyName, PACKAGE_FLAGS packageFilters, out string?[] packageFullNames, out uint[] packageProperties)
@@ -702,7 +702,7 @@ public static partial class Kernel32
 
 		using SafeCoTaskMemString buf = new((int)bufferLength, CharSet.Unicode);
 		using SafeNativeArray<uint> props = new((int)count);
-		using SafeNativeArray<PWSTR> fns = new((int)count);
+		using SafeNativeArray<StrPtrUni> fns = new((int)count);
 		err = FindPackagesByPackageFamily(packageFamilyName!, packageFilters, ref count, fns, ref bufferLength, buf, props);
 		if (err.Succeeded)
 		{
@@ -719,7 +719,7 @@ public static partial class Kernel32
 	/// <param name="results">Receives an array containing the strings of package full names that were found and their associated properties.</param>
 	/// <returns>If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code.</returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-findpackagesbypackagefamily LONG
-	// FindPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 packageFilters, UINT32 *count, PWSTR *packageFullNames, UINT32
+	// FindPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 packageFilters, UINT32 *count, StrPtrUni *packageFullNames, UINT32
 	// *bufferLength, WCHAR *buffer, UINT32 *packageProperties );
 	[PInvokeData("appmodel.h", MSDNShortId = "D52E98BD-726F-4AC0-A034-02896B1D1687")]
 	public static Win32Error FindPackagesByPackageFamily(string packageFamilyName, PACKAGE_FLAGS packageFilters, out (string? fullName, uint properties)[] results)
@@ -752,7 +752,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="applicationUserModelId">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>A pointer to memory space that receives the app user model ID string, which includes the null-terminator.</para>
 	/// </param>
 	/// <returns>
@@ -781,7 +781,7 @@ public static partial class Kernel32
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-formatapplicationusermodelid LONG
 	// FormatApplicationUserModelId( PCWSTR packageFamilyName, PCWSTR packageRelativeApplicationId, UINT32
-	// *applicationUserModelIdLength, PWSTR applicationUserModelId );
+	// *applicationUserModelIdLength, StrPtrUni applicationUserModelId );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "F48D19C2-6373-41FC-A99D-E3CCB68D6C6C")]
 	public static extern Win32Error FormatApplicationUserModelId(string packageFamilyName, string packageRelativeApplicationId,
@@ -830,7 +830,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getapplicationusermodelid LONG
-	// GetApplicationUserModelId( HANDLE hProcess, UINT32 *applicationUserModelIdLength, PWSTR applicationUserModelId );
+	// GetApplicationUserModelId( HANDLE hProcess, UINT32 *applicationUserModelIdLength, StrPtrUni applicationUserModelId );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "FE4E0818-F548-494B-B3BD-FB51DC748451")]
 	public static extern Win32Error GetApplicationUserModelId(HPROCESS hProcess, ref uint applicationUserModelIdLength,
@@ -879,7 +879,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getapplicationusermodelidfromtoken LONG
-	// GetApplicationUserModelIdFromToken( HANDLE token, UINT32 *applicationUserModelIdLength, PWSTR applicationUserModelId );
+	// GetApplicationUserModelIdFromToken( HANDLE token, UINT32 *applicationUserModelIdLength, StrPtrUni applicationUserModelId );
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "80036518-927E-4CD0-B499-8EA472AB7E5A")]
 	public static extern Win32Error GetApplicationUserModelIdFromToken(HTOKEN token, ref uint applicationUserModelIdLength,
@@ -922,7 +922,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getcurrentapplicationusermodelid LONG
-	// GetCurrentApplicationUserModelId( UINT32 *applicationUserModelIdLength, PWSTR applicationUserModelId );
+	// GetCurrentApplicationUserModelId( UINT32 *applicationUserModelIdLength, StrPtrUni applicationUserModelId );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "562BB225-0922-4FE7-92C0-573A2CCE3195")]
 	public static extern Win32Error GetCurrentApplicationUserModelId(ref uint applicationUserModelIdLength,
@@ -939,7 +939,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFamilyName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package family name.</para>
 	/// </param>
 	/// <returns>
@@ -968,7 +968,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getcurrentpackagefamilyname LONG
-	// GetCurrentPackageFamilyName( UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
+	// GetCurrentPackageFamilyName( UINT32 *packageFamilyNameLength, StrPtrUni packageFamilyName );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "39DBFBDD-A1CC-45C3-A5DD-5ED9697F9AFE")]
 	public static extern Win32Error GetCurrentPackageFamilyName(ref uint packageFamilyNameLength,
@@ -985,7 +985,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFullName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package full name.</para>
 	/// </param>
 	/// <returns>
@@ -1014,7 +1014,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getcurrentpackagefullname LONG
-	// GetCurrentPackageFullName( UINT32 *packageFullNameLength, PWSTR packageFullName );
+	// GetCurrentPackageFullName( UINT32 *packageFullNameLength, StrPtrUni packageFullName );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "D5B00C53-1FBF-4245-92D1-FA39713A9EE7")]
 	public static extern Win32Error GetCurrentPackageFullName(ref uint packageFullNameLength,
@@ -1230,7 +1230,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="path">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package path.</para>
 	/// </param>
 	/// <returns>
@@ -1255,7 +1255,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getcurrentpackagepath LONG GetCurrentPackagePath( UINT32
-	// *pathLength, PWSTR path );
+	// *pathLength, StrPtrUni path );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "46CE81DF-A9D5-492E-AB5E-4F043DC326E2")]
 	public static extern Win32Error GetCurrentPackagePath(ref uint pathLength, [Optional, SizeDef(nameof(pathLength), SizingMethod.Query)] StringBuilder? path);
@@ -1275,7 +1275,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="path">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package path.</para>
 	/// </param>
 	/// <returns>
@@ -1307,7 +1307,7 @@ public static partial class Kernel32
 	/// types of games to support mods.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getcurrentpackagepath2 LONG GetCurrentPackagePath2(
-	// PackagePathType packagePathType, UINT32 *pathLength, PWSTR path );
+	// PackagePathType packagePathType, UINT32 *pathLength, StrPtrUni path );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h")]
 	public static extern Win32Error GetCurrentPackagePath2(PackagePathType packagePathType, ref uint pathLength,
@@ -1339,7 +1339,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/gl-es/windows/win32/api/appmodel/nf-appmodel-getidforpackagedependencycontext
-	// HRESULT GetIdForPackageDependencyContext( PACKAGEDEPENDENCY_CONTEXT packageDependencyContext, PWSTR *packageDependencyId );
+	// HRESULT GetIdForPackageDependencyContext( PACKAGEDEPENDENCY_CONTEXT packageDependencyContext, StrPtrUni *packageDependencyId );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "NF:appmodel.GetIdForPackageDependencyContext")]
 	public static extern HRESULT GetIdForPackageDependencyContext(PACKAGEDEPENDENCY_CONTEXT packageDependencyContext,
@@ -1448,7 +1448,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFamilyName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package family name.</para>
 	/// </param>
 	/// <returns>
@@ -1477,7 +1477,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackagefamilyname LONG GetPackageFamilyName( HANDLE
-	// hProcess, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
+	// hProcess, UINT32 *packageFamilyNameLength, StrPtrUni packageFamilyName );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "AC239898-9924-4193-9072-7A7EEC2D03E9")]
 	public static extern Win32Error GetPackageFamilyName(HPROCESS hProcess, ref uint packageFamilyNameLength,
@@ -1498,7 +1498,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFamilyName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package family name.</para>
 	/// </param>
 	/// <returns>
@@ -1527,7 +1527,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackagefamilynamefromtoken LONG
-	// GetPackageFamilyNameFromToken( HANDLE token, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
+	// GetPackageFamilyNameFromToken( HANDLE token, UINT32 *packageFamilyNameLength, StrPtrUni packageFamilyName );
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "C4FAF5DE-DF1F-4AFA-813B-5D80C786031B")]
 	public static extern Win32Error GetPackageFamilyNameFromToken(HTOKEN token, ref uint packageFamilyNameLength,
@@ -1549,7 +1549,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFullName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package full name.</para>
 	/// </param>
 	/// <returns>
@@ -1577,11 +1577,11 @@ public static partial class Kernel32
 	/// <para>For info about string size limits, see Identity constants.</para>
 	/// <para>Examples</para>
 	/// <para>
-	/// <code>#define _UNICODE 1 #define UNICODE 1 #include &lt;Windows.h&gt; #include &lt;appmodel.h&gt; #include &lt;malloc.h&gt; #include &lt;stdlib.h&gt; #include &lt;stdio.h&gt; int ShowUsage(); void ShowProcessPackageFullName(__in const UINT32 pid, __in HANDLE process); int ShowUsage() { wprintf(L"Usage: GetPackageFullName &lt;pid&gt; [&lt;pid&gt;...]\n"); return 1; } int __cdecl wmain(__in int argc, __in_ecount(argc) WCHAR * argv[]) { if (argc &lt;= 1) return ShowUsage(); for (int i=1; i&lt;argc; ++i) { UINT32 pid = wcstoul(argv[i], NULL, 10); if (pid &gt; 0) { HANDLE process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid); if (process == NULL) wprintf(L"Error %d in OpenProcess (pid=%u)\n", GetLastError(), pid); else { ShowProcessPackageFullName(pid, process); CloseHandle(process); } } } return 0; } void ShowProcessPackageFullName(__in const UINT32 pid, __in HANDLE process) { wprintf(L"Process %u (handle=%p)\n", pid, process); UINT32 length = 0; LONG rc = GetPackageFullName(process, &amp;length, NULL); if (rc != ERROR_INSUFFICIENT_BUFFER) { if (rc == APPMODEL_ERROR_NO_PACKAGE) wprintf(L"Process has no package identity\n"); else wprintf(L"Error %d in GetPackageFullName\n", rc); return; } PWSTR fullName = (PWSTR) malloc(length * sizeof(*fullName)); if (fullName == NULL) { wprintf(L"Error allocating memory\n"); return; } rc = GetPackageFullName(process, &amp;length, fullName); if (rc != ERROR_SUCCESS) wprintf(L"Error %d retrieving PackageFullName\n", rc); else wprintf(L"%s\n", fullName); free(fullName); }</code>
+	/// <code>#define _UNICODE 1 #define UNICODE 1 #include &lt;Windows.h&gt; #include &lt;appmodel.h&gt; #include &lt;malloc.h&gt; #include &lt;stdlib.h&gt; #include &lt;stdio.h&gt; int ShowUsage(); void ShowProcessPackageFullName(__in const UINT32 pid, __in HANDLE process); int ShowUsage() { wprintf(L"Usage: GetPackageFullName &lt;pid&gt; [&lt;pid&gt;...]\n"); return 1; } int __cdecl wmain(__in int argc, __in_ecount(argc) WCHAR * argv[]) { if (argc &lt;= 1) return ShowUsage(); for (int i=1; i&lt;argc; ++i) { UINT32 pid = wcstoul(argv[i], NULL, 10); if (pid &gt; 0) { HANDLE process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid); if (process == NULL) wprintf(L"Error %d in OpenProcess (pid=%u)\n", GetLastError(), pid); else { ShowProcessPackageFullName(pid, process); CloseHandle(process); } } } return 0; } void ShowProcessPackageFullName(__in const UINT32 pid, __in HANDLE process) { wprintf(L"Process %u (handle=%p)\n", pid, process); UINT32 length = 0; LONG rc = GetPackageFullName(process, &amp;length, NULL); if (rc != ERROR_INSUFFICIENT_BUFFER) { if (rc == APPMODEL_ERROR_NO_PACKAGE) wprintf(L"Process has no package identity\n"); else wprintf(L"Error %d in GetPackageFullName\n", rc); return; } StrPtrUni fullName = (StrPtrUni) malloc(length * sizeof(*fullName)); if (fullName == NULL) { wprintf(L"Error allocating memory\n"); return; } rc = GetPackageFullName(process, &amp;length, fullName); if (rc != ERROR_SUCCESS) wprintf(L"Error %d retrieving PackageFullName\n", rc); else wprintf(L"%s\n", fullName); free(fullName); }</code>
 	/// </para>
 	/// </remarks>
 	// https://webcache.googleusercontent.com/search?q=cache:IqzT6kD4rycJ:https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getpackagefullname+&cd=2&hl=en&ct=clnk&gl=us
-	// LONG GetPackageFullName( HANDLE hProcess, UINT32 *packageFullNameLength, PWSTR packageFullName );
+	// LONG GetPackageFullName( HANDLE hProcess, UINT32 *packageFullNameLength, StrPtrUni packageFullName );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "NF:appmodel.GetPackageFullName")]
 	public static extern Win32Error GetPackageFullName(HPROCESS hProcess, ref uint packageFullNameLength,
@@ -1627,7 +1627,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackagefullnamefromtoken LONG
-	// GetPackageFullNameFromToken( HANDLE token, UINT32 *packageFullNameLength, PWSTR packageFullName );
+	// GetPackageFullNameFromToken( HANDLE token, UINT32 *packageFullNameLength, StrPtrUni packageFullName );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "7B0D574E-A2F5-4D08-AEFB-9E040BBC729F")]
 	public static extern Win32Error GetPackageFullNameFromToken(HTOKEN token, ref uint packageFullNameLength,
@@ -1758,7 +1758,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="path">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package path.</para>
 	/// </param>
 	/// <returns>
@@ -1779,7 +1779,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackagepath LONG GetPackagePath( const PACKAGE_ID
-	// *packageId, const UINT32 reserved, UINT32 *pathLength, PWSTR path );
+	// *packageId, const UINT32 reserved, UINT32 *pathLength, StrPtrUni path );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "BDA0DD87-A36D-486B-BF89-EA5CC105C742")]
 	public static extern Win32Error GetPackagePath(in PACKAGE_ID packageId, [Optional, Ignore] uint reserved, ref uint pathLength,
@@ -1803,7 +1803,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="path">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>A pointer to memory space that receives the package path string, which includes the null-terminator.</para>
 	/// </param>
 	/// <returns>
@@ -1824,7 +1824,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackagepathbyfullname LONG GetPackagePathByFullName(
-	// PCWSTR packageFullName, UINT32 *pathLength, PWSTR path );
+	// PCWSTR packageFullName, UINT32 *pathLength, StrPtrUni path );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "9C25708C-1464-4C59-9740-E9F105116385")]
 	public static extern Win32Error GetPackagePathByFullName(string packageFullName, ref uint pathLength,
@@ -1850,7 +1850,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="path">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>A pointer to memory space that receives the package path string, which includes the null-terminator.</para>
 	/// </param>
 	/// <returns>
@@ -1878,7 +1878,7 @@ public static partial class Kernel32
 	/// types of games to support mods.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getpackagepathbyfullname2 LONG GetPackagePathByFullName2(
-	// PCWSTR packageFullName, PackagePathType packagePathType, UINT32 *pathLength, PWSTR path );
+	// PCWSTR packageFullName, PackagePathType packagePathType, UINT32 *pathLength, StrPtrUni path );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h")]
 	public static extern Win32Error GetPackagePathByFullName2([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, PackagePathType packagePathType,
@@ -1898,7 +1898,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFullNames">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>A pointer to the strings of package full names.</para>
 	/// </param>
 	/// <param name="bufferLength">
@@ -1931,12 +1931,12 @@ public static partial class Kernel32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackagesbypackagefamily LONG
-	// GetPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 *count, PWSTR *packageFullNames, UINT32 *bufferLength, WCHAR *buffer );
+	// GetPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 *count, StrPtrUni *packageFullNames, UINT32 *bufferLength, WCHAR *buffer );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "C2163203-D654-4491-9090-0CC43F42EC35")]
 	[SuppressAutoGen]
 	public static extern Win32Error GetPackagesByPackageFamily(string packageFamilyName, ref uint count,
-		[Optional, Out, SizeDef(nameof(count), SizingMethod.Query)] PWSTR[]? packageFullNames,
+		[Optional, Out, SizeDef(nameof(count), SizingMethod.Query)] StrPtrUni[]? packageFullNames,
 		ref uint bufferLength, [Optional, Out, SizeDef(nameof(bufferLength), SizingMethod.Query)] IntPtr buffer);
 
 	/// <summary>Gets the packages with the specified family name for the current user.</summary>
@@ -1944,7 +1944,7 @@ public static partial class Kernel32
 	/// <param name="packageFullNames">A pointer to the strings of package full names.</param>
 	/// <returns>If the function succeeds it returns <c>ERROR_SUCCESS</c>. Otherwise, the function returns an error code.</returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getpackagesbypackagefamily LONG
-	// GetPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 *count, PWSTR *packageFullNames, UINT32 *bufferLength, WCHAR *buffer );
+	// GetPackagesByPackageFamily( PCWSTR packageFamilyName, UINT32 *count, StrPtrUni *packageFullNames, UINT32 *bufferLength, WCHAR *buffer );
 	[PInvokeData("appmodel.h", MSDNShortId = "C2163203-D654-4491-9090-0CC43F42EC35")]
 	public static Win32Error GetPackagesByPackageFamily(string packageFamilyName, out string?[] packageFullNames)
 	{
@@ -1954,7 +1954,7 @@ public static partial class Kernel32
 		if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER)
 			return err;
 
-		var mem = new PWSTR[(int)count];
+		var mem = new StrPtrUni[(int)count];
 		using SafeCoTaskMemString buffer = new((int)bufferLength);
 		err = GetPackagesByPackageFamily(packageFamilyName, ref count, mem, ref bufferLength, buffer);
 		if (err.Succeeded)
@@ -2016,7 +2016,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="path">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>A pointer to memory space that receives the package path string, which includes the null-terminator.</para>
 	/// </param>
 	/// <returns>
@@ -2043,7 +2043,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-getstagedpackagepathbyfullname LONG
-	// GetStagedPackagePathByFullName( PCWSTR packageFullName, UINT32 *pathLength, PWSTR path );
+	// GetStagedPackagePathByFullName( PCWSTR packageFullName, UINT32 *pathLength, StrPtrUni path );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "F0A37D77-6262-44B1-BEC5-083E41BDE139")]
 	public static extern Win32Error GetStagedPackagePathByFullName([MarshalAs(UnmanagedType.LPWStr)] string packageFullName, ref uint pathLength,
@@ -2071,7 +2071,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="path">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>A pointer to memory space that receives the package path string, which includes the null-terminator.</para>
 	/// </param>
 	/// <returns>
@@ -2099,7 +2099,7 @@ public static partial class Kernel32
 	/// types of games to support mods.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-getstagedpackagepathbyfullname2 LONG
-	// GetStagedPackagePathByFullName2( PCWSTR packageFullName, PackagePathType packagePathType, UINT32 *pathLength, PWSTR path );
+	// GetStagedPackagePathByFullName2( PCWSTR packageFullName, PackagePathType packagePathType, UINT32 *pathLength, StrPtrUni path );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h")]
 	public static extern Win32Error GetStagedPackagePathByFullName2([MarshalAs(UnmanagedType.LPWStr)] string packageFullName,
@@ -2160,7 +2160,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFamilyName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package family name.</para>
 	/// </param>
 	/// <returns>
@@ -2185,7 +2185,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-packagefamilynamefromfullname LONG
-	// PackageFamilyNameFromFullName( PCWSTR packageFullName, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
+	// PackageFamilyNameFromFullName( PCWSTR packageFullName, UINT32 *packageFamilyNameLength, StrPtrUni packageFamilyName );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "98E95CE5-E970-4A19-BAD3-994DAEC4BEA0")]
 	public static extern Win32Error PackageFamilyNameFromFullName(string packageFullName, ref uint packageFamilyNameLength,
@@ -2206,7 +2206,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFamilyName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package family name.</para>
 	/// </param>
 	/// <returns>
@@ -2231,7 +2231,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-packagefamilynamefromid LONG PackageFamilyNameFromId(
-	// const PACKAGE_ID *packageId, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
+	// const PACKAGE_ID *packageId, UINT32 *packageFamilyNameLength, StrPtrUni packageFamilyName );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "198DAB6B-21D2-4ACB-87DF-B3F4EFBEE323")]
 	public static extern Win32Error PackageFamilyNameFromId(in PACKAGE_ID packageId, ref uint packageFamilyNameLength,
@@ -2252,7 +2252,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFullName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package full name.</para>
 	/// </param>
 	/// <returns>
@@ -2277,7 +2277,7 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-packagefullnamefromid LONG PackageFullNameFromId( const
-	// PACKAGE_ID *packageId, UINT32 *packageFullNameLength, PWSTR packageFullName );
+	// PACKAGE_ID *packageId, UINT32 *packageFullNameLength, StrPtrUni packageFullName );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "0024AF55-295E-49B1-90C2-9144D336529B")]
 	public static extern Win32Error PackageFullNameFromId(in PACKAGE_ID packageId, ref uint packageFullNameLength,
@@ -2393,7 +2393,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package name.</para>
 	/// </param>
 	/// <param name="packagePublisherIdLength">
@@ -2404,7 +2404,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packagePublisherId">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The package publisher ID.</para>
 	/// </param>
 	/// <returns>
@@ -2429,8 +2429,8 @@ public static partial class Kernel32
 	/// <para>Examples</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-packagenameandpublisheridfromfamilyname LONG
-	// PackageNameAndPublisherIdFromFamilyName( PCWSTR packageFamilyName, UINT32 *packageNameLength, PWSTR packageName, UINT32
-	// *packagePublisherIdLength, PWSTR packagePublisherId );
+	// PackageNameAndPublisherIdFromFamilyName( PCWSTR packageFamilyName, UINT32 *packageNameLength, StrPtrUni packageName, UINT32
+	// *packagePublisherIdLength, StrPtrUni packagePublisherId );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "4AA5BD75-F865-40D6-9C10-E54C197D47C4")]
 	public static extern Win32Error PackageNameAndPublisherIdFromFamilyName(string packageFamilyName, ref uint packageNameLength,
@@ -2456,7 +2456,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageFamilyName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>A pointer to memory space that receives the package family name string, which includes the null-terminator.</para>
 	/// </param>
 	/// <param name="packageRelativeApplicationIdLength">
@@ -2471,7 +2471,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="packageRelativeApplicationId">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>A pointer to memory space that receives the package-relative app ID (PRAID) string, which includes the null-terminator.</para>
 	/// </param>
 	/// <returns>
@@ -2499,8 +2499,8 @@ public static partial class Kernel32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/nf-appmodel-parseapplicationusermodelid LONG
-	// ParseApplicationUserModelId( PCWSTR applicationUserModelId, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName, UINT32
-	// *packageRelativeApplicationIdLength, PWSTR packageRelativeApplicationId );
+	// ParseApplicationUserModelId( PCWSTR applicationUserModelId, UINT32 *packageFamilyNameLength, StrPtrUni packageFamilyName, UINT32
+	// *packageRelativeApplicationIdLength, StrPtrUni packageRelativeApplicationId );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("appmodel.h", MSDNShortId = "03B29E82-611F-47D1-8CB6-047B9BEB4D9E")]
 	public static extern Win32Error ParseApplicationUserModelId(string applicationUserModelId, ref uint packageFamilyNameLength,
@@ -2573,7 +2573,7 @@ public static partial class Kernel32
 	/// <para>The options to apply when creating the package dependency.</para>
 	/// </param>
 	/// <param name="packageDependencyId">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>The ID of the new package dependency. Use the HeapAlloc function to allocate memory for this parameter, and use HeapFree to deallocate the memory.</para>
 	/// </param>
 	/// <returns>
@@ -2597,7 +2597,7 @@ public static partial class Kernel32
 	// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/nf-appmodel-trycreatepackagedependency HRESULT TryCreatePackageDependency(
 	// PSID user, PCWSTR packageFamilyName, PACKAGE_VERSION minVersion, PackageDependencyProcessorArchitectures
 	// packageDependencyProcessorArchitectures, PackageDependencyLifetimeKind lifetimeKind, PCWSTR lifetimeArtifact,
-	// CreatePackageDependencyOptions options, PWSTR *packageDependencyId );
+	// CreatePackageDependencyOptions options, StrPtrUni *packageDependencyId );
 	[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("appmodel.h", MSDNShortId = "NF:appmodel.TryCreatePackageDependency")]
 	public static extern HRESULT TryCreatePackageDependency([In, Optional] PSID user, [MarshalAs(UnmanagedType.LPWStr)] string packageFamilyName,
@@ -2612,7 +2612,7 @@ public static partial class Kernel32
 	/// <para>For info about string size limits, see Identity constants.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/appmodel/ns-appmodel-package_id typedef struct PACKAGE_ID { UINT32 reserved;
-	// UINT32 processorArchitecture; PACKAGE_VERSION version; PWSTR name; PWSTR publisher; PWSTR resourceId; PWSTR publisherId; };
+	// UINT32 processorArchitecture; PACKAGE_VERSION version; StrPtrUni name; StrPtrUni publisher; StrPtrUni resourceId; StrPtrUni publisherId; };
 	[PInvokeData("appmodel.h", MSDNShortId = "4B15281A-2227-47B7-A750-0A01DB8543FC")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct PACKAGE_ID
@@ -2638,28 +2638,28 @@ public static partial class Kernel32
 		public PACKAGE_VERSION version;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>The name of the package.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>The publisher of the package. If there is no publisher for the package, this member is <c>NULL</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string? publisher;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>The resource identifier (ID) of the package. If there is no resource ID for the package, this member is <c>NULL</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string? resourceId;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>The publisher identifier (ID) of the package. If there is no publisher ID for the package, this member is <c>NULL</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -2669,7 +2669,7 @@ public static partial class Kernel32
 	/// <summary>Represents package identification information that includes the package identifier, full name, and install location.</summary>
 	/// <remarks>For info about string size limits, see Identity constants.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/appmodel/ns-appmodel-package_info typedef struct PACKAGE_INFO { UINT32
-	// reserved; UINT32 flags; PWSTR path; PWSTR packageFullName; PWSTR packageFamilyName; PACKAGE_ID packageId; } PACKAGE_INFO;
+	// reserved; UINT32 flags; StrPtrUni path; StrPtrUni packageFullName; StrPtrUni packageFamilyName; PACKAGE_ID packageId; } PACKAGE_INFO;
 	[PInvokeData("appmodel.h", MSDNShortId = "0DDE00D1-9C5F-4F2B-8110-A92B1FFA1B64")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct PACKAGE_INFO

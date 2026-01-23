@@ -97,7 +97,7 @@ public static partial class Rpc
 		/// object interface.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public Func<SIZE_T, IntPtr> pfnAllocate;
+		public Func<SizeT, IntPtr> pfnAllocate;
 
 		/// <summary>
 		/// Memory-free function to be used by the stub. Set to midl_user_free for nonobject interface and NdrOleFree for object interface.

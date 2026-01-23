@@ -228,7 +228,7 @@ public class StringHelperTests
 			Encoding encoding = cs.ToEncoding();
 			ptr = StringHelper.AllocString(value, encoding, Marshal.AllocCoTaskMem, out var count);
 			Assert.That(count, Is.EqualTo(StringHelper.GetByteCount(value, encoding, true)));
-			Assert.That(StringHelper.GetString(ptr, encoding, out SIZE_T sz), Is.EqualTo(value));
+			Assert.That(StringHelper.GetString(ptr, encoding, out SizeT sz), Is.EqualTo(value));
 			Assert.That((int)sz, Is.EqualTo(count));
 			Assert.That(StringHelper.GetString(ptr, encoding, out sz, count * 2), Is.EqualTo(value));
 			Assert.That((int)sz, Is.EqualTo(count));

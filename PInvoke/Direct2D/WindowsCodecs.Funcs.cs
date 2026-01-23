@@ -185,7 +185,7 @@ public static partial class WindowsCodecs
 	/// <para>The metadata format GUID.</para>
 	/// </param>
 	/// <param name="pwzSchema">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The URI string of the schema for which the name is to be retrieved.</para>
 	/// </param>
 	/// <param name="cchName">
@@ -211,7 +211,7 @@ public static partial class WindowsCodecs
 	/// <para>For more information, see How to Write a WIC-Enabled Codec.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincodec/nf-wincodec-wicmapschematoname HRESULT WICMapSchemaToName( REFGUID
-	// guidMetadataFormat, PWSTR pwzSchema, UINT cchName, WCHAR *wzName, UINT *pcchActual );
+	// guidMetadataFormat, StrPtrUni pwzSchema, UINT cchName, WCHAR *wzName, UINT *pcchActual );
 	[DllImport(Lib.Windowscodecs, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincodec.h", MSDNShortId = "6e71b75a-a542-459c-9935-b05f3ce39217")]
 	public static extern HRESULT WICMapSchemaToName(in Guid guidMetadataFormat, [MarshalAs(UnmanagedType.LPWStr)] string pwzSchema, uint cchName, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder wzName, out uint pcchActual);

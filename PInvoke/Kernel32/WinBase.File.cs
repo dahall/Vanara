@@ -873,7 +873,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI CheckNameLegalDOS8Dot3( _In_ LPCTSTR lpName, _Out_opt_ PSTR lpOemName, _In_ DWORD OemNameSize, _Out_opt_ PBOOL
+	// BOOL WINAPI CheckNameLegalDOS8Dot3( _In_ LPCTSTR lpName, _Out_opt_ StrPtrAnsi lpOemName, _In_ DWORD OemNameSize, _Out_opt_ PBOOL
 	// pbNameContainsSpaces, _Out_ PBOOL pbNameLegal); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363807(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa363807")]
@@ -1593,7 +1593,7 @@ public static partial class Kernel32
 	/// extended error information, call <c>GetLastError</c>.
 	/// </para>
 	/// </returns>
-	// HANDLE WINAPI FindFirstVolumeMountPoint( _In_ PTSTR lpszRootPathName, _Out_ PTSTR lpszVolumeMountPoint, _In_ DWORD cchBufferLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364426(v=vs.85).aspx
+	// HANDLE WINAPI FindFirstVolumeMountPoint( _In_ StrPtrAuto lpszRootPathName, _Out_ StrPtrAuto lpszVolumeMountPoint, _In_ DWORD cchBufferLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364426(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa364426")]
 	public static extern SafeVolumeMountPointHandle FindFirstVolumeMountPoint(string lpszRootPathName, StringBuilder lpszVolumeMountPoint, uint cchBufferLength);
@@ -1665,7 +1665,7 @@ public static partial class Kernel32
 	/// search with the <c>FindVolumeMountPointClose</c> function.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI FindNextVolumeMountPoint( _In_ HANDLE hFindVolumeMountPoint, _Out_ PTSTR lpszVolumeMountPoint, _In_ DWORD
+	// BOOL WINAPI FindNextVolumeMountPoint( _In_ HANDLE hFindVolumeMountPoint, _Out_ StrPtrAuto lpszVolumeMountPoint, _In_ DWORD
 	// cchBufferLength); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364432(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa364432")]

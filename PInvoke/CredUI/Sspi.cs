@@ -161,7 +161,7 @@ public static partial class CredUI
 		public IntPtr pInputAuthIdentity;
 
 		/// <summary>The name of the target.</summary>
-		public PWSTR TargetName;
+		public StrPtrUni TargetName;
 
 		/// <summary>A pointer to a CREDUI_INFO structure that specifies information for the credential prompt dialog box.</summary>
 		public IntPtr UIInfo;

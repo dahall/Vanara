@@ -1026,16 +1026,16 @@ public static partial class NdfApi
 	}
 
 	/// <summary>The <c>HELPER_ATTRIBUTE</c> structure contains all NDF supported data types.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ndattrib/ns-ndattrib-helper_attribute typedef struct tagHELPER_ATTRIBUTE { PWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/ndattrib/ns-ndattrib-helper_attribute typedef struct tagHELPER_ATTRIBUTE { StrPtrUni
 	// pwszName; ATTRIBUTE_TYPE type; union { BOOL Boolean; char Char; byte Byte; short Short; WORD Word; int Int; DWORD DWord; LONGLONG
-	// Int64; ULONGLONG UInt64; PWSTR PWStr; GUID Guid; LIFE_TIME LifeTime; DIAG_SOCKADDR Address; OCTET_STRING OctetString; }; }
+	// Int64; ULONGLONG UInt64; StrPtrUni PWStr; GUID Guid; LIFE_TIME LifeTime; DIAG_SOCKADDR Address; OCTET_STRING OctetString; }; }
 	// HELPER_ATTRIBUTE, *PHELPER_ATTRIBUTE;
 	[PInvokeData("ndattrib.h", MSDNShortId = "NS:ndattrib.tagHELPER_ATTRIBUTE")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HELPER_ATTRIBUTE
 	{
 		/// <summary>
-		/// <para>Type: <c>[string] PWSTR</c></para>
+		/// <para>Type: <c>[string] StrPtrUni</c></para>
 		/// <para>A pointer to a null-terminated string that contains the name of the attribute.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -1103,7 +1103,7 @@ public static partial class NdfApi
 		public ulong UInt64;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A null-terminated string value. Used when <c>type</c> is <c>AT_STRING</c>.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -1175,8 +1175,8 @@ public static partial class NdfApi
 	}
 
 	/// <summary>The <c>RepairInfo</c> structure contains data required for a particular repair option.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ndattrib/ns-ndattrib-repairinfo typedef struct tagRepairInfo { GUID guid; PWSTR
-	// pwszClassName; PWSTR pwszDescription; DWORD sidType; long cost; ULONG flags; REPAIR_SCOPE scope; REPAIR_RISK risk; UiInfo UiInfo; int
+	// https://docs.microsoft.com/en-us/windows/win32/api/ndattrib/ns-ndattrib-repairinfo typedef struct tagRepairInfo { GUID guid; StrPtrUni
+	// pwszClassName; StrPtrUni pwszDescription; DWORD sidType; long cost; ULONG flags; REPAIR_SCOPE scope; REPAIR_RISK risk; UiInfo UiInfo; int
 	// rootCauseIndex; } RepairInfo, *PRepairInfo;
 	[PInvokeData("ndattrib.h", MSDNShortId = "NS:ndattrib.tagRepairInfo")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1301,7 +1301,7 @@ public static partial class NdfApi
 	}
 
 	/// <summary>Contains detailed information about the root cause of an incident.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ndattrib/ns-ndattrib-rootcauseinfo typedef struct tagRootCauseInfo { PWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/ndattrib/ns-ndattrib-rootcauseinfo typedef struct tagRootCauseInfo { StrPtrUni
 	// pwszDescription; GUID rootCauseID; DWORD rootCauseFlags; GUID networkInterfaceID; RepairInfoEx *pRepairs; USHORT repairCount; }
 	// RootCauseInfo, *PRootCauseInfo;
 	[PInvokeData("ndattrib.h", MSDNShortId = "NS:ndattrib.tagRootCauseInfo")]
@@ -1309,7 +1309,7 @@ public static partial class NdfApi
 	public struct RootCauseInfo
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A string that describes the problem that caused the incident.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -1412,14 +1412,14 @@ public static partial class NdfApi
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ndattrib/ns-ndattrib-shellcommandinfo typedef struct tagShellCommandInfo { PWSTR
-	// pwszOperation; PWSTR pwszFile; PWSTR pwszParameters; PWSTR pwszDirectory; ULONG nShowCmd; } ShellCommandInfo, *PShellCommandInfo;
+	// https://docs.microsoft.com/en-us/windows/win32/api/ndattrib/ns-ndattrib-shellcommandinfo typedef struct tagShellCommandInfo { StrPtrUni
+	// pwszOperation; StrPtrUni pwszFile; StrPtrUni pwszParameters; StrPtrUni pwszDirectory; ULONG nShowCmd; } ShellCommandInfo, *PShellCommandInfo;
 	[PInvokeData("ndattrib.h", MSDNShortId = "NS:ndattrib.tagShellCommandInfo")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct ShellCommandInfo
 	{
 		/// <summary>
-		/// <para>Type: <c>[string] PWSTR</c></para>
+		/// <para>Type: <c>[string] StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a null-terminated string that contains the action to be performed. The set of available verbs that specifies the
 		/// action depends on the particular file or folder. Generally, the actions available from an object's shortcut menu are available
@@ -1430,7 +1430,7 @@ public static partial class NdfApi
 		public string? pwszOperation;
 
 		/// <summary>
-		/// <para>Type: <c>[string] PWSTR</c></para>
+		/// <para>Type: <c>[string] StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a null-terminated string that specifies the file or object on which to execute the specified verb. To specify a
 		/// Shell namespace object, pass the fully qualified parse name. Note that not all verbs are supported on all objects. For example,
@@ -1441,7 +1441,7 @@ public static partial class NdfApi
 		public string pwszFile;
 
 		/// <summary>
-		/// <para>Type: <c>[string] PWSTR</c></para>
+		/// <para>Type: <c>[string] StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a null-terminated strings that specifies the parameters to be passed to the application, only if the <c>pwszFile</c>
 		/// parameter specifies an executable file. The format of this string is determined by the verb that is to be invoked. If
@@ -1452,7 +1452,7 @@ public static partial class NdfApi
 		public string? pwszParameters;
 
 		/// <summary>
-		/// <para>Type: <c>[string] PWSTR</c></para>
+		/// <para>Type: <c>[string] StrPtrUni</c></para>
 		/// <para>A pointer to a null-terminated string that specifies the default directory.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -1470,7 +1470,7 @@ public static partial class NdfApi
 
 	/// <summary>The <c>UiInfo</c> structure is used to display repair messages to the user.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ndattrib/ns-ndattrib-uiinfo typedef struct tagUiInfo { UI_INFO_TYPE type; union {
-	// PWSTR pwzNull; ShellCommandInfo ShellInfo; PWSTR pwzHelpUrl; PWSTR pwzDui; }; } UiInfo, *PUiInfo;
+	// StrPtrUni pwzNull; ShellCommandInfo ShellInfo; StrPtrUni pwzHelpUrl; StrPtrUni pwzDui; }; } UiInfo, *PUiInfo;
 	[PInvokeData("ndattrib.h", MSDNShortId = "NS:ndattrib.tagUiInfo")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct UiInfo
@@ -1482,7 +1482,7 @@ public static partial class NdfApi
 		public UI_INFO_TYPE type;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>No additional UI is required. Used when <c>type</c> is set to UIT_NONE.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -1495,14 +1495,14 @@ public static partial class NdfApi
 		public ShellCommandInfo ShellInfo;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>Launches a help pane. Used when <c>type</c> is set to UIT_HELP_PANE.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string pwzHelpUrl;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>Use a direct user interface. Used when <c>type</c> is set to UIT_DUI.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]

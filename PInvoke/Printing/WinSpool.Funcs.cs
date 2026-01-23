@@ -316,7 +316,7 @@ public static partial class WinSpool
 	/// when you run <c>AddPrinter</c>.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprinter HANDLE AddPrinter( _In_ PTSTR *pName, _In_ DWORD Level, _In_
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprinter HANDLE AddPrinter( _In_ StrPtrAuto *pName, _In_ DWORD Level, _In_
 	// LPBYTE pPrinter );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "ffc4fee8-46c6-47ad-803d-623bf8efdefd")]
@@ -341,7 +341,7 @@ public static partial class WinSpool
 	/// with dwType set to PRINTER_ENUM_CONNECTION.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprinterconnection BOOL AddPrinterConnection( _In_ PTSTR pName );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/addprinterconnection BOOL AddPrinterConnection( _In_ StrPtrAuto pName );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "6decf89a-1411-4e7e-aa20-60e7068658c2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -495,7 +495,7 @@ public static partial class WinSpool
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/advanceddocumentproperties LONG AdvancedDocumentProperties( _In_ HWND
-	// hWnd, _In_ HANDLE hPrinter, _In_ PTSTR pDeviceName, _Out_ PDEVMODE pDevModeOutput, _In_ PDEVMODE pDevModeInput );
+	// hWnd, _In_ HANDLE hPrinter, _In_ StrPtrAuto pDeviceName, _Out_ PDEVMODE pDevModeOutput, _In_ PDEVMODE pDevModeInput );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "29e33f34-f6ec-4989-b076-e1fef8eb5bc4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -539,7 +539,7 @@ public static partial class WinSpool
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/advanceddocumentproperties LONG AdvancedDocumentProperties( _In_ HWND
-	// hWnd, _In_ HANDLE hPrinter, _In_ PTSTR pDeviceName, _Out_ PDEVMODE pDevModeOutput, _In_ PDEVMODE pDevModeInput );
+	// hWnd, _In_ HANDLE hPrinter, _In_ StrPtrAuto pDeviceName, _Out_ PDEVMODE pDevModeOutput, _In_ PDEVMODE pDevModeInput );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "29e33f34-f6ec-4989-b076-e1fef8eb5bc4")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -644,8 +644,8 @@ public static partial class WinSpool
 	/// Before calling the <c>ConfigurePort</c> function, an application should call the <c>EnumPorts</c> function to determine valid
 	/// port names.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/configureport BOOL ConfigurePort( _In_ PTSTR pName, _In_ HWND hWnd,
-	// _In_ PTSTR pPortName );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/configureport BOOL ConfigurePort( _In_ StrPtrAuto pName, _In_ HWND hWnd,
+	// _In_ StrPtrAuto pPortName );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "a65e9876-d6af-48c2-9e6b-8bd8695db130")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -691,7 +691,7 @@ public static partial class WinSpool
 	/// <para>If the function fails, the return value is zero.</para>
 	/// </returns>
 	/// <remarks><c>DeleteForm</c> can only delete form names that were added by using the <c>AddForm</c> function.</remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteform BOOL DeleteForm( _In_ HANDLE hPrinter, _In_ PTSTR pFormName );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteform BOOL DeleteForm( _In_ HANDLE hPrinter, _In_ StrPtrAuto pFormName );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "a2d0345f-2469-46ab-935f-777f2b33b621")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -736,7 +736,7 @@ public static partial class WinSpool
 	/// The <c>DeletePrinterConnection</c> function does not delete any printer driver files that were copied to the server to which the
 	/// printer is attached.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprinterconnection BOOL DeletePrinterConnection( _In_ PTSTR pName );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprinterconnection BOOL DeletePrinterConnection( _In_ StrPtrAuto pName );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "7b056eea-fbd9-4a08-a2dc-7326caeec387")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -764,7 +764,7 @@ public static partial class WinSpool
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/deleteprinterdata DWORD DeletePrinterData( _In_ HANDLE hPrinter, _In_
-	// PTSTR pValueName );
+	// StrPtrAuto pValueName );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "03c0bd75-d6de-46e3-b8e9-5a55df5135ea")]
 	public static extern Win32Error DeletePrinterData(HPRINTER hPrinter, string pValueName);
@@ -1120,7 +1120,7 @@ public static partial class WinSpool
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-devicecapabilitiesa
-	// int DeviceCapabilitiesA( LPCSTR pDevice, LPCSTR pPort, WORD fwCapability, PSTR pOutput, const DEVMODEA *pDevMode );
+	// int DeviceCapabilitiesA( LPCSTR pDevice, LPCSTR pPort, WORD fwCapability, StrPtrAnsi pOutput, const DEVMODEA *pDevMode );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d7f63ef7-0a2e-47c3-9e81-6e8a6dffe9af")]
 	public static extern int DeviceCapabilities(string pDevice, [Optional] string? pPort, DC fwCapability, [Optional] IntPtr pOutput, in DEVMODE pDevMode);
@@ -1416,7 +1416,7 @@ public static partial class WinSpool
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-devicecapabilitiesa
-	// int DeviceCapabilitiesA( LPCSTR pDevice, LPCSTR pPort, WORD fwCapability, PSTR pOutput, const DEVMODEA *pDevMode );
+	// int DeviceCapabilitiesA( LPCSTR pDevice, LPCSTR pPort, WORD fwCapability, StrPtrAnsi pOutput, const DEVMODEA *pDevMode );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "d7f63ef7-0a2e-47c3-9e81-6e8a6dffe9af")]
 	public static extern int DeviceCapabilities(string pDevice, [Optional] string? pPort, DC fwCapability, [Optional] IntPtr pOutput, [In, Optional] IntPtr pDevMode);
@@ -1909,7 +1909,7 @@ public static partial class WinSpool
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/documentproperties LONG DocumentProperties( _In_ HWND hWnd, _In_ HANDLE
-	// hPrinter, _In_ PTSTR pDeviceName, _Out_ PDEVMODE pDevModeOutput, _In_ PDEVMODE pDevModeInput, _In_ DWORD fMode );
+	// hPrinter, _In_ StrPtrAuto pDeviceName, _Out_ PDEVMODE pDevModeOutput, _In_ PDEVMODE pDevModeInput, _In_ DWORD fMode );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "e89a2f6f-2bac-4369-b526-f8e15028698b")]
 	public static extern int DocumentProperties(HWND hWnd, HPRINTER hPrinter, string pDeviceName, IntPtr pDevModeOutput, in DEVMODE pDevModeInput, [Optional] DM fMode);
@@ -2034,7 +2034,7 @@ public static partial class WinSpool
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/documentproperties LONG DocumentProperties( _In_ HWND hWnd, _In_ HANDLE
-	// hPrinter, _In_ PTSTR pDeviceName, _Out_ PDEVMODE pDevModeOutput, _In_ PDEVMODE pDevModeInput, _In_ DWORD fMode );
+	// hPrinter, _In_ StrPtrAuto pDeviceName, _Out_ PDEVMODE pDevModeOutput, _In_ PDEVMODE pDevModeInput, _In_ DWORD fMode );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "e89a2f6f-2bac-4369-b526-f8e15028698b")]
 	public static extern int DocumentProperties(HWND hWnd, HPRINTER hPrinter, string pDeviceName, IntPtr pDevModeOutput, [Optional] IntPtr pDevModeInput, [Optional] DM fMode);
@@ -2391,7 +2391,7 @@ public static partial class WinSpool
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumprinterdata DWORD EnumPrinterData( _In_ HANDLE hPrinter, _In_ DWORD
-	// dwIndex, _Out_ PTSTR pValueName, _In_ DWORD cbValueName, _Out_ LPDWORD pcbValueName, _Out_ LPDWORD pType, _Out_ LPBYTE pData,
+	// dwIndex, _Out_ StrPtrAuto pValueName, _In_ DWORD cbValueName, _Out_ LPDWORD pcbValueName, _Out_ LPDWORD pType, _Out_ LPBYTE pData,
 	// _In_ DWORD cbData, _Out_ LPDWORD pcbData );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "0a4c8436-46fe-4e21-8d55-c5031a3d1b38")]
@@ -2573,7 +2573,7 @@ public static partial class WinSpool
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumprinterkey DWORD EnumPrinterKey( _In_ HANDLE hPrinter, _In_ LPCTSTR
-	// pKeyName, _Out_ PTSTR pSubkey, _In_ DWORD cbSubkey, _Out_ LPDWORD pcbSubkey );
+	// pKeyName, _Out_ StrPtrAuto pSubkey, _In_ DWORD cbSubkey, _Out_ LPDWORD pcbSubkey );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "721b1d23-a594-4439-b8f9-9b11be5fe874")]
 	public static extern Win32Error EnumPrinterKey(HPRINTER hPrinter, string pKeyName, IntPtr pSubkey, uint cbSubkey, out uint pcbSubkey);
@@ -2833,7 +2833,7 @@ public static partial class WinSpool
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumprinters BOOL EnumPrinters( _In_ DWORD Flags, _In_ PTSTR Name, _In_
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/enumprinters BOOL EnumPrinters( _In_ DWORD Flags, _In_ StrPtrAuto Name, _In_
 	// DWORD Level, _Out_ LPBYTE pPrinterEnum, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded, _Out_ LPDWORD pcReturned );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "0d0cc726-c515-4146-9273-cdf1db3c76b7")]
@@ -3771,7 +3771,7 @@ public static partial class WinSpool
 	/// </list>
 	/// </returns>
 	/// <remarks/>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getdefaultprinter BOOL GetDefaultPrinter( _In_ PTSTR pszBuffer, _Inout_
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getdefaultprinter BOOL GetDefaultPrinter( _In_ StrPtrAuto pszBuffer, _Inout_
 	// LPDWORD pcchBuffer );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "8ec06743-43ce-4fac-83c4-f09eac7ee333")]
@@ -3800,7 +3800,7 @@ public static partial class WinSpool
 	/// <remarks>
 	/// If the caller is remote, and the Level is 2, the <c>StringType</c> value of the returned <c>FORM_INFO_2</c> will always be STRING_LANGPAIR.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getform BOOL GetForm( _In_ HANDLE hPrinter, _In_ PTSTR pFormName, _In_
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getform BOOL GetForm( _In_ HANDLE hPrinter, _In_ StrPtrAuto pFormName, _In_
 	// DWORD Level, _Out_ LPBYTE pForm, _In_ DWORD cbBuf, _Out_ LPDWORD pcbNeeded );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "10b25748-6d7c-46ab-bd2c-9b6126a1d7d1")]
@@ -4326,7 +4326,7 @@ public static partial class WinSpool
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getprinterdata DWORD GetPrinterData( _In_ HANDLE hPrinter, _In_ PTSTR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/getprinterdata DWORD GetPrinterData( _In_ HANDLE hPrinter, _In_ StrPtrAuto
 	// pValueName, _Out_ LPDWORD pType, _Out_ LPBYTE pData, _In_ DWORD nSize, _Out_ LPDWORD pcbNeeded );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "b5a44b27-a4aa-4e58-9a64-05be87d12ab5")]
@@ -5127,7 +5127,7 @@ public static partial class WinSpool
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "8b4e32cc-5eeb-4a0d-a1b7-f6edb99ed8d8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsValidDevmode(in DEVMODE pDevmode, SIZE_T DevmodeSize);
+	public static extern bool IsValidDevmode(in DEVMODE pDevmode, SizeT DevmodeSize);
 
 	/// <summary>
 	/// The <c>OpenPrinter</c> function retrieves a handle to the specified printer or print server or other types of handles in the
@@ -5219,7 +5219,7 @@ public static partial class WinSpool
 	/// call will fail with a return value of zero and <c>GetLastError</c> will return the value ERROR_ACCESS_DENIED.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/openprinter BOOL OpenPrinter( _In_ PTSTR pPrinterName, _Out_ LPHANDLE
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/openprinter BOOL OpenPrinter( _In_ StrPtrAuto pPrinterName, _Out_ LPHANDLE
 	// phPrinter, _In_ LPPRINTER_DEFAULTS pDefault );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "96763220-d851-46f0-8be8-403f3356edb9")]
@@ -5588,8 +5588,8 @@ public static partial class WinSpool
 	/// </para>
 	/// <para>If the caller is remote and the Level is 2, the <c>StringType</c> value of the <c>FORM_INFO_2</c> cannot be STRING_MUIDLL.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/setform BOOL SetForm( _In_ HANDLE hPrinter, _In_ PTSTR pFormName, _In_
-	// DWORD Level, _In_ PTSTR pForm );
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/setform BOOL SetForm( _In_ HANDLE hPrinter, _In_ StrPtrAuto pFormName, _In_
+	// DWORD Level, _In_ StrPtrAuto pForm );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "05d5d495-952c-4a1d-8694-1004d0c2bcf6")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -6008,7 +6008,7 @@ public static partial class WinSpool
 	/// the port. The print spooler resumes sending jobs to the port when the port status is cleared by another call to <c>SetPort</c>.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/setport BOOL SetPort( _In_ PTSTR pName, _In_ PTSTR pPortName, _In_
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/setport BOOL SetPort( _In_ StrPtrAuto pName, _In_ StrPtrAuto pPortName, _In_
 	// DWORD dwLevel, _In_ LPBYTE pPortInfo );
 	[DllImport(Lib.Winspool, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "1b80ad93-aaa1-41ed-a668-a944fa62c3eb")]
@@ -6685,7 +6685,7 @@ public static partial class WinSpool
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/setprinterdata DWORD SetPrinterData( _In_ HANDLE hPrinter, _In_ PTSTR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/setprinterdata DWORD SetPrinterData( _In_ HANDLE hPrinter, _In_ StrPtrAuto
 	// pValueName, _In_ DWORD Type, _In_ LPBYTE pData, _In_ DWORD cbData );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "16072de9-98fb-4ada-8216-180b64cf44c8")]
@@ -6867,7 +6867,7 @@ public static partial class WinSpool
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/printdocs/setprinterdata DWORD SetPrinterData( _In_ HANDLE hPrinter, _In_ PTSTR
+	// https://docs.microsoft.com/en-us/windows/win32/printdocs/setprinterdata DWORD SetPrinterData( _In_ HANDLE hPrinter, _In_ StrPtrAuto
 	// pValueName, _In_ DWORD Type, _In_ LPBYTE pData, _In_ DWORD cbData );
 	[DllImport(Lib.Winspool, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winspool.h", MSDNShortId = "16072de9-98fb-4ada-8216-180b64cf44c8")]

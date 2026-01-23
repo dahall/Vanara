@@ -608,7 +608,7 @@ public static partial class KtmW32
 	/// <para>You can create a volatile RM on a durable TM, but you cannot create a durable RM on a volatile TM.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ktmw32/nf-ktmw32-createresourcemanager HANDLE CreateResourceManager( IN
-	// LPSECURITY_ATTRIBUTES lpResourceManagerAttributes, IN LPGUID ResourceManagerId, IN DWORD CreateOptions, IN HANDLE TmHandle, PWSTR
+	// LPSECURITY_ATTRIBUTES lpResourceManagerAttributes, IN LPGUID ResourceManagerId, IN DWORD CreateOptions, IN HANDLE TmHandle, StrPtrUni
 	// Description );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "ad88e478-1dff-4f35-a0e3-6bda8bb45711")]
@@ -672,7 +672,7 @@ public static partial class KtmW32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ktmw32/nf-ktmw32-createtransaction HANDLE CreateTransaction( IN
 	// LPSECURITY_ATTRIBUTES lpTransactionAttributes, IN LPGUID UOW, IN DWORD CreateOptions, IN DWORD IsolationLevel, IN DWORD
-	// IsolationFlags, IN DWORD Timeout, PWSTR Description );
+	// IsolationFlags, IN DWORD Timeout, StrPtrUni Description );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "578bda35-bd35-4f6d-8366-a4bfb4dbfe42")]
 	public static extern SafeHTRXN CreateTransaction([In, Optional] SECURITY_ATTRIBUTES? lpTransactionAttributes, [In, Optional] IntPtr UOW,
@@ -712,7 +712,7 @@ public static partial class KtmW32
 	/// <para>You must call RecoverTransactionManager after creating a TM in order for the TM to function correctly.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ktmw32/nf-ktmw32-createtransactionmanager HANDLE CreateTransactionManager( IN
-	// LPSECURITY_ATTRIBUTES lpTransactionAttributes, PWSTR LogFileName, IN ULONG CreateOptions, IN ULONG CommitStrength );
+	// LPSECURITY_ATTRIBUTES lpTransactionAttributes, StrPtrUni LogFileName, IN ULONG CreateOptions, IN ULONG CommitStrength );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "f5b7d0c1-9cd0-48fc-8125-d4da040951c4")]
 	public static extern SafeHTRXNMGR CreateTransactionManager([In, Optional] SECURITY_ATTRIBUTES? lpTransactionAttributes,
@@ -881,7 +881,7 @@ public static partial class KtmW32
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ktmw32/nf-ktmw32-gettransactioninformation BOOL GetTransactionInformation( IN
 	// HANDLE TransactionHandle, OUT PDWORD Outcome, OUT PDWORD IsolationLevel, OUT PDWORD IsolationFlags, OUT PDWORD Timeout, DWORD
-	// BufferLength, PWSTR Description );
+	// BufferLength, StrPtrUni Description );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "5ce3c96a-629e-49d0-8ec4-f9bf76af99ac")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -980,7 +980,7 @@ public static partial class KtmW32
 	/// The LogFileName must be specified using the NT file format. For example: &lt;drive&gt;:&lt;path&gt;. Do not use the .BLF extension.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ktmw32/nf-ktmw32-opentransactionmanager HANDLE OpenTransactionManager( PWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/ktmw32/nf-ktmw32-opentransactionmanager HANDLE OpenTransactionManager( StrPtrUni
 	// LogFileName, IN ACCESS_MASK DesiredAccess, IN ULONG OpenOptions );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "6b53609a-b956-441c-b5b5-9a8e6aa489c9")]
@@ -1247,7 +1247,7 @@ public static partial class KtmW32
 	/// <para>If the function fails, the return value is zero (0). To get extended error information, call the GetLastError function.</para>
 	/// <para>The following list identifies the possible error codes:</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ktmw32/nf-ktmw32-renametransactionmanager BOOL RenameTransactionManager( PWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/ktmw32/nf-ktmw32-renametransactionmanager BOOL RenameTransactionManager( StrPtrUni
 	// LogFileName, IN LPGUID ExistingTransactionManagerGuid );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "2767e689-1342-458f-a215-a29d774c0648")]
@@ -1414,7 +1414,7 @@ public static partial class KtmW32
 	/// <para>The following list identifies the possible error codes:</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ktmw32/nf-ktmw32-settransactioninformation BOOL SetTransactionInformation( IN
-	// HANDLE TransactionHandle, IN DWORD IsolationLevel, IN DWORD IsolationFlags, IN DWORD Timeout, PWSTR Description );
+	// HANDLE TransactionHandle, IN DWORD IsolationLevel, IN DWORD IsolationFlags, IN DWORD Timeout, StrPtrUni Description );
 	[DllImport(Lib.Ktmw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ktmw32.h", MSDNShortId = "e33d221b-cd06-4f20-a4b5-407a04362ba0")]
 	[return: MarshalAs(UnmanagedType.Bool)]

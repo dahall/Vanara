@@ -339,9 +339,9 @@ public static partial class Kernel32
 	/// <para>For an example, see AWE Example.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapalloc DECLSPEC_ALLOCATOR LPVOID HeapAlloc( HANDLE
-	// hHeap, DWORD dwFlags, SIZE_T dwBytes );
+	// hHeap, DWORD dwFlags, SizeT dwBytes );
 	[PInvokeData("heapapi.h", MSDNShortId = "9a176312-0312-4cc1-baf5-949b346d983e")]
-	public static SafeHeapBlock HeapAlloc(HHEAP hHeap, HeapFlags dwFlags, SIZE_T dwBytes) => new(hHeap, dwBytes, dwFlags);
+	public static SafeHeapBlock HeapAlloc(HHEAP hHeap, HeapFlags dwFlags, SizeT dwBytes) => new(hHeap, dwBytes, dwFlags);
 
 	/// <summary>
 	/// Returns the size of the largest committed free block in the specified heap. If the Disable heap coalesce on free global flag is
@@ -405,11 +405,11 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapcompact SIZE_T HeapCompact( HANDLE hHeap, DWORD
+	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapcompact SizeT HeapCompact( HANDLE hHeap, DWORD
 	// dwFlags );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("heapapi.h", MSDNShortId = "792ec16f-d6b0-4afd-a832-29fe12b25058")]
-	public static extern SIZE_T HeapCompact([In] HHEAP hHeap, HeapFlags dwFlags);
+	public static extern SizeT HeapCompact([In] HHEAP hHeap, HeapFlags dwFlags);
 
 	/// <summary>
 	/// Creates a private heap object that can be used by the calling process. The function reserves space in the virtual address space
@@ -450,7 +450,7 @@ public static partial class Kernel32
 	/// </returns>
 	[PInvokeData("HeapApi.h", MSDNShortId = "aa366599")]
 	[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
-	public static extern SafeHHEAP HeapCreate(HeapFlags flOptions, SIZE_T dwInitialSize = default, SIZE_T dwMaximumSize = default);
+	public static extern SafeHHEAP HeapCreate(HeapFlags flOptions, SizeT dwInitialSize = default, SizeT dwMaximumSize = default);
 
 	/// <summary>
 	/// Destroys the specified heap object. It decommits and releases all the pages of a private heap object, and it invalidates the
@@ -580,11 +580,11 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapqueryinformation BOOL HeapQueryInformation( HANDLE
-	// HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SIZE_T HeapInformationLength, PSIZE_T ReturnLength );
+	// HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SizeT HeapInformationLength, PSIZE_T ReturnLength );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("heapapi.h", MSDNShortId = "6bf6cb8b-7212-4ddb-9ea6-34bc78824a8f")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool HeapQueryInformation([In] HHEAP HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, IntPtr HeapInformation, SIZE_T HeapInformationLength, out SIZE_T ReturnLength);
+	public static extern bool HeapQueryInformation([In] HHEAP HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, IntPtr HeapInformation, SizeT HeapInformationLength, out SizeT ReturnLength);
 
 	/// <summary>Retrieves information about the specified heap.</summary>
 	/// <param name="HeapHandle">
@@ -716,9 +716,9 @@ public static partial class Kernel32
 	/// If the function fails, it does not call <c>SetLastError</c>. An application cannot call <c>GetLastError</c> for extended error information.
 	/// </para>
 	/// </returns>
-	// LPVOID WINAPI HeapReAlloc( _In_ HANDLE hHeap, _In_ DWORD dwFlags, _In_ LPVOID lpMem, _In_ SIZE_T dwBytes);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366704(v=vs.85).aspx
+	// LPVOID WINAPI HeapReAlloc( _In_ HANDLE hHeap, _In_ DWORD dwFlags, _In_ LPVOID lpMem, _In_ SizeT dwBytes);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366704(v=vs.85).aspx
 	[PInvokeData("HeapApi.h", MSDNShortId = "aa366704")]
-	public static SafeHeapBlock HeapReAlloc(HHEAP hHeap, HeapFlags dwFlags, SafeHeapBlock lpMem, SIZE_T dwBytes)
+	public static SafeHeapBlock HeapReAlloc(HHEAP hHeap, HeapFlags dwFlags, SafeHeapBlock lpMem, SizeT dwBytes)
 	{
 		var ptr = HeapReAllocInternal(hHeap, dwFlags, lpMem.DangerousGetHandle(), dwBytes);
 		if (ptr == IntPtr.Zero) Win32Error.ThrowLastError();
@@ -799,11 +799,11 @@ public static partial class Kernel32
 	/// <para>The following example shows you how to enable the low-fragmentation heap.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapsetinformation BOOL HeapSetInformation( HANDLE
-	// HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SIZE_T HeapInformationLength );
+	// HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SizeT HeapInformationLength );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("heapapi.h", MSDNShortId = "33c262ca-5093-4f44-a8c6-09045bc90f60")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool HeapSetInformation([In] HHEAP HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, [In, Optional] IntPtr HeapInformation, [Optional] SIZE_T HeapInformationLength);
+	public static extern bool HeapSetInformation([In] HHEAP HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, [In, Optional] IntPtr HeapInformation, [Optional] SizeT HeapInformationLength);
 
 	/// <summary>Enables features for a specified heap.</summary>
 	/// <param name="HeapHandle">
@@ -934,11 +934,11 @@ public static partial class Kernel32
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapsize SIZE_T HeapSize( HANDLE hHeap, DWORD dwFlags,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-heapsize SizeT HeapSize( HANDLE hHeap, DWORD dwFlags,
 	// LPCVOID lpMem );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("heapapi.h", MSDNShortId = "a8fcfd99-7b04-4aa3-8619-272b254551a3")]
-	public static extern SIZE_T HeapSize(HHEAP hHeap, HeapFlags dwFlags, SafeHeapBlock lpMem);
+	public static extern SizeT HeapSize(HHEAP hHeap, HeapFlags dwFlags, SafeHeapBlock lpMem);
 
 	/// <summary>Undocumented.</summary>
 	/// <param name="hHeap">
@@ -1071,10 +1071,10 @@ public static partial class Kernel32
 	}
 
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "HeapAlloc")]
-	internal static extern IntPtr HeapAllocInternal(HHEAP hHeap, HeapFlags dwFlags, SIZE_T dwBytes);
+	internal static extern IntPtr HeapAllocInternal(HHEAP hHeap, HeapFlags dwFlags, SizeT dwBytes);
 
 	[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "HeapReAlloc")]
-	internal static extern IntPtr HeapReAllocInternal(HHEAP hHeap, HeapFlags dwFlags, IntPtr lpMem, SIZE_T dwBytes);
+	internal static extern IntPtr HeapReAllocInternal(HHEAP hHeap, HeapFlags dwFlags, IntPtr lpMem, SizeT dwBytes);
 
 	/// <summary>Specifies flags for a HeapOptimizeResources operation initiated with HeapSetInformation.</summary>
 	/// <remarks>
@@ -1101,7 +1101,7 @@ public static partial class Kernel32
 
 	/// <summary>Represents a heap summary retrieved with a call to HeapSummary</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/heapapi/ns-heapapi-heap_summary
-	// typedef struct _HEAP_SUMMARY { DWORD cb; SIZE_T cbAllocated; SIZE_T cbCommitted; SIZE_T cbReserved; SIZE_T cbMaxReserve; } HEAP_SUMMARY, *PHEAP_SUMMARY;
+	// typedef struct _HEAP_SUMMARY { DWORD cb; SizeT cbAllocated; SizeT cbCommitted; SizeT cbReserved; SizeT cbMaxReserve; } HEAP_SUMMARY, *PHEAP_SUMMARY;
 	[PInvokeData("heapapi.h")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HEAP_SUMMARY()
@@ -1109,13 +1109,13 @@ public static partial class Kernel32
 		/// <summary>Address of a continuous block of memory.</summary>
 		public uint cb = (uint)Marshal.SizeOf<HEAP_SUMMARY>();
 		/// <summary>The size of the allocated memory.</summary>
-		public SIZE_T cbAllocated;
+		public SizeT cbAllocated;
 		/// <summary>The size of the committed memory.</summary>
-		public SIZE_T cbCommitted;
+		public SizeT cbCommitted;
 		/// <summary>The size of the reserved memory.</summary>
-		public SIZE_T cbReserved;
+		public SizeT cbReserved;
 		/// <summary>The size of the maximum reserved memory.</summary>
-		public SIZE_T cbMaxReserve;
+		public SizeT cbMaxReserve;
 
 		/// <summary>Gets this structure with the size field set appropriately.</summary>
 		public static readonly HEAP_SUMMARY Default = new();
@@ -1362,7 +1362,7 @@ public static partial class Kernel32
 		/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> this safe handle disposes the handle when done.</param>
 		/// <param name="size">The size, in bytes, of the allocated heap memory, if known.</param>
-		public SafeHeapBlock(IntPtr ptr, SIZE_T size, bool ownsHandle = true) : base(ptr, size, ownsHandle)
+		public SafeHeapBlock(IntPtr ptr, SizeT size, bool ownsHandle = true) : base(ptr, size, ownsHandle)
 		{
 		}
 
@@ -1371,7 +1371,7 @@ public static partial class Kernel32
 		/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> this safe handle disposes the handle when done.</param>
 		/// <param name="size">The size, in bytes, of the allocated heap memory, if known.</param>
-		public SafeHeapBlock(HHEAP hHeap, IntPtr ptr, SIZE_T size, bool ownsHandle = true) : base(ptr, size, ownsHandle)
+		public SafeHeapBlock(HHEAP hHeap, IntPtr ptr, SizeT size, bool ownsHandle = true) : base(ptr, size, ownsHandle)
 		{
 			if (hHeap.IsNull) throw new ArgumentNullException(nameof(hHeap));
 			mm.HeapHandle = hHeap;
@@ -1380,7 +1380,7 @@ public static partial class Kernel32
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
 		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-		public SafeHeapBlock(SIZE_T size) : base(size)
+		public SafeHeapBlock(SizeT size) : base(size)
 		{
 		}
 
@@ -1422,7 +1422,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </param>
 		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-		public SafeHeapBlock(HHEAP hHeap, SIZE_T size = default, HeapFlags flags = 0) : this(hHeap, IntPtr.Zero, size)
+		public SafeHeapBlock(HHEAP hHeap, SizeT size = default, HeapFlags flags = 0) : this(hHeap, IntPtr.Zero, size)
 		{
 			if (size < 0)
 				throw new ArgumentOutOfRangeException(nameof(size), "The value of this argument must be non-negative");
@@ -1459,13 +1459,13 @@ public static partial class Kernel32
 		public HHEAP HeapHandle => mm.HeapHandle;
 
 		/// <inheritdoc/>
-		public static ISafeMemoryHandle Create(IntPtr handle, SIZE_T size, bool ownsHandle = true) => new SafeHeapBlock(handle, size, ownsHandle);
+		public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeHeapBlock(handle, size, ownsHandle);
 
 		/// <inheritdoc/>
 		public static ISafeMemoryHandle Create(byte[] bytes) => new SafeHeapBlock(bytes);
 
 		/// <inheritdoc/>
-		public static ISafeMemoryHandle Create(SIZE_T size) => new SafeHeapBlock(size);
+		public static ISafeMemoryHandle Create(SizeT size) => new SafeHeapBlock(size);
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure
@@ -1524,7 +1524,7 @@ public static partial class Kernel32
 		/// <summary>Gets a block of memory from this private heap.</summary>
 		/// <param name="size">The size of the block.</param>
 		/// <returns>A safe handle for the memory that will call HeapFree on disposal.</returns>
-		public SafeHeapBlock GetBlock(SIZE_T size) => new(this, size);
+		public SafeHeapBlock GetBlock(SizeT size) => new(this, size);
 
 		/// <summary>Optimizes caches for this heap, and decommits the memory if possible.</summary>
 		public void OptimizeResources() => HeapSetInformation(this, HEAP_INFORMATION_CLASS.HeapOptimizeResources, new HEAP_OPTIMIZE_RESOURCES_INFORMATION(0));

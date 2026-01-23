@@ -46,7 +46,7 @@ public static partial class Ole32
 		/// A pointer to the string pointer for the description. This string must be released by the caller using the CoTaskMemFree function.
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/comcat/nf-comcat-icatinformation-getcategorydesc HRESULT GetCategoryDesc(
-		// REFCATID rcatid, LCID lcid, PWSTR *pszDesc );
+		// REFCATID rcatid, LCID lcid, StrPtrUni *pszDesc );
 		void GetCategoryDesc(in Guid rcatid, LCID lcid, [MarshalAs(UnmanagedType.LPWStr)] out string pszDesc);
 
 		/// <summary>Retrieves an enumerator for the classes that implement one or more specified category identifiers.</summary>

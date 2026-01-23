@@ -247,7 +247,7 @@ public static partial class WinMm
 	/// than MAXERRORLENGTH characters long.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mmeapi/nf-mmeapi-waveingeterrortext MMRESULT waveInGetErrorText( MMRESULT
-	// mmrError, PSTR pszText, UINT cchText );
+	// mmrError, StrPtrAnsi pszText, UINT cchText );
 	[DllImport(Lib_Winmm, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mmeapi.h", MSDNShortId = "NF:mmeapi.waveInGetErrorText")]
 	public static extern MMRESULT waveInGetErrorText(MMRESULT mmrError, [MarshalAs(UnmanagedType.LPStr)] StringBuilder pszText, uint cchText);
@@ -1002,7 +1002,7 @@ public static partial class WinMm
 	/// than MAXERRORLENGTH characters long.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mmeapi/nf-mmeapi-waveoutgeterrortext MMRESULT waveOutGetErrorText( MMRESULT
-	// mmrError, PSTR pszText, UINT cchText );
+	// mmrError, StrPtrAnsi pszText, UINT cchText );
 	[DllImport(Lib_Winmm, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("mmeapi.h", MSDNShortId = "NF:mmeapi.waveOutGetErrorText")]
 	public static extern MMRESULT waveOutGetErrorText(MMRESULT mmrError, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder pszText, uint cchText);
@@ -2381,7 +2381,7 @@ public static partial class WinMm
 	/// waveOutPrepareHeader function. (For either function, the <c>dwFlags</c> member must be set to zero.)
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/mmeapi/ns-mmeapi-wavehdr typedef struct wavehdr_tag { PSTR lpData; DWORD
+	// https://docs.microsoft.com/en-us/windows/win32/api/mmeapi/ns-mmeapi-wavehdr typedef struct wavehdr_tag { StrPtrAnsi lpData; DWORD
 	// dwBufferLength; DWORD dwBytesRecorded; DWORD_PTR dwUser; DWORD dwFlags; DWORD dwLoops; struct wavehdr_tag *lpNext; DWORD_PTR
 	// reserved; } WAVEHDR, *PWAVEHDR, *NPWAVEHDR, *LPWAVEHDR;
 	[PInvokeData("mmeapi.h", MSDNShortId = "NS:mmeapi.wavehdr_tag")]

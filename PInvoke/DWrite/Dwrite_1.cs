@@ -4415,7 +4415,7 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextanalysissource-gettextatposition HRESULT
 		// GetTextAtPosition( UINT32 textPosition, WCHAR const **textString, UINT32 *textLength );
-		new void GetTextAtPosition(uint textPosition, out PWSTR textString, out uint textLength);
+		new void GetTextAtPosition(uint textPosition, out StrPtrUni textString, out uint textLength);
 
 		/// <summary>Gets a block of text immediately preceding the specified position.</summary>
 		/// <param name="textPosition">
@@ -4449,7 +4449,7 @@ public static partial class Dwrite
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextanalysissource-gettextbeforeposition HRESULT
 		// GetTextBeforePosition( UINT32 textPosition, WCHAR const **textString, UINT32 *textLength );
-		new void GetTextBeforePosition(uint textPosition, out PWSTR textString, out uint textLength);
+		new void GetTextBeforePosition(uint textPosition, out StrPtrUni textString, out uint textLength);
 
 		/// <summary>Gets the paragraph reading direction.</summary>
 		/// <returns>
@@ -4484,7 +4484,7 @@ public static partial class Dwrite
 		/// <remarks>The localeName pointer must remain valid until the next call or until the analysis returns.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-idwritetextanalysissource-getlocalename HRESULT
 		// GetLocaleName( UINT32 textPosition, UINT32 *textLength, WCHAR const **localeName );
-		new void GetLocaleName(uint textPosition, out uint textLength, out PWSTR localeName);
+		new void GetLocaleName(uint textPosition, out uint textLength, out StrPtrUni localeName);
 
 		/// <summary>Gets the number substitution from the text range affected by the text analysis.</summary>
 		/// <param name="textPosition">

@@ -619,7 +619,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_application typedef struct peer_application_tag { GUID id;
-	// PEER_DATA data; PWSTR pwzDescription; } PEER_APPLICATION, *PEER_APPLICATION*;
+	// PEER_DATA data; StrPtrUni pwzDescription; } PEER_APPLICATION, *PEER_APPLICATION*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_application_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_APPLICATION
@@ -656,7 +656,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_application_registration_info typedef struct
-	// peer_application_registration_info_tag { PEER_APPLICATION application; PWSTR pwzApplicationToLaunch; PWSTR
+	// peer_application_registration_info_tag { PEER_APPLICATION application; StrPtrUni pwzApplicationToLaunch; StrPtrUni
 	// pwzApplicationArguments; DWORD dwPublicationScope; } PEER_APPLICATION_REGISTRATION_INFO, *PEER_APPLICATION_REGISTRATION_INFO*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_application_registration_info_tag")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -786,7 +786,7 @@ public static partial class P2P
 	/// enumerating peer graphing or grouping connections.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_connection_info typedef struct peer_connection_info_tag {
-	// DWORD dwSize; DWORD dwFlags; ULONGLONG ullConnectionId; ULONGLONG ullNodeId; PWSTR pwzPeerId; PEER_ADDRESS address; } PEER_CONNECTION_INFO;
+	// DWORD dwSize; DWORD dwFlags; ULONGLONG ullConnectionId; ULONGLONG ullNodeId; StrPtrUni pwzPeerId; PEER_ADDRESS address; } PEER_CONNECTION_INFO;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_connection_info_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_CONNECTION_INFO
@@ -818,8 +818,8 @@ public static partial class P2P
 	/// changes. Lists of contacts are maintained by the peer collaboration infrastructure, and specific status change events are raised
 	/// for each individual contact in the list.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_contact typedef struct peer_contact_tag { PWSTR pwzPeerName;
-	// PWSTR pwzNickName; PWSTR pwzDisplayName; PWSTR pwzEmailAddress; BOOL fWatch; PEER_WATCH_PERMISSION WatcherPermissions; PEER_DATA
+	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_contact typedef struct peer_contact_tag { StrPtrUni pwzPeerName;
+	// StrPtrUni pwzNickName; StrPtrUni pwzDisplayName; StrPtrUni pwzEmailAddress; BOOL fWatch; PEER_WATCH_PERMISSION WatcherPermissions; PEER_DATA
 	// credentials; } PEER_CONTACT, *PEER_CONTACT*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_contact_tag")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -869,7 +869,7 @@ public static partial class P2P
 
 	/// <summary>The <c>PEER_CREDENTIAL_INFO</c> structure defines information used to obtain and issue a peer's security credentials.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_credential_info typedef struct peer_credential_info_tag {
-	// DWORD dwSize; DWORD dwFlags; PWSTR pwzFriendlyName; CERT_PUBLIC_KEY_INFO *pPublicKey; PWSTR pwzIssuerPeerName; PWSTR
+	// DWORD dwSize; DWORD dwFlags; StrPtrUni pwzFriendlyName; CERT_PUBLIC_KEY_INFO *pPublicKey; StrPtrUni pwzIssuerPeerName; StrPtrUni
 	// pwzIssuerFriendlyName; FILETIME ftValidityStart; FILETIME ftValidityEnd; ULONG cRoles; PEER_ROLE_ID *pRoles; }
 	// PEER_CREDENTIAL_INFO, *PEER_CREDENTIAL_INFO*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_credential_info_tag")]
@@ -966,7 +966,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_endpoint typedef struct peer_endpoint_tag { PEER_ADDRESS
-	// address; PWSTR pwzEndpointName; } PEER_ENDPOINT, *PEER_ENDPOINT*;
+	// address; StrPtrUni pwzEndpointName; } PEER_ENDPOINT, *PEER_ENDPOINT*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_endpoint_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_ENDPOINT
@@ -1196,7 +1196,7 @@ public static partial class P2P
 	/// The <c>PEER_EVENT_MEMBER_CHANGE_DATA</c> structure contains data that describes a change in the status of a peer group member.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_event_member_change_data typedef struct
-	// peer_event_member_change_data_tag { DWORD dwSize; PEER_MEMBER_CHANGE_TYPE changeType; PWSTR pwzIdentity; }
+	// peer_event_member_change_data_tag { DWORD dwSize; PEER_MEMBER_CHANGE_TYPE changeType; StrPtrUni pwzIdentity; }
 	// PEER_EVENT_MEMBER_CHANGE_DATA, *PEER_EVENT_MEMBER_CHANGE_DATA*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_event_member_change_data_tag")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1211,7 +1211,7 @@ public static partial class P2P
 		public PEER_MEMBER_CHANGE_TYPE changeType;
 
 		/// <summary>Pointer to a Unicode string that contains the peer name of the peer group member.</summary>
-		public PWSTR pwzIdentity;
+		public StrPtrUni pwzIdentity;
 	}
 
 	/// <summary>
@@ -1219,7 +1219,7 @@ public static partial class P2P
 	/// is triggered.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_event_node_change_data typedef struct
-	// peer_event_node_change_data_tag { DWORD dwSize; PEER_NODE_CHANGE_TYPE changeType; ULONGLONG ullNodeId; PWSTR pwzPeerId; }
+	// peer_event_node_change_data_tag { DWORD dwSize; PEER_NODE_CHANGE_TYPE changeType; ULONGLONG ullNodeId; StrPtrUni pwzPeerId; }
 	// PEER_EVENT_NODE_CHANGE_DATA, *PEER_EVENT_NODE_CHANGE_DATA*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_event_node_change_data_tag")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1255,7 +1255,7 @@ public static partial class P2P
 		public ulong ullNodeId;
 
 		/// <summary>Specifies the peer ID of the node that has changed.</summary>
-		public PWSTR pwzPeerId;
+		public StrPtrUni pwzPeerId;
 	}
 
 	/// <summary>
@@ -1591,8 +1591,8 @@ public static partial class P2P
 	/// <para>The remaining members cannot be modified.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_graph_properties typedef struct peer_graph_properties_tag {
-	// DWORD dwSize; DWORD dwFlags; DWORD dwScope; DWORD dwMaxRecordSize; PWSTR pwzGraphId; PWSTR pwzCreatorId; PWSTR pwzFriendlyName;
-	// PWSTR pwzComment; ULONG ulPresenceLifetime; ULONG cPresenceMax; } PEER_GRAPH_PROPERTIES, *PEER_GRAPH_PROPERTIES*;
+	// DWORD dwSize; DWORD dwFlags; DWORD dwScope; DWORD dwMaxRecordSize; StrPtrUni pwzGraphId; StrPtrUni pwzCreatorId; StrPtrUni pwzFriendlyName;
+	// StrPtrUni pwzComment; ULONG ulPresenceLifetime; ULONG cPresenceMax; } PEER_GRAPH_PROPERTIES, *PEER_GRAPH_PROPERTIES*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_graph_properties_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_GRAPH_PROPERTIES
@@ -1833,8 +1833,8 @@ public static partial class P2P
 
 	/// <summary>The <c>PEER_GROUP_PROPERTIES</c> structure contains data about the membership policy of a peer group.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_group_properties typedef struct peer_group_properties_tag {
-	// DWORD dwSize; DWORD dwFlags; PWSTR pwzCloud; PWSTR pwzClassifier; PWSTR pwzGroupPeerName; PWSTR pwzCreatorPeerName; PWSTR
-	// pwzFriendlyName; PWSTR pwzComment; ULONG ulMemberDataLifetime; ULONG ulPresenceLifetime; DWORD dwAuthenticationSchemes; PWSTR
+	// DWORD dwSize; DWORD dwFlags; StrPtrUni pwzCloud; StrPtrUni pwzClassifier; StrPtrUni pwzGroupPeerName; StrPtrUni pwzCreatorPeerName; StrPtrUni
+	// pwzFriendlyName; StrPtrUni pwzComment; ULONG ulMemberDataLifetime; ULONG ulPresenceLifetime; DWORD dwAuthenticationSchemes; StrPtrUni
 	// pwzGroupPassword; PEER_ROLE_ID groupPasswordRole; } PEER_GROUP_PROPERTIES, *PEER_GROUP_PROPERTIES*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_group_properties_tag")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1929,7 +1929,7 @@ public static partial class P2P
 	/// contact's endpoint.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_invitation typedef struct peer_invitation_tag { GUID
-	// applicationId; PEER_DATA applicationData; PWSTR pwzMessage; } PEER_INVITATION, *PEER_INVITATION*;
+	// applicationId; PEER_DATA applicationData; StrPtrUni pwzMessage; } PEER_INVITATION, *PEER_INVITATION*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_invitation_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_INVITATION
@@ -1958,10 +1958,10 @@ public static partial class P2P
 	/// represented as Unicode strings. To obtain this structure, pass the XML invitation string created by PeerGroupCreateInvitation to PeerGroupParseInvitation.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_invitation_info typedef struct peer_invitation_info_tag {
-	// DWORD dwSize; DWORD dwFlags; PWSTR pwzCloudName; DWORD dwScope; DWORD dwCloudFlags; PWSTR pwzGroupPeerName; PWSTR
-	// pwzIssuerPeerName; PWSTR pwzSubjectPeerName; PWSTR pwzGroupFriendlyName; PWSTR pwzIssuerFriendlyName; PWSTR
+	// DWORD dwSize; DWORD dwFlags; StrPtrUni pwzCloudName; DWORD dwScope; DWORD dwCloudFlags; StrPtrUni pwzGroupPeerName; StrPtrUni
+	// pwzIssuerPeerName; StrPtrUni pwzSubjectPeerName; StrPtrUni pwzGroupFriendlyName; StrPtrUni pwzIssuerFriendlyName; StrPtrUni
 	// pwzSubjectFriendlyName; FILETIME ftValidityStart; FILETIME ftValidityEnd; ULONG cRoles; PEER_ROLE_ID *pRoles; ULONG cClassifiers;
-	// PWSTR *ppwzClassifiers; CERT_PUBLIC_KEY_INFO *pSubjectPublicKey; PEER_GROUP_AUTHENTICATION_SCHEME authScheme; }
+	// StrPtrUni *ppwzClassifiers; CERT_PUBLIC_KEY_INFO *pSubjectPublicKey; PEER_GROUP_AUTHENTICATION_SCHEME authScheme; }
 	// PEER_INVITATION_INFO, *PEER_INVITATION_INFO*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_invitation_info_tag")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2100,7 +2100,7 @@ public static partial class P2P
 	/// The <c>PEER_INVITATION_RESPONSE</c> structure contains a response to an invitation to join a peer collaboration activity.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_invitation_response typedef struct
-	// peer_invitation_response_tag { PEER_INVITATION_RESPONSE_TYPE action; PWSTR pwzMessage; HRESULT hrExtendedInfo; }
+	// peer_invitation_response_tag { PEER_INVITATION_RESPONSE_TYPE action; StrPtrUni pwzMessage; HRESULT hrExtendedInfo; }
 	// PEER_INVITATION_RESPONSE, *PEER_INVITATION_RESPONSE*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_invitation_response_tag")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2124,7 +2124,7 @@ public static partial class P2P
 
 	/// <summary>The <c>PEER_MEMBER</c> structure contains information that describes a member of a peer group.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_member typedef struct peer_member_tag { DWORD dwSize; DWORD
-	// dwFlags; PWSTR pwzIdentity; PWSTR pwzAttributes; ULONGLONG ullNodeId; ULONG cAddresses; PEER_ADDRESS *pAddresses;
+	// dwFlags; StrPtrUni pwzIdentity; StrPtrUni pwzAttributes; ULONGLONG ullNodeId; ULONG cAddresses; PEER_ADDRESS *pAddresses;
 	// PEER_CREDENTIAL_INFO *pCredentialInfo; } PEER_MEMBER, *PEER_MEMBER*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_member_tag")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2186,7 +2186,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_name_pair typedef struct peer_name_pair_tag { DWORD dwSize;
-	// PWSTR pwzPeerName; PWSTR pwzFriendlyName; } PEER_NAME_PAIR, *PEER_NAME_PAIR*;
+	// StrPtrUni pwzPeerName; StrPtrUni pwzFriendlyName; } PEER_NAME_PAIR, *PEER_NAME_PAIR*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_name_pair_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_NAME_PAIR
@@ -2209,7 +2209,7 @@ public static partial class P2P
 
 	/// <summary>The <c>PEER_NODE_INFO</c> structure contains information that is specific to a particular node in a peer graph.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_node_info typedef struct peer_node_info_tag { DWORD dwSize;
-	// ULONGLONG ullNodeId; PWSTR pwzPeerId; ULONG cAddresses; PEER_ADDRESS* pAddresses; PWSTR pwzAttributes; } PEER_NODE_INFO, *PEER_NODE_INFO*;
+	// ULONGLONG ullNodeId; StrPtrUni pwzPeerId; ULONG cAddresses; PEER_ADDRESS* pAddresses; StrPtrUni pwzAttributes; } PEER_NODE_INFO, *PEER_NODE_INFO*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_node_info_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_NODE_INFO
@@ -2286,7 +2286,7 @@ public static partial class P2P
 	}
 
 	/// <summary>The <c>PEER_PEOPLE_NEAR_ME</c> structure contains information about a peer in the same logical or virtual subnet.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_people_near_me typedef struct peer_people_near_me_tag { PWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_people_near_me typedef struct peer_people_near_me_tag { StrPtrUni
 	// pwzNickName; PEER_ENDPOINT endpoint; GUID id; } PEER_PEOPLE_NEAR_ME, *PEER_PEOPLE_NEAR_ME*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_people_near_me_tag")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2308,7 +2308,7 @@ public static partial class P2P
 
 	/// <summary>The <c>PEER_PNRP_CLOUD_INFO</c> structure contains information about a Peer Name Resolution Protocol (PNRP) cloud.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_pnrp_cloud_info typedef struct peer_pnrp_cloud_info_tag {
-	// PWSTR pwzCloudName; PNRP_SCOPE dwScope; DWORD dwScopeId; } PEER_PNRP_CLOUD_INFO, *PEER_PNRP_CLOUD_INFO*;
+	// StrPtrUni pwzCloudName; PNRP_SCOPE dwScope; DWORD dwScopeId; } PEER_PNRP_CLOUD_INFO, *PEER_PNRP_CLOUD_INFO*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_pnrp_cloud_info_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_PNRP_CLOUD_INFO
@@ -2354,7 +2354,7 @@ public static partial class P2P
 
 	/// <summary>The <c>PEER_PNRP_ENDPOINT_INFO</c> structure contains the IP addresses and data associated with a peer endpoint.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_pnrp_endpoint_info typedef struct peer_pnrp_endpoint_info_tag
-	// { PWSTR pwzPeerName; ULONG cAddresses; SOCKADDR **ppAddresses; PWSTR pwzComment; PEER_DATA payload; } PEER_PNRP_ENDPOINT_INFO, *PEER_PNRP_ENDPOINT_INFO*;
+	// { StrPtrUni pwzPeerName; ULONG cAddresses; SOCKADDR **ppAddresses; StrPtrUni pwzComment; PEER_DATA payload; } PEER_PNRP_ENDPOINT_INFO, *PEER_PNRP_ENDPOINT_INFO*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_pnrp_endpoint_info_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_PNRP_ENDPOINT_INFO
@@ -2386,8 +2386,8 @@ public static partial class P2P
 	/// PNRP cloud.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_pnrp_registration_info typedef struct
-	// peer_pnrp_registration_info_tag { PWSTR pwzCloudName; PWSTR pwzPublishingIdentity; ULONG cAddresses; SOCKADDR **ppAddresses; WORD
-	// wPort; PWSTR pwzComment; PEER_DATA payload; } PEER_PNRP_REGISTRATION_INFO, *PEER_PNRP_REGISTRATION_INFO*;
+	// peer_pnrp_registration_info_tag { StrPtrUni pwzCloudName; StrPtrUni pwzPublishingIdentity; ULONG cAddresses; SOCKADDR **ppAddresses; WORD
+	// wPort; StrPtrUni pwzComment; PEER_DATA payload; } PEER_PNRP_REGISTRATION_INFO, *PEER_PNRP_REGISTRATION_INFO*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_pnrp_registration_info_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_PNRP_REGISTRATION_INFO
@@ -2436,7 +2436,7 @@ public static partial class P2P
 	/// or not the peer has logged into or out of the peer collaboration network, or has set a specific status (for example, "Busy, "Away").
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_presence_info typedef struct peer_presence_info_tag {
-	// PEER_PRESENCE_STATUS status; PWSTR pwzDescriptiveText; } PEER_PRESENCE_INFO, *PEER_PRESENCE_INFO*;
+	// PEER_PRESENCE_STATUS status; StrPtrUni pwzDescriptiveText; } PEER_PRESENCE_INFO, *PEER_PRESENCE_INFO*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_presence_info_tag")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PEER_PRESENCE_INFO
@@ -2457,7 +2457,7 @@ public static partial class P2P
 
 	/// <summary>The <c>PEER_RECORD</c> structure contains the record object that an application uses.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_record typedef struct peer_record_tag { DWORD dwSize; GUID
-	// type; GUID id; DWORD dwVersion; DWORD dwFlags; PWSTR pwzCreatorId; PWSTR pwzModifiedById; PWSTR pwzAttributes; FILETIME
+	// type; GUID id; DWORD dwVersion; DWORD dwFlags; StrPtrUni pwzCreatorId; StrPtrUni pwzModifiedById; StrPtrUni pwzAttributes; FILETIME
 	// ftCreation; FILETIME ftExpiration; FILETIME ftLastModified; PEER_DATA securityData; PEER_DATA data; } PEER_RECORD, *PEER_RECORD*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_record_tag")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2600,7 +2600,7 @@ public static partial class P2P
 	/// database; doing so can lead to a deadlock situation. Instead, the application should look at a cached copy of the information.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/ns-p2p-peer_security_interface typedef struct peer_security_interface_tag
-	// { DWORD dwSize; PWSTR pwzSspFilename; PWSTR pwzPackageName; ULONG cbSecurityInfo; PBYTE pbSecurityInfo; PVOID pvContext;
+	// { DWORD dwSize; StrPtrUni pwzSspFilename; StrPtrUni pwzPackageName; ULONG cbSecurityInfo; PBYTE pbSecurityInfo; PVOID pvContext;
 	// PFNPEER_VALIDATE_RECORD pfnValidateRecord; PFNPEER_SECURE_RECORD pfnSecureRecord; PFNPEER_FREE_SECURITY_DATA pfnFreeSecurityData;
 	// PFNPEER_ON_PASSWORD_AUTH_FAILED pfnAuthFailed; } PEER_SECURITY_INTERFACE, *PEER_SECURITY_INTERFACE*;
 	[PInvokeData("p2p.h", MSDNShortId = "NS:p2p.peer_security_interface_tag")]

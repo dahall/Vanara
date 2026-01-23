@@ -303,13 +303,13 @@ public static partial class Shell32
 		/// Initializes the window title and cancel button text of the progress dialog box displayed during the namespace walk.
 		/// </summary>
 		/// <param name="ppszTitle">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// When this method returns, contains a pointer to a null-terminated string that contains the title to be used for the dialog box.
 		/// </para>
 		/// </param>
 		/// <param name="ppszCancel">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// When this method returns, contains a pointer to a null-terminated string that contains the text displayed on the button that
 		/// cancels the namespace walk.
@@ -320,7 +320,7 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalkcb-initializeprogressdialog
-		// HRESULT InitializeProgressDialog( PWSTR *ppszTitle, PWSTR *ppszCancel );
+		// HRESULT InitializeProgressDialog( StrPtrUni *ppszTitle, StrPtrUni *ppszCancel );
 		[PreserveSig]
 		HRESULT InitializeProgressDialog([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszTitle, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszCancel);
 	}
@@ -402,13 +402,13 @@ public static partial class Shell32
 		/// Initializes the window title and cancel button text of the progress dialog box displayed during the namespace walk.
 		/// </summary>
 		/// <param name="ppszTitle">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// When this method returns, contains a pointer to a null-terminated string that contains the title to be used for the dialog box.
 		/// </para>
 		/// </param>
 		/// <param name="ppszCancel">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// When this method returns, contains a pointer to a null-terminated string that contains the text displayed on the button that
 		/// cancels the namespace walk.
@@ -419,7 +419,7 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalkcb-initializeprogressdialog
-		// HRESULT InitializeProgressDialog( PWSTR *ppszTitle, PWSTR *ppszCancel );
+		// HRESULT InitializeProgressDialog( StrPtrUni *ppszTitle, StrPtrUni *ppszCancel );
 		[PreserveSig]
 		new HRESULT InitializeProgressDialog([Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszTitle, [Out, MarshalAs(UnmanagedType.LPWStr)] out string? ppszCancel);
 

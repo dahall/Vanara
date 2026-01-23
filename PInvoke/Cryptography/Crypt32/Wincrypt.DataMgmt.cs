@@ -1586,7 +1586,7 @@ public static partial class Crypt32
 	/// </item>
 	/// </list>
 	/// </param>
-	/// <param name="pszPrivateKeyObjId">An <c>PSTR</c> variable that contains the private key object identifier (OID).</param>
+	/// <param name="pszPrivateKeyObjId">An <c>StrPtrAnsi</c> variable that contains the private key object identifier (OID).</param>
 	/// <param name="dwFlags">This parameter should be zero if pbPrivateKeyBlob is <c>NULL</c> and 0x8000 otherwise.</param>
 	/// <param name="pvAuxInfo">This parameter must be set to <c>NULL</c>.</param>
 	/// <param name="pbPrivateKeyBlob">
@@ -1633,7 +1633,7 @@ public static partial class Crypt32
 	/// </returns>
 	/// <remarks>This function is only supported for asymmetric keys.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptexportpkcs8 BOOL CryptExportPKCS8( HCRYPTPROV
-	// hCryptProv, DWORD dwKeySpec, PSTR pszPrivateKeyObjId, DWORD dwFlags, void *pvAuxInfo, BYTE *pbPrivateKeyBlob, DWORD
+	// hCryptProv, DWORD dwKeySpec, StrPtrAnsi pszPrivateKeyObjId, DWORD dwFlags, void *pvAuxInfo, BYTE *pbPrivateKeyBlob, DWORD
 	// *pcbPrivateKeyBlob );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[Obsolete("The CryptExportPKCS8 function is no longer available for use as of Windows Server 2008 and Windows Vista. Instead, use the PFXExportCertStoreEx function.")]
@@ -1994,7 +1994,7 @@ public static partial class Crypt32
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptexportpublickeyinfoex BOOL
 	// CryptExportPublicKeyInfoEx( HCRYPTPROV_OR_NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, DWORD dwKeySpec, DWORD dwCertEncodingType,
-	// PSTR pszPublicKeyObjId, DWORD dwFlags, void *pvAuxInfo, PCERT_PUBLIC_KEY_INFO pInfo, DWORD *pcbInfo );
+	// StrPtrAnsi pszPublicKeyObjId, DWORD dwFlags, void *pvAuxInfo, PCERT_PUBLIC_KEY_INFO pInfo, DWORD *pcbInfo );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "38274222-90b3-4038-86d3-6b2813100ce2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2116,7 +2116,7 @@ public static partial class Crypt32
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptexportpublickeyinfoex BOOL
 	// CryptExportPublicKeyInfoEx( HCRYPTPROV_OR_NCRYPT_KEY_HANDLE hCryptProvOrNCryptKey, DWORD dwKeySpec, DWORD dwCertEncodingType,
-	// PSTR pszPublicKeyObjId, DWORD dwFlags, void *pvAuxInfo, PCERT_PUBLIC_KEY_INFO pInfo, DWORD *pcbInfo );
+	// StrPtrAnsi pszPublicKeyObjId, DWORD dwFlags, void *pvAuxInfo, PCERT_PUBLIC_KEY_INFO pInfo, DWORD *pcbInfo );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "38274222-90b3-4038-86d3-6b2813100ce2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2187,7 +2187,7 @@ public static partial class Crypt32
 	/// key is exported as a RSA Public Key, the values of the dwFlags and pvAuxInfo parameters are not used.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptexportpublickeyinfofrombcryptkeyhandle BOOL
-	// CryptExportPublicKeyInfoFromBCryptKeyHandle( BCRYPT_KEY_HANDLE hBCryptKey, DWORD dwCertEncodingType, PSTR pszPublicKeyObjId,
+	// CryptExportPublicKeyInfoFromBCryptKeyHandle( BCRYPT_KEY_HANDLE hBCryptKey, DWORD dwCertEncodingType, StrPtrAnsi pszPublicKeyObjId,
 	// DWORD dwFlags, void *pvAuxInfo, PCERT_PUBLIC_KEY_INFO pInfo, DWORD *pcbInfo );
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "f96bff4a-d354-4231-907a-383aff5cfacc")]
@@ -2341,7 +2341,7 @@ public static partial class Crypt32
 	[DllImport(Lib.Crypt32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "8f0006a9-0930-4b71-87ce-e72371095e4c")]
 	[return: MarshalAs(UnmanagedType.LPWStr)]
-	public static extern PWSTR CryptFindLocalizedName([MarshalAs(UnmanagedType.LPWStr)] string pwszCryptName);
+	public static extern StrPtrUni CryptFindLocalizedName([MarshalAs(UnmanagedType.LPWStr)] string pwszCryptName);
 
 	/// <summary>
 	/// <note>Important: This API is deprecated. New and existing software should start using Cryptography Next Generation APIs.
@@ -6267,7 +6267,7 @@ public static partial class Crypt32
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_pkcs8_export_params typedef struct
-	// _CRYPT_PKCS8_EXPORT_PARAMS { HCRYPTPROV hCryptProv; DWORD dwKeySpec; PSTR pszPrivateKeyObjId; PCRYPT_ENCRYPT_PRIVATE_KEY_FUNC
+	// _CRYPT_PKCS8_EXPORT_PARAMS { HCRYPTPROV hCryptProv; DWORD dwKeySpec; StrPtrAnsi pszPrivateKeyObjId; PCRYPT_ENCRYPT_PRIVATE_KEY_FUNC
 	// pEncryptPrivateKeyFunc; LPVOID pVoidEncryptFunc; } CRYPT_PKCS8_EXPORT_PARAMS, *PCRYPT_PKCS8_EXPORT_PARAMS;
 	[PInvokeData("wincrypt.h", MSDNShortId = "5a60c96e-907a-409e-921c-59055452463f")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -6301,8 +6301,8 @@ public static partial class Crypt32
 		/// </summary>
 		public CertKeySpec dwKeySpec;
 
-		/// <summary>An <c>PSTR</c> variable that contains the object identifier (OID) of the private key to be exported.</summary>
-		public PSTR pszPrivateKeyObjId;
+		/// <summary>An <c>StrPtrAnsi</c> variable that contains the object identifier (OID) of the private key to be exported.</summary>
+		public StrPtrAnsi pszPrivateKeyObjId;
 
 		/// <summary>
 		/// A PCRYPT_ENCRYPT_PRIVATE_KEY_FUNC pointer that points to a callback to a function that encrypts the private key. If this is
@@ -6440,13 +6440,13 @@ public static partial class Crypt32
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
 		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-		public SafeCryptMem(SIZE_T size = default) : base(size) { }
+		public SafeCryptMem(SizeT size = default) : base(size) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="handle">The handle.</param>
 		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-		public SafeCryptMem(IntPtr handle, SIZE_T size, bool ownsHandle) : base(handle, size, ownsHandle) { }
+		public SafeCryptMem(IntPtr handle, SizeT size, bool ownsHandle) : base(handle, size, ownsHandle) { }
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
@@ -6456,19 +6456,19 @@ public static partial class Crypt32
 		/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
 		public SafeCryptMem(byte[] bytes) : base(bytes) { }
 
-		/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+		/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native StrPtrUni.</summary>
 		/// <param name="s">The string value.</param>
 		/// <param name="charSet">The character set of the string.</param>
 		/// <returns>SafeMemoryHandleExt object to an native (unmanaged) string</returns>
 		public SafeCryptMem(string s, CharSet charSet = CharSet.Unicode) : base(s, charSet) { }
 
 		/// <inheritdoc/>
-		public static ISafeMemoryHandle Create(IntPtr handle, SIZE_T size, bool ownsHandle = true) => new SafeCryptMem(handle, size, ownsHandle);
+		public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeCryptMem(handle, size, ownsHandle);
 
 		/// <inheritdoc/>
 		public static ISafeMemoryHandle Create(byte[] bytes) => new SafeCryptMem(bytes);
 
 		/// <inheritdoc/>
-		public static ISafeMemoryHandle Create(SIZE_T size) => new SafeCryptMem(size);
+		public static ISafeMemoryHandle Create(SizeT size) => new SafeCryptMem(size);
 	}
 }

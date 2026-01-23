@@ -3897,7 +3897,7 @@ public static partial class D3D12
 	/// <c>D3D12_FEATURE_VIDEO_EXTENSION_COMMAND_SIZE</c>. Checks the allocation size of a video extension command.
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/ns-d3d12video-d3d12_feature_data_video_extension_command_size typedef
-	// struct D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SIZE { UINT NodeIndex; GUID CommandId; const void *pCreationParameters; SIZE_T
+	// struct D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SIZE { UINT NodeIndex; GUID CommandId; const void *pCreationParameters; SizeT
 	// CreationParametersSizeInBytes; UINT64 MemoryPoolL0Size; UINT64 MemoryPoolL1Size; } D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SIZE;
 	[PInvokeData("d3d12video.h", MSDNShortId = "NS:d3d12video.D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SIZE")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -3917,7 +3917,7 @@ public static partial class D3D12
 		public IntPtr pCreationParameters;
 
 		/// <summary>The size of the pCreationParameters parameter structure, in bytes.</summary>
-		public SIZE_T CreationParametersSizeInBytes;
+		public SizeT CreationParametersSizeInBytes;
 
 		/// <summary>
 		/// The allocation size of the video extension command in the L0 memory pool. L0 is the physical system memory pool. When the
@@ -3940,8 +3940,8 @@ public static partial class D3D12
 	/// output structures.
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/ns-d3d12video-d3d12_feature_data_video_extension_command_support
-	// typedef struct D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT { UINT NodeIndex; GUID CommandId; const void *pInputData; SIZE_T
-	// InputDataSizeInBytes; void *pOutputData; SIZE_T OutputDataSizeInBytes; } D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT;
+	// typedef struct D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT { UINT NodeIndex; GUID CommandId; const void *pInputData; SizeT
+	// InputDataSizeInBytes; void *pOutputData; SizeT OutputDataSizeInBytes; } D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT;
 	[PInvokeData("d3d12video.h", MSDNShortId = "NS:d3d12video.D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_FEATURE_DATA_VIDEO_EXTENSION_COMMAND_SUPPORT
@@ -3959,7 +3959,7 @@ public static partial class D3D12
 		public IntPtr pInputData;
 
 		/// <summary>The byte size of the input data allocation.</summary>
-		public SIZE_T InputDataSizeInBytes;
+		public SizeT InputDataSizeInBytes;
 
 		/// <summary>
 		/// Output data for the capability query allocated by the caller with a size of OutputDataSizeInBytes. This struct is enumerable as
@@ -3968,7 +3968,7 @@ public static partial class D3D12
 		public IntPtr pOutputData;
 
 		/// <summary>The byte size of the output data allocation.</summary>
-		public SIZE_T OutputDataSizeInBytes;
+		public SizeT OutputDataSizeInBytes;
 	}
 
 	/// <summary>

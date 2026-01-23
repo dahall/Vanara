@@ -1604,12 +1604,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -1723,12 +1723,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -4361,12 +4361,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -4480,12 +4480,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -7508,12 +7508,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -7627,12 +7627,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;

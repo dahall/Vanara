@@ -80,7 +80,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="lpszName">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The name of a resource of the type being enumerated. Alternately, rather than a pointer, this parameter can be , where ID is the
 	/// integer identifier of the resource. For more information, see the Remarks section below.
@@ -97,7 +97,7 @@ public static partial class Kernel32
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>Returns <c>TRUE</c> to continue enumeration or <c>FALSE</c> to stop enumeration.</para>
 	/// </returns>
-	// BOOL CALLBACK EnumResNameProc( _In_opt_ HMODULE hModule, _In_ LPCTSTR lpszType, _In_ PTSTR lpszName, _In_ LONG_PTR lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648034(v=vs.85).aspx
+	// BOOL CALLBACK EnumResNameProc( _In_opt_ HMODULE hModule, _In_ LPCTSTR lpszType, _In_ StrPtrAuto lpszName, _In_ LONG_PTR lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648034(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 	[SuppressUnmanagedCodeSecurity]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648034")]
@@ -117,7 +117,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <param name="lpszType">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The type of resource for which the type is being enumerated. Alternately, rather than a pointer, this parameter can be
 	/// <c>MAKEINTRESOURCE</c>(ID), where ID is the integer identifier of the given resource type. For standard resource types, see
@@ -135,7 +135,7 @@ public static partial class Kernel32
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>Returns <c>TRUE</c> to continue enumeration or <c>FALSE</c> to stop enumeration.</para>
 	/// </returns>
-	// BOOL CALLBACK EnumResTypeProc( _In_opt_ HMODULE hModule, _In_ PTSTR lpszType, _In_ LONG_PTR lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648041(v=vs.85).aspx
+	// BOOL CALLBACK EnumResTypeProc( _In_opt_ HMODULE hModule, _In_ StrPtrAuto lpszType, _In_ LONG_PTR lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648041(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms648041")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1319,7 +1319,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetModuleFileName( _In_opt_ HMODULE hModule, _Out_ PTSTR lpFilename, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683197(v=vs.85).aspx
+	// DWORD WINAPI GetModuleFileName( _In_opt_ HMODULE hModule, _Out_ StrPtrAuto lpFilename, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683197(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms683197")]
 	public static extern uint GetModuleFileName(HINSTANCE hModule, [SizeDef(nameof(nSize), SizingMethod.Guess)] StringBuilder? lpFilename, uint nSize);

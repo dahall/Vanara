@@ -1741,7 +1741,7 @@ public static partial class Kernel32
 
 	/// <summary>Contains basic limit information for a job object.</summary>
 	// typedef struct _JOBOBJECT_BASIC_LIMIT_INFORMATION { LARGE_INTEGER PerProcessUserTimeLimit; LARGE_INTEGER PerJobUserTimeLimit;
-	// DWORD LimitFlags; SIZE_T MinimumWorkingSetSize; SIZE_T MaximumWorkingSetSize; DWORD ActiveProcessLimit; ULONG_PTR Affinity; DWORD
+	// DWORD LimitFlags; SizeT MinimumWorkingSetSize; SizeT MaximumWorkingSetSize; DWORD ActiveProcessLimit; ULONG_PTR Affinity; DWORD
 	// PriorityClass; DWORD SchedulingClass;} JOBOBJECT_BASIC_LIMIT_INFORMATION, *PJOBOBJECT_BASIC_LIMIT_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/ms684147(v=vs.85).aspx
 	[PInvokeData("WinNT.h", MSDNShortId = "ms684147")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1930,7 +1930,7 @@ public static partial class Kernel32
 		/// </para>
 		/// <para>If <c>MaximumWorkingSetSize</c> is nonzero, <c>MinimumWorkingSetSize</c> cannot be zero.</para>
 		/// </summary>
-		public SIZE_T MinimumWorkingSetSize;
+		public SizeT MinimumWorkingSetSize;
 
 		/// <summary>
 		/// <para>
@@ -1939,7 +1939,7 @@ public static partial class Kernel32
 		/// </para>
 		/// <para>If <c>MinimumWorkingSetSize</c> is nonzero, <c>MaximumWorkingSetSize</c> cannot be zero.</para>
 		/// </summary>
-		public SIZE_T MaximumWorkingSetSize;
+		public SizeT MaximumWorkingSetSize;
 
 		/// <summary>
 		/// <para>
@@ -2261,7 +2261,7 @@ public static partial class Kernel32
 
 	/// <summary>Contains basic and extended limit information for a job object.</summary>
 	// typedef struct _JOBOBJECT_EXTENDED_LIMIT_INFORMATION { JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation; IO_COUNTERS
-	// IoInfo; SIZE_T ProcessMemoryLimit; SIZE_T JobMemoryLimit; SIZE_T PeakProcessMemoryUsed; SIZE_T PeakJobMemoryUsed;}
+	// IoInfo; SizeT ProcessMemoryLimit; SizeT JobMemoryLimit; SizeT PeakProcessMemoryUsed; SizeT PeakJobMemoryUsed;}
 	// JOBOBJECT_EXTENDED_LIMIT_INFORMATION, *PJOBOBJECT_EXTENDED_LIMIT_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/ms684156(v=vs.85).aspx
 	[PInvokeData("WinNT.h", MSDNShortId = "ms684156")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -2278,20 +2278,20 @@ public static partial class Kernel32
 		/// <c>JOB_OBJECT_LIMIT_PROCESS_MEMORY</c> value, this member specifies the limit for the virtual memory that can be committed by
 		/// a process. Otherwise, this member is ignored.
 		/// </summary>
-		public SIZE_T ProcessMemoryLimit;
+		public SizeT ProcessMemoryLimit;
 
 		/// <summary>
 		/// If the <c>LimitFlags</c> member of the <c>JOBOBJECT_BASIC_LIMIT_INFORMATION</c> structure specifies the
 		/// <c>JOB_OBJECT_LIMIT_JOB_MEMORY</c> value, this member specifies the limit for the virtual memory that can be committed for
 		/// the job. Otherwise, this member is ignored.
 		/// </summary>
-		public SIZE_T JobMemoryLimit;
+		public SizeT JobMemoryLimit;
 
 		/// <summary>The peak memory used by any process ever associated with the job.</summary>
-		public SIZE_T PeakProcessMemoryUsed;
+		public SizeT PeakProcessMemoryUsed;
 
 		/// <summary>The peak memory usage of all processes currently associated with the job.</summary>
-		public SIZE_T PeakJobMemoryUsed;
+		public SizeT PeakJobMemoryUsed;
 	}
 
 	/// <summary/>
@@ -2331,7 +2331,7 @@ public static partial class Kernel32
 	/// Contains information used to control the I/O rate for a job. This structure is used by the
 	/// <c>SetIoRateControlInformationJobObject</c> and <c>QueryIoRateControlInformationJobObject</c> functions.
 	/// </summary>
-	// typedef struct JOBOBJECT_IO_RATE_CONTROL_INFORMATION { LONG64 MaxIops; LONG64 MaxBandwith; LONG64 ReservationIops; PWSTR
+	// typedef struct JOBOBJECT_IO_RATE_CONTROL_INFORMATION { LONG64 MaxIops; LONG64 MaxBandwith; LONG64 ReservationIops; StrPtrUni
 	// VolumeName; ULONG BaseIoSize; ULONG ControlFlags;} JOBOBJECT_IO_RATE_CONTROL_INFORMATION; https://msdn.microsoft.com/en-us/library/windows/desktop/mt280122(v=vs.85).aspx
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	[PInvokeData("Jobapi2.h", MSDNShortId = "mt280122")]

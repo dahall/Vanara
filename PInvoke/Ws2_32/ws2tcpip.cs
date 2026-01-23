@@ -523,7 +523,7 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>GetAddrInfoEx</c> is defined to <c>GetAddrInfoExW</c>, the Unicode version of this
-	/// function. The string parameters are defined to the <c>PWSTR</c> data type and the <c>ADDRINFOEXW</c> structure is used. On
+	/// function. The string parameters are defined to the <c>StrPtrUni</c> data type and the <c>ADDRINFOEXW</c> structure is used. On
 	/// Windows 8 and Windows Server 2012, the timeout, lpOverlapped, lpCompletionRoutine, and lpNameHandle parameters may be used to
 	/// call the <c>GetAddrInfoEx</c> function so that it can complete asynchronously.
 	/// </para>
@@ -2329,11 +2329,11 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>InetNtop</c> is defined to <c>InetNtopW</c>, the Unicode version of this function. The
-	/// pStringBuf parameter is defined to the <c>PSTR</c> data type.
+	/// pStringBuf parameter is defined to the <c>StrPtrAnsi</c> data type.
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is not defined, <c>InetNtop</c> is defined to <c>InetNtopA</c>, the ANSI version of this function. The
-	/// ANSI version of this function is always defined as <c>inet_ntop</c>. The pStringBuf parameter is defined to the <c>PWSTR</c>
+	/// ANSI version of this function is always defined as <c>inet_ntop</c>. The pStringBuf parameter is defined to the <c>StrPtrUni</c>
 	/// data type.
 	/// </para>
 	/// <para>The IN_ADDR structure is defined in the Inaddr.h header file.</para>
@@ -2352,10 +2352,10 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ws2tcpip/nf-ws2tcpip-inet_ntop PCSTR WSAAPI inet_ntop( INT Family, const
-	// VOID *pAddr, PSTR pStringBuf, size_t StringBufSize );
+	// VOID *pAddr, StrPtrAnsi pStringBuf, size_t StringBufSize );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("ws2tcpip.h", MSDNShortId = "1e26b88c-808f-4807-8641-e5c6b10853ad")]
-	public static extern PSTR inet_ntop(ADDRESS_FAMILY Family, in IN_ADDR pAddr, StringBuilder pStringBuf, SIZE_T StringBufSize);
+	public static extern StrPtrAnsi inet_ntop(ADDRESS_FAMILY Family, in IN_ADDR pAddr, StringBuilder pStringBuf, SizeT StringBufSize);
 
 	/// <summary>
 	/// The <c>InetNtop</c> function converts an IPv4 or IPv6 Internet network address into a string in Internet standard format. The
@@ -2468,11 +2468,11 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>InetNtop</c> is defined to <c>InetNtopW</c>, the Unicode version of this function. The
-	/// pStringBuf parameter is defined to the <c>PSTR</c> data type.
+	/// pStringBuf parameter is defined to the <c>StrPtrAnsi</c> data type.
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is not defined, <c>InetNtop</c> is defined to <c>InetNtopA</c>, the ANSI version of this function. The
-	/// ANSI version of this function is always defined as <c>inet_ntop</c>. The pStringBuf parameter is defined to the <c>PWSTR</c>
+	/// ANSI version of this function is always defined as <c>inet_ntop</c>. The pStringBuf parameter is defined to the <c>StrPtrUni</c>
 	/// data type.
 	/// </para>
 	/// <para>The IN_ADDR structure is defined in the Inaddr.h header file.</para>
@@ -2491,10 +2491,10 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/ws2tcpip/nf-ws2tcpip-inet_ntop PCSTR WSAAPI inet_ntop( INT Family, const
-	// VOID *pAddr, PSTR pStringBuf, size_t StringBufSize );
+	// VOID *pAddr, StrPtrAnsi pStringBuf, size_t StringBufSize );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("ws2tcpip.h", MSDNShortId = "1e26b88c-808f-4807-8641-e5c6b10853ad")]
-	public static extern PSTR inet_ntop(ADDRESS_FAMILY Family, in IN6_ADDR pAddr, StringBuilder pStringBuf, SIZE_T StringBufSize);
+	public static extern StrPtrAnsi inet_ntop(ADDRESS_FAMILY Family, in IN6_ADDR pAddr, StringBuilder pStringBuf, SizeT StringBufSize);
 
 	/// <summary>
 	/// The <c>InetPton</c> function converts an IPv4 or IPv6 Internet network address in its standard text presentation form into its
@@ -2893,11 +2893,11 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>InetNtop</c> is defined to <c>InetNtopW</c>, the Unicode version of this function. The
-	/// pStringBuf parameter is defined to the <c>PSTR</c> data type.
+	/// pStringBuf parameter is defined to the <c>StrPtrAnsi</c> data type.
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is not defined, <c>InetNtop</c> is defined to <c>InetNtopA</c>, the ANSI version of this function. The
-	/// ANSI version of this function is always defined as <c>inet_ntop</c>. The pStringBuf parameter is defined to the <c>PWSTR</c>
+	/// ANSI version of this function is always defined as <c>inet_ntop</c>. The pStringBuf parameter is defined to the <c>StrPtrUni</c>
 	/// data type.
 	/// </para>
 	/// <para>The IN_ADDR structure is defined in the Inaddr.h header file.</para>
@@ -2916,10 +2916,10 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-inetntopw PCWSTR WSAAPI InetNtopW( INT Family, const VOID
-	// *pAddr, PWSTR pStringBuf, size_t StringBufSize );
+	// *pAddr, StrPtrUni pStringBuf, size_t StringBufSize );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ws2tcpip.h", MSDNShortId = "1e26b88c-808f-4807-8641-e5c6b10853ad")]
-	public static extern PWSTR InetNtopW(ADDRESS_FAMILY Family, in IN_ADDR pAddr, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pStringBuf, SIZE_T StringBufSize);
+	public static extern StrPtrUni InetNtopW(ADDRESS_FAMILY Family, in IN_ADDR pAddr, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pStringBuf, SizeT StringBufSize);
 
 	/// <summary>
 	/// The <c>InetNtop</c> function converts an IPv4 or IPv6 Internet network address into a string in Internet standard format. The
@@ -3032,11 +3032,11 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>InetNtop</c> is defined to <c>InetNtopW</c>, the Unicode version of this function. The
-	/// pStringBuf parameter is defined to the <c>PSTR</c> data type.
+	/// pStringBuf parameter is defined to the <c>StrPtrAnsi</c> data type.
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is not defined, <c>InetNtop</c> is defined to <c>InetNtopA</c>, the ANSI version of this function. The
-	/// ANSI version of this function is always defined as <c>inet_ntop</c>. The pStringBuf parameter is defined to the <c>PWSTR</c>
+	/// ANSI version of this function is always defined as <c>inet_ntop</c>. The pStringBuf parameter is defined to the <c>StrPtrUni</c>
 	/// data type.
 	/// </para>
 	/// <para>The IN_ADDR structure is defined in the Inaddr.h header file.</para>
@@ -3055,10 +3055,10 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-inetntopw PCWSTR WSAAPI InetNtopW( INT Family, const VOID
-	// *pAddr, PWSTR pStringBuf, size_t StringBufSize );
+	// *pAddr, StrPtrUni pStringBuf, size_t StringBufSize );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("ws2tcpip.h", MSDNShortId = "1e26b88c-808f-4807-8641-e5c6b10853ad")]
-	public static extern PWSTR InetNtopW(ADDRESS_FAMILY Family, in IN6_ADDR pAddr, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pStringBuf, SIZE_T StringBufSize);
+	public static extern StrPtrUni InetNtopW(ADDRESS_FAMILY Family, in IN6_ADDR pAddr, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pStringBuf, SizeT StringBufSize);
 
 	/// <summary>
 	/// The <c>InetPton</c> function converts an IPv4 or IPv6 Internet network address in its standard text presentation form into its
@@ -3493,7 +3493,7 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When <c>UNICODE</c> or <c>_UNICODE</c> is defined, <c>SetAddrInfoEx</c> is defined to SetAddrInfoExW, the Unicode version of
-	/// this function. The string parameters are defined to the <c>PWSTR</c> data type.
+	/// this function. The string parameters are defined to the <c>StrPtrUni</c> data type.
 	/// </para>
 	/// <para>
 	/// When <c>UNICODE</c> or <c>_UNICODE</c> is not defined, <c>SetAddrInfoEx</c> is defined to SetAddrInfoExA, the ANSI version of

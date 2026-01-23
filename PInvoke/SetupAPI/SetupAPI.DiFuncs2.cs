@@ -817,7 +817,7 @@ public static partial class SetupAPI
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetdeviceinstanceida WINSETUPAPI BOOL
-	// SetupDiGetDeviceInstanceIdA( HDEVINFO DeviceInfoSet, PSP_DEVINFO_DATA DeviceInfoData, PSTR DeviceInstanceId, DWORD
+	// SetupDiGetDeviceInstanceIdA( HDEVINFO DeviceInfoSet, PSP_DEVINFO_DATA DeviceInfoData, StrPtrAnsi DeviceInstanceId, DWORD
 	// DeviceInstanceIdSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetDeviceInstanceIdA")]
@@ -2051,7 +2051,7 @@ public static partial class SetupAPI
 	/// </returns>
 	/// <remarks>Call SetupDiGetHwProfileFriendlyNameEx to get the friendly name of a hardware profile ID on a remote computer.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigethwprofilefriendlynamea WINSETUPAPI BOOL
-	// SetupDiGetHwProfileFriendlyNameA( DWORD HwProfile, PSTR FriendlyName, DWORD FriendlyNameSize, PDWORD RequiredSize );
+	// SetupDiGetHwProfileFriendlyNameA( DWORD HwProfile, StrPtrAnsi FriendlyName, DWORD FriendlyNameSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetHwProfileFriendlyNameA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2083,7 +2083,7 @@ public static partial class SetupAPI
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigethwprofilefriendlynameexa WINSETUPAPI BOOL
-	// SetupDiGetHwProfileFriendlyNameExA( DWORD HwProfile, PSTR FriendlyName, DWORD FriendlyNameSize, PDWORD RequiredSize, PCSTR
+	// SetupDiGetHwProfileFriendlyNameExA( DWORD HwProfile, StrPtrAnsi FriendlyName, DWORD FriendlyNameSize, PDWORD RequiredSize, PCSTR
 	// MachineName, PVOID Reserved );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetHwProfileFriendlyNameExA")]
@@ -2185,7 +2185,7 @@ public static partial class SetupAPI
 	/// </returns>
 	/// <remarks>Do not use this function with INF files for Windows 9x or Millennium Edition.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupdigetinfclassw WINSETUPAPI BOOL SetupDiGetINFClassW(
-	// PCWSTR InfName, LPGUID ClassGuid, PWSTR ClassName, DWORD ClassNameSize, PDWORD RequiredSize );
+	// PCWSTR InfName, LPGUID ClassGuid, StrPtrUni ClassName, DWORD ClassNameSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupDiGetINFClassW")]
 	[return: MarshalAs(UnmanagedType.Bool)]

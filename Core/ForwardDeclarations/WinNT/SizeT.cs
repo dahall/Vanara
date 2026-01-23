@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 
 namespace Vanara.PInvoke;
 
-/// <summary>Managed instance of the SIZE_T type.</summary>
+/// <summary>Managed instance of the SizeT type.</summary>
 [StructLayout(LayoutKind.Sequential), Serializable]
 [TypeConverter(typeof(SizeTTypeConverter))]
 [DebuggerDisplay("{Value}")]

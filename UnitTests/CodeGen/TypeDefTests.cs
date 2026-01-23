@@ -39,7 +39,7 @@ public partial class CodeGenTests
 			namespace Vanara.PInvoke
 			{
 				[TypeDef(typeof(nuint), ConvertTo = typeof(ulong), GetConvValue="value", SetConvValue="new UIntPtr(value)")]
-				public partial struct SIZE_T { }
+				public partial struct SizeT { }
 			}
 			""";
 		var compilation = GetCompilation(src);

@@ -321,7 +321,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/cbem-setwindowtheme
-		[MsgParams(null, typeof(PWSTR), LResultType = null)]
+		[MsgParams(null, typeof(StrPtrUni), LResultType = null)]
 		CBEM_SETWINDOWTHEME = 0x200B,
 	}
 
@@ -446,7 +446,7 @@ public static partial class ComCtl32
 		/// indicated in cchTextMax. If this member is set to LPSTR_TEXTCALLBACK, the control will request the information by using the
 		/// CBEN_GETDISPINFO notification codes.
 		/// </summary>
-		public PTSTR pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>The length of pszText, in TCHARs. If text information is being set, this member is ignored.</summary>
 		public int cchTextMax;

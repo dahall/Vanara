@@ -58,7 +58,7 @@ public static partial class Kernel32
 		/// <summary>Initializes a new instance of the <see cref="SafeMoveableHGlobalHandle"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
 		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-		public SafeMoveableHGlobalHandle(SIZE_T size) : base(size) { }
+		public SafeMoveableHGlobalHandle(SizeT size) : base(size) { }
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
@@ -87,13 +87,13 @@ public static partial class Kernel32
 		public static SafeMoveableHGlobalHandle Null { get; } = new SafeMoveableHGlobalHandle(IntPtr.Zero, false);
 
 		/// <inheritdoc/>
-		public static ISafeMemoryHandle Create(IntPtr handle, SIZE_T size, bool ownsHandle = true) => new SafeMoveableHGlobalHandle(handle, ownsHandle);
+		public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeMoveableHGlobalHandle(handle, ownsHandle);
 
 		/// <inheritdoc/>
 		public static ISafeMemoryHandle Create(byte[] bytes) => new SafeMoveableHGlobalHandle(bytes);
 
 		/// <inheritdoc/>
-		public static ISafeMemoryHandle Create(SIZE_T size) => new SafeMoveableHGlobalHandle(size);
+		public static ISafeMemoryHandle Create(SizeT size) => new SafeMoveableHGlobalHandle(size);
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure

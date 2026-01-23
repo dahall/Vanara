@@ -2238,7 +2238,7 @@ public static partial class ActiveDS
 		/// <para>The following code example shows how the <c>IDirectoryObject::GetObjectAttributes</c> method can be used.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-getobjectattributes HRESULT GetObjectAttributes(
-		// [in] PWSTR *pAttributeNames, [in] DWORD dwNumberAttributes, [out] PADS_ATTR_INFO *ppAttributeEntries, [out] DWORD
+		// [in] StrPtrUni *pAttributeNames, [in] DWORD dwNumberAttributes, [out] PADS_ATTR_INFO *ppAttributeEntries, [out] DWORD
 		// *pdwNumAttributesReturned );
 		void GetObjectAttributes([In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[]? pAttributeNames,
 			[In] uint dwNumberAttributes, out ManagedArrayPointer<ADS_ATTR_INFO> ppAttributeEntries, out uint pdwNumAttributesReturned);
@@ -2296,7 +2296,7 @@ public static partial class ActiveDS
 		/// <para>The following C/C++ code example shows how to create a user object using the <c>IDirectoryObject::CreateDSObject</c> method.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-createdsobject HRESULT CreateDSObject( [in]
-		// PWSTR pszRDNName, [in] PADS_ATTR_INFO pAttributeEntries, [in] DWORD dwNumAttributes, [out] IDispatch **ppObject );
+		// StrPtrUni pszRDNName, [in] PADS_ATTR_INFO pAttributeEntries, [in] DWORD dwNumAttributes, [out] IDispatch **ppObject );
 		void CreateDSObject([In, MarshalAs(UnmanagedType.LPWStr)] string pszRDNName, [In] ManagedArrayPointer<ADS_ATTR_INFO> pAttributeEntries, [In] uint dwNumAttributes, [MarshalAs(UnmanagedType.IDispatch)] out object ppObject);
 
 		/// <summary>The <c>IDirectoryObject::DeleteDSObject</c> method deletes a leaf object in a directory tree.</summary>
@@ -2306,7 +2306,7 @@ public static partial class ActiveDS
 		/// <para>Examples</para>
 		/// <para>The following C/C++ code example shows how to delete a user object.</para>
 		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-deletedsobject HRESULT DeleteDSObject( PWSTR
+		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectoryobject-deletedsobject HRESULT DeleteDSObject( StrPtrUni
 		// pszRDNName );
 		void DeleteDSObject([In, MarshalAs(UnmanagedType.LPWStr)] string pszRDNName);
 	}
@@ -2506,8 +2506,8 @@ public static partial class ActiveDS
 		/// <para>Examples</para>
 		/// <para>The following C++ code example shows how to invoke <c>IDirectorySearch::ExecuteSearch</c>.</para>
 		/// </remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-executesearch HRESULT ExecuteSearch( [in] PWSTR
-		// pszSearchFilter, [in] PWSTR *pAttributeNames, [in] DWORD dwNumberAttributes, [out] PADS_SEARCH_HANDLE phSearchResult );
+		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-executesearch HRESULT ExecuteSearch( [in] StrPtrUni
+		// pszSearchFilter, [in] StrPtrUni *pAttributeNames, [in] DWORD dwNumberAttributes, [out] PADS_SEARCH_HANDLE phSearchResult );
 		void ExecuteSearch([In, MarshalAs(UnmanagedType.LPWStr)] string pszSearchFilter,
 			[In, Optional, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[]? pAttributeNames,
 			[In, Optional] uint dwNumberAttributes, out ADS_SEARCH_HANDLE phSearchResult);
@@ -2587,7 +2587,7 @@ public static partial class ActiveDS
 		/// subsequent rows contain data. The caller does NOT need to free this memory.
 		/// </param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-getnextcolumnname HRESULT GetNextColumnName(
-		// [in] ADS_SEARCH_HANDLE hSearchHandle, [out] PWSTR *ppszColumnName );
+		// [in] ADS_SEARCH_HANDLE hSearchHandle, [out] StrPtrUni *ppszColumnName );
 		[PreserveSig]
 		HRESULT GetNextColumnName([In] ADS_SEARCH_HANDLE hSearchHandle, [Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AdsUnicodeStringMarshaler))] out string? ppszColumnName);
 
@@ -2614,7 +2614,7 @@ public static partial class ActiveDS
 		/// <para>Examples</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/iads/nf-iads-idirectorysearch-getcolumn HRESULT GetColumn( [in]
-		// ADS_SEARCH_HANDLE hSearchResult, [in] PWSTR szColumnName, [out] PADS_SEARCH_COLUMN pSearchColumn );
+		// ADS_SEARCH_HANDLE hSearchResult, [in] StrPtrUni szColumnName, [out] PADS_SEARCH_COLUMN pSearchColumn );
 		[PreserveSig]
 		HRESULT GetColumn([In] ADS_SEARCH_HANDLE hSearchResult, [In, MarshalAs(UnmanagedType.LPWStr)] string szColumnName, [Out] IntPtr pSearchColumn);
 

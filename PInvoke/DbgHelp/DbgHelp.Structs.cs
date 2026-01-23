@@ -361,11 +361,11 @@ After:
 	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-image_debug_information typedef struct
 	// _IMAGE_DEBUG_INFORMATION { LIST_ENTRY List; DWORD ReservedSize; PVOID ReservedMappedBase; USHORT ReservedMachine; USHORT
 	// ReservedCharacteristics; DWORD ReservedCheckSum; DWORD ImageBase; DWORD SizeOfImage; DWORD ReservedNumberOfSections;
-	// PIMAGE_SECTION_HEADER ReservedSections; DWORD ReservedExportedNamesSize; PSTR ReservedExportedNames; DWORD
+	// PIMAGE_SECTION_HEADER ReservedSections; DWORD ReservedExportedNamesSize; StrPtrAnsi ReservedExportedNames; DWORD
 	// ReservedNumberOfFunctionTableEntries; PIMAGE_FUNCTION_ENTRY ReservedFunctionTableEntries; DWORD
 	// ReservedLowestFunctionStartingAddress; DWORD ReservedHighestFunctionEndingAddress; DWORD ReservedNumberOfFpoTableEntries;
 	// PFPO_DATA ReservedFpoTableEntries; DWORD SizeOfCoffSymbols; PIMAGE_COFF_SYMBOLS_HEADER CoffSymbols; DWORD
-	// ReservedSizeOfCodeViewSymbols; PVOID ReservedCodeViewSymbols; PSTR ImageFilePath; PSTR ImageFileName; PSTR ReservedDebugFilePath;
+	// ReservedSizeOfCodeViewSymbols; PVOID ReservedCodeViewSymbols; StrPtrAnsi ImageFilePath; StrPtrAnsi ImageFileName; StrPtrAnsi ReservedDebugFilePath;
 	// DWORD ReservedTimeDateStamp; BOOL ReservedRomImage; PIMAGE_DEBUG_DIRECTORY ReservedDebugDirectory; DWORD
 	// ReservedNumberOfDebugDirectories; DWORD ReservedOriginalFunctionTableBaseAddress; DWORD Reserved[2]; } IMAGE_DEBUG_INFORMATION, *PIMAGE_DEBUG_INFORMATION;
 	[PInvokeData("dbghelp.h", MSDNShortId = "NS:dbghelp._IMAGE_DEBUG_INFORMATION")]
@@ -1399,7 +1399,7 @@ After:
 		/// <returns>
 		/// The size, in bytes, of the base object in memory. This should return the equivalent of the sizeof(X) function in C/C++.
 		/// </returns>
-		public SIZE_T GetNativeSize() => Marshal.SizeOf(structType);
+		public SizeT GetNativeSize() => Marshal.SizeOf(structType);
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -1422,7 +1422,7 @@ After:
 			return ret;
 		}
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 
@@ -1714,7 +1714,7 @@ After:
 	/// <code>typedef struct _LIST_ENTRY { struct _LIST_ENTRY *Flink; struct _LIST_ENTRY *Blink; } LIST_ENTRY, *PLIST_ENTRY, *RESTRICTED_POINTER PRLIST_ENTRY;</code>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-loaded_image typedef struct _LOADED_IMAGE { PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-loaded_image typedef struct _LOADED_IMAGE { StrPtrAnsi
 	// ModuleName; HANDLE hFile; PUCHAR MappedAddress; #if ... PIMAGE_NT_HEADERS64 FileHeader; #else PIMAGE_NT_HEADERS32 FileHeader;
 	// #endif PIMAGE_SECTION_HEADER LastRvaSection; ULONG NumberOfSections; PIMAGE_SECTION_HEADER Sections; ULONG Characteristics;
 	// BOOLEAN fSystemImage; BOOLEAN fDOSImage; BOOLEAN fReadOnly; UCHAR Version; LIST_ENTRY Links; ULONG SizeOfImage; } LOADED_IMAGE, *PLOADED_IMAGE;
@@ -1850,7 +1850,7 @@ After:
 	/// <code>typedef struct _LIST_ENTRY { struct _LIST_ENTRY *Flink; struct _LIST_ENTRY *Blink; } LIST_ENTRY, *PLIST_ENTRY, *RESTRICTED_POINTER PRLIST_ENTRY;</code>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-loaded_image typedef struct _LOADED_IMAGE { PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/ns-dbghelp-loaded_image typedef struct _LOADED_IMAGE { StrPtrAnsi
 	// ModuleName; HANDLE hFile; PUCHAR MappedAddress; #if ... PIMAGE_NT_HEADERS64 FileHeader; #else PIMAGE_NT_HEADERS32 FileHeader;
 	// #endif PIMAGE_SECTION_HEADER LastRvaSection; ULONG NumberOfSections; PIMAGE_SECTION_HEADER Sections; ULONG Characteristics;
 	// BOOLEAN fSystemImage; BOOLEAN fDOSImage; BOOLEAN fReadOnly; UCHAR Version; LIST_ENTRY Links; ULONG SizeOfImage; } LOADED_IMAGE, *PLOADED_IMAGE;
@@ -1859,7 +1859,7 @@ After:
 	public unsafe struct LOADED_IMAGE_UNSAFE
 	{
 		/// <summary>The file name of the mapped file.</summary>
-		public PSTR ModuleName;
+		public StrPtrAnsi ModuleName;
 
 		/// <summary>A handle to the mapped file.</summary>
 		public HFILE hFile;
@@ -1989,13 +1989,13 @@ After:
 		public uint oCV;
 
 		/// <summary>The size of the CodeView record.</summary>
-		public SIZE_T cCV;
+		public SizeT cCV;
 
 		/// <summary>The offset of the Misc record.</summary>
 		public uint oMisc;
 
 		/// <summary>The size of the Misc record.</summary>
-		public SIZE_T cMisc;
+		public SizeT cMisc;
 
 		/// <summary>The date/time stamp of the image.</summary>
 		public uint dtImage;

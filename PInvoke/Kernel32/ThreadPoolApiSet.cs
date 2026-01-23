@@ -1007,10 +1007,10 @@ public static partial class Kernel32
 	public struct TP_POOL_STACK_INFORMATION
 	{
 		/// <summary>The stack reserve size.</summary>
-		public SIZE_T StackReserve;
+		public SizeT StackReserve;
 
 		/// <summary>The stack commit size.</summary>
-		public SIZE_T StackCommit;
+		public SizeT StackCommit;
 	}
 
 	/// <summary>Defines a callback environment.</summary>

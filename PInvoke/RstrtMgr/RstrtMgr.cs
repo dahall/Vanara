@@ -1046,8 +1046,8 @@ public static class RstrtMgr
 	/// and the RmGetFilterList functions.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/restartmanager/ns-restartmanager-rm_filter_info typedef struct _RM_FILTER_INFO
-	// { RM_FILTER_ACTION FilterAction; RM_FILTER_TRIGGER FilterTrigger; DWORD cbNextOffset; union { PWSTR strFilename;
-	// RM_UNIQUE_PROCESS Process; PWSTR strServiceShortName; }; } RM_FILTER_INFO, *PRM_FILTER_INFO;
+	// { RM_FILTER_ACTION FilterAction; RM_FILTER_TRIGGER FilterTrigger; DWORD cbNextOffset; union { StrPtrUni strFilename;
+	// RM_UNIQUE_PROCESS Process; StrPtrUni strServiceShortName; }; } RM_FILTER_INFO, *PRM_FILTER_INFO;
 	[PInvokeData("restartmanager.h", MSDNShortId = "NS:restartmanager._RM_FILTER_INFO")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct RM_FILTER_INFO
@@ -1076,7 +1076,7 @@ public static class RstrtMgr
 		private struct UNION
 		{
 			[FieldOffset(0)]
-			public PWSTR str;
+			public StrPtrUni str;
 
 			[FieldOffset(0)]
 			public RM_UNIQUE_PROCESS proc;

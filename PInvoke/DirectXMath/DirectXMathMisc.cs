@@ -1170,8 +1170,8 @@ public static partial class DirectXMath
 	// InputStride, [in] size_t PlaneCount, in FXMMATRIX ITM ) noexcept;
 	[PInvokeData("directxmath.h", MSDNShortId = "NF:directxmath.XMPlaneTransformStream")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static unsafe XMFLOAT4* XMPlaneTransformStream([In] XMFLOAT4* pOutputStream, SIZE_T OutputStride, [In] XMFLOAT4* pInputStream,
-		SIZE_T InputStride, SIZE_T PlaneCount, in FXMMATRIX ITM) => XMVector4TransformStream(pOutputStream, OutputStride, pInputStream, InputStride, PlaneCount, ITM);
+	public static unsafe XMFLOAT4* XMPlaneTransformStream([In] XMFLOAT4* pOutputStream, SizeT OutputStride, [In] XMFLOAT4* pInputStream,
+		SizeT InputStride, SizeT PlaneCount, in FXMMATRIX ITM) => XMVector4TransformStream(pOutputStream, OutputStride, pInputStream, InputStride, PlaneCount, ITM);
 
 	/// <summary>Returns a point in barycentric coordinates, using the specified quaternions.</summary>
 	/// <param name="Q0">First quaternion in the triangle.</param>

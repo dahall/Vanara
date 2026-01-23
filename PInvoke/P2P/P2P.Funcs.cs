@@ -353,7 +353,7 @@ public static partial class P2P
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peerhostnametopeername NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerHostNameToPeerName( PCWSTR pwzHostName, PWSTR *ppwzPeerName );
+	// PeerHostNameToPeerName( PCWSTR pwzHostName, StrPtrUni *ppwzPeerName );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerHostNameToPeerName")]
 	public static extern HRESULT PeerHostNameToPeerName([MarshalAs(UnmanagedType.LPWStr)] string pwzHostName,
@@ -386,7 +386,7 @@ public static partial class P2P
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peernametopeerhostname NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerNameToPeerHostName( PCWSTR pwzPeerName, PWSTR *ppwzHostName );
+	// PeerNameToPeerHostName( PCWSTR pwzPeerName, StrPtrUni *ppwzHostName );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerNameToPeerHostName")]
 	public static extern HRESULT PeerNameToPeerHostName([MarshalAs(UnmanagedType.LPWStr)] string pwzPeerName,

@@ -331,10 +331,10 @@ public static partial class Ws2_32
 	/// <param name="AddressCount">The address count.</param>
 	/// <returns>The size, in bytes, required to hold the structure. This does not include allocation for the addresses pointed to by each <see cref="SOCKET_ADDRESS"/>.</returns>
 	[PInvokeData("ws2def.h")]
-	public static SIZE_T SIZEOF_SOCKET_ADDRESS_LIST(SIZE_T AddressCount) => Marshal.OffsetOf(typeof(SOCKET_ADDRESS_LIST), "Address").ToInt32() + Marshal.SizeOf(typeof(SOCKET_ADDRESS)) * AddressCount;
+	public static SizeT SIZEOF_SOCKET_ADDRESS_LIST(SizeT AddressCount) => Marshal.OffsetOf(typeof(SOCKET_ADDRESS_LIST), "Address").ToInt32() + Marshal.SizeOf(typeof(SOCKET_ADDRESS)) * AddressCount;
 
 	/// <summary>The maximum natural alignment</summary>
-	public static readonly SIZE_T MAX_NATURAL_ALIGNMENT = IntPtr.Size;
+	public static readonly SizeT MAX_NATURAL_ALIGNMENT = IntPtr.Size;
 
 	[StructLayout(LayoutKind.Sequential)]
 	private struct AlignedStruct<T> where T : struct
@@ -343,20 +343,20 @@ public static partial class Ws2_32
 		public readonly T type;
 	}
 
-	/// <summary>Returns the alignment in bytes of the specified type as a value of type <see cref="SIZE_T"/>.</summary>
+	/// <summary>Returns the alignment in bytes of the specified type as a value of type <see cref="SizeT"/>.</summary>
 	/// <typeparam name="T">The type for which to get the alignment.</typeparam>
 	/// <returns>The alignment in bytes of the specified type.</returns>
-	public static SIZE_T TYPE_ALIGNMENT<T>() where T : struct => Marshal.OffsetOf(typeof(AlignedStruct<T>), "type").ToInt64();
+	public static SizeT TYPE_ALIGNMENT<T>() where T : struct => Marshal.OffsetOf(typeof(AlignedStruct<T>), "type").ToInt64();
 
-	/// <summary>Returns the alignment in bytes of padding as a value of type <see cref="SIZE_T"/>.</summary>
+	/// <summary>Returns the alignment in bytes of padding as a value of type <see cref="SizeT"/>.</summary>
 	/// <param name="length">The padding length.</param>
 	/// <returns>The alignment in bytes.</returns>
-	public static SIZE_T WSA_CMSGDATA_ALIGN(SIZE_T length) => (length + MAX_NATURAL_ALIGNMENT-1) & (~(MAX_NATURAL_ALIGNMENT-1));
+	public static SizeT WSA_CMSGDATA_ALIGN(SizeT length) => (length + MAX_NATURAL_ALIGNMENT-1) & (~(MAX_NATURAL_ALIGNMENT-1));
 
-	/// <summary>Returns the alignment in bytes of WSACMSGHDR with padding as a value of type <see cref="SIZE_T"/>.</summary>
+	/// <summary>Returns the alignment in bytes of WSACMSGHDR with padding as a value of type <see cref="SizeT"/>.</summary>
 	/// <param name="length">The padding length.</param>
 	/// <returns>The alignment in bytes.</returns>
-	public static SIZE_T WSA_CMSGHDR_ALIGN(SIZE_T length) =>
+	public static SizeT WSA_CMSGHDR_ALIGN(SizeT length) =>
 		(length + TYPE_ALIGNMENT<WSACMSGHDR>()-1) & (~(TYPE_ALIGNMENT<WSACMSGHDR>()-1));
 
 	/// <summary>
@@ -377,7 +377,7 @@ public static partial class Ws2_32
 	/// <summary>Returns the value to store in cmsg_len given the amount of data.</summary>
 	/// <param name="length">The length.</param>
 	/// <returns>The data length.</returns>
-	public static SIZE_T WSA_CMSG_LEN(SIZE_T length) => WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR))) + length;
+	public static SizeT WSA_CMSG_LEN(SizeT length) => WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR))) + length;
 
 	/// <summary>Returns the next ancillary data object, or a null if there are no more data objects.</summary>
 	/// <param name="msg">The message.</param>
@@ -397,15 +397,15 @@ public static partial class Ws2_32
 	/// <summary>Returns total size of an ancillary data object given the amount of data. Used to allocate the correct amount of space.</summary>
 	/// <param name="length">The length.</param>
 	/// <returns>Total size</returns>
-	public static SIZE_T WSA_CMSG_SPACE(SIZE_T length) => WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR)) + WSA_CMSGHDR_ALIGN(length));
+	public static SizeT WSA_CMSG_SPACE(SizeT length) => WSA_CMSGDATA_ALIGN(Marshal.SizeOf(typeof(WSACMSGHDR)) + WSA_CMSGHDR_ALIGN(length));
 
 	/// <summary>
 	/// The addrinfoex2 structure is used by the GetAddrInfoEx function to hold host address information when both a canonical name and
 	/// a fully qualified domain name have been requested.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-addrinfoex2w typedef struct addrinfoex2W { int ai_flags; int
-	// ai_family; int ai_socktype; int ai_protocol; size_t ai_addrlen; PWSTR ai_canonname; struct sockaddr *ai_addr; void *ai_blob;
-	// size_t ai_bloblen; LPGUID ai_provider; struct addrinfoex2W *ai_next; int ai_version; PWSTR ai_fqdn; } ADDRINFOEX2W,
+	// ai_family; int ai_socktype; int ai_protocol; size_t ai_addrlen; StrPtrUni ai_canonname; struct sockaddr *ai_addr; void *ai_blob;
+	// size_t ai_bloblen; LPGUID ai_provider; struct addrinfoex2W *ai_next; int ai_version; StrPtrUni ai_fqdn; } ADDRINFOEX2W,
 	// *PADDRINFOEX2W, *LPADDRINFOEX2W;
 	[PInvokeData("ws2def.h", MSDNShortId = "9CB33347-A838-473D-B5CD-1149D6632CF2")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -663,10 +663,10 @@ public static partial class Ws2_32
 		public IPPROTO ai_protocol;
 
 		/// <summary>The length, in bytes, of the buffer pointed to by the <c>ai_addr</c> member.</summary>
-		public SIZE_T ai_addrlen;
+		public SizeT ai_addrlen;
 
 		/// <summary>The canonical name for the host.</summary>
-		public PWSTR ai_canonname;
+		public StrPtrUni ai_canonname;
 
 		/// <summary>
 		/// A pointer to a sockaddr structure. The <c>ai_addr</c> member in each returned <c>addrinfoex2</c> structure points to a
@@ -683,7 +683,7 @@ public static partial class Ws2_32
 		public IntPtr ai_blob;
 
 		/// <summary>The length, in bytes, of the <c>ai_blob</c> member.</summary>
-		public SIZE_T ai_bloblen;
+		public SizeT ai_bloblen;
 
 		/// <summary>A pointer to the GUID of a specific namespace provider.</summary>
 		public GuidPtr ai_provider;
@@ -698,7 +698,7 @@ public static partial class Ws2_32
 		public int ai_version;
 
 		/// <summary>The fully qualified domain name for the host.</summary>
-		public PWSTR ai_fqdn;
+		public StrPtrUni ai_fqdn;
 
 		/// <summary>
 		/// <para>Type: <c>struct sockaddr*</c></para>
@@ -731,7 +731,7 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>addrinfoex</c> is defined to <c>addrinfoexW</c>, the Unicode version of this structure.
-	/// The string parameters are defined to the <c>PWSTR</c> data type and the <c>addrinfoexW</c> structure is used.
+	/// The string parameters are defined to the <c>StrPtrUni</c> data type and the <c>addrinfoexW</c> structure is used.
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is not defined, <c>addrinfoex</c> is defined to <c>addrinfoexA</c>, the ANSI version of this structure.
@@ -1028,13 +1028,13 @@ public static partial class Ws2_32
 		/// <para>Type: <c>size_t</c></para>
 		/// <para>The length, in bytes, of the buffer pointed to by the <c>ai_addr</c> member.</para>
 		/// </summary>
-		public SIZE_T ai_addrlen;
+		public SizeT ai_addrlen;
 
 		/// <summary>
 		/// <para>Type: <c>PCTSTR</c></para>
 		/// <para>The canonical name for the host.</para>
 		/// </summary>
-		public PWSTR ai_canonname;
+		public StrPtrUni ai_canonname;
 
 		/// <summary>
 		/// <para>Type: <c>struct sockaddr*</c></para>
@@ -1060,7 +1060,7 @@ public static partial class Ws2_32
 		/// <para>Type: <c>size_t</c></para>
 		/// <para>The length, in bytes, of the <c>ai_blob</c> member.</para>
 		/// </summary>
-		public SIZE_T ai_bloblen;
+		public SizeT ai_bloblen;
 
 		/// <summary>
 		/// <para>Type: <c>LPGUID</c></para>
@@ -1117,7 +1117,7 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>addrinfoex2</c> is defined to <c>addrinfoex2W</c>, the Unicode version of this
-	/// structure. The string parameters are defined to the <c>PWSTR</c> data type and the <c>addrinfoex2W</c> structure is used.
+	/// structure. The string parameters are defined to the <c>StrPtrUni</c> data type and the <c>addrinfoex2W</c> structure is used.
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is not defined, <c>addrinfoex2</c> is defined to <c>addrinfoex2A</c>, the ANSI version of this
@@ -1437,13 +1437,13 @@ public static partial class Ws2_32
 		/// <para>Type: <c>size_t</c></para>
 		/// <para>The length, in bytes, of the buffer pointed to by the <c>ai_addr</c> member.</para>
 		/// </summary>
-		public SIZE_T ai_addrlen;
+		public SizeT ai_addrlen;
 
 		/// <summary>
 		/// <para>Type: <c>char*</c></para>
 		/// <para>The canonical name for the host.</para>
 		/// </summary>
-		public PWSTR ai_canonname;
+		public StrPtrUni ai_canonname;
 
 		/// <summary>
 		/// <para>Type: <c>struct sockaddr*</c></para>
@@ -1828,7 +1828,7 @@ public static partial class Ws2_32
 	/// The control information data that is associated with a datagram is made up of one or more control data objects. Each object
 	/// begins with a CMSGHDR structure.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-wsacmsghdr typedef struct _WSACMSGHDR { SIZE_T cmsg_len; INT
+	// https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-wsacmsghdr typedef struct _WSACMSGHDR { SizeT cmsg_len; INT
 	// cmsg_level; INT cmsg_type; } WSACMSGHDR, *PWSACMSGHDR, *LPWSACMSGHDR;
 	[PInvokeData("ws2def.h", MSDNShortId = "NS:ws2def._WSACMSGHDR")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1838,7 +1838,7 @@ public static partial class Ws2_32
 		/// <para>The number of bytes from the beginning of the CMSGHDR structure to the end of the control data.</para>
 		/// <para><c>Note</c> The value of the <c>cmsg_len</c> member does not account for any padding that may follow the control data.</para>
 		/// </summary>
-		public SIZE_T cmsg_len;
+		public SizeT cmsg_len;
 
 		/// <summary>The protocol that originated the control information.</summary>
 		public int cmsg_level;

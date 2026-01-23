@@ -529,7 +529,7 @@ public static partial class D3D12
 		/// <para>A pointer to the source data for the serialized signature.</para>
 		/// </param>
 		/// <param name="blobLengthInBytes">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>The size, in bytes, of the block of memory that <i>pBlobWithRootSignature</i> points to.</para>
 		/// </param>
 		/// <param name="riid">
@@ -565,10 +565,10 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createrootsignature HRESULT CreateRootSignature(
-		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
+		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SizeT blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SIZE_T blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -2079,7 +2079,7 @@ public static partial class D3D12
 		/// </para>
 		/// </param>
 		/// <param name="BlobLength">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>Specifies the length of pLibraryBlob in bytes.</para>
 		/// </param>
 		/// <param name="riid">
@@ -2136,9 +2136,9 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device1-createpipelinelibrary HRESULT
-		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
+		// CreatePipelineLibrary( const void *pLibraryBlob, SizeT BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SIZE_T BlobLength, in Guid riid,
+		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
@@ -2918,8 +2918,8 @@ public static partial class D3D12
 		/// <para>An optional pointer to a constant structure containing the values of the parameters for creating the meta command.</para>
 		/// </param>
 		/// <param name="CreationParametersDataSizeInBytes">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
-		/// <para>A <c>SIZE_T</c> containing the size of the structure pointed to by <i>pCreationParametersData</i>, if set, otherwise 0.</para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
+		/// <para>A <c>SizeT</c> containing the size of the structure pointed to by <i>pCreationParametersData</i>, if set, otherwise 0.</para>
 		/// </param>
 		/// <param name="riid">
 		/// <para>Type: <b>REFIID</b></para>
@@ -2950,10 +2950,10 @@ public static partial class D3D12
 		/// </list>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createmetacommand HRESULT CreateMetaCommand(
-		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SIZE_T
+		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SizeT
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SIZE_T CreationParametersDataSizeInBytes,
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
 			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
@@ -4320,7 +4320,7 @@ public static partial class D3D12
 		/// <para>A pointer to the source data for the serialized signature.</para>
 		/// </param>
 		/// <param name="blobLengthInBytes">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>The size, in bytes, of the block of memory that <i>pBlobWithRootSignature</i> points to.</para>
 		/// </param>
 		/// <param name="riid">
@@ -4356,10 +4356,10 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createrootsignature HRESULT CreateRootSignature(
-		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
+		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SizeT blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SIZE_T blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -5870,7 +5870,7 @@ public static partial class D3D12
 		/// </para>
 		/// </param>
 		/// <param name="BlobLength">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>Specifies the length of pLibraryBlob in bytes.</para>
 		/// </param>
 		/// <param name="riid">
@@ -5927,9 +5927,9 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device1-createpipelinelibrary HRESULT
-		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
+		// CreatePipelineLibrary( const void *pLibraryBlob, SizeT BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SIZE_T BlobLength, in Guid riid,
+		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
@@ -6709,8 +6709,8 @@ public static partial class D3D12
 		/// <para>An optional pointer to a constant structure containing the values of the parameters for creating the meta command.</para>
 		/// </param>
 		/// <param name="CreationParametersDataSizeInBytes">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
-		/// <para>A <c>SIZE_T</c> containing the size of the structure pointed to by <i>pCreationParametersData</i>, if set, otherwise 0.</para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
+		/// <para>A <c>SizeT</c> containing the size of the structure pointed to by <i>pCreationParametersData</i>, if set, otherwise 0.</para>
 		/// </param>
 		/// <param name="riid">
 		/// <para>Type: <b>REFIID</b></para>
@@ -6741,10 +6741,10 @@ public static partial class D3D12
 		/// </list>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createmetacommand HRESULT CreateMetaCommand(
-		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SIZE_T
+		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SizeT
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SIZE_T CreationParametersDataSizeInBytes,
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
 			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
@@ -8118,7 +8118,7 @@ public static partial class D3D12
 		/// <para>A pointer to the source data for the serialized signature.</para>
 		/// </param>
 		/// <param name="blobLengthInBytes">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>The size, in bytes, of the block of memory that <i>pBlobWithRootSignature</i> points to.</para>
 		/// </param>
 		/// <param name="riid">
@@ -8154,10 +8154,10 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createrootsignature HRESULT CreateRootSignature(
-		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
+		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SizeT blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SIZE_T blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -9668,7 +9668,7 @@ public static partial class D3D12
 		/// </para>
 		/// </param>
 		/// <param name="BlobLength">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>Specifies the length of pLibraryBlob in bytes.</para>
 		/// </param>
 		/// <param name="riid">
@@ -9725,9 +9725,9 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device1-createpipelinelibrary HRESULT
-		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
+		// CreatePipelineLibrary( const void *pLibraryBlob, SizeT BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SIZE_T BlobLength, in Guid riid,
+		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
@@ -10507,8 +10507,8 @@ public static partial class D3D12
 		/// <para>An optional pointer to a constant structure containing the values of the parameters for creating the meta command.</para>
 		/// </param>
 		/// <param name="CreationParametersDataSizeInBytes">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
-		/// <para>A <c>SIZE_T</c> containing the size of the structure pointed to by <i>pCreationParametersData</i>, if set, otherwise 0.</para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
+		/// <para>A <c>SizeT</c> containing the size of the structure pointed to by <i>pCreationParametersData</i>, if set, otherwise 0.</para>
 		/// </param>
 		/// <param name="riid">
 		/// <para>Type: <b>REFIID</b></para>
@@ -10539,10 +10539,10 @@ public static partial class D3D12
 		/// </list>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createmetacommand HRESULT CreateMetaCommand(
-		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SIZE_T
+		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SizeT
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SIZE_T CreationParametersDataSizeInBytes,
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
 			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
@@ -11412,7 +11412,7 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[]? pResourceAllocationInfo1);
 
 		[PreserveSig]
-		HRESULT OpenExistingHeapFromAddress1([In] IntPtr pAddress, SIZE_T size, in Guid riid,
+		HRESULT OpenExistingHeapFromAddress1([In] IntPtr pAddress, SizeT size, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvHeap);
 	}
 
@@ -11920,7 +11920,7 @@ public static partial class D3D12
 		/// <para>A pointer to the source data for the serialized signature.</para>
 		/// </param>
 		/// <param name="blobLengthInBytes">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>The size, in bytes, of the block of memory that <i>pBlobWithRootSignature</i> points to.</para>
 		/// </param>
 		/// <param name="riid">
@@ -11956,10 +11956,10 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device-createrootsignature HRESULT CreateRootSignature(
-		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SIZE_T blobLengthInBytes, REFIID riid, [out] void
+		// [in] UINT nodeMask, [in] const void *pBlobWithRootSignature, [in] SizeT blobLengthInBytes, REFIID riid, [out] void
 		// **ppvRootSignature );
 		[PreserveSig]
-		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SIZE_T blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
+		new HRESULT CreateRootSignature(uint nodeMask, [In] IntPtr pBlobWithRootSignature, [In] SizeT blobLengthInBytes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object? ppvRootSignature);
 
 		/// <summary>Creates a constant-buffer view for accessing resource data.</summary>
 		/// <param name="pDesc">
@@ -13470,7 +13470,7 @@ public static partial class D3D12
 		/// </para>
 		/// </param>
 		/// <param name="BlobLength">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>Specifies the length of pLibraryBlob in bytes.</para>
 		/// </param>
 		/// <param name="riid">
@@ -13527,9 +13527,9 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device1-createpipelinelibrary HRESULT
-		// CreatePipelineLibrary( const void *pLibraryBlob, SIZE_T BlobLength, REFIID riid, void **ppPipelineLibrary );
+		// CreatePipelineLibrary( const void *pLibraryBlob, SizeT BlobLength, REFIID riid, void **ppPipelineLibrary );
 		[PreserveSig]
-		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SIZE_T BlobLength, in Guid riid,
+		new HRESULT CreatePipelineLibrary([In] IntPtr pLibraryBlob, [In] SizeT BlobLength, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppPipelineLibrary);
 
 		/// <summary>Specifies an event that should be fired when one or more of a collection of fences reach specific values.</summary>
@@ -14309,8 +14309,8 @@ public static partial class D3D12
 		/// <para>An optional pointer to a constant structure containing the values of the parameters for creating the meta command.</para>
 		/// </param>
 		/// <param name="CreationParametersDataSizeInBytes">
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
-		/// <para>A <c>SIZE_T</c> containing the size of the structure pointed to by <i>pCreationParametersData</i>, if set, otherwise 0.</para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
+		/// <para>A <c>SizeT</c> containing the size of the structure pointed to by <i>pCreationParametersData</i>, if set, otherwise 0.</para>
 		/// </param>
 		/// <param name="riid">
 		/// <para>Type: <b>REFIID</b></para>
@@ -14341,10 +14341,10 @@ public static partial class D3D12
 		/// </list>
 		/// </returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12device5-createmetacommand HRESULT CreateMetaCommand(
-		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SIZE_T
+		// [in] REFGUID CommandId, [in] UINT NodeMask, [in, optional] const void *pCreationParametersData, [in] SizeT
 		// CreationParametersDataSizeInBytes, REFIID riid, [out] void **ppMetaCommand );
 		[PreserveSig]
-		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SIZE_T CreationParametersDataSizeInBytes,
+		new HRESULT CreateMetaCommand(in Guid CommandId, uint NodeMask, [In, Optional] IntPtr pCreationParametersData, [In] SizeT CreationParametersDataSizeInBytes,
 			in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppMetaCommand);
 
 		/// <summary>Creates an <c>ID3D12StateObject</c>.</summary>
@@ -15214,11 +15214,11 @@ public static partial class D3D12
 			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D12_RESOURCE_ALLOCATION_INFO1[]? pResourceAllocationInfo1);
 
 		[PreserveSig]
-		new HRESULT OpenExistingHeapFromAddress1([In] IntPtr pAddress, SIZE_T size, in Guid riid,
+		new HRESULT OpenExistingHeapFromAddress1([In] IntPtr pAddress, SizeT size, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppvHeap);
 
 		[PreserveSig]
-		HRESULT CreateRootSignatureFromSubobjectInLibrary(uint nodeMask, [In] IntPtr pLibraryBlob, SIZE_T blobLengthInBytes,
+		HRESULT CreateRootSignatureFromSubobjectInLibrary(uint nodeMask, [In] IntPtr pLibraryBlob, SizeT blobLengthInBytes,
 			[Optional, MarshalAs(UnmanagedType.LPWStr)] string? subobjectName, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppvRootSignature);
 	}
@@ -15891,12 +15891,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -16013,12 +16013,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -18525,15 +18525,15 @@ public static partial class D3D12
 		/// An optional pointer to a constant structure containing the values of the parameters for initializing the meta command.
 		/// </param>
 		/// <param name="InitializationParametersDataSizeInBytes">
-		/// A <c>SIZE_T</c> containing the size of the structure pointed to by <i>pInitializationParametersData</i>, if set, otherwise 0.
+		/// A <c>SizeT</c> containing the size of the structure pointed to by <i>pInitializationParametersData</i>, if set, otherwise 0.
 		/// </param>
 		/// <returns>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist4-initializemetacommand void
 		// InitializeMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pInitializationParametersData, [in]
-		// SIZE_T InitializationParametersDataSizeInBytes );
+		// SizeT InitializationParametersDataSizeInBytes );
 		[PreserveSig]
 		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pInitializationParametersData,
-			[In] SIZE_T InitializationParametersDataSizeInBytes);
+			[In] SizeT InitializationParametersDataSizeInBytes);
 
 		/// <summary>
 		/// <para>Records the execution (or invocation) of the specified meta command into a graphics command list.</para>
@@ -18552,7 +18552,7 @@ public static partial class D3D12
 		/// An optional pointer to a constant structure containing the values of the parameters for executing the meta command.
 		/// </param>
 		/// <param name="ExecutionParametersDataSizeInBytes">
-		/// A <c>SIZE_T</c> containing the size of the structure pointed to by <i>pExecutionParametersData</i>, if set, otherwise 0.
+		/// A <c>SizeT</c> containing the size of the structure pointed to by <i>pExecutionParametersData</i>, if set, otherwise 0.
 		/// </param>
 		/// <returns>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</returns>
 		/// <remarks>
@@ -18570,10 +18570,10 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist4-executemetacommand void
-		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SIZE_T
+		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SizeT
 		// ExecutionParametersDataSizeInBytes );
 		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SIZE_T ExecutionParametersDataSizeInBytes);
+		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SizeT ExecutionParametersDataSizeInBytes);
 
 		/// <summary>
 		/// Performs a raytracing acceleration structure build on the GPU and optionally outputs post-build information immediately after
@@ -19452,12 +19452,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -19574,12 +19574,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -22086,15 +22086,15 @@ public static partial class D3D12
 		/// An optional pointer to a constant structure containing the values of the parameters for initializing the meta command.
 		/// </param>
 		/// <param name="InitializationParametersDataSizeInBytes">
-		/// A <c>SIZE_T</c> containing the size of the structure pointed to by <i>pInitializationParametersData</i>, if set, otherwise 0.
+		/// A <c>SizeT</c> containing the size of the structure pointed to by <i>pInitializationParametersData</i>, if set, otherwise 0.
 		/// </param>
 		/// <returns>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist4-initializemetacommand void
 		// InitializeMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pInitializationParametersData, [in]
-		// SIZE_T InitializationParametersDataSizeInBytes );
+		// SizeT InitializationParametersDataSizeInBytes );
 		[PreserveSig]
 		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pInitializationParametersData,
-			[In] SIZE_T InitializationParametersDataSizeInBytes);
+			[In] SizeT InitializationParametersDataSizeInBytes);
 
 		/// <summary>
 		/// <para>Records the execution (or invocation) of the specified meta command into a graphics command list.</para>
@@ -22113,7 +22113,7 @@ public static partial class D3D12
 		/// An optional pointer to a constant structure containing the values of the parameters for executing the meta command.
 		/// </param>
 		/// <param name="ExecutionParametersDataSizeInBytes">
-		/// A <c>SIZE_T</c> containing the size of the structure pointed to by <i>pExecutionParametersData</i>, if set, otherwise 0.
+		/// A <c>SizeT</c> containing the size of the structure pointed to by <i>pExecutionParametersData</i>, if set, otherwise 0.
 		/// </param>
 		/// <returns>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</returns>
 		/// <remarks>
@@ -22131,10 +22131,10 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist4-executemetacommand void
-		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SIZE_T
+		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SizeT
 		// ExecutionParametersDataSizeInBytes );
 		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SIZE_T ExecutionParametersDataSizeInBytes);
+		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SizeT ExecutionParametersDataSizeInBytes);
 
 		/// <summary>
 		/// Performs a raytracing acceleration structure build on the GPU and optionally outputs post-build information immediately after
@@ -23001,12 +23001,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -23123,12 +23123,12 @@ public static partial class D3D12
 		/// _In_reads_(NumSubresources) const UINT64* pRowSizesInBytes, _In_reads_(NumSubresources) const D3D12_SUBRESOURCE_DATA* pSrcData)
 		/// { // Minor validation D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate-&gt;GetDesc(); D3D12_RESOURCE_DESC DestinationDesc =
 		/// pDestinationResource-&gt;GetDesc(); if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER || IntermediateDesc.Width
-		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SIZE_T)-1 || (DestinationDesc.Dimension ==
+		/// &lt; RequiredSize + pLayouts[0].Offset || RequiredSize &gt; (SizeT)-1 || (DestinationDesc.Dimension ==
 		/// D3D12_RESOURCE_DIMENSION_BUFFER &amp;&amp; (FirstSubresource != 0 || NumSubresources != 1))) { return 0; } BYTE* pData; HRESULT
 		/// hr = pIntermediate-&gt;Map(0, NULL, reinterpret_cast&lt;void**&gt;(&amp;pData)); if (FAILED(hr)) { return 0; } for (UINT i = 0;
-		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SIZE_T)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
+		/// i &lt; NumSubresources; ++i) { if (pRowSizesInBytes[i] &gt; (SizeT)-1) return 0; D3D12_MEMCPY_DEST DestData = { pData +
 		/// pLayouts[i].Offset, pLayouts[i].Footprint.RowPitch, pLayouts[i].Footprint.RowPitch * pNumRows[i] };
-		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SIZE_T)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
+		/// MemcpySubresource(&amp;DestData, &amp;pSrcData[i], (SizeT)pRowSizesInBytes[i], pNumRows[i], pLayouts[i].Footprint.Depth); }
 		/// pIntermediate-&gt;Unmap(0, NULL); if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER) { CD3DX12_BOX SrcBox( UINT(
 		/// pLayouts[0].Offset ), UINT( pLayouts[0].Offset + pLayouts[0].Footprint.Width ) ); pCmdList-&gt;CopyBufferRegion(
 		/// pDestinationResource, 0, pIntermediate, pLayouts[0].Offset, pLayouts[0].Footprint.Width); } else { for (UINT i = 0; i &lt;
@@ -25635,15 +25635,15 @@ public static partial class D3D12
 		/// An optional pointer to a constant structure containing the values of the parameters for initializing the meta command.
 		/// </param>
 		/// <param name="InitializationParametersDataSizeInBytes">
-		/// A <c>SIZE_T</c> containing the size of the structure pointed to by <i>pInitializationParametersData</i>, if set, otherwise 0.
+		/// A <c>SizeT</c> containing the size of the structure pointed to by <i>pInitializationParametersData</i>, if set, otherwise 0.
 		/// </param>
 		/// <returns>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist4-initializemetacommand void
 		// InitializeMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pInitializationParametersData, [in]
-		// SIZE_T InitializationParametersDataSizeInBytes );
+		// SizeT InitializationParametersDataSizeInBytes );
 		[PreserveSig]
 		new void InitializeMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pInitializationParametersData,
-			[In] SIZE_T InitializationParametersDataSizeInBytes);
+			[In] SizeT InitializationParametersDataSizeInBytes);
 
 		/// <summary>
 		/// <para>Records the execution (or invocation) of the specified meta command into a graphics command list.</para>
@@ -25662,7 +25662,7 @@ public static partial class D3D12
 		/// An optional pointer to a constant structure containing the values of the parameters for executing the meta command.
 		/// </param>
 		/// <param name="ExecutionParametersDataSizeInBytes">
-		/// A <c>SIZE_T</c> containing the size of the structure pointed to by <i>pExecutionParametersData</i>, if set, otherwise 0.
+		/// A <c>SizeT</c> containing the size of the structure pointed to by <i>pExecutionParametersData</i>, if set, otherwise 0.
 		/// </param>
 		/// <returns>If this method succeeds, it returns <b>S_OK</b>. Otherwise, it returns an <b>HRESULT</b> error code.</returns>
 		/// <remarks>
@@ -25680,10 +25680,10 @@ public static partial class D3D12
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist4-executemetacommand void
-		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SIZE_T
+		// ExecuteMetaCommand( [in] ID3D12MetaCommand *pMetaCommand, [in, optional] const void *pExecutionParametersData, [in] SizeT
 		// ExecutionParametersDataSizeInBytes );
 		[PreserveSig]
-		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SIZE_T ExecutionParametersDataSizeInBytes);
+		new void ExecuteMetaCommand([In] ID3D12MetaCommand pMetaCommand, [In, Optional] IntPtr pExecutionParametersData, [In] SizeT ExecutionParametersDataSizeInBytes);
 
 		/// <summary>
 		/// Performs a raytracing acceleration structure build on the GPU and optionally outputs post-build information immediately after
@@ -26243,7 +26243,7 @@ public static partial class D3D12
 		[MarshalAs(UnmanagedType.LPWStr)]
 		public string ProgramName;
 		public uint NumExports;
-		public ArrayPointer<PWSTR> pExports;
+		public ArrayPointer<StrPtrUni> pExports;
 		public uint NumSubobjects;
 		public ArrayPointer<D3D12_STATE_SUBOBJECT> ppSubobjects;
 

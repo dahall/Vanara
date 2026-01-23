@@ -178,9 +178,9 @@ public static partial class Ws2_32
 	/// <summary>The <c>WSANSCLASSINFO</c> structure provides individual parameter information for a specific Windows Sockets namespace.</summary>
 	/// <remarks>
 	/// The <c>WSANSCLASSINFO</c> structure is defined differently depending on whether ANSI or UNICODE is used. The above syntax block
-	/// applies to ANSI; for UNICODE, the datatype for <c>lpszName</c> is <c>PWSTR</c>.
+	/// applies to ANSI; for UNICODE, the datatype for <c>lpszName</c> is <c>StrPtrUni</c>.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsansclassinfoa typedef struct _WSANSClassInfoA { PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsansclassinfoa typedef struct _WSANSClassInfoA { StrPtrAnsi
 	// lpszName; DWORD dwNameSpace; DWORD dwValueType; DWORD dwValueSize; LPVOID lpValue; } WSANSCLASSINFOA, *PWSANSCLASSINFOA, *LPWSANSCLASSINFOA;
 	[PInvokeData("winsock2.h", MSDNShortId = "b4f811ad-7967-45bd-b563-a28bb1633596")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -332,8 +332,8 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsaquerysetw typedef struct _WSAQuerySetW { DWORD dwSize;
-	// PWSTR lpszServiceInstanceName; LPGUID lpServiceClassId; LPWSAVERSION lpVersion; PWSTR lpszComment; DWORD dwNameSpace; LPGUID
-	// lpNSProviderId; PWSTR lpszContext; DWORD dwNumberOfProtocols; LPAFPROTOCOLS lpafpProtocols; PWSTR lpszQueryString; DWORD
+	// StrPtrUni lpszServiceInstanceName; LPGUID lpServiceClassId; LPWSAVERSION lpVersion; StrPtrUni lpszComment; DWORD dwNameSpace; LPGUID
+	// lpNSProviderId; StrPtrUni lpszContext; DWORD dwNumberOfProtocols; LPAFPROTOCOLS lpafpProtocols; StrPtrUni lpszQueryString; DWORD
 	// dwNumberOfCsAddrs; LPCSADDR_INFO lpcsaBuffer; DWORD dwOutputFlags; LPBLOB lpBlob; } WSAQUERYSETW, *PWSAQUERYSETW, *LPWSAQUERYSETW;
 	[PInvokeData("winsock2.h", MSDNShortId = "6c81fbba-aaf4-49ca-ab79-b6fe5dfb0076")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -349,7 +349,7 @@ public static partial class Ws2_32
 		public uint dwSize;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// A pointer to an optional NULL-terminated string that contains service name. The semantics for using wildcards within the
 		/// string are not defined, but can be supported by certain namespace providers.
@@ -374,7 +374,7 @@ public static partial class Ws2_32
 		public IntPtr lpVersion;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>This member is ignored for queries.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -445,7 +445,7 @@ public static partial class Ws2_32
 		public GuidPtr lpNSProviderId;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to an optional starting point of the query in a hierarchical namespace.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)]
@@ -464,7 +464,7 @@ public static partial class Ws2_32
 		public IntPtr lpafpProtocols;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// A pointer to an optional NULL-terminated query string. Some namespaces, such as Whois++, support enriched SQL-like queries
 		/// that are contained in a simple text string. This parameter is used to specify that string.
@@ -533,8 +533,8 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsaquerysetw typedef struct _WSAQuerySetW { DWORD dwSize;
-	// PWSTR lpszServiceInstanceName; LPGUID lpServiceClassId; LPWSAVERSION lpVersion; PWSTR lpszComment; DWORD dwNameSpace; LPGUID
-	// lpNSProviderId; PWSTR lpszContext; DWORD dwNumberOfProtocols; LPAFPROTOCOLS lpafpProtocols; PWSTR lpszQueryString; DWORD
+	// StrPtrUni lpszServiceInstanceName; LPGUID lpServiceClassId; LPWSAVERSION lpVersion; StrPtrUni lpszComment; DWORD dwNameSpace; LPGUID
+	// lpNSProviderId; StrPtrUni lpszContext; DWORD dwNumberOfProtocols; LPAFPROTOCOLS lpafpProtocols; StrPtrUni lpszQueryString; DWORD
 	// dwNumberOfCsAddrs; LPCSADDR_INFO lpcsaBuffer; DWORD dwOutputFlags; LPBLOB lpBlob; } WSAQUERYSETW, *PWSAQUERYSETW, *LPWSAQUERYSETW;
 	[PInvokeData("winsock2.h", MSDNShortId = "6c81fbba-aaf4-49ca-ab79-b6fe5dfb0076")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -640,9 +640,9 @@ public static partial class Ws2_32
 		/// </summary>
 		public byte[]? lpBlob;
 
-		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(WSAQUERYSET));
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(WSAQUERYSET));
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => throw new NotImplementedException();
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 			WSAQUERYSET qs = (WSAQUERYSET)Marshal.PtrToStructure(pNativeData, typeof(WSAQUERYSET))!;
@@ -670,7 +670,7 @@ public static partial class Ws2_32
 	/// Sockets 2, there is a single <c>WSASERVICECLASSINFO</c> structure.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsaserviceclassinfow typedef struct _WSAServiceClassInfoW
-	// { LPGUID lpServiceClassId; PWSTR lpszServiceClassName; DWORD dwCount; LPWSANSCLASSINFOW lpClassInfos; } WSASERVICECLASSINFOW,
+	// { LPGUID lpServiceClassId; StrPtrUni lpszServiceClassName; DWORD dwCount; LPWSANSCLASSINFOW lpClassInfos; } WSASERVICECLASSINFOW,
 	// *PWSASERVICECLASSINFOW, *LPWSASERVICECLASSINFOW;
 	[PInvokeData("winsock2.h", MSDNShortId = "02422c24-34a6-4e34-a795-66b0b687ac44")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]

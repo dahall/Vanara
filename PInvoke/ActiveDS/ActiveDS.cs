@@ -90,7 +90,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ADsBuildVarArrayStr</c> function builds a variant array from an array of Unicode strings.</summary>
 	/// <param name="lppPathNames">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>Array of null-terminated Unicode strings.</para>
 	/// </param>
 	/// <param name="dwPathNames">
@@ -114,7 +114,7 @@ public static partial class ActiveDS
 	/// strings to a variant array of strings.
 	/// </para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsbuildvararraystr HRESULT ADsBuildVarArrayStr( [in] PWSTR
+	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsbuildvararraystr HRESULT ADsBuildVarArrayStr( [in] StrPtrUni
 	// *lppPathNames, [in] DWORD dwPathNames, [out] VARIANT *pVar );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsBuildVarArrayStr")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
@@ -134,7 +134,7 @@ public static partial class ActiveDS
 	/// <para>Size, in bytes, of the BLOB.</para>
 	/// </param>
 	/// <param name="ppszDestData">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>Pointer to a null-terminated Unicode string that receives the converted data. This memory does NOT need to be freed.</para>
 	/// </param>
 	/// <returns>
@@ -155,7 +155,7 @@ public static partial class ActiveDS
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsencodebinarydata HRESULT ADsEncodeBinaryData( [in] PBYTE
-	// pbSrcData, [in] DWORD dwSrcLen, [out] PWSTR *ppszDestData );
+	// pbSrcData, [in] DWORD dwSrcLen, [out] StrPtrUni *ppszDestData );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT ADsEncodeBinaryData([In] IntPtr pbSrcData, uint dwSrcLen, [Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AdsUnicodeStringMarshaler))] out string? ppszDestData);
@@ -173,7 +173,7 @@ public static partial class ActiveDS
 	/// <para>Size, in bytes, of the BLOB.</para>
 	/// </param>
 	/// <param name="ppszDestData">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>Pointer to a null-terminated Unicode string that receives the converted data. This memory does NOT need to be freed.</para>
 	/// </param>
 	/// <returns>
@@ -196,7 +196,7 @@ public static partial class ActiveDS
 	/// <para>The following code example shows how to use this function.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsencodebinarydata HRESULT ADsEncodeBinaryData( [in] PBYTE
-	// pbSrcData, [in] DWORD dwSrcLen, [out] PWSTR *ppszDestData );
+	// pbSrcData, [in] DWORD dwSrcLen, [out] StrPtrUni *ppszDestData );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsEncodeBinaryData")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	public static extern HRESULT ADsEncodeBinaryData([In] byte[] pbSrcData, uint dwSrcLen, [Optional, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AdsUnicodeStringMarshaler))] out string? ppszDestData);
@@ -295,7 +295,7 @@ public static partial class ActiveDS
 	/// <para>Pointer to the location that receives the error code.</para>
 	/// </param>
 	/// <param name="lpErrorBuf">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>Pointer to the location that receives the null-terminated Unicode string that describes the error.</para>
 	/// </param>
 	/// <param name="dwErrorBufLen">
@@ -306,7 +306,7 @@ public static partial class ActiveDS
 	/// </para>
 	/// </param>
 	/// <param name="lpNameBuf">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// Pointer to the location that receives the null-terminated Unicode string that describes the name of the provider that raised the error.
 	/// </para>
@@ -337,7 +337,7 @@ public static partial class ActiveDS
 	/// <para></para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-adsgetlasterror HRESULT ADsGetLastError( [out] LPDWORD lpError,
-	// [out] PWSTR lpErrorBuf, [in] DWORD dwErrorBufLen, [out] PWSTR lpNameBuf, [in] DWORD dwNameBufLen );
+	// [out] StrPtrUni lpErrorBuf, [in] DWORD dwErrorBufLen, [out] StrPtrUni lpNameBuf, [in] DWORD dwNameBufLen );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ADsGetLastError")]
 	[DllImport(Lib_Activeds, SetLastError = true, ExactSpelling = true)]
 	public static extern HRESULT ADsGetLastError(out Win32Error lpError, [Out, MarshalAs(UnmanagedType.LPWStr), SizeDef(nameof(dwErrorBufLen))] StringBuilder? lpErrorBuf, [Range(0, Kernel32.MAX_PATH)] int dwErrorBufLen,
@@ -501,11 +501,11 @@ public static partial class ActiveDS
 	/// </para>
 	/// </param>
 	/// <param name="pszError">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The null-terminated Unicode string that describes the network-specific error.</para>
 	/// </param>
 	/// <param name="pszProvider">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The null-terminated Unicode string that names the ADSI provider that raised the error.</para>
 	/// </param>
 	/// <returns>None</returns>
@@ -551,11 +551,11 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>AllocADsStr</c> function allocates memory for and copies a specified string.</summary>
 	/// <param name="pStr">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>Pointer to a null-terminated Unicode string to be copied.</para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// When successful, the function returns a non- <c>NULL</c> pointer to the allocated memory. The string in <c>pStr</c> is copied to this
 	/// buffer and null-terminated. The caller must free this memory when it is no longer required by passing the returned pointer to FreeADsStr.
@@ -566,10 +566,10 @@ public static partial class ActiveDS
 	/// </para>
 	/// </returns>
 	/// <remarks>For more information and a code example that shows how to use the <c>AllocADsStr</c> function, see ReallocADsStr.</remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-allocadsstr PWSTR AllocADsStr( [in] LPCWSTR pStr );
+	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-allocadsstr StrPtrUni AllocADsStr( [in] LPCWSTR pStr );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.AllocADsStr")]
 	[DllImport(Lib_Activeds, SetLastError = true, ExactSpelling = true)]
-	public static extern PWSTR AllocADsStr([MarshalAs(UnmanagedType.LPWStr)] string pStr);
+	public static extern StrPtrUni AllocADsStr([MarshalAs(UnmanagedType.LPWStr)] string pStr);
 
 	/// <summary>The <c>BinarySDToSecurityDescriptor</c> function converts a binary security descriptor to an IADsSecurityDescriptor object.</summary>
 	/// <param name="pSecurityDescriptor">
@@ -654,7 +654,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>FreeADsStr</c> function frees the memory of a string allocated by AllocADsStr or ReallocADsStr.</summary>
 	/// <param name="pStr">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>Pointer to the string to be freed. This string must have been allocated with the AllocADsStr or ReallocADsStr function.</para>
 	/// </param>
 	/// <returns>
@@ -668,11 +668,11 @@ public static partial class ActiveDS
 	/// </para>
 	/// <para>For more information and a code example that shows how to use the <c>FreeADsStr</c> function, see ReallocADsStr.</para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-freeadsstr BOOL FreeADsStr( [in] PWSTR pStr );
+	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-freeadsstr BOOL FreeADsStr( [in] StrPtrUni pStr );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.FreeADsStr")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FreeADsStr(PWSTR pStr);
+	public static extern bool FreeADsStr(StrPtrUni pStr);
 
 	/// <summary>The <c>ReallocADsMem</c> function reallocates and copies an existing memory block.</summary>
 	/// <param name="pOldMem">
@@ -709,7 +709,7 @@ public static partial class ActiveDS
 
 	/// <summary>The <c>ReallocADsStr</c> function creates a copy of a Unicode string.</summary>
 	/// <param name="ppStr">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>
 	/// Pointer to null-terminated Unicode string pointer that receives the allocated string. <c>ReallocADsStr</c> will attempt to free this
 	/// memory with FreeADsStr before reallocating the string, so this parameter should be initialized to <c>NULL</c> if the memory should
@@ -718,19 +718,19 @@ public static partial class ActiveDS
 	/// <para>The caller must free this memory when it is no longer required by passing this pointer to FreeADsStr.</para>
 	/// </param>
 	/// <param name="pStr">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>Pointer to a null-terminated Unicode string that contains the string to copy.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>The function returns <c>TRUE</c> if successful, otherwise <c>FALSE</c> is returned.</para>
 	/// </returns>
-	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-reallocadsstr BOOL ReallocADsStr( [out] PWSTR *ppStr, [in]
-	// PWSTR pStr );
+	// https://learn.microsoft.com/en-us/windows/win32/api/adshlp/nf-adshlp-reallocadsstr BOOL ReallocADsStr( [out] StrPtrUni *ppStr, [in]
+	// StrPtrUni pStr );
 	[PInvokeData("adshlp.h", MSDNShortId = "NF:adshlp.ReallocADsStr")]
 	[DllImport(Lib_Activeds, SetLastError = false, ExactSpelling = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool ReallocADsStr(ref PWSTR ppStr, [MarshalAs(UnmanagedType.LPWStr)] string pStr);
+	public static extern bool ReallocADsStr(ref StrPtrUni ppStr, [MarshalAs(UnmanagedType.LPWStr)] string pStr);
 
 	/// <summary>
 	/// The <c>SecurityDescriptorToBinarySD</c> function converts an IADsSecurityDescriptor object to the binary security descriptor format.

@@ -157,7 +157,7 @@ public static partial class Shell32
 		/// <para>A pointer to an IShellItemArray.</para>
 		/// </param>
 		/// <param name="ppszName">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Pointer to a buffer that, when this method returns successfully, receives the title string.</para>
 		/// </param>
 		/// <returns>
@@ -165,7 +165,7 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommand-gettitle HRESULT GetTitle(
-		// IShellItemArray *psiItemArray, PWSTR *ppszName );
+		// IShellItemArray *psiItemArray, StrPtrUni *ppszName );
 		[PreserveSig]
 		HRESULT GetTitle(IShellItemArray psiItemArray, [MarshalAs(UnmanagedType.LPWStr)] out string? ppszName);
 
@@ -175,7 +175,7 @@ public static partial class Shell32
 		/// <para>A pointer to an IShellItemArray.</para>
 		/// </param>
 		/// <param name="ppszIcon">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// Pointer to a buffer that, when this method returns successfully, receives the resource string that identifies the icon source.
 		/// </para>
@@ -186,7 +186,7 @@ public static partial class Shell32
 		/// </returns>
 		/// <remarks>The retrieved icon resource string is in the standard format, for instance "shell32.dll,-249".</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommand-geticon HRESULT GetIcon(
-		// IShellItemArray *psiItemArray, PWSTR *ppszIcon );
+		// IShellItemArray *psiItemArray, StrPtrUni *ppszIcon );
 		[PreserveSig]
 		HRESULT GetIcon(IShellItemArray psiItemArray, [MarshalAs(UnmanagedType.LPWStr)] out string? ppszIcon);
 
@@ -196,7 +196,7 @@ public static partial class Shell32
 		/// <para>A pointer to an IShellItemArray.</para>
 		/// </param>
 		/// <param name="ppszInfotip">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Pointer to a buffer that, when this method returns successfully, receives the tooltip string.</para>
 		/// </param>
 		/// <returns>
@@ -204,7 +204,7 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iexplorercommand-gettooltip HRESULT
-		// GetToolTip( IShellItemArray *psiItemArray, PWSTR *ppszInfotip );
+		// GetToolTip( IShellItemArray *psiItemArray, StrPtrUni *ppszInfotip );
 		[PreserveSig]
 		HRESULT GetToolTip(IShellItemArray psiItemArray, [MarshalAs(UnmanagedType.LPWStr)] out string? ppszInfotip);
 

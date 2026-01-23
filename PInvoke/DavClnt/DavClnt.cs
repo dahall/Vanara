@@ -70,7 +70,7 @@ public static partial class DavClnt
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/davclnt/nc-davclnt-pfndavauthcallback PFNDAVAUTHCALLBACK Pfndavauthcallback;
-	// DWORD Pfndavauthcallback( PWSTR lpwzServerName, PWSTR lpwzRemoteName, DWORD dwAuthScheme, DWORD dwFlags, PDAV_CALLBACK_CRED
+	// DWORD Pfndavauthcallback( StrPtrUni lpwzServerName, StrPtrUni lpwzRemoteName, DWORD dwAuthScheme, DWORD dwFlags, PDAV_CALLBACK_CRED
 	// pCallbackCred, AUTHNEXTSTEP *NextStep, PFNDAVAUTHCALLBACK_FREECRED *pFreeCred ) {...}
 	[PInvokeData("davclnt.h", MSDNShortId = "6ac191ac-e63f-431f-893b-92c69320db58")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
@@ -249,7 +249,7 @@ public static partial class DavClnt
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/davclnt/nf-davclnt-davcancelconnectionstoserver DWORD
-	// DavCancelConnectionsToServer( PWSTR lpName, BOOL fForce );
+	// DavCancelConnectionsToServer( StrPtrUni lpName, BOOL fForce );
 	[DllImport(Lib_DavClnt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("davclnt.h", MSDNShortId = "6eb3b011-4cd3-45ec-a07e-c8743d35a176")]
 	public static extern Win32Error DavCancelConnectionsToServer(string lpName, [MarshalAs(UnmanagedType.Bool)] bool fForce);
@@ -337,7 +337,7 @@ public static partial class DavClnt
 	/// </returns>
 	/// <remarks>If you call this function for a file handle whose previous I/O operation was successful, it returns ERROR_INVALID_PARAMETER.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/davclnt/nf-davclnt-davgetextendederror DWORD DavGetExtendedError( HANDLE
-	// hFile, DWORD *ExtError, PWSTR ExtErrorString, DWORD *cChSize );
+	// hFile, DWORD *ExtError, StrPtrUni ExtErrorString, DWORD *cChSize );
 	[DllImport(Lib_DavClnt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("davclnt.h", MSDNShortId = "939b6163-b7ae-4ab7-9bcc-a02cbf34ca63")]
 	public static extern Win32Error DavGetExtendedError(HANDLE hFile, out Win32Error ExtError, StringBuilder ExtErrorString, ref uint cChSize);
@@ -384,7 +384,7 @@ public static partial class DavClnt
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/davclnt/nf-davclnt-davgethttpfromuncpath DWORD DavGetHTTPFromUNCPath( LPCWSTR
-	// UncPath, PWSTR Url, LPDWORD lpSize );
+	// UncPath, StrPtrUni Url, LPDWORD lpSize );
 	[DllImport(Lib_DavClnt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("davclnt.h", MSDNShortId = "caa83e54-a029-45aa-9681-26b2be54fea3")]
 	public static extern Win32Error DavGetHTTPFromUNCPath(string UncPath, StringBuilder Url, ref uint lpSize);
@@ -457,7 +457,7 @@ public static partial class DavClnt
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/davclnt/nf-davclnt-davgetthelockownerofthefile DWORD
-	// DavGetTheLockOwnerOfTheFile( LPCWSTR FileName, PWSTR LockOwnerName, PULONG LockOwnerNameLengthInBytes );
+	// DavGetTheLockOwnerOfTheFile( LPCWSTR FileName, StrPtrUni LockOwnerName, PULONG LockOwnerNameLengthInBytes );
 	[DllImport(Lib_DavClnt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("davclnt.h", MSDNShortId = "94a4607c-2770-4656-8710-987d6b951e0e")]
 	public static extern Win32Error DavGetTheLockOwnerOfTheFile(string FileName, StringBuilder? LockOwnerName, ref uint LockOwnerNameLengthInBytes);
@@ -525,7 +525,7 @@ public static partial class DavClnt
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/davclnt/nf-davclnt-davgetuncfromhttppath DWORD DavGetUNCFromHTTPPath( LPCWSTR
-	// Url, PWSTR UncPath, LPDWORD lpSize );
+	// Url, StrPtrUni UncPath, LPDWORD lpSize );
 	[DllImport(Lib_DavClnt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("davclnt.h", MSDNShortId = "e9613e4a-5ba1-4954-bc7a-7843249f031e")]
 	public static extern Win32Error DavGetUNCFromHTTPPath(string Url, StringBuilder UncPath, ref uint lpSize);
@@ -627,7 +627,7 @@ public static partial class DavClnt
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/davclnt/ns-davclnt-_dav_callback_auth_unp typedef struct
-	// _DAV_CALLBACK_AUTH_UNP { PWSTR pszUserName; ULONG ulUserNameLength; PWSTR pszPassword; ULONG ulPasswordLength; }
+	// _DAV_CALLBACK_AUTH_UNP { StrPtrUni pszUserName; ULONG ulUserNameLength; StrPtrUni pszPassword; ULONG ulPasswordLength; }
 	// DAV_CALLBACK_AUTH_UNP, *PDAV_CALLBACK_AUTH_UNP;
 	[PInvokeData("davclnt.h", MSDNShortId = "47420a67-bf3f-40d9-bfc4-ac2cb2776a40")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]

@@ -1471,7 +1471,7 @@ public static partial class Ws2_32
 		public override readonly string ToString()
 		{
 			System.Text.StringBuilder sb = new(64);
-			PWSTR p = InetNtopW(ADDRESS_FAMILY.AF_INET6, this, sb, sb.Capacity);
+			StrPtrUni p = InetNtopW(ADDRESS_FAMILY.AF_INET6, this, sb, sb.Capacity);
 			return p.IsNull ? throw WSAGetLastError().GetException()! : sb.ToString();
 		}
 

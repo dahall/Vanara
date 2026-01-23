@@ -2760,7 +2760,7 @@ public static partial class ComCtl32
 	/// <para>Handle to the tree-view control.</para>
 	/// </param>
 	/// <param name="lpsz">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Pointer to the buffer that receives the incremental search string.</para>
 	/// </param>
 	/// <returns>None</returns>
@@ -2772,7 +2772,7 @@ public static partial class ComCtl32
 	[PInvokeData("commctrl.h", MSDNShortId = "NF:commctrl.TreeView_GetISearchString")]
 	public static bool TreeView_GetISearchString(HWND hwndTV, out string? lpsz)
 	{
-		using SafePTSTR str = new(2048);
+		using SafeLPTSTR str = new(2048);
 		BOOL ret = SendMessage(hwndTV, TreeViewMessage.TVM_GETISEARCHSTRING, default, str.DangerousGetHandle());
 		lpsz = (string?)str;
 		return ret;
@@ -4265,7 +4265,7 @@ public static partial class ComCtl32
 		/// Address of a character buffer that contains the text to be displayed. If you want to change the text displayed in the tooltip,
 		/// you will need to modify the contents of this buffer. The size of this buffer is specified by the cchTextMax structure.
 		/// </summary>
-		public PTSTR pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>
 		/// Size of the buffer at pszText, in characters. Although you should never assume that this buffer will be of any particular size,
@@ -4683,7 +4683,7 @@ public static partial class ComCtl32
 		/// address of the buffer that receives the item text. Note that although the tree-view control allows any length string to be stored
 		/// as item text, only the first 260 characters are displayed.
 		/// </summary>
-		public PTSTR pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>
 		/// Size of the buffer pointed to by the pszText member, in characters. If this structure is being used to set item attributes, this

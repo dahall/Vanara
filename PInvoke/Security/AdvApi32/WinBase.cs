@@ -505,7 +505,7 @@ public static partial class AdvApi32
 	/// <para>The <c>AccessCheckAndAuditAlarm</c> function fails if the calling thread is not impersonating a client.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-accesscheckandauditalarma BOOL AccessCheckAndAuditAlarmA(
-	// LPCSTR SubsystemName, LPVOID HandleId, PSTR ObjectTypeName, PSTR ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, DWORD
+	// LPCSTR SubsystemName, LPVOID HandleId, StrPtrAnsi ObjectTypeName, StrPtrAnsi ObjectName, PSECURITY_DESCRIPTOR SecurityDescriptor, DWORD
 	// DesiredAccess, PGENERIC_MAPPING GenericMapping, BOOL ObjectCreation, LPDWORD GrantedAccess, LPBOOL AccessStatus, LPBOOL
 	// pfGenerateOnClose );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
@@ -1381,7 +1381,7 @@ public static partial class AdvApi32
 	/// <para>The following example demonstrates how to call this function.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createprocesswithlogonw BOOL CreateProcessWithLogonW(
-	// LPCWSTR lpUsername, LPCWSTR lpDomain, LPCWSTR lpPassword, DWORD dwLogonFlags, LPCWSTR lpApplicationName, PWSTR lpCommandLine,
+	// LPCWSTR lpUsername, LPCWSTR lpDomain, LPCWSTR lpPassword, DWORD dwLogonFlags, LPCWSTR lpApplicationName, StrPtrUni lpCommandLine,
 	// DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION
 	// lpProcessInformation );
 	[PInvokeData("winbase.h", MSDNShortId = "dcfdcd5b-0269-4081-b1db-e272171c27a2")]
@@ -1692,7 +1692,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createprocesswithtokenw BOOL CreateProcessWithTokenW(
-	// HANDLE hToken, DWORD dwLogonFlags, LPCWSTR lpApplicationName, PWSTR lpCommandLine, DWORD dwCreationFlags, LPVOID lpEnvironment,
+	// HANDLE hToken, DWORD dwLogonFlags, LPCWSTR lpApplicationName, StrPtrUni lpCommandLine, DWORD dwCreationFlags, LPVOID lpEnvironment,
 	// LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation );
 	[PInvokeData("winbase.h", MSDNShortId = "b329866a-0c0d-4cb3-838c-36aac17c87ed")]
 	public static bool CreateProcessWithTokenW(HTOKEN hToken, ProcessLogonFlags dwLogonFlags, string lpApplicationName, [Optional] StringBuilder? lpCommandLine, CREATE_PROCESS dwCreationFlags,
@@ -2021,7 +2021,7 @@ public static partial class AdvApi32
 	/// <para>Examples</para>
 	/// <para>For an example, see Getting System Information.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getusernamea BOOL GetUserNameA( PSTR lpBuffer, LPDWORD
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getusernamea BOOL GetUserNameA( StrPtrAnsi lpBuffer, LPDWORD
 	// pcbBuffer );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "87adc46a-c069-4ee5-900a-03b646306e64")]
@@ -2512,8 +2512,8 @@ public static partial class AdvApi32
 	/// </para>
 	/// <para>If the optional pTokenGroups parameter is supplied, LSA will not add either the local SID or the logon SID automatically.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/SecAuthN/logonuserexexw BOOL WINAPI LogonUserExExW( _In_ PTSTR lpszUsername,
-	// _In_opt_ PTSTR lpszDomain, _In_opt_ PTSTR lpszPassword, _In_ DWORD dwLogonType, _In_ DWORD dwLogonProvider, _In_opt_
+	// https://docs.microsoft.com/en-us/windows/desktop/SecAuthN/logonuserexexw BOOL WINAPI LogonUserExExW( _In_ StrPtrAuto lpszUsername,
+	// _In_opt_ StrPtrAuto lpszDomain, _In_opt_ StrPtrAuto lpszPassword, _In_ DWORD dwLogonType, _In_ DWORD dwLogonProvider, _In_opt_
 	// PTOKEN_GROUPS pTokenGroups, _Out_opt_ PHANDLE phToken, _Out_opt_ PSID *ppLogonSid, _Out_opt_ PVOID *ppProfileBuffer, _Out_opt_
 	// LPDWORD pdwProfileLength, _Out_opt_ PQUOTA_LIMITS pQuotaLimits );
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
@@ -2600,7 +2600,7 @@ public static partial class AdvApi32
 		int sidSz = 0, sbSz = 0;
 		LookupAccountName(systemName, accountName, SafePSID.Null, ref sidSz, null, ref sbSz, out _);
 		var sb = new StringBuilder(sbSz);
-		sid = new SafePSID((SIZE_T)sidSz);
+		sid = new SafePSID((SizeT)sidSz);
 		var ret = LookupAccountName(systemName, accountName, sid, ref sidSz, sb, ref sbSz, out snu);
 		domainName = sb.ToString();
 		return ret;
@@ -2722,7 +2722,7 @@ public static partial class AdvApi32
 	/// </returns>
 	/// <remarks>This function is similar to LookupAccountSid, but restricts the search to the local machine.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-lookupaccountsidlocalw
-	// BOOL LookupAccountSidLocalW( PSID Sid, PWSTR Name, LPDWORD cchName, PWSTR ReferencedDomainName, LPDWORD cchReferencedDomainName, PSID_NAME_USE peUse );
+	// BOOL LookupAccountSidLocalW( PSID Sid, StrPtrUni Name, LPDWORD cchName, StrPtrUni ReferencedDomainName, LPDWORD cchReferencedDomainName, PSID_NAME_USE peUse );
 	[PInvokeData("winbase.h", MSDNShortId = "NF:winbase.LookupAccountSidLocalW")]
 	public static bool LookupAccountSidLocal([In] PSID Sid, StringBuilder? Name, ref int cchName,
 		StringBuilder? ReferencedDomainName, ref int cchReferencedDomainName, out SID_NAME_USE peUse) =>
@@ -2823,7 +2823,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lookupprivilegedisplaynamea BOOL
-	// LookupPrivilegeDisplayNameA( LPCSTR lpSystemName, LPCSTR lpName, PSTR lpDisplayName, LPDWORD cchDisplayName, LPDWORD lpLanguageId );
+	// LookupPrivilegeDisplayNameA( LPCSTR lpSystemName, LPCSTR lpName, StrPtrAnsi lpDisplayName, LPDWORD cchDisplayName, LPDWORD lpLanguageId );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winbase.h", MSDNShortId = "1fbb26b6-615e-4883-9f4b-3a1d05d9feaa")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2868,7 +2868,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lookupprivilegenamea BOOL LookupPrivilegeNameA( LPCSTR
-	// lpSystemName, PLUID lpLuid, PSTR lpName, LPDWORD cchName );
+	// lpSystemName, PLUID lpLuid, StrPtrAnsi lpName, LPDWORD cchName );
 	[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "580fb58f-1470-4389-9f07-8f37403e2bdf")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3011,7 +3011,7 @@ public static partial class AdvApi32
 	/// thread. This allows the calling process to impersonate a client during the call.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-objectopenauditalarma BOOL ObjectOpenAuditAlarmA( LPCSTR
-	// SubsystemName, LPVOID HandleId, PSTR ObjectTypeName, PSTR ObjectName, PSECURITY_DESCRIPTOR pSecurityDescriptor, HANDLE
+	// SubsystemName, LPVOID HandleId, StrPtrAnsi ObjectTypeName, StrPtrAnsi ObjectName, PSECURITY_DESCRIPTOR pSecurityDescriptor, HANDLE
 	// ClientToken, DWORD DesiredAccess, DWORD GrantedAccess, PPRIVILEGE_SET Privileges, BOOL ObjectCreation, BOOL AccessGranted, LPBOOL
 	// GenerateOnClose );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
@@ -3785,7 +3785,7 @@ public static partial class AdvApi32
 	/// <para>The following example demonstrates how to call this function.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createprocesswithlogonw BOOL CreateProcessWithLogonW(
-	// LPCWSTR lpUsername, LPCWSTR lpDomain, LPCWSTR lpPassword, DWORD dwLogonFlags, LPCWSTR lpApplicationName, PWSTR lpCommandLine,
+	// LPCWSTR lpUsername, LPCWSTR lpDomain, LPCWSTR lpPassword, DWORD dwLogonFlags, LPCWSTR lpApplicationName, StrPtrUni lpCommandLine,
 	// DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION
 	// lpProcessInformation );
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
@@ -4094,7 +4094,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createprocesswithtokenw BOOL CreateProcessWithTokenW(
-	// HANDLE hToken, DWORD dwLogonFlags, LPCWSTR lpApplicationName, PWSTR lpCommandLine, DWORD dwCreationFlags, LPVOID lpEnvironment,
+	// HANDLE hToken, DWORD dwLogonFlags, LPCWSTR lpApplicationName, StrPtrUni lpCommandLine, DWORD dwCreationFlags, LPVOID lpEnvironment,
 	// LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation );
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winbase.h", MSDNShortId = "b329866a-0c0d-4cb3-838c-36aac17c87ed")]

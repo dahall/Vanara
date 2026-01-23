@@ -117,10 +117,10 @@ public static partial class AdvApi32
 	/// <para><c>Windows Vista:</c> The CounterInitialize function is named <c>PerfAutoInitialize</c>.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/perflib/nc-perflib-perf_mem_alloc PERF_MEM_ALLOC PerfMemAlloc; LPVOID
-	// PerfMemAlloc( IN SIZE_T AllocSize, IN LPVOID pContext ) {...}
+	// PerfMemAlloc( IN SizeT AllocSize, IN LPVOID pContext ) {...}
 	[PInvokeData("perflib.h", MSDNShortId = "09af7e56-2174-4a82-b45b-59f4180e4aab")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate IntPtr AllocateMemory([In] SIZE_T AllocSize, [In, Optional] IntPtr pContext);
+	public delegate IntPtr AllocateMemory([In] SizeT AllocSize, [In, Optional] IntPtr pContext);
 
 	/// <summary>
 	/// <para>

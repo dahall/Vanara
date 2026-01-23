@@ -29,7 +29,7 @@ public static class IOExtensions
 	{
 		if (!typeof(T).IsBlittable())
 			throw new ArgumentException(@"The type parameter layout is not sequential or explicit.", nameof(T));
-		PInvoke.SIZE_T sz = Marshal.SizeOf<T>();
+		PInvoke.SizeT sz = Marshal.SizeOf<T>();
 		byte[] bytes = reader.ReadBytes(sz);
 		using PinnedObject ptr = new(bytes);
 		return (T)((IntPtr)ptr).Convert(sz, typeof(T))!;

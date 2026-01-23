@@ -285,7 +285,7 @@ public class SystemSecurity : IDisposable
 		int sidSize = 0, nameSize = 0;
 		LookupAccountName(svr, accountName, SafePSID.Null, ref sidSize, null, ref nameSize, out _);
 		var domainName = new System.Text.StringBuilder(nameSize);
-		var sid = new SafePSID((SIZE_T)sidSize);
+		var sid = new SafePSID((SizeT)sidSize);
 		if (!LookupAccountName(string.Empty, accountName, sid, ref sidSize, domainName, ref nameSize, out _))
 			throw new System.ComponentModel.Win32Exception();
 		return sid;

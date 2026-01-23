@@ -33,7 +33,7 @@ public partial class WinBaseTests
 		Assert.That(UnregisterApplicationRecoveryCallback(), ResultIs.Successful);
 
 		sb.Clear();
-		Assert.That(QueryActCtxSettingsW(0, hctx, null, "Dummy", sb, sb.Capacity, out SIZE_T req), ResultIs.Failure);
+		Assert.That(QueryActCtxSettingsW(0, hctx, null, "Dummy", sb, sb.Capacity, out SizeT req), ResultIs.Failure);
 		Assert.That(() => QueryActCtxW<ACTIVATION_CONTEXT_BASIC_INFORMATION>(QueryActCtxFlag.QUERY_ACTCTX_FLAG_USE_ACTIVE_ACTCTX, SafeHACTCTX.Null, ACTIVATION_CONTEXT_INFO_CLASS.ActivationContextBasicInformation).WriteValues(), Throws.Nothing);
 		Assert.That(() => QueryActCtxW<ACTIVATION_CONTEXT_DETAILED_INFORMATION>(QueryActCtxFlag.QUERY_ACTCTX_FLAG_USE_ACTIVE_ACTCTX, SafeHACTCTX.Null, ACTIVATION_CONTEXT_INFO_CLASS.ActivationContextDetailedInformation).WriteValues(), Throws.Nothing);
 		Assert.That(() => QueryActCtxW<ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION>(QueryActCtxFlag.QUERY_ACTCTX_FLAG_USE_ACTIVE_ACTCTX, SafeHACTCTX.Null, ACTIVATION_CONTEXT_INFO_CLASS.AssemblyDetailedInformationInActivationContext, 1).WriteValues(), Throws.Nothing);

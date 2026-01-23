@@ -62,7 +62,7 @@ public static partial class SpellCheckProvider
 		/// <para>This property is read-only.</para>
 		/// </summary>
 		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheckprovider/nf-spellcheckprovider-ispellcheckprovider-get_languagetag
-		// HRESULT get_LanguageTag( PWSTR *value );
+		// HRESULT get_LanguageTag( StrPtrUni *value );
 		[PreserveSig]
 		HRESULT get_LanguageTag(out string? value);
 
@@ -213,7 +213,7 @@ public static partial class SpellCheckProvider
 		/// <param name="value"/>
 		/// <returns>None</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheckprovider/nf-spellcheckprovider-ispellcheckprovider-get_id HRESULT
-		// get_Id( PWSTR *value );
+		// get_Id( StrPtrUni *value );
 		[PreserveSig]
 		HRESULT get_Id(out string? value);
 
@@ -224,7 +224,7 @@ public static partial class SpellCheckProvider
 		/// <param name="value"/>
 		/// <returns>None</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/spellcheckprovider/nf-spellcheckprovider-ispellcheckprovider-get_localizedname
-		// HRESULT get_LocalizedName( PWSTR *value );
+		// HRESULT get_LocalizedName( StrPtrUni *value );
 		[PreserveSig]
 		HRESULT get_LocalizedName(out string? value);
 

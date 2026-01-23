@@ -107,7 +107,7 @@ public static partial class Shell32
 		/// </param>
 		/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idesktopwallpaper-getwallpaper HRESULT
-		// GetWallpaper( LPCWSTR monitorID, PWSTR *wallpaper );
+		// GetWallpaper( LPCWSTR monitorID, StrPtrUni *wallpaper );
 		[PreserveSig]
 		HRESULT GetWallpaper([MarshalAs(UnmanagedType.LPWStr)] string? monitorID, [MarshalAs(UnmanagedType.LPWStr)] out string wallpaper);
 
@@ -136,7 +136,7 @@ public static partial class Shell32
 		/// GetMonitorRECT to distinguish between attached and detached monitors.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-idesktopwallpaper-getmonitordevicepathat
-		// HRESULT GetMonitorDevicePathAt( UINT monitorIndex, PWSTR *monitorID );
+		// HRESULT GetMonitorDevicePathAt( UINT monitorIndex, StrPtrUni *monitorID );
 		[PreserveSig]
 		HRESULT GetMonitorDevicePathAt(uint monitorIndex, [MarshalAs(UnmanagedType.LPWStr)] out string? monitorID);
 

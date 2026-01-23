@@ -251,7 +251,7 @@ public static partial class Schannel
 	/// </param>
 	/// <param name="dwFlags">This parameter is not used.</param>
 	/// <returns>Returns nonzero if the specified entries are removed from the Schannel cache or zero otherwise.</returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/schannel/nf-schannel-sslemptycachea BOOL SslEmptyCacheA( PSTR pszTargetName,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/schannel/nf-schannel-sslemptycachea BOOL SslEmptyCacheA( StrPtrAnsi pszTargetName,
 	// DWORD dwFlags );
 	[DllImport(Lib.Schannel, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("schannel.h", MSDNShortId = "c914d4e3-657e-45ef-ace8-2cea900a8a76")]
@@ -689,7 +689,7 @@ public static partial class Schannel
 
 	/// <summary>The <c>SecPkgContext_KeyingMaterial</c> structure specifies the exportable keying material for the security context.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/schannel/ns-schannel-_secpkgcontext_keyingmaterialinfo typedef struct
-	// _SecPkgContext_KeyingMaterialInfo { WORD cbLabel; PSTR pszLabel; WORD cbContextValue; PBYTE pbContextValue; DWORD
+	// _SecPkgContext_KeyingMaterialInfo { WORD cbLabel; StrPtrAnsi pszLabel; WORD cbContextValue; PBYTE pbContextValue; DWORD
 	// cbKeyingMaterial; } SecPkgContext_KeyingMaterialInfo, *PSecPkgContext_KeyingMaterialInfo;
 	[PInvokeData("schannel.h", MSDNShortId = "2F8C4316-FC03-473C-8A97-83665B3271AC")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -937,7 +937,7 @@ public static partial class Schannel
 
 	/// <summary>The <c>X509Certificate</c> structure represents an X.509 certificate.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/schannel/ns-schannel-_x509certificate typedef struct _X509Certificate { DWORD
-	// Version; DWORD SerialNumber[4]; ALG_ID SignatureAlgorithm; FILETIME ValidFrom; FILETIME ValidUntil; PSTR pszIssuer; PSTR
+	// Version; DWORD SerialNumber[4]; ALG_ID SignatureAlgorithm; FILETIME ValidFrom; FILETIME ValidUntil; StrPtrAnsi pszIssuer; StrPtrAnsi
 	// pszSubject; PctPublicKey *pPublicKey; } X509Certificate, *PX509Certificate;
 	[PInvokeData("schannel.h", MSDNShortId = "5a337f78-e5de-4ea2-9c15-1056d9e9e38c")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]

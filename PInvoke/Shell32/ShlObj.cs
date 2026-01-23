@@ -833,7 +833,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-gethelptext
-		[MsgParams(typeof(uint), typeof(PSTR))]
+		[MsgParams(typeof(uint), typeof(StrPtrAnsi))]
 		DFM_GETHELPTEXT = 5,
 
 		/// <summary>
@@ -974,7 +974,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-gethelptextw
-		[MsgParams(typeof(uint), typeof(PWSTR))]
+		[MsgParams(typeof(uint), typeof(StrPtrUni))]
 		DFM_GETHELPTEXTW = 11,
 
 		/// <summary>
@@ -1044,7 +1044,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-mapcommandname
-		[MsgParams(typeof(PTSTR), typeof(int?))]
+		[MsgParams(typeof(StrPtrAuto), typeof(int?))]
 		DFM_MAPCOMMANDNAME = 13,
 
 		/// <summary>
@@ -1097,7 +1097,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-getverb
-		[MsgParams(typeof(uint), typeof(PWSTR))]
+		[MsgParams(typeof(uint), typeof(StrPtrUni))]
 		DFM_GETVERBW = 15,
 
 		/// <summary>
@@ -1121,7 +1121,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/shell/dfm-getverb
-		[MsgParams(typeof(uint), typeof(PSTR))]
+		[MsgParams(typeof(uint), typeof(StrPtrAnsi))]
 		DFM_GETVERBA = 16,
 
 		/// <summary>
@@ -3157,7 +3157,7 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <param name="pszFilePath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A null-terminated Unicode string that contains a file name used to initialize the File Name edit control. This string corresponds
 	/// to the OPENFILENAME structure's <c>lpstrFile</c> member and is used in exactly the same way.
@@ -3201,7 +3201,7 @@ public static partial class Shell32
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-getfilenamefrombrowse BOOL GetFileNameFromBrowse( HWND hwnd,
-	// PWSTR pszFilePath, UINT cchFilePath, PCWSTR pszWorkingDir, PCWSTR pszDefExt, PCWSTR pszFilters, PCWSTR pszTitle );
+	// StrPtrUni pszFilePath, UINT cchFilePath, PCWSTR pszWorkingDir, PCWSTR pszDefExt, PCWSTR pszFilters, PCWSTR pszTitle );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj.h", MSDNShortId = "1f075051-18c8-4ec2-b010-f983ba2d3303")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3441,7 +3441,7 @@ public static partial class Shell32
 	/// <para>This value can be <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="pszSpec">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a null-terminated buffer that contains the file or directory name to be cleaned. In the case of a file, include the
 	/// file's extension. Note that because '' is considered an invalid character and will be removed, this buffer cannot contain a path
@@ -3500,7 +3500,7 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathcleanupspec int PathCleanupSpec( PCWSTR
-	// pszDir, PWSTR pszSpec );
+	// pszDir, StrPtrUni pszSpec );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "593fd2b7-44ae-4309-a185-97e42f3cc0fa")]
 	public static extern PCS PathCleanupSpec([MarshalAs(UnmanagedType.LPWStr)] string? pszDir, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSpec);
@@ -3513,7 +3513,7 @@ public static partial class Shell32
 	/// <para>Retrieves the short path form of a specified input path.</para>
 	/// </summary>
 	/// <param name="pszLongPath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a null-terminated, Unicode string that contains the long path. When the function returns, it contains the equivalent
 	/// short path.
@@ -3522,7 +3522,7 @@ public static partial class Shell32
 	/// <returns>
 	/// <para>This function does not return a value.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathgetshortpath void PathGetShortPath( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathgetshortpath void PathGetShortPath( StrPtrUni
 	// pszLongPath );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "f374a575-3fbf-4bed-aa76-76ed81e01d60")]
@@ -3588,7 +3588,7 @@ public static partial class Shell32
 	/// <para>Creates a unique path name from a template.</para>
 	/// </summary>
 	/// <param name="pszUniqueName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A buffer that receives a null-terminated Unicode string that contains the unique path name. It should be at least MAX_PATH
 	/// characters in length.
@@ -3632,7 +3632,7 @@ public static partial class Shell32
 	/// names such as "My New Filename (1)", "My New Filename (2)", and so on.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathmakeuniquename BOOL PathMakeUniqueName( PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathmakeuniquename BOOL PathMakeUniqueName( StrPtrUni
 	// pszUniqueName, UINT cchMax, PCWSTR pszTemplate, PCWSTR pszLongPlate, PCWSTR pszDir );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "8456ae0c-e83c-43d0-a86a-1861a373d237")]
@@ -3647,7 +3647,7 @@ public static partial class Shell32
 	/// <para>Converts a relative or unqualified path name to a fully qualified path name.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A null-terminated Unicode string that contains the path to resolve. When the function returns, the string contains the
 	/// corresponding fully qualified path. This buffer should be at least MAX_PATH characters long.
@@ -3688,7 +3688,7 @@ public static partial class Shell32
 	/// </para>
 	/// <para>If <c>PathResolve</c> cannot resolve the path specified in , it calls PathFindOnPath using and as the parameters.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathresolve int PathResolve( PWSTR pszPath,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathresolve int PathResolve( StrPtrUni pszPath,
 	// PZPCWSTR dirs, UINT fFlags );
 	[DllImport(Lib.Shell32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "84bf0b56-513f-4ac6-b2cf-11f0c471da1e")]
@@ -3699,7 +3699,7 @@ public static partial class Shell32
 	/// <para>Creates a unique filename based on an existing filename.</para>
 	/// </summary>
 	/// <param name="pszUniqueName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A string buffer that receives a null-terminated Unicode string that contains the fully qualified path of the unique file name.
 	/// This buffer should be at least MAX_PATH characters long to avoid causing a buffer overrun.
@@ -3734,7 +3734,7 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathyetanothermakeuniquename BOOL
-	// PathYetAnotherMakeUniqueName( PWSTR pszUniqueName, PCWSTR pszPath, PCWSTR pszShort, PCWSTR pszFileSpec );
+	// PathYetAnotherMakeUniqueName( StrPtrUni pszUniqueName, PCWSTR pszPath, PCWSTR pszShort, PCWSTR pszFileSpec );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "1f76ecfa-6f2f-4dde-b05e-4252c92660d9")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -3755,7 +3755,7 @@ public static partial class Shell32
 	/// <para>The handle of the parent window. This value can be <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="pszIconPath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a string that contains the null-terminated, fully qualified path of the default resource that contains the icons. If
 	/// the user chooses a different resource in the dialog, this buffer contains the path of that file when the function returns. This
@@ -3778,7 +3778,7 @@ public static partial class Shell32
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>Returns <see langword="true"/> if successful; otherwise, <see langword="false"/>.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg int PickIconDlg( HWND hwnd, PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg int PickIconDlg( HWND hwnd, StrPtrUni
 	// pszIconPath, UINT cchIconPath, int *piIconIndex );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "3dfcda10-26d8-495d-8c92-7ff16da098c1")]
@@ -6150,7 +6150,7 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// When this function returns, this value points to the directory path and appended subpath. This is a <c>null</c>-terminated string
 	/// of length MAX_PATH. This string is empty when the function returns an error code.
@@ -6161,7 +6161,7 @@ public static partial class Shell32
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetfolderpathandsubdira HRESULT
-	// SHGetFolderPathAndSubDirA( HWND hwnd, int csidl, HANDLE hToken, DWORD dwFlags, LPCSTR pszSubDir, PSTR pszPath );
+	// SHGetFolderPathAndSubDirA( HWND hwnd, int csidl, HANDLE hToken, DWORD dwFlags, LPCSTR pszSubDir, StrPtrAnsi pszPath );
 	[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "7e92e136-1036-4c96-931f-6e0129fb839a")]
 	public static extern HRESULT SHGetFolderPathAndSubDir(HWND hwnd, CSIDL csidl, [Optional] HTOKEN hToken, SHGFP dwFlags, string pszSubDir, StringBuilder pszPath);
@@ -6475,7 +6475,7 @@ public static partial class Shell32
 	/// </para>
 	/// </param>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// When this function is called it is passed a null-terminated, Unicode buffer to receive the file system path. This buffer is of
 	/// size .
@@ -6510,7 +6510,7 @@ public static partial class Shell32
 	/// <para>If the parameter specifies a shortcut, the contains the path to the shortcut, not to the shortcut's target.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetpathfromidlistex BOOL SHGetPathFromIDListEx(
-	// PCIDLIST_ABSOLUTE pidl, PWSTR pszPath, DWORD cchPath, GPFIDL_FLAGS uOpts );
+	// PCIDLIST_ABSOLUTE pidl, StrPtrUni pszPath, DWORD cchPath, GPFIDL_FLAGS uOpts );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "80270c59-275d-4b13-b16c-0c07bb79ed8e")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -7555,7 +7555,7 @@ public static partial class Shell32
 	/// <para>Handle of the parent window, used to display UI. If this is not needed, this value can be set to <c>NULL</c>.</para>
 	/// </param>
 	/// <param name="pszFile">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// A pointer to a null-terminated Unicode string that specifies the UNC path to validate. Note: This string must not be a constant string.
 	/// </para>
@@ -7581,7 +7581,7 @@ public static partial class Shell32
 	/// <para>Returns <c>TRUE</c> if the UNC path exists; <c>FALSE</c> if the UNC path does not exist or if some other failure occurred.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shvalidateunc BOOL SHValidateUNC( HWND hwndOwner,
-	// PWSTR pszFile, UINT fConnect );
+	// StrPtrUni pszFile, UINT fConnect );
 	[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("shlobj_core.h", MSDNShortId = "42394650-5571-4165-84f1-19a26fb4a1b8")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -8858,9 +8858,9 @@ public static partial class Shell32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-shfoldercustomsettings typedef struct
-	// SHFOLDERCUSTOMSETTINGS { DWORD dwSize; DWORD dwMask; SHELLVIEWID *pvid; PWSTR pszWebViewTemplate; DWORD cchWebViewTemplate;
-	// PWSTR pszWebViewTemplateVersion; PWSTR pszInfoTip; DWORD cchInfoTip; CLSID *pclsid; DWORD dwFlags; PWSTR pszIconFile; DWORD
-	// cchIconFile; int iIconIndex; PWSTR pszLogo; DWORD cchLogo; } *LPSHFOLDERCUSTOMSETTINGS;
+	// SHFOLDERCUSTOMSETTINGS { DWORD dwSize; DWORD dwMask; SHELLVIEWID *pvid; StrPtrUni pszWebViewTemplate; DWORD cchWebViewTemplate;
+	// StrPtrUni pszWebViewTemplateVersion; StrPtrUni pszInfoTip; DWORD cchInfoTip; CLSID *pclsid; DWORD dwFlags; StrPtrUni pszIconFile; DWORD
+	// cchIconFile; int iIconIndex; StrPtrUni pszLogo; DWORD cchLogo; } *LPSHFOLDERCUSTOMSETTINGS;
 	[PInvokeData("shlobj_core.h", MSDNShortId = "a6357372-80ef-4719-b53f-87eb3fdc1b0d")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct SHFOLDERCUSTOMSETTINGS(FOLDERCUSTOMSETTINGSMASK mask)
@@ -8903,10 +8903,10 @@ public static partial class Shell32
 		public IntPtr pvid;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to a null-terminated string containing the path to the folder's WebView template.</para>
 		/// </summary>
-		public PTSTR pszWebViewTemplate;
+		public StrPtrAuto pszWebViewTemplate;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8919,16 +8919,16 @@ public static partial class Shell32
 		public uint cchWebViewTemplate;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the WebView template version.</para>
 		/// </summary>
-		public PTSTR pszWebViewTemplateVersion;
+		public StrPtrAuto pszWebViewTemplateVersion;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the text of the folder's infotip.</para>
 		/// </summary>
-		public PTSTR pszInfoTip;
+		public StrPtrAuto pszInfoTip;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8955,10 +8955,10 @@ public static partial class Shell32
 		public uint dwFlags;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to a null-terminated buffer containing the path to file containing the folder's icon.</para>
 		/// </summary>
-		public PTSTR pszIconFile;
+		public StrPtrAuto pszIconFile;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -8976,13 +8976,13 @@ public static partial class Shell32
 		public int iIconIndex;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// A pointer to a null-terminated buffer containing the path to the file containing the folder's logo image. This is the image
 		/// used in thumbnail views.
 		/// </para>
 		/// </summary>
-		public PTSTR pszLogo;
+		public StrPtrAuto pszLogo;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>

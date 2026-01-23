@@ -1036,7 +1036,7 @@ public static partial class Ole32
 	}
 
 	/// <summary>
-	/// Enumerate strings. <c>PWSTR</c> is the type that indicates a pointer to a zero-terminated string of wide, or Unicode, characters.
+	/// Enumerate strings. <c>StrPtrUni</c> is the type that indicates a pointer to a zero-terminated string of wide, or Unicode, characters.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/objidl/nn-objidl-ienumstring
 	[PInvokeData("objidl.h", MSDNShortId = "NN:objidl.IEnumString")]
@@ -1424,9 +1424,9 @@ public static partial class Ole32
 		/// memory available, <c>Alloc</c> returns <c>NULL</c>.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-alloc void * Alloc( SIZE_T cb );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-alloc void * Alloc( SizeT cb );
 		[PreserveSig]
-		IntPtr Alloc(SIZE_T cb);
+		IntPtr Alloc(SizeT cb);
 
 		/// <summary>Changes the size of a previously allocated block of memory.</summary>
 		/// <param name="pv">
@@ -1462,9 +1462,9 @@ public static partial class Ole32
 		/// get a pointer to a type other than <c>void</c>, use a type cast on the return value.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-realloc void * Realloc( void *pv, SIZE_T cb );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-realloc void * Realloc( void *pv, SizeT cb );
 		[PreserveSig]
-		IntPtr Realloc([In, Optional] IntPtr pv, SIZE_T cb);
+		IntPtr Realloc([In, Optional] IntPtr pv, SizeT cb);
 
 		/// <summary>Frees a previously allocated block of memory.</summary>
 		/// <param name="pv">A pointer to the memory block to be freed. If this parameter is <c>NULL</c>, this method has no effect.</param>
@@ -1485,9 +1485,9 @@ public static partial class Ole32
 		/// IMalloc::Realloc. The size returned is the actual size of the allocation, which may be greater than the size requested when
 		/// the allocation was made.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-getsize SIZE_T GetSize( void *pv );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-getsize SizeT GetSize( void *pv );
 		[PreserveSig]
-		SIZE_T GetSize([In, Optional] IntPtr pv);
+		SizeT GetSize([In, Optional] IntPtr pv);
 
 		/// <summary>Determines whether this allocator was used to allocate the specified block of memory.</summary>
 		/// <param name="pv">A pointer to the block of memory. If this parameter is a <c>NULL</c> pointer, -1 is returned.</param>
@@ -3907,7 +3907,7 @@ public static partial class Ole32
 		/// <summary>Retrieves the size of a previously allocated block of memory.</summary>
 		/// <param name="hMem">A pointer to the block of memory.</param>
 		/// <returns>The size of the allocated memory block in bytes or, if <paramref name="hMem"/> is a NULL pointer, -1.</returns>
-		public SIZE_T GetSize(IntPtr hMem) => (malloc?.Value ?? GetMalloc()).GetSize(hMem);
+		public SizeT GetSize(IntPtr hMem) => (malloc?.Value ?? GetMalloc()).GetSize(hMem);
 
 		/// <summary>Gets the reallocation method.</summary>
 		/// <param name="hMem">A memory handle.</param>
@@ -3924,13 +3924,13 @@ public static partial class Ole32
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
 		/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-		public SafeIMallocHandle(SIZE_T size = default) : base(size) { }
+		public SafeIMallocHandle(SizeT size = default) : base(size) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
 		/// <param name="handle">The handle.</param>
 		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-		public SafeIMallocHandle(IntPtr handle, SIZE_T size = default, bool ownsHandle = true) : base(handle, size <= 0 ? mm.GetSize(handle) : size, ownsHandle) { }
+		public SafeIMallocHandle(IntPtr handle, SizeT size = default, bool ownsHandle = true) : base(handle, size <= 0 ? mm.GetSize(handle) : size, ownsHandle) { }
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
@@ -3940,7 +3940,7 @@ public static partial class Ole32
 		/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
 		public SafeIMallocHandle(byte[] bytes) : base(bytes) { }
 
-		/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+		/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native StrPtrUni.</summary>
 		/// <param name="s">The string value.</param>
 		/// <param name="charSet">The character set of the string.</param>
 		/// <returns>SafeMemoryHandleExt object to an native (unmanaged) string</returns>
@@ -3954,7 +3954,7 @@ public static partial class Ole32
 		public static SafeIMallocHandle Null => new(IntPtr.Zero, 0, false);
 
 		/// <inheritdoc/>
-		public override SIZE_T Size { get => sz = mm.GetSize(handle); set => base.Size = value; }
+		public override SizeT Size { get => sz = mm.GetSize(handle); set => base.Size = value; }
 
 		/// <summary>
 		/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure

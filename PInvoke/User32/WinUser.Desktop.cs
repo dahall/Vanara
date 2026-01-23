@@ -14,7 +14,7 @@ public static partial class User32
 	/// <param name="lpszDesktop">The name of the desktop.</param>
 	/// <param name="lParam">An application-defined value specified in the <c>EnumDesktops</c> function.</param>
 	/// <returns>To continue enumeration, the callback function must return TRUE. To stop enumeration, it must return FALSE.</returns>
-	// BOOL CALLBACK EnumDesktopProc( _In_ PTSTR lpszDesktop, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682612(v=vs.85).aspx
+	// BOOL CALLBACK EnumDesktopProc( _In_ StrPtrAuto lpszDesktop, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682612(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms682612")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -32,7 +32,7 @@ public static partial class User32
 	/// <param name="lpszWindowStation">The name of the window station.</param>
 	/// <param name="lParam">An application-defined value specified in the <c>EnumWindowStations</c> function.</param>
 	/// <returns>To continue enumeration, the callback function must return TRUE. To stop enumeration, it must return FALSE.</returns>
-	// BOOL CALLBACK EnumWindowStationProc( _In_ PTSTR lpszWindowStation, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682643(v=vs.85).aspx
+	// BOOL CALLBACK EnumWindowStationProc( _In_ StrPtrAuto lpszWindowStation, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682643(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("Winuser.h", MSDNShortId = "ms682643")]
 	[return: MarshalAs(UnmanagedType.Bool)]

@@ -631,7 +631,7 @@ public static partial class CoreAudio
 		/// </item>
 		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/nf-mmdeviceapi-immdevice-getid HRESULT GetId( PWSTR *ppstrId );
+		// https://docs.microsoft.com/en-us/windows/win32/api/mmdeviceapi/nf-mmdeviceapi-immdevice-getid HRESULT GetId( StrPtrUni *ppstrId );
 		SafeCoTaskMemString GetId();
 
 		/// <summary>The <c>GetState</c> method retrieves the current device state.</summary>

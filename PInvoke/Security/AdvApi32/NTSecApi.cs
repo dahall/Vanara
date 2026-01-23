@@ -614,7 +614,7 @@ public static partial class AdvApi32
 		/// </summary>
 		public int MaximumAuditEventCount => EventAuditingOptions?.Length ?? 0;
 
-		SIZE_T IVanaraMarshaler.GetNativeSize() => IntPtr.Size * 3 + 36;
+		SizeT IVanaraMarshaler.GetNativeSize() => IntPtr.Size * 3 + 36;
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? obj)
 		{
@@ -628,7 +628,7 @@ public static partial class AdvApi32
 			return mem;
 		}
 
-		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr ptr, SIZE_T size)
+		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr ptr, SizeT size)
 		{
 			using var str = new NativeMemoryStream(ptr, size);
 			var mode = str.Read<BOOLEAN>();

@@ -309,7 +309,7 @@ public static partial class AdvApi32
 	/// <para>For an example, see Starting an Interactive Client Process.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessasusera BOOL
-	// CreateProcessAsUserA( HANDLE hToken, LPCSTR lpApplicationName, PSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
+	// CreateProcessAsUserA( HANDLE hToken, LPCSTR lpApplicationName, StrPtrAnsi lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
 	// LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR
 	// lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation );
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "6b3f4dd9-500b-420e-804a-401a9e188be8")]
@@ -627,7 +627,7 @@ public static partial class AdvApi32
 	/// <para>For an example, see Starting an Interactive Client Process.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessasusera BOOL
-	// CreateProcessAsUserA( HANDLE hToken, LPCSTR lpApplicationName, PSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
+	// CreateProcessAsUserA( HANDLE hToken, LPCSTR lpApplicationName, StrPtrAnsi lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
 	// LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR
 	// lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation );
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "6b3f4dd9-500b-420e-804a-401a9e188be8")]
@@ -1049,7 +1049,7 @@ public static partial class AdvApi32
 	/// <para>For an example, see Starting an Interactive Client Process.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessasusera BOOL
-	// CreateProcessAsUserA( HANDLE hToken, LPCSTR lpApplicationName, PSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
+	// CreateProcessAsUserA( HANDLE hToken, LPCSTR lpApplicationName, StrPtrAnsi lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
 	// LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR
 	// lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
@@ -1364,7 +1364,7 @@ public static partial class AdvApi32
 	/// <para>For an example, see Starting an Interactive Client Process.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessasusera BOOL
-	// CreateProcessAsUserA( HANDLE hToken, LPCSTR lpApplicationName, PSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
+	// CreateProcessAsUserA( HANDLE hToken, LPCSTR lpApplicationName, StrPtrAnsi lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
 	// LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR
 	// lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation );
 	[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]

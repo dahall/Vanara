@@ -1412,8 +1412,8 @@ public static partial class Authz
 	/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzinitializeobjectaccessauditevent AUTHZAPI BOOL
-	// AuthzInitializeObjectAccessAuditEvent( DWORD Flags, AUTHZ_AUDIT_EVENT_TYPE_HANDLE hAuditEventType, PWSTR szOperationType, PWSTR
-	// szObjectType, PWSTR szObjectName, PWSTR szAdditionalInfo, PAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, DWORD
+	// AuthzInitializeObjectAccessAuditEvent( DWORD Flags, AUTHZ_AUDIT_EVENT_TYPE_HANDLE hAuditEventType, StrPtrUni szOperationType, StrPtrUni
+	// szObjectType, StrPtrUni szObjectName, StrPtrUni szAdditionalInfo, PAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, DWORD
 	// dwAdditionalParameterCount, ... );
 	[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("authz.h", MSDNShortId = "cf79a92f-31e0-47cf-8990-4dbd46056a90")]
@@ -1463,8 +1463,8 @@ public static partial class Authz
 	/// <para>If the function fails, it returns <c>FALSE</c>. For extended error information, call GetLastError.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/nf-authz-authzinitializeobjectaccessauditevent2 AUTHZAPI BOOL
-	// AuthzInitializeObjectAccessAuditEvent2( DWORD Flags, AUTHZ_AUDIT_EVENT_TYPE_HANDLE hAuditEventType, PWSTR szOperationType, PWSTR
-	// szObjectType, PWSTR szObjectName, PWSTR szAdditionalInfo, PWSTR szAdditionalInfo2, PAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, DWORD
+	// AuthzInitializeObjectAccessAuditEvent2( DWORD Flags, AUTHZ_AUDIT_EVENT_TYPE_HANDLE hAuditEventType, StrPtrUni szOperationType, StrPtrUni
+	// szObjectType, StrPtrUni szObjectName, StrPtrUni szAdditionalInfo, StrPtrUni szAdditionalInfo2, PAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, DWORD
 	// dwAdditionalParameterCount, ... );
 	[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("authz.h", MSDNShortId = "c65bb799-0158-496a-b428-0331c4474b74")]
@@ -2163,7 +2163,7 @@ public static partial class Authz
 	/// The <c>AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET</c> structure specifies the offset of a registration object type name.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-authz_registration_object_type_name_offset typedef struct
-	// _AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET { PWSTR szObjectTypeName; DWORD dwOffset; }
+	// _AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET { StrPtrUni szObjectTypeName; DWORD dwOffset; }
 	// AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET, *PAUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET;
 	[PInvokeData("authz.h", MSDNShortId = "2ec39edc-7819-41a5-8798-dc51c00ba85e")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2250,7 +2250,7 @@ public static partial class Authz
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_security_attribute_fqbn_value typedef struct
-	// _AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE { ULONG64 Version; PWSTR pName; } AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE, *PAUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE;
+	// _AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE { ULONG64 Version; StrPtrUni pName; } AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE, *PAUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE;
 	[PInvokeData("authz.h", MSDNShortId = "05b4bf7d-a0d9-473c-b215-9cf566b2a996")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE
@@ -2287,8 +2287,8 @@ public static partial class Authz
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_security_attribute_v1 typedef struct
-	// _AUTHZ_SECURITY_ATTRIBUTE_V1 { PWSTR pName; USHORT ValueType; USHORT Reserved; ULONG Flags; ULONG ValueCount; union { PLONG64
-	// pInt64; PULONG64 pUint64; PWSTR *ppString; PAUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE pFqbn;
+	// _AUTHZ_SECURITY_ATTRIBUTE_V1 { StrPtrUni pName; USHORT ValueType; USHORT Reserved; ULONG Flags; ULONG ValueCount; union { PLONG64
+	// pInt64; PULONG64 pUint64; StrPtrUni *ppString; PAUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE pFqbn;
 	// PAUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE pOctetString; } Values; } AUTHZ_SECURITY_ATTRIBUTE_V1, *PAUTHZ_SECURITY_ATTRIBUTE_V1;
 	[PInvokeData("authz.h", MSDNShortId = "0c4778bb-1b5d-4422-b066-d2a6aaa1f351")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2373,8 +2373,8 @@ public static partial class Authz
 
 	/// <summary>The <c>AUTHZ_SOURCE_SCHEMA_REGISTRATION</c> structure specifies information about source schema registration.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/authz/ns-authz-_authz_source_schema_registration typedef struct
-	// _AUTHZ_SOURCE_SCHEMA_REGISTRATION { DWORD dwFlags; PWSTR szEventSourceName; PWSTR szEventMessageFile; PWSTR
-	// szEventSourceXmlSchemaFile; PWSTR szEventAccessStringsFile; PWSTR szExecutableImagePath; union { PVOID pReserved; GUID
+	// _AUTHZ_SOURCE_SCHEMA_REGISTRATION { DWORD dwFlags; StrPtrUni szEventSourceName; StrPtrUni szEventMessageFile; StrPtrUni
+	// szEventSourceXmlSchemaFile; StrPtrUni szEventAccessStringsFile; StrPtrUni szExecutableImagePath; union { PVOID pReserved; GUID
 	// *pProviderGuid; } DUMMYUNIONNAME; DWORD dwObjectTypeNameCount; AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET
 	// ObjectTypeNames[ANYSIZE_ARRAY]; } AUTHZ_SOURCE_SCHEMA_REGISTRATION, *PAUTHZ_SOURCE_SCHEMA_REGISTRATION;
 	[PInvokeData("authz.h", MSDNShortId = "8b4d6e14-fb9c-428a-bd94-34eba668edc6")]
@@ -2733,7 +2733,7 @@ public static partial class Authz
 		private struct Internal_AUTHZ_SECURITY_ATTRIBUTE_V1
 		{
 			/// <summary>A pointer to a name of a security attribute.</summary>
-			public PWSTR pName;
+			public StrPtrUni pName;
 
 			/// <summary>The data type of the values pointed to by the Values member.</summary>
 			public AUTHZ_SECURITY_ATTRIBUTE_DATATYPE ValueType;

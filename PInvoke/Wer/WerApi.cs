@@ -215,7 +215,7 @@ public static partial class Wer
 	// https://docs.microsoft.com/en-us/windows/win32/api/werapi/nf-werapi-werfreestring void WerFreeString( PCWSTR pwszStr );
 	[DllImport(Lib.Wer, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("werapi.h", MSDNShortId = "748AEFD4-3310-4BC1-A3DA-CFACBA31F2FC")]
-	public static extern void WerFreeString(PWSTR pwszStr);
+	public static extern void WerFreeString(StrPtrUni pwszStr);
 
 	/// <summary>Removes the specified application from the list of applications that are to be excluded from error reporting.</summary>
 	/// <param name="pwzExeName">
@@ -889,7 +889,7 @@ public static partial class Wer
 	// HREPORTSTORE hReportStore, PCWSTR *ppszReportKey );
 	[DllImport(Lib.Wer, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("werapi.h", MSDNShortId = "E4732B60-BFBE-4916-83A6-5F031D267913")]
-	public static extern HRESULT WerStoreGetFirstReportKey(HREPORTSTORE hReportStore, out PWSTR ppszReportKey);
+	public static extern HRESULT WerStoreGetFirstReportKey(HREPORTSTORE hReportStore, out StrPtrUni ppszReportKey);
 
 	/// <summary>Gets a reference to the next report in the error report store.</summary>
 	/// <param name="hReportStore">The error report store (previously retrieved with WerStoreOpen).</param>
@@ -917,7 +917,7 @@ public static partial class Wer
 	// HREPORTSTORE hReportStore, PCWSTR *ppszReportKey );
 	[DllImport(Lib.Wer, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("werapi.h", MSDNShortId = "781D54A9-6F51-445E-89A8-A0C944081B81")]
-	public static extern HRESULT WerStoreGetNextReportKey(HREPORTSTORE hReportStore, out PWSTR ppszReportKey);
+	public static extern HRESULT WerStoreGetNextReportKey(HREPORTSTORE hReportStore, out StrPtrUni ppszReportKey);
 
 	/// <summary>Opens the collection of stored error reports.</summary>
 	/// <param name="repStoreType">The type of report store to open. See Remarks for details.</param>

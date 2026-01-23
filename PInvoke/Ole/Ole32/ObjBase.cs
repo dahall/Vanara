@@ -2752,7 +2752,7 @@ public static partial class Ole32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ns-objidl-_coserverinfo typedef struct _COSERVERINFO { DWORD
-	// dwReserved1; PWSTR pwszName; COAUTHINFO *pAuthInfo; DWORD dwReserved2; } COSERVERINFO;
+	// dwReserved1; StrPtrUni pwszName; COAUTHINFO *pAuthInfo; DWORD dwReserved2; } COSERVERINFO;
 	[PInvokeData("objidl.h", MSDNShortId = "88c94a7f-5cf0-4d61-833f-91cba45d8624")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public class COSERVERINFO

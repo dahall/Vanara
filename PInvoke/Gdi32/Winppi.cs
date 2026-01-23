@@ -290,7 +290,7 @@ public static partial class Gdi32
 	/// <para>For additional information, see Using GDI Functions in Print Processors.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/winppi/nf-winppi-gdigetspoolfilehandle HANDLE
-	// GdiGetSpoolFileHandle( PWSTR pwszPrinterName, LPDEVMODEW pDevmode, PWSTR pwszDocName );
+	// GdiGetSpoolFileHandle( StrPtrUni pwszPrinterName, LPDEVMODEW pDevmode, StrPtrUni pwszDocName );
 	[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winppi.h", MSDNShortId = "c820ee94-29c2-4478-884c-49dd68cd713a")]
 	[return: AddAsCtor]

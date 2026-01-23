@@ -1256,7 +1256,7 @@ public static partial class ComCtl32
 		/// contain the string without truncating it, you must add padding to the returned string width.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getstringwidth
-		[MsgParams(null, typeof(PTSTR))]
+		[MsgParams(null, typeof(StrPtrAuto))]
 		LVM_GETSTRINGWIDTH = LVM_FIRST + 87,
 
 		/// <summary>
@@ -3599,7 +3599,7 @@ public static partial class ComCtl32
 		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/lvm-getemptytext
-		[MsgParams(typeof(uint), typeof(PWSTR), LResultType = typeof(BOOL))]
+		[MsgParams(typeof(uint), typeof(StrPtrUni), LResultType = typeof(BOOL))]
 		LVM_GETEMPTYTEXT = LVM_FIRST + 204,
 
 		/// <summary>
@@ -5744,7 +5744,7 @@ public static partial class ComCtl32
 	/// <para>The creation of footers in list-view controls is currently not supported.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-lvfooterinfo typedef struct tagLVFOOTERINFO { UINT mask;
-	// PWSTR pszText; int cchTextMax; UINT cItems; } LVFOOTERINFO, *LPLVFOOTERINFO;
+	// StrPtrUni pszText; int cchTextMax; UINT cItems; } LVFOOTERINFO, *LPLVFOOTERINFO;
 	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVFOOTERINFO")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct LVFOOTERINFO
@@ -5759,7 +5759,7 @@ public static partial class ComCtl32
 		public LVFF mask;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>Not supported. Must be set to zero.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -5791,7 +5791,7 @@ public static partial class ComCtl32
 	/// <summary>Contains information on a footer item.</summary>
 	/// <remarks>This structure is used with the ListView_GetFooterItem macro and the LVM_GETFOOTERITEM message.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-lvfooteritem typedef struct tagLVFOOTERITEM { UINT mask; int
-	// iItem; PWSTR pszText; int cchTextMax; UINT state; UINT stateMask; } LVFOOTERITEM, *LPLVFOOTERITEM;
+	// iItem; StrPtrUni pszText; int cchTextMax; UINT state; UINT stateMask; } LVFOOTERITEM, *LPLVFOOTERITEM;
 	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagLVFOOTERITEM")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct LVFOOTERITEM
@@ -5826,7 +5826,7 @@ public static partial class ComCtl32
 		public int iItem;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a null-terminated, Unicode buffer. The calling process is responsible for allocating the buffer.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -6476,7 +6476,7 @@ public static partial class ComCtl32
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmlvgetinfotipa typedef struct tagNMLVGETINFOTIPA { NMHDR
-	// hdr; DWORD dwFlags; PSTR pszText; int cchTextMax; int iItem; int iSubItem; LPARAM lParam; } NMLVGETINFOTIPA, *LPNMLVGETINFOTIPA;
+	// hdr; DWORD dwFlags; StrPtrAnsi pszText; int cchTextMax; int iItem; int iSubItem; LPARAM lParam; } NMLVGETINFOTIPA, *LPNMLVGETINFOTIPA;
 	[PInvokeData("commctrl.h", MSDNShortId = "NS:commctrl.tagNMLVGETINFOTIPA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct NMLVGETINFOTIP : INotificationInfo
@@ -6494,14 +6494,14 @@ public static partial class ComCtl32
 		public LVGIT dwFlags;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// Address of a string buffer that receives any additional text information. If <c>dwFlags</c> is zero, this member will contain the
 		/// existing item text. In this case, you should append any additional text onto the end of this string. The size of this buffer is
 		/// specified by the <c>cchTextMax</c> structure.
 		/// </para>
 		/// </summary>
-		public PTSTR pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>
 		/// <para>Type: <c>int</c></para>
@@ -6684,7 +6684,7 @@ public static partial class ComCtl32
 		/// LVBKIF_SOURCE_URL flag is set in ulFlags. This member must be initialized to point to the buffer that contains or receives the
 		/// text before sending the message.
 		/// </summary>
-		public PTSTR pszImage;
+		public StrPtrAuto pszImage;
 
 		/// <summary>Size of the buffer at the address in pszImage. If information is being sent to the control, this member is ignored.</summary>
 		public uint cchImageMax;
@@ -6752,7 +6752,7 @@ public static partial class ComCtl32
 		{
 			ulFlags = flags;
 			if (ulFlags.IsFlagSet(ListViewBkImageFlag.LVBKIF_SOURCE_URL))
-				pszImage = new PTSTR(cchImageMax = 1024);
+				pszImage = new StrPtrAuto(cchImageMax = 1024);
 		}
 
 		/// <summary>Gets or sets the URL.</summary>
@@ -6795,7 +6795,7 @@ public static partial class ComCtl32
 		/// If the structure is receiving information about a column, this member specifies the address of the buffer that receives the
 		/// column header text.
 		/// </summary>
-		public PTSTR pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszText member. If the structure is not receiving information about a column, this
@@ -6834,7 +6834,7 @@ public static partial class ComCtl32
 		{
 			this.mask = mask;
 			if (mask.IsFlagSet(ListViewColumMask.LVCF_TEXT))
-				pszText = new PTSTR(cchTextMax = 1024);
+				pszText = new StrPtrAuto(cchTextMax = 1024);
 		}
 
 		/// <summary>Gets or sets the format.</summary>
@@ -6923,7 +6923,7 @@ public static partial class ComCtl32
 		/// Pointer to a null-terminated string that contains the header text when item information is being set. If group information is
 		/// being retrieved, this member specifies the address of the buffer that receives the header text.
 		/// </summary>
-		public PTSTR pszHeader;
+		public StrPtrAuto pszHeader;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszHeader member. If the structure is not receiving information about a group,
@@ -6935,7 +6935,7 @@ public static partial class ComCtl32
 		/// Pointer to a null-terminated string that contains the footer text when item information is being set. If group information is
 		/// being retrieved, this member specifies the address of the buffer that receives the footer text.
 		/// </summary>
-		public PTSTR pszFooter;
+		public StrPtrAuto pszFooter;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszFooter member. If the structure is not receiving information about a group,
@@ -6965,7 +6965,7 @@ public static partial class ComCtl32
 		/// being retrieved, this member specifies the address of the buffer that receives the subtitle text. This element is drawn under the
 		/// header text.
 		/// </summary>
-		public PTSTR pszSubtitle;
+		public StrPtrAuto pszSubtitle;
 
 		/// <summary>
 		/// Size, in TCHARs, of the buffer pointed to by the pszSubtitle member. If the structure is not receiving information about a group,
@@ -6978,7 +6978,7 @@ public static partial class ComCtl32
 		/// information is being retrieved, this member specifies the address of the buffer that receives the task text. This item is drawn
 		/// right-aligned opposite the header text. When clicked by the user, the task link generates an LVN_LINKCLICK notification.
 		/// </summary>
-		public PTSTR pszTask;
+		public StrPtrAuto pszTask;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszTask member. If the structure is not receiving information about a group, this
@@ -6991,7 +6991,7 @@ public static partial class ComCtl32
 		/// information is being retrieved, this member specifies the address of the buffer that receives the top description text. This item
 		/// is drawn opposite the title image when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.
 		/// </summary>
-		public PTSTR pszDescriptionTop;
+		public StrPtrAuto pszDescriptionTop;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszDescriptionTop member. If the structure is not receiving information about a
@@ -7004,7 +7004,7 @@ public static partial class ComCtl32
 		/// information is being retrieved, this member specifies the address of the buffer that receives the bottom description text. This
 		/// item is drawn under the top description text when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.
 		/// </summary>
-		public PTSTR pszDescriptionBottom;
+		public StrPtrAuto pszDescriptionBottom;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszDescriptionBottom member. If the structure is not receiving information about a
@@ -7029,7 +7029,7 @@ public static partial class ComCtl32
 		/// being set. If group information is being retrieved, this member specifies the address of the buffer that receives the subset
 		/// title text.
 		/// </summary>
-		public PTSTR pszSubsetTitle;
+		public StrPtrAuto pszSubsetTitle;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszSubsetTitle member. If the structure is not receiving information about a
@@ -7055,22 +7055,22 @@ public static partial class ComCtl32
 			if (header != null)
 				Header = header;
 			else if ((mask & ListViewGroupMask.LVGF_HEADER) != 0)
-				pszHeader = new PTSTR(cchHeader = 1024);
+				pszHeader = new StrPtrAuto(cchHeader = 1024);
 
 			if ((mask & ListViewGroupMask.LVGF_FOOTER) != 0)
-				pszFooter = new PTSTR(cchFooter = 1024);
+				pszFooter = new StrPtrAuto(cchFooter = 1024);
 
 			if ((mask & ListViewGroupMask.LVGF_SUBTITLE) != 0)
-				pszSubtitle = new PTSTR(cchSubtitle = 1024);
+				pszSubtitle = new StrPtrAuto(cchSubtitle = 1024);
 
 			if ((mask & ListViewGroupMask.LVGF_TASK) != 0)
-				pszTask = new PTSTR(cchTask = 1024);
+				pszTask = new StrPtrAuto(cchTask = 1024);
 
 			if ((mask & ListViewGroupMask.LVGF_DESCRIPTIONBOTTOM) != 0)
-				pszDescriptionBottom = new PTSTR(cchDescriptionBottom = 1024);
+				pszDescriptionBottom = new StrPtrAuto(cchDescriptionBottom = 1024);
 
 			if ((mask & ListViewGroupMask.LVGF_DESCRIPTIONTOP) != 0)
-				pszDescriptionTop = new PTSTR(cchDescriptionTop = 1024);
+				pszDescriptionTop = new StrPtrAuto(cchDescriptionTop = 1024);
 		}
 
 		/// <summary>Gets or sets the bottom description text.</summary>
@@ -7250,7 +7250,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// <para>Do not set pszText to LPSTR_TEXTCALLBACK if the list-view control has the LVS_SORTASCENDING or LVS_SORTDESCENDING style.</para>
 		/// </summary>
-		public PTSTR pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>
 		/// Number of TCHARs in the buffer pointed to by pszText, including the terminating NULL.
@@ -7321,7 +7321,7 @@ public static partial class ComCtl32
 		{
 			this.mask = mask;
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_TEXT))
-				pszText = new PTSTR(cchTextMax = 1024);
+				pszText = new StrPtrAuto(cchTextMax = 1024);
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_COLUMNS))
 				puColumns = Marshal.AllocHGlobal(Marshal.SizeOf<int>() * MAX_COLS);
 			if (mask.IsFlagSet(ListViewItemMask.LVIF_COLFMT))

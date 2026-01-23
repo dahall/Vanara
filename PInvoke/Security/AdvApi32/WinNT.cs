@@ -2681,7 +2681,7 @@ public static partial class AdvApi32
 
 	/// <summary>The <c>CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE</c> structure specifies the fully qualified binary name.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_claim_security_attribute_fqbn_value typedef struct
-	// _CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE { DWORD64 Version; PWSTR Name; } CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE, *PCLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE;
+	// _CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE { DWORD64 Version; StrPtrUni Name; } CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE, *PCLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE;
 	[PInvokeData("winnt.h", MSDNShortId = "1FD9A519-40EA-4780-90F5-C9DF4ADAE72C")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE
@@ -2719,8 +2719,8 @@ public static partial class AdvApi32
 	/// authorization context.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-_claim_security_attribute_v1 typedef struct
-	// _CLAIM_SECURITY_ATTRIBUTE_V1 { PWSTR Name; WORD ValueType; WORD Reserved; DWORD Flags; DWORD ValueCount; union { PLONG64 pInt64;
-	// PDWORD64 pUint64; PWSTR *ppString; PCLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE pFqbn; PCLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE
+	// _CLAIM_SECURITY_ATTRIBUTE_V1 { StrPtrUni Name; WORD ValueType; WORD Reserved; DWORD Flags; DWORD ValueCount; union { PLONG64 pInt64;
+	// PDWORD64 pUint64; StrPtrUni *ppString; PCLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE pFqbn; PCLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE
 	// pOctetString; } Values; } CLAIM_SECURITY_ATTRIBUTE_V1, *PCLAIM_SECURITY_ATTRIBUTE_V1;
 	[PInvokeData("winnt.h", MSDNShortId = "FDBB9B00-01C3-474A-81FF-97C5CBA3261B")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2730,7 +2730,7 @@ public static partial class AdvApi32
 		/// A pointer to a string of Unicode characters that contains the name of the security attribute. This string must be at least 4
 		/// bytes in length.
 		/// </summary>
-		public PWSTR Name;
+		public StrPtrUni Name;
 
 		/// <summary>
 		/// <para>
@@ -2839,9 +2839,9 @@ public static partial class AdvApi32
 			[FieldOffset(0)]
 			public ArrayPointer<ulong> pUint64;
 
-			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>PWSTR</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING"/>.</summary>
+			/// <summary>Pointer to an array of <c>ValueCount</c> members where each member is a <c>StrPtrUni</c> of type <see cref="CLAIM_SECURITY_ATTRIBUTE_TYPE.CLAIM_SECURITY_ATTRIBUTE_TYPE_STRING"/>.</summary>
 			[FieldOffset(0)]
-			public ArrayPointer<PWSTR> ppString;
+			public ArrayPointer<StrPtrUni> ppString;
 
 			/// <summary>
 			/// Pointer to an array of <c>ValueCount</c> members where each member is a fully qualified binary name value of type <see cref="CLAIM_SECURITY_ATTRIBUTE_FQBN_VALUE"/>.
@@ -5194,7 +5194,7 @@ public static partial class AdvApi32
 		}
 
 		/// <inheritdoc/>
-		public override SIZE_T Size
+		public override SizeT Size
 		{
 			get => base.Size;
 			set
@@ -5301,7 +5301,7 @@ public static partial class AdvApi32
 		/// <inheritdoc/>
 		public override int GetHashCode() => Header.GetHashCode();
 
-		private bool EnsureCapacity(SIZE_T addCap)
+		private bool EnsureCapacity(SizeT addCap)
 		{
 			if (Length + addCap > Size)
 				Size = Macros.ALIGN_TO_MULTIPLE(Length + addCap, 4);
@@ -5414,7 +5414,7 @@ public static partial class AdvApi32
 		public uint Revision => ((PACL)handle).Revision();
 
 		/// <inheritdoc/>
-		public override SIZE_T Size
+		public override SizeT Size
 		{
 			get => base.Size;
 			set
@@ -5812,7 +5812,7 @@ public static partial class AdvApi32
 
 		/// <summary>Gets or sets the size in bytes of the security descriptor.</summary>
 		/// <value>The size in bytes of the security descriptor.</value>
-		public override SIZE_T Size
+		public override SizeT Size
 		{
 			get
 			{
@@ -5965,8 +5965,8 @@ public static partial class AdvApi32
 			var pSD = new SafePSECURITY_DESCRIPTOR((int)cSD);
 			var pDacl = cDacl == 0 ? SafePACL.Null : new SafePACL((int)cDacl);
 			var pSacl = cSacl == 0 ? SafePACL.Null : new SafePACL((int)cSacl);
-			var pOwn = cOwn == 0 ? SafePSID.Null : new SafePSID((SIZE_T)cOwn);
-			var pGrp = cGrp == 0 ? SafePSID.Null : new SafePSID((SIZE_T)cGrp);
+			var pOwn = cOwn == 0 ? SafePSID.Null : new SafePSID((SizeT)cOwn);
+			var pGrp = cGrp == 0 ? SafePSID.Null : new SafePSID((SizeT)cGrp);
 			if (!MakeAbsoluteSD(this, pSD, ref cSD, pDacl, ref cDacl, pSacl, ref cSacl, pOwn, ref cOwn, pGrp, ref cGrp))
 				Win32Error.ThrowLastError();
 			return (pSD, pDacl, pSacl, pOwn, pGrp);

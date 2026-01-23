@@ -210,7 +210,7 @@ public static partial class D3D12
 		/// <summary>Initializes a new instance of the <see cref="D3D12_BARRIER_GROUP"/> struct.</summary>
 		/// <param name="numBarriers">The number of barriers.</param>
 		/// <param name="pBarriers">The barriers.</param>
-		public D3D12_BARRIER_GROUP(SIZE_T numBarriers, ManagedArrayPointer<D3D12_GLOBAL_BARRIER> pBarriers)
+		public D3D12_BARRIER_GROUP(SizeT numBarriers, ManagedArrayPointer<D3D12_GLOBAL_BARRIER> pBarriers)
 		{
 			Type = D3D12_BARRIER_TYPE.D3D12_BARRIER_TYPE_GLOBAL;
 			NumBarriers = numBarriers;
@@ -220,7 +220,7 @@ public static partial class D3D12
 		/// <summary>Initializes a new instance of the <see cref="D3D12_BARRIER_GROUP"/> struct.</summary>
 		/// <param name="numBarriers">The number of barriers.</param>
 		/// <param name="pBarriers">The barriers.</param>
-		public D3D12_BARRIER_GROUP(SIZE_T numBarriers, ManagedArrayPointer<D3D12_TEXTURE_BARRIER> pBarriers)
+		public D3D12_BARRIER_GROUP(SizeT numBarriers, ManagedArrayPointer<D3D12_TEXTURE_BARRIER> pBarriers)
 		{
 			Type = D3D12_BARRIER_TYPE.D3D12_BARRIER_TYPE_TEXTURE;
 			NumBarriers = numBarriers;
@@ -230,7 +230,7 @@ public static partial class D3D12
 		/// <summary>Initializes a new instance of the <see cref="D3D12_BARRIER_GROUP"/> struct.</summary>
 		/// <param name="numBarriers">The number of barriers.</param>
 		/// <param name="pBarriers">The barriers.</param>
-		public D3D12_BARRIER_GROUP(SIZE_T numBarriers, ManagedArrayPointer<D3D12_BUFFER_BARRIER> pBarriers)
+		public D3D12_BARRIER_GROUP(SizeT numBarriers, ManagedArrayPointer<D3D12_BUFFER_BARRIER> pBarriers)
 		{
 			Type = D3D12_BARRIER_TYPE.D3D12_BARRIER_TYPE_BUFFER;
 			NumBarriers = numBarriers;
@@ -726,7 +726,7 @@ public static partial class D3D12
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_cached_pipeline_state typedef struct
-	// D3D12_CACHED_PIPELINE_STATE { const void *pCachedBlob; SIZE_T CachedBlobSizeInBytes; } D3D12_CACHED_PIPELINE_STATE;
+	// D3D12_CACHED_PIPELINE_STATE { const void *pCachedBlob; SizeT CachedBlobSizeInBytes; } D3D12_CACHED_PIPELINE_STATE;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_CACHED_PIPELINE_STATE")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_CACHED_PIPELINE_STATE
@@ -735,7 +735,7 @@ public static partial class D3D12
 		public IntPtr pCachedBlob;
 
 		/// <summary>Specifies the size of the cache in bytes.</summary>
-		public SIZE_T CachedBlobSizeInBytes;
+		public SizeT CachedBlobSizeInBytes;
 	}
 
 	/// <summary>Describes a value used to optimize clear operations for a particular resource.</summary>
@@ -1001,13 +1001,13 @@ public static partial class D3D12
 	/// <para>To get the handle increment size use <c>ID3D12Device.GetDescriptorHandleIncrementSize</c></para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_cpu_descriptor_handle typedef struct
-	// D3D12_CPU_DESCRIPTOR_HANDLE { SIZE_T ptr; } D3D12_CPU_DESCRIPTOR_HANDLE;
+	// D3D12_CPU_DESCRIPTOR_HANDLE { SizeT ptr; } D3D12_CPU_DESCRIPTOR_HANDLE;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_CPU_DESCRIPTOR_HANDLE")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_CPU_DESCRIPTOR_HANDLE : IEquatable<D3D12_CPU_DESCRIPTOR_HANDLE>
 	{
 		/// <summary>The address of the descriptor.</summary>
-		public SIZE_T ptr;
+		public SizeT ptr;
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is D3D12_CPU_DESCRIPTOR_HANDLE hANDLE && Equals(hANDLE);
@@ -3433,8 +3433,8 @@ public static partial class D3D12
 
 	/// <summary>Indicates the level of support that the adapter provides for metacommands.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_feature_data_query_meta_command typedef struct
-	// D3D12_FEATURE_DATA_QUERY_META_COMMAND { GUID CommandId; UINT NodeMask; const void *pQueryInputData; SIZE_T QueryInputDataSizeInBytes;
-	// void *pQueryOutputData; SIZE_T QueryOutputDataSizeInBytes; } D3D12_FEATURE_DATA_QUERY_META_COMMAND;
+	// D3D12_FEATURE_DATA_QUERY_META_COMMAND { GUID CommandId; UINT NodeMask; const void *pQueryInputData; SizeT QueryInputDataSizeInBytes;
+	// void *pQueryOutputData; SizeT QueryOutputDataSizeInBytes; } D3D12_FEATURE_DATA_QUERY_META_COMMAND;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_FEATURE_DATA_QUERY_META_COMMAND")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_FEATURE_DATA_QUERY_META_COMMAND
@@ -3461,10 +3461,10 @@ public static partial class D3D12
 		public IntPtr pQueryInputData;
 
 		/// <summary>
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>The size of the buffer pointed to by pQueryInputData, in bytes.</para>
 		/// </summary>
-		public SIZE_T QueryInputDataSizeInBytes;
+		public SizeT QueryInputDataSizeInBytes;
 
 		/// <summary>
 		/// <para>Type: <b><c>void</c>*</b></para>
@@ -3473,10 +3473,10 @@ public static partial class D3D12
 		public IntPtr pQueryOutputData;
 
 		/// <summary>
-		/// <para>Type: <b><c>SIZE_T</c></b></para>
+		/// <para>Type: <b><c>SizeT</c></b></para>
 		/// <para>The size of the buffer pointed to by pQueryOutputData, in bytes.</para>
 		/// </summary>
-		public SIZE_T QueryOutputDataSizeInBytes;
+		public SizeT QueryOutputDataSizeInBytes;
 	}
 
 	/// <summary>Indicates root signature version support.</summary>
@@ -3646,7 +3646,7 @@ public static partial class D3D12
 	public struct D3D12_GPU_DESCRIPTOR_HANDLE : IEquatable<D3D12_GPU_DESCRIPTOR_HANDLE>
 	{
 		/// <summary>The address of the descriptor.</summary>
-		public SIZE_T ptr;
+		public SizeT ptr;
 
 		/// <inheritdoc/>
 		public override bool Equals(object? obj) => obj is D3D12_GPU_DESCRIPTOR_HANDLE hANDLE && Equals(hANDLE);
@@ -4442,7 +4442,7 @@ public static partial class D3D12
 		/// <summary>Initializes a new instance of the <see cref="D3D12_INPUT_LAYOUT_DESC" /> struct.</summary>
 		/// <param name="numElements">The number of elements.</param>
 		/// <param name="elements">The elements.</param>
-		public D3D12_INPUT_LAYOUT_DESC(SIZE_T numElements, ManagedArrayPointer<D3D12_INPUT_ELEMENT_DESC> elements)
+		public D3D12_INPUT_LAYOUT_DESC(SizeT numElements, ManagedArrayPointer<D3D12_INPUT_ELEMENT_DESC> elements)
 		{
 			NumElements = numElements;
 			pInputElementDescs = elements;
@@ -4478,7 +4478,7 @@ public static partial class D3D12
 	/// <summary>Describes the destination of a memory copy operation.</summary>
 	/// <remarks>This structure is used by a number of helper methods, refer to <c>Helper Structures and Functions for D3D12</c>.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_memcpy_dest typedef struct D3D12_MEMCPY_DEST { void *pData;
-	// SIZE_T RowPitch; SIZE_T SlicePitch; } D3D12_MEMCPY_DEST;
+	// SizeT RowPitch; SizeT SlicePitch; } D3D12_MEMCPY_DEST;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_MEMCPY_DEST")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_MEMCPY_DEST
@@ -4487,10 +4487,10 @@ public static partial class D3D12
 		public IntPtr pData;
 
 		/// <summary>The row pitch, or width, or physical size, in bytes, of the subresource data.</summary>
-		public SIZE_T RowPitch;
+		public SizeT RowPitch;
 
 		/// <summary>The slice pitch, or width, or physical size, in bytes, of the subresource data.</summary>
-		public SIZE_T SlicePitch;
+		public SizeT SlicePitch;
 	}
 
 	/// <summary>Describes a meta command.</summary>
@@ -4716,13 +4716,13 @@ public static partial class D3D12
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_pipeline_state_stream_desc typedef struct
-	// D3D12_PIPELINE_STATE_STREAM_DESC { SIZE_T SizeInBytes; void *pPipelineStateSubobjectStream; } D3D12_PIPELINE_STATE_STREAM_DESC;
+	// D3D12_PIPELINE_STATE_STREAM_DESC { SizeT SizeInBytes; void *pPipelineStateSubobjectStream; } D3D12_PIPELINE_STATE_STREAM_DESC;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_PIPELINE_STATE_STREAM_DESC")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D3D12_PIPELINE_STATE_STREAM_DESC
 	{
 		/// <summary>Specifies the size of the opaque data structure pointed to by the pPipelineStateSubobjectStream member, in bytes.</summary>
-		public SIZE_T SizeInBytes;
+		public SizeT SizeInBytes;
 
 		/// <summary>Specifies the address of a data structure that describes as a bytestream an arbitrary pipeline state subobject.</summary>
 		public IntPtr pPipelineStateSubobjectStream;
@@ -4987,17 +4987,17 @@ public static partial class D3D12
 	/// </para>
 	/// <para>This structure is used by the <c>Map</c> and <c>Unmap</c> methods.</para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_range typedef struct D3D12_RANGE { SIZE_T Begin; SIZE_T End;
+	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_range typedef struct D3D12_RANGE { SizeT Begin; SizeT End;
 	// } D3D12_RANGE;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_RANGE")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_RANGE(SIZE_T begin, SIZE_T end)
+	public struct D3D12_RANGE(SizeT begin, SizeT end)
 	{
 		/// <summary>The offset, in bytes, denoting the beginning of a memory range.</summary>
-		public SIZE_T Begin = begin;
+		public SizeT Begin = begin;
 
 		/// <summary>The offset, in bytes, denoting the end of a memory range. <b>End</b> is one-past-the-end.</summary>
-		public SIZE_T End = end;
+		public SizeT End = end;
 	}
 
 	/// <summary>Describes a memory range in a 64-bit address space.</summary>
@@ -6952,7 +6952,7 @@ public static partial class D3D12
 		/// <param name="numRanges">The number of descriptor ranges in the table layout.</param>
 		/// <param name="ranges">The descriptor ranges.</param>
 		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE.</returns>
-		public static D3D12_ROOT_DESCRIPTOR_TABLE Init(SIZE_T numRanges, ArrayPointer<D3D12_DESCRIPTOR_RANGE> ranges) =>
+		public static D3D12_ROOT_DESCRIPTOR_TABLE Init(SizeT numRanges, ArrayPointer<D3D12_DESCRIPTOR_RANGE> ranges) =>
 			new() { NumDescriptorRanges = numRanges, pDescriptorRanges = ranges };
 	}
 
@@ -6994,7 +6994,7 @@ public static partial class D3D12
 		/// <param name="numRanges">The number of descriptor ranges in the table layout.</param>
 		/// <param name="ranges">The descriptor ranges.</param>
 		/// <returns>An initialized D3D12_ROOT_DESCRIPTOR_TABLE1.</returns>
-		public static D3D12_ROOT_DESCRIPTOR_TABLE1 Init(SIZE_T numRanges, ArrayPointer<D3D12_DESCRIPTOR_RANGE1> ranges) =>
+		public static D3D12_ROOT_DESCRIPTOR_TABLE1 Init(SizeT numRanges, ArrayPointer<D3D12_DESCRIPTOR_RANGE1> ranges) =>
 			new() { NumDescriptorRanges = numRanges, pDescriptorRanges = ranges };
 	}
 
@@ -7104,7 +7104,7 @@ public static partial class D3D12
 		/// <param name="pDescriptorRanges">The descriptor ranges.</param>
 		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
 		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER"/>.</returns>
-		public static D3D12_ROOT_PARAMETER InitAsDescriptorTable(SIZE_T numRanges, [In] ArrayPointer<D3D12_DESCRIPTOR_RANGE> pDescriptorRanges,
+		public static D3D12_ROOT_PARAMETER InitAsDescriptorTable(SizeT numRanges, [In] ArrayPointer<D3D12_DESCRIPTOR_RANGE> pDescriptorRanges,
 			[Optional] D3D12_SHADER_VISIBILITY visibility) => new()
 			{
 				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
@@ -7242,7 +7242,7 @@ public static partial class D3D12
 		/// <param name="pDescriptorRanges">The descriptor ranges.</param>
 		/// <param name="visibility">Specifies the shaders that can access the contents of the root signature slot.</param>
 		/// <returns>An initialized <see cref="D3D12_ROOT_PARAMETER1"/>.</returns>
-		public static D3D12_ROOT_PARAMETER1 InitAsDescriptorTable(SIZE_T numRanges, [In] ArrayPointer<D3D12_DESCRIPTOR_RANGE1> pDescriptorRanges,
+		public static D3D12_ROOT_PARAMETER1 InitAsDescriptorTable(SizeT numRanges, [In] ArrayPointer<D3D12_DESCRIPTOR_RANGE1> pDescriptorRanges,
 			[Optional] D3D12_SHADER_VISIBILITY visibility) => new()
 			{
 				ParameterType = D3D12_ROOT_PARAMETER_TYPE.D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE,
@@ -7360,7 +7360,7 @@ public static partial class D3D12
 		/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
 		/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
 		/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
-		public D3D12_ROOT_SIGNATURE_DESC(SIZE_T cParameters, ArrayPointer<D3D12_ROOT_PARAMETER> pParameters, SIZE_T cStaticSamplers = default,
+		public D3D12_ROOT_SIGNATURE_DESC(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER> pParameters, SizeT cStaticSamplers = default,
 			ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default,
 			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
 		{
@@ -7440,7 +7440,7 @@ public static partial class D3D12
 		/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
 		/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC</c> structures.</param>
 		/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
-		public D3D12_ROOT_SIGNATURE_DESC1(SIZE_T cParameters, ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters, SIZE_T cStaticSamplers = default,
+		public D3D12_ROOT_SIGNATURE_DESC1(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters, SizeT cStaticSamplers = default,
 			ArrayPointer<D3D12_STATIC_SAMPLER_DESC> pStaticSamplers = default,
 			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
 		{
@@ -7517,7 +7517,7 @@ public static partial class D3D12
 		/// <param name="cStaticSamplers">Specifies the number of static samplers.</param>
 		/// <param name="pStaticSamplers">Pointer to one or more <c>D3D12_STATIC_SAMPLER_DESC1</c> structures.</param>
 		/// <param name="flags">Specifies the <c>D3D12_ROOT_SIGNATURE_FLAGS</c> that determine the data volatility.</param>
-		public D3D12_ROOT_SIGNATURE_DESC2(SIZE_T cParameters, ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters, SIZE_T cStaticSamplers = default,
+		public D3D12_ROOT_SIGNATURE_DESC2(SizeT cParameters, ArrayPointer<D3D12_ROOT_PARAMETER1> pParameters, SizeT cStaticSamplers = default,
 			ArrayPointer<D3D12_STATIC_SAMPLER_DESC1> pStaticSamplers = default,
 			D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAGS.D3D12_ROOT_SIGNATURE_FLAG_NONE)
 		{
@@ -7756,16 +7756,16 @@ public static partial class D3D12
 	/// <para>When loading a shader from FXC/DXC, this may be the entire compiled blob as is loaded from disk.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_shader_bytecode typedef struct D3D12_SHADER_BYTECODE { const
-	// void *pShaderBytecode; SIZE_T BytecodeLength; } D3D12_SHADER_BYTECODE;
+	// void *pShaderBytecode; SizeT BytecodeLength; } D3D12_SHADER_BYTECODE;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_SHADER_BYTECODE")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct D3D12_SHADER_BYTECODE(IntPtr pShaderBytecode, SIZE_T bytecodeLength)
+	public struct D3D12_SHADER_BYTECODE(IntPtr pShaderBytecode, SizeT bytecodeLength)
 	{
 		/// <summary>A pointer to a memory block that contains the shader data.</summary>
 		public IntPtr pShaderBytecode = pShaderBytecode;
 
 		/// <summary>The size, in bytes, of the shader data that the <b>pShaderBytecode</b> member points to.</summary>
-		public SIZE_T BytecodeLength = bytecodeLength;
+		public SizeT BytecodeLength = bytecodeLength;
 
 		/// <summary>Initializes a new instance of the <see cref="D3D12_SHADER_BYTECODE"/> struct.</summary>
 		/// <param name="pShaderBlob">The <see cref="ID3DBlob"/> with shader data.</param>
@@ -8052,7 +8052,7 @@ public static partial class D3D12
 			pSubobjects.Sum(o => Marshal.SizeOf(o.desc)) ];
 
 		/// <inheritdoc/>
-		SIZE_T IVanaraMarshaler.GetNativeSize() => GetSizes().Sum();
+		SizeT IVanaraMarshaler.GetNativeSize() => GetSizes().Sum();
 
 		/// <inheritdoc/>
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
@@ -8087,7 +8087,7 @@ public static partial class D3D12
 		}
 
 		/// <inheritdoc/>
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes) => throw new NotImplementedException();
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes) => throw new NotImplementedException();
 	}
 
 	/// <summary>Represents a subobject within a state object description. Use with <c>D3D12_STATE_OBJECT_DESC</c>.</summary>
@@ -8372,16 +8372,16 @@ public static partial class D3D12
 	// const void *pData; LONG_PTR RowPitch; LONG_PTR SlicePitch; } D3D12_SUBRESOURCE_DATA;
 	[PInvokeData("d3d12.h", MSDNShortId = "NS:d3d12.D3D12_SUBRESOURCE_DATA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-	public struct D3D12_SUBRESOURCE_DATA(IntPtr pData, SIZE_T rowPitch, SIZE_T slicePitch)
+	public struct D3D12_SUBRESOURCE_DATA(IntPtr pData, SizeT rowPitch, SizeT slicePitch)
 	{
 		/// <summary>A pointer to a memory block that contains the subresource data.</summary>
 		public IntPtr pData = pData;
 
 		/// <summary>The row pitch, or width, or physical size, in bytes, of the subresource data.</summary>
-		public SIZE_T RowPitch = rowPitch;
+		public SizeT RowPitch = rowPitch;
 
 		/// <summary>The depth pitch, or width, or physical size, in bytes, of the subresource data.</summary>
-		public SIZE_T SlicePitch = slicePitch;
+		public SizeT SlicePitch = slicePitch;
 	}
 
 	/// <summary>Describes the format, width, height, depth, and row-pitch of the subresource into the parent resource.</summary>
@@ -9625,7 +9625,7 @@ public static partial class D3D12
 		/// <param name="cViewInstance">The number of views to be used, up to D3D12_MAX_VIEW_INSTANCE_COUNT.</param>
 		/// <param name="pViewInstanceLocations">The view instance locations.</param>
 		/// <param name="flags">Configures view instancing with additional options.</param>
-		public D3D12_VIEW_INSTANCING_DESC([Optional] SIZE_T cViewInstance, [In, Optional] ArrayPointer<D3D12_VIEW_INSTANCE_LOCATION> pViewInstanceLocations,
+		public D3D12_VIEW_INSTANCING_DESC([Optional] SizeT cViewInstance, [In, Optional] ArrayPointer<D3D12_VIEW_INSTANCE_LOCATION> pViewInstanceLocations,
 			[Optional] D3D12_VIEW_INSTANCING_FLAGS flags)
 		{
 			ViewInstanceCount = cViewInstance;

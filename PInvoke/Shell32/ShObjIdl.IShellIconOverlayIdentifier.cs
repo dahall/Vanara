@@ -79,7 +79,7 @@ public static partial class Shell32
 
 		/// <summary>Provides the location of the icon overlay's bitmap.</summary>
 		/// <param name="pwszIconFile">
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A null-terminated Unicode string that contains the fully qualified path of the file containing the icon. The .dll, .exe, and
 		/// .ico file types are all acceptable. You must set the <c>ISIOI_ICONFILE</c> flag in pdwFlags if you return a file name.
@@ -124,7 +124,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishelliconoverlayidentifier-getoverlayinfo
-		// HRESULT GetOverlayInfo( PWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags );
+		// HRESULT GetOverlayInfo( StrPtrUni pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags );
 		[PreserveSig]
 		HRESULT GetOverlayInfo([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszIconFile, int cchMax, out int pIndex, out ISIOI pdwFlags);
 

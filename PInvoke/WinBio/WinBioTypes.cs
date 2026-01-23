@@ -3266,7 +3266,7 @@ public static partial class WinBio
 		public ulong UserState;
 
 		/// <summary/>
-		public SIZE_T PolicySize;
+		public SizeT PolicySize;
 
 		private readonly Guid _Policy1;
 		private readonly Guid _Policy2;

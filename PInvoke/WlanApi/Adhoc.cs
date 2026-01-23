@@ -112,7 +112,7 @@ public static partial class WlanApi
 		/// <para>You must free this string using CoTaskMemFree.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/adhoc/nf-adhoc-idot11adhocinterface-getfriendlyname HRESULT
-		// GetFriendlyName( PWSTR *ppszName );
+		// GetFriendlyName( StrPtrUni *ppszName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetFriendlyName();
 
@@ -540,7 +540,7 @@ public static partial class WlanApi
 		/// <para>The SSID of the network.</para>
 		/// <para>You must free this string using CoTaskMemFree.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/win32/api/adhoc/nf-adhoc-idot11adhocnetwork-getssid HRESULT GetSSID( PWSTR
+		// https://docs.microsoft.com/en-us/windows/win32/api/adhoc/nf-adhoc-idot11adhocnetwork-getssid HRESULT GetSSID( StrPtrUni
 		// *ppszwSSID );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetSSID();
@@ -560,7 +560,7 @@ public static partial class WlanApi
 		/// <para>You must free this string using CoTaskMemFree.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/adhoc/nf-adhoc-idot11adhocnetwork-getprofilename HRESULT GetProfileName(
-		// PWSTR *ppszwProfileName );
+		// StrPtrUni *ppszwProfileName );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string? GetProfileName();
 

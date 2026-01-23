@@ -464,10 +464,10 @@ public static partial class IpHlpApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/nf-netioapi-convertinterfaceluidtoalias _NETIOAPI_SUCCESS_
-	// NETIOAPI_API ConvertInterfaceLuidToAlias( CONST NET_LUID *InterfaceLuid, PWSTR InterfaceAlias, SIZE_T Length );
+	// NETIOAPI_API ConvertInterfaceLuidToAlias( CONST NET_LUID *InterfaceLuid, StrPtrUni InterfaceAlias, SizeT Length );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("netioapi.h", MSDNShortId = "86a821c1-e04b-4bc3-846d-767c55008aed")]
-	public static extern Win32Error ConvertInterfaceLuidToAlias(in NET_LUID InterfaceLuid, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder InterfaceAlias, SIZE_T Length);
+	public static extern Win32Error ConvertInterfaceLuidToAlias(in NET_LUID InterfaceLuid, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder InterfaceAlias, SizeT Length);
 
 	/// <summary>
 	/// <para>
@@ -605,10 +605,10 @@ public static partial class IpHlpApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/nf-netioapi-convertinterfaceluidtonamea _NETIOAPI_SUCCESS_
-	// NETIOAPI_API ConvertInterfaceLuidToNameA( CONST NET_LUID *InterfaceLuid, PSTR InterfaceName, SIZE_T Length );
+	// NETIOAPI_API ConvertInterfaceLuidToNameA( CONST NET_LUID *InterfaceLuid, StrPtrAnsi InterfaceName, SizeT Length );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("netioapi.h", MSDNShortId = "c65f7b3c-55f4-40f8-9a7a-19d1066deca4")]
-	public static extern Win32Error ConvertInterfaceLuidToName(in NET_LUID InterfaceLuid, StringBuilder InterfaceName, SIZE_T Length);
+	public static extern Win32Error ConvertInterfaceLuidToName(in NET_LUID InterfaceLuid, StringBuilder InterfaceName, SizeT Length);
 
 	/// <summary>
 	/// <para>

@@ -2997,7 +2997,7 @@ public static partial class Odbc32
 		if (typeof(T) == typeof(string))
 		{
 			SQLColAttribute(StatementHandle, ColumnNumber, FieldIdentifier, default, 0, out var sz, out _).ThrowIfFailed(StatementHandle);
-			using SafePTSTR str = new(sz + 1);
+			using SafeLPTSTR str = new(sz + 1);
 			SQLColAttribute(StatementHandle, ColumnNumber, FieldIdentifier, str, (short)str.Size, out _, out _).ThrowIfFailed(StatementHandle);
 			return (T)(object)(str.ToString() ?? "");
 		}

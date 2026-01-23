@@ -716,10 +716,10 @@ public static partial class Ole32
 		/// </param>
 		/// <param name="rglpwstrName">
 		/// <para>
-		/// A caller-allocated array of size of <c>PWSTR</c> members. On return, the implementation fills in this array. A given entry
+		/// A caller-allocated array of size of <c>StrPtrUni</c> members. On return, the implementation fills in this array. A given entry
 		/// contains either the corresponding string name of a property ID or it can be empty if the property ID has no string names.
 		/// </para>
-		/// <para>Each <c>PWSTR</c> member of the array should be freed using the CoTaskMemFree function.</para>
+		/// <para>Each <c>StrPtrUni</c> member of the array should be freed using the CoTaskMemFree function.</para>
 		/// </param>
 		/// <returns>
 		/// <para>This method supports the standard return value E_UNEXPECTED, in addition to the following:</para>
@@ -1290,7 +1290,7 @@ public static partial class Ole32
 
 		/// <summary>Initializes a new instance of the <see cref="PROPSPEC"/> struct.</summary>
 		/// <param name="propName">Specifies a pointer to the string name of the property.</param>
-		public PROPSPEC(PWSTR propName)
+		public PROPSPEC(StrPtrUni propName)
 		{
 			ulKind = PRSPEC.PRSPEC_LPWSTR;
 			union = (IntPtr)propName;

@@ -816,7 +816,7 @@ public static partial class CfgMgr32
 	/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_add_idw CMAPI CONFIGRET CM_Add_IDW( DEVINST dnDevInst,
-	// PWSTR pszID, ULONG ulFlags );
+	// StrPtrUni pszID, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Add_IDW")]
 	public static extern CONFIGRET CM_Add_ID(uint dnDevInst, string pszID, CM_ADD_ID ulFlags);
@@ -879,7 +879,7 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_add_id_exw CMAPI CONFIGRET CM_Add_ID_ExW( DEVINST
-	// dnDevInst, PWSTR pszID, ULONG ulFlags, HMACHINE hMachine );
+	// dnDevInst, StrPtrUni pszID, ULONG ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Add_ID_ExW")]
 	public static extern CONFIGRET CM_Add_ID_Ex(uint dnDevInst, string pszID, CM_ADD_ID ulFlags, HMACHINE hMachine);
@@ -1480,7 +1480,7 @@ public static partial class CfgMgr32
 	/// <para>After enumerator names have been obtained, the names can be used as input to CM_Get_Device_ID_List.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_enumerate_enumeratorsw CMAPI CONFIGRET
-	// CM_Enumerate_EnumeratorsW( ULONG ulEnumIndex, PWSTR Buffer, PULONG pulLength, ULONG ulFlags );
+	// CM_Enumerate_EnumeratorsW( ULONG ulEnumIndex, StrPtrUni Buffer, PULONG pulLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Enumerate_EnumeratorsW")]
 	[SuppressAutoGen]
@@ -1550,7 +1550,7 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_enumerate_enumerators_exw CMAPI CONFIGRET
-	// CM_Enumerate_Enumerators_ExW( ULONG ulEnumIndex, PWSTR Buffer, PULONG pulLength, ULONG ulFlags, HMACHINE hMachine );
+	// CM_Enumerate_Enumerators_ExW( ULONG ulEnumIndex, StrPtrUni Buffer, PULONG pulLength, ULONG ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Enumerate_Enumerators_ExW")]
 	[SuppressAutoGen]
@@ -2492,7 +2492,7 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_get_device_id_exw CMAPI CONFIGRET
-	// CM_Get_Device_ID_ExW( DEVINST dnDevInst, PWSTR Buffer, ULONG BufferLen, ULONG ulFlags, HMACHINE hMachine );
+	// CM_Get_Device_ID_ExW( DEVINST dnDevInst, StrPtrUni Buffer, ULONG BufferLen, ULONG ulFlags, HMACHINE hMachine );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_ID_ExW")]
 	public static extern CONFIGRET CM_Get_Device_ID_Ex(uint dnDevInst, [SizeDef(nameof(BufferLen), SizingMethod.InclNullTerm)] StringBuilder Buffer, [Range(0, MAX_DEVICE_ID_LEN + 1)] uint BufferLen,

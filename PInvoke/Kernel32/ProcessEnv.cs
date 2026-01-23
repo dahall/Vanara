@@ -53,7 +53,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI ExpandEnvironmentStrings( _In_ LPCTSTR lpSrc, _Out_opt_ PTSTR lpDst, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724265(v=vs.85).aspx
+	// DWORD WINAPI ExpandEnvironmentStrings( _In_ LPCTSTR lpSrc, _Out_opt_ StrPtrAuto lpDst, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724265(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724265")]
 	public static extern uint ExpandEnvironmentStrings(string lpSrc, [Out, SizeDef(nameof(nSize), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpDst, uint nSize);
@@ -75,7 +75,7 @@ public static partial class Kernel32
 
 	/// <summary>Retrieves the command-line string for the current process.</summary>
 	/// <returns>The return value is a pointer to the command-line string for the current process.</returns>
-	// PTSTR WINAPI GetCommandLine(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683156(v=vs.85).aspx
+	// StrPtrAuto WINAPI GetCommandLine(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683156(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683156")]
 	public static string? GetCommandLine() => Marshal.PtrToStringAuto(GetCommandLineInternal());
 
@@ -102,7 +102,7 @@ public static partial class Kernel32
 	/// characters, including the null-terminating character.
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetCurrentDirectory( _In_ DWORD nBufferLength, _Out_ PTSTR lpBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364934(v=vs.85).aspx
+	// DWORD WINAPI GetCurrentDirectory( _In_ DWORD nBufferLength, _Out_ StrPtrAuto lpBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364934(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa364934")]
 	public static extern uint GetCurrentDirectory(uint nBufferLength, [Out, SizeDef(nameof(nBufferLength), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? lpBuffer);
@@ -144,7 +144,7 @@ public static partial class Kernel32
 	/// <c>GetLastError</c> returns ERROR_ENVVAR_NOT_FOUND.
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetEnvironmentVariable( _In_opt_ LPCTSTR lpName, _Out_opt_ PTSTR lpBuffer, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683188(v=vs.85).aspx
+	// DWORD WINAPI GetEnvironmentVariable( _In_opt_ LPCTSTR lpName, _Out_opt_ StrPtrAuto lpBuffer, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683188(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683188")]
 	public static extern uint GetEnvironmentVariable([Range(0, 32767)] string lpName,
@@ -237,11 +237,11 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// DWORD WINAPI SearchPath( _In_opt_ LPCTSTR lpPath, _In_ LPCTSTR lpFileName, _In_opt_ LPCTSTR lpExtension, _In_ DWORD nBufferLength,
-	// _Out_ PTSTR lpBuffer, _Out_opt_ PTSTR *lpFilePart); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365527(v=vs.85).aspx
+	// _Out_ StrPtrAuto lpBuffer, _Out_opt_ StrPtrAuto *lpFilePart); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365527(v=vs.85).aspx
 	[PInvokeData("WinBase.h", MSDNShortId = "aa365527")]
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	public static extern uint SearchPath([In, Optional] string? lpPath, string lpFileName, [In, Optional] string? lpExtension, uint nBufferLength,
-		[Out] StringBuilder? lpBuffer, out PTSTR lpFilePart);
+		[Out] StringBuilder? lpBuffer, out StrPtrAuto lpFilePart);
 
 	/// <summary>Searches for a specified file in a specified path.</summary>
 	/// <param name="lpPath">

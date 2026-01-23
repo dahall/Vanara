@@ -48,7 +48,7 @@ public static partial class Kernel32
 	/// buffer is not large enough to contain all the key name and value pairs associated with the named section, the return value is
 	/// equal to nSize minus two.
 	/// </returns>
-	// DWORD WINAPI GetPrivateProfileSection( _In_ LPCTSTR lpAppName, _Out_ PTSTR lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR
+	// DWORD WINAPI GetPrivateProfileSection( _In_ LPCTSTR lpAppName, _Out_ StrPtrAuto lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR
 	// lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724348(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724348")]
@@ -84,7 +84,7 @@ public static partial class Kernel32
 	/// character. If the buffer is not large enough to contain all the section names associated with the specified initialization file,
 	/// the return value is equal to the size specified by nSize minus two.
 	/// </returns>
-	// DWORD WINAPI GetPrivateProfileSectionNames( _Out_ PTSTR lpszReturnBuffer, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724352(v=vs.85).aspx
+	// DWORD WINAPI GetPrivateProfileSectionNames( _Out_ StrPtrAuto lpszReturnBuffer, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724352(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724352")]
 	public static extern uint GetPrivateProfileSectionNames(IntPtr lpszReturnBuffer, uint nSize, string lpFileName);
@@ -99,7 +99,7 @@ public static partial class Kernel32
 	/// size will be increased until success or reaching the maximum number of characters supported by the function.
 	/// </param>
 	/// <returns>The section names associated with the named file.</returns>
-	// DWORD WINAPI GetPrivateProfileSectionNames( _Out_ PTSTR lpszReturnBuffer, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724352(v=vs.85).aspx
+	// DWORD WINAPI GetPrivateProfileSectionNames( _Out_ StrPtrAuto lpszReturnBuffer, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724352(v=vs.85).aspx
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724352")]
 	public static string[] GetPrivateProfileSectionNames(string lpFileName, int charLenHint = -1) =>
 		GetProfStrings((p, s) => GetPrivateProfileSectionNames(p, s, lpFileName), charLenHint);
@@ -144,7 +144,7 @@ public static partial class Kernel32
 	/// <c>errorno</c> with a value of '0x2' (File Not Found). To retrieve extended error information, call GetLastError.
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ PTSTR
+	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ StrPtrAuto
 	// lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724353(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724353")]
@@ -190,7 +190,7 @@ public static partial class Kernel32
 	/// <c>errorno</c> with a value of '0x2' (File Not Found). To retrieve extended error information, call GetLastError.
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ PTSTR
+	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ StrPtrAuto
 	// lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724353(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724353")]
@@ -214,7 +214,7 @@ public static partial class Kernel32
 	/// size will be increased until success or reaching the maximum number of characters supported by the function.
 	/// </param>
 	/// <returns>The returned value(s).</returns>
-	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ PTSTR
+	// DWORD WINAPI GetPrivateProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ StrPtrAuto
 	// lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724353(v=vs.85).aspx
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724353")]
 	public static string[] GetPrivateProfileString([Optional] string? lpAppName, [Optional] string? lpKeyName, string lpFileName, int charLenHint = -1) =>
@@ -301,7 +301,7 @@ public static partial class Kernel32
 	/// character. If the buffer is not large enough to contain all the keys and values associated with the named section, the return
 	/// value is equal to the size specified by nSize minus two.
 	/// </returns>
-	// DWORD WINAPI GetProfileSection( _In_ LPCTSTR lpAppName, _Out_ PTSTR lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724363(v=vs.85).aspx
+	// DWORD WINAPI GetProfileSection( _In_ LPCTSTR lpAppName, _Out_ StrPtrAuto lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724363(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724363")]
 	public static extern uint GetProfileSection(string lpAppName, IntPtr lpReturnedString, uint nSize);
@@ -313,7 +313,7 @@ public static partial class Kernel32
 	/// size will be increased until success or reaching the maximum number of characters supported by the function.
 	/// </param>
 	/// <returns>An array of keys and values associated with the named section.</returns>
-	// DWORD WINAPI GetProfileSection( _In_ LPCTSTR lpAppName, _Out_ PTSTR lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724363(v=vs.85).aspx
+	// DWORD WINAPI GetProfileSection( _In_ LPCTSTR lpAppName, _Out_ StrPtrAuto lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724363(v=vs.85).aspx
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724363")]
 	public static string[] GetProfileSection(string lpAppName, int charLenHint = -1) => GetProfStrings((p, s) => GetProfileSection(lpAppName, p, s), charLenHint);
 
@@ -350,7 +350,7 @@ public static partial class Kernel32
 	/// last string is truncated and followed by two <c>null</c> characters. In this case, the return value is equal to nSize minus two.
 	/// </para>
 	/// </returns>
-	// DWORD WINAPI GetProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ PTSTR
+	// DWORD WINAPI GetProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ StrPtrAuto
 	// lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724366(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724366")]
@@ -384,7 +384,7 @@ public static partial class Kernel32
 	/// size will be increased until success or reaching the maximum number of characters supported by the function.
 	/// </param>
 	/// <returns>The returned value(s).</returns>
-	// DWORD WINAPI GetProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ PTSTR
+	// DWORD WINAPI GetProfileString( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ LPCTSTR lpDefault, _Out_ StrPtrAuto
 	// lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724366(v=vs.85).aspx
 	[PInvokeData("Winbase.h", MSDNShortId = "ms724366")]
 	public static string[] GetProfileString([Optional] string? lpAppName, [Optional] string? lpKeyName, [Optional] string? lpDefault, int charLenHint = -1) =>

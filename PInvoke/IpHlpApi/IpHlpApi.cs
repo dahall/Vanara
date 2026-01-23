@@ -2466,7 +2466,7 @@ public static partial class IpHlpApi
 	/// <para>If the function succeeds, the return value is NO_ERROR.</para>
 	/// <para>If the function fails, use <c>FormatMessage</c> to obtain the message string for the returned error.</para>
 	/// </returns>
-	// DWORD GetAdapterIndex( _In_ PWSTR AdapterName, _Inout_ PULONG IfIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365909(v=vs.85).aspx
+	// DWORD GetAdapterIndex( _In_ StrPtrUni AdapterName, _Inout_ PULONG IfIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365909(v=vs.85).aspx
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("IpHlpApi.h", MSDNShortId = "aa365909")]
 	public static extern Win32Error GetAdapterIndex([MarshalAs(UnmanagedType.LPWStr)] string AdapterName, out uint IfIndex);
@@ -3933,11 +3933,11 @@ public static partial class IpHlpApi
 	/// </para>
 	/// <para>
 	/// The syntax for the <c>GetIpErrorString</c> function was slightly changed on the Microsoft Windows Software Development Kit (SDK)
-	/// released for Windows Vista and later. The data type for the Buffer parameter was changed from <c>PWCHAR</c> to <c>PWSTR</c>.
+	/// released for Windows Vista and later. The data type for the Buffer parameter was changed from <c>PWCHAR</c> to <c>StrPtrUni</c>.
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/iphlpapi/nf-iphlpapi-getiperrorstring DWORD GetIpErrorString( IP_STATUS
-	// ErrorCode, PWSTR Buffer, PDWORD Size );
+	// ErrorCode, StrPtrUni Buffer, PDWORD Size );
 	[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("iphlpapi.h", MSDNShortId = "4f71777a-2e87-4411-89fd-12c165d4d8ae")]
 	public static extern Win32Error GetIpErrorString(Win32Error ErrorCode, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, ref uint Size);

@@ -1892,7 +1892,7 @@ public static partial class Ole32
 		/// <summary>The number of elements in the <see cref="rgwz"/> array.</summary>
 		public readonly uint cwBuf;
 
-		private readonly PWSTR _rgwz;
+		private readonly StrPtrUni _rgwz;
 
 #pragma warning disable IDE1006 // Naming Styles
 

@@ -5084,8 +5084,8 @@ public static partial class DXGI
 	/// IDXGIAdapter2::GetDesc2 method.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_2/ns-dxgi1_2-dxgi_adapter_desc2 typedef struct DXGI_ADAPTER_DESC2 { WCHAR
-	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SIZE_T DedicatedVideoMemory; SIZE_T
-	// DedicatedSystemMemory; SIZE_T SharedSystemMemory; LUID AdapterLuid; UINT Flags; DXGI_GRAPHICS_PREEMPTION_GRANULARITY
+	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SizeT DedicatedVideoMemory; SizeT
+	// DedicatedSystemMemory; SizeT SharedSystemMemory; LUID AdapterLuid; UINT Flags; DXGI_GRAPHICS_PREEMPTION_GRANULARITY
 	// GraphicsPreemptionGranularity; DXGI_COMPUTE_PREEMPTION_GRANULARITY ComputePreemptionGranularity; } DXGI_ADAPTER_DESC2;
 	[PInvokeData("dxgi1_2.h", MSDNShortId = "NS:dxgi1_2.DXGI_ADAPTER_DESC2"), StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DXGI_ADAPTER_DESC2
@@ -5119,19 +5119,19 @@ public static partial class DXGI
 		public uint Revision;
 
 		/// <summary>The number of bytes of dedicated video memory that are not shared with the CPU.</summary>
-		public SIZE_T DedicatedVideoMemory;
+		public SizeT DedicatedVideoMemory;
 
 		/// <summary>
 		/// The number of bytes of dedicated system memory that are not shared with the CPU. This memory is allocated from available system
 		/// memory at boot time.
 		/// </summary>
-		public SIZE_T DedicatedSystemMemory;
+		public SizeT DedicatedSystemMemory;
 
 		/// <summary>
 		/// The number of bytes of shared system memory. This is the maximum value of system memory that may be consumed by the adapter
 		/// during operation. Any incidental memory consumed by the driver as it manages and uses video memory is additional.
 		/// </summary>
-		public SIZE_T SharedSystemMemory;
+		public SizeT SharedSystemMemory;
 
 		/// <summary>
 		/// A unique value that identifies the adapter. See LUID for a definition of the structure. <c>LUID</c> is defined in dxgi.h.

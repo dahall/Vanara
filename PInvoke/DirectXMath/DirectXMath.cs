@@ -166,7 +166,7 @@ public static partial class DirectXMath
 	public const uint XM_SWIZZLE_Z = 2;
 
 	/// <summary/>
-	public static readonly SIZE_T XM_CACHE_LINE_SIZE = IntPtr.Size * 16;
+	public static readonly SizeT XM_CACHE_LINE_SIZE = IntPtr.Size * 16;
 
 	/// <summary>
 	/// <para>A 2D vector consisting of two single-precision floating-point values.</para>

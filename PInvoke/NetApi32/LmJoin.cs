@@ -695,7 +695,7 @@ public static partial class NetApi32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/nf-lmjoin-netcreateprovisioningpackage NET_API_STATUS NET_API_FUNCTION
 	// NetCreateProvisioningPackage( PNETSETUP_PROVISIONING_PARAMS pProvisioningParams, PBYTE *ppPackageBinData, DWORD
-	// *pdwPackageBinDataSize, PWSTR *ppPackageTextData );
+	// *pdwPackageBinDataSize, StrPtrUni *ppPackageTextData );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "6E2A5578-8308-41E2-B5E9-5E34E9E76C0B")]
 	public static extern Win32Error NetCreateProvisioningPackage(in NETSETUP_PROVISIONING_PARAMS pProvisioningParams, out IntPtr ppPackageBinData,
@@ -1004,7 +1004,7 @@ public static partial class NetApi32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/nf-lmjoin-netcreateprovisioningpackage NET_API_STATUS NET_API_FUNCTION
 	// NetCreateProvisioningPackage( PNETSETUP_PROVISIONING_PARAMS pProvisioningParams, PBYTE *ppPackageBinData, DWORD
-	// *pdwPackageBinDataSize, PWSTR *ppPackageTextData );
+	// *pdwPackageBinDataSize, StrPtrUni *ppPackageTextData );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "6E2A5578-8308-41E2-B5E9-5E34E9E76C0B")]
 	public static extern Win32Error NetCreateProvisioningPackage(in NETSETUP_PROVISIONING_PARAMS pProvisioningParams, [Optional] IntPtr ppPackageBinData,
@@ -1107,7 +1107,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/nf-lmjoin-netenumeratecomputernames NET_API_STATUS NET_API_FUNCTION
-	// NetEnumerateComputerNames( LPCWSTR Server, NET_COMPUTER_NAME_TYPE NameType, ULONG Reserved, PDWORD EntryCount, PWSTR
+	// NetEnumerateComputerNames( LPCWSTR Server, NET_COMPUTER_NAME_TYPE NameType, ULONG Reserved, PDWORD EntryCount, StrPtrUni
 	// **ComputerNames );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "c657ae33-404e-4c36-a956-5fbcfa540be7")]
@@ -1191,7 +1191,7 @@ public static partial class NetApi32
 	/// <para>For more information about organizational units, see Managing Users in the Active Directory documentation.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/nf-lmjoin-netgetjoinableous NET_API_STATUS NET_API_FUNCTION
-	// NetGetJoinableOUs( LPCWSTR lpServer, LPCWSTR lpDomain, LPCWSTR lpAccount, LPCWSTR lpPassword, DWORD *OUCount, PWSTR **OUs );
+	// NetGetJoinableOUs( LPCWSTR lpServer, LPCWSTR lpDomain, LPCWSTR lpAccount, LPCWSTR lpPassword, DWORD *OUCount, StrPtrUni **OUs );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "1faa912b-c56d-431c-95d5-d36790b0d467")]
 	public static extern Win32Error NetGetJoinableOUs([Optional] string? lpServer, string lpDomain, [Optional] string? lpAccount, [Optional] string? lpPassword, out uint OUCount,
@@ -1224,7 +1224,7 @@ public static partial class NetApi32
 	/// </returns>
 	/// <remarks>No special group membership is required to successfully execute the <c>NetGetJoinInformation</c> function.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/nf-lmjoin-netgetjoininformation NET_API_STATUS NET_API_FUNCTION
-	// NetGetJoinInformation( LPCWSTR lpServer, PWSTR *lpNameBuffer, PNETSETUP_JOIN_STATUS BufferType );
+	// NetGetJoinInformation( LPCWSTR lpServer, StrPtrUni *lpNameBuffer, PNETSETUP_JOIN_STATUS BufferType );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "c7cc1cf2-4530-4039-806b-fbee572f564d")]
 	public static extern Win32Error NetGetJoinInformation([Optional] string? lpServer,
@@ -1718,7 +1718,7 @@ public static partial class NetApi32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/nf-lmjoin-netprovisioncomputeraccount NET_API_STATUS NET_API_FUNCTION
 	// NetProvisionComputerAccount( LPCWSTR lpDomain, LPCWSTR lpMachineName, LPCWSTR lpMachineAccountOU, LPCWSTR lpDcName, DWORD
-	// dwOptions, PBYTE *pProvisionBinData, DWORD *pdwProvisionBinDataSize, PWSTR *pProvisionTextData );
+	// dwOptions, PBYTE *pProvisionBinData, DWORD *pdwProvisionBinDataSize, StrPtrUni *pProvisionTextData );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "4c854258-b84d-4ef3-a6da-ce0a9540ffd5")]
 	public static extern Win32Error NetProvisionComputerAccount(string lpDomain, string lpMachineName, [Optional] string? lpMachineAccountOU,
@@ -1977,7 +1977,7 @@ public static partial class NetApi32
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/nf-lmjoin-netprovisioncomputeraccount NET_API_STATUS NET_API_FUNCTION
 	// NetProvisionComputerAccount( LPCWSTR lpDomain, LPCWSTR lpMachineName, LPCWSTR lpMachineAccountOU, LPCWSTR lpDcName, DWORD
-	// dwOptions, PBYTE *pProvisionBinData, DWORD *pdwProvisionBinDataSize, PWSTR *pProvisionTextData );
+	// dwOptions, PBYTE *pProvisionBinData, DWORD *pdwProvisionBinDataSize, StrPtrUni *pProvisionTextData );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmjoin.h", MSDNShortId = "4c854258-b84d-4ef3-a6da-ce0a9540ffd5")]
 	public static extern Win32Error NetProvisionComputerAccount(string lpDomain, string lpMachineName, [Optional] string? lpMachineAccountOU,
@@ -2789,8 +2789,8 @@ public static partial class NetApi32
 	public static extern Win32Error NetValidateName([Optional] string? lpServer, string lpName, [Optional] string? lpAccount, [Optional] string? lpPassword, NETSETUP_NAME_TYPE NameType);
 
 	/// <summary>Contains information about a user account that is used to join a device to Microsoft Azure Active Directory.</summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/ns-lmjoin-_dsreg_user_info typedef struct _DSREG_USER_INFO { PWSTR
-	// pszUserEmail; PWSTR pszUserKeyId; PWSTR pszUserKeyName; } DSREG_USER_INFO, *PDSREG_USER_INFO;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/ns-lmjoin-_dsreg_user_info typedef struct _DSREG_USER_INFO { StrPtrUni
+	// pszUserEmail; StrPtrUni pszUserKeyId; StrPtrUni pszUserKeyName; } DSREG_USER_INFO, *PDSREG_USER_INFO;
 	[PInvokeData("lmjoin.h", MSDNShortId = "5E639988-0F53-40D7-BBEC-F78B3D124CC0")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DSREG_USER_INFO
@@ -2859,7 +2859,7 @@ public static partial class NetApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/ns-lmjoin-_netsetup_provisioning_params typedef struct
 	// _NETSETUP_PROVISIONING_PARAMS { DWORD dwVersion; LPCWSTR lpDomain; LPCWSTR lpHostName; LPCWSTR lpMachineAccountOU; LPCWSTR
 	// lpDcName; DWORD dwProvisionOptions; LPCWSTR *aCertTemplateNames; DWORD cCertTemplateNames; LPCWSTR *aMachinePolicyNames; DWORD
-	// cMachinePolicyNames; LPCWSTR *aMachinePolicyPaths; DWORD cMachinePolicyPaths; PWSTR lpNetbiosName; PWSTR lpSiteName; PWSTR
+	// cMachinePolicyNames; LPCWSTR *aMachinePolicyPaths; DWORD cMachinePolicyPaths; StrPtrUni lpNetbiosName; StrPtrUni lpSiteName; StrPtrUni
 	// lpPrimaryDNSDomain; } NETSETUP_PROVISIONING_PARAMS, *PNETSETUP_PROVISIONING_PARAMS;
 	[PInvokeData("lmjoin.h", MSDNShortId = "E965804F-145A-4D8F-BB8E-466580AC65DA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -3004,9 +3004,9 @@ public static partial class NetApi32
 
 	/// <summary>Contains information about how a device is joined to Microsoft Azure Active Directory.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmjoin/ns-lmjoin-_dsreg_join_info typedef struct _DSREG_JOIN_INFO {
-	// DSREG_JOIN_TYPE joinType; PCCERT_CONTEXT pJoinCertificate; PWSTR pszDeviceId; PWSTR pszIdpDomain; PWSTR pszTenantId; PWSTR
-	// pszJoinUserEmail; PWSTR pszTenantDisplayName; PWSTR pszMdmEnrollmentUrl; PWSTR pszMdmTermsOfUseUrl; PWSTR pszMdmComplianceUrl;
-	// PWSTR pszUserSettingSyncUrl; DSREG_USER_INFO *pUserInfo; } DSREG_JOIN_INFO, *PDSREG_JOIN_INFO;
+	// DSREG_JOIN_TYPE joinType; PCCERT_CONTEXT pJoinCertificate; StrPtrUni pszDeviceId; StrPtrUni pszIdpDomain; StrPtrUni pszTenantId; StrPtrUni
+	// pszJoinUserEmail; StrPtrUni pszTenantDisplayName; StrPtrUni pszMdmEnrollmentUrl; StrPtrUni pszMdmTermsOfUseUrl; StrPtrUni pszMdmComplianceUrl;
+	// StrPtrUni pszUserSettingSyncUrl; DSREG_USER_INFO *pUserInfo; } DSREG_JOIN_INFO, *PDSREG_JOIN_INFO;
 	[PInvokeData("lmjoin.h", MSDNShortId = "9B0F7BE3-BDCD-437E-9157-9A646A2A20E2")]
 	public class DSREG_JOIN_INFO : SafeHANDLE
 	{
@@ -3062,15 +3062,15 @@ public static partial class NetApi32
 		{
 			public DSREG_JOIN_TYPE joinType; 
 			public IntPtr pJoinCertificate;
-			public PWSTR pszDeviceId;
-			public PWSTR pszIdpDomain;
-			public PWSTR pszTenantId;
-			public PWSTR pszJoinUserEmail;
-			public PWSTR pszTenantDisplayName;
-			public PWSTR pszMdmEnrollmentUrl;
-			public PWSTR pszMdmTermsOfUseUrl;
-			public PWSTR pszMdmComplianceUrl;
-			public PWSTR pszUserSettingSyncUrl;
+			public StrPtrUni pszDeviceId;
+			public StrPtrUni pszIdpDomain;
+			public StrPtrUni pszTenantId;
+			public StrPtrUni pszJoinUserEmail;
+			public StrPtrUni pszTenantDisplayName;
+			public StrPtrUni pszMdmEnrollmentUrl;
+			public StrPtrUni pszMdmTermsOfUseUrl;
+			public StrPtrUni pszMdmComplianceUrl;
+			public StrPtrUni pszUserSettingSyncUrl;
 			public IntPtr pUserInfo;
 		}
 	}

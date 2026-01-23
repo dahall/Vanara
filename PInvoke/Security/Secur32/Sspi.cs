@@ -1407,7 +1407,7 @@ public static partial class Secur32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-acquirecredentialshandlea SECURITY_STATUS SEC_ENTRY
-	// AcquireCredentialsHandleA( PSTR pszPrincipal, PSTR pszPackage, unsigned long fCredentialUse, void *pvLogonId, void *pAuthData,
+	// AcquireCredentialsHandleA( StrPtrAnsi pszPrincipal, StrPtrAnsi pszPackage, unsigned long fCredentialUse, void *pvLogonId, void *pAuthData,
 	// SEC_GET_KEY_FN pGetKeyFn, void *pvGetKeyArgument, PCredHandle phCredential, PTimeStamp ptsExpiry );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "3b73decf-75d4-4bc4-b7ca-5f16aaadff29")]
@@ -1537,7 +1537,7 @@ public static partial class Secur32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-acquirecredentialshandlea SECURITY_STATUS SEC_ENTRY
-	// AcquireCredentialsHandleA( PSTR pszPrincipal, PSTR pszPackage, unsigned long fCredentialUse, void *pvLogonId, void *pAuthData,
+	// AcquireCredentialsHandleA( StrPtrAnsi pszPrincipal, StrPtrAnsi pszPackage, unsigned long fCredentialUse, void *pvLogonId, void *pAuthData,
 	// SEC_GET_KEY_FN pGetKeyFn, void *pvGetKeyArgument, PCredHandle phCredential, PTimeStamp ptsExpiry );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "3b73decf-75d4-4bc4-b7ca-5f16aaadff29")]
@@ -1555,7 +1555,7 @@ public static partial class Secur32
 	/// <para>If the function fails, it returns a nonzero error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-addsecuritypackagea SECURITY_STATUS SEC_ENTRY
-	// AddSecurityPackageA( PSTR pszPackageName, PSECURITY_PACKAGE_OPTIONS pOptions );
+	// AddSecurityPackageA( StrPtrAnsi pszPackageName, PSECURITY_PACKAGE_OPTIONS pOptions );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "35b993d2-87a0-46d0-991f-88358b0cc5e6")]
 	public static extern HRESULT AddSecurityPackage(string pszPackageName, in SECURITY_PACKAGE_OPTIONS pOptions);
@@ -1570,7 +1570,7 @@ public static partial class Secur32
 	/// <para>If the function fails, it returns a nonzero error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-addsecuritypackagea SECURITY_STATUS SEC_ENTRY
-	// AddSecurityPackageA( PSTR pszPackageName, PSECURITY_PACKAGE_OPTIONS pOptions );
+	// AddSecurityPackageA( StrPtrAnsi pszPackageName, PSECURITY_PACKAGE_OPTIONS pOptions );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "35b993d2-87a0-46d0-991f-88358b0cc5e6")]
 	public static extern HRESULT AddSecurityPackage(string pszPackageName, [Optional] IntPtr pOptions);
@@ -1870,7 +1870,7 @@ public static partial class Secur32
 	/// <para>If the function fails, it returns a nonzero error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-deletesecuritypackagea SECURITY_STATUS SEC_ENTRY
-	// DeleteSecurityPackageA( PSTR pszPackageName );
+	// DeleteSecurityPackageA( StrPtrAnsi pszPackageName );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "7a9a2c64-92a4-419b-8b20-d0f5cba64147")]
 	public static extern HRESULT DeleteSecurityPackage(string pszPackageName);
@@ -2311,7 +2311,7 @@ public static partial class Secur32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-importsecuritycontexta SECURITY_STATUS SEC_ENTRY
-	// ImportSecurityContextA( PSTR pszPackage, PSecBuffer pPackedContext, VOID *Token, PCtxtHandle phContext );
+	// ImportSecurityContextA( StrPtrAnsi pszPackage, PSecBuffer pPackedContext, VOID *Token, PCtxtHandle phContext );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "0f8e65d0-69cf-42ba-a903-1922d731e5ec")]
 	public static extern HRESULT ImportSecurityContext(string pszPackage, ref SecBuffer pPackedContext, HTOKEN Token, out SafeCtxtHandle phContext);
@@ -4854,7 +4854,7 @@ public static partial class Secur32
 	/// </returns>
 	/// <remarks>The caller must call the FreeContextBuffer function to free the buffer returned in ppPackageInfo.</remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-querysecuritypackageinfoa SECURITY_STATUS SEC_ENTRY
-	// QuerySecurityPackageInfoA( PSTR pszPackageName, PSecPkgInfoA *ppPackageInfo );
+	// QuerySecurityPackageInfoA( StrPtrAnsi pszPackageName, PSecPkgInfoA *ppPackageInfo );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "130ef0fe-bb13-4a65-b476-cd25ed234da1")]
 	public static extern HRESULT QuerySecurityPackageInfo(string pszPackageName, out SafeContextBuffer ppPackageInfo);
@@ -5019,7 +5019,7 @@ public static partial class Secur32
 	/// <para>A terminating <c>NULL</c> character is appended to the end of the list.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslenumerateprofilesa SECURITY_STATUS SEC_ENTRY
-	// SaslEnumerateProfilesA( PSTR *ProfileList, ULONG *ProfileCount );
+	// SaslEnumerateProfilesA( StrPtrAnsi *ProfileList, ULONG *ProfileCount );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "0c11e0e3-2538-4703-bc32-31c73d65a498")]
 	public static extern HRESULT SaslEnumerateProfiles([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Auto")] out string[] ProfileList, out uint ProfileCount);
@@ -5125,7 +5125,7 @@ public static partial class Secur32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslgetprofilepackagew SECURITY_STATUS SEC_ENTRY
-	// SaslGetProfilePackageW( PWSTR ProfileName, PSecPkgInfoW *PackageInfo );
+	// SaslGetProfilePackageW( StrPtrUni ProfileName, PSecPkgInfoW *PackageInfo );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("sspi.h", MSDNShortId = "b7cecc5f-775f-40ba-abfc-27d51b3f5395")]
 	public static extern HRESULT SaslGetProfilePackage(string ProfileName, out SafeContextBuffer PackageInfo);
@@ -5272,7 +5272,7 @@ public static partial class Secur32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-saslinitializesecuritycontextw SECURITY_STATUS SEC_ENTRY
-	// SaslInitializeSecurityContextW( PCredHandle phCredential, PCtxtHandle phContext, PWSTR pszTargetName, unsigned long fContextReq,
+	// SaslInitializeSecurityContextW( PCredHandle phCredential, PCtxtHandle phContext, StrPtrUni pszTargetName, unsigned long fContextReq,
 	// unsigned long Reserved1, unsigned long TargetDataRep, PSecBufferDesc pInput, unsigned long Reserved2, PCtxtHandle phNewContext,
 	// PSecBufferDesc pOutput, unsigned long *pfContextAttr, PTimeStamp ptsExpiry );
 	[DllImport(Lib.Secur32, SetLastError = false, CharSet = CharSet.Auto)]
@@ -5886,7 +5886,7 @@ public static partial class Secur32
 	/// <para>If the function fails, it returns a nonzero error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/sspi/nf-sspi-sspigettargethostname SECURITY_STATUS SEC_ENTRY
-	// SspiGetTargetHostName( PCWSTR pszTargetName, PWSTR *pszHostName );
+	// SspiGetTargetHostName( PCWSTR pszTargetName, StrPtrUni *pszHostName );
 	[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("sspi.h", MSDNShortId = "84570dfc-1890-4b82-b411-1f9eaa75537b")]
 	public static extern Win32Error SspiGetTargetHostName([MarshalAs(UnmanagedType.LPWStr)] string pszTargetName, [MarshalAs(UnmanagedType.LPWStr)] out string pszHostName);

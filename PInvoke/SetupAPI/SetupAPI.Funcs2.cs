@@ -1904,7 +1904,7 @@ public static partial class SetupAPI
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setuppromptfordiska WINSETUPAPI UINT SetupPromptForDiskA(
 	// HWND hwndParent, PCSTR DialogTitle, PCSTR DiskName, PCSTR PathToSource, PCSTR FileSought, PCSTR TagFile, DWORD DiskPromptStyle,
-	// PSTR PathBuffer, DWORD PathBufferSize, PDWORD PathRequiredSize );
+	// StrPtrAnsi PathBuffer, DWORD PathBufferSize, PDWORD PathRequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupPromptForDiskA")]
 	public static extern uint SetupPromptForDisk(HWND hwndParent, [Optional, MarshalAs(UnmanagedType.LPTStr)] string? DialogTitle,
@@ -1991,7 +1991,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupquerydrivesindiskspacelista WINSETUPAPI BOOL
-	// SetupQueryDrivesInDiskSpaceListA( HDSKSPC DiskSpace, PSTR ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
+	// SetupQueryDrivesInDiskSpaceListA( HDSKSPC DiskSpace, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupQueryDrivesInDiskSpaceListA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2088,7 +2088,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupqueryfileloga WINSETUPAPI BOOL SetupQueryFileLogA(
-	// HSPFILELOG FileLogHandle, PCSTR LogSectionName, PCSTR TargetFilename, SetupFileLogInfo DesiredInfo, PSTR DataOut, DWORD
+	// HSPFILELOG FileLogHandle, PCSTR LogSectionName, PCSTR TargetFilename, SetupFileLogInfo DesiredInfo, StrPtrAnsi DataOut, DWORD
 	// ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupQueryFileLogA")]
@@ -2148,7 +2148,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupqueryinffileinformationa WINSETUPAPI BOOL
-	// SetupQueryInfFileInformationA( PSP_INF_INFORMATION InfInformation, UINT InfIndex, PSTR ReturnBuffer, DWORD ReturnBufferSize,
+	// SetupQueryInfFileInformationA( PSP_INF_INFORMATION InfInformation, UINT InfIndex, StrPtrAnsi ReturnBuffer, DWORD ReturnBufferSize,
 	// PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupQueryInfFileInformationA")]
@@ -2337,7 +2337,7 @@ public static partial class SetupAPI
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/setupapi/nf-setupapi-setupqueryinfversioninformationa WINSETUPAPI BOOL
-	// SetupQueryInfVersionInformationA( PSP_INF_INFORMATION InfInformation, UINT InfIndex, PCSTR Key, PSTR ReturnBuffer, DWORD
+	// SetupQueryInfVersionInformationA( PSP_INF_INFORMATION InfInformation, UINT InfIndex, PCSTR Key, StrPtrAnsi ReturnBuffer, DWORD
 	// ReturnBufferSize, PDWORD RequiredSize );
 	[DllImport(Lib_SetupAPI, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("setupapi.h", MSDNShortId = "NF:setupapi.SetupQueryInfVersionInformationA")]

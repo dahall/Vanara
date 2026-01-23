@@ -45,13 +45,13 @@ internal static class Extensions
 		return false;
 	}
 
-	public static ISafeMemoryHandle CreateEx<TMem>(this TMem h, SIZE_T size) where TMem : ISafeMemoryHandleFactory => CreateSafeMemory<TMem>(size);
+	public static ISafeMemoryHandle CreateEx<TMem>(this TMem h, SizeT size) where TMem : ISafeMemoryHandleFactory => CreateSafeMemory<TMem>(size);
 
-	public static ISafeMemoryHandle CreateSafeMemory<TMem>(SIZE_T size) where TMem : ISafeMemoryHandleFactory =>
+	public static ISafeMemoryHandle CreateSafeMemory<TMem>(SizeT size) where TMem : ISafeMemoryHandleFactory =>
 #if NET7_0_OR_GREATER
 		TMem.Create(size);
 #else
-		typeof(TMem).GetMethod("Create", BindingFlags.Public | BindingFlags.Static, null, [typeof(SIZE_T)], null)?.
+		typeof(TMem).GetMethod("Create", BindingFlags.Public | BindingFlags.Static, null, [typeof(SizeT)], null)?.
 			Invoke(null, [size]) as ISafeMemoryHandle ?? throw new NotSupportedException($"Cannot create SafeMemoryHandle of type {typeof(TMem).Name}.");
 #endif
 

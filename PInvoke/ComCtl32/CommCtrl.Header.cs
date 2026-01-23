@@ -1342,7 +1342,7 @@ public static partial class ComCtl32
 		/// sending an HDN_GETDISPINFO notification code. Note that although the header control allows a string of any length to be
 		/// stored as item text, only the first 260 TCHARs are displayed.
 		/// </summary>
-		public PTSTR pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>A handle to the item bitmap.</summary>
 		public HBITMAP hbm = IntPtr.Zero;
@@ -1390,7 +1390,7 @@ public static partial class ComCtl32
 		public HDITEM(HeaderItemMask mask = HeaderItemMask.HDI_ALL)
 		{
 			if (mask.IsFlagSet(HeaderItemMask.HDI_TEXT))
-				pszText = new PTSTR(cchTextMax = 1024);
+				pszText = new StrPtrAuto(cchTextMax = 1024);
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="HDITEM"/> class.</summary>
@@ -1700,7 +1700,7 @@ public static partial class ComCtl32
 		public uint mask;
 
 		/// <summary>A pointer to a null-terminated string containing the text that will be displayed for the header item.</summary>
-		public PTSTR pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>The size of the buffer that pszText points to.</summary>
 		public int cchTextMax;

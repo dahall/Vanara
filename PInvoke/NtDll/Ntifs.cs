@@ -12,7 +12,7 @@ public static partial class NtDll
 	/// <param name="CommitSize">Pointer to a variable that will receive the actual size, in bytes, of the allocated region of pages.</param>
 	/// <returns>Result of commit.</returns>
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false)]
-	public delegate NTStatus PRTL_HEAP_COMMIT_ROUTINE([In] IntPtr Base, ref IntPtr CommitAddress, ref SIZE_T CommitSize);
+	public delegate NTStatus PRTL_HEAP_COMMIT_ROUTINE([In] IntPtr Base, ref IntPtr CommitAddress, ref SizeT CommitSize);
 
 	/// <summary>Specifies the options to apply when the driver creates or opens the file.</summary>
 	[PInvokeData("ntifs.h", MSDNShortId = "c40b99be-5627-44f3-9853-c3ae31a8035c")]
@@ -383,7 +383,7 @@ public static partial class NtDll
 	// ULONG AllocationType, ULONG Protect );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "bb82c90d-9bd3-4a23-b171-06a3208e424b")]
-	public static extern NTStatus NtAllocateVirtualMemory(HPROCESS ProcessHandle, ref IntPtr BaseAddress, SIZE_T ZeroBits, ref SIZE_T RegionSize, MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION Protect);
+	public static extern NTStatus NtAllocateVirtualMemory(HPROCESS ProcessHandle, ref IntPtr BaseAddress, SizeT ZeroBits, ref SizeT RegionSize, MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION Protect);
 
 	/// <summary>
 	/// <para>The <c>NtCreateFile</c> routine creates a new file or opens an existing file.</para>
@@ -2239,10 +2239,10 @@ public static partial class NtDll
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlallocateheap NTSYSAPI PVOID RtlAllocateHeap( PVOID
-	// HeapHandle, ULONG Flags, SIZE_T Size );
+	// HeapHandle, ULONG Flags, SizeT Size );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlAllocateHeap")]
-	public static extern IntPtr RtlAllocateHeap(IntPtr HeapHandle, [In, Optional] HeapFlags Flags, SIZE_T Size);
+	public static extern IntPtr RtlAllocateHeap(IntPtr HeapHandle, [In, Optional] HeapFlags Flags, SizeT Size);
 
 	/// <summary>
 	/// The <c>RtlCreateHeap</c> routine creates a heap object that can be used by the calling process. This routine reserves space in the
@@ -2388,11 +2388,11 @@ public static partial class NtDll
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlcreateheap NTSYSAPI PVOID RtlCreateHeap( ULONG Flags,
-	// PVOID HeapBase, SIZE_T ReserveSize, SIZE_T CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
+	// PVOID HeapBase, SizeT ReserveSize, SizeT CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlCreateHeap")]
-	public static extern IntPtr RtlCreateHeap([In, Optional] HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SIZE_T ReserveSize,
-		[In, Optional] SIZE_T CommitSize, [In, Optional] IntPtr Lock, [In, Optional] IntPtr Parameters);
+	public static extern IntPtr RtlCreateHeap([In, Optional] HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SizeT ReserveSize,
+		[In, Optional] SizeT CommitSize, [In, Optional] IntPtr Lock, [In, Optional] IntPtr Parameters);
 
 	/// <summary>
 	/// The <c>RtlCreateHeap</c> routine creates a heap object that can be used by the calling process. This routine reserves space in the
@@ -2538,11 +2538,11 @@ public static partial class NtDll
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtlcreateheap NTSYSAPI PVOID RtlCreateHeap( ULONG Flags,
-	// PVOID HeapBase, SIZE_T ReserveSize, SIZE_T CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
+	// PVOID HeapBase, SizeT ReserveSize, SizeT CommitSize, PVOID Lock, PRTL_HEAP_PARAMETERS Parameters );
 	[DllImport(Lib.NtDll, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ntifs.h", MSDNShortId = "NF:ntifs.RtlCreateHeap")]
-	public static extern IntPtr RtlCreateHeap([In, Optional] HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SIZE_T ReserveSize,
-		[In, Optional] SIZE_T CommitSize, [In, Optional] IntPtr Lock, in RTL_HEAP_PARAMETERS Parameters);
+	public static extern IntPtr RtlCreateHeap([In, Optional] HeapFlags Flags, [In, Optional] IntPtr HeapBase, [In, Optional] SizeT ReserveSize,
+		[In, Optional] SizeT CommitSize, [In, Optional] IntPtr Lock, in RTL_HEAP_PARAMETERS Parameters);
 
 	/// <summary>
 	/// The <c>RtlDestroyHeap</c> routine destroys the specified heap object. <c>RtlDestroyHeap</c> decommits and releases all the pages of
@@ -3163,28 +3163,28 @@ public static partial class NtDll
 		public uint Length;
 
 		/// <summary>Segment reserve size, in bytes. If this value is not specified, 1 MB is used.</summary>
-		public SIZE_T SegmentReserve;
+		public SizeT SegmentReserve;
 
 		/// <summary>Segment reserve size, in bytes. If this value is not specified, 1 MB is used.</summary>
-		public SIZE_T SegmentCommit;
+		public SizeT SegmentCommit;
 
 		/// <summary>Decommit free block threshold, in bytes. If this value is not specified, PAGE_SIZE is used.</summary>
-		public SIZE_T DeCommitFreeBlockThreshold;
+		public SizeT DeCommitFreeBlockThreshold;
 
 		/// <summary>Decommit total free threshold, in bytes. If this value is not specified, 65536 is used.</summary>
-		public SIZE_T DeCommitTotalFreeThreshold;
+		public SizeT DeCommitTotalFreeThreshold;
 
 		/// <summary>
 		/// Size, in bytes, of the largest block of memory that can be allocated from the heap. If this value is not specified, the
 		/// difference between the highest and lowest addresses, less one page, is used.
 		/// </summary>
-		public SIZE_T MaximumAllocationSize;
+		public SizeT MaximumAllocationSize;
 
 		/// <summary>
 		/// Virtual memory threshold, in bytes. If this value is not specified, or if it is greater than the maximum heap block size, the
 		/// maximum heap block size of 0x7F000 is used.
 		/// </summary>
-		public SIZE_T VirtualMemoryThreshold;
+		public SizeT VirtualMemoryThreshold;
 
 		/// <summary>
 		/// Initial amount of memory, in bytes, to commit for the heap.
@@ -3194,7 +3194,7 @@ public static partial class NtDll
 		/// otherwise it is ignored.
 		/// </para>
 		/// </summary>
-		public SIZE_T InitialCommit;
+		public SizeT InitialCommit;
 
 		/// <summary>
 		/// Initial amount of memory, in bytes, to reserve for the heap.
@@ -3203,7 +3203,7 @@ public static partial class NtDll
 		/// otherwise it is ignored.
 		/// </para>
 		/// </summary>
-		public SIZE_T InitialReserve;
+		public SizeT InitialReserve;
 
 		/// <summary>
 		/// Callback routine to commit pages from the heap. If this parameter is non-NULL, the heap must be nongrowable.
@@ -3213,10 +3213,10 @@ public static partial class NtDll
 		public PRTL_HEAP_COMMIT_ROUTINE? CommitRoutine;
 
 		/// <summary>Reserved for system use. Drivers must set this parameter to zero.</summary>
-		private SIZE_T Reserved1;
+		private SizeT Reserved1;
 
 		/// <summary>Reserved for system use. Drivers must set this parameter to zero.</summary>
-		private SIZE_T Reserved2;
+		private SizeT Reserved2;
 	}
 
 	/*

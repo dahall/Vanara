@@ -1660,7 +1660,7 @@ public static partial class D3D12
 	/// <para>A pointer to the source data for the serialized root signature.</para>
 	/// </param>
 	/// <param name="SrcDataSizeInBytes">
-	/// <para>Type: <b><c>SIZE_T</c></b></para>
+	/// <para>Type: <b><c>SizeT</c></b></para>
 	/// <para>The size, in bytes, of the block of memory that <i>pSrcData</i> points to.</para>
 	/// </param>
 	/// <param name="pRootSignatureDeserializerInterface">
@@ -1694,11 +1694,11 @@ public static partial class D3D12
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-d3d12createrootsignaturedeserializer HRESULT
-	// D3D12CreateRootSignatureDeserializer( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSizeInBytes, [in] REFIID
+	// D3D12CreateRootSignatureDeserializer( [in] LPCVOID pSrcData, [in] SizeT SrcDataSizeInBytes, [in] REFIID
 	// pRootSignatureDeserializerInterface, [out] void **ppRootSignatureDeserializer );
 	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12CreateRootSignatureDeserializer")]
 	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true), Obsolete("This function has been superceded by D3D12CreateVersionedRootSignatureDeserializer.")]
-	public static extern HRESULT D3D12CreateRootSignatureDeserializer([In] IntPtr pSrcData, [In] SIZE_T SrcDataSizeInBytes,
+	public static extern HRESULT D3D12CreateRootSignatureDeserializer([In] IntPtr pSrcData, [In] SizeT SrcDataSizeInBytes,
 		in Guid pRootSignatureDeserializerInterface, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppRootSignatureDeserializer);
 
 	/// <summary>Generates an interface that can return the deserialized data structure, via <c>GetUnconvertedRootSignatureDesc</c>.</summary>
@@ -1707,7 +1707,7 @@ public static partial class D3D12
 	/// <para>A pointer to the source data for the serialized root signature.</para>
 	/// </param>
 	/// <param name="SrcDataSizeInBytes">
-	/// <para>Type: <b>SIZE_T</b></para>
+	/// <para>Type: <b>SizeT</b></para>
 	/// <para>The size, in bytes, of the block of memory that <i>pSrcData</i> points to.</para>
 	/// </param>
 	/// <param name="pRootSignatureDeserializerInterface">
@@ -1743,11 +1743,11 @@ public static partial class D3D12
 	/// <para>This function supercedes <c>D3D12CreateRootSignatureDeserializer</c>.</para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-d3d12createversionedrootsignaturedeserializer HRESULT
-	// D3D12CreateVersionedRootSignatureDeserializer( [in] LPCVOID pSrcData, [in] SIZE_T SrcDataSizeInBytes, [in] REFIID
+	// D3D12CreateVersionedRootSignatureDeserializer( [in] LPCVOID pSrcData, [in] SizeT SrcDataSizeInBytes, [in] REFIID
 	// pRootSignatureDeserializerInterface, [out] void **ppRootSignatureDeserializer );
 	[PInvokeData("d3d12.h", MSDNShortId = "NF:d3d12.D3D12CreateVersionedRootSignatureDeserializer")]
 	[DllImport(Lib_D3D12, SetLastError = false, ExactSpelling = true)]
-	public static extern HRESULT D3D12CreateVersionedRootSignatureDeserializer([In] IntPtr pSrcData, [In] SIZE_T SrcDataSizeInBytes,
+	public static extern HRESULT D3D12CreateVersionedRootSignatureDeserializer([In] IntPtr pSrcData, [In] SizeT SrcDataSizeInBytes,
 		in Guid pRootSignatureDeserializerInterface, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object? ppRootSignatureDeserializer);
 
 	/// <summary>Generates an interface that can return the deserialized data structure, via <c>GetUnconvertedRootSignatureDesc</c>.</summary>
@@ -1765,7 +1765,7 @@ public static partial class D3D12
 	/// </para>
 	/// <para>This function supercedes <c>D3D12CreateRootSignatureDeserializer</c>.</para>
 	/// </remarks>
-	public static ID3D12VersionedRootSignatureDeserializer? D3D12CreateVersionedRootSignatureDeserializer([In] IntPtr pSrcData, [In] SIZE_T SrcDataSizeInBytes) =>
+	public static ID3D12VersionedRootSignatureDeserializer? D3D12CreateVersionedRootSignatureDeserializer([In] IntPtr pSrcData, [In] SizeT SrcDataSizeInBytes) =>
 		D3D12CreateVersionedRootSignatureDeserializer(pSrcData, SrcDataSizeInBytes, typeof(ID3D12VersionedRootSignatureDeserializer).GUID, out var ptr).Succeeded ? (ID3D12VersionedRootSignatureDeserializer?)ptr : null;
 
 	/// <summary>Enables a list of experimental features.</summary>
@@ -2202,7 +2202,7 @@ public static partial class D3D12
 											{
 												D3D12_ROOT_DESCRIPTOR_TABLE1 table_1_1 = desc_1_1.pParameters[n].DescriptorTable;
 
-												SIZE_T DescriptorRangesSize = Marshal.SizeOf<D3D12_DESCRIPTOR_RANGE>() * table_1_1.NumDescriptorRanges;
+												SizeT DescriptorRangesSize = Marshal.SizeOf<D3D12_DESCRIPTOR_RANGE>() * table_1_1.NumDescriptorRanges;
 												SafeHeapBlock pDescriptorRanges = (DescriptorRangesSize > 0 && hr.Succeeded) ? HeapAlloc(GetProcessHeap(), 0, DescriptorRangesSize) : SafeHeapBlock.Null;
 												if (DescriptorRangesSize > 0 && pDescriptorRanges.IsInvalid)
 												{

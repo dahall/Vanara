@@ -84,7 +84,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/mschapp/nf-mschapp-mschapsrvchangepassword DWORD MSChapSrvChangePassword(
-	// PWSTR ServerName, PWSTR UserName, BOOLEAN LmOldPresent, PLM_OWF_PASSWORD LmOldOwfPassword, PLM_OWF_PASSWORD LmNewOwfPassword,
+	// StrPtrUni ServerName, StrPtrUni UserName, BOOLEAN LmOldPresent, PLM_OWF_PASSWORD LmOldOwfPassword, PLM_OWF_PASSWORD LmNewOwfPassword,
 	// PNT_OWF_PASSWORD NtOldOwfPassword, PNT_OWF_PASSWORD NtNewOwfPassword );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("mschapp.h", MSDNShortId = "6c154675-4c82-4305-8231-577f990eaeb1")]
@@ -196,7 +196,7 @@ public static partial class AdvApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/mschapp/nf-mschapp-mschapsrvchangepassword2 DWORD MSChapSrvChangePassword2(
-	// PWSTR ServerName, PWSTR UserName, PSAMPR_ENCRYPTED_USER_PASSWORD NewPasswordEncryptedWithOldNt, PENCRYPTED_NT_OWF_PASSWORD
+	// StrPtrUni ServerName, StrPtrUni UserName, PSAMPR_ENCRYPTED_USER_PASSWORD NewPasswordEncryptedWithOldNt, PENCRYPTED_NT_OWF_PASSWORD
 	// OldNtOwfPasswordEncryptedWithNewNt, BOOLEAN LmPresent, PSAMPR_ENCRYPTED_USER_PASSWORD NewPasswordEncryptedWithOldLm,
 	// PENCRYPTED_LM_OWF_PASSWORD OldLmOwfPasswordEncryptedWithNewLmOrNt );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]

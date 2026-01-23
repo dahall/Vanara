@@ -128,7 +128,7 @@ public static partial class ImageHlp
 	/// </para>
 	/// <para>The following code fragment describes how to use the Va value when the status is BindImageComplete.</para>
 	/// <para>
-	/// <code>case BindImageComplete: if (fVerbose) { fprintf(stderr, "BIND: Details of binding %s\n", ImageName ); NewImports = (PIMAGE_BOUND_IMPORT_DESCRIPTOR)Va; NewImport = NewImports; while (NewImport-&gt;OffsetModuleName) { fprintf( stderr, " Import from %s [%x]", (PSTR)NewImports + NewImport-&gt;OffsetModuleName, NewImport-&gt;TimeDateStamp ); if (NewImport-&gt;NumberOfModuleForwarderRefs != 0) { fprintf( stderr, " with %u forwarders", NewImport-&gt; NumberOfModuleForwarderRefs ); } fprintf( stderr, "\n" ); NewForwarder = (PIMAGE_BOUND_FORWARDER_REF)(NewImport+1); for (i=0; i&lt;NewImport-&gt;NumberOfModuleForwarderRefs; i++) { fprintf( stderr, " Forward to %s [%x]\n", (PSTR)NewImports + NewForwarder-&gt;OffsetModuleName, NewForwarder-&gt;TimeDateStamp); NewForwarder += 1; } NewImport = (PIMAGE_BOUND_IMPORT_DESCRIPTOR)NewForwarder; } } break;</code>
+	/// <code>case BindImageComplete: if (fVerbose) { fprintf(stderr, "BIND: Details of binding %s\n", ImageName ); NewImports = (PIMAGE_BOUND_IMPORT_DESCRIPTOR)Va; NewImport = NewImports; while (NewImport-&gt;OffsetModuleName) { fprintf( stderr, " Import from %s [%x]", (StrPtrAnsi)NewImports + NewImport-&gt;OffsetModuleName, NewImport-&gt;TimeDateStamp ); if (NewImport-&gt;NumberOfModuleForwarderRefs != 0) { fprintf( stderr, " with %u forwarders", NewImport-&gt; NumberOfModuleForwarderRefs ); } fprintf( stderr, "\n" ); NewForwarder = (PIMAGE_BOUND_FORWARDER_REF)(NewImport+1); for (i=0; i&lt;NewImport-&gt;NumberOfModuleForwarderRefs; i++) { fprintf( stderr, " Forward to %s [%x]\n", (StrPtrAnsi)NewImports + NewForwarder-&gt;OffsetModuleName, NewForwarder-&gt;TimeDateStamp); NewForwarder += 1; } NewImport = (PIMAGE_BOUND_IMPORT_DESCRIPTOR)NewForwarder; } } break;</code>
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/imagehlp/nc-imagehlp-pimagehlp_status_routine PIMAGEHLP_STATUS_ROUTINE
@@ -1141,8 +1141,8 @@ public static partial class ImageHlp
 	/// than one thread to this function.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/imagehlp/nf-imagehlp-splitsymbols BOOL IMAGEAPI SplitSymbols( PSTR ImageName,
-	// PCSTR SymbolsPath, PSTR SymbolFilePath, ULONG Flags );
+	// https://docs.microsoft.com/en-us/windows/win32/api/imagehlp/nf-imagehlp-splitsymbols BOOL IMAGEAPI SplitSymbols( StrPtrAnsi ImageName,
+	// PCSTR SymbolsPath, StrPtrAnsi SymbolFilePath, ULONG Flags );
 	[DllImport(Lib_ImageHlp, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("imagehlp.h", MSDNShortId = "NF:imagehlp.SplitSymbols")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1274,7 +1274,7 @@ public static partial class ImageHlp
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/imagehlp/nf-imagehlp-updatedebuginfofile BOOL IMAGEAPI UpdateDebugInfoFile(
-	// PCSTR ImageFileName, PCSTR SymbolPath, PSTR DebugFilePath, PIMAGE_NT_HEADERS32 NtHeaders );
+	// PCSTR ImageFileName, PCSTR SymbolPath, StrPtrAnsi DebugFilePath, PIMAGE_NT_HEADERS32 NtHeaders );
 	[DllImport(Lib_ImageHlp, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("imagehlp.h", MSDNShortId = "NF:imagehlp.UpdateDebugInfoFile")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1309,7 +1309,7 @@ public static partial class ImageHlp
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/imagehlp/nf-imagehlp-updatedebuginfofileex BOOL IMAGEAPI
-	// UpdateDebugInfoFileEx( PCSTR ImageFileName, PCSTR SymbolPath, PSTR DebugFilePath, PIMAGE_NT_HEADERS32 NtHeaders, DWORD
+	// UpdateDebugInfoFileEx( PCSTR ImageFileName, PCSTR SymbolPath, StrPtrAnsi DebugFilePath, PIMAGE_NT_HEADERS32 NtHeaders, DWORD
 	// OldCheckSum );
 	[DllImport(Lib_ImageHlp, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("imagehlp.h", MSDNShortId = "NF:imagehlp.UpdateDebugInfoFileEx")]

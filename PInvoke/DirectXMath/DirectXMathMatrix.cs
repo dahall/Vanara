@@ -1331,7 +1331,7 @@ public static partial class DirectXMath
 			m[1] * m[4] * m[10] * m[15] + m[0] * m[5] * m[10] * m[15];
 	}
 
-	private static void XM3RANKDECOMPOSE(out SIZE_T a, out SIZE_T b, out SIZE_T c, float x, float y, float z)
+	private static void XM3RANKDECOMPOSE(out SizeT a, out SizeT b, out SizeT c, float x, float y, float z)
 	{
 		if (x < y)
 		{

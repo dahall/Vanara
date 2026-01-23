@@ -1492,8 +1492,8 @@ public static partial class IpHlpApi
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/tcpestats/ns-tcpestats-_tcp_estats_rec_rod_v0 typedef struct
 	// _TCP_ESTATS_REC_ROD_v0 { ULONG CurRwinSent; ULONG MaxRwinSent; ULONG MinRwinSent; ULONG LimRwin; ULONG DupAckEpisodes; ULONG
-	// DupAcksOut; ULONG CeRcvd; ULONG EcnSent; ULONG EcnNoncesRcvd; ULONG CurReasmQueue; ULONG MaxReasmQueue; SIZE_T CurAppRQueue;
-	// SIZE_T MaxAppRQueue; UCHAR WinScaleSent; } TCP_ESTATS_REC_ROD_v0, *PTCP_ESTATS_REC_ROD_v0;
+	// DupAcksOut; ULONG CeRcvd; ULONG EcnSent; ULONG EcnNoncesRcvd; ULONG CurReasmQueue; ULONG MaxReasmQueue; SizeT CurAppRQueue;
+	// SizeT MaxAppRQueue; UCHAR WinScaleSent; } TCP_ESTATS_REC_ROD_v0, *PTCP_ESTATS_REC_ROD_v0;
 	[PInvokeData("tcpestats.h", MSDNShortId = "1481f108-1ea3-4952-9131-8b15e373d83e")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct TCP_ESTATS_REC_ROD_v0
@@ -1580,16 +1580,16 @@ public static partial class IpHlpApi
 		public uint MaxReasmQueue;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The current number of bytes of application data that has been acknowledged by TCP but not yet delivered to the application.</para>
 		/// </summary>
-		public SIZE_T CurAppRQueue;
+		public SizeT CurAppRQueue;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The maximum number of bytes of application data that has been acknowledged by TCP but not yet delivered to the application.</para>
 		/// </summary>
-		public SIZE_T MaxAppRQueue;
+		public SizeT MaxAppRQueue;
 
 		/// <summary>
 		/// <para>Type: <c>UCHAR</c></para>
@@ -1690,26 +1690,26 @@ public static partial class IpHlpApi
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/tcpestats/ns-tcpestats-_tcp_estats_send_buff_rod_v0 typedef struct
-	// _TCP_ESTATS_SEND_BUFF_ROD_v0 { SIZE_T CurRetxQueue; SIZE_T MaxRetxQueue; SIZE_T CurAppWQueue; SIZE_T MaxAppWQueue; }
+	// _TCP_ESTATS_SEND_BUFF_ROD_v0 { SizeT CurRetxQueue; SizeT MaxRetxQueue; SizeT CurAppWQueue; SizeT MaxAppWQueue; }
 	// TCP_ESTATS_SEND_BUFF_ROD_v0, *PTCP_ESTATS_SEND_BUFF_ROD_v0;
 	[PInvokeData("tcpestats.h", MSDNShortId = "7cda7378-95e4-4f1d-88b3-27974fedec83")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct TCP_ESTATS_SEND_BUFF_ROD_v0
 	{
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The current number of bytes of data occupying the retransmit queue.</para>
 		/// </summary>
-		public SIZE_T CurRetxQueue;
+		public SizeT CurRetxQueue;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The maximum number of bytes of data occupying the retransmit queue.</para>
 		/// </summary>
-		public SIZE_T MaxRetxQueue;
+		public SizeT MaxRetxQueue;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>
 		/// The current number of bytes of application data buffered by TCP, pending the first transmission (to the left of SND.NXT or SndMax).
 		/// </para>
@@ -1719,10 +1719,10 @@ public static partial class IpHlpApi
 		/// performance may suffer if there is insufficient queued write data.
 		/// </para>
 		/// </summary>
-		public SIZE_T CurAppWQueue;
+		public SizeT CurAppWQueue;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The maximum number of bytes of application data buffered by TCP, pending the first transmission.</para>
 		/// <para>
 		/// This is the maximum value of the <c>CurAppWQueue</c> member. The <c>MaxAppWQueue</c> and <c>CurAppWQueue</c> members can be
@@ -1730,7 +1730,7 @@ public static partial class IpHlpApi
 		/// insufficient application performance or excessive CPU load or scheduler latency).
 		/// </para>
 		/// </summary>
-		public SIZE_T MaxAppWQueue;
+		public SizeT MaxAppWQueue;
 	}
 
 	/// <summary>
@@ -1882,8 +1882,8 @@ public static partial class IpHlpApi
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/tcpestats/ns-tcpestats-_tcp_estats_snd_cong_rod_v0 typedef struct
-	// _TCP_ESTATS_SND_CONG_ROD_v0 { ULONG SndLimTransRwin; ULONG SndLimTimeRwin; SIZE_T SndLimBytesRwin; ULONG SndLimTransCwnd; ULONG
-	// SndLimTimeCwnd; SIZE_T SndLimBytesCwnd; ULONG SndLimTransSnd; ULONG SndLimTimeSnd; SIZE_T SndLimBytesSnd; ULONG SlowStart; ULONG
+	// _TCP_ESTATS_SND_CONG_ROD_v0 { ULONG SndLimTransRwin; ULONG SndLimTimeRwin; SizeT SndLimBytesRwin; ULONG SndLimTransCwnd; ULONG
+	// SndLimTimeCwnd; SizeT SndLimBytesCwnd; ULONG SndLimTransSnd; ULONG SndLimTimeSnd; SizeT SndLimBytesSnd; ULONG SlowStart; ULONG
 	// CongAvoid; ULONG OtherReductions; ULONG CurCwnd; ULONG MaxSsCwnd; ULONG MaxCaCwnd; ULONG CurSsthresh; ULONG MaxSsthresh; ULONG
 	// MinSsthresh; } TCP_ESTATS_SND_CONG_ROD_v0, *PTCP_ESTATS_SND_CONG_ROD_v0;
 	[PInvokeData("tcpestats.h", MSDNShortId = "5eb2d1c6-d4ba-4038-b598-ead517679ae7")]
@@ -1909,10 +1909,10 @@ public static partial class IpHlpApi
 		public uint SndLimTimeRwin;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The total number of bytes sent in the "Receiver Limited" state.</para>
 		/// </summary>
-		public SIZE_T SndLimBytesRwin;
+		public SizeT SndLimBytesRwin;
 
 		/// <summary>
 		/// <para>Type: <c>ULONG</c></para>
@@ -1934,10 +1934,10 @@ public static partial class IpHlpApi
 		public uint SndLimTimeCwnd;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The total number of bytes sent in the "Congestion Limited" state.</para>
 		/// </summary>
-		public SIZE_T SndLimBytesCwnd;
+		public SizeT SndLimBytesCwnd;
 
 		/// <summary>
 		/// <para>Type: <c>ULONG</c></para>
@@ -1957,10 +1957,10 @@ public static partial class IpHlpApi
 		public uint SndLimTimeSnd;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The total number of bytes sent in the "Sender Limited" state.</para>
 		/// </summary>
-		public SIZE_T SndLimBytesSnd;
+		public SizeT SndLimBytesSnd;
 
 		/// <summary>
 		/// <para>Type: <c>ULONG</c></para>

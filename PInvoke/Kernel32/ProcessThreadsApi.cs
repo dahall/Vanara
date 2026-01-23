@@ -234,7 +234,7 @@ public static partial class Kernel32
 	}
 
 	/// <summary>
-	/// Flags used by <see cref="CreateRemoteThread(HPROCESS, SECURITY_ATTRIBUTES, SIZE_T, IntPtr, IntPtr, CREATE_THREAD_FLAGS, out uint)"/>.
+	/// Flags used by <see cref="CreateRemoteThread(HPROCESS, SECURITY_ATTRIBUTES, SizeT, IntPtr, IntPtr, CREATE_THREAD_FLAGS, out uint)"/>.
 	/// </summary>
 	[Flags]
 	public enum CREATE_THREAD_FLAGS
@@ -1662,7 +1662,7 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ PTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ StrPtrAuto lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
@@ -1878,7 +1878,7 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ PTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ StrPtrAuto lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
@@ -1968,12 +1968,12 @@ public static partial class Kernel32
 	/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLL).
 	/// </para>
 	/// </returns>
-	// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682437(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682437")]
 	[return: AddAsCtor]
-	public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SIZE_T dwStackSize,
+	public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize,
 		ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
 	/// <summary>
@@ -2049,12 +2049,12 @@ public static partial class Kernel32
 	/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLL).
 	/// </para>
 	/// </returns>
-	// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE WINAPI CreateRemoteThread( _In_ HANDLE hProcess, _In_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682437(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682437")]
 	[return: AddAsCtor]
-	public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SIZE_T dwStackSize,
+	public static extern SafeHTHREAD CreateRemoteThread([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize,
 		IntPtr lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
 	/// <summary>
@@ -2122,12 +2122,12 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
 	/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_ LPPROC_THREAD_ATTRIBUTE_LIST
 	// lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
-	public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SIZE_T dwStackSize,
+	public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize,
 		ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, SafeProcThreadAttributeList lpAttributeList,
 		out uint lpThreadId);
 
@@ -2196,12 +2196,12 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
 	/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_ LPPROC_THREAD_ATTRIBUTE_LIST
 	// lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
-	public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SIZE_T dwStackSize,
+	public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize,
 		ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, [Optional] IntPtr lpAttributeList,
 		out uint lpThreadId);
 
@@ -2270,12 +2270,12 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
 	/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_ LPPROC_THREAD_ATTRIBUTE_LIST
 	// lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
-	public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SIZE_T dwStackSize,
+	public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize,
 		IntPtr lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, SafeProcThreadAttributeList lpAttributeList,
 		out uint lpThreadId);
 
@@ -2344,12 +2344,12 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a handle to the new thread.</para>
 	/// <para>If the function fails, the return value is NULL. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_
+	// HANDLE CreateRemoteThreadEx( _In_ HANDLE hProcess, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_
 	// LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _In_opt_ LPPROC_THREAD_ATTRIBUTE_LIST
 	// lpAttributeList, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
-	public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SIZE_T dwStackSize,
+	public static extern SafeHTHREAD CreateRemoteThreadEx([In] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize,
 		IntPtr lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, [Optional] IntPtr lpAttributeList,
 		out uint lpThreadId);
 
@@ -2415,7 +2415,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
 	[return: AddAsCtor]
 	public static SafeHTHREAD CreateRemoteThreadEx([In, AddAsMember] HPROCESS hProcess, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes,
-		ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] SIZE_T dwStackSize, [Optional] CREATE_THREAD_FLAGS dwCreationFlags,
+		ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, [Optional] SizeT dwStackSize, [Optional] CREATE_THREAD_FLAGS dwCreationFlags,
 		out uint lpThreadId, params (PROC_THREAD_ATTRIBUTE attribute, object value)[] lpAttributeList)
 	{
 		using var al = SafeProcThreadAttributeList.Create(lpAttributeList.ToDictionary(x => x.attribute, x => x.value));
@@ -2485,12 +2485,12 @@ public static partial class Kernel32
 	/// the process is created even if it refers to invalid or missing dynamic-link libraries (DLLs).
 	/// </para>
 	/// </returns>
-	// HANDLE WINAPI CreateThread( _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_ LPTHREAD_START_ROUTINE
+	// HANDLE WINAPI CreateThread( _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_ LPTHREAD_START_ROUTINE
 	// lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682453")]
 	[return: AddAsCtor]
-	public static extern SafeHTHREAD CreateThread([In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SIZE_T dwStackSize, ThreadProc lpStartAddress,
+	public static extern SafeHTHREAD CreateThread([In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize, ThreadProc lpStartAddress,
 		[In, Optional] IntPtr lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
 	/// <summary>
@@ -2556,11 +2556,11 @@ public static partial class Kernel32
 	/// the process is created even if it refers to invalid or missing dynamic-link libraries (DLLs).
 	/// </para>
 	/// </returns>
-	// HANDLE WINAPI CreateThread( _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SIZE_T dwStackSize, _In_ LPTHREAD_START_ROUTINE
+	// HANDLE WINAPI CreateThread( _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ SizeT dwStackSize, _In_ LPTHREAD_START_ROUTINE
 	// lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms682453")]
-	public static extern unsafe SafeHTHREAD CreateThread([In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SIZE_T dwStackSize, ThreadProcUnsafe lpStartAddress,
+	public static extern unsafe SafeHTHREAD CreateThread([In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes, [Optional] SizeT dwStackSize, ThreadProcUnsafe lpStartAddress,
 		[In, Optional] void* lpParameter, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
 	/// <summary>Deletes the specified list of attributes for process and thread creation.</summary>
@@ -2595,11 +2595,11 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI FlushInstructionCache( _In_ HANDLE hProcess, _In_ LPCVOID lpBaseAddress, _In_ SIZE_T dwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679350(v=vs.85).aspx
+	// BOOL WINAPI FlushInstructionCache( _In_ HANDLE hProcess, _In_ LPCVOID lpBaseAddress, _In_ SizeT dwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679350(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms679350")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool FlushInstructionCache([In] HPROCESS hProcess, [In, Optional] IntPtr lpBaseAddress, [Optional] SIZE_T dwSize);
+	public static extern bool FlushInstructionCache([In] HPROCESS hProcess, [In, Optional] IntPtr lpBaseAddress, [Optional] SizeT dwSize);
 
 	/// <summary>Flushes the write queue of each processor that is running a thread of the current process.</summary>
 	/// <returns>This function does not return a value.</returns>
@@ -3237,11 +3237,11 @@ public static partial class Kernel32
 	/// for this function, call <c>GetLastError</c>.
 	/// </returns>
 	// BOOL WINAPI GetProcessMitigationPolicy( _In_ HANDLE hProcess, _In_ PROCESS_MITIGATION_POLICY MitigationPolicy, _Out_ PVOID lpBuffer,
-	// _In_ SIZE_T dwLength); https://msdn.microsoft.com/en-us/library/windows/desktop/hh769085(v=vs.85).aspx
+	// _In_ SizeT dwLength); https://msdn.microsoft.com/en-us/library/windows/desktop/hh769085(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Processthreadsapi.h", MSDNShortId = "hh769085")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool GetProcessMitigationPolicy(HPROCESS hProcess, PROCESS_MITIGATION_POLICY MitigationPolicy, IntPtr lpBuffer, SIZE_T dwLength);
+	public static extern bool GetProcessMitigationPolicy(HPROCESS hProcess, PROCESS_MITIGATION_POLICY MitigationPolicy, IntPtr lpBuffer, SizeT dwLength);
 
 	/// <summary>Retrieves mitigation policy settings for the calling process.</summary>
 	/// <typeparam name="T">The type of the value to retrieve.</typeparam>
@@ -3657,7 +3657,7 @@ public static partial class Kernel32
 	/// <para>Thread descriptions do not need to be unique.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getthreaddescription HRESULT
-	// GetThreadDescription( HANDLE hThread, PWSTR *ppszThreadDescription );
+	// GetThreadDescription( HANDLE hThread, StrPtrUni *ppszThreadDescription );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "9CFF0A2D-2196-4AE0-8F77-229A8AB7A3E8")]
 	public static extern HRESULT GetThreadDescription(HTHREAD hThread, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler))] out string ppszThreadDescription);
@@ -3967,7 +3967,7 @@ public static partial class Kernel32
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683481")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool InitializeProcThreadAttributeList(IntPtr lpAttributeList, uint dwAttributeCount, [Optional] uint dwFlags, ref SIZE_T lpSize);
+	public static extern bool InitializeProcThreadAttributeList(IntPtr lpAttributeList, uint dwAttributeCount, [Optional] uint dwFlags, ref SizeT lpSize);
 
 	/// <summary>Determines whether the specified process is considered critical.</summary>
 	/// <param name="hProcess">
@@ -4740,11 +4740,11 @@ public static partial class Kernel32
 	/// If the function succeeds, it returns <c>TRUE</c>. If the function fails, it returns <c>FALSE</c>. To retrieve error values defined
 	/// for this function, call <c>GetLastError</c>.
 	/// </returns>
-	// BOOL WINAPI SetProcessMitigationPolicy( _In_ PROCESS_MITIGATION_POLICY MitigationPolicy, _In_ PVOID lpBuffer, _In_ SIZE_T dwLength); https://msdn.microsoft.com/en-us/library/windows/desktop/hh769088(v=vs.85).aspx
+	// BOOL WINAPI SetProcessMitigationPolicy( _In_ PROCESS_MITIGATION_POLICY MitigationPolicy, _In_ PVOID lpBuffer, _In_ SizeT dwLength); https://msdn.microsoft.com/en-us/library/windows/desktop/hh769088(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Processthreadsapi.h", MSDNShortId = "hh769088")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY MitigationPolicy, IntPtr lpBuffer, SIZE_T dwLength);
+	public static extern bool SetProcessMitigationPolicy(PROCESS_MITIGATION_POLICY MitigationPolicy, IntPtr lpBuffer, SizeT dwLength);
 
 	/// <summary>
 	/// Sets a mitigation policy for the calling process. Mitigation policies enable a process to harden itself against various types of attacks.
@@ -5751,12 +5751,12 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// BOOL WINAPI UpdateProcThreadAttribute( _Inout_ LPPROC_THREAD_ATTRIBUTE_LIST lpAttributeList, _In_ DWORD dwFlags, _In_ DWORD_PTR
-	// Attribute, _In_ PVOID lpValue, _In_ SIZE_T cbSize, _Out_opt_ PVOID lpPreviousValue, _In_opt_ PSIZE_T lpReturnSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686880(v=vs.85).aspx
+	// Attribute, _In_ PVOID lpValue, _In_ SizeT cbSize, _Out_opt_ PVOID lpPreviousValue, _In_opt_ PSIZE_T lpReturnSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686880(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms686880")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool UpdateProcThreadAttribute(IntPtr lpAttributeList, [Optional] uint dwFlags, PROC_THREAD_ATTRIBUTE Attribute, IntPtr lpValue,
-		SIZE_T cbSize, [Optional] IntPtr lpPreviousValue, [Optional] IntPtr lpReturnSize);
+		SizeT cbSize, [Optional] IntPtr lpPreviousValue, [Optional] IntPtr lpReturnSize);
 
 	/// <summary>
 	/// <para>Creates a new process and its primary thread. The new process runs in the security context of the calling process.</para>
@@ -5926,7 +5926,7 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ PTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ StrPtrAuto lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
@@ -6106,7 +6106,7 @@ public static partial class Kernel32
 	/// initialize, the process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ PTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
+	// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ StrPtrAuto lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES
 	// lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
 	// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
 	// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
@@ -7032,7 +7032,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Creating Processes.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-_startupinfoa typedef struct _STARTUPINFOA {
-	// DWORD cb; PSTR lpReserved; PSTR lpDesktop; PSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
+	// DWORD cb; StrPtrAnsi lpReserved; StrPtrAnsi lpDesktop; StrPtrAnsi lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
 	// DWORD dwYCountChars; DWORD dwFillAttribute; DWORD dwFlags; WORD wShowWindow; WORD cbReserved2; LPBYTE lpReserved2; HANDLE hStdInput;
 	// HANDLE hStdOutput; HANDLE hStdError; } STARTUPINFOA, *LPSTARTUPINFOA;
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "cf4b795c-52c1-4573-8328-99ee13f68bb3")]
@@ -7564,7 +7564,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Creating Processes.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-_startupinfoa typedef struct _STARTUPINFOA {
-	// DWORD cb; PSTR lpReserved; PSTR lpDesktop; PSTR lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
+	// DWORD cb; StrPtrAnsi lpReserved; StrPtrAnsi lpDesktop; StrPtrAnsi lpTitle; DWORD dwX; DWORD dwY; DWORD dwXSize; DWORD dwYSize; DWORD dwXCountChars;
 	// DWORD dwYCountChars; DWORD dwFillAttribute; DWORD dwFlags; WORD wShowWindow; WORD cbReserved2; LPBYTE lpReserved2; HANDLE hStdInput;
 	// HANDLE hStdOutput; HANDLE hStdError; } STARTUPINFOA, *LPSTARTUPINFOA;
 	[PInvokeData("processthreadsapi.h", MSDNShortId = "cf4b795c-52c1-4573-8328-99ee13f68bb3")]
@@ -7586,7 +7586,7 @@ public static partial class Kernel32
 		/// </summary>
 		//[MarshalAs(UnmanagedType.LPTStr)]
 		//public string lpDesktop;
-		public PTSTR lpDesktop;
+		public StrPtrAuto lpDesktop;
 
 		/// <summary>
 		/// For console processes, this is the title displayed in the title bar if a new console window is created. If NULL, the name of the
@@ -7595,7 +7595,7 @@ public static partial class Kernel32
 		/// </summary>
 		//[MarshalAs(UnmanagedType.LPTStr)]
 		//public string lpTitle;
-		public PTSTR lpTitle;
+		public StrPtrAuto lpTitle;
 
 		/// <summary>
 		/// <para>
@@ -7927,7 +7927,7 @@ public static partial class Kernel32
 		/// <c>CreateProcess</c>, where the process is created even if it refers to invalid or missing dynamic-link libraries (DLLs).
 		/// </para>
 		/// </returns>
-		public static SafeHTHREAD Create(ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, out uint lpThreadId, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, [Optional] SIZE_T dwStackSize, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes) =>
+		public static SafeHTHREAD Create(ThreadProc lpStartAddress, [In, Optional] IntPtr lpParameter, out uint lpThreadId, [Optional] CREATE_THREAD_FLAGS dwCreationFlags, [Optional] SizeT dwStackSize, [In, Optional] SECURITY_ATTRIBUTES? lpThreadAttributes) =>
 			Kernel32.CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, out lpThreadId);
 
 		/// <summary>
@@ -8045,7 +8045,7 @@ public static partial class Kernel32
 			foreach (KeyValuePair<PROC_THREAD_ATTRIBUTE, object> kv in attributes)
 				if (!IsValid(kv.Key, kv.Value)) throw new ArgumentException($"The attribute {kv.Key} does not support a value of type {kv.Value.GetType().Name}.");
 
-			SIZE_T sz = 0;
+			SizeT sz = 0;
 			InitializeProcThreadAttributeList(IntPtr.Zero, (uint)attributes.Count, 0, ref sz);
 			if (sz == 0) Win32Error.ThrowLastError();
 			RuntimeHelpers.PrepareConstrainedRegions();

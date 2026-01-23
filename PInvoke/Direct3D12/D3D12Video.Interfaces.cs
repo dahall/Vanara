@@ -1212,10 +1212,10 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist2-initializeextensioncommand
-		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
+		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SizeT
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
-		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SIZE_T InitializationParametersSizeInBytes);
+		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SizeT InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into a decode command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -1233,10 +1233,10 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist2-executeextensioncommand
-		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
+		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SizeT
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
-		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SIZE_T ExecutionParametersSizeInBytes);
+		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SizeT ExecutionParametersSizeInBytes);
 	}
 
 	/// <summary>
@@ -1673,10 +1673,10 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist2-initializeextensioncommand
-		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
+		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SizeT
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
-		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SIZE_T InitializationParametersSizeInBytes);
+		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SizeT InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into a decode command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -1694,10 +1694,10 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodecodecommandlist2-executeextensioncommand
-		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
+		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SizeT
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
-		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SIZE_T ExecutionParametersSizeInBytes);
+		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SizeT ExecutionParametersSizeInBytes);
 
 		/// <summary>
 		/// <para>Adds a collection of barriers into a video decode command list recording.</para>
@@ -2821,11 +2821,11 @@ public static partial class D3D12
 		/// </param>
 		/// <returns>This method returns an HRESULT.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice2-createvideoextensioncommand
-		// HRESULT CreateVideoExtensionCommand( const D3D12_VIDEO_EXTENSION_COMMAND_DESC *pDesc, const void *pCreationParameters, SIZE_T
+		// HRESULT CreateVideoExtensionCommand( const D3D12_VIDEO_EXTENSION_COMMAND_DESC *pDesc, const void *pCreationParameters, SizeT
 		// CreationParametersDataSizeInBytes, ID3D12ProtectedResourceSession *pProtectedResourceSession, REFIID riid, void
 		// **ppVideoExtensionCommand );
 		[PreserveSig]
-		HRESULT CreateVideoExtensionCommand(in D3D12_VIDEO_EXTENSION_COMMAND_DESC pDesc, [In] IntPtr pCreationParameters, SIZE_T CreationParametersDataSizeInBytes,
+		HRESULT CreateVideoExtensionCommand(in D3D12_VIDEO_EXTENSION_COMMAND_DESC pDesc, [In] IntPtr pCreationParameters, SizeT CreationParametersDataSizeInBytes,
 			[In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppVideoExtensionCommand);
 
@@ -2862,11 +2862,11 @@ public static partial class D3D12
 		/// </list>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice2-executeextensioncommand HRESULT
-		// ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
-		// ExecutionParametersSizeInBytes, void *pOutputData, SIZE_T OutputDataSizeInBytes );
+		// ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SizeT
+		// ExecutionParametersSizeInBytes, void *pOutputData, SizeT OutputDataSizeInBytes );
 		[PreserveSig]
 		HRESULT ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters,
-			SIZE_T ExecutionParametersSizeInBytes, [Out] IntPtr pOutputData, SIZE_T OutputDataSizeInBytes);
+			SizeT ExecutionParametersSizeInBytes, [Out] IntPtr pOutputData, SizeT OutputDataSizeInBytes);
 	}
 
 	/// <summary>Extends the <c>ID3D12VideoDevice</c> interface to add support video encoding capabilities.</summary>
@@ -3058,11 +3058,11 @@ public static partial class D3D12
 		/// </param>
 		/// <returns>This method returns an HRESULT.</returns>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice2-createvideoextensioncommand
-		// HRESULT CreateVideoExtensionCommand( const D3D12_VIDEO_EXTENSION_COMMAND_DESC *pDesc, const void *pCreationParameters, SIZE_T
+		// HRESULT CreateVideoExtensionCommand( const D3D12_VIDEO_EXTENSION_COMMAND_DESC *pDesc, const void *pCreationParameters, SizeT
 		// CreationParametersDataSizeInBytes, ID3D12ProtectedResourceSession *pProtectedResourceSession, REFIID riid, void
 		// **ppVideoExtensionCommand );
 		[PreserveSig]
-		new HRESULT CreateVideoExtensionCommand(in D3D12_VIDEO_EXTENSION_COMMAND_DESC pDesc, [In] IntPtr pCreationParameters, SIZE_T CreationParametersDataSizeInBytes,
+		new HRESULT CreateVideoExtensionCommand(in D3D12_VIDEO_EXTENSION_COMMAND_DESC pDesc, [In] IntPtr pCreationParameters, SizeT CreationParametersDataSizeInBytes,
 			[In, Optional] ID3D12ProtectedResourceSession? pProtectedResourceSession, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)] out object? ppVideoExtensionCommand);
 
@@ -3099,11 +3099,11 @@ public static partial class D3D12
 		/// </list>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videodevice2-executeextensioncommand HRESULT
-		// ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
-		// ExecutionParametersSizeInBytes, void *pOutputData, SIZE_T OutputDataSizeInBytes );
+		// ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SizeT
+		// ExecutionParametersSizeInBytes, void *pOutputData, SizeT OutputDataSizeInBytes );
 		[PreserveSig]
 		new HRESULT ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters,
-			SIZE_T ExecutionParametersSizeInBytes, [Out] IntPtr pOutputData, SIZE_T OutputDataSizeInBytes);
+			SizeT ExecutionParametersSizeInBytes, [Out] IntPtr pOutputData, SizeT OutputDataSizeInBytes);
 
 		/// <summary>Creates a new instance of <c>ID3D12VideoEncoder</c>.</summary>
 		/// <param name="pDesc">A <c>D3D12_VIDEO_ENCODER_DESC</c> representing the configuration parameters for the video encoder.</param>
@@ -3985,11 +3985,11 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist1-initializeextensioncommand
-		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
+		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SizeT
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
 		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters,
-			SIZE_T InitializationParametersSizeInBytes);
+			SizeT InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into an encode command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -4007,11 +4007,11 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist1-executeextensioncommand
-		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
+		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SizeT
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
 		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters,
-			SIZE_T ExecutionParametersSizeInBytes);
+			SizeT ExecutionParametersSizeInBytes);
 	}
 
 	/// <summary>
@@ -4452,11 +4452,11 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist1-initializeextensioncommand
-		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
+		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SizeT
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
 		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters,
-			SIZE_T InitializationParametersSizeInBytes);
+			SizeT InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into an encode command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -4474,11 +4474,11 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist1-executeextensioncommand
-		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
+		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SizeT
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
 		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters,
-			SIZE_T ExecutionParametersSizeInBytes);
+			SizeT ExecutionParametersSizeInBytes);
 
 		/// <summary>Encodes a bitstream.</summary>
 		/// <param name="pEncoder">A <c>ID3D12VideoEncoder</c> representing the video encoder to be used for the encode operation.</param>
@@ -4980,11 +4980,11 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist1-initializeextensioncommand
-		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
+		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SizeT
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
 		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters,
-			SIZE_T InitializationParametersSizeInBytes);
+			SizeT InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into an encode command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -5002,11 +5002,11 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoencodecommandlist1-executeextensioncommand
-		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
+		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SizeT
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
 		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters,
-			SIZE_T ExecutionParametersSizeInBytes);
+			SizeT ExecutionParametersSizeInBytes);
 
 		/// <summary>Encodes a bitstream.</summary>
 		/// <param name="pEncoder">A <c>ID3D12VideoEncoder</c> representing the video encoder to be used for the encode operation.</param>
@@ -7390,10 +7390,10 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist2-initializeextensioncommand
-		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
+		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SizeT
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
-		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SIZE_T InitializationParametersSizeInBytes);
+		void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SizeT InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into a video process command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -7411,10 +7411,10 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist2-executeextensioncommand
-		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
+		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SizeT
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
-		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SIZE_T ExecutionParametersSizeInBytes);
+		void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SizeT ExecutionParametersSizeInBytes);
 	}
 
 	/// <summary>
@@ -7876,10 +7876,10 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist2-initializeextensioncommand
-		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SIZE_T
+		// void InitializeExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pInitializationParameters, SizeT
 		// InitializationParametersSizeInBytes );
 		[PreserveSig]
-		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SIZE_T InitializationParametersSizeInBytes);
+		new void InitializeExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pInitializationParameters, SizeT InitializationParametersSizeInBytes);
 
 		/// <summary>Records a command to execute a video extension command into a video process command list.</summary>
 		/// <param name="pExtensionCommand">
@@ -7897,10 +7897,10 @@ public static partial class D3D12
 		/// Errors initializing the extension command are reported via debug layers and the return value of the command list's <c>Close</c> method.
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12video/nf-d3d12video-id3d12videoprocesscommandlist2-executeextensioncommand
-		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SIZE_T
+		// void ExecuteExtensionCommand( ID3D12VideoExtensionCommand *pExtensionCommand, const void *pExecutionParameters, SizeT
 		// ExecutionParametersSizeInBytes );
 		[PreserveSig]
-		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SIZE_T ExecutionParametersSizeInBytes);
+		new void ExecuteExtensionCommand([In] ID3D12VideoExtensionCommand pExtensionCommand, [In] IntPtr pExecutionParameters, SizeT ExecutionParametersSizeInBytes);
 
 		/// <summary>
 		/// <para>Adds a collection of barriers into a video process command list recording.</para>

@@ -1156,7 +1156,7 @@ public static partial class Ws2_32
 	/// Server 2012 R2, and later.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-gethostnamew int WSAAPI GetHostNameW( PWSTR name, int
+	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-gethostnamew int WSAAPI GetHostNameW( StrPtrUni name, int
 	// namelen );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winsock2.h", MSDNShortId = "787EB209-5944-4F0A-8550-FE1115C2298A")]
@@ -2345,7 +2345,7 @@ public static partial class Ws2_32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/wsipv6ok/nf-wsipv6ok-inet_ntoa void inet_ntoa( a );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 	[PInvokeData("wsipv6ok.h", MSDNShortId = "01cd32e7-a01d-40e8-afb5-69223d643a0e")]
-	public static extern PSTR inet_ntoa(IN_ADDR a);
+	public static extern StrPtrAnsi inet_ntoa(IN_ADDR a);
 
 	/// <summary>The <c>ioctlsocket</c> function controls the I/O mode of a socket.</summary>
 	/// <param name="s">A descriptor identifying a socket.</param>
@@ -6261,7 +6261,7 @@ public static partial class Ws2_32
 	public struct PROTOENT
 	{
 		/// <summary>Official name of the protocol.</summary>
-		public PSTR p_name;
+		public StrPtrAnsi p_name;
 
 		/// <summary>Null-terminated array of alternate names.</summary>
 		public IntPtr p_aliases;
@@ -6307,7 +6307,7 @@ public static partial class Ws2_32
 			return new SERVENT { s_name = s.s_name, s_aliases = s.s_aliases.ToStringEnum(s.s_aliases.GetNulledPtrArrayLength(), CharSet.Ansi).Where(s => s is not null).ToArray()!, s_port = s.s_port, s_proto = s.s_proto };
 		}
 
-		readonly SIZE_T IVanaraMarshaler.GetNativeSize() => IntPtr.Size == 8 ? Marshal.SizeOf(typeof(SERVENTx64)) : Marshal.SizeOf(typeof(SERVENT));
+		readonly SizeT IVanaraMarshaler.GetNativeSize() => IntPtr.Size == 8 ? Marshal.SizeOf(typeof(SERVENTx64)) : Marshal.SizeOf(typeof(SERVENT));
 
 		readonly SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -6334,23 +6334,23 @@ public static partial class Ws2_32
 			throw new ArgumentException("Object must be of type SERVENT.", nameof(managedObject));
 		}
 
-		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes) => FromIntPtr(pNativeData);
+		object IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes) => FromIntPtr(pNativeData);
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		private struct SERVENTx32
 		{
-			public PSTR s_name;
+			public StrPtrAnsi s_name;
 			public IntPtr s_aliases;
 			public short s_port;
-			public PSTR s_proto;
+			public StrPtrAnsi s_proto;
 		}
 
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		private struct SERVENTx64
 		{
-			public PSTR s_name;
+			public StrPtrAnsi s_name;
 			public IntPtr s_aliases;
-			public PSTR s_proto;
+			public StrPtrAnsi s_proto;
 			public short s_port;
 		}
 	}

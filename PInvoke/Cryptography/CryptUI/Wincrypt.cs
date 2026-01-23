@@ -984,7 +984,7 @@ public static partial class CryptUI
 		/// Enhanced key usage object identifier (OID) of the certificates that will initially appear in the dialog box. The default
 		/// value is <c>NULL</c>, which displays all certificates.
 		/// </summary>
-		public PSTR pszInitUsageOID;
+		public StrPtrAnsi pszInitUsageOID;
 	}
 
 	/// <summary>
@@ -1149,7 +1149,7 @@ public static partial class CryptUI
 		/// <summary>
 		/// An array of pointers to null-terminated strings that contain the purposes for which this certificate will be validated.
 		/// </summary>
-		public ArrayPointer<PTSTR> rgszPurposes;
+		public ArrayPointer<StrPtrAuto> rgszPurposes;
 
 		/// <summary>The number of purposes in the <c>rgszPurposes</c> array.</summary>
 		public uint cPurposes;
@@ -1262,7 +1262,7 @@ public static partial class CryptUI
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cryptuiapi/ns-cryptuiapi-cryptui_wiz_digital_sign_cert_pvk_info typedef struct
-	// _CRYPTUI_WIZ_DIGITAL_SIGN_CERT_PVK_INFO { DWORD dwSize; PWSTR pwszSigningCertFileName; DWORD dwPvkChoice; union {
+	// _CRYPTUI_WIZ_DIGITAL_SIGN_CERT_PVK_INFO { DWORD dwSize; StrPtrUni pwszSigningCertFileName; DWORD dwPvkChoice; union {
 	// PCCRYPTUI_WIZ_DIGITAL_SIGN_PVK_FILE_INFO pPvkFileInfo; PCRYPT_KEY_PROV_INFO pPvkProvInfo; }; }
 	// CRYPTUI_WIZ_DIGITAL_SIGN_CERT_PVK_INFO, *PCRYPTUI_WIZ_DIGITAL_SIGN_CERT_PVK_INFO;
 	[PInvokeData("cryptuiapi.h", MSDNShortId = "0316ed0b-d4e5-4102-9ab0-637e96c7d9f5")]
@@ -1387,7 +1387,7 @@ public static partial class CryptUI
 		/// A pointer to a null-terminated ANSI string that contains the object identifier (OID) of the hash algorithm used for the
 		/// signature. The default value is <c>NULL</c>, which indicates that the SHA-1 hash algorithm is used.
 		/// </summary>
-		public PSTR pszHashAlg;
+		public StrPtrAnsi pszHashAlg;
 
 		/// <summary>
 		/// A pointer to a null-terminated Unicode string that contains the string displayed on the digital signature wizard page. The
@@ -1466,7 +1466,7 @@ public static partial class CryptUI
 			/// used if <c>CRYPTUI_WIZ_DIGITAL_SIGN_SUBJECT_FILE</c> is specified for the <c>dwSubjectChoice</c> member.
 			/// </summary>
 			[FieldOffset(0)]
-			public PWSTR pwszFileName;
+			public StrPtrUni pwszFileName;
 
 			/// <summary>
 			/// A pointer to a CRYPTUI_WIZ_DIGITAL_SIGN_BLOB_INFO structure that contains the BLOB to sign. This member is used if
@@ -1578,7 +1578,7 @@ public static partial class CryptUI
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cryptuiapi/ns-cryptuiapi-cryptui_wiz_digital_sign_pvk_file_info typedef struct
-	// _CRYPTUI_WIZ_DIGITAL_SIGN_PVK_FILE_INFO { DWORD dwSize; PWSTR pwszPvkFileName; PWSTR pwszProvName; DWORD dwProvType; }
+	// _CRYPTUI_WIZ_DIGITAL_SIGN_PVK_FILE_INFO { DWORD dwSize; StrPtrUni pwszPvkFileName; StrPtrUni pwszProvName; DWORD dwProvType; }
 	// CRYPTUI_WIZ_DIGITAL_SIGN_PVK_FILE_INFO, *PCRYPTUI_WIZ_DIGITAL_SIGN_PVK_FILE_INFO;
 	[PInvokeData("cryptuiapi.h", MSDNShortId = "0e737661-2cc3-47be-ab32-0efbc18fefbd")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1890,7 +1890,7 @@ public static partial class CryptUI
 			/// certificate to import. This member is used if the <c>dwSubjectChoice</c> member contains <c>CRYPTUI_WIZ_IMPORT_SUBJECT_FILE</c>.
 			/// </summary>
 			[FieldOffset(0)]
-			public PWSTR pwszFileName;
+			public StrPtrUni pwszFileName;
 
 			/// <summary>
 			/// A pointer to the CERT_CONTEXT structure that contains the certificate to import. This member is used if the

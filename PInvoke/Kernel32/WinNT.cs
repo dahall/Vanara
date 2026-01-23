@@ -178,11 +178,11 @@ public static partial class Kernel32
 	/// <para>To unregister the callback function, use the RemoveSecureMemoryCacheCallback function.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/nc-winnt-psecure_memory_cache_callback BOOLEAN
-	// PsecureMemoryCacheCallback( PVOID Addr, SIZE_T Range ) {...}
+	// PsecureMemoryCacheCallback( PVOID Addr, SizeT Range ) {...}
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	[PInvokeData("winnt.h", MSDNShortId = "abde4b6f-7cd8-4a4b-9b00-f035b2c29054")]
 	[return: MarshalAs(UnmanagedType.U1)]
-	public delegate bool SecureMemoryCacheCallback([In] IntPtr Addr, SIZE_T Range);
+	public delegate bool SecureMemoryCacheCallback([In] IntPtr Addr, SizeT Range);
 
 	/// <summary>A bitmask that specifies the compression format.</summary>
 	[PInvokeData("winnt.h")]
@@ -390,7 +390,7 @@ public static partial class Kernel32
 	// void RtlCopyMemory( Destination, Source, Length );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wdm.h", MSDNShortId = "d204eeb4-e109-4a86-986f-0fccdda3f8f8")]
-	public static extern void RtlCopyMemory([Out] IntPtr Destination, [In] IntPtr Source, SIZE_T Length);
+	public static extern void RtlCopyMemory([Out] IntPtr Destination, [In] IntPtr Source, SizeT Length);
 
 	/// <summary>The <c>RtlFillMemory</c> routine fills a block of memory with the specified fill value.</summary>
 	/// <param name="Destination">Datatype: void*. A pointer to the block of memory to be filled.</param>
@@ -408,7 +408,7 @@ public static partial class Kernel32
 	// void RtlFillMemory( Destination, Length, Fill );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("wdm.h", MSDNShortId = "9a73331a-cc73-4a47-948b-a821600ca6a6")]
-	public static extern void RtlFillMemory([Out] IntPtr Destination, SIZE_T Length, [Range(0, byte.MaxValue)] int Fill);
+	public static extern void RtlFillMemory([Out] IntPtr Destination, SizeT Length, [Range(0, byte.MaxValue)] int Fill);
 
 	/// <summary>
 	/// Copies the contents of a source memory block to a destination memory block, and supports overlapping source and destination
@@ -433,10 +433,10 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/devnotes/rtlmovememory VOID RtlMoveMemory( _Out_ VOID UNALIGNED *Destination, _In_
-	// const VOID UNALIGNED *Source, _In_ SIZE_T Length );
+	// const VOID UNALIGNED *Source, _In_ SizeT Length );
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winnt.h", MSDNShortId = "D374F14D-24C7-4771-AD40-3AC37E7A2D2F")]
-	public static extern void RtlMoveMemory([In] IntPtr Destination, [In] IntPtr Source, [In] SIZE_T Length);
+	public static extern void RtlMoveMemory([In] IntPtr Destination, [In] IntPtr Source, [In] SizeT Length);
 
 	/// <summary>
 	/// The RtlZeroMemory routine fills a block of memory with zeros, given a pointer to the block and the length, in bytes, to be filled.
@@ -446,7 +446,7 @@ public static partial class Kernel32
 	// https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/nf-wdm-rtlzeromemory
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winnt.h")]
-	public static extern void RtlZeroMemory([In] IntPtr Destination, SIZE_T Length);
+	public static extern void RtlZeroMemory([In] IntPtr Destination, SizeT Length);
 
 	/// <summary>
 	/// Contains processor-specific register data. The system uses CONTEXT structures to perform various internal operations. Refer to

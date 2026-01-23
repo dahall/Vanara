@@ -9344,7 +9344,7 @@ public static partial class BCrypt
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_algorithm_identifier typedef struct
-	// _BCRYPT_ALGORITHM_IDENTIFIER { PWSTR pszName; ULONG dwClass; ULONG dwFlags; } BCRYPT_ALGORITHM_IDENTIFIER;
+	// _BCRYPT_ALGORITHM_IDENTIFIER { StrPtrUni pszName; ULONG dwClass; ULONG dwFlags; } BCRYPT_ALGORITHM_IDENTIFIER;
 	[PInvokeData("bcrypt.h", MSDNShortId = "a49a21c9-5668-4709-b52a-f6cacd944845")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct BCRYPT_ALGORITHM_IDENTIFIER
@@ -9583,7 +9583,7 @@ public static partial class BCrypt
 
 	/// <summary>The <c>BCRYPT_PROVIDER_NAME</c> structure contains the name of a CNG provider.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_provider_name typedef struct _BCRYPT_PROVIDER_NAME {
-	// PWSTR pszProviderName; } BCRYPT_PROVIDER_NAME;
+	// StrPtrUni pszProviderName; } BCRYPT_PROVIDER_NAME;
 	[PInvokeData("bcrypt.h", MSDNShortId = "0c57aa3f-1d9a-4bb2-b142-bce9c054e658")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct BCRYPT_PROVIDER_NAME
@@ -9691,7 +9691,7 @@ public static partial class BCrypt
 	/// The <c>CRYPT_CONTEXT_FUNCTION_PROVIDERS</c> structure contains a set of cryptographic function providers for a CNG configuration context.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_crypt_context_function_providers typedef struct
-	// _CRYPT_CONTEXT_FUNCTION_PROVIDERS { ULONG cProviders; PWSTR *rgpszProviders; } CRYPT_CONTEXT_FUNCTION_PROVIDERS, *PCRYPT_CONTEXT_FUNCTION_PROVIDERS;
+	// _CRYPT_CONTEXT_FUNCTION_PROVIDERS { ULONG cProviders; StrPtrUni *rgpszProviders; } CRYPT_CONTEXT_FUNCTION_PROVIDERS, *PCRYPT_CONTEXT_FUNCTION_PROVIDERS;
 	[PInvokeData("bcrypt.h", MSDNShortId = "5e175ac2-38eb-44c4-a01a-fb436e833546")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct CRYPT_CONTEXT_FUNCTION_PROVIDERS
@@ -9712,7 +9712,7 @@ public static partial class BCrypt
 	/// <para>The <c>CRYPT_CONTEXT_FUNCTIONS</c> structure contains a set of cryptographic functions for a CNG configuration context.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_crypt_context_functions typedef struct
-	// _CRYPT_CONTEXT_FUNCTIONS { ULONG cFunctions; PWSTR *rgpszFunctions; } CRYPT_CONTEXT_FUNCTIONS, *PCRYPT_CONTEXT_FUNCTIONS;
+	// _CRYPT_CONTEXT_FUNCTIONS { ULONG cFunctions; StrPtrUni *rgpszFunctions; } CRYPT_CONTEXT_FUNCTIONS, *PCRYPT_CONTEXT_FUNCTIONS;
 	[PInvokeData("bcrypt.h", MSDNShortId = "c576f39c-a03a-47aa-90b7-500736070c6f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct CRYPT_CONTEXT_FUNCTIONS
@@ -9737,7 +9737,7 @@ public static partial class BCrypt
 	/// <para>The <c>CRYPT_CONTEXTS</c> structure contains a set of CNG configuration context identifiers.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_crypt_contexts typedef struct _CRYPT_CONTEXTS { ULONG
-	// cContexts; PWSTR *rgpszContexts; } CRYPT_CONTEXTS, *PCRYPT_CONTEXTS;
+	// cContexts; StrPtrUni *rgpszContexts; } CRYPT_CONTEXTS, *PCRYPT_CONTEXTS;
 	[PInvokeData("bcrypt.h", MSDNShortId = "a1b60660-a4c5-4880-8cd4-48d8717c77c3")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct CRYPT_CONTEXTS
@@ -9760,7 +9760,7 @@ public static partial class BCrypt
 
 	/// <summary>The <b>CRYPT_IMAGE_REG</b> structure contains image registration information about a CNG provider.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-crypt_image_reg
-	// typedef struct _CRYPT_IMAGE_REG { PWSTR pszImage; ULONG cInterfaces; PCRYPT_INTERFACE_REG *rgpInterfaces; } CRYPT_IMAGE_REG, *PCRYPT_IMAGE_REG;
+	// typedef struct _CRYPT_IMAGE_REG { StrPtrUni pszImage; ULONG cInterfaces; PCRYPT_INTERFACE_REG *rgpInterfaces; } CRYPT_IMAGE_REG, *PCRYPT_IMAGE_REG;
 	[PInvokeData("bcrypt.h", MSDNShortId = "NS:bcrypt._CRYPT_IMAGE_REG")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CRYPT_IMAGE_REG
@@ -9778,7 +9778,7 @@ public static partial class BCrypt
 
 	/// <summary>The <b>CRYPT_INTERFACE_REG</b> structure is used to contain information about the type of interface supported by a CNG provider.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-crypt_interface_reg
-	// typedef struct _CRYPT_INTERFACE_REG { ULONG dwInterface; ULONG dwFlags; ULONG cFunctions; PWSTR *rgpszFunctions; } CRYPT_INTERFACE_REG, *PCRYPT_INTERFACE_REG;
+	// typedef struct _CRYPT_INTERFACE_REG { ULONG dwInterface; ULONG dwFlags; ULONG cFunctions; StrPtrUni *rgpszFunctions; } CRYPT_INTERFACE_REG, *PCRYPT_INTERFACE_REG;
 	[PInvokeData("bcrypt.h", MSDNShortId = "NS:bcrypt._CRYPT_INTERFACE_REG")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CRYPT_INTERFACE_REG
@@ -9874,7 +9874,7 @@ public static partial class BCrypt
 
 	/// <summary>The <b>CRYPT_PROVIDER_REG</b> structure is used to contain registration information for a CNG provider.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/ns-bcrypt-crypt_provider_reg typedef struct _CRYPT_PROVIDER_REG { ULONG
-	// cAliases; PWSTR *rgpszAliases; PCRYPT_IMAGE_REG pUM; PCRYPT_IMAGE_REG pKM; } CRYPT_PROVIDER_REG, *PCRYPT_PROVIDER_REG;
+	// cAliases; StrPtrUni *rgpszAliases; PCRYPT_IMAGE_REG pUM; PCRYPT_IMAGE_REG pKM; } CRYPT_PROVIDER_REG, *PCRYPT_PROVIDER_REG;
 	[PInvokeData("bcrypt.h", MSDNShortId = "NS:bcrypt._CRYPT_PROVIDER_REG")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CRYPT_PROVIDER_REG
@@ -9908,7 +9908,7 @@ public static partial class BCrypt
 	/// <para>The <c>CRYPT_PROVIDERS</c> structure contains information about the registered CNG providers.</para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_crypt_providers typedef struct _CRYPT_PROVIDERS { ULONG
-	// cProviders; PWSTR *rgpszProviders; } CRYPT_PROVIDERS, *PCRYPT_PROVIDERS;
+	// cProviders; StrPtrUni *rgpszProviders; } CRYPT_PROVIDERS, *PCRYPT_PROVIDERS;
 	[PInvokeData("bcrypt.h", MSDNShortId = "aef0e173-d3df-466e-ac2a-c686cae5edc9")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct CRYPT_PROVIDERS
@@ -10496,7 +10496,7 @@ public static partial class BCrypt
 	public partial class SafeBCryptBuffer
 	{
 		/// <summary>Gets the size of the buffer.</summary>
-		public SIZE_T Size { get; internal set; }
+		public SizeT Size { get; internal set; }
 
 		/// <summary>Marshals data to a newly allocated managed object of the type specified by a generic type parameter.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>

@@ -2282,12 +2282,12 @@ public static partial class Kernel32
 	/// TRUE if the wait succeeded. If the operation fails, the function returns FALSE. If the wait fails, call <c>GetLastError</c> to obtain
 	/// extended error information. In particular, if the operation times out, <c>GetLastError</c> returns <c>ERROR_TIMEOUT</c>.
 	/// </returns>
-	// BOOL WINAPI WaitOnAddress( _In_ VOID volatile *Address, _In_ PVOID CompareAddress, _In_ SIZE_T AddressSize, _In_opt_ DWORD
+	// BOOL WINAPI WaitOnAddress( _In_ VOID volatile *Address, _In_ PVOID CompareAddress, _In_ SizeT AddressSize, _In_opt_ DWORD
 	// dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706898(v=vs.85).aspx
 	[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("SynchAPI.h", MSDNShortId = "hh706898")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern unsafe bool WaitOnAddress(void* Address, void* CompareAddress, SIZE_T AddressSize, uint dwMilliseconds);
+	public static extern unsafe bool WaitOnAddress(void* Address, void* CompareAddress, SizeT AddressSize, uint dwMilliseconds);
 
 	/// <summary>Wake all threads waiting on the specified condition variable.</summary>
 	/// <param name="ConditionVariable">A pointer to the condition variable.</param>
@@ -2377,7 +2377,7 @@ public static partial class Kernel32
 	/// Contains information about a power request. This structure is used by the <c>PowerCreateRequest</c> and <c>SetWaitableTimerEx</c> functions.
 	/// </summary>
 	// typedef struct _REASON_CONTEXT { ULONG Version; DWORD Flags; union { struct { HMODULE LocalizedReasonModule; ULONG LocalizedReasonId;
-	// ULONG ReasonStringCount; PWSTR *ReasonStrings; } Detailed; PWSTR SimpleReasonString; } Reason;} REASON_CONTEXT, *PREASON_CONTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/dd405536(v=vs.85).aspx
+	// ULONG ReasonStringCount; StrPtrUni *ReasonStrings; } Detailed; StrPtrUni SimpleReasonString; } Reason;} REASON_CONTEXT, *PREASON_CONTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/dd405536(v=vs.85).aspx
 	[PInvokeData("MinWinBase.h", MSDNShortId = "dd405536")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public class REASON_CONTEXT : IDisposable

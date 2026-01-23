@@ -138,11 +138,11 @@ public static partial class Shell32
 		/// <para>A pointer to a SHELL_ITEM_RESOURCE resource.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>A pointer to a resource description as a Unicode string.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishellitemresources-getresourcedescription
-		// HRESULT GetResourceDescription( const SHELL_ITEM_RESOURCE *pcsir, PWSTR *ppszDescription );
+		// HRESULT GetResourceDescription( const SHELL_ITEM_RESOURCE *pcsir, StrPtrUni *ppszDescription );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetResourceDescription(in SHELL_ITEM_RESOURCE pcsir);
 

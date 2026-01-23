@@ -6,8 +6,8 @@ namespace Vanara.InteropServices.Tests;
 
 public class SafeCoTaskStruct<T> : SafeMemStruct<T, CoTaskMemoryMethods> where T : struct
 {
-	public SafeCoTaskStruct(SIZE_T capacity = default) : base(capacity) { }
-	public SafeCoTaskStruct(in T value, SIZE_T capacity = default) : base(value, capacity) { }
+	public SafeCoTaskStruct(SizeT capacity = default) : base(capacity) { }
+	public SafeCoTaskStruct(in T value, SizeT capacity = default) : base(value, capacity) { }
 }
 
 [TestFixture]

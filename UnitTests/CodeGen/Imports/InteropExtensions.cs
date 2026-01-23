@@ -30,7 +30,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>A <see cref="ReadOnlySpan{T}"/> that represents the memory.</returns>
 //	/ <exception cref="InsufficientMemoryException"></exception>
-//	public static unsafe ReadOnlySpan<T> AsReadOnlySpan<T>(this IntPtr ptr, SIZE_T length, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default)
+//	public static unsafe ReadOnlySpan<T> AsReadOnlySpan<T>(this IntPtr ptr, SizeT length, SizeT prefixBytes = default, SizeT allocatedBytes = default)
 //	{
 //		if (ptr == IntPtr.Zero) return null;
 //		if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
@@ -47,7 +47,7 @@ public static partial class InteropExtensions
 //	/ <param name="prefixBytes">Bytes to skip before starting the span.</param>
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>A referenced structure.</returns>
-//	public static ref T AsRef<T>(this IntPtr ptr, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) =>
+//	public static ref T AsRef<T>(this IntPtr ptr, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 //		ref MemoryMarshal.GetReference(AsSpan<T>(ptr, 1, prefixBytes, allocatedBytes));
 
 //	/ <summary>Returns the pointer as a <see cref="Span{T}"/>.</summary>
@@ -58,7 +58,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>A <see cref="Span{T}"/> that represents the memory.</returns>
 //	/ <exception cref="InsufficientMemoryException"></exception>
-//	public static unsafe Span<T> AsSpan<T>(this IntPtr ptr, SIZE_T length, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default)
+//	public static unsafe Span<T> AsSpan<T>(this IntPtr ptr, SizeT length, SizeT prefixBytes = default, SizeT allocatedBytes = default)
 //	{
 //		if (ptr == IntPtr.Zero) return null;
 //		if (allocatedBytes < 0) throw new ArgumentOutOfRangeException(nameof(allocatedBytes));
@@ -78,7 +78,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>A pointer that represents the memory.</returns>
 //	/ <exception cref="InsufficientMemoryException"></exception>
-//	public static unsafe T* AsUnmanagedArrayPointer<T>(this IntPtr ptr, SIZE_T length, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) where T : unmanaged
+//	public static unsafe T* AsUnmanagedArrayPointer<T>(this IntPtr ptr, SizeT length, SizeT prefixBytes = default, SizeT allocatedBytes = default) where T : unmanaged
 //	{
 //		if (ptr == IntPtr.Zero) return null;
 //		if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
@@ -144,7 +144,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static IEnumerator<T?> GetEnumerator<T>(this IntPtr ptr, SIZE_T count, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) =>
+//	public static IEnumerator<T?> GetEnumerator<T>(this IntPtr ptr, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 //		new NativeMemoryEnumerator<T>(ptr, count, prefixBytes, allocatedBytes);
 
 //	/ <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="System.Collections.IEnumerator"/>.</summary>
@@ -155,7 +155,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static System.Collections.IEnumerator GetEnumerator(this IntPtr ptr, Type type, SIZE_T count, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) =>
+//	public static System.Collections.IEnumerator GetEnumerator(this IntPtr ptr, Type type, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 //		new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
 
 //	/ <summary>
@@ -246,7 +246,7 @@ public static partial class InteropExtensions
 //	/ The number of allocated bytes behind <paramref name="ptr"/>. This value is used to determine when to stop enumerating.
 //	/ </param>
 //	/ <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the linked list.</returns>
-//	public static IEnumerable<T?> LinkedListToIEnum<T>(this IntPtr ptr, Func<T?, long> nextOffset, SIZE_T allocatedBytes)
+//	public static IEnumerable<T?> LinkedListToIEnum<T>(this IntPtr ptr, Func<T?, long> nextOffset, SizeT allocatedBytes)
 //	{
 //		IntPtr pEnd = ptr.Offset(allocatedBytes);
 //		for (IntPtr pCurrent = ptr; pCurrent.ToInt64() < pEnd.ToInt64();)
@@ -280,7 +280,7 @@ public static partial class InteropExtensions
 //	/ <returns>
 //	/ Pointer to the allocated native (unmanaged) array of objects stored using the character set defined by <paramref name="charSet"/>.
 //	/ </returns>
-//	public static IntPtr MarshalObjectsToPtr(this IEnumerable<object>? values, Func<int, IntPtr> memAlloc, out int bytesAllocated, bool referencePointers = false, CharSet charSet = CharSet.Auto, SIZE_T prefixBytes = default,
+//	public static IntPtr MarshalObjectsToPtr(this IEnumerable<object>? values, Func<int, IntPtr> memAlloc, out int bytesAllocated, bool referencePointers = false, CharSet charSet = CharSet.Auto, SizeT prefixBytes = default,
 //		Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
 //	{
 //		 Bail early if empty
@@ -321,7 +321,7 @@ public static partial class InteropExtensions
 //	/ </param>
 //	/ <param name="prefixBytes">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
 //	[Obsolete("Please use the Vanara.Extensions.InteropExtensions.Write method instead. This will be removed from the library shortly as it performs no allocation.", true)]
-//	public static void MarshalToPtr<T>(this IEnumerable<T> items, IntPtr ptr, SIZE_T prefixBytes = default) => Write(ptr, items, prefixBytes);
+//	public static void MarshalToPtr<T>(this IEnumerable<T> items, IntPtr ptr, SizeT prefixBytes = default) => Write(ptr, items, prefixBytes);
 
 //	/ <summary>Marshals data from a managed object to an unmanaged block of memory that is allocated using <paramref name="memAlloc"/>.</summary>
 //	/ <typeparam name="T">The type of the managed object.</typeparam>
@@ -338,7 +338,7 @@ public static partial class InteropExtensions
 //	/ </param>
 //	/ <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 //	/ <returns>A pointer to the memory allocated by <paramref name="memAlloc"/>.</returns>
-//	public static IntPtr MarshalToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated, SIZE_T prefixBytes = default,
+//	public static IntPtr MarshalToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated, SizeT prefixBytes = default,
 //		Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
 //	{
 //		if (VanaraMarshaler.CanMarshal(typeof(T), out IVanaraMarshaler? marshaler))
@@ -371,7 +371,7 @@ public static partial class InteropExtensions
 //	/ <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 //	/ <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
 //	/ <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
-//	public static IntPtr MarshalToPtr(this Array items, Func<int, IntPtr> memAlloc, out int bytesAllocated, SIZE_T prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
+//	public static IntPtr MarshalToPtr(this Array items, Func<int, IntPtr> memAlloc, out int bytesAllocated, SizeT prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
 //	{
 //		if (items.Rank != 1)
 //			throw new ArgumentException("Only single dimension arrays are supported.", nameof(items));
@@ -406,7 +406,7 @@ public static partial class InteropExtensions
 //	/ <param name="memUnlock">The optional function to unlock memory after assignment.</param>
 //	/ <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
 //	/ <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
-//	public static IntPtr MarshalToPtr<T>(this IEnumerable<T> items, Func<int, IntPtr> memAlloc, out int bytesAllocated, SIZE_T prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
+//	public static IntPtr MarshalToPtr<T>(this IEnumerable<T> items, Func<int, IntPtr> memAlloc, out int bytesAllocated, SizeT prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
 //	{
 //		if (!typeof(T).IsMarshalable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 
@@ -439,7 +439,7 @@ public static partial class InteropExtensions
 //	/ <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
 //	/ <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static IntPtr MarshalToPtr<T>(this T[] items, Func<int, IntPtr> memAlloc, out int bytesAllocated, SIZE_T prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null) =>
+//	public static IntPtr MarshalToPtr<T>(this T[] items, Func<int, IntPtr> memAlloc, out int bytesAllocated, SizeT prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null) =>
 //		MarshalToPtr(items.Cast<T>(), memAlloc, out bytesAllocated, prefixBytes, memLock, memUnlock);
 
 //	/ <summary>
@@ -462,7 +462,7 @@ public static partial class InteropExtensions
 //	/ Pointer to the allocated native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character
 //	/ set defined by <paramref name="charSet"/>.
 //	/ </returns>
-//	public static IntPtr MarshalToPtr(this IEnumerable<string?> values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, SIZE_T prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
+//	public static IntPtr MarshalToPtr(this IEnumerable<string?> values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, SizeT prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
 //	{
 //		 Get size
 //		bytesAllocated = Math.Abs(GetStrListSize(values, packing, charSet)) + prefixBytes;
@@ -491,7 +491,7 @@ public static partial class InteropExtensions
 //	/ set defined by <paramref name="charSet"/>.
 //	/ </returns>
 //	public static IntPtr MarshalToPtr(this string?[] values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated,
-//		CharSet charSet = CharSet.Auto, SIZE_T prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null) =>
+//		CharSet charSet = CharSet.Auto, SizeT prefixBytes = default, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null) =>
 //		MarshalToPtr((IEnumerable<string?>)values, packing, memAlloc, out bytesAllocated, charSet, prefixBytes, memLock, memUnlock);
 
 //	/ <summary>Adds an offset to the value of a pointer.</summary>
@@ -520,13 +520,13 @@ public static partial class InteropExtensions
 //	/ <typeparam name="T">The type whose size is to be returned.</typeparam>
 //	/ <returns>The size, in bytes, of the type that is specified by the <typeparamref name="T"/> type parameter.</returns>
 //	/ <exception cref="ArgumentException">Unable to get size of type.</exception>
-//	public static SIZE_T SizeOf<T>() => SizeOf(typeof(T));
+//	public static SizeT SizeOf<T>() => SizeOf(typeof(T));
 
 //	/ <summary>Returns the native memory size of a type, if possible.</summary>
 //	/ <param name="type">The type whose size is to be returned.</param>
 //	/ <returns>The size, in bytes, of the type that is specified by the <paramref name="type"/> parameter.</returns>
 //	/ <exception cref="ArgumentException">Unable to get size of type. - type</exception>
-//	public static SIZE_T SizeOf(Type type)
+//	public static SizeT SizeOf(Type type)
 //	{
 //		if (VanaraMarshaler.CanMarshal(type, out var marshaler))
 //			return marshaler.GetNativeSize();
@@ -538,7 +538,7 @@ public static partial class InteropExtensions
 //	/ <param name="charSet">The character set to use for the strings.</param>
 //	/ <returns>The size, in bytes, of the value that is specified by the <paramref name="value"/> parameter.</returns>
 //	/ <exception cref="ArgumentException">Unable to get the size of the value.</exception>
-//	public static SIZE_T SizeOf(object? value, CharSet charSet = CharSet.Auto)
+//	public static SizeT SizeOf(object? value, CharSet charSet = CharSet.Auto)
 //	{
 //		if (value is null) return 0;
 //		if (value is string s) return StringHelper.GetByteCount(s, true, charSet);
@@ -584,7 +584,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>An array of type <typeparamref name="T"/> containing the elements of the native array.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static T[]? ToArray<T>(this IntPtr ptr, SIZE_T count, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) =>
+//	public static T[]? ToArray<T>(this IntPtr ptr, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 //		ToArray(ptr, typeof(T), count, prefixBytes, allocatedBytes)?.ToTypedArray<T>();
 
 //	/ <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into a CLI array.</summary>
@@ -596,7 +596,7 @@ public static partial class InteropExtensions
 //	/ <param name="bytesRead">The number of bytes read during the conversion.</param>
 //	/ <returns>An array of type <typeparamref name="T"/> containing the elements of the native array.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static T[]? ToArray<T>(this IntPtr ptr, SIZE_T count, [Optional] SIZE_T prefixBytes, [Optional] SIZE_T allocatedBytes, out int bytesRead) =>
+//	public static T[]? ToArray<T>(this IntPtr ptr, SizeT count, [Optional] SizeT prefixBytes, [Optional] SizeT allocatedBytes, out int bytesRead) =>
 //		ToArray(ptr, typeof(T), count, prefixBytes, allocatedBytes, out bytesRead)?.ToTypedArray<T>();
 
 //	/ <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into a CLI array.</summary>
@@ -607,7 +607,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>An array of type <paramref name="type"/> containing the elements of the native array.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static Array? ToArray(this IntPtr ptr, Type type, SIZE_T count, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) =>
+//	public static Array? ToArray(this IntPtr ptr, Type type, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 //		ToArray(ptr, type, count, prefixBytes, allocatedBytes, out _);
 
 //	/ <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into a CLI array.</summary>
@@ -620,7 +620,7 @@ public static partial class InteropExtensions
 //	/ <returns>An array of type <paramref name="type"/> containing the elements of the native array.</returns>
 //	/ <exception cref="ArgumentNullException">type</exception>
 //	/ <exception cref="InsufficientMemoryException"></exception>
-//	public static Array? ToArray(this IntPtr ptr, Type type, SIZE_T count, [Optional] SIZE_T prefixBytes, [Optional] SIZE_T allocatedBytes, out int bytesRead)
+//	public static Array? ToArray(this IntPtr ptr, Type type, SizeT count, [Optional] SizeT prefixBytes, [Optional] SizeT allocatedBytes, out int bytesRead)
 //	{
 //		if (type is null) throw new ArgumentNullException(nameof(type));
 //		if (type == typeof(byte))
@@ -631,7 +631,7 @@ public static partial class InteropExtensions
 //		bytesRead = 0;
 //		if (ptr == IntPtr.Zero) return null;
 //		var ret = Array.CreateInstance(type, count); // new object[count];
-//		SIZE_T stSize = SizeOf(type);
+//		SizeT stSize = SizeOf(type);
 //		if (allocatedBytes > 0 && stSize * count + prefixBytes > allocatedBytes)
 //			throw new InsufficientMemoryException();
 //		if (allocatedBytes == default) allocatedBytes = uint.MaxValue;
@@ -651,7 +651,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>An array of <see cref="byte"/> of length <paramref name="count"/>.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static byte[]? ToByteArray(this IntPtr ptr, SIZE_T count, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) =>
+//	public static byte[]? ToByteArray(this IntPtr ptr, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 //		ptr.AsReadOnlySpan<byte>(count, prefixBytes, allocatedBytes).ToArray();
 
 //	/ <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
@@ -662,7 +662,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static IEnumerable<T?> ToIEnum<T>(this IntPtr ptr, SIZE_T count, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) =>
+//	public static IEnumerable<T?> ToIEnum<T>(this IntPtr ptr, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 //		new NativeMemoryEnumerator<T>(ptr, count, prefixBytes, allocatedBytes);
 
 //	/ <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
@@ -673,7 +673,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static System.Collections.IEnumerable ToIEnum(this IntPtr ptr, Type type, SIZE_T count, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) =>
+//	public static System.Collections.IEnumerable ToIEnum(this IntPtr ptr, Type type, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 //		new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
 
 //	/ <summary>Converts an <see cref="SafeHandle"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
@@ -684,7 +684,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static IEnumerable<T?> ToIEnum<T>(this SafeHandle ptr, SIZE_T count, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) =>
+//	public static IEnumerable<T?> ToIEnum<T>(this SafeHandle ptr, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 //		new NativeMemoryEnumerator<T>(ptr, count, prefixBytes, allocatedBytes);
 
 //	/ <summary>Converts an <see cref="SafeHandle"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
@@ -695,7 +695,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static System.Collections.IEnumerable ToIEnum(this SafeHandle ptr, Type type, SIZE_T count, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default) =>
+//	public static System.Collections.IEnumerable ToIEnum(this SafeHandle ptr, Type type, SizeT count, SizeT prefixBytes = default, SizeT allocatedBytes = default) =>
 //		new UntypedNativeMemoryEnumerator(ptr, type, count, prefixBytes, allocatedBytes);
 
 //	/ <summary>Converts a <see cref="SecureString"/> to a string.</summary>
@@ -775,14 +775,14 @@ public static partial class InteropExtensions
 //	/ <param name="length">The number of Unicode characters in the unmanaged string, excluding any terminating null values.</param>
 //	/ <returns>A <see cref="SecureString"/> with the contents of the in memory string.</returns>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static SecureString? ToSecureString(this IntPtr p, SIZE_T length) => ToSecureString(p, length, out _);
+//	public static SecureString? ToSecureString(this IntPtr p, SizeT length) => ToSecureString(p, length, out _);
 
 //	/ <summary>Converts a pointer to an unmanaged Unicode string of a specified length to a <see cref="SecureString"/>.</summary>
 //	/ <param name="p">A pointer to an unmanaged Unicode string.</param>
 //	/ <param name="length">The number of Unicode characters in the unmanaged string, excluding any terminating null values.</param>
 //	/ <param name="bytesRead">The number of bytes read during the conversion.</param>
 //	/ <returns>A <see cref="SecureString"/> with the contents of the in memory string.</returns>
-//	public static SecureString? ToSecureString(this IntPtr p, SIZE_T length, out int bytesRead)
+//	public static SecureString? ToSecureString(this IntPtr p, SizeT length, out int bytesRead)
 //	{
 //		bytesRead = length * 2;
 //		if (p == IntPtr.Zero) return null;
@@ -815,7 +815,7 @@ public static partial class InteropExtensions
 //	/ <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>Enumeration of strings.</returns>
-//	public static IEnumerable<string?> ToStringEnum(this IntPtr ptr, SIZE_T count, CharSet charSet = CharSet.Auto, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default)
+//	public static IEnumerable<string?> ToStringEnum(this IntPtr ptr, SizeT count, CharSet charSet = CharSet.Auto, SizeT prefixBytes = default, SizeT allocatedBytes = default)
 //	{
 //		if (ptr == IntPtr.Zero || count == 0) yield break;
 //		if (allocatedBytes > 0 && count * IntPtr.Size + prefixBytes > allocatedBytes)
@@ -837,7 +837,7 @@ public static partial class InteropExtensions
 //	/ <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>Enumeration of strings.</returns>
-//	public static IEnumerable<string?> ToStringEnum(this IntPtr ptr, SIZE_T count, Encoding encoder, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default)
+//	public static IEnumerable<string?> ToStringEnum(this IntPtr ptr, SizeT count, Encoding encoder, SizeT prefixBytes = default, SizeT allocatedBytes = default)
 //	{
 //		if (ptr == IntPtr.Zero || count == 0) yield break;
 //		if (allocatedBytes > 0 && count * IntPtr.Size + prefixBytes > allocatedBytes)
@@ -858,13 +858,13 @@ public static partial class InteropExtensions
 //	/ <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="lptr"/>.</param>
 //	/ <returns>An enumerated list of strings.</returns>
-//	public static IEnumerable<string> ToStringEnum(this IntPtr lptr, CharSet charSet = CharSet.Auto, SIZE_T prefixBytes = default, SIZE_T allocatedBytes = default)
+//	public static IEnumerable<string> ToStringEnum(this IntPtr lptr, CharSet charSet = CharSet.Auto, SizeT prefixBytes = default, SizeT allocatedBytes = default)
 //	{
 //		if (lptr == IntPtr.Zero) yield break;
 //		var charLength = StringHelper.GetCharSize(charSet);
 //		var i = prefixBytes;
 //		if (allocatedBytes == 0)
-//			allocatedBytes = SIZE_T.MaxValue;
+//			allocatedBytes = SizeT.MaxValue;
 //		else if (allocatedBytes - prefixBytes - charLength < 0)
 //			throw new InsufficientMemoryException();
 //		 handle condition where there is just the null terminator
@@ -892,9 +892,9 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="lptr" />.</param>
 //	/ <returns>An enumerated list of strings.</returns>
 //	/ <exception cref="System.InsufficientMemoryException"></exception>
-//	public static IEnumerable<string> ToStringEnum(this IntPtr lptr, Encoding encoder, [Optional] SIZE_T prefixBytes, [Optional] SIZE_T allocatedBytes)
+//	public static IEnumerable<string> ToStringEnum(this IntPtr lptr, Encoding encoder, [Optional] SizeT prefixBytes, [Optional] SizeT allocatedBytes)
 //	{
-//		SIZE_T c, bytesread = prefixBytes;
+//		SizeT c, bytesread = prefixBytes;
 //		if (lptr == IntPtr.Zero) yield break;
 //		if (allocatedBytes == default) allocatedBytes = IntPtr.Size == 4 ? int.MaxValue : long.MaxValue;
 //		for (IntPtr ptr = lptr.Offset(prefixBytes); bytesread <= allocatedBytes && encoder.GetChar(ptr).GetValueOrDefault('\0') != '\0'; bytesread += c, ptr = lptr.Offset(bytesread))
@@ -918,7 +918,7 @@ public static partial class InteropExtensions
 //	/ <exception cref="NotSupportedException">Type specified by <paramref name="destType"/> cannot be marshaled.</exception>
 //	/ <exception cref="InsufficientMemoryException">The amount of allocated memory specified is insufficient to marshal the type specified.</exception>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static object? ToStructure(this IntPtr ptr, Type destType, [Optional] SIZE_T allocatedBytes, [Optional] SIZE_T offset) =>
+//	public static object? ToStructure(this IntPtr ptr, Type destType, [Optional] SizeT allocatedBytes, [Optional] SizeT offset) =>
 //		ToStructure(ptr, destType, allocatedBytes, offset, out _);
 
 //	/ <summary>
@@ -933,7 +933,7 @@ public static partial class InteropExtensions
 //	/ <exception cref="ArgumentOutOfRangeException"><paramref name="allocatedBytes"/> cannot be negative.</exception>
 //	/ <exception cref="NotSupportedException">Type specified by <paramref name="destType"/> cannot be marshaled.</exception>
 //	/ <exception cref="InsufficientMemoryException">The amount of allocated memory specified is insufficient to marshal the type specified.</exception>
-//	public static object? ToStructure(this IntPtr ptr, Type destType, [Optional] SIZE_T allocatedBytes, [Optional] SIZE_T offset, out int bytesRead)
+//	public static object? ToStructure(this IntPtr ptr, Type destType, [Optional] SizeT allocatedBytes, [Optional] SizeT offset, out int bytesRead)
 //	{
 //		bytesRead = 0;
 //		if (ptr == IntPtr.Zero) return null;
@@ -1031,7 +1031,7 @@ public static partial class InteropExtensions
 //	/ <exception cref="InsufficientMemoryException">The amount of allocated memory specified is insufficient to marshal the type specified.</exception>
 //	[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static T? ToStructure<T>(this IntPtr ptr, [Optional] SIZE_T allocatedBytes, [Optional] SIZE_T offset) =>
+//	public static T? ToStructure<T>(this IntPtr ptr, [Optional] SizeT allocatedBytes, [Optional] SizeT offset) =>
 //		ToStructure<T>(ptr, allocatedBytes, offset, out _);
 
 //	/ <summary>
@@ -1048,7 +1048,7 @@ public static partial class InteropExtensions
 //	/ <exception cref="InsufficientMemoryException">The amount of allocated memory specified is insufficient to marshal the type specified.</exception>
 //	[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static T? ToStructure<T>(this IntPtr ptr, [Optional] SIZE_T allocatedBytes, [Optional] SIZE_T offset, out int bytesRead) =>
+//	public static T? ToStructure<T>(this IntPtr ptr, [Optional] SizeT allocatedBytes, [Optional] SizeT offset, out int bytesRead) =>
 //		(T?)ToStructure(ptr, typeof(T), allocatedBytes, offset, out bytesRead);
 
 //	/ <summary>Marshals data from an unmanaged block of memory to a managed object.</summary>
@@ -1058,7 +1058,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <param name="offset">The number of bytes to skip before reading the element.</param>
 //	/ <returns>A managed object that contains the data that the <paramref name="ptr"/> parameter points to.</returns>
-//	public static void ToStructure<T>(this IntPtr ptr, T instance, SIZE_T allocatedBytes = default, SIZE_T offset = default) where T : class
+//	public static void ToStructure<T>(this IntPtr ptr, T instance, SizeT allocatedBytes = default, SizeT offset = default) where T : class
 //	{
 //		if (ptr == IntPtr.Zero) throw new NullReferenceException();
 //		Type t = TrueType(typeof(T), out var stSize);
@@ -1117,9 +1117,9 @@ public static partial class InteropExtensions
 //	/ <param name="count">The number of items in the native array.</param>
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>An array of type <typeparamref name="T"/> containing the elements of the native array.</returns>
-//	public static unsafe T[] UnsafePtrToArray<T>(T* ptr, SIZE_T count, SIZE_T allocatedBytes = default) where T : unmanaged
+//	public static unsafe T[] UnsafePtrToArray<T>(T* ptr, SizeT count, SizeT allocatedBytes = default) where T : unmanaged
 //	{
-//		SIZE_T stSize = SizeOf<T>();
+//		SizeT stSize = SizeOf<T>();
 //		if (allocatedBytes > 0 && stSize * count > allocatedBytes)
 //			throw new InsufficientMemoryException();
 //		if (allocatedBytes == default) allocatedBytes = uint.MaxValue;
@@ -1145,7 +1145,7 @@ public static partial class InteropExtensions
 //	/ <returns>The number of bytes written. The offset is not included.</returns>
 //	/ <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
 //	/ <exception cref="InsufficientMemoryException"></exception>
-//	public static SIZE_T Write<T>(this IntPtr ptr, IEnumerable<T> items, SIZE_T offset = default, SIZE_T allocatedBytes = default)
+//	public static SizeT Write<T>(this IntPtr ptr, IEnumerable<T> items, SizeT offset = default, SizeT allocatedBytes = default)
 //	{
 //		var count = items?.Count() ?? 0;
 //		if (count == 0) return 0;
@@ -1180,7 +1180,7 @@ public static partial class InteropExtensions
 //	/ <exception cref="ArgumentException">Concatenated string arrays cannot contain empty or null strings.</exception>
 //	/ <exception cref="ArgumentException">Structure layout is not sequential or explicit.</exception>
 //	/ <exception cref="InsufficientMemoryException"></exception>
-//	public static SIZE_T Write(this IntPtr ptr, IEnumerable<string?> items, StringListPackMethod packing, CharSet charSet = CharSet.Auto, SIZE_T offset = default, SIZE_T allocatedBytes = default)
+//	public static SizeT Write(this IntPtr ptr, IEnumerable<string?> items, StringListPackMethod packing, CharSet charSet = CharSet.Auto, SizeT offset = default, SizeT allocatedBytes = default)
 //	{
 //		 Check size
 //		int sz = GetStrListSize(items, packing, charSet);
@@ -1211,7 +1211,7 @@ public static partial class InteropExtensions
 //		}
 //		else
 //		{
-//			SIZE_T poff = offset;
+//			SizeT poff = offset;
 //			foreach (var s in items)
 //			{
 //				if (string.IsNullOrEmpty(s)) throw new ArgumentException("Concatenated string arrays cannot contain empty or null strings.");
@@ -1230,7 +1230,7 @@ public static partial class InteropExtensions
 //	/ <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 //	/ <returns>The number of bytes written. The offset is not included.</returns>
 //	/ <exception cref="InsufficientMemoryException"></exception>
-//	public static SIZE_T Write(this IntPtr ptr, object? value, SIZE_T offset = default, SIZE_T allocatedBytes = default)
+//	public static SizeT Write(this IntPtr ptr, object? value, SizeT offset = default, SizeT allocatedBytes = default)
 //	{
 //		if (value is null) return 0;
 //		if (!value.GetType().IsMarshalable())
@@ -1247,7 +1247,7 @@ public static partial class InteropExtensions
 //	/ <returns>The number of bytes written. The offset is not included.</returns>
 //	/ <exception cref="InsufficientMemoryException"></exception>
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-//	public static SIZE_T Write<T>(this IntPtr ptr, in T value, SIZE_T offset = default, SIZE_T allocatedBytes = default) where T : struct =>
+//	public static SizeT Write<T>(this IntPtr ptr, in T value, SizeT offset = default, SizeT allocatedBytes = default) where T : struct =>
 //		WriteNoChecks(ptr, value, offset, allocatedBytes);
 
 //	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1260,7 +1260,7 @@ public static partial class InteropExtensions
 //		return ttype;
 //	}
 
-//	internal static SIZE_T WriteNoChecks(IntPtr ptr, object? value, SIZE_T offset, SIZE_T allocatedBytes)
+//	internal static SizeT WriteNoChecks(IntPtr ptr, object? value, SizeT offset, SizeT allocatedBytes)
 //	{
 //		if (value is null) return 0;
 //		if (value is IntPtr p) { Marshal.WriteIntPtr(ptr.Offset(offset), p); return IntPtr.Size; }
@@ -1383,7 +1383,7 @@ public static partial class InteropExtensions
 //		}
 //	}
 
-//	private static IntPtr AllocWrite(SIZE_T cnt, Action<IntPtr, int>? writer, Func<int, IntPtr> memAlloc, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
+//	private static IntPtr AllocWrite(SizeT cnt, Action<IntPtr, int>? writer, Func<int, IntPtr> memAlloc, Func<IntPtr, IntPtr>? memLock = null, Func<IntPtr, bool>? memUnlock = null)
 //	{
 //		IntPtr alloc = memAlloc(cnt);
 //		IntPtr lck = memLock?.Invoke(alloc) ?? alloc;
@@ -1413,7 +1413,7 @@ public static partial class InteropExtensions
 //		int chSz = StringHelper.GetCharSize(charSet);
 //		if (items is null || !items.Any())
 //			return -(packing == StringListPackMethod.Concatenated ? chSz : IntPtr.Size);
-//		SIZE_T count = items.Count();
+//		SizeT count = items.Count();
 //		return items.Sum(i => StringHelper.GetByteCount(i, true, charSet)) + (packing == StringListPackMethod.Concatenated ? chSz : (count + 1) * IntPtr.Size);
 //	}
 

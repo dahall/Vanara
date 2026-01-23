@@ -44,7 +44,7 @@ public static partial class Shell32
 	{
 		/// <summary>Retrieves an AppUserModelId from the source application.</summary>
 		/// <param name="launchingApp">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>Contains a pointer to a string that contains the AppUserModelId.</para>
 		/// </param>
 		/// <returns>
@@ -52,7 +52,7 @@ public static partial class Shell32
 		/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ilaunchsourceappusermodelid-getappusermodelid
-		// HRESULT GetAppUserModelId( PWSTR *launchingApp );
+		// HRESULT GetAppUserModelId( StrPtrUni *launchingApp );
 		[PreserveSig]
 		HRESULT GetAppUserModelId([MarshalAs(UnmanagedType.LPWStr)] out string launchingApp);
 	}

@@ -15,7 +15,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetDllDirectory( _In_ DWORD nBufferLength, _Out_ PTSTR lpBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683186(v=vs.85).aspx
+	// DWORD WINAPI GetDllDirectory( _In_ DWORD nBufferLength, _Out_ StrPtrAuto lpBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683186(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms683186")]
 	public static extern uint GetDllDirectory(uint nBufferLength, [Optional, SizeDef(nameof(nBufferLength), SizingMethod.QueryResultInReturn)] StringBuilder? lpBuffer);

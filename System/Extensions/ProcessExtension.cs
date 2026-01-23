@@ -270,7 +270,7 @@ public static partial class ProcessExtension
 	public static T ReadMemory<T>(this Process process, IntPtr baseAddress) where T : struct
 	{
 		using var mem = new SafeCoTaskMemStruct<T>();
-		SIZE_T req = ReadToMem(process, baseAddress, mem);
+		SizeT req = ReadToMem(process, baseAddress, mem);
 		return mem.Value;
 	}
 
@@ -287,10 +287,10 @@ public static partial class ProcessExtension
 	/// </param>
 	/// <param name="size">The number of bytes to be read from the specified process.</param>
 	/// <returns>A buffer with the contents from the address space of the specified process.</returns>
-	public static byte[] ReadMemory(this Process process, IntPtr baseAddress, SIZE_T size)
+	public static byte[] ReadMemory(this Process process, IntPtr baseAddress, SizeT size)
 	{
 		using var mem = new SafeCoTaskMemHandle(size);
-		SIZE_T req = ReadToMem(process, baseAddress, mem);
+		SizeT req = ReadToMem(process, baseAddress, mem);
 		return mem.GetBytes(0, req);
 	}
 
@@ -515,7 +515,7 @@ public static partial class ProcessExtension
 	/// <param name="buffer">A pointer to the buffer that contains data to be written in the address space of the specified process.</param>
 	/// <param name="bufferSize">The number of bytes to be written to the specified process.</param>
 	/// <returns>The number of bytes transferred into the specified process.</returns>
-	public static SIZE_T WriteMemory(this Process process, IntPtr baseAddress, IntPtr buffer, SIZE_T bufferSize)
+	public static SizeT WriteMemory(this Process process, IntPtr baseAddress, IntPtr buffer, SizeT bufferSize)
 	{
 		Win32Error.ThrowLastErrorIfFalse(WriteProcessMemory(process, baseAddress, buffer, bufferSize, out var written));
 		return written;
@@ -532,7 +532,7 @@ public static partial class ProcessExtension
 	/// </param>
 	/// <param name="buffer">A pointer to the buffer that contains data to be written in the address space of the specified process.</param>
 	/// <returns>The number of bytes transferred into the specified process.</returns>
-	public static SIZE_T WriteMemory(this Process process, IntPtr baseAddress, byte[] buffer)
+	public static SizeT WriteMemory(this Process process, IntPtr baseAddress, byte[] buffer)
 	{
 		Win32Error.ThrowLastErrorIfFalse(WriteProcessMemory(process, baseAddress, buffer, buffer.Length, out var written));
 		return written;
@@ -553,7 +553,7 @@ public static partial class ProcessExtension
 		}
 	}
 
-	private static SIZE_T ReadToMem(Process proc, IntPtr baseAddress, SafeMemoryHandle<CoTaskMemoryMethods> mem)
+	private static SizeT ReadToMem(Process proc, IntPtr baseAddress, SafeMemoryHandle<CoTaskMemoryMethods> mem)
 	{
 		bool ret;
 		if ((ret = ReadProcessMemory(proc, baseAddress, mem, mem.Size, out var req)) == false && req > mem.Size)

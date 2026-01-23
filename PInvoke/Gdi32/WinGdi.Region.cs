@@ -754,7 +754,7 @@ public static partial class Gdi32
 		//internal static RGNDATA FromSize(uint sz) => new() { Buffer = new(((int)sz - hdrSize) / Marshal.SizeOf<RECT>()) };
 
 		/// <inheritdoc/>
-		public SIZE_T GetNativeSize() => RGNDATAHEADER.hdrSize + Marshal.SizeOf<RECT>() * Buffer.Count;
+		public SizeT GetNativeSize() => RGNDATAHEADER.hdrSize + Marshal.SizeOf<RECT>() * Buffer.Count;
 
 		internal static SafeAllocatedMemoryHandle FromManaged(object? managedObject)
 		{
@@ -765,7 +765,7 @@ public static partial class Gdi32
 			return h;
 		}
 
-		internal static RGNDATA? FromNative(IntPtr pNativeData, SIZE_T allocatedBytes)
+		internal static RGNDATA? FromNative(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 			RGNDATA rd = new();

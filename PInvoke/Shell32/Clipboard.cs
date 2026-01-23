@@ -615,7 +615,7 @@ public static partial class Shell32
 	/// Conventions for Function Prototypes.</note>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winnetwk/ns-winnetwk-netresourcew typedef struct _NETRESOURCEW { DWORD dwScope;
-	// DWORD dwType; DWORD dwDisplayType; DWORD dwUsage; PWSTR lpLocalName; PWSTR lpRemoteName; PWSTR lpComment; PWSTR lpProvider; }
+	// DWORD dwType; DWORD dwDisplayType; DWORD dwUsage; StrPtrUni lpLocalName; StrPtrUni lpRemoteName; StrPtrUni lpComment; StrPtrUni lpProvider; }
 	// NETRESOURCEW, *LPNETRESOURCEW;
 	[PInvokeData("winnetwk.h", MSDNShortId = "NS:winnetwk._NETRESOURCEW")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -745,20 +745,20 @@ public static partial class Shell32
 		/// </para>
 		/// <para>If <c>dwScope</c> is not set to RESOURCE_CONNECTED, this field is undefined.</para>
 		/// </summary>
-		public PTSTR lpLocalName;
+		public StrPtrAuto lpLocalName;
 
 		/// <summary>
 		/// If the enumerated item is a network resource, this field contains a remote network name. This name may be then passed to
 		/// NPAddConnection to make a network connection if <c>dwUsage</c> is set to RESOURCEUSAGE_CONNECTABLE. If the enumerated item is
 		/// a current connection, this field will refer to the remote network name that <c>lpLocalName</c> is connected to.
 		/// </summary>
-		public PTSTR lpRemoteName;
+		public StrPtrAuto lpRemoteName;
 
 		/// <summary>May be any provider-supplied comment associated with the enumerated item.</summary>
-		public PTSTR lpComment;
+		public StrPtrAuto lpComment;
 
 		/// <summary>Specifies the name of the provider that owns this enumerated item.</summary>
-		public PTSTR lpProvider;
+		public StrPtrAuto lpProvider;
 	}
 
 	/// <summary>Defines the <see cref="ShellClipboardFormat.CFSTR_NETRESOURCES"/> clipboard format.</summary>
@@ -778,7 +778,7 @@ public static partial class Shell32
 		/// <summary>
 		/// <para>Type: <c>NETRESOURCE[1]</c></para>
 		/// <para>
-		/// The array of NETRESOURCE structures that contain information about network resources. The string members ( <c>PSTR</c>
+		/// The array of NETRESOURCE structures that contain information about network resources. The string members ( <c>StrPtrAnsi</c>
 		/// types) in the structure contain offsets instead of addresses.
 		/// </para>
 		/// </summary>

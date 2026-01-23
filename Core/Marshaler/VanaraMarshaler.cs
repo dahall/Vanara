@@ -11,7 +11,7 @@ public interface IVanaraMarshaler
 	/// <returns>
 	/// The size, in bytes, of the base object in memory. This should return the equivalent of the sizeof(X) function in C/C++.
 	/// </returns>
-	SIZE_T GetNativeSize();
+	SizeT GetNativeSize();
 
 	/// <summary>Marshals the managed object to its native, in-memory, value.</summary>
 	/// <param name="managedObject">The managed object to marshal.</param>
@@ -22,7 +22,7 @@ public interface IVanaraMarshaler
 	/// <param name="pNativeData">The pointer to the native data.</param>
 	/// <param name="allocatedBytes">The number of allocated bytes.</param>
 	/// <returns>The type instance.</returns>
-	object? MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes);
+	object? MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes);
 }
 
 /// <summary>Provides methods to assist with custom marshaling.</summary>
@@ -91,7 +91,7 @@ public class VanaraCustomMarshaler<T> : ICustomMarshaler
 
 	IntPtr ICustomMarshaler.MarshalManagedToNative(object ManagedObj) => VanaraMarshaler.CanMarshal<T>(out var m) ? (mem = m!.MarshalManagedToNative(ManagedObj)) : throw new InvalidOperationException("Cannot marshal this type.");
 
-	object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => VanaraMarshaler.CanMarshal<T>(out var m) ? m!.MarshalNativeToManaged(pNativeData, SIZE_T.MaxValue) ?? throw new ArgumentNullException(nameof(pNativeData)) : throw new InvalidOperationException("Cannot marshal this type.");
+	object ICustomMarshaler.MarshalNativeToManaged(IntPtr pNativeData) => VanaraMarshaler.CanMarshal<T>(out var m) ? m!.MarshalNativeToManaged(pNativeData, SizeT.MaxValue) ?? throw new ArgumentNullException(nameof(pNativeData)) : throw new InvalidOperationException("Cannot marshal this type.");
 }
 
 /// <summary>Apply this attribute to a class or structure to have all Vanara interop function process via the marshaler.</summary>
@@ -125,8 +125,8 @@ public class VanaraMarshalerAttribute : Attribute
 /// <seealso cref="Vanara.InteropServices.IVanaraMarshaler"/>
 internal class MarshalerOnVanaraMarshaler(Type type, Vanara.Marshaler.MarshalerOptions? opts = null) : IVanaraMarshaler
 {
-	SIZE_T IVanaraMarshaler.GetNativeSize() => Vanara.Marshaler.Marshaler.SizeOf(type, opts);
+	SizeT IVanaraMarshaler.GetNativeSize() => Vanara.Marshaler.Marshaler.SizeOf(type, opts);
 	SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) =>
 		managedObject is null ? SafeCoTaskMemHandle.Null : (SafeAllocatedMemoryHandle)Vanara.Marshaler.Marshaler.ValueToPtr(managedObject!, opts);
-	object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes) => Vanara.Marshaler.Marshaler.PtrToValue(type, pNativeData, opts);
+	object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes) => Vanara.Marshaler.Marshaler.PtrToValue(type, pNativeData, opts);
 }

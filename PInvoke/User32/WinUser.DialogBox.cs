@@ -997,7 +997,7 @@ public static partial class User32
 	/// <para>A handle to the dialog box that contains the list box.</para>
 	/// </param>
 	/// <param name="lpPathSpec">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer containing a null-terminated string that specifies an absolute path, relative path, or filename. An absolute
 	/// path can begin with a drive letter (for example, d:) or a UNC name (for example, \&lt;i&gt;machinename\ <c>sharename</c>).
@@ -1115,7 +1115,7 @@ public static partial class User32
 	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-dlgdirlista int DlgDirListA( [in] HWND hDlg, [in, out] PSTR
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-dlgdirlista int DlgDirListA( [in] HWND hDlg, [in, out] StrPtrAnsi
 	// lpPathSpec, [in] int nIDListBox, [in] int nIDStaticPath, [in] UINT uFileType );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.DlgDirListA")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
@@ -1131,7 +1131,7 @@ public static partial class User32
 	/// <para>A handle to the dialog box that contains the combo box.</para>
 	/// </param>
 	/// <param name="lpPathSpec">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer containing a null-terminated string that specifies an absolute path, relative path, or file name. An absolute
 	/// path can begin with a drive letter (for example, d:) or a UNC name (for example, \\ <c>machinename</c>\ <c>sharename</c>).
@@ -1263,7 +1263,7 @@ public static partial class User32
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-dlgdirlistcomboboxa int DlgDirListComboBoxA( [in] HWND hDlg,
-	// [in, out] PSTR lpPathSpec, [in] int nIDComboBox, [in] int nIDStaticPath, [in] UINT uFiletype );
+	// [in, out] StrPtrAnsi lpPathSpec, [in] int nIDComboBox, [in] int nIDStaticPath, [in] UINT uFiletype );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.DlgDirListComboBoxA")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	public static extern int DlgDirListComboBox([In, AddAsMember] HWND hDlg, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpPathSpec, int nIDComboBox, int nIDStaticPath, DDL uFiletype);
@@ -1277,7 +1277,7 @@ public static partial class User32
 	/// <para>A handle to the dialog box that contains the combo box.</para>
 	/// </param>
 	/// <param name="lpString">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to the buffer that receives the selected path.</para>
 	/// </param>
 	/// <param name="cchOut">
@@ -1314,7 +1314,7 @@ public static partial class User32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dlgdirselectcomboboxexa BOOL DlgDirSelectComboBoxExA( HWND
-	// hwndDlg, PSTR lpString, int cchOut, int idComboBox );
+	// hwndDlg, StrPtrAnsi lpString, int cchOut, int idComboBox );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1329,7 +1329,7 @@ public static partial class User32
 	/// <para>A handle to the dialog box that contains the list box.</para>
 	/// </param>
 	/// <param name="lpString">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a buffer that receives the selected path.</para>
 	/// </param>
 	/// <param name="chCount">
@@ -1374,7 +1374,7 @@ public static partial class User32
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-dlgdirselectexw BOOL DlgDirSelectExW( [in] HWND hwndDlg, [out]
-	// PWSTR lpString, [in] int chCount, [in] int idListBox );
+	// StrPtrUni lpString, [in] int chCount, [in] int idListBox );
 	[PInvokeData("winuser.h", MSDNShortId = "NF:winuser.DlgDirSelectExW")]
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1605,7 +1605,7 @@ public static partial class User32
 	/// <para>The identifier of the control whose title or text is to be retrieved.</para>
 	/// </param>
 	/// <param name="lpString">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The buffer to receive the title or text.</para>
 	/// </param>
 	/// <param name="cchMax">
@@ -1630,7 +1630,7 @@ public static partial class User32
 	/// <para>For an example, see Creating a Modal Dialog Box.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdlgitemtexta UINT GetDlgItemTextA( HWND hDlg, int
-	// nIDDlgItem, PSTR lpString, int cchMax );
+	// nIDDlgItem, StrPtrAnsi lpString, int cchMax );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getdlgitemtext")]
 	public static extern uint GetDlgItemText([In, AddAsMember] HWND hDlg, int nIDDlgItem, [Out, MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(cchMax), SizingMethod.QueryResultInReturn)] StringBuilder? lpString, uint cchMax);
@@ -2643,7 +2643,7 @@ public static partial class User32
 		public static DlgItemTemplate MakeStatic(string text, ushort id, short x, short y, short cx = 50, short cy = 14, WindowStyles style = WindowStyles.WS_CHILD | WindowStyles.WS_VISIBLE | (WindowStyles)StaticStyle.SS_LEFT, WindowStylesEx exstyle = 0) =>
 			MakeControl(0x0082, text, id, x, y, cx, cy, style, exstyle);
 
-		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<DLGTEMPLATE>() + sizeof(ushort) * 3;
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<DLGTEMPLATE>() + sizeof(ushort) * 3;
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -2723,7 +2723,7 @@ public static partial class User32
 			}
 		}
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero)
 				return null;
@@ -3189,7 +3189,7 @@ public static partial class User32
 			WindowStylesEx exstyle = 0, uint helpID = 0) =>
 			MakeControl(0x0082, text, id, x, y, cx, cy, style, exstyle, helpID);
 
-		SIZE_T IVanaraMarshaler.GetNativeSize() => 40;
+		SizeT IVanaraMarshaler.GetNativeSize() => 40;
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
 			if (managedObject is not DLGTEMPLATEEX_MGD dt)
@@ -3262,7 +3262,7 @@ public static partial class User32
 					buffer.Write(s, CharSet.Unicode);
 			}
 		}
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero)
 				return null;

@@ -458,7 +458,7 @@ public static partial class WindowsDriverFramework
 		/// size, in bytes, that is larger than the value that is specified for the <b>ContextSize</b> member of the
 		/// WDF_OBJECT_CONTEXT_TYPE_INFO structure. For more information, see the following Remarks section.
 		/// </summary>
-		public SIZE_T ContextSizeOverride;
+		public SizeT ContextSizeOverride;
 
 		/// <summary>
 		/// A pointer to a <c>WDF_OBJECT_CONTEXT_TYPE_INFO</c> structure. The <c>WDF_OBJECT_ATTRIBUTES_SET_CONTEXT_TYPE</c> macro sets this pointer.
@@ -493,14 +493,14 @@ public static partial class WindowsDriverFramework
 		public uint Size;
 
 		/// <summary>A quoted string that represents the name of a driver-defined structure that contains an object's context information.</summary>
-		public PWSTR ContextName;
+		public StrPtrUni ContextName;
 
 		/// <summary>
 		/// The size, in bytes, of the structure that the <b>ContextName</b> member specifies. The framework allocates space for this
 		/// structure when it creates an object. If the <b>ContextSizeOverride</b> member of the <c>WDF_OBJECT_ATTRIBUTES</c> structure is
 		/// nonzero, its value overrides the value in the <b>ContextSize</b> member.
 		/// </summary>
-		public SIZE_T ContextSize;
+		public SizeT ContextSize;
 
 		/// <summary>For internal use.</summary>
 		public StructPointer<WDF_OBJECT_CONTEXT_TYPE_INFO> UniqueType;

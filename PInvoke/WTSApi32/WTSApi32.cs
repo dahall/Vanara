@@ -654,7 +654,7 @@ public static partial class WTSApi32
 	/// </returns>
 	/// <remarks>Either the LogonId or TargetLogonId parameter can be <c>LOGONID_CURRENT</c>, but not both.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsconnectsessiona BOOL WTSConnectSessionA( ULONG
-	// LogonId, ULONG TargetLogonId, PSTR pPassword, BOOL bWait );
+	// LogonId, ULONG TargetLogonId, StrPtrAnsi pPassword, BOOL bWait );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSConnectSessionA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -693,7 +693,7 @@ public static partial class WTSApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtscreatelistenera BOOL WTSCreateListenerA( HANDLE
-	// hServer, PVOID pReserved, DWORD Reserved, PSTR pListenerName, PWTSLISTENERCONFIGA pBuffer, DWORD flag );
+	// hServer, PVOID pReserved, DWORD Reserved, StrPtrAnsi pListenerName, PWTSLISTENERCONFIGA pBuffer, DWORD flag );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSCreateListenerA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -851,7 +851,7 @@ public static partial class WTSApi32
 	/// The caller must be a member of the Administrators group to enumerate processes that are running under another user session.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsenumerateprocessesexa BOOL WTSEnumerateProcessesExA(
-	// HANDLE hServer, DWORD *pLevel, DWORD SessionId, PSTR *ppProcessInfo, DWORD *pCount );
+	// HANDLE hServer, DWORD *pLevel, DWORD SessionId, StrPtrAnsi *ppProcessInfo, DWORD *pCount );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSEnumerateProcessesExA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -877,7 +877,7 @@ public static partial class WTSApi32
 	/// The caller must be a member of the Administrators group to enumerate processes that are running under another user session.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsenumerateprocessesexa BOOL WTSEnumerateProcessesExA(
-	// HANDLE hServer, DWORD *pLevel, DWORD SessionId, PSTR *ppProcessInfo, DWORD *pCount );
+	// HANDLE hServer, DWORD *pLevel, DWORD SessionId, StrPtrAnsi *ppProcessInfo, DWORD *pCount );
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSEnumerateProcessesExA")]
 	public static bool WTSEnumerateProcessesEx(HWTSSERVER hServer, uint SessionId, [NotNullWhen(true)] out WTS_PROCESS_INFO_EX[]? ppProcessInfo)
 	{
@@ -917,7 +917,7 @@ public static partial class WTSApi32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 	/// </returns>
 	/// <remarks>This function will not work if NetBT is disabled.</remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsenumerateserversa BOOL WTSEnumerateServersA( PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsenumerateserversa BOOL WTSEnumerateServersA( StrPtrAnsi
 	// pDomainName, DWORD Reserved, DWORD Version, PWTS_SERVER_INFOA *ppServerInfo, DWORD *pCount );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSEnumerateServersA")]
@@ -936,7 +936,7 @@ public static partial class WTSApi32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 	/// </returns>
 	/// <remarks>This function will not work if NetBT is disabled.</remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsenumerateserversa BOOL WTSEnumerateServersA( PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsenumerateserversa BOOL WTSEnumerateServersA( StrPtrAnsi
 	// pDomainName, DWORD Reserved, DWORD Version, PWTS_SERVER_INFOA *ppServerInfo, DWORD *pCount );
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSEnumerateServersA")]
 	public static bool WTSEnumerateServers([Optional] string? pDomainName, [NotNullWhen(true)] out WTS_SERVER_INFO[]? ppServerInfo)
@@ -1287,7 +1287,7 @@ public static partial class WTSApi32
 	/// allocated buffer and nLength to the number returned by the first call.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsgetlistenersecuritya BOOL WTSGetListenerSecurityA(
-	// HANDLE hServer, PVOID pReserved, DWORD Reserved, PSTR pListenerName, SECURITY_INFORMATION SecurityInformation,
+	// HANDLE hServer, PVOID pReserved, DWORD Reserved, StrPtrAnsi pListenerName, SECURITY_INFORMATION SecurityInformation,
 	// PSECURITY_DESCRIPTOR pSecurityDescriptor, DWORD nLength, LPDWORD lpnLengthNeeded );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSGetListenerSecurityA")]
@@ -1364,7 +1364,7 @@ public static partial class WTSApi32
 	/// Use the constant <c>WTS_CURRENT_SERVER_HANDLE</c> instead.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsopenservera HANDLE WTSOpenServerA( PSTR pServerName );
+	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsopenservera HANDLE WTSOpenServerA( StrPtrAnsi pServerName );
 	[DllImport(Lib_WTSApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSOpenServerA")]
 	public static extern SafeHWTSSERVER WTSOpenServer([MarshalAs(UnmanagedType.LPTStr)] string pServerName);
@@ -1391,7 +1391,7 @@ public static partial class WTSApi32
 	/// </para>
 	/// <para>When you have finished using the handle returned by this function, release it by calling the WTSCloseServer function.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsopenserverexa HANDLE WTSOpenServerExA( PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsopenserverexa HANDLE WTSOpenServerExA( StrPtrAnsi
 	// pServerName );
 	[DllImport(Lib_WTSApi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSOpenServerExA")]
@@ -1412,7 +1412,7 @@ public static partial class WTSApi32
 	/// WTSGetListenerSecurity function.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsquerylistenerconfiga BOOL WTSQueryListenerConfigA(
-	// HANDLE hServer, PVOID pReserved, DWORD Reserved, PSTR pListenerName, PWTSLISTENERCONFIGA pBuffer );
+	// HANDLE hServer, PVOID pReserved, DWORD Reserved, StrPtrAnsi pListenerName, PWTSLISTENERCONFIGA pBuffer );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSQueryListenerConfigA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1470,7 +1470,7 @@ public static partial class WTSApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsquerysessioninformationa BOOL
-	// WTSQuerySessionInformationA( HANDLE hServer, DWORD SessionId, WTS_INFO_CLASS WTSInfoClass, PSTR *ppBuffer, DWORD *pBytesReturned );
+	// WTSQuerySessionInformationA( HANDLE hServer, DWORD SessionId, WTS_INFO_CLASS WTSInfoClass, StrPtrAnsi *ppBuffer, DWORD *pBytesReturned );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSQuerySessionInformationA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1518,8 +1518,8 @@ public static partial class WTSApi32
 	/// domain controller.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsqueryuserconfiga BOOL WTSQueryUserConfigA( PSTR
-	// pServerName, PSTR pUserName, WTS_CONFIG_CLASS WTSConfigClass, PSTR *ppBuffer, DWORD *pBytesReturned );
+	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsqueryuserconfiga BOOL WTSQueryUserConfigA( StrPtrAnsi
+	// pServerName, StrPtrAnsi pUserName, WTS_CONFIG_CLASS WTSConfigClass, StrPtrAnsi *ppBuffer, DWORD *pBytesReturned );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSQueryUserConfigA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1730,7 +1730,7 @@ public static partial class WTSApi32
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtssendmessagea BOOL WTSSendMessageA( HANDLE hServer,
-	// DWORD SessionId, PSTR pTitle, DWORD TitleLength, PSTR pMessage, DWORD MessageLength, DWORD Style, DWORD Timeout, DWORD
+	// DWORD SessionId, StrPtrAnsi pTitle, DWORD TitleLength, StrPtrAnsi pMessage, DWORD MessageLength, DWORD Style, DWORD Timeout, DWORD
 	// *pResponse, BOOL bWait );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSSendMessageA")]
@@ -1862,7 +1862,7 @@ public static partial class WTSApi32
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtssetlistenersecuritya BOOL WTSSetListenerSecurityA(
-	// HANDLE hServer, PVOID pReserved, DWORD Reserved, PSTR pListenerName, SECURITY_INFORMATION SecurityInformation,
+	// HANDLE hServer, PVOID pReserved, DWORD Reserved, StrPtrAnsi pListenerName, SECURITY_INFORMATION SecurityInformation,
 	// PSECURITY_DESCRIPTOR pSecurityDescriptor );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSSetListenerSecurityA")]
@@ -1903,15 +1903,15 @@ public static partial class WTSApi32
 	/// </para>
 	/// <para>
 	/// If the value of the WTSConfigClass parameter corresponds to an integer value in the WTS_CONFIG_CLASS enumeration, define the
-	/// value to be set as a <c>DWORD</c>. Then cast the value to an <c>PWSTR</c> in the call to <c>WTSSetUserConfig</c>, as in the
+	/// value to be set as a <c>DWORD</c>. Then cast the value to an <c>StrPtrUni</c> in the call to <c>WTSSetUserConfig</c>, as in the
 	/// following example:
 	/// </para>
 	/// <para>
-	/// <code>WTSSetUserConfig( strServer.GetBuffer(0), m_strName.GetBuffer(0), WTSUserConfigfAllowLogonTerminalServer, (PWSTR) &amp;dwEnable, sizeof(DWORD));</code>
+	/// <code>WTSSetUserConfig( strServer.GetBuffer(0), m_strName.GetBuffer(0), WTSUserConfigfAllowLogonTerminalServer, (StrPtrUni) &amp;dwEnable, sizeof(DWORD));</code>
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtssetuserconfiga BOOL WTSSetUserConfigA( PSTR
-	// pServerName, PSTR pUserName, WTS_CONFIG_CLASS WTSConfigClass, PSTR pBuffer, DWORD DataLength );
+	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtssetuserconfiga BOOL WTSSetUserConfigA( StrPtrAnsi
+	// pServerName, StrPtrAnsi pUserName, WTS_CONFIG_CLASS WTSConfigClass, StrPtrAnsi pBuffer, DWORD DataLength );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSSetUserConfigA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2039,7 +2039,7 @@ public static partial class WTSApi32
 	/// </returns>
 	/// <remarks/>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsstartremotecontrolsessiona BOOL
-	// WTSStartRemoteControlSessionA( PSTR pTargetServerName, ULONG TargetLogonId, BYTE HotkeyVk, USHORT HotkeyModifiers );
+	// WTSStartRemoteControlSessionA( StrPtrAnsi pTargetServerName, ULONG TargetLogonId, BYTE HotkeyVk, USHORT HotkeyModifiers );
 	[DllImport(Lib_WTSApi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSStartRemoteControlSessionA")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2154,7 +2154,7 @@ public static partial class WTSApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsvirtualchannelopen HANDLE WTSVirtualChannelOpen(
-	// HANDLE hServer, DWORD SessionId, PSTR pVirtualName );
+	// HANDLE hServer, DWORD SessionId, StrPtrAnsi pVirtualName );
 	[DllImport(Lib_WTSApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSVirtualChannelOpen")]
 	public static extern SafeHVIRTUALCHANNEL WTSVirtualChannelOpen(HWTSSERVER hServer, uint SessionId, [MarshalAs(UnmanagedType.LPStr)] string pVirtualName);
@@ -2220,7 +2220,7 @@ public static partial class WTSApi32
 	/// </param>
 	/// <returns><c>NULL</c> on error with GetLastError set.</returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/nf-wtsapi32-wtsvirtualchannelopenex HANDLE WTSVirtualChannelOpenEx(
-	// DWORD SessionId, PSTR pVirtualName, DWORD flags );
+	// DWORD SessionId, StrPtrAnsi pVirtualName, DWORD flags );
 	[DllImport(Lib_WTSApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NF:wtsapi32.WTSVirtualChannelOpenEx")]
 	public static extern SafeHVIRTUALCHANNEL WTSVirtualChannelOpenEx(uint SessionId, [MarshalAs(UnmanagedType.LPStr)] string pVirtualName, WTS_CHANNEL_OPTION flags);
@@ -2287,7 +2287,7 @@ public static partial class WTSApi32
 	/// vcHandle = WTSVirtualChannelOpen(
 	///    WTS_CURRENT_SERVER_HANDLE, // Current TS Server
 	///    WTS_CURRENT_SESSION,       // Current TS Session
-	///    (PSTR) "TSTCHNL"          // Channel name
+	///    (StrPtrAnsi) "TSTCHNL"          // Channel name
 	/// );
 	/// 
 	/// if (vcHandle == NULL)
@@ -2546,7 +2546,7 @@ public static partial class WTSApi32
 
 	/// <summary>Contains information about a process running on a Remote Desktop Session Host (RD Session Host) server.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/ns-wtsapi32-wts_process_infoa typedef struct _WTS_PROCESS_INFOA {
-	// DWORD SessionId; DWORD ProcessId; PSTR pProcessName; PSID pUserSid; } WTS_PROCESS_INFOA, *PWTS_PROCESS_INFOA;
+	// DWORD SessionId; DWORD ProcessId; StrPtrAnsi pProcessName; PSID pUserSid; } WTS_PROCESS_INFOA, *PWTS_PROCESS_INFOA;
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NS:wtsapi32._WTS_PROCESS_INFOA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct WTS_PROCESS_INFO
@@ -2573,7 +2573,7 @@ public static partial class WTSApi32
 	/// is returned by the WTSEnumerateProcessesEx function when you set the pLevel parameter to one.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/ns-wtsapi32-wts_process_info_exa typedef struct _WTS_PROCESS_INFO_EXA
-	// { DWORD SessionId; DWORD ProcessId; PSTR pProcessName; PSID pUserSid; DWORD NumberOfThreads; DWORD HandleCount; DWORD
+	// { DWORD SessionId; DWORD ProcessId; StrPtrAnsi pProcessName; PSID pUserSid; DWORD NumberOfThreads; DWORD HandleCount; DWORD
 	// PagefileUsage; DWORD PeakPagefileUsage; DWORD WorkingSetSize; DWORD PeakWorkingSetSize; LARGE_INTEGER UserTime; LARGE_INTEGER
 	// KernelTime; } WTS_PROCESS_INFO_EXA, *PWTS_PROCESS_INFO_EXA;
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NS:wtsapi32._WTS_PROCESS_INFO_EXA")]
@@ -2622,7 +2622,7 @@ public static partial class WTSApi32
 	}
 
 	/// <summary>Contains information about a specific Remote Desktop Services server.</summary>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/ns-wtsapi32-wts_server_infoa typedef struct _WTS_SERVER_INFOA { PSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/ns-wtsapi32-wts_server_infoa typedef struct _WTS_SERVER_INFOA { StrPtrAnsi
 	// pServerName; } WTS_SERVER_INFOA, *PWTS_SERVER_INFOA;
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NS:wtsapi32._WTS_SERVER_INFOA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -2656,7 +2656,7 @@ public static partial class WTSApi32
 
 	/// <summary>Contains information about a client session on a Remote Desktop Session Host (RD Session Host) server.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/ns-wtsapi32-wts_session_infoa typedef struct _WTS_SESSION_INFOA {
-	// DWORD SessionId; PSTR pWinStationName; WTS_CONNECTSTATE_CLASS State; } WTS_SESSION_INFOA, *PWTS_SESSION_INFOA;
+	// DWORD SessionId; StrPtrAnsi pWinStationName; WTS_CONNECTSTATE_CLASS State; } WTS_SESSION_INFOA, *PWTS_SESSION_INFOA;
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NS:wtsapi32._WTS_SESSION_INFOA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct WTS_SESSION_INFO
@@ -2695,8 +2695,8 @@ public static partial class WTSApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wtsapi32/ns-wtsapi32-wts_session_info_1a typedef struct _WTS_SESSION_INFO_1A {
-	// DWORD ExecEnvId; WTS_CONNECTSTATE_CLASS State; DWORD SessionId; PSTR pSessionName; PSTR pHostName; PSTR pUserName; PSTR
-	// pDomainName; PSTR pFarmName; } WTS_SESSION_INFO_1A, *PWTS_SESSION_INFO_1A;
+	// DWORD ExecEnvId; WTS_CONNECTSTATE_CLASS State; DWORD SessionId; StrPtrAnsi pSessionName; StrPtrAnsi pHostName; StrPtrAnsi pUserName; StrPtrAnsi
+	// pDomainName; StrPtrAnsi pFarmName; } WTS_SESSION_INFO_1A, *PWTS_SESSION_INFO_1A;
 	[PInvokeData("wtsapi32.h", MSDNShortId = "NS:wtsapi32._WTS_SESSION_INFO_1A")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct WTS_SESSION_INFO_1

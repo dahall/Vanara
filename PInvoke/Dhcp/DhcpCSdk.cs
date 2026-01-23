@@ -238,7 +238,7 @@ public static partial class Dhcp
 	/// whenever changes occur to the parameters requested in Params.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpcsdk/nf-dhcpcsdk-dhcpregisterparamchange DWORD DhcpRegisterParamChange(
-	// DWORD Flags, LPVOID Reserved, PWSTR AdapterName, LPDHCPCAPI_CLASSID ClassId, DHCPCAPI_PARAMS_ARRAY Params, LPVOID Handle );
+	// DWORD Flags, LPVOID Reserved, StrPtrUni AdapterName, LPDHCPCAPI_CLASSID ClassId, DHCPCAPI_PARAMS_ARRAY Params, LPVOID Handle );
 	[DllImport(Lib_Dhcp, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpcsdk.h", MSDNShortId = "NF:dhcpcsdk.DhcpRegisterParamChange")]
 	public static extern Win32Error DhcpRegisterParamChange(uint Flags, [Optional] IntPtr Reserved, [MarshalAs(UnmanagedType.LPWStr)] string AdapterName,
@@ -354,8 +354,8 @@ public static partial class Dhcp
 	/// <para>To see the <c>DhcpRequestParams</c> function in use, see DHCP Examples.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpcsdk/nf-dhcpcsdk-dhcprequestparams DWORD DhcpRequestParams( DWORD Flags,
-	// LPVOID Reserved, PWSTR AdapterName, LPDHCPCAPI_CLASSID ClassId, DHCPCAPI_PARAMS_ARRAY SendParams, DHCPCAPI_PARAMS_ARRAY
-	// RecdParams, LPBYTE Buffer, LPDWORD pSize, PWSTR RequestIdStr );
+	// LPVOID Reserved, StrPtrUni AdapterName, LPDHCPCAPI_CLASSID ClassId, DHCPCAPI_PARAMS_ARRAY SendParams, DHCPCAPI_PARAMS_ARRAY
+	// RecdParams, LPBYTE Buffer, LPDWORD pSize, StrPtrUni RequestIdStr );
 	[DllImport(Lib_Dhcp, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpcsdk.h", MSDNShortId = "NF:dhcpcsdk.DhcpRequestParams")]
 	public static extern Win32Error DhcpRequestParams([Optional] DHCPCAPI_REQUEST Flags, [In, Optional] IntPtr Reserved, [MarshalAs(UnmanagedType.LPWStr)] string AdapterName,
@@ -464,8 +464,8 @@ public static partial class Dhcp
 	/// <para>To see the <c>DhcpRequestParams</c> function in use, see DHCP Examples.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpcsdk/nf-dhcpcsdk-dhcprequestparams DWORD DhcpRequestParams( DWORD Flags,
-	// LPVOID Reserved, PWSTR AdapterName, LPDHCPCAPI_CLASSID ClassId, DHCPCAPI_PARAMS_ARRAY SendParams, DHCPCAPI_PARAMS_ARRAY
-	// RecdParams, LPBYTE Buffer, LPDWORD pSize, PWSTR RequestIdStr );
+	// LPVOID Reserved, StrPtrUni AdapterName, LPDHCPCAPI_CLASSID ClassId, DHCPCAPI_PARAMS_ARRAY SendParams, DHCPCAPI_PARAMS_ARRAY
+	// RecdParams, LPBYTE Buffer, LPDWORD pSize, StrPtrUni RequestIdStr );
 	[DllImport(Lib_Dhcp, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpcsdk.h", MSDNShortId = "NF:dhcpcsdk.DhcpRequestParams")]
 	public static extern Win32Error DhcpRequestParams([Optional] DHCPCAPI_REQUEST Flags, [In, Optional] IntPtr Reserved, [MarshalAs(UnmanagedType.LPWStr)] string AdapterName,
@@ -492,7 +492,7 @@ public static partial class Dhcp
 	/// setup or installer process would likely make the <c>DhcpUndoRequestParams</c> function call to cancel its associated persistent request.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dhcpcsdk/nf-dhcpcsdk-dhcpundorequestparams DWORD DhcpUndoRequestParams( DWORD
-	// Flags, LPVOID Reserved, PWSTR AdapterName, PWSTR RequestIdStr );
+	// Flags, LPVOID Reserved, StrPtrUni AdapterName, StrPtrUni RequestIdStr );
 	[DllImport(Lib_Dhcp, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("dhcpcsdk.h", MSDNShortId = "NF:dhcpcsdk.DhcpUndoRequestParams")]
 	public static extern Win32Error DhcpUndoRequestParams([Optional] uint Flags, [In, Optional] IntPtr Reserved, [MarshalAs(UnmanagedType.LPWStr)] string? AdapterName, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? RequestIdStr);

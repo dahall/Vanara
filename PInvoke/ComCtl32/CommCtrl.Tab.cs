@@ -895,7 +895,7 @@ public static partial class ComCtl32
 		/// Pointer to a null-terminated string that contains the tab text when item information is being set. If item information is
 		/// being retrieved, this member specifies the address of the buffer that receives the tab text.
 		/// </summary>
-		public PTSTR pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszText member. If the structure is not receiving information, this member is ignored.
@@ -919,7 +919,7 @@ public static partial class ComCtl32
 		{
 			if ((itemsToGet & TabControlItemMask.TCIF_TEXT) != 0)
 			{
-				pszText = new PTSTR(cchTextMax = 1024);
+				pszText = new StrPtrAuto(cchTextMax = 1024);
 			}
 		}
 
@@ -976,7 +976,7 @@ public static partial class ComCtl32
 		/// Pointer to a null-terminated string that contains the tab text when item information is being set. If item information is
 		/// being retrieved, this member specifies the address of the buffer that receives the tab text.
 		/// </summary>
-		public PTSTR pszText;
+		public StrPtrAuto pszText;
 
 		/// <summary>
 		/// Size in TCHARs of the buffer pointed to by the pszText member. If the structure is not receiving information, this member is ignored.
@@ -991,7 +991,7 @@ public static partial class ComCtl32
 		{
 			if ((itemsToGet & TabControlItemMask.TCIF_TEXT) != 0)
 			{
-				pszText = new PTSTR(cchTextMax = 1024);
+				pszText = new StrPtrAuto(cchTextMax = 1024);
 			}
 		}
 

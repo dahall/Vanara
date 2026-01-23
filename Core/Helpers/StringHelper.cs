@@ -15,7 +15,7 @@ public static class StringHelper
 	/// <param name="memAllocator">The method used to allocate the memory.</param>
 	/// <param name="charSet">The character set.</param>
 	/// <returns>The address of the block of memory allocated.</returns>
-	public static IntPtr AllocChars(SIZE_T count, Func<int, IntPtr> memAllocator, CharSet charSet = CharSet.Auto)
+	public static IntPtr AllocChars(SizeT count, Func<int, IntPtr> memAllocator, CharSet charSet = CharSet.Auto)
 	{
 		if (count == 0) return IntPtr.Zero;
 		var sz = GetCharSize(charSet);
@@ -34,7 +34,7 @@ public static class StringHelper
 	/// <param name="count">The number of characters, inclusive of the null terminator.</param>
 	/// <param name="charSet">The character set.</param>
 	/// <returns>The address of the block of memory allocated.</returns>
-	public static IntPtr AllocChars(SIZE_T count, CharSet charSet = CharSet.Auto) => AllocChars(count, Marshal.AllocCoTaskMem, charSet);
+	public static IntPtr AllocChars(SizeT count, CharSet charSet = CharSet.Auto) => AllocChars(count, Marshal.AllocCoTaskMem, charSet);
 
 	/// <summary>Copies the contents of a managed <see cref="SecureString"/> object to a block of memory allocated from the unmanaged COM task allocator.</summary>
 	/// <param name="s">The managed object to copy.</param>
@@ -257,7 +257,7 @@ public static class StringHelper
 	/// A managed string that holds a copy of the unmanaged string if the value of the <paramref name="ptr" /> parameter is not null;
 	/// otherwise, this method returns null.
 	/// </returns>
-	public static string? GetString(IntPtr ptr, Encoding encoding, out SIZE_T readBytes, long allocatedBytes = long.MaxValue)
+	public static string? GetString(IntPtr ptr, Encoding encoding, out SizeT readBytes, long allocatedBytes = long.MaxValue)
 	{
 		readBytes = 0;
 		if (IsValue(ptr)) return null;
@@ -294,7 +294,7 @@ public static class StringHelper
 	/// A managed string that holds a copy of the unmanaged string if the value of the <paramref name="ptr"/> parameter is not null;
 	/// otherwise, this method returns null.
 	/// </returns>
-	public static string? GetString(IntPtr ptr, SIZE_T length, CharSet charSet = CharSet.Auto) => GetString(ptr, charSet, length * GetCharSize(charSet));
+	public static string? GetString(IntPtr ptr, SizeT length, CharSet charSet = CharSet.Auto) => GetString(ptr, charSet, length * GetCharSize(charSet));
 
 	/// <summary>Indicates whether a specified string is <see langword="null"/>, empty, or consists only of white-space characters.</summary>
 	/// <param name="value">The string to test.</param>

@@ -24,7 +24,7 @@ public static partial class Shell32
 		/// <para>The list is visible.</para>
 		/// </param>
 		/// <param name="ppwszString">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// A pointer to a buffer containing the first select item in the drop-down list, if the value pointed to by pdwFlags is
 		/// <c>ACDD_VISIBLE</c>. This value can be <c>NULL</c> on entry if this information is not needed.
@@ -35,7 +35,7 @@ public static partial class Shell32
 		/// </para>
 		/// </param>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-iautocompletedropdown-getdropdownstatus HRESULT
-		// GetDropDownStatus( DWORD *pdwFlags, PWSTR *ppwszString );
+		// GetDropDownStatus( DWORD *pdwFlags, StrPtrUni *ppwszString );
 		unsafe void GetDropDownStatus(uint* pdwFlags, char** ppwszString);
 
 		/// <summary>Forces the autocomplete object to refresh its list of suggestions when the list is visible.</summary>

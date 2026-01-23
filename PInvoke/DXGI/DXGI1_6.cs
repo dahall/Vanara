@@ -3529,8 +3529,8 @@ public static partial class DXGI
 	/// IDXGIAdapter4::GetDesc3 method.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_6/ns-dxgi1_6-dxgi_adapter_desc3 typedef struct DXGI_ADAPTER_DESC3 { WCHAR
-	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SIZE_T DedicatedVideoMemory; SIZE_T
-	// DedicatedSystemMemory; SIZE_T SharedSystemMemory; LUID AdapterLuid; DXGI_ADAPTER_FLAG3 Flags; DXGI_GRAPHICS_PREEMPTION_GRANULARITY
+	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SizeT DedicatedVideoMemory; SizeT
+	// DedicatedSystemMemory; SizeT SharedSystemMemory; LUID AdapterLuid; DXGI_ADAPTER_FLAG3 Flags; DXGI_GRAPHICS_PREEMPTION_GRANULARITY
 	// GraphicsPreemptionGranularity; DXGI_COMPUTE_PREEMPTION_GRANULARITY ComputePreemptionGranularity; } DXGI_ADAPTER_DESC3;
 	[PInvokeData("dxgi1_6.h", MSDNShortId = "NS:dxgi1_6.DXGI_ADAPTER_DESC3")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -3565,19 +3565,19 @@ public static partial class DXGI
 		public uint Revision;
 
 		/// <summary>The number of bytes of dedicated video memory that are not shared with the CPU.</summary>
-		public SIZE_T DedicatedVideoMemory;
+		public SizeT DedicatedVideoMemory;
 
 		/// <summary>
 		/// The number of bytes of dedicated system memory that are not shared with the CPU. This memory is allocated from available system
 		/// memory at boot time.
 		/// </summary>
-		public SIZE_T DedicatedSystemMemory;
+		public SizeT DedicatedSystemMemory;
 
 		/// <summary>
 		/// The number of bytes of shared system memory. This is the maximum value of system memory that may be consumed by the adapter
 		/// during operation. Any incidental memory consumed by the driver as it manages and uses video memory is additional.
 		/// </summary>
-		public SIZE_T SharedSystemMemory;
+		public SizeT SharedSystemMemory;
 
 		/// <summary>
 		/// A unique value that identifies the adapter. See LUID for a definition of the structure. <c>LUID</c> is defined in dxgi.h.

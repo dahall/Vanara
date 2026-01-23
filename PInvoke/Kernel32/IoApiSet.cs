@@ -600,7 +600,7 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns><c>true</c> if successful.</returns>
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-	public static bool DeviceIoControl<TIn, TOut>(HFILE hDev, uint ioControlCode, TIn inVal, out TOut outVal, SIZE_T outSz = default) where TIn : struct where TOut : struct
+	public static bool DeviceIoControl<TIn, TOut>(HFILE hDev, uint ioControlCode, TIn inVal, out TOut outVal, SizeT outSz = default) where TIn : struct where TOut : struct
 	{
 		using SafeHGlobalHandle ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal), ptrOut = outSz == 0 ? SafeHGlobalHandle.CreateFromStructure<TOut>() : new(outSz);
 		var ret = DeviceIoControl(hDev, ioControlCode, ptrIn, ptrIn.Size, ptrOut, ptrOut.Size, out var bRet, IntPtr.Zero);
@@ -633,7 +633,7 @@ public static partial class Kernel32
 	/// </param>
 	/// <returns><c>true</c> if successful.</returns>
 	[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-	public static bool DeviceIoControl<TOut>(HFILE hDev, uint ioControlCode, out TOut outVal, SIZE_T outSz = default) where TOut : struct
+	public static bool DeviceIoControl<TOut>(HFILE hDev, uint ioControlCode, out TOut outVal, SizeT outSz = default) where TOut : struct
 	{
 		using var ptrOut = outSz == 0 ? SafeHGlobalHandle.CreateFromStructure<TOut>() : new(outSz);
 		var ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, ptrOut, ptrOut.Size, out var bRet, IntPtr.Zero);

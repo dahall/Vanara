@@ -489,7 +489,7 @@ public static partial class User32
 		/// <para>The <c>BCM_SETNOTE</c> message works only with the <c>BS_COMMANDLINK</c> and <c>BS_DEFCOMMANDLINK</c> button styles.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bcm-setnote
-		[MsgParams(null, typeof(PWSTR), LResultType = typeof(BOOL))]
+		[MsgParams(null, typeof(StrPtrUni), LResultType = typeof(BOOL))]
 		BCM_SETNOTE = BCM_FIRST + 0x0009,
 
 		/// <summary>
@@ -520,7 +520,7 @@ public static partial class User32
 		/// </list>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/bcm-getnote
-		[MsgParams(typeof(uint), typeof(PWSTR), LResultType = typeof(BOOL))]
+		[MsgParams(typeof(uint), typeof(StrPtrUni), LResultType = typeof(BOOL))]
 		BCM_GETNOTE = BCM_FIRST + 0x000A,
 
 		/// <summary>

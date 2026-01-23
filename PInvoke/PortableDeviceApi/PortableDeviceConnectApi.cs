@@ -255,7 +255,7 @@ public static partial class PortableDeviceApi
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/portabledeviceconnectapi/nf-portabledeviceconnectapi-iportabledeviceconnector-getpnpid
-		// HRESULT GetPnPID( [out] PWSTR *ppwszPnPID );
+		// HRESULT GetPnPID( [out] StrPtrUni *ppwszPnPID );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetPnPID();
 	}

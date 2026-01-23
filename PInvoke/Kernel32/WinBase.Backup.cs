@@ -530,7 +530,7 @@ public static partial class Kernel32
 					string? name = null;
 					if (hdr.dwStreamNameSize > 0)
 					{
-						using SafePWSTR pName = new(((int)hdr.dwStreamNameSize / 2) + 1);
+						using SafeLPWSTR pName = new(((int)hdr.dwStreamNameSize / 2) + 1);
 						bool nameRead = BackupRead(hFile, pName, hdr.dwStreamNameSize, out bytesRead, false, bProcessSecurity, ref lpContext);
 						if (!nameRead)
 							return GetLastError();

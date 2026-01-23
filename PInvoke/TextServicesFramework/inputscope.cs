@@ -691,7 +691,7 @@ public static partial class MSCTF
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/inputscope/nf-inputscope-setinputscopes HRESULT SetInputScopes( HWND hwnd,
-	// const InputScope *pInputScopes, UINT cInputScopes, PWSTR *ppszPhraseList, UINT cPhrases, PWSTR pszRegExp, PWSTR pszSRGS );
+	// const InputScope *pInputScopes, UINT cInputScopes, StrPtrUni *ppszPhraseList, UINT cPhrases, StrPtrUni pszRegExp, StrPtrUni pszSRGS );
 	[DllImport(Lib_Msctf, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("inputscope.h", MSDNShortId = "NF:inputscope.SetInputScopes")]
 	public static extern HRESULT SetInputScopes(HWND hwnd, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] InputScope[]? pInputScopes, uint cInputScopes,
@@ -739,7 +739,7 @@ public static partial class MSCTF
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/inputscope/nf-inputscope-setinputscopes2 HRESULT SetInputScopes2( HWND hwnd,
-	// const InputScope *pInputScopes, UINT cInputScopes, IEnumString *pEnumString, PWSTR pszRegExp, PWSTR pszSRGS );
+	// const InputScope *pInputScopes, UINT cInputScopes, IEnumString *pEnumString, StrPtrUni pszRegExp, StrPtrUni pszSRGS );
 	[DllImport(Lib_Msctf, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("inputscope.h", MSDNShortId = "NF:inputscope.SetInputScopes2")]
 	public static extern HRESULT SetInputScopes2(HWND hwnd, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] InputScope[]? pInputScopes, uint cInputScopes,
@@ -750,7 +750,7 @@ public static partial class MSCTF
 	/// <param name="pszXML">N/A</param>
 	/// <returns>This function does not return a value.</returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/inputscope/nf-inputscope-setinputscopexml HRESULT SetInputScopeXML( HWND hwnd,
-	// PWSTR pszXML );
+	// StrPtrUni pszXML );
 	[DllImport(Lib_Msctf, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("inputscope.h", MSDNShortId = "NF:inputscope.SetInputScopeXML")]
 	public static extern HRESULT SetInputScopeXML(HWND hwnd, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string? pszXML);

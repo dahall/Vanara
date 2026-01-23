@@ -65,7 +65,7 @@ public static partial class ClfsW32
 	/// <para>The following list identifies the possible error codes:</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-addlogcontainer CLFSUSER_API BOOL AddLogContainer( [in] HANDLE
-	// hLog, [in, optional] PULONGLONG pcbContainer, [in] PWSTR pwszContainerPath, [in, out, optional] LPVOID pReserved );
+	// hLog, [in, optional] PULONGLONG pcbContainer, [in] StrPtrUni pwszContainerPath, [in, out, optional] LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainer")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -115,7 +115,7 @@ public static partial class ClfsW32
 	/// <para>The following list identifies the possible error codes:</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-addlogcontainer CLFSUSER_API BOOL AddLogContainer( [in] HANDLE
-	// hLog, [in, optional] PULONGLONG pcbContainer, [in] PWSTR pwszContainerPath, [in, out, optional] LPVOID pReserved );
+	// hLog, [in, optional] PULONGLONG pcbContainer, [in] StrPtrUni pwszContainerPath, [in, out, optional] LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainer")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -177,7 +177,7 @@ public static partial class ClfsW32
 	/// <para>Containers are created and opened in a noncompressed mode, and are initialized with 0 (zeros) when they are created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-addlogcontainerset CLFSUSER_API BOOL AddLogContainerSet( [in]
-	// HANDLE hLog, [in] USHORT cContainer, [in, optional] PULONGLONG pcbContainer, [in] PWSTR *rgwszContainerPath, [in, out, optional]
+	// HANDLE hLog, [in] USHORT cContainer, [in, optional] PULONGLONG pcbContainer, [in] StrPtrUni *rgwszContainerPath, [in, out, optional]
 	// LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainerSet")]
@@ -241,7 +241,7 @@ public static partial class ClfsW32
 	/// <para>Containers are created and opened in a noncompressed mode, and are initialized with 0 (zeros) when they are created.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-addlogcontainerset CLFSUSER_API BOOL AddLogContainerSet( [in]
-	// HANDLE hLog, [in] USHORT cContainer, [in, optional] PULONGLONG pcbContainer, [in] PWSTR *rgwszContainerPath, [in, out, optional]
+	// HANDLE hLog, [in] USHORT cContainer, [in, optional] PULONGLONG pcbContainer, [in] StrPtrUni *rgwszContainerPath, [in, out, optional]
 	// LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.AddLogContainerSet")]
@@ -988,7 +988,7 @@ public static partial class ClfsW32
 	/// identifies the possible error codes:
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-dumplogrecords CLFSUSER_API BOOL DumpLogRecords( [in] PWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-dumplogrecords CLFSUSER_API BOOL DumpLogRecords( [in] StrPtrUni
 	// pwszLogFileName, [in] CLFS_RECORD_TYPE fRecordType, [in, optional] PCLFS_LSN plsnStart, [in, optional] PCLFS_LSN plsnEnd, [in,
 	// optional] PFILE pstrmOut, [in, optional] CLFS_PRINT_RECORD_ROUTINE pfnPrintRecord, [in, optional] CLFS_BLOCK_ALLOCATION pfnAllocBlock,
 	// [in, optional] CLFS_BLOCK_DEALLOCATION pfnFreeBlock, [in, optional] PVOID pvBlockAllocContext, [in] ULONG cbBlock, [in] ULONG
@@ -1106,7 +1106,7 @@ public static partial class ClfsW32
 	/// identifies the possible error codes:
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-dumplogrecords CLFSUSER_API BOOL DumpLogRecords( [in] PWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-dumplogrecords CLFSUSER_API BOOL DumpLogRecords( [in] StrPtrUni
 	// pwszLogFileName, [in] CLFS_RECORD_TYPE fRecordType, [in, optional] PCLFS_LSN plsnStart, [in, optional] PCLFS_LSN plsnEnd, [in,
 	// optional] PFILE pstrmOut, [in, optional] CLFS_PRINT_RECORD_ROUTINE pfnPrintRecord, [in, optional] CLFS_BLOCK_ALLOCATION pfnAllocBlock,
 	// [in, optional] CLFS_BLOCK_DEALLOCATION pfnFreeBlock, [in, optional] PVOID pvBlockAllocContext, [in] ULONG cbBlock, [in] ULONG
@@ -1597,7 +1597,7 @@ public static partial class ClfsW32
 	/// <para>You can only perform one archive operation at a time per handle that CreateLogFile returns.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-preparelogarchive CLFSUSER_API BOOL PrepareLogArchive( [in]
-	// HANDLE hLog, [in, out] PWSTR pszBaseLogFileName, [in] ULONG cLen, [in, optional] const PCLFS_LSN plsnLow, [in, optional] const
+	// HANDLE hLog, [in, out] StrPtrUni pszBaseLogFileName, [in] ULONG cLen, [in, optional] const PCLFS_LSN plsnLow, [in, optional] const
 	// PCLFS_LSN plsnHigh, [out, optional] PULONG pcActualLength, [out] PULONGLONG poffBaseLogFileData, [out] PULONGLONG
 	// pcbBaseLogFileLength, [out] PCLFS_LSN plsnBase, [out] PCLFS_LSN plsnLast, [out] PCLFS_LSN plsnCurrentArchiveTail, [out]
 	// PCLFS_LOG_ARCHIVE_CONTEXT ppvArchiveContext );
@@ -1688,7 +1688,7 @@ public static partial class ClfsW32
 	/// <para>You can only perform one archive operation at a time per handle that CreateLogFile returns.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-preparelogarchive CLFSUSER_API BOOL PrepareLogArchive( [in]
-	// HANDLE hLog, [in, out] PWSTR pszBaseLogFileName, [in] ULONG cLen, [in, optional] const PCLFS_LSN plsnLow, [in, optional] const
+	// HANDLE hLog, [in, out] StrPtrUni pszBaseLogFileName, [in] ULONG cLen, [in, optional] const PCLFS_LSN plsnLow, [in, optional] const
 	// PCLFS_LSN plsnHigh, [out, optional] PULONG pcActualLength, [out] PULONGLONG poffBaseLogFileData, [out] PULONGLONG
 	// pcbBaseLogFileLength, [out] PCLFS_LSN plsnBase, [out] PCLFS_LSN plsnLast, [out] PCLFS_LSN plsnCurrentArchiveTail, [out]
 	// PCLFS_LOG_ARCHIVE_CONTEXT ppvArchiveContext );
@@ -2449,7 +2449,7 @@ public static partial class ClfsW32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-removelogcontainer CLFSUSER_API BOOL RemoveLogContainer( [in]
-	// HANDLE hLog, [in] PWSTR pwszContainerPath, [in] BOOL fForce, [in, out, optional] LPVOID pReserved );
+	// HANDLE hLog, [in] StrPtrUni pwszContainerPath, [in] BOOL fForce, [in, out, optional] LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.RemoveLogContainer")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -2505,7 +2505,7 @@ public static partial class ClfsW32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/clfsw32/nf-clfsw32-removelogcontainerset CLFSUSER_API BOOL RemoveLogContainerSet(
-	// [in] HANDLE hLog, [in] USHORT cContainer, [in] PWSTR *rgwszContainerPath, [in] BOOL fForce, [in, out, optional] LPVOID pReserved );
+	// [in] HANDLE hLog, [in] USHORT cContainer, [in] StrPtrUni *rgwszContainerPath, [in] BOOL fForce, [in, out, optional] LPVOID pReserved );
 	[DllImport(Lib_Clfsw32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("clfsw32.h", MSDNShortId = "NF:clfsw32.RemoveLogContainerSet")]
 	[return: MarshalAs(UnmanagedType.Bool)]

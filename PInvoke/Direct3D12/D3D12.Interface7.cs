@@ -1307,13 +1307,13 @@ public static partial class D3D12
 
 		/// <summary>Returns the amount of memory required to serialize the current contents of the database.</summary>
 		/// <returns>
-		/// <para>Type: <b>SIZE_T</b></para>
-		/// <para>This method returns a SIZE_T object, containing the size required in bytes.</para>
+		/// <para>Type: <b>SizeT</b></para>
+		/// <para>This method returns a SizeT object, containing the size required in bytes.</para>
 		/// </returns>
 		/// <remarks>Refer to the remarks and examples for <c>CreatePipelineLibrary</c>.</remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12pipelinelibrary-getserializedsize SIZE_T GetSerializedSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12pipelinelibrary-getserializedsize SizeT GetSerializedSize();
 		[PreserveSig]
-		SIZE_T GetSerializedSize();
+		SizeT GetSerializedSize();
 
 		/// <summary>Writes the contents of the library to the provided memory, to be provided back to the runtime at a later time.</summary>
 		/// <param name="pData">
@@ -1325,7 +1325,7 @@ public static partial class D3D12
 		/// </para>
 		/// </param>
 		/// <param name="DataSizeInBytes">
-		/// <para>Type: <b>SIZE_T</b></para>
+		/// <para>Type: <b>SizeT</b></para>
 		/// <para>The size provided must be at least the size returned from <c>GetSerializedSize</c>.</para>
 		/// </param>
 		/// <returns>
@@ -1334,9 +1334,9 @@ public static partial class D3D12
 		/// </returns>
 		/// <remarks>Refer to the remarks and examples for <c>CreatePipelineLibrary</c>.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12pipelinelibrary-serialize HRESULT Serialize( [out] void
-		// *pData, SIZE_T DataSizeInBytes );
+		// *pData, SizeT DataSizeInBytes );
 		[PreserveSig]
-		HRESULT Serialize([Out] IntPtr pData, SIZE_T DataSizeInBytes);
+		HRESULT Serialize([Out] IntPtr pData, SizeT DataSizeInBytes);
 	}
 
 	/// <summary>
@@ -1606,13 +1606,13 @@ public static partial class D3D12
 
 		/// <summary>Returns the amount of memory required to serialize the current contents of the database.</summary>
 		/// <returns>
-		/// <para>Type: <b>SIZE_T</b></para>
-		/// <para>This method returns a SIZE_T object, containing the size required in bytes.</para>
+		/// <para>Type: <b>SizeT</b></para>
+		/// <para>This method returns a SizeT object, containing the size required in bytes.</para>
 		/// </returns>
 		/// <remarks>Refer to the remarks and examples for <c>CreatePipelineLibrary</c>.</remarks>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12pipelinelibrary-getserializedsize SIZE_T GetSerializedSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12pipelinelibrary-getserializedsize SizeT GetSerializedSize();
 		[PreserveSig]
-		new SIZE_T GetSerializedSize();
+		new SizeT GetSerializedSize();
 
 		/// <summary>Writes the contents of the library to the provided memory, to be provided back to the runtime at a later time.</summary>
 		/// <param name="pData">
@@ -1624,7 +1624,7 @@ public static partial class D3D12
 		/// </para>
 		/// </param>
 		/// <param name="DataSizeInBytes">
-		/// <para>Type: <b>SIZE_T</b></para>
+		/// <para>Type: <b>SizeT</b></para>
 		/// <para>The size provided must be at least the size returned from <c>GetSerializedSize</c>.</para>
 		/// </param>
 		/// <returns>
@@ -1633,9 +1633,9 @@ public static partial class D3D12
 		/// </returns>
 		/// <remarks>Refer to the remarks and examples for <c>CreatePipelineLibrary</c>.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12pipelinelibrary-serialize HRESULT Serialize( [out] void
-		// *pData, SIZE_T DataSizeInBytes );
+		// *pData, SizeT DataSizeInBytes );
 		[PreserveSig]
-		new HRESULT Serialize([Out] IntPtr pData, SIZE_T DataSizeInBytes);
+		new HRESULT Serialize([Out] IntPtr pData, SizeT DataSizeInBytes);
 
 		/// <summary>
 		/// Retrieves the requested PSO from the library. The pipeline stream description is matched against the library database, and

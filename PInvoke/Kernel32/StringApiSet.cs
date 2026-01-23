@@ -534,7 +534,7 @@ public static partial class Kernel32
 	/// which can return one of the following error codes:
 	/// </para>
 	/// </returns>
-	// int FoldString( _In_ DWORD dwMapFlags, _In_ LPCTSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ PTSTR lpDestStr, _In_ int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318063(v=vs.85).aspx
+	// int FoldString( _In_ DWORD dwMapFlags, _In_ LPCTSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ StrPtrAuto lpDestStr, _In_ int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318063(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318063")]
 	public static extern int FoldString(STRING_MAPPING dwMapFlags, string lpSrcStr, int cchSrc,
@@ -594,7 +594,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </param>
 	/// <returns>The translated string if successful.</returns>
-	// int FoldString( _In_ DWORD dwMapFlags, _In_ LPCTSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ PTSTR lpDestStr, _In_ int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318063(v=vs.85).aspx
+	// int FoldString( _In_ DWORD dwMapFlags, _In_ LPCTSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ StrPtrAuto lpDestStr, _In_ int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318063(v=vs.85).aspx
 	[PInvokeData("Winnls.h", MSDNShortId = "dd318063")]
 	public static string Fold(this string lpSrcStr, STRING_MAPPING dwMapFlags)
 	{
@@ -1020,11 +1020,11 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	// int MultiByteToWideChar( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCSTR lpMultiByteStr, _In_ int cbMultiByte, _Out_opt_
-	// PWSTR lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
+	// StrPtrUni lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
 	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [In, SizeDef(nameof(cbMultiByte))] IntPtr lpMultiByteStr,
-		[Optional, DefaultParameterValue(-1)] int cbMultiByte, [Out, SizeDef(nameof(cchWideChar))] PWSTR lpWideCharStr, int cchWideChar);
+		[Optional, DefaultParameterValue(-1)] int cbMultiByte, [Out, SizeDef(nameof(cchWideChar))] StrPtrUni lpWideCharStr, int cchWideChar);
 
 	/// <summary>
 	/// Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
@@ -1152,7 +1152,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	// int MultiByteToWideChar( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCSTR lpMultiByteStr, _In_ int cbMultiByte, _Out_opt_
-	// PWSTR lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
+	// StrPtrUni lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
 	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [In] byte[] lpMultiByteStr, int cbMultiByte,
@@ -1284,7 +1284,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	// int MultiByteToWideChar( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCSTR lpMultiByteStr, _In_ int cbMultiByte, _Out_opt_
-	// PWSTR lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
+	// StrPtrUni lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
 	public static extern int MultiByteToWideChar(uint CodePage, MBCONV dwFlags, [In] byte[] lpMultiByteStr, [Optional, DefaultParameterValue(-1)] int cbMultiByte,
@@ -1411,7 +1411,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	// int MultiByteToWideChar( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCSTR lpMultiByteStr, _In_ int cbMultiByte, _Out_opt_
-	// PWSTR lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
+	// StrPtrUni lpWideCharStr, _In_ int cchWideChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072(v=vs.85).aspx
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd319072")]
 	public static byte[] MultiByteToWideChar(uint CodePage, [In] byte[] lpMultiByteStr, int cbMultiByte = -1, MBCONV dwFlags = MBCONV.MB_PRECOMPOSED)
 	{
@@ -1574,12 +1574,12 @@ public static partial class Kernel32
 	/// which can return one of the following error codes:
 	/// </para>
 	/// </returns>
-	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ PSTR
+	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ StrPtrAnsi
 	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
-	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In, SizeDef(nameof(cchWideChar))] PWSTR lpWideCharStr,
-		[Optional, DefaultParameterValue(-1)] int cchWideChar, [Out, Optional, SizeDef(nameof(cbMultiByte), SizingMethod.QueryResultInReturn | SizingMethod.Query | SizingMethod.InclNullTerm | SizingMethod.Bytes)] PSTR lpMultiByteStr,
+	public static extern int WideCharToMultiByte(uint CodePage, WCCONV dwFlags, [In, SizeDef(nameof(cchWideChar))] StrPtrUni lpWideCharStr,
+		[Optional, DefaultParameterValue(-1)] int cchWideChar, [Out, Optional, SizeDef(nameof(cbMultiByte), SizingMethod.QueryResultInReturn | SizingMethod.Query | SizingMethod.InclNullTerm | SizingMethod.Bytes)] StrPtrAnsi lpMultiByteStr,
 		[Optional] int cbMultiByte, [In, Optional] IntPtr lpDefaultChar, [MarshalAs(UnmanagedType.Bool)] out bool lpUsedDefaultChar);
 
 	/// <summary>
@@ -1735,7 +1735,7 @@ public static partial class Kernel32
 	/// which can return one of the following error codes:
 	/// </para>
 	/// </returns>
-	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ PSTR
+	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ StrPtrAnsi
 	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
@@ -1896,7 +1896,7 @@ public static partial class Kernel32
 	/// which can return one of the following error codes:
 	/// </para>
 	/// </returns>
-	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ PSTR
+	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ StrPtrAnsi
 	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]
@@ -2056,7 +2056,7 @@ public static partial class Kernel32
 	/// which can return one of the following error codes:
 	/// </para>
 	/// </returns>
-	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ PSTR
+	// int WideCharToMultiByte( _In_ UINT CodePage, _In_ DWORD dwFlags, _In_ LPCWSTR lpWideCharStr, _In_ int cchWideChar, _Out_opt_ StrPtrAnsi
 	// lpMultiByteStr, _In_ int cbMultiByte, _In_opt_ LPCSTR lpDefaultChar, _Out_opt_ LPBOOL lpUsedDefaultChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Stringapiset.h", MSDNShortId = "dd374130")]

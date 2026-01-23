@@ -4111,7 +4111,7 @@ public static partial class SetupAPI
 
 		/// <summary>Initializes a new instance of the <see cref="SafeSP_DEVICE_INTERFACE_DETAIL_DATA"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
-		public SafeSP_DEVICE_INTERFACE_DETAIL_DATA(SIZE_T size) : base(size)
+		public SafeSP_DEVICE_INTERFACE_DETAIL_DATA(SizeT size) : base(size)
 		{
 			Marshal.StructureToPtr(SP_DEVICE_INTERFACE_DETAIL_DATA.Default, handle, false);
 		}

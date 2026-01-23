@@ -84,7 +84,7 @@ public static partial class User32
 	/// </para>
 	/// </param>
 	/// <param name="lpCmdLine">
-	/// <para>Type: <c>PSTR</c></para>
+	/// <para>Type: <c>StrPtrAnsi</c></para>
 	/// <para>
 	/// The command line for the application, excluding the program name. To retrieve the entire command line, use the
 	/// <c>GetCommandLine</c> function.
@@ -161,7 +161,7 @@ public static partial class User32
 	/// that message's wParam parameter. If the function terminates before entering the message loop, it should return zero.
 	/// </para>
 	/// </returns>
-	// int CALLBACK WinMain( _In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ PSTR lpCmdLine, _In_ int nCmdShow); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx
+	// int CALLBACK WinMain( _In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ StrPtrAnsi lpCmdLine, _In_ int nCmdShow); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms633559")]
 	public delegate int WinMain([In] HINSTANCE hInstance, [In] HINSTANCE hPrevInstance, [In, MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
@@ -3890,7 +3890,7 @@ public static partial class User32
 	/// </para>
 	/// </param>
 	/// <param name="pszItemText">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The name of the item. If this parameter is <c>NULL</c>, the name of the item is not copied.</para>
 	/// </param>
 	/// <param name="cchItemText">
@@ -3910,7 +3910,7 @@ public static partial class User32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getalttabinfoa BOOL GetAltTabInfoA( HWND hwnd, int iItem,
-	// PALTTABINFO pati, PSTR pszItemText, UINT cchItemText );
+	// PALTTABINFO pati, StrPtrAnsi pszItemText, UINT cchItemText );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getalttabinfo")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -4311,7 +4311,7 @@ public static partial class User32
 	/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
 	/// </param>
 	/// <param name="lpClassName">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The class name string.</para>
 	/// </param>
 	/// <param name="nMaxCount">
@@ -4325,7 +4325,7 @@ public static partial class User32
 	/// </para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassname int GetClassName( HWND hWnd, PTSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassname int GetClassName( HWND hWnd, StrPtrAuto
 	// lpClassName, int nMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
@@ -5116,7 +5116,7 @@ public static partial class User32
 	/// <para>A handle to the window whose module file name is to be retrieved.</para>
 	/// </param>
 	/// <param name="pszFileName">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The path and file name.</para>
 	/// </param>
 	/// <param name="cchFileNameMax">
@@ -5128,7 +5128,7 @@ public static partial class User32
 	/// <para>The return value is the total number of characters copied into the buffer.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowmodulefilenamea UINT GetWindowModuleFileNameA(
-	// HWND hwnd, PSTR pszFileName, UINT cchFileNameMax );
+	// HWND hwnd, StrPtrAnsi pszFileName, UINT cchFileNameMax );
 	[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowmodulefilename")]
 	public static extern uint GetWindowModuleFileName([In, AddAsMember] HWND hwnd, [Out, SizeDef(nameof(cchFileNameMax), SizingMethod.QueryResultInReturn | SizingMethod.InclNullTerm)] StringBuilder? pszFileName, uint cchFileNameMax);
@@ -5199,7 +5199,7 @@ public static partial class User32
 	/// <para>A handle to the window or control containing the text.</para>
 	/// </param>
 	/// <param name="lpString">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The buffer that will receive the text. If the string is as long or longer than the buffer, the string is truncated and terminated
 	/// with a null character.
@@ -5233,7 +5233,7 @@ public static partial class User32
 	/// <para>Examples</para>
 	/// <para>For an example, see Sending a Message.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowtexta int GetWindowTextA( HWND hWnd, PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowtexta int GetWindowTextA( HWND hWnd, StrPtrAnsi
 	// lpString, int nMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getwindowtext")]
@@ -5364,7 +5364,7 @@ public static partial class User32
 	/// <para>A handle to the window or control containing the text.</para>
 	/// </param>
 	/// <param name="pString">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>The buffer that is to receive the text.</para>
 	/// <para>If the string is as long or longer than the buffer, the string is truncated and terminated with a null character.</para>
 	/// </param>
@@ -5389,7 +5389,7 @@ public static partial class User32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-internalgetwindowtext int InternalGetWindowText( HWND
-	// hWnd, PWSTR pString, int cchMaxCount );
+	// hWnd, StrPtrUni pString, int cchMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "internalgetwindowtext")]
 	public static extern int InternalGetWindowText([In, AddAsMember] HWND hWnd,
@@ -6050,7 +6050,7 @@ public static partial class User32
 	/// <para>A handle to the window whose type will be retrieved.</para>
 	/// </param>
 	/// <param name="ptszClassName">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a string that receives the window type.</para>
 	/// </param>
 	/// <param name="cchClassNameMax">
@@ -6063,7 +6063,7 @@ public static partial class User32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-realgetwindowclassw UINT RealGetWindowClassW( HWND hwnd,
-	// PWSTR ptszClassName, UINT cchClassNameMax );
+	// StrPtrUni ptszClassName, UINT cchClassNameMax );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "realgetwindowclass")]
 	public static extern uint RealGetWindowClass([In, AddAsMember] HWND hwnd,
@@ -9016,13 +9016,13 @@ public static partial class User32
 		/// <para>Type: <c>LPCTSTR</c></para>
 		/// <para>The name of the new window.</para>
 		/// </summary>
-		public PTSTR lpszName;
+		public StrPtrAuto lpszName;
 
 		/// <summary>
 		/// <para>Type: <c>LPCTSTR</c></para>
 		/// <para>A pointer to a null-terminated string or an atom that specifies the class name of the new window.</para>
 		/// </summary>
-		public PTSTR lpszClass;
+		public StrPtrAuto lpszClass;
 
 		/// <summary>
 		/// <para>Type: <c>DWORD</c></para>
@@ -10089,9 +10089,9 @@ public static partial class User32
 
 		public HBRUSH hbrBackground;
 
-		public PTSTR lpszMenuName;
+		public StrPtrAuto lpszMenuName;
 
-		public PTSTR lpszClassName;
+		public StrPtrAuto lpszClassName;
 
 		public HICON hIconSm;
 

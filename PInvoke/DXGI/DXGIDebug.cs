@@ -277,7 +277,7 @@ public static partial class DXGI
 		/// typical example:
 		/// </para>
 		/// <para>
-		/// <c>// Get the size of the message. SIZE_T messageLength = 0; HRESULT hr = pInfoQueue-&gt;GetMessage(DXGI_DEBUG_ALL, 0, NULL,
+		/// <c>// Get the size of the message. SizeT messageLength = 0; HRESULT hr = pInfoQueue-&gt;GetMessage(DXGI_DEBUG_ALL, 0, NULL,
 		/// &amp;messageLength); if(hr == S_FALSE){ // Allocate space and get the message. DXGI_INFO_QUEUE_MESSAGE * pMessage =
 		/// (DXGI_INFO_QUEUE_MESSAGE*)malloc(messageLength); hr = pInfoQueue-&gt;GetMessage(DXGI_DEBUG_ALL, 0, pMessage,
 		/// &amp;messageLength); // Do something with the message and free it if(hr == S_OK){ // ... // ... // ... free(pMessage); } }</c>
@@ -286,10 +286,10 @@ public static partial class DXGI
 		/// <para></para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgidebug/nf-dxgidebug-idxgiinfoqueue-getmessage HRESULT GetMessage( [in]
-		// DXGI_DEBUG_ID Producer, [in] UINT64 MessageIndex, [out, optional] DXGI_INFO_QUEUE_MESSAGE *pMessage, [in, out] SIZE_T
+		// DXGI_DEBUG_ID Producer, [in] UINT64 MessageIndex, [out, optional] DXGI_INFO_QUEUE_MESSAGE *pMessage, [in, out] SizeT
 		// *pMessageByteLength );
 		[PreserveSig]
-		HRESULT GetMessage(DXGI_DEBUG_ID Producer, ulong MessageIndex, [Out, Optional] ManagedStructPointer<DXGI_INFO_QUEUE_MESSAGE> pMessage, ref SIZE_T pMessageByteLength);
+		HRESULT GetMessage(DXGI_DEBUG_ID Producer, ulong MessageIndex, [Out, Optional] ManagedStructPointer<DXGI_INFO_QUEUE_MESSAGE> pMessage, ref SizeT pMessageByteLength);
 
 		/// <summary>Gets the number of messages that can pass through a retrieval filter.</summary>
 		/// <param name="Producer">A <c>DXGI_DEBUG_ID</c> value that identifies the entity that gets the number.</param>
@@ -394,10 +394,10 @@ public static partial class DXGI
 		/// <para></para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgidebug/nf-dxgidebug-idxgiinfoqueue-getstoragefilter HRESULT
-		// GetStorageFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T
+		// GetStorageFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT
 		// *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetStorageFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SIZE_T pFilterByteLength);
+		HRESULT GetStorageFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
 
 		/// <summary>Removes a storage filter from the top of the storage-filter stack.</summary>
 		/// <param name="Producer">A <c>DXGI_DEBUG_ID</c> value that identifies the entity that removes the filter.</param>
@@ -514,10 +514,10 @@ public static partial class DXGI
 		/// <para></para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxgidebug/nf-dxgidebug-idxgiinfoqueue-getretrievalfilter HRESULT
-		// GetRetrievalFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SIZE_T
+		// GetRetrievalFilter( [in] DXGI_DEBUG_ID Producer, [out, optional] DXGI_INFO_QUEUE_FILTER *pFilter, [in, out] SizeT
 		// *pFilterByteLength );
 		[PreserveSig]
-		HRESULT GetRetrievalFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SIZE_T pFilterByteLength);
+		HRESULT GetRetrievalFilter(DXGI_DEBUG_ID Producer, [Out, Optional] StructPointer<DXGI_INFO_QUEUE_FILTER> pFilter, ref SizeT pFilterByteLength);
 
 		/// <summary>Removes a retrieval filter from the top of the retrieval-filter stack.</summary>
 		/// <param name="Producer">A <c>DXGI_DEBUG_ID</c> value that identifies the entity that removes the filter.</param>
@@ -851,7 +851,7 @@ public static partial class DXGI
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxgidebug/ns-dxgidebug-dxgi_info_queue_message typedef struct
 	// DXGI_INFO_QUEUE_MESSAGE { DXGI_DEBUG_ID Producer; DXGI_INFO_QUEUE_MESSAGE_CATEGORY Category; DXGI_INFO_QUEUE_MESSAGE_SEVERITY
-	// Severity; DXGI_INFO_QUEUE_MESSAGE_ID ID; const char *pDescription; SIZE_T DescriptionByteLength; } DXGI_INFO_QUEUE_MESSAGE;
+	// Severity; DXGI_INFO_QUEUE_MESSAGE_ID ID; const char *pDescription; SizeT DescriptionByteLength; } DXGI_INFO_QUEUE_MESSAGE;
 	[PInvokeData("dxgidebug.h", MSDNShortId = "NS:dxgidebug.DXGI_INFO_QUEUE_MESSAGE"), StructLayout(LayoutKind.Sequential)]
 	public struct DXGI_INFO_QUEUE_MESSAGE
 	{
@@ -872,6 +872,6 @@ public static partial class DXGI
 		public string? pDescription;
 
 		/// <summary>The length of the message string at <c>pDescription</c>, in bytes.</summary>
-		public SIZE_T DescriptionByteLength;
+		public SizeT DescriptionByteLength;
 	}
 }

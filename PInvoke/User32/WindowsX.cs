@@ -32,7 +32,7 @@ public static partial class User32
 		=> fn(hwnd, (int)WindowMessage.WM_ACTIVATEAPP, (WPARAM)(BOOL)fActivate, (LPARAM)dwThreadId);
 
 	public static void FORWARD_WM_ASKCBFORMATNAME(HWND hwnd, int cchMax, string rgchName, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, (int)WindowMessage.WM_ASKCBFORMATNAME, (WPARAM)cchMax, (LPARAM)new SafePSTR(rgchName));
+		=> fn(hwnd, (int)WindowMessage.WM_ASKCBFORMATNAME, (WPARAM)cchMax, (LPARAM)new SafeLPSTR(rgchName));
 
 	public static void FORWARD_WM_CANCELMODE(HWND hwnd, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_CANCELMODE, IntPtr.Zero, IntPtr.Zero);
@@ -125,7 +125,7 @@ public static partial class User32
 		=> (BOOL)fn(hwnd, (int)WindowMessage.WM_DEVICECHANGE, (WPARAM)uEvent, (LPARAM)dwEventData);
 
 	public static void FORWARD_WM_DEVMODECHANGE(HWND hwnd, string lpszDeviceName, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, (int)WindowMessage.WM_DEVMODECHANGE, IntPtr.Zero, new SafePSTR(lpszDeviceName));
+		=> fn(hwnd, (int)WindowMessage.WM_DEVMODECHANGE, IntPtr.Zero, new SafeLPSTR(lpszDeviceName));
 
 	public static void FORWARD_WM_DISPLAYCHANGE(HWND hwnd, uint bitsPerPixel, uint cxScreen, uint cyScreen, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_DISPLAYCHANGE, (WPARAM)bitsPerPixel, MAKELPARAM(cxScreen, cyScreen));
@@ -164,7 +164,7 @@ public static partial class User32
 		=> fn(hwnd, (int)WindowMessage.WM_GETMINMAXINFO, IntPtr.Zero, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(lpMinMaxInfo));
 
 	public static int FORWARD_WM_GETTEXT(HWND hwnd, int cchTextMax, string lpszText, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> (int)fn(hwnd, (int)WindowMessage.WM_GETTEXT, (WPARAM)cchTextMax, new SafePSTR(lpszText));
+		=> (int)fn(hwnd, (int)WindowMessage.WM_GETTEXT, (WPARAM)cchTextMax, new SafeLPSTR(lpszText));
 
 	public static int FORWARD_WM_GETTEXTLENGTH(HWND hwnd, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> (int)fn(hwnd, (int)WindowMessage.WM_GETTEXTLENGTH, IntPtr.Zero, IntPtr.Zero);
@@ -377,7 +377,7 @@ public static partial class User32
 		=> fn(hwnd, (int)WindowMessage.WM_SETREDRAW, (WPARAM)(BOOL)fRedraw, IntPtr.Zero);
 
 	public static void FORWARD_WM_SETTEXT(HWND hwnd, string lpszText, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, (int)WindowMessage.WM_SETTEXT, IntPtr.Zero, new SafePSTR(lpszText));
+		=> fn(hwnd, (int)WindowMessage.WM_SETTEXT, IntPtr.Zero, new SafeLPSTR(lpszText));
 
 	public static void FORWARD_WM_SHOWWINDOW(HWND hwnd, bool fShow, uint status, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
 		=> fn(hwnd, (int)WindowMessage.WM_SHOWWINDOW, (WPARAM)(BOOL)fShow, (LPARAM)status);
@@ -449,7 +449,7 @@ public static partial class User32
 		=> (BOOL)fn(hwnd, (int)WindowMessage.WM_WINDOWPOSCHANGING, IntPtr.Zero, (LPARAM)SafeCoTaskMemHandle.CreateFromStructure(lpwpos));
 
 	public static void FORWARD_WM_WININICHANGE(HWND hwnd, string lpszSectionName, Func<HWND, uint, WPARAM, LPARAM, LRESULT> fn)
-		=> fn(hwnd, (int)WindowMessage.WM_WININICHANGE, IntPtr.Zero, new SafePSTR(lpszSectionName));
+		=> fn(hwnd, (int)WindowMessage.WM_WININICHANGE, IntPtr.Zero, new SafeLPSTR(lpszSectionName));
 
 	public static (WPARAM wp, LPARAM lp) GET_EM_LINESCROLL_MPS(WPARAM vert, LPARAM horz) => (horz, vert);
 

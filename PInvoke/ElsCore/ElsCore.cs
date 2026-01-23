@@ -436,8 +436,8 @@ public static partial class ElsCore
 	/// <para></para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/elscore/ns-elscore-mapping_data_range typedef struct _MAPPING_DATA_RANGE { DWORD
-	// dwStartIndex; DWORD dwEndIndex; PWSTR pszDescription; DWORD dwDescriptionLength; LPVOID pData; DWORD dwDataSize; PWSTR
-	// pszContentType; PWSTR *prgActionIds; DWORD dwActionsCount; PWSTR *prgActionDisplayNames; } MAPPING_DATA_RANGE, *PMAPPING_DATA_RANGE;
+	// dwStartIndex; DWORD dwEndIndex; StrPtrUni pszDescription; DWORD dwDescriptionLength; LPVOID pData; DWORD dwDataSize; StrPtrUni
+	// pszContentType; StrPtrUni *prgActionIds; DWORD dwActionsCount; StrPtrUni *prgActionDisplayNames; } MAPPING_DATA_RANGE, *PMAPPING_DATA_RANGE;
 	[PInvokeData("elscore.h", MSDNShortId = "NS:elscore._MAPPING_DATA_RANGE")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct MAPPING_DATA_RANGE
@@ -491,7 +491,7 @@ public static partial class ElsCore
 		/// <para>Available action Ids for this subrange. They are usable for calling MappingDoAction.</para>
 		/// <para><c>Note</c>  In Windows 7, the ELS services do not expose any actions.</para>
 		/// </summary>
-		public ArrayPointer<PWSTR> prgActionIds;
+		public ArrayPointer<StrPtrUni> prgActionIds;
 
 		/// <summary>
 		/// <para>Available action Ids for this subrange. They are usable for calling MappingDoAction.</para>
@@ -509,7 +509,7 @@ public static partial class ElsCore
 		/// <para>Action display names for this subrange. These strings can be localized.</para>
 		/// <para><c>Note</c>  In Windows 7, the ELS services do not expose any actions.</para>
 		/// </summary>
-		public ArrayPointer<PWSTR> prgActionDisplayNames;
+		public ArrayPointer<StrPtrUni> prgActionDisplayNames;
 
 		/// <summary>
 		/// <para>Action display names for this subrange. These strings can be localized.</para>
@@ -524,15 +524,15 @@ public static partial class ElsCore
 	/// of the members that it needs for search criteria.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/elscore/ns-elscore-mapping_enum_options typedef struct _MAPPING_ENUM_OPTIONS {
-	// size_t Size; PWSTR pszCategory; PWSTR pszInputLanguage; PWSTR pszOutputLanguage; PWSTR pszInputScript; PWSTR pszOutputScript;
-	// PWSTR pszInputContentType; PWSTR pszOutputContentType; GUID *pGuid; unsigned OnlineService : 2; unsigned ServiceType : 2; }
+	// size_t Size; StrPtrUni pszCategory; StrPtrUni pszInputLanguage; StrPtrUni pszOutputLanguage; StrPtrUni pszInputScript; StrPtrUni pszOutputScript;
+	// StrPtrUni pszInputContentType; StrPtrUni pszOutputContentType; GUID *pGuid; unsigned OnlineService : 2; unsigned ServiceType : 2; }
 	// MAPPING_ENUM_OPTIONS, *PMAPPING_ENUM_OPTIONS;
 	[PInvokeData("elscore.h", MSDNShortId = "NS:elscore._MAPPING_ENUM_OPTIONS")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct MAPPING_ENUM_OPTIONS
 	{
 		/// <summary>Size of the structure, used to validate the structure version. This value is required.</summary>
-		public SIZE_T Size;
+		public SizeT Size;
 
 		/// <summary>
 		/// Optional. Pointer to a service category, for example, "Language Detection". The application must set this member to <c>NULL</c>
@@ -622,8 +622,8 @@ public static partial class ElsCore
 	/// the data passed to the initial call to <c>MappingRecognizeText</c>.</note>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/elscore/ns-elscore-mapping_options typedef struct _MAPPING_OPTIONS { size_t Size;
-	// PWSTR pszInputLanguage; PWSTR pszOutputLanguage; PWSTR pszInputScript; PWSTR pszOutputScript; PWSTR pszInputContentType; PWSTR
-	// pszOutputContentType; PWSTR pszUILanguage; PFN_MAPPINGCALLBACKPROC pfnRecognizeCallback; LPVOID pRecognizeCallerData; DWORD
+	// StrPtrUni pszInputLanguage; StrPtrUni pszOutputLanguage; StrPtrUni pszInputScript; StrPtrUni pszOutputScript; StrPtrUni pszInputContentType; StrPtrUni
+	// pszOutputContentType; StrPtrUni pszUILanguage; PFN_MAPPINGCALLBACKPROC pfnRecognizeCallback; LPVOID pRecognizeCallerData; DWORD
 	// dwRecognizeCallerDataSize; PFN_MAPPINGCALLBACKPROC pfnActionCallback; LPVOID pActionCallerData; DWORD dwActionCallerDataSize; DWORD
 	// dwServiceFlag; unsigned GetActionDisplayName : 1; } MAPPING_OPTIONS, *PMAPPING_OPTIONS;
 	[PInvokeData("elscore.h", MSDNShortId = "NS:elscore._MAPPING_OPTIONS")]
@@ -631,7 +631,7 @@ public static partial class ElsCore
 	public struct MAPPING_OPTIONS
 	{
 		/// <summary>Size of the structure, used to validate the structure version. This value is required.</summary>
-		public SIZE_T Size = Marshal.SizeOf(typeof(MAPPING_OPTIONS));
+		public SizeT Size = Marshal.SizeOf(typeof(MAPPING_OPTIONS));
 
 		/// <summary>
 		/// Optional. Pointer to an input language string, following the IETF naming convention, that identifies the input language that the
@@ -773,7 +773,7 @@ public static partial class ElsCore
 	public struct MAPPING_PROPERTY_BAG
 	{
 		/// <summary>Size of the structure, used to verify the structure version. This value is required.</summary>
-		public SIZE_T Size = Marshal.SizeOf(typeof(MAPPING_PROPERTY_BAG));
+		public SizeT Size = Marshal.SizeOf(typeof(MAPPING_PROPERTY_BAG));
 
 		/// <summary>
 		/// Pointer to an array of MAPPING_DATA_RANGE structures containing all recognized text range results. This member is populated by MappingRecognizeText.
@@ -819,10 +819,10 @@ public static partial class ElsCore
 	/// <summary>Contains information about an ELS service.</summary>
 	/// <remarks>Structures of this type are created in an application call to MappingGetServices.</remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/elscore/ns-elscore-mapping_service_info typedef struct _MAPPING_SERVICE_INFO {
-	// size_t Size; PWSTR pszCopyright; WORD wMajorVersion; WORD wMinorVersion; WORD wBuildVersion; WORD wStepVersion; DWORD
-	// dwInputContentTypesCount; PWSTR *prgInputContentTypes; DWORD dwOutputContentTypesCount; PWSTR *prgOutputContentTypes; DWORD
-	// dwInputLanguagesCount; PWSTR *prgInputLanguages; DWORD dwOutputLanguagesCount; PWSTR *prgOutputLanguages; DWORD dwInputScriptsCount;
-	// PWSTR *prgInputScripts; DWORD dwOutputScriptsCount; PWSTR *prgOutputScripts; GUID guid; PWSTR pszCategory; PWSTR pszDescription;
+	// size_t Size; StrPtrUni pszCopyright; WORD wMajorVersion; WORD wMinorVersion; WORD wBuildVersion; WORD wStepVersion; DWORD
+	// dwInputContentTypesCount; StrPtrUni *prgInputContentTypes; DWORD dwOutputContentTypesCount; StrPtrUni *prgOutputContentTypes; DWORD
+	// dwInputLanguagesCount; StrPtrUni *prgInputLanguages; DWORD dwOutputLanguagesCount; StrPtrUni *prgOutputLanguages; DWORD dwInputScriptsCount;
+	// StrPtrUni *prgInputScripts; DWORD dwOutputScriptsCount; StrPtrUni *prgOutputScripts; GUID guid; StrPtrUni pszCategory; StrPtrUni pszDescription;
 	// DWORD dwPrivateDataSize; LPVOID pPrivateData; LPVOID pContext; unsigned IsOneToOneLanguageMapping : 1; unsigned HasSubservices : 1;
 	// unsigned OnlineOnly : 1; unsigned ServiceType : 2; } MAPPING_SERVICE_INFO, *PMAPPING_SERVICE_INFO;
 	[PInvokeData("elscore.h", MSDNShortId = "NS:elscore._MAPPING_SERVICE_INFO")]
@@ -830,7 +830,7 @@ public static partial class ElsCore
 	public struct MAPPING_SERVICE_INFO
 	{
 		/// <summary>Size of the structure, used to validate the structure version. This value is required.</summary>
-		public SIZE_T Size;
+		public SizeT Size;
 
 		/// <summary>Pointer to copyright information about the service.</summary>
 		[MarshalAs(UnmanagedType.LPWStr)]
@@ -861,7 +861,7 @@ public static partial class ElsCore
 		/// found at Text Media Types.
 		/// </para>
 		/// </summary>
-		public ArrayPointer<PWSTR> prgInputContentTypes;
+		public ArrayPointer<StrPtrUni> prgInputContentTypes;
 
 		/// <summary>
 		/// <para>
@@ -882,7 +882,7 @@ public static partial class ElsCore
 		/// Optional. Pointer to an array of output content types, following the format of the MIME content types, that identify the format
 		/// in which the service retrieves data.
 		/// </summary>
-		public ArrayPointer<PWSTR> prgOutputContentTypes;
+		public ArrayPointer<StrPtrUni> prgOutputContentTypes;
 
 		/// <summary>
 		/// Optional. The array of output content types, following the format of the MIME content types, that identify the format in which
@@ -899,7 +899,7 @@ public static partial class ElsCore
 		/// Pointer to an array of the input languages, following the IETF naming convention, that the service accepts. This member is set to
 		/// <c>NULL</c> if the service can work with any input language.
 		/// </summary>
-		public ArrayPointer<PWSTR> prgInputLanguages;
+		public ArrayPointer<StrPtrUni> prgInputLanguages;
 
 		/// <summary>
 		/// The array of the input languages, following the IETF naming convention, that the service accepts. This member is set to
@@ -917,7 +917,7 @@ public static partial class ElsCore
 		/// Pointer to an array of output languages, following the IETF naming convention, in which the service can retrieve results. This
 		/// member is set to <c>NULL</c> if the service can retrieve results in any language, or if the service ignores the output language.
 		/// </summary>
-		public ArrayPointer<PWSTR> prgOutputLanguages;
+		public ArrayPointer<StrPtrUni> prgOutputLanguages;
 
 		/// <summary>
 		/// The array of output languages, following the IETF naming convention, in which the service can retrieve results. This member is
@@ -932,7 +932,7 @@ public static partial class ElsCore
 		/// Pointer to an array of input scripts, with Unicode standard script names, that are supported by the service. This member is set
 		/// to <c>NULL</c> if the service can work with any scripts, or if the service ignores the input scripts.
 		/// </summary>
-		public ArrayPointer<PWSTR> prgInputScripts;
+		public ArrayPointer<StrPtrUni> prgInputScripts;
 
 		/// <summary>
 		/// The array of input scripts, with Unicode standard script names, that are supported by the service. This member is set to
@@ -950,7 +950,7 @@ public static partial class ElsCore
 		/// Pointer to an array of output scripts supported by the service. This member is set to <c>NULL</c> if the service can work with
 		/// any scripts, or the service ignores the output scripts.
 		/// </summary>
-		public ArrayPointer<PWSTR> prgOutputScripts;
+		public ArrayPointer<StrPtrUni> prgOutputScripts;
 
 		/// <summary>
 		/// The array of output scripts supported by the service. This member is set to <c>NULL</c> if the service can work with any scripts,
@@ -1048,7 +1048,7 @@ public static partial class ElsCore
 	/// <seealso cref="IReadOnlyList{T}"/>
 	public class SafeMAPPING_SERVICE_INFOArray : SafeHANDLE, IReadOnlyList<MAPPING_SERVICE_INFO>
 	{
-		private static readonly SIZE_T elemSize = Marshal.SizeOf(typeof(MAPPING_SERVICE_INFO));
+		private static readonly SizeT elemSize = Marshal.SizeOf(typeof(MAPPING_SERVICE_INFO));
 
 		internal SafeMAPPING_SERVICE_INFOArray(IntPtr ptr, int count) : base(IntPtr.Zero, true)
 		{

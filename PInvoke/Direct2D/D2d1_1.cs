@@ -4778,7 +4778,7 @@ public static partial class D2d1
 		/// <para>The index of the property for which the name is being returned.</para>
 		/// </param>
 		/// <param name="name">
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>When this method returns, contains the name being retrieved.</para>
 		/// </param>
 		/// <param name="nameCount">
@@ -4790,7 +4790,7 @@ public static partial class D2d1
 		/// <c>RESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER)</c>, name will still be filled and truncated.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-getpropertyname(uint32_pwstr_uint32) HRESULT
-		// GetPropertyName( UINT32 index, PWSTR name, UINT32 nameCount );
+		// GetPropertyName( UINT32 index, StrPtrUni name, UINT32 nameCount );
 		new void GetPropertyName(uint index, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder name, uint nameCount);
 
 		/// <summary>Gets the number of characters for the given property name. This is a template overload. See Remarks.</summary>
@@ -7102,7 +7102,7 @@ public static partial class D2d1
 		/// <para>The index of the property for which the name is being returned.</para>
 		/// </param>
 		/// <param name="name">
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>When this method returns, contains the name being retrieved.</para>
 		/// </param>
 		/// <param name="nameCount">
@@ -7114,7 +7114,7 @@ public static partial class D2d1
 		/// <c>RESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER)</c>, name will still be filled and truncated.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-getpropertyname(uint32_pwstr_uint32) HRESULT
-		// GetPropertyName( UINT32 index, PWSTR name, UINT32 nameCount );
+		// GetPropertyName( UINT32 index, StrPtrUni name, UINT32 nameCount );
 		void GetPropertyName(uint index, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder name, uint nameCount);
 
 		/// <summary>Gets the number of characters for the given property name. This is a template overload. See Remarks.</summary>
@@ -7785,7 +7785,7 @@ public static partial class D2d1
 	/// <returns>When this method returns, contains the name being retrieved.</returns>
 	/// <remarks>This method returns an empty string if index is invalid.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/d2d1_1/nf-d2d1_1-id2d1properties-getpropertyname(uint32_pwstr_uint32) HRESULT
-	// GetPropertyName( UINT32 index, PWSTR name, UINT32 nameCount );
+	// GetPropertyName( UINT32 index, StrPtrUni name, UINT32 nameCount );
 	public static string GetPropertyName(this ID2D1Properties props, uint index)
 	{
 		var len = props.GetPropertyNameLength(index);
@@ -7967,7 +7967,7 @@ public static partial class D2d1
 	// HRESULT SetValue( UINT32 index, D2D1_PROPERTY_TYPE type, const BYTE *data, UINT32 dataSize );
 	public static void SetValue(this ID2D1Properties props, uint index, string data)
 	{
-		using SafePWSTR mem = new(data);
+		using SafeLPWSTR mem = new(data);
 		props.SetValue(index, D2D1_PROPERTY_TYPE.D2D1_PROPERTY_TYPE_STRING, mem, (uint)mem.Size);
 	}
 
@@ -8002,7 +8002,7 @@ public static partial class D2d1
 	// HRESULT SetValueByName( PCWSTR name, D2D1_PROPERTY_TYPE type, const BYTE *data, UINT32 dataSize );
 	public static void SetValueByName(this ID2D1Properties props, string name, D2D1_PROPERTY_TYPE type, string data)
 	{
-		using SafePWSTR mem = new(data);
+		using SafeLPWSTR mem = new(data);
 		props.SetValueByName(name, type, mem, (uint)mem.Size);
 	}
 
@@ -8399,19 +8399,19 @@ public static partial class D2d1
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/hh404326(v=vs.85) typedef struct D2D1_RESOURCE_USAGE {
-	// SIZE_T workingTextureAreaMemory; SIZE_T cachingTextureAreaMemory; SIZE_T shaderCacheMemory; } D2D1_RESOURCE_USAGE, *PD2D1_RESOURCE_USAGE;
+	// SizeT workingTextureAreaMemory; SizeT cachingTextureAreaMemory; SizeT shaderCacheMemory; } D2D1_RESOURCE_USAGE, *PD2D1_RESOURCE_USAGE;
 	[PInvokeData("D2D1.h")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct D2D1_RESOURCE_USAGE
 	{
 		/// <summary><c>workingTextureAreaMemory</c> An approximate amount of memory usage by image pipeline processing textures.</summary>
-		public SIZE_T workingTextureAreaMemory;
+		public SizeT workingTextureAreaMemory;
 
 		/// <summary><c>cachingTextureAreaMemory</c> The approximate amount of memory used by the cached effect.</summary>
-		public SIZE_T cachingTextureAreaMemory;
+		public SizeT cachingTextureAreaMemory;
 
 		/// <summary><c>shaderCacheMemory</c> The approximate amount of memory used by cached shaders.</summary>
-		public SIZE_T shaderCacheMemory;
+		public SizeT shaderCacheMemory;
 	}
 
 	/// <summary>Describes the stroke that outlines a shape.</summary>

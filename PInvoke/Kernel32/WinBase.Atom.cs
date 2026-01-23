@@ -115,7 +115,7 @@ public static partial class Kernel32
 	/// <para>The local atom that identifies the character string to be retrieved.</para>
 	/// </param>
 	/// <param name="lpBuffer">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The character string.</para>
 	/// </param>
 	/// <param name="nSize">
@@ -130,7 +130,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// UINT WINAPI GetAtomName( _In_ ATOM nAtom, _Out_ PTSTR lpBuffer, _In_ int nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649059(v=vs.85).aspx
+	// UINT WINAPI GetAtomName( _In_ ATOM nAtom, _Out_ StrPtrAuto lpBuffer, _In_ int nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649059(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649059")]
 	public static extern uint GetAtomName(ATOM nAtom, [SizeDef(nameof(nSize))] StringBuilder? lpBuffer, [Range(0, 255)] int nSize);
@@ -301,7 +301,7 @@ public static partial class Kernel32
 	/// <para>The global atom associated with the character string to be retrieved.</para>
 	/// </param>
 	/// <param name="lpBuffer">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The buffer for the character string.</para>
 	/// </param>
 	/// <param name="nSize">
@@ -316,7 +316,7 @@ public static partial class Kernel32
 	/// </para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// UINT WINAPI GlobalGetAtomName( _In_ ATOM nAtom, _Out_ PTSTR lpBuffer, _In_ int nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649063(v=vs.85).aspx
+	// UINT WINAPI GlobalGetAtomName( _In_ ATOM nAtom, _Out_ StrPtrAuto lpBuffer, _In_ int nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649063(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Winbase.h", MSDNShortId = "ms649063")]
 	public static extern uint GlobalGetAtomName(ATOM nAtom, [SizeDef(nameof(nSize))] StringBuilder lpBuffer, [Range(0, 255)] int nSize);

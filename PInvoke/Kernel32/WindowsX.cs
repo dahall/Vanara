@@ -15,7 +15,7 @@ public static partial class Kernel32
 	/// <returns>A pointer to the to the first byte of the global memory lock.</returns>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static IntPtr GlobalAllocPtr(GMEM flags, SIZE_T cb) => GlobalLock(GlobalAlloc(flags, cb));
+	public static IntPtr GlobalAllocPtr(GMEM flags, SizeT cb) => GlobalLock(GlobalAlloc(flags, cb));
 
 	/// <summary>Frees the specified locked global memory block and invalidates its handle.</summary>
 	/// <param name="lp">A pointer to a locked global memory block to be freed.</param>
@@ -55,7 +55,7 @@ public static partial class Kernel32
 	/// <returns>A pointer to the to the first byte of the reallocated global memory lock.</returns>
 	[PInvokeData("windowsx.h")]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static IntPtr GlobalReAllocPtr(IntPtr lp, SIZE_T cbNew, GMEM flags)
+	public static IntPtr GlobalReAllocPtr(IntPtr lp, SizeT cbNew, GMEM flags)
 	{ GlobalUnlockPtr(lp); return GlobalLock(GlobalReAlloc(GlobalPtrHandle(lp), cbNew, flags)); }
 
 	/// <summary>Unlocks a pointer to a global memory block.</summary>

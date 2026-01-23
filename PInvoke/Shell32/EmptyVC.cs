@@ -99,14 +99,14 @@ public static partial class Shell32
 		/// <para>A pointer to a null-terminated Unicode string with the volume root—for example, "C:".</para>
 		/// </param>
 		/// <param name="ppwszDisplayName">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// A pointer to a null-terminated Unicode string with the name that will be displayed in the disk cleanup manager's list of
 		/// handlers. If no value is assigned, the registry value will be used.
 		/// </para>
 		/// </param>
 		/// <param name="ppwszDescription">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// A pointer to a null-terminated Unicode string that will be displayed when this object is selected from the disk cleanup manager's
 		/// list of available disk cleanup handlers. If no value is assigned, the registry value will be used.
@@ -196,7 +196,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/emptyvc/nf-emptyvc-iemptyvolumecache-initialize HRESULT Initialize( [in] HKEY
-		// hkRegKey, [in] LPCWSTR pcwszVolume, [out] PWSTR *ppwszDisplayName, [out] PWSTR *ppwszDescription, [in, out] DWORD *pdwFlags );
+		// hkRegKey, [in] LPCWSTR pcwszVolume, [out] StrPtrUni *ppwszDisplayName, [out] StrPtrUni *ppwszDescription, [in, out] DWORD *pdwFlags );
 		[PreserveSig]
 		HRESULT Initialize([In] HKEY hkRegKey, [MarshalAs(UnmanagedType.LPWStr)] string pcwszVolume, [MarshalAs(UnmanagedType.LPWStr)] out string ppwszDisplayName,
 			[MarshalAs(UnmanagedType.LPWStr)] out string ppwszDescription, out EVCF pdwFlags);
@@ -398,14 +398,14 @@ public static partial class Shell32
 		/// <para>A pointer to a null-terminated Unicode string with the volume root—for example, "C:".</para>
 		/// </param>
 		/// <param name="ppwszDisplayName">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// A pointer to a null-terminated Unicode string with the name that will be displayed in the disk cleanup manager's list of
 		/// handlers. If no value is assigned, the registry value will be used.
 		/// </para>
 		/// </param>
 		/// <param name="ppwszDescription">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// A pointer to a null-terminated Unicode string that will be displayed when this object is selected from the disk cleanup manager's
 		/// list of available disk cleanup handlers. If no value is assigned, the registry value will be used.
@@ -495,7 +495,7 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/emptyvc/nf-emptyvc-iemptyvolumecache-initialize HRESULT Initialize( [in] HKEY
-		// hkRegKey, [in] LPCWSTR pcwszVolume, [out] PWSTR *ppwszDisplayName, [out] PWSTR *ppwszDescription, [in, out] DWORD *pdwFlags );
+		// hkRegKey, [in] LPCWSTR pcwszVolume, [out] StrPtrUni *ppwszDisplayName, [out] StrPtrUni *ppwszDescription, [in, out] DWORD *pdwFlags );
 		[PreserveSig]
 		new HRESULT Initialize([In] HKEY hkRegKey, [MarshalAs(UnmanagedType.LPWStr)] string pcwszVolume, [MarshalAs(UnmanagedType.LPWStr)] out string ppwszDisplayName,
 			[MarshalAs(UnmanagedType.LPWStr)] out string ppwszDescription, out EVCF pdwFlags);
@@ -689,21 +689,21 @@ public static partial class Shell32
 		/// <para>A pointer to a null-terminated Unicode string with the name of the handler's registry key.</para>
 		/// </param>
 		/// <param name="ppwszDisplayName">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// A pointer to a null-terminated Unicode string with the name that will be displayed in the disk cleanup manager's list of
 		/// handlers. You must assign a value to this parameter.
 		/// </para>
 		/// </param>
 		/// <param name="ppwszDescription">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// A pointer to a null-terminated Unicode string that will be displayed when this object is selected from the disk cleanup manager's
 		/// list of available disk cleaners. You must assign a value to this parameter.
 		/// </para>
 		/// </param>
 		/// <param name="ppwszBtnText">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// A pointer to a null-terminated Unicode string with the text that will be displayed on the disk cleanup manager's <c>Settings</c>
 		/// button. If the <c>EVCF_HASSETTINGS</c> flag is set, you must assign a value to <c>ppwszBtnText</c>. Otherwise, you can set it to <c>NULL</c>.
@@ -803,8 +803,8 @@ public static partial class Shell32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/emptyvc/nf-emptyvc-iemptyvolumecache2-initializeex HRESULT InitializeEx( [in]
-		// HKEY hkRegKey, [in] LPCWSTR pcwszVolume, [in] LPCWSTR pcwszKeyName, [out] PWSTR *ppwszDisplayName, [out] PWSTR
-		// *ppwszDescription, [out] PWSTR *ppwszBtnText, [in, out] DWORD *pdwFlags );
+		// HKEY hkRegKey, [in] LPCWSTR pcwszVolume, [in] LPCWSTR pcwszKeyName, [out] StrPtrUni *ppwszDisplayName, [out] StrPtrUni
+		// *ppwszDescription, [out] StrPtrUni *ppwszBtnText, [in, out] DWORD *pdwFlags );
 		[PreserveSig]
 		HRESULT InitializeEx([In] HKEY hkRegKey, [MarshalAs(UnmanagedType.LPWStr)] string pcwszVolume, [MarshalAs(UnmanagedType.LPWStr)] string pcwszKeyName,
 			[MarshalAs(UnmanagedType.LPWStr)] out string ppwszDisplayName, [MarshalAs(UnmanagedType.LPWStr)] out string ppwszDescription,

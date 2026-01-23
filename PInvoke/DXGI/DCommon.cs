@@ -3782,12 +3782,12 @@ public static partial class DXGI
 
 		/// <summary>Gets the size.</summary>
 		/// <returns>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The size of the data, in bytes.</para>
 		/// </returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SizeT GetBufferSize();
 		[PreserveSig]
-		SIZE_T GetBufferSize();
+		SizeT GetBufferSize();
 	}
 
 	/// <summary>

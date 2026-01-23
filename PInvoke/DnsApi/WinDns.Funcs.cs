@@ -270,7 +270,7 @@ public static partial class DnsApi
 	/// </summary>
 	/// <param name="proxyName">A pointer to the <c>proxyName</c> string to be freed.</param>
 	/// <returns>None</returns>
-	// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsfreeproxyname void DnsFreeProxyName( _Frees_ptr_opt_ PWSTR
+	// https://docs.microsoft.com/en-us/windows/win32/api/windns/nf-windns-dnsfreeproxyname void DnsFreeProxyName( _Frees_ptr_opt_ StrPtrUni
 	// proxyName );
 	[DllImport(Lib.Dnsapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("windns.h", MSDNShortId = "4c69d548-3bb5-4609-9fc5-3a829a285956")]

@@ -783,7 +783,7 @@ public static partial class Crypt32
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/ns-mscat-cryptcatmember typedef struct CRYPTCATMEMBER_ { DWORD cbStruct;
-	// PWSTR pwszReferenceTag; PWSTR pwszFileName; GUID gSubjectType; DWORD fdwMemberFlags; struct SIP_INDIRECT_DATA_ *pIndirectData;
+	// StrPtrUni pwszReferenceTag; StrPtrUni pwszFileName; GUID gSubjectType; DWORD fdwMemberFlags; struct SIP_INDIRECT_DATA_ *pIndirectData;
 	// DWORD dwCertVersion; DWORD dwReserved; HANDLE hReserved; CRYPT_ATTR_BLOB sEncodedIndirectData; CRYPT_ATTR_BLOB
 	// sEncodedMemberInfo; } CRYPTCATMEMBER;
 	[PInvokeData("mscat.h", MSDNShortId = "08f663d9-9dc2-4ac9-95c5-7f2ed972eb9b")]
@@ -835,7 +835,7 @@ public static partial class Crypt32
 	/// </para>
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/mscat/ns-mscat-cryptcatstore typedef struct CRYPTCATSTORE_ { DWORD cbStruct;
-	// DWORD dwPublicVersion; PWSTR pwszP7File; HCRYPTPROV hProv; DWORD dwEncodingType; DWORD fdwStoreFlags; HANDLE hReserved; HANDLE
+	// DWORD dwPublicVersion; StrPtrUni pwszP7File; HCRYPTPROV hProv; DWORD dwEncodingType; DWORD fdwStoreFlags; HANDLE hReserved; HANDLE
 	// hAttrs; HCRYPTMSG hCryptMsg; HANDLE hSorted; } CRYPTCATSTORE;
 	[PInvokeData("mscat.h", MSDNShortId = "65a15797-453c-4f47-8ea1-c92e616b50aa")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -978,7 +978,7 @@ public static partial class Crypt32
 	// https://docs.microsoft.com/en-us/windows/win32/api/mssip/ns-mssip-sip_add_newprovider typedef struct SIP_ADD_NEWPROVIDER_ { DWORD
 	// cbStruct; GUID *pgSubject; WCHAR *pwszDLLFileName; WCHAR *pwszMagicNumber; WCHAR *pwszIsFunctionName; WCHAR *pwszGetFuncName;
 	// WCHAR *pwszPutFuncName; WCHAR *pwszCreateFuncName; WCHAR *pwszVerifyFuncName; WCHAR *pwszRemoveFuncName; WCHAR
-	// *pwszIsFunctionNameFmt2; PWSTR pwszGetCapFuncName; } SIP_ADD_NEWPROVIDER, *PSIP_ADD_NEWPROVIDER;
+	// *pwszIsFunctionNameFmt2; StrPtrUni pwszGetCapFuncName; } SIP_ADD_NEWPROVIDER, *PSIP_ADD_NEWPROVIDER;
 	[PInvokeData("mssip.h", MSDNShortId = "5ca88c0c-a7c9-4517-a874-49d38c1bc7c3")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct SIP_ADD_NEWPROVIDER

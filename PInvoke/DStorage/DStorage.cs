@@ -393,8 +393,8 @@ public static partial class DStorage
 		/// <param name="compressedBuffer">Points to a buffer where compressed data will be written.</param>
 		/// <param name="compressedBufferSize">Size, in bytes, of the buffer which will receive the compressed data</param>
 		/// <param name="compressedDataSize">Size, in bytes, of the actual size written to compressedBuffer</param>
-		void CompressBuffer(IntPtr uncompressedData, SIZE_T uncompressedDataSize, DSTORAGE_COMPRESSION compressionSetting,
-			IntPtr compressedBuffer, SIZE_T compressedBufferSize, out SIZE_T compressedDataSize);
+		void CompressBuffer(IntPtr uncompressedData, SizeT uncompressedDataSize, DSTORAGE_COMPRESSION compressionSetting,
+			IntPtr compressedBuffer, SizeT compressedBufferSize, out SizeT compressedDataSize);
 
 		/// <summary>Decompresses data previously compressed using CompressBuffer.</summary>
 		/// <param name="compressedData">Points to a buffer containing compressed data.</param>
@@ -402,13 +402,13 @@ public static partial class DStorage
 		/// <param name="uncompressedBuffer">Points to a buffer where uncompressed data will be written.</param>
 		/// <param name="uncompressedBufferSize">Size, in bytes, of the buffer which will receive the uncompressed data</param>
 		/// <param name="uncompressedDataSize">Size, in bytes, of the actual size written to uncompressedBuffer</param>
-		void DecompressBuffer(IntPtr compressedData, SIZE_T compressedDataSize, IntPtr uncompressedBuffer, SIZE_T uncompressedBufferSize,
-			out SIZE_T uncompressedDataSize);
+		void DecompressBuffer(IntPtr compressedData, SizeT compressedDataSize, IntPtr uncompressedBuffer, SizeT uncompressedBufferSize,
+			out SizeT uncompressedDataSize);
 
 		/// <summary>Returns an upper bound estimated size in bytes required to compress the specified data size.</summary>
 		/// <param name="uncompressedDataSize">Size, in bytes, of the data to be compressed</param>
 		[PreserveSig]
-		SIZE_T CompressBufferBound(SIZE_T uncompressedDataSize);
+		SizeT CompressBufferBound(SizeT uncompressedDataSize);
 	}
 
 	/// <summary>

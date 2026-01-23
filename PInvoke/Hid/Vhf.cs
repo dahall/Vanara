@@ -285,11 +285,11 @@ public static partial class Hid
 	// https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/vhf/ns-vhf-_vhf_config typedef struct _VHF_CONFIG { ULONG Size; PVOID
 	// VhfClientContext; ULONG OperationContextSize; #ifdef _KERNEL_MODE PDEVICE_OBJECT DeviceObject; #else HANDLE FileHandle; #endif USHORT
 	// VendorID; USHORT ProductID; USHORT VersionNumber; GUID ContainerID; USHORT InstanceIDLength; _Field_size_bytes_full_(InstanceIDLength)
-	// PWSTR InstanceID; USHORT ReportDescriptorLength; _Field_size_full_(ReportDescriptorLength) PUCHAR ReportDescriptor;
+	// StrPtrUni InstanceID; USHORT ReportDescriptorLength; _Field_size_full_(ReportDescriptorLength) PUCHAR ReportDescriptor;
 	// PEVT_VHF_READY_FOR_NEXT_READ_REPORT EvtVhfReadyForNextReadReport; PEVT_VHF_ASYNC_OPERATION EvtVhfAsyncOperationGetFeature;
 	// PEVT_VHF_ASYNC_OPERATION EvtVhfAsyncOperationSetFeature; PEVT_VHF_ASYNC_OPERATION EvtVhfAsyncOperationWriteReport;
 	// PEVT_VHF_ASYNC_OPERATION EvtVhfAsyncOperationGetInputReport; PEVT_VHF_CLEANUP EvtVhfCleanup; USHORT HardwareIDsLength;
-	// _Field_size_bytes_full_(HardwareIDsLength) PWSTR HardwareIDs; } VHF_CONFIG, *PVHF_CONFIG;
+	// _Field_size_bytes_full_(HardwareIDsLength) StrPtrUni HardwareIDs; } VHF_CONFIG, *PVHF_CONFIG;
 	[PInvokeData("vhf.h", MSDNShortId = "NS:vhf._VHF_CONFIG")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct VHF_CONFIG
@@ -397,7 +397,7 @@ public static partial class Hid
 		public ushort HardwareIDsLength;
 
 		/// <summary/>
-		public PWSTR HardwareIDs;
+		public StrPtrUni HardwareIDs;
 
 		/// <summary>
 		/// Use the <b>VHF_CONFIG_INIT</b> function to initialize the required members of the <c>VHF_CONFIG</c> structure allocated by the

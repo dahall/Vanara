@@ -1018,8 +1018,8 @@ public static partial class DXGI
 	/// IDXGIAdapter::GetDesc method.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/ns-dxgi-dxgi_adapter_desc typedef struct DXGI_ADAPTER_DESC { WCHAR
-	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SIZE_T DedicatedVideoMemory; SIZE_T
-	// DedicatedSystemMemory; SIZE_T SharedSystemMemory; LUID AdapterLuid; } DXGI_ADAPTER_DESC;
+	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SizeT DedicatedVideoMemory; SizeT
+	// DedicatedSystemMemory; SizeT SharedSystemMemory; LUID AdapterLuid; } DXGI_ADAPTER_DESC;
 	[PInvokeData("dxgi.h"), StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DXGI_ADAPTER_DESC
 	{
@@ -1065,28 +1065,28 @@ public static partial class DXGI
 		public uint Revision;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The number of bytes of dedicated video memory that are not shared with the CPU.</para>
 		/// </summary>
-		public SIZE_T DedicatedVideoMemory;
+		public SizeT DedicatedVideoMemory;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>
 		/// The number of bytes of dedicated system memory that are not shared with the CPU. This memory is allocated from available system
 		/// memory at boot time.
 		/// </para>
 		/// </summary>
-		public SIZE_T DedicatedSystemMemory;
+		public SizeT DedicatedSystemMemory;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>
 		/// The number of bytes of shared system memory. This is the maximum value of system memory that may be consumed by the adapter
 		/// during operation. Any incidental memory consumed by the driver as it manages and uses video memory is additional.
 		/// </para>
 		/// </summary>
-		public SIZE_T SharedSystemMemory;
+		public SizeT SharedSystemMemory;
 
 		/// <summary>
 		/// <para>Type: <c>LUID</c></para>
@@ -1101,8 +1101,8 @@ public static partial class DXGI
 	/// IDXGIAdapter1::GetDesc1 method.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/dxgi/ns-dxgi-dxgi_adapter_desc1 typedef struct DXGI_ADAPTER_DESC1 { WCHAR
-	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SIZE_T DedicatedVideoMemory; SIZE_T
-	// DedicatedSystemMemory; SIZE_T SharedSystemMemory; LUID AdapterLuid; UINT Flags; } DXGI_ADAPTER_DESC1;
+	// Description[128]; UINT VendorId; UINT DeviceId; UINT SubSysId; UINT Revision; SizeT DedicatedVideoMemory; SizeT
+	// DedicatedSystemMemory; SizeT SharedSystemMemory; LUID AdapterLuid; UINT Flags; } DXGI_ADAPTER_DESC1;
 	[PInvokeData("dxgi.h", MSDNShortId = "0ae3bdb1-b122-439a-8f62-c831a9dd87e2"), StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct DXGI_ADAPTER_DESC1
 	{
@@ -1148,28 +1148,28 @@ public static partial class DXGI
 		public uint Revision;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The number of bytes of dedicated video memory that are not shared with the CPU.</para>
 		/// </summary>
-		public SIZE_T DedicatedVideoMemory;
+		public SizeT DedicatedVideoMemory;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>
 		/// The number of bytes of dedicated system memory that are not shared with the CPU. This memory is allocated from available system
 		/// memory at boot time.
 		/// </para>
 		/// </summary>
-		public SIZE_T DedicatedSystemMemory;
+		public SizeT DedicatedSystemMemory;
 
 		/// <summary>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>
 		/// The number of bytes of shared system memory. This is the maximum value of system memory that may be consumed by the adapter
 		/// during operation. Any incidental memory consumed by the driver as it manages and uses video memory is additional.
 		/// </para>
 		/// </summary>
-		public SIZE_T SharedSystemMemory;
+		public SizeT SharedSystemMemory;
 
 		/// <summary>
 		/// <para>Type: <c>LUID</c></para>

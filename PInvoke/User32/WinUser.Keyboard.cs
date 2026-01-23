@@ -1206,7 +1206,7 @@ public static partial class User32
 
 	/// <summary>Retrieves the name of the active input locale identifier (formerly called the keyboard layout) for the system.</summary>
 	/// <param name="pwszKLID">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// The buffer (of at least <c>KL_NAMELENGTH</c> characters in length) that receives the name of the input locale identifier,
 	/// including the terminating null character. This will be a copy of the string provided to the LoadKeyboardLayout function, unless
@@ -1229,7 +1229,7 @@ public static partial class User32
 	/// <c>CurrentInputMethodLanguageTag</c> to any National Language Support functions, it must first convert the tags by calling ResolveLocaleName.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeyboardlayoutnamea BOOL GetKeyboardLayoutNameA( PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeyboardlayoutnamea BOOL GetKeyboardLayoutNameA( StrPtrAnsi
 	// pwszKLID );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
@@ -1445,7 +1445,7 @@ public static partial class User32
 	/// </list>
 	/// </param>
 	/// <param name="lpString">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The buffer that will receive the key name.</para>
 	/// </param>
 	/// <param name="cchSize">
@@ -1469,7 +1469,7 @@ public static partial class User32
 	/// of the currently installed keyboard, thus the function may give different results for different input locales. The name of a
 	/// character key is the character itself. The names of dead keys are spelled out in full.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeynametexta int GetKeyNameTextA( LONG lParam, PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeynametexta int GetKeyNameTextA( LONG lParam, StrPtrAnsi
 	// lpString, int cchSize );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
@@ -2312,7 +2312,7 @@ public static partial class User32
 	/// </para>
 	/// </param>
 	/// <param name="pwszBuff">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// The buffer that receives the translated Unicode character or characters. However, this buffer may be returned without being
 	/// null-terminated even though the variable name suggests that it is null-terminated.
@@ -2379,7 +2379,7 @@ public static partial class User32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-tounicode int ToUnicode( UINT wVirtKey, UINT wScanCode,
-	// const BYTE *lpKeyState, PWSTR pwszBuff, int cchBuff, UINT wFlags );
+	// const BYTE *lpKeyState, StrPtrUni pwszBuff, int cchBuff, UINT wFlags );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	public static extern int ToUnicode(EnumRebase<VK, uint> wVirtKey, uint wScanCode, [In, Optional] byte[]? lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, int cchBuff, uint wFlags);
@@ -2401,7 +2401,7 @@ public static partial class User32
 	/// </para>
 	/// </param>
 	/// <param name="pwszBuff">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// The buffer that receives the translated Unicode character or characters. However, this buffer may be returned without being
 	/// null-terminated even though the variable name suggests that it is null-terminated.
@@ -2484,7 +2484,7 @@ public static partial class User32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-tounicodeex int ToUnicodeEx( UINT wVirtKey, UINT
-	// wScanCode, const BYTE *lpKeyState, PWSTR pwszBuff, int cchBuff, UINT wFlags, HKL dwhkl );
+	// wScanCode, const BYTE *lpKeyState, StrPtrUni pwszBuff, int cchBuff, UINT wFlags, HKL dwhkl );
 	[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("winuser.h", MSDNShortId = "")]
 	public static extern int ToUnicodeEx(EnumRebase<VK, uint> wVirtKey, uint wScanCode, [In, Optional] byte[]? lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, int cchBuff, uint wFlags, HKL dwhkl);

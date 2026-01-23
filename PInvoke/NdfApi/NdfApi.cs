@@ -808,7 +808,7 @@ public static partial class NdfApi
 	/// <para><c>TRUE</c> if diagnosis will be performed using the WinHTTP APIs; <c>FALSE</c> if the WinInet APIs will be used.</para>
 	/// </param>
 	/// <param name="moduleName">
-	/// <para>Type: <c>PWSTR</c></para>
+	/// <para>Type: <c>StrPtrUni</c></para>
 	/// <para>
 	/// The module name to use when checking against application-specific filtering rules (for example, "C:\Program Files\Internet
 	/// Explorer\iexplorer.exe"). If <c>NULL</c>, the value is autodetected during the diagnosis.
@@ -845,7 +845,7 @@ public static partial class NdfApi
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ndfapi/nf-ndfapi-ndfcreatewebincidentex HRESULT NdfCreateWebIncidentEx( [in]
-	// LPCWSTR url, [in] BOOL useWinHTTP, [in] PWSTR moduleName, [out] NDFHANDLE *handle );
+	// LPCWSTR url, [in] BOOL useWinHTTP, [in] StrPtrUni moduleName, [out] NDFHANDLE *handle );
 	[DllImport(Lib_Ndfapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ndfapi.h", MSDNShortId = "NF:ndfapi.NdfCreateWebIncidentEx")]
 	public static extern HRESULT NdfCreateWebIncidentEx([MarshalAs(UnmanagedType.LPWStr)] string url, [MarshalAs(UnmanagedType.Bool)] bool useWinHTTP,

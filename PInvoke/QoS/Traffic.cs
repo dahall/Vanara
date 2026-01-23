@@ -917,7 +917,7 @@ public static partial class Traffic
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/traffic/nf-traffic-tcgetflownamea ULONG TcGetFlowNameA( [in] HANDLE FlowHandle,
-	// [in] ULONG StrSize, [out] PSTR pFlowName );
+	// [in] ULONG StrSize, [out] StrPtrAnsi pFlowName );
 	[PInvokeData("traffic.h", MSDNShortId = "NF:traffic.TcGetFlowNameA")]
 	[DllImport(Lib_Traffic, SetLastError = false, CharSet = CharSet.Auto)]
 	public static extern Win32Error TcGetFlowName([In] HFLOW FlowHandle, uint StrSize, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder pFlowName);
@@ -1098,7 +1098,7 @@ public static partial class Traffic
 	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/traffic/nf-traffic-tcopeninterfacew ULONG TcOpenInterfaceW( [in] PWSTR
+	// https://learn.microsoft.com/en-us/windows/win32/api/traffic/nf-traffic-tcopeninterfacew ULONG TcOpenInterfaceW( [in] StrPtrUni
 	// pInterfaceName, [in] HANDLE ClientHandle, [in] HANDLE ClIfcCtx, [out] PHANDLE pIfcHandle );
 	[PInvokeData("traffic.h", MSDNShortId = "NF:traffic.TcOpenInterfaceW")]
 	[DllImport(Lib_Traffic, SetLastError = false, CharSet = CharSet.Auto)]
@@ -1162,7 +1162,7 @@ public static partial class Traffic
 	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/traffic/nf-traffic-tcqueryflowa ULONG TcQueryFlowA( [in] PSTR pFlowName, [in]
+	// https://learn.microsoft.com/en-us/windows/win32/api/traffic/nf-traffic-tcqueryflowa ULONG TcQueryFlowA( [in] StrPtrAnsi pFlowName, [in]
 	// LPGUID pGuidParam, [in, out] PULONG pBufferSize, [out] PVOID Buffer );
 	[PInvokeData("traffic.h", MSDNShortId = "NF:traffic.TcQueryFlowA")]
 	[DllImport(Lib_Traffic, SetLastError = false, CharSet = CharSet.Auto)]
@@ -1372,7 +1372,7 @@ public static partial class Traffic
 	/// </para>
 	/// </para>
 	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/traffic/nf-traffic-tcsetflowa ULONG TcSetFlowA( [in] PSTR pFlowName, [in] LPGUID
+	// https://learn.microsoft.com/en-us/windows/win32/api/traffic/nf-traffic-tcsetflowa ULONG TcSetFlowA( [in] StrPtrAnsi pFlowName, [in] LPGUID
 	// pGuidParam, [in] ULONG BufferSize, [in] PVOID Buffer );
 	[PInvokeData("traffic.h", MSDNShortId = "NF:traffic.TcSetFlowA")]
 	[DllImport(Lib_Traffic, SetLastError = false, CharSet = CharSet.Auto)]
@@ -1832,7 +1832,7 @@ public static partial class Traffic
 		/// </summary>
 		public IQoSObjectHdr[]? TcObjects;
 
-		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(INT_TC_GEN_FLOW));
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf(typeof(INT_TC_GEN_FLOW));
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -1854,7 +1854,7 @@ public static partial class Traffic
 			return pFlow;
 		}
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			var f = pNativeData.ToStructure<INT_TC_GEN_FLOW>(allocatedBytes);
 			TC_GEN_FLOW ret = new() { SendingFlowspec = f.SendingFlowspec, ReceivingFlowspec = f.ReceivingFlowspec, TcObjects = new IQoSObjectHdr[f.TcObjectsLength] };
@@ -1883,7 +1883,7 @@ public static partial class Traffic
 
 	/// <summary>The <c>TC_IFC_DESCRIPTOR</c> structure is an interface identifier used to enumerate interfaces.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/traffic/ns-traffic-tc_ifc_descriptor typedef struct _TC_IFC_DESCRIPTOR { ULONG
-	// Length; PWSTR pInterfaceName; PWSTR pInterfaceID; ADDRESS_LIST_DESCRIPTOR AddressListDesc; } TC_IFC_DESCRIPTOR, *PTC_IFC_DESCRIPTOR;
+	// Length; StrPtrUni pInterfaceName; StrPtrUni pInterfaceID; ADDRESS_LIST_DESCRIPTOR AddressListDesc; } TC_IFC_DESCRIPTOR, *PTC_IFC_DESCRIPTOR;
 	[PInvokeData("traffic.h", MSDNShortId = "NS:traffic._TC_IFC_DESCRIPTOR")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct TC_IFC_DESCRIPTOR

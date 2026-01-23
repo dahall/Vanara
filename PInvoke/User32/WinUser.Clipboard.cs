@@ -774,7 +774,7 @@ public static partial class User32
 	/// <para>The type of format to be retrieved. This parameter must not specify any of the predefined clipboard formats.</para>
 	/// </param>
 	/// <param name="lpszFormatName">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The buffer that is to receive the format name.</para>
 	/// </param>
 	/// <param name="cchMaxCount">
@@ -800,7 +800,7 @@ public static partial class User32
 	/// <para>For an example, see Example of a Clipboard Viewer.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclipboardformatnamea int GetClipboardFormatNameA( UINT
-	// format, PSTR lpszFormatName, int cchMaxCount );
+	// format, StrPtrAnsi lpszFormatName, int cchMaxCount );
 	[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("winuser.h", MSDNShortId = "getclipboardformatname")]
 	public static extern int GetClipboardFormatName(uint format, [Out, SizeDef(nameof(cchMaxCount), SizingMethod.QueryResultInReturn)] StringBuilder? lpszFormatName, int cchMaxCount);

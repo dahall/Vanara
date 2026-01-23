@@ -2382,7 +2382,7 @@ public static partial class Ws2_32
 	// int WSCGetProviderInfo( [in] LPGUID lpProviderId, [in] WSC_PROVIDER_INFO_TYPE InfoType, [out] PBYTE Info, [in, out] size_t *InfoSize, [in] DWORD Flags, [out] LPINT lpErrno );
 	[PInvokeData("ws2spi.h", MSDNShortId = "NF:ws2spi.WSCGetProviderInfo")]
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
-	public static extern WSRESULT WSCGetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SIZE_T InfoSize, uint Flags, out int lpErrno);
+	public static extern WSRESULT WSCGetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SizeT InfoSize, uint Flags, out int lpErrno);
 
 	/// <summary>The **WSCGetProviderInfo32** function retrieves the data associated with an information class for a 32-bit layered service provider (LSP).</summary>
 	/// <param name="lpProviderId">A pointer to a globally unique identifier (GUID) for the provider.</param>
@@ -2545,7 +2545,7 @@ public static partial class Ws2_32
 	// lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, PBYTE Info, size_t *InfoSize, DWORD Flags, LPINT lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "91686b38-3cde-4979-8bf6-45e805dd37ff")]
-	public static extern WSRESULT WSCGetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SIZE_T InfoSize, uint Flags, out int lpErrno);
+	public static extern WSRESULT WSCGetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, [Out] IntPtr Info, ref SizeT InfoSize, uint Flags, out int lpErrno);
 
 	/// <summary>The <c>WSCGetProviderPath</c> function retrieves the DLL path for the specified provider.</summary>
 	/// <param name="lpProviderId">
@@ -2712,8 +2712,8 @@ public static partial class Ws2_32
 	/// then be executing the application in an enhanced shell as the built-in Administrator (RunAs administrator) for this function to succeed.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nf-ws2spi-wscinstallnamespace INT WSCInstallNameSpace( PWSTR
-	// lpszIdentifier, PWSTR lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId );
+	// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nf-ws2spi-wscinstallnamespace INT WSCInstallNameSpace( StrPtrUni
+	// lpszIdentifier, StrPtrUni lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "f17f6174-879e-45e7-a250-975d1ee24fe0")]
 	public static extern WSRESULT WSCInstallNameSpace([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId);
@@ -2799,8 +2799,8 @@ public static partial class Ws2_32
 	/// function to succeed.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nf-ws2spi-wscinstallnamespace32 INT WSCInstallNameSpace32( PWSTR
-	// lpszIdentifier, PWSTR lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId );
+	// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nf-ws2spi-wscinstallnamespace32 INT WSCInstallNameSpace32( StrPtrUni
+	// lpszIdentifier, StrPtrUni lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "b107fbe6-bbfb-45be-8419-4d85d3c4e80c")]
 	public static extern WSRESULT WSCInstallNameSpace32([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId);
@@ -2888,8 +2888,8 @@ public static partial class Ws2_32
 	/// then be executing the application in an enhanced shell as the built-in Administrator (RunAs administrator) for this function to succeed.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nf-ws2spi-wscinstallnamespaceex INT WSCInstallNameSpaceEx( PWSTR
-	// lpszIdentifier, PWSTR lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId, LPBLOB lpProviderSpecific );
+	// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nf-ws2spi-wscinstallnamespaceex INT WSCInstallNameSpaceEx( StrPtrUni
+	// lpszIdentifier, StrPtrUni lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId, LPBLOB lpProviderSpecific );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "13dde602-c958-4312-a16f-a393dd6fb829")]
 	public static extern WSRESULT WSCInstallNameSpaceEx([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId, in BLOB lpProviderSpecific);
@@ -2990,8 +2990,8 @@ public static partial class Ws2_32
 	/// then be executing the application in an enhanced shell as the built-in Administrator (RunAs administrator) for this function to succeed.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nf-ws2spi-wscinstallnamespaceex32 INT WSCInstallNameSpaceEx32( PWSTR
-	// lpszIdentifier, PWSTR lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId, LPBLOB lpProviderSpecific );
+	// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nf-ws2spi-wscinstallnamespaceex32 INT WSCInstallNameSpaceEx32( StrPtrUni
+	// lpszIdentifier, StrPtrUni lpszPathName, DWORD dwNameSpace, DWORD dwVersion, LPGUID lpProviderId, LPBLOB lpProviderSpecific );
 	[DllImport(Lib.Ws2_32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "222ebfcc-8854-4224-b464-28098c84b750")]
 	public static extern WSRESULT WSCInstallNameSpaceEx32([MarshalAs(UnmanagedType.LPWStr)] string lpszIdentifier, [MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, uint dwNameSpace, uint dwVersion, in Guid lpProviderId, in BLOB lpProviderSpecific);
@@ -3413,7 +3413,7 @@ public static partial class Ws2_32
 	/// <para>Any file installation or provider-specific configuration must be performed by the calling application.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ws2spi/nf-ws2spi-wscinstallproviderandchains int WSCInstallProviderAndChains(
-	// LPGUID lpProviderId, const PWSTR lpszProviderDllPath, const PWSTR lpszLspName, DWORD dwServiceFlags, LPWSAPROTOCOL_INFOW
+	// LPGUID lpProviderId, const StrPtrUni lpszProviderDllPath, const StrPtrUni lpszLspName, DWORD dwServiceFlags, LPWSAPROTOCOL_INFOW
 	// lpProtocolInfoList, DWORD dwNumberOfEntries, LPDWORD lpdwCatalogEntryId, LPINT lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "592f48b4-5826-449f-b5cc-b0990679fe9f")]
@@ -3768,7 +3768,7 @@ public static partial class Ws2_32
 	// lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, PBYTE Info, size_t InfoSize, DWORD Flags, LPINT lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "10eed3e6-d5a0-4ba4-964e-3d924a231afb")]
-	public static extern WSRESULT WSCSetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SIZE_T InfoSize, uint Flags, out int lpErrno);
+	public static extern WSRESULT WSCSetProviderInfo(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SizeT InfoSize, uint Flags, out int lpErrno);
 
 	/// <summary>The **WSCSetProviderInfo32** function sets the data value for specified information class for a layered service provider (LSP).</summary>
 	/// <param name="lpProviderId">A pointer to a globally unique identifier (GUID) for the provider.</param>
@@ -3931,7 +3931,7 @@ public static partial class Ws2_32
 	// lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, PBYTE Info, size_t InfoSize, DWORD Flags, LPINT lpErrno );
 	[DllImport(Lib.Ws2_32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("ws2spi.h", MSDNShortId = "adb2737f-5327-4306-bd57-f165f339f911")]
-	public static extern WSRESULT WSCSetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SIZE_T InfoSize, uint Flags, out int lpErrno);
+	public static extern WSRESULT WSCSetProviderInfo32(in Guid lpProviderId, WSC_PROVIDER_INFO_TYPE InfoType, IntPtr Info, SizeT InfoSize, uint Flags, out int lpErrno);
 
 	/// <summary>The <c>WSCUnInstallNameSpace</c> function uninstalls the indicated name-space provider.</summary>
 	/// <param name="lpProviderId">A pointer to a globally unique identifier (GUID) for the name-space provider to be uninstalled.</param>
@@ -4422,16 +4422,16 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>WSANAMESPACE_INFOEX</c> is defined to <c>WSANAMESPACE_INFOEXW</c>, the Unicode version
-	/// of this structure and the <c>lpszIdentifier</c> string member is defined to the <c>PWSTR</c> data type.
+	/// of this structure and the <c>lpszIdentifier</c> string member is defined to the <c>StrPtrUni</c> data type.
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is not defined, <c>WSANAMESPACE_INFOEX</c> is defined to <c>WSANAMESPACE_INFOEXA</c>, the ANSI version
-	/// of this structure and the <c>lpszIdentifier</c> string member is defined to the <c>PSTR</c> data type.
+	/// of this structure and the <c>lpszIdentifier</c> string member is defined to the <c>StrPtrAnsi</c> data type.
 	/// </para>
 	/// <para>The WSCEnumNameSpaceProvidersEx32 function is a Unicode only function and returns <c>WSANAMESPACE_INFOEXW</c> structures.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsanamespace_infoexw typedef struct _WSANAMESPACE_INFOEXW
-	// { GUID NSProviderId; DWORD dwNameSpace; BOOL fActive; DWORD dwVersion; PWSTR lpszIdentifier; BLOB ProviderSpecific; }
+	// { GUID NSProviderId; DWORD dwNameSpace; BOOL fActive; DWORD dwVersion; StrPtrUni lpszIdentifier; BLOB ProviderSpecific; }
 	// WSANAMESPACE_INFOEXW, *PWSANAMESPACE_INFOEXW, *LPWSANAMESPACE_INFOEXW;
 	[PInvokeData("winsock2.h", MSDNShortId = "3f4a8916-9db9-4b65-982f-4cb4ec2205ed")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -4508,10 +4508,10 @@ public static partial class Ws2_32
 		public uint dwVersion;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A display string that identifies the namespace provider.</para>
 		/// </summary>
-		public PWSTR lpszIdentifier;
+		public StrPtrUni lpszIdentifier;
 
 		/// <summary>
 		/// <para>Type: <c>BLOB</c></para>
@@ -4530,11 +4530,11 @@ public static partial class Ws2_32
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is defined, <c>WSANAMESPACE_INFO</c> is defined to <c>WSANAMESPACE_INFOW</c>, the Unicode version of
-	/// this data structure and the <c>lpszIdentifier</c> string member is defined to the <c>PWSTR</c> data type.
+	/// this data structure and the <c>lpszIdentifier</c> string member is defined to the <c>StrPtrUni</c> data type.
 	/// </para>
 	/// <para>
 	/// When UNICODE or _UNICODE is not defined, <c>WSANAMESPACE_INFO</c> is defined to <c>WSANAMESPACE_INFOA</c>, the ANSI version of
-	/// this data structure and the <c>lpszIdentifier</c> string member is defined to the <c>PSTR</c> data type.
+	/// this data structure and the <c>lpszIdentifier</c> string member is defined to the <c>StrPtrAnsi</c> data type.
 	/// </para>
 	/// <para>
 	/// On Windows Vista and later, WSANAMESPACE_INFOEX, an enhanced version of the <c>WSANAMESPACE_INFO</c> structure, is returned by
@@ -4542,7 +4542,7 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsanamespace_infow typedef struct _WSANAMESPACE_INFOW {
-	// GUID NSProviderId; DWORD dwNameSpace; BOOL fActive; DWORD dwVersion; PWSTR lpszIdentifier; } WSANAMESPACE_INFOW,
+	// GUID NSProviderId; DWORD dwNameSpace; BOOL fActive; DWORD dwVersion; StrPtrUni lpszIdentifier; } WSANAMESPACE_INFOW,
 	// *PWSANAMESPACE_INFOW, *LPWSANAMESPACE_INFOW;
 	[PInvokeData("winsock2.h", MSDNShortId = "a5c76657-df62-471a-95e9-8017cad47b00")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -4619,10 +4619,10 @@ public static partial class Ws2_32
 		public uint dwVersion;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A display string that identifies the namespace provider.</para>
 		/// </summary>
-		public PWSTR lpszIdentifier;
+		public StrPtrUni lpszIdentifier;
 	}
 
 	/// <summary>
@@ -5190,8 +5190,8 @@ public static partial class Ws2_32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winsock2/ns-winsock2-wsaqueryset2w typedef struct _WSAQuerySet2W { DWORD
-	// dwSize; PWSTR lpszServiceInstanceName; LPWSAVERSION lpVersion; PWSTR lpszComment; DWORD dwNameSpace; LPGUID lpNSProviderId;
-	// PWSTR lpszContext; DWORD dwNumberOfProtocols; LPAFPROTOCOLS lpafpProtocols; PWSTR lpszQueryString; DWORD dwNumberOfCsAddrs;
+	// dwSize; StrPtrUni lpszServiceInstanceName; LPWSAVERSION lpVersion; StrPtrUni lpszComment; DWORD dwNameSpace; LPGUID lpNSProviderId;
+	// StrPtrUni lpszContext; DWORD dwNumberOfProtocols; LPAFPROTOCOLS lpafpProtocols; StrPtrUni lpszQueryString; DWORD dwNumberOfCsAddrs;
 	// LPCSADDR_INFO lpcsaBuffer; DWORD dwOutputFlags; LPBLOB lpBlob; } WSAQUERYSET2W, *PWSAQUERYSET2W, *LPWSAQUERYSET2W;
 	[PInvokeData("winsock2.h", MSDNShortId = "ffe71de0-3561-481f-b81f-835c6c3a3ee4")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -5207,7 +5207,7 @@ public static partial class Ws2_32
 		public uint dwSize;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// A pointer to an optional <c>NULL</c>-terminated string that contains service name. The semantics for using wildcards within
 		/// the string are not defined, but can be supported by certain namespace providers.
@@ -5225,7 +5225,7 @@ public static partial class Ws2_32
 		public IntPtr lpVersion;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>This member is ignored for queries.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)] public string lpszComment;
@@ -5295,7 +5295,7 @@ public static partial class Ws2_32
 		public GuidPtr lpNSProviderId;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>A pointer to an optional starting point of the query in a hierarchical namespace.</para>
 		/// </summary>
 		[MarshalAs(UnmanagedType.LPTStr)] public string? lpszContext;
@@ -5313,7 +5313,7 @@ public static partial class Ws2_32
 		public IntPtr lpafpProtocols;
 
 		/// <summary>
-		/// <para>Type: <c>PTSTR</c></para>
+		/// <para>Type: <c>StrPtrAuto</c></para>
 		/// <para>
 		/// A pointer to an optional <c>NULL</c>-terminated query string. Some namespaces, such as Whois++, support enriched SQL-like
 		/// queries that are contained in a simple text string. This parameter is used to specify that string.

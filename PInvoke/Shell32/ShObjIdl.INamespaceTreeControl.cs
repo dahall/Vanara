@@ -1775,7 +1775,7 @@ public static partial class Shell32
 		/// <para>Pointer to the IShellItem that contains the tooltip.</para>
 		/// </param>
 		/// <param name="pszTip">
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>When this method returns, contains the text of the tooltip.</para>
 		/// </param>
 		/// <param name="cchTip">
@@ -1790,7 +1790,7 @@ public static partial class Shell32
 		/// If this method returns S_OK, the client provides its own tooltip. Otherwise the INameSpaceTreeControl will extract one.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl/nf-shobjidl-inamespacetreecontrolevents-ongettooltip HRESULT
-		// OnGetToolTip( IShellItem *psi, PWSTR pszTip, int cchTip );
+		// OnGetToolTip( IShellItem *psi, StrPtrUni pszTip, int cchTip );
 		[PreserveSig]
 		HRESULT OnGetToolTip([In] IShellItem psi, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszTip, int cchTip);
 

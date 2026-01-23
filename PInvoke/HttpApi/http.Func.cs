@@ -1243,7 +1243,7 @@ public static partial class HttpApi
 	/// <para>If the function fails, it returns one of the following or a system error code defined in WinError.h.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/nf-http-httpprepareurl HTTPAPI_LINKAGE ULONG HttpPrepareUrl( PVOID Reserved,
-	// ULONG Flags, [in] PCWSTR Url, [out] PWSTR *PreparedUrl );
+	// ULONG Flags, [in] PCWSTR Url, [out] StrPtrUni *PreparedUrl );
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpPrepareUrl")]
 	public static Win32Error HttpPrepareUrl(string Url, out string? PreparedUrl)
 	{
@@ -5820,7 +5820,7 @@ public static partial class HttpApi
 	/// <para>If the function fails, it returns one of the following or a system error code defined in WinError.h.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/http/nf-http-httpprepareurl HTTPAPI_LINKAGE ULONG HttpPrepareUrl( PVOID Reserved,
-	// ULONG Flags, [in] PCWSTR Url, [out] PWSTR *PreparedUrl );
+	// ULONG Flags, [in] PCWSTR Url, [out] StrPtrUni *PreparedUrl );
 	[DllImport(Lib_Httpapi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("http.h", MSDNShortId = "NF:http.HttpPrepareUrl")]
 	private static extern Win32Error HttpPrepareUrl([In, Optional] IntPtr Reserved, [Optional] uint Flags, [MarshalAs(UnmanagedType.LPWStr)] string Url,

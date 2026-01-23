@@ -1498,7 +1498,7 @@ public static partial class Imm32
 	/// character. For Unicode, the function returns the number of Unicode characters, not including the Unicode terminating null character.
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immgetdescriptiona UINT ImmGetDescriptionA( HKL hKL, [out, optional]
-	// PSTR lpszDescription, [in] UINT uBufLen );
+	// StrPtrAnsi lpszDescription, [in] UINT uBufLen );
 	[DllImport(Lib_Imm32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("imm.h", MSDNShortId = "NF:imm.ImmGetDescriptionA")]
 	public static extern uint ImmGetDescription(HKL hKL, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszDescription, uint uBufLen);
@@ -1646,7 +1646,7 @@ public static partial class Imm32
 	/// <para>Applications typically call this function after receiving an IMN_GUIDELINE command.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immgetguidelinea DWORD ImmGetGuideLineA( [in] HIMC hIMC, [in] DWORD
-	// dwIndex, [out, optional] PSTR lpBuf, [in] DWORD dwBufLen );
+	// dwIndex, [out, optional] StrPtrAnsi lpBuf, [in] DWORD dwBufLen );
 	[DllImport(Lib_Imm32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("imm.h", MSDNShortId = "NF:imm.ImmGetGuideLineA")]
 	public static extern uint ImmGetGuideLine(HIMC hIMC, GGL dwIndex, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpBuf, uint dwBufLen);
@@ -1679,7 +1679,7 @@ public static partial class Imm32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immgetimefilenamea UINT ImmGetIMEFileNameA( HKL hKL, [out, optional]
-	// PSTR lpszFileName, [in] UINT uBufLen );
+	// StrPtrAnsi lpszFileName, [in] UINT uBufLen );
 	[DllImport(Lib_Imm32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("imm.h", MSDNShortId = "NF:imm.ImmGetIMEFileNameA")]
 	public static extern uint ImmGetIMEFileName(HKL hKL, [Out, Optional, MarshalAs(UnmanagedType.LPTStr)] StringBuilder? lpszFileName, uint uBufLen);
@@ -2610,8 +2610,8 @@ public static partial class Imm32
 	/// value in the configuration dialog box for the IME.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/imm/ns-imm-registerworda typedef struct tagREGISTERWORDA { PSTR lpReading;
-	// PSTR lpWord; } REGISTERWORDA, *PREGISTERWORDA, *NPREGISTERWORDA, *LPREGISTERWORDA;
+	// https://docs.microsoft.com/en-us/windows/win32/api/imm/ns-imm-registerworda typedef struct tagREGISTERWORDA { StrPtrAnsi lpReading;
+	// StrPtrAnsi lpWord; } REGISTERWORDA, *PREGISTERWORDA, *NPREGISTERWORDA, *LPREGISTERWORDA;
 	[PInvokeData("imm.h", MSDNShortId = "NS:imm.tagREGISTERWORDA")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct REGISTERWORD
@@ -2651,11 +2651,11 @@ public static partial class Imm32
 
 	private class CANDIDATELISTMarshaler : IVanaraMarshaler
 	{
-		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<CANDIDATELIST>();
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<CANDIDATELIST>();
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => new SafeHGlobalStruct<CANDIDATELIST>();
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			var mem = new SafeHGlobalStruct<CANDIDATELIST>(pNativeData, false, allocatedBytes);
 			CANDIDATELIST info = mem.Value;

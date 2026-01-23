@@ -82,12 +82,12 @@ public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMetho
 	/// <param name="handle">The handle.</param>
 	/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
 	/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
-	public SafeCoTaskMemHandle(IntPtr handle, SIZE_T size, bool ownsHandle = true) : base(handle, size, ownsHandle) { }
+	public SafeCoTaskMemHandle(IntPtr handle, SizeT size, bool ownsHandle = true) : base(handle, size, ownsHandle) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemHandle"/> class.</summary>
 	/// <param name="size">The size of memory to allocate, in bytes.</param>
 	/// <exception cref="ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-	public SafeCoTaskMemHandle(SIZE_T size) : base(size) { }
+	public SafeCoTaskMemHandle(SizeT size) : base(size) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemHandle"/> class using the specified byte array.</summary>
 	/// <remarks>
@@ -115,7 +115,7 @@ public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMetho
 	/// <returns>SafeCoTaskMemHandle object to an native (unmanaged) array of pointers</returns>
 	public SafeCoTaskMemHandle(IntPtr[] values) : base(values) { }
 
-	/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+	/// <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native StrPtrUni.</summary>
 	/// <param name="s">The string value.</param>
 	/// <returns>SafeCoTaskMemHandle object to an native (unmanaged) Unicode string</returns>
 	public SafeCoTaskMemHandle(string s) : base(s) { }
@@ -128,13 +128,13 @@ public partial class SafeCoTaskMemHandle : SafeMemoryHandleExt<CoTaskMemoryMetho
 	public static SafeCoTaskMemHandle Null => new(IntPtr.Zero, 0, false);
 
 	/// <inheritdoc/>
-	public static ISafeMemoryHandle Create(IntPtr handle, SIZE_T size, bool ownsHandle = true) => new SafeCoTaskMemHandle(handle, size, ownsHandle);
+	public static ISafeMemoryHandle Create(IntPtr handle, SizeT size, bool ownsHandle = true) => new SafeCoTaskMemHandle(handle, size, ownsHandle);
 
 	/// <inheritdoc/>
 	public static ISafeMemoryHandle Create(byte[] bytes) => new SafeCoTaskMemHandle(bytes);
 
 	/// <inheritdoc/>
-	public static ISafeMemoryHandle Create(SIZE_T size) => new SafeCoTaskMemHandle(size);
+	public static ISafeMemoryHandle Create(SizeT size) => new SafeCoTaskMemHandle(size);
 
 	/// <summary>
 	/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure

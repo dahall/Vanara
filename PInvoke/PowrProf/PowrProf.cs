@@ -3947,7 +3947,7 @@ public static partial class PowrProf
 	/// operating system can record the thermal event in the system event log.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/powrprof/ns-powrprof-_thermal_event typedef struct _THERMAL_EVENT { ULONG
-	// Version; ULONG Size; ULONG Type; ULONG Temperature; ULONG TripPointTemperature; PWSTR Initiator; } THERMAL_EVENT, *PTHERMAL_EVENT;
+	// Version; ULONG Size; ULONG Type; ULONG Temperature; ULONG TripPointTemperature; StrPtrUni Initiator; } THERMAL_EVENT, *PTHERMAL_EVENT;
 	[PInvokeData("powrprof.h", MSDNShortId = "80B6A494-AED6-4EF0-8B69-4AA5DA6BCBB3")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct THERMAL_EVENT

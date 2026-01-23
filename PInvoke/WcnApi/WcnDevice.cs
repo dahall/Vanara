@@ -330,7 +330,7 @@ public static partial class WcnApi
 		/// </returns>
 		/// <remarks>This function can only be called after IWCNDevice::Connect has been called, and the session has completed successfully.</remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/wcndevice/nf-wcndevice-iwcndevice-getnetworkprofile HRESULT
-		// GetNetworkProfile( DWORD cchMaxStringLength, PWSTR wszProfile );
+		// GetNetworkProfile( DWORD cchMaxStringLength, StrPtrUni wszProfile );
 		[PreserveSig]
 		HRESULT GetNetworkProfile(uint cchMaxStringLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder wszProfile);
 

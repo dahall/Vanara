@@ -6616,7 +6616,7 @@ public static partial class AdvApi32
 		/// Do not use.
 		/// <para>The name of the event tracing session is the first null-terminated string following this structure in memory.</para>
 		/// </summary>
-		public PWSTR LoggerName;
+		public StrPtrUni LoggerName;
 
 		/// <summary>
 		/// Do Not use.
@@ -6625,7 +6625,7 @@ public static partial class AdvApi32
 		/// string is the name of the session.
 		/// </para>
 		/// </summary>
-		public PWSTR LogFileName;
+		public StrPtrUni LogFileName;
 
 		/// <summary>A TIME_ZONE_INFORMATION structure that contains the time zone for the BootTime, EndTime and StartTime members.</summary>
 		public TIME_ZONE_INFORMATION TimeZone;

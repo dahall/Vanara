@@ -878,7 +878,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-settitle
-		[MsgParams(typeof(ToolTipIcon), typeof(PWSTR), LResultType = typeof(BOOL))]
+		[MsgParams(typeof(ToolTipIcon), typeof(StrPtrUni), LResultType = typeof(BOOL))]
 		TTM_SETTITLE = WindowMessage.WM_USER + 33, // wParam = TTI_*, lParam = wchar* szTitle
 
 		/// <summary>
@@ -941,7 +941,7 @@ public static partial class ComCtl32
 		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/controls/ttm-setwindowtheme
-		[MsgParams(null, typeof(PWSTR), LResultType = null)]
+		[MsgParams(null, typeof(StrPtrUni), LResultType = null)]
 		TTM_SETWINDOWTHEME = CommonControlMessage.CCM_SETWINDOWTHEME
 	}
 
@@ -1202,7 +1202,7 @@ public static partial class ComCtl32
 		/// size. Otherwise, it can be set to NULL. If lpszText is set to LPSTR_TEXTCALLBACK, the control sends the TTN_GETDISPINFO
 		/// notification code to the owner window to retrieve the text.
 		/// </summary>
-		public PTSTR lpszText;
+		public StrPtrAuto lpszText;
 
 		/// <summary>Version 4.70 and later. A 32-bit application-defined value that is associated with the tool.</summary>
 		public IntPtr lParam;
@@ -1226,7 +1226,7 @@ public static partial class ComCtl32
 		public uint cch;
 
 		/// <summary>Pointer to a wide character string that contains the title.</summary>
-		public PWSTR pszTitle;
+		public StrPtrUni pszTitle;
 	}
 
 	/// <summary>

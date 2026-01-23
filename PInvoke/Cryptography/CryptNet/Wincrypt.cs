@@ -2058,8 +2058,8 @@ public static partial class CryptNet
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/ns-wincrypt-crypt_retrieve_aux_info typedef struct
 	// _CRYPT_RETRIEVE_AUX_INFO { DWORD cbSize; FILETIME *pLastSyncTime; DWORD dwMaxUrlRetrievalByteCount;
 	// PCRYPTNET_URL_CACHE_PRE_FETCH_INFO pPreFetchInfo; PCRYPTNET_URL_CACHE_FLUSH_INFO pFlushInfo; PCRYPTNET_URL_CACHE_RESPONSE_INFO
-	// *ppResponseInfo; PWSTR pwszCacheFileNamePrefix; LPFILETIME pftCacheResync; BOOL fProxyCacheRetrieval; DWORD dwHttpStatusCode;
-	// PWSTR *ppwszErrorResponseHeaders; PCRYPT_DATA_BLOB *ppErrorContentBlob; } CRYPT_RETRIEVE_AUX_INFO, *PCRYPT_RETRIEVE_AUX_INFO;
+	// *ppResponseInfo; StrPtrUni pwszCacheFileNamePrefix; LPFILETIME pftCacheResync; BOOL fProxyCacheRetrieval; DWORD dwHttpStatusCode;
+	// StrPtrUni *ppwszErrorResponseHeaders; PCRYPT_DATA_BLOB *ppErrorContentBlob; } CRYPT_RETRIEVE_AUX_INFO, *PCRYPT_RETRIEVE_AUX_INFO;
 	[PInvokeData("wincrypt.h", MSDNShortId = "33ea51e7-c3e3-4cf8-ade0-099cb8b2e651")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct CRYPT_RETRIEVE_AUX_INFO
@@ -2121,7 +2121,7 @@ public static partial class CryptNet
 		public uint dwHttpStatusCode;
 
 		/// <summary/>
-		public ArrayPointer<PWSTR> ppwszErrorResponseHeaders;
+		public ArrayPointer<StrPtrUni> ppwszErrorResponseHeaders;
 
 		/// <summary/>
 		public StructPointer<StructPointer<CRYPTOAPI_BLOB>> ppErrorContentBlob;

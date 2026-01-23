@@ -15,7 +15,7 @@ public static partial class AdvApi32
 	public class SafePSID : SafeMemoryHandle<LocalMemoryMethods>, IEquatable<SafePSID>, IEquatable<PSID>, IEquatable<IntPtr>, ICloneable, ISecurityObject
 	{
 		/// <summary>Equivalent to a NULL pointer to a SID.</summary>
-		public static readonly SafePSID Null = new(SIZE_T.Zero);
+		public static readonly SafePSID Null = new(SizeT.Zero);
 
 		/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
 		/// <param name="psid">The existing <see cref="SafePSID"/> instance to duplicate.</param>
@@ -23,7 +23,7 @@ public static partial class AdvApi32
 
 		/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
 		/// <param name="size">The size of memory to allocate, in bytes.</param>
-		public SafePSID(SIZE_T size) : base(size)
+		public SafePSID(SizeT size) : base(size)
 		{
 		}
 
@@ -118,7 +118,7 @@ public static partial class AdvApi32
 			var sz = 0U;
 			CreateWellKnownSid(WellKnownSidType, DomainSid, Null, ref sz);
 			if (sz == 0) Win32Error.ThrowLastError();
-			SafePSID newSid = new((SIZE_T)sz);
+			SafePSID newSid = new((SizeT)sz);
 			if (!CreateWellKnownSid(WellKnownSidType, DomainSid, newSid, ref sz))
 				Win32Error.ThrowLastError();
 			return newSid;

@@ -61,7 +61,7 @@ public class GuidStringMarshalerTest
 		var m = GuidToStringMarshaler.GetInstance("D,Unicode");
 
 		Assert.That(m.MarshalNativeToManaged(IntPtr.Zero), Is.Null);
-		using SafePWSTR ps = new(gstr);
+		using SafeLPWSTR ps = new(gstr);
 		Assert.That(m.MarshalNativeToManaged(ps), Is.EqualTo(g));
 	}
 }

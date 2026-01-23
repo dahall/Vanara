@@ -547,7 +547,7 @@ public static partial class CfgMgr32
 	/// <para>For information about using device instance handles that are bound to the local machine, see CM_Get_Child.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_get_device_idw CMAPI CONFIGRET CM_Get_Device_IDW(
-	// DEVINST dnDevInst, PWSTR Buffer, ULONG BufferLen, ULONG ulFlags );
+	// DEVINST dnDevInst, StrPtrUni Buffer, ULONG BufferLen, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Unicode)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_IDW")]
 	public static extern CONFIGRET CM_Get_Device_ID(uint dnDevInst, [SizeDef(nameof(BufferLen), SizingMethod.InclNullTerm)] StringBuilder Buffer,
@@ -621,7 +621,7 @@ public static partial class CfgMgr32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/cfgmgr32/nf-cfgmgr32-cm_get_device_interface_aliasw CMAPI CONFIGRET
-	// CM_Get_Device_Interface_AliasW( LPCWSTR pszDeviceInterface, LPGUID AliasInterfaceGuid, PWSTR pszAliasDeviceInterface, PULONG
+	// CM_Get_Device_Interface_AliasW( LPCWSTR pszDeviceInterface, LPGUID AliasInterfaceGuid, StrPtrUni pszAliasDeviceInterface, PULONG
 	// pulLength, ULONG ulFlags );
 	[DllImport(Lib_Cfgmgr32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("cfgmgr32.h", MSDNShortId = "NF:cfgmgr32.CM_Get_Device_Interface_AliasW")]
@@ -686,7 +686,7 @@ public static partial class CfgMgr32
 	/// <para>Examples</para>
 	/// <para>This snippet illustrates retrying getting the size and the list as described in the Remarks section.</para>
 	/// <para>
-	/// <code> CONFIGRET cr = CR_SUCCESS; PWSTR DeviceInterfaceList = NULL; ULONG DeviceInterfaceListLength = 0; do { cr = CM_Get_Device_Interface_List_Size(&amp;DeviceInterfaceListLength, (LPGUID)&amp;GUID_DEVINTERFACE_VOLUME, NULL, CM_GET_DEVICE_INTERFACE_LIST_ALL_DEVICES); if (cr != CR_SUCCESS) { break; } if (DeviceInterfaceList != NULL) { HeapFree(GetProcessHeap(), 0, DeviceInterfaceList); } DeviceInterfaceList = (PWSTR)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, DeviceInterfaceListLength * sizeof(WCHAR)); if (DeviceInterfaceList == NULL) { cr = CR_OUT_OF_MEMORY; break; } cr = CM_Get_Device_Interface_List((LPGUID)&amp;GUID_DEVINTERFACE_VOLUME, NULL, DeviceInterfaceList, DeviceInterfaceListLength, CM_GET_DEVICE_INTERFACE_LIST_ALL_DEVICES); } while (cr == CR_BUFFER_SMALL); if (cr != CR_SUCCESS) { goto Exit; }</code>
+	/// <code> CONFIGRET cr = CR_SUCCESS; StrPtrUni DeviceInterfaceList = NULL; ULONG DeviceInterfaceListLength = 0; do { cr = CM_Get_Device_Interface_List_Size(&amp;DeviceInterfaceListLength, (LPGUID)&amp;GUID_DEVINTERFACE_VOLUME, NULL, CM_GET_DEVICE_INTERFACE_LIST_ALL_DEVICES); if (cr != CR_SUCCESS) { break; } if (DeviceInterfaceList != NULL) { HeapFree(GetProcessHeap(), 0, DeviceInterfaceList); } DeviceInterfaceList = (StrPtrUni)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, DeviceInterfaceListLength * sizeof(WCHAR)); if (DeviceInterfaceList == NULL) { cr = CR_OUT_OF_MEMORY; break; } cr = CM_Get_Device_Interface_List((LPGUID)&amp;GUID_DEVINTERFACE_VOLUME, NULL, DeviceInterfaceList, DeviceInterfaceListLength, CM_GET_DEVICE_INTERFACE_LIST_ALL_DEVICES); } while (cr == CR_BUFFER_SMALL); if (cr != CR_SUCCESS) { goto Exit; }</code>
 	/// </para>
 	/// <para>
 	/// <para>Note</para>

@@ -204,7 +204,7 @@ public class Odbc32Tests
 	{
 		public short cDisplaySize;           /* size to display  */
 		public string? colName;              /* name of column   */
-		public SafePTSTR? wszBuffer;        /* display buffer   */
+		public SafeLPTSTR? wszBuffer;        /* display buffer   */
 		public nint indPtr;                  /* size or null     */
 		public bool fChar;                   /* character col?   */
 	}

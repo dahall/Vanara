@@ -587,7 +587,7 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// HRESULT WINAPI GetApplicationRestartSettings( _In_ HANDLE hProcess, _Out_opt_ PWSTR pwzCommandline, _Inout_ PDWORD pcchSize,
+	// HRESULT WINAPI GetApplicationRestartSettings( _In_ HANDLE hProcess, _Out_opt_ StrPtrUni pwzCommandline, _Inout_ PDWORD pcchSize,
 	// _Out_opt_ PDWORD pdwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373344(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa373344")]
@@ -643,12 +643,12 @@ public static partial class Kernel32
 	/// </para>
 	/// </returns>
 	// BOOL QueryActCtxSettingsW( _In_opt_ DWORD dwFlags, _In_opt_ HANDLE hActCtx, _In_opt_ PCWSTR settingsNameSpace, _In_ PCWSTR
-	// settingName, _Out_ PWSTR pvBuffer, _In_ SIZE_T dwBuffer, _Out_opt_ SIZE_T *pdwWrittenOrRequired); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375700(v=vs.85).aspx
+	// settingName, _Out_ StrPtrUni pvBuffer, _In_ SizeT dwBuffer, _Out_opt_ SizeT *pdwWrittenOrRequired); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375700(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("Winbase.h", MSDNShortId = "aa375700")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool QueryActCtxSettingsW([Optional, Ignore] uint dwFlags, [In, AddAsMember] HACTCTX hActCtx, [Optional] string? settingsNameSpace,
-		string settingName, [Out, SizeDef(nameof(dwBuffer), SizingMethod.Query, OutVarName = nameof(pdwWrittenOrRequired))] StringBuilder? pvBuffer, SIZE_T dwBuffer, out SIZE_T pdwWrittenOrRequired);
+		string settingName, [Out, SizeDef(nameof(dwBuffer), SizingMethod.Query, OutVarName = nameof(pdwWrittenOrRequired))] StringBuilder? pvBuffer, SizeT dwBuffer, out SizeT pdwWrittenOrRequired);
 
 	/// <summary>The <c>QueryActCtxW</c> function queries the activation context.</summary>
 	/// <param name="dwFlags">
@@ -799,12 +799,12 @@ public static partial class Kernel32
 	/// <para>The following example shows the method of calling first with a small buffer and then recalling if the buffer is too small.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-queryactctxw
-	// BOOL QueryActCtxW( DWORD dwFlags, HANDLE hActCtx, PVOID pvSubInstance, ULONG ulInfoClass, PVOID pvBuffer, SIZE_T cbBuffer, SIZE_T *pcbWrittenOrRequired );
+	// BOOL QueryActCtxW( DWORD dwFlags, HANDLE hActCtx, PVOID pvSubInstance, ULONG ulInfoClass, PVOID pvBuffer, SizeT cbBuffer, SizeT *pcbWrittenOrRequired );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("winbase.h", MSDNShortId = "7d45f63f-0baf-4236-b245-d36f9eb32e8c")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool QueryActCtxW(QueryActCtxFlag dwFlags, [In] HACTCTX hActCtx, [In, Optional] IntPtr pvSubInstance,
-		ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, IntPtr pvBuffer, SIZE_T cbBuffer, out SIZE_T pcbWrittenOrRequired);
+		ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, IntPtr pvBuffer, SizeT cbBuffer, out SizeT pcbWrittenOrRequired);
 
 	/// <summary>The <c>QueryActCtxW</c> function queries the activation context.</summary>
 	/// <typeparam name="T">The type of the requested return value.</typeparam>

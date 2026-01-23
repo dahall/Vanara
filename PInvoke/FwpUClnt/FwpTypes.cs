@@ -594,7 +594,7 @@ public static partial class FwpUClnt
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwptypes/ns-fwptypes-fwp_condition_value0 typedef struct FWP_CONDITION_VALUE0_ {
 	// FWP_DATA_TYPE type; union { UINT8 uint8; UINT16 uint16; UINT32 uint32; UINT64 *uint64; INT8 int8; INT16 int16; INT32 int32; INT64
 	// *int64; float float32; double *double64; FWP_BYTE_ARRAY16 *byteArray16; FWP_BYTE_BLOB *byteBlob; SID *sid; FWP_BYTE_BLOB *sd;
-	// FWP_TOKEN_INFORMATION *tokenInformation; FWP_BYTE_BLOB *tokenAccessInformation; PWSTR unicodeString; FWP_BYTE_ARRAY6 *byteArray6;
+	// FWP_TOKEN_INFORMATION *tokenInformation; FWP_BYTE_BLOB *tokenAccessInformation; StrPtrUni unicodeString; FWP_BYTE_ARRAY6 *byteArray6;
 	// FWP_V4_ADDR_AND_MASK *v4AddrMask; FWP_V6_ADDR_AND_MASK *v6AddrMask; FWP_RANGE0 *rangeValue; }; } FWP_CONDITION_VALUE0;
 	[PInvokeData("fwptypes.h", MSDNShortId = "NS:fwptypes.FWP_CONDITION_VALUE0_")]
 	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
@@ -755,7 +755,7 @@ public static partial class FwpUClnt
 		/// </para>
 		/// </summary>
 		[FieldOffset(8)]
-		public PWSTR unicodeString;
+		public StrPtrUni unicodeString;
 
 		/// <summary>
 		/// <para>Available when <c>type</c> is FWP_BYTE_ARRAY6_TYPE.</para>
@@ -886,7 +886,7 @@ public static partial class FwpUClnt
 	// https://docs.microsoft.com/en-us/windows/win32/api/fwptypes/ns-fwptypes-fwp_value0 typedef struct FWP_VALUE0_ { FWP_DATA_TYPE type;
 	// union { UINT8 uint8; UINT16 uint16; UINT32 uint32; UINT64 *uint64; INT8 int8; INT16 int16; INT32 int32; INT64 *int64; float float32;
 	// double *double64; FWP_BYTE_ARRAY16 *byteArray16; FWP_BYTE_BLOB *byteBlob; SID *sid; FWP_BYTE_BLOB *sd; FWP_TOKEN_INFORMATION
-	// *tokenInformation; FWP_BYTE_BLOB *tokenAccessInformation; PWSTR unicodeString; FWP_BYTE_ARRAY6 *byteArray6; }; } FWP_VALUE0;
+	// *tokenInformation; FWP_BYTE_BLOB *tokenAccessInformation; StrPtrUni unicodeString; FWP_BYTE_ARRAY6 *byteArray6; }; } FWP_VALUE0;
 	[PInvokeData("fwptypes.h", MSDNShortId = "NS:fwptypes.FWP_VALUE0_")]
 	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 	public struct FWP_VALUE0
@@ -1016,7 +1016,7 @@ public static partial class FwpUClnt
 		/// <para>A pointer to a null-terminated unicode string.</para>
 		/// </summary>
 		[FieldOffset(8)]
-		public PWSTR unicodeString;
+		public StrPtrUni unicodeString;
 
 		/// <summary>
 		/// <para>case(FWP_BYTE_ARRAY6_TYPE)</para>

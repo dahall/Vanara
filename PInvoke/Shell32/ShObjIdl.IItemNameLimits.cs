@@ -14,14 +14,14 @@ public static partial class Shell32
 		/// Loads a string that contains each of the characters that are valid or invalid in the namespace under which it is called.
 		/// </summary>
 		/// <param name="ppwszValidChars">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>
 		/// A pointer to a string that contains all valid characters in the namespace. If the namespace provides any invalid characters
 		/// in ppwszInvalidChars, then this value returns <c>NULL</c>. See Remarks for more details.
 		/// </para>
 		/// </param>
 		/// <param name="ppwszInvalidChars">
-		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>Type: <c>StrPtrUni*</c></para>
 		/// <para>A pointer to a string that contains all invalid characters in the namespace.</para>
 		/// </param>
 		/// <remarks>
@@ -39,7 +39,7 @@ public static partial class Shell32
 		/// <para>If the method returns a success code, the allocated string must be freed using CoTaskMemFree.</para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-iitemnamelimits-getvalidcharacters HRESULT
-		// GetValidCharacters( PWSTR *ppwszValidChars, PWSTR *ppwszInvalidChars );
+		// GetValidCharacters( StrPtrUni *ppwszValidChars, StrPtrUni *ppwszInvalidChars );
 		void GetValidCharacters([MarshalAs(UnmanagedType.LPWStr)] out string? ppwszValidChars, [MarshalAs(UnmanagedType.LPWStr)] out string ppwszInvalidChars);
 
 		/// <summary>Returns the maximum number of characters allowed for a particular name in the namespace under which it is called.</summary>

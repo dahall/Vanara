@@ -287,7 +287,7 @@ public class ClipboardTests
 		ido!.SetData(ShellClipboardFormat.CFSTR_MOUNTEDVOLUME, ptxt);
 		Assert.That(ido!.GetData(ShellClipboardFormat.CFSTR_MOUNTEDVOLUME), Is.EqualTo(ptxt));
 
-		SafePTSTR remName = new("WINSTATION");
+		SafeLPTSTR remName = new("WINSTATION");
 		NRESARRAY nres = new() { cItems = 1, nr = [new() { lpRemoteName = remName }] };
 		ido!.SetData(ShellClipboardFormat.CFSTR_NETRESOURCES, nres);
 		Assert.That(((NRESARRAY)ido!.GetData(ShellClipboardFormat.CFSTR_NETRESOURCES)!).cItems, Is.EqualTo(nres.cItems));

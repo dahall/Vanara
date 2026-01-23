@@ -1713,7 +1713,7 @@ public static partial class Rpc
 	// unsigned int Count; unsigned char *Protseq[1]; } RPC_PROTSEQ_VECTOR;
 	[PInvokeData("rpcdce.h", MSDNShortId = "NS:rpcdce._RPC_PROTSEQ_VECTOR")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct RPC_PROTSEQ_VECTOR : IArrayStruct<PTSTR>
+	public struct RPC_PROTSEQ_VECTOR : IArrayStruct<StrPtrAuto>
 	{
 		/// <summary>Number of protocol-sequence strings present in the array <c>Protseq</c>.</summary>
 		public uint Count;

@@ -323,7 +323,7 @@ public static partial class Kernel32
 	/// <term>FORMAT_MESSAGE_ALLOCATE_BUFFER0x00000100</term>
 	/// <term>
 	/// The function allocates a buffer large enough to hold the formatted message, and places a pointer to the allocated buffer at the
-	/// address specified by lpBuffer. The lpBuffer parameter is a pointer to an PTSTR; you must cast the pointer to an PTSTR (for
+	/// address specified by lpBuffer. The lpBuffer parameter is a pointer to an StrPtrAuto; you must cast the pointer to an StrPtrAuto (for
 	/// example, ). The nSize parameter specifies the minimum number of TCHARs to allocate for an output message buffer. The caller
 	/// should use the LocalFree function to free the buffer when it is no longer needed.If the length of the formatted message exceeds
 	/// 128K bytes, then FormatMessage will fail and a subsequent call to GetLastError will return ERROR_MORE_DATA.In previous versions
@@ -484,7 +484,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// DWORD WINAPI FormatMessage( _In_ DWORD dwFlags, _In_opt_ LPCVOID lpSource, _In_ DWORD dwMessageId, _In_ DWORD dwLanguageId, _Out_
-	// PTSTR lpBuffer, _In_ DWORD nSize, _In_opt_ va_list *Arguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351(v=vs.85).aspx
+	// StrPtrAuto lpBuffer, _In_ DWORD nSize, _In_opt_ va_list *Arguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
 	public static extern int FormatMessage(FormatMessageFlags dwFlags, [Optional] HINSTANCE lpSource, [Optional] uint dwMessageId,
@@ -513,7 +513,7 @@ public static partial class Kernel32
 	/// <term>FORMAT_MESSAGE_ALLOCATE_BUFFER0x00000100</term>
 	/// <term>
 	/// The function allocates a buffer large enough to hold the formatted message, and places a pointer to the allocated buffer at the
-	/// address specified by lpBuffer. The lpBuffer parameter is a pointer to an PTSTR; you must cast the pointer to an PTSTR (for
+	/// address specified by lpBuffer. The lpBuffer parameter is a pointer to an StrPtrAuto; you must cast the pointer to an StrPtrAuto (for
 	/// example, ). The nSize parameter specifies the minimum number of TCHARs to allocate for an output message buffer. The caller
 	/// should use the LocalFree function to free the buffer when it is no longer needed.If the length of the formatted message exceeds
 	/// 128K bytes, then FormatMessage will fail and a subsequent call to GetLastError will return ERROR_MORE_DATA.In previous versions
@@ -674,7 +674,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// DWORD WINAPI FormatMessage( _In_ DWORD dwFlags, _In_opt_ LPCVOID lpSource, _In_ DWORD dwMessageId, _In_ DWORD dwLanguageId, _Out_
-	// PTSTR lpBuffer, _In_ DWORD nSize, _In_opt_ va_list *Arguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351(v=vs.85).aspx
+	// StrPtrAuto lpBuffer, _In_ DWORD nSize, _In_opt_ va_list *Arguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
 	public static extern int FormatMessage(FormatMessageFlags dwFlags, [Optional] string? lpSource, [Optional] uint dwMessageId, [Optional] uint dwLanguageId, StringBuilder lpBuffer, uint nSize, [Optional] IntPtr Arguments);
@@ -702,7 +702,7 @@ public static partial class Kernel32
 	/// <term>FORMAT_MESSAGE_ALLOCATE_BUFFER0x00000100</term>
 	/// <term>
 	/// The function allocates a buffer large enough to hold the formatted message, and places a pointer to the allocated buffer at the
-	/// address specified by lpBuffer. The lpBuffer parameter is a pointer to an PTSTR; you must cast the pointer to an PTSTR (for
+	/// address specified by lpBuffer. The lpBuffer parameter is a pointer to an StrPtrAuto; you must cast the pointer to an StrPtrAuto (for
 	/// example, ). The nSize parameter specifies the minimum number of TCHARs to allocate for an output message buffer. The caller
 	/// should use the LocalFree function to free the buffer when it is no longer needed.If the length of the formatted message exceeds
 	/// 128K bytes, then FormatMessage will fail and a subsequent call to GetLastError will return ERROR_MORE_DATA.In previous versions
@@ -863,7 +863,7 @@ public static partial class Kernel32
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
 	// DWORD WINAPI FormatMessage( _In_ DWORD dwFlags, _In_opt_ LPCVOID lpSource, _In_ DWORD dwMessageId, _In_ DWORD dwLanguageId, _Out_
-	// PTSTR lpBuffer, _In_ DWORD nSize, _In_opt_ va_list *Arguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351(v=vs.85).aspx
+	// StrPtrAuto lpBuffer, _In_ DWORD nSize, _In_opt_ va_list *Arguments); https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
 	public static extern int FormatMessage(FormatMessageFlags dwFlags, [Optional] IntPtr lpSource, [Optional] uint dwMessageId, [Optional] uint dwLanguageId, [Optional] IntPtr lpBuffer, [Optional] uint nSize, [Optional] IntPtr Arguments);
@@ -1453,7 +1453,7 @@ public static partial class Kernel32
 	/// <param name="FailedAllocationSize">Size of the failed allocation.</param>
 	[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "")]
-	public static extern void TerminateProcessOnMemoryExhaustion(SIZE_T FailedAllocationSize);
+	public static extern void TerminateProcessOnMemoryExhaustion(SizeT FailedAllocationSize);
 
 	/// <summary>
 	/// An application-defined function that passes unhandled exceptions to the debugger, if the process is being debugged. Otherwise, it

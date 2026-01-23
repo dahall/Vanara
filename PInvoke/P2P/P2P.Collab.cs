@@ -1296,7 +1296,7 @@ public static partial class P2P
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabexportcontact NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerCollabExportContact( PCWSTR pwzPeerName, PWSTR *ppwzContactData );
+	// PeerCollabExportContact( PCWSTR pwzPeerName, StrPtrUni *ppwzContactData );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabExportContact")]
 	public static extern HRESULT PeerCollabExportContact([MarshalAs(UnmanagedType.LPWStr)] string? pwzPeerName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzContactData);
@@ -1467,7 +1467,7 @@ public static partial class P2P
 	/// </returns>
 	/// <remarks>The endpoint name is limited to 25 Unicode characters. To free this data call PeerFreeData.</remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabgetendpointname NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerCollabGetEndpointName( PWSTR *ppwzEndpointName );
+	// PeerCollabGetEndpointName( StrPtrUni *ppwzEndpointName );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabGetEndpointName")]
 	public static extern HRESULT PeerCollabGetEndpointName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PeerStringMarshaler))] out string ppwzEndpointName);
@@ -1881,7 +1881,7 @@ public static partial class P2P
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabquerycontactdata NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerCollabQueryContactData( PCPEER_ENDPOINT pcEndpoint, PWSTR *ppwzContactData );
+	// PeerCollabQueryContactData( PCPEER_ENDPOINT pcEndpoint, StrPtrUni *ppwzContactData );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabQueryContactData")]
 	public static extern HRESULT PeerCollabQueryContactData(in PEER_ENDPOINT pcEndpoint,
@@ -1932,7 +1932,7 @@ public static partial class P2P
 	/// </list>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peercollabquerycontactdata NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerCollabQueryContactData( PCPEER_ENDPOINT pcEndpoint, PWSTR *ppwzContactData );
+	// PeerCollabQueryContactData( PCPEER_ENDPOINT pcEndpoint, StrPtrUni *ppwzContactData );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerCollabQueryContactData")]
 	public static extern HRESULT PeerCollabQueryContactData([In, Optional] IntPtr pcEndpoint,

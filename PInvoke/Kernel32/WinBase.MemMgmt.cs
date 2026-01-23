@@ -154,10 +154,10 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a handle to the newly allocated memory object.</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HGLOBAL WINAPI GlobalAlloc( _In_ UINT uFlags, _In_ SIZE_T dwBytes); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366574(v=vs.85).aspx
+	// HGLOBAL WINAPI GlobalAlloc( _In_ UINT uFlags, _In_ SizeT dwBytes); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366574(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366574")]
-	public static extern HGLOBAL GlobalAlloc(GMEM uFlags, SIZE_T dwBytes);
+	public static extern HGLOBAL GlobalAlloc(GMEM uFlags, SizeT dwBytes);
 
 	/// <summary>Retrieves information about the specified global memory object.</summary>
 	/// <param name="hMem">
@@ -286,10 +286,10 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is a handle to the reallocated memory object.</para>
 	/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// HGLOBAL WINAPI GlobalReAlloc( _In_ HGLOBAL hMem, _In_ SIZE_T dwBytes, _In_ UINT uFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366590(v=vs.85).aspx
+	// HGLOBAL WINAPI GlobalReAlloc( _In_ HGLOBAL hMem, _In_ SizeT dwBytes, _In_ UINT uFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366590(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366590")]
-	public static extern HGLOBAL GlobalReAlloc([In, AddAsMember] HGLOBAL hMem, SIZE_T dwBytes, GMEM uFlags);
+	public static extern HGLOBAL GlobalReAlloc([In, AddAsMember] HGLOBAL hMem, SizeT dwBytes, GMEM uFlags);
 
 	/// <summary>Retrieves the current size of the specified global memory object, in bytes.</summary>
 	/// <param name="hMem">
@@ -302,10 +302,10 @@ public static partial class Kernel32
 	/// information, call <c>GetLastError</c>.
 	/// </para>
 	/// </returns>
-	// SIZE_T WINAPI GlobalSize( _In_ HGLOBAL hMem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366593(v=vs.85).aspx
+	// SizeT WINAPI GlobalSize( _In_ HGLOBAL hMem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366593(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366593")]
-	public static extern SIZE_T GlobalSize([In, AddAsMember] HGLOBAL hMem);
+	public static extern SizeT GlobalSize([In, AddAsMember] HGLOBAL hMem);
 
 	/// <summary>
 	/// <para>
@@ -390,7 +390,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366713")]
 	[Obsolete("This function is obsolete and should not be used. Despite its name, it does not guarantee that the pointer is valid or that the memory pointed to is safe to use.")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsBadReadPtr([In] IntPtr lp, SIZE_T ucb);
+	public static extern bool IsBadReadPtr([In] IntPtr lp, SizeT ucb);
 
 	/// <summary>Verifies that the calling process has read access to the specified range of memory.</summary>
 	/// <param name="lpsz">A pointer to a null-terminated string, either Unicode or ASCII.</param>
@@ -419,7 +419,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366714")]
 	[Obsolete("This function is obsolete and should not be used. Despite its name, it does not guarantee that the pointer is valid or that the memory pointed to is safe to use.")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsBadStringPtr([In] IntPtr lpsz, SIZE_T ucchMax);
+	public static extern bool IsBadStringPtr([In] IntPtr lpsz, SizeT ucchMax);
 
 	/// <summary>Verifies that the calling process has write access to the specified range of memory.</summary>
 	/// <param name="lp">A pointer to the first byte of the memory block.</param>
@@ -439,7 +439,7 @@ public static partial class Kernel32
 	[PInvokeData("WinBase.h", MSDNShortId = "aa366716")]
 	[Obsolete("This function is obsolete and should not be used. Despite its name, it does not guarantee that the pointer is valid or that the memory pointed to is safe to use.")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool IsBadWritePtr([In] IntPtr lp, SIZE_T ucb);
+	public static extern bool IsBadWritePtr([In] IntPtr lp, SizeT ucb);
 
 	/// <summary>
 	/// <para>Allocates the specified number of bytes from the heap.</para>
@@ -531,10 +531,10 @@ public static partial class Kernel32
 	/// <para>The following code shows a simple use of <c>LocalAlloc</c> and LocalFree.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-localalloc DECLSPEC_ALLOCATOR HLOCAL LocalAlloc( UINT
-	// uFlags, SIZE_T uBytes );
+	// uFlags, SizeT uBytes );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "da8cd2be-ff4c-4da5-813c-8759a58228c9")]
-	public static extern HLOCAL LocalAlloc(LMEM uFlags, SIZE_T uBytes);
+	public static extern HLOCAL LocalAlloc(LMEM uFlags, SizeT uBytes);
 
 	/// <summary>Retrieves information about the specified local memory object.</summary>
 	/// <param name="hMem">
@@ -681,10 +681,10 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-localrealloc DECLSPEC_ALLOCATOR HLOCAL LocalReAlloc(
-	// _Frees_ptr_opt_ HLOCAL hMem, SIZE_T uBytes, UINT uFlags );
+	// _Frees_ptr_opt_ HLOCAL hMem, SizeT uBytes, UINT uFlags );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "88527ddd-e0c2-4a41-825e-d3a6df77fd2a")]
-	public static extern HLOCAL LocalReAlloc([In] HLOCAL hMem, SIZE_T uBytes, LMEM uFlags);
+	public static extern HLOCAL LocalReAlloc([In] HLOCAL hMem, SizeT uBytes, LMEM uFlags);
 
 	/// <summary>
 	/// <para>Retrieves the current size of the specified local memory object, in bytes.</para>
@@ -709,10 +709,10 @@ public static partial class Kernel32
 	/// To verify that the specified object's memory block has not been discarded, call the LocalFlags function before calling <c>LocalSize</c>.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-localsize SIZE_T LocalSize( HLOCAL hMem );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-localsize SizeT LocalSize( HLOCAL hMem );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("winbase.h", MSDNShortId = "d1337845-d89c-4cd5-a584-36fe0c682c1a")]
-	public static extern SIZE_T LocalSize([In] HLOCAL hMem);
+	public static extern SizeT LocalSize([In] HLOCAL hMem);
 
 	/// <summary>
 	/// Decrements the lock count associated with a memory object that was allocated with <c>LMEM_MOVEABLE</c>. This function has no

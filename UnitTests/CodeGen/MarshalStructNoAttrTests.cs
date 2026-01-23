@@ -131,7 +131,7 @@ public struct MarshaledStruct
 [StructLayout(LayoutKind.Sequential)]
 public struct UnmarshaledStruct
 {
-	public PWSTR s;
+	public StrPtrUni s;
 	public int c;
 	public ArrayPointer<int> a;
 }

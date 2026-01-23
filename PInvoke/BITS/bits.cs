@@ -3821,7 +3821,7 @@ public static class BITS
 		/// </summary>
 		/// <returns>A string containing the HTTP method name.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/bits10_2/nf-bits10_2-ibackgroundcopyjobhttpoptions2-gethttpmethod
-		// HRESULT GetHttpMethod( [out] PWSTR *method );
+		// HRESULT GetHttpMethod( [out] StrPtrUni *method );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		string GetHttpMethod();
 	}
@@ -4015,7 +4015,7 @@ public static class BITS
 		/// </summary>
 		/// <returns>A string containing the HTTP method name.</returns>
 		// https://docs.microsoft.com/en-us/windows/win32/api/bits10_2/nf-bits10_2-ibackgroundcopyjobhttpoptions2-gethttpmethod
-		// HRESULT GetHttpMethod( [out] PWSTR *method );
+		// HRESULT GetHttpMethod( [out] StrPtrUni *method );
 		[return: MarshalAs(UnmanagedType.LPWStr)]
 		new string GetHttpMethod();
 
@@ -4920,7 +4920,7 @@ public static class BITS
 			public BG_BASIC_CREDENTIALS Basic;
 
 			/// <summary>The <c>BG_BASIC_CREDENTIALS</c> structure identifies the user name and password to authenticate.</summary>
-			// typedef struct { PWSTR UserName; PWSTR Password;} BG_BASIC_CREDENTIALS; https://msdn.microsoft.com/en-us/library/windows/desktop/aa362793(v=vs.85).aspx
+			// typedef struct { StrPtrUni UserName; StrPtrUni Password;} BG_BASIC_CREDENTIALS; https://msdn.microsoft.com/en-us/library/windows/desktop/aa362793(v=vs.85).aspx
 			[PInvokeData("Bits1_5.h", MSDNShortId = "aa362793")]
 			[StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
 			public struct BG_BASIC_CREDENTIALS
@@ -4953,7 +4953,7 @@ public static class BITS
 	}
 
 	/// <summary>The <c>BG_FILE_INFO</c> structure provides the local and remote names of the file to transfer.</summary>
-	// typedef struct _BG_FILE_INFO { PWSTR RemoteName; PWSTR LocalName;} BG_FILE_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/aa362800(v=vs.85).aspx
+	// typedef struct _BG_FILE_INFO { StrPtrUni RemoteName; StrPtrUni LocalName;} BG_FILE_INFO; https://msdn.microsoft.com/en-us/library/windows/desktop/aa362800(v=vs.85).aspx
 	[PInvokeData("Bits.h", MSDNShortId = "aa362800")]
 	[StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
 	public struct BG_FILE_INFO
@@ -5117,7 +5117,7 @@ public static class BITS
 	/// <c>BITS_FILE_PROPERTY_ID</c> enumeration.
 	/// </summary>
 	/// <returns></returns>
-	// typedef union { PWSTR String;} BITS_FILE_PROPERTY_VALUE; https://msdn.microsoft.com/en-us/library/windows/desktop/mt147016(v=vs.85).aspx
+	// typedef union { StrPtrUni String;} BITS_FILE_PROPERTY_VALUE; https://msdn.microsoft.com/en-us/library/windows/desktop/mt147016(v=vs.85).aspx
 	[PInvokeData("Bits5_0.h", MSDNShortId = "mt147016")]
 	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 	public struct BITS_FILE_PROPERTY_VALUE

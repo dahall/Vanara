@@ -35,16 +35,16 @@ public static partial class ShlwApi
 	/// <para>TBD</para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer that, when this function returns successfully, points to the new string's terminating null character. If the backslash
 	/// could not be appended due to inadequate buffer size, this value is <c>NULL</c>.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathaddbackslasha PSTR PathAddBackslashA( PSTR pszPath );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathaddbackslasha StrPtrAnsi PathAddBackslashA( StrPtrAnsi pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "27d8aec7-8b00-412a-9a42-8ce27e262781")]
-	public static extern PTSTR PathAddBackslash(StringBuilder pszPath);
+	public static extern StrPtrAuto PathAddBackslash(StringBuilder pszPath);
 
 	/// <summary>
 	/// <para>Adds a file name extension to a path string.</para>
@@ -54,7 +54,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer with the null-terminated string to which the file name extension will be appended. You must set the size of
 	/// this buffer to MAX_PATH to ensure that it is large enough to hold the returned string.
@@ -74,7 +74,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para>Examples</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathaddextensiona BOOL PathAddExtensionA( PSTR pszPath,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathaddextensiona BOOL PathAddExtensionA( StrPtrAnsi pszPath,
 	// LPCSTR pszExt );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "2c113d11-11d5-4362-bad5-c859d65aca2a")]
@@ -89,7 +89,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string to which the path specified in pszMore is appended. You must set the size of this buffer to
 	/// MAX_PATH to ensure that it is large enough to hold the returned string.
@@ -112,7 +112,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para>Examples</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathappenda BOOL PathAppendA( PSTR pszPath, LPCSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathappenda BOOL PathAppendA( StrPtrAnsi pszPath, LPCSTR
 	// pszMore );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "896737ef-a05c-4f0f-b8b0-56355ae9c2d9")]
@@ -130,17 +130,17 @@ public static partial class ShlwApi
 	/// <para>A variable of type <c>int</c> that indicates the desired drive number. It should be between 0 and 25.</para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// Returns the address of the constructed root path. If the call fails for any reason (for example, an invalid drive number), szRoot
 	/// is returned unchanged.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathbuildroota PSTR PathBuildRootA( PSTR pszRoot, int
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathbuildroota StrPtrAnsi PathBuildRootA( StrPtrAnsi pszRoot, int
 	// iDrive );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "0a6895bd-54cf-499c-9057-f2d721bce5d9")]
-	public static extern PTSTR PathBuildRoot(StringBuilder pszRoot, int iDrive);
+	public static extern StrPtrAuto PathBuildRoot(StringBuilder pszRoot, int iDrive);
 
 	/// <summary>
 	/// <para>Simplifies a path by removing navigation elements such as "." and ".." to produce a direct, well-formed path.</para>
@@ -174,7 +174,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para>Examples</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcanonicalizea BOOL PathCanonicalizeA( PSTR pszBuf,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcanonicalizea BOOL PathCanonicalizeA( StrPtrAnsi pszBuf,
 	// LPCSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "e9b1e877-2cd6-4dd9-a15b-676cb940daed")]
@@ -198,7 +198,7 @@ public static partial class ShlwApi
 	/// <para>TBD</para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the concatenated path string. This is the same
 	/// string pointed to by pszPathOut. If this function does not return successfully, this value is <c>NULL</c>.
@@ -212,11 +212,11 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para>Examples</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcombinea PSTR PathCombineA( PSTR pszDest, LPCSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcombinea StrPtrAnsi PathCombineA( StrPtrAnsi pszDest, LPCSTR
 	// pszDir, LPCSTR pszFile );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "ed03334b-f688-4993-9685-092135ca29c9")]
-	public static extern PTSTR PathCombine(StringBuilder pszDest, [Optional] string? pszDir, [Optional] string? pszFile);
+	public static extern StrPtrAuto PathCombine(StringBuilder pszDest, [Optional] string? pszDir, [Optional] string? pszFile);
 
 	/// <summary>
 	/// <para>Compares two paths to determine if they share a common prefix. A prefix is one of these types: "C:\", ".", "..", "..\".</para>
@@ -240,7 +240,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcommonprefixa int PathCommonPrefixA( LPCSTR pszFile1,
-	// LPCSTR pszFile2, PSTR achPath );
+	// LPCSTR pszFile2, StrPtrAnsi achPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "13c32b32-8541-41c4-82d8-48d3b2439f0c")]
 	public static extern int PathCommonPrefix(string pszFile1, string pszFile2, StringBuilder achPath);
@@ -273,7 +273,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para>Examples</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcompactpatha BOOL PathCompactPathA( HDC hDC, PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcompactpatha BOOL PathCompactPathA( HDC hDC, StrPtrAnsi
 	// pszPath, UINT dx );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "b8184c98-1f86-4714-baf8-af4ef3e71cf2")]
@@ -284,7 +284,7 @@ public static partial class ShlwApi
 	/// <para>Truncates a path to fit within a certain number of characters by replacing path components with ellipses.</para>
 	/// </summary>
 	/// <param name="pszOut">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>The address of the string that has been altered.</para>
 	/// </param>
 	/// <param name="pszSrc">
@@ -312,7 +312,7 @@ public static partial class ShlwApi
 	/// character. For example, if the input file name is "My Filename" and cchMax is 10, <c>PathCompactPathEx</c> will return "My Fil...".
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcompactpathexa BOOL PathCompactPathExA( PSTR pszOut,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcompactpathexa BOOL PathCompactPathExA( StrPtrAnsi pszOut,
 	// LPCSTR pszSrc, UINT cchMax, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "ff108ee6-3d71-4ab2-a04a-d4bcce408f88")]
@@ -327,7 +327,7 @@ public static partial class ShlwApi
 	/// <para>A null-terminated string of maximum length INTERNET_MAX_URL_LENGTH that contains the URL.</para>
 	/// </param>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this function returns successfully, receives the MS-DOS path. You must set the size of this
 	/// buffer to MAX_PATH to ensure that it is large enough to hold the returned string.
@@ -346,7 +346,7 @@ public static partial class ShlwApi
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcreatefromurla LWSTDAPI PathCreateFromUrlA( PCSTR
-	// pszUrl, PSTR pszPath, DWORD *pcchPath, DWORD dwFlags );
+	// pszUrl, StrPtrAnsi pszPath, DWORD *pcchPath, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f4136c80-a309-4551-be73-f2f24ecd4675")]
 	public static extern HRESULT PathCreateFromUrl(string pszUrl, StringBuilder pszPath, ref uint pcchPath, uint dwFlags = 0);
@@ -359,7 +359,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to the URL of a file, represented as a null-terminated, Unicode string.</para>
 	/// </param>
 	/// <param name="ppszOut">
-	/// <para>Type: <c>PWSTR*</c></para>
+	/// <para>Type: <c>StrPtrUni*</c></para>
 	/// <para>
 	/// The address of a pointer to a buffer of length MAX_PATH that, when this function returns successfully, receives the file path.
 	/// </para>
@@ -373,7 +373,7 @@ public static partial class ShlwApi
 	/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcreatefromurlalloc LWSTDAPI PathCreateFromUrlAlloc(
-	// PCWSTR pszIn, PWSTR *ppszOut, DWORD dwFlags );
+	// PCWSTR pszIn, StrPtrUni *ppszOut, DWORD dwFlags );
 	[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "274411cd-5922-4db8-8775-feb93cae32dd")]
 	public static extern HRESULT PathCreateFromUrlAlloc(string pszIn, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler))] out string ppszOut, uint dwFlags = 0);
@@ -408,14 +408,14 @@ public static partial class ShlwApi
 	/// <para>Searches a path for an extension.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string of maximum length MAX_PATH that contains the path to search, including the extension being
 	/// searched for.
 	/// </para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// Returns the address of the "." that precedes the extension within pszPath if an extension is found, or the address of the
 	/// terminating null character otherwise.
@@ -430,7 +430,7 @@ public static partial class ShlwApi
 	// pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "afebd4b7-2685-4b6e-8f8a-d43944dacef5")]
-	public static extern PTSTR PathFindExtension(string pszPath);
+	public static extern StrPtrAuto PathFindExtension(string pszPath);
 
 	/// <summary>
 	/// <para>Searches a path for a file name.</para>
@@ -439,19 +439,19 @@ public static partial class ShlwApi
 	/// <para>TBD</para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Returns a pointer to the address of the string if successful, or a pointer to the beginning of the path otherwise.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathfindfilenamea LPCSTR PathFindFileNameA( LPCSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "f3824dee-1169-4f89-9844-35aa8a1830c4")]
-	public static extern PTSTR PathFindFileName(string pszPath);
+	public static extern StrPtrAuto PathFindFileName(string pszPath);
 
 	/// <summary>
 	/// <para>Parses a path and returns the portion of that path that follows the first backslash.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string that contains the path to parse. This string must not be longer than MAX_PATH characters,
 	/// plus the terminating null character. Path components are delimited by backslashes. For instance, the path
@@ -459,7 +459,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Returns a pointer to a null-terminated string that contains the truncated path.</para>
 	/// <para>If pszPath points to the last component in the path, this function returns a pointer to the terminating null character.</para>
 	/// <para>If pszPath points to the terminating null character or if the call fails, this function returns <c>NULL</c>.</para>
@@ -481,11 +481,11 @@ public static partial class ShlwApi
 	// LPCSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "2c76b901-dc0e-4f26-93c8-3c59b8f7147d")]
-	public static extern PTSTR PathFindNextComponent(string pszPath);
+	public static extern StrPtrAuto PathFindNextComponent(string pszPath);
 
 	/// <summary>Searches for a file.</summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string of length MAX_PATH that contains the file name for which to search. If the search is
 	/// successful, this parameter is used to return the fully qualified path name.
@@ -518,7 +518,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-pathfindonpatha
-	// BOOL PathFindOnPathA( [in, out] PSTR pszPath, [in, optional] PZPCSTR ppszOtherDirs );
+	// BOOL PathFindOnPathA( [in, out] StrPtrAnsi pszPath, [in, optional] PZPCSTR ppszOtherDirs );
 	[PInvokeData("shlwapi.h", MSDNShortId = "NF:shlwapi.PathFindOnPathA")]
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -558,13 +558,13 @@ public static partial class ShlwApi
 	// pszPath, const LPCSTR *apszSuffix, int iArraySize );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "e2285f7d-bb5d-48c5-bdf1-10ca410389f0")]
-	public static extern PTSTR PathFindSuffixArray(string pszPath, string[] apszSuffix, int iArraySize);
+	public static extern StrPtrAuto PathFindSuffixArray(string pszPath, string[] apszSuffix, int iArraySize);
 
 	/// <summary>Finds the command line arguments within a given path.</summary>
-	/// <param name="pszPath"><para>Type: <c>PTSTR</c></para>
+	/// <param name="pszPath"><para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Pointer to a null-terminated string of maximum length MAX_PATH that contains the path to be searched.</para></param>
 	/// <returns>
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Returns a pointer to a null-terminated string that contains the arguments portion of the path if successful.</para>
 	/// <para>If there are no arguments in the path, the function returns a pointer to the end of the input string.</para>
 	/// <para>If the function is given a <c>NULL</c> argument it returns <c>NULL</c>.</para>
@@ -578,7 +578,7 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathgetargsa LPCSTR PathGetArgsA( LPCSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "17dfb601-1306-41b6-a504-8bf69ff204c9")]
-	public static extern PTSTR PathGetArgs(string pszPath);
+	public static extern StrPtrAuto PathGetArgs(string pszPath);
 
 	/// <summary>
 	/// <para>Determines the type of character in relation to a path.</para>
@@ -1000,7 +1000,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para>Examples</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathmakeprettya BOOL PathMakePrettyA( PSTR pszPath );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathmakeprettya BOOL PathMakePrettyA( StrPtrAnsi pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "fb871054-4c63-42de-b85b-edefa4b09ea0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1010,7 +1010,7 @@ public static partial class ShlwApi
 	/// <para>Gives an existing folder the proper attributes to become a system folder.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string of length MAX_PATH that contains the name of an existing folder that will be made into a
 	/// system folder.
@@ -1111,7 +1111,7 @@ public static partial class ShlwApi
 	/// <para>Parses a file location string that contains a file location and icon index, and returns separate values.</para>
 	/// </summary>
 	/// <param name="pszIconFile">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string of length MAX_PATH that contains a file location string. It should be in the form
 	/// "path,iconindex". When the function returns, pszIconFile will point to the file's path.
@@ -1128,7 +1128,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para>Examples</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathparseiconlocationa int PathParseIconLocationA( PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathparseiconlocationa int PathParseIconLocationA( StrPtrAnsi
 	// pszIconFile );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "1ded2f0f-0e11-4730-ab7b-16536e7f4435")]
@@ -1138,7 +1138,7 @@ public static partial class ShlwApi
 	/// <para>Searches a path for spaces. If spaces are found, the entire path is enclosed in quotation marks.</para>
 	/// </summary>
 	/// <param name="lpsz">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string that contains the path to search. The size of this buffer must be set to MAX_PATH to ensure
 	/// that it is large enough to hold the returned string.
@@ -1148,7 +1148,7 @@ public static partial class ShlwApi
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para><c>TRUE</c> if spaces were found; otherwise, <c>FALSE</c>.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathquotespacesa BOOL PathQuoteSpacesA( PSTR lpsz );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathquotespacesa BOOL PathQuoteSpacesA( StrPtrAnsi lpsz );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "76a51c21-b924-4919-a6bb-8c6bdec5b3f0")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1158,7 +1158,7 @@ public static partial class ShlwApi
 	/// <para>Creates a relative path from one file or folder to another.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a string that receives the relative path. This buffer must be at least MAX_PATH characters in size.</para>
 	/// </param>
 	/// <param name="pszFrom">
@@ -1206,7 +1206,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para>Examples</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathrelativepathtoa BOOL PathRelativePathToA( PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathrelativepathtoa BOOL PathRelativePathToA( StrPtrAnsi
 	// pszPath, LPCSTR pszFrom, DWORD dwAttrFrom, LPCSTR pszTo, DWORD dwAttrTo );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "7ed8d50a-2ad4-4ddf-941d-aea593341592")]
@@ -1217,7 +1217,7 @@ public static partial class ShlwApi
 	/// <para>Removes any arguments from a given path.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Pointer to a null-terminated string of length MAX_PATH that contains the path from which to remove arguments.</para>
 	/// </param>
 	/// <returns>
@@ -1230,7 +1230,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// <para>Examples</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathremoveargsa void PathRemoveArgsA( PSTR pszPath );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathremoveargsa void PathRemoveArgsA( StrPtrAnsi pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "430072bc-4ddc-4b3d-bf32-fb60d7b56faf")]
 	public static extern void PathRemoveArgs(StringBuilder pszPath);
@@ -1246,18 +1246,18 @@ public static partial class ShlwApi
 	/// <para>TBD</para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer that, when this function returns successfully and if a backslash has been removed, points to the terminating null
 	/// character that has replaced the backslash at the end of the string. If the path did not include a trailing backslash, this value
 	/// will point to the final character in the string.
 	/// </para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathremovebackslasha PSTR PathRemoveBackslashA( PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathremovebackslasha StrPtrAnsi PathRemoveBackslashA( StrPtrAnsi
 	// pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "58d13c38-40aa-4aaa-81dc-2b68425f1fe0")]
-	public static extern PTSTR PathRemoveBackslash(StringBuilder pszPath);
+	public static extern StrPtrAuto PathRemoveBackslash(StringBuilder pszPath);
 
 	/// <summary>
 	/// <para>Removes all leading and trailing spaces from a string.</para>
@@ -1268,7 +1268,7 @@ public static partial class ShlwApi
 	/// <returns>
 	/// <para>This function does not return a value.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathremoveblanksa void PathRemoveBlanksA( PSTR pszPath );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathremoveblanksa void PathRemoveBlanksA( StrPtrAnsi pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "0f496855-3ea7-4193-b895-fd4ea26ef6c5")]
 	public static extern void PathRemoveBlanks(StringBuilder pszPath);
@@ -1278,13 +1278,13 @@ public static partial class ShlwApi
 	/// <para><c>Note</c> This function is deprecated. We recommend the use of the PathCchRemoveExtension in its place.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a null-terminated string of length MAX_PATH from which to remove the extension.</para>
 	/// </param>
 	/// <returns>
 	/// <para>This function does not return a value.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathremoveextensiona void PathRemoveExtensionA( PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathremoveextensiona void PathRemoveExtensionA( StrPtrAnsi
 	// pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "6e26d005-50af-4376-b734-19ba3d9c470f")]
@@ -1295,14 +1295,14 @@ public static partial class ShlwApi
 	/// <para><c>Note</c> This function is deprecated. We recommend the use of the PathCchRemoveFileSpec function in its place.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a null-terminated string of length MAX_PATH that contains the path from which to remove the file name.</para>
 	/// </param>
 	/// <returns>
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>Returns nonzero if something was removed, or zero otherwise.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathremovefilespeca BOOL PathRemoveFileSpecA( PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathremovefilespeca BOOL PathRemoveFileSpecA( StrPtrAnsi
 	// pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "c47bcf8a-c59d-4d6a-81a9-a3960ae39867")]
@@ -1320,7 +1320,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>Pointer to a null-terminated string of length MAX_PATH in which to replace the extension.</para>
 	/// </param>
 	/// <param name="pszExt">
@@ -1331,7 +1331,7 @@ public static partial class ShlwApi
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>Returns nonzero if successful, or zero if the new path and extension would exceed MAX_PATH characters.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathrenameextensiona BOOL PathRenameExtensionA( PSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathrenameextensiona BOOL PathRenameExtensionA( StrPtrAnsi
 	// pszPath, LPCSTR pszExt );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "3d94f67c-e3ee-4b64-b0b9-8f771423bdc5")]
@@ -1355,7 +1355,7 @@ public static partial class ShlwApi
 	/// <para>Returns <c>TRUE</c> if the path is qualified, or <c>FALSE</c> otherwise.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathsearchandqualifya BOOL PathSearchAndQualifyA( LPCSTR
-	// pszPath, PSTR pszBuf, UINT cchBuf );
+	// pszPath, StrPtrAnsi pszBuf, UINT cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "90da281d-349a-460a-aa5a-14e3b4ced727")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1392,11 +1392,11 @@ public static partial class ShlwApi
 	/// </para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to a null-terminated string of maximum length MAX_PATH that contains the path to parse.</para>
 	/// </param>
 	/// <returns>
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer that, when this function returns successfully, points to the beginning of the subpath that follows the root (drive
 	/// letter or UNC server/share). If the function encounters an error, this value will be <c>NULL</c>.
@@ -1405,13 +1405,13 @@ public static partial class ShlwApi
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathskiproota LPCSTR PathSkipRootA( LPCSTR pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "528a3953-26d7-4fff-be31-9c9788d429ab")]
-	public static extern PTSTR PathSkipRoot(string pszPath);
+	public static extern StrPtrAuto PathSkipRoot(string pszPath);
 
 	/// <summary>
 	/// <para>Removes the path portion of a fully qualified path and file.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string of length MAX_PATH that contains the path and file name. When this function returns
 	/// successfully, the string contains only the file name, with the path removed.
@@ -1420,7 +1420,7 @@ public static partial class ShlwApi
 	/// <returns>
 	/// <para>This function does not return a value.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathstrippatha void PathStripPathA( PSTR pszPath );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathstrippatha void PathStripPathA( StrPtrAnsi pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "84b439f2-f570-4e7f-bc3f-e0fdd185ea15")]
 	public static extern void PathStripPath(StringBuilder pszPath);
@@ -1439,7 +1439,7 @@ public static partial class ShlwApi
 	/// <para>Type: <c>BOOL</c></para>
 	/// <para>Returns <c>TRUE</c> if a valid drive letter was found in the path, or <c>FALSE</c> otherwise.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathstriptoroota BOOL PathStripToRootA( PSTR pszPath );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathstriptoroota BOOL PathStripToRootA( StrPtrAnsi pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "ce9a1a40-2a03-44d2-80bc-0dc10654550b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1449,7 +1449,7 @@ public static partial class ShlwApi
 	/// <para>Removes the decoration from a path string.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A null-terminated string of length MAX_PATH that contains the path. When the function returns, pszPath points to the undecorated string.
 	/// </para>
@@ -1487,7 +1487,7 @@ public static partial class ShlwApi
 	/// </item>
 	/// </list>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathundecoratea void PathUndecorateA( PSTR pszPath );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathundecoratea void PathUndecorateA( StrPtrAnsi pszPath );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "2d98ad60-8a7d-4b8d-9b5c-27e348bdc2c3")]
 	public static extern void PathUndecorate(StringBuilder pszPath);
@@ -1500,7 +1500,7 @@ public static partial class ShlwApi
 	/// <para>A pointer to a null-terminated string of maximum length MAX_PATH that contains the path to be unexpanded.</para>
 	/// </param>
 	/// <param name="pszBuf">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a buffer that, when this method returns successfully, receives the unexpanded string. The size of this buffer must
 	/// be set to MAX_PATH to ensure that it is large enough to hold the returned string.
@@ -1560,7 +1560,7 @@ public static partial class ShlwApi
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathunexpandenvstringsa BOOL PathUnExpandEnvStringsA(
-	// LPCSTR pszPath, PSTR pszBuf, UINT cchBuf );
+	// LPCSTR pszPath, StrPtrAnsi pszBuf, UINT cchBuf );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "cfab1ee0-03f3-4e0f-a29d-5331fec022b5")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -1570,7 +1570,7 @@ public static partial class ShlwApi
 	/// <para>Removes the attributes from a folder that make it a system folder. This folder must actually exist in the file system.</para>
 	/// </summary>
 	/// <param name="pszPath">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string of maximum length MAX_PATH that contains the name of an existing folder that will have the
 	/// system folder attributes removed.
@@ -1591,7 +1591,7 @@ public static partial class ShlwApi
 	/// <para>Removes quotes from the beginning and end of a path.</para>
 	/// </summary>
 	/// <param name="lpsz">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>
 	/// A pointer to a null-terminated string of length MAX_PATH that contains the path. When the function returns successfully, points
 	/// to the string with beginning and ending quotation marks removed.
@@ -1600,7 +1600,7 @@ public static partial class ShlwApi
 	/// <returns>
 	/// <para>No return value.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathunquotespacesa BOOL PathUnquoteSpacesA( PSTR lpsz );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathunquotespacesa BOOL PathUnquoteSpacesA( StrPtrAnsi lpsz );
 	[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("shlwapi.h", MSDNShortId = "00474c95-ec59-489a-bee3-191b98a47567")]
 	[return: MarshalAs(UnmanagedType.Bool)]

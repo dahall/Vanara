@@ -124,7 +124,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/datetimeapi/nf-datetimeapi-getdateformata int GetDateFormatA( LCID Locale,
-	// DWORD dwFlags, const SYSTEMTIME *lpDate, LPCSTR lpFormat, PSTR lpDateStr, int cchDate );
+	// DWORD dwFlags, const SYSTEMTIME *lpDate, LPCSTR lpFormat, StrPtrAnsi lpDateStr, int cchDate );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "546cede1-1702-403a-bba3-b5cd3b35a1bf")]
 	public static extern int GetDateFormat(LCID Locale, DATE_FORMAT dwFlags, [In, Optional] PSYSTEMTIME? lpDate, [Optional] string? lpFormat,
@@ -341,7 +341,7 @@ public static partial class Kernel32
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/datetimeapi/nf-datetimeapi-getdateformatex int GetDateFormatEx( [in, optional]
 	// LPCWSTR lpLocaleName, [in] DWORD dwFlags, [in, optional] const SYSTEMTIME *lpDate, [in, optional] LPCWSTR lpFormat, [out,
-	// optional] PWSTR lpDateStr, [in] int cchDate, [in, optional] LPCWSTR lpCalendar );
+	// optional] StrPtrUni lpDateStr, [in] int cchDate, [in, optional] LPCWSTR lpCalendar );
 	[PInvokeData("datetimeapi.h", MSDNShortId = "NF:datetimeapi.GetDateFormatEx")]
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	public static extern int GetDateFormatEx([Optional] string? lpLocaleName, DATE_FORMAT dwFlags, [In, Optional] PSYSTEMTIME? lpDate,
@@ -438,7 +438,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/datetimeapi/nf-datetimeapi-gettimeformata int GetTimeFormatA( LCID Locale,
-	// DWORD dwFlags, const SYSTEMTIME *lpTime, LPCSTR lpFormat, PSTR lpTimeStr, int cchTime );
+	// DWORD dwFlags, const SYSTEMTIME *lpTime, LPCSTR lpFormat, StrPtrAnsi lpTimeStr, int cchTime );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "3db91d29-df97-4660-b3cd-0db5b42cfd01")]
 	public static extern int GetTimeFormat(LCID Locale, TIME_FORMAT dwFlags, [In, Optional] PSYSTEMTIME? lpTime, [Optional] string? lpFormat,
@@ -633,7 +633,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/datetimeapi/nf-datetimeapi-gettimeformatex int GetTimeFormatEx( LPCWSTR
-	// lpLocaleName, DWORD dwFlags, const SYSTEMTIME *lpTime, LPCWSTR lpFormat, PWSTR lpTimeStr, int cchTime );
+	// lpLocaleName, DWORD dwFlags, const SYSTEMTIME *lpTime, LPCWSTR lpFormat, StrPtrUni lpTimeStr, int cchTime );
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("datetimeapi.h", MSDNShortId = "4d63888e-4496-4315-ac87-bf60c54daa37")]
 	public static extern int GetTimeFormatEx([Optional] string? lpLocaleName, TIME_FORMAT dwFlags, [In, Optional] PSYSTEMTIME? lpTime, [Optional] string? lpFormat,

@@ -908,19 +908,19 @@ public class JobLimits : JobHelper
 	/// <para>Both <c>min</c> and <c>max</c> must be zero or non-zero.</para>
 	/// <para>If this value is <see langword="null"/>, then this setting is disabled.</para>
 	/// </summary>
-	public (SIZE_T min, SIZE_T max)? WorkingSetSize
+	public (SizeT min, SizeT max)? WorkingSetSize
 	{
 		get => job.CheckThenGet((JOBOBJECT_BASIC_LIMIT_INFORMATION n) =>
-			n.LimitFlags.IsFlagSet(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_WORKINGSET) ? (n.MinimumWorkingSetSize, n.MaximumWorkingSetSize) : ((SIZE_T, SIZE_T)?)null);
+			n.LimitFlags.IsFlagSet(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_WORKINGSET) ? (n.MinimumWorkingSetSize, n.MaximumWorkingSetSize) : ((SizeT, SizeT)?)null);
 		set
 		{
-			if (value.HasValue && ((value.Value.min == SIZE_T.Zero && value.Value.max != SIZE_T.Zero) || (value.Value.max == SIZE_T.Zero && value.Value.min != SIZE_T.Zero) || value.Value.min > value.Value.max))
+			if (value.HasValue && ((value.Value.min == SizeT.Zero && value.Value.max != SizeT.Zero) || (value.Value.max == SizeT.Zero && value.Value.min != SizeT.Zero) || value.Value.min > value.Value.max))
 				throw new ArgumentOutOfRangeException(nameof(WorkingSetSize));
 			job.CheckThenSet((ref JOBOBJECT_BASIC_LIMIT_INFORMATION i) =>
 			{
 				i.LimitFlags = i.LimitFlags.SetFlags(JOBOBJECT_LIMIT_FLAGS.JOB_OBJECT_LIMIT_WORKINGSET, value.HasValue);
-				i.MinimumWorkingSetSize = value.HasValue ? value.Value.min : SIZE_T.Zero;
-				i.MaximumWorkingSetSize = value.HasValue ? value.Value.max : SIZE_T.Zero;
+				i.MinimumWorkingSetSize = value.HasValue ? value.Value.min : SizeT.Zero;
+				i.MaximumWorkingSetSize = value.HasValue ? value.Value.max : SizeT.Zero;
 			});
 		}
 	}

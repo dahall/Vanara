@@ -16,7 +16,7 @@ public static partial class User32
 	/// </para>
 	/// </summary>
 	/// <param name="lpch">
-	/// <para>Type: <c>PTSTR</c></para>
+	/// <para>Type: <c>StrPtrAuto</c></para>
 	/// <para>A pointer to the text of the edit control.</para>
 	/// </param>
 	/// <param name="ichCurrent">
@@ -124,7 +124,7 @@ public static partial class User32
 	/// </para>
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nc-winuser-editwordbreakproca EDITWORDBREAKPROCA Editwordbreakproca; int
-	// Editwordbreakproca( [in] PSTR lpch, [in] int ichCurrent, [in] int cch, [in] int code ) {...}
+	// Editwordbreakproca( [in] StrPtrAnsi lpch, [in] int ichCurrent, [in] int cch, [in] int code ) {...}
 	[PInvokeData("winuser.h", MSDNShortId = "NC:winuser.EDITWORDBREAKPROCA")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = false, CharSet = CharSet.Auto)]
 	public delegate int EDITWORDBREAKPROC([MarshalAs(UnmanagedType.LPTStr)] string lpch, int ichCurrent, int cch, WB code);
@@ -796,7 +796,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getline
-		[MsgParams(typeof(int), typeof(PTSTR), LResultType = typeof(int))]
+		[MsgParams(typeof(int), typeof(StrPtrAuto), LResultType = typeof(int))]
 		EM_GETLINE = 0x00C4,
 
 		/// <summary>
@@ -1592,7 +1592,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-setcuebanner
-		[MsgParams(typeof(BOOL), typeof(PWSTR), LResultType = typeof(BOOL))]
+		[MsgParams(typeof(BOOL), typeof(StrPtrUni), LResultType = typeof(BOOL))]
 		EM_SETCUEBANNER = ECM_FIRST + 1,     // Set the cue banner with the lParm = LPCWSTR
 
 		/// <summary>
@@ -1615,7 +1615,7 @@ public static partial class User32
 		/// </para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/controls/em-getcuebanner
-		[MsgParams(typeof(PWSTR), typeof(uint), LResultType = typeof(BOOL))]
+		[MsgParams(typeof(StrPtrUni), typeof(uint), LResultType = typeof(BOOL))]
 		EM_GETCUEBANNER = ECM_FIRST + 2,     // Set the cue banner with the lParm = LPCWSTR
 
 		/// <summary>

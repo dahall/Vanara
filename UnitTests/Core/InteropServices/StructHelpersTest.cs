@@ -94,7 +94,7 @@ public class StructHelpersTest
 		Assert.That(t.p[1], Is.EqualTo(newpt));
 
 		// Get the size from the attribute
-		SIZE_T? val = t.GetFieldSizeViaAttribute("p");
+		SizeT? val = t.GetFieldSizeViaAttribute("p");
 		Assert.That((int)val!.GetValueOrDefault(), Is.EqualTo(t.l));
 	}
 }

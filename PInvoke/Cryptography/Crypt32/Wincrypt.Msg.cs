@@ -1364,7 +1364,7 @@ public static partial class Crypt32
 	/// </list>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptmsgcalculateencodedlength DWORD
-	// CryptMsgCalculateEncodedLength( DWORD dwMsgEncodingType, DWORD dwFlags, DWORD dwMsgType, void const *pvMsgEncodeInfo, PSTR
+	// CryptMsgCalculateEncodedLength( DWORD dwMsgEncodingType, DWORD dwFlags, DWORD dwMsgType, void const *pvMsgEncodeInfo, StrPtrAnsi
 	// pszInnerContentObjID, DWORD cbData );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "1c12003a-c2f3-4069-8bd6-b8f2875b0c98")]
@@ -3174,7 +3174,7 @@ public static partial class Crypt32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptmsgopentoencode HCRYPTMSG CryptMsgOpenToEncode(
-	// DWORD dwMsgEncodingType, DWORD dwFlags, DWORD dwMsgType, void const *pvMsgEncodeInfo, PSTR pszInnerContentObjID,
+	// DWORD dwMsgEncodingType, DWORD dwFlags, DWORD dwMsgType, void const *pvMsgEncodeInfo, StrPtrAnsi pszInnerContentObjID,
 	// PCMSG_STREAM_INFO pStreamInfo );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b0d2610b-05ba-4fb6-8f38-10f970a52091")]
@@ -3405,7 +3405,7 @@ public static partial class Crypt32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-cryptmsgopentoencode HCRYPTMSG CryptMsgOpenToEncode(
-	// DWORD dwMsgEncodingType, DWORD dwFlags, DWORD dwMsgType, void const *pvMsgEncodeInfo, PSTR pszInnerContentObjID,
+	// DWORD dwMsgEncodingType, DWORD dwFlags, DWORD dwMsgType, void const *pvMsgEncodeInfo, StrPtrAnsi pszInnerContentObjID,
 	// PCMSG_STREAM_INFO pStreamInfo );
 	[DllImport(Lib.Crypt32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("wincrypt.h", MSDNShortId = "b0d2610b-05ba-4fb6-8f38-10f970a52091")]

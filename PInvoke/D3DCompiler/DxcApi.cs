@@ -332,12 +332,12 @@ public static partial class DXC
 
 		/// <summary>Gets the size.</summary>
 		/// <returns>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The size of the data, in bytes.</para>
 		/// </returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SizeT GetBufferSize();
 		[PreserveSig]
-		new SIZE_T GetBufferSize();
+		new SizeT GetBufferSize();
 
 		/// <summary>Retrieve the encoding for this blob.</summary>
 		/// <param name="pKnown">Pointer to a variable that will be set to <c>TRUE</c> if the encoding is known.</param>
@@ -357,7 +357,7 @@ public static partial class DXC
 	/// return output name strings in DXC.
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/ns-dxcapi-idxcblobutf8 struct IDxcBlobUtf8 : IDxcBlobEncoding { LPCSTR
-	// GetStringPointer(); SIZE_T GetStringLength(); };
+	// GetStringPointer(); SizeT GetStringLength(); };
 	[PInvokeData("dxcapi.h", MSDNShortId = "NS:dxcapi.IDxcBlobUtf8")]
 	[ComImport, Guid("3da636c9-ba71-4024-a301-30cbf125305b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IDxcBlobUtf8 : IDxcBlobEncoding, IDxcBlob
@@ -373,12 +373,12 @@ public static partial class DXC
 
 		/// <summary>Gets the size.</summary>
 		/// <returns>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The size of the data, in bytes.</para>
 		/// </returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SizeT GetBufferSize();
 		[PreserveSig]
-		new SIZE_T GetBufferSize();
+		new SizeT GetBufferSize();
 
 		/// <summary>Retrieve the encoding for this blob.</summary>
 		/// <param name="pKnown">Pointer to a variable that will be set to <c>TRUE</c> if the encoding is known.</param>
@@ -397,9 +397,9 @@ public static partial class DXC
 		string GetStringPointer();
 
 		/// <summary>Retrieves the length of the string stored in this blob, in characters, excluding the null-terminator.</summary>
-		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcblobutf8-getstringlength SIZE_T GetStringLength();
+		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcblobutf8-getstringlength SizeT GetStringLength();
 		[PreserveSig]
-		SIZE_T GetStringLength();
+		SizeT GetStringLength();
 	}
 
 	/// <summary>
@@ -423,12 +423,12 @@ public static partial class DXC
 
 		/// <summary>Gets the size.</summary>
 		/// <returns>
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>The size of the data, in bytes.</para>
 		/// </returns>
-		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SIZE_T GetBufferSize();
+		// https://learn.microsoft.com/en-us/windows/win32/api/d3dcommon/nf-d3dcommon-id3d10blob-getbuffersize SizeT GetBufferSize();
 		[PreserveSig]
-		new SIZE_T GetBufferSize();
+		new SizeT GetBufferSize();
 
 		/// <summary>Retrieve the encoding for this blob.</summary>
 		/// <param name="pKnown">Pointer to a variable that will be set to <c>TRUE</c> if the encoding is known.</param>
@@ -447,9 +447,9 @@ public static partial class DXC
 		string GetStringPointer();
 
 		/// <summary>Retrieves the length of the string stored in this blob, in characters, excluding the null-terminator.</summary>
-		// SIZE_T GetStringLength();
+		// SizeT GetStringLength();
 		[PreserveSig]
-		SIZE_T GetStringLength();
+		SizeT GetStringLength();
 	}
 
 	/// <summary><b>IDxcCompiler</b> is deprecated; use <c>IDxcCompiler3</c> instead.</summary>
@@ -521,7 +521,7 @@ public static partial class DXC
 	/// <summary><b>IDxcCompiler2</b> is deprecated; use <c>IDxcCompiler3</c> instead.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/ns-dxcapi-idxccompiler2 struct IDxcCompiler2 : IDxcCompiler { HRESULT
 	// CompileWithDebug( IDxcBlob *pSource, LPCWSTR pSourceName, LPCWSTR pEntryPoint, LPCWSTR pTargetProfile, LPCWSTR *pArguments, UINT32
-	// argCount, const DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, PWSTR
+	// argCount, const DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, StrPtrUni
 	// *ppDebugBlobName, IDxcBlob **ppDebugBlob ); };
 	[PInvokeData("dxcapi.h", MSDNShortId = "NS:dxcapi.IDxcCompiler2")]
 	[ComImport, Guid("a005a9d9-b8bb-4594-b5c9-0e633bec4d37"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -599,7 +599,7 @@ public static partial class DXC
 		/// <param name="ppDebugBlob">The debug blob.</param>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxccompiler2-compilewithdebug HRESULT CompileWithDebug(
 		// IDxcBlob *pSource, LPCWSTR pSourceName, LPCWSTR pEntryPoint, LPCWSTR pTargetProfile, LPCWSTR *pArguments, UINT32 argCount, const
-		// DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, PWSTR
+		// DxcDefine *pDefines, UINT32 defineCount, IDxcIncludeHandler *pIncludeHandler, IDxcOperationResult **ppResult, StrPtrUni
 		// *ppDebugBlobName, IDxcBlob **ppDebugBlob );
 		[PreserveSig]
 		HRESULT CompileWithDebug([In] IDxcBlob pSource, [Optional, MarshalAs(UnmanagedType.LPWStr)] string? pSourceName,
@@ -1133,14 +1133,14 @@ public static partial class DXC
 		/// <summary><c>ppResult</c></summary>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getoptionname HRESULT GetOptionName(
-		// PWSTR *ppResult );
+		// StrPtrUni *ppResult );
 		[PreserveSig]
 		HRESULT GetOptionName([MarshalAs(UnmanagedType.LPWStr)] out string ppResult);
 
 		/// <summary><c>ppResult</c></summary>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getdescription HRESULT GetDescription(
-		// PWSTR *ppResult );
+		// StrPtrUni *ppResult );
 		[PreserveSig]
 		HRESULT GetDescription([MarshalAs(UnmanagedType.LPWStr)] out string ppResult);
 
@@ -1158,7 +1158,7 @@ public static partial class DXC
 		/// <param name="argIndex"/>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getoptionargname HRESULT GetOptionArgName(
-		// UINT32 argIndex, PWSTR *ppResult );
+		// UINT32 argIndex, StrPtrUni *ppResult );
 		[PreserveSig]
 		HRESULT GetOptionArgName(uint argIndex, [MarshalAs(UnmanagedType.LPWStr)] out string ppResult);
 
@@ -1169,7 +1169,7 @@ public static partial class DXC
 		/// <param name="argIndex"/>
 		/// <param name="ppResult"/>
 		// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/nf-dxcapi-idxcoptimizerpass-getoptionargdescription HRESULT
-		// GetOptionArgDescription( UINT32 argIndex, PWSTR *ppResult );
+		// GetOptionArgDescription( UINT32 argIndex, StrPtrUni *ppResult );
 		[PreserveSig]
 		HRESULT GetOptionArgDescription(uint argIndex, [MarshalAs(UnmanagedType.LPWStr)] out string? ppResult);
 	}
@@ -2047,7 +2047,7 @@ public static partial class DXC
 	}
 
 	/// <summary>Structure for supplying bytes or text input to Dxc APIs.</summary>
-	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/ns-dxcapi-dxctext typedef struct DxcBuffer { LPCVOID Ptr; SIZE_T Size;
+	// https://learn.microsoft.com/en-us/windows/win32/api/dxcapi/ns-dxcapi-dxctext typedef struct DxcBuffer { LPCVOID Ptr; SizeT Size;
 	// UINT Encoding; } DxcText;
 	[PInvokeData("dxcapi.h", MSDNShortId = "NS:dxcapi.DxcBuffer")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -2057,7 +2057,7 @@ public static partial class DXC
 		public IntPtr Ptr;
 
 		/// <summary>The size of the buffer, in bytes.</summary>
-		public SIZE_T Size;
+		public SizeT Size;
 
 		/// <summary>The encoding of the buffer. Use Encoding == 0 for non-text bytes, ANSI text, or unknown with byte-order mark (BOM).</summary>
 		public uint Encoding;

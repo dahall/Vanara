@@ -496,7 +496,7 @@ public static partial class Hid
 	/// <c>IWDFRequest::GetDeviceIoControlParameters</c> and providing the <i>pOutBufferSize</i> parameter, as shown in the following example.
 	/// </para>
 	/// <para>
-	/// <c>UCHAR reportId; SIZE_T outBufferSize; FxRequest-&gt;GetDeviceIoControlParameters(NULL, NULL, &amp;outBufferSize); reportId = (UCHAR)outBufferSize;</c>
+	/// <c>UCHAR reportId; SizeT outBufferSize; FxRequest-&gt;GetDeviceIoControlParameters(NULL, NULL, &amp;outBufferSize); reportId = (UCHAR)outBufferSize;</c>
 	/// </para>
 	/// <para>Input buffer length</para>
 	/// <para>None.</para>
@@ -534,7 +534,7 @@ public static partial class Hid
 	/// <c>IWDFRequest::GetDeviceIoControlParameters</c> and providing the <i>pOutBufferSize</i> parameter, as shown in the following example.
 	/// </para>
 	/// <para>
-	/// <c>UCHAR reportId; SIZE_T outBufferSize; FxRequest-&gt;GetDeviceIoControlParameters(NULL, NULL, &amp;outBufferSize); reportId = (UCHAR)outBufferSize;</c>
+	/// <c>UCHAR reportId; SizeT outBufferSize; FxRequest-&gt;GetDeviceIoControlParameters(NULL, NULL, &amp;outBufferSize); reportId = (UCHAR)outBufferSize;</c>
 	/// </para>
 	/// <para>Input buffer length</para>
 	/// <para>None.</para>
@@ -736,7 +736,7 @@ public static partial class Hid
 		public PDRIVER_OBJECT DriverObject;
 
 		/// <summary>Pointer to the minidriver's registry path.</summary>
-		public PWSTR RegistryPath;
+		public StrPtrUni RegistryPath;
 
 		/// <summary>Specifies the length, in bytes, that the minidriver requests for a device extension.</summary>
 		public uint DeviceExtensionSize;

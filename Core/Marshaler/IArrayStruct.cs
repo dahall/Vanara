@@ -32,7 +32,7 @@ public class IArrayStructMarshaler<T> : IVanaraMarshaler where T : struct
 	public static readonly int hSz = sizeof(uint);
 
 	/// <inheritdoc/>
-	public SIZE_T GetNativeSize() => hSz + IntPtr.Size;
+	public SizeT GetNativeSize() => hSz + IntPtr.Size;
 
 	/// <inheritdoc/>
 	public SafeAllocatedMemoryHandle MarshalManagedToNative(object? managedObject)
@@ -49,7 +49,7 @@ public class IArrayStructMarshaler<T> : IVanaraMarshaler where T : struct
 	}
 
 	/// <inheritdoc/>
-	public object? MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
+	public object? MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 	{
 		if (pNativeData == default) return new T[0];
 		var cnt = pNativeData.ToStructure<uint>();

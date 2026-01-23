@@ -508,7 +508,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Enumerating all Device Drivers in the System.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getdevicedriverbasenamea DWORD GetDeviceDriverBaseNameA( LPVOID
-	// ImageBase, PSTR lpFilename, DWORD nSize );
+	// ImageBase, StrPtrAnsi lpFilename, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "a19a927d-4669-4d4c-951e-43f294a8fb40")]
 	public static extern uint GetDeviceDriverBaseName(IntPtr ImageBase, [SizeDef(nameof(nSize))] StringBuilder lpFilename, uint nSize);
@@ -544,7 +544,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getdevicedriverfilenamea DWORD GetDeviceDriverFileNameA( LPVOID
-	// ImageBase, PSTR lpFilename, DWORD nSize );
+	// ImageBase, StrPtrAnsi lpFilename, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "6ddbcf7e-e41c-4ea7-b60a-01ed5c98c530")]
 	public static extern uint GetDeviceDriverFileName(IntPtr ImageBase, [SizeDef(nameof(nSize))] StringBuilder lpFilename, uint nSize);
@@ -612,7 +612,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Obtaining a File Name From a File Handle.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getmappedfilenamea DWORD GetMappedFileNameA( HANDLE hProcess,
-	// LPVOID lpv, PSTR lpFilename, DWORD nSize );
+	// LPVOID lpv, StrPtrAnsi lpFilename, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "10a2e5ab-f495-486d-8ef7-ef763716afd1")]
 	public static extern uint GetMappedFileName(HPROCESS hProcess, IntPtr lpv, [SizeDef(nameof(nSize))] StringBuilder lpFilename, uint nSize);
@@ -676,7 +676,7 @@ public static partial class Kernel32
 	/// <para>For an example, see Enumerating All Processes.</para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getmodulebasenamea DWORD GetModuleBaseNameA( HANDLE hProcess,
-	// HMODULE hModule, PSTR lpBaseName, DWORD nSize );
+	// HMODULE hModule, StrPtrAnsi lpBaseName, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "31a9eb69-95f0-4dd7-8fd5-296f2cff0b8a")]
 	public static extern uint GetModuleBaseName(HPROCESS hProcess, [Optional] HINSTANCE hModule, [MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(nSize))] StringBuilder lpBaseName, uint nSize);
@@ -748,7 +748,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexa DWORD GetModuleFileNameExA( HANDLE hProcess,
-	// HMODULE hModule, PSTR lpFilename, DWORD nSize );
+	// HMODULE hModule, StrPtrAnsi lpFilename, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "NF:psapi.GetModuleFileNameExA")]
 	public static extern uint GetModuleFileNameEx(HPROCESS hProcess, [Optional] HINSTANCE hModule, [MarshalAs(UnmanagedType.LPTStr), SizeDef(nameof(nSize))] StringBuilder lpFilename, uint nSize);
@@ -875,7 +875,7 @@ public static partial class Kernel32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-getprocessimagefilenamea DWORD GetProcessImageFileNameA( HANDLE
-	// hProcess, PSTR lpImageFileName, DWORD nSize );
+	// hProcess, StrPtrAnsi lpImageFileName, DWORD nSize );
 	[DllImport(Lib_Psapi, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("psapi.h", MSDNShortId = "819fc2f4-0801-417b-9cbb-d7fd2894634e")]
 	public static extern uint GetProcessImageFileName([In, AddAsMember] HPROCESS hProcess, [SizeDef(nameof(nSize))] StringBuilder lpImageFileName, uint nSize);
@@ -1358,7 +1358,7 @@ public static partial class Kernel32
 
 	/// <summary>Contains information about a pagefile.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-_enum_page_file_information typedef struct
-	// _ENUM_PAGE_FILE_INFORMATION { DWORD cb; DWORD Reserved; SIZE_T TotalSize; SIZE_T TotalInUse; SIZE_T PeakUsage; }
+	// _ENUM_PAGE_FILE_INFORMATION { DWORD cb; DWORD Reserved; SizeT TotalSize; SizeT TotalInUse; SizeT PeakUsage; }
 	// ENUM_PAGE_FILE_INFORMATION, *PENUM_PAGE_FILE_INFORMATION;
 	[PInvokeData("psapi.h", MSDNShortId = "020f3be8-f624-4788-8079-0f7679c9bef0")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -1371,13 +1371,13 @@ public static partial class Kernel32
 		public uint Reserved;
 
 		/// <summary>The total size of the pagefile, in pages.</summary>
-		public SIZE_T TotalSize;
+		public SizeT TotalSize;
 
 		/// <summary>The current pagefile usage, in pages.</summary>
-		public SIZE_T TotalInUse;
+		public SizeT TotalInUse;
 
 		/// <summary>The peak pagefile usage, in pages.</summary>
-		public SIZE_T PeakUsage;
+		public SizeT PeakUsage;
 	}
 
 	/// <summary>Contains the module load address, size, and entry point.</summary>
@@ -1405,8 +1405,8 @@ public static partial class Kernel32
 
 	/// <summary>Contains performance information.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/ns-psapi-_performance_information typedef struct _PERFORMANCE_INFORMATION {
-	// DWORD cb; SIZE_T CommitTotal; SIZE_T CommitLimit; SIZE_T CommitPeak; SIZE_T PhysicalTotal; SIZE_T PhysicalAvailable; SIZE_T
-	// SystemCache; SIZE_T KernelTotal; SIZE_T KernelPaged; SIZE_T KernelNonpaged; SIZE_T PageSize; DWORD HandleCount; DWORD ProcessCount;
+	// DWORD cb; SizeT CommitTotal; SizeT CommitLimit; SizeT CommitPeak; SizeT PhysicalTotal; SizeT PhysicalAvailable; SizeT
+	// SystemCache; SizeT KernelTotal; SizeT KernelPaged; SizeT KernelNonpaged; SizeT PageSize; DWORD HandleCount; DWORD ProcessCount;
 	// DWORD ThreadCount; } PERFORMANCE_INFORMATION, *PPERFORMANCE_INFORMATION, PERFORMACE_INFORMATION, *PPERFORMACE_INFORMATION;
 	[PInvokeData("psapi.h", MSDNShortId = "efc47f6e-1a60-4e77-9e5d-c725f9042ab8")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1419,41 +1419,41 @@ public static partial class Kernel32
 		/// The number of pages currently committed by the system. Note that committing pages (using VirtualAlloc with MEM_COMMIT) changes
 		/// this value immediately; however, the physical memory is not charged until the pages are accessed.
 		/// </summary>
-		public SIZE_T CommitTotal;
+		public SizeT CommitTotal;
 
 		/// <summary>
 		/// The current maximum number of pages that can be committed by the system without extending the paging file(s). This number can
 		/// change if memory is added or deleted, or if pagefiles have grown, shrunk, or been added. If the paging file can be extended, this
 		/// is a soft limit.
 		/// </summary>
-		public SIZE_T CommitLimit;
+		public SizeT CommitLimit;
 
 		/// <summary>The maximum number of pages that were simultaneously in the committed state since the last system reboot.</summary>
-		public SIZE_T CommitPeak;
+		public SizeT CommitPeak;
 
 		/// <summary>The amount of actual physical memory, in pages.</summary>
-		public SIZE_T PhysicalTotal;
+		public SizeT PhysicalTotal;
 
 		/// <summary>
 		/// The amount of physical memory currently available, in pages. This is the amount of physical memory that can be immediately reused
 		/// without having to write its contents to disk first. It is the sum of the size of the standby, free, and zero lists.
 		/// </summary>
-		public SIZE_T PhysicalAvailable;
+		public SizeT PhysicalAvailable;
 
 		/// <summary>The amount of system cache memory, in pages. This is the size of the standby list plus the system working set.</summary>
-		public SIZE_T SystemCache;
+		public SizeT SystemCache;
 
 		/// <summary>The sum of the memory currently in the paged and nonpaged kernel pools, in pages.</summary>
-		public SIZE_T KernelTotal;
+		public SizeT KernelTotal;
 
 		/// <summary>The memory currently in the paged kernel pool, in pages.</summary>
-		public SIZE_T KernelPaged;
+		public SizeT KernelPaged;
 
 		/// <summary>The memory currently in the nonpaged kernel pool, in pages.</summary>
-		public SIZE_T KernelNonpaged;
+		public SizeT KernelNonpaged;
 
 		/// <summary>The size of a page, in bytes.</summary>
-		public SIZE_T PageSize;
+		public SizeT PageSize;
 
 		/// <summary>The current number of open handles.</summary>
 		public uint HandleCount;
@@ -1470,8 +1470,8 @@ public static partial class Kernel32
 
 	/// <summary>Contains the memory statistics for a process.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/ns-psapi-_process_memory_counters typedef struct _PROCESS_MEMORY_COUNTERS {
-	// DWORD cb; DWORD PageFaultCount; SIZE_T PeakWorkingSetSize; SIZE_T WorkingSetSize; SIZE_T QuotaPeakPagedPoolUsage; SIZE_T
-	// QuotaPagedPoolUsage; SIZE_T QuotaPeakNonPagedPoolUsage; SIZE_T QuotaNonPagedPoolUsage; SIZE_T PagefileUsage; SIZE_T PeakPagefileUsage;
+	// DWORD cb; DWORD PageFaultCount; SizeT PeakWorkingSetSize; SizeT WorkingSetSize; SizeT QuotaPeakPagedPoolUsage; SizeT
+	// QuotaPagedPoolUsage; SizeT QuotaPeakNonPagedPoolUsage; SizeT QuotaNonPagedPoolUsage; SizeT PagefileUsage; SizeT PeakPagefileUsage;
 	// } PROCESS_MEMORY_COUNTERS;
 	[PInvokeData("psapi.h", MSDNShortId = "288b5865-28a3-478b-ad32-c710fe4f3a81")]
 	[StructLayout(LayoutKind.Sequential)]
@@ -1484,31 +1484,31 @@ public static partial class Kernel32
 		public uint PageFaultCount;
 
 		/// <summary>The peak working set size, in bytes.</summary>
-		public SIZE_T PeakWorkingSetSize;
+		public SizeT PeakWorkingSetSize;
 
 		/// <summary>The current working set size, in bytes.</summary>
-		public SIZE_T WorkingSetSize;
+		public SizeT WorkingSetSize;
 
 		/// <summary>The peak paged pool usage, in bytes.</summary>
-		public SIZE_T QuotaPeakPagedPoolUsage;
+		public SizeT QuotaPeakPagedPoolUsage;
 
 		/// <summary>The current paged pool usage, in bytes.</summary>
-		public SIZE_T QuotaPagedPoolUsage;
+		public SizeT QuotaPagedPoolUsage;
 
 		/// <summary>The peak nonpaged pool usage, in bytes.</summary>
-		public SIZE_T QuotaPeakNonPagedPoolUsage;
+		public SizeT QuotaPeakNonPagedPoolUsage;
 
 		/// <summary>The current nonpaged pool usage, in bytes.</summary>
-		public SIZE_T QuotaNonPagedPoolUsage;
+		public SizeT QuotaNonPagedPoolUsage;
 
 		/// <summary>
 		/// The Commit Charge value in bytes for this process. Commit Charge is the total amount of memory that the memory manager has
 		/// committed for a running process.
 		/// </summary>
-		public SIZE_T PagefileUsage;
+		public SizeT PagefileUsage;
 
 		/// <summary>The peak value in bytes of the Commit Charge during the lifetime of this process.</summary>
-		public SIZE_T PeakPagefileUsage;
+		public SizeT PeakPagefileUsage;
 
 		/// <summary>A default initialized instance.</summary>
 		public static readonly PROCESS_MEMORY_COUNTERS Default = new();
@@ -1516,9 +1516,9 @@ public static partial class Kernel32
 
 	/// <summary>Contains extended memory statistics for a process.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters_ex typedef struct
-	// _PROCESS_MEMORY_COUNTERS_EX { DWORD cb; DWORD PageFaultCount; SIZE_T PeakWorkingSetSize; SIZE_T WorkingSetSize; SIZE_T
-	// QuotaPeakPagedPoolUsage; SIZE_T QuotaPagedPoolUsage; SIZE_T QuotaPeakNonPagedPoolUsage; SIZE_T QuotaNonPagedPoolUsage; SIZE_T
-	// PagefileUsage; SIZE_T PeakPagefileUsage; SIZE_T PrivateUsage; } PROCESS_MEMORY_COUNTERS_EX;
+	// _PROCESS_MEMORY_COUNTERS_EX { DWORD cb; DWORD PageFaultCount; SizeT PeakWorkingSetSize; SizeT WorkingSetSize; SizeT
+	// QuotaPeakPagedPoolUsage; SizeT QuotaPagedPoolUsage; SizeT QuotaPeakNonPagedPoolUsage; SizeT QuotaNonPagedPoolUsage; SizeT
+	// PagefileUsage; SizeT PeakPagefileUsage; SizeT PrivateUsage; } PROCESS_MEMORY_COUNTERS_EX;
 	[PInvokeData("psapi.h", MSDNShortId = "cf06445d-b71a-4320-afc8-4bd88ebfb284")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct PROCESS_MEMORY_COUNTERS_EX()
@@ -1530,22 +1530,22 @@ public static partial class Kernel32
 		public uint PageFaultCount;
 
 		/// <summary>The peak working set size, in bytes.</summary>
-		public SIZE_T PeakWorkingSetSize;
+		public SizeT PeakWorkingSetSize;
 
 		/// <summary>The current working set size, in bytes.</summary>
-		public SIZE_T WorkingSetSize;
+		public SizeT WorkingSetSize;
 
 		/// <summary>The peak paged pool usage, in bytes.</summary>
-		public SIZE_T QuotaPeakPagedPoolUsage;
+		public SizeT QuotaPeakPagedPoolUsage;
 
 		/// <summary>The current paged pool usage, in bytes.</summary>
-		public SIZE_T QuotaPagedPoolUsage;
+		public SizeT QuotaPagedPoolUsage;
 
 		/// <summary>The peak nonpaged pool usage, in bytes.</summary>
-		public SIZE_T QuotaPeakNonPagedPoolUsage;
+		public SizeT QuotaPeakNonPagedPoolUsage;
 
 		/// <summary>The current nonpaged pool usage, in bytes.</summary>
-		public SIZE_T QuotaNonPagedPoolUsage;
+		public SizeT QuotaNonPagedPoolUsage;
 
 		/// <summary>
 		/// <para>
@@ -1556,16 +1556,16 @@ public static partial class Kernel32
 		/// <c>Windows 7 and Windows Server 2008 R2 and earlier:</c><c>PagefileUsage</c> is always zero. Check <c>PrivateUsage</c> instead.
 		/// </para>
 		/// </summary>
-		public SIZE_T PagefileUsage;
+		public SizeT PagefileUsage;
 
 		/// <summary>The peak value in bytes of the Commit Charge during the lifetime of this process.</summary>
-		public SIZE_T PeakPagefileUsage;
+		public SizeT PeakPagefileUsage;
 
 		/// <summary>
 		/// Same as <c>PagefileUsage</c>. The Commit Charge value in bytes for this process. Commit Charge is the total amount of memory that
 		/// the memory manager has committed for a running process.
 		/// </summary>
-		public SIZE_T PrivateUsage;
+		public SizeT PrivateUsage;
 
 		/// <summary>A default initialized instance.</summary>
 		public static readonly PROCESS_MEMORY_COUNTERS_EX Default = new();

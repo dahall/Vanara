@@ -187,12 +187,12 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// PVOID WINAPI CreateEnclave( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ SIZE_T dwInitialCommittment,
+	// PVOID WINAPI CreateEnclave( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ SizeT dwInitialCommittment,
 	// _In_ DWORD flEnclaveType, _In_ LPCVOID lpEnclaveInformation, _In_ DWORD dwInfoLength, _Out_opt_ LPDWORD lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592866(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592866")]
 	[return: AddAsCtor]
-	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SIZE_T dwSize, [Optional] SIZE_T dwInitialCommittment,
+	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SizeT dwSize, [Optional] SizeT dwInitialCommittment,
 		EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_SGX lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
 
 	/// <summary>
@@ -271,12 +271,12 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// PVOID WINAPI CreateEnclave( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ SIZE_T dwInitialCommittment,
+	// PVOID WINAPI CreateEnclave( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SizeT dwSize, _In_ SizeT dwInitialCommittment,
 	// _In_ DWORD flEnclaveType, _In_ LPCVOID lpEnclaveInformation, _In_ DWORD dwInfoLength, _Out_opt_ LPDWORD lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592866(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592866")]
 	[return: AddAsCtor]
-	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SIZE_T dwSize, [Optional] SIZE_T dwInitialCommittment,
+	public static extern SafeEnclaveHandle CreateEnclave(HPROCESS hProcess, [In, Optional] IntPtr lpAddress, SizeT dwSize, [Optional] SizeT dwInitialCommittment,
 		EnclaveType flEnclaveType, in ENCLAVE_CREATE_INFO_VBS lpEnclaveInformation, uint dwInfoLength, out uint lpEnclaveError);
 
 	/// <summary>Deletes the specified enclave.</summary>
@@ -755,14 +755,14 @@ public static partial class Kernel32
 	/// </list>
 	/// </para>
 	/// </returns>
-	// BOOL WINAPI LoadEnclaveData( _In_ HANDLE hProcess, _In_ LPVOID lpAddress, _In_ LPCVOID lpBuffer, _In_ SIZE_T nSize, _In_ DWORD
+	// BOOL WINAPI LoadEnclaveData( _In_ HANDLE hProcess, _In_ LPVOID lpAddress, _In_ LPCVOID lpBuffer, _In_ SizeT nSize, _In_ DWORD
 	// flProtect, _In_ LPCVOID lpPageInformation, _In_ DWORD dwInfoLength, _Out_ PSIZE_T lpNumberOfBytesWritten, _Out_opt_ LPDWORD
 	// lpEnclaveError); https://msdn.microsoft.com/en-us/library/windows/desktop/mt592871(v=vs.85).aspx
 	[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("Enclaveapi.h", MSDNShortId = "mt592871")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool LoadEnclaveData(HPROCESS hProcess, IntPtr lpAddress, [Optional] IntPtr lpBuffer, [Optional] SIZE_T nSize, MEM_PROTECTION flProtect,
-		[Optional] IntPtr lpPageInformation, [Optional] uint dwInfoLength, out SIZE_T lpNumberOfBytesWritten, out uint lpEnclaveError);
+	public static extern bool LoadEnclaveData(HPROCESS hProcess, IntPtr lpAddress, [Optional] IntPtr lpBuffer, [Optional] SizeT nSize, MEM_PROTECTION flProtect,
+		[Optional] IntPtr lpPageInformation, [Optional] uint dwInfoLength, out SizeT lpNumberOfBytesWritten, out uint lpEnclaveError);
 
 	/// <summary>Loads an image and all of its imports into an enclave.</summary>
 	/// <param name="lpEnclaveAddress">The base address of the image into which to load the image.</param>
@@ -800,10 +800,10 @@ public static partial class Kernel32
 	/// address space of the containing process) even when access is restricted using <c>EnclaveRestrictContainingProcessAccess</c>.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclavecopyintoenclave HRESULT
-	// EnclaveCopyIntoEnclave( VOID *EnclaveAddress, const VOID *UnsecureAddress, SIZE_T NumberOfBytes );
+	// EnclaveCopyIntoEnclave( VOID *EnclaveAddress, const VOID *UnsecureAddress, SizeT NumberOfBytes );
 	[PInvokeData("winenclaveapi.h", MSDNShortId = "NF:winenclaveapi.EnclaveCopyIntoEnclave")]
 	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
-	public static extern HRESULT EnclaveCopyIntoEnclave([In] IntPtr EnclaveAddress, [In] IntPtr UnsecureAddress, SIZE_T NumberOfBytes);
+	public static extern HRESULT EnclaveCopyIntoEnclave([In] IntPtr EnclaveAddress, [In] IntPtr UnsecureAddress, SizeT NumberOfBytes);
 
 	/// <summary>Copies data from the enclave to an untrusted address (outside of the enclave).</summary>
 	/// <param name="UnsecureAddress">An address outside of the enclave to which to copy data.</param>
@@ -818,10 +818,10 @@ public static partial class Kernel32
 	/// address space of the containing process) even when access is restricted using <c>EnclaveRestrictContainingProcessAccess</c>.
 	/// </remarks>
 	// https://learn.microsoft.com/en-us/windows/win32/api/winenclaveapi/nf-winenclaveapi-enclavecopyoutofenclave HRESULT
-	// EnclaveCopyOutOfEnclave( VOID *UnsecureAddress, const VOID *EnclaveAddress, SIZE_T NumberOfBytes );
+	// EnclaveCopyOutOfEnclave( VOID *UnsecureAddress, const VOID *EnclaveAddress, SizeT NumberOfBytes );
 	[PInvokeData("winenclaveapi.h", MSDNShortId = "NF:winenclaveapi.EnclaveCopyOutOfEnclave")]
 	[DllImport(Lib.VertDll, SetLastError = true, ExactSpelling = true)]
-	public static extern HRESULT EnclaveCopyOutOfEnclave([In] IntPtr UnsecureAddress, [In] IntPtr EnclaveAddress, SIZE_T NumberOfBytes);
+	public static extern HRESULT EnclaveCopyOutOfEnclave([In] IntPtr UnsecureAddress, [In] IntPtr EnclaveAddress, SizeT NumberOfBytes);
 
 	/// <summary>
 	/// Restricts (or restores) access by an enclave to the address space of its containing process. This policy applies to all threads in
@@ -985,7 +985,7 @@ public static partial class Kernel32
 
 	/// <summary>Contains information about the currently executing enclave.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ntenclv/ns-ntenclv-enclave_information typedef struct ENCLAVE_INFORMATION {
-	// ULONG EnclaveType; ULONG Reserved; PVOID BaseAddress; SIZE_T Size; ENCLAVE_IDENTITY Identity; } ENCLAVE_INFORMATION;
+	// ULONG EnclaveType; ULONG Reserved; PVOID BaseAddress; SizeT Size; ENCLAVE_IDENTITY Identity; } ENCLAVE_INFORMATION;
 	[PInvokeData("ntenclv.h", MSDNShortId = "6720EDBE-6A0E-4192-A096-2ACA681E2AAF")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ENCLAVE_INFORMATION
@@ -1016,7 +1016,7 @@ public static partial class Kernel32
 		public IntPtr BaseAddress;
 
 		/// <summary>The size of the enclave, in bytes.</summary>
-		public SIZE_T Size;
+		public SizeT Size;
 
 		/// <summary>The identity of the primary module of an enclave.</summary>
 		public ENCLAVE_IDENTITY Identity;

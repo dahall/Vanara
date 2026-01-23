@@ -753,7 +753,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleAlias( _In_ PTSTR lpSource, _Out_ PTSTR lpTargetBuffer, _In_ DWORD TargetBufferLength, _In_ PTSTR
+	// DWORD WINAPI GetConsoleAlias( _In_ StrPtrAuto lpSource, _Out_ StrPtrAuto lpTargetBuffer, _In_ DWORD TargetBufferLength, _In_ StrPtrAuto
 	// lpExeName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
@@ -769,7 +769,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleAlias( _In_ PTSTR lpSource, _Out_ PTSTR lpTargetBuffer, _In_ DWORD TargetBufferLength, _In_ PTSTR
+	// DWORD WINAPI GetConsoleAlias( _In_ StrPtrAuto lpSource, _Out_ StrPtrAuto lpTargetBuffer, _In_ DWORD TargetBufferLength, _In_ StrPtrAuto
 	// lpExeName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
@@ -797,8 +797,8 @@ public static partial class Kernel32
 	/// Using the Windows Headers.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/console/getconsolealiases DWORD WINAPI GetConsoleAliases( _Out_ PTSTR lpAliasBuffer,
-	// _In_ DWORD AliasBufferLength, _In_ PTSTR lpExeName );
+	// https://docs.microsoft.com/en-us/windows/console/getconsolealiases DWORD WINAPI GetConsoleAliases( _Out_ StrPtrAuto lpAliasBuffer,
+	// _In_ DWORD AliasBufferLength, _In_ StrPtrAuto lpExeName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("ConsoleApi3.h", MSDNShortId = "92eefa4e-ffde-4886-afde-5aecf450b425")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -825,8 +825,8 @@ public static partial class Kernel32
 	/// Using the Windows Headers.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/console/getconsolealiases DWORD WINAPI GetConsoleAliases( _Out_ PTSTR lpAliasBuffer,
-	// _In_ DWORD AliasBufferLength, _In_ PTSTR lpExeName );
+	// https://docs.microsoft.com/en-us/windows/console/getconsolealiases DWORD WINAPI GetConsoleAliases( _Out_ StrPtrAuto lpAliasBuffer,
+	// _In_ DWORD AliasBufferLength, _In_ StrPtrAuto lpExeName );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("ConsoleApi3.h", MSDNShortId = "92eefa4e-ffde-4886-afde-5aecf450b425")]
 	public static extern bool GetConsoleAliases(IntPtr lpAliasBuffer, uint AliasBufferLength, string lpExeName);
@@ -846,7 +846,7 @@ public static partial class Kernel32
 	/// <summary>Retrieves the required size for the buffer used by the <c>GetConsoleAliases</c> function.</summary>
 	/// <param name="lpExeName">The name of the executable file whose console aliases are to be retrieved.</param>
 	/// <returns>The size of the buffer required to store all console aliases defined for this executable file, in bytes.</returns>
-	// DWORD WINAPI GetConsoleAliasesLength( _In_ PTSTR lpExeName );
+	// DWORD WINAPI GetConsoleAliasesLength( _In_ StrPtrAuto lpExeName );
 	[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	public static extern uint GetConsoleAliasesLength(string lpExeName);
@@ -858,7 +858,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleAliasExes( _Out_ PTSTR lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
+	// DWORD WINAPI GetConsoleAliasExes( _Out_ StrPtrAuto lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -871,7 +871,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleAliasExes( _Out_ PTSTR lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
+	// DWORD WINAPI GetConsoleAliasExes( _Out_ StrPtrAuto lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
@@ -879,7 +879,7 @@ public static partial class Kernel32
 
 	/// <summary>Retrieves the names of all executable files with console aliases defined.</summary>
 	/// <returns>An array of the executable files.</returns>
-	// DWORD WINAPI GetConsoleAliasExes( _Out_ PTSTR lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
+	// DWORD WINAPI GetConsoleAliasExes( _Out_ StrPtrAuto lpExeNameBuffer, _In_ DWORD ExeNameBufferLength );
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static string[] GetConsoleAliasExes()
@@ -1383,7 +1383,7 @@ public static partial class Kernel32
 	/// <para>If the buffer is not large enough to store the title, the return value is zero and <c>GetLastError</c> returns <c>ERROR_SUCCESS</c>.</para>
 	/// <para>If the function fails, the return value is zero and <c>GetLastError</c> returns the error code.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleOriginalTitle( _Out_ PTSTR lpConsoleTitle, _In_ DWORD nSize );
+	// DWORD WINAPI GetConsoleOriginalTitle( _Out_ StrPtrAuto lpConsoleTitle, _In_ DWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	public static extern uint GetConsoleOriginalTitle([SizeDef(nameof(nSize), SizingMethod.Guess)] StringBuilder lpConsoleTitle, uint nSize);
@@ -1402,7 +1402,7 @@ public static partial class Kernel32
 	/// <para>If the buffer is not large enough to store the title, the return value is zero and <c>GetLastError</c> returns <c>ERROR_SUCCESS</c>.</para>
 	/// <para>If the function fails, the return value is zero and <c>GetLastError</c> returns the error code.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleOriginalTitle( _Out_ PTSTR lpConsoleTitle, _In_ DWORD nSize );
+	// DWORD WINAPI GetConsoleOriginalTitle( _Out_ StrPtrAuto lpConsoleTitle, _In_ DWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	public static extern uint GetConsoleOriginalTitle(IntPtr lpConsoleTitle, uint nSize);
@@ -1527,7 +1527,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is the length of the console window's title, in characters.</para>
 	/// <para>If the function fails, the return value is zero and <c>GetLastError</c> returns the error code.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleTitle( _Out_ PTSTR lpConsoleTitle, _In_ DWORD nSize );
+	// DWORD WINAPI GetConsoleTitle( _Out_ StrPtrAuto lpConsoleTitle, _In_ DWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	public static extern uint GetConsoleTitle([SizeDef(nameof(nSize), SizingMethod.QueryResultInReturn)] StringBuilder? lpConsoleTitle, uint nSize);
@@ -1548,7 +1548,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is the length of the console window's title, in characters.</para>
 	/// <para>If the function fails, the return value is zero and <c>GetLastError</c> returns the error code.</para>
 	/// </returns>
-	// DWORD WINAPI GetConsoleTitle( _Out_ PTSTR lpConsoleTitle, _In_ DWORD nSize );
+	// DWORD WINAPI GetConsoleTitle( _Out_ StrPtrAuto lpConsoleTitle, _In_ DWORD nSize );
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
 	public static extern uint GetConsoleTitle(IntPtr lpConsoleTitle, uint nSize);
@@ -1981,7 +1981,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI ReadConsoleOutputCharacter(_In_ HANDLE hConsoleOutput, _Out_ PTSTR lpCharacter, _In_ DWORD nLength, _In_ COORD
+	// BOOL WINAPI ReadConsoleOutputCharacter(_In_ HANDLE hConsoleOutput, _Out_ StrPtrAuto lpCharacter, _In_ DWORD nLength, _In_ COORD
 	// dwReadCoord, _Out_ LPDWORD lpNumberOfCharsRead);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]
@@ -2013,7 +2013,7 @@ public static partial class Kernel32
 	/// <para>If the function succeeds, the return value is nonzero.</para>
 	/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 	/// </returns>
-	// BOOL WINAPI ReadConsoleOutputCharacter(_In_ HANDLE hConsoleOutput, _Out_ PTSTR lpCharacter, _In_ DWORD nLength, _In_ COORD
+	// BOOL WINAPI ReadConsoleOutputCharacter(_In_ HANDLE hConsoleOutput, _Out_ StrPtrAuto lpCharacter, _In_ DWORD nLength, _In_ COORD
 	// dwReadCoord, _Out_ LPDWORD lpNumberOfCharsRead);
 	[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("Wincon.h", MSDNShortId = "")]

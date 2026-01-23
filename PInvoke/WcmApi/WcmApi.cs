@@ -940,7 +940,7 @@ public static partial class WcmApi
 		/// <summary>Converts this memory to a string value.</summary>
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory.</param>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
-		public string? ToString(SIZE_T allocatedBytes) => StringHelper.GetString(handle, CharSet.Unicode, allocatedBytes);
+		public string? ToString(SizeT allocatedBytes) => StringHelper.GetString(handle, CharSet.Unicode, allocatedBytes);
 
 		/// <summary>
 		/// Marshals data from an unmanaged block of memory to a newly allocated managed object of the type specified by a generic type parameter.
@@ -948,7 +948,7 @@ public static partial class WcmApi
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory.</param>
 		/// <returns>A managed object that contains the requested data.</returns>
-		public T? ToStructure<T>(SIZE_T allocatedBytes = default) => handle.ToStructure<T>(allocatedBytes);
+		public T? ToStructure<T>(SizeT allocatedBytes = default) => handle.ToStructure<T>(allocatedBytes);
 	}
 
 	internal class WcmMarshaler<T> : ICustomMarshaler

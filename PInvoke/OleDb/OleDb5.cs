@@ -1994,7 +1994,7 @@ public static partial class OleDb
 		HRESULT Copy(DBCOUNTITEM cRows, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rgpwszSourceURLs,
 			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rgpwszDestURLs, DBCOPYFLAGS dwCopyFlags,
 			[In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pAuthenticate, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DBSTATUS[] rgdwStatus,
-			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PWSTR[]? rgpwszNewURLs, out SafeIMallocHandle ppStringsBuffer);
+			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] StrPtrUni[]? rgpwszNewURLs, out SafeIMallocHandle ppStringsBuffer);
 
 		/// <summary>
 		/// Moves trees or subtrees that are represented by OLE DB row objects. The trees or subtrees are designated by an array of source
@@ -2263,7 +2263,7 @@ public static partial class OleDb
 		HRESULT Move(DBCOUNTITEM cRows, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rgpwszSourceURLs,
 			[In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 0)] string[] rgpwszDestURLs, DBMOVEFLAGS dwMoveFlags,
 			[In, Optional, MarshalAs(UnmanagedType.IUnknown)] object? pAuthenticate, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] DBSTATUS[] rgdwStatus,
-			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PWSTR[]? rgpwszNewURLs, out SafeIMallocHandle ppStringsBuffer);
+			[Out, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] StrPtrUni[]? rgpwszNewURLs, out SafeIMallocHandle ppStringsBuffer);
 
 		/// <summary>
 		/// Deletes the trees or subtrees named by an array of URLs. The URLs must all be within the scope of the current row object.

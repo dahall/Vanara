@@ -828,7 +828,7 @@ public static partial class ProjectedFSLib
 	// PrjAllocateAlignedBuffer( PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT namespaceVirtualizationContext, size_t size );
 	[DllImport(Lib.ProjectedFSLib, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("projectedfslib.h", MSDNShortId = "49B723CC-976D-44C6-91D9-0FB26CFD45CA")]
-	public static extern IntPtr PrjAllocateAlignedBuffer(PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT namespaceVirtualizationContext, SIZE_T size);
+	public static extern IntPtr PrjAllocateAlignedBuffer(PRJ_NAMESPACE_VIRTUALIZATION_CONTEXT namespaceVirtualizationContext, SizeT size);
 
 	/// <summary>Purges the virtualization instance's negative path cache, if it is active.</summary>
 	/// <param name="namespaceVirtualizationContext">Opaque handle for the virtualization instance.</param>

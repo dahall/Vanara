@@ -1087,7 +1087,7 @@ public static partial class Gdi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getenhmetafiledescriptiona UINT GetEnhMetaFileDescriptionA(
-	// HENHMETAFILE hemf, UINT cchBuffer, PSTR lpDescription );
+	// HENHMETAFILE hemf, UINT cchBuffer, StrPtrAnsi lpDescription );
 	[DllImport(Lib.Gdi32, SetLastError = true, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "51f4f617-fe53-4463-b222-cb6860d15dd6")]
 	public static extern uint GetEnhMetaFileDescription([In, AddAsMember] HENHMETAFILE hemf, uint cchBuffer, [Out, SizeDef(nameof(cchBuffer), SizingMethod.QueryResultInReturn)] StringBuilder? lpDescription);

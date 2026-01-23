@@ -1767,13 +1767,13 @@ public static partial class NCrypt
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		/// <param name="allocatedBytes">The total number of bytes allocated to the native memory.</param>
 		/// <returns>A managed object that contains the data that this handle points to.</returns>
-		public T ToStructure<T>(SIZE_T allocatedBytes) where T : struct => handle.ToStructure<T>(allocatedBytes);
+		public T ToStructure<T>(SizeT allocatedBytes) where T : struct => handle.ToStructure<T>(allocatedBytes);
 
 		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into a CLI array.</summary>
 		/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
 		/// <param name="count">The number of items in the native array.</param>
 		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory.</param>
 		/// <returns>An array of type <typeparamref name="T"/> containing the elements of the native array.</returns>
-		public T[]? ToArray<T>(int count, SIZE_T allocatedBytes = default) where T : struct => handle.ToArray<T>(count, 0, allocatedBytes);
+		public T[]? ToArray<T>(int count, SizeT allocatedBytes = default) where T : struct => handle.ToArray<T>(count, 0, allocatedBytes);
 	}
 }

@@ -478,7 +478,7 @@ public static partial class P2P
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupcreateinvitation NOT_BUILD_WINDOWS_DEPRECATE HRESULT
 	// PeerGroupCreateInvitation( HGROUP hGroup, PCWSTR pwzIdentityInfo, FILETIME *pftExpiration, ULONG cRoles, const GUID *pRoles,
-	// PWSTR *ppwzInvitation );
+	// StrPtrUni *ppwzInvitation );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupCreateInvitation")]
 	public static extern HRESULT PeerGroupCreateInvitation(HGROUP hGroup, [MarshalAs(UnmanagedType.LPWStr)] string pwzIdentityInfo, in FILETIME pftExpiration,
@@ -584,7 +584,7 @@ public static partial class P2P
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupcreateinvitation NOT_BUILD_WINDOWS_DEPRECATE HRESULT
 	// PeerGroupCreateInvitation( HGROUP hGroup, PCWSTR pwzIdentityInfo, FILETIME *pftExpiration, ULONG cRoles, const GUID *pRoles,
-	// PWSTR *ppwzInvitation );
+	// StrPtrUni *ppwzInvitation );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupCreateInvitation")]
 	public static extern HRESULT PeerGroupCreateInvitation(HGROUP hGroup, [MarshalAs(UnmanagedType.LPWStr)] string pwzIdentityInfo, [In, Optional] IntPtr pftExpiration,
@@ -677,7 +677,7 @@ public static partial class P2P
 	/// </para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupcreatepasswordinvitation NOT_BUILD_WINDOWS_DEPRECATE
-	// HRESULT PeerGroupCreatePasswordInvitation( HGROUP hGroup, PWSTR *ppwzInvitation );
+	// HRESULT PeerGroupCreatePasswordInvitation( HGROUP hGroup, StrPtrUni *ppwzInvitation );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupCreatePasswordInvitation")]
 	public static extern HRESULT PeerGroupCreatePasswordInvitation(HGROUP hGroup,
@@ -1134,7 +1134,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupexportconfig NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerGroupExportConfig( HGROUP hGroup, PCWSTR pwzPassword, PWSTR *ppwzXML );
+	// PeerGroupExportConfig( HGROUP hGroup, PCWSTR pwzPassword, StrPtrUni *ppwzXML );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupExportConfig")]
 	public static extern HRESULT PeerGroupExportConfig(HGROUP hGroup, [MarshalAs(UnmanagedType.LPWStr)] string pwzPassword,
@@ -1432,7 +1432,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupimportconfig NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerGroupImportConfig( PCWSTR pwzXML, PCWSTR pwzPassword, BOOL fOverwrite, PWSTR *ppwzIdentity, PWSTR *ppwzGroup );
+	// PeerGroupImportConfig( PCWSTR pwzXML, PCWSTR pwzPassword, BOOL fOverwrite, StrPtrUni *ppwzIdentity, StrPtrUni *ppwzGroup );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupImportConfig")]
 	public static extern HRESULT PeerGroupImportConfig([MarshalAs(UnmanagedType.LPWStr)] string pwzXML, [MarshalAs(UnmanagedType.LPWStr)] string pwzPassword,
@@ -1580,7 +1580,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupissuecredentials NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerGroupIssueCredentials( HGROUP hGroup, PCWSTR pwzSubjectIdentity, PEER_CREDENTIAL_INFO *pCredentialInfo, DWORD dwFlags, PWSTR
+	// PeerGroupIssueCredentials( HGROUP hGroup, PCWSTR pwzSubjectIdentity, PEER_CREDENTIAL_INFO *pCredentialInfo, DWORD dwFlags, StrPtrUni
 	// *ppwzInvitation );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupIssueCredentials")]
@@ -1682,7 +1682,7 @@ public static partial class P2P
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/p2p/nf-p2p-peergroupissuecredentials NOT_BUILD_WINDOWS_DEPRECATE HRESULT
-	// PeerGroupIssueCredentials( HGROUP hGroup, PCWSTR pwzSubjectIdentity, PEER_CREDENTIAL_INFO *pCredentialInfo, DWORD dwFlags, PWSTR
+	// PeerGroupIssueCredentials( HGROUP hGroup, PCWSTR pwzSubjectIdentity, PEER_CREDENTIAL_INFO *pCredentialInfo, DWORD dwFlags, StrPtrUni
 	// *ppwzInvitation );
 	[DllImport(Lib_P2P, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("p2p.h", MSDNShortId = "NF:p2p.PeerGroupIssueCredentials")]

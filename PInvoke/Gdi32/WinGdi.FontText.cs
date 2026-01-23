@@ -3820,7 +3820,7 @@ public static partial class Gdi32
 	/// <para>The typeface name is copied as a null-terminated character string.</para>
 	/// <para>If the name is longer than the number of characters specified by the nCount parameter, the name is truncated.</para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextfacea int GetTextFaceA( HDC hdc, int c, PSTR lpName );
+	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-gettextfacea int GetTextFaceA( HDC hdc, int c, StrPtrAnsi lpName );
 	[DllImport(Lib.Gdi32, SetLastError = false, CharSet = CharSet.Auto)]
 	[PInvokeData("wingdi.h", MSDNShortId = "c4c8c8f5-3651-481b-a55f-da7f49d92f3a")]
 	public static extern int GetTextFace([In, AddAsMember] HDC hdc, int c, [Optional, SizeDef(nameof(c), SizingMethod.QueryResultInReturn)] StringBuilder? lpName);
@@ -4573,7 +4573,7 @@ public static partial class Gdi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-gcp_resultsa typedef struct tagGCP_RESULTSA { DWORD lStructSize;
-	// PSTR lpOutString; UINT *lpOrder; int *lpDx; int *lpCaretPos; PSTR lpClass; PWSTR lpGlyphs; UINT nGlyphs; int nMaxFit; }
+	// StrPtrAnsi lpOutString; UINT *lpOrder; int *lpDx; int *lpCaretPos; StrPtrAnsi lpClass; StrPtrUni lpGlyphs; UINT nGlyphs; int nMaxFit; }
 	// GCP_RESULTSA, *LPGCP_RESULTSA;
 	[PInvokeData("wingdi.h", MSDNShortId = "7692637e-963a-4e0a-8a04-e05a6d01c417")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -4588,7 +4588,7 @@ public static partial class Gdi32
 		/// string is identical to the original string, but may be different if the string needs reordering and the GCP_REORDER flag is set
 		/// or if the original string exceeds the maximum extent and the GCP_MAXEXTENT flag is set.
 		/// </summary>
-		public PTSTR lpOutString;
+		public StrPtrAuto lpOutString;
 
 		/// <summary>
 		/// <para>
@@ -5158,8 +5158,8 @@ public static partial class Gdi32
 	// otmsCharSlopeRise; int otmsCharSlopeRun; int otmItalicAngle; UINT otmEMSquare; int otmAscent; int otmDescent; UINT otmLineGap; UINT
 	// otmsCapEmHeight; UINT otmsXHeight; RECT otmrcFontBox; int otmMacAscent; int otmMacDescent; UINT otmMacLineGap; UINT otmusMinimumPPEM;
 	// POINT otmptSubscriptSize; POINT otmptSubscriptOffset; POINT otmptSuperscriptSize; POINT otmptSuperscriptOffset; UINT
-	// otmsStrikeoutSize; int otmsStrikeoutPosition; int otmsUnderscoreSize; int otmsUnderscorePosition; PSTR otmpFamilyName; PSTR
-	// otmpFaceName; PSTR otmpStyleName; PSTR otmpFullName; } OUTLINETEXTMETRICA, *POUTLINETEXTMETRICA, *NPOUTLINETEXTMETRICA, *LPOUTLINETEXTMETRICA;
+	// otmsStrikeoutSize; int otmsStrikeoutPosition; int otmsUnderscoreSize; int otmsUnderscorePosition; StrPtrAnsi otmpFamilyName; StrPtrAnsi
+	// otmpFaceName; StrPtrAnsi otmpStyleName; StrPtrAnsi otmpFullName; } OUTLINETEXTMETRICA, *POUTLINETEXTMETRICA, *NPOUTLINETEXTMETRICA, *LPOUTLINETEXTMETRICA;
 	[PInvokeData("wingdi.h", MSDNShortId = "79d77df0-193a-49a8-b93d-4ef5807c3c9b")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct OUTLINETEXTMETRIC()

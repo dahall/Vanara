@@ -324,7 +324,7 @@ public static partial class NetApi32
 	/// <para>If the function fails, it returns an error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/nf-lmaccess-netaddserviceaccount NTSTATUS NetAddServiceAccount(
-	// PWSTR ServerName, PWSTR AccountName, PWSTR Password, DWORD Flags );
+	// StrPtrUni ServerName, StrPtrUni AccountName, StrPtrUni Password, DWORD Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmaccess.h", MSDNShortId = "004bd392-8837-4d98-905a-cd19ed02817d")]
 	public static extern NTStatus NetAddServiceAccount([Optional] string? ServerName, string AccountName, [Optional] string? Password, SvcAcctAddFlag Flags);
@@ -350,7 +350,7 @@ public static partial class NetApi32
 	/// <para>If the function fails, it returns an error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/nf-lmaccess-netenumerateserviceaccounts NTSTATUS
-	// NetEnumerateServiceAccounts( PWSTR ServerName, DWORD Flags, DWORD *AccountsCount, PZPWSTR *Accounts );
+	// NetEnumerateServiceAccounts( StrPtrUni ServerName, DWORD Flags, DWORD *AccountsCount, PZPWSTR *Accounts );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmaccess.h", MSDNShortId = "048116b6-1bae-4dcc-9bd0-a466c395e5d8")]
 	public static extern NTStatus NetEnumerateServiceAccounts([Optional, Ignore] string? ServerName, [Optional, Ignore] uint Flags, ref uint AccountsCount,
@@ -1557,8 +1557,8 @@ public static partial class NetApi32
 	/// <para>If the function succeeds, it returns <c>STATUS_SUCCESS</c>.</para>
 	/// <para>If the function fails, it returns an error code.</para>
 	/// </returns>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/nf-lmaccess-netisserviceaccount NTSTATUS NetIsServiceAccount( PWSTR
-	// ServerName, PWSTR AccountName, BOOL *IsService );
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/nf-lmaccess-netisserviceaccount NTSTATUS NetIsServiceAccount( StrPtrUni
+	// ServerName, StrPtrUni AccountName, BOOL *IsService );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmaccess.h", MSDNShortId = "975e7c0d-d803-4d78-99ed-d07369341674")]
 	public static extern NTStatus NetIsServiceAccount([Optional] string? ServerName, string AccountName, [MarshalAs(UnmanagedType.Bool)] out bool IsService);
@@ -2691,7 +2691,7 @@ public static partial class NetApi32
 	/// <para>If the function fails, it returns an error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/nf-lmaccess-netqueryserviceaccount NTSTATUS NetQueryServiceAccount(
-	// PWSTR ServerName, PWSTR AccountName, DWORD InfoLevel, PBYTE *Buffer );
+	// StrPtrUni ServerName, StrPtrUni AccountName, DWORD InfoLevel, PBYTE *Buffer );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmaccess.h", MSDNShortId = "ee253cab-bd53-426e-809a-12a1ccdc010b")]
 	public static extern NTStatus NetQueryServiceAccount([Optional] string? ServerName, string AccountName, uint InfoLevel, out SafeNetApiBuffer Buffer);
@@ -2730,7 +2730,7 @@ public static partial class NetApi32
 	/// <para>If the function fails, it returns an error code.</para>
 	/// </returns>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/nf-lmaccess-netremoveserviceaccount NTSTATUS
-	// NetRemoveServiceAccount( PWSTR ServerName, PWSTR AccountName, DWORD Flags );
+	// NetRemoveServiceAccount( StrPtrUni ServerName, StrPtrUni AccountName, DWORD Flags );
 	[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 	[PInvokeData("lmaccess.h", MSDNShortId = "f67745b7-bdfd-44bc-83e0-2ad24b78e137")]
 	public static extern NTStatus NetRemoveServiceAccount([Optional] string? ServerName, string AccountName, SvcAcctRemFlag Flags);
@@ -4699,7 +4699,7 @@ public static partial class NetApi32
 	/// be terminated by a period and they cannot include commas or any of the following printable characters: ", /, , [, ], :, |, &lt;,
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-group_info_0 typedef struct _GROUP_INFO_0 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-group_info_0 typedef struct _GROUP_INFO_0 { StrPtrUni
 	// grpi0_name; } GROUP_INFO_0, *PGROUP_INFO_0, *LPGROUP_INFO_0;
 	[PInvokeData("lmaccess.h", MSDNShortId = "019796d1-b987-45d2-90df-1d3b484217a9")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -4721,8 +4721,8 @@ public static partial class NetApi32
 	/// be terminated by a period and they cannot include commas or any of the following printable characters: ", /, , [, ], :, |, &lt;,
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_group_info_1 typedef struct _GROUP_INFO_1 { PWSTR
-	// grpi1_name; PWSTR grpi1_comment; } GROUP_INFO_1, *PGROUP_INFO_1, *LPGROUP_INFO_1;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_group_info_1 typedef struct _GROUP_INFO_1 { StrPtrUni
+	// grpi1_name; StrPtrUni grpi1_comment; } GROUP_INFO_1, *PGROUP_INFO_1, *LPGROUP_INFO_1;
 	[PInvokeData("lmaccess.h", MSDNShortId = "0b42a438-64fd-4f37-98b8-77e10c09548c")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct GROUP_INFO_1
@@ -4745,7 +4745,7 @@ public static partial class NetApi32
 
 	/// <summary>The <c>GROUP_INFO_1002</c> structure contains a comment to associate with a global group.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_group_info_1002 typedef struct _GROUP_INFO_1002 {
-	// PWSTR grpi1002_comment; } GROUP_INFO_1002, *PGROUP_INFO_1002, *LPGROUP_INFO_1002;
+	// StrPtrUni grpi1002_comment; } GROUP_INFO_1002, *PGROUP_INFO_1002, *LPGROUP_INFO_1002;
 	[PInvokeData("lmaccess.h", MSDNShortId = "9c322ef5-4f98-44ad-8b57-40f8533eb9c1")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct GROUP_INFO_1002
@@ -4782,8 +4782,8 @@ public static partial class NetApi32
 	/// be terminated by a period and they cannot include commas or any of the following printable characters: ", /, , [, ], :, |, &lt;,
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_group_info_2 typedef struct _GROUP_INFO_2 { PWSTR
-	// grpi2_name; PWSTR grpi2_comment; DWORD grpi2_group_id; DWORD grpi2_attributes; } GROUP_INFO_2, *PGROUP_INFO_2;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_group_info_2 typedef struct _GROUP_INFO_2 { StrPtrUni
+	// grpi2_name; StrPtrUni grpi2_comment; DWORD grpi2_group_id; DWORD grpi2_attributes; } GROUP_INFO_2, *PGROUP_INFO_2;
 	[PInvokeData("lmaccess.h", MSDNShortId = "2c17a70c-7b62-4dcc-9dc6-2f4b8c41d6ec")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct GROUP_INFO_2
@@ -4820,8 +4820,8 @@ public static partial class NetApi32
 	/// The <c>GROUP_INFO_3</c> structure contains information about a global group, including name, security identifier (SID), and
 	/// resource attributes.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_group_info_3 typedef struct _GROUP_INFO_3 { PWSTR
-	// grpi3_name; PWSTR grpi3_comment; PSID grpi3_group_sid; DWORD grpi3_attributes; } GROUP_INFO_3, *PGROUP_INFO_3;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_group_info_3 typedef struct _GROUP_INFO_3 { StrPtrUni
+	// grpi3_name; StrPtrUni grpi3_comment; PSID grpi3_group_sid; DWORD grpi3_attributes; } GROUP_INFO_3, *PGROUP_INFO_3;
 	[PInvokeData("lmaccess.h", MSDNShortId = "aa0c3b6e-ab27-48b9-a37f-5cceb63c70fd")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct GROUP_INFO_3
@@ -4868,7 +4868,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_group_users_info_0 typedef struct _GROUP_USERS_INFO_0 {
-	// PWSTR grui0_name; } GROUP_USERS_INFO_0, *PGROUP_USERS_INFO_0, *LPGROUP_USERS_INFO_0;
+	// StrPtrUni grui0_name; } GROUP_USERS_INFO_0, *PGROUP_USERS_INFO_0, *LPGROUP_USERS_INFO_0;
 	[PInvokeData("lmaccess.h", MSDNShortId = "cc0e5d27-91f1-4640-bb80-e73899fabba9")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct GROUP_USERS_INFO_0
@@ -4903,13 +4903,13 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_group_users_info_1 typedef struct _GROUP_USERS_INFO_1 {
-	// PWSTR grui1_name; DWORD grui1_attributes; } GROUP_USERS_INFO_1, *PGROUP_USERS_INFO_1, *LPGROUP_USERS_INFO_1;
+	// StrPtrUni grui1_name; DWORD grui1_attributes; } GROUP_USERS_INFO_1, *PGROUP_USERS_INFO_1, *LPGROUP_USERS_INFO_1;
 	[PInvokeData("lmaccess.h", MSDNShortId = "d92e7c18-f2c7-4ea5-8bb6-fec023272dbb")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct GROUP_USERS_INFO_1
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a null-terminated Unicode character string that specifies a name. For more information, see the Remarks section.
 		/// </para>
@@ -4981,7 +4981,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_localgroup_info_0 typedef struct _LOCALGROUP_INFO_0 {
-	// PWSTR lgrpi0_name; } LOCALGROUP_INFO_0, *PLOCALGROUP_INFO_0, *LPLOCALGROUP_INFO_0;
+	// StrPtrUni lgrpi0_name; } LOCALGROUP_INFO_0, *PLOCALGROUP_INFO_0, *LPLOCALGROUP_INFO_0;
 	[PInvokeData("lmaccess.h", MSDNShortId = "dfdb4c20-ea4a-45c9-b4f3-d6a844f89bb6")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct LOCALGROUP_INFO_0
@@ -4999,7 +4999,7 @@ public static partial class NetApi32
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_localgroup_info_1 typedef struct _LOCALGROUP_INFO_1 {
-	// PWSTR lgrpi1_name; PWSTR lgrpi1_comment; } LOCALGROUP_INFO_1, *PLOCALGROUP_INFO_1, *LPLOCALGROUP_INFO_1;
+	// StrPtrUni lgrpi1_name; StrPtrUni lgrpi1_comment; } LOCALGROUP_INFO_1, *PLOCALGROUP_INFO_1, *LPLOCALGROUP_INFO_1;
 	[PInvokeData("lmaccess.h", MSDNShortId = "b96d7ddc-3ffb-4203-88b1-4aa123051695")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct LOCALGROUP_INFO_1
@@ -5019,7 +5019,7 @@ public static partial class NetApi32
 
 	/// <summary>The <c>LOCALGROUP_INFO_1002</c> structure contains a comment describing a local group.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_localgroup_info_1002 typedef struct
-	// _LOCALGROUP_INFO_1002 { PWSTR lgrpi1002_comment; } LOCALGROUP_INFO_1002, *PLOCALGROUP_INFO_1002, *LPLOCALGROUP_INFO_1002;
+	// _LOCALGROUP_INFO_1002 { StrPtrUni lgrpi1002_comment; } LOCALGROUP_INFO_1002, *PLOCALGROUP_INFO_1002, *LPLOCALGROUP_INFO_1002;
 	[PInvokeData("lmaccess.h", MSDNShortId = "027db4a3-6722-46e8-a204-922ed97cb3f5")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct LOCALGROUP_INFO_1002
@@ -5055,7 +5055,7 @@ public static partial class NetApi32
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-localgroup_members_info_1 typedef struct
-	// _LOCALGROUP_MEMBERS_INFO_1 { PSID lgrmi1_sid; SID_NAME_USE lgrmi1_sidusage; PWSTR lgrmi1_name; } LOCALGROUP_MEMBERS_INFO_1,
+	// _LOCALGROUP_MEMBERS_INFO_1 { PSID lgrmi1_sid; SID_NAME_USE lgrmi1_sidusage; StrPtrUni lgrmi1_name; } LOCALGROUP_MEMBERS_INFO_1,
 	// *PLOCALGROUP_MEMBERS_INFO_1, *LPLOCALGROUP_MEMBERS_INFO_1;
 	[PInvokeData("lmaccess.h", MSDNShortId = "d6b1b729-cdd5-4ed3-a5a1-cf3a8b6cecf2")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -5105,7 +5105,7 @@ public static partial class NetApi32
 		public SID_NAME_USE lgrmi1_sidusage;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to the account name of the local group member identified by the <c>lgrmi1_sid</c> member. The <c>lgrmi1_name</c>
 		/// member does not include the domain name. For more information, see the following Remarks section.
@@ -5124,7 +5124,7 @@ public static partial class NetApi32
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-localgroup_members_info_2 typedef struct
-	// _LOCALGROUP_MEMBERS_INFO_2 { PSID lgrmi2_sid; SID_NAME_USE lgrmi2_sidusage; PWSTR lgrmi2_domainandname; }
+	// _LOCALGROUP_MEMBERS_INFO_2 { PSID lgrmi2_sid; SID_NAME_USE lgrmi2_sidusage; StrPtrUni lgrmi2_domainandname; }
 	// LOCALGROUP_MEMBERS_INFO_2, *PLOCALGROUP_MEMBERS_INFO_2, *LPLOCALGROUP_MEMBERS_INFO_2;
 	[PInvokeData("lmaccess.h", MSDNShortId = "f5cd6e84-1111-4558-bec4-26af13f21b61")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -5174,7 +5174,7 @@ public static partial class NetApi32
 		public SID_NAME_USE lgrmi2_sidusage;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to the account name of the local group member identified by <c>lgrmi2_sid</c>. The <c>lgrmi2_domainandname</c>
 		/// member includes the domain name and has the form:
@@ -5197,13 +5197,13 @@ public static partial class NetApi32
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_localgroup_members_info_3 typedef struct
-	// _LOCALGROUP_MEMBERS_INFO_3 { PWSTR lgrmi3_domainandname; } LOCALGROUP_MEMBERS_INFO_3, *PLOCALGROUP_MEMBERS_INFO_3, *LPLOCALGROUP_MEMBERS_INFO_3;
+	// _LOCALGROUP_MEMBERS_INFO_3 { StrPtrUni lgrmi3_domainandname; } LOCALGROUP_MEMBERS_INFO_3, *PLOCALGROUP_MEMBERS_INFO_3, *LPLOCALGROUP_MEMBERS_INFO_3;
 	[PInvokeData("lmaccess.h", MSDNShortId = "e8d1d884-c955-4706-bc3e-142469b02545")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct LOCALGROUP_MEMBERS_INFO_3
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// Pointer to a null-terminated Unicode string specifying the account name of the local group member prefixed by the domain name
 		/// and the "" separator character. For example:
@@ -5224,7 +5224,7 @@ public static partial class NetApi32
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_localgroup_users_info_0 typedef struct
-	// _LOCALGROUP_USERS_INFO_0 { PWSTR lgrui0_name; } LOCALGROUP_USERS_INFO_0, *PLOCALGROUP_USERS_INFO_0, *LPLOCALGROUP_USERS_INFO_0;
+	// _LOCALGROUP_USERS_INFO_0 { StrPtrUni lgrui0_name; } LOCALGROUP_USERS_INFO_0, *PLOCALGROUP_USERS_INFO_0, *LPLOCALGROUP_USERS_INFO_0;
 	[PInvokeData("lmaccess.h", MSDNShortId = "e9358f19-ec8f-4454-896c-c9fadb848378")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct LOCALGROUP_USERS_INFO_0
@@ -5238,20 +5238,20 @@ public static partial class NetApi32
 	/// group accounts.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_net_display_group typedef struct _NET_DISPLAY_GROUP {
-	// PWSTR grpi3_name; PWSTR grpi3_comment; DWORD grpi3_group_id; DWORD grpi3_attributes; DWORD grpi3_next_index; }
+	// StrPtrUni grpi3_name; StrPtrUni grpi3_comment; DWORD grpi3_group_id; DWORD grpi3_attributes; DWORD grpi3_next_index; }
 	// NET_DISPLAY_GROUP, *PNET_DISPLAY_GROUP;
 	[PInvokeData("lmaccess.h", MSDNShortId = "8e467f20-2cfb-40ae-a8b2-a5350d736eed")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct NET_DISPLAY_GROUP
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string that specifies the name of the group.</para>
 		/// </summary>
 		public string grpi3_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment associated with the group. This string can be a null string, or it can
 		/// have any number of characters before the terminating null character.
@@ -5294,19 +5294,19 @@ public static partial class NetApi32
 	/// computers and their attributes.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_net_display_machine typedef struct _NET_DISPLAY_MACHINE
-	// { PWSTR usri2_name; PWSTR usri2_comment; DWORD usri2_flags; DWORD usri2_user_id; DWORD usri2_next_index; } NET_DISPLAY_MACHINE, *PNET_DISPLAY_MACHINE;
+	// { StrPtrUni usri2_name; StrPtrUni usri2_comment; DWORD usri2_flags; DWORD usri2_user_id; DWORD usri2_next_index; } NET_DISPLAY_MACHINE, *PNET_DISPLAY_MACHINE;
 	[PInvokeData("lmaccess.h", MSDNShortId = "bdb1bef0-51f1-41d7-97fb-bda4ad24e386")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct NET_DISPLAY_MACHINE
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string that specifies the name of the computer to access.</para>
 		/// </summary>
 		public string usri2_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment associated with the computer. This string can be a null string, or it
 		/// can have any number of characters before the terminating null character.
@@ -5457,20 +5457,20 @@ public static partial class NetApi32
 	/// The <c>NET_DISPLAY_USER</c> structure contains information that an account manager can access to determine information about user accounts.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_net_display_user typedef struct _NET_DISPLAY_USER {
-	// PWSTR usri1_name; PWSTR usri1_comment; DWORD usri1_flags; PWSTR usri1_full_name; DWORD usri1_user_id; DWORD usri1_next_index; }
+	// StrPtrUni usri1_name; StrPtrUni usri1_comment; DWORD usri1_flags; StrPtrUni usri1_full_name; DWORD usri1_user_id; DWORD usri1_next_index; }
 	// NET_DISPLAY_USER, *PNET_DISPLAY_USER;
 	[PInvokeData("lmaccess.h", MSDNShortId = "308966f7-448c-4748-bbe7-9ac63afae1d9")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct NET_DISPLAY_USER
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string that specifies the name of the user account.</para>
 		/// </summary>
 		public string usri1_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment associated with the user. This string can be a null string, or it can
 		/// have any number of characters before the terminating null character (MAXCOMMENTSZ).
@@ -5596,7 +5596,7 @@ public static partial class NetApi32
 		public UserAcctCtrlFlags usri1_flags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the full name of the user. This string can be a null string, or it can have any
 		/// number of characters before the terminating null character.
@@ -5795,7 +5795,7 @@ public static partial class NetApi32
 	/// when the application requests a password change validation.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-net_validate_password_change_input_arg typedef struct
-	// _NET_VALIDATE_PASSWORD_CHANGE_INPUT_ARG { NET_VALIDATE_PERSISTED_FIELDS InputPersistedFields; PWSTR ClearPassword; PWSTR
+	// _NET_VALIDATE_PASSWORD_CHANGE_INPUT_ARG { NET_VALIDATE_PERSISTED_FIELDS InputPersistedFields; StrPtrUni ClearPassword; StrPtrUni
 	// UserAccountName; NET_VALIDATE_PASSWORD_HASH HashedPassword; BOOLEAN PasswordMatch; } NET_VALIDATE_PASSWORD_CHANGE_INPUT_ARG, *PNET_VALIDATE_PASSWORD_CHANGE_INPUT_ARG;
 	[PInvokeData("lmaccess.h", MSDNShortId = "09404998-81c5-400c-9d99-a0a4bb4095bf")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -5846,7 +5846,7 @@ public static partial class NetApi32
 	/// when the application requests a password reset validation.
 	/// </summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-net_validate_password_reset_input_arg typedef struct
-	// _NET_VALIDATE_PASSWORD_RESET_INPUT_ARG { NET_VALIDATE_PERSISTED_FIELDS InputPersistedFields; PWSTR ClearPassword; PWSTR
+	// _NET_VALIDATE_PASSWORD_RESET_INPUT_ARG { NET_VALIDATE_PERSISTED_FIELDS InputPersistedFields; StrPtrUni ClearPassword; StrPtrUni
 	// UserAccountName; NET_VALIDATE_PASSWORD_HASH HashedPassword; BOOLEAN PasswordMustChangeAtNextLogon; BOOLEAN ClearLockout; }
 	// NET_VALIDATE_PASSWORD_RESET_INPUT_ARG, *PNET_VALIDATE_PASSWORD_RESET_INPUT_ARG;
 	[PInvokeData("lmaccess.h", MSDNShortId = "3a6d4c2d-0d90-48bf-9dfa-2ba587538350")]
@@ -5993,7 +5993,7 @@ public static partial class NetApi32
 	/// be terminated by a period and they cannot include commas or any of the following printable characters: ", /, , [, ], :, |, &lt;,
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_0 typedef struct _USER_INFO_0 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_0 typedef struct _USER_INFO_0 { StrPtrUni
 	// usri0_name; } USER_INFO_0, *PUSER_INFO_0, *LPUSER_INFO_0;
 	[PInvokeData("lmaccess.h", MSDNShortId = "5d24a2dd-d1ee-4c97-8fbc-0b336313b60c")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6015,15 +6015,15 @@ public static partial class NetApi32
 	/// be terminated by a period and they cannot include commas or any of the following printable characters: ", /, , [, ], :, |, &lt;,
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1 typedef struct _USER_INFO_1 { PWSTR
-	// usri1_name; PWSTR usri1_password; DWORD usri1_password_age; DWORD usri1_priv; PWSTR usri1_home_dir; PWSTR usri1_comment; DWORD
-	// usri1_flags; PWSTR usri1_script_path; } USER_INFO_1, *PUSER_INFO_1, *LPUSER_INFO_1;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1 typedef struct _USER_INFO_1 { StrPtrUni
+	// usri1_name; StrPtrUni usri1_password; DWORD usri1_password_age; DWORD usri1_priv; StrPtrUni usri1_home_dir; StrPtrUni usri1_comment; DWORD
+	// usri1_flags; StrPtrUni usri1_script_path; } USER_INFO_1, *PUSER_INFO_1, *LPUSER_INFO_1;
 	[PInvokeData("lmaccess.h", MSDNShortId = "f17a1aef-45f1-461f-975d-75221d08277c")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_INFO_1
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the name of the user account. For the NetUserSetInfo function, this member is
 		/// ignored. For more information, see the following Remarks section.
@@ -6032,7 +6032,7 @@ public static partial class NetApi32
 		public string usri1_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the password of the user indicated by the <c>usri1_name</c> member. The length
 		/// cannot exceed PWLEN bytes. The NetUserEnum and NetUserGetInfo functions return a <c>NULL</c> pointer to maintain password security.
@@ -6080,7 +6080,7 @@ public static partial class NetApi32
 		public UserPrivilege usri1_priv;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path of the home directory for the user specified in the <c>usri1_name</c>
 		/// member. The string can be <c>NULL</c>.
@@ -6089,7 +6089,7 @@ public static partial class NetApi32
 		public string? usri1_home_dir;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment to associate with the user account. This string can be a <c>NULL</c>
 		/// string, or it can have any number of characters before the terminating null character.
@@ -6219,7 +6219,7 @@ public static partial class NetApi32
 		public UserAcctCtrlFlags usri1_flags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path for the user's logon script file. The script file can be a .CMD file, an
 		/// .EXE file, or a .BAT file. The string can also be <c>NULL</c>.
@@ -6237,8 +6237,8 @@ public static partial class NetApi32
 	/// be terminated by a period and they cannot include commas or any of the following printable characters: ", /, , [, ], :, |, &lt;,
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_10 typedef struct _USER_INFO_10 { PWSTR
-	// usri10_name; PWSTR usri10_comment; PWSTR usri10_usr_comment; PWSTR usri10_full_name; } USER_INFO_10, *PUSER_INFO_10, *LPUSER_INFO_10;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_10 typedef struct _USER_INFO_10 { StrPtrUni
+	// usri10_name; StrPtrUni usri10_comment; StrPtrUni usri10_usr_comment; StrPtrUni usri10_full_name; } USER_INFO_10, *PUSER_INFO_10, *LPUSER_INFO_10;
 	[PInvokeData("lmaccess.h", MSDNShortId = "f85e3e92-02b2-4ee8-8a82-38e4ef5b4072")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_INFO_10
@@ -6273,7 +6273,7 @@ public static partial class NetApi32
 	/// NetUserSetInfo function.
 	/// </summary>
 	/// <remarks>By convention, the length of passwords is limited to LM20_PWLEN characters.</remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1003 typedef struct _USER_INFO_1003 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1003 typedef struct _USER_INFO_1003 { StrPtrUni
 	// usri1003_password; } USER_INFO_1003, *PUSER_INFO_1003, *LPUSER_INFO_1003;
 	[PInvokeData("lmaccess.h", MSDNShortId = "ef1d1ecd-7226-4e4e-a0b3-ec096d3b1207")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6328,7 +6328,7 @@ public static partial class NetApi32
 	/// The <c>USER_INFO_1006</c> structure contains the user's home directory path. This information level is valid only when you call
 	/// the NetUserSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1006 typedef struct _USER_INFO_1006 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1006 typedef struct _USER_INFO_1006 { StrPtrUni
 	// usri1006_home_dir; } USER_INFO_1006, *PUSER_INFO_1006, *LPUSER_INFO_1006;
 	[PInvokeData("lmaccess.h", MSDNShortId = "9eb4973b-cda5-4862-b558-3af90b7de19f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6345,7 +6345,7 @@ public static partial class NetApi32
 	/// The <c>USER_INFO_1007</c> structure contains a comment associated with a user network account. This information level is valid
 	/// only when you call the NetUserSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1007 typedef struct _USER_INFO_1007 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1007 typedef struct _USER_INFO_1007 { StrPtrUni
 	// usri1007_comment; } USER_INFO_1007, *PUSER_INFO_1007, *LPUSER_INFO_1007;
 	[PInvokeData("lmaccess.h", MSDNShortId = "a2e49802-799d-4f98-aa6d-5cb1478cb4d4")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6497,7 +6497,7 @@ public static partial class NetApi32
 	/// The <c>USER_INFO_1009</c> structure contains the path for a user's logon script file. This information level is valid only when
 	/// you call the NetUserSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1009 typedef struct _USER_INFO_1009 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1009 typedef struct _USER_INFO_1009 { StrPtrUni
 	// usri1009_script_path; } USER_INFO_1009, *PUSER_INFO_1009, *LPUSER_INFO_1009;
 	[PInvokeData("lmaccess.h", MSDNShortId = "baaabbf9-9571-49db-bf38-a3fc2d0a200a")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6560,7 +6560,7 @@ public static partial class NetApi32
 	/// The <c>USER_INFO_1011</c> structure contains the full name of a network user. This information level is valid only when you call
 	/// the NetUserSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1011 typedef struct _USER_INFO_1011 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1011 typedef struct _USER_INFO_1011 { StrPtrUni
 	// usri1011_full_name; } USER_INFO_1011, *PUSER_INFO_1011, *LPUSER_INFO_1011;
 	[PInvokeData("lmaccess.h", MSDNShortId = "f60075b4-19c5-4998-b8c3-61e960e76035")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6578,7 +6578,7 @@ public static partial class NetApi32
 	/// The <c>USER_INFO_1012</c> structure contains a user comment. This information level is valid only when you call the
 	/// NetUserSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1012 typedef struct _USER_INFO_1012 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1012 typedef struct _USER_INFO_1012 { StrPtrUni
 	// usri1012_usr_comment; } USER_INFO_1012, *PUSER_INFO_1012, *LPUSER_INFO_1012;
 	[PInvokeData("lmaccess.h", MSDNShortId = "92501552-7afe-4a95-980a-576254a122a9")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6596,7 +6596,7 @@ public static partial class NetApi32
 	/// The <c>USER_INFO_1013</c> structure contains reserved information for network accounts. This information level is valid only when
 	/// you call the NetUserSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1013 typedef struct _USER_INFO_1013 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1013 typedef struct _USER_INFO_1013 { StrPtrUni
 	// usri1013_parms; } USER_INFO_1013, *PUSER_INFO_1013, *LPUSER_INFO_1013;
 	[PInvokeData("lmaccess.h", MSDNShortId = "7166201d-57e3-4288-ad15-392cc3733dc6")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6620,7 +6620,7 @@ public static partial class NetApi32
 	/// The <c>USER_INFO_1014</c> structure contains the names of workstations from which the user can log on. This information level is
 	/// valid only when you call the NetUserSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1014 typedef struct _USER_INFO_1014 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1014 typedef struct _USER_INFO_1014 { StrPtrUni
 	// usri1014_workstations; } USER_INFO_1014, *PUSER_INFO_1014, *LPUSER_INFO_1014;
 	[PInvokeData("lmaccess.h", MSDNShortId = "ff7f385d-bcda-4560-b22f-d1fc94e7ae41")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6725,7 +6725,7 @@ public static partial class NetApi32
 	/// The <c>USER_INFO_1023</c> structure contains the name of the server to which network logon requests should be sent. This
 	/// information level is valid only when you call the NetUserSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1023 typedef struct _USER_INFO_1023 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1023 typedef struct _USER_INFO_1023 { StrPtrUni
 	// usri1023_logon_server; } USER_INFO_1023, *PUSER_INFO_1023, *LPUSER_INFO_1023;
 	[PInvokeData("lmaccess.h", MSDNShortId = "44985bbe-48d2-4fe9-9247-2800089269cb")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6806,7 +6806,7 @@ public static partial class NetApi32
 	/// The <c>USER_INFO_1052</c> structure contains the path to a network user's profile. This information level is valid only when you
 	/// call the NetUserSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1052 typedef struct _USER_INFO_1052 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1052 typedef struct _USER_INFO_1052 { StrPtrUni
 	// usri1052_profile; } USER_INFO_1052, *PUSER_INFO_1052, *LPUSER_INFO_1052;
 	[PInvokeData("lmaccess.h", MSDNShortId = "55ec6819-8558-413a-9a79-c2d59993163d")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6823,7 +6823,7 @@ public static partial class NetApi32
 	/// The <c>USER_INFO_1053</c> structure contains user information for network accounts. This information level is valid only when you
 	/// call the NetUserSetInfo function.
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1053 typedef struct _USER_INFO_1053 { PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_1053 typedef struct _USER_INFO_1053 { StrPtrUni
 	// usri1053_home_dir_drive; } USER_INFO_1053, *PUSER_INFO_1053, *LPUSER_INFO_1053;
 	[PInvokeData("lmaccess.h", MSDNShortId = "687b2c35-344d-49db-a1e2-fb5c2b5db2d6")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -6845,18 +6845,18 @@ public static partial class NetApi32
 	/// be terminated by a period and they cannot include commas or any of the following printable characters: ", /, , [, ], :, |, &lt;,
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_11 typedef struct _USER_INFO_11 { PWSTR
-	// usri11_name; PWSTR usri11_comment; PWSTR usri11_usr_comment; PWSTR usri11_full_name; DWORD usri11_priv; DWORD
-	// usri11_auth_flags; DWORD usri11_password_age; PWSTR usri11_home_dir; PWSTR usri11_parms; DWORD usri11_last_logon; DWORD
-	// usri11_last_logoff; DWORD usri11_bad_pw_count; DWORD usri11_num_logons; PWSTR usri11_logon_server; DWORD usri11_country_code;
-	// PWSTR usri11_workstations; DWORD usri11_max_storage; DWORD usri11_units_per_week; PBYTE usri11_logon_hours; DWORD
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_11 typedef struct _USER_INFO_11 { StrPtrUni
+	// usri11_name; StrPtrUni usri11_comment; StrPtrUni usri11_usr_comment; StrPtrUni usri11_full_name; DWORD usri11_priv; DWORD
+	// usri11_auth_flags; DWORD usri11_password_age; StrPtrUni usri11_home_dir; StrPtrUni usri11_parms; DWORD usri11_last_logon; DWORD
+	// usri11_last_logoff; DWORD usri11_bad_pw_count; DWORD usri11_num_logons; StrPtrUni usri11_logon_server; DWORD usri11_country_code;
+	// StrPtrUni usri11_workstations; DWORD usri11_max_storage; DWORD usri11_units_per_week; PBYTE usri11_logon_hours; DWORD
 	// usri11_code_page; } USER_INFO_11, *PUSER_INFO_11, *LPUSER_INFO_11;
 	[PInvokeData("lmaccess.h", MSDNShortId = "718e7143-a6df-4912-954c-cc63bb490044")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_INFO_11
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode character that specifies the name of the user account. Calls to the NetUserSetInfo function ignore
 		/// this member. For more information, see the following Remarks section.
@@ -6865,7 +6865,7 @@ public static partial class NetApi32
 		public string usri11_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment associated with the user account. This string can be a <c>NULL</c>
 		/// string, or it can have any number of characters before the terminating null character.
@@ -6874,7 +6874,7 @@ public static partial class NetApi32
 		public string? usri11_comment;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a user comment. This string can be a <c>NULL</c> string, or it can have any
 		/// number of characters before the terminating null character.
@@ -6883,7 +6883,7 @@ public static partial class NetApi32
 		public string? usri11_usr_comment;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the full name of the user. This string can be a <c>NULL</c> string, or it can
 		/// have any number of characters before the terminating null character.
@@ -6976,7 +6976,7 @@ public static partial class NetApi32
 		public uint usri11_password_age;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path of the home directory for the user specified in the <c>usri11_name</c>
 		/// member. The string can be <c>NULL</c>.
@@ -6985,7 +6985,7 @@ public static partial class NetApi32
 		public string? usri11_home_dir;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that is reserved for use by applications. This string can be a <c>NULL</c> string, or it can
 		/// have any number of characters before the terminating null character. Microsoft products use this member to store user
@@ -7050,7 +7050,7 @@ public static partial class NetApi32
 		public uint usri11_num_logons;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the name of the server to which logon requests are sent. Server names should be
 		/// preceded by two backslashes (\). To indicate that the logon request can be handled by any logon server, specify an asterisk
@@ -7069,7 +7069,7 @@ public static partial class NetApi32
 		public uint usri11_country_code;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the names of workstations from which the user can log on. As many as eight
 		/// workstations can be specified; the names must be separated by commas. A <c>NULL</c> string indicates that there is no
@@ -7138,18 +7138,18 @@ public static partial class NetApi32
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_2 typedef struct _USER_INFO_2 { PWSTR
-	// usri2_name; PWSTR usri2_password; DWORD usri2_password_age; DWORD usri2_priv; PWSTR usri2_home_dir; PWSTR usri2_comment; DWORD
-	// usri2_flags; PWSTR usri2_script_path; DWORD usri2_auth_flags; PWSTR usri2_full_name; PWSTR usri2_usr_comment; PWSTR
-	// usri2_parms; PWSTR usri2_workstations; DWORD usri2_last_logon; DWORD usri2_last_logoff; DWORD usri2_acct_expires; DWORD
-	// usri2_max_storage; DWORD usri2_units_per_week; PBYTE usri2_logon_hours; DWORD usri2_bad_pw_count; DWORD usri2_num_logons; PWSTR
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_2 typedef struct _USER_INFO_2 { StrPtrUni
+	// usri2_name; StrPtrUni usri2_password; DWORD usri2_password_age; DWORD usri2_priv; StrPtrUni usri2_home_dir; StrPtrUni usri2_comment; DWORD
+	// usri2_flags; StrPtrUni usri2_script_path; DWORD usri2_auth_flags; StrPtrUni usri2_full_name; StrPtrUni usri2_usr_comment; StrPtrUni
+	// usri2_parms; StrPtrUni usri2_workstations; DWORD usri2_last_logon; DWORD usri2_last_logoff; DWORD usri2_acct_expires; DWORD
+	// usri2_max_storage; DWORD usri2_units_per_week; PBYTE usri2_logon_hours; DWORD usri2_bad_pw_count; DWORD usri2_num_logons; StrPtrUni
 	// usri2_logon_server; DWORD usri2_country_code; DWORD usri2_code_page; } USER_INFO_2, *PUSER_INFO_2, *LPUSER_INFO_2;
 	[PInvokeData("lmaccess.h", MSDNShortId = "50c78c6a-a08f-473b-929a-9528e618165f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_INFO_2
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the name of the user account. Calls to the NetUserSetInfo function ignore this
 		/// member. For more information, see the following Remarks section.
@@ -7158,7 +7158,7 @@ public static partial class NetApi32
 		public string usri2_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the password for the user identified by the <c>usri2_name</c> member. The length
 		/// cannot exceed PWLEN bytes. The NetUserEnum and NetUserGetInfo functions return a <c>NULL</c> pointer to maintain password security.
@@ -7206,7 +7206,7 @@ public static partial class NetApi32
 		public UserPrivilege usri2_priv;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path of the home directory for the user specified by the <c>usri2_name</c>
 		/// member. The string can be <c>NULL</c>.
@@ -7215,7 +7215,7 @@ public static partial class NetApi32
 		public string? usri2_home_dir;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment to associate with the user account. The string can be a <c>NULL</c>
 		/// string, or it can have any number of characters before the terminating null character.
@@ -7345,7 +7345,7 @@ public static partial class NetApi32
 		public UserAcctCtrlFlags usri2_flags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path for the user's logon script file. The script file can be a .CMD file, an
 		/// .EXE file, or a .BAT file. The string can also be <c>NULL</c>.
@@ -7400,7 +7400,7 @@ public static partial class NetApi32
 		public UserOpPriv usri2_auth_flags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the full name of the user. This string can be a <c>NULL</c> string, or it can
 		/// have any number of characters before the terminating null character.
@@ -7409,7 +7409,7 @@ public static partial class NetApi32
 		public string? usri2_full_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a user comment. This string can be a <c>NULL</c> string, or it can have any
 		/// number of characters before the terminating null character.
@@ -7418,7 +7418,7 @@ public static partial class NetApi32
 		public string? usri2_usr_comment;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that is reserved for use by applications. This string can be a <c>NULL</c> string, or it can
 		/// have any number of characters before the terminating null character. Microsoft products use this member to store user
@@ -7428,7 +7428,7 @@ public static partial class NetApi32
 		public string? usri2_parms;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the names of workstations from which the user can log on. As many as eight
 		/// workstations can be specified; the names must be separated by commas. A <c>NULL</c> string indicates that there is no
@@ -7542,7 +7542,7 @@ public static partial class NetApi32
 		public uint usri2_num_logons;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the name of the server to which logon requests are sent. Server names should be
 		/// preceded by two backslashes (\). To indicate that the logon request can be handled by any logon server, specify an asterisk
@@ -7582,15 +7582,15 @@ public static partial class NetApi32
 	/// be terminated by a period and they cannot include commas or any of the following printable characters: ", /, , [, ], :, |, &lt;,
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_20 typedef struct _USER_INFO_20 { PWSTR
-	// usri20_name; PWSTR usri20_full_name; PWSTR usri20_comment; DWORD usri20_flags; DWORD usri20_user_id; } USER_INFO_20,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_20 typedef struct _USER_INFO_20 { StrPtrUni
+	// usri20_name; StrPtrUni usri20_full_name; StrPtrUni usri20_comment; DWORD usri20_flags; DWORD usri20_user_id; } USER_INFO_20,
 	// *PUSER_INFO_20, *LPUSER_INFO_20;
 	[PInvokeData("lmaccess.h", MSDNShortId = "67f58d6b-488b-4a88-808f-edb9c3464d85")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_INFO_20
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the name of the user account. Calls to the NetUserSetInfo function ignore this
 		/// member. For more information, see the following Remarks section.
@@ -7599,7 +7599,7 @@ public static partial class NetApi32
 		public string usri20_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the full name of the user. This string can be a null string, or it can have any
 		/// number of characters before the terminating null character.
@@ -7608,7 +7608,7 @@ public static partial class NetApi32
 		public string? usri20_full_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment associated with the user account. This string can be a null string, or
 		/// it can have any number of characters before the terminating null character.
@@ -7769,19 +7769,19 @@ public static partial class NetApi32
 	/// be terminated by a period and they cannot include commas or any of the following printable characters: ", /, , [, ], :, |, &lt;,
 	/// &gt;, +, =, ;, ?, *. Names also cannot include characters in the range 1-31, which are non-printable.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_22 typedef struct _USER_INFO_22 { PWSTR
-	// usri22_name; BYTE usri22_password[ENCRYPTED_PWLEN]; DWORD usri22_password_age; DWORD usri22_priv; PWSTR usri22_home_dir; PWSTR
-	// usri22_comment; DWORD usri22_flags; PWSTR usri22_script_path; DWORD usri22_auth_flags; PWSTR usri22_full_name; PWSTR
-	// usri22_usr_comment; PWSTR usri22_parms; PWSTR usri22_workstations; DWORD usri22_last_logon; DWORD usri22_last_logoff; DWORD
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_22 typedef struct _USER_INFO_22 { StrPtrUni
+	// usri22_name; BYTE usri22_password[ENCRYPTED_PWLEN]; DWORD usri22_password_age; DWORD usri22_priv; StrPtrUni usri22_home_dir; StrPtrUni
+	// usri22_comment; DWORD usri22_flags; StrPtrUni usri22_script_path; DWORD usri22_auth_flags; StrPtrUni usri22_full_name; StrPtrUni
+	// usri22_usr_comment; StrPtrUni usri22_parms; StrPtrUni usri22_workstations; DWORD usri22_last_logon; DWORD usri22_last_logoff; DWORD
 	// usri22_acct_expires; DWORD usri22_max_storage; DWORD usri22_units_per_week; PBYTE usri22_logon_hours; DWORD usri22_bad_pw_count;
-	// DWORD usri22_num_logons; PWSTR usri22_logon_server; DWORD usri22_country_code; DWORD usri22_code_page; } USER_INFO_22,
+	// DWORD usri22_num_logons; StrPtrUni usri22_logon_server; DWORD usri22_country_code; DWORD usri22_code_page; } USER_INFO_22,
 	// *PUSER_INFO_22, *LPUSER_INFO_22;
 	[PInvokeData("lmaccess.h", MSDNShortId = "ff8d2088-953b-4a8a-bdcb-86148dc66a7a")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_INFO_22
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the name of the user account. Calls to the NetUserSetInfo function ignore this
 		/// member. For more information, see the following Remarks section.
@@ -7835,7 +7835,7 @@ public static partial class NetApi32
 		public UserPrivilege usri22_priv;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path of the home directory for the user specified by the <c>usri22_name</c>
 		/// member. The string can be null.
@@ -7844,7 +7844,7 @@ public static partial class NetApi32
 		public string? usri22_home_dir;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment associated with the user account. This string can be a null string, or
 		/// it can have any number of characters before the terminating null character.
@@ -7974,7 +7974,7 @@ public static partial class NetApi32
 		public UserAcctCtrlFlags usri22_flags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path for the user's logon script file. The script file can be a .CMD file, an
 		/// .EXE file, or a .BAT file. The string can also be null.
@@ -8029,7 +8029,7 @@ public static partial class NetApi32
 		public UserOpPriv usri22_auth_flags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the full name of the user. This string can be a null string, or it can have any
 		/// number of characters before the terminating null character.
@@ -8038,7 +8038,7 @@ public static partial class NetApi32
 		public string? usri22_full_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a user comment. This string can be a null string, or it can have any number of
 		/// characters before the terminating null character.
@@ -8047,7 +8047,7 @@ public static partial class NetApi32
 		public string? usri22_usr_comment;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that is reserved for use by applications. This string can be a null string, or it can have any
 		/// number of characters before the terminating null character. Microsoft products use this member to store user configuration
@@ -8057,7 +8057,7 @@ public static partial class NetApi32
 		public string? usri22_parms;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the names of workstations from which the user can log on. As many as eight
 		/// workstations can be specified; the names must be separated by commas. A null string indicates that there is no restriction.
@@ -8169,7 +8169,7 @@ public static partial class NetApi32
 		public uint usri22_num_logons;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the name of the server to which logon requests are sent. Server names should be
 		/// preceded by two backslashes (\). To indicate that the logon request can be handled by any logon server, specify an asterisk
@@ -8207,15 +8207,15 @@ public static partial class NetApi32
 	/// <c>USER_INFO_23</c> structure instead of the <c>USER_INFO_20</c> structure.
 	/// </para>
 	/// </summary>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_23 typedef struct _USER_INFO_23 { PWSTR
-	// usri23_name; PWSTR usri23_full_name; PWSTR usri23_comment; DWORD usri23_flags; PSID usri23_user_sid; } USER_INFO_23,
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_23 typedef struct _USER_INFO_23 { StrPtrUni
+	// usri23_name; StrPtrUni usri23_full_name; StrPtrUni usri23_comment; DWORD usri23_flags; PSID usri23_user_sid; } USER_INFO_23,
 	// *PUSER_INFO_23, *LPUSER_INFO_23;
 	[PInvokeData("lmaccess.h", MSDNShortId = "1af3ff6d-bc9f-44ad-9981-124ac1961298")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_INFO_23
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the name of the user account. Calls to the NetUserSetInfo function ignore this member.
 		/// </para>
@@ -8223,7 +8223,7 @@ public static partial class NetApi32
 		public string usri23_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the full name of the user. This string can be a null string, or it can have any
 		/// number of characters before the terminating null character.
@@ -8232,7 +8232,7 @@ public static partial class NetApi32
 		public string? usri23_full_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment associated with the user account. This string can be a null string, or
 		/// it can have any number of characters before the terminating null character.
@@ -8386,7 +8386,7 @@ public static partial class NetApi32
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_24 typedef struct _USER_INFO_24 { BOOL
-	// usri24_internet_identity; DWORD usri24_flags; PWSTR usri24_internet_provider_name; PWSTR usri24_internet_principal_name; PSID
+	// usri24_internet_identity; DWORD usri24_flags; StrPtrUni usri24_internet_provider_name; StrPtrUni usri24_internet_principal_name; PSID
 	// usri24_user_sid; } USER_INFO_24, *PUSER_INFO_24, *LPUSER_INFO_24;
 	[PInvokeData("lmaccess.h", MSDNShortId = "CE65EDE0-F4AE-4582-9D7F-6667BBA98C75")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -8434,19 +8434,19 @@ public static partial class NetApi32
 	/// NetUserSetInfo, and NetUserGetInfofunctions on Windows XP and later.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_3 typedef struct _USER_INFO_3 { PWSTR
-	// usri3_name; PWSTR usri3_password; DWORD usri3_password_age; DWORD usri3_priv; PWSTR usri3_home_dir; PWSTR usri3_comment; DWORD
-	// usri3_flags; PWSTR usri3_script_path; DWORD usri3_auth_flags; PWSTR usri3_full_name; PWSTR usri3_usr_comment; PWSTR
-	// usri3_parms; PWSTR usri3_workstations; DWORD usri3_last_logon; DWORD usri3_last_logoff; DWORD usri3_acct_expires; DWORD
-	// usri3_max_storage; DWORD usri3_units_per_week; PBYTE usri3_logon_hours; DWORD usri3_bad_pw_count; DWORD usri3_num_logons; PWSTR
-	// usri3_logon_server; DWORD usri3_country_code; DWORD usri3_code_page; DWORD usri3_user_id; DWORD usri3_primary_group_id; PWSTR
-	// usri3_profile; PWSTR usri3_home_dir_drive; DWORD usri3_password_expired; } USER_INFO_3, *PUSER_INFO_3, *LPUSER_INFO_3;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_3 typedef struct _USER_INFO_3 { StrPtrUni
+	// usri3_name; StrPtrUni usri3_password; DWORD usri3_password_age; DWORD usri3_priv; StrPtrUni usri3_home_dir; StrPtrUni usri3_comment; DWORD
+	// usri3_flags; StrPtrUni usri3_script_path; DWORD usri3_auth_flags; StrPtrUni usri3_full_name; StrPtrUni usri3_usr_comment; StrPtrUni
+	// usri3_parms; StrPtrUni usri3_workstations; DWORD usri3_last_logon; DWORD usri3_last_logoff; DWORD usri3_acct_expires; DWORD
+	// usri3_max_storage; DWORD usri3_units_per_week; PBYTE usri3_logon_hours; DWORD usri3_bad_pw_count; DWORD usri3_num_logons; StrPtrUni
+	// usri3_logon_server; DWORD usri3_country_code; DWORD usri3_code_page; DWORD usri3_user_id; DWORD usri3_primary_group_id; StrPtrUni
+	// usri3_profile; StrPtrUni usri3_home_dir_drive; DWORD usri3_password_expired; } USER_INFO_3, *PUSER_INFO_3, *LPUSER_INFO_3;
 	[PInvokeData("lmaccess.h", MSDNShortId = "39ed05f5-165d-4cb8-98af-e4120a1634f6")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_INFO_3
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the name of the user account. For the NetUserSetInfo function, this member is
 		/// ignored. For more information, see the following Remarks section.
@@ -8455,7 +8455,7 @@ public static partial class NetApi32
 		public string usri3_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the password for the user identified by the <c>usri3_name</c> member. The length
 		/// cannot exceed PWLEN bytes. The NetUserEnum and NetUserGetInfo functions return a <c>NULL</c> pointer to maintain password security.
@@ -8501,7 +8501,7 @@ public static partial class NetApi32
 		public UserPrivilege usri3_priv;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path of the home directory of the user specified by the <c>usri3_name</c>
 		/// member. The string can be <c>NULL</c>.
@@ -8510,7 +8510,7 @@ public static partial class NetApi32
 		public string? usri3_home_dir;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment to associate with the user account. The string can be a <c>NULL</c>
 		/// string, or it can have any number of characters before the terminating null character.
@@ -8640,7 +8640,7 @@ public static partial class NetApi32
 		public UserAcctCtrlFlags usri3_flags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path for the user's logon script file. The script file can be a .CMD file, an
 		/// .EXE file, or a .BAT file. The string can also be <c>NULL</c>.
@@ -8684,7 +8684,7 @@ public static partial class NetApi32
 		public UserOpPriv usri3_auth_flags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the full name of the user. This string can be a <c>NULL</c> string, or it can
 		/// have any number of characters before the terminating null character.
@@ -8693,7 +8693,7 @@ public static partial class NetApi32
 		public string? usri3_full_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a user comment. This string can be a <c>NULL</c> string, or it can have any
 		/// number of characters before the terminating null character.
@@ -8702,7 +8702,7 @@ public static partial class NetApi32
 		public string? usri3_usr_comment;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that is reserved for use by applications. This string can be a <c>NULL</c> string, or it can
 		/// have any number of characters before the terminating null character. Microsoft products use this member to store user
@@ -8712,7 +8712,7 @@ public static partial class NetApi32
 		public string? usri3_parms;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the names of workstations from which the user can log on. As many as eight
 		/// workstations can be specified; the names must be separated by commas. If you do not want to restrict the number of
@@ -8826,7 +8826,7 @@ public static partial class NetApi32
 		public uint usri3_num_logons;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the name of the server to which logon requests are sent. Server names should be
 		/// preceded by two backslashes (\). To indicate that the logon request can be handled by any logon server, specify an asterisk
@@ -8871,7 +8871,7 @@ public static partial class NetApi32
 		public uint usri3_primary_group_id;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies a path to the user's profile. This value can be a <c>NULL</c> string, a local
 		/// absolute path, or a UNC path.
@@ -8880,7 +8880,7 @@ public static partial class NetApi32
 		public string? usri3_profile;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string that specifies the drive letter assigned to the user's home directory for logon purposes.</para>
 		/// </summary>
 		public string usri3_home_dir_drive;
@@ -8915,19 +8915,19 @@ public static partial class NetApi32
 	/// XP and later.
 	/// </para>
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_4 typedef struct _USER_INFO_4 { PWSTR
-	// usri4_name; PWSTR usri4_password; DWORD usri4_password_age; DWORD usri4_priv; PWSTR usri4_home_dir; PWSTR usri4_comment; DWORD
-	// usri4_flags; PWSTR usri4_script_path; DWORD usri4_auth_flags; PWSTR usri4_full_name; PWSTR usri4_usr_comment; PWSTR
-	// usri4_parms; PWSTR usri4_workstations; DWORD usri4_last_logon; DWORD usri4_last_logoff; DWORD usri4_acct_expires; DWORD
-	// usri4_max_storage; DWORD usri4_units_per_week; PBYTE usri4_logon_hours; DWORD usri4_bad_pw_count; DWORD usri4_num_logons; PWSTR
-	// usri4_logon_server; DWORD usri4_country_code; DWORD usri4_code_page; PSID usri4_user_sid; DWORD usri4_primary_group_id; PWSTR
-	// usri4_profile; PWSTR usri4_home_dir_drive; DWORD usri4_password_expired; } USER_INFO_4, *PUSER_INFO_4, *LPUSER_INFO_4;
+	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_info_4 typedef struct _USER_INFO_4 { StrPtrUni
+	// usri4_name; StrPtrUni usri4_password; DWORD usri4_password_age; DWORD usri4_priv; StrPtrUni usri4_home_dir; StrPtrUni usri4_comment; DWORD
+	// usri4_flags; StrPtrUni usri4_script_path; DWORD usri4_auth_flags; StrPtrUni usri4_full_name; StrPtrUni usri4_usr_comment; StrPtrUni
+	// usri4_parms; StrPtrUni usri4_workstations; DWORD usri4_last_logon; DWORD usri4_last_logoff; DWORD usri4_acct_expires; DWORD
+	// usri4_max_storage; DWORD usri4_units_per_week; PBYTE usri4_logon_hours; DWORD usri4_bad_pw_count; DWORD usri4_num_logons; StrPtrUni
+	// usri4_logon_server; DWORD usri4_country_code; DWORD usri4_code_page; PSID usri4_user_sid; DWORD usri4_primary_group_id; StrPtrUni
+	// usri4_profile; StrPtrUni usri4_home_dir_drive; DWORD usri4_password_expired; } USER_INFO_4, *PUSER_INFO_4, *LPUSER_INFO_4;
 	[PInvokeData("lmaccess.h", MSDNShortId = "66b11a5f-1c2d-4564-8845-9e2fa1f40f3e")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_INFO_4
 	{
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the name of the user account. For the NetUserSetInfo function, this member is ignored.
 		/// </para>
@@ -8935,7 +8935,7 @@ public static partial class NetApi32
 		public string usri4_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies the password for the user identified by the <c>usri4_name</c> member. The length
 		/// cannot exceed PWLEN bytes. The NetUserGetInfo function returns a <c>NULL</c> pointer to maintain password security.
@@ -8981,7 +8981,7 @@ public static partial class NetApi32
 		public UserPrivilege usri4_priv;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path of the home directory of the user specified by the <c>usri4_name</c>
 		/// member. The string can be <c>NULL</c>.
@@ -8990,7 +8990,7 @@ public static partial class NetApi32
 		public string? usri4_home_dir;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a comment to associate with the user account. The string can be a <c>NULL</c>
 		/// string, or it can have any number of characters before the terminating null character.
@@ -9120,7 +9120,7 @@ public static partial class NetApi32
 		public UserAcctCtrlFlags usri4_flags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string specifying the path for the user's logon script file. The script file can be a .CMD file, an
 		/// .EXE file, or a .BAT file. The string can also be <c>NULL</c>.
@@ -9164,7 +9164,7 @@ public static partial class NetApi32
 		public UserOpPriv usri4_auth_flags;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the full name of the user. This string can be a <c>NULL</c> string, or it can
 		/// have any number of characters before the terminating null character.
@@ -9173,7 +9173,7 @@ public static partial class NetApi32
 		public string? usri4_full_name;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains a user comment. This string can be a <c>NULL</c> string, or it can have any
 		/// number of characters before the terminating null character.
@@ -9182,7 +9182,7 @@ public static partial class NetApi32
 		public string? usri4_usr_comment;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that is reserved for use by applications. This string can be a <c>NULL</c> string, or it can
 		/// have any number of characters before the terminating null character. Microsoft products use this member to store user
@@ -9192,7 +9192,7 @@ public static partial class NetApi32
 		public string? usri4_parms;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the names of workstations from which the user can log on. As many as eight
 		/// workstations can be specified; the names must be separated by commas. If you do not want to restrict the number of
@@ -9306,7 +9306,7 @@ public static partial class NetApi32
 		public uint usri4_num_logons;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that contains the name of the server to which logon requests are sent. Server names should be
 		/// preceded by two backslashes (\). To indicate that the logon request can be handled by any logon server, specify an asterisk
@@ -9349,7 +9349,7 @@ public static partial class NetApi32
 		public uint usri4_primary_group_id;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>
 		/// A pointer to a Unicode string that specifies a path to the user's profile. This value can be a <c>NULL</c> string, a local
 		/// absolute path, or a UNC path.
@@ -9358,7 +9358,7 @@ public static partial class NetApi32
 		public string? usri4_profile;
 
 		/// <summary>
-		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>Type: <c>StrPtrUni</c></para>
 		/// <para>A pointer to a Unicode string that specifies the drive letter assigned to the user's home directory for logon purposes.</para>
 		/// </summary>
 		public string usri4_home_dir_drive;
@@ -9420,7 +9420,7 @@ public static partial class NetApi32
 
 	/// <summary>The <c>USER_MODALS_INFO_1</c> structure contains logon server and domain controller information.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_modals_info_1 typedef struct _USER_MODALS_INFO_1 {
-	// DWORD usrmod1_role; PWSTR usrmod1_primary; } USER_MODALS_INFO_1, *PUSER_MODALS_INFO_1, *LPUSER_MODALS_INFO_1;
+	// DWORD usrmod1_role; StrPtrUni usrmod1_primary; } USER_MODALS_INFO_1, *PUSER_MODALS_INFO_1, *LPUSER_MODALS_INFO_1;
 	[PInvokeData("lmaccess.h", MSDNShortId = "2cb7f310-c76e-42fd-892c-fead374af16c")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_MODALS_INFO_1
@@ -9582,7 +9582,7 @@ public static partial class NetApi32
 
 	/// <summary>The <c>USER_MODALS_INFO_1007</c> structure contains domain controller information.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_modals_info_1007 typedef struct
-	// _USER_MODALS_INFO_1007 { PWSTR usrmod1007_primary; } USER_MODALS_INFO_1007, *PUSER_MODALS_INFO_1007, *LPUSER_MODALS_INFO_1007;
+	// _USER_MODALS_INFO_1007 { StrPtrUni usrmod1007_primary; } USER_MODALS_INFO_1007, *PUSER_MODALS_INFO_1007, *LPUSER_MODALS_INFO_1007;
 	[PInvokeData("lmaccess.h", MSDNShortId = "aa6425eb-576c-4f6f-b9c9-96d9535bc7d6")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_MODALS_INFO_1007
@@ -9596,7 +9596,7 @@ public static partial class NetApi32
 
 	/// <summary>The <c>USER_MODALS_INFO_2</c> structure contains the Security Account Manager (SAM) domain name and identifier.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/lmaccess/ns-lmaccess-_user_modals_info_2 typedef struct _USER_MODALS_INFO_2 {
-	// PWSTR usrmod2_domain_name; PSID usrmod2_domain_id; } USER_MODALS_INFO_2, *PUSER_MODALS_INFO_2, *LPUSER_MODALS_INFO_2;
+	// StrPtrUni usrmod2_domain_name; PSID usrmod2_domain_id; } USER_MODALS_INFO_2, *PUSER_MODALS_INFO_2, *LPUSER_MODALS_INFO_2;
 	[PInvokeData("lmaccess.h", MSDNShortId = "9a4b3fc1-03b5-4ba7-948f-e455c34fa234")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct USER_MODALS_INFO_2

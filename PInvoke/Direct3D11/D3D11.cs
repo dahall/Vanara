@@ -841,11 +841,11 @@ public static partial class D3D11
 
 		/// <summary>Gets the instance name of the current HLSL class.</summary>
 		/// <param name="pInstanceName">
-		/// <para>Type: <c>PSTR</c></para>
+		/// <para>Type: <c>StrPtrAnsi</c></para>
 		/// <para>The instance name of the current HLSL class.</para>
 		/// </param>
 		/// <param name="pBufferLength">
-		/// <para>Type: <c>SIZE_T*</c></para>
+		/// <para>Type: <c>SizeT*</c></para>
 		/// <para>The length of the <c>pInstanceName</c> parameter.</para>
 		/// </param>
 		/// <returns>None</returns>
@@ -855,17 +855,17 @@ public static partial class D3D11
 		/// <para><c>Windows Phone 8:</c> This API is supported.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11classinstance-getinstancename void GetInstanceName(
-		// [out, optional] PSTR pInstanceName, [in, out] SIZE_T *pBufferLength );
+		// [out, optional] StrPtrAnsi pInstanceName, [in, out] SizeT *pBufferLength );
 		[PreserveSig]
-		void GetInstanceName([Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pInstanceName, ref SIZE_T pBufferLength);
+		void GetInstanceName([Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pInstanceName, ref SizeT pBufferLength);
 
 		/// <summary>Gets the type of the current HLSL class.</summary>
 		/// <param name="pTypeName">
-		/// <para>Type: <c>PSTR</c></para>
+		/// <para>Type: <c>StrPtrAnsi</c></para>
 		/// <para>Type of the current HLSL class.</para>
 		/// </param>
 		/// <param name="pBufferLength">
-		/// <para>Type: <c>SIZE_T*</c></para>
+		/// <para>Type: <c>SizeT*</c></para>
 		/// <para>The length of the <c>pTypeName</c> parameter.</para>
 		/// </param>
 		/// <returns>None</returns>
@@ -875,9 +875,9 @@ public static partial class D3D11
 		/// <para><c>Windows Phone 8:</c> This API is supported.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11classinstance-gettypename void GetTypeName( [out,
-		// optional] PSTR pTypeName, [in, out] SIZE_T *pBufferLength );
+		// optional] StrPtrAnsi pTypeName, [in, out] SizeT *pBufferLength );
 		[PreserveSig]
-		void GetTypeName([Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pTypeName, ref SIZE_T pBufferLength);
+		void GetTypeName([Out, MarshalAs(UnmanagedType.LPStr)] StringBuilder pTypeName, ref SizeT pBufferLength);
 	}
 
 	/// <summary>This interface encapsulates an HLSL dynamic linkage.</summary>
@@ -2496,7 +2496,7 @@ public static partial class D3D11
 		/// </para>
 		/// </param>
 		/// <param name="BytecodeLength">
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>Size of the compiled shader.</para>
 		/// </param>
 		/// <param name="ppInputLayout">
@@ -2527,7 +2527,7 @@ public static partial class D3D11
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createinputlayout HRESULT CreateInputLayout( [in]
 		// const D3D11_INPUT_ELEMENT_DESC *pInputElementDescs, [in] uint NumElements, [in] const void *pShaderBytecodeWithInputSignature,
-		// [in] SIZE_T BytecodeLength, [out, optional] ID3D11InputLayout **ppInputLayout );
+		// [in] SizeT BytecodeLength, [out, optional] ID3D11InputLayout **ppInputLayout );
 		[PreserveSig]
 		HRESULT CreateInputLayout([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] D3D11_INPUT_ELEMENT_DESC[] pInputElementDescs,
 			int NumElements, [In] IntPtr pShaderBytecodeWithInputSignature, [In] IntPtr BytecodeLength,
@@ -2539,7 +2539,7 @@ public static partial class D3D11
 		/// <para>A pointer to the compiled shader.</para>
 		/// </param>
 		/// <param name="BytecodeLength">
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>Size of the compiled vertex shader.</para>
 		/// </param>
 		/// <param name="pClassLinkage">
@@ -2611,7 +2611,7 @@ public static partial class D3D11
 		/// </list>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createvertexshader HRESULT CreateVertexShader(
-		// [in] const void *pShaderBytecode, [in] SIZE_T BytecodeLength, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional]
+		// [in] const void *pShaderBytecode, [in] SizeT BytecodeLength, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional]
 		// ID3D11VertexShader **ppVertexShader );
 		[PreserveSig]
 		HRESULT CreateVertexShader([In] IntPtr pShaderBytecode, [In] IntPtr BytecodeLength, [In, Optional] ID3D11ClassLinkage? pClassLinkage,
@@ -2623,7 +2623,7 @@ public static partial class D3D11
 		/// <para>A pointer to the compiled shader.</para>
 		/// </param>
 		/// <param name="BytecodeLength">
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>Size of the compiled geometry shader.</para>
 		/// </param>
 		/// <param name="pClassLinkage">
@@ -2698,7 +2698,7 @@ public static partial class D3D11
 		/// <para>Usage Example</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-creategeometryshader HRESULT
-		// CreateGeometryShader( [in] const void *pShaderBytecode, [in] SIZE_T BytecodeLength, [in, optional] ID3D11ClassLinkage
+		// CreateGeometryShader( [in] const void *pShaderBytecode, [in] SizeT BytecodeLength, [in, optional] ID3D11ClassLinkage
 		// *pClassLinkage, [out, optional] ID3D11GeometryShader **ppGeometryShader );
 		[PreserveSig]
 		HRESULT CreateGeometryShader([In] IntPtr pShaderBytecode, [In] IntPtr BytecodeLength, [In, Optional] ID3D11ClassLinkage? pClassLinkage,
@@ -2719,7 +2719,7 @@ public static partial class D3D11
 		/// </para>
 		/// </param>
 		/// <param name="BytecodeLength">
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>Size of the compiled geometry shader.</para>
 		/// </param>
 		/// <param name="pSODeclaration">
@@ -2821,7 +2821,7 @@ public static partial class D3D11
 		/// <para><c>Windows Phone 8:</c> This API is supported.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-creategeometryshaderwithstreamoutput HRESULT
-		// CreateGeometryShaderWithStreamOutput( [in] const void *pShaderBytecode, [in] SIZE_T BytecodeLength, [in, optional] const
+		// CreateGeometryShaderWithStreamOutput( [in] const void *pShaderBytecode, [in] SizeT BytecodeLength, [in, optional] const
 		// D3D11_SO_DECLARATION_ENTRY *pSODeclaration, [in] uint NumEntries, [in, optional] const uint *pBufferStrides, [in] uint
 		// NumStrides, [in] uint RasterizedStream, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional] ID3D11GeometryShader
 		// **ppGeometryShader );
@@ -2837,7 +2837,7 @@ public static partial class D3D11
 		/// <para>A pointer to the compiled shader.</para>
 		/// </param>
 		/// <param name="BytecodeLength">
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>Size of the compiled pixel shader.</para>
 		/// </param>
 		/// <param name="pClassLinkage">
@@ -2857,7 +2857,7 @@ public static partial class D3D11
 		/// </returns>
 		/// <remarks>After creating the pixel shader, you can set it to the device using ID3D11DeviceContext::PSSetShader.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createpixelshader HRESULT CreatePixelShader( [in]
-		// const void *pShaderBytecode, [in] SIZE_T BytecodeLength, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional]
+		// const void *pShaderBytecode, [in] SizeT BytecodeLength, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional]
 		// ID3D11PixelShader **ppPixelShader );
 		[PreserveSig]
 		HRESULT CreatePixelShader([In] IntPtr pShaderBytecode, [In] IntPtr BytecodeLength, ID3D11ClassLinkage? pClassLinkage, [MarshalAs(UnmanagedType.Interface)] out ID3D11PixelShader? ppPixelShader);
@@ -2868,7 +2868,7 @@ public static partial class D3D11
 		/// <para>A pointer to a compiled shader.</para>
 		/// </param>
 		/// <param name="BytecodeLength">
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>Size of the compiled shader.</para>
 		/// </param>
 		/// <param name="pClassLinkage">
@@ -2937,7 +2937,7 @@ public static partial class D3D11
 		/// </list>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createhullshader HRESULT CreateHullShader( [in]
-		// const void *pShaderBytecode, [in] SIZE_T BytecodeLength, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional]
+		// const void *pShaderBytecode, [in] SizeT BytecodeLength, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional]
 		// ID3D11HullShader **ppHullShader );
 		[PreserveSig]
 		HRESULT CreateHullShader([In] IntPtr pShaderBytecode, [In] IntPtr BytecodeLength, ID3D11ClassLinkage? pClassLinkage, [MarshalAs(UnmanagedType.Interface)] out ID3D11HullShader? ppHullShader);
@@ -2948,7 +2948,7 @@ public static partial class D3D11
 		/// <para>A pointer to a compiled shader.</para>
 		/// </param>
 		/// <param name="BytecodeLength">
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>Size of the compiled shader.</para>
 		/// </param>
 		/// <param name="pClassLinkage">
@@ -3020,7 +3020,7 @@ public static partial class D3D11
 		/// </list>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createdomainshader HRESULT CreateDomainShader(
-		// [in] const void *pShaderBytecode, [in] SIZE_T BytecodeLength, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional]
+		// [in] const void *pShaderBytecode, [in] SizeT BytecodeLength, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional]
 		// ID3D11DomainShader **ppDomainShader );
 		[PreserveSig]
 		HRESULT CreateDomainShader([In] IntPtr pShaderBytecode, [In] IntPtr BytecodeLength, ID3D11ClassLinkage? pClassLinkage, [MarshalAs(UnmanagedType.Interface)] out ID3D11DomainShader? ppDomainShader);
@@ -3031,7 +3031,7 @@ public static partial class D3D11
 		/// <para>A pointer to a compiled shader.</para>
 		/// </param>
 		/// <param name="BytecodeLength">
-		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>Type: <c>SizeT</c></para>
 		/// <para>Size of the compiled shader in <c>pShaderBytecode</c>.</para>
 		/// </param>
 		/// <param name="pClassLinkage">
@@ -3054,7 +3054,7 @@ public static partial class D3D11
 		/// </returns>
 		/// <remarks>For an example, see How To: Create a Compute Shader and HDRToneMappingCS11 Sample.</remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-createcomputeshader HRESULT CreateComputeShader(
-		// [in] const void *pShaderBytecode, [in] SIZE_T BytecodeLength, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional]
+		// [in] const void *pShaderBytecode, [in] SizeT BytecodeLength, [in, optional] ID3D11ClassLinkage *pClassLinkage, [out, optional]
 		// ID3D11ComputeShader **ppComputeShader );
 		[PreserveSig]
 		HRESULT CreateComputeShader([In] IntPtr pShaderBytecode, [In] IntPtr BytecodeLength, ID3D11ClassLinkage? pClassLinkage, [MarshalAs(UnmanagedType.Interface)] out ID3D11ComputeShader? ppComputeShader);
@@ -3488,7 +3488,7 @@ public static partial class D3D11
 		/// </para>
 		/// </param>
 		/// <param name="szName">
-		/// <para>Type: <c>PSTR</c></para>
+		/// <para>Type: <c>StrPtrAnsi</c></para>
 		/// <para>
 		/// String to be filled with a brief name for the counter. May be <c>NULL</c> if the application is not interested in the name of
 		/// the counter.
@@ -3499,7 +3499,7 @@ public static partial class D3D11
 		/// <para>Length of the string returned to szName. Can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="szUnits">
-		/// <para>Type: <c>PSTR</c></para>
+		/// <para>Type: <c>StrPtrAnsi</c></para>
 		/// <para>
 		/// Name of the units a counter measures, provided the memory the pointer points to has enough room to hold the string. Can be
 		/// <c>NULL</c>. The returned string will always be in English.
@@ -3510,7 +3510,7 @@ public static partial class D3D11
 		/// <para>Length of the string returned to szUnits. Can be <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="szDescription">
-		/// <para>Type: <c>PSTR</c></para>
+		/// <para>Type: <c>StrPtrAnsi</c></para>
 		/// <para>
 		/// A description of the counter, provided the memory the pointer points to has enough room to hold the string. Can be <c>NULL</c>.
 		/// The returned string will always be in English.
@@ -3536,8 +3536,8 @@ public static partial class D3D11
 		/// <para><c>Windows Phone 8:</c> This API is supported.</para>
 		/// </remarks>
 		// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/nf-d3d11-id3d11device-checkcounter HRESULT CheckCounter( [in] const
-		// D3D11_COUNTER_DESC *pDesc, [out] D3D11_COUNTER_TYPE *pType, [out] uint *pActiveCounters, [out, optional] PSTR szName, [in, out,
-		// optional] uint *pNameLength, [out, optional] PSTR szUnits, [in, out, optional] uint *pUnitsLength, [out, optional] PSTR
+		// D3D11_COUNTER_DESC *pDesc, [out] D3D11_COUNTER_TYPE *pType, [out] uint *pActiveCounters, [out, optional] StrPtrAnsi szName, [in, out,
+		// optional] uint *pNameLength, [out, optional] StrPtrAnsi szUnits, [in, out, optional] uint *pUnitsLength, [out, optional] StrPtrAnsi
 		// szDescription, [in, out, optional] uint *pDescriptionLength );
 		[PreserveSig]
 		HRESULT CheckCounter(in D3D11_COUNTER_DESC pDesc, out D3D11_COUNTER_TYPE pType, out uint pActiveCounters,
@@ -13735,7 +13735,7 @@ public static partial class D3D11
 	/// <param name="mapFlag">Flag that specifies what the CPU does when the GPU is busy. This flag is optional.</param>
 	/// <returns>The copied memory from <see cref="D3D11_MAPPED_SUBRESOURCE.pData"/>.</returns>
 	public static SafeCoTaskMemHandle GetMappedData(this ID3D11DeviceContext context, ID3D11Resource resource, uint subResource, D3D11_MAP mapType,
-		SIZE_T size, D3D11_MAP_FLAG mapFlag = 0)
+		SizeT size, D3D11_MAP_FLAG mapFlag = 0)
 	{
 		SafeCoTaskMemHandle mem = SafeCoTaskMemHandle.Null;
 		ActionWhileMapped(context, resource, subResource, mapType, action, mapFlag);

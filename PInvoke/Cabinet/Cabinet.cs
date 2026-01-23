@@ -7,7 +7,7 @@ public static partial class Cabinet
 	/// <param name="UserContext">The user context.</param>
 	/// <param name="Size">The size.</param>
 	/// <returns>The allocated memory pointer.</returns>
-	public delegate IntPtr PFN_COMPRESS_ALLOCATE([In] IntPtr UserContext, [In] SIZE_T Size);
+	public delegate IntPtr PFN_COMPRESS_ALLOCATE([In] IntPtr UserContext, [In] SizeT Size);
 
 	/// <summary>A callback that frees memory.</summary>
 	/// <param name="UserContext">The user context.</param>
@@ -132,12 +132,12 @@ public static partial class Cabinet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-compress BOOL Compress( COMPRESSOR_HANDLE
-	// CompressorHandle, LPCVOID UncompressedData, SIZE_T UncompressedDataSize, PVOID CompressedBuffer, SIZE_T CompressedBufferSize,
+	// CompressorHandle, LPCVOID UncompressedData, SizeT UncompressedDataSize, PVOID CompressedBuffer, SizeT CompressedBufferSize,
 	// PSIZE_T CompressedDataSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "0e32501c-5213-43e6-88ca-1e424181d7a2")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Compress(COMPRESSOR_HANDLE CompressorHandle, IntPtr UncompressedData, SIZE_T UncompressedDataSize, IntPtr CompressedBuffer, SIZE_T CompressedBufferSize, out SIZE_T CompressedDataSize);
+	public static extern bool Compress(COMPRESSOR_HANDLE CompressorHandle, IntPtr UncompressedData, SizeT UncompressedDataSize, IntPtr CompressedBuffer, SizeT CompressedBufferSize, out SizeT CompressedDataSize);
 
 	/// <summary>Generates a new <c>COMPRESSOR_HANDLE</c>.</summary>
 	/// <param name="Algorithm">
@@ -397,12 +397,12 @@ public static partial class Cabinet
 	/// </para>
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-decompress BOOL Decompress( DECOMPRESSOR_HANDLE
-	// DecompressorHandle, LPCVOID CompressedData, SIZE_T CompressedDataSize, PVOID UncompressedBuffer, SIZE_T UncompressedBufferSize,
+	// DecompressorHandle, LPCVOID CompressedData, SizeT CompressedDataSize, PVOID UncompressedBuffer, SizeT UncompressedBufferSize,
 	// PSIZE_T UncompressedDataSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "654b88c7-14f2-43d4-8850-675ea303b439")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool Decompress(DECOMPRESSOR_HANDLE DecompressorHandle, IntPtr CompressedData, SIZE_T CompressedDataSize, IntPtr UncompressedBuffer, SIZE_T UncompressedBufferSize, out SIZE_T UncompressedDataSize);
+	public static extern bool Decompress(DECOMPRESSOR_HANDLE DecompressorHandle, IntPtr CompressedData, SizeT CompressedDataSize, IntPtr UncompressedBuffer, SizeT UncompressedBufferSize, out SizeT UncompressedDataSize);
 
 	/// <summary>Queries a compressor for information for a particular compression algorithm.</summary>
 	/// <param name="CompressorHandle">Handle to the compressor being queried for information.</param>
@@ -423,11 +423,11 @@ public static partial class Cabinet
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-querycompressorinformation BOOL
 	// QueryCompressorInformation( COMPRESSOR_HANDLE CompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, PVOID
-	// CompressInformation, SIZE_T CompressInformationSize );
+	// CompressInformation, SizeT CompressInformationSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "90b2ef29-c488-4d32-a315-312b25a0e585")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryCompressorInformation(COMPRESSOR_HANDLE CompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, IntPtr CompressInformation, SIZE_T CompressInformationSize);
+	public static extern bool QueryCompressorInformation(COMPRESSOR_HANDLE CompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, IntPtr CompressInformation, SizeT CompressInformationSize);
 
 	/// <summary>Use this function to query information about a particular compression algorithm.</summary>
 	/// <param name="DecompressorHandle">Handle to the decompressor being queried for information.</param>
@@ -445,11 +445,11 @@ public static partial class Cabinet
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-querydecompressorinformation BOOL
 	// QueryDecompressorInformation( DECOMPRESSOR_HANDLE DecompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, PVOID
-	// CompressInformation, SIZE_T CompressInformationSize );
+	// CompressInformation, SizeT CompressInformationSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "85b39c04-2145-45d2-be59-24615905353d")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool QueryDecompressorInformation(DECOMPRESSOR_HANDLE DecompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, IntPtr CompressInformation, SIZE_T CompressInformationSize);
+	public static extern bool QueryDecompressorInformation(DECOMPRESSOR_HANDLE DecompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, IntPtr CompressInformation, SizeT CompressInformationSize);
 
 	/// <summary>
 	/// Prepares the compressor for the compression of a new stream. The compressor object retains properties set with
@@ -507,11 +507,11 @@ public static partial class Cabinet
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-setcompressorinformation BOOL
 	// SetCompressorInformation( COMPRESSOR_HANDLE CompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, LPCVOID
-	// CompressInformation, SIZE_T CompressInformationSize );
+	// CompressInformation, SizeT CompressInformationSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "f8c2c425-9b21-4fe3-8b81-d8bf3cd8ec5b")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetCompressorInformation(COMPRESSOR_HANDLE CompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, IntPtr CompressInformation, SIZE_T CompressInformationSize);
+	public static extern bool SetCompressorInformation(COMPRESSOR_HANDLE CompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, IntPtr CompressInformation, SizeT CompressInformationSize);
 
 	/// <summary>Sets information in a decompressor for a particular compression algorithm.</summary>
 	/// <param name="DecompressorHandle">Handle to the decompressor.</param>
@@ -532,11 +532,11 @@ public static partial class Cabinet
 	/// </remarks>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/nf-compressapi-setdecompressorinformation BOOL
 	// SetDecompressorInformation( DECOMPRESSOR_HANDLE DecompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, LPCVOID
-	// CompressInformation, SIZE_T CompressInformationSize );
+	// CompressInformation, SizeT CompressInformationSize );
 	[DllImport(Lib.Cabinet, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("compressapi.h", MSDNShortId = "804B73D3-E68E-43A3-8F23-6A46ABDECB23")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern bool SetDecompressorInformation(DECOMPRESSOR_HANDLE DecompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, IntPtr CompressInformation, SIZE_T CompressInformationSize);
+	public static extern bool SetDecompressorInformation(DECOMPRESSOR_HANDLE DecompressorHandle, COMPRESS_INFORMATION_CLASS CompressInformationClass, IntPtr CompressInformation, SizeT CompressInformationSize);
 
 	/// <summary>A structure containing optional memory allocation and deallocation routines.</summary>
 	// https://docs.microsoft.com/en-us/windows/desktop/api/compressapi/ns-compressapi-compress_allocation_routines typedef struct

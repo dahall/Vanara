@@ -599,7 +599,7 @@ public static partial class CoreAudio
 		/// pointed to by the ppwstrFormatRep parameter.
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/win32/api/audioenginebaseapo/nf-audioenginebaseapo-iaudiosystemeffectscustomformats-getformatrepresentation
-		// HRESULT GetFormatRepresentation( UINT nFormat, PWSTR *ppwstrFormatRep );
+		// HRESULT GetFormatRepresentation( UINT nFormat, StrPtrUni *ppwstrFormatRep );
 		void GetFormatRepresentation(uint nFormat, out SafeCoTaskMemString ppwstrFormatRep);
 	}
 
@@ -834,7 +834,7 @@ public static partial class CoreAudio
 
 	/// <summary>The AudioFXExtensionParams structure is passed to the system effects ControlPanel Extension PropertyPage via IShellPropSheetExt::AddPages.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/audioenginebaseapo/ns-audioenginebaseapo-audiofxextensionparams typedef struct
-	// __MIDL___MIDL_itf_audioenginebaseapo_0000_0008_0001 { LPARAM AddPageParam; PWSTR pwstrEndpointID; IPropertyStore *pFxProperties; } AudioFXExtensionParams;
+	// __MIDL___MIDL_itf_audioenginebaseapo_0000_0008_0001 { LPARAM AddPageParam; StrPtrUni pwstrEndpointID; IPropertyStore *pFxProperties; } AudioFXExtensionParams;
 	[PInvokeData("audioenginebaseapo.h", MSDNShortId = "832F1190-ED3E-4059-AB45-18C23D98663B")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct AudioFXExtensionParams

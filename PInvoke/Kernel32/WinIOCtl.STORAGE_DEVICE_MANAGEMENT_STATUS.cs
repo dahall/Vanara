@@ -247,11 +247,11 @@ public static partial class Kernel32
 
 	private class STORAGE_DEVICE_UNIQUE_IDENTIFIER_Marshaler : IVanaraMarshaler
 	{
-		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<STORAGE_DEVICE_UNIQUE_IDENTIFIER>();
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<STORAGE_DEVICE_UNIQUE_IDENTIFIER>();
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject) => new SafeCoTaskMemHandle(1024);
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero) return null;
 			STORAGE_DEVICE_UNIQUE_IDENTIFIER sdd = (STORAGE_DEVICE_UNIQUE_IDENTIFIER)Marshal.PtrToStructure(pNativeData, typeof(STORAGE_DEVICE_UNIQUE_IDENTIFIER))!;

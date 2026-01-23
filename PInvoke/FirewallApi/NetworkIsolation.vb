@@ -195,7 +195,7 @@ Partial Public Module FirewallApi
         Public userSid As PSID
 
         ''' <summary>
-        ''' <para>Type: <c>PWSTR</c></para>
+        ''' <para>Type: <c>StrPtrUni</c></para>
         ''' <para>The app container's globally unique name.</para>
         ''' <para>Also referred to as the Package Family Name, for the app container of a Windows Store app.</para>
         ''' </summary>
@@ -203,14 +203,14 @@ Partial Public Module FirewallApi
         Public appContainerName As String
 
         ''' <summary>
-        ''' <para>Type: <c>PWSTR</c></para>
+        ''' <para>Type: <c>StrPtrUni</c></para>
         ''' <para>Friendly name of the app container</para>
         ''' </summary>
         <MarshalAs(UnmanagedType.LPWStr)>
         Public displayName As String
 
         ''' <summary>
-        ''' <para>Type: <c>PWSTR</c></para>
+        ''' <para>Type: <c>StrPtrUni</c></para>
         ''' <para>A description of the app container (its use, the objective of the application that uses it, etc.)</para>
         ''' </summary>
         <MarshalAs(UnmanagedType.LPWStr)>

@@ -14,7 +14,7 @@ public static partial class NCrypt
 	/// <returns>Pointer to the allocated memory.</returns>
 	[PInvokeData("ncrypt.h")]
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate IntPtr PFN_NCRYPT_ALLOC(SIZE_T cbSize);
+	public delegate IntPtr PFN_NCRYPT_ALLOC(SizeT cbSize);
 
 	/// <summary>A custom function that can free allocated memory.</summary>
 	/// <param name="pv">Pointer to the allocated memory.</param>
@@ -4859,7 +4859,7 @@ public static partial class NCrypt
 	// cbSize; PFN_NCRYPT_ALLOC pfnAlloc; PFN_NCRYPT_FREE pfnFree; } NCRYPT_ALLOC_PARA;
 	[PInvokeData("ncrypt.h", MSDNShortId = "4F546F51-E4DE-4703-B1D1-F84165C3C31B")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct NCRYPT_ALLOC_PARA(Func<SIZE_T, IntPtr>? alloc = null, Action<IntPtr>? free = null)
+	public struct NCRYPT_ALLOC_PARA(Func<SizeT, IntPtr>? alloc = null, Action<IntPtr>? free = null)
 	{
 		/// <summary>The size, in bytes, of this structure.</summary>
 		public uint cbSize = (uint)Marshal.SizeOf<NCRYPT_ALLOC_PARA>();
@@ -4873,7 +4873,7 @@ public static partial class NCrypt
 
 	/// <summary>The <c>NCryptAlgorithmName</c> structure is used to contain information about a CNG algorithm.</summary>
 	// https://docs.microsoft.com/en-us/windows/win32/api/ncrypt/ns-ncrypt-ncryptalgorithmname typedef struct _NCryptAlgorithmName {
-	// PWSTR pszName; DWORD dwClass; DWORD dwAlgOperations; DWORD dwFlags; } NCryptAlgorithmName;
+	// StrPtrUni pszName; DWORD dwClass; DWORD dwAlgOperations; DWORD dwFlags; } NCryptAlgorithmName;
 	[PInvokeData("ncrypt.h", MSDNShortId = "79b0193e-3be8-46ce-a422-40ed9698363f")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	public struct NCryptAlgorithmName
@@ -5125,7 +5125,7 @@ public static partial class NCrypt
 
 	/// <summary>The <b>NCryptKeyName</b> structure is used to contain information about a CNG key.</summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/ncrypt/ns-ncrypt-ncryptkeyname
-	// typedef struct NCryptKeyName { PWSTR pszName; PWSTR pszAlgid; DWORD dwLegacyKeySpec; DWORD dwFlags; } NCryptKeyName;
+	// typedef struct NCryptKeyName { StrPtrUni pszName; StrPtrUni pszAlgid; DWORD dwLegacyKeySpec; DWORD dwFlags; } NCryptKeyName;
 	[PInvokeData("ncrypt.h", MSDNShortId = "NS:ncrypt.NCryptKeyName")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct NCryptKeyName
@@ -5186,7 +5186,7 @@ public static partial class NCrypt
 	/// NCryptEnumStorageProviders function to return the names of the registered CNG key storage providers.
 	/// </summary>
 	// https://learn.microsoft.com/en-us/windows/win32/api/ncrypt/ns-ncrypt-ncryptprovidername
-	// typedef struct NCryptProviderName { PWSTR pszName; PWSTR pszComment; } NCryptProviderName;
+	// typedef struct NCryptProviderName { StrPtrUni pszName; StrPtrUni pszComment; } NCryptProviderName;
 	[PInvokeData("ncrypt.h", MSDNShortId = "NS:ncrypt.NCryptProviderName")]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct NCryptProviderName
@@ -5452,7 +5452,7 @@ public static partial class NCrypt
 		/// <param name="buffers">An array of NCryptBuffer objects to include in the buffer descriptor. Cannot be null.</param>
 		public static implicit operator NCryptBufferDesc(NCryptBuffer[] buffers) => new(buffers);
 
-		SIZE_T IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<NCryptBufferInt>();
+		SizeT IVanaraMarshaler.GetNativeSize() => Marshal.SizeOf<NCryptBufferInt>();
 
 		SafeAllocatedMemoryHandle IVanaraMarshaler.MarshalManagedToNative(object? managedObject)
 		{
@@ -5470,7 +5470,7 @@ public static partial class NCrypt
 			return ret;
 		}
 
-		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SIZE_T allocatedBytes)
+		object? IVanaraMarshaler.MarshalNativeToManaged(IntPtr pNativeData, SizeT allocatedBytes)
 		{
 			if (pNativeData == IntPtr.Zero || allocatedBytes == 0) return null;
 			if (allocatedBytes < Marshal.SizeOf<NCryptBufferDescInt>()) throw new InsufficientMemoryException();
