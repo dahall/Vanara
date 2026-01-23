@@ -20,8 +20,4 @@
 #include "Utils.h"
 #include "Macros.h"
 
-//#using <Vanara.Core.dll>
-//#using <Vanara.PInvoke.Shared.dll>
-//#using <Vanara.PInvoke.VssApiMgd.dll>
-
 #endif //PCH_H

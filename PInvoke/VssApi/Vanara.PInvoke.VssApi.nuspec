@@ -16,7 +16,7 @@
     <language>en-US</language>
     <dependencies>
       <group targetFramework="net8.0-windows7.0">
-        <dependency id="Vanara.PInvoke.Shared" version="4.1.2" exclude="Build,Analyzers" />
+        <dependency id="Vanara.Core" version="5.0.1" exclude="Build,Analyzers" />
       </group>
     </dependencies>
     <releaseNotes></releaseNotes>
