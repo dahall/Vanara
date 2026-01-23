@@ -1,7 +1,7 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ output extension=".cs" #>
-<# var classes = new string [] {"PSTR", "PTSTR", "PWSTR"}; #>
+<# var classes = new string [] {"LPSTR", "LPTSTR", "LPWSTR"}; #>
 <# var charSets = new string [] {"Ansi", "Auto", "Unicode"}; #>
 <# var ptrs = new string [] {"StrPtrAnsi", "StrPtrAuto", "StrPtrUni"}; #>
 using System.Diagnostics.CodeAnalysis;
@@ -10,7 +10,7 @@ using System.Security;
 namespace Vanara.InteropServices;
 
 <# for (int i = 0; i < classes.Length; i++) { #>
-/// <summary>Class that reprents a <#= classes[i] #> with allocated memory behind it.</summary>
+/// <summary>Class that represents a <#= classes[i] #> with allocated memory behind it.</summary>
 public class Safe<#= classes[i] #> : SafeMemString<CoTaskMemoryMethods>
 {
 	const CharSet thisCharSet = CharSet.<#= charSets[i] #>;
@@ -43,27 +43,14 @@ public class Safe<#= classes[i] #> : SafeMemString<CoTaskMemoryMethods>
 	private Safe<#= classes[i] #>(<#= ptrs[i] #> ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
 		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
 
-	/// <summary>Initializes a new instance of the <see cref="Safe<#= classes[i] #>"/> class.</summary>
-	/// <param name="ptr">The PTR.</param>
-	/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
-	/// <param name="allocatedBytes">The number of bytes allocated to <paramref name="ptr"/>.</param>
-	[ExcludeFromCodeCoverage]
-	private Safe<#= classes[i] #>(<#= classes[i] #> ptr, bool ownsHandle = true, PInvoke.SizeT allocatedBytes = default) :
-		base((IntPtr)ptr, thisCharSet, ownsHandle, allocatedBytes) { }
-
 	/// <summary>Represents a <c>null</c> value. Used primarily for comparison.</summary>
 	/// <value>A null value.</value>
-	public static Safe<#= classes[i] #> Null => new((<#= classes[i] #>)IntPtr.Zero, false);
+	public static Safe<#= classes[i] #> Null => new((<#= ptrs[i] #>)IntPtr.Zero, false);
 
 	/// <summary>Returns the string value held by a <see cref="Safe<#= classes[i] #>"/>.</summary>
 	/// <param name="s">The <see cref="Safe<#= classes[i] #>"/> instance.</param>
 	/// <returns>A <see cref="string"/> value held by the <see cref="Safe<#= classes[i] #>"/> or <c>null</c> if the handle or value is invalid.</returns>
 	public static implicit operator Safe<#= classes[i] #>(string s) => s.ToString();
-
-	/// <summary>Returns the <#= classes[i] #> value held by a <see cref="Safe<#= classes[i] #>"/>.</summary>
-	/// <param name="s">The <see cref="Safe<#= classes[i] #>"/> instance.</param>
-	/// <returns>A <see cref="<#= classes[i] #>"/> value held by the <see cref="Safe<#= classes[i] #>"/> or <c>default</c> if the handle or value is invalid.</returns>
-	public static implicit operator <#= classes[i] #>(Safe<#= classes[i] #> s) => (<#= classes[i] #>)s.handle;
 
 	/// <summary>Returns the <#= ptrs[i] #> value held by a <see cref="Safe<#= classes[i] #>"/>.</summary>
 	/// <param name="s">The <see cref="Safe<#= classes[i] #>"/> instance.</param>

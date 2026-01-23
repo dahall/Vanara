@@ -1,9 +1,8 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ output extension=".cs" #>
-<# var classes = new string [] {"PSTR", "PTSTR", "PWSTR"}; #>
+<# var classes = new string [] {"StrPtrAnsi", "StrPtrAuto", "StrPtrUni"}; #>
 <# var charSets = new string [] {"Ansi", "Auto", "Unicode"}; #>
-<# var ptrs = new string [] {"StrPtrAnsi", "StrPtrAuto", "StrPtrUni"}; #>
 using System.Collections.Generic;
 using System.Diagnostics;
 
