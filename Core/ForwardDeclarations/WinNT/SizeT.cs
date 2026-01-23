@@ -13,8 +13,7 @@ namespace Vanara.PInvoke;
 [StructLayout(LayoutKind.Sequential), Serializable]
 [TypeConverter(typeof(SizeTTypeConverter))]
 [DebuggerDisplay("{Value}")]
-[Obsolete("Use 'SIZE_T' instead. This type will be removed in a future release.", false)]
-public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComparable, ISerializable
+public struct SizeT : IEquatable<SizeT>, IEquatable<nuint>, IComparable<SizeT>, IConvertible, IComparable, ISerializable
 #if NET7_0_OR_GREATER
 	, IParsable<SizeT>, ISpanParsable<SizeT>, IBinaryInteger<SizeT>, IUnsignedNumber<SizeT>
 #endif
@@ -138,16 +137,6 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 	/// <param name="value">The value.</param>
 	/// <returns>The result of the conversion.</returns>
 	public static implicit operator ulong(SizeT value) => value.val;
-
-	/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="SIZE_T"/>.</summary>
-	/// <param name="value">The value.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SIZE_T(SizeT value) => value.val;
-
-	/// <summary>Performs an implicit conversion from <see cref="SIZE_T"/> to <see cref="SizeT"/>.</summary>
-	/// <param name="value">The value.</param>
-	/// <returns>The result of the conversion.</returns>
-	public static implicit operator SizeT(SIZE_T value) => (nuint)value;
 
 	/// <summary>Subtracts two specified <see cref="SizeT"/> values.</summary>
 	/// <param name="s1">The minuend.</param>
@@ -295,6 +284,9 @@ public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible, IComp
 
 	/// <inheritdoc/>
 	public readonly bool Equals(SizeT other) => Value.Equals(other.Value);
+
+	/// <inheritdoc/>
+	public readonly bool Equals(nuint other) => Value.Equals(other);
 
 	/// <inheritdoc/>
 	public override readonly int GetHashCode() => Value.GetHashCode();
