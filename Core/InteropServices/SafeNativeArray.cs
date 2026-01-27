@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using Vanara.PInvoke;
 
 namespace Vanara.InteropServices;
 
@@ -11,7 +13,7 @@ namespace Vanara.InteropServices;
 public class SafeNativeArray<TElem> : SafeNativeArrayBase<TElem, HGlobalMemoryMethods> where TElem : struct
 {
 	/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
-	public SafeNativeArray() : base(0, 0) { }
+	public SafeNativeArray() : base() { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class from a copy of a managed TElem array.</summary>
 	/// <param name="array">The array of bytes to copy.</param>
@@ -59,6 +61,9 @@ public class SafeNativeArrayBase<TElem, TMem> : SafeMemoryHandle<TMem>, IList<TE
 {
 	/// <summary>Gets the size of the element.</summary>
 	protected static readonly int ElemSize = InteropExtensions.SizeOf<TElem>();
+
+	/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
+	public SafeNativeArrayBase() : base(default, 0, false) { }
 
 	/// <summary>Initializes a new instance of the <see cref="SafeNativeArrayBase{TElem, TMem}"/> class from a copy of a managed TElem array.</summary>
 	/// <param name="array">The array of <typeparamref name="TElem"/> with which to initialize the <see cref="SafeNativeArrayBase{TElem, TMem}"/>.</param>
@@ -162,6 +167,9 @@ public class SafeNativeArrayBase<TElem, TMem> : SafeMemoryHandle<TMem>, IList<TE
 	/// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
 	public void Add(TElem item) => Insert(Count, item);
 
+	/// <summary>Gets a <see cref="Span{TElem}"/> over this <see cref="SafeNativeArrayBase{TElem, TMem}"/> instance.</summary>
+	public Span<TElem> AsSpan() => handle.AsSpan<TElem>(Count, (int)HeaderSize, Size);
+
 	/// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
 	public virtual void Clear()
 	{
@@ -189,6 +197,27 @@ public class SafeNativeArrayBase<TElem, TMem> : SafeMemoryHandle<TMem>, IList<TE
 	/// </param>
 	/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 	public void CopyTo(TElem[] array, int arrayIndex) => Elements?.CopyTo(array, arrayIndex);
+
+	/// <summary>
+	/// Sets the current count to the specified value, overriding internal size constraints. Use with caution, as this method may leave the
+	/// object in an inconsistent state if used incorrectly.
+	/// </summary>
+	/// <remarks>
+	/// This method bypasses normal validation and size management. It is intended for advanced scenarios where manual control over the count
+	/// and internal size is required, like when the pointer has been set as an out parameter, but the size has not been set. Improper use
+	/// may result in data corruption or runtime errors. Prefer using standard methods for modifying the count unless you have a specific
+	/// need for this low-level operation.
+	/// </remarks>
+	/// <param name="count">
+	/// The new count value to set. Must be non-negative and should not exceed the maximum allowed by the underlying storage.
+	/// </param>
+	public virtual void DangerousOverrideCount(SizeT count)
+	{
+		Count = count;
+		DangerousOverrideSize(GetRequiredSize(count, HeaderSize));
+		OnCountChanged();
+		OnUpdateHeader();
+	}
 
 	/// <summary>Returns an enumerator that iterates through the collection.</summary>
 	/// <returns>A <see cref="IEnumerator{TElem}"/> that can be used to iterate through the collection.</returns>
@@ -259,10 +288,10 @@ public class SafeNativeArrayBase<TElem, TMem> : SafeMemoryHandle<TMem>, IList<TE
 	}
 
 	/// <summary>Performs an implicit conversion from <see cref="SafeNativeArrayBase{TElem, TMem}"/> to <see cref="ReadOnlySpan{TElem}"/>.</summary>
-	public static implicit operator ReadOnlySpan<TElem>(SafeNativeArrayBase<TElem, TMem> array) => array.handle.AsSpan<TElem>(array.Count, (int)array.HeaderSize, array.Size);
+	public static implicit operator ReadOnlySpan<TElem>(SafeNativeArrayBase<TElem, TMem> array) => array.AsSpan();
 
 	/// <summary>Performs an implicit conversion from <see cref="SafeNativeArrayBase{TElem, TMem}"/> to <see cref="Span{TElem}"/>.</summary>
-	public static implicit operator Span<TElem>(SafeNativeArrayBase<TElem, TMem> array) => array.handle.AsSpan<TElem>(array.Count, (int)array.HeaderSize, array.Size);
+	public static implicit operator Span<TElem>(SafeNativeArrayBase<TElem, TMem> array) => array.AsSpan();
 
 	/// <summary>Returns an enumerator that iterates through a collection.</summary>
 	/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
