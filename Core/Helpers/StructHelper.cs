@@ -50,4 +50,27 @@ public static class StructHelper
 		fi.SetValue(ret, Convert.ChangeType((uint)InteropExtensions.SizeOf<T>(), fi.FieldType));
 		return (T)ret;
 	}
+
+	/// <summary>
+	/// Initializes a fixed-length array by copying the contents of the specified array and padding with default values if
+	/// necessary.
+	/// </summary>
+	/// <typeparam name="T">The type of elements in the array.</typeparam>
+	/// <param name="fixedLen">The required length of the returned array. Must be greater than or equal to the length of <paramref name="array"/>.</param>
+	/// <param name="array">The source array whose elements are to be copied. If null, an empty array is used.</param>
+	/// <returns>A new array of length <paramref name="fixedLen"/> containing the elements of <paramref name="array"/>, followed by
+	/// default values if <paramref name="array"/> is shorter than <paramref name="fixedLen"/>. If <paramref name="array"/>
+	/// is already of the required length, the original array is returned.</returns>
+	/// <exception cref="ArgumentException">Thrown if the length of <paramref name="array"/> is greater than <paramref name="fixedLen"/>.</exception>
+	public static T[] InitFixedArray<T>(int fixedLen, T[] array)
+	{
+		array ??= [];
+		if (array.Length > fixedLen)
+			throw new ArgumentException($"The length of {nameof(array)} is larger than {nameof(fixedLen)} limit.", nameof(array));
+		if (array.Length == fixedLen)
+			return array;
+		var ret = new T[fixedLen];
+		Array.Copy(array, ret, array.Length);
+		return ret;
+	}
 }
