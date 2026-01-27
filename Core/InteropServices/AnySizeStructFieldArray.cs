@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Vanara.InteropServices;
 
@@ -40,9 +41,9 @@ public struct AnySizeStructUnmanagedFieldArray<T> where T : unmanaged
 /// <summary>
 /// For structures that end with an ANYSIZE array field, this structure can be used to represent the value rather than using <see
 /// cref="UnmanagedType.ByValArray"/> but only when using an <c>unmanaged</c> type for <typeparamref name="T"/>.
+/// <note type="warning">Prone to memory overruns. Consider using marshaling.</note>
 /// </summary>
 /// <typeparam name="T">The type of the array element.</typeparam>
-[Obsolete("Prone to memory overruns. Use marshaling instead.")]
 public struct AnySizeStructFieldArray<T> where T : struct
 {
 	/// <summary>The elem</summary>
@@ -61,5 +62,12 @@ public struct AnySizeStructFieldArray<T> where T : struct
 			if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
 			unsafe { return ((IntPtr)Unsafe.AsPointer(ref elem)).ToStructure<T>(); }
 		}
+	}
+
+	/// <summary>Gets a <see cref="Span{T}"/> of the elements.</summary>
+	public Span<T> AsSpan(int length)
+	{
+		if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
+		unsafe { return new Span<T>(Unsafe.AsPointer(ref elem), length); }
 	}
 }
