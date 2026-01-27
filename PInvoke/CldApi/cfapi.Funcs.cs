@@ -114,7 +114,7 @@ public static partial class CldApi
 	// Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "FDDE9CB0-E1A2-46D6-94E0-228495675271")]
-	public static extern HRESULT CfConvertToPlaceholder(HFILE FileHandle, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength, CF_CONVERT_FLAGS ConvertFlags, out USN ConvertUsn, [In, Out, Optional] IntPtr Overlapped);
+	public static extern HRESULT CfConvertToPlaceholder(HFILE FileHandle, [In, Optional, SizeDef(nameof(FileIdentityLength))] IntPtr FileIdentity, uint FileIdentityLength, CF_CONVERT_FLAGS ConvertFlags, out USN ConvertUsn, [In, Out, Optional] StructPointer<NativeOverlapped> Overlapped);
 
 	/// <summary>Converts a normal file/directory to a placeholder file/directory.</summary>
 	/// <param name="FileHandle">Handle to the file or directory to be converted.</param>
@@ -242,7 +242,7 @@ public static partial class CldApi
 	// Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("CfApi.h")]
-	public static extern HRESULT CfDehydratePlaceholder(HFILE FileHandle, long StartingOffset, long Length, CF_DEHYDRATE_FLAGS DehydrateFlags, [In, Out, Optional] IntPtr Overlapped);
+	public static extern HRESULT CfDehydratePlaceholder(HFILE FileHandle, long StartingOffset, long Length, CF_DEHYDRATE_FLAGS DehydrateFlags, [In, Out, Optional] StructPointer<NativeOverlapped> Overlapped);
 
 	/// <summary>
 	/// Dehydrates a placeholder file by ensuring that the specified byte range is not present on-disk in the placeholder. This is valid
@@ -551,7 +551,7 @@ public static partial class CldApi
 	// FileHandle, LARGE_INTEGER StartingOffset, LARGE_INTEGER Length, CF_HYDRATE_FLAGS HydrateFlags, LPOVERLAPPED Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "4FFD7580-BF59-48D0-B6D7-516559914096")]
-	public static extern HRESULT CfHydratePlaceholder(HFILE FileHandle, long StartingOffset = 0, long Length = -1, CF_HYDRATE_FLAGS HydrateFlags = 0, [In, Out] IntPtr Overlapped = default);
+	public static extern HRESULT CfHydratePlaceholder(HFILE FileHandle, long StartingOffset = 0, long Length = -1, CF_HYDRATE_FLAGS HydrateFlags = 0, [In, Out] StructPointer<NativeOverlapped> Overlapped = default);
 
 	/// <summary>
 	/// Hydrates a placeholder file by ensuring that the specified byte range is present on-disk in the placeholder. This is valid for
@@ -768,7 +768,7 @@ public static partial class CldApi
 	// SyncRootPath, CF_SYNC_STATUS *SyncStatus );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "DC77D18A-CBF4-4172-815A-AB49A48D10B3")]
-	public static extern HRESULT CfReportSyncStatus([MarshalAs(UnmanagedType.LPWStr)] string SyncRootPath, [In, Optional] IntPtr SyncStatus);
+	public static extern HRESULT CfReportSyncStatus([MarshalAs(UnmanagedType.LPWStr)] string SyncRootPath, [In, Optional] StructPointer<NativeOverlapped> SyncStatus);
 
 	/// <summary>
 	/// Reverts a placeholder back to a regular file, stripping away all special characteristics such as the reparse tag, the file
@@ -908,7 +908,7 @@ public static partial class CldApi
 	// CF_PIN_STATE PinState, CF_SET_PIN_FLAGS PinFlags, LPOVERLAPPED Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "8B279914-E23A-479B-8621-E83DE1978597")]
-	public static extern HRESULT CfSetPinState(HFILE FileHandle, CF_PIN_STATE PinState, CF_SET_PIN_FLAGS PinFlags, [In, Out, Optional] IntPtr Overlapped);
+	public static extern HRESULT CfSetPinState(HFILE FileHandle, CF_PIN_STATE PinState, CF_SET_PIN_FLAGS PinFlags, [In, Out, Optional] StructPointer<NativeOverlapped> Overlapped);
 
 	/// <summary>
 	/// This sets the pin state of a placeholder, used to represent a user’s intent. Any application (not just the sync provider) can
@@ -1041,7 +1041,7 @@ public static partial class CldApi
 	// *DehydrateRangeArray, DWORD DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags, USN *UpdateUsn, LPOVERLAPPED Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "13F2BF9A-505F-4CFB-B008-7DDE85A3C581")]
-	public static extern HRESULT CfUpdatePlaceholder([In] HFILE FileHandle, in CF_FS_METADATA FsMetadata, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength,
+	public static extern HRESULT CfUpdatePlaceholder([In] HFILE FileHandle, in CF_FS_METADATA FsMetadata, [In, Optional, SizeDef(nameof(FileIdentityLength))] IntPtr FileIdentity, uint FileIdentityLength,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] CF_FILE_RANGE[]? DehydrateRangeArray, uint DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags,
 		ref USN UpdateUsn, [In, Out, Optional] StructPointer<NativeOverlapped> Overlapped);
 
@@ -1111,7 +1111,7 @@ public static partial class CldApi
 	// *DehydrateRangeArray, DWORD DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags, USN *UpdateUsn, LPOVERLAPPED Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "13F2BF9A-505F-4CFB-B008-7DDE85A3C581")]
-	public static extern HRESULT CfUpdatePlaceholder([In] HFILE FileHandle, [In, Optional] StructPointer<CF_FS_METADATA> FsMetadata, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength,
+	public static extern HRESULT CfUpdatePlaceholder([In] HFILE FileHandle, [In, Optional] StructPointer<CF_FS_METADATA> FsMetadata, [In, Optional, SizeDef(nameof(FileIdentityLength))] IntPtr FileIdentity, uint FileIdentityLength,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] CF_FILE_RANGE[]? DehydrateRangeArray, uint DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags,
 		[In, Out, Optional] StructPointer<USN> UpdateUsn, [In, Out, Optional] StructPointer<NativeOverlapped> Overlapped);
 
@@ -1181,6 +1181,7 @@ public static partial class CldApi
 	// *DehydrateRangeArray, DWORD DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags, USN *UpdateUsn, LPOVERLAPPED Overlapped );
 	[DllImport(Lib.CldApi, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("cfapi.h", MSDNShortId = "13F2BF9A-505F-4CFB-B008-7DDE85A3C581")]
+	[SuppressAutoGen]
 	public static unsafe extern HRESULT CfUpdatePlaceholder([In] HFILE FileHandle, [In, Optional] CF_FS_METADATA* FsMetadata, [In, Optional] IntPtr FileIdentity, uint FileIdentityLength,
 		[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5)] CF_FILE_RANGE[]? DehydrateRangeArray, uint DehydrateRangeCount, CF_UPDATE_FLAGS UpdateFlags,
 		[In, Out, Optional] USN* UpdateUsn, [In, Out, Optional] NativeOverlapped* Overlapped);

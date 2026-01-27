@@ -1331,10 +1331,10 @@ public static partial class CldApi
 		public byte PriorityHint;
 
 		/// <summary>An optional correlation vector.</summary>
-		public IntPtr CorrelationVector;
+		public ManagedStructPointer<CORRELATION_VECTOR> CorrelationVector;
 
 		/// <summary>Points to a structure that contains the information about the user process that triggers this callback.</summary>
-		public IntPtr ProcessInfo;
+		public ManagedStructPointer<CF_PROCESS_INFO> ProcessInfo;
 
 		/// <summary/>
 		public CF_REQUEST_KEY RequestKey;
@@ -1662,6 +1662,23 @@ public static partial class CldApi
 
 		/// <summary>The size of the file, in bytes.</summary>
 		public long FileSize;
+
+		/// <summary>Creates a new instance of the <see cref="CF_FS_METADATA"/> structure using the metadata from the specified file.</summary>
+		/// <param name="fileInfo">
+		/// The <see cref="System.IO.FileInfo"/> object representing the file from which to extract metadata. Must not be null.
+		/// </param>
+		public CF_FS_METADATA(System.IO.FileInfo fileInfo)
+		{
+			FileSize = fileInfo.Length;
+			BasicInfo = new()
+			{
+				FileAttributes = (FileFlagsAndAttributes)fileInfo.Attributes,
+				CreationTime = fileInfo.CreationTime.ToFileTimeStruct(),
+				LastWriteTime = fileInfo.LastWriteTime.ToFileTimeStruct(),
+				LastAccessTime = fileInfo.LastAccessTime.ToFileTimeStruct(),
+				ChangeTime = fileInfo.LastWriteTime.ToFileTimeStruct()
+			};
+		}
 	}
 
 	/// <summary>Specifies the primary hydration policy and its modifier.</summary>
@@ -1704,7 +1721,7 @@ public static partial class CldApi
 		public CF_TRANSFER_KEY TransferKey;
 
 		/// <summary>A correlation vector on a placeholder used for telemetry purposes.</summary>
-		public IntPtr CorrelationVector;
+		public ManagedStructPointer<CORRELATION_VECTOR> CorrelationVector;
 
 		/// <summary>
 		/// <para><c>Note</c> This member is new for Windows 10, version 1803.</para>
@@ -1716,7 +1733,7 @@ public static partial class CldApi
 		/// clear the previously set sync status, if there is one.
 		/// </para>
 		/// </summary>
-		public IntPtr SyncStatus;
+		public StructPointer<CF_SYNC_STATUS> SyncStatus;
 
 		/// <summary/>
 		public CF_REQUEST_KEY RequestKey;
@@ -1880,7 +1897,7 @@ public static partial class CldApi
 			public CF_OPERATION_RESTART_HYDRATION_FLAGS Flags;
 
 			/// <summary>Optional. Contains updates to the files metadata.</summary>
-			public IntPtr FsMetadata;
+			public StructPointer<CF_FS_METADATA> FsMetadata;
 
 			/// <summary>Optional. When provided, the file identity is updated to this value. Otherwise, it remains the same.</summary>
 			public IntPtr FileIdentity;
@@ -1903,7 +1920,8 @@ public static partial class CldApi
 			public long PlaceholderTotalCount;
 
 			/// <summary>An array of placeholders to be transferred.</summary>
-			public IntPtr PlaceholderArray;
+			[SizeDef(nameof(PlaceholderTotalCount))]
+			public ManagedArrayPointer<CF_PLACEHOLDER_CREATE_INFO> PlaceholderArray;
 
 			/// <summary>The number of placeholders being transferred.</summary>
 			public uint PlaceholderCount;
@@ -2019,18 +2037,7 @@ public static partial class CldApi
 		public CF_PLACEHOLDER_CREATE_INFO(System.IO.FileInfo fileInfo) : this()
 		{
 			RelativeFileName = fileInfo.FullName;
-			FsMetadata = new CF_FS_METADATA
-			{
-				FileSize = fileInfo.Length,
-				BasicInfo = new FILE_BASIC_INFO
-				{
-					FileAttributes = (FileFlagsAndAttributes)fileInfo.Attributes,
-					CreationTime = fileInfo.CreationTime.ToFileTimeStruct(),
-					LastWriteTime = fileInfo.LastWriteTime.ToFileTimeStruct(),
-					LastAccessTime = fileInfo.LastAccessTime.ToFileTimeStruct(),
-					ChangeTime = fileInfo.LastWriteTime.ToFileTimeStruct()
-				}
-			};
+			FsMetadata = new(fileInfo);
 		}
 	}
 
