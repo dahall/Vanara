@@ -20,7 +20,7 @@ public static class TestHelper
 	private static readonly Lazy<JsonSerializerSettings> jsonSet = new(() =>
 		new JsonSerializerSettings()
 		{
-			Converters = new JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter(),
+			Converters = [ new Newtonsoft.Json.Converters.StringEnumConverter(),
 				new Newtonsoft.Json.Converters.BinaryConverter(),
 				new GenJsonConverter<ulong, SizeT>(i => new SizeT(i), o => o.Value),
 				new GenJsonConverter<DateTime, FILETIME>(dt => dt.ToFileTimeStruct(), ft => ft.ToDateTime()),
@@ -28,7 +28,7 @@ public static class TestHelper
 				new GenJsonConverter<string, GenericSecurityDescriptor>(i => new RawSecurityDescriptor(i), o => o.GetSddlForm(AccessControlSections.All)),
 				new GenJsonConverter<string, IndirectString>(i => new(i), o => o.ToString()),
 				new GenJsonConverter<string, SecurityIdentifier>(i => new(i), o => o.ToString()),
-			},
+			],
 			ReferenceLoopHandling = ReferenceLoopHandling.Serialize
 		});
 
@@ -59,7 +59,7 @@ public static class TestHelper
 	public static IList<string> GetNestedStructSizes(this Type type, params string[] filters) =>
 		type.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic).GetStructSizes(false, filters);
 
-	public static string GetStringVal(this object value, bool showDefVals = true, bool bypassMemDump = false)
+	public static string GetStringVal(this object? value, bool showDefVals = true, bool bypassMemDump = false)
 	{
 		switch (value)
 		{
@@ -106,8 +106,8 @@ Simple:
 	public static IList<string> GetStructSizes(this Type[] types, bool fullName = false, params string[] filters)
 	{
 		TypeAttributes attr = TypeAttributes.SequentialLayout | TypeAttributes.ExplicitLayout;
-		return types.Where(t => t.IsValueType && !t.IsEnum && !t.IsGenericType && (t.Attributes & attr) != 0 && (filters.Length == 0 || filters.Any(s => t.Name.Contains(s)))).
-			OrderBy(t => fullName ? t.FullName : t.Name).Select(t => $"{(fullName ? t.FullName : t.Name)} = {GetTypeSize(t)}").ToList();
+		return [.. types.Where(t => t.IsValueType && !t.IsEnum && !t.IsGenericType && (t.Attributes & attr) != 0 && (filters.Length == 0 || filters.Any(s => t.Name.Contains(s)))).
+			OrderBy(t => fullName ? t.FullName : t.Name).Select(t => $"{(fullName ? t.FullName : t.Name)} = {GetTypeSize(t)}")];
 
 		static long GetTypeSize(Type t) { try { return (long)InteropExtensions.SizeOf(t); } catch { return -1; } }
 	}
@@ -150,24 +150,32 @@ Simple:
 
 	public static void WriteValues(this object value, bool showDefVals = true) => TestContext.WriteLine(GetStringVal(value, showDefVals));
 
-	private class GenJsonConverter<TIn, TOut> : JsonConverter<TOut>
+	public static void WriteValues<T>(this Span<T> value, bool showDefVals = true)
 	{
-		private readonly Func<TIn, TOut> rdr;
-		private readonly Func<TOut, TIn> wtr;
+		TestContext.WriteLine("[");
+		foreach (ref readonly T v in value)
+			TestContext.WriteLine(GetStringVal(v, showDefVals).Indent());
+		TestContext.WriteLine("]");
+	}
 
-		public GenJsonConverter(Func<TIn, TOut> r, Func<TOut, TIn> w)
-		{
-			rdr = r;
-			wtr = w;
-		}
+	public static string Indent(this string multiLineValue, int spaces = 2)
+	{
+		StringBuilder sb = new(multiLineValue);
+		string indent = new(' ', spaces);
+		sb.Replace(Environment.NewLine, Environment.NewLine + indent);
+		sb.Insert(0, indent);
+		return sb.ToString();
+	}
 
+	private class GenJsonConverter<TIn, TOut>(Func<TIn, TOut> r, Func<TOut, TIn> w) : JsonConverter<TOut>
+	{
 		public override TOut? ReadJson(JsonReader reader, Type objectType, TOut? existingValue, bool hasExistingValue, JsonSerializer serializer) =>
-			reader.Value is TIn t ? rdr(t) : default;
+			reader.Value is TIn t ? r(t) : default;
 
 		public override void WriteJson(JsonWriter writer, TOut? value, JsonSerializer serializer)
 		{
 			if (value is not null)
-				writer.WriteValue(wtr(value));
+				writer.WriteValue(w(value));
 		}
 	}
 }
