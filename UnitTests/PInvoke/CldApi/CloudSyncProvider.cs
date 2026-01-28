@@ -30,7 +30,7 @@ public class CloudSyncCallbackArgs<T> : EventArgs where T : struct
 		info = CallbackInfo;
 		SyncRootIdentity = new SafeHGlobalHandle(CallbackInfo.SyncRootIdentity, CallbackInfo.SyncRootIdentityLength, false);
 		FileIdentity = new SafeHGlobalHandle(CallbackInfo.FileIdentity, CallbackInfo.FileIdentityLength, false);
-		ProcessInfo = CallbackInfo.ProcessInfo.ToNullableStructure<CF_PROCESS_INFO>();
+		ProcessInfo = CallbackInfo.ProcessInfo.Value;
 		try { ParamData = CallbackParameters.GetParam<T>(); } catch { }
 		//catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"{ex.Message}"); }
 	}
@@ -69,7 +69,7 @@ public class CloudSyncCallbackArgs<T> : EventArgs where T : struct
 	public T ParamData { get; }
 
 	/// <summary>An optional correlation vector.</summary>
-	public IntPtr pCorrelationVector => info.CorrelationVector;
+	public IntPtr pCorrelationVector => (IntPtr)info.CorrelationVector;
 
 	/// <summary>
 	/// A numeric scale given to the sync provider to describe the relative priority of one fetch compared to another fetch, in order to

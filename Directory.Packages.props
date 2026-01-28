@@ -80,5 +80,6 @@
     <PackageVersion Include="System.ServiceProcess.ServiceController" Version="8.0.1" Condition=" $(NET6OR7) " />
     <PackageVersion Include="System.ServiceProcess.ServiceController" Version="$(SYSVER)" Condition=" $(NET8ORLATER) " />
     <PackageVersion Include="System.ValueTuple" Version="4.6.1" Condition=" $(NETSTANDARD2_0) " />
+    <PackageVersion Include="NuGet.Build.Tasks.Pack" Version="6.14.0" />
   </ItemGroup>
 </Project>
