@@ -9,7 +9,4 @@
     <IsPackable>false</IsPackable>
     <TargetFrameworks>net8.0-windows</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup>
-    
-  </ItemGroup>
 </Project>
