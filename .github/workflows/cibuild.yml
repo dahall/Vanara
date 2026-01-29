@@ -34,31 +34,36 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2.0.0
+#    - name: Add MSBuild to PATH
+#      uses: microsoft/setup-msbuild@v2.0.0
+#      with:
+#        vs-version: 'latest'
+#        vs-prerelease: true
+    - name: Install Visual Studio 2026 Build Tools
+      shell: pwsh
+      run: choco install visualstudio2026buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --includeRecommended --quiet" -y --ignore-package-exit-codes=3010
 
     - name: Clear NuGet cache
       run: nuget locals all -clear
 
-    - name: Restore VssApi NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}}
-
     - name: Restore Solution NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild ${{env.SOLUTION_FILE_PATH}} /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}}
+      run: |
+        & "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\Tools\VsDevCmd.bat"
+        msbuild ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}}
+        msbuild ${{env.SOLUTION_FILE_PATH}} /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}}
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /verbosity:quiet /t:build /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      run: |
+        & "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\Tools\VsDevCmd.bat"
+        msbuild /m /verbosity:quiet /t:build /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
-    - name: Build VssApi NuGet package
+    - name: Build NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget pack ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.nuspec -Verbosity quiet -Symbols -OutputDirectory ${{env.SOLUTION_PATH}}\PInvoke\VssApi\bin\Release
-
-    - name: Build meta NuGet package
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget pack ${{env.SOLUTION_PATH}}\Vanara.Library.nuspec
+      run: |
+        nuget pack ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.nuspec -Verbosity quiet -Symbols -OutputDirectory ${{env.SOLUTION_PATH}}\PInvoke\VssApi\bin\Release
+        nuget pack ${{env.SOLUTION_PATH}}\Vanara.Library.nuspec
 
     - name: Publish packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
