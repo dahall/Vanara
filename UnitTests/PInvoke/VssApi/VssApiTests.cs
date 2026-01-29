@@ -58,8 +58,13 @@ public class VssApiTests
 			writer.GetIdentity(out var pidInstance, out var pidWriter, out var pbstrWriter, out var pInstanceName, out var usage, out var source);
 			TestContext.WriteLine($"Writer: {pbstrWriter} ({pInstanceName})");
 			int i = 0;
-			foreach (var info in writer.Components.Select(c => c.GetComponentInfo()))
+			foreach (var c in writer.Components)
+			{
+				var info = c.GetComponentInfo();
 				TestContext.WriteLine($"  {++i}: {info.bstrCaption}={info.bstrComponentName} ({info.bstrLogicalPath})");
+				foreach (var f in c.Files)
+					TestContext.WriteLine($"    File: {f.Path} ({f.BackupTypeMask})");
+			}
 		}
 		backup.FreeWriterMetadata();
 		Guid snapshotSetId = backup.StartSnapshotSet();
