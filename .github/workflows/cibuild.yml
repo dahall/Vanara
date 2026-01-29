@@ -49,14 +49,14 @@ jobs:
     - name: Restore Solution NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        call "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\Tools\VsDevCmd.bat"
+        & "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\Tools\VsDevCmd.bat"
         msbuild ${{env.SOLUTION_PATH}}\PInvoke\VssApi\Vanara.PInvoke.VssApi.vcxproj /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}}
         msbuild ${{env.SOLUTION_FILE_PATH}} /m /verbosity:quiet /t:restore /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}}
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        call "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\Tools\VsDevCmd.bat"
+        & "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\Tools\VsDevCmd.bat"
         msbuild /m /verbosity:quiet /t:build /p:RunAnalyzersDuringBuild=false /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
     - name: Build NuGet packages
