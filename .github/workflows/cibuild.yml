@@ -45,6 +45,7 @@ jobs:
         Write-Host "Installing VS 2026 Build Tools..."
         choco install visualstudio2026buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --includeRecommended --quiet" -y --ignore-package-exit-codes=3010
         Write-Host "VS 2026 Build Tools installation completed"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\Tools\VsDevCmd.bat"
 
     - name: Clear NuGet cache
       run: nuget locals all -clear
