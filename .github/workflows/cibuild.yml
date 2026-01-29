@@ -34,11 +34,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2.0.0
-      with:
-        vs-version: 'latest'
-        vs-prerelease: true
+#    - name: Add MSBuild to PATH
+#      uses: microsoft/setup-msbuild@v2.0.0
+#      with:
+#        vs-version: 'latest'
+#        vs-prerelease: true
+    - name: Install Visual Studio 2026 Build Tools
+      shell: pwsh
+      run: |
+        Write-Host "Installing VS 2026 Build Tools..."
+        choco install visualstudio2026buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --includeRecommended --quiet" -y --ignore-package-exit-codes=3010
+        Write-Host "VS 2026 Build Tools installation completed"
 
     - name: Clear NuGet cache
       run: nuget locals all -clear
