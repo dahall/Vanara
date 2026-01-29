@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using Vanara.PInvoke.VssApi;
 using static Vanara.PInvoke.Kernel32;
 
@@ -24,10 +24,7 @@ public class VssApiTests
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 	[OneTimeSetUp]
-	public void _Setup()
-	{
-		vols = EnumVolumes().ToArray();
-	}
+	public void _Setup() => vols = [.. EnumVolumes()];
 
 	[OneTimeTearDown]
 	public void _TearDown()
@@ -35,29 +32,45 @@ public class VssApiTests
 	}
 
 	[TestWhenElevated]
-	public void OpenStreamOnVSSCopy()
+	public void GetMetadataComponentInfo()
+	{
+		string metadataFile = TestCaseSources.GetFilePath("vss_metadata.xml");
+		Assert.That(VssFactory.CreateVssExamineWriterMetadata(metadataFile, out var ppMetadata), ResultIs.Successful);
+		int i = 0;
+		foreach (var info in ppMetadata.Components.Select(c => c.GetComponentInfo()))
+			TestContext.WriteLine($"{++i}: {info.bstrComponentName}={info.bstrLogicalPath}");
+	}
+
+	[TestWhenElevated]
+	public async Task OpenStreamOnVSSCopy()
 	{
 		Assert.That(VssFactory.CreateVssBackupComponents(out IVssBackupComponents backup), ResultIs.Successful);
 		backup.InitializeForBackup();
-		backup.GatherWriterMetadata();
+		backup.SetContext(VSS_SNAPSHOT_CONTEXT.VSS_CTX_BACKUP);
+		backup.SetBackupState(true, true, VSS_BACKUP_TYPE.VSS_BT_FULL, false);
+		Assert.That(backup.IsVolumeSupported(default, "C:\\"), Is.True);
+		await backup.GatherWriterMetadata().AsTask();
 		backup.FreeWriterMetadata();
-		backup.SetBackupState(false, true, VSS_BACKUP_TYPE.VSS_BT_FULL, false);
-		var setId = backup.StartSnapshotSet();
+		Guid snapshotSetId = backup.StartSnapshotSet();
 		try
 		{
-			Assert.That(backup.IsVolumeSupported(default, "C:\\"), Is.True);
 			var snapId = backup.AddToSnapshotSet("C:\\");
+			backup.PrepareForBackup();
+
+			await backup.DoSnapshotSet().AsTask();
+
 			var props = backup.GetSnapshotProperties(snapId);
 			TestContext.WriteLine(props.m_pwszSnapshotDeviceObject);
 			props.Dispose();
+
+			await backup.BackupComplete().AsTask();
 		}
 		finally
 		{
-			HRESULT hr = backup.DeleteSnapshots(setId, VSS_OBJECT_TYPE.VSS_OBJECT_SNAPSHOT_SET, true, out _, out var badId);
+			HRESULT hr = backup.DeleteSnapshots(snapshotSetId, VSS_OBJECT_TYPE.VSS_OBJECT_SNAPSHOT_SET, true, out _, out var badId);
 			if (hr.Failed)
 				TestContext.WriteLine($"Failed to delete snapshot {badId}");
 		}
-		_ = backup.PrepareForBackup();
 	}
 
 	[TestWhenElevated]
