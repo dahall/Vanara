@@ -1,5 +1,8 @@
-﻿using NUnit.Framework;
+﻿using ICSharpCode.Decompiler.Metadata;
+using Microsoft.CodeAnalysis;
+using NUnit.Framework;
 using NUnit.Framework.Internal;
+using System.IO.Pipelines;
 using System.Linq;
 using System.Threading.Tasks;
 using Vanara.PInvoke.VssApi;
@@ -50,6 +53,14 @@ public class VssApiTests
 		backup.SetBackupState(true, true, VSS_BACKUP_TYPE.VSS_BT_FULL, false);
 		Assert.That(backup.IsVolumeSupported(default, "C:\\"), Is.True);
 		await backup.GatherWriterMetadata().AsTask();
+		foreach (var writer in backup.WriterMetadata)
+		{
+			writer.GetIdentity(out var pidInstance, out var pidWriter, out var pbstrWriter, out var pInstanceName, out var usage, out var source);
+			TestContext.WriteLine($"Writer: {pbstrWriter} ({pInstanceName})");
+			int i = 0;
+			foreach (var info in writer.Components.Select(c => c.GetComponentInfo()))
+				TestContext.WriteLine($"  {++i}: {info.bstrCaption}={info.bstrComponentName} ({info.bstrLogicalPath})");
+		}
 		backup.FreeWriterMetadata();
 		Guid snapshotSetId = backup.StartSnapshotSet();
 		try

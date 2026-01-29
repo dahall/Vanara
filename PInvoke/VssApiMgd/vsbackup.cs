@@ -2213,13 +2213,19 @@ public struct VSS_COMPONENTINFO
 	/// <para>A logical path can be <see langword="null"/>.</para>
 	/// <para>There are no restrictions on the characters that can appear in a non- <see langword="null"/> logical path.</para>
 	/// </summary>
+	[MarshalAs(UnmanagedType.BStr)]
 	public string? bstrLogicalPath;
 
 	/// <summary>A string containing the name of the component. A component name string cannot be <see langword="null"/>.</summary>
+	[MarshalAs(UnmanagedType.BStr)]
 	public string bstrComponentName;
 
 	/// <summary>A string containing the description of the component. A caption string can be <see langword="null"/>.</summary>
+	[MarshalAs(UnmanagedType.BStr)]
 	public string? bstrCaption;
+
+	private IntPtr _pbIcon;
+	private uint cbIcon;
 
 	/// <summary>
 	/// <para>
@@ -2228,7 +2234,7 @@ public struct VSS_COMPONENTINFO
 	/// </para>
 	/// <para>If the writer that created the component did not choose to specify an icon, <c>pbIcon</c> is <see langword="null"/>.</para>
 	/// </summary>
-	public byte[]? pbIcon;
+	public readonly Span<byte> pbIcon => _pbIcon.AsSpan<byte>((int)cbIcon);
 
 	/// <summary>
 	/// <para>
@@ -2241,9 +2247,11 @@ public struct VSS_COMPONENTINFO
 	/// retrieve the information using IVssComponent::GetRestoreMetadata.
 	/// </para>
 	/// </summary>
+	[MarshalAs(UnmanagedType.U1)]
 	public bool bRestoreMetadata;
 
 	/// <summary>Reserved for future use. The value of this parameter should always be set to <c>false</c>.</summary>
+	[MarshalAs(UnmanagedType.U1)]
 	public bool bNotifyOnBackupComplete;
 
 	/// <summary>
@@ -2310,6 +2318,7 @@ public struct VSS_COMPONENTINFO
 	/// </item>
 	/// </list>
 	/// </summary>
+	[MarshalAs(UnmanagedType.U1)]
 	public bool bSelectable;
 
 	/// <summary>
@@ -2330,6 +2339,7 @@ public struct VSS_COMPONENTINFO
 	/// </para>
 	/// <para>See Working with Selectability and Logical Paths for more information.</para>
 	/// </summary>
+	[MarshalAs(UnmanagedType.U1)]
 	public bool bSelectableForRestore;
 
 	/// <summary>
