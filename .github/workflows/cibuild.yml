@@ -36,6 +36,9 @@ jobs:
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2.0.0
+      with:
+        vs-version: 'latest'
+        vs-prerelease: true
 
     - name: Clear NuGet cache
       run: nuget locals all -clear
