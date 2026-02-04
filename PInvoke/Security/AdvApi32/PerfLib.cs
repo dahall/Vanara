@@ -1,9 +1,49 @@
-﻿namespace Vanara.PInvoke;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Vanara.PInvoke;
 
 public static partial class AdvApi32
 {
 	/// <summary/>
 	public const uint PERF_WILDCARD_COUNTER = uint.MaxValue;
+
+	/// <summary/>
+	public const string PERF_WILDCARD_INSTANCE = "*";
+
+	private const uint PERF_COUNTERSET_FLAG_AGGREGATE = 4;
+	private const uint PERF_COUNTERSET_FLAG_HISTORY = 8;
+	private const uint PERF_COUNTERSET_FLAG_INSTANCE = 16;
+	private const uint PERF_COUNTERSET_FLAG_MULTIPLE = 2;
+	private const uint PERF_PROVIDER_DRIVER = 2;
+	private const uint PERF_PROVIDER_KERNEL_MODE = 1;
+	private const uint PERF_PROVIDER_USER_MODE = 0;
+
+	/// <summary>
+	/// <para>
+	/// Providers implement this function to provide custom memory management for PERFLIB. PERFLIB calls this callback when it needs to
+	/// allocate memory. By default, PERFLIB uses the process heap to allocate memory.
+	/// </para>
+	/// <para>
+	/// The <c>PERF_MEM_ALLOC</c> type defines a pointer to this callback function. The <c>AllocateMemory</c> function is a placeholder
+	/// for the application-defined function name.
+	/// </para>
+	/// </summary>
+	/// <param name="AllocSize">Number of bytes to allocate.</param>
+	/// <param name="pContext">Context information set in the <c>pMemContext</c> member of PERF_PROVIDER_CONTEXT.</param>
+	/// <returns>Pointer to the allocated memory or <c>NULL</c> if an error occurred.</returns>
+	/// <remarks>
+	/// <para>
+	/// If you used the <c>-MemoryRoutines</c> when calling CTRPP, you must implement this callback function. You pass the name of your
+	/// callback function to CounterInitialize.
+	/// </para>
+	/// <para><c>Windows Vista:</c> The CounterInitialize function is named <c>PerfAutoInitialize</c>.</para>
+	/// </remarks>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/perflib/nc-perflib-perf_mem_alloc PERF_MEM_ALLOC PerfMemAlloc; LPVOID
+	// PerfMemAlloc( IN SizeT AllocSize, IN LPVOID pContext ) {...}
+	[PInvokeData("perflib.h", MSDNShortId = "09af7e56-2174-4a82-b45b-59f4180e4aab")]
+	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+	public delegate IntPtr AllocateMemory([In] SizeT AllocSize, [In, Optional] IntPtr pContext);
 
 	/// <summary>
 	/// <para>
@@ -99,32 +139,6 @@ public static partial class AdvApi32
 	/// <summary>
 	/// <para>
 	/// Providers implement this function to provide custom memory management for PERFLIB. PERFLIB calls this callback when it needs to
-	/// allocate memory. By default, PERFLIB uses the process heap to allocate memory.
-	/// </para>
-	/// <para>
-	/// The <c>PERF_MEM_ALLOC</c> type defines a pointer to this callback function. The <c>AllocateMemory</c> function is a placeholder
-	/// for the application-defined function name.
-	/// </para>
-	/// </summary>
-	/// <param name="AllocSize">Number of bytes to allocate.</param>
-	/// <param name="pContext">Context information set in the <c>pMemContext</c> member of PERF_PROVIDER_CONTEXT.</param>
-	/// <returns>Pointer to the allocated memory or <c>NULL</c> if an error occurred.</returns>
-	/// <remarks>
-	/// <para>
-	/// If you used the <c>-MemoryRoutines</c> when calling CTRPP, you must implement this callback function. You pass the name of your
-	/// callback function to CounterInitialize.
-	/// </para>
-	/// <para><c>Windows Vista:</c> The CounterInitialize function is named <c>PerfAutoInitialize</c>.</para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/perflib/nc-perflib-perf_mem_alloc PERF_MEM_ALLOC PerfMemAlloc; LPVOID
-	// PerfMemAlloc( IN SizeT AllocSize, IN LPVOID pContext ) {...}
-	[PInvokeData("perflib.h", MSDNShortId = "09af7e56-2174-4a82-b45b-59f4180e4aab")]
-	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-	public delegate IntPtr AllocateMemory([In] SizeT AllocSize, [In, Optional] IntPtr pContext);
-
-	/// <summary>
-	/// <para>
-	/// Providers implement this function to provide custom memory management for PERFLIB. PERFLIB calls this callback when it needs to
 	/// free memory that it allocated using AllocateMemory.
 	/// </para>
 	/// <para>
@@ -147,6 +161,98 @@ public static partial class AdvApi32
 	[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 	public delegate void FreeMemory([In] IntPtr pBuffer, [In] IntPtr pContext);
 
+	/// <summary>Specifies the type of aggregation to perform on counter instances in a counter set.</summary>
+	public enum PERF_AGGREGATE
+	{
+		/// <summary>Undefined.</summary>
+		PERF_AGGREGATE_UNDEFINED = 0,
+
+		/// <summary>The sum of the values of the returned counter instances.</summary>
+		PERF_AGGREGATE_TOTAL,
+
+		/// <summary>The average of the values of the returned counter instances.</summary>
+		PERF_AGGREGATE_AVG,
+
+		/// <summary>The minimum value of the returned counter instance values.</summary>
+		PERF_AGGREGATE_MIN,
+
+		/// <summary>The maximum value of the returned counter instance values.</summary>
+		PERF_AGGREGATE_MAX,
+	}
+
+	/// <summary>Specifies attributes of a performance counter in a PERF_COUNTER_INFO structure.</summary>
+	[Flags]
+	public enum PERF_ATTRIB : ulong
+	{
+		/// <summary>The query on the server MUST dereference the counter to obtain the value.</summary>
+		PERF_ATTRIB_BY_REFERENCE = 0x00000001,
+
+		/// <summary>Instructs the client consumer querying for performance counter data not to display the counter value.</summary>
+		PERF_ATTRIB_NO_DISPLAYABLE = 0x00000002,
+
+		/// <summary>
+		/// Instructs the client consumer querying performance counter data to display the counter values as a single number without commas
+		/// between digits.
+		/// </summary>
+		PERF_ATTRIB_NO_GROUP_SEPARATOR = 0x00000004,
+
+		/// <summary>Instructs the client consumer querying performance counter to display the counter value as a real number.</summary>
+		PERF_ATTRIB_DISPLAY_AS_REAL = 0x00000008,
+
+		/// <summary>Instructs the client consumer querying performance counter to display the counter value as a hexadecimal number.</summary>
+		PERF_ATTRIB_DISPLAY_AS_HEX = 0x00000010,
+	}
+
+	/// <summary>
+	/// Specifies whether the counter set allows multiple instances such as processes and physical disks, or a single instance such as memory
+	/// in <see cref="PERF_COUNTERSET_INFO"/>.
+	/// </summary>
+	[Flags]
+	public enum PERF_COUNTERSET_TYPE : uint
+	{
+		/// <summary>The counter set contains single instance counters, for example, a counter that measures physical memory.</summary>
+		PERF_COUNTERSET_SINGLE_INSTANCE = 0,
+
+		/// <summary>
+		/// The counter set contains multiple instance counters, for example, a counter that measures the average disk I/O for a process.
+		/// </summary>
+		PERF_COUNTERSET_MULTI_INSTANCES = (PERF_COUNTERSET_FLAG_MULTIPLE),
+
+		/// <summary>
+		/// The counter set contains single instance counters whose aggregate value is obtained from one or more sources. For example, a
+		/// counter in this type of counter set might obtain the number of reads from each of the three hard disks on the computer and sum
+		/// their values.
+		/// </summary>
+		PERF_COUNTERSET_SINGLE_AGGREGATE = (PERF_COUNTERSET_FLAG_AGGREGATE),
+
+		/// <summary>
+		/// The counter set contains multiple instance counters whose aggregate value is obtained from all instances of the counter. For
+		/// example, a counter in this type of counter set might obtain the total thread execution time for all threads in a multi-threaded
+		/// application and sum their values.
+		/// </summary>
+		PERF_COUNTERSET_MULTI_AGGREGATE = (PERF_COUNTERSET_FLAG_AGGREGATE | PERF_COUNTERSET_FLAG_MULTIPLE),
+
+		/// <summary>
+		/// The difference between this type and PERF_COUNTERSET_SINGLE_AGGREGATE is that this counter set type stores all counter values for
+		/// the lifetime of the consumer application (the counter value is cached beyond the lifetime of the counter). For example, if one of
+		/// the hard disks in the single aggregate example above were to become unavailable, the total bytes read by that disk would still be
+		/// available and used to calculate the aggregate value.
+		/// </summary>
+		PERF_COUNTERSET_SINGLE_AGGREGATE_HISTORY = (PERF_COUNTERSET_FLAG_HISTORY | PERF_COUNTERSET_SINGLE_AGGREGATE),
+
+		/// <summary>
+		/// This type is similar to PERF_COUNTERSET_MULTI_AGGREGATE, except that instead of aggregating all instance data to one aggregated
+		/// (_Total) instance, it will aggregate counter data from instances of the same name.
+		/// <para>
+		/// For example, if multiple provider processes contained instances named IExplore, PERF_COUNTERSET_MULTIPLE and
+		/// PERF_COUNTERSET_MULTI_AGGREGATE CounterSet will show multiple IExplore instances (IExplore, IExplore#1, IExplore#2, and so on);
+		/// however, a PERF_COUNTERSET_INSTANCE_AGGREGATE instance type will only publish one IExplore instance with aggregated counter data
+		/// from all instances named IExplore.
+		/// </para>
+		/// </summary>
+		PERF_COUNTERSET_INSTANCE_AGGREGATE = (PERF_COUNTERSET_MULTI_AGGREGATE | PERF_COUNTERSET_FLAG_INSTANCE),
+	}
+
 	/// <summary>
 	/// Indicates the content type of a PERF_COUNTER_HEADER block that the PerfQueryCounterData function includes as part of the
 	/// PERF_DATA_HEADER block that the function produces as output.
@@ -160,15 +266,19 @@ public static partial class AdvApi32
 		PERF_ERROR_RETURN = 0,
 
 		/// <summary>The query returned a single counter from a single instance.</summary>
+		[CorrespondingType(typeof(PERF_COUNTER_HEADER))]
 		PERF_SINGLE_COUNTER = 1,
 
 		/// <summary>The query returned multiple counters from a single instance.</summary>
+		[CorrespondingType(typeof(PERF_MULTI_COUNTERS))]
 		PERF_MULTIPLE_COUNTERS = 2,
 
 		/// <summary>The query returned a single counter from each of multiple instances.</summary>
+		[CorrespondingType(typeof(PERF_MULTI_INSTANCES))]
 		PERF_MULTIPLE_INSTANCES = 4,
 
 		/// <summary>The query returned multiple counters from each of multiple instances.</summary>
+		[CorrespondingType(typeof(PERF_COUNTER_HEADER))]
 		PERF_COUNTERSET = 6,
 	}
 
@@ -283,7 +393,47 @@ public static partial class AdvApi32
 	// PPERF_COUNTER_IDENTIFIER pCounters, DWORD cbCounters );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "FC66E794-EF13-47BB-A704-735924363310")]
-	public static extern NTStatus PerfAddCounters(HPERFQUERY hQuery, [In, Out] PERF_COUNTER_IDENTIFIER_WITH_INST_NAME[] pCounters, uint cbCounters);
+	public static extern NTStatus PerfAddCounters([In] HPERFQUERY hQuery, [In, Out] IntPtr pCounters, uint cbCounters);
+
+	/// <summary>Adds performance counter specifications to the specified query.</summary>
+	/// <param name="hQuery">A handle to the query to which you want to add performance counter specifications.</param>
+	/// <param name="pCounters">A pointer to the performance counter specifications that you want to add.</param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// <para>For each PPERF_COUNTER_IDENTIFIER block:</para>
+	/// <list type="bullet">
+	/// <item>
+	/// <term>
+	/// Set the <c>CounterSetGuid</c> member of the PERF_COUNTER_IDENTIFIER structure to the identifier of the counter set to be queried.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// Set the <c>CounterId</c> member of the PERF_COUNTER_IDENTIFIER structure to the identifier of the counter that should be returned
+	/// by the query. To return all counters, set <c>CounterId</c> to <c>PERF_WILDCARD_COUNTER</c>.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>
+	/// Set the <c>InstanceId</c> member of the PERF_COUNTER_IDENTIFIER structure to the identifier of the instance that should be
+	/// returned by the query. If no filtering should be done based on instance identifier, set <c>InstanceId</c> to <c>PERF_WILDCARD_COUNTER</c>.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>Set the optional instance name.</term>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// <c>PerfAddCounters</c> attempts to add one counter specification to the query for each PERF_COUNTER_IDENTIFIER block, and updates
+	/// the <c>Status</c> member of the <c>PERF_COUNTER_IDENTIFIER</c> structure in each block with the result of the attempt.
+	/// </para>
+	/// </remarks>
+	[PInvokeData("perflib.h", MSDNShortId = "FC66E794-EF13-47BB-A704-735924363310")]
+	public static NTStatus PerfAddCounters([In, AddAsMember] HPERFQUERY hQuery, [In, Out] PPERF_COUNTER_IDENTIFIER[] pCounters) =>
+		ProcessCounters(hQuery, pCounters, PerfAddCounters);
 
 	/// <summary>Closes a query handle that you opened by calling PerfOpenQueryHandle.</summary>
 	/// <param name="hQuery">A handle to the query that you want to close</param>
@@ -296,68 +446,6 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "94D08CF1-D47C-4A1B-A0CE-8C318CDF9FE0")]
 	public static extern NTStatus PerfCloseQueryHandle(HPERFQUERY hQuery);
-
-	/// <summary>Creates an instance of the specified counter set. Providers use this function.</summary>
-	/// <param name="ProviderHandle">
-	/// <para>
-	/// The handle of the provider. Use the handle variable that the CTRPP tool generated for you. For the name of the variable, see the
-	/// <c>symbol</c> attribute of the provider element.
-	/// </para>
-	/// <para><c>Windows Vista:</c> The PerfStartProvider function returns the handle.</para>
-	/// </param>
-	/// <param name="CounterSetGuid">
-	/// <para>
-	/// GUID that uniquely identifies the counter set that you want to create an instance of. This is the same GUID specified in the
-	/// <c>guid</c> attribute of the counterSet element. Use the GUID variable that the CTRPP tool generated for you. For the name of the
-	/// variable, see the <c>symbol</c> attribute of the <c>counterSet</c> element.
-	/// </para>
-	/// <para><c>Windows Vista:</c> The GUID variable is not available.</para>
-	/// </param>
-	/// <param name="Name"><c>Null</c>-terminated Unicode string that contains a unique name for this instance.</param>
-	/// <param name="Id">
-	/// Unique identifier for this instance of the counter set. The identifier can be a serial number that you increment for each new instance.
-	/// </param>
-	/// <returns>
-	/// <para>
-	/// A PERF_COUNTERSET_INSTANCE structure that contains the instance of the counter set or <c>NULL</c> if PERFLIB could not create the
-	/// instance. Cache this pointer to use in later calls instead of calling PerfQueryInstance to retrieve the pointer to the instance.
-	/// </para>
-	/// <para>This function returns <c>NULL</c> if an error occurred. To determine the error that occurred, call GetLastError.</para>
-	/// </returns>
-	/// <remarks>
-	/// <para>
-	/// The provider determines when it creates an instance. If the counter data is more static, the provider can create an instance at
-	/// initialization time. For example, the number of processors on a computer would be considered static, so a provider that provides
-	/// counter data for processors could create an instance for each processor on the computer at initialization time. For counters that are
-	/// more dynamic, such as disk or process counters, the providers would create the new instances in response to a new USB device being
-	/// added or a new process being created.
-	/// </para>
-	/// <para>
-	/// When the provider calls this function, PERFLIB allocates local memory for the new instance and builds the instance block. PERFLIB
-	/// deletes the memory when the provider calls the PerfDeleteInstance function.
-	/// </para>
-	/// <para>The instance contains the raw counter data. Providers use the following three functions to update the raw counter data:</para>
-	/// <list type="bullet">
-	/// <item>
-	/// <description>PerfSetUlongCounterValue</description>
-	/// </item>
-	/// <item>
-	/// <description>PerfSetUlongLongCounterValue</description>
-	/// </item>
-	/// <item>
-	/// <description>PerfSetCounterRefValue</description>
-	/// </item>
-	/// </list>
-	/// <para>
-	/// Typically, the provider keeps the counter data up-to-date at all times. As an alternative, the provider can implement the
-	/// ControlCallback function and use the <c>PERF_COLLECT_START</c> request code to trigger the updates.
-	/// </para>
-	/// </remarks>
-	// https://learn.microsoft.com/en-us/windows/win32/api/perflib/nf-perflib-perfcreateinstance
-	// PPERF_COUNTERSET_INSTANCE PerfCreateInstance( [in] HANDLE ProviderHandle, [in] LPCGUID CounterSetGuid, [in] PCWSTR Name, [in] ULONG Id );
-	[PInvokeData("perflib.h", MSDNShortId = "NF:perflib.PerfCreateInstance")]
-	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
-	public static extern IntPtr PerfCreateInstance(HPERFPROV ProviderHandle, IntPtr CounterSetGuid, [MarshalAs(UnmanagedType.LPWStr)] string Name, uint Id);
 
 	/// <summary>Creates an instance of the specified counter set. Providers use this function.</summary>
 	/// <param name="ProviderHandle">
@@ -418,10 +506,13 @@ public static partial class AdvApi32
 	// https://docs.microsoft.com/en-us/windows/desktop/api/perflib/nf-perflib-perfcreateinstance PPERF_COUNTERSET_INSTANCE
 	// PerfCreateInstance( HANDLE ProviderHandle, LPCGUID CounterSetGuid, PCWSTR Name, ULONG Id );
 	[PInvokeData("perflib.h", MSDNShortId = "73be8588-2c87-4c27-933d-62b8605ed9a3")]
-	public static SafePPERF_COUNTERSET_INSTANCE PerfCreateInstance(HPERFPROV ProviderHandle, Guid? CounterSetGuid, string Name, uint Id)
+	[return: AddAsCtor]
+	public static SafePPERF_COUNTERSET_INSTANCE PerfCreateInstance([In, AddAsMember] HPERFPROV ProviderHandle, in Guid CounterSetGuid, string Name, uint Id)
 	{
-		SafeHGlobalStruct<Guid> guid = CounterSetGuid;
-		return new SafePPERF_COUNTERSET_INSTANCE(ProviderHandle, PerfCreateInstance(ProviderHandle, (IntPtr)guid, Name, Id));
+		return new(ProviderHandle, PerfCreateInstance(ProviderHandle, CounterSetGuid, Name, Id));
+
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		static extern IntPtr PerfCreateInstance(HPERFPROV ProviderHandle, in Guid CounterSetGuid, [MarshalAs(UnmanagedType.LPWStr)] string Name, uint Id);
 	}
 
 	/// <summary>Decrements the value of a counter whose value is a 4-byte unsigned integer. Providers use this function.</summary>
@@ -462,7 +553,7 @@ public static partial class AdvApi32
 	// PerfDecrementULongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "5e8b40d6-b794-4bac-8832-3eb14c49ecec")]
-	public static extern NTStatus PerfDecrementULongCounterValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, uint Value);
+	public static extern NTStatus PerfDecrementULongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, uint Value);
 
 	/// <summary>Decrements the value of a counter whose value is an 8-byte unsigned integer. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -502,7 +593,7 @@ public static partial class AdvApi32
 	// PerfDecrementULongLongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONGLONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "38fd52a7-c2af-4c69-a104-aba6a602fbf4")]
-	public static extern NTStatus PerfDecrementULongLongCounterValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, ulong Value);
+	public static extern NTStatus PerfDecrementULongLongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, ulong Value);
 
 	/// <summary>Removes the specified performance counter specifications from the specified query.</summary>
 	/// <param name="hQuery">A handle to the query from which you want to remove performance counter specifications.</param>
@@ -528,7 +619,22 @@ public static partial class AdvApi32
 	// hQuery, PPERF_COUNTER_IDENTIFIER pCounters, DWORD cbCounters );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "330CA041-41CA-4C48-B88B-C48A0143505E")]
-	public static extern NTStatus PerfDeleteCounters(HPERFQUERY hQuery, [In, Out] PERF_COUNTER_IDENTIFIER_WITH_INST_NAME[] pCounters, uint cbCounters);
+	public static extern NTStatus PerfDeleteCounters([In] HPERFQUERY hQuery, [In, Out] IntPtr pCounters, uint cbCounters);
+
+	/// <summary>Removes the specified performance counter specifications from the specified query.</summary>
+	/// <param name="hQuery">A handle to the query from which you want to remove performance counter specifications.</param>
+	/// <param name="pCounters">The performance counter specifications that you want to remove.</param>
+	/// <returns>
+	/// <para>If the function succeeds, it returns ERROR_SUCCESS.</para>
+	/// <para>If the function fails, the return value is a system error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// <c>PerfDeleteCounters</c> attempts to remove one counter specification from the query for each PERF_COUNTER_IDENTIFIER block, and
+	/// updates the <c>Status</c> member of the <c>PERF_COUNTER_IDENTIFIER</c> structure in each block with the result of the attempt.
+	/// </remarks>
+	[PInvokeData("perflib.h", MSDNShortId = "330CA041-41CA-4C48-B88B-C48A0143505E")]
+	public static NTStatus PerfDeleteCounters([In, AddAsMember] HPERFQUERY hQuery, [In, Out] PPERF_COUNTER_IDENTIFIER[] pCounters) =>
+		ProcessCounters(hQuery, pCounters, PerfDeleteCounters);
 
 	/// <summary>Deletes an instance of the counter set created by the PerfCreateInstance function. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -557,7 +663,7 @@ public static partial class AdvApi32
 	// Provider, PPERF_COUNTERSET_INSTANCE InstanceBlock );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "8266e58c-c0a3-42dd-9f06-0d04dccfcf7c")]
-	public static extern NTStatus PerfDeleteInstance(HPERFPROV Provider, IntPtr InstanceBlock);
+	public static extern NTStatus PerfDeleteInstance([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> InstanceBlock);
 
 	/// <summary>
 	/// <para>Gets the counter set identifiers of the counter sets that are registered on the specified system.</para>
@@ -619,7 +725,9 @@ public static partial class AdvApi32
 	// ULONG PerfEnumerateCounterSet( [in, optional] LPCWSTR szMachine, [out, optional] LPGUID pCounterSetIds, DWORD cCounterSetIds, [out] LPDWORD pcCounterSetIdsActual );
 	[PInvokeData("perflib.h", MSDNShortId = "NF:perflib.PerfEnumerateCounterSet")]
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
-	public static extern NTStatus PerfEnumerateCounterSet([MarshalAs(UnmanagedType.LPWStr), Optional] string? szMachine, [In, Out] Guid[]? pCounterSetIds, uint cCounterSetIds, out uint pcCounterSetIdsActual);
+	public static extern NTStatus PerfEnumerateCounterSet([MarshalAs(UnmanagedType.LPWStr), Optional] string? szMachine,
+		[Out, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(cCounterSetIds), SizingMethod.Query, OutVarName = nameof(pcCounterSetIdsActual))] Guid[]? pCounterSetIds,
+		uint cCounterSetIds, out uint pcCounterSetIdsActual);
 
 	/// <summary>
 	/// <para>Gets the names and identifiers of the active instances of a counter set on the</para>
@@ -710,7 +818,68 @@ public static partial class AdvApi32
 	// LPDWORD pcbInstancesActual );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "83DCEAB7-5F79-4A55-8BAC-D20F545FF76D")]
-	public static extern Win32Error PerfEnumerateCounterSetInstances([MarshalAs(UnmanagedType.LPWStr), Optional] string? szMachine, in Guid pCounterSetId, [In, Optional] IntPtr pInstances, uint cbInstances, out uint pcbInstancesActual);
+	public static extern Win32Error PerfEnumerateCounterSetInstances([MarshalAs(UnmanagedType.LPWStr), Optional] string? szMachine, in Guid pCounterSetId,
+		[Out/*, MarshalAs(UnmanagedType.LPArray), SizeDef(nameof(cbInstances), SizingMethod.Query | SizingMethod.Bytes, OutVarName = nameof(pcbInstancesActual))*/] IntPtr pInstances, uint cbInstances, out uint pcbInstancesActual);
+
+	/// <summary>Gets the names and identifiers of the active instances of a counter set on the specified system.</summary>
+	/// <param name="szMachine">
+	/// The name of the machine for which to get the information about the active instances of the counter set that the pCounterSet parameter
+	/// specifies. If NULL, the function retrieves information about the active instances of the specified counter set for the local machine.
+	/// </param>
+	/// <param name="pCounterSetId">
+	/// The counter set identifier of the counter set for which you want to get the information about of the active instances.
+	/// </param>
+	/// <param name="pInstances">
+	/// A sequence of tuples containing the instance ID and name of each active instance of the specified counter set extracted from <c>PERF_INSTANCE_HEADER</c>.
+	/// </param>
+	/// <returns>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>
+	/// The function successfully stored all of the information about the active instances of the counter set in the buffer that pInstances
+	/// specified. The value that pcbInstancesActual points to indicates amount of information actually stored in the buffer, in bytes.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
+	/// <term>
+	/// The buffer that pInstances specified was not large enough to store all of the information about the active instances of the counter
+	/// set. The value that pcbInstancesActual points to indicates the size of the buffer required to store all of the information. Enlarge
+	/// the buffer to the required size and call the function again.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>For other types of failures, the return value is a system error code.</para>
+	/// </returns>
+	[PInvokeData("perflib.h", MSDNShortId = "83DCEAB7-5F79-4A55-8BAC-D20F545FF76D")]
+	public static Win32Error PerfEnumerateCounterSetInstances(string? szMachine, in Guid pCounterSetId, out IEnumerable<(uint id, string name)> pInstances)
+	{
+		pInstances = [];
+		var err = PerfEnumerateCounterSetInstances(szMachine, pCounterSetId, IntPtr.Zero, 0, out var pcbInstancesActual);
+		if (err != Win32Error.ERROR_NOT_ENOUGH_MEMORY)
+			return err;
+		using var mem = new SafeHGlobalHandle(pcbInstancesActual);
+		err = PerfEnumerateCounterSetInstances(szMachine, in pCounterSetId, mem, pcbInstancesActual, out pcbInstancesActual);
+		if (err.Succeeded && pcbInstancesActual > 0)
+		{
+			List<(uint id, string name)> list = [];
+			IntPtr p = mem;
+			for (uint offset = 0, hsz = (uint)Marshal.SizeOf<PERF_INSTANCE_HEADER>(); offset < pcbInstancesActual;)
+			{
+				ref var header = ref p.Offset(offset).AsRef<PERF_INSTANCE_HEADER>();
+				var name = Marshal.PtrToStringUni(p.Offset(offset + hsz)) ?? string.Empty;
+				list.Add((header.InstanceId, name));
+				offset += header.Size;
+			}
+			pInstances = list;
+		}
+		return err;
+	}
 
 	/// <summary>Increments the value of a counter whose value is a 4-byte unsigned integer. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -752,7 +921,7 @@ public static partial class AdvApi32
 	// PerfIncrementULongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "002162a0-d782-4648-949e-178985fd1d44")]
-	public static extern NTStatus PerfIncrementULongCounterValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, uint Value);
+	public static extern NTStatus PerfIncrementULongCounterValue(HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, uint Value);
 
 	/// <summary>Increments the value of a counter whose value is an 8-byte unsigned integer. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -794,7 +963,7 @@ public static partial class AdvApi32
 	// PerfIncrementULongLongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONGLONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "6e701561-4036-4ae4-8d4e-667fa6a20d99")]
-	public static extern NTStatus PerfIncrementULongLongCounterValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, ulong Value);
+	public static extern NTStatus PerfIncrementULongLongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, ulong Value);
 
 	/// <summary>Creates a handle that references a query on the specified system. A query is a list of counter specifications.</summary>
 	/// <param name="szMachine">The name of the machine for which you want to get the query handle.</param>
@@ -812,7 +981,7 @@ public static partial class AdvApi32
 	// szMachine, HANDLE *phQuery );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "5105F617-9443-451D-B802-C6A241769E65")]
-	public static extern NTStatus PerfOpenQueryHandle([MarshalAs(UnmanagedType.LPWStr)] string? szMachine, out SafeHPERFQUERY phQuery);
+	public static extern NTStatus PerfOpenQueryHandle([MarshalAs(UnmanagedType.LPWStr)] string? szMachine, [AddAsCtor] out SafeHPERFQUERY phQuery);
 
 	/// <summary>Gets the values of the performance counters that match the counter specifications in the specified query.</summary>
 	/// <param name="hQuery">
@@ -884,7 +1053,55 @@ public static partial class AdvApi32
 	// hQuery, PPERF_DATA_HEADER pCounterBlock, DWORD cbCounterBlock, LPDWORD pcbCounterBlockActual );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "EBCF00E0-6C40-40E5-9F3D-9AE5F9AB74AC")]
-	public static extern NTStatus PerfQueryCounterData(HPERFQUERY hQuery, [Optional] IntPtr pCounterBlock, uint cbCounterBlock, out uint pcbCounterBlockActual);
+	[SuppressAutoGen]
+	public static extern Win32Error PerfQueryCounterData(HPERFQUERY hQuery, [Out, SizeDef(nameof(cbCounterBlock), SizingMethod.Query | SizingMethod.Bytes, OutVarName = nameof(pcbCounterBlockActual))] IntPtr pCounterBlock,
+		uint cbCounterBlock, out uint pcbCounterBlockActual);
+
+	/// <summary>Gets the values of the performance counters that match the counter specifications in the specified query.</summary>
+	/// <param name="hQuery">
+	/// A handle to a query for the counter specifications of the performance counters for which you want to get the values.
+	/// </param>
+	/// <param name="pCounterBlock">A pointer to a buffer that receives the performance counter values as a PERF_DATA_HEADER block.</param>
+	/// <returns>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>
+	/// The function successfully stored all of the requested performance counter values in the buffer that pCounterBlock specified. The
+	/// value that pcbCounterBlockActual points to indicates amount of information actually stored in the buffer, in bytes.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
+	/// <term>
+	/// The buffer that pCounterBlock specified was not large enough to store all of the requested performance counter values. The value
+	/// that pcbCounterBlockActual points to indicates the size of the buffer required to store all of the information. Enlarge the
+	/// buffer to the required size and call the function again.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>For other types of failures, the return value is a system error code.</para>
+	/// </returns>
+	/// <remarks>
+	/// The information about the performance counter values is written to the buffer that pCounterBlock specifies as a PERF_DATA_HEADER
+	/// block, which consists <c>PERF_DATA_HEADER</c> structure followed by a sequence of PERF_COUNTER_HEADER blocks.
+	/// </remarks>
+	[PInvokeData("perflib.h", MSDNShortId = "EBCF00E0-6C40-40E5-9F3D-9AE5F9AB74AC")]
+	public static NTStatus PerfQueryCounterData([In, AddAsMember] HPERFQUERY hQuery, out SafeCoTaskMemStruct<PERF_DATA_HEADER> pCounterBlock)
+	{
+		var err = PerfQueryCounterData(hQuery, IntPtr.Zero, 0, out var pcbCounterBlockActual);
+		if (err != Win32Error.ERROR_NOT_ENOUGH_MEMORY)
+		{
+			pCounterBlock = SafeCoTaskMemStruct<PERF_DATA_HEADER>.Null;
+			return err;
+		}
+		pCounterBlock = new(pcbCounterBlockActual);
+		return PerfQueryCounterData(hQuery, pCounterBlock, pcbCounterBlockActual, out _);
+	}
 
 	/// <summary>Gets the counter specifications in the specified query.</summary>
 	/// <param name="hQuery">A handle to the query for which you want to get the counter specifications</param>
@@ -965,21 +1182,74 @@ public static partial class AdvApi32
 	// hQuery, PPERF_COUNTER_IDENTIFIER pCounters, DWORD cbCounters, LPDWORD pcbCountersActual );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "42CAB98C-4525-499D-BA11-731A666E112D")]
-	public static extern NTStatus PerfQueryCounterInfo(HPERFQUERY hQuery, [In, Out] PERF_COUNTER_IDENTIFIER_WITH_INST_NAME[]? pCounters, uint cbCounters, out uint pcbCountersActual);
+	public static extern NTStatus PerfQueryCounterInfo([In] HPERFQUERY hQuery, [Out] IntPtr pCounters, uint cbCounters, out uint pcbCountersActual);
+
+	/// <summary>Gets the counter specifications in the specified query.</summary>
+	/// <param name="hQuery">A handle to the query for which you want to get the counter specifications</param>
+	/// <param name="pCounters">
+	/// The counter specifications as a collection of tuples containing the PERF_COUNTER_IDENTIFIER and optional name.
+	/// </param>
+	/// <returns>
+	/// <list type="table">
+	/// <listheader>
+	/// <term>Return code</term>
+	/// <term>Description</term>
+	/// </listheader>
+	/// <item>
+	/// <term>ERROR_SUCCESS</term>
+	/// <term>
+	/// The function successfully stored all of the information about the counter specifications in the buffer that pCounters specified. The
+	/// value that pcbCountersActual points to indicates amount of information actually stored in the buffer, in bytes.
+	/// </term>
+	/// </item>
+	/// <item>
+	/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
+	/// <term>
+	/// The buffer that pCounters specified was not large enough to store all of the information about the counter specifications. The value
+	/// that pcbCountersActual points to indicates the size of the buffer required to store all of the information. Enlarge the buffer to the
+	/// required size and call the function again.
+	/// </term>
+	/// </item>
+	/// </list>
+	/// <para>For other types of failures, the return value is a system error code.</para>
+	/// </returns>
+	[PInvokeData("perflib.h", MSDNShortId = "42CAB98C-4525-499D-BA11-731A666E112D")]
+	public static NTStatus PerfQueryCounterInfo([In, AddAsMember] HPERFQUERY hQuery, out IReadOnlyList<PPERF_COUNTER_IDENTIFIER> pCounters)
+	{
+		pCounters = [];
+		var err = PerfQueryCounterInfo(hQuery, IntPtr.Zero, 0, out var pcbCountersActual);
+		if (err != NTStatus.STATUS_BUFFER_TOO_SMALL)
+			return err;
+		using var mem = new SafeHGlobalHandle(pcbCountersActual);
+		err = PerfQueryCounterInfo(hQuery, mem, pcbCountersActual, out pcbCountersActual);
+		if (err.Succeeded && pcbCountersActual > 0)
+		{
+			List<PPERF_COUNTER_IDENTIFIER> pc = [];
+			for (int offset = 0; offset < pcbCountersActual;)
+			{
+				PPERF_COUNTER_IDENTIFIER pci = new(mem.DangerousGetHandle().Offset(offset));
+				pc.Add(pci);
+				offset += (int)pci.Size;
+			}
+			pCounters = pc;
+		}
+		return err;
+	}
 
 	/// <summary>Gets information about a counter set on the specified system.</summary>
 	/// <param name="szMachine">
-	/// The name of the machine for which to get the information about the counter set that the pCounterSet parameter specifies. If NULL,
-	/// the function retrieves information about the specified counter set for the local machine.
+	/// The name of the machine for which to get the information about the counter set that the pCounterSet parameter specifies. If NULL, the
+	/// function retrieves information about the specified counter set for the local machine.
 	/// </param>
 	/// <param name="pCounterSetId">The counter set identifier of the counter set for which you want to get information.</param>
 	/// <param name="requestCode">
 	/// The type of information that you want to get about the counter set. See PerfRegInfoType for a list of possible values.
 	/// </param>
 	/// <param name="requestLangId">
-	/// <para>The preferred locale identifier for the strings that contain the requested information if requestCode is <c>PERF_REG_COUNTERSET_NAME_STRING</c>,</para>
-	/// <para><c>PERF_REG_COUNTERSET_HELP_STRING</c>, <c>PERF_REG_COUNTER_NAME_STRINGS</c>, or</para>
-	/// <para><c>PERF_REG_COUNTER_HELP_STRINGS</c>.</para>
+	/// <para>
+	/// The preferred locale identifier for the strings that contain the requested information if requestCode is
+	/// <c>PERF_REG_COUNTERSET_NAME_STRING</c>, <c>PERF_REG_COUNTERSET_HELP_STRING</c>, <c>PERF_REG_COUNTER_NAME_STRINGS</c>, or <c>PERF_REG_COUNTER_HELP_STRINGS</c>.
+	/// </para>
 	/// <para>The counter identifier of the counter for which you want data, if requestCode is <c>PERF_REG_COUNTER_STRUCT</c>.</para>
 	/// <para>Set to 0 for all other values of requestCode.</para>
 	/// </param>
@@ -1002,16 +1272,14 @@ public static partial class AdvApi32
 	/// </listheader>
 	/// <item>
 	/// <term>ERROR_SUCCESS</term>
-	/// <term>
-	/// The number of bytes of information about the specified counter set that the function stored in the buffer that pbRegInfo specified.
-	/// </term>
+	/// <term>The number of bytes of information about the specified counter set that the function stored in the buffer that pbRegInfo specified.</term>
 	/// <term/>
 	/// </item>
 	/// <item>
 	/// <term>ERROR_NOT_ENOUGH_MEMORY</term>
 	/// <term>
-	/// The size of the buffer required to store the information about the counter set on the specified machine, in bytes. Enlarge the
-	/// buffer to the required size and call the function again.
+	/// The size of the buffer required to store the information about the counter set on the specified machine, in bytes. Enlarge the buffer
+	/// to the required size and call the function again.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1029,8 +1297,8 @@ public static partial class AdvApi32
 	/// <item>
 	/// <term>ERROR_SUCCESS</term>
 	/// <term>
-	/// The function successfully stored all of the information about the counter set in the buffer that pbRegInfo specified. The value
-	/// that pcbRegInfoActual points to indicates amount of information actually stored in the buffer, in bytes.
+	/// The function successfully stored all of the information about the counter set in the buffer that pbRegInfo specified. The value that
+	/// pcbRegInfoActual points to indicates amount of information actually stored in the buffer, in bytes.
 	/// </term>
 	/// </item>
 	/// <item>
@@ -1053,7 +1321,8 @@ public static partial class AdvApi32
 	// LPBYTE pbRegInfo, DWORD cbRegInfo, LPDWORD pcbRegInfoActual );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "E8E83E47-2445-42AE-855F-6710FC8F789E")]
-	public static extern Win32Error PerfQueryCounterSetRegistrationInfo([MarshalAs(UnmanagedType.LPWStr), Optional] string? szMachine, in Guid pCounterSetId, PerfRegInfoType requestCode, uint requestLangId, [Optional] IntPtr pbRegInfo, uint cbRegInfo, out uint pcbRegInfoActual);
+	public static extern Win32Error PerfQueryCounterSetRegistrationInfo([MarshalAs(UnmanagedType.LPWStr), Optional] string? szMachine, in Guid pCounterSetId,
+		PerfRegInfoType requestCode, uint requestLangId, [Out, SizeDef(nameof(cbRegInfo), SizingMethod.Query, OutVarName = nameof(pcbRegInfoActual))] IntPtr pbRegInfo, uint cbRegInfo, out uint pcbRegInfoActual);
 
 	/// <summary>Retrieves a pointer to the specified counter set instance. Providers use this function.</summary>
 	/// <param name="ProviderHandle">
@@ -1090,7 +1359,7 @@ public static partial class AdvApi32
 	// PerfQueryInstance( HANDLE ProviderHandle, LPCGUID CounterSetGuid, PCWSTR Name, ULONG Id );
 	[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "844f3f9e-8de2-4995-b13c-befe0da8a1ab")]
-	public static extern IntPtr PerfQueryInstance(HPERFPROV ProviderHandle, in Guid CounterSetGuid, [MarshalAs(UnmanagedType.LPWStr)] string Name, uint Id);
+	public static extern StructPointer<PERF_COUNTERSET_INSTANCE> PerfQueryInstance([In, AddAsMember] HPERFPROV ProviderHandle, in Guid CounterSetGuid, [MarshalAs(UnmanagedType.LPWStr)] string Name, uint Id);
 
 	/// <summary>Updates the value of a counter whose value is a pointer to the actual data. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -1140,7 +1409,7 @@ public static partial class AdvApi32
 	// HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, PVOID Address );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "0694ff8c-4c36-4bf7-a2b3-c032bf7a2f65")]
-	public static extern NTStatus PerfSetCounterRefValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, IntPtr Address);
+	public static extern NTStatus PerfSetCounterRefValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, IntPtr Address);
 
 	/// <summary>Specifies the layout of a particular counter set.</summary>
 	/// <param name="ProviderHandle">
@@ -1164,7 +1433,7 @@ public static partial class AdvApi32
 	// ProviderHandle, PPERF_COUNTERSET_INFO Template, ULONG TemplateSize );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "b4295503-5588-4898-816c-939a5920fc77")]
-	public static extern NTStatus PerfSetCounterSetInfo(HPERFPROV ProviderHandle, ref PERF_COUNTERSET_INFO Template, uint TemplateSize);
+	public static extern NTStatus PerfSetCounterSetInfo([In, AddAsMember] HPERFPROV ProviderHandle, [In] StructPointer<PERF_COUNTERSET_INFO> Template, uint TemplateSize);
 
 	/// <summary>Updates the value of a counter whose value is a 4-byte unsigned integer. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -1206,7 +1475,7 @@ public static partial class AdvApi32
 	// HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "b790bea0-90d8-4894-bacb-a27f777cf240")]
-	public static extern NTStatus PerfSetULongCounterValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, uint Value);
+	public static extern NTStatus PerfSetULongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, uint Value);
 
 	/// <summary>Updates the value of a counter whose value is an 8-byte unsigned integer. Providers use this function.</summary>
 	/// <param name="Provider">
@@ -1248,7 +1517,7 @@ public static partial class AdvApi32
 	// PerfSetULongLongCounterValue( HANDLE Provider, PPERF_COUNTERSET_INSTANCE Instance, ULONG CounterId, ULONGLONG Value );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "c38f9efc-7ea8-4841-9a31-a88d4f87369c")]
-	public static extern NTStatus PerfSetULongLongCounterValue(HPERFPROV Provider, SafePPERF_COUNTERSET_INSTANCE Instance, uint CounterId, ulong Value);
+	public static extern NTStatus PerfSetULongLongCounterValue([In, AddAsMember] HPERFPROV Provider, [In] StructPointer<PERF_COUNTERSET_INSTANCE> Instance, uint CounterId, ulong Value);
 
 	/// <summary>Registers the provider.</summary>
 	/// <param name="ProviderGuid">
@@ -1271,7 +1540,7 @@ public static partial class AdvApi32
 	// ProviderGuid, PERFLIBREQUEST ControlCallback, HANDLE *phProvider );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "b417b19b-adbc-40e3-aca1-c2cd94a79232")]
-	public static extern NTStatus PerfStartProvider(in Guid ProviderGuid, [Optional] ControlCallback? ControlCallback, out SafeHPERFPROV phProvider);
+	public static extern NTStatus PerfStartProvider(in Guid ProviderGuid, [Optional] ControlCallback? ControlCallback, [AddAsCtor] out SafeHPERFPROV phProvider);
 
 	/// <summary>Registers the provider.</summary>
 	/// <param name="ProviderGuid">
@@ -1297,7 +1566,7 @@ public static partial class AdvApi32
 	// ProviderGuid, PPERF_PROVIDER_CONTEXT ProviderContext, PHANDLE Provider );
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "9f3aefbf-0836-46fc-8a53-858c3c94cef9")]
-	public static extern NTStatus PerfStartProviderEx(in Guid ProviderGuid, in PERF_PROVIDER_CONTEXT ProviderContext, out SafeHPERFPROV Provider);
+	public static extern NTStatus PerfStartProviderEx(in Guid ProviderGuid, in PERF_PROVIDER_CONTEXT ProviderContext, [AddAsCtor] out SafeHPERFPROV Provider);
 
 	/// <summary>
 	/// Removes the provider's registration from the list of registered providers and frees all resources associated with the provider.
@@ -1316,6 +1585,36 @@ public static partial class AdvApi32
 	[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 	[PInvokeData("perflib.h", MSDNShortId = "4b31f88b-cadc-4bee-bdea-9079cc14c140")]
 	public static extern NTStatus PerfStopProvider(HPERFPROV ProviderHandle);
+
+	internal static int Mult8(int x) => (x + 7) & ~7;
+
+	internal static NTStatus ProcessCounters([In] HPERFQUERY hQuery, [In, Out] PPERF_COUNTER_IDENTIFIER[] pCounters, Func<HPERFQUERY, IntPtr, uint, NTStatus> f)
+	{
+		if (pCounters is null || pCounters.Length == 0)
+			return NTStatus.STATUS_INVALID_PARAMETER;
+		var size = pCounters.Sum(pc => pc.Size);
+		using SafeCoTaskMemStruct<PERF_COUNTER_IDENTIFIER> mem = new(size);
+		var ptr = mem.DangerousGetHandle();
+		foreach (var pci in pCounters)
+		{
+			pci.Write(ptr);
+			ptr += (int)pci.Size;
+		}
+		var err = f(hQuery, mem, (uint)size);
+		if (err.Succeeded)
+		{
+			unsafe
+			{
+				var e = (PERF_COUNTER_IDENTIFIER*)mem;
+				for (int i = 0; i < pCounters.Length; i++)
+				{
+					pCounters[i] = new(e);
+					e = (PERF_COUNTER_IDENTIFIER*)((byte*)e + e->Size);
+				}
+			}
+		}
+		return err;
+	}
 
 	/// <summary>
 	/// <para>
@@ -1351,7 +1650,7 @@ public static partial class AdvApi32
 		public uint dwDataSize;
 
 		/// <summary>
-		/// <para>The total size of the <c>PERF_COUNTER_DATA</c> block, which is the sum of the sizes opf the following items:</para>
+		/// <para>The total size of the <c>PERF_COUNTER_DATA</c> block, which is the sum of the sizes of the following items:</para>
 		/// <list type="bullet">
 		/// <item>
 		/// <term>The <c>PERF_COUNTER_DATA</c> structure</term>
@@ -1365,6 +1664,16 @@ public static partial class AdvApi32
 		/// </list>
 		/// </summary>
 		public uint dwSize;
+
+		/// <summary>Gets the raw performance counter data.</summary>
+		public static ulong GetData(StructPointer<PERF_COUNTER_DATA> pcd)
+		{
+			unsafe
+			{
+				var pData = (byte*)((PERF_COUNTER_DATA*)pcd + 1);
+				return ((PERF_COUNTER_DATA*)pcd)->dwDataSize == 4 ? *(uint*)pData : *(ulong*)pData;
+			}
+		}
 	}
 
 	/// <summary>
@@ -1382,7 +1691,7 @@ public static partial class AdvApi32
 	public struct PERF_COUNTER_HEADER
 	{
 		/// <summary>An error code that indicates whether the operation to query the performance succeeded or failed.</summary>
-		public uint dwStatus;
+		public Win32Error dwStatus;
 
 		/// <summary>
 		/// <para>The type of performance counter information that the <c>PERF_COUNTER_HEADER</c> block provides.</para>
@@ -1439,6 +1748,41 @@ public static partial class AdvApi32
 
 		/// <summary>Reserved.</summary>
 		public uint Reserved;
+
+		internal static readonly int cntHdrSz = Marshal.SizeOf<PERF_COUNTER_HEADER>();
+
+		internal readonly bool ValidFor(PerfCounterDataType type) => dwType == type && dwSize > cntHdrSz;
+
+		/// <summary>Gets the data for a single-counter, single-instance query.</summary>
+		public static StructPointer<PERF_COUNTER_DATA> GetSingleCounter(StructPointer<PERF_COUNTER_HEADER> ptr) =>
+			GetTrailingStruct<PERF_COUNTER_DATA>(ptr, PerfCounterDataType.PERF_SINGLE_COUNTER);
+
+		/// <summary>Gets the single-counter, single-instance query.</summary>
+		public static ulong GetSingleCounterData(StructPointer<PERF_COUNTER_HEADER> ptr) =>
+			PERF_COUNTER_DATA.GetData(GetSingleCounter(ptr));
+
+		/// <summary>Enumerates the multiple counters in the data header.</summary>
+		public static StructPointer<PERF_MULTI_COUNTERS> GetCounterset(StructPointer<PERF_COUNTER_HEADER> ptr) =>
+			GetTrailingStruct<PERF_MULTI_COUNTERS>(ptr, PerfCounterDataType.PERF_COUNTERSET);
+
+		/// <summary>Gets the multiple counters in the data header.</summary>
+		public static StructPointer<PERF_MULTI_COUNTERS> GetMultiCounters(StructPointer<PERF_COUNTER_HEADER> ptr) =>
+			GetTrailingStruct<PERF_MULTI_COUNTERS>(ptr, PerfCounterDataType.PERF_MULTIPLE_COUNTERS);
+
+		/// <summary>Enumerates the multiple counters in the data header.</summary>
+		public static IEnumerable<(uint id, ulong data)> GetMultiCountersData(StructPointer<PERF_COUNTER_HEADER> ptr) =>
+			PERF_MULTI_COUNTERS.GetDataBlocks(GetMultiCounters(ptr));
+
+		/// <summary>Enumerates the instances in the data header.</summary>
+		public static StructPointer<PERF_MULTI_INSTANCES> GetMultiInstances(StructPointer<PERF_COUNTER_HEADER> ptr) =>
+			GetTrailingStruct<PERF_MULTI_INSTANCES>(ptr, PerfCounterDataType.PERF_MULTIPLE_INSTANCES);
+
+		private static StructPointer<T> GetTrailingStruct<T>(StructPointer<PERF_COUNTER_HEADER> ptr, PerfCounterDataType type) where T : unmanaged
+		{
+			if (!ptr.AsRef().ValidFor(type))
+				throw new ArgumentException($"The PERF_COUNTER_HEADER does not contain a {typeof(T).Name} structure.", nameof(ptr));
+			return ((IntPtr)ptr).Offset(cntHdrSz);
+		}
 	}
 
 	/// <summary>
@@ -1484,13 +1828,13 @@ public static partial class AdvApi32
 	// Reserved; } PERF_COUNTER_IDENTIFIER, *PPERF_COUNTER_IDENTIFIER;
 	[PInvokeData("perflib.h", MSDNShortId = "4BBAB831-9A7F-407E-A7D6-9123192C12B4")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct PERF_COUNTER_IDENTIFIER
+	public struct PERF_COUNTER_IDENTIFIER(Guid counterSetGuid, uint counterId = PERF_WILDCARD_COUNTER, uint instanceId = PERF_WILDCARD_COUNTER)
 	{
 		/// <summary>The <c>GUID</c> of the performance counter set.</summary>
-		public Guid CounterSetGuid;
+		public Guid CounterSetGuid = counterSetGuid;
 
 		/// <summary>An error code that indicates whether the operation to add or delete a performance counter succeeded or failed.</summary>
-		public uint Status;
+		public Win32Error Status;
 
 		/// <summary>
 		/// The total size of the <c>PERF_COUNTER_IDENTIFIER</c> block, in bytes. The total size of the block is the sum of the sizes of
@@ -1499,10 +1843,10 @@ public static partial class AdvApi32
 		public uint Size;
 
 		/// <summary>The identifier of the performance counter. <c>PERF_WILDCARD_COUNTER</c> specifies all counters.</summary>
-		public uint CounterId;
+		public uint CounterId = counterId;
 
 		/// <summary>The instance identifier. Specify 0xFFFFFFFF if you do not want to filter the results based on the instance identifier.</summary>
-		public uint InstanceId;
+		public uint InstanceId = instanceId;
 
 		/// <summary>
 		/// The position in the sequence of <c>PERF_COUNTER_IDENTIFIER</c> blocks at which the counter data that corresponds to this
@@ -1512,86 +1856,6 @@ public static partial class AdvApi32
 
 		/// <summary>Reserved.</summary>
 		public uint Reserved;
-	}
-
-	/// <summary>
-	/// <para>
-	/// Contains information about the <c>PERF_COUNTER_IDENTIFIER</c> block that contains the structure. A <c>PERF_COUNTER_IDENTIFIER</c>
-	/// block provides information about a performance counter specification, and consists of the following items in order:
-	/// </para>
-	/// <list type="number">
-	/// <item>
-	/// <term>A <c>PERF_COUNTER_IDENTIFIER</c> structure</term>
-	/// </item>
-	/// <item>
-	/// <term>An optional null-terminated UTF-16LE string that specifies the instance name</term>
-	/// </item>
-	/// <item>
-	/// <term>Padding as needed to make the size of the block a multiple of 8 bytes.</term>
-	/// </item>
-	/// </list>
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// When you specify a counter set identifier for a single-instance counter set, you must not specify the instance name in the
-	/// additional data of the <c>PERF_COUNTER_IDENTIFIER</c> block. The size of the <c>PERF_COUNTER_IDENTIFIER</c> block must be the
-	/// size of the <c>PERF_COUNTER_IDENTIFIER</c> structure.
-	/// </para>
-	/// <para>
-	/// On the other hand, when you specify a counter set identifier for a multiple-instance counter set, you must specify the instance
-	/// name in the additional data of the <c>PERF_COUNTER_IDENTIFIER</c> block. The identifier is not considered valid unless the size of
-	/// the <c>PERF_COUNTER_IDENTIFIER</c> block is greater than the size of the <c>PERF_COUNTER_IDENTIFIER</c> structure. If you do not
-	/// want to filter the counter sets based on the instance name, use <c>PERF_WILDCARD_INSTANCE</c> as the instance name.
-	/// </para>
-	/// <para>
-	/// The PerfAddCounters and PerfDeleteCounters functions accept a sequence of <c>PERF_COUNTER_IDENTIFIER</c> blocks to define the
-	/// counter specifications that you want to be add or remove from a query.
-	/// </para>
-	/// <para>
-	/// The PerfQueryCounterInfo function gets a sequence of <c>PERF_COUNTER_IDENTIFIER</c> blocks to indicate the counter specifications
-	/// in a query and to indicate in the <c>Index</c> member the order in which the query gets the results.
-	/// </para>
-	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/perflib/ns-perflib-_perf_counter_identifier typedef struct
-	// _PERF_COUNTER_IDENTIFIER { GUID CounterSetGuid; ULONG Status; ULONG Size; ULONG CounterId; ULONG InstanceId; ULONG Index; ULONG
-	// Reserved; } PERF_COUNTER_IDENTIFIER, *PPERF_COUNTER_IDENTIFIER;
-	[PInvokeData("perflib.h", MSDNShortId = "4BBAB831-9A7F-407E-A7D6-9123192C12B4")]
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct PERF_COUNTER_IDENTIFIER_WITH_INST_NAME
-	{
-		/// <summary>The <c>GUID</c> of the performance counter set.</summary>
-		public Guid CounterSetGuid;
-
-		/// <summary>An error code that indicates whether the operation to add or delete a performance counter succeeded or failed.</summary>
-		public uint Status;
-
-		/// <summary>
-		/// The total size of the <c>PERF_COUNTER_IDENTIFIER</c> block, in bytes. The total size of the block is the sum of the sizes of
-		/// the <c>PERF_COUNTER_IDENTIFIER</c> structure, the string that specifies the instance name, and the padding.
-		/// </summary>
-		public uint Size;
-
-		/// <summary>The identifier of the performance counter. <c>PERF_WILDCARD_COUNTER</c> specifies all counters.</summary>
-		public uint CounterId;
-
-		/// <summary>The instance identifier. Specify 0xFFFFFFFF if you do not want to filter the results based on the instance identifier.</summary>
-		public uint InstanceId;
-
-		/// <summary>
-		/// The position in the sequence of <c>PERF_COUNTER_IDENTIFIER</c> blocks at which the counter data that corresponds to this
-		/// <c>PERF_COUNTER_IDENTIFIER</c> block is returned. Set by PerfQueryCounterInfo.
-		/// </summary>
-		public uint Index;
-
-		/// <summary>Reserved.</summary>
-		public uint Reserved;
-
-		/// <summary>The instance name used when using multi-instance counter sets.</summary>
-		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-		public string InstanceName;
-
-		/// <summary>An instance of this structure with the size property preset.</summary>
-		public static readonly PERF_COUNTER_IDENTIFIER_WITH_INST_NAME Default = new() { Size = (uint)Marshal.SizeOf<PERF_COUNTER_IDENTIFIER_WITH_INST_NAME>() };
 	}
 
 	/// <summary>Defines the counter that is sent to a provider's callback when the consumer adds or removes a counter from the query.</summary>
@@ -1643,15 +1907,15 @@ public static partial class AdvApi32
 	// ULONG CounterId; ULONG Type; ULONGLONG Attrib; ULONG Size; ULONG DetailLevel; LONG Scale; ULONG Offset; } PERF_COUNTER_INFO, *PPERF_COUNTER_INFO;
 	[PInvokeData("perflib.h", MSDNShortId = "f1fb6ad5-ad38-46d0-b76d-803887ba3d97")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct PERF_COUNTER_INFO
+	public struct PERF_COUNTER_INFO(uint id, uint type, uint size, uint detailLevel)
 	{
 		/// <summary>Identifier that uniquely identifies the counter within the counter set.</summary>
-		public uint CounterId;
+		public uint CounterId = id;
 
 		/// <summary>
 		/// Specifies the type of counter. For possible counter types, see Counter Types in the Windows 2003 Deployment Guide.
 		/// </summary>
-		public uint Type;
+		public uint Type = type;
 
 		/// <summary>
 		/// <para>One or more attributes that indicate how to display this counter.</para>
@@ -1687,10 +1951,10 @@ public static partial class AdvApi32
 		/// exclusive. If you specify all three attributes, precedence is given to the attributes in the order given.
 		/// </para>
 		/// </summary>
-		public ulong Attrib;
+		public PERF_ATTRIB Attrib;
 
 		/// <summary>Size, in bytes, of this structure.</summary>
-		public uint Size;
+		public uint Size = size;
 
 		/// <summary>
 		/// <para>Specify the target audience for the counter.</para>
@@ -1710,7 +1974,7 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint DetailLevel;
+		public uint DetailLevel = detailLevel;
 
 		/// <summary>
 		/// Scale factor to apply to the counter value. Valid values range from –10 through 10. Zero if no scale is applied. If this
@@ -1825,7 +2089,7 @@ public static partial class AdvApi32
 		/// attributes in the order given.
 		/// </para>
 		/// </summary>
-		public ulong Attrib;
+		public PERF_ATTRIB Attrib;
 
 		/// <summary>
 		/// <para>The target audience for the counter.</para>
@@ -1904,7 +2168,7 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint AggregateFunc;
+		public PERF_AGGREGATE AggregateFunc;
 
 		/// <summary>Reserved.</summary>
 		public uint Reserved;
@@ -1922,21 +2186,21 @@ public static partial class AdvApi32
 	// { GUID CounterSetGuid; GUID ProviderGuid; ULONG NumCounters; ULONG InstanceType; } PERF_COUNTERSET_INFO, *PPERF_COUNTERSET_INFO;
 	[PInvokeData("perflib.h", MSDNShortId = "bf48dcdb-6fdd-4093-9006-a53690c3ed86")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct PERF_COUNTERSET_INFO
+	public struct PERF_COUNTERSET_INFO(in Guid counterSetGuid, in Guid providerGuid, uint numCounters, PERF_COUNTERSET_TYPE instType = PERF_COUNTERSET_TYPE.PERF_COUNTERSET_MULTI_INSTANCES)
 	{
 		/// <summary>
 		/// GUID that uniquely identifies the counter set. The <c>guid</c> attribute of the counterSet element contains the GUID.
 		/// </summary>
-		public Guid CounterSetGuid;
+		public Guid CounterSetGuid = counterSetGuid;
 
 		/// <summary>
 		/// GUID that uniquely identifies the provider that supports the counter set. The <c>providerGuid</c> attribute of the provider
 		/// element contains the GUID.
 		/// </summary>
-		public Guid ProviderGuid;
+		public Guid ProviderGuid = providerGuid;
 
 		/// <summary>Number of counters in the counter set. See Remarks.</summary>
-		public uint NumCounters;
+		public uint NumCounters = numCounters;
 
 		/// <summary>
 		/// <para>
@@ -1997,7 +2261,7 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint InstanceType;
+		public PERF_COUNTERSET_TYPE InstanceType = instType;
 	}
 
 	/// <summary>Defines an instance of a counter set.</summary>
@@ -2135,7 +2399,7 @@ public static partial class AdvApi32
 		/// </item>
 		/// </list>
 		/// </summary>
-		public uint InstanceType;
+		public PERF_COUNTERSET_TYPE InstanceType;
 	}
 
 	/// <summary>
@@ -2181,6 +2445,24 @@ public static partial class AdvApi32
 
 		/// <summary>The time at which data is collected by the provider.</summary>
 		public SYSTEMTIME SystemTime;
+
+		/// <summary>Enumerates the counters in the data header.</summary>
+		public static IEnumerable<(PERF_COUNTER_HEADER value, StructPointer<PERF_COUNTER_HEADER> ptr)> GetCounters(StructPointer<PERF_DATA_HEADER> ptr)
+		{
+			var cn = ptr.AsRef().dwNumCounters;
+			var offset = Marshal.SizeOf<PERF_DATA_HEADER>();
+			for (var i = 0; i < cn; i++)
+			{
+				StructPointer<PERF_COUNTER_HEADER> p = ((IntPtr)ptr).Offset(offset);
+				var val = p.Value.GetValueOrDefault();
+				yield return (val, p);
+				offset += (int)val.dwSize;
+			}
+		}
+
+		/// <summary>Enumerates the errors in the data header.</summary>
+		public static IEnumerable<Win32Error> GetErrors(StructPointer<PERF_DATA_HEADER> ptr) =>
+			GetCounters(ptr).Where(t => t.value.dwType == PerfCounterDataType.PERF_ERROR_RETURN).Select(t => t.value.dwStatus);
 	}
 
 	/// <summary>
@@ -2228,6 +2510,50 @@ public static partial class AdvApi32
 
 		/// <summary>The instance identifier.</summary>
 		public uint InstanceId;
+
+		/// <summary>Retrieves the Unicode instance name from the specified performance instance header pointer.</summary>
+		/// <remarks>
+		/// The returned string is interpreted as Unicode and is extracted from the memory immediately following the PERF_INSTANCE_HEADER
+		/// structure. The caller is responsible for ensuring that the pointer is valid and points to a properly initialized structure.
+		/// </remarks>
+		/// <param name="ptr">A pointer to a PERF_INSTANCE_HEADER structure from which to extract the instance name.</param>
+		/// <returns>A string containing the instance name, or null if the name cannot be read.</returns>
+		public static string? GetInstanceName(StructPointer<PERF_INSTANCE_HEADER> ptr)
+		{
+			ref var ih = ref ptr.AsRef();
+			return StringHelper.GetString(((IntPtr)ptr).Offset(Marshal.SizeOf<PERF_INSTANCE_HEADER>()), CharSet.Unicode, (int)(ih.Size - Marshal.SizeOf<PERF_INSTANCE_HEADER>()));
+		}
+
+		/// <summary>
+		/// Retrieves the raw counter data associated with a performance instance header that is part of a multiple-instance query.
+		/// </summary>
+		/// <param name="ptr">
+		/// A pointer to a PERF_INSTANCE_HEADER structure representing the performance instance for which to retrieve counter data.
+		/// </param>
+		/// <returns>
+		/// A span of bytes containing the counter data for the specified performance instance. The span will be empty if no data is available.
+		/// </returns>
+		public static ulong GetMultiInstData(StructPointer<PERF_INSTANCE_HEADER> ptr) =>
+			PERF_COUNTER_DATA.GetData(((IntPtr)ptr).Offset(ptr.AsRef().Size));
+
+		/// <summary>Enumerates the collection of performance counter data structures for a given set of performance instances.</summary>
+		/// <remarks>
+		/// The returned enumerable yields pointers in the order they appear in memory, starting immediately after the specified instance
+		/// header. The caller is responsible for ensuring that the memory region referenced by ptr and count remains valid for the duration
+		/// of the enumeration.
+		/// </remarks>
+		/// <param name="ptr">A pointer to the first performance instance header from which to begin enumeration.</param>
+		/// <param name="count">The number of performance counter data structures to enumerate. Must be non-negative.</param>
+		/// <returns>An enumerable collection of pointers to PERF_COUNTER_DATA structures, one for each performance instance.</returns>
+		public static IEnumerable<StructPointer<PERF_COUNTER_DATA>> GetCountersetData(StructPointer<PERF_INSTANCE_HEADER> ptr, SizeT count)
+		{
+			StructPointer<PERF_COUNTER_DATA> pCounterData = ((IntPtr)ptr).Offset(ptr.AsRef().Size);
+			for (int i = 0; i < count; i++)
+			{
+				yield return pCounterData;
+				pCounterData = ((IntPtr)pCounterData).Offset(pCounterData.AsRef().dwSize);
+			}
+		}
 	}
 
 	/// <summary>
@@ -2254,33 +2580,81 @@ public static partial class AdvApi32
 
 		/// <summary>The number of performance counter identifiers that the <c>PERF_MULTI_COUNTERS</c> block contains.</summary>
 		public uint dwCounters;
+
+		/// <summary>Retrieves the collection of counter values from the specified PERF_MULTI_COUNTERS structure pointer.</summary>
+		/// <remarks>
+		/// The returned collection reflects the counter values stored immediately after the PERF_MULTI_COUNTERS structure in memory. The
+		/// caller is responsible for ensuring that the pointer references a valid and properly initialized structure.
+		/// </remarks>
+		/// <param name="ptr">A pointer to a PERF_MULTI_COUNTERS structure from which to read the counter values.</param>
+		/// <returns>An enumerable collection of unsigned integer counter values. Returns an empty collection if no counters are present.</returns>
+		public static IEnumerable<(uint id, ulong data)> GetDataBlocks(StructPointer<PERF_MULTI_COUNTERS> ptr)
+		{
+			var ids = GetDataIds(ptr).ToArray();
+			var cnt = ids.Length;
+			int offset = (int)ptr.AsRef().dwSize;
+			for (var i = 0; i < cnt; i++)
+			{
+				StructPointer<PERF_COUNTER_DATA> d = ((IntPtr)ptr).Offset(offset);
+				var dval = d.Value.GetValueOrDefault();
+				yield return (ids[i], dval.dwDataSize switch
+				{
+					4 => ((IntPtr)d).Offset(Marshal.SizeOf<PERF_COUNTER_DATA>()).ToStructure<uint>(),
+					8 => ((IntPtr)d).Offset(Marshal.SizeOf<PERF_COUNTER_DATA>()).ToStructure<ulong>(),
+					_ => 0
+				});
+				offset += (int)dval.dwSize;
+			}
+		}
+
+		/// <summary>Retrieves the collection of counter IDs from the specified PERF_MULTI_COUNTERS structure pointer.</summary>
+		public static Span<uint> GetDataIds(StructPointer<PERF_MULTI_COUNTERS> ptr)
+		{
+			var cnt = ptr.AsRef().dwCounters;
+			int offset = Marshal.SizeOf<PERF_MULTI_COUNTERS>();
+			return ((IntPtr)ptr).Offset(offset).AsSpan<uint>(cnt);
+		}
+
+		/// <summary>Retrieves a pointer to the PERF_MULTI_INSTANCES structure that follows the specified PERF_MULTI_COUNTERS structure pointer.</summary>
+		public static StructPointer<PERF_MULTI_INSTANCES> GetMultiInstances(StructPointer<PERF_MULTI_COUNTERS> pcs) =>
+			((IntPtr)pcs).Offset(pcs.AsRef().dwSize);
 	}
 
 	/// <summary>
 	/// <para>
 	/// Provides information about the <c>PERF_MULTI_INSTANCES</c> block that contains the structure. A <c>PERF_MULTI_INSTANCES</c> block
-	/// indicates the number of instances for which results are provided as part of the PERF_COUNTER_HEADER block in multiple-instance
+	/// indicates the number of instances for which results are provided as part of the <c>PERF_COUNTER_HEADER</c> block in multiple-instance
 	/// query. The <c>PERF_MULTI_INSTANCES</c> block consists of the following items in order:
 	/// </para>
 	/// <list type="number">
+	/// <item>A <c>PERF_MULTI_INSTANCES</c> structure</item>
 	/// <item>
-	/// <term>A <c>PERF_MULTI_INSTANCES</c> structure</term>
+	/// A number of instance data blocks. The number of instance data blocks that the <c>PERF_MULTI_INSTANCES</c> block contains is indicated
+	/// by the <c>dwInstances</c> member of the <c>PERF_MULTI_INSTANCES</c> structure. Each instance data block consists of the following
+	/// items in order:
+	/// </item>
+	/// <list type="number">
+	/// <item>A PERF_INSTANCE_HEADER block</item>
+	/// <item>A number of PERF_COUNTER_DATA blocks. The number of PERF_COUNTER_DATA blocks depends on the context:</item>
+	/// <list type="number">
+	/// <item>
+	/// If the PERF_MULTI_INSTANCES block is part of a PERF_COUNTER_HEADER block with type PERF_MULTIPLE_INSTANCES, the instance data block
+	/// contains one PERF_COUNTER_DATA block.
 	/// </item>
 	/// <item>
-	/// <term>
-	/// A number of instance data blocks. The number of instance data blocks that the <c>PERF_MULTI_INSTANCES</c> block contains is
-	/// indicated ny the <c>dwInstances</c> member of the <c>PERF_MULTI_INSTANCES</c> structure. Each instance data block consists of the
-	/// following items in order:
-	/// </term>
+	/// If the PERF_MULTI_INSTANCES block is part of a PERF_COUNTER_HEADER block with type PERF_COUNTERSET, the number of PERF_COUNTER_DATA
+	/// blocks is indicated by the PERF_MULTI_COUNTERS block.
 	/// </item>
+	/// </list>
+	/// </list>
 	/// </list>
 	/// </summary>
 	/// <remarks>
-	/// The PerfQueryCounterData function gets a PERF_DATA_HEADER block that may contain <c>PERF_MULTI_INSTANCES</c> blocks within the
-	/// PERF_COUNTER_HEADER block.
+	/// The <c>PerfQueryCounterData</c> function gets a <c>PERF_DATA_HEADER</c> block that may contain <c>PERF_MULTI_INSTANCES</c> blocks
+	/// within the <c>PERF_COUNTER_HEADER</c> block.
 	/// </remarks>
-	// https://docs.microsoft.com/en-us/windows/desktop/api/perflib/ns-perflib-perf_multi_instances typedef struct _PERF_MULTI_INSTANCES
-	// { ULONG dwTotalSize; ULONG dwInstances; } PERF_MULTI_INSTANCES, *PPERF_MULTI_INSTANCES;
+	// https://learn.microsoft.com/en-us/windows/win32/api/perflib/ns-perflib-perf_multi_instances
+	// typedef struct _PERF_MULTI_INSTANCES { ULONG dwTotalSize; ULONG dwInstances; } PERF_MULTI_INSTANCES, *PPERF_MULTI_INSTANCES;
 	[PInvokeData("perflib.h", MSDNShortId = "5EC34ECD-D240-4B44-A52B-C5518918400C")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 	public struct PERF_MULTI_INSTANCES
@@ -2293,6 +2667,29 @@ public static partial class AdvApi32
 
 		/// <summary>The number of instance data blocks in the <c>PERF_MULTI_INSTANCES</c> block.</summary>
 		public uint dwInstances;
+
+
+		/// <summary>Enumerates the instances in the data header.</summary>
+		public static IEnumerable<StructPointer<PERF_INSTANCE_HEADER>> GetInstances(StructPointer<PERF_MULTI_INSTANCES> pmi) =>
+			GetCountersetInstances(pmi, 1);
+
+		/// <summary>Enumerates the instances in the data header.</summary>
+		public static IEnumerable<StructPointer<PERF_INSTANCE_HEADER>> GetCountersetInstances(StructPointer<PERF_MULTI_INSTANCES> pmi, SizeT dwCounters)
+		{
+			StructPointer<PERF_INSTANCE_HEADER> ih = ((IntPtr)pmi).Offset(Marshal.SizeOf<PERF_MULTI_INSTANCES>());
+			for (var i = 0; i < pmi.AsRef().dwInstances; i++)
+			{
+				yield return ih;
+				unsafe
+				{
+					var pih = (PERF_INSTANCE_HEADER*)ih;
+					var pcd = (PERF_COUNTER_DATA*)((byte*)pih + pih->Size);
+					for (int ic = 0; ic < dwCounters; ic++)
+						pcd = (PERF_COUNTER_DATA*)((byte*)pcd + pcd->dwSize);
+					ih = (IntPtr)pcd;
+				}
+			}
+		}
 	}
 
 	/// <summary>Defines provider context information.</summary>
@@ -2302,10 +2699,10 @@ public static partial class AdvApi32
 	// LPVOID pMemContext; } PERF_PROVIDER_CONTEXT, *PPERF_PROVIDER_CONTEXT;
 	[PInvokeData("perflib.h", MSDNShortId = "9bfab8aa-f44b-4515-8a2a-764583080f57")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-	public struct PERF_PROVIDER_CONTEXT
+	public struct PERF_PROVIDER_CONTEXT(ControlCallback? controlCallback)
 	{
 		/// <summary>The size of this structure.</summary>
-		public uint ContextSize;
+		public uint ContextSize = (uint)Marshal.SizeOf<PERF_PROVIDER_CONTEXT>();
 
 		/// <summary>Reserved.</summary>
 		public uint Reserved;
@@ -2316,27 +2713,27 @@ public static partial class AdvApi32
 		/// used the <c>-NotificationCallback</c> argument when calling CTRPP. Otherwise, <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public ControlCallback ControlCallback;
+		public ControlCallback? ControlCallback = controlCallback;
 
 		/// <summary>
 		/// The name of the AllocateMemory function that PERFLIB calls to allocate memory. Set this member if you used the
 		/// <c>-MemoryRoutines</c> argument when calling CTRPP. Otherwise, <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public AllocateMemory MemAllocRoutine;
+		public AllocateMemory MemAllocRoutine = (s, _) => Marshal.AllocCoTaskMem(s);
 
 		/// <summary>
 		/// The name of the FreeMemory function that PERFLIB calls to free memory allocated by the AllocateMemory function. Must be
 		/// <c>NULL</c> if <c>MemAllocRoutine</c> is <c>NULL</c>.
 		/// </summary>
 		[MarshalAs(UnmanagedType.FunctionPtr)]
-		public FreeMemory MemFreeRoutine;
+		public FreeMemory MemFreeRoutine = (p, _) => Marshal.FreeCoTaskMem(p);
 
 		/// <summary>Context information passed to the memory allocation and free routines. Can be <c>NULL</c>.</summary>
 		public IntPtr pMemContext;
 
 		/// <summary>Provides a default instance of this structure with the size preset.</summary>
-		public static readonly PERF_PROVIDER_CONTEXT Default = new() { ContextSize = (uint)Marshal.SizeOf<PERF_PROVIDER_CONTEXT>() };
+		public static readonly PERF_PROVIDER_CONTEXT Default = new(null);
 	}
 
 	/// <summary>
@@ -2378,6 +2775,32 @@ public static partial class AdvApi32
 
 		/// <summary>The number of PERF_STRING_COUNTER_HEADER structures in the <c>PERF_STRING_BUFFER_HEADER</c> block.</summary>
 		public uint dwCounters;
+
+		/// <summary>Enumerates counter ID and value pairs from a performance string buffer.</summary>
+		/// <remarks>
+		/// The returned sequence reflects the counters present in the buffer at the time of enumeration. The caller is responsible for
+		/// ensuring that the memory referenced by the pointer remains valid for the duration of the enumeration.
+		/// </remarks>
+		/// <param name="ptr">
+		/// A pointer to a PERF_STRING_BUFFER_HEADER structure representing the start of the performance string buffer to read.
+		/// </param>
+		/// <returns>
+		/// An enumerable collection of tuples, each containing a counter ID and its associated string value. The value is null if the
+		/// counter does not have an associated string.
+		/// </returns>
+		public static IEnumerable<(uint counterId, string? value)> GetData(StructPointer<PERF_STRING_BUFFER_HEADER> ptr)
+		{
+			var cn = ptr.AsRef().dwCounters;
+			var offset = Marshal.SizeOf<PERF_STRING_BUFFER_HEADER>();
+			var chsz = Marshal.SizeOf<PERF_STRING_COUNTER_HEADER>();
+			for (var i = 0; i < cn; i++)
+			{
+				var pch = ((IntPtr)ptr).Offset(offset);
+				ref PERF_STRING_COUNTER_HEADER h = ref pch.AsRef<PERF_STRING_COUNTER_HEADER>();
+				yield return (h.dwCounterId, h.dwOffset == uint.MaxValue ? null : Marshal.PtrToStringUni(pch.Offset(h.dwOffset)));
+				offset += chsz;
+			}
+		}
 	}
 
 	/// <summary>
@@ -2405,7 +2828,257 @@ public static partial class AdvApi32
 		public uint dwOffset;
 	}
 
+	/// <summary>Managed version of PERF_COUNTER_INFO with marshalling support.</summary>
+	public class PERF_COUNTER_INFO_MGD
+	{
+		/// <summary>
+		/// <para>One or more attributes that indicate how to display this counter.</para>
+		/// <para>The possible values are:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PERF_ATTRIB_BY_REFERENCE</term>
+		/// <term>Retrieve the value of the counter by reference as opposed to by value.</term>
+		/// </item>
+		/// <item>
+		/// <term>PERF_ATTRIB_NO_DISPLAYABLE</term>
+		/// <term>Do not display the counter value.</term>
+		/// </item>
+		/// <item>
+		/// <term>PERF_ATTRIB_NO_GROUP_SEPARATOR</term>
+		/// <term>Do not use digit separators when displaying counter value.</term>
+		/// </item>
+		/// <item>
+		/// <term>PERF_ATTRIB_DISPLAY_AS_REAL</term>
+		/// <term>Display the counter value as a real value.</term>
+		/// </item>
+		/// <item>
+		/// <term>PERF_ATTRIB_DISPLAY_AS_HEX</term>
+		/// <term>Display the counter value as a hexadecimal number.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The attributes PERF_ATTRIB_NO_GROUP_SEPARATOR, PERF_ATTRIB_DISPLAY_AS_REAL, and PERF_ATTRIB_DISPLAY_AS_HEX are not mutually
+		/// exclusive. If you specify all three attributes, precedence is given to the attributes in the order given.
+		/// </para>
+		/// </summary>
+		public PERF_ATTRIB Attrib { get; set; }
+
+		/// <summary>Identifier that uniquely identifies the counter within the counter set.</summary>
+		public uint CounterId { get; set; }
+
+		/// <summary>The counter's raw counter value.</summary>
+		public byte[]? CounterValue { get; set; }
+
+		/// <summary>
+		/// <para>Specify the target audience for the counter.</para>
+		/// <para>Possible values are:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PERF_DETAIL_NOVICE</term>
+		/// <term>You can display the counter to any level of user.</term>
+		/// </item>
+		/// <item>
+		/// <term>PERF_DETAIL_ADVANCED</term>
+		/// <term>The counter is complicated and should be displayed only to advanced users.</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		public uint DetailLevel { get; set; }
+
+		/// <summary>
+		/// Scale factor to apply to the counter value. Valid values range from –10 through 10. Zero if no scale is applied. If this
+		/// value is zero, the scale value is 1; if this value is 1, the scale value is 10; if this value is –1, the scale value is .10;
+		/// and so on.
+		/// </summary>
+		public int Scale { get; set; }
+
+		/// <summary>
+		/// Specifies the type of counter. For possible counter types, see Counter Types in the Windows 2003 Deployment Guide.
+		/// </summary>
+		public uint Type { get; set; }
+	}
+
+
+	/// <summary>Managed version of PERF_COUNTERSET_INSTANCE with marshalling support.</summary>
+#if NET7_0_OR_GREATER
+	[System.Runtime.InteropServices.Marshalling.CustomMarshaller(typeof(PERF_COUNTERSET_INSTANCE_MGD), System.Runtime.InteropServices.Marshalling.MarshalMode.Default, typeof(LsaUnicodeStringMarshaler.CustomMarshaller))]
+#endif
+	public class PERF_COUNTERSET_INSTANCE_MGD
+	{
+		/// <summary>List of counters in this instance block.</summary>
+		public List<PERF_COUNTER_INFO_MGD> Counters = [];
+
+		/// <summary>GUID that identifies the counter set to which this instance belongs.</summary>
+		public Guid CounterSetGuid { get; set; }
+
+		/// <summary>The provider specified the identifier when calling PerfCreateInstance.</summary>
+		public uint InstanceId { get; set; }
+
+		/// <summary>The provider specified the instance name when calling PerfCreateInstance.</summary>
+		public string InstanceName { get; set; } = "";
+		internal static unsafe class CustomMarshaller
+		{
+			static readonly uint instanceSize = (uint)Marshal.SizeOf<PERF_COUNTERSET_INSTANCE>();
+			public static PERF_COUNTERSET_INSTANCE_MGD? ConvertToManaged(PERF_COUNTERSET_INSTANCE* unmanaged)
+			{
+				if (unmanaged is null) return null;
+				var result = new PERF_COUNTERSET_INSTANCE_MGD
+				{
+					CounterSetGuid = unmanaged->CounterSetGuid,
+					InstanceId = unmanaged->InstanceId,
+					InstanceName = Marshal.PtrToStringUni(((IntPtr)unmanaged).Offset(unmanaged->InstanceNameOffset), (int)(unmanaged->InstanceNameSize / 2 - 1)) ?? ""
+				};
+				var counterInfoPtr = (PERF_COUNTER_INFO*)(unmanaged + 1);
+				var counterCount = (unmanaged->InstanceNameOffset - (uint)instanceSize) / (uint)Marshal.SizeOf<PERF_COUNTER_INFO>();
+				for (int i = 0; i < counterCount; i++)
+				{
+					var counterInfo = counterInfoPtr[i];
+					var counter = new PERF_COUNTER_INFO_MGD
+					{
+						CounterId = counterInfo.CounterId,
+						Type = counterInfo.Type,
+						Attrib = counterInfo.Attrib,
+						DetailLevel = counterInfo.DetailLevel,
+						Scale = counterInfo.Scale
+					};
+					if (counterInfo.Offset + 4 <= unmanaged->InstanceNameOffset)
+					{
+						var nextOffset = (i + 1 < counterCount) ? counterInfoPtr[i + 1].Offset : unmanaged->InstanceNameOffset;
+						var counterValueLength = nextOffset - counterInfo.Offset;
+						counter.CounterValue = new byte[counterValueLength];
+						Marshal.Copy((IntPtr)((byte*)unmanaged + counterInfo.Offset), counter.CounterValue, 0, (int)counterValueLength);
+					}
+					result.Counters.Add(counter);
+				}
+				return result;
+			}
+
+			public static PERF_COUNTERSET_INSTANCE* ConvertToUnmanaged(PERF_COUNTERSET_INSTANCE_MGD? value)
+			{
+				if (value is null) return null;
+				var instanceNameBytes = ((uint)value.InstanceName.Length + 1) * 2;
+				var counterInfoSize = (uint)(value.Counters.Count * Marshal.SizeOf<PERF_COUNTER_INFO>());
+				var valueSize = (uint)value.Counters.Sum(c => (c.CounterValue?.Length ?? 0));
+				var totalSize = instanceSize + counterInfoSize + instanceNameBytes + valueSize;
+				var ptr = (PERF_COUNTERSET_INSTANCE*)Marshal.AllocCoTaskMem((int)totalSize);
+				ptr->CounterSetGuid = value.CounterSetGuid;
+				ptr->dwSize = totalSize;
+				ptr->InstanceId = value.InstanceId;
+				ptr->InstanceNameOffset = instanceSize + counterInfoSize + valueSize;
+				ptr->InstanceNameSize = instanceNameBytes;
+				var counterInfoPtr = (PERF_COUNTER_INFO*)(ptr + 1);
+				var offset = instanceSize + counterInfoSize;
+				for (int i = 0; i < value.Counters.Count; i++)
+				{
+					var counter = value.Counters[i];
+					counterInfoPtr[i].CounterId = counter.CounterId;
+					counterInfoPtr[i].Type = counter.Type;
+					counterInfoPtr[i].Attrib = counter.Attrib;
+					counterInfoPtr[i].DetailLevel = counter.DetailLevel;
+					counterInfoPtr[i].Scale = counter.Scale;
+					counterInfoPtr[i].Offset = offset;
+					var counterValueLength = counter.CounterValue?.Length ?? 0;
+					if (counterValueLength > 0)
+					{
+						var dest = (byte*)ptr + offset;
+						Marshal.Copy(counter.CounterValue!, 0, (IntPtr)dest, counterValueLength);
+						offset += (uint)counterValueLength;
+					}
+				}
+				return ptr;
+			}
+			public static void Free(PERF_COUNTERSET_INSTANCE* unmanaged)
+			{
+				if (unmanaged != null)
+					Marshal.FreeCoTaskMem((IntPtr)unmanaged);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Represents an identifier for a performance counter, including its counter set GUID, counter and instance identifiers, status, and
+	/// optional instance name.
+	/// </summary>
+	/// <remarks>
+	/// Use this class to specify or retrieve information about a particular performance counter instance when querying or managing
+	/// performance counters. The instance name is optional; if not specified, the instance is identified solely by its numeric identifier.
+	/// The special value 0xFFFFFFFF for the instance identifier indicates that results should not be filtered by instance. The status field
+	/// provides the result of operations such as adding or deleting a counter.
+	/// </remarks>
+	public class PPERF_COUNTER_IDENTIFIER
+	{
+		private static readonly int structSize = Marshal.SizeOf<PERF_COUNTER_IDENTIFIER>();
+		private PERF_COUNTER_IDENTIFIER id;
+
+		/// <summary>
+		/// Initializes a new instance of the PPERF_COUNTER_IDENTIFIER class with the specified counter set GUID, counter ID, instance ID,
+		/// and optional instance name.
+		/// </summary>
+		/// <remarks>
+		/// If counterId or instanceId is set to PERF_WILDCARD_COUNTER, the identifier will match all counters or instances, respectively.
+		/// This constructor is typically used to specify a particular counter or to select multiple counters or instances using wildcards.
+		/// </remarks>
+		/// <param name="counterSetGuid">The unique identifier of the performance counter set to which this counter belongs.</param>
+		/// <param name="instanceName">The name of the counter instance, or null to indicate all instances.</param>
+		/// <param name="counterId">
+		/// The identifier of the specific counter within the counter set. Use PERF_WILDCARD_COUNTER to select all counters.
+		/// </param>
+		/// <param name="instanceId">The identifier of the counter instance. Use PERF_WILDCARD_COUNTER to select all instances.</param>
+		public PPERF_COUNTER_IDENTIFIER(Guid counterSetGuid, string? instanceName = null, uint counterId = PERF_WILDCARD_COUNTER, uint instanceId = PERF_WILDCARD_COUNTER)
+		{
+			CounterSetGuid = counterSetGuid;
+			CounterId = counterId;
+			InstanceId = instanceId;
+			InstanceName = instanceName;
+		}
+
+		internal unsafe PPERF_COUNTER_IDENTIFIER(PERF_COUNTER_IDENTIFIER* ptr) : this((IntPtr)ptr) { }
+
+		internal PPERF_COUNTER_IDENTIFIER(IntPtr ptr)
+		{
+			unsafe { id = *(PERF_COUNTER_IDENTIFIER*)ptr; }
+			InstanceName = id.Size > structSize ? StringHelper.GetString(ptr.Offset(structSize), CharSet.Unicode, id.Size - structSize) : null;
+		}
+
+		/// <summary>The identifier of the performance counter. <c>PERF_WILDCARD_COUNTER</c> specifies all counters.</summary>
+		public uint CounterId { get => id.CounterId; set => id.CounterId = value; }
+
+		/// <summary>The <c>GUID</c> of the performance counter set.</summary>
+		public Guid CounterSetGuid { get => id.CounterSetGuid; set => id.CounterSetGuid = value; }
+
+		/// <summary>
+		/// The position in the sequence of <c>PERF_COUNTER_IDENTIFIER</c> blocks at which the counter data that corresponds to this
+		/// <c>PERF_COUNTER_IDENTIFIER</c> block is returned. Set by PerfQueryCounterInfo.
+		/// </summary>
+		public uint Index => id.Index;
+
+		/// <summary>The instance identifier. Specify 0xFFFFFFFF if you do not want to filter the results based on the instance identifier.</summary>
+		public uint InstanceId { get => id.InstanceId; set => id.InstanceId = value; }
+
+		/// <summary>The optional instance name associated with the counter.</summary>
+		public string? InstanceName { get; set; }
+
+		/// <summary>An error code that indicates whether the operation to add or delete a performance counter succeeded or failed.</summary>
+		public Win32Error Status => id.Status;
+		internal uint Size => (uint)(InstanceName is null ? structSize : structSize + Mult8((InstanceName.Length + 1) * 2));
+		internal void Write(IntPtr ptr)
+		{
+			id.Size = Size;
+			Marshal.StructureToPtr(id, ptr, false);
+			if (InstanceName is not null)
+				StringHelper.Write(InstanceName, ptr.Offset(structSize), out _, true, CharSet.Unicode, id.Size - structSize);
+		}
+	}
 	/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="PERF_COUNTERSET_INSTANCE"/> that is disposed using <see cref="PerfDeleteInstance"/>.</summary>
+	[AdjustAutoMethodNamePattern("Perf|Instance", "")]
 	public class SafePPERF_COUNTERSET_INSTANCE : SafeHANDLE
 	{
 		private readonly HPERFPROV hProv;
@@ -2423,8 +3096,17 @@ public static partial class AdvApi32
 		/// <summary>Initializes a new instance of the <see cref="SafePPERF_COUNTERSET_INSTANCE"/> class.</summary>
 		private SafePPERF_COUNTERSET_INSTANCE() : base() { }
 
+		/// <summary>Gets a reference to the underlying structure.</summary>
+		public ref PERF_COUNTERSET_INSTANCE Ref => ref handle.AsRef<PERF_COUNTERSET_INSTANCE>();
+
 		/// <summary>Gets the underlying structure values.</summary>
 		public PERF_COUNTERSET_INSTANCE Value => handle.ToStructure<PERF_COUNTERSET_INSTANCE>();
+
+		/// <summary>Performs an implicit conversion from <see cref="SafePPERF_COUNTERSET_INSTANCE"/> to <see cref="StructPointer{PERF_COUNTERSET_INSTANCE}"/>.</summary>
+		public static implicit operator StructPointer<PERF_COUNTERSET_INSTANCE>(SafePPERF_COUNTERSET_INSTANCE inst) => inst.DangerousGetHandle();
+
+		/// <summary>Gets the managed details of the instance.</summary>
+		public PERF_COUNTERSET_INSTANCE_MGD GetDetails() { unsafe { return PERF_COUNTERSET_INSTANCE_MGD.CustomMarshaller.ConvertToManaged((PERF_COUNTERSET_INSTANCE*)handle)!; } } 
 
 		/// <inheritdoc/>
 		protected override bool InternalReleaseHandle() => PerfDeleteInstance(hProv, handle).Succeeded;
