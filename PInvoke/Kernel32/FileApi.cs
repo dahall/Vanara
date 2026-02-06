@@ -10376,7 +10376,7 @@ public static partial class Kernel32
 	// *PCREATEFILE2_EXTENDED_PARAMETERS, *LPCREATEFILE2_EXTENDED_PARAMETERS;
 	[PInvokeData("FileAPI.h", MSDNShortId = "hh449426")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct CREATEFILE2_EXTENDED_PARAMETERS()
+	public struct CREATEFILE2_EXTENDED_PARAMETERS(FILE_ATTRIBUTE attributes)
 	{
 		/// <summary>
 		/// <para>Contains the size of this structure, .</para>
@@ -10456,7 +10456,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public FileFlagsAndAttributes dwFileAttributes;
+		public FILE_ATTRIBUTE dwFileAttributes = attributes;
 
 		/// <summary>
 		/// <para>
@@ -10574,7 +10574,7 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public FileFlagsAndAttributes dwFileFlags;
+		public FILE_FLAG dwFileFlags;
 
 		/// <summary>
 		/// <para>The dwSecurityQosFlags parameter specifies SQOS information. For more information, see Impersonation Levels.</para>
@@ -10615,11 +10615,11 @@ public static partial class Kernel32
 		/// </list>
 		/// </para>
 		/// </summary>
-		public FileFlagsAndAttributes dwSecurityQosFlags;
+		public FILE_SECURITY dwSecurityQosFlags;
 
 		/// <summary>
 		/// <para>
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that contains two separate but related data members: an optional security
+		/// A pointer to a <see cref="SECURITY_ATTRIBUTES"/> structure that contains two separate but related data members: an optional security
 		/// descriptor, and a Boolean value that determines whether the returned handle can be inherited by child processes.
 		/// </para>
 		/// <para>This parameter can be <c>NULL</c>.</para>
@@ -10750,7 +10750,7 @@ public static partial class Kernel32
 	// *PCREATEFILE3_EXTENDED_PARAMETERS, *LPCREATEFILE3_EXTENDED_PARAMETERS;
 	[PInvokeData("fileapi.h", MSDNShortId = "NS:fileapi._CREATEFILE3_EXTENDED_PARAMETERS")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	public struct CREATEFILE3_EXTENDED_PARAMETERS()
+	public struct CREATEFILE3_EXTENDED_PARAMETERS(FILE_ATTRIBUTE attributes)
 	{
 		/// <summary>Contains the size of this structure, <c>sizeof(CREATEFILE3_EXTENDED_PARAMETERS)</c>.</summary>
 		public uint dwSize = (uint)Marshal.SizeOf<CREATEFILE3_EXTENDED_PARAMETERS>();
@@ -10832,7 +10832,7 @@ public static partial class Kernel32
 		///     </item>
 		///   </list>
 		/// </summary>
-		public FileFlagsAndAttributes dwFileAttributes;
+		public FILE_ATTRIBUTE dwFileAttributes = attributes;
 
 		/// <summary>
 		///   <para>This parameter can contain combinations of flags (<b>FILE_FLAG_*</b>) for control of file or device caching behavior, access modes, and other special-purpose flags.</para>
@@ -10941,7 +10941,7 @@ public static partial class Kernel32
 		///     </item>
 		///   </list>
 		/// </summary>
-		public FileFlagsAndAttributes dwFileFlags;
+		public FILE_FLAG dwFileFlags;
 
 		/// <summary>
 		///   <para>The dwSecurityQosFlags parameter specifies SQOS information. For more information, see <c>Impersonation Levels</c>.</para>
@@ -10988,7 +10988,7 @@ public static partial class Kernel32
 		///     </item>
 		///   </list>
 		/// </summary>
-		public FileFlagsAndAttributes dwSecurityQosFlags;
+		public FILE_SECURITY dwSecurityQosFlags;
 
 		/// <summary>
 		///   <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that contains two separate but related data members: an optional security descriptor, and a Boolean value that determines whether the returned handle can be inherited by child processes.</para>

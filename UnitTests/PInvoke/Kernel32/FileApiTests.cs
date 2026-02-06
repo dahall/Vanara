@@ -62,7 +62,7 @@ public class FileApiTests
 	public void CreateReadFileTest()
 	{
 		string rofn = CreateTempFile();
-		using SafeHFILE f = CreateFile(rofn, Kernel32.FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL, IntPtr.Zero);
+		using SafeHFILE f = CreateFile(rofn, Kernel32.FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL);
 		SafeCoTaskMemString sb = new(100, CharSet.Ansi);
 		bool b = ReadFile(f, (IntPtr)sb, (uint)sb.Capacity, out uint read, IntPtr.Zero);
 		if (!b) TestContext.WriteLine($"ReadFile:{Win32Error.GetLastError()}");
@@ -85,9 +85,10 @@ public class FileApiTests
 	}
 
 	[Test]
-	public void CreateWriteFileTest()
+	public void Create2WriteFileTest()
 	{
-		using SafeHFILE f = CreateFile(Path.GetTempFileName(), Kernel32.FileAccess.GENERIC_WRITE, FileShare.Write, null, FileMode.OpenOrCreate, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL, IntPtr.Zero);
+		using SafeCoTaskMemStruct<CREATEFILE2_EXTENDED_PARAMETERS> cfp2 = new CREATEFILE2_EXTENDED_PARAMETERS(FILE_ATTRIBUTE.FILE_ATTRIBUTE_NORMAL);
+		using SafeHFILE f = CreateFile2(Path.GetTempFileName(), Kernel32.FileAccess.GENERIC_WRITE, FileShare.Write, FileMode.OpenOrCreate, (IntPtr)cfp2);
 		string txt = "Some text to push.";
 		byte[] bytes = txt.GetBytes(false);
 		bool b = WriteFile(f, bytes, (uint)bytes.Length, out uint written, IntPtr.Zero);
