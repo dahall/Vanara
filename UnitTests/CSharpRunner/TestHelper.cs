@@ -97,7 +97,7 @@ Simple:
 				try
 				{
 					jsonSet.Value.DefaultValueHandling = showDefVals ? DefaultValueHandling.Include : DefaultValueHandling.Ignore;
-					return JsonConvert.SerializeObject(value, Formatting.Indented, jsonSet.Value);
+					return $"{value.GetType().Name} {JsonConvert.SerializeObject(value, Formatting.Indented, jsonSet.Value)}";
 				}
 				catch (Exception e) { return e.ToString(); }
 		}
@@ -153,8 +153,11 @@ Simple:
 	public static void WriteValues<T>(this Span<T> value, bool showDefVals = true)
 	{
 		TestContext.WriteLine("[");
-		foreach (ref readonly T v in value)
-			TestContext.WriteLine(GetStringVal(v, showDefVals).Indent());
+		if (typeof(T).IsPrimitive)
+			TestContext.WriteLine(string.Join(", ", value.ToArray()).Indent());
+		else
+			foreach (ref readonly T v in value)
+				TestContext.WriteLine(GetStringVal(v, showDefVals).Indent());
 		TestContext.WriteLine("]");
 	}
 
